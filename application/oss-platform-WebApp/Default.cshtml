@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "FSS Workflow Designer";
+}
+
+<script src="~/Scripts/VisualConfiguration.js"></script>
+<script src="~/Scripts/JsPlumbInit.js"></script>
+<script src="~/Scripts/WfActivityDef.js"></script>
+<script src="~/Scripts/WfUtils.js"></script>
+<script src="~/Scripts/WfSave.js"></script>
+<script src="~/Scripts/WfLoad.js"></script>
+<script src="~/Scripts/WfDialogs.js"></script>
+
+<div class="toolbox">
+    <button type="button" class="btn btn-primary btn-lg btn-save-workflow">Save</button>
+    <button type="button" class="btn btn-default btn-lg btn-load-workflow">Load latest</button>
+    <button type="button" class="btn btn-default btn-lg btn-open-history">History</button>
+    <button type="button" class="btn btn-danger btn-lg btn-clear-workflow"">Clear workflow</button>
+
+    <div class="menuLabel noselect">Editing modes:</div>
+    <div class="btn-group-vertical" data-toggle="buttons">
+        <label id="mode-normal" class="btn btn-default btn-lg btn-edit-mode active">
+            <input type="radio" name="modes" autocomplete="off" checked>Normal mode
+        </label>
+        <label id="mode-delete" class="btn btn-danger btn-lg btn-edit-mode">
+            <input type="radio" name="modes" autocomplete="off">Delete mode
+        </label>
+    </div>
+
+    <div class="menuLabel noselect">Activity Toolbox:</div>
+    <div id="activityMenu"></div>
+</div>
+
+<div class="work-area-container">
+    <div id="workflow-container" class="workflow-container"></div>
+</div>
+
+<div id="save-dialog" title="Save Workflow">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+
+<div id="history-dialog" title="Load from history">
+    <table id="commit-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>

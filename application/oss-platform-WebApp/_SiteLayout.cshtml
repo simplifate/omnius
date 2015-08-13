@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="~/Content/Style/base/minified/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Style/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/Style/WfDesigner.css" rel="stylesheet" type="text/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="~/Scripts/Libraries/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/Libraries/jquery-ui-1.10.3.min.js"></script>
+    <script src="~/Scripts/Libraries/bootstrap.min.js"></script>
+    <script src="~/Scripts/Libraries/dom.jsPlumb-1.7.6-min.js "></script>
+    <meta name="viewport" content="width=device-width" />
+    @RenderSection("head", required: false)
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
