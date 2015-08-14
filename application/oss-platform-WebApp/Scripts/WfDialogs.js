@@ -12,6 +12,14 @@
                 saveDialog.dialog("close");
             }
         },
+        create: function() {
+            $("#message").keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    SaveWorkflow($("#message").val());
+                    saveDialog.dialog("close");
+                    return false;
+                }
+            })},
         open: function () {
             $("#message").val("");
         }
@@ -35,16 +43,18 @@
             }
         },
         open: function (event, ui) {
+            historyDialog.data("selectedCommitId", null);
             $.ajax({
                 type: "GET",
                 url: "/api/commits",
                 dataType: "json",
                 error: function () { alert("Error loading commit history") },
                 success: function (data) {
-                    historyDialog.data("selectedCommitId", null);
                     $("#commit-table:first tbody:nth-child(2) tr").remove();
                     tbody = $("#commit-table:first tbody:nth-child(2)");
                     commitIdArray = [];
+
+                    // Fill in the history rows
                     for (i = 0; i < data.CommitHeaders.length; i++) {
                         commitIdArray.push(data.CommitHeaders[i].Id);
                         if(data.CommitHeaders[i].CommitMessage != null)
@@ -54,6 +64,8 @@
                             tbody.append($('<tr class="commitRow"><td>' + data.CommitHeaders[i].TimeString
                                 + '</td><td style="color: darkgrey;">(no message)</td></tr>'));
                     }
+
+                    // Highlight the selected row
                     $(document).on('click', 'tr.commitRow', function (event) {
                         $("#commit-table:first tbody:nth-child(2) tr").removeClass("highlightedCommitRow");
                         $(this).addClass("highlightedCommitRow");
@@ -66,19 +78,19 @@
         }
     });
 
-    $(".toolbox .btn-save-workflow").button().on("click", function () {
+    $("#btn-save-workflow").button().on("click", function () {
         saveDialog.dialog("open");
     });
 
-    $(".toolbox .btn-load-workflow").button().on("click", function () {
+    $("#btn-load-workflow").button().on("click", function () {
         LoadWorkflow("latest");
     });
 
-    $(".toolbox .btn-open-history").button().on("click", function () {
+    $("#btn-open-history").button().on("click", function () {
         historyDialog.dialog("open");
     });
 
-    $(".toolbox .btn-clear-workflow").button().on("click", function () {
+    $("#btn-clear-workflow").button().on("click", function () {
         ClearWorkflow();
     });
 });

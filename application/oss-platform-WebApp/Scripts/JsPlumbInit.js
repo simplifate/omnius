@@ -43,7 +43,7 @@ function AddEndpointsByType(newElement) {
             anchor: "BottomRight", uuid: newElementId + "BottomRight"
         });
     }
-    else if (newElementOutput == "yn") {
+    else if (newElementOutput == "YesNo") {
         instance.addEndpoint(newElementId, yesEndpoint, {
             anchor: "BottomLeft", uuid: newElementId + "BottomLeft"
         });
@@ -81,20 +81,8 @@ jsPlumb.ready(function () {
         $("#activityMenu .menuItem").draggable({
             helper: "clone",
             tolerance: "fit",
-            revert: true,
-            start: function (e, ui) {
-                //$(ui.helper).css("position", "absolute");
-            }
+            revert: true
         });
-
-        /*$("#activityMenu .menuItem").on("click", function (clickedElement, event) {
-            instance.draggable(clickedElement), {
-                containment: "parent",
-                stop: function (event) {
-                    stateDragged = true;
-                }
-            }
-        });*/
 
         $("#workflow-container").droppable({
             accept: ".menuItem",
@@ -109,9 +97,8 @@ jsPlumb.ready(function () {
                 droppedElement.css("left", parseInt(droppedElement.css("left")) + $("#workflow-container").scrollLeft());
                 droppedElement.css("top", parseInt(droppedElement.css("top")) + $("#workflow-container").scrollTop());
                 instance.draggable(droppedElement, {});
-                newElement = $("#workflow-container .activity:last");
-                AddEndpointsByType(newElement);
-                newElement.on("mousedown", function () {
+                AddEndpointsByType(droppedElement);
+                droppedElement.on("mousedown", function () {
                     if (DeleteModeActive == true) {
                         instance.removeAllEndpoints(this, true);
                         $(this).remove();
@@ -119,8 +106,6 @@ jsPlumb.ready(function () {
                 })
             }
         });
-
-        instance.draggable(jsPlumb.getSelector(".workflow-container .activity"), {});
     });
 });
 

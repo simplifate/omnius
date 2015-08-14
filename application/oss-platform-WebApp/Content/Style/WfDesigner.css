@@ -3,6 +3,11 @@
     overflow: hidden;
 }
 
+.toolbox {
+    float: right;
+    padding-right: 15px;
+}
+
 .menuLabel {
     width: 175px;
     text-align: center;
@@ -13,75 +18,20 @@
     cursor: default;
 }
 
-.toolbox {
-    float: right;
-    padding-right: 15px;
-}
-
-.btn-save-workflow {
+.btn-toolbox-menu {
     box-sizing: initial;
     display: block;
     width: 160px;
-    padding: 10px 6.3px;
+    padding: 10px 6px;
+    margin-bottom: 12px;
+}
+
+#btn-save-workflow {
     margin-top: 12px;
-    margin-bottom: 12px;
-}
-
-.btn-load-workflow {
-    box-sizing: initial;
-    display: block;
-    width: 160px;
-    padding: 10px 6.3px;
-    margin-bottom: 12px;
-}
-
-.btn-open-history {
-    box-sizing: initial;
-    display: block;
-    width: 160px;
-    padding: 10px 6.3px;
-    margin-bottom: 12px;
-}
-
-.btn-clear-workflow {
-    box-sizing: initial;
-    display: block;
-    width: 160px;
-    padding: 10px 6.3px;
-    margin-bottom: 12px;
 }
 
 .btn-edit-mode {
     width: 174px !important;
-}
-
-.workflow-container .activity {
-    box-sizing: initial;
-    border: 1px solid #346789;
-    box-shadow: 2px 2px 19px #aaa;
-    -o-box-shadow: 2px 2px 19px #aaa;
-    -webkit-box-shadow: 2px 2px 19px #aaa;
-    -moz-box-shadow: 2px 2px 19px #aaa;
-    -moz-border-radius: 0.5em;
-    border-radius: 0.5em;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-    width: 160px;
-    height: 40px;
-    line-height: 40px;
-    cursor: pointer;
-    text-align: center;
-    z-index: 20;
-    position: absolute;
-    background-color: #eeeeef;
-    color: black;
-    font-family: helvetica;
-    padding: 0.5em;
-    font-size: 0.9em;
-    -webkit-transition: -webkit-box-shadow 0.15s ease-in;
-    -moz-transition: -moz-box-shadow 0.15s ease-in;
-    -o-transition: -o-box-shadow 0.15s ease-in;
-    transition: box-shadow 0.15s ease-in;
 }
 
 #activityMenu {
@@ -97,8 +47,8 @@
     -o-box-shadow: 2px 2px 19px #aaa;
     -webkit-box-shadow: 2px 2px 19px #aaa;
     -moz-box-shadow: 2px 2px 19px #aaa;
-    -moz-border-radius: 0.5em;
-    border-radius: 0.5em;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     opacity: 0.8;
     filter: alpha(opacity=80);
     width: 160px;
@@ -110,10 +60,38 @@
     background-color: #eeeeef;
     color: black;
     font-family: helvetica;
-    padding: 0.5em;
+    padding: 6px;
     font-size: 0.9em;
 }
 
+.workflow-container .activity {
+    box-sizing: initial;
+    border: 1px solid #346789;
+    box-shadow: 2px 2px 19px #aaa;
+    -o-box-shadow: 2px 2px 19px #aaa;
+    -webkit-box-shadow: 2px 2px 19px #aaa;
+    -moz-box-shadow: 2px 2px 19px #aaa;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 20;
+    position: absolute;
+    background-color: #eeeeef;
+    color: black;
+    font-family: helvetica;
+    padding: 6px;
+    font-size: 0.9em;
+    -webkit-transition: -webkit-box-shadow 0.15s ease-in;
+    -moz-transition: -moz-box-shadow 0.15s ease-in;
+    -o-transition: -o-box-shadow 0.15s ease-in;
+    transition: box-shadow 0.15s ease-in;
+}
 
 .workflow-container .activity:hover, #activityMenu .activity:hover {
     box-shadow: 2px 2px 19px #444;

@@ -7,7 +7,7 @@ using FSSWorkflowDesigner.DAL;
 
 namespace FSSWorkflowDesigner.Controllers
 {
-    public class SaveLoadApiController : Controller
+    public class WorkflowApiController : Controller
     {
         [Route("api/commits")]
         [HttpGet]
@@ -46,6 +46,8 @@ namespace FSSWorkflowDesigner.Controllers
                             Activities = new List<Activity>()
                         };
                         context.Commits.Add(newCommit);
+
+                        // All connection keys will be re-mapped to the primary IDs assigned to activities by the database provider
                         Dictionary<int, int> idMapping = new Dictionary<int, int>();
 
                         for (int i = 0; i < postData.Activities.Count; i++)
@@ -81,15 +83,13 @@ namespace FSSWorkflowDesigner.Controllers
                 }
                 return new HttpStatusCodeResult(200);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new HttpStatusCodeResult(500);
             }
         }
 
-        [Route("api/commits/{commitId:int}")]
-        [HttpGet]
-        public ActionResult GetCommitById(int commitId)
+        private ActionResult getCommit(bool getLatest, int commitId = -1)
         {
             try
             {
@@ -97,40 +97,18 @@ namespace FSSWorkflowDesigner.Controllers
                 List<AjaxTransferConnection> connections = new List<AjaxTransferConnection>();
                 using (var context = new WorkflowDbContext())
                 {
-                    var requestedCommit = (from c in context.Commits where c.Id.Equals(commitId) select c).First();
+                    Commit requestedCommit;
+                    if(getLatest)
+                        requestedCommit = (from c in context.Commits orderby c.Timestamp descending select c).First();
+                    else
+                        requestedCommit = (from c in context.Commits where c.Id.Equals(commitId) select c).First();
+                    transferState.CommitMessage = requestedCommit.CommitMessage;
+
                     foreach (var item in requestedCommit.Activities)
                     {
-                        transferState.Activities.Add(new AjaxTransferActivity { Id = item.Id, ActType = item.Type, PositionX = item.PositionX, PositionY = item.PositionY });
-                        foreach (var output in item.Outputs)
-                        {
-                            AjaxTransferConnection currentConnection = new AjaxTransferConnection { Source = item.Id, SourceSlot = output.SourceSlot,
-                                Target = output.Target, TargetSlot = output.TargetSlot };
-                            transferState.Connections.Add(currentConnection);
-                        }
-                    }
-                }
-                return Json(transferState, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(500);
-            }
-        }
+                        transferState.Activities.Add(new AjaxTransferActivity { Id = item.Id, ActType = item.Type,
+                            PositionX = item.PositionX, PositionY = item.PositionY });
 
-        [Route("api/commits/latest")]
-        [HttpGet]
-        public ActionResult GetLatestCommit()
-        {
-            try
-            {
-                AjaxTransferWorkflowSate transferState = new AjaxTransferWorkflowSate();
-                List<AjaxTransferConnection> connections = new List<AjaxTransferConnection>();
-                using (var context = new WorkflowDbContext())
-                {
-                    var latestCommit = (from c in context.Commits orderby c.Timestamp descending select c).First();
-                    foreach (var item in latestCommit.Activities)
-                    {
-                        transferState.Activities.Add(new AjaxTransferActivity { Id = item.Id, ActType = item.Type, PositionX = item.PositionX, PositionY = item.PositionY });
                         foreach (var output in item.Outputs)
                         {
                             AjaxTransferConnection currentConnection = new AjaxTransferConnection
@@ -146,10 +124,24 @@ namespace FSSWorkflowDesigner.Controllers
                 }
                 return Json(transferState, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new HttpStatusCodeResult(500);
             }
+        }
+
+        [Route("api/commits/latest")]
+        [HttpGet]
+        public ActionResult GetLatestCommit()
+        {
+            return getCommit(true);
+        }
+
+        [Route("api/commits/{commitId:int}")]
+        [HttpGet]
+        public ActionResult GetCommitById(int commitId)
+        {
+            return getCommit(false, commitId);
         }
     }
 }

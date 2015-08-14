@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using FSSWorkflowDesigner.Models;
 
 namespace FSSWorkflowDesigner.DAL
 {

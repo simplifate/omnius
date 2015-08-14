@@ -41,7 +41,6 @@ targetEndpoint = {
     dropOptions: { hoverClass: "hover", activeClass: "active" },
     isTarget: true
 };
-
 yesEndpoint = $.extend({}, sourceEndpoint, {
     overlays: [
         ["Label", {

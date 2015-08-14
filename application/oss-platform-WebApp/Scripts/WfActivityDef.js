@@ -7,7 +7,7 @@
     {
         Name: "Decision",
         Input: "1",
-        Output: "yn"
+        Output: "YesNo"
     },
     {
         Name: "Process",

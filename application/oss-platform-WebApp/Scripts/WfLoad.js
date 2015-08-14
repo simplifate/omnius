@@ -9,15 +9,15 @@
         success: function (data) {
             for (i = 0; i < data.Activities.length; i++) {
                 currentActivity = data.Activities[i];
-                $("#workflow-container").append($('<div class="activity" actid="' + currentActivity.Id
+                newActivity = $('<div class="activity" actid="' + currentActivity.Id
                     + '" acttype="' + currentActivity.ActType + '"><strong>'
-                    + ActivityDef[currentActivity.ActType].Name + '</strong><br /><br /></div>'));
-                newElement = $("#workflow-container .activity:last");
-                newElement.css("left", currentActivity.PositionX);
-                newElement.css("top", currentActivity.PositionY);
-                instance.draggable(newElement.get(0), {});
-                AddEndpointsByType(newElement);
-                newElement.on("mousedown", function () {
+                    + ActivityDef[currentActivity.ActType].Name + '</strong><br /><br /></div>');
+                $("#workflow-container").append(newActivity);
+                newActivity.css("left", currentActivity.PositionX);
+                newActivity.css("top", currentActivity.PositionY);
+                instance.draggable(newActivity.get(0), {});
+                AddEndpointsByType(newActivity);
+                newActivity.on("mousedown", function () {
                     if (DeleteModeActive == true) {
                         instance.removeAllEndpoints(this, true);
                         $(this).remove();
@@ -42,7 +42,7 @@
 
                 if (sourceOutputType == "1")
                     sourceEndpointName = "BottomCenter";
-                else if (sourceOutputType == "2" || sourceOutputType == "yn" || sourceOutputType == "OkTimeout") {
+                else if (sourceOutputType == "2" || sourceOutputType == "YesNo" || sourceOutputType == "OkTimeout") {
                     if (currentConnection.SourceSlot == 0)
                         sourceEndpointName = "BottomLeft";
                     else
