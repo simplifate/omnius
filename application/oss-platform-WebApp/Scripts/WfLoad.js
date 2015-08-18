@@ -3,7 +3,7 @@
 
     $.ajax({
         type: "GET",
-        url: "/api/commits/" + commitId,
+        url: "/api/workflows/" + CurrentWorkflowId + "/commits/" + commitId,
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {

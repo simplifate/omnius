@@ -26,7 +26,7 @@
     margin-bottom: 12px;
 }
 
-#btn-save-workflow {
+#btn-new-workflow {
     margin-top: 12px;
 }
 
@@ -37,7 +37,7 @@
 #activityMenu {
     overflow-y: scroll;
     padding-right: 5px;
-    height: 490px;
+    height: 390px;
 }
 
 #activityMenu .menuItem {
@@ -102,10 +102,24 @@
     filter: alpha(opacity=60);
 }
 
-.work-area-container {
+.top-bar-container {
     position: absolute;
     left: 0px;
     top: 0px;
+    right: 240px;
+    height: 27px;
+    background-color: #337AB7;
+    color: white;
+    text-align: center;
+    padding-top: 3px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.work-area-container {
+    position: absolute;
+    left: 0px;
+    top: 27px;
     right: 240px;
     bottom: 0px;
 }

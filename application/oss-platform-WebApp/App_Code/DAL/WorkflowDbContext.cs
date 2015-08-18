@@ -5,7 +5,7 @@ namespace FSSWorkflowDesigner.DAL
 {
     public class WorkflowDbContext : DbContext
     {
-        public DbSet<Commit> Commits { get; set; }
+        public DbSet<Workflow> Workflows { get; set; }
 
         public WorkflowDbContext() : base("WorkflowDbContext")
         {
@@ -23,6 +23,9 @@ namespace FSSWorkflowDesigner.DAL
             modelBuilder.Entity<Commit>()
                         .HasMany(s => s.Activities)
                         .WithRequired(s => s.Commit);
+            modelBuilder.Entity<Workflow>()
+                        .HasMany(s => s.Commits)
+                        .WithRequired(s => s.Workflow);
         }
     }
 }

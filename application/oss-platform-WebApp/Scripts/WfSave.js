@@ -51,7 +51,7 @@
 
     $.ajax({
         type: "POST",
-        url: "/api/commits",
+        url: "/api/workflows/" + CurrentWorkflowId + "/commits",
         data: postData,
         success: function(){ alert("OK") },
         error: function() { alert("ERROR") }

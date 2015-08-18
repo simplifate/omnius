@@ -9,29 +9,114 @@ namespace FSSWorkflowDesigner.Controllers
 {
     public class WorkflowApiController : Controller
     {
-        [Route("api/commits")]
+        [Route("api/workflows")]
         [HttpGet]
-        public ActionResult GetCommitList()
+        public ActionResult GetWorkflowList()
         {
-            AjaxTransferHistory transferHistory = new AjaxTransferHistory();
-            using (var context = new WorkflowDbContext())
+            try
             {
-                var commits = from c in context.Commits orderby c.Timestamp descending select c;
-                foreach (Commit c in commits)
-                    transferHistory.CommitHeaders.Add(new AjaxTransferCommitHeader
-                    {
-                        Id = c.Id,
-                        CommitMessage = c.CommitMessage,
-                        TimeString = c.Timestamp.ToString("d. M. yyyy H:mm:ss")
-                    });
-            }
+                List<AjaxTransferWorkflowHeader> workflowHeaderList = new List<AjaxTransferWorkflowHeader>();
+                using (var context = new WorkflowDbContext())
+                {
+                    var workflows = from w in context.Workflows orderby w.LastChangeTime descending select w;
+                    foreach (Workflow w in workflows)
+                        workflowHeaderList.Add(new AjaxTransferWorkflowHeader
+                        {
+                            Id = w.Id,
+                            Name = w.Name,
+                            TimeString = w.CreationTime.ToString("d. M. yyyy H:mm:ss")
+                        });
+                }
 
-            return Json(transferHistory, JsonRequestBehavior.AllowGet);
+                return Json(workflowHeaderList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
 
-        [Route("api/commits")]
+        [Route("api/workflows/last-used")]
+        [HttpGet]
+        public ActionResult GetTheWorkflowLastUsed()
+        {
+            try
+            {
+                using (var context = new WorkflowDbContext())
+                {
+                    var workflow = (from w in context.Workflows orderby w.LastChangeTime descending select w).First();
+                    return Json(new AjaxTransferWorkflowHeader
+                    {
+                        Id = workflow.Id,
+                        Name = workflow.Name,
+                        TimeString = workflow.CreationTime.ToString("d. M. yyyy H:mm:ss")
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(500);
+            }
+        }
+
+        [Route("api/workflows/{workflowId:int}/commits")]
+        [HttpGet]
+        public ActionResult GetCommitList(int workflowId)
+        {
+            try
+            {
+                List<AjaxTransferCommitHeader> transferHistory = new List<AjaxTransferCommitHeader>();
+                using (var context = new WorkflowDbContext())
+                {
+                    Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
+                    var commits = from c in workflow.Commits orderby c.Timestamp descending select c;
+                    foreach (Commit c in commits)
+                        transferHistory.Add(new AjaxTransferCommitHeader
+                        {
+                            Id = c.Id,
+                            CommitMessage = c.CommitMessage,
+                            TimeString = c.Timestamp.ToString("d. M. yyyy H:mm:ss")
+                        });
+                }
+
+                return Json(transferHistory, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(500);
+            }
+        }
+
+        [Route("api/workflows")]
         [HttpPost]
-        public ActionResult Save(AjaxTransferWorkflowSate postData)
+        public ActionResult CreateWorkflow(AjaxTransferWorkflowHeader postData)
+        {
+            try
+            {
+                using (var context = new WorkflowDbContext())
+                {
+                    DateTime saveTime = DateTime.Now;
+                    Workflow newWorkflow = new Workflow
+                    {
+                        Name = postData.Name,
+                        CreationTime = saveTime,
+                        LastChangeTime = saveTime
+                    };
+                    context.Workflows.Add(newWorkflow);
+                    context.SaveChanges();
+                    return Json(new AjaxTransferWorkflowHeader { Id = newWorkflow.Id, Name = newWorkflow.Name,
+                        TimeString = newWorkflow.CreationTime.ToString("d. M. yyyy H:mm:ss")});
+                }
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(500);
+            }
+        }
+
+        [Route("api/workflows/{workflowId:int}/commits")]
+        [HttpPost]
+        public ActionResult SaveToExistingWorkflow(int workflowId, AjaxTransferWorkflowSate postData)
         {
             try
             {
@@ -45,7 +130,8 @@ namespace FSSWorkflowDesigner.Controllers
                             Timestamp = DateTime.Now,
                             Activities = new List<Activity>()
                         };
-                        context.Commits.Add(newCommit);
+                        Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
+                        workflow.Commits.Add(newCommit);
 
                         // All connection keys will be re-mapped to the primary IDs assigned to activities by the database provider
                         Dictionary<int, int> idMapping = new Dictionary<int, int>();
@@ -78,6 +164,7 @@ namespace FSSWorkflowDesigner.Controllers
                                 newCommit.Activities.First(a => a.Id == target).Inputs.Add(new Input { Source = source, Slot = postData.Connections[i].TargetSlot });
                             }
                         }
+                        workflow.LastChangeTime = DateTime.Now;
                         context.SaveChanges();
                     }
                 }
@@ -89,7 +176,7 @@ namespace FSSWorkflowDesigner.Controllers
             }
         }
 
-        private ActionResult getCommit(bool getLatest, int commitId = -1)
+        private ActionResult getCommit(int workflowId, int commitId = -1)
         {
             try
             {
@@ -97,11 +184,19 @@ namespace FSSWorkflowDesigner.Controllers
                 List<AjaxTransferConnection> connections = new List<AjaxTransferConnection>();
                 using (var context = new WorkflowDbContext())
                 {
-                    Commit requestedCommit;
-                    if(getLatest)
-                        requestedCommit = (from c in context.Commits orderby c.Timestamp descending select c).First();
-                    else
-                        requestedCommit = (from c in context.Commits where c.Id.Equals(commitId) select c).First();
+                    Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
+                    Commit requestedCommit = new Commit();
+                    try
+                    {
+                        if (commitId == -1) // No commitId specified, get the lates commit by default
+                            requestedCommit = (from c in workflow.Commits where c.Workflow.Id.Equals(workflowId) orderby c.Timestamp descending select c).First();
+                        else
+                            requestedCommit = (from c in workflow.Commits where c.Workflow.Id.Equals(workflowId) && c.Id.Equals(commitId) select c).First();
+                    }
+                    catch(InvalidOperationException) // Workflow history is empty, no commits yet
+                    {
+                        return Json(new AjaxTransferWorkflowSate(), JsonRequestBehavior.AllowGet);
+                    }
                     transferState.CommitMessage = requestedCommit.CommitMessage;
 
                     foreach (var item in requestedCommit.Activities)
@@ -130,18 +225,18 @@ namespace FSSWorkflowDesigner.Controllers
             }
         }
 
-        [Route("api/commits/latest")]
+        [Route("api/workflows/{workflowId:int}/commits/latest")]
         [HttpGet]
-        public ActionResult GetLatestCommit()
+        public ActionResult GetLatestCommit(int workflowId)
         {
-            return getCommit(true);
+            return getCommit(workflowId);
         }
 
-        [Route("api/commits/{commitId:int}")]
+        [Route("api/workflows/{workflowId:int}/commits/{commitId:int}")]
         [HttpGet]
-        public ActionResult GetCommitById(int commitId)
+        public ActionResult GetCommitById(int workflowId, int commitId)
         {
-            return getCommit(false, commitId);
+            return getCommit(workflowId, commitId);
         }
     }
 }

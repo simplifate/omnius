@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FSSWorkflowDesigner.Models
 {
@@ -35,13 +34,10 @@ namespace FSSWorkflowDesigner.Models
         public string CommitMessage { get; set; }
         public string TimeString { get; set; }
     }
-    public class AjaxTransferHistory
+    public class AjaxTransferWorkflowHeader
     {
-        public List<AjaxTransferCommitHeader> CommitHeaders { get; set; }
-
-        public AjaxTransferHistory()
-        {
-            CommitHeaders = new List<AjaxTransferCommitHeader>();
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string TimeString { get; set; }
     }
 }

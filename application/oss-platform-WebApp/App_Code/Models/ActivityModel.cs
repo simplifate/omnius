@@ -58,9 +58,24 @@ namespace FSSWorkflowDesigner.Models
         public DateTime Timestamp { get; set; }
         public virtual ICollection<Activity> Activities { get; set; }
 
+        public virtual Workflow Workflow { get; set; }
+
         public Commit()
         {
             Activities = new List<Activity>();
+        }
+    }
+    public class Workflow
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime CreationTime { get; set; }
+        public DateTime LastChangeTime { get; set; }
+        public virtual ICollection<Commit> Commits { get; set; }
+
+        public Workflow()
+        {
+            Commits = new List<Commit>();
         }
     }
 }

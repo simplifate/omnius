@@ -1,5 +1,7 @@
 ﻿var instance;
 var DeleteModeActive = false;
+var CurrentWorkflowId = 0;
+var CurrentWorkflowName = "WorkflowTest";
 
 function AddEndpointsByType(newElement) {
     newElementId = newElement.attr("id");
@@ -95,7 +97,7 @@ jsPlumb.ready(function () {
                 $(droppedElement).addClass("activity");
                 droppedElement.appendTo("#workflow-container");
                 droppedElement.css("left", parseInt(droppedElement.css("left")) + $("#workflow-container").scrollLeft());
-                droppedElement.css("top", parseInt(droppedElement.css("top")) + $("#workflow-container").scrollTop());
+                droppedElement.css("top", parseInt(droppedElement.css("top")) + $("#workflow-container").scrollTop() - 27);
                 instance.draggable(droppedElement, {});
                 AddEndpointsByType(droppedElement);
                 droppedElement.on("mousedown", function () {
