@@ -192,6 +192,9 @@
     $("#btn-clear-workflow").button().on("click", function () {
         ClearWorkflow();
     });
+    $("#switchToDatabase").on("click", function () {
+        window.location = "/database";
+    });
 
     $.ajax({
         type: "GET",

@@ -192,3 +192,10 @@ path, ._jsPlumb_endpoint {
 .highlightedCommitRow {
     background-color: lightblue !important;
 }
+
+#switchToDatabase {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 32px;
+}

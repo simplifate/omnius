@@ -1,0 +1,145 @@
+﻿.dbTable {
+    position: absolute;
+    width: 220px;
+    border: 1px solid #45525e;
+    border-radius: 4px;
+}
+
+.dbTableHeader {
+    background-color: #45525e;
+    color: white;
+    width: 218px;
+    height: 30px;
+    padding-top: 3px;
+    text-align: center;
+}
+
+.dbTableName {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+
+}
+
+.dbColumn {
+    position: relative;
+    text-align: left;
+    height: 30px;
+    background-color: lightblue;
+    padding-top: 3px;
+}
+
+.dbColumnName {
+    color: black;
+    font-weight: normal;
+    font-size: 1.2em;
+}
+
+.dbPrimaryKey {
+    background-color: #3bb8e1;
+}
+
+.deleteTableIcon {
+    float: left;
+    padding-top: 6px;
+    padding-left: 6px;
+    color: #ff9090;
+}
+
+.addColumnIcon {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.editTableIcon {
+    position: absolute;
+    top: 6px;
+    right: 30px;
+}
+
+.editColumnIcon {
+    float: right;
+    padding-top: 6px;
+    padding-right: 6px;}
+
+
+.deleteColumnIcon {
+    float: left;
+    padding-top: 6px;
+    padding-left: 6px;
+    margin-right: 10px;
+}
+
+.addColumnIcon:hover, .editColumnIcon:hover, .deleteColumnIcon:hover, .deleteTableIcon:hover, .editTableIcon:hover {
+    color: #ff4000;
+}
+
+.addColumnIcon, .deleteTableIcon, .editColumnIcon, .deleteColumnIcon, .editTableIcon, .dbTableName, .dbColumnName {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.ui-dialog {
+    padding: 0px 0px;
+    border: 1px solid #45525e;
+    border-radius: 4px;
+}
+.ui-widget-header {
+    background-image: none;
+    background-color: #45525e;
+    color: white;
+}
+
+#add-column-dialog {
+    padding: 12px 15px !important;
+    height: auto !important;
+}
+
+.ui-dialog-buttonpane {
+    padding: 3px 3px 3px 3px !important;
+}
+
+.ui-dialog-buttonset button {
+    margin: 3px 3px !important;
+}
+
+#new-column-name, #new-table-name {
+    width: 220px;
+}
+
+.ui-dialog-content .formTable label {
+    margin-bottom: 0px;
+}
+
+.ui-dialog-content .formTable tr {
+    height: 32px;
+}
+
+
+.ui-dialog-content .formTable td {
+    vertical-align: middle;
+}
+
+.ui-dialog-content .formTable tr td:first-child {
+    width: 150px;
+}
+
+#switchToWorkflow {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#btnAddTable {
+    position: absolute;
+    left: 10px;
+    top: 60px;
+}

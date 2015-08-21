@@ -1,10 +1,14 @@
-﻿@{
-    Layout = "~/_SiteLayout.cshtml";
+﻿@inherits System.Web.Mvc.WebViewPage
+@section head{
+    <link href="~/Content/Style/WfDesigner.css" rel="stylesheet" type="text/css" />
+}
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
     Page.Title = "FSS Workflow Designer";
 }
 
-<script src="~/Scripts/VisualConfiguration.js"></script>
-<script src="~/Scripts/JsPlumbInit.js"></script>
+<script src="~/Scripts/WfVisualConfiguration.js"></script>
+<script src="~/Scripts/WfInit.js"></script>
 <script src="~/Scripts/WfActivityDef.js"></script>
 <script src="~/Scripts/WfUtils.js"></script>
 <script src="~/Scripts/WfSave.js"></script>
@@ -35,6 +39,9 @@
 </div>
 
 <div class="top-bar-container"></div>
+
+<button type="button" id="switchToDatabase" class="btn btn-info">Switch to database designer</button>
+
 <div class="work-area-container">
     <div id="workflow-container" class="workflow-container"></div>
 </div>

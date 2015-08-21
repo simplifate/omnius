@@ -1,0 +1,127 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@section head{
+    <link href="~/Content/Style/DbDesigner.css" rel="stylesheet" type="text/css" />
+}
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Title = "FSS Database Designer";
+}
+<script src="~/Scripts/DbDialogs.js"></script>
+<script src="~/Scripts/DbInit.js"></script>
+
+<button type="button" id="switchToWorkflow" class="btn btn-info">Switch to workflow designer</button><br />
+<button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+<div id="database-container">
+
+    <div class="dbTable" style="left: 305px; top: 100px;">
+        <div class="dbTableHeader">
+            <div class="deleteTableIcon fa fa-remove"></div>
+            <span class="dbTableName">Users</span>
+            <div class="editTableIcon fa fa-pencil"></div>
+            <div class="addColumnIcon fa fa-plus"></div>
+        </div>
+        <div class="dbTableBody">
+            <div class="dbColumn dbPrimaryKey">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">id</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">name</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">group</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">password</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dbTable" style="left: 630px; top: 115px;">
+        <div class="dbTableHeader">
+            <div class="deleteTableIcon fa fa-remove"></div>
+            <span class="dbTableName">Groups</span>
+            <div class="editTableIcon fa fa-pencil"></div>
+            <div class="addColumnIcon fa fa-plus"></div>
+        </div>
+        <div class="dbTableBody">
+            <div class="dbColumn dbPrimaryKey">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">id</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">description</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="add-table-dialog" title="Add table">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="new-table-name">Table name</label></td>
+                    <td><input type="text" name="name" id="new-table-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+
+<div id="edit-table-dialog" title="Edit table">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="table-name">Table name</label></td>
+                    <td><input type="text" name="name" id="table-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+
+<div id="add-column-dialog" title="Add column">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="column-name">Column name</label></td>
+                    <td><input type="text" name="name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="primary-key-checkbox">Primary key</label></td>
+                    <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+
+<div id="edit-column-dialog" title="Edit column">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="column-name">Column name</label></td>
+                    <td><input type="text" name="column-name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="primary-key-checkbox">Primary key</label></td>
+                    <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
