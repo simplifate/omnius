@@ -8,10 +8,11 @@
 }
 <script src="~/Scripts/DbDialogs.js"></script>
 <script src="~/Scripts/DbInit.js"></script>
+<script src="~/Scripts/DbVisualConfiguration.js"></script>
 
 <button type="button" id="switchToWorkflow" class="btn btn-info">Switch to workflow designer</button><br />
 <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
-<div id="database-container">
+<div id="database-container" class="database-container">
 
     <div class="dbTable" style="left: 305px; top: 100px;">
         <div class="dbTableHeader">
@@ -33,7 +34,7 @@
             </div>
             <div class="dbColumn">
                 <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">group</span>
+                <span class="dbColumnName">groupId</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
             <div class="dbColumn">
@@ -59,7 +60,33 @@
             </div>
             <div class="dbColumn">
                 <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">serverId</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">description</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dbTable" style="left: 940px; top: 145px;">
+        <div class="dbTableHeader">
+            <div class="deleteTableIcon fa fa-remove"></div>
+            <span class="dbTableName">Servers</span>
+            <div class="editTableIcon fa fa-pencil"></div>
+            <div class="addColumnIcon fa fa-plus"></div>
+        </div>
+        <div class="dbTableBody">
+            <div class="dbColumn dbPrimaryKey">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">id</span>
+                <div class="editColumnIcon fa fa-pencil"></div>
+            </div>
+            <div class="dbColumn">
+                <div class="deleteColumnIcon fa fa-remove"></div>
+                <span class="dbColumnName">hostname</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
         </div>
@@ -122,6 +149,19 @@
                     <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
+        </fieldset>
+    </form>
+</div>
+
+<div id="edit-relation-dialog" title="Edit relation">
+    <form>
+        <fieldset>
+            <label for="relation-type">Relation type</label><br />
+            <input type="radio" name="relation-type" value="1-1" checked> 1:1 - one to one<br>
+            <input type="radio" name="relation-type" value="1-N"> 1:N - one to many<br>
+            <input type="radio" name="relation-type" value="N-1"> N:1 - many to one<br>
+            <input type="radio" name="relation-type" value="M-N"> M:N - many to many<br>
+            <span class="deleteRelation"><input type="radio" name="relation-type" value="Delete"> none - delete this relation</span><br>
         </fieldset>
     </form>
 </div>

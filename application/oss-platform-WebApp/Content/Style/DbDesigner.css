@@ -103,16 +103,12 @@
     height: auto !important;
 }
 
-.ui-dialog-buttonpane {
-    padding: 3px 3px 3px 3px !important;
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 3px;
 }
 
-.ui-dialog-buttonset button {
-    margin: 3px 3px !important;
-}
-
-#new-column-name, #new-table-name {
-    width: 220px;
+.ui-dialog .ui-dialog-buttonset button {
+    margin: 3px;
 }
 
 .ui-dialog-content .formTable label {
@@ -122,7 +118,6 @@
 .ui-dialog-content .formTable tr {
     height: 32px;
 }
-
 
 .ui-dialog-content .formTable td {
     vertical-align: middle;
@@ -142,4 +137,16 @@
     position: absolute;
     left: 10px;
     top: 60px;
+}
+
+.relationLabel {
+    margin-top: 15px;
+}
+
+.deleteRelation {
+    color: #ff6060;
+}
+
+#edit-relation-dialog input[type=radio] {
+    margin-left: 20px;
 }

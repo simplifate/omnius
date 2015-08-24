@@ -1,7 +1,4 @@
 ﻿$(function () {
-    $(".dbTable").draggable({
-        handle: ".dbTableHeader"
-    });
     $("#btnAddTable").on("click", function () {
         addTableDialog.dialog("open");
     });
@@ -10,6 +7,7 @@
     });
     $(".deleteColumnIcon").on("click", function () {
         $(this).parents(".dbColumn").remove();
+        instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
     });
     $(".addColumnIcon").on("click", function () {
         addColumnDialog.data("currentTable", $(this).parents(".dbTable"));
@@ -25,6 +23,7 @@
     });
     $(".deleteTableIcon").on("click", function () {
         $(this).parents(".dbTable").remove();
+        instance.removeAllEndpoints($(this).parents(".dbTable"), true);
     });
 });
 
@@ -34,15 +33,13 @@ function addTable(tableName) {
         + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey"><div class="deleteColumnIcon fa fa-remove"></div>'
         + '<span class="dbColumnName">id</span><div class="editColumnIcon fa fa-pencil"></div></div></div></div>');
     $("body").append(newTable);
-    newTable.draggable({
-        handle: ".dbTableHeader"
-    });
     $(".editTableIcon").on("click", function () {
         CurrentTable = $(this).parents(".dbTable");
         editTableDialog.dialog("open");
     });
     newTable.find(".deleteTableIcon").on("click", function () {
         $(this).parents(".dbTable").remove();
+        instance.removeAllEndpoints($(this).parents(".dbTable"), true);
     });
     newTable.find(".addColumnIcon").on("click", function () {
         addColumnDialog.data("currentTable", $(this).parents(".dbTable"));
@@ -50,12 +47,14 @@ function addTable(tableName) {
     })
     newTable.find(".deleteColumnIcon").on("click", function () {
         $(this).parents(".dbColumn").remove();
+        instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
     });
     newTable.find(".editColumnIcon").on("click", function () {
         CurrentColumn = $(this).parents(".dbColumn");
         editColumnDialog.dialog("open");
     });
-    //AddToJsPlumb(newTable.find(".dbColumn"));
+    instance.draggable(newTable);
+    AddColumnToJsPlumb(newTable.find(".dbColumn"));
 }
 
 function addColumn(table, columnName, isPrimaryKey) {
@@ -71,8 +70,8 @@ function addColumn(table, columnName, isPrimaryKey) {
     });
     table.children(".dbTableBody").append(newColumn);
     if (isPrimaryKey) {
-        table.find(".dbColumn").removeClass("dbPrimaryKey");
+        //table.find(".dbColumn").removeClass("dbPrimaryKey");
         newColumn.addClass("dbPrimaryKey");
     }
-    //AddToJsPlumb(newColumn);
+    AddColumnToJsPlumb(newColumn);
 }
