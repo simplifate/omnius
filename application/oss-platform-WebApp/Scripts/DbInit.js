@@ -30,7 +30,7 @@
 function addTable(tableName) {
     newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
         + tableName + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
-        + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey"><div class="deleteColumnIcon fa fa-remove"></div>'
+        + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey" dbColumnType="integer"><div class="deleteColumnIcon fa fa-remove"></div>'
         + '<span class="dbColumnName">id</span><div class="editColumnIcon fa fa-pencil"></div></div></div></div>');
     $("body").append(newTable);
     $(".editTableIcon").on("click", function () {
@@ -57,7 +57,7 @@ function addTable(tableName) {
     AddColumnToJsPlumb(newTable.find(".dbColumn"));
 }
 
-function addColumn(table, columnName, isPrimaryKey) {
+function addColumn(table, columnName, isPrimaryKey, type) {
     newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
     + columnName + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
 
@@ -73,5 +73,6 @@ function addColumn(table, columnName, isPrimaryKey) {
         //table.find(".dbColumn").removeClass("dbPrimaryKey");
         newColumn.addClass("dbPrimaryKey");
     }
+    newColumn.attr("dbColumnType", type);
     AddColumnToJsPlumb(newColumn);
 }

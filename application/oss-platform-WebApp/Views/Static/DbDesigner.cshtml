@@ -12,6 +12,7 @@
 
 <button type="button" id="switchToWorkflow" class="btn btn-info">Switch to workflow designer</button><br />
 <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+<button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
 <div id="database-container" class="database-container">
 
     <div class="dbTable" style="left: 305px; top: 100px;">
@@ -22,22 +23,22 @@
             <div class="addColumnIcon fa fa-plus"></div>
         </div>
         <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey">
+            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">id</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="varchar">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">name</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="integer">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">groupId</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="varchar">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">password</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
@@ -53,17 +54,17 @@
             <div class="addColumnIcon fa fa-plus"></div>
         </div>
         <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey">
+            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">id</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="integer">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">serverId</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="varchar">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">description</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
@@ -79,12 +80,12 @@
             <div class="addColumnIcon fa fa-plus"></div>
         </div>
         <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey">
+            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">id</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
             </div>
-            <div class="dbColumn">
+            <div class="dbColumn" dbColumnType="varchar">
                 <div class="deleteColumnIcon fa fa-remove"></div>
                 <span class="dbColumnName">hostname</span>
                 <div class="editColumnIcon fa fa-pencil"></div>
@@ -131,6 +132,23 @@
                     <td><label for="primary-key-checkbox">Primary key</label></td>
                     <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
+                <tr>
+                    <td><label for="column-type">Type</label></td>
+                    <td>
+                        <select name="column-type" id="column-type-dropdown">
+                            <option value="varchar">Varchar</option>
+                            <option value="boolean">Boolean</option>
+                            <option value="integer">Integer</option>
+                            <option value="float">Float</option>
+                            <option value="currency">Currency</option>
+                            <option value="date">Date</option>
+                            <option value="time">Time</option>
+                            <option value="timestamp">Timestamp</option>
+                            <option value="xml">XML</option>
+                            <option value="blob">Blob</option>
+                        </select>
+                    </td>
+                </tr>
             </table>
         </fieldset>
     </form>
@@ -147,6 +165,23 @@
                 <tr>
                     <td><label for="primary-key-checkbox">Primary key</label></td>
                     <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="column-type">Type</label></td>
+                    <td>
+                        <select name="column-type" id="column-type-dropdown">
+                            <option value="varchar">Varchar</option>
+                            <option value="boolean">Boolean</option>
+                            <option value="integer">Integer</option>
+                            <option value="float">Float</option>
+                            <option value="currency">Currency</option>
+                            <option value="date">Date</option>
+                            <option value="time">Time</option>
+                            <option value="timestamp">Timestamp</option>
+                            <option value="xml">XML</option>
+                            <option value="blob">Blob</option>
+                        </select> 
+                    </td>
                 </tr>
             </table>
         </fieldset>

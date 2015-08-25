@@ -67,7 +67,8 @@ $(function () {
                 addColumnDialog.dialog("close");
                 addColumn(addColumnDialog.data("currentTable"),
                     $(this).parents(".ui-dialog").find("#column-name").val(),
-                    $(this).parents(".ui-dialog").find("#primary-key-checkbox").is(":checked"));
+                    $(this).parents(".ui-dialog").find("#primary-key-checkbox").is(":checked"),
+                    $(this).find("#column-type-dropdown").val());
             },
             Cancel: function () {
                 addColumnDialog.dialog("close");
@@ -79,7 +80,8 @@ $(function () {
                     addColumnDialog.dialog("close");
                     addColumn(addColumnDialog.data("currentTable"),
                         $(this).parents(".ui-dialog").find("#column-name").val(),
-                        $(this).parents(".ui-dialog").find("#primary-key-checkbox").is(":checked"));
+                        $(this).parents(".ui-dialog").find("#primary-key-checkbox").is(":checked"),
+                        $(this).find("#column-type-dropdown").val());
                     return false;
                 }
             })
@@ -94,11 +96,12 @@ $(function () {
         autoOpen: false,
         resizable: false,
         width: 400,
-        height: 190,
+        height: 210,
         buttons: {
             "Save": function () {
                 editColumnDialog.dialog("close");
                 CurrentColumn.find(".dbColumnName").text($(this).parents(".ui-dialog").find("#column-name").val());
+                CurrentColumn.attr("dbColumnType", $(this).find("#column-type-dropdown").val());
                 if (CurrentColumn.hasClass("dbPrimaryKey") && !$(this).find("#primary-key-checkbox").prop("checked"))
                     CurrentColumn.removeClass("dbPrimaryKey");
                 else if (!CurrentColumn.hasClass("dbPrimaryKey") && $(this).find("#primary-key-checkbox").prop("checked")) {
@@ -115,6 +118,7 @@ $(function () {
                 if (e.keyCode == $.ui.keyCode.ENTER) {
                     editColumnDialog.dialog("close");
                     CurrentColumn.find(".dbColumnName").text($(this).parents(".ui-dialog").find("#column-name").val());
+                    CurrentColumn.attr("dbColumnType", $(this).find("#column-type-dropdown").val());
                     if (CurrentColumn.hasClass("dbPrimaryKey") && !$(this).parents(".ui-dialog").find("#primary-key-checkbox").prop("checked"))
                         CurrentColumn.removeClass("dbPrimaryKey");
                     else if (!CurrentColumn.hasClass("dbPrimaryKey") && $(this).parents(".ui-dialog").find("#primary-key-checkbox").prop("checked")) {
@@ -128,6 +132,7 @@ $(function () {
         open: function () {
             $(this).find("#column-name").val(CurrentColumn.find(".dbColumnName").text());
             $(this).find("#primary-key-checkbox").prop("checked", CurrentColumn.hasClass("dbPrimaryKey"));
+            $(this).find("#column-type-dropdown").val(CurrentColumn.attr("dbColumnType"));
         }
     });
     editRelationDialog = $("#edit-relation-dialog").dialog({

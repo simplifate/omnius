@@ -139,6 +139,12 @@
     top: 60px;
 }
 
+#btnSaveScheme {
+    position: absolute;
+    left: 10px;
+    top: 110px;
+}
+
 .relationLabel {
     margin-top: 15px;
 }
@@ -149,4 +155,13 @@
 
 #edit-relation-dialog input[type=radio] {
     margin-left: 20px;
+}
+
+._jsPlumb_overlay {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
 }
