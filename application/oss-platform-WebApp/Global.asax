@@ -1,1 +1,1 @@
-﻿<%@ Application Language="C#" Inherits="FSSWorkflowDesigner.Application"%>
+﻿<%@ Application Language="C#" Inherits="FSPOC.Application"%>

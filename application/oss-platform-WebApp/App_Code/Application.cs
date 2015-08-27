@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace FSSWorkflowDesigner
+namespace FSPOC
 {
     public class Application : System.Web.HttpApplication
     {

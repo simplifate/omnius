@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FSSWorkflowDesigner.Models
+namespace FSPOC.Models
 {
     public class AjaxTransferActivity
     {

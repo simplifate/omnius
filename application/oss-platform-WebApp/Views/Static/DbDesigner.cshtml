@@ -6,13 +6,23 @@
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
     Page.Title = "FSS Database Designer";
 }
-<script src="~/Scripts/DbDialogs.js"></script>
-<script src="~/Scripts/DbInit.js"></script>
-<script src="~/Scripts/DbVisualConfiguration.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbDialogs.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbInit.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbVisualConfiguration.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbUtils.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbSave.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbLoad.js"></script>
 
 <button type="button" id="switchToWorkflow" class="btn btn-info">Switch to workflow designer</button><br />
-<button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
-<button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
+
+
+<div class="toolbox">
+    <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+    <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
+    <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load scheme</button>
+    <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
+</div>
+
 <div id="database-container" class="database-container">
 
     <div class="dbTable" style="left: 305px; top: 100px;">
@@ -192,10 +202,10 @@
     <form>
         <fieldset>
             <label for="relation-type">Relation type</label><br />
-            <input type="radio" name="relation-type" value="1-1" checked> 1:1 - one to one<br>
-            <input type="radio" name="relation-type" value="1-N"> 1:N - one to many<br>
-            <input type="radio" name="relation-type" value="N-1"> N:1 - many to one<br>
-            <input type="radio" name="relation-type" value="M-N"> M:N - many to many<br>
+            <input type="radio" name="relation-type" value="1" checked> 1:1 - one to one<br>
+            <input type="radio" name="relation-type" value="2"> 1:N - one to many<br>
+            <input type="radio" name="relation-type" value="3"> N:1 - many to one<br>
+            <input type="radio" name="relation-type" value="4"> M:N - many to many<br>
             <span class="deleteRelation"><input type="radio" name="relation-type" value="Delete"> none - delete this relation</span><br>
         </fieldset>
     </form>

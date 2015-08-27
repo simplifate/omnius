@@ -89,6 +89,7 @@ $(function () {
         open: function () {
             $(this).find("#column-name").val("");
             $(this).find("#primary-key-checkbox").attr("checked", false);
+            $(this).find("#column-type-dropdown").val("varchar");
         }
     });
 
@@ -143,18 +144,18 @@ $(function () {
         buttons: {
             "Save": function () {
                 editRelationDialog.dialog("close");
-                $(CurrentConnection).attr("relationType", $(this).find("input[type='radio']:checked").val());
+                $(CurrentConnection).data("relationType", $(this).find("input[type='radio']:checked").val());
                 switch ($(this).find("input[type='radio']:checked").val()) {
-                    case "1-1":
+                    case "1":
                         EditRelation(CurrentConnection, "1", "1");
                         break;
-                    case "1-N":
+                    case "2":
                         EditRelation(CurrentConnection, "1", "N");
                         break;
-                    case "N-1":
+                    case "3":
                         EditRelation(CurrentConnection, "N", "1");
                         break;
-                    case "M-N":
+                    case "4":
                         EditRelation(CurrentConnection, "M", "N");
                         break;
                     case "Delete":

@@ -19,7 +19,7 @@
             }
         },
         create: function() {
-            $("#new-workflow-name").keypress(function (e) {
+            $(this).find("#new-workflow-name").keypress(function (e) {
                 if (e.keyCode == $.ui.keyCode.ENTER) {
                     newWorkflowName = $("#new-workflow-name").val();
                     if (newWorkflowName) {

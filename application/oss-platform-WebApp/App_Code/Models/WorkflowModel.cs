@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FSSWorkflowDesigner.Models
+namespace FSPOC.Models
 {
     public enum ActivityTypes
     {
@@ -43,7 +43,7 @@ namespace FSSWorkflowDesigner.Models
         public virtual ICollection<Input> Inputs { get; set; }
         public virtual ICollection<Output> Outputs { get; set; }
 
-        public virtual Commit Commit { get; set; }
+        public virtual WorkflowCommit WorkflowCommit { get; set; }
 
         public Activity()
         {
@@ -51,7 +51,7 @@ namespace FSSWorkflowDesigner.Models
             Outputs = new List<Output>();
         }
     }
-    public class Commit
+    public class WorkflowCommit
     {
         public int Id { get; set; }
         public string CommitMessage { get; set; }
@@ -60,7 +60,7 @@ namespace FSSWorkflowDesigner.Models
 
         public virtual Workflow Workflow { get; set; }
 
-        public Commit()
+        public WorkflowCommit()
         {
             Activities = new List<Activity>();
         }
@@ -71,11 +71,11 @@ namespace FSSWorkflowDesigner.Models
         public string Name { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastChangeTime { get; set; }
-        public virtual ICollection<Commit> Commits { get; set; }
+        public virtual ICollection<WorkflowCommit> WorkflowCommits { get; set; }
 
         public Workflow()
         {
-            Commits = new List<Commit>();
+            WorkflowCommits = new List<WorkflowCommit>();
         }
     }
 }

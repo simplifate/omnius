@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
-using FSSWorkflowDesigner.Models;
-using FSSWorkflowDesigner.DAL;
+using FSPOC.Models;
+using FSPOC.DAL;
 
-namespace FSSWorkflowDesigner.Controllers
+namespace FSPOC.Controllers
 {
     public class WorkflowApiController : Controller
     {
@@ -69,8 +69,8 @@ namespace FSSWorkflowDesigner.Controllers
                 using (var context = new WorkflowDbContext())
                 {
                     Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
-                    var commits = from c in workflow.Commits orderby c.Timestamp descending select c;
-                    foreach (Commit c in commits)
+                    var commits = from c in workflow.WorkflowCommits orderby c.Timestamp descending select c;
+                    foreach (WorkflowCommit c in commits)
                         transferHistory.Add(new AjaxTransferCommitHeader
                         {
                             Id = c.Id,
@@ -124,14 +124,14 @@ namespace FSSWorkflowDesigner.Controllers
                 {
                     using (var context = new WorkflowDbContext())
                     {
-                        Commit newCommit = new Commit
+                        WorkflowCommit newCommit = new WorkflowCommit
                         {
                             CommitMessage = postData.CommitMessage,
                             Timestamp = DateTime.Now,
                             Activities = new List<Activity>()
                         };
                         Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
-                        workflow.Commits.Add(newCommit);
+                        workflow.WorkflowCommits.Add(newCommit);
 
                         // All connection keys will be re-mapped to the primary IDs assigned to activities by the database provider
                         Dictionary<int, int> idMapping = new Dictionary<int, int>();
@@ -185,13 +185,13 @@ namespace FSSWorkflowDesigner.Controllers
                 using (var context = new WorkflowDbContext())
                 {
                     Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
-                    Commit requestedCommit = new Commit();
+                    WorkflowCommit requestedCommit = new WorkflowCommit();
                     try
                     {
                         if (commitId == -1) // No commitId specified, get the lates commit by default
-                            requestedCommit = (from c in workflow.Commits where c.Workflow.Id.Equals(workflowId) orderby c.Timestamp descending select c).First();
+                            requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) orderby c.Timestamp descending select c).First();
                         else
-                            requestedCommit = (from c in workflow.Commits where c.Workflow.Id.Equals(workflowId) && c.Id.Equals(commitId) select c).First();
+                            requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) && c.Id.Equals(commitId) select c).First();
                     }
                     catch(InvalidOperationException) // Workflow history is empty, no commits yet
                     {

@@ -1,40 +1,5 @@
 ﻿var instance;
 
-function AddColumnToJsPlumb(item) {
-    instance.makeSource(item, {
-        anchor: ["Continuous", { faces: ["left", "right"] }],
-        faces: ["left", "right"],
-        container: "database-container",
-        connector: ["Straight", { stub: [0, 0], gap: 5 }],
-        connectorStyle: { strokeStyle: "#1092bd", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 }
-    });
-
-    instance.makeTarget(item, {
-        dropOptions: { hoverClass: "dragHover" },
-        anchor: ["Continuous", { faces: ["left", "right"] }],
-        faces: ["left", "right"],
-        container: "database-container",
-        allowLoopback: false
-    });
-}
-
-function EditRelation(connection, sourceLabel, targetLabel) {
-    connection.removeOverlay("label0");
-    connection.removeOverlay("label1");
-    connection.addOverlay(["Label", {
-        location: 0.1,
-        id: "label0",
-        cssClass: "relationLabel",
-        label: sourceLabel
-    }]);
-    connection.addOverlay(["Label", {
-        location: 0.9,
-        id: "label1",
-        cssClass: "relationLabel",
-        label: targetLabel
-    }]);
-}
-
 jsPlumb.ready(function() {
     instance = jsPlumb.getInstance({
         Endpoint: ["Blank", { }],
@@ -56,6 +21,11 @@ jsPlumb.ready(function() {
     });
 
     instance.bind("connection", function (info) {
+        if ($(info.connection.source).attr("dbColumnType") != $(info.connection.target).attr("dbColumnType")) {
+            instance.detach(info.connection);
+            alert("These columns have different types. Relation can only be created between columns of the same type.");
+            return false;
+        }
         info.connection.addClass("relationConnection");
         info.connection.removeOverlay("arrow");
         info.connection.addOverlay(["Arrow", {

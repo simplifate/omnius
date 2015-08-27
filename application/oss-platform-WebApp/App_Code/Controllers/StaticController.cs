@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace FSSWorkflowDesigner.Controllers
+namespace FSPOC.Controllers
 {
     public class StaticController : Controller
     {

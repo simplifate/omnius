@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace FSSWorkflowDesigner.DAL
+namespace FSPOC.DAL
 {
     public class WorkflowDbInitializer : CreateDatabaseIfNotExists<WorkflowDbContext>
     {
