@@ -37,6 +37,7 @@
                 for (j = 0; j < data.Tables[i].Columns.length; j++) {
                     newColumn = $('<div class="dbColumn" dbColumnType="' + data.Tables[i].Columns[j].Type +
                         '" dbColumnId="' + data.Tables[i].Columns[j].Id +
+                        '" dbAllowNull="' + data.Tables[i].Columns[j].AllowNull +
                         '"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
                         + data.Tables[i].Columns[j].Name + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
 

@@ -1,45 +1,11 @@
-﻿body {
-    background-color: #e0e0e0;
-    overflow: hidden;
-}
-
-.toolbox {
-    float: right;
-    padding-right: 15px;
-}
-
-.menuLabel {
-    width: 175px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    cursor: default;
-}
-
-.btn-toolbox-menu {
-    box-sizing: initial;
-    display: block;
-    width: 160px;
-    padding: 10px 6px;
-    margin-bottom: 12px;
-}
-
-#btn-new-workflow {
-    margin-top: 12px;
-}
-
-.btn-edit-mode {
+﻿.btn-edit-mode {
     width: 174px !important;
 }
-
 #activityMenu {
     overflow-y: scroll;
     padding-right: 5px;
     height: 390px;
 }
-
 #activityMenu .menuItem {
     box-sizing: initial;
     border: 1px solid #346789;
@@ -63,7 +29,6 @@
     padding: 6px;
     font-size: 0.9em;
 }
-
 .workflow-container .activity {
     box-sizing: initial;
     border: 1px solid #346789;
@@ -92,7 +57,6 @@
     -o-transition: -o-box-shadow 0.15s ease-in;
     transition: box-shadow 0.15s ease-in;
 }
-
 .workflow-container .activity:hover, #activityMenu .activity:hover {
     box-shadow: 2px 2px 19px #444;
     -o-box-shadow: 2px 2px 19px #444;
@@ -101,29 +65,26 @@
     opacity: 0.6;
     filter: alpha(opacity=60);
 }
-
 .top-bar-container {
     position: absolute;
     left: 0px;
     top: 0px;
     right: 240px;
-    height: 27px;
+    height: 32px;
     background-color: #337AB7;
     color: white;
     text-align: center;
-    padding-top: 3px;
+    padding-top: 6px;
     font-size: 1.2em;
     font-weight: bold;
 }
-
 .work-area-container {
     position: absolute;
     left: 0px;
-    top: 27px;
+    top: 32px;
     right: 240px;
     bottom: 0px;
 }
-
 .workflow-container {
     touch-action: none;
     width: 100%;
@@ -133,24 +94,19 @@
     overflow: scroll;
     position: relative;
 }
-
 .workflow-container .active {
     border: 1px dotted green;
 }
-
 .workflow-container .hover {
     border: 1px dotted red;
 }
-
 .workflow-container ._jsPlumb_connector {
     z-index: 4;
 }
-
 .workflow-container ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel {
     z-index: 21;
     cursor: pointer;
 }
-
 .workflow-container .aLabel {
     background-color: white;
     padding: 0.4em;
@@ -162,25 +118,20 @@
     filter: alpha(opacity=80);
     cursor: pointer;
 }
-
 .workflow-container .aLabel._jsPlumb_hover {
     background-color: #5C96BC;
     color: white;
     border: 1px solid white;
 }
-
 .activity._jsPlumb_connected {
     border: 2px solid green;
 }
-
 .jsplumb-drag {
     border: 4px solid pink !important;
 }
-
 path, ._jsPlumb_endpoint {
     cursor: pointer;
 }
-
 .noselect, .workflow-container, ._jsPlumb_overlay {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -188,14 +139,15 @@ path, ._jsPlumb_endpoint {
     -ms-user-select: none;
     user-select: none;
 }
-
 .highlightedCommitRow {
     background-color: lightblue !important;
 }
-
 #switchToDatabase {
     position: absolute;
     left: 0px;
     top: 0px;
     height: 32px;
+    z-index: 200;
+    color: white;
+    background-color: #4d41e7;
 }

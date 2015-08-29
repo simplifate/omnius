@@ -1,11 +1,13 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @section head{
+    <link href="~/Content/Style/Common.css" rel="stylesheet" />
     <link href="~/Content/Style/DbDesigner.css" rel="stylesheet" type="text/css" />
 }
 @{
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
     Page.Title = "FSS Database Designer";
 }
+<script src="~/Scripts/DatabaseDesigner/DbSqlServerDef.js"></script>
 <script src="~/Scripts/DatabaseDesigner/DbDialogs.js"></script>
 <script src="~/Scripts/DatabaseDesigner/DbInit.js"></script>
 <script src="~/Scripts/DatabaseDesigner/DbVisualConfiguration.js"></script>
@@ -13,95 +15,20 @@
 <script src="~/Scripts/DatabaseDesigner/DbSave.js"></script>
 <script src="~/Scripts/DatabaseDesigner/DbLoad.js"></script>
 
-<button type="button" id="switchToWorkflow" class="btn btn-info">Switch to workflow designer</button><br />
-
+<div class="top-bar-container">Default database scheme</div>
+<button type="button" id="switchToWorkflow" class="btn">Switch to workflow designer</button>
 
 <div class="toolbox">
-    <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
-    <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
-    <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load scheme</button>
-    <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
+    <div class="menuButtons">
+        <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+        <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
+        <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load scheme</button>
+        <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
+    </div>
 </div>
 
-<div id="database-container" class="database-container">
-
-    <div class="dbTable" style="left: 305px; top: 100px;">
-        <div class="dbTableHeader">
-            <div class="deleteTableIcon fa fa-remove"></div>
-            <span class="dbTableName">Users</span>
-            <div class="editTableIcon fa fa-pencil"></div>
-            <div class="addColumnIcon fa fa-plus"></div>
-        </div>
-        <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">id</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="varchar">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">name</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="integer">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">groupId</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="varchar">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">password</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dbTable" style="left: 630px; top: 115px;">
-        <div class="dbTableHeader">
-            <div class="deleteTableIcon fa fa-remove"></div>
-            <span class="dbTableName">Groups</span>
-            <div class="editTableIcon fa fa-pencil"></div>
-            <div class="addColumnIcon fa fa-plus"></div>
-        </div>
-        <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">id</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="integer">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">serverId</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="varchar">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">description</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dbTable" style="left: 940px; top: 145px;">
-        <div class="dbTableHeader">
-            <div class="deleteTableIcon fa fa-remove"></div>
-            <span class="dbTableName">Servers</span>
-            <div class="editTableIcon fa fa-pencil"></div>
-            <div class="addColumnIcon fa fa-plus"></div>
-        </div>
-        <div class="dbTableBody">
-            <div class="dbColumn dbPrimaryKey" dbColumnType="integer">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">id</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-            <div class="dbColumn" dbColumnType="varchar">
-                <div class="deleteColumnIcon fa fa-remove"></div>
-                <span class="dbColumnName">hostname</span>
-                <div class="editColumnIcon fa fa-pencil"></div>
-            </div>
-        </div>
-    </div>
+<div class="work-area-container">
+    <div id="database-container" class="database-container"></div>
 </div>
 
 <div id="add-table-dialog" title="Add table">
@@ -139,25 +66,18 @@
                     <td><input type="text" name="name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
+                    <td><label for="column-type">Type</label></td>
+                    <td>
+                        <select name="column-type" id="column-type-dropdown"></select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="primary-key-checkbox">Primary key</label></td>
                     <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
-                    <td><label for="column-type">Type</label></td>
-                    <td>
-                        <select name="column-type" id="column-type-dropdown">
-                            <option value="varchar">Varchar</option>
-                            <option value="boolean">Boolean</option>
-                            <option value="integer">Integer</option>
-                            <option value="float">Float</option>
-                            <option value="currency">Currency</option>
-                            <option value="date">Date</option>
-                            <option value="time">Time</option>
-                            <option value="timestamp">Timestamp</option>
-                            <option value="xml">XML</option>
-                            <option value="blob">Blob</option>
-                        </select>
-                    </td>
+                    <td><label for="allow-null-checkbox">Allow Null</label></td>
+                    <td><input type="checkbox" name="allow-null" id="allow-null-checkbox" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
         </fieldset>
@@ -173,25 +93,18 @@
                     <td><input type="text" name="column-name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
+                    <td><label for="column-type">Type</label></td>
+                    <td>
+                        <select name="column-type" id="column-type-dropdown"></select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="primary-key-checkbox">Primary key</label></td>
                     <td><input type="checkbox" name="primary-key" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
-                    <td><label for="column-type">Type</label></td>
-                    <td>
-                        <select name="column-type" id="column-type-dropdown">
-                            <option value="varchar">Varchar</option>
-                            <option value="boolean">Boolean</option>
-                            <option value="integer">Integer</option>
-                            <option value="float">Float</option>
-                            <option value="currency">Currency</option>
-                            <option value="date">Date</option>
-                            <option value="time">Time</option>
-                            <option value="timestamp">Timestamp</option>
-                            <option value="xml">XML</option>
-                            <option value="blob">Blob</option>
-                        </select> 
-                    </td>
+                    <td><label for="allow-null-checkbox">Allow Null</label></td>
+                    <td><input type="checkbox" name="allow-null" id="allow-null-checkbox" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
         </fieldset>

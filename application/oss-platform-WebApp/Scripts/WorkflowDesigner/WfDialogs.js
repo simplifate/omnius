@@ -5,36 +5,33 @@
         height: 190,
         buttons: {
             "Create": function () {
-                newWorkflowName = $("#new-workflow-name").val();
-                if (newWorkflowName) {
-                    newWorkflowDialog.dialog("close");
-                    CreateWorkflow(newWorkflowName);
-                }
-                else {
-                    alert("Please choose a name for the workflow.");
-                }
+                newWorkflowDialog_SubmitData();
             },
             Cancel: function () {
                 newWorkflowDialog.dialog("close");
             }
         },
         create: function() {
-            $(this).find("#new-workflow-name").keypress(function (e) {
+            $(this).keypress(function (e) {
                 if (e.keyCode == $.ui.keyCode.ENTER) {
-                    newWorkflowName = $("#new-workflow-name").val();
-                    if (newWorkflowName) {
-                        newWorkflowDialog.dialog("close");
-                        CreateWorkflow(newWorkflowName);
-                    }
-                    else {
-                        alert("Please choose a name for the workflow.");
-                    }
+                    newWorkflowDialog_SubmitData();
+                    return false;
                 }
             })},
         open: function () {
-            $("#new-workflow-name").val("");
+            newWorkflowDialog.find("#new-workflow-name").val("");
         }
     });
+    function newWorkflowDialog_SubmitData() {
+        newWorkflowName = newWorkflowDialog.find("#new-workflow-name").val();
+        if (newWorkflowName) {
+            newWorkflowDialog.dialog("close");
+            CreateWorkflow(newWorkflowName);
+        }
+        else {
+            alert("Please choose a name for the workflow.");
+        }
+    }
 
     changeWorkflowDialog = $("#change-workflow-dialog").dialog({
         autoOpen: false,
@@ -42,15 +39,7 @@
         height: 540,
         buttons: {
             "Load": function () {
-                if (changeWorkflowDialog.data("selectedWorkflowId")) {
-                    CurrentWorkflowId = changeWorkflowDialog.data("selectedWorkflowId");
-                    CurrentWorkflowName = changeWorkflowDialog.data("selectedWorkflowName");
-                    LoadWorkflow("latest");
-                    $(".top-bar-container").text(CurrentWorkflowName);
-                    changeWorkflowDialog.dialog("close");
-                }
-                else
-                    alert("Please select a workflow");
+                changeWorkflowDialog_SubmitData();
             },
             Cancel: function () {
                 changeWorkflowDialog.dialog("close");
@@ -64,8 +53,8 @@
                 dataType: "json",
                 error: function () { alert("Error loading the workflow list") },
                 success: function (data) {
-                    $("#workflow-list-table:first tbody:nth-child(2) tr").remove();
-                    tbody = $("#workflow-list-table:first tbody:nth-child(2)");
+                    changeWorkflowDialog.find("#workflow-list-table tbody:nth-child(2) tr").remove();
+                    tbody = changeWorkflowDialog.find("#workflow-list-table tbody:nth-child(2)");
                     workflowIdArray = [];
                     workflowNameArray = [];
 
@@ -79,7 +68,7 @@
 
                     // Highlight the selected row
                     $(document).on('click', 'tr.workflowItemRow', function (event) {
-                        $("#workflow-list-table:first tbody:nth-child(2) tr").removeClass("highlightedCommitRow");
+                        changeWorkflowDialog.find("#workflow-list-table tbody:nth-child(2) tr").removeClass("highlightedCommitRow");
                         $(this).addClass("highlightedCommitRow");
                         var rowIndex = $(this).index();
                         changeWorkflowDialog.data("selectedWorkflowId", workflowIdArray[rowIndex]);
@@ -89,6 +78,17 @@
             });
         }
     });
+    function changeWorkflowDialog_SubmitData() {
+        if (changeWorkflowDialog.data("selectedWorkflowId")) {
+            CurrentWorkflowId = changeWorkflowDialog.data("selectedWorkflowId");
+            CurrentWorkflowName = changeWorkflowDialog.data("selectedWorkflowName");
+            LoadWorkflow("latest");
+            $(".top-bar-container").text(CurrentWorkflowName);
+            changeWorkflowDialog.dialog("close");
+        }
+        else
+            alert("Please select a workflow");
+    }
 
     saveDialog = $("#save-dialog").dialog({
         autoOpen: false,
@@ -96,25 +96,27 @@
         height: 190,
         buttons: {
             "Save": function () {
-                SaveWorkflow($("#message").val());
-                saveDialog.dialog("close");
+                saveDialog_SubmitData();
             },
             Cancel: function () {
                 saveDialog.dialog("close");
             }
         },
         create: function() {
-            $("#message").keypress(function (e) {
+            $(this).keypress(function (e) {
                 if (e.keyCode == $.ui.keyCode.ENTER) {
-                    SaveWorkflow($("#message").val());
-                    saveDialog.dialog("close");
+                    saveDialog_SubmitData();
                     return false;
                 }
             })},
         open: function () {
-            $("#message").val("");
+            saveDialog.find("#message").val("");
         }
     });
+    function saveDialog_SubmitData() {
+        saveDialog.dialog("close");
+        SaveWorkflow(saveDialog.find("#message").val());
+    }
 
     historyDialog = $("#history-dialog").dialog({
         autoOpen: false,
@@ -122,12 +124,7 @@
         height: 540,
         buttons: {
             "Load": function () {
-                if (historyDialog.data("selectedCommitId")) {
-                    LoadWorkflow(historyDialog.data("selectedCommitId"));
-                    historyDialog.dialog("close");
-                }
-                else
-                    alert("Please select a commit");
+                historyDialog_SubmitData();
             },
             Cancel: function () {
                 historyDialog.dialog("close");
@@ -141,8 +138,8 @@
                 dataType: "json",
                 error: function () { alert("Error loading commit history") },
                 success: function (data) {
-                    $("#commit-table:first tbody:nth-child(2) tr").remove();
-                    tbody = $("#commit-table:first tbody:nth-child(2)");
+                    historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
+                    tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
                     commitIdArray = [];
 
                     // Fill in the history rows
@@ -158,16 +155,23 @@
 
                     // Highlight the selected row
                     $(document).on('click', 'tr.commitRow', function (event) {
-                        $("#commit-table:first tbody:nth-child(2) tr").removeClass("highlightedCommitRow");
+                        historyDialog.find("#commit-table tbody:nth-child(2) tr").removeClass("highlightedCommitRow");
                         $(this).addClass("highlightedCommitRow");
                         var rowIndex = $(this).index();
                         historyDialog.data("selectedCommitId", commitIdArray[rowIndex]);
                     });
-                    
                 }
             });
         }
     });
+    function historyDialog_SubmitData() {
+        if (historyDialog.data("selectedCommitId")) {
+            LoadWorkflow(historyDialog.data("selectedCommitId"));
+            historyDialog.dialog("close");
+        }
+        else
+            alert("Please select a commit");
+    }
 
     $("#btn-new-workflow").button().on("click", function () {
         newWorkflowDialog.dialog("open");

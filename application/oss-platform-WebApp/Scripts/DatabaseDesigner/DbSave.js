@@ -9,8 +9,9 @@
             columnArray.push({
                 Id: columnIdCounter,
                 Name: $(columnDiv).find(".dbColumnName").text(),
+                Type: $(columnDiv).attr("dbColumnType"),
                 PrimaryKey: $(columnDiv).hasClass("dbPrimaryKey"),
-                Type: $(columnDiv).attr("dbColumnType")});
+                AllowNull: ($(columnDiv).attr("dbAllowNull") == "true")});
             $(columnDiv).attr("dbColumnId", columnIdCounter);
             columnIdCounter++;
         });

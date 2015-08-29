@@ -1,5 +1,6 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @section head{
+    <link href="~/Content/Style/Common.css" rel="stylesheet" />
     <link href="~/Content/Style/WfDesigner.css" rel="stylesheet" type="text/css" />
 }
 @{
@@ -17,12 +18,14 @@
 <script src="~/Scripts/WorkflowDesigner/WfDialogs.js"></script>
 
 <div class="toolbox">
-    <button id="btn-new-workflow" type="button" class="btn btn-primary btn-lg btn-toolbox-menu">New workflow</button>
-    <button id="btn-change-workflow" type="button" class="btn btn-default btn-lg btn-toolbox-menu">Change workflow</button>
-    <button id="btn-save-workflow" type="button" class="btn btn-primary btn-lg btn-toolbox-menu">Save</button>
-    <button id="btn-load-workflow" type="button" class="btn btn-default btn-lg btn-toolbox-menu">Load latest</button>
-    <button id="btn-open-history" type="button" class="btn btn-default btn-lg btn-toolbox-menu">History</button>
-    <button id="btn-clear-workflow" type="button" class="btn btn-danger btn-lg btn-toolbox-menu">Clear workflow</button>
+    <div class="menuButtons">
+        <button id="btn-new-workflow" type="button" class="btn btn-primary btn-lg">New workflow</button>
+        <button id="btn-change-workflow" type="button" class="btn btn-default btn-lg">Change workflow</button>
+        <button id="btn-save-workflow" type="button" class="btn btn-primary btn-lg">Save</button>
+        <button id="btn-load-workflow" type="button" class="btn btn-default btn-lg">Load latest</button>
+        <button id="btn-open-history" type="button" class="btn btn-default btn-lg">History</button>
+        <button id="btn-clear-workflow" type="button" class="btn btn-danger btn-lg">Clear workflow</button>
+    </div>
 
     <div class="menuLabel noselect">Editing modes:</div>
     <div class="btn-group-vertical" data-toggle="buttons">
@@ -40,7 +43,7 @@
 
 <div class="top-bar-container"></div>
 
-<button type="button" id="switchToDatabase" class="btn btn-info">Switch to database designer</button>
+<button type="button" id="switchToDatabase" class="btn">Switch to database designer</button>
 
 <div class="work-area-container">
     <div id="workflow-container" class="workflow-container"></div>

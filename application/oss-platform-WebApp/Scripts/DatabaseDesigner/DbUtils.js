@@ -40,7 +40,7 @@ function EditRelation(connection, sourceLabel, targetLabel) {
     }]);
 }
 
-function addTable(tableName) {
+function AddTable(tableName) {
     newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
         + tableName + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
         + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey" dbColumnType="integer"><div class="deleteColumnIcon fa fa-remove"></div>'
@@ -70,8 +70,9 @@ function addTable(tableName) {
     AddColumnToJsPlumb(newTable.find(".dbColumn"));
 }
 
-function addColumn(table, columnName, isPrimaryKey, type) {
-    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
+function AddColumn(table, columnName, type, isPrimaryKey, allowNull) {
+    newColumn = $('<div class="dbColumn" dbAllowNull="' + allowNull + '">'
+    + '<div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
     + columnName + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
 
     newColumn.children(".deleteColumnIcon").on("click", function () {

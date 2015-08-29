@@ -1,0 +1,48 @@
+﻿body {
+    background-color: #e0e0e0;
+    overflow: hidden;
+}
+.toolbox {
+    float: right;
+    padding-right: 15px;
+    padding-top: 12px;
+}
+.menuLabel {
+    width: 175px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    cursor: default;
+}
+.menuButtons .btn {
+    box-sizing: initial;
+    display: block;
+    width: 160px;
+    padding: 10px 6px;
+    margin-bottom: 12px;
+}
+.ui-dialog {
+    padding: 0px 0px;
+    border: 1px solid #45525e;
+    border-radius: 4px;
+}
+.ui-widget-header {
+    background-image: none;
+    background-color: #45525e;
+    color: white;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 3px;
+}
+.ui-dialog .ui-dialog-buttonset button {
+    margin: 3px;
+}
+.ui-dialog-titlebar-close {
+  background: url("/Content/Style/base/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+  border: medium none;
+}
+.ui-dialog-titlebar-close:hover {
+  background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+}

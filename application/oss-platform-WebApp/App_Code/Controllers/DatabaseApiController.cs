@@ -26,7 +26,7 @@ namespace FSPOC.Controllers
                         foreach (var column in table.Columns)
                         {
                             ajaxTable.Columns.Add(new AjaxTransferDbColumn { Id = column.Id, Name = column.Name,
-                                PrimaryKey = column.PrimaryKey, Type = column.Type });
+                                Type = column.Type, PrimaryKey = column.PrimaryKey, AllowNull = column.AllowNull });
                         }
                         result.Tables.Add(ajaxTable);
                     }
@@ -67,7 +67,9 @@ namespace FSPOC.Controllers
                         foreach (var column in ajaxTable.Columns)
                         {
                             int ajaxColumnId = column.Id;
-                            DbColumn newColumn = new DbColumn { Name = column.Name, PrimaryKey = column.PrimaryKey, Type = column.Type };
+                            DbColumn newColumn = new DbColumn { Name = column.Name, Type = column.Type,
+                                PrimaryKey = column.PrimaryKey, AllowNull = column.AllowNull
+                            };
                             newTable.Columns.Add(newColumn);
                             context.SaveChanges();
                             columnIdMapping.Add(ajaxColumnId, newColumn.Id);

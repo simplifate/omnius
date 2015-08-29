@@ -7,15 +7,16 @@ namespace FSPOC.Models
     {
         NoRelation = 0,
         OneToOne,
-        OnetToN,
-        NToOne,
-        MToN
+        OnetToMany,
+        ManyToOne,
+        ManyToMany
     }
     public class DbColumn
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public bool PrimaryKey { get; set; }
+        public bool AllowNull { get; set; }
         public string Type { get; set; }
 
         public virtual DbTable DbTable { get; set; }
