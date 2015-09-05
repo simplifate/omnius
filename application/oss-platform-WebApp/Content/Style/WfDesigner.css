@@ -139,9 +139,6 @@ path, ._jsPlumb_endpoint {
     -ms-user-select: none;
     user-select: none;
 }
-.highlightedCommitRow {
-    background-color: lightblue !important;
-}
 #switchToDatabase {
     position: absolute;
     left: 0px;

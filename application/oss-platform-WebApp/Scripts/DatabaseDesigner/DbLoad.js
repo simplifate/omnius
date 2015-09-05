@@ -1,7 +1,7 @@
-﻿function LoadDbScheme() {
+﻿function LoadDbScheme(commitId) {
     $.ajax({
         type: "GET",
-        url: "/api/database",
+        url: "/api/database/commits/" + commitId,
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {
@@ -9,7 +9,7 @@
             for (i = 0; i < data.Tables.length; i++) {
                 newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
                     + data.Tables[i].Name + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
-                    + '<div class="dbTableBody"></div></div>');
+                    + '<div class="dbTableBody"></div><div class="dbTableIndexArea"></div></div>');
                 $("#database-container").append(newTable);
                 $(".editTableIcon").on("click", function () {
                     CurrentTable = $(this).parents(".dbTable");
@@ -35,11 +35,18 @@
                 newTable.css("top", data.Tables[i].PositionY);
                 instance.draggable(newTable);
                 for (j = 0; j < data.Tables[i].Columns.length; j++) {
-                    newColumn = $('<div class="dbColumn" dbColumnType="' + data.Tables[i].Columns[j].Type +
-                        '" dbColumnId="' + data.Tables[i].Columns[j].Id +
-                        '" dbAllowNull="' + data.Tables[i].Columns[j].AllowNull +
-                        '"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
+                    if (data.Tables[i].Columns[j].DefaultValue != null)
+                        defaultValue = data.Tables[i].Columns[j].DefaultValue;
+                    else
+                        defaultValue = "";
+                    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
                         + data.Tables[i].Columns[j].Name + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
+                    newColumn.attr("dbColumnType", data.Tables[i].Columns[j].Type);
+                    newColumn.attr("dbColumnId", data.Tables[i].Columns[j].Id);
+                    newColumn.data("dbAllowNull", data.Tables[i].Columns[j].AllowNull);
+                    newColumn.data("dbDefaultValue", defaultValue);
+                    newColumn.data("dbColumnLength", data.Tables[i].Columns[j].ColumnLength);
+                    newColumn.data("dbColumnLengthMax", data.Tables[i].Columns[j].ColumnLengthIsMax);
 
                     newColumn.children(".deleteColumnIcon").on("click", function () {
                         $(this).parents(".dbColumn").remove();
@@ -55,6 +62,25 @@
                     newColumn.attr("dbColumnType", data.Tables[i].Columns[j].Type);
                 }
                 AddColumnToJsPlumb(newTable.find(".dbColumn"));
+                for (j = 0; j < data.Tables[i].Indices.length; j++) {
+                    indexLabel = "Index: " + data.Tables[i].Indices[j].FirstColumnName;
+                    if (data.Tables[i].Indices[j].SecondColumnName != "-none-")
+                        indexLabel += ", " + data.Tables[i].Indices[j].SecondColumnName;
+                    newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><span class="dbIndexText">' + indexLabel + '</span><div class="editIndexIcon fa fa-pencil"></div></div>');
+                    newIndex.data("indexName", data.Tables[i].Indices[j].Name);
+                    newIndex.data("firstColumn", data.Tables[i].Indices[j].FirstColumnName);
+                    newIndex.data("secondColumn", data.Tables[i].Indices[j].SecondColumnName);
+                    newIndex.data("unique", data.Tables[i].Indices[j].Unique);
+                    newIndex.children(".deleteIndexIcon").on("click", function () {
+                        $(this).parents(".dbIndex").remove();
+                    });
+                    newIndex.children(".editIndexIcon").on("click", function () {
+                        CurrentIndex = $(this).parents(".dbIndex");
+                        CurrentTable = $(this).parents(".dbTable");
+                        editIndexDialog.dialog("open");
+                    });
+                    newTable.children(".dbTableIndexArea").append(newIndex);
+                }
             }
             for (i = 0; i < data.Relations.length; i++) {
                 sourceDiv = $("#database-container .dbColumn[dbColumnId='" + data.Relations[i].LeftColumn + "']");
@@ -72,6 +98,24 @@
                         EditRelation(newConnection, "M", "N");
                         break;
                 }
+            }
+            for (i = 0; i < data.Views.length; i++) {
+                newView = $('<div class="dbView"><div class="dbViewHeader"><div class="deleteViewIcon fa fa-remove"></div>'
+                    + '<span class="dbViewName">View: ' + data.Views[i].Name + '</span><div class="editViewIcon fa fa-pencil"></div></div></div>');
+
+                $("#database-container").append(newView);
+                newView.find(".editViewIcon").on("click", function () {
+                    CurrentView = $(this).parents(".dbView");
+                    editViewDialog.dialog("open");
+                });
+                newView.find(".deleteViewIcon").on("click", function () {
+                    $(this).parents(".dbView").remove();
+                });
+                newView.css("left", data.Views[i].PositionX);
+                newView.css("top", data.Views[i].PositionY);
+                newView.data("dbViewName", data.Views[i].Name);
+                newView.data("dbViewQuery", data.Views[i].Query);
+                instance.draggable(newView);
             }
         }
     });

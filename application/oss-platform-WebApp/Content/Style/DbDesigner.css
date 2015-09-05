@@ -14,8 +14,8 @@
 }
 .dbTableName {
     position: absolute;
-    left: 48px;
-    right: 48px;
+    left: 18px;
+    right: 18px;
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
@@ -34,6 +34,52 @@
 }
 .dbPrimaryKey {
     background-color: #3bb8e1;
+}
+.dbIndex {
+    height: 30px;
+    padding-top: 3px;
+    background-color: lightyellow;
+    color: black;
+    font-style: italic;
+    border-top: 1px solid black;
+}
+.dbIndexText {
+    position: relative;
+    top: 3px;
+    max-width: 180px;
+}
+.dbView {
+    position: absolute;
+    width: 220px;
+    border: 1px solid #455a51;
+    border-radius: 4px;
+}
+.dbViewHeader {
+    background-color: #455a51;
+    color: #e5ffec;
+    width: 218px;
+    height: 30px;
+    padding-top: 3px;
+    text-align: center;
+}
+.dbViewName {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.deleteViewIcon {
+    float: left;
+    padding-top: 6px;
+    padding-left: 6px;
+    color: #ff9090;
+}
+.editViewIcon {
+    float: right;
+    padding-top: 6px;
+    padding-right: 6px;
 }
 .deleteTableIcon {
     float: left;
@@ -62,10 +108,23 @@
     padding-left: 6px;
     margin-right: 10px;
 }
-.addColumnIcon:hover, .editColumnIcon:hover, .deleteColumnIcon:hover, .deleteTableIcon:hover, .editTableIcon:hover {
+.deleteIndexIcon {
+    float: left;
+    padding-top: 6px;
+    padding-left: 6px;
+    margin-right: 10px;
+}
+.editIndexIcon {
+    float: right;
+    padding-top: 6px;
+    padding-right: 6px;
+}
+.addColumnIcon:hover, .editColumnIcon:hover, .deleteColumnIcon:hover, .deleteTableIcon:hover, .editTableIcon:hover,
+.deleteViewIcon:hover, .editViewIcon:hover, .deleteIndexIcon:hover, .editIndexIcon:hover {
     color: #ff4000;
 }
-.addColumnIcon, .deleteTableIcon, .editColumnIcon, .deleteColumnIcon, .editTableIcon, .dbTableName, .dbColumnName, ._jsPlumb_overlay {
+.addColumnIcon, .deleteTableIcon, .editColumnIcon, .deleteColumnIcon, .editTableIcon, .deleteViewIcon, .editViewIcon, .deleteIndexIcon,
+.dbTableName, .dbColumnName, .dbViewName, .dbIndexText, .editIndexIcon, ._jsPlumb_overlay {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -131,3 +190,10 @@
     overflow: scroll;
     position: relative;
 }
+ label[for=new-view-query], label[for=view-query] {
+     margin-top: 6px;
+ }
+ input#column-length {
+     width: 70px;
+     margin-left: 8px;
+ }

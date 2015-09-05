@@ -6,7 +6,7 @@ namespace FSPOC.DAL
     public class WorkflowDbContext : DbContext
     {
         public DbSet<Workflow> Workflows { get; set; }
-        public DbSet<DbScheme> DbSchemes { get; set; }
+        public DbSet<DbSchemeCommit> DbSchemeCommits { get; set; }
 
         public WorkflowDbContext() : base("WorkflowDbContext")
         {
@@ -33,12 +33,18 @@ namespace FSPOC.DAL
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)
                         .WithRequired(s => s.DbTable);
-            modelBuilder.Entity<DbScheme>()
+            modelBuilder.Entity<DbTable>()
+                        .HasMany(s => s.Indices)
+                        .WithRequired(s => s.DbTable);
+            modelBuilder.Entity<DbSchemeCommit>()
                         .HasMany(s => s.Tables)
-                        .WithRequired(s => s.DbScheme);
-            modelBuilder.Entity<DbScheme>()
+                        .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<DbSchemeCommit>()
                         .HasMany(s => s.Relations)
-                        .WithRequired(s => s.DbScheme);
+                        .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<DbSchemeCommit>()
+                        .HasMany(s => s.Views)
+                        .WithRequired(s => s.DbSchemeCommit);
         }
     }
 }

@@ -46,3 +46,6 @@
 .ui-dialog-titlebar-close:hover {
   background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
 }
+.highlightedCommitRow {
+    background-color: lightblue !important;
+}
