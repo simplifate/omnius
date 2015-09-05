@@ -136,7 +136,7 @@ namespace FSPOC.Controllers
         {
             return getCommit();
         }
-        [Route("api/database")]
+        [Route("api/database/commits")]
         [HttpPost]
         public ActionResult SaveScheme(AjaxTransferDbScheme postData)
         {

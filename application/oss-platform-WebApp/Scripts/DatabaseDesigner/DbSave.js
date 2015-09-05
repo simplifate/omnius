@@ -70,7 +70,7 @@
     }
     $.ajax({
         type: "POST",
-        url: "/api/database",
+        url: "/api/database/commits",
         data: postData,
         success: function () { alert("OK") },
         error: function () { alert("ERROR") }
