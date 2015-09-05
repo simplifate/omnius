@@ -46,7 +46,7 @@ function EditRelation(connection, sourceLabel, targetLabel) {
 function AddTable(tableName) {
     newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
         + tableName + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
-        + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey"><div class="deleteColumnIcon fa fa-remove"></div>'
+        + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey" dbColumnType="integer"><div class="deleteColumnIcon fa fa-remove"></div>'
         + '<span class="dbColumnName">id</span><div class="editColumnIcon fa fa-pencil"></div></div></div>'
         + '<div class="dbTableIndexArea"></div></div>');
     newTable.find(".dbColumn").data("dbColumnType", "integer");
@@ -66,6 +66,8 @@ function AddTable(tableName) {
     newTable.find(".deleteColumnIcon").on("click", function () {
         $(this).parents(".dbColumn").remove();
         instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
+        instance.recalculateOffsets();
+        instance.repaintEverything();
     });
     newTable.find(".editColumnIcon").on("click", function () {
         CurrentColumn = $(this).parents(".dbColumn");
@@ -81,6 +83,9 @@ function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValu
 
     newColumn.children(".deleteColumnIcon").on("click", function () {
         $(this).parents(".dbColumn").remove();
+        instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
+        instance.recalculateOffsets();
+        instance.repaintEverything();
     });
     newColumn.children(".editColumnIcon").on("click", function () {
         CurrentColumn = $(this).parents(".dbColumn");

@@ -112,6 +112,7 @@ $(function () {
             addColumnDialog.find("#column-length-max").prop("checked", true);
             addColumnDialog.find("#column-length").hide();
             addColumnDialog.find("#columnLengthNotSupported").hide();
+            CheckColumnLengthSupport(addColumnDialog, "varchar");
         }
     });
     function addColumnDialog_SubmitData() {

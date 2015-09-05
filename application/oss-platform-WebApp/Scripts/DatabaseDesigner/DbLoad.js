@@ -50,6 +50,9 @@
 
                     newColumn.children(".deleteColumnIcon").on("click", function () {
                         $(this).parents(".dbColumn").remove();
+                        instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
+                        instance.recalculateOffsets();
+                        instance.repaintEverything();
                     });
                     newColumn.children(".editColumnIcon").on("click", function () {
                         CurrentColumn = $(this).parents(".dbColumn");
