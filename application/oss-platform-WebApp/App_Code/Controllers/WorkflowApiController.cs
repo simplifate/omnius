@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Linq;
 using FSPOC.Models;
 using FSPOC.DAL;
+using Logger;
 
 namespace FSPOC.Controllers
 {
@@ -30,8 +31,9 @@ namespace FSPOC.Controllers
 
                 return Json(workflowHeaderList, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(String.Format("WorkflowDesigner: error when loading the workflow list (GET api/workflows). Exception message: {0}", ex.Message));
                 return new HttpStatusCodeResult(500);
             }
         }
@@ -53,8 +55,10 @@ namespace FSPOC.Controllers
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(String.Format("WorkflowDesigner: error when loading the most recently saved workflow (GET api/workflows/last-used)."
+                    + "Exception message: {0}", ex.Message));
                 return new HttpStatusCodeResult(500);
             }
         }
@@ -81,8 +85,10 @@ namespace FSPOC.Controllers
 
                 return Json(transferHistory, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(String.Format("WorkflowDesigner: error when loading commit history for workflow with id={1} "
+                    + "(GET api/workflows/{1}/commits). Exception message: {0}", ex.Message, workflowId));
                 return new HttpStatusCodeResult(500);
             }
         }
@@ -108,8 +114,10 @@ namespace FSPOC.Controllers
                         TimeString = newWorkflow.CreationTime.ToString("d. M. yyyy H:mm:ss")});
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(String.Format("WorkflowDesigner: error when creating a new workflow (POST api/workflows). "
+                    + "Exception message: {0}", ex.Message));
                 return new HttpStatusCodeResult(500);
             }
         }
@@ -170,73 +178,96 @@ namespace FSPOC.Controllers
                 }
                 return new HttpStatusCodeResult(200);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(String.Format("WorkflowDesigner: error when saving state of the workflow with id={1} "
+                    + "(POST api/workflows/{workflowId:int}/commits). Exception message: {0}", ex.Message, workflowId));
                 return new HttpStatusCodeResult(500);
             }
         }
 
         private ActionResult getCommit(int workflowId, int commitId = -1)
         {
-            try
+            AjaxTransferWorkflowSate transferState = new AjaxTransferWorkflowSate();
+            List<AjaxTransferConnection> connections = new List<AjaxTransferConnection>();
+            using (var context = new WorkflowDbContext())
             {
-                AjaxTransferWorkflowSate transferState = new AjaxTransferWorkflowSate();
-                List<AjaxTransferConnection> connections = new List<AjaxTransferConnection>();
-                using (var context = new WorkflowDbContext())
+                Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
+                WorkflowCommit requestedCommit = new WorkflowCommit();
+                try
                 {
-                    Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
-                    WorkflowCommit requestedCommit = new WorkflowCommit();
-                    try
+                    if (commitId == -1) // No commitId specified, get the lates commit by default
+                        requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) orderby c.Timestamp descending select c).First();
+                    else
+                        requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) && c.Id.Equals(commitId) select c).First();
+                }
+                catch(InvalidOperationException ex) // Workflow history is empty, no commits yet
+                {
+                    if (commitId == -1)
                     {
-                        if (commitId == -1) // No commitId specified, get the lates commit by default
-                            requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) orderby c.Timestamp descending select c).First();
-                        else
-                            requestedCommit = (from c in workflow.WorkflowCommits where c.Workflow.Id.Equals(workflowId) && c.Id.Equals(commitId) select c).First();
-                    }
-                    catch(InvalidOperationException) // Workflow history is empty, no commits yet
-                    {
+                        Log.Info(String.Format("WorkflowDesigner: latest commit was requested for workflow with id={0} which has no history. Returning an empty commit.", workflowId));
                         return Json(new AjaxTransferWorkflowSate(), JsonRequestBehavior.AllowGet);
                     }
-                    transferState.CommitMessage = requestedCommit.CommitMessage;
-
-                    foreach (var item in requestedCommit.Activities)
+                    else
                     {
-                        transferState.Activities.Add(new AjaxTransferActivity { Id = item.Id, ActType = item.Type,
-                            PositionX = item.PositionX, PositionY = item.PositionY });
-
-                        foreach (var output in item.Outputs)
-                        {
-                            AjaxTransferConnection currentConnection = new AjaxTransferConnection
-                            {
-                                Source = item.Id,
-                                SourceSlot = output.SourceSlot,
-                                Target = output.Target,
-                                TargetSlot = output.TargetSlot
-                            };
-                            transferState.Connections.Add(currentConnection);
-                        }
+                        Log.Error(String.Format("WorkflowDesigner: the requested commit doesn't exist. Workflow with id={1} doesn't have a commit with id={2} "
+                            + "Exception message: {0}", ex.Message, workflowId, commitId));
+                        return new HttpStatusCodeResult(404);
                     }
                 }
-                return Json(transferState, JsonRequestBehavior.AllowGet);
+                transferState.CommitMessage = requestedCommit.CommitMessage;
+
+                foreach (var item in requestedCommit.Activities)
+                {
+                    transferState.Activities.Add(new AjaxTransferActivity { Id = item.Id, ActType = item.Type,
+                        PositionX = item.PositionX, PositionY = item.PositionY });
+
+                    foreach (var output in item.Outputs)
+                    {
+                        AjaxTransferConnection currentConnection = new AjaxTransferConnection
+                        {
+                            Source = item.Id,
+                            SourceSlot = output.SourceSlot,
+                            Target = output.Target,
+                            TargetSlot = output.TargetSlot
+                        };
+                        transferState.Connections.Add(currentConnection);
+                    }
+                }
             }
-            catch (Exception)
-            {
-                return new HttpStatusCodeResult(500);
-            }
+            return Json(transferState, JsonRequestBehavior.AllowGet);
         }
 
         [Route("api/workflows/{workflowId:int}/commits/latest")]
         [HttpGet]
         public ActionResult GetLatestCommit(int workflowId)
         {
-            return getCommit(workflowId);
+            try
+            {
+                return getCommit(workflowId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(String.Format("WorkflowDesigner: error when loading the latest commit from workflow with id={1} "
+                    + "(GET api/workflows/{1}/commits/latest). Exception message: {0}", ex.Message, workflowId));
+                return new HttpStatusCodeResult(500);
+            }
         }
 
         [Route("api/workflows/{workflowId:int}/commits/{commitId:int}")]
         [HttpGet]
         public ActionResult GetCommitById(int workflowId, int commitId)
         {
-            return getCommit(workflowId, commitId);
+            try
+            {
+                return getCommit(workflowId, commitId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(String.Format("WorkflowDesigner: error when loading commit with id={2} from workflow with id={1} "
+                    + "(GET api/workflows/{1}/commits/{2}). Exception message: {0}", ex.Message, workflowId, commitId));
+                return new HttpStatusCodeResult(500);
+            }
         }
     }
 }
