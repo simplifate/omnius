@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_withApp : SqlQuery
+    public class SqlQuery_withApp : SqlQuery
     {
         protected string _applicationName;
 

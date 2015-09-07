@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sql\Operators.cs" />
     <Compile Include="Sql\SqlInitScript.cs" />
     <Compile Include="Sql\SqlQuery_Column_Add.cs" />
     <Compile Include="Sql\SqlQuery_Column_Drop.cs" />

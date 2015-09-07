@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Select : SqlQuery_Selectable
+    public class SqlQuery_Select : SqlQuery_Selectable
     {
         public List<string> columns { get; set; }
-        public string tableName { get; set; }
 
         public SqlQuery_Select(string applicationName) : base(applicationName)
         {
@@ -20,10 +19,14 @@ namespace DynamicDB.Sql
             _params.Add("applicationName", _applicationName);
             _params.Add("tableName", tableName);
             _params.Add("columnNames", (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
+            _params.Add("where", _where);
+            _params.Add("join", _join);
+            _params.Add("order", _order);
+            _params.Add("group", _group);
 
             _sqlString =
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('SELECT ', @columnNames, ' FROM ', @realTableName, ';');" +
+                "SET @sql = CONCAT('SELECT ', @columnNames, ' FROM ', @realTableName, @join, @where, @order, @group, ';');" +
                 "exec(@sql);";
             
             return base.BaseExecutionWithRead(connection);

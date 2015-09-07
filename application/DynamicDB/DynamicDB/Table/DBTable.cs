@@ -89,5 +89,12 @@ namespace DynamicDB
 
             return this;
         }
+
+        public SqlQuery_Select select(params string[] columns)
+        {
+            SqlQuery_Select query = new SqlQuery_Select(ApplicationName) { columns = columns.ToList() };
+            queries.Add(query);
+            return query;
+        }
     }
 }
