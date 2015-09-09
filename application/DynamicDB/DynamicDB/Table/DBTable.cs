@@ -69,8 +69,16 @@ namespace DynamicDB
         {
             SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList(ApplicationName, tableName);
             List<DBItem> items = query.ExecuteWithRead();
-            // ##!!##
-            return null;
+
+            List<DBColumn> columns = items.Select(i => new DBColumn()
+            {
+                Name = (string)i["name"],
+                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"]),
+                maxLength = (int)i["max_length"],
+                canBeNull = (bool)i["is_nullable"]
+            }).ToList();
+
+            return columns;
         }
         public DBTable AddColumn(string name, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
         {

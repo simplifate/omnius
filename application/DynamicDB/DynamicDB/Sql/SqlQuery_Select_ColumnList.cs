@@ -20,7 +20,7 @@ namespace DynamicDB.Sql
 
             _sqlString =
                 "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SELECT* FROM sys.columns WHERE object_id = OBJECT_ID(@realTableName);";
+                "SELECT columns.*, types.name typeName FROM sys.columns columns JOIN sys.types types ON columns.user_type_id = types.user_type_id WHERE object_id = OBJECT_ID(@tableName)";
         }
     }
 }
