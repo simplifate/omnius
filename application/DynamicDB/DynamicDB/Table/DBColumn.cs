@@ -10,7 +10,7 @@ namespace DynamicDB
     public class DBColumn
     {
         public string Name;
-        public SqlDbType type;
+        public SqlDbType type { get; set; }
         public int? maxLength = null;
         public bool canBeNull = true;
         public string additionalOptions = "";
@@ -26,6 +26,11 @@ namespace DynamicDB
                     (canBeNull) ? "NULL" : "NOT NULL",
                     additionalOptions
                     );
+        }
+
+        public int? getMaxLength()
+        {
+            return maxLength;
         }
     }
 }
