@@ -27,10 +27,5 @@ namespace DynamicDB
                     additionalOptions
                     );
         }
-
-        public int? getMaxLength()
-        {
-            return maxLength;
-        }
     }
 }

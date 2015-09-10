@@ -80,15 +80,15 @@ namespace DynamicDB
 
             return columns;
         }
-        public DBTable AddColumn(string name, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable AddColumn(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
         {
             SqlQuery_Table_Create query;
             if ((query = queries.GetCreate(tableName)) != null)
-                query.AddColumn(name, type, maxLength, canBeNull, additionalOptions);
+                query.AddColumn(columnName, type, maxLength, canBeNull, additionalOptions);
             else
                 queries.Add(new SqlQuery_Column_Add(ApplicationName, tableName, new DBColumn()
                 {
-                    Name = name,
+                    Name = columnName,
                     type = type,
                     maxLength = maxLength,
                     canBeNull = canBeNull,
@@ -97,12 +97,48 @@ namespace DynamicDB
 
             return this;
         }
-
-        public SqlQuery_Select select(params string[] columns)
+        public DBTable RenameColumn(string originColumnName, string newColumnName)
         {
-            SqlQuery_Select query = new SqlQuery_Select(ApplicationName) { columns = columns.ToList() };
-            queries.Add(query);
-            return query;
+            queries.Add(new SqlQuery_Column_Rename(ApplicationName)
+            {
+                tableName = tableName,
+                originColumnName = originColumnName,
+                newColumnName = newColumnName
+            });
+
+            return this;
+        }
+        public DBTable ModifyColumn(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        {
+            new SqlQuery_Column_Modify(ApplicationName)
+            {
+                tableName = tableName,
+                column = new DBColumn()
+                {
+                    Name = columnName,
+                    type = type,
+                    maxLength = maxLength,
+                    canBeNull = canBeNull,
+                    additionalOptions = additionalOptions
+                }
+            };
+            
+            return this;
+        }
+        public DBTable DropColumn(string columnName)
+        {
+            queries.Add(new SqlQuery_Column_Drop(ApplicationName)
+            {
+                tableName = tableName,
+                columnName = columnName
+            });
+
+            return this;
+        }
+
+        public SqlQuery_Select Select(params string[] columns)
+        {
+            return new SqlQuery_Select(ApplicationName) { columns = columns.ToList() };
         }
     }
 }

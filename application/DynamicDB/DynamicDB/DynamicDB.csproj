@@ -45,7 +45,10 @@
     <Compile Include="Sql\SqlQuery_Column_Add.cs" />
     <Compile Include="Sql\SqlQuery_Column_Drop.cs" />
     <Compile Include="Sql\SqlQuery_Column_Modify.cs" />
+    <Compile Include="Sql\SqlQuery_Column_Rename.cs" />
+    <Compile Include="Sql\SqlQuery_Delete.cs" />
     <Compile Include="Sql\SqlQuery_Insert.cs" />
+    <Compile Include="Sql\SqlQuery_PrimaryKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_Select.cs" />
     <Compile Include="Sql\SqlQuery_Selectable.cs" />
     <Compile Include="Sql\SqlQuery_Select_ColumnList.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Sql\SqlQuery.cs" />
     <Compile Include="Sql\SqlQueue.cs" />
     <Compile Include="Sql\SqlQuery_Simple_Table_Create.cs" />
+    <Compile Include="Table\DBValue.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

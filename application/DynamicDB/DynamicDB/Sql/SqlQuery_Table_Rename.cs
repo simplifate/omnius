@@ -28,7 +28,7 @@ namespace DynamicDB.Sql
             _sqlString =
                 "DECLARE @MetaTables NVARCHAR(100) = (SELECT DbMetaTables FROM dbo.Applications WHERE Name = @applicationName);" +
                 "DECLARE @sql NVARCHAR(MAX) = CONCAT('UPDATE ', @MetaTables, ' SET Name = @newName WHERE Name = @tableName;');" +
-                "exec sp_executesql @sql, N'@tableName NVARCHAR(50) output, @newName NVARCHAR(50)', @tableName = @tableName, @newName = @newName;";
+                "exec sp_executesql @sql, N'@tableName NVARCHAR(50), @newName NVARCHAR(50)', @tableName = @tableName, @newName = @newName;";
 
             base.BaseExecution(transaction);
         }

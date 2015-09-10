@@ -31,5 +31,10 @@ namespace DynamicDB.Sql
             
             return base.BaseExecutionWithRead(connection);
         }
+
+        public List<DBItem> ToList()
+        {
+            return ExecuteWithRead();
+        }
     }
 }
