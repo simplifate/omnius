@@ -110,9 +110,9 @@ $(function () {
             addColumnDialog.find("#default-value").val("");
             addColumnDialog.find("#column-length").val(100);
             addColumnDialog.find("#column-length-max").prop("checked", true);
-            addColumnDialog.find("#column-length").hide();
             addColumnDialog.find("#columnLengthNotSupported").hide();
             CheckColumnLengthSupport(addColumnDialog, "varchar");
+            addColumnDialog.find("#column-length").hide();
         }
     });
     function addColumnDialog_SubmitData() {
