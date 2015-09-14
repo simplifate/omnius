@@ -8,9 +8,8 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Insert : SqlQuery_withApp
     {
-        public List<DBColumn> columns { get; set; }
         public string tableName { get; set; }
-        public List<DBValue> values { get; set; }
+        public Dictionary<DBColumn, object> data { get; set; }
 
         public SqlQuery_Insert(string applicationName) : base(applicationName)
         {
@@ -18,32 +17,24 @@ namespace DynamicDB.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            if (values == null || values.Count == 0)
-                throw new ArgumentNullException("values");
+            if (data == null || data.Count < 1)
+                throw new ArgumentNullException("data");
 
-            _params.Add("tableName", tableName);
-            _params.Add("applicationName", _applicationName);
-            if (columns != null && columns.Count > 0)
-                _params.Add("columnsNames", string.Join(",", columns.Select(dbc => dbc.Name)));
+            string parAppName = safeAddParam("AppName", _applicationName);
+            string parTableName = safeAddParam("tableName", tableName);
+
+            _sqlString = string.Format(
+                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql = CONCAT('INSERT INTO ', @realTableName, '({2}) VALUES({3})');" +
+                "exec sp_executesql @sql, N'{4}', {5};",
+                parAppName, // 0
+                parTableName, // 1
+                string.Join(",", data.Select(pair => pair.Key.Name)), // 2
+                string.Join(",", data.Select(pair => "@" + pair.Value)), // 3
+                string.Join(",", data.Select(pair => pair.Key.getShortSqlDefinition())), // 4
+                string.Join(",", data.Select(pair => "@" + pair.Value)) // 5
+                );
             
-            List<string> valueNames = new List<string>();
-            
-            for(int i=0;i<=values.Count;i++)
-            {
-                valueNames.Add("@" + safeAddParam("value", values[i]));
-
-                 values[i].setDataType(valueNames[i], columns[i].type,columns[i].maxLength);
-            }
-
-            if (columns!=null)
-            {
-                _sqlString =
-                    "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                    "SET @sql= CONCAT('INSERT INTO ', @realTableName, ' (', @columnNames, ') VALUES (" + string.Join(",", valueNames) + ");'" + 
-                    "exec sp_executesql @sql, N'"+ string.Join(",",values.Select(val=>val.getDataType()) ) +"', "+ string.Join(",", valueNames) +";";    
-            }
-            // TODO how to make a statement without a specified columns
-
             base.BaseExecution(transaction);
         }
    

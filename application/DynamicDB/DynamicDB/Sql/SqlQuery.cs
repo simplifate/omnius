@@ -155,5 +155,25 @@ namespace DynamicDB.Sql
             // return new key
             return key;
         }
+        public Dictionary<string, string> safeAddParam(Dictionary<string, object> param)
+        {
+            Dictionary<string, string> output = new Dictionary<string, string>();
+            foreach (var par in param)
+            {
+                output[par.Key] = safeAddParam(par.Key, par.Value);
+            }
+
+            return output;
+        }
+        public Dictionary<DBColumn, string> safeAddParam(Dictionary<DBColumn, object> param)
+        {
+            Dictionary<DBColumn, string> output = new Dictionary<DBColumn, string>();
+            foreach (var par in param)
+            {
+                output[par.Key] = safeAddParam(par.Key.Name, par.Value);
+            }
+
+            return output;
+        }
     }
 }
