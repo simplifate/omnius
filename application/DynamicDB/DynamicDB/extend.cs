@@ -9,7 +9,7 @@ namespace System
 {
     public static partial class ExtendMethods
     {
-        public static string Random(this string str, int length, string chars = "abcdefghijklmnopqrstuvwxyz0123456789")
+        public static string Random(this string str, int length, string chars = "abcdefghijklmnopqrstuvwxyz")
         {
             var random = new Random();
             str = new string(

@@ -172,14 +172,16 @@ namespace DynamicDB
         public DBTable Add(DBItem item)
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
-            item.getColumnNames()
-            
-            new SqlQuery_Insert(ApplicationName)
+            foreach(DBColumn column in getColumnList())
+            {
+                data.Add(column, item[column.Name]);
+            }
+
+            queries.Add(new SqlQuery_Insert(ApplicationName)
             {
                 tableName = tableName,
-                data
-            };
-
+                data = data
+            });
 
             return this;
         }
