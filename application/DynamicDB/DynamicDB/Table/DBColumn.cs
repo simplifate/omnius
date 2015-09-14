@@ -27,5 +27,15 @@ namespace DynamicDB
                     additionalOptions
                     );
         }
+        public virtual string getShortSqlDefinition()
+        {
+            return
+                string.Format(
+                    "{0} {1}{2}",
+                    Name,
+                    type.ToString(),
+                    (maxLength != null) ? "(" + maxLength.ToString() + ")" : ""
+                );
+        }
     }
 }

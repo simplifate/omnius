@@ -39,6 +39,36 @@ namespace DynamicDB
         #endregion
 
         public string tableName;
+        private List<DBColumn> _columns = null;
+        private List<string> _primaryKeys = null;
+        public List<string> primaryKeys
+        {
+            get
+            {
+                if (_primaryKeys == null || _primaryKeys.Count < 1)
+                {
+                    List<DBItem> primaryKeyItem = new SqlQuery_Table_GetPrimaryKey(ApplicationName) { tableName = tableName }.ExecuteWithRead();
+                    _primaryKeys = primaryKeyItem.Select(pk => (string)pk["column_name"]).ToList();
+                }
+
+                return _primaryKeys;
+            }
+            set
+            {
+                _primaryKeys = value;
+            }
+        }
+        public List<DBColumn> getPrimaryColumns()
+        {
+            List<DBColumn> output = new List<DBColumn>();
+            foreach(DBColumn column in getColumnList())
+            {
+                if (primaryKeys.Contains(column.Name))
+                    output.Add(column);
+            }
+
+            return output;
+        }
 
         public DBTable Create()
         {
@@ -67,10 +97,13 @@ namespace DynamicDB
 
         public List<DBColumn> getColumnList()
         {
+            if (_columns != null)
+                return _columns;
+
             SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList(ApplicationName, tableName);
             List<DBItem> items = query.ExecuteWithRead();
 
-            List<DBColumn> columns = items.Select(i => new DBColumn()
+            _columns = items.Select(i => new DBColumn()
             {
                 Name = (string)i["name"],
                 type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"]),
@@ -78,7 +111,7 @@ namespace DynamicDB
                 canBeNull = (bool)i["is_nullable"]
             }).ToList();
 
-            return columns;
+            return _columns;
         }
         public DBTable AddColumn(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
         {
@@ -135,6 +168,44 @@ namespace DynamicDB
 
             return this;
         }
+
+        public DBTable Add(DBItem item)
+        {
+            Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
+            item.getColumnNames()
+            
+            new SqlQuery_Insert(ApplicationName)
+            {
+                tableName = tableName,
+                data
+            };
+
+
+            return this;
+        }
+        public DBTable Update(DBItem item)
+        {
+
+            return this;
+        }
+        public DBTable Remove(DBItem item)
+        {
+            Dictionary<DBColumn, object> columnValueCondition = new Dictionary<DBColumn, object>();
+            foreach(DBColumn primaryColumn in getPrimaryColumns())
+            {
+                columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
+            }
+            
+
+            queries.Add(new SqlQuery_Delete(ApplicationName)
+            {
+                tableName = tableName,
+                columnValueCondition = columnValueCondition
+            });
+
+            return this;
+        }
+
 
         public SqlQuery_Select Select(params string[] columns)
         {

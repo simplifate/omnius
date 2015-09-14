@@ -9,8 +9,7 @@ namespace DynamicDB.Sql
     class SqlQuery_Delete:SqlQuery_withApp
     {
         public string tableName { get; set; }
-        public DBColumn keyCol { get; set; }
-        public DBValue value { get; set; }
+        public Dictionary<DBColumn, object> columnValueCondition { get; set; }
 
         public SqlQuery_Delete(string applicationName) : base(applicationName)
         {
@@ -18,16 +17,13 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _params.Add("tableName", tableName);
-            _params.Add("applicationName", _applicationName);
-            _params.Add("keyColumn", keyCol.Name);
-            _params.Add("keyValue", value);
+            string parAppName = safeAddParam("AppName", _applicationName);
+            string parTableName = safeAddParam("TableName", tableName);
+            var parConditions = safeAddParam(columnValueCondition);
 
             _sqlString = "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @applicationName, @tableName, @realTableName OUTPUT;"+
-                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE ', @keyColumn, '=', @keyValue, ';')"+
-                "exec (@sql)";
-           
-
+                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE " + string.Join(" AND ", parConditions.Select(pair => pair.Key.Name + "=@" + pair.Key.Name)) + ";')"+
+                "exec sp_executesql @sql, N'" + string.Join(",", parConditions.Select(pair => pair.Key.getShortSqlDefinition() )) + "', " + string.Join(",", parConditions.Select(pair => string.Format("@{0}=@{1}", pair.Key.Name, pair.Value)));
 
             base.BaseExecution(transaction);
         }

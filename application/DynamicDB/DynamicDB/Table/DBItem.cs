@@ -8,7 +8,7 @@ namespace DynamicDB
 {
     public class DBItem
     {
-        private string _tableName;
+        public DBTable table { get; set; }
 
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
         public object this[string propertyName]

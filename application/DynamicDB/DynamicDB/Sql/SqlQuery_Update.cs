@@ -6,45 +6,43 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Update:SqlQuery_withApp
+    class SqlQuery_Update : SqlQuery_withApp
     {
         public string tableName;
-        public List<DBColumn> columns { get; set; }
-        public List<DBValue> values { get; set; }
-        public DBColumn keyCol;
-        public object keyVal;
+        public Dictionary<DBColumn, object> changes { get; set; }
+        public Dictionary<DBColumn, object> rowSelect { get; set; }
 
-
-        public SqlQuery_Update(string applicationName, string tableName, DBColumn keyCol, string keyVal) : base(applicationName)
+        public SqlQuery_Update(string applicationName) : base(applicationName)
         {
-            this.tableName = tableName;
-            this.keyCol = keyCol;
-            this.keyVal = keyVal;
         }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _params.Add("tableName", tableName);
-            _params.Add("applicationName", _applicationName);
-            _params.Add("keyColumn", keyCol);
-            _params.Add("keyValue", keyVal);
+            if (changes == null || changes.Count < 1)
+                throw new ArgumentNullException("changes");
+            if (rowSelect == null || rowSelect.Count < 1)
+                throw new ArgumentNullException("rowSelect");
 
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('UPDATE ', @realTableName, ' SET '";
-            for(int i=0;i<=columns.Count;i++)
-            {
-               
-                string columName = safeAddParam("columnName", columns[i]);
-                string valueName = safeAddParam("value", values[i]);
+            string parAppName = safeAddParam("AppName", _applicationName);
+            string parTableName = safeAddParam("TableName", tableName);
+
+            var parChanges = safeAddParam(changes);
+            var parRowSelect = safeAddParam(rowSelect);
+
+            _sqlString = string.Format(
+                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql= CONCAT('UPDATE ', @realTableName, ' SET {2} WHERE {3};')" +
+                "exec sp_executesql @sql, N'{4},{5}', {6},{7};",
+                parAppName, parTableName,
+                string.Join(",", parChanges.Select(pair => pair.Key.Name + "=@" + pair.Value)),
+                string.Join(",", parRowSelect.Select(pair => pair.Key.Name + "=@" + pair.Value)),
+
+                string.Join(",", parChanges.Select(pair => pair.Key.getShortSqlDefinition())),
+                string.Join(",", parRowSelect.Select(pair => pair.Key.getShortSqlDefinition())),
                 
-                values[i].setDataType(valueName,columns[i].type,columns[i].maxLength);
-                
-                _sqlString += string.Format(", @{0}, '=', @{1}", columName,valueName);
-            }
-            _sqlString+="' WHERE ', @keyColumn, '=', @keyValue, ';')"+
-                    "exec sp_executesql @sql, N'" + string.Join(",", values.Select(val=>val.getDataType())) + "', " + string.Join(",", values.Select(vn => vn + "=" + vn)) + ";";    
-           
+                string.Join(",", parChanges.Select(pair => "@" + pair.Value)),
+                string.Join(",", parRowSelect.Select(pair => "@" + pair.Value))
+                );
 
             base.BaseExecution(transaction);
         }
