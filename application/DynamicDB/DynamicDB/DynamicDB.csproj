@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Sql\Operators.cs" />
     <Compile Include="Sql\SqlInitScript.cs" />
+    <Compile Include="Sql\SqlQuery_ForeignKeyAdd.cs" />
+    <Compile Include="Sql\SqlQuery_ForeignKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_PrimaryKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_Column_Add.cs" />
     <Compile Include="Sql\SqlQuery_Column_Drop.cs" />
