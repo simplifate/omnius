@@ -52,6 +52,7 @@ namespace DynamicDB.Sql
                     catch (SqlException e)
                     {
                         transaction.Rollback();
+                        _queries.Clear();
                         throw e;
                     }
                 }
