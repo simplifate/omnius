@@ -48,13 +48,14 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _params.Add("tableName", _tableName);
-            _params.Add("applicationName", _applicationName);
-            _params.Add("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @columnDefinition, ');');" +
-                "exec(@sql);";
+            string parTableName = safeAddParam("tableName", _tableName);
+            string parAppName = safeAddParam("applicationName", _applicationName);
+            var parColumns = safeAddParam("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
+            
+            _sqlString =string.Format(
+                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @{2}, ');');" +
+                "exec(@sql);", parAppName,parTableName,parColumns);
             
             base.BaseExecution(transaction);
         }

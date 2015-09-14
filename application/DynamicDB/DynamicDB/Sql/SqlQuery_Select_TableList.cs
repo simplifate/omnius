@@ -8,20 +8,24 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Select_TableList : SqlQuery_withApp
     {
-        private List<string> _columns;
         public List<string> columns { get; set; }
 
-        public SqlQuery_Select_TableList(string applicationName, List<string> columns = null) : base(applicationName)
+        public SqlQuery_Select_TableList(string applicationName) : base(applicationName)
         {
-            _columns = columns;
+        }
 
-            _params.Add("applicationName", _applicationName);
-            _params.Add("columnNames", (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
+        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        {
+            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parColumnName = safeAddParam("columnNames",
+                (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
 
-            _sqlString =
-                "DECLARE @tableName NVARCHAR(50) = (SELECT DbMetaTables FROM dbo.Applications WHERE Name = @applicationName);" +
-                "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT ', @columnNames, ' FROM ', @tableName, ';');" +
-                "exec(@sql);";
+            _sqlString =string.Format(
+                "DECLARE @tableName NVARCHAR(50) = (SELECT DbMetaTables FROM dbo.Applications WHERE Name = @{0});" +
+                "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT ', @{1}, ' FROM ', @tableName, ';');" +
+                "exec(@sql);", parAppName,parColumnName);
+
+            return base.BaseExecutionWithRead(connection);
         }
     }
 }

@@ -74,10 +74,10 @@ namespace DynamicDB.Sql
 
             return _query;
         }
-        //public SqlQuery_Selectable In(object value)
+        //public SqlQuery_Selectable In(List<object> values)
         //{
-        //    string paramName = _query.safeAddParam("param", value);
-        //    _query._where += string.Format(" {0}<>{1}", _columnName, paramName);
+        //    string paramName = _query.safeAddParam("param", values);
+        //    _query._where += string.Format(" {0} IN ({1})", _columnName, );
 
         //    return _query;
         //}

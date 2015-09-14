@@ -8,19 +8,23 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Select_ColumnList : SqlQuery_withApp
     {
-        private string _tableName;
-        public string tableName { get { return _tableName; } }
+        public string tableName { get; set; }
 
-        public SqlQuery_Select_ColumnList(string ApplicationName, string tableName) : base(ApplicationName)
+        public SqlQuery_Select_ColumnList(string ApplicationName)
+            : base(ApplicationName)
         {
-            _tableName = tableName;
+        }
 
-            _params.Add("applicationName", _applicationName);
-            _params.Add("tableName", _tableName);
+        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        {
+            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parTableName = safeAddParam("tableName", tableName);
 
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SELECT columns.*, types.name typeName FROM sys.columns columns JOIN sys.types types ON columns.user_type_id = types.user_type_id WHERE object_id = OBJECT_ID(@tableName)";
+            _sqlString = string.Format(
+                "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SELECT columns.*, types.name typeName FROM sys.columns columns JOIN sys.types types ON columns.user_type_id = types.user_type_id WHERE object_id = OBJECT_ID(@realTableName)", parAppName, parTableName);
+
+            return base.BaseExecutionWithRead(connection);
         }
     }
 }

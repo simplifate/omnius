@@ -21,9 +21,15 @@ namespace DynamicDB.Sql
             string parTableName = safeAddParam("TableName", tableName);
             var parConditions = safeAddParam(columnValueCondition);
 
-            _sqlString = "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @applicationName, @tableName, @realTableName OUTPUT;"+
-                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE " + string.Join(" AND ", parConditions.Select(pair => pair.Key.Name + "=@" + pair.Key.Name)) + ";')"+
-                "exec sp_executesql @sql, N'" + string.Join(",", parConditions.Select(pair => pair.Key.getShortSqlDefinition() )) + "', " + string.Join(",", parConditions.Select(pair => string.Format("@{0}=@{1}", pair.Key.Name, pair.Value)));
+            _sqlString = string.Format(
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE {2} ;')"+
+                "exec sp_executesql @sql, N'{3} ,{4}" 
+                , parAppName,parTableName,
+            string.Join(" AND ", parConditions.Select(pair => pair.Key.Name + "=@" + pair.Key.Name)),
+            string.Join(",", parConditions.Select(pair => pair.Key.getShortSqlDefinition())),
+            string.Join(",", parConditions.Select(pair => string.Format("@{0}=@{1}", pair.Key.Name, pair.Value)))
+            );
 
             base.BaseExecution(transaction);
         }
