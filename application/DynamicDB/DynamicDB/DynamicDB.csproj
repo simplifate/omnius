@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Sql\Operators.cs" />
     <Compile Include="Sql\SqlInitScript.cs" />
+    <Compile Include="Sql\SqlQuery_PrimaryKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_Column_Add.cs" />
     <Compile Include="Sql\SqlQuery_Column_Drop.cs" />
     <Compile Include="Sql\SqlQuery_Column_Modify.cs" />
@@ -57,6 +58,8 @@
     <Compile Include="Sql\SqlQuery_Table_Drop.cs" />
     <Compile Include="Sql\SqlQuery_Table_GetPrimaryKey.cs" />
     <Compile Include="Sql\SqlQuery_Table_Rename.cs" />
+    <Compile Include="Sql\SqlQuery_UniqueAdd.cs" />
+    <Compile Include="Sql\SqlQuery_UniqueDrop.cs" />
     <Compile Include="Sql\SqlQuery_Update.cs" />
     <Compile Include="Sql\SqlQuery_withApp.cs" />
     <Compile Include="Table\AdditionalSqlDefinition.cs" />
