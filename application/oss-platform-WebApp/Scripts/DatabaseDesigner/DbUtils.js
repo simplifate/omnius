@@ -44,10 +44,10 @@ function EditRelation(connection, sourceLabel, targetLabel) {
 }
 
 function AddTable(tableName) {
-    newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
-        + tableName + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
+    newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
+        + tableName + '</div><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
         + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey" dbColumnType="integer"><div class="deleteColumnIcon fa fa-remove"></div>'
-        + '<span class="dbColumnName">id</span><div class="editColumnIcon fa fa-pencil"></div></div></div>'
+        + '<div class="dbColumnName">id</div><div class="editColumnIcon fa fa-pencil"></div></div></div>'
         + '<div class="dbTableIndexArea"></div></div>');
     newTable.find(".dbColumn").data("dbColumnType", "integer");
     $("#database-container").append(newTable);
@@ -78,8 +78,8 @@ function AddTable(tableName) {
 }
 
 function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValue, length, lengthMax) {
-    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
-        + columnName + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
+    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><div class="dbColumnName">'
+        + columnName + '</div><div class="editColumnIcon fa fa-pencil"></div></div>');
 
     newColumn.children(".deleteColumnIcon").on("click", function () {
         $(this).parents(".dbColumn").remove();
@@ -104,14 +104,22 @@ function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValu
     AddColumnToJsPlumb(newColumn);
 }
 
-function AddIndex(table, name, firstColumn, secondColumn, unique) {
-    indexLabel = "Index: " + firstColumn;
-    if (secondColumn != "-none-")
-        indexLabel += ", " + secondColumn;
-    newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><span class="dbIndexText">' + indexLabel + '</span><div class="editIndexIcon fa fa-pencil"></div></div>');
+function AddIndex(table, name, indexColumnArray, unique) {
+    indexLabel = "Index: ";
+    for (i = 0; i < indexColumnArray.length - 1; i++)
+        indexLabel += indexColumnArray[i] + ", ";
+    indexLabel += indexColumnArray[indexColumnArray.length - 1];
+    if (unique)
+        indexLabel += " - unique";
+    newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><div class="dbIndexText">' + indexLabel + '</div><div class="editIndexIcon fa fa-pencil"></div></div>');
     newIndex.data("indexName", name);
-    newIndex.data("firstColumn", firstColumn);
-    newIndex.data("secondColumn", secondColumn);
+    filteredIndexColumnArray = [];
+    for (i = 0; i < indexColumnArray.length; i++) {
+        if (indexColumnArray[i] != "-none-")
+            filteredIndexColumnArray.push(indexColumnArray[i]);
+    }
+    newIndex.data("indexColumnArray", filteredIndexColumnArray);
+    newIndex.data("indexColumnArray", indexColumnArray);
     newIndex.data("unique", unique);
     newIndex.children(".deleteIndexIcon").on("click", function () {
         $(this).parents(".dbIndex").remove();
@@ -127,7 +135,7 @@ function AddIndex(table, name, firstColumn, secondColumn, unique) {
 function AddView(viewName, viewQuery) {
     alert(viewName);
     newView = $('<div class="dbView" style="top: 100px; left: 20px;"><div class="dbViewHeader"><div class="deleteViewIcon fa fa-remove"></div>'
-    + '<span class="dbViewName">View: ' + viewName + '</span><div class="editViewIcon fa fa-pencil"></div></div></div>');
+    + '<div class="dbViewName">View: ' + viewName + '</div><div class="editViewIcon fa fa-pencil"></div></div></div>');
 
     $("#database-container").append(newView);
     newView.find(".editViewIcon").on("click", function () {
@@ -147,7 +155,12 @@ function CheckColumnLengthSupport(dialog, typeCode) {
     currentType = SqlServerDataTypes.filter(function (val) {
         return val[0] == typeCode;
     });
-    if (currentType[0][2]) {
+    if (!typeCode) {
+        dialog.find("#columnLengthNotSupported").show();
+        dialog.find("#column-length").hide();
+        dialog.find("#column-length-max").hide();
+        dialog.find("label[for=column-length-max]").hide();
+    } else if (currentType[0][2]) {
         dialog.find("#columnLengthNotSupported").hide();
         dialog.find("#column-length").show();
         dialog.find("#column-length-max").show();

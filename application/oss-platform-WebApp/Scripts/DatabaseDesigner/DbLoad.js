@@ -7,8 +7,8 @@
         success: function (data) {
             ClearDbScheme();
             for (i = 0; i < data.Tables.length; i++) {
-                newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><span class="dbTableName">'
-                    + data.Tables[i].Name + '</span><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
+                newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
+                    + data.Tables[i].Name + '</div><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
                     + '<div class="dbTableBody"></div><div class="dbTableIndexArea"></div></div>');
                 $("#database-container").append(newTable);
                 $(".editTableIcon").on("click", function () {
@@ -39,8 +39,8 @@
                         defaultValue = data.Tables[i].Columns[j].DefaultValue;
                     else
                         defaultValue = "";
-                    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><span class="dbColumnName">'
-                        + data.Tables[i].Columns[j].Name + '</span><div class="editColumnIcon fa fa-pencil"></div></div>');
+                    newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><div class="dbColumnName">'
+                        + data.Tables[i].Columns[j].Name + '</div><div class="editColumnIcon fa fa-pencil"></div></div>');
                     newColumn.attr("dbColumnType", data.Tables[i].Columns[j].Type);
                     newColumn.attr("dbColumnId", data.Tables[i].Columns[j].Id);
                     newColumn.data("dbAllowNull", data.Tables[i].Columns[j].AllowNull);
@@ -66,13 +66,15 @@
                 }
                 AddColumnToJsPlumb(newTable.find(".dbColumn"));
                 for (j = 0; j < data.Tables[i].Indices.length; j++) {
-                    indexLabel = "Index: " + data.Tables[i].Indices[j].FirstColumnName;
-                    if (data.Tables[i].Indices[j].SecondColumnName != "-none-")
-                        indexLabel += ", " + data.Tables[i].Indices[j].SecondColumnName;
-                    newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><span class="dbIndexText">' + indexLabel + '</span><div class="editIndexIcon fa fa-pencil"></div></div>');
+                    indexLabel = "Index: ";
+                    for (k = 0; k < data.Tables[i].Indices[j].ColumnNames.length - 1; k++)
+                        indexLabel += data.Tables[i].Indices[j].ColumnNames[k] + ", ";
+                    indexLabel += data.Tables[i].Indices[j].ColumnNames[data.Tables[i].Indices[j].ColumnNames.length - 1];
+                    if (data.Tables[i].Indices[j].Unique)
+                        indexLabel += " - unique";
+                    newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><div class="dbIndexText">' + indexLabel + '</div><div class="editIndexIcon fa fa-pencil"></div></div>');
                     newIndex.data("indexName", data.Tables[i].Indices[j].Name);
-                    newIndex.data("firstColumn", data.Tables[i].Indices[j].FirstColumnName);
-                    newIndex.data("secondColumn", data.Tables[i].Indices[j].SecondColumnName);
+                    newIndex.data("indexColumnArray", data.Tables[i].Indices[j].ColumnNames);
                     newIndex.data("unique", data.Tables[i].Indices[j].Unique);
                     newIndex.children(".deleteIndexIcon").on("click", function () {
                         $(this).parents(".dbIndex").remove();
@@ -104,7 +106,7 @@
             }
             for (i = 0; i < data.Views.length; i++) {
                 newView = $('<div class="dbView"><div class="dbViewHeader"><div class="deleteViewIcon fa fa-remove"></div>'
-                    + '<span class="dbViewName">View: ' + data.Views[i].Name + '</span><div class="editViewIcon fa fa-pencil"></div></div></div>');
+                    + '<div class="dbViewName">View: ' + data.Views[i].Name + '</div><div class="editViewIcon fa fa-pencil"></div></div></div>');
 
                 $("#database-container").append(newView);
                 newView.find(".editViewIcon").on("click", function () {

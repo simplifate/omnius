@@ -29,8 +29,7 @@ namespace FSPOC.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Unique { get; set; }
-        public string FirstColumnName { get; set; }
-        public string SecondColumnName { get; set; }
+        public string ColumnNames { get; set; }
 
         public virtual DbTable DbTable { get; set; }
     }
