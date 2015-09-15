@@ -14,7 +14,7 @@ namespace DynamicDB.Sql
         {
         }
 
-        protected override void BaseExecution(MarshalByRefObject connection)
+        protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTableName = safeAddParam("tableName", tableName);
@@ -25,7 +25,7 @@ namespace DynamicDB.Sql
                 "exec(@sql)",
                 parAppName, parTableName);
 
-            base.BaseExecution(connection);
+            base.BaseExecution(transaction);
         }
     }
 }

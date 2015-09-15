@@ -17,7 +17,7 @@ namespace DynamicDB.Sql
         {
         }
 
-        protected override void BaseExecution(MarshalByRefObject connection)
+        protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTable1Name = safeAddParam("tableName", table1Name);
@@ -32,7 +32,7 @@ namespace DynamicDB.Sql
                 "SET @sql= CONCAT('ALTER TABLE ', @realTable1Name, ' ADD CONSTRAINT FK_', @realTable1Name,' FOREIGN KEY (', {3}, ') REFERENCES ', @realTable2Name, '(', {4}, ');')",
                 parAppName,parTable1Name,parTable2Name,parForeignKey,parPrimaryKey);
 
-            base.BaseExecution(connection);
+            base.BaseExecution(transaction);
         }
     }
 }

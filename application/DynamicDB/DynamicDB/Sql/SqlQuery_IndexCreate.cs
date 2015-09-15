@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_UniqueAdd:SqlQuery_withApp
+    class SqlQuery_IndexCreate:SqlQuery_withApp
     {
         public string tableName { get; set; }
-        public List<string> keyColumns { get; set; } 
+        public List<string> columnName { get; set; } 
 
-        public SqlQuery_UniqueAdd(string applicationName) : base(applicationName)
+        public SqlQuery_IndexCreate(string applicationName) : base(applicationName)
         {
         }
 
@@ -19,13 +19,13 @@ namespace DynamicDB.Sql
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTableName = safeAddParam("tableName", tableName);
-            string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
+            string parColumnName = safeAddParam("columnName", string.Join(", ",columnName));
 
             _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @realTableName, ' UNIQUE (', @{2}, ');')" +
+                "SET @sql= CONCAT('CREATE INDEX index_', @realTableName, ' ON ', @realTableName, '(', @{2}, ');')" +
                 "exec (@sql)",
-                parAppName, parTableName, parColumns);
+                parAppName, parTableName, parColumnName);
 
             base.BaseExecution(transaction);
         }
