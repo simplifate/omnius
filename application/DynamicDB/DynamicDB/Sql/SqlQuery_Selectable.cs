@@ -12,6 +12,7 @@ namespace DynamicDB.Sql
         internal string _where = "";
         internal string _order = "";
         internal string _group = "";
+        internal string _check = "";
 
         public string tableName { get; set; }
 
@@ -19,9 +20,14 @@ namespace DynamicDB.Sql
         {
         }
 
+        public Operators check(string columnName)
+        {
+            return new Operators(this, columnName, false);
+        }
+
         public Operators where(string columnName)
         {
-            return new Operators(this, columnName);
+            return new Operators(this, columnName, true);
         }
         public SqlQuery_Selectable join(string joinedTableName, string originColumnName, string joinedColumnName)
         {

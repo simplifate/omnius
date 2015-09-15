@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Sql\Operators.cs" />
     <Compile Include="Sql\SqlInitScript.cs" />
+    <Compile Include="Sql\SqlQuery_CheckAdd.cs" />
+    <Compile Include="Sql\SqlQuery_CheckDrop.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_IndexCreate.cs" />
