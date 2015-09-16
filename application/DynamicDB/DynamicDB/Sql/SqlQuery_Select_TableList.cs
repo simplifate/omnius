@@ -19,7 +19,7 @@ namespace DynamicDB.Sql
             _params.Add("columnNames", (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
 
             _sqlString =
-                "DECLARE @tableName NVARCHAR(50) = (SELECT DbMetaTables FROM dbo.Applications WHERE Name = @applicationName);" +
+                "DECLARE @tableName NVARCHAR(50) = (SELECT DbMetaTables FROM " + SqlInitScript.aplicationTableName + " WHERE Name = @applicationName);" +
                 "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT ', @columnNames, ' FROM ', @tableName, ';');" +
                 "exec(@sql);";
         }

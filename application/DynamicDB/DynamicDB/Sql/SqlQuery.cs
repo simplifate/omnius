@@ -71,7 +71,7 @@ namespace DynamicDB.Sql
             }
             catch(SqlException e)
             {
-                if (e.Message == "Could not find stored procedure 'getTableRealName'." || e.Message == "Could not find stored procedure 'getTableRealNameWithMeta'.")
+                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
                 {
                     new SqlInitScript().Execute(connection);
                     cmd.ExecuteNonQuery();
@@ -90,7 +90,7 @@ namespace DynamicDB.Sql
             }
             catch (SqlException e)
             {
-                if (e.Message == "Could not find stored procedure 'getTableRealName'.")
+                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
                 {
                     // declare procedure
                     new SqlInitScript().Execute(connection);

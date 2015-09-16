@@ -48,13 +48,23 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _params.Add("tableName", _tableName);
-            _params.Add("applicationName", _applicationName);
-            _params.Add("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @columnDefinition, ');');" +
-                "exec(@sql);";
+            string parAppName = safeAddParam("AppName", _applicationName);
+            string parTableName = safeAddParam("tableName", _tableName);
+            string parColumnDef = safeAddParam("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
+
+            _sqlString = string.Format(
+                "DECLARE @_DbMetaTables NVARCHAR(50), @_sql NVARCHAR(MAX);" +
+                "SELECT @_DbMetaTables = DbMetaTables FROM {0} WHERE Name = @{1};" +
+                "SET @_sql = CONCAT('INSERT INTO ', @_DbMetaTables, '(Name) VALUES(@{2});');" +
+                "exec sp_executesql @_sql, N'@{2} NVARCHAR(50)', @{2};" +
+                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{1}, @{2}, @realTableName OUTPUT;" +
+                "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @{3}, ');');" +
+                "exec(@sql);",
+                SqlInitScript.aplicationTableName,
+                parAppName,
+                parTableName,
+                parColumnDef
+                );
             
             base.BaseExecution(transaction);
         }
