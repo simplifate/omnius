@@ -18,7 +18,7 @@ namespace DynamicDB.Sql
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTableName = safeAddParam("tableName", tableName);
-            string parCheck = safeAddParam("check", string.Join(" AND ",_check));
+            string parCheck = safeAddParam("check", string.Join(" AND ",_where));
 
             _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
