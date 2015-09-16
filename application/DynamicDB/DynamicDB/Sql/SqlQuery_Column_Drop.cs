@@ -17,14 +17,14 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            _params.Add("applicationName", _applicationName);
-            _params.Add("tableName", tableName);
-            _params.Add("columnName", columnName);
+            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parTableName = safeAddParam("tableName", tableName);
+            string parColumn = safeAddParam("columnName", columnName);
 
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @applicationName, @tableName, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' DROP COLUMN ', @columnName, ';')" +
-                "exec(@sql);";
+            _sqlString =string.Format(
+                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' DROP COLUMN ', @{2}, ';')" +
+                "exec(@sql);", parAppName, parTableName, parColumn);
 
             base.BaseExecution(connection);
         }

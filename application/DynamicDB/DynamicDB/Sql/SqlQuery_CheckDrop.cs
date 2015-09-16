@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Column_Modify:SqlQuery_withApp
+    class SqlQuery_CheckDrop:SqlQuery_withApp
     {
         public string tableName { get; set; }
-        public DBColumn column{ get; set; }
 
-        public SqlQuery_Column_Modify(string applicationName) : base(applicationName)
+        public SqlQuery_CheckDrop(string applicationName) : base(applicationName)
         {
         }
 
@@ -19,12 +18,12 @@ namespace DynamicDB.Sql
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTableName = safeAddParam("tableName", tableName);
-            var parColumn = safeAddParam("columnDefinition", column.getSqlDefinition());
 
-            _sqlString =string.Format(
+            _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('ALTER TABLE ', @realTableName, ' ALTER COLUMN ', @{2});" +
-                "exec(@sql);", parAppName, parTableName, parColumn);
+                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, 'DROP CONSTRAINT CHK_', @realTableName, ';')"+ 
+                "exec(@sql)",parAppName,parTableName
+                );
 
             base.BaseExecution(transaction);
         }

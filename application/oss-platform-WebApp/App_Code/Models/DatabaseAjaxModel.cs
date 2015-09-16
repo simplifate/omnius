@@ -19,8 +19,12 @@ namespace FSPOC.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Unique { get; set; }
-        public string FirstColumnName { get; set; }
-        public string SecondColumnName { get; set; }
+        public List<string> ColumnNames { get; set; }
+
+        public AjaxTransferDbIndex()
+        {
+            ColumnNames = new List<string>();
+        }
     }
     public class AjaxTransferDbTable
     {

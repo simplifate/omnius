@@ -22,11 +22,16 @@
             columnIdCounter++;
         });
         $(tableDiv).find(".dbIndex").each(function (indexIndex, indexDiv) {
+            originalIndexColumnArray = $(indexDiv).data("indexColumnArray");
+            filteredIndexColumnArray = [];
+            for (i = 0; i < originalIndexColumnArray.length; i++) {
+                if (originalIndexColumnArray[i] != "-none-")
+                    filteredIndexColumnArray.push(originalIndexColumnArray[i]);
+            }
             indexArray.push({
                 Id: indexIndex,
                 Name: $(indexDiv).data("indexName"),
-                FirstColumnName: $(indexDiv).data("firstColumn"),
-                SecondColumnName: $(indexDiv).data("secondColumn"),
+                ColumnNames: filteredIndexColumnArray,
                 Unique: $(indexDiv).data("unique")
             });
         });

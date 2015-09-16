@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var ZoomFactor = 1.0;
+$(function () {
     $("#btnAddTable").on("click", function () {
         addTableDialog.dialog("open");
     });
@@ -19,6 +20,19 @@
     });
     $("#btnClearScheme").on("click", function () {
         ClearDbScheme();
+    });
+    $("#btnZoomIn").on("click", function () {
+        ZoomFactor += 0.1;
+        $(".database-container").css("transform", "scale(" + ZoomFactor + ")");
+        $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
+        instance.repaintEverything();
+    });
+    $("#btnZoomOut").on("click", function () {
+        if (ZoomFactor >= 0.2)
+            ZoomFactor -= 0.1;
+        $(".database-container").css("transform", "scale(" + ZoomFactor + ")");
+        $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
+        instance.repaintEverything();
     });
 
     LoadDbScheme("latest");

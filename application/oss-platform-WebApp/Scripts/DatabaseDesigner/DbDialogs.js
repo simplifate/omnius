@@ -110,9 +110,9 @@ $(function () {
             addColumnDialog.find("#default-value").val("");
             addColumnDialog.find("#column-length").val(100);
             addColumnDialog.find("#column-length-max").prop("checked", true);
-            addColumnDialog.find("#column-length").hide();
             addColumnDialog.find("#columnLengthNotSupported").hide();
             CheckColumnLengthSupport(addColumnDialog, "varchar");
+            addColumnDialog.find("#column-length").hide();
         }
     });
     function addColumnDialog_SubmitData() {
@@ -396,7 +396,7 @@ $(function () {
         autoOpen: false,
         resizable: false,
         width: 400,
-        height: 230,
+        height: 260,
         buttons: {
             "Add": function () {
                 addIndexDialog_SubmitData();
@@ -411,7 +411,19 @@ $(function () {
                     addIndexDialog_SubmitData();
                     return false;
                 }
-            })
+            });
+            $("#add-index-dialog #btn-add-index-column").on("click", function () {
+                newColumnNumber = addIndexDialog.data("columnsShown") + 1;
+                newFormRow = $('<tr class="additionalFormRow"><td><label for="additional-column">' + newColumnNumber + '. column</label></td>'
+                    + '<td><select name="additional-column" class="additionalColumn"></select></td></tr>');
+                newFormRow.find(".additionalColumn").append($('<option value="-none-">-none-</option>'));
+                CurrentTable.find(".dbColumn").each(function (i, val) {
+                    newFormRow.find(".additionalColumn").append(
+                        $('<option value="' + $(val).find(".dbColumnName").text() + '">' + $(val).find(".dbColumnName").text() + '</option>'));
+                });
+                $("#add-index-dialog").find("#addIndexColumnFormRow").before(newFormRow);
+                addIndexDialog.data("columnsShown", newColumnNumber);
+            });
         },
         open: function () {
             addIndexDialog.find("#first-column option").remove();
@@ -430,13 +442,25 @@ $(function () {
             addIndexDialog.find("#first-column").val("id");
             addIndexDialog.find("#second-column").val("-none-");
             addIndexDialog.find("#unique-checkbox").prop("checked", false);
+            addIndexDialog.find(".additionalFormRow").remove();
+            addIndexDialog.data("columnsShown", 1);
         }
     });
     function addIndexDialog_SubmitData() {
+        indexColumnArray = [
+            addIndexDialog.find("#first-column").val()
+        ];
+        addIndexDialog.find(".additionalFormRow .additionalColumn").each(function (i, element) {
+            indexColumnArray.push($(element).val());
+        });
+        filteredIndexColumnArray = [];
+        for (i = 0; i < indexColumnArray.length; i++) {
+            if (indexColumnArray[i] != "-none-")
+                filteredIndexColumnArray.push(indexColumnArray[i]);
+        }
         AddIndex(CurrentTable,
             addIndexDialog.find("#index-name").val(),
-            addIndexDialog.find("#first-column").val(),
-            addIndexDialog.find("#second-column").val(),
+            filteredIndexColumnArray,
             addIndexDialog.find("#unique-checkbox").prop("checked")
             );
         addIndexDialog.dialog("close");
@@ -461,7 +485,19 @@ $(function () {
                     editIndexDialog_SubmitData();
                     return false;
                 }
-            })
+            });
+            $("#edit-index-dialog #btn-add-index-column").on("click", function () {
+                newColumnNumber = editIndexDialog.data("columnsShown") + 1;
+                newFormRow = $('<tr class="additionalFormRow"><td><label for="additional-column">' + newColumnNumber + '. column</label></td>'
+                    + '<td><select name="additional-column" class="additionalColumn"></select></td></tr>');
+                newFormRow.find(".additionalColumn").append($('<option value="-none-">-none-</option>'));
+                CurrentTable.find(".dbColumn").each(function (i, val) {
+                    newFormRow.find(".additionalColumn").append(
+                        $('<option value="' + $(val).find(".dbColumnName").text() + '">' + $(val).find(".dbColumnName").text() + '</option>'));
+                });
+                $("#edit-index-dialog").find("#addIndexColumnFormRow").before(newFormRow);
+                editIndexDialog.data("columnsShown", newColumnNumber);
+            });
         },
         open: function () {
             editIndexDialog.find("#first-column option").remove();
@@ -476,18 +512,47 @@ $(function () {
                 editIndexDialog.find("#second-column").append(
                     $('<option value="' + $(val).find(".dbColumnName").text() + '">' + $(val).find(".dbColumnName").text() + '</option>'));
             });
+            indexColumnArray = CurrentIndex.data("indexColumnArray");
+            if (!indexColumnArray)
+                indexColumnArray = ["id"];
+            editIndexDialog.data("columnsShown", indexColumnArray.length);
             editIndexDialog.find("#index-name").val(CurrentIndex.data("indexName"));
-            editIndexDialog.find("#first-column").val(CurrentIndex.data("firstColumn"));
-            editIndexDialog.find("#second-column").val(CurrentIndex.data("secondColumn"));
+            editIndexDialog.find("#first-column").val(indexColumnArray[0]);
+            editIndexDialog.find("#second-column").val(indexColumnArray[1]);
             editIndexDialog.find("#unique-checkbox").prop("checked", CurrentIndex.data("unique"));
+            editIndexDialog.find(".additionalFormRow").remove();
+            for (i = 1; i < indexColumnArray.length; i++) {
+                newFormRow = $('<tr class="additionalFormRow"><td><label for="additional-column">' + (i + 1) + '. column</label></td>'
+                    + '<td><select name="additional-column" class="additionalColumn"></select></td></tr>');
+                newFormRow.find(".additionalColumn").append($('<option value="-none-">-none-</option>'));
+                CurrentTable.find(".dbColumn").each(function (i, val) {
+                    newFormRow.find(".additionalColumn").append(
+                        $('<option value="' + $(val).find(".dbColumnName").text() + '">' + $(val).find(".dbColumnName").text() + '</option>'));
+                });
+                newFormRow.find(".additionalColumn").val(indexColumnArray[i]);
+                $("#edit-index-dialog").find("#addIndexColumnFormRow").before(newFormRow);
+            };
         }
     });
     function editIndexDialog_SubmitData() {
-        firstColumn = editIndexDialog.find("#first-column").val();
-        secondColumn = editIndexDialog.find("#second-column").val();
-        indexLabel = "Index: " + firstColumn;
-        if (secondColumn != "-none-")
-            indexLabel += ", " + secondColumn;
+        indexColumnArray = [
+            editIndexDialog.find("#first-column").val()
+        ];
+        editIndexDialog.find(".additionalFormRow .additionalColumn").each(function (i, element) {
+            indexColumnArray.push($(element).val());
+        });
+        filteredIndexColumnArray = [];
+        for (i = 0; i < indexColumnArray.length; i++) {
+            if (indexColumnArray[i] != "-none-")
+                filteredIndexColumnArray.push(indexColumnArray[i]);
+        }
+        indexLabel = "Index: ";
+        for (i = 0; i < filteredIndexColumnArray.length - 1; i++)
+            indexLabel += filteredIndexColumnArray[i] + ", ";
+        indexLabel += filteredIndexColumnArray[filteredIndexColumnArray.length - 1];
+        if (editIndexDialog.find("#unique-checkbox").prop("checked"))
+            indexLabel += " - unique";
+
         newIndex = $('<div class="dbIndex"><div class="deleteIndexIcon fa fa-remove"></div><span class="dbIndexText">'
             + indexLabel + '</span><div class="editIndexIcon fa fa-pencil"></div></div>');
         newIndex.children(".deleteIndexIcon").on("click", function () {
@@ -499,8 +564,7 @@ $(function () {
             editIndexDialog.dialog("open");
         });
         newIndex.data("indexName", editIndexDialog.find("#index-name").val());
-        newIndex.data("firstColumn", firstColumn);
-        newIndex.data("secondColumn", secondColumn);
+        newIndex.data("indexColumnArray", filteredIndexColumnArray);
         newIndex.data("unique", editIndexDialog.find("#unique-checkbox").prop("checked"));
         CurrentIndex.replaceWith(newIndex);
         editIndexDialog.dialog("close");

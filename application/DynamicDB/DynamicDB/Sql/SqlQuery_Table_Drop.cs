@@ -9,23 +9,21 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Table_Drop : SqlQuery_withApp
     {
-        private string _tableName;
-        public string tableName { get { return _tableName; } }
+        public string tableName { get; set; }
 
-        public SqlQuery_Table_Drop(string ApplicationName, string TableName) : base(ApplicationName)
+        public SqlQuery_Table_Drop(string ApplicationName) : base(ApplicationName)
         {
-            _tableName = TableName;
         }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _params.Add("applicationName", _applicationName);
-            _params.Add("tableName", _tableName);
+            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", _applicationName);
 
-            _sqlString =
-                "DECLARE @realTableName NVARCHAR(50),@DbTablePrefix NVARCHAR(50),@DbMetaTables NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealNameWithMeta @applicationName, @tableName, @realTableName OUTPUT, @DbTablePrefix OUTPUT, @DbMetaTables OUTPUT;" +
-                "SET @sql = CONCAT('DROP TABLE ', @realTableName, ';DELETE FROM ', @DbMetaTables, ' WHERE Name = ', @tableName);" +
-                "exec(@sql);";
+            _sqlString =string.Format(
+                "DECLARE @realTableName NVARCHAR(50),@DbTablePrefix NVARCHAR(50),@DbMetaTables NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealNameWithMeta @{0}, @{1}, @realTableName OUTPUT, @DbTablePrefix OUTPUT, @DbMetaTables OUTPUT;" +
+                "SET @sql = CONCAT('DROP TABLE ', @realTableName, ';DELETE FROM ', @DbMetaTables, ' WHERE Name = ', @{1});" +
+                "exec(@sql);", parAppName,parTableName);
 
             base.BaseExecution(transaction);
         }

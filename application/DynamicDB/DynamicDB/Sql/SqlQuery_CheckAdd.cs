@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Column_Modify:SqlQuery_withApp
+    class SqlQuery_CheckAdd:SqlQuery_Selectable
     {
         public string tableName { get; set; }
-        public DBColumn column{ get; set; }
 
-        public SqlQuery_Column_Modify(string applicationName) : base(applicationName)
+        public SqlQuery_CheckAdd(string ApplicationName) : base(ApplicationName)
         {
         }
 
@@ -19,14 +18,17 @@ namespace DynamicDB.Sql
         {
             string parAppName = safeAddParam("applicationName", _applicationName);
             string parTableName = safeAddParam("tableName", tableName);
-            var parColumn = safeAddParam("columnDefinition", column.getSqlDefinition());
+            string parCheck = safeAddParam("check", string.Join(" AND ",_where));
 
-            _sqlString =string.Format(
+            _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('ALTER TABLE ', @realTableName, ' ALTER COLUMN ', @{2});" +
-                "exec(@sql);", parAppName, parTableName, parColumn);
+                "SET @sql = CONCAT('ALTER TABLE ', @realTableName, 'ADD CONSTRAINT CHK_',@realTableName, ' ' , @{2}, ';')" +
+                "exec (@sql)",
+                parAppName,parTableName,parCheck);
+
 
             base.BaseExecution(transaction);
         }
     }
+
 }

@@ -101,8 +101,7 @@ namespace FSPOC.Controllers
                             Id = index.Id,
                             Name = index.Name,
                             Unique = index.Unique,
-                            FirstColumnName = index.FirstColumnName,
-                            SecondColumnName = index.SecondColumnName
+                            ColumnNames = index.ColumnNames.Split(',').ToList()
                         });
                     }
                     result.Tables.Add(ajaxTable);
@@ -197,12 +196,18 @@ namespace FSPOC.Controllers
                         }
                         foreach (var index in ajaxTable.Indices)
                         {
+                            string columnNamesString = "";
+                            if (index.ColumnNames.Count > 0)
+                            {
+                                for (int i = 0; i < index.ColumnNames.Count - 1; i++)
+                                    columnNamesString += index.ColumnNames[i] + ",";
+                                columnNamesString += index.ColumnNames.Last();
+                            }
                             DbIndex newIndex = new DbIndex
                             {
                                 Name = index.Name,
                                 Unique = index.Unique,
-                                FirstColumnName = index.FirstColumnName,
-                                SecondColumnName = index.SecondColumnName
+                                ColumnNames = columnNamesString
                             };
                             newTable.Indices.Add(newIndex);
                         }

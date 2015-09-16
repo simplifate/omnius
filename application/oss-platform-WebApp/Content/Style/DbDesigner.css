@@ -14,8 +14,8 @@
 }
 .dbTableName {
     position: absolute;
-    left: 18px;
-    right: 18px;
+    left: 50px;
+    right: 50px;
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
@@ -31,6 +31,7 @@
     color: black;
     font-weight: normal;
     font-size: 1.2em;
+    width: 165px;
 }
 .dbPrimaryKey {
     background-color: #3bb8e1;
@@ -46,7 +47,7 @@
 .dbIndexText {
     position: relative;
     top: 3px;
-    max-width: 180px;
+    width: 165px;
 }
 .dbView {
     position: absolute;
@@ -64,8 +65,8 @@
 }
 .dbViewName {
     position: absolute;
-    left: 18px;
-    right: 18px;
+    left: 20px;
+    right: 20px;
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
@@ -181,19 +182,33 @@
     top: 32px;
     right: 205px;
     bottom: 0px;
-}.database-container {
-    touch-action: none;
-    width: 100%;
-    height: 100%;
+    overflow: scroll;
     border: 2px solid grey;
     background-color: white;
-    overflow: scroll;
-    position: relative;
 }
- label[for=new-view-query], label[for=view-query] {
-     margin-top: 6px;
- }
- input#column-length {
-     width: 70px;
-     margin-left: 8px;
- }
+.database-container {
+    touch-action: none;
+    width: auto;
+    height: auto;
+    position: relative;
+    transform-origin: 0 0;
+}
+label[for=new-view-query], label[for=view-query] {
+    margin-top: 6px;
+}
+input#column-length {
+    width: 70px;
+    margin-left: 8px;
+}
+#zoomLabel {
+    font-size: 1.5em;
+    margin-bottom: 4px;
+}
+#add-index-dialog, #edit-index-dialog {
+    height: auto !important;
+}
+.dbTableName, .dbColumnName, .dbIndexText, .dbViewName {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
