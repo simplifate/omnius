@@ -39,6 +39,7 @@ namespace DynamicDB
         #endregion
 
         public string tableName;
+        private string _AppName;
         private List<DBColumn> _columns = null;
         private List<string> _primaryKeys = null;
         public List<string> primaryKeys
@@ -68,6 +69,11 @@ namespace DynamicDB
             }
 
             return output;
+        }
+
+        public DBTable()
+        {
+            _AppName = ApplicationName;
         }
 
         public DBTable Create()
@@ -102,12 +108,12 @@ namespace DynamicDB
 
             SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList(ApplicationName) { tableName = tableName };
             List<DBItem> items = query.ExecuteWithRead();
-
+            
             _columns = items.Select(i => new DBColumn()
             {
                 Name = (string)i["name"],
-                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"]),
-                maxLength = (int)i["max_length"],
+                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"], true),
+                maxLength = Convert.ToInt32((Int16)i["max_length"]),
                 canBeNull = (bool)i["is_nullable"]
             }).ToList();
 
