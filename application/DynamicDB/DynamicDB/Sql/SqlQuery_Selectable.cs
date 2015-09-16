@@ -31,7 +31,25 @@ namespace DynamicDB.Sql
         }
         public SqlQuery_Selectable join(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join += string.Format(" JOIN {0} ON {1}.{2}={3}{4}", joinedTableName, tableName, originColumnName, joinedTableName, joinedColumnName);
+            _join += string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+
+            return this;
+        }
+        public SqlQuery_Selectable leftOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        {
+            _join += string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+
+            return this;
+        }
+        public SqlQuery_Selectable rightOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        {
+            _join += string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+
+            return this;
+        }
+        public SqlQuery_Selectable fullOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        {
+            _join += string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
 
             return this;
         }
