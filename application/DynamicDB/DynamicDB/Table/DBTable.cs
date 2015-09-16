@@ -81,7 +81,7 @@ namespace DynamicDB
         public DBTable Drop()
         {
             queries.Add(
-                new SqlQuery_Table_Drop(ApplicationName, tableName)
+                new SqlQuery_Table_Drop(ApplicationName) { tableName = tableName }
                 );
 
             return this;
@@ -89,7 +89,7 @@ namespace DynamicDB
         public DBTable Rename(string newName)
         {
             queries.Add(
-                new SqlQuery_Table_Rename(ApplicationName, tableName, newName)
+                new SqlQuery_Table_Rename(ApplicationName) { tableName = tableName, newName = newName }
                 );
 
             return this;
@@ -100,7 +100,7 @@ namespace DynamicDB
             if (_columns != null)
                 return _columns;
 
-            SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList(ApplicationName, tableName);
+            SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList(ApplicationName) { tableName = tableName };
             List<DBItem> items = query.ExecuteWithRead();
 
             _columns = items.Select(i => new DBColumn()
