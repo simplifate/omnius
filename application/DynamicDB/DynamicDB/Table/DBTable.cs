@@ -217,7 +217,7 @@ namespace DynamicDB
 
         public SqlQuery_Select Select(params string[] columns)
         {
-            return new SqlQuery_Select(ApplicationName) { columns = columns.ToList() };
+            return new SqlQuery_Select(ApplicationName) { columns = columns.ToList(), tableName = tableName};
         }
     }
 }
