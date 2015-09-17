@@ -38,9 +38,9 @@ namespace DynamicDB
         public static string ApplicationName;
         #endregion
 
-        public string tableName;
+        public string tableName { get; set; }
         private string _AppName;
-        private List<DBColumn> _columns = null;
+        public List<DBColumn> _columns { get; set; }
         private List<string> _primaryKeys = null;
         public List<string> primaryKeys
         {
