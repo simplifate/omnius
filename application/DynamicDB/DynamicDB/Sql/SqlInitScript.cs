@@ -17,7 +17,7 @@ namespace DynamicDB.Sql
                 "CREATE PROCEDURE getTableRealNameWithMeta @applicationName NVARCHAR(50), @tableName NVARCHAR(50), @tableRealName NVARCHAR(50) OUTPUT, @DbTablePrefix NVARCHAR(50) OUTPUT, @DbMetaTables NVARCHAR(50) OUTPUT AS " +
                 "DECLARE @tableId INT, @sql NVARCHAR(MAX);" +
                 "SELECT @DbTablePrefix = DbTablePrefix, @DbMetaTables = DbMetaTables FROM " + aplicationTableName + " WHERE Name = @applicationName;" +
-                "SET @sql = CONCAT('SELECT @tableId=Id FROM ', @DbMetaTables, ' WHERE Name = @tableName');" +
+                "SET @sql = CONCAT('SELECT @tableId=Id FROM ', @DbMetaTables, ' WHERE Name = @tableName;');" +
                 "exec sp_executesql @sql, N'@tableId Int output, @tableName NVARCHAR(50)', @tableId output, @tableName; SET @tableRealName = CONCAT(@DbTablePrefix, @tableId); ";
             base.BaseExecution(transaction);
 
