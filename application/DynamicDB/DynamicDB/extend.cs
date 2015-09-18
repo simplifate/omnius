@@ -19,5 +19,18 @@ namespace System
 
             return str;
         }
+        public static int IndexOf<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            int i = 0;
+            foreach(TSource item in source)
+            {
+                if (predicate(item))
+                    return i;
+
+                i++;
+            }
+
+            return -1;
+        }
     }
 }

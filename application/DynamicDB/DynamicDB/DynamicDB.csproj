@@ -71,6 +71,9 @@
     <Compile Include="Sql\SqlQuery_withApp.cs" />
     <Compile Include="Table\AdditionalSqlDefinition.cs" />
     <Compile Include="Table\DBColumn.cs" />
+    <Compile Include="Table\DBColumns.cs" />
+    <Compile Include="Table\DBIndex.cs" />
+    <Compile Include="Table\DBIndices.cs" />
     <Compile Include="Table\DBItem.cs" />
     <Compile Include="Table\DBTable.cs" />
     <Compile Include="extend.cs" />
