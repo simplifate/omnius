@@ -40,7 +40,32 @@ namespace DynamicDB
 
         public string tableName { get; set; }
         private string _AppName;
-        public List<DBColumn> _columns { get; set; }
+        private List<DBColumn> _columns;
+        public List<DBColumn> columns
+        {
+            get
+            {
+                if (_columns != null)
+                    return _columns;
+
+                SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = ApplicationName, tableName = tableName };
+                List<DBItem> items = query.ExecuteWithRead();
+
+                _columns = items.Select(i => new DBColumn()
+                {
+                    Name = (string)i["name"],
+                    type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"], true),
+                    maxLength = Convert.ToInt32((Int16)i["max_length"]),
+                    canBeNull = (bool)i["is_nullable"]
+                }).ToList();
+
+                return _columns;
+            }
+            set
+            {
+                _columns = value;
+            }
+        }
         private List<string> _primaryKeys = null;
         public List<string> primaryKeys
         {
@@ -62,7 +87,7 @@ namespace DynamicDB
         public List<DBColumn> getPrimaryColumns()
         {
             List<DBColumn> output = new List<DBColumn>();
-            foreach(DBColumn column in getColumnList())
+            foreach(DBColumn column in columns)
             {
                 if (primaryKeys.Contains(column.Name))
                     output.Add(column);
@@ -107,25 +132,7 @@ namespace DynamicDB
 
             return this;
         }
-
-        public List<DBColumn> getColumnList()
-        {
-            if (_columns != null)
-                return _columns;
-
-            SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = ApplicationName, tableName = tableName };
-            List<DBItem> items = query.ExecuteWithRead();
-            
-            _columns = items.Select(i => new DBColumn()
-            {
-                Name = (string)i["name"],
-                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"], true),
-                maxLength = Convert.ToInt32((Int16)i["max_length"]),
-                canBeNull = (bool)i["is_nullable"]
-            }).ToList();
-
-            return _columns;
-        }
+        
         public DBTable AddColumn(DBColumn column)
         {
             SqlQuery_Table_Create query;
@@ -201,7 +208,7 @@ namespace DynamicDB
         public DBTable Add(DBItem item)
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
-            foreach(DBColumn column in getColumnList())
+            foreach(DBColumn column in columns)
             {
                 data.Add(column, item[column.Name]);
             }

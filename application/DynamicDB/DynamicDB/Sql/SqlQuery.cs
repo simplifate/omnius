@@ -146,7 +146,7 @@ namespace DynamicDB.Sql
             // get unique key
             while(_params.ContainsKey(key))
             {
-                key.Random(10);
+                key = key.Random(10);
             }
 
             // save param
