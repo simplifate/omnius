@@ -8,16 +8,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Column_Drop : SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public string columnName { get; set; }
-
-        public SqlQuery_Column_Drop(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parColumn = safeAddParam("columnName", columnName);
 

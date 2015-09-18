@@ -8,16 +8,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_IndexCreate:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public List<string> columnName { get; set; } 
-
-        public SqlQuery_IndexCreate(string applicationName) : base(applicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parColumnName = safeAddParam("columnName", string.Join(", ",columnName));
 

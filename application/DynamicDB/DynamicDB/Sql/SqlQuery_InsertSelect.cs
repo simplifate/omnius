@@ -8,19 +8,14 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_InsertSelect:SqlQuery_Selectable
     {
-        public string table1Name { get; set; }
         public string table2Name { get; set; }
         public List<string> columns1 { get; set; }
         public List<string> columns2 { get; set; } 
-
-        public SqlQuery_InsertSelect(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
-            string parTable1Name = safeAddParam("tableName", table1Name);
+            string parAppName = safeAddParam("applicationName", applicationName);
+            string parTable1Name = safeAddParam("tableName", tableName);
             string parTable2Name = safeAddParam("tableName", table2Name);
             string parColumn1Name = safeAddParam("columnName", string.Join(", ", columns1));
             string parColumn2Name = safeAddParam("columnName", string.Join(", ", columns2));

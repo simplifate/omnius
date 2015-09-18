@@ -10,13 +10,10 @@ namespace DynamicDB.Sql
     public class SqlQuery_Select : SqlQuery_Selectable
     {
         public List<string> columns { get; set; }
-
-        public SqlQuery_Select(string applicationName) : base(applicationName)
-        {
-        }
+        
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parColumnName = safeAddParam("columnNames", (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
             string parWhere = safeAddParam("where", _where);

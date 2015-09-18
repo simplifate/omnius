@@ -8,15 +8,9 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_PrimaryKeyDrop:SqlQuery_withApp
     {
-        public string tableName { get; set; }
-
-        public SqlQuery_PrimaryKeyDrop(string applicationName) : base(applicationName)
-        {
-        }
-
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
 
             _sqlString = string.Format(

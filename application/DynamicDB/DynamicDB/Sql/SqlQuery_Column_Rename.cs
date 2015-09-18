@@ -8,17 +8,12 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Column_Rename:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public string originColumnName { get; set; }
         public string newColumnName { get; set; }
-
-        public SqlQuery_Column_Rename(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parOriginName = safeAddParam("originColumnName", originColumnName);
             string parNewName = safeAddParam("newColumnName", newColumnName);

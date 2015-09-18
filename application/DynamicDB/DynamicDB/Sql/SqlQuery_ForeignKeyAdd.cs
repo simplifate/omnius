@@ -8,19 +8,14 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_ForeignKeyAdd:SqlQuery_withApp
     {
-        public string table1Name { get; set; }
         public string table2Name { get; set; }
         public List<string> foreignKey { get; set; }
         public string primaryKey { get; set; }
-
-        public SqlQuery_ForeignKeyAdd(string applicationName) : base(applicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
-            string parTable1Name = safeAddParam("tableName", table1Name);
+            string parAppName = safeAddParam("applicationName", applicationName);
+            string parTable1Name = safeAddParam("tableName", tableName);
             string parTable2Name = safeAddParam("tableName", table2Name);
             string parForeignKey = safeAddParam("foreignKey", string.Join(",", foreignKey));
             string parPrimaryKey = safeAddParam("primaryKey", string.Join(",", primaryKey));

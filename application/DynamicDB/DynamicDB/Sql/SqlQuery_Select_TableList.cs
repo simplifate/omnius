@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Select_TableList : SqlQuery_withApp
+    class SqlQuery_Select_TableList : SqlQuery
     {
+        public string ApplicationName;
         public List<string> columns { get; set; }
-
-        public SqlQuery_Select_TableList(string applicationName) : base(applicationName)
-        {
-        }
-
+        
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            if (ApplicationName == null)
+                throw new ArgumentNullException("ApplicationName");
+
+            string parAppName = safeAddParam("applicationName", ApplicationName);
             string parColumnName = safeAddParam("columnNames",
                 (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
 

@@ -8,19 +8,14 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_PrimaryKeyAdd:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public List<string> keyColumns { get; set; }
-
-        public SqlQuery_PrimaryKeyAdd(string applicationName) : base(applicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             if (keyColumns == null || keyColumns.Count < 1)
                 throw new ArgumentNullException("keyColumn");
 
-            string parAppName = safeAddParam("AppName", _applicationName);
+            string parAppName = safeAddParam("AppName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
 

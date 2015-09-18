@@ -8,16 +8,9 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Select_ColumnList : SqlQuery_withApp
     {
-        public string tableName { get; set; }
-
-        public SqlQuery_Select_ColumnList(string ApplicationName)
-            : base(ApplicationName)
-        {
-        }
-
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
 
             _sqlString = string.Format(

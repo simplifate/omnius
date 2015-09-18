@@ -8,15 +8,9 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_CheckAdd:SqlQuery_Selectable
     {
-        public string tableName { get; set; }
-
-        public SqlQuery_CheckAdd(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parCheck = safeAddParam("check", string.Join(" AND ",_where));
 

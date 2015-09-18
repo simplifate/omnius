@@ -8,15 +8,9 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Table_GetPrimaryKey : SqlQuery_withApp
     {
-        public string tableName { get; set; }
-
-        public SqlQuery_Table_GetPrimaryKey(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("AppName", _applicationName);
+            string parAppName = safeAddParam("AppName", applicationName);
             string parTabName = safeAddParam("TableName", tableName);
 
             _sqlString = string.Format(

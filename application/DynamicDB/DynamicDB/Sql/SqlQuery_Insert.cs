@@ -8,19 +8,14 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Insert : SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public Dictionary<DBColumn, object> data { get; set; }
-
-        public SqlQuery_Insert(string applicationName) : base(applicationName)
-        {
-        }
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             if (data == null || data.Count < 1)
                 throw new ArgumentNullException("data");
 
-            string parAppName = safeAddParam("AppName", _applicationName);
+            string parAppName = safeAddParam("AppName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
 
             _sqlString = string.Format(

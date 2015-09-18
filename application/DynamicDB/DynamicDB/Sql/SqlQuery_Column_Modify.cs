@@ -8,16 +8,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Column_Modify:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public DBColumn column{ get; set; }
-
-        public SqlQuery_Column_Modify(string applicationName) : base(applicationName)
-        {
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             var parColumn = safeAddParam("columnDefinition", column.getSqlDefinition());
 

@@ -8,7 +8,6 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Delete:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public Dictionary<DBColumn, object> columnValueCondition { get; set; }
 
         public SqlQuery_Delete(string applicationName) : base(applicationName)
@@ -17,7 +16,7 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", _applicationName);
+            string parAppName = safeAddParam("AppName", applicationName);
             string parTableName = safeAddParam("TableName", tableName);
             var parConditions = safeAddParam(columnValueCondition);
 

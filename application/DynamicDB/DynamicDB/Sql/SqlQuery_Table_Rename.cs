@@ -9,16 +9,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Table_Rename : SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public string newName{ get; set; }
-
-        public SqlQuery_Table_Rename(string ApplicationName) : base(ApplicationName)
-        {
-        }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parNewName = safeAddParam("newName", newName);
 

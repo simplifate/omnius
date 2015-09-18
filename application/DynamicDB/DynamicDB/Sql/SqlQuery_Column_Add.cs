@@ -10,18 +10,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Column_Add : SqlQuery_withApp
     {
-        public string tableName;
         public DBColumn column;
-
-        public SqlQuery_Column_Add(string applicationName, string tableName = null, DBColumn column = null) : base(applicationName)
-        {
-            this.column = column;
-            this.tableName = tableName;
-        }
-
+        
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName= safeAddParam("tableName", tableName);
             var parColumn= safeAddParam("columnDefinition", column.getSqlDefinition());
 

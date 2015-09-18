@@ -12,13 +12,7 @@ namespace DynamicDB.Sql
         internal string _where = "";
         internal string _order = "";
         internal string _group = "";
-
-        public string tableName { get; set; }
-
-        public SqlQuery_Selectable(string ApplicationName) : base(ApplicationName)
-        {
-        }
-
+        
         public Operators where(string columnName)
         {
             return new Operators(this, columnName);

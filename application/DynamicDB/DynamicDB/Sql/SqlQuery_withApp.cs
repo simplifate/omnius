@@ -8,11 +8,31 @@ namespace DynamicDB.Sql
 {
     public class SqlQuery_withApp : SqlQuery
     {
-        protected string _applicationName;
+        public string applicationName;
+        public string tableName;
 
-        public SqlQuery_withApp(string applicationName, string SqlString = "", Dictionary<string, object> param = null) : base(SqlString, param)
+        public SqlQuery_withApp(string applicationName = null, string SqlString = "", Dictionary<string, object> param = null) : base(SqlString, param)
         {
-            _applicationName = applicationName;
+            this.applicationName = applicationName;
+        }
+
+        protected override void BaseExecution(MarshalByRefObject connection)
+        {
+            if (applicationName == null)
+                throw new ArgumentNullException("applicationName");
+            if (tableName == null)
+                throw new ArgumentNullException("tableName");
+
+            base.BaseExecution(connection);
+        }
+        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        {
+            if (applicationName == null)
+                throw new ArgumentNullException("applicationName");
+            if (tableName == null)
+                throw new ArgumentNullException("tableName");
+
+            return base.BaseExecutionWithRead(connection);
         }
     }
 }

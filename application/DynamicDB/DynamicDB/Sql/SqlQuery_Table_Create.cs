@@ -10,14 +10,7 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Table_Create : SqlQuery_withApp
     {
-        private string _tableName;
-        public string tableName { get { return _tableName; } }
         private List<DBColumn> _columns = new List<DBColumn>();
-
-        public SqlQuery_Table_Create(string applicationName, string tableName) : base(applicationName)
-        {
-            _tableName = tableName;
-        }
 
         public SqlQuery_Table_Create AddColumn(DBColumn column)
         {
@@ -48,8 +41,8 @@ namespace DynamicDB.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", _applicationName);
-            string parTableName = safeAddParam("tableName", _tableName);
+            string parAppName = safeAddParam("AppName", applicationName);
+            string parTableName = safeAddParam("tableName", tableName);
             string parColumnDef = safeAddParam("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
 
             _sqlString = string.Format(

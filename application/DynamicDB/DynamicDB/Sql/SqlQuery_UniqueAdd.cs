@@ -8,16 +8,11 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_UniqueAdd:SqlQuery_withApp
     {
-        public string tableName { get; set; }
         public List<string> keyColumns { get; set; } 
-
-        public SqlQuery_UniqueAdd(string applicationName) : base(applicationName)
-        {
-        }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", _applicationName);
+            string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
             string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
 

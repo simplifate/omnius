@@ -8,13 +8,8 @@ namespace DynamicDB.Sql
 {
     class SqlQuery_Update : SqlQuery_withApp
     {
-        public string tableName;
         public Dictionary<DBColumn, object> changes { get; set; }
         public Dictionary<DBColumn, object> rowSelect { get; set; }
-
-        public SqlQuery_Update(string applicationName) : base(applicationName)
-        {
-        }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
@@ -23,7 +18,7 @@ namespace DynamicDB.Sql
             if (rowSelect == null || rowSelect.Count < 1)
                 throw new ArgumentNullException("rowSelect");
 
-            string parAppName = safeAddParam("AppName", _applicationName);
+            string parAppName = safeAddParam("AppName", applicationName);
             string parTableName = safeAddParam("TableName", tableName);
 
             var parChanges = safeAddParam(changes);
