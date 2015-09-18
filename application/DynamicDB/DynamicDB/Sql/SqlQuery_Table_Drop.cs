@@ -16,7 +16,7 @@ namespace DynamicDB.Sql
 
             _sqlString =string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@DbTablePrefix NVARCHAR(50),@DbMetaTables NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealNameWithMeta @{0}, @{1}, @realTableName OUTPUT, @DbTablePrefix OUTPUT, @DbMetaTables OUTPUT;" +
-                "SET @sql = CONCAT('DROP TABLE ', @realTableName, ';DELETE FROM ', @DbMetaTables, ' WHERE Name = ', @{1});" +
+                "SET @sql = CONCAT('DROP TABLE ', @realTableName, '; DELETE FROM ', @DbMetaTables, ' WHERE Name = ', @{1},';');" +
                 "exec(@sql);", parAppName,parTableName);
 
             base.BaseExecution(transaction);
