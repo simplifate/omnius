@@ -8,13 +8,15 @@ namespace DynamicDB
 {
     public class DBColumns : IEnumerator,IEnumerable
     {
-        public DBTable table { get; }
+        public DBTable table { get { return _table; }  }
+        private DBTable _table { get; set; }
+        public List<DBColumn> colums{get{return _colums;}}
         private List<DBColumn> _colums;
         private int position = -1;
 
         public DBColumns(DBTable table)
         {
-            this.table = table;
+            _table = table;
             _colums = new List<DBColumn>();
 
             SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
@@ -114,7 +116,7 @@ namespace DynamicDB
                 columnName = columnName
             });
 
-            _colums.Remove(c => c.Name == columnName);
+            _colums.Remove(_colums.SingleOrDefault(c => c.Name == columnName));
             return this;
         }
 

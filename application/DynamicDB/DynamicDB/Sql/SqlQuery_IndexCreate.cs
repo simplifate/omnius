@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_IndexCreate:SqlQuery_withApp
+    public class SqlQuery_IndexCreate:SqlQuery_withApp
     {
-        public List<string> columnName { get; set; } 
+        public List<string> columnsName { get; set; }
+        public string indexName { get; set; }
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string parAppName = safeAddParam("applicationName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
-            string parColumnName = safeAddParam("columnName", string.Join(", ",columnName));
+            string parIndexName = safeAddParam("indexName", indexName);
+            string parColumnName = safeAddParam("columnName", string.Join(", ",columnsName));
 
             _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('CREATE INDEX index_', @realTableName, ' ON ', @realTableName, '(', @{2}, ');')" +
+                "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');')" +
                 "exec (@sql)",
-                parAppName, parTableName, parColumnName);
+                parAppName, parTableName,parIndexName, parColumnName);
 
             base.BaseExecution(transaction);
         }

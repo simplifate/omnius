@@ -7,13 +7,14 @@ namespace DynamicDB
 {
     class DBIndices
     {
-        public DBTable table { get; }
+        public DBTable table { get { return _table; } }
+        private DBTable _table { get; set; }
         private List<DBIndex> _indices;
         private int position = -1;
 
         public DBIndices(DBTable table)
         {
-            this.table = table;
+            _table = table;
             _indices = new List<DBIndex>();
         }
 

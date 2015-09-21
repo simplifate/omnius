@@ -39,7 +39,8 @@ namespace DynamicDB
         #endregion
 
         public string tableName { get; set; }
-        public string AppName { get; }
+        public string AppName { get { return _AppName; } }
+        private string _AppName { get; set; }
         private DBColumns _columns;
         public DBColumns columns
         {
@@ -83,7 +84,7 @@ namespace DynamicDB
 
         public DBTable()
         {
-            AppName = ApplicationName;
+            _AppName = ApplicationName;
         }
 
         public DBTable Create()
@@ -165,6 +166,17 @@ namespace DynamicDB
                 applicationName = ApplicationName,
                 columns = columns.ToList(), tableName = tableName
             };
+        }
+
+        public void Index(string index,List<string> columns)
+        {
+            queries.Add(new SqlQuery_IndexCreate()
+            {
+                applicationName = ApplicationName,
+                columnsName =columns,
+                tableName = tableName,
+                indexName = index
+            });
         }
     }
 }
