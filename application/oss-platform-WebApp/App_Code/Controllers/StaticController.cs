@@ -15,5 +15,16 @@ namespace FSPOC.Controllers
         {
             return View();
         }
+        /* Coming soon...
+        [Route("apps")]
+        public ActionResult AppManager()
+        {
+            return View();
+        }*/
+        [Route("tapestry")]
+        public ActionResult Tapestry()
+        {
+            return View();
+        }
     }
 }

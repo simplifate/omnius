@@ -1,0 +1,312 @@
+﻿.blockPanel {
+    position: absolute;
+    margin: 20px; 
+    background-color: #f2f2f2;
+    border: 1px solid #c8c8c8;
+    width: 1320px;
+    min-height: 820px;
+    margin: 20px;
+}
+#attributesPanel {
+    position: absolute;
+    left: 0px;
+    width: 698px;
+    background-color: #ffccff;
+    border: 1px solid #ff99ff;
+    color: #ff66ff;
+    margin: 20px; 
+    padding: 5px 10px; 
+    font-size: 1.5em;
+}
+#rulesPanel {
+    position: absolute;
+    left: 0px;
+    top: 170px;
+    right: 270px;
+    bottom: 140px;
+    background-color: #e2efd9; 
+    border: 1px solid #538135; 
+    color: #538135;
+    margin: 20px;
+    padding: 5px 10px; 
+    font-size: 1.5em;
+}
+#viewsPanel {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 698px;
+    background-color: #fff2cc; 
+    border: 1px solid #fee599; 
+    color: #bf9000;
+    margin: 20px; 
+    padding: 5px 10px;
+    font-size: 1.5em;
+    height: 110px;
+}
+#actionsPanel {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: #cbffff;
+    border: 1px solid #7effff;
+    color: #007f7f;
+    width: 240px;
+    margin: 20px; 
+    padding: 5px 10px; 
+    font-size: 1.5em;
+}
+#rolesPanel {
+    position: absolute;
+    right: 270px;
+    left: 728px;
+    top: 40px;
+    background-color: #fbe5d5;
+    border: 1px solid #f7cbac;
+    color: #f4b183;
+    margin: 20px; 
+    padding: 5px 10px; 
+    font-size: 1.5em;
+}
+#statesPanel {
+    position: absolute;
+    bottom: 0px;
+    right: 270px;
+    left: 728px;
+    background-color: #dae2f3; 
+    border: 1px solid #b5c6e7; 
+    color: #90aadb;
+    height: 110px;
+    margin: 20px; 
+    padding: 5px 10px;
+    font-size: 1.5em;
+}
+#attributesPanel .attribute {
+    background-color: #ff99ff; 
+    border: 1px solid #ff66ff; 
+    color: white;
+}
+#viewsPanel .view {
+    background-color: #ffd965; 
+    border: 1px solid #bf9000; 
+    color: white;
+}
+#actionsPanel .action {
+    background-color: #00fefe; 
+    border: 1px solid #007f7f; 
+    color: #007f7f; 
+    margin: 7px;
+    width: 200px;
+}
+#rolesPanel .role {
+    background-color: #f4b183; 
+    border: 1px solid #c55a11; 
+    color: white;
+}
+#statesPanel .state {
+    background-color: #90aadb; 
+    border: 1px solid #305497; 
+    color: white; 
+}
+.menuPanel .menuItem {
+    margin: 7px; 
+    width: 180px; 
+    text-align:center;
+    vertical-align: middle;
+    display: inline-block;
+    padding: 5Px;
+    z-index: 10;
+}
+#rulesPanel .rule {
+    position: absolute;
+    background-color: #c5e0b3;
+    border: 1px solid #a8d08d;
+    margin: 15px;
+    width: 500px;
+    padding: 5px;
+    min-height: 80px;
+}
+.rule .item {
+    text-align:center;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+.rule .view {
+    background-color: #ffd965; 
+    border: 1px solid #bf9000; 
+    color: white; 
+}
+.rule .attribute {
+    background-color: #ff99ff; 
+    border: 1px solid #ff66ff; 
+    color: white;
+}
+.rule .action {
+    background-color: #00fefe; 
+    border: 1px solid #007f7f; 
+    color: #007f7f;
+}
+.rule .role {
+    background-color: #f4b183; 
+    border: 1px solid #c55a11; 
+    color: white;
+}
+.rule .state {
+    background-color: #90aadb; 
+    border: 1px solid #305497; 
+    color: white;
+}
+.ruleHeader {
+    position: relative;
+    top: -20px;
+    background-color: #a8d08d;
+    height: 15px;
+    width: 180px;
+}
+.header {
+    width: 440px;
+    background-color: #f2f2f2;
+    border-right: 1px solid #c8c8c8; 
+    border-bottom: 1px solid #c8c8c8; 
+    color: #a5a5a5;
+    font-size: 1.5em;
+    height: 40px;
+}
+.headerItem {
+    width: 180px; 
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    height: 40px;
+    padding-top: 5px;
+}
+#headerBlockName {
+    border-right: 1px solid #c8c8c8;
+    position: absolute;
+    width: 250px;
+}
+#headerTableName {
+    position: absolute;
+    left: 250px;
+    width: 190px;
+}
+.headerItem:hover {
+    background-color: #d8d8d8;
+    cursor: pointer;
+}
+#btnAddRule {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 3px 10px;
+    font-size: 0.8em;
+}
+#btnAddActions {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 3px 10px;
+    font-size: 0.8em;
+}
+.item, .menuPanel, #blockPanel, .formRow {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+.item {
+    position: absolute;
+    margin: -1px;
+    padding: 5px;
+}
+.sourceEndpoint {
+    margin-left: 4px;
+}
+.ui-dialog {
+    padding: 0px 0px;
+    border: 1px solid #45525e;
+    border-radius: 4px;
+}
+.ui-widget-header {
+    background-image: none;
+    background-color: #45525e;
+    color: white;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 3px;
+}
+.ui-dialog .ui-dialog-buttonset button {
+    margin: 3px;
+}
+.ui-dialog-titlebar-close {
+    background: url("/Content/Style/base/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+    border: medium none;
+}
+.ui-dialog-titlebar-close:hover {
+    background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+}
+.sourceEndpoint._jsPlumb_dragging, .sourceEndpoint.jsplumb-drag {
+    visibility: hidden !important;
+}
+.sourceEndpoint.jsplumb-drag-active {
+    visibility: visible !important;
+}
+#upperVerticalDivider {
+    position: absolute;
+    left: 722px;
+    top: 60px;
+    width: 3px;
+    height: 100px;
+    margin: 0px 10px;
+    cursor: ew-resize;
+    background-color: darkgrey;
+}
+#lowerVerticalDivider {
+    position: absolute;
+    left: 722px;
+    bottom: 20px;
+    width: 3px;
+    height: 110px;
+    margin: 0px 10px;
+    cursor: ew-resize;
+    background-color: darkgrey;
+}
+.highlightedRow {
+    background-color: lightblue !important;
+}
+.contextMenu {
+    height: 100%;
+    width: auto;
+    padding: 5px;
+    background-color: #bf9000;
+    color: black;
+    display: inline-block;
+}
+.attribute .contextMenu {
+    background-color: #ff66ff;
+}
+.view .contextMenu {
+    background-color: #bf9000;
+}
+.action .contextMenu {
+    background-color: #007f7f;
+}
+.state .contextMenu {
+    background-color: #305497;
+}
+.role .contextMenu {
+    background-color: #c55a11;
+}
+.contextMenu:hover {
+    color: white;
+    cursor: pointer;
+}
+.itemLabel {
+    display: inline-block;
+    padding: 5px;
+}

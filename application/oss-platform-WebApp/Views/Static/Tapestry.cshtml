@@ -1,0 +1,102 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@section head{
+    <link href="~/Content/Style/base/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="~/Content/Style/Tapestry.css" rel="stylesheet" type="text/css" />
+}
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Title = "FSPOC Tapestry";
+}
+<script src="~/Scripts/CommonLibraries/jquery.contextMenu.js"></script>
+<script src="~/Scripts/Tapestry/Utils.js"></script>
+<script src="~/Scripts/Tapestry/Init.js"></script>
+<script src="~/Scripts/Tapestry/VisualConfiguration.js"></script>
+<script src="~/Scripts/Tapestry/Dialogs.js"></script>
+
+<div class="blockPanel">
+    <div class="header">
+        <div class="headerItem" id="headerBlockName">Log In Screen</div>
+        <div class="headerItem" id="headerTableName">User</div>
+    </div>
+    <div id="attributesPanel" class="menuPanel">
+        Attributes<br />
+        <div class="menuItem attribute">Username</div>
+        <div class="menuItem attribute">Password</div>
+    </div>
+    <div id="rulesPanel">
+        <button type="button" class="btn btn-primary" id="btnAddRule">Add rule</button>
+        Rules<br />
+        <div id="rule1" class="rule" style="left: 20px; top: 45px; width: 355px; height: 70px;">
+            <div class="ruleHeader"></div>
+            <div class="item view" style="left: 34px; top: 21px;">Username</div>
+            <div class="item attribute"style="left: 197px; top: 22px;">Username</div>
+        </div>
+        <div id="rule2" class="rule" style="left: 400px; top: 45px; width: 355px; height: 70px;">
+            <div class="ruleHeader"></div>
+            <div class="item view" style="left: 34px; top: 21px;">Password</div>
+            <div class="item attribute" style="left: 197px; top: 22px;">Password</div>
+        </div>
+        <div id="rule3" class="rule" style="left: 20px; top: 155px; width: 520px; height: 130px;">
+            <div class="ruleHeader"></div>
+            <div class="item view" style="left: 34px; top: 30px;">Retrieve password</div>
+            <div class="item action" style="left: 262px; top: 30px;">Forgot password</div>
+        </div>
+    </div>
+    <div id="viewsPanel" class="menuPanel">
+        Views<br />
+        <div class="menuItem view">Username</div>
+        <div class="menuItem view">Password</div>
+        <div class="menuItem view">Log In</div>
+    </div>
+    <div id="statesPanel" class="menuPanel">
+        States<br />
+        <div class="menuItem state">Logged Out</div>
+    </div>
+    <div id="rolesPanel" class="menuPanel">
+        Roles<br />
+        <div class="menuItem role">None</div>
+    </div>
+    <div id="actionsPanel" class="menuPanel">
+        <button type="button" class="btn btn-primary" id="btnAddActions">Add actions</button>
+        Actions<br />
+        <div class="menuItem action">Log In</div>
+        <div class="menuItem action">Check Credentials</div>
+        <div class="menuItem action">Forgot password</div>
+        <div class="menuItem action">Validation message</div>
+    </div>
+    <div id="upperVerticalDivider"></div>
+    <div id="lowerVerticalDivider"></div>
+</div>
+
+<div id="rename-block-dialog" title="Rename block">
+    <form>
+        <fieldset>
+            <label for="block-name">Choose a new name</label>
+            <input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="add-actions-dialog" title="Add actions">
+    <table id="action-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Action name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="choose-table-dialog" title="Choose table">
+    <table id="choice-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Table name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
