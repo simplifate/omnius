@@ -22,7 +22,7 @@ namespace DynamicDB.Sql
             string parWhere = safeAddParam("where", _where);
 
             _sqlString = string.Format(
-                "DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTable1Name OUTPUT; exec getRealTableName @{0}, @{2}, @realTable2Name OUTPUT;" +
+                "DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTable1Name OUTPUT; exec getRealTableName @{0}, @{2}, @realTable2Name OUTPUT;" +
                 "SET @sql=CONCAT('INSERT INTO ', @realTable1Name, '({3}) SELECT ', @realTable2Name, '({4})', @{5}, ';'"+
                 "exec (@sql)",
                 parAppName,parTable1Name,parTable2Name, parColumn1Name, parColumn2Name, parWhere);

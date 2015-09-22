@@ -168,12 +168,31 @@ namespace DynamicDB
             };
         }
 
-        public void Index(string index,List<string> columns)
+        public void createIndex(string index,List<string> columns)
         {
             queries.Add(new SqlQuery_IndexCreate()
             {
                 applicationName = ApplicationName,
                 columnsName =columns,
+                tableName = tableName,
+                indexName = index
+            });
+        }
+
+        public SqlQuery_SelectIndexes getIndexNames(string table)
+        {
+            return new SqlQuery_SelectIndexes()
+            {
+                tableName = table
+            };
+
+        }
+
+        public void dropIndex(string index)
+        {
+            queries.Add(new SqlQuery_IndexDrop()
+            {
+                applicationName = ApplicationName,
                 tableName = tableName,
                 indexName = index
             });

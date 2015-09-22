@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_IndexDrop:SqlQuery_withApp
+    public class SqlQuery_IndexDrop:SqlQuery_withApp
     {
         public string indexName { get; set; }
 
@@ -17,7 +17,7 @@ namespace DynamicDB.Sql
             string parIndexName = safeAddParam("indexName", indexName);
 
             _sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('DROP INDEX index_', @{2}, ' ON ', @realTableName, ';')" +
                 "exec (@sql)",
                 parAppName, parTableName,parIndexName);

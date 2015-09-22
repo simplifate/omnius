@@ -14,7 +14,7 @@ namespace DynamicDB.Sql
             string parTableName = safeAddParam("tableName", tableName);
 
             _sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName@{0},@{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName@{0},@{1}, @realTableName OUTPUT;" +
                 "SET @sql=CONCAT('ALTER TABLE ', @realTableName, 'DROP CONSTRAINT UN_', @realTableName, ';')" +
                 "exec(@sql)",
                 parAppName, parTableName);

@@ -19,7 +19,7 @@ namespace DynamicDB.Sql
             string parColumnName = safeAddParam("columnName", string.Join(", ",columnsName));
 
             _sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getRealTableName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');')" +
                 "exec (@sql)",
                 parAppName, parTableName,parIndexName, parColumnName);
