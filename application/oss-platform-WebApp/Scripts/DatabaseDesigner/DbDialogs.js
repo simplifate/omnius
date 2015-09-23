@@ -68,7 +68,7 @@ $(function () {
         autoOpen: false,
         resizable: false,
         width: 400,
-        height: 310,
+        height: 330,
         buttons: {
             "Add": function () {
                 addColumnDialog_SubmitData();
@@ -105,6 +105,7 @@ $(function () {
         open: function () {
             addColumnDialog.find("#column-name").val("");
             addColumnDialog.find("#primary-key-checkbox").prop("checked", false);
+            addColumnDialog.find("#unique-checkbox").prop("checked", false);
             addColumnDialog.find("#allow-null-checkbox").prop("checked", false);
             addColumnDialog.find("#column-type-dropdown").val("varchar");
             addColumnDialog.find("#default-value").val("");
@@ -123,7 +124,8 @@ $(function () {
             addColumnDialog.find("#allow-null-checkbox").prop("checked"),
             addColumnDialog.find("#default-value").val(),
             addColumnDialog.find("#column-length").val(),
-            addColumnDialog.find("#column-length-max").prop("checked"));
+            addColumnDialog.find("#column-length-max").prop("checked"),
+            addColumnDialog.find("#unique-checkbox").prop("checked"));
         addColumnDialog.dialog("close");
     }
 
@@ -131,7 +133,7 @@ $(function () {
         autoOpen: false,
         resizable: false,
         width: 400,
-        height: 300,
+        height: 330,
         buttons: {
             "Save": function () {
                 editColumnDialog_SubmitData();
@@ -168,6 +170,7 @@ $(function () {
         open: function () {
             editColumnDialog.find("#column-name").val(CurrentColumn.find(".dbColumnName").text());
             editColumnDialog.find("#primary-key-checkbox").prop("checked", CurrentColumn.hasClass("dbPrimaryKey"));
+            editColumnDialog.find("#unique-checkbox").prop("checked", CurrentColumn.data("dbUnique"));
             editColumnDialog.find("#allow-null-checkbox").prop("checked", CurrentColumn.data("dbAllowNull"));
             editColumnDialog.find("#column-type-dropdown").val(CurrentColumn.attr("dbColumnType"));
             editColumnDialog.find("#default-value").val(CurrentColumn.data("dbDefaultValue"));
@@ -181,6 +184,7 @@ $(function () {
     function editColumnDialog_SubmitData() {
         CurrentColumn.find(".dbColumnName").text(editColumnDialog.find("#column-name").val());
         CurrentColumn.attr("dbColumnType", editColumnDialog.find("#column-type-dropdown").val());
+        CurrentColumn.data("dbUnique", editColumnDialog.find("#unique-checkbox").prop("checked"));
         CurrentColumn.data("dbAllowNull", editColumnDialog.find("#allow-null-checkbox").prop("checked"));
         CurrentColumn.data("dbDefaultValue", editColumnDialog.find("#default-value").val());
         CurrentColumn.data("dbColumnLength", editColumnDialog.find("#column-length").val());

@@ -13,6 +13,7 @@
                 Name: $(columnDiv).find(".dbColumnName").text(),
                 Type: $(columnDiv).attr("dbColumnType"),
                 PrimaryKey: $(columnDiv).hasClass("dbPrimaryKey"),
+                Unique: $(columnDiv).data("dbUnique"),
                 AllowNull: $(columnDiv).data("dbAllowNull"),
                 DefaultValue: $(columnDiv).data("dbDefaultValue"),
                 ColumnLength: $(columnDiv).data("dbColumnLength"),

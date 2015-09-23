@@ -43,6 +43,7 @@
                         + data.Tables[i].Columns[j].Name + '</div><div class="editColumnIcon fa fa-pencil"></div></div>');
                     newColumn.attr("dbColumnType", data.Tables[i].Columns[j].Type);
                     newColumn.attr("dbColumnId", data.Tables[i].Columns[j].Id);
+                    newColumn.data("dbUnique", data.Tables[i].Columns[j].Unique);
                     newColumn.data("dbAllowNull", data.Tables[i].Columns[j].AllowNull);
                     newColumn.data("dbDefaultValue", defaultValue);
                     newColumn.data("dbColumnLength", data.Tables[i].Columns[j].ColumnLength);

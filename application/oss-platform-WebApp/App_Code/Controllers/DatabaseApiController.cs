@@ -88,6 +88,7 @@ namespace FSPOC.Controllers
                             Name = column.Name,
                             Type = column.Type,
                             PrimaryKey = column.PrimaryKey,
+                            Unique = column.Unique,
                             AllowNull = column.AllowNull,
                             DefaultValue = column.DefaultValue,
                             ColumnLength = column.ColumnLength,
@@ -188,7 +189,7 @@ namespace FSPOC.Controllers
                             int ajaxColumnId = column.Id;
                             DbColumn newColumn = new DbColumn { Name = column.Name, Type = column.Type,
                                 PrimaryKey = column.PrimaryKey, AllowNull = column.AllowNull, DefaultValue = column.DefaultValue,
-                                ColumnLength = column.ColumnLength, ColumnLengthIsMax = column.ColumnLengthIsMax
+                                ColumnLength = column.ColumnLength, ColumnLengthIsMax = column.ColumnLengthIsMax, Unique = column.Unique
                             };
                             newTable.Columns.Add(newColumn);
                             context.SaveChanges();
