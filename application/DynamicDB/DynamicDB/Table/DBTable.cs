@@ -179,13 +179,12 @@ namespace DynamicDB
             });
         }
 
-        public List<string> getIndexNames(string table)
+        public SqlQuery_SelectIndexes getIndexNames(string table)
         {
             return new SqlQuery_SelectIndexes()
             {
-                applicationName = ApplicationName,
                 tableName = table
-            }.ExecuteWithRead().Select(i => (string)i["IndexName"]).ToList();
+            };
 
         }
 

@@ -8,7 +8,7 @@ namespace DynamicDB
     class DBIndices
     {
         public DBTable table { get { return _table; } }
-        private DBTable _table { get; set; }
+        private DBTable _table;
         private List<DBIndex> _indices;
         private int position = -1;
 

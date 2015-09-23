@@ -8,36 +8,38 @@ namespace DynamicDB.Sql
 {
     public class SqlQuery_Selectable : SqlQuery_withApp
     {
-        internal string _join = "";
-        internal string _where = "";
+        internal List<string> _join = new List<string>();
+        internal Condition_concat _where = null;
         internal string _order = "";
         internal string _group = "";
         
-        public Operators where(string columnName)
+        public SqlQuery_Selectable where(Func<Conditions, Condition_concat> conditions)
         {
-            return new Operators(this, columnName);
+            _where = conditions(new Conditions(this));
+
+            return this;
         }
         public SqlQuery_Selectable join(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join += string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+            _join.Add(string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
             return this;
         }
         public SqlQuery_Selectable leftOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join += string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+            _join.Add(string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
             return this;
         }
         public SqlQuery_Selectable rightOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join += string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+            _join.Add(string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
             return this;
         }
         public SqlQuery_Selectable fullOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join += string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName);
+            _join.Add(string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
             return this;
         }
