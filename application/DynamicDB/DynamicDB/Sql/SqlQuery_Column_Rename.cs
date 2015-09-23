@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Column_Rename:SqlQuery_withApp
+    class SqlQuery_Column_Rename : SqlQuery_withApp
     {
         public string originColumnName { get; set; }
         public string newColumnName { get; set; }
@@ -26,6 +26,11 @@ namespace DynamicDB.Sql
                 parAppName, tableName, parOriginName, parNewName);
 
             base.BaseExecution(connection);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Rename column {0} in {1}[{2}]", originColumnName, tableName, applicationName);
         }
     }
 }

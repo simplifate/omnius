@@ -27,5 +27,10 @@ namespace DynamicDB.Sql
                 "exec getTableRealNameWithMeta @applicationName, @tableName, @tableRealName OUTPUT, @DbTablePrefix OUTPUT, @DbMetaTables OUTPUT;";
             base.BaseExecution(transaction);
         }
+
+        public override string ToString()
+        {
+            return "Initial query: creating procedure";
+        }
     }
 }

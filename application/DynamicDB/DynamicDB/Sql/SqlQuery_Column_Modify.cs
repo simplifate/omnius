@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Column_Modify:SqlQuery_withApp
+    class SqlQuery_Column_Modify : SqlQuery_withApp
     {
         public DBColumn column{ get; set; }
         
@@ -22,6 +22,11 @@ namespace DynamicDB.Sql
                 "exec(@sql);", parAppName, parTableName, parColumn);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Modify column {0} in {1}[{2}]", column.Name, tableName, applicationName);
         }
     }
 }

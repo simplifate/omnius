@@ -20,5 +20,10 @@ namespace DynamicDB.Sql
 
             return base.BaseExecutionWithRead(connection);
         }
+        
+        public override string ToString()
+        {
+            return string.Format("Get primary keys in {0}[{1}]", tableName, applicationName);
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_ForeignKeyDrop:SqlQuery_withApp
+    class SqlQuery_ForeignKeyDrop : SqlQuery_withApp
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
@@ -20,6 +20,11 @@ namespace DynamicDB.Sql
                 parAppName, parTableName);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Add Foreign key in {0}[{1}]", tableName, applicationName);
         }
     }
 }

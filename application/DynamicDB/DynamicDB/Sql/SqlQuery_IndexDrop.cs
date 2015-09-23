@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    public class SqlQuery_IndexDrop:SqlQuery_withApp
+    public class SqlQuery_IndexDrop : SqlQuery_withApp
     {
         public string indexName { get; set; }
 
@@ -22,6 +22,11 @@ namespace DynamicDB.Sql
                 "exec (@sql)",
                 parAppName, parTableName,parIndexName);
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Drop index {0} in {1}[{2}]", indexName, tableName, applicationName);
         }
     }
 }

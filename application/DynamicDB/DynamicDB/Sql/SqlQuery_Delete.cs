@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_Delete:SqlQuery_withApp
+    class SqlQuery_Delete : SqlQuery_withApp
     {
         public Dictionary<DBColumn, object> columnValueCondition { get; set; }
-
-        public SqlQuery_Delete(string applicationName) : base(applicationName)
-        {
-        }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
@@ -31,6 +27,11 @@ namespace DynamicDB.Sql
             );
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Delete row in {0}[{1}]", tableName, applicationName);
         }
     }
 }

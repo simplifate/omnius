@@ -33,5 +33,10 @@ namespace DynamicDB.Sql
         {
             return ExecuteWithRead();
         }
+
+        public override string ToString()
+        {
+            return string.Format("Select row in {0}[{1}]", tableName, applicationName);
+        }
     }
 }

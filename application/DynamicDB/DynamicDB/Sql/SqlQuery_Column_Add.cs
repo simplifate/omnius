@@ -25,5 +25,10 @@ namespace DynamicDB.Sql
 
             base.BaseExecution(transaction);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Add column {0} to {1}[{2}]", column.Name, tableName, applicationName);
+        }
     }
 }

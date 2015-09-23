@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_PrimaryKeyDrop:SqlQuery_withApp
+    class SqlQuery_PrimaryKeyDrop : SqlQuery_withApp
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
@@ -20,6 +20,11 @@ namespace DynamicDB.Sql
                 parAppName, parTableName);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Drop primary key in {0}[{1}]", tableName, applicationName);
         }
     }
 

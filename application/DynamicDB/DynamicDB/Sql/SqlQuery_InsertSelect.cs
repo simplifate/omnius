@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_InsertSelect:SqlQuery_Selectable
+    class SqlQuery_InsertSelect : SqlQuery_Selectable
     {
         public string table2Name { get; set; }
         public List<string> columns1 { get; set; }
@@ -28,6 +28,11 @@ namespace DynamicDB.Sql
                 parAppName,parTable1Name,parTable2Name, parColumn1Name, parColumn2Name, parWhere);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Insert row in {0}[{1}]", tableName, applicationName);
         }
     }
 }

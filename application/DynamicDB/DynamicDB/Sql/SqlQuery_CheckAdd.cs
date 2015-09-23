@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_CheckAdd:SqlQuery_Selectable
+    class SqlQuery_CheckAdd : SqlQuery_Selectable
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
@@ -23,6 +23,10 @@ namespace DynamicDB.Sql
 
             base.BaseExecution(transaction);
         }
-    }
 
+        public override string ToString()
+        {
+            return string.Format("Add check in {0}[{1}]", tableName, applicationName);
+        }
+    }
 }

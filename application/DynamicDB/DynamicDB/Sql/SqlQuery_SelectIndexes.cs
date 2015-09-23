@@ -7,7 +7,7 @@ using System.Web;
 
 namespace DynamicDB.Sql
 {
-    public class SqlQuery_SelectIndexes:SqlQuery_withApp
+    public class SqlQuery_SelectIndexes : SqlQuery_withApp
     {
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
@@ -23,6 +23,11 @@ namespace DynamicDB.Sql
                 );
         
             return base.BaseExecutionWithRead(connection);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Get index list in {0}[{1}]", tableName, applicationName);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_ForeignKeyAdd:SqlQuery_withApp
+    class SqlQuery_ForeignKeyAdd : SqlQuery_withApp
     {
         public string table2Name { get; set; }
         public List<string> foreignKey { get; set; }
@@ -28,6 +28,11 @@ namespace DynamicDB.Sql
                 parAppName,parTable1Name,parTable2Name,parForeignKey,parPrimaryKey);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Add Foreign key to {0} in {1}[{2}]", table2Name, tableName, applicationName);
         }
     }
 }

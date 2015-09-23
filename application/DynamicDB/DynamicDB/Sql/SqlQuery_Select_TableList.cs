@@ -27,5 +27,10 @@ namespace DynamicDB.Sql
 
             return base.BaseExecutionWithRead(connection);
         }
+        
+        public override string ToString()
+        {
+            return string.Format("Get table list in [{0}]", ApplicationName);
+        }
     }
 }

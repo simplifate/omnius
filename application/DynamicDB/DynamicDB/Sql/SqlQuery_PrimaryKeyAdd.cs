@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    class SqlQuery_PrimaryKeyAdd:SqlQuery_withApp
+    class SqlQuery_PrimaryKeyAdd : SqlQuery_withApp
     {
         public List<string> keyColumns { get; set; }
         
@@ -26,6 +26,11 @@ namespace DynamicDB.Sql
                 parAppName, parTableName, parColumns);
             
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Add primary key to {0}[{1}]", tableName, applicationName);
         }
     }
 }

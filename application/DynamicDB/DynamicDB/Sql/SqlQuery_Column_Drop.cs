@@ -23,5 +23,10 @@ namespace DynamicDB.Sql
 
             base.BaseExecution(connection);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Drop column {0} in {1}[{2}]", columnName, tableName, applicationName);
+        }
     }
 }

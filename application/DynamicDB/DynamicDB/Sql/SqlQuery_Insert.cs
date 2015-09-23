@@ -32,7 +32,10 @@ namespace DynamicDB.Sql
             
             base.BaseExecution(transaction);
         }
-   
 
+        public override string ToString()
+        {
+            return string.Format("Insert row in {0}[{1}]", tableName, applicationName);
+        }
     }
 }

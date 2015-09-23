@@ -161,13 +161,11 @@ namespace DynamicDB
 
         public List<T> Select<T>(Func<DBColumn,T> selection)
         {
-            List<T> output = new List<T>();
-            foreach(DBColumn column in _colums)
-            {
-                output.Add(selection(column));
-            }
-
-            return output;
+            return _colums.Select(selection).ToList();
+        }
+        public DBColumn FirstOrDefault(Func<DBColumn, bool> selection)
+        {
+            return _colums.FirstOrDefault(selection);
         }
         #endregion
     }

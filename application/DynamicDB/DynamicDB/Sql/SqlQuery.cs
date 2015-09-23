@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Logger;
 
 namespace DynamicDB.Sql
 {
@@ -77,7 +78,7 @@ namespace DynamicDB.Sql
                     cmd.ExecuteNonQuery();
                 }
                 else
-                    throw;
+                    Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
             }
         }
         protected virtual List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)

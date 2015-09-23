@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DynamicDB.Sql
 {
-    public class SqlQuery_IndexCreate:SqlQuery_withApp
+    public class SqlQuery_IndexCreate : SqlQuery_withApp
     {
         public List<string> columnsName { get; set; }
         public string indexName { get; set; }
@@ -25,6 +25,11 @@ namespace DynamicDB.Sql
                 parAppName, parTableName,parIndexName, parColumnName);
 
             base.BaseExecution(transaction);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Add index {0} in {1}[{2}]", indexName, tableName, applicationName);
         }
     }
 }
