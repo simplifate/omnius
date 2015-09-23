@@ -178,5 +178,18 @@ namespace DynamicDB
                 columns = columns.ToList(), tableName = tableName
             };
         }
+
+        public static void AddForeignKey(string tableAName, string tableAColumns, string tableBName, string tableBColumns)
+        {
+            queries.Add(new SqlQuery_ForeignKeyAdd()
+            {
+                applicationName = ApplicationName,
+                tableName = tableAName,
+                table2Name = tableBName,
+                foreignKey = tableAColumns,
+                primaryKey = tableBColumns
+            });
+
+        }
     }
 }
