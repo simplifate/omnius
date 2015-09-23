@@ -10,7 +10,6 @@ namespace DynamicDB
     {
         public DBTable table { get { return _table; }  }
         private DBTable _table { get; set; }
-        public List<DBColumn> columns { get; }
         private List<DBColumn> _colums;
         private int position = -1;
 
@@ -31,7 +30,7 @@ namespace DynamicDB
             }).ToList();
         }
 
-        public DBColumns Add(DBColumn column)
+        public DBTable Add(DBColumn column)
         {
             SqlQuery_Table_Create query;
             if ((query = DBTable.queries.GetCreate(table.tableName)) != null)
@@ -45,9 +44,9 @@ namespace DynamicDB
                 });
 
             _colums.Add(column);
-            return this;
+            return _table;
         }
-        public DBColumns Add(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable Add(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
         {
             return Add(new DBColumn()
             {
@@ -58,17 +57,17 @@ namespace DynamicDB
                 additionalOptions = additionalOptions
             });
         }
-        public DBColumns AddRange(DBColumns columns)
+        public DBTable AddRange(DBColumns columns)
         {
             foreach(DBColumn column in columns)
             {
                 Add(column);
             }
 
-            return this;
+            return _table;
         }
 
-        public DBColumns Rename(string originColumnName, string newColumnName)
+        public DBTable Rename(string originColumnName, string newColumnName)
         {
             DBTable.queries.Add(new SqlQuery_Column_Rename()
             {
@@ -79,10 +78,10 @@ namespace DynamicDB
             });
 
             _colums.SingleOrDefault(c => c.Name == originColumnName).Name = newColumnName;
-            return this;
+            return _table;
         }
 
-        public DBColumns Modify(DBColumn column)
+        public DBTable Modify(DBColumn column)
         {
             new SqlQuery_Column_Modify()
             {
@@ -93,9 +92,9 @@ namespace DynamicDB
             
             int index = _colums.IndexOf(c => c.Name == column.Name);
             _colums[index] = column;
-            return this;
+            return _table;
         }
-        public DBColumns Modify(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable Modify(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
         {
             return Modify(new DBColumn()
             {
@@ -107,7 +106,7 @@ namespace DynamicDB
             });
         }
 
-        public DBColumns Drop(string columnName)
+        public DBTable Drop(string columnName)
         {
             DBTable.queries.Add(new SqlQuery_Column_Drop()
             {
@@ -117,7 +116,7 @@ namespace DynamicDB
             });
 
             _colums.Remove(_colums.SingleOrDefault(c => c.Name == columnName));
-            return this;
+            return _table;
         }
 
         #region IEnum
@@ -158,6 +157,17 @@ namespace DynamicDB
         public object Current
         {
             get { return _colums[position]; }
+        }
+
+        public List<T> Select<T>(Func<DBColumn,T> selection)
+        {
+            List<T> output = new List<T>();
+            foreach(DBColumn column in _colums)
+            {
+                output.Add(selection(column));
+            }
+
+            return output;
         }
         #endregion
     }

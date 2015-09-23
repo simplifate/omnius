@@ -87,6 +87,17 @@ namespace DynamicDB
         {
             get { return _indices[position]; }
         }
+
+        public List<T> Select<T>(Func<DBIndex, T> selection)
+        {
+            List<T> output = new List<T>();
+            foreach (DBIndex index in _indices)
+            {
+                output.Add(selection(index));
+            }
+
+            return output;
+        }
         #endregion
     }
 }
