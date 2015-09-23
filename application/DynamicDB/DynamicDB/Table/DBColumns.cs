@@ -6,11 +6,11 @@ using DynamicDB.Sql;
 
 namespace DynamicDB
 {
-    public class DBColumns : IEnumerator,IEnumerable
+    public class DBColumns : IEnumerator, IEnumerable
     {
         public DBTable table { get { return _table; }  }
         private DBTable _table { get; set; }
-        public List<DBColumn> colums{get{return _colums;}}
+        public List<DBColumn> columns { get; }
         private List<DBColumn> _colums;
         private int position = -1;
 
@@ -132,10 +132,13 @@ namespace DynamicDB
             }
             set
             {
-                if (_colums.Count <= index)
+                if (_colums.Count == index)
+                    _colums.Add(value); 
+
+                else if (_colums.Count <= index)
                     throw new IndexOutOfRangeException();
 
-                _colums[index] = value;
+                else _colums[index] = value;
             }
         }
         
