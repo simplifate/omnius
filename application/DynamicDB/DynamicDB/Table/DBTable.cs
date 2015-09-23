@@ -52,6 +52,17 @@ namespace DynamicDB
                 return _columns;
             }
         }
+        private DBIndices _indices;
+        public DBIndices indices
+        {
+            get
+            {
+                if (_indices == null)
+                    _indices = new DBIndices(this);
+
+                return _indices;
+            }
+        }
         private List<string> _primaryKeys = null;
         public List<string> primaryKeys
         {
@@ -166,36 +177,6 @@ namespace DynamicDB
                 applicationName = ApplicationName,
                 columns = columns.ToList(), tableName = tableName
             };
-        }
-
-        public void createIndex(string index,List<string> columns)
-        {
-            queries.Add(new SqlQuery_IndexCreate()
-            {
-                applicationName = ApplicationName,
-                columnsName =columns,
-                tableName = tableName,
-                indexName = index
-            });
-        }
-
-        public SqlQuery_SelectIndexes getIndexNames(string table)
-        {
-            return new SqlQuery_SelectIndexes()
-            {
-                tableName = table
-            };
-
-        }
-
-        public void dropIndex(string index)
-        {
-            queries.Add(new SqlQuery_IndexDrop()
-            {
-                applicationName = ApplicationName,
-                tableName = tableName,
-                indexName = index
-            });
         }
     }
 }
