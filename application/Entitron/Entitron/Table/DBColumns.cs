@@ -6,7 +6,7 @@ using Entitron.Sql;
 
 namespace Entitron
 {
-    public class DBColumns : IEnumerator, IEnumerable
+    public class DBColumns : IEnumerable, IEnumerator
     {
         public DBTable table { get { return _table; }  }
         private DBTable _table { get; set; }
@@ -24,7 +24,7 @@ namespace Entitron
             _colums = items.Select(i => new DBColumn()
             {
                 Name = (string)i["name"],
-                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"], true),
+                type = (string)i["typeName"],
                 maxLength = Convert.ToInt32((Int16)i["max_length"]),
                 canBeNull = (bool)i["is_nullable"]
             }).ToList();
@@ -46,7 +46,15 @@ namespace Entitron
             _colums.Add(column);
             return _table;
         }
-        public DBTable Add(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable Add(
+            string columnName,
+            string type,
+            bool allowColumnLength,
+            int? maxLength = null,
+            bool canBeNull = true,
+            bool isPrimaryKey = false,
+            bool isUnique = false,
+            string additionalOptions = null)
         {
             return Add(new DBColumn()
             {
@@ -54,6 +62,8 @@ namespace Entitron
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
+                isPrimaryKey = isPrimaryKey,
+                isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
         }
@@ -94,7 +104,15 @@ namespace Entitron
             _colums[index] = column;
             return _table;
         }
-        public DBTable Modify(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable Modify(
+            string columnName,
+            string type,
+            bool allowColumnLength,
+            int? maxLength = null,
+            bool canBeNull = true,
+            bool isPrimaryKey = false,
+            bool isUnique = false,
+            string additionalOptions = null)
         {
             return Modify(new DBColumn()
             {
@@ -102,6 +120,8 @@ namespace Entitron
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
+                isPrimaryKey = isPrimaryKey,
+                isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
         }
@@ -158,6 +178,11 @@ namespace Entitron
         {
             get { return _colums[position]; }
         }
+
+        //public void CopyTo(Array a, int i)
+        //{
+        //    _colums.CopyTo()
+        //}
 
         public List<T> Select<T>(Func<DBColumn,T> selection)
         {

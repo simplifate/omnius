@@ -25,12 +25,21 @@ namespace Entitron.Sql
 
             return this;
         }
-        public SqlQuery_Simple_Table_Create AddColumn(string columnName, SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public SqlQuery_Simple_Table_Create AddColumn(
+            string columnName, 
+            string type, 
+            bool allowColumnLength, 
+            int? maxLength = null, 
+            bool canBeNull = true,
+            bool isPrimaryKey = false,
+            bool isUnique = false,
+            string additionalOptions = null)
         {
             _columns.Add(new DBColumn()
             {
                 Name = columnName,
                 type = type,
+                allowColumnLength = allowColumnLength,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
                 additionalOptions = additionalOptions
