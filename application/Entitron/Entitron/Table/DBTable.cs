@@ -192,5 +192,24 @@ namespace Entitron
             });
 
         }
+
+        public virtual void AddPrimaryKey(List<string> primaryKey)
+        {
+            queries.Add(new SqlQuery_PrimaryKeyAdd()
+            {
+                applicationName = AppName,
+                tableName = tableName,
+                keyColumns = primaryKey
+            });
+        }
+
+        public virtual void DropPrimaryKey()
+        {
+            queries.Add(new SqlQuery_PrimaryKeyDrop()
+            {
+                applicationName = AppName,
+                tableName = tableName
+            });
+        }
     }
 }
