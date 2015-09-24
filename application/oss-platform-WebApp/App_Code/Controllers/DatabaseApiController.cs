@@ -249,5 +249,26 @@ namespace FSPOC.Controllers
                 return new HttpStatusCodeResult(500);
             }
         }
+        [Route("api/database/generate")]
+        [HttpGet]
+        public ActionResult Generate()
+        {
+            try
+            {
+                using (var context = new WorkflowDbContext())
+                {
+                    var latestCommit = (from c in context.DbSchemeCommits orderby c.Timestamp descending select c).First();
+                    DatabaseGenerator generator = new DatabaseGenerator();
+                    generator.GenerateFrom(latestCommit);
+                    return new HttpStatusCodeResult(200);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log.Error(String.Format("DatabaseDesigner: error when loading the latest commit (GET api/database/commits/latest). "
+                //    + "Exception message: {0}", ex.Message));
+                return new HttpStatusCodeResult(500);
+            }
+        }
     }
 }
