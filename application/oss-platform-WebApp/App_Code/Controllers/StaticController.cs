@@ -7,7 +7,6 @@ namespace FSPOC.Controllers
     public class StaticController : Controller
     {
         [Route("workflow")]
-        [Route("~/", Name = "default")]
         public ActionResult WfDesigner()
         {
             return View();
@@ -23,6 +22,7 @@ namespace FSPOC.Controllers
             return View();
         }
         [Route("apps")]
+        [Route("~/", Name = "default")]
         public ActionResult AppManager()
         {
             List<AppTile> appTiles = new List<AppTile>();

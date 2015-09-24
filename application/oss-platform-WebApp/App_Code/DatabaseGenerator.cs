@@ -4,10 +4,11 @@ namespace FSPOC
 {
     public class DatabaseGenerator
     {
+        private string connectionString;
+
         public void GenerateFrom(DbSchemeCommit scheme)
         {
-            // TODO: load real connection string
-            Entitron.DBTable.connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Fabio\upstream\OSS-platform\application\oss-platform-WebApp\App_Data\EntitronTesting.mdf;Integrated Security=True";
+            Entitron.DBTable.connectionString = connectionString;
             foreach (DbTable efTable in scheme.Tables)
             {
                 Entitron.DBTable writeTable = new Entitron.DBTable();
@@ -28,6 +29,9 @@ namespace FSPOC
             Entitron.DBTable.SaveChanges();
         }
 
-        public DatabaseGenerator() { }
+        public DatabaseGenerator()
+        {
+            connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["EntitronTesting"].ConnectionString;
+        }
     }
 }

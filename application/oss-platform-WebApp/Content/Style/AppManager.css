@@ -1,4 +1,12 @@
-﻿body {
+﻿@font-face {
+  font-family: "RweHeadlineRegular";
+  src: url(fonts/rweheadline-regularcondens-webfont.ttf) format("truetype");
+}
+@font-face {
+  font-family: "RweTextMedium";
+  src: url(fonts/rwetext-medium-webfont.ttf) format("truetype");
+}
+body {
     background: white;
 }
 .appPanel {
@@ -10,6 +18,7 @@
     display: inline-block;
 }
 .appPanelContents {
+    font-family: RweTextMedium;
     width: 100%;
     height: 100%;
     padding: 12px 12px;
@@ -59,8 +68,9 @@
     color: white;
 }
 .appTitle {
-    font-size: 18px;
-    font-weight: bold;
+    font-family: RweHeadlineRegular;
+    text-transform: uppercase;
+    font-size: 20px;
     margin-bottom: 10px;
     white-space: nowrap;
 }
