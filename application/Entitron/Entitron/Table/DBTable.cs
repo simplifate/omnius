@@ -39,8 +39,7 @@ namespace Entitron
         #endregion
 
         public string tableName { get; set; }
-        public string AppName { get { return _AppName; } }
-        private string _AppName { get; set; }
+        public string AppName { get; set; }
         private DBColumns _columns;
         public DBColumns columns
         {
@@ -95,16 +94,22 @@ namespace Entitron
 
         public DBTable()
         {
-            _AppName = ApplicationName;
+            AppName = ApplicationName;
         }
 
         public DBTable Create()
         {
-            queries.Add(new SqlQuery_Table_Create()
+            SqlQuery_Table_Create query = new SqlQuery_Table_Create()
             {
                 applicationName = ApplicationName,
                 tableName = tableName
-            });
+            };
+
+            foreach(DBColumn column in columns)
+            {
+                query.AddColumn(column);
+            }
+            queries.Add(query);
 
             return this;
         }

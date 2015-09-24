@@ -6,28 +6,29 @@ using Entitron.Sql;
 
 namespace Entitron
 {
-    public class DBIndices
+    public class DBIndices : List<DBIndex>
     {
         public DBTable table { get { return _table; } }
         private DBTable _table;
-        private List<DBIndex> _indices;
-        private int position = -1;
 
         public DBIndices(DBTable table)
         {
             _table = table;
-            _indices = new List<DBIndex>();
 
             SqlQuery_SelectIndexes query = new SqlQuery_SelectIndexes() { applicationName = table.AppName, tableName = table.tableName };
-            List<DBItem> items = query.ExecuteWithRead();
 
-            _indices = items.Select(i => new DBIndex()
+            foreach (DBItem i in query.ExecuteWithRead())
             {
-                indexName = (string)i["IndexName"]
-            }).ToList();
+                DBIndex index = new DBIndex()
+                {
+                    table = _table,
+                    indexName = (string)i["IndexName"]
+                };
+                Add(index);
+            }
         }
 
-        public DBIndices Add(string indexName, List<string> columns)
+        public DBIndices AddToDB(string indexName, List<string> columns)
         {
             DBTable.queries.Add(new SqlQuery_IndexCreate()
             {
@@ -37,9 +38,10 @@ namespace Entitron
                 indexName = indexName
             });
 
+            Add(new DBIndex() { table = _table, indexName = indexName });
             return this;
         }
-        public DBIndices Drop(string indexName)
+        public DBIndices DropFromDB(string indexName)
         {
             DBTable.queries.Add(new SqlQuery_IndexDrop()
             {
@@ -48,56 +50,8 @@ namespace Entitron
                 indexName = indexName
             });
 
+            Remove(this.SingleOrDefault(i => i.indexName == indexName));
             return this;
         }
-
-        #region IEnum
-        public DBIndex this[int index]
-        {
-            get
-            {
-                if (_indices.Count <= index)
-                    throw new IndexOutOfRangeException();
-
-                return _indices[index];
-            }
-            set
-            {
-                if (_indices.Count <= index)
-                    throw new IndexOutOfRangeException();
-
-                _indices[index] = value;
-            }
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return (IEnumerator)this;
-        }
-        public bool MoveNext()
-        {
-            position++;
-            return (position < _indices.Count);
-        }
-        public void Reset()
-        {
-            position = 0;
-        }
-        public object Current
-        {
-            get { return _indices[position]; }
-        }
-
-        public List<T> Select<T>(Func<DBIndex, T> selection)
-        {
-            List<T> output = new List<T>();
-            foreach (DBIndex index in _indices)
-            {
-                output.Add(selection(index));
-            }
-
-            return output;
-        }
-        #endregion
     }
 }

@@ -14,7 +14,8 @@ namespace Entitron.Sql
 
         public SqlQuery_Table_Create AddColumn(DBColumn column)
         {
-            _columns.Add(column);
+            if (!_columns.Any(c => c.Name == column.Name))
+                _columns.Add(column);
 
             return this;
         }
