@@ -6,7 +6,16 @@
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
     Page.Title = "FSPOC App Manager";
 }
+<script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
 <script src="~/Scripts/AppManager.js"></script>
+
+<select id="moduleSwitcher">
+    <option value="apps" selected="selected">Application Manager</option>
+    <option value="workflow">Workflow Designer</option>
+    <option value="database">Database Designer</option>
+    <option value="tapestry">Tapestry</option>
+</select>
+
 @foreach (FSPOC.Models.AppTile app in (IEnumerable<FSPOC.Models.AppTile>)ViewData["Tiles"])
 {
     <div class="appPanel" style="width: @(app.TileWidth*120)px; height: @(app.TileHeight*120)px; left: @(app.PositionX)px; top: @(app.PositionY)px;">

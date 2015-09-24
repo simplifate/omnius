@@ -139,12 +139,4 @@ path, ._jsPlumb_endpoint {
     -ms-user-select: none;
     user-select: none;
 }
-#switchToDatabase {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 32px;
-    z-index: 200;
-    color: white;
-    background-color: #4d41e7;
-}
+

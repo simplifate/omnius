@@ -8,6 +8,7 @@
     Page.Title = "FSS Workflow Designer";
 }
 
+<script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
 <script src="~/Scripts/WorkflowDesigner/WfVisualConfiguration.js"></script>
 <script src="~/Scripts/WorkflowDesigner/WfInit.js"></script>
 <script src="~/Scripts/WorkflowDesigner/WfActivityDef.js"></script>
@@ -43,7 +44,12 @@
 
 <div class="top-bar-container"></div>
 
-<button type="button" id="switchToDatabase" class="btn">Switch to database designer</button>
+<select id="moduleSwitcher">
+    <option value="apps">Application Manager</option>
+    <option value="workflow" selected="selected">Workflow Designer</option>
+    <option value="database">Database Designer</option>
+    <option value="tapestry">Tapestry</option>
+</select>
 
 <div class="work-area-container">
     <div id="workflow-container" class="workflow-container"></div>

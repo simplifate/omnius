@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    public class SqlQuery_Select : SqlQuery_Selectable
+    public class SqlQuery_Select : SqlQuery_Selectable<SqlQuery_Select>
     {
         public List<string> columns { get; set; }
         

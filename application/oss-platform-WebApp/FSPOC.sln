@@ -5,7 +5,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "FSPOC", ".", "{B105C249-C987-494C-ADD3-BCFDED9F1330}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
-		ProjectReferences = "{b2dcda47-f205-491e-a588-ba598feb69c0}|Logger.dll;"
+		ProjectReferences = "{b2dcda47-f205-491e-a588-ba598feb69c0}|Logger.dll;{927c1dcc-1fda-4fd0-8247-c051aa22469c}|Entitron.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_50224"
 		Debug.AspNetCompiler.PhysicalPath = "..\oss-platform-WebApp\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50224\"
@@ -27,6 +27,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "FSPOC", ".", "{B105C249-C98
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ND.Logger", "..\ND.Logger\ND.Logger.csproj", "{B2DCDA47-F205-491E-A588-BA598FEB69C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entitron", "..\Entitron\Entitron\Entitron.csproj", "{927C1DCC-1FDA-4FD0-8247-C051AA22469C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{B2DCDA47-F205-491E-A588-BA598FEB69C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2DCDA47-F205-491E-A588-BA598FEB69C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2DCDA47-F205-491E-A588-BA598FEB69C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{927C1DCC-1FDA-4FD0-8247-C051AA22469C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{927C1DCC-1FDA-4FD0-8247-C051AA22469C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{927C1DCC-1FDA-4FD0-8247-C051AA22469C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{927C1DCC-1FDA-4FD0-8247-C051AA22469C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

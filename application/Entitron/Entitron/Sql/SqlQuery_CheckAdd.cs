@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    class SqlQuery_CheckAdd : SqlQuery_Selectable
+    class SqlQuery_CheckAdd : SqlQuery_Selectable<SqlQuery_CheckAdd>
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {

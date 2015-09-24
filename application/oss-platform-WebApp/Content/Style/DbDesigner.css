@@ -145,15 +145,6 @@
 .ui-dialog-content .formTable tr td:first-child {
     width: 150px;
 }
-#switchToWorkflow {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 32px;
-    z-index: 200;
-    color: white;
-    background-color: #4d41e7;
-}
 .top-bar-container {
     position: absolute;
     left: 0px;

@@ -21,6 +21,13 @@ $(function () {
     $("#btnClearScheme").on("click", function () {
         ClearDbScheme();
     });
+    $("#btnGenerate").on("click", function () {
+        jQuery.get("/api/database/generate", function () {
+            alert("Success");
+        }).fail(function () {
+            alert("Error: database generation failed");
+        });
+    });
     $("#btnZoomIn").on("click", function () {
         ZoomFactor += 0.1;
         $(".database-container").css("transform", "scale(" + ZoomFactor + ")");

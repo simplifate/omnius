@@ -6,31 +6,31 @@ using Entitron.Sql;
 
 namespace Entitron
 {
-    public class DBColumns : IEnumerator, IEnumerable
+    public class DBColumns : List<DBColumn>
     {
         public DBTable table { get { return _table; }  }
         private DBTable _table { get; set; }
-        private List<DBColumn> _colums;
-        private int position = -1;
 
         public DBColumns(DBTable table)
         {
             _table = table;
-            _colums = new List<DBColumn>();
 
             SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
-            List<DBItem> items = query.ExecuteWithRead();
-
-            _colums = items.Select(i => new DBColumn()
+            
+            foreach(DBItem i in query.ExecuteWithRead())
             {
-                Name = (string)i["name"],
-                type = (System.Data.SqlDbType)Enum.Parse(typeof(System.Data.SqlDbType), (string)i["typeName"], true),
-                maxLength = Convert.ToInt32((Int16)i["max_length"]),
-                canBeNull = (bool)i["is_nullable"]
-            }).ToList();
+                DBColumn column = new DBColumn()
+                {
+                    Name = (string)i["name"],
+                    type = (string)i["typeName"],
+                    maxLength = Convert.ToInt32((Int16)i["max_length"]),
+                    canBeNull = (bool)i["is_nullable"]
+                };
+                Add(column);
+            }
         }
 
-        public DBTable Add(DBColumn column)
+        public DBTable AddToDB(DBColumn column)
         {
             SqlQuery_Table_Create query;
             if ((query = DBTable.queries.GetCreate(table.tableName)) != null)
@@ -43,21 +43,32 @@ namespace Entitron
                     column = column
                 });
 
-            _colums.Add(column);
+            this.Add(column);
+
             return _table;
         }
-        public DBTable Add(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable AddToDB(
+            string columnName,
+            string type,
+            bool allowColumnLength,
+            int? maxLength = null,
+            bool canBeNull = true,
+            bool isPrimaryKey = false,
+            bool isUnique = false,
+            string additionalOptions = null)
         {
-            return Add(new DBColumn()
+            return AddToDB(new DBColumn()
             {
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
+                isPrimaryKey = isPrimaryKey,
+                isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
         }
-        public DBTable AddRange(DBColumns columns)
+        public DBTable AddRangeToDB(DBColumns columns)
         {
             foreach(DBColumn column in columns)
             {
@@ -67,7 +78,7 @@ namespace Entitron
             return _table;
         }
 
-        public DBTable Rename(string originColumnName, string newColumnName)
+        public DBTable RenameInDB(string originColumnName, string newColumnName)
         {
             DBTable.queries.Add(new SqlQuery_Column_Rename()
             {
@@ -77,11 +88,11 @@ namespace Entitron
                 newColumnName = newColumnName
             });
 
-            _colums.SingleOrDefault(c => c.Name == originColumnName).Name = newColumnName;
+            this.SingleOrDefault(c => c.Name == originColumnName).Name = newColumnName;
             return _table;
         }
 
-        public DBTable Modify(DBColumn column)
+        public DBTable ModifyInDB(DBColumn column)
         {
             new SqlQuery_Column_Modify()
             {
@@ -90,23 +101,32 @@ namespace Entitron
                 column = column
             };
             
-            int index = _colums.IndexOf(c => c.Name == column.Name);
-            _colums[index] = column;
+            this[this.IndexOf(c => c.Name == column.Name)] = column;
             return _table;
         }
-        public DBTable Modify(string columnName, System.Data.SqlDbType type, int? maxLength = null, bool canBeNull = true, string additionalOptions = null)
+        public DBTable ModifyInDB(
+            string columnName,
+            string type,
+            bool allowColumnLength,
+            int? maxLength = null,
+            bool canBeNull = true,
+            bool isPrimaryKey = false,
+            bool isUnique = false,
+            string additionalOptions = null)
         {
-            return Modify(new DBColumn()
+            return ModifyInDB(new DBColumn()
             {
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
+                isPrimaryKey = isPrimaryKey,
+                isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
         }
 
-        public DBTable Drop(string columnName)
+        public DBTable DropFromDB(string columnName)
         {
             DBTable.queries.Add(new SqlQuery_Column_Drop()
             {
@@ -115,58 +135,8 @@ namespace Entitron
                 columnName = columnName
             });
 
-            _colums.Remove(_colums.SingleOrDefault(c => c.Name == columnName));
+            Remove(this.SingleOrDefault(c => c.Name == columnName));
             return _table;
         }
-
-        #region IEnum
-        public DBColumn this[int index]
-        {
-            get
-            {
-                if (_colums.Count <= index)
-                    throw new IndexOutOfRangeException();
-
-                return _colums[index];
-            }
-            set
-            {
-                if (_colums.Count == index)
-                    _colums.Add(value); 
-
-                else if (_colums.Count <= index)
-                    throw new IndexOutOfRangeException();
-
-                else _colums[index] = value;
-            }
-        }
-        
-        public IEnumerator GetEnumerator()
-        {
-            return (IEnumerator)this;
-        }
-        public bool MoveNext()
-        {
-            position++;
-            return (position < _colums.Count);
-        }
-        public void Reset()
-        {
-            position = 0;
-        }
-        public object Current
-        {
-            get { return _colums[position]; }
-        }
-
-        public List<T> Select<T>(Func<DBColumn,T> selection)
-        {
-            return _colums.Select(selection).ToList();
-        }
-        public DBColumn FirstOrDefault(Func<DBColumn, bool> selection)
-        {
-            return _colums.FirstOrDefault(selection);
-        }
-        #endregion
     }
 }
