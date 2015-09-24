@@ -6,54 +6,54 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    public class SqlQuery_Selectable : SqlQuery_withApp
+    public class SqlQuery_Selectable<T> : SqlQuery_withApp where T : SqlQuery_Selectable<T>
     {
         internal List<string> _join = new List<string>();
         internal Condition_concat _where = null;
         internal string _order = "";
         internal string _group = "";
         
-        public SqlQuery_Selectable where(Func<Conditions, Condition_concat> conditions)
+        public T where(Func<Conditions, Condition_concat> conditions)
         {
             _where = conditions(new Conditions(this));
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable join(string joinedTableName, string originColumnName, string joinedColumnName)
+        public T join(string joinedTableName, string originColumnName, string joinedColumnName)
         {
             _join.Add(string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable leftOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        public T leftOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
             _join.Add(string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable rightOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        public T rightOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
             _join.Add(string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable fullOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
+        public T fullOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
             _join.Add(string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable order(string columnName)
+        public T order(string columnName)
         {
             _order = string.Format(" ORDER BY {0}", columnName);
 
-            return this;
+            return (T)this;
         }
-        public SqlQuery_Selectable group(string columnName)
+        public T group(string columnName)
         {
             _group = string.Format(" GROUP BY {0}", columnName);
 
-            return this;
+            return (T)this;
         }
     }
 }

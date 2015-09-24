@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    class SqlQuery_InsertSelect : SqlQuery_Selectable
+    class SqlQuery_InsertSelect : SqlQuery_Selectable<SqlQuery_InsertSelect>
     {
         public string table2Name { get; set; }
         public List<string> columns1 { get; set; }
