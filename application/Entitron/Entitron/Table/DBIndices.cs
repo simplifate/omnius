@@ -53,5 +53,13 @@ namespace Entitron
             Remove(this.SingleOrDefault(i => i.indexName == indexName));
             return this;
         }
+        public List<string> getIndeces()
+        {
+            return new SqlQuery_SelectIndexes()
+            {
+                applicationName = table.AppName,
+                tableName = table.tableName
+            }.ExecuteWithRead().Select(i => (string)i["IndexName"]).ToList();
+        } 
     }
 }

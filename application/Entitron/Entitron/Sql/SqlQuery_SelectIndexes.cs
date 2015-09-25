@@ -17,7 +17,7 @@ namespace Entitron.Sql
             _sqlString = string.Format(
                 "DECLARE @sql NVARCHAR(MAX), @realTableName NVARCHAR(50);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
-                "SET @sql = 'SELECT i.name IndexName FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE t.name=@realTableName AND i.name IS NOT NULL;';" +
+                "SET @sql = 'SELECT i.name IndexName FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND t.name=@realTableName';" + 
                 "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
                 parAppName, parTableName
                 );

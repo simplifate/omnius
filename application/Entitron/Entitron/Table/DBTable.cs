@@ -185,7 +185,7 @@ namespace Entitron
             };
         }
 
-        public static void AddForeignKey(string tableAName, string tableAColumns, string tableBName, string tableBColumns)
+        public void AddForeignKey(string tableAName, string tableAColumns, string tableBName, string tableBColumns)
         {
             queries.Add(new SqlQuery_ForeignKeyAdd()
             {
@@ -195,10 +195,28 @@ namespace Entitron
                 foreignKey = tableAColumns,
                 primaryKey = tableBColumns
             });
-
         }
 
-        public virtual void AddPrimaryKey(List<string> primaryKey)
+        public void DropForeignKey(string foreignKeyName)
+        {
+            queries.Add(new SqlQuery_ForeignKeyDrop()
+            {
+                applicationName = ApplicationName,
+                tableName = tableName,
+                foreignKeyName = foreignKeyName
+            });
+        }
+
+        public List<string> GetForeignKeys()
+        {
+            return new SqlQuery_SelectFogreignKeys()
+            {
+                applicationName = AppName,
+                tableName = tableName
+            }.ExecuteWithRead().Select(f => (string)f["ForeignKeyName"]).ToList();
+        } 
+
+        public void AddPrimaryKey(List<string> primaryKey)
         {
             queries.Add(new SqlQuery_PrimaryKeyAdd()
             {
@@ -208,7 +226,7 @@ namespace Entitron
             });
         }
 
-        public virtual void DropPrimaryKey()
+        public void DropPrimaryKey()
         {
             queries.Add(new SqlQuery_PrimaryKeyDrop()
             {

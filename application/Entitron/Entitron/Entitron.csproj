@@ -64,6 +64,7 @@
     <Compile Include="Sql\SqlQuery_PrimaryKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_Select.cs" />
     <Compile Include="Sql\SqlQuery_Selectable.cs" />
+    <Compile Include="Sql\SqlQuery_SelectFogreignKeys.cs" />
     <Compile Include="Sql\SqlQuery_SelectIndexes.cs" />
     <Compile Include="Sql\SqlQuery_Select_ColumnList.cs" />
     <Compile Include="Sql\SqlQuery_Select_TableList.cs" />
