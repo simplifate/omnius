@@ -1,0 +1,57 @@
+﻿#overviewPanel {
+    position: absolute;
+    background-color: #f2f2f2;
+    border: 1px solid #c8c8c8;
+    width: 90%;
+    min-height: 820px;
+    margin: 40px 20px;
+}
+
+.block {
+    position: absolute;
+    width: 160px;
+    height: 86px;
+    background-color: #e0e0e0;
+    border: 1px solid #808080;
+    font-size: 16px;
+}
+
+.block .blockName {
+    position: absolute;
+    top: 15px;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+}
+
+.block .tableName {
+    position: absolute;
+    top: 50px;
+    text-align: center;
+    width: 100%;
+}
+
+.block {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+#btnAddBlock {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#moduleSwitcher {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 32px;
+    z-index: 200;
+    color: white;
+    background-color: #4d41e7;
+}

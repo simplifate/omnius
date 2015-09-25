@@ -1,0 +1,41 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@section head{
+    <link href="~/Content/Style/base/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="~/Content/Style/Overview.css" rel="stylesheet" type="text/css" />
+}
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Title = "FSPOC Overview";
+}
+<script src="~/Scripts/CommonLibraries/jquery.contextMenu.js"></script>
+<script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
+<script src="~/Scripts/Overview/Init.js"></script>
+<script src="~/Scripts/Overview/VisualConfiguration.js"></script>
+
+<select id="moduleSwitcher">
+    <option value="apps">Application Manager</option>
+    <option value="workflow">Workflow Designer</option>
+    <option value="database">Database Designer</option>
+    <option value="tapestry">Tapestry</option>
+    <option value="overview" selected="selected">Overview</option>
+</select>
+
+<div id="overviewPanel">
+    <button id="btnAddBlock" class="btn btn-lg btn-primary">Add block</button>
+    <div class="block" id="block1" style="left: 150px; top: 150px;">
+        <div class="blockName">Log in screen</div>
+        <div class="tableName">Users</div>
+    </div>
+    <div class="block" id="block2" style="left: 550px; top: 300px;">
+        <div class="blockName">Second block</div>
+        <div class="tableName">Table2</div>
+    </div>
+    <div class="block" id="block3" style="left: 950px; top: 150px;">
+        <div class="blockName">Third block</div>
+        <div class="tableName">Table3</div>
+    </div>
+    <div class="block" id="block4" style="left: 950px; top: 450px;">
+        <div class="blockName">Fourth block</div>
+        <div class="tableName">Table4</div>
+    </div>
+</div>

@@ -21,6 +21,11 @@ namespace FSPOC.Controllers
         {
             return View();
         }
+        [Route("overview")]
+        public ActionResult Overview()
+        {
+            return View();
+        }
         [Route("apps")]
         [Route("~/", Name = "default")]
         public ActionResult AppManager()

@@ -14,6 +14,9 @@
             case "tapestry":
                 window.location.href = "/tapestry";
                 break;
+            case "overview":
+                window.location.href = "/overview";
+                break;
         }
     });
 });
