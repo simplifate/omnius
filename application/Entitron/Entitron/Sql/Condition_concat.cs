@@ -8,6 +8,11 @@ namespace Entitron.Sql
 {
     public class Condition_concat
     {
+        public static Condition_concat Empty()
+        {
+            return new Condition_concat(new Conditions(new SqlQuery()));
+        }
+
         private Conditions _conditions;
 
         public Condition_concat(Conditions conditions)
