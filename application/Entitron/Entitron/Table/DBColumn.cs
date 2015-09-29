@@ -42,5 +42,10 @@ namespace Entitron
                     (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : ""
                 );
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

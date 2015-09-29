@@ -234,5 +234,10 @@ namespace Entitron
                 tableName = tableName
             });
         }
+
+        public override string ToString()
+        {
+            return tableName;
+        }
     }
 }

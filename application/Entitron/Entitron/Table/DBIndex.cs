@@ -11,5 +11,10 @@ namespace Entitron
         public DBTable table { get; set; }
         public string indexName { get; set; }
         public List<DBColumn> columns { get; set; }
+
+        public override string ToString()
+        {
+            return indexName;
+        }
     }
 }
