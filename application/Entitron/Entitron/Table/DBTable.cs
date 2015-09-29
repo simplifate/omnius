@@ -185,11 +185,12 @@ namespace Entitron
             };
         }
 
-        public void AddForeignKey(string tableAName, string tableAColumns, string tableBName, string tableBColumns)
+        public void AddForeignKey(string foreignName, string tableAName, string tableAColumns, string tableBName, string tableBColumns)
         {
             queries.Add(new SqlQuery_ForeignKeyAdd()
             {
                 applicationName = ApplicationName,
+                foreignName = foreignName,
                 tableName = tableAName,
                 table2Name = tableBName,
                 foreignKey = tableAColumns,
