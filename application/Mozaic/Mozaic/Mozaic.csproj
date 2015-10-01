@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Entitron">
+      <HintPath>..\..\Entitron\Entitron\bin\Debug\Entitron.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -180,9 +183,26 @@
     <Compile Include="Migrations\201509291144520_CreatePage.Designer.cs">
       <DependentUpon>201509291144520_CreatePage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509291239027_PageForeignKey.cs" />
+    <Compile Include="Migrations\201509291239027_PageForeignKey.Designer.cs">
+      <DependentUpon>201509291239027_PageForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509300847299_RequiredAttributesTemplatePage.cs" />
+    <Compile Include="Migrations\201509300847299_RequiredAttributesTemplatePage.Designer.cs">
+      <DependentUpon>201509300847299_RequiredAttributesTemplatePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509301029005_PageRelationsMerged.cs" />
+    <Compile Include="Migrations\201509301029005_PageRelationsMerged.Designer.cs">
+      <DependentUpon>201509301029005_PageRelationsMerged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509301041224_conventionRelationRepaired.cs" />
+    <Compile Include="Migrations\201509301041224_conventionRelationRepaired.Designer.cs">
+      <DependentUpon>201509301041224_conventionRelationRepaired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\DBMozaic.cs" />
+    <Compile Include="Models\extension.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Models\TemplateCategory.cs" />
@@ -244,6 +264,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509291144520_CreatePage.resx">
       <DependentUpon>201509291144520_CreatePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509291239027_PageForeignKey.resx">
+      <DependentUpon>201509291239027_PageForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509300847299_RequiredAttributesTemplatePage.resx">
+      <DependentUpon>201509300847299_RequiredAttributesTemplatePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509301029005_PageRelationsMerged.resx">
+      <DependentUpon>201509301029005_PageRelationsMerged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509301041224_conventionRelationRepaired.resx">
+      <DependentUpon>201509301041224_conventionRelationRepaired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

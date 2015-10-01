@@ -9,9 +9,12 @@ namespace Mozaic.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            DBMozaic e = new DBMozaic();
+
+            Page page = e.Pages.FirstOrDefault(p => p.Id == id);
+            return View(page);
         }
     }
 }
