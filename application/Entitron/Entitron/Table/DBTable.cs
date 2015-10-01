@@ -80,6 +80,17 @@ namespace Entitron
                 _primaryKeys = value;
             }
         }
+        private DBForeignKeys _foreignKeys;
+        public DBForeignKeys foreignKeys
+        {
+            get
+            {
+                if (_foreignKeys == null)
+                    _foreignKeys = new DBForeignKeys(this);
+
+                return _foreignKeys;
+            }
+        }
         public List<DBColumn> getPrimaryColumns()
         {
             List<DBColumn> output = new List<DBColumn>();
@@ -185,38 +196,6 @@ namespace Entitron
             };
         }
 
-        public void AddForeignKey(string foreignName, string tableAName, string tableAColumns, string tableBName, string tableBColumns)
-        {
-            queries.Add(new SqlQuery_ForeignKeyAdd()
-            {
-                applicationName = ApplicationName,
-                foreignName = foreignName,
-                tableName = tableAName,
-                table2Name = tableBName,
-                foreignKey = tableAColumns,
-                primaryKey = tableBColumns
-            });
-        }
-
-        public void DropForeignKey(string foreignKeyName)
-        {
-            queries.Add(new SqlQuery_ForeignKeyDrop()
-            {
-                applicationName = ApplicationName,
-                tableName = tableName,
-                foreignKeyName = foreignKeyName
-            });
-        }
-
-        public List<string> GetForeignKeys()
-        {
-            return new SqlQuery_SelectFogreignKeys()
-            {
-                applicationName = AppName,
-                tableName = tableName
-            }.ExecuteWithRead().Select(f => (string)f["ForeignKeyName"]).ToList();
-        } 
-
         public void AddPrimaryKey(List<string> primaryKey)
         {
             queries.Add(new SqlQuery_PrimaryKeyAdd()
@@ -226,7 +205,6 @@ namespace Entitron
                 keyColumns = primaryKey
             });
         }
-
         public void DropPrimaryKey()
         {
             queries.Add(new SqlQuery_PrimaryKeyDrop()

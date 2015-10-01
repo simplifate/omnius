@@ -79,6 +79,8 @@
     <Compile Include="Table\AdditionalSqlDefinition.cs" />
     <Compile Include="Table\DBColumn.cs" />
     <Compile Include="Table\DBColumns.cs" />
+    <Compile Include="Table\DBForeignKey.cs" />
+    <Compile Include="Table\DBForeignKeys.cs" />
     <Compile Include="Table\DBIndex.cs" />
     <Compile Include="Table\DBIndices.cs" />
     <Compile Include="Table\DBItem.cs" />
