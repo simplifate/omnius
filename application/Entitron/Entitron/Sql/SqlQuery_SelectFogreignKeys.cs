@@ -22,7 +22,7 @@ namespace Entitron.Sql
                 "INNER JOIN sys.tables targetT ON targetT.object_id = fkc.referenced_object_id " +
                 "INNER JOIN sys.columns sourceC ON sourceC.column_id = fkc.parent_column_id AND fk.parent_object_id = sourceC.object_id " +
                 "INNER JOIN sys.columns targetC ON targetC.column_id = fkc.referenced_column_id AND fk.referenced_object_id = targetC.object_id " +
-                "WHERE sourceT.name = @realTableName';" +
+                "WHERE sourceT.name = @realTableName OR targetT.name = @realTableName';" +
                 "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
                 parAppName, parTableName
                 );

@@ -20,14 +20,26 @@ namespace Entitron
 
             foreach (DBItem i in query.ExecuteWithRead())
             {
-                DBForeignKey fk = new DBForeignKey()
+                DBForeignKey fk = new DBForeignKey();
+                fk.name = (string)i["name"];
+
+                // is source table
+                if (table.tableName == (string)i["sourceTable"])
                 {
-                    name = (string)i["name"],
-                    sourceTable = (string)i["sourceTable"],
-                    targetTable = (string)i["targetTable"],
-                    sourceColumn = (string)i["sourceColumn"],
-                    targetColumn = (string)i["targetColumn"]
-                };
+                    fk.sourceTable = (string)i["sourceTable"];
+                    fk.targetTable = (string)i["targetTable"];
+                    fk.sourceColumn = (string)i["sourceColumn"];
+                    fk.targetColumn = (string)i["targetColumn"];
+                }
+                // is target table
+                else
+                {
+                    fk.sourceTable = (string)i["targetTable"];
+                    fk.targetTable = (string)i["sourceTable"];
+                    fk.sourceColumn = (string)i["targetColumn"];
+                    fk.targetColumn = (string)i["sourceColumn"];
+                }
+
                 Add(fk);
             }
         }
