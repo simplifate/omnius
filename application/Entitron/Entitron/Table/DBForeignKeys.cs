@@ -44,7 +44,7 @@ namespace Entitron
             }
         }
 
-        public DBForeignKeys AddToDB(DBForeignKey fk, string onDeleteAction = null, string onUpdateAction = null)
+        public DBForeignKeys AddToDB(DBForeignKey fk)
         {
             DBTable.queries.Add(new SqlQuery_ForeignKeyAdd()
             {
@@ -54,8 +54,8 @@ namespace Entitron
                 table2Name = fk.targetTable,
                 foreignKey = fk.sourceColumn,
                 primaryKey = fk.targetColumn,
-                onDelete = onDeleteAction,
-                onUpdate = onUpdateAction
+                onDelete = fk.onDelete,
+                onUpdate = fk.onUpdate
             });
 
             Add(fk);

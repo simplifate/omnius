@@ -163,8 +163,23 @@ namespace Entitron
 
             return this;
         }
-        public DBTable Update(DBItem item)
+        public DBTable Update(DBItem item, DBItem selectRow )
         {
+            Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
+            Dictionary<DBColumn,object> row = new Dictionary<DBColumn, object>();
+            foreach (DBColumn column in columns)
+            {
+                data.Add(column, item[column.Name]);
+                row.Add(column,selectRow[column.Name]);
+            }
+
+            queries.Add(new SqlQuery_Update()
+            {
+              applicationName  = AppName,
+              tableName = tableName,
+              changes = data,
+
+            });
 
             return this;
         }
