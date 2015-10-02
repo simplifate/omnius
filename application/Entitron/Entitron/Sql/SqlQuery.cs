@@ -12,11 +12,13 @@ namespace Entitron.Sql
     {
         protected string _sqlString;
         protected Dictionary<string, object> _params;
+        protected Dictionary<string, string> _datatypes;
 
         public SqlQuery(string SqlString = "", Dictionary<string, object> param = null)
         {
             _sqlString = SqlString;
             _params = (param != null) ? param : new Dictionary<string, object>();
+            _datatypes = new Dictionary<string, string>();
         }
 
         public void Execute(string connectionString = null)
@@ -152,6 +154,7 @@ namespace Entitron.Sql
 
             // save param
             _params[key] = value;
+            _datatypes[key] = new SqlParameter("to koukáš, co?", value).SqlDbType.ToString();
 
             // return new key
             return key;

@@ -181,7 +181,7 @@ namespace Entitron
             {
                 applicationName = ApplicationName,
                 tableName = tableName,
-                columnValueCondition = columnValueCondition
+                rowSelect = columnValueCondition
             });
 
             return this;

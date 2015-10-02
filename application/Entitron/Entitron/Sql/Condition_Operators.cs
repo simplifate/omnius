@@ -19,7 +19,7 @@ namespace Entitron.Sql
         {
             string paramName = _conditions._query.safeAddParam("param", value);
             
-            _conditions._sql += string.Format("{0}({1}={2})", _conditions._concat, _conditions._columnName, paramName);
+            _conditions._sql += string.Format("{0}({1}=@{2})", _conditions._concat, _conditions._columnName, paramName);
 
             return new Condition_concat(_conditions);
         }

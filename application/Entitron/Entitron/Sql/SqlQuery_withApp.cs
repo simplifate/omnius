@@ -32,7 +32,13 @@ namespace Entitron.Sql
             if (tableName == null)
                 throw new ArgumentNullException("tableName");
 
-            return base.BaseExecutionWithRead(connection);
+            List<DBItem> output = base.BaseExecutionWithRead(connection);
+            foreach (DBItem item in output)
+            {
+                item.table = DBTable.GetTable(tableName);
+            }
+
+            return output;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Entitron.Sql
 
         internal string _columnName = null;
         internal string _sql = "";
-        internal string _concat = "";
+        internal string _concat = "WHERE ";
 
         public Conditions(SqlQuery query)
         {
