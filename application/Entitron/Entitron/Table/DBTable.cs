@@ -178,7 +178,7 @@ namespace Entitron
               applicationName  = AppName,
               tableName = tableName,
               changes = data,
-
+              rowSelect = row
             });
 
             return this;

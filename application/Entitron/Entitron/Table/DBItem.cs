@@ -12,6 +12,7 @@ namespace Entitron
 
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
         private Dictionary<string, object> _foreignKeys = new Dictionary<string, object>();
+        
         public object this[string propertyName]
         {
             get
@@ -47,5 +48,10 @@ namespace Entitron
         {
             return _properties.Keys.ToList();
         }
+
+        public List<object> getAllProperties()
+        {
+            return _properties.Values.ToList();
+        } 
     }
 }
