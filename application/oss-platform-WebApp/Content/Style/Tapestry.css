@@ -9,7 +9,7 @@
 #attributesPanel {
     position: absolute;
     left: 0px;
-    width: 698px;
+    width: 876px;
     background-color: #ffccff;
     border: 1px solid #ff99ff;
     color: #ff66ff;
@@ -34,7 +34,7 @@
     position: absolute;
     bottom: 0px;
     left: 0px;
-    width: 698px;
+    width: 876px;
     background-color: #fff2cc; 
     border: 1px solid #fee599; 
     color: #bf9000;
@@ -59,7 +59,7 @@
 #rolesPanel {
     position: absolute;
     right: 270px;
-    left: 728px;
+    left: 906px;
     top: 40px;
     background-color: #fbe5d5;
     border: 1px solid #f7cbac;
@@ -72,7 +72,7 @@
     position: absolute;
     bottom: 0px;
     right: 270px;
-    left: 728px;
+    left: 906px;
     background-color: #dae2f3; 
     border: 1px solid #b5c6e7; 
     color: #90aadb;
@@ -166,7 +166,7 @@
     width: 180px;
 }
 .header {
-    width: 440px;
+    width: 740px;
     background-color: #f2f2f2;
     border-right: 1px solid #c8c8c8; 
     border-bottom: 1px solid #c8c8c8; 
@@ -188,9 +188,15 @@
     width: 250px;
 }
 #headerTableName {
+    border-right: 1px solid #c8c8c8;
     position: absolute;
     left: 250px;
     width: 190px;
+}
+#headerOverview {
+    position: absolute;
+    left: 440px;
+    width: 300px;
 }
 .headerItem:hover {
     background-color: #d8d8d8;
@@ -210,7 +216,7 @@
     padding: 3px 10px;
     font-size: 0.8em;
 }
-.item, .menuPanel, #blockPanel, .formRow {
+.item, .menuPanel, #blockPanel, .formRow, ._jsPlumb_overlay {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -257,23 +263,25 @@
 }
 #upperVerticalDivider {
     position: absolute;
-    left: 722px;
+    left: 900px;
     top: 60px;
-    width: 3px;
+    width: 23px;
     height: 100px;
-    margin: 0px 10px;
     cursor: ew-resize;
-    background-color: darkgrey;
 }
 #lowerVerticalDivider {
     position: absolute;
-    left: 722px;
+    left: 900px;
     bottom: 20px;
-    width: 3px;
+    width: 23px;
     height: 110px;
-    margin: 0px 10px;
     cursor: ew-resize;
+}
+.dividerBar {
     background-color: darkgrey;
+    width: 3px;
+    height: 100%;
+    margin: 0px 10px;
 }
 .highlightedRow {
     background-color: lightblue !important;
@@ -317,4 +325,18 @@
     z-index: 200;
     color: white;
     background-color: #4d41e7;
+}
+.decisionRhombus {
+    width: 70px;
+    height: 60px;
+    margin-top: -22px;
+    margin-left: -7px;
+}
+.endpointSourceLabel {
+    color: #41719c;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #c5e0b3;
+    z-index: 100;
+    padding: 1px 5px;
 }

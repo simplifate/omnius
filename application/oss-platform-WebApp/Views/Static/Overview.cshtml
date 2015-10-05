@@ -11,6 +11,7 @@
 <script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
 <script src="~/Scripts/Overview/Init.js"></script>
 <script src="~/Scripts/Overview/VisualConfiguration.js"></script>
+<script src="~/Scripts/Overview/Dialogs.js"></script>
 
 <select id="moduleSwitcher">
     <option value="apps">Application Manager</option>
@@ -38,4 +39,21 @@
         <div class="blockName">Fourth block</div>
         <div class="tableName">Table4</div>
     </div>
+</div>
+
+<div id="add-block-dialog" title="Add block">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="block-name">Block name</label></td>
+                    <td><input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="table-dropdown">Table</label></td>
+                    <td><select name="table-dropdown" id="table-dropdown"></select></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
 </div>

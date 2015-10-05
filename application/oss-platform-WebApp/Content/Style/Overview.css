@@ -6,7 +6,6 @@
     min-height: 820px;
     margin: 40px 20px;
 }
-
 .block {
     position: absolute;
     width: 160px;
@@ -15,7 +14,6 @@
     border: 1px solid #808080;
     font-size: 16px;
 }
-
 .block .blockName {
     position: absolute;
     top: 15px;
@@ -23,14 +21,12 @@
     width: 100%;
     font-weight: bold;
 }
-
 .block .tableName {
     position: absolute;
     top: 50px;
     text-align: center;
     width: 100%;
 }
-
 .block {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -39,13 +35,11 @@
     user-select: none;
     cursor: default;
 }
-
 #btnAddBlock {
     position: absolute;
     right: 10px;
     top: 10px;
 }
-
 #moduleSwitcher {
     position: absolute;
     left: 0px;
@@ -54,4 +48,39 @@
     z-index: 200;
     color: white;
     background-color: #4d41e7;
+}
+.ui-dialog {
+    padding: 0px 0px;
+    border: 1px solid #45525e;
+    border-radius: 4px;
+}
+.ui-widget-header {
+    background-image: none;
+    background-color: #45525e;
+    color: white;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 3px;
+}
+.ui-dialog .ui-dialog-buttonset button {
+    margin: 3px;
+}
+.ui-dialog-titlebar-close {
+    background: url("/Content/Style/base/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+    border: medium none;
+}
+.ui-dialog-titlebar-close:hover {
+    background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+}
+.ui-dialog-content .formTable label {
+    margin-bottom: 0px;
+}
+.ui-dialog-content .formTable tr {
+    height: 32px;
+}
+.ui-dialog-content .formTable td {
+    vertical-align: middle;
+}
+.ui-dialog-content .formTable tr td:first-child {
+    width: 150px;
 }

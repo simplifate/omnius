@@ -26,6 +26,7 @@
     <div class="header">
         <div class="headerItem" id="headerBlockName">Log In Screen</div>
         <div class="headerItem" id="headerTableName">User</div>
+        <div class="headerItem" id="headerOverview">Return to Overview</div>
     </div>
     <div id="attributesPanel" class="menuPanel">
         Attributes<br />
@@ -37,18 +38,25 @@
         Rules<br />
         <div id="rule1" class="rule" style="left: 20px; top: 45px; width: 355px; height: 70px;">
             <div class="ruleHeader"></div>
-            <div class="item view" style="left: 34px; top: 21px;">Username</div>
-            <div class="item attribute"style="left: 197px; top: 22px;">Username</div>
+            <div id="item1" class="item view" style="left: 34px; top: 21px;">Username</div>
+            <div id="item2" class="item attribute"style="left: 197px; top: 22px;">Username</div>
         </div>
         <div id="rule2" class="rule" style="left: 400px; top: 45px; width: 355px; height: 70px;">
             <div class="ruleHeader"></div>
-            <div class="item view" style="left: 34px; top: 21px;">Password</div>
-            <div class="item attribute" style="left: 197px; top: 22px;">Password</div>
+            <div id="item3" class="item view" style="left: 34px; top: 21px;">Password</div>
+            <div id="item4" class="item attribute" style="left: 197px; top: 22px;">Password</div>
         </div>
-        <div id="rule3" class="rule" style="left: 20px; top: 155px; width: 520px; height: 130px;">
+        <div id="rule3" class="rule" style="left: 20px; top: 155px; width: 737px; height: 222px;">
             <div class="ruleHeader"></div>
-            <div class="item view" style="left: 34px; top: 30px;">Retrieve password</div>
-            <div class="item action" style="left: 262px; top: 30px;">Forgot password</div>
+            <div id="item5" class="item view" style="left: 34px; top: 45px;">Log In</div>
+            <div id="item6" class="item action" style="left: 174px; top: 45px;">Check Credentials</div>
+            <div id="item7" class="item action" style="left: 576px; top: 45px;">Log In</div>
+            <div id="item8" class="item action" style="left: 517px; top: 155px;">Validation message</div>
+            <div id="decision1" class="decisionRhombus" style="left: 414px; top: 34px;">
+                <svg width="70" height="60">
+                    <polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" />
+                </svg>
+            </div>
         </div>
     </div>
     <div id="viewsPanel" class="menuPanel">
@@ -73,8 +81,8 @@
         <div class="menuItem action">Forgot password</div>
         <div class="menuItem action">Validation message</div>
     </div>
-    <div id="upperVerticalDivider"></div>
-    <div id="lowerVerticalDivider"></div>
+    <div id="upperVerticalDivider"><div class="dividerBar"></div></div>
+    <div id="lowerVerticalDivider"><div class="dividerBar"></div></div>
 </div>
 
 <div id="rename-block-dialog" title="Rename block">

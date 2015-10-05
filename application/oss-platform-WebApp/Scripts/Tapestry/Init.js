@@ -5,6 +5,9 @@
     $("#headerTableName").on("click", function () {
         chooseTableDialog.dialog("open");
     });
+    $("#headerOverview").on("click", function () {
+        window.location.href = "/overview";
+    });
     $("#btnAddActions").on("click", function () {
         addActionsDialog.dialog("open");
     });
@@ -22,7 +25,7 @@
                 droppedElement.appendTo(this);
                 leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
                 topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
-                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset })
+                droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 })
                 droppedElement.removeClass("menuItem");
                 droppedElement.addClass("item");
                 AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
@@ -108,4 +111,5 @@
             AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
         }
     });
+    $(".decisionRhombus").draggable();
 });

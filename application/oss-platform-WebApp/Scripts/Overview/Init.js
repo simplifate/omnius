@@ -1,11 +1,11 @@
 ﻿$(function () {
     $("#overviewPanel").resizable();
     $("#btnAddBlock").on("click", function () {
-        alert("TODO: Add new block");
+        addBlockDialog.dialog("open");
     });
     $(".block").on("dblclick", function () {
-        name = $(this).find(".blockName").text();
-        alert('Double clicked "' + name + '"');
+        // TODO: Pass block's ID to Tapestry to edit this block
+        window.location.href = "/tapestry";
     });
     $.contextMenu({
         selector: '.block',

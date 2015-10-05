@@ -9,6 +9,7 @@ namespace FSPOC
         public void GenerateFrom(DbSchemeCommit scheme)
         {
             Entitron.DBTable.connectionString = connectionString;
+            Entitron.DBTable.ApplicationName = "ApplicationTest";
             foreach (DbTable efTable in scheme.Tables)
             {
                 Entitron.DBTable writeTable = new Entitron.DBTable();
@@ -22,7 +23,7 @@ namespace FSPOC
                     writeColumn.canBeNull = efColumn.AllowNull;
                     writeColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
                     writeColumn.type = efColumn.Type;
-                    writeTable.columns.Add(writeColumn);
+                    writeTable.columns.AddToDB(writeColumn);
                 }
                 writeTable.Create();
             }
