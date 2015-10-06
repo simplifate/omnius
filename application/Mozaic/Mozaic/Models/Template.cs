@@ -55,13 +55,19 @@ namespace Mozaic.Models
                 int innerEndIndex = output.IndexOf(endingKey, innerStartIndex);
                 string key = output.Substring(innerStartIndex, innerEndIndex - innerStartIndex).Trim();
 
+                output = output.Remove(startIndex, (innerEndIndex + endingKey.Length) - startIndex);
+
                 string currentAddress = address != null ? string.Format("{0}.{1}", address, key) : key;
+                // there is no relation
+                if (!Relations.ContainsKey(currentAddress))
+                    continue;
                 string[] items = Relations[currentAddress].Split(',');
 
                 string replacement = "";
                 foreach(string item in items)
                 {
                     string[] a = item.Split(':');
+                    if (a.Length < 1) continue; // wrong format
                     string type = a[0];
                     string name = a[1];
 
@@ -75,10 +81,12 @@ namespace Mozaic.Models
                             replacement += Model[name];
                             break;
                         case "DL": // datasource list
-                            foreach(DBItem listItem in (List<DBItem>)Model[name])
+                            if (a.Length < 2) continue; // wrong format
+                            string templateName = a[2];
+                            foreach(DBItem listItem in (List<DBItem>)Model[name] ?? new List<DBItem>())
                             {
                                 listItem["__parent__"] = Model;
-                                replacement += entity.Templates.FirstOrDefault(t => t.Name == a[2])
+                                replacement += entity.Templates.FirstOrDefault(t => t.Name == templateName)
                                     .Render(Relations, listItem, entity, currentAddress);
                             }
                             break;
@@ -86,8 +94,7 @@ namespace Mozaic.Models
                             throw new FormatException("Template relations in wrong format");
                     }
                 }
-
-                output = output.Remove(startIndex, (innerEndIndex + endingKey.Length) - startIndex);
+                
                 output = output.Insert(startIndex, replacement);
             }
             
