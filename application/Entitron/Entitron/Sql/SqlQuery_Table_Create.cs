@@ -64,7 +64,9 @@ namespace Entitron.Sql
                 "exec sp_executesql @_sql, N'@{2} NVARCHAR(50)', @{2};" +
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{1}, @{2}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @{3}, ');');" +
-                "exec(@sql);",
+                "exec(@sql);" +
+                "SET @_sql = CONCAT('UPDATE ', @_DbMetaTables, ' SET tableId=(SELECT object_id FROM sys.tables t WHERE t.name=@realTableName) WHERE Name=@tableName;');" +
+                "exec sp_executesql @_sql, N'@realTableName NVARCHAR(50), @tableName NVARCHAR(50)', @realTableName, @tableName;",
                 SqlInitScript.aplicationTableName,
                 parAppName,
                 parTableName,

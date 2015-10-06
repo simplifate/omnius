@@ -14,18 +14,16 @@ namespace Entitron.Sql
             string parTableName = safeAddParam("tableName", tableName);
 
             _sqlString = string.Format(
-                "DECLARE @sql NVARCHAR(MAX), @realTableName NVARCHAR(50);" +
-                "exec getTableRealName @{0}, @{1}, @realTableName output;" +
-                "SET @sql='SELECT fk.name name, sourceT.name sourceTable, targetT.name targetTable, sourceC.name sourceColumn, targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
+                "DECLARE @metaTable NVARCHAR(50) = (SELECT DbMetaTables meta FROM dbo.Applications WHERE dbo.Applications.Name = @{0});" +
+                "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT fk.name name, sourceT.Name sourceTable, sourceC.name sourceColumn, targetT.Name targetTable, targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
                 "INNER JOIN sys.foreign_keys fk ON fk.object_id = fkc.constraint_object_id " +
-                "INNER JOIN sys.tables sourceT ON sourceT.object_id = fkc.parent_object_id " +
-                "INNER JOIN sys.tables targetT ON targetT.object_id = fkc.referenced_object_id " +
-                "INNER JOIN sys.columns sourceC ON sourceC.column_id = fkc.parent_column_id AND fk.parent_object_id = sourceC.object_id " +
-                "INNER JOIN sys.columns targetC ON targetC.column_id = fkc.referenced_column_id AND fk.referenced_object_id = targetC.object_id " +
-                "WHERE sourceT.name = @realTableName OR targetT.name = @realTableName';" +
-                "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
-                parAppName, parTableName
-                );
+                "INNER JOIN ', @metaTable, ' sourceT ON sourceT.tableId = fkc.parent_object_id " +
+                "INNER JOIN ', @metaTable, ' targetT ON targetT.tableId = fkc.referenced_object_id " +
+                "INNER JOIN sys.columns sourceC ON sourceC.column_id = fkc.parent_column_id AND fkc.parent_object_id = sourceC.object_id " +
+                "INNER JOIN sys.columns targetC ON targetC.column_id = fkc.referenced_column_id AND fkc.referenced_object_id = targetC.object_id " +
+                "WHERE sourceT.Name = @tableName OR targetT.Name = @tableName; '); " +
+                "exec sp_executesql @sql, N'@tableName NVARCHAR(50)', @{1};",
+                parAppName, parTableName);
 
             return base.BaseExecutionWithRead(connection);
         }

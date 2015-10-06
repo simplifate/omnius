@@ -19,8 +19,7 @@ namespace Entitron.Sql
                 "SELECT @DbTablePrefix = DbTablePrefix, @DbMetaTables = DbMetaTables FROM " + aplicationTableName + " WHERE Name = @applicationName;" +
                 "SET @sql = CONCAT('SELECT @tableId=Id FROM ', @DbMetaTables, ' WHERE Name = @tableName;');" +
                 "exec sp_executesql @sql, N'@tableId Int output, @tableName NVARCHAR(50)', @tableId output, @tableName;" + 
-                "IF (@tableId IS NULL) SET @tableRealName = @tableName;" +
-                "ELSE SET @tableRealName = CONCAT(@DbTablePrefix, @tableId);";
+                "SET @tableRealName = CONCAT(@DbTablePrefix, @tableId);";
             base.BaseExecution(transaction);
 
             _sqlString =
