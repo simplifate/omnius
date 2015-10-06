@@ -31,41 +31,79 @@ namespace FSPOC.Controllers
         public ActionResult AppManager()
         {
             List<AppTile> appTiles = new List<AppTile>();
-
             appTiles.Add(new AppTile
             {
-                Name = "Intranet",
+                Name = "Rezervace služeb",
                 TileWidth = 2,
                 TileHeight = 2,
-                Icon = "fa-users",
-                PositionX = 764,
-                PositionY = 136,
-                InnerHTML = "<span class='mediumFont'>V současnosti je online<br /><span class='highlight'>381</span> uživatelů</span>"
+                Color = 1,
+                Icon = "fa-calendar",
+                PositionX = 710,
+                PositionY = 100,
+                InnerHTML = "<span class='mediumFont'>Zasedací místnost A:<br />12:30-14:00<hr />Zasedací místnost B:<br /><span class=\"highlight\">volná</span></span>"
             });
             appTiles.Add(new AppTile
             {
-                Name = "Spammer",
+                Name = "Překlady",
                 TileWidth = 2,
-                TileHeight = 2,
-                Icon = "fa-stack-overflow",
-                PositionX = 1004,
-                PositionY = 136,
-                InnerHTML = "<span class='mediumFont'>Odeslaných zpráv: <span class='highlight'>68</span></span>"
+                TileHeight = 1,
+                Color = 2,
+                Icon = "fa-copy",
+                PositionX = 950,
+                PositionY = 340,
+                InnerHTML = ""
             });
-            appTiles.Add(new AppTile { Name = "Trvalé zlepšování", Color = 0, TileWidth = 2, TileHeight = 1, Icon = "fa-child", PositionX = 764, PositionY = 376 });
             appTiles.Add(new AppTile
             {
-                Name = "Aukční systém",
+                Name = "Evidence externích přístupů",
+                TileWidth = 2,
+                TileHeight = 1,
+                Icon = "fa-wifi",
+                TitleFontSize = 13,
+                PositionX = 710,
+                PositionY = 340,
+                InnerHTML = ""
+            });
+            appTiles.Add(new AppTile
+            {
+                Name = "Portál interních auditů",
+                TileWidth = 2,
+                TileHeight = 2,
+                Icon = "fa-check",
+                TitleFontSize = 15,
+                PositionX = 950,
+                PositionY = 100,
+                InnerHTML = "<span class='mediumFont'>Výsledky auditu z <span class=\"highlight\">6.10.2015</span> jsou nyní dostupné ke stažení</span>"
+            });
+            appTiles.Add(new AppTile
+            {
+                Name = "Náklady a výnosy",
                 TileWidth = 4,
                 TileHeight = 4,
-                Icon = "fa-money",
-                PositionX = 284,
-                PositionY = 136,
-                InnerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                Icon = "fa-line-chart",
+                PositionX = 230,
+                PositionY = 100,
+                InnerHTML = "<svg width=\"430\" height=\"400\"><path d=\"M 0 100 L 430 100\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 10 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 200 L 430 200\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 300 L 430 300\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 430 400\"  stroke=\"#53ccff\" stroke-width=\"3\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 0 10\"  stroke=\"#53ccff\" stroke-width=\"3\" fill=\"none\" />"
+                    + "<path d=\"M 430 400 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 50 350 L 100 320 L 150 200 L 200 340 L 250 260 L 300 190 L 350 230 L 400 110 L 429 50\" "
+                    + "stroke=\"#ffdf00\" stroke-width=\"4\" fill=\"none\" /></svg>"
             });
-            appTiles.Add(new AppTile { Name = "Passworder", Color = 1, TileWidth = 2, TileHeight = 1, Icon = "fa-lock", PositionX = 764, PositionY = 496 });
-            appTiles.Add(new AppTile { Name = "App1", Color = 1, PositionX = 1004, PositionY = 376 });
-            appTiles.Add(new AppTile { Name = "App2", Color = 2, PositionX = 1004, PositionY = 496 });
+            appTiles.Add(new AppTile
+            {
+                Name = "Tracking RWE",
+                TileWidth = 2,
+                TileHeight = 1,
+                Color = 1,
+                Icon = "fa-eye",
+                PositionX = 710,
+                PositionY = 460,
+                InnerHTML = ""
+            });
 
             ViewData["Tiles"] = appTiles;
             return View();

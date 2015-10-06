@@ -21,10 +21,12 @@
 {
     <div class="appPanel" style="width: @(app.TileWidth*120)px; height: @(app.TileHeight*120)px; left: @(app.PositionX)px; top: @(app.PositionY)px;">
         <div class="appPanelContents appColor@(app.Color)">
-            <div class="appIcon">
-                <i class="fa @(app.Icon)"></i>
+            <div class="appPanelHeader">
+                <div class="appIcon">
+                    <i class="fa @(app.Icon)"></i>
+                </div>
+                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@app.Name</div>
             </div>
-            <div class="appTitle">@app.Name</div>
             @Html.Raw(app.InnerHTML)
         </div>
     </div>

@@ -17,6 +17,9 @@ body {
     font-size: 14px;
     display: inline-block;
 }
+.appPanelHeader {
+    height: 36px;
+}
 .appPanelContents {
     font-family: RweTextMedium;
     width: 100%;
@@ -40,6 +43,10 @@ body {
 .appPanel .largeFont {
     font-size: 22px;
 }
+.appPanel hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 .appPanel .highlight {
     font-weight: bold;
 }
@@ -59,6 +66,9 @@ body {
     background: -moz-linear-gradient(bottom, #87ba15, #019a32);
     background: linear-gradient(to bottom, #87ba15, #019a32);
     color: white;
+}
+.appColor1 .highlight {
+    color: #ffdf00;
 }
 .appColor2 {
     background: -webkit-linear-gradient(top, #c3dc89, #8aba18);
