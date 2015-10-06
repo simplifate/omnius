@@ -154,7 +154,8 @@ namespace Entitron.Sql
 
             // save param
             _params[key] = value;
-            _datatypes[key] = new SqlParameter("to koukáš, co?", value).SqlDbType.ToString();
+            var a = new SqlParameter("to koukáš, co?", value);
+            _datatypes[key] = (a.Size != 0) ? string.Format("{0}({1})", a.SqlDbType.ToString(), (a.Size != -1) ? a.Size.ToString() : "MAX") : a.SqlDbType.ToString();
 
             // return new key
             return key;
