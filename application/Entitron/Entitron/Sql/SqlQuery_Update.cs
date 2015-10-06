@@ -21,17 +21,16 @@ namespace Entitron.Sql
             Dictionary<DBColumn, string> values = safeAddParam(rowSelect);
             Dictionary<DBColumn, string> parChanges = safeAddParam(changes);
 
+
             _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('UPDATE ', @realTableName, ' SET {2} WHERE {3};')" +
-                "exec sp_executesql @sql, N'{4}, {5}', {6}, {7};",
+                "exec sp_executesql @sql, N'{4}', {5};",
                 parAppName, parTableName,
                 string.Join(", ", parChanges.Select(pair => pair.Key.Name + "= @" + pair.Value)),
                 string.Join(" AND ", values.Select(s => s.Key.Name + "= @" + s.Value)),
-                string.Join(", ", parChanges.Select(pair =>"@" + pair.Key.getShortSqlDefinition())),
-                string.Join(", ", values.Select(s => "@" + s.Key.getShortSqlDefinition())),
-                string.Join(", ", parChanges.Select(pair => "@" + pair.Value)),
-                string.Join(", ", values.Select(s => "@" + s.Value))
+                string.Join(", ", _datatypes.Select(s=>"@" + s.Key +" " + s.Value )),
+                string.Join(", ", _datatypes.Select(s=>"@" + s.Key))
                 );
 
             base.BaseExecution(transaction);

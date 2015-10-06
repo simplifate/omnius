@@ -23,8 +23,8 @@ namespace Entitron.Sql
                 "exec sp_executesql @sql, N'{3}', {4};" 
                 , parAppName,parTableName,
                 string.Join(" AND ", values.Select(s=>s.Key.Name + "= @" + s.Value)),
-                string.Join(", ", values.Select(s=>"@" + s.Key.getShortSqlDefinition())),
-                string.Join(", ", values.Select(s=>"@" + s.Value))
+                string.Join(", ", _datatypes.Select(s => "@" + s.Key + " " + s.Value)),
+                string.Join(", ", _datatypes.Select(s => "@" + s.Key))
                 
             );
 

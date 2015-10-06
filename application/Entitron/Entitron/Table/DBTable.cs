@@ -167,10 +167,25 @@ namespace Entitron
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
             Dictionary<DBColumn,object> row = new Dictionary<DBColumn, object>();
-            foreach (DBColumn column in columns)
+
+            if (getPrimaryColumns() != null)
             {
-                data.Add(column, item[column.Name]);
-                row.Add(column,selectRow[column.Name]);
+                foreach (DBColumn column in columns)
+                {
+                    data.Add(column, item[column.Name]);
+                }
+                foreach (DBColumn pkColum in getPrimaryColumns())
+                {
+                    row.Add(pkColum, selectRow[pkColum.Name]);
+                }
+            }
+            else if(getPrimaryColumns()==null)
+            {
+                foreach (DBColumn column in columns)
+                {
+                    data.Add(column, item[column.Name]);
+                    row.Add(column, selectRow[column.Name]);
+                }
             }
 
             queries.Add(new SqlQuery_Update()
@@ -186,12 +201,22 @@ namespace Entitron
         public DBTable Remove(DBItem item)
         {
             Dictionary<DBColumn, object> columnValueCondition = new Dictionary<DBColumn, object>();
-            foreach(DBColumn primaryColumn in getPrimaryColumns())
+            
+            if (getPrimaryColumns() != null)
             {
-                columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
+                foreach (DBColumn primaryColumn in getPrimaryColumns())
+                {
+                    columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
+                }
+            }
+            else
+            {
+                foreach (DBColumn column in columns)
+                {
+                    columnValueCondition.Add(column, item[column.Name]);
+                }
             }
             
-
             queries.Add(new SqlQuery_Delete()
             {
                 applicationName = ApplicationName,

@@ -23,7 +23,7 @@ namespace Entitron.Sql
                 "DECLARE @realTableName NVARCHAR(50),@fullOriginName NVARCHAR(100);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @fullOriginName = CONCAT(@realTableName, '.', @{2});" +
                 "exec sp_RENAME @fullOriginName, @{3}, 'COLUMN';",
-                parAppName, tableName, parOriginName, parNewName);
+                parAppName, parTableName, parOriginName, parNewName);
 
             base.BaseExecution(connection);
         }

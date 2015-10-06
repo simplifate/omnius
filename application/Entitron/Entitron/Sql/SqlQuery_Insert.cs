@@ -22,12 +22,13 @@ namespace Entitron.Sql
             _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('INSERT INTO ', @realTableName, ' ({2}) VALUES ({3}) ;');" +
-                "exec sp_executesql @sql, N'{4}', {3};",
+                "exec sp_executesql @sql, N'{4}', {5};",
                 parAppName, // 0
                 parTableName, // 1
                 string.Join(", ", values.Select(pair => "[" + pair.Key.Name + "]")), // 2
                 string.Join(", ", values.Select(pair => "@" + pair.Value)), // 3
-                string.Join(", ", values.Select(pair => "@" + pair.Key.getShortSqlDefinition())) // 4
+                string.Join(", ", _datatypes.Select(s => "@" + s.Key + " " + s.Value)),
+                string.Join(", ", _datatypes.Select(s => "@" + s.Key))
                 );
             
             base.BaseExecution(transaction);
