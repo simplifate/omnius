@@ -83,13 +83,20 @@ namespace FSPOC.Controllers
                 Icon = "fa-line-chart",
                 PositionX = 230,
                 PositionY = 100,
-                InnerHTML = "<svg width=\"430\" height=\"400\"><path d=\"M 0 100 L 430 100\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
-                    + "<path d=\"M 0 10 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                InnerHTML = "<svg width=\"430\" height=\"400\">"
+                    + "<path d=\"M 0 100 L 430 100\"  stroke=\"#53ccff\" stroke-width=\"1\" stroke-opacity=\"0.50\" fill=\"none\" />"
                     + "<path d=\"M 0 200 L 430 200\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
-                    + "<path d=\"M 0 300 L 430 300\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
-                    + "<path d=\"M 0 400 L 430 400\"  stroke=\"#53ccff\" stroke-width=\"3\" fill=\"none\" />"
-                    + "<path d=\"M 0 400 L 0 10\"  stroke=\"#53ccff\" stroke-width=\"3\" fill=\"none\" />"
-                    + "<path d=\"M 430 400 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 300 L 430 300\"  stroke=\"#53ccff\" stroke-width=\"1\" stroke-opacity=\"0.50\" fill=\"none\" />"
+                    + "<path d=\"M 100 10 L 100 400\"  stroke=\"#53ccff\" stroke-width=\"1\" stroke-opacity=\"0.50\"  fill=\"none\" />"
+                    + "<path d=\"M 200 10 L 200 400\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 300 10 L 300 400\"  stroke=\"#53ccff\" stroke-width=\"1\" stroke-opacity=\"0.50\" fill=\"none\" />"
+                    + "<path d=\"M 400 10 L 400 400\"  stroke=\"#53ccff\" stroke-width=\"1\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 50 350 L 100 320 L 150 200 L 200 340 L 250 260 L 300 190 L 350 230 L 400 110 L 429 50 L 429 400 Z\" "
+                    + "stroke=\"none\" fill=\"#000020\" fill-opacity=\"0.45\"/>"
+                    + "<path d=\"M 0 10 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"2\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 0 10\"  stroke=\"#53ccff\" stroke-width=\"2\" fill=\"none\" />"
+                    + "<path d=\"M 0 400 L 430 400\"  stroke=\"#53ccff\" stroke-width=\"2\" fill=\"none\" />"
+                    + "<path d=\"M 430 400 L 430 10\"  stroke=\"#53ccff\" stroke-width=\"2\" fill=\"none\" />"
                     + "<path d=\"M 0 400 L 50 350 L 100 320 L 150 200 L 200 340 L 250 260 L 300 190 L 350 230 L 400 110 L 429 50\" "
                     + "stroke=\"#ffdf00\" stroke-width=\"4\" fill=\"none\" /></svg>"
             });
