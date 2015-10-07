@@ -166,26 +166,15 @@ namespace Entitron
         public DBTable Update(DBItem item, DBItem selectRow )
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
-            Dictionary<DBColumn,object> row = new Dictionary<DBColumn, object>();
+            Dictionary<DBColumn, object> row = new Dictionary<DBColumn, object>();
 
-            if (getPrimaryColumns() != null)
+            foreach (DBColumn column in columns)
             {
-                foreach (DBColumn column in columns)
-                {
-                    data.Add(column, item[column.Name]);
-                }
-                foreach (DBColumn pkColum in getPrimaryColumns())
-                {
-                    row.Add(pkColum, selectRow[pkColum.Name]);
-                }
+                data.Add(column, item[column.Name]);
             }
-            else if(getPrimaryColumns()==null)
+            foreach (DBColumn pkColum in getPrimaryColumns())
             {
-                foreach (DBColumn column in columns)
-                {
-                    data.Add(column, item[column.Name]);
-                    row.Add(column, selectRow[column.Name]);
-                }
+                row.Add(pkColum, selectRow[pkColum.Name]);
             }
 
             queries.Add(new SqlQuery_Update()
@@ -201,22 +190,12 @@ namespace Entitron
         public DBTable Remove(DBItem item)
         {
             Dictionary<DBColumn, object> columnValueCondition = new Dictionary<DBColumn, object>();
-            
-            if (getPrimaryColumns() != null)
+
+            foreach (DBColumn primaryColumn in getPrimaryColumns())
             {
-                foreach (DBColumn primaryColumn in getPrimaryColumns())
-                {
-                    columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
-                }
+                columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
             }
-            else
-            {
-                foreach (DBColumn column in columns)
-                {
-                    columnValueCondition.Add(column, item[column.Name]);
-                }
-            }
-            
+
             queries.Add(new SqlQuery_Delete()
             {
                 applicationName = ApplicationName,

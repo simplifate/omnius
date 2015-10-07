@@ -10,7 +10,7 @@ namespace Entitron.Sql
     class SqlQueue
     {
         public string connectionString;
-        private List<SqlQuery> _queries = new List<SqlQuery>();
+        internal static List<SqlQuery> _queries = new List<SqlQuery>();
 
         public SqlQueue Add(SqlQuery query)
         {

@@ -19,12 +19,16 @@ namespace Entitron
 
             foreach (DBItem i in query.ExecuteWithRead())
             {
-                DBIndex index = new DBIndex()
+                if (i["IndexName"].GetType() != typeof (DBNull))
                 {
-                    table = _table,
-                    indexName = (string)i["IndexName"]
-                };
-                Add(index);
+                    DBIndex index = new DBIndex()
+                    {
+                        table = _table,
+                        indexName = (string)i["IndexName"]
+                    };
+                    Add(index);
+                }
+                    
             }
         }
 

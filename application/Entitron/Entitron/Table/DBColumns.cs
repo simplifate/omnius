@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Entitron.Sql;
 
@@ -53,7 +54,6 @@ namespace Entitron
             bool allowColumnLength,
             int? maxLength = null,
             bool canBeNull = true,
-            bool isPrimaryKey = false,
             bool isUnique = false,
             string additionalOptions = null)
         {
@@ -63,7 +63,6 @@ namespace Entitron
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
@@ -110,7 +109,6 @@ namespace Entitron
             bool allowColumnLength,
             int? maxLength = null,
             bool canBeNull = true,
-            bool isPrimaryKey = false,
             bool isUnique = false,
             string additionalOptions = null)
         {
@@ -120,7 +118,6 @@ namespace Entitron
                 type = type,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
@@ -137,6 +134,21 @@ namespace Entitron
 
             Remove(this.SingleOrDefault(c => c.Name == columnName));
             return _table;
+        }
+
+        public static List<string> getStringDataType()
+        {
+            List<string> stringsDataType = new List<string>();
+
+           SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
+
+            foreach (DBItem s in query.ExecuteWithRead())
+            {
+                string type = s["name"].ToString();
+                stringsDataType.Add(type);
+            }
+
+            return stringsDataType;
         }
     }
 }

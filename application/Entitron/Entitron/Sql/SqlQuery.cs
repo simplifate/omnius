@@ -80,6 +80,7 @@ namespace Entitron.Sql
                     cmd.ExecuteNonQuery();
                 }
                 else
+                    SqlQueue._queries.Clear();
                     Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
             }
         }

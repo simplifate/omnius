@@ -14,7 +14,6 @@ namespace Entitron
         public bool allowColumnLength { get; set; }
         public int? maxLength { get; set; }
         public bool canBeNull { get; set; }
-        public bool isPrimaryKey { get; set; }
         public bool isUnique { get; set; }
         public string additionalOptions = "";
 
@@ -28,7 +27,6 @@ namespace Entitron
                     (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : "",
                     (canBeNull==true) ? "NULL" : "NOT NULL",
                     (isUnique == true) ? "UNIQUE" : "",
-                    (isPrimaryKey == true) ? "PRIMARY KEY" : "",
                     additionalOptions
                     );
         }

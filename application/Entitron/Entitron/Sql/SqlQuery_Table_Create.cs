@@ -14,8 +14,18 @@ namespace Entitron.Sql
 
         public SqlQuery_Table_Create AddColumn(DBColumn column)
         {
+
             if (!_columns.Any(c => c.Name == column.Name))
                 _columns.Add(column);
+
+            foreach (string s in DBColumns.getStringDataType())
+            {
+                if (column.type.ToLower() == s)
+                {
+                    column.allowColumnLength = true;
+                    break;
+                }
+            }
 
             return this;
         }
@@ -36,7 +46,6 @@ namespace Entitron.Sql
                 allowColumnLength = allowColumnLength,
                 maxLength = maxLength,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
