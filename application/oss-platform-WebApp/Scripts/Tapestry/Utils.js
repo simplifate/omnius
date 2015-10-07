@@ -21,10 +21,14 @@
 }
 
 function AddToJsPlumb(instance, item) {
-    instance.draggable(item, { containment: "parent" });
-    itemId = $(item).attr("id");
-
     if ($(item).hasClass("decisionRhombus")) {
+        $(item).draggable({
+            containment: "parent",
+            drag: function () {
+                instance.repaintEverything();
+            }
+        });
+        itemId = $(item).attr("id");
         instance.addEndpoint(itemId, yesEndpoint, {
             anchor: "RightMiddle", uuid: itemId + "RightMiddle"
         });
@@ -33,6 +37,8 @@ function AddToJsPlumb(instance, item) {
         });
     }
     else {
+        instance.draggable(item, { containment: "parent" });
+        itemId = $(item).attr("id");
         instance.addEndpoint(itemId, sourceEndpoint, {
             anchor: "RightMiddle", uuid: itemId + "RightMiddle"
         });

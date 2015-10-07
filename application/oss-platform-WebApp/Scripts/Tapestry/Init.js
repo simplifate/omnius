@@ -25,19 +25,24 @@
                 droppedElement.appendTo(this);
                 leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
                 topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
-                droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 })
-                droppedElement.removeClass("menuItem");
-                droppedElement.addClass("item");
-                AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
+                if (droppedElement.hasClass("operator")) {
+                    newOperator = $('<div id="newOperator" class="decisionRhombus"><svg width="70" height="60">'
+                      + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                    newOperator.appendTo(this);
+                    newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                    droppedElement.remove();
+                    AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
+                }
+                else {
+                    droppedElement.removeClass("menuItem");
+                    droppedElement.addClass("item");
+                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                    AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
+                }
             }
         });
     });
-    $(".blockPanel").resizable({
-        resize: function (event, ui) {
-            $("#rolesPanel").css("left", $("#upperVerticalDivider").position.left);
-            $("#statesPanel").css("left", $("#lowerVerticalDivider").position.left);
-        }
-    });
+    $(".blockPanel").resizable();
     $(".rule").resizable();
     $(".rule").draggable({ handle: ".ruleHeader" });
     $("#upperVerticalDivider").draggable({
@@ -48,12 +53,31 @@
             $("#rolesPanel").css("left", 728 + shift);
         }
     });
-    $("#lowerVerticalDivider").draggable({
+    $("#lowerLeftVerticalDivider").draggable({
         axis: "x",
         drag: function (event, ui) {
             shift = ui.position.left - 722;
+            dividerDistance = parseInt($("#lowerRightVerticalDivider").css("left")) - ui.position.left;
             $("#viewsPanel").width(676 + shift);
+            $("#statesPanel").width(dividerDistance - 52);
             $("#statesPanel").css("left", 728 + shift);
+        }
+    });
+    $("#lowerRightVerticalDivider").draggable({
+        axis: "x",
+        drag: function (event, ui) {
+            shift = ui.position.left - 1170;
+            dividerDistance = ui.position.left - parseInt($("#lowerLeftVerticalDivider").css("left"));
+            $("#statesPanel").width(dividerDistance - 52);
+            $("#portsPanel").css("left", 1176 + shift);
+        }
+    });
+    $("#rightHorizontalDivider").draggable({
+        axis: "y",
+        drag: function (event, ui) {
+            shift = ui.position.top - 587;
+            $("#actionsPanel").height(548 + shift);
+            $("#operatorsPanel").css("top", 598 + shift);
         }
     });
     $(".menuItem").draggable({
@@ -62,7 +86,7 @@
         revert: true
     });
     $.contextMenu({
-        selector: '.rule .item',
+        selector: '.rule .item, .rule .decisionRhombus',
         trigger: 'right',
         zIndex: 300,
         callback: function (key, options) {
@@ -105,11 +129,20 @@
             droppedElement.appendTo(this);
             leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
             topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
-            droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 })
-            droppedElement.removeClass("menuItem");
-            droppedElement.addClass("item");
-            AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
+            if (droppedElement.hasClass("operator")) {
+                newOperator = $('<div id="newOperator" class="decisionRhombus"><svg width="70" height="60">'
+                  + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                newOperator.appendTo(this);
+                newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                droppedElement.remove();
+                AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
+            }
+            else {
+                droppedElement.removeClass("menuItem");
+                droppedElement.addClass("item");
+                droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
+            }
         }
     });
-    $(".decisionRhombus").draggable();
 });

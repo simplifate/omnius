@@ -47,14 +47,32 @@
     position: absolute;
     right: 0px;
     top: 0px;
-    bottom: 0px;
+    height: 560px;
     background-color: #cbffff;
     border: 1px solid #7effff;
     color: #007f7f;
     width: 240px;
     margin: 20px; 
+    padding: 5px 10px;
+    font-size: 1.5em;
+}
+#operatorsPanel {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    top: 598px;
+    background-color: #98c3ec;
+    border: 1px solid #41719C;
+    color: #41719C;
+    width: 240px;
+    margin: 20px; 
     padding: 5px 10px; 
     font-size: 1.5em;
+}
+#operatorsPanel .operator {
+    background-color: #4f88bb; 
+    border: 1px solid #41719c; 
+    color: white;
 }
 #rolesPanel {
     position: absolute;
@@ -71,8 +89,8 @@
 #statesPanel {
     position: absolute;
     bottom: 0px;
-    right: 270px;
     left: 906px;
+    width: 240px;
     background-color: #dae2f3; 
     border: 1px solid #b5c6e7; 
     color: #90aadb;
@@ -80,6 +98,24 @@
     margin: 20px; 
     padding: 5px 10px;
     font-size: 1.5em;
+}
+#portsPanel {
+    position: absolute;
+    bottom: 0px;
+    right: 270px;
+    left: 1176px;
+    background-color: #ffc49c; 
+    border: 1px solid #c55a11; 
+    color: #c55a11;
+    height: 110px;
+    margin: 20px; 
+    padding: 5px 10px;
+    font-size: 1.5em;
+}
+#portsPanel .port {
+    background-color: #c55a11; 
+    border: 1px solid #833c0b; 
+    color: white;
 }
 #attributesPanel .attribute {
     background-color: #ff99ff; 
@@ -156,6 +192,11 @@
 .rule .state {
     background-color: #90aadb; 
     border: 1px solid #305497; 
+    color: white;
+}
+.rule .port {
+    background-color: #c55a11; 
+    border: 1px solid #833c0b; 
     color: white;
 }
 .ruleHeader {
@@ -269,7 +310,7 @@
     height: 100px;
     cursor: ew-resize;
 }
-#lowerVerticalDivider {
+#lowerLeftVerticalDivider {
     position: absolute;
     left: 900px;
     bottom: 20px;
@@ -277,11 +318,33 @@
     height: 110px;
     cursor: ew-resize;
 }
-.dividerBar {
+#lowerRightVerticalDivider {
+    position: absolute;
+    left: 1170px;
+    bottom: 20px;
+    width: 23px;
+    height: 110px;
+    cursor: ew-resize;
+}
+#rightHorizontalDivider {
+    position: absolute;
+    top: 587px;
+    right: 20px;
+    width: 240px;
+    height: 23px;
+    cursor: ns-resize;
+}
+.verticalDividerBar {
     background-color: darkgrey;
     width: 3px;
     height: 100%;
     margin: 0px 10px;
+}
+.horizontalDividerBar {
+    background-color: darkgrey;
+    height: 3px;
+    width: 100%;
+    margin: 10px 0px;
 }
 .highlightedRow {
     background-color: lightblue !important;

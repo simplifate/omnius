@@ -33,23 +33,25 @@
         height: 550,
         buttons: {
             "Add": function () {
-                addActionDialog_SubmitData();
+                addActionsDialog_SubmitData();
             },
             Cancel: function () {
-                addActionDialog.dialog("close");
+                addActionsDialog.dialog("close");
             }
+        },
+        create: function() {
+            $(document).on("click", "tr.actionRow", function (event) {
+                $(this).toggleClass("highlightedRow");
+            });
         },
         open: function (event, ui) {
             $(this).find("#action-table:first tbody:nth-child(2) tr").remove();
             tbody = $(this).find("#action-table tbody:nth-child(2)");
             for (i = 1; i <= 10; i++)
                 tbody.append($('<tr class="actionRow formRow"><td>' + 'Action' + i + '</td></tr>'));
-            $(document).on("click", "tr.actionRow", function (event) {
-                $(this).toggleClass("highlightedRow");
-            });
         }
     });
-    function addActionDialog_SubmitData() {
+    function addActionsDialog_SubmitData() {
         somethingWasAdded = false;
         addActionsDialog.find("#action-table:first tbody:nth-child(2) tr").each(function (index, element) {
             if ($(element).hasClass("highlightedRow")) {
