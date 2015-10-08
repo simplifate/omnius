@@ -71,6 +71,7 @@
     <Compile Include="Sql\SqlQuery_Select_TableList.cs" />
     <Compile Include="Sql\SqlQuery_Table_Create.cs" />
     <Compile Include="Sql\SqlQuery_Table_Drop.cs" />
+    <Compile Include="Sql\SqlQuery_Table_exists.cs" />
     <Compile Include="Sql\SqlQuery_Table_GetPrimaryKey.cs" />
     <Compile Include="Sql\SqlQuery_Table_Rename.cs" />
     <Compile Include="Sql\SqlQuery_UniqueAdd.cs" />

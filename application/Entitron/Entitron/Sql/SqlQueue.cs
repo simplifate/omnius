@@ -18,15 +18,25 @@ namespace Entitron.Sql
 
             return this;
         }
-        public SqlQuery_Table_Create GetCreate(string tableName)
+        public T GetQuery<T>(string tableName) where T : SqlQuery_withApp
         {
-            foreach(SqlQuery query in _queries)
+            return (T)_queries.FirstOrDefault(q => q is T && (q as T).tableName == tableName);
+        }
+        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withApp
+        {
+            List<T> output = new List<T>();
+            for(int i = 0; i < _queries.Count; i++)
             {
-                if (query is SqlQuery_Table_Create && (query as SqlQuery_Table_Create).tableName == tableName)
-                    return (SqlQuery_Table_Create)query;
+                SqlQuery q = _queries[i];
+                if (q is T && (q as T).tableName == tableName)
+                {
+                    output.Add((T)q);
+                    _queries.RemoveAt(i);
+                    i--;
+                }
             }
 
-            return null;
+            return output;
         }
 
         public void ExecuteAll()

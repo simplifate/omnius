@@ -16,25 +16,29 @@ namespace Entitron
         {
             _table = table;
 
-            SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
-            
-            foreach(DBItem i in query.ExecuteWithRead())
+            // if table exists - get columns
+            if (_table.isInDB())
             {
-                DBColumn column = new DBColumn()
+                SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
+
+                foreach (DBItem i in query.ExecuteWithRead())
                 {
-                    Name = (string)i["name"],
-                    type = (string)i["typeName"],
-                    maxLength = Convert.ToInt32((Int16)i["max_length"]),
-                    canBeNull = (bool)i["is_nullable"]
-                };
-                Add(column);
+                    DBColumn column = new DBColumn()
+                    {
+                        Name = (string)i["name"],
+                        type = (string)i["typeName"],
+                        maxLength = Convert.ToInt32((Int16)i["max_length"]),
+                        canBeNull = (bool)i["is_nullable"]
+                    };
+                    Add(column);
+                }
             }
         }
 
         public DBTable AddToDB(DBColumn column)
         {
-            SqlQuery_Table_Create query;
-            if ((query = DBTable.queries.GetCreate(table.tableName)) != null)
+            SqlQuery_Table_Create query = DBTable.queries.GetQuery<SqlQuery_Table_Create>(table.tableName);
+            if (query != null)
                 query.AddColumn(column);
             else
                 DBTable.queries.Add(new SqlQuery_Column_Add()
@@ -44,7 +48,7 @@ namespace Entitron
                     column = column
                 });
 
-            this.Add(column);
+            Add(column);
 
             return _table;
         }
@@ -140,7 +144,7 @@ namespace Entitron
         {
             List<string> stringsDataType = new List<string>();
 
-           SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
+            SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
 
             foreach (DBItem s in query.ExecuteWithRead())
             {

@@ -16,31 +16,34 @@ namespace Entitron
         {
             _table = table;
 
-            SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { applicationName = table.AppName, tableName = table.tableName };
-
-            foreach (DBItem i in query.ExecuteWithRead())
+            if (_table.isInDB())
             {
-                DBForeignKey fk = new DBForeignKey();
-                fk.name = (string)i["name"];
+                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { applicationName = table.AppName, tableName = table.tableName };
 
-                // is source table
-                if (table.tableName == (string)i["sourceTable"])
+                foreach (DBItem i in query.ExecuteWithRead())
                 {
-                    fk.sourceTable = (string)i["sourceTable"];
-                    fk.targetTable = (string)i["targetTable"];
-                    fk.sourceColumn = (string)i["sourceColumn"];
-                    fk.targetColumn = (string)i["targetColumn"];
-                }
-                // is target table
-                else
-                {
-                    fk.sourceTable = (string)i["targetTable"];
-                    fk.targetTable = (string)i["sourceTable"];
-                    fk.sourceColumn = (string)i["targetColumn"];
-                    fk.targetColumn = (string)i["sourceColumn"];
-                }
+                    DBForeignKey fk = new DBForeignKey();
+                    fk.name = (string)i["name"];
 
-                Add(fk);
+                    // is source table
+                    if (table.tableName == (string)i["sourceTable"])
+                    {
+                        fk.sourceTable = (string)i["sourceTable"];
+                        fk.targetTable = (string)i["targetTable"];
+                        fk.sourceColumn = (string)i["sourceColumn"];
+                        fk.targetColumn = (string)i["targetColumn"];
+                    }
+                    // is target table
+                    else
+                    {
+                        fk.sourceTable = (string)i["targetTable"];
+                        fk.targetTable = (string)i["sourceTable"];
+                        fk.sourceColumn = (string)i["targetColumn"];
+                        fk.targetColumn = (string)i["sourceColumn"];
+                    }
+
+                    Add(fk);
+                }
             }
         }
 

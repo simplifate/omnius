@@ -18,13 +18,25 @@ namespace Entitron
         }
         public static DBTable GetTable(string name)
         {
-            return new DBTable() { tableName = name };
+            SqlQuery_Table_exists query = new SqlQuery_Table_exists()
+            {
+                applicationName = ApplicationName,
+                tableName = name
+            };
+
+            // if table exists
+            if (query.ExecuteWithRead() != null)
+            {
+                return new DBTable(name);
+            }
+
+            return null;
         }
         public static List<DBTable> GetAll()
         {
             List<DBItem> items = (new SqlQuery_Select_TableList() { ApplicationName = ApplicationName }).ExecuteWithRead();
             
-            return items.Select(i => new DBTable() { tableName = (string)i["Name"] }).ToList();
+            return items.Select(i => new DBTable((string)i["Name"])).ToList();
         }
         public static void SaveChanges()
         {
@@ -37,6 +49,8 @@ namespace Entitron
         }
         public static string ApplicationName;
         #endregion
+
+        private string _tableNameInDB;
 
         public string tableName { get; set; }
         public string AppName { get; set; }
@@ -103,9 +117,12 @@ namespace Entitron
             return output;
         }
 
-        public DBTable()
+        public DBTable(string tableNameInDB = null)
         {
+            _tableNameInDB = tableNameInDB;
             AppName = ApplicationName;
+
+            tableName = _tableNameInDB;
         }
 
         public DBTable Create()
@@ -116,10 +133,18 @@ namespace Entitron
                 tableName = tableName
             };
 
+            // add columns from queries
+            foreach(SqlQuery_Column_Add columnQuery in queries.GetAndRemoveQueries<SqlQuery_Column_Add>(tableName))
+            {
+                query.AddColumn(columnQuery.column);
+            }
+            
+            // add columns from list
             foreach(DBColumn column in columns)
             {
                 query.AddColumn(column);
             }
+
             queries.Add(query);
 
             return this;
@@ -144,6 +169,13 @@ namespace Entitron
             });
 
             return this;
+        }
+        public bool isInDB()
+        {
+            if (string.IsNullOrWhiteSpace(AppName) || string.IsNullOrWhiteSpace(tableName))
+                return false;
+
+            return (_tableNameInDB != null);
         }
 
         public DBTable Add(DBItem item)
