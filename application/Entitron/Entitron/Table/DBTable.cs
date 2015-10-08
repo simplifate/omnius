@@ -249,11 +249,27 @@ namespace Entitron
 
         public void AddPrimaryKey(List<string> primaryKey)
         {
+            bool isClusterAlreadyCreate = false;
+
+            if (indices != null)
+            {
+                foreach (DBIndex index in indices)
+                {
+                    if (index.indexName == "index_" + AppName + tableName)
+                    {
+                        isClusterAlreadyCreate = true;
+                        break;
+
+                    }
+                }
+            }
+         
             queries.Add(new SqlQuery_PrimaryKeyAdd()
             {
                 applicationName = AppName,
                 tableName = tableName,
-                keyColumns = primaryKey
+                keyColumns = primaryKey,
+                isClusterCreated = isClusterAlreadyCreate
             });
         }
         public void DropPrimaryKey()

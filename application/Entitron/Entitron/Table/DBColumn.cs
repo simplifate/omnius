@@ -21,7 +21,7 @@ namespace Entitron
         {
             return
                 string.Format(
-                    "{0} {1}{2} {3} {4} {5} {6}",
+                    "{0} {1}{2} {3} {4} {5}",
                     Name,
                     type,
                     (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : "",

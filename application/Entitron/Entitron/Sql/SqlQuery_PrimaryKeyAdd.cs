@@ -9,7 +9,8 @@ namespace Entitron.Sql
     class SqlQuery_PrimaryKeyAdd : SqlQuery_withApp
     {
         public List<string> keyColumns { get; set; }
-        
+        public bool isClusterCreated { get; set; }
+
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             if (keyColumns == null || keyColumns.Count < 1)
@@ -19,12 +20,26 @@ namespace Entitron.Sql
             string parTableName = safeAddParam("tableName", tableName);
             string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
 
-            _sqlString = string.Format(
+            if (isClusterCreated != true)
+            {
+                _sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY (', @{2}, ');')" +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' , " +
+                "' CREATE CLUSTERED INDEX index_', @{0}, @{1} , ' ON ', @realTableName, '(', @{2},');');" +
                 "exec (@sql)",
                 parAppName, parTableName, parColumns);
-            
+            }
+            else
+            {
+                _sqlString = string.Format(
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' );" +
+                "exec (@sql)",
+                parAppName, parTableName, parColumns);
+
+            }
+
+
             base.BaseExecution(transaction);
         }
 
