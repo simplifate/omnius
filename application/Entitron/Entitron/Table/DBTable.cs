@@ -285,5 +285,27 @@ namespace Entitron
         {
             return tableName;
         }
+
+        public void DisableConstraint(string constraintName)
+        {
+            queries.Add(new SqlQuery_ConstraintDisabled()
+            {
+                applicationName = AppName,
+                tableName = tableName,
+                constraintName = constraintName
+            });
+        }
+
+        public List<string> getConstraints()
+        {
+            SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains();
+            List<string> constraints=new List<string>();
+
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                constraints.Add(i["name"].ToString());
+            }
+            return constraints;
+        } 
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="Sql\SqlInitScript.cs" />
     <Compile Include="Sql\SqlQuery_CheckAdd.cs" />
     <Compile Include="Sql\SqlQuery_CheckDrop.cs" />
+    <Compile Include="Sql\SqlQuery_ConstraintDisabled.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_IndexCreate.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Sql\SqlQuery_PrimaryKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_Select.cs" />
     <Compile Include="Sql\SqlQuery_Selectable.cs" />
+    <Compile Include="Sql\SqlQuery_SelectConstrains.cs" />
     <Compile Include="Sql\SqlQuery_SelectFogreignKeys.cs" />
     <Compile Include="Sql\SqlQuery_SelectIndexes.cs" />
     <Compile Include="Sql\SqlQuery_SelectStringsTypes.cs" />

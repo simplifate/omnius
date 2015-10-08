@@ -9,7 +9,7 @@ namespace Entitron
 {
     public class DBColumns : List<DBColumn>
     {
-        public DBTable table { get { return _table; }  }
+        public DBTable table { get { return _table; } }
         private DBTable _table { get; set; }
 
         public DBColumns(DBTable table)
@@ -73,7 +73,7 @@ namespace Entitron
         }
         public DBTable AddRangeToDB(DBColumns columns)
         {
-            foreach(DBColumn column in columns)
+            foreach (DBColumn column in columns)
             {
                 Add(column);
             }
@@ -103,7 +103,7 @@ namespace Entitron
                 tableName = table.tableName,
                 column = column
             };
-            
+
             this[this.IndexOf(c => c.Name == column.Name)] = column;
             return _table;
         }
@@ -143,15 +143,12 @@ namespace Entitron
         public static List<string> getStringDataType()
         {
             List<string> stringsDataType = new List<string>();
-
             SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
 
             foreach (DBItem s in query.ExecuteWithRead())
             {
-                string type = s["name"].ToString();
-                stringsDataType.Add(type);
+                stringsDataType.Add(s["name"].ToString());
             }
-
             return stringsDataType;
         }
     }
