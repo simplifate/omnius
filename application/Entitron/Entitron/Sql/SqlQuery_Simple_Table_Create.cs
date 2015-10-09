@@ -28,8 +28,11 @@ namespace Entitron.Sql
         public SqlQuery_Simple_Table_Create AddColumn(
             string columnName, 
             string type, 
-            bool allowColumnLength, 
-            int? maxLength = null, 
+            bool allowColumnLength,
+            bool allowPrecisionScale,
+            int? maxLength = null,
+            int? precision = null,
+            int? scale = null,
             bool canBeNull = true,
             bool isPrimaryKey = false,
             bool isUnique = false,
@@ -40,7 +43,10 @@ namespace Entitron.Sql
                 Name = columnName,
                 type = type,
                 allowColumnLength = allowColumnLength,
+                allowPrecisionScale = allowPrecisionScale,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
                 additionalOptions = additionalOptions
             });

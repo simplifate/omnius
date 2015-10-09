@@ -15,10 +15,10 @@ namespace Entitron.Sql
 
             _sqlString = string.Format(
                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-               "SET @sql= CONCAT(SELECT kc.name name FROM sys.key_constraints kc INNER JOIN sys.tables t ON kc.object_id=t.object_id UNION " +
+               "SET @sql= CONCAT('SELECT kc.name name FROM sys.key_constraints kc INNER JOIN sys.tables t ON kc.object_id=t.object_id UNION " +
                "SELECT fk.name name FROM sys.foreign_keys fk INNER JOIN sys.tables t ON fk.object_id=t.object_id UNION " +
                "SELECT i.name name FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id=t.object_id " +
-               "WHERE t.name = ,@realTableName;)" 
+               "WHERE t.name = ', @realTableName, ';');" 
                 );
 
             base.BaseExecution(transaction);

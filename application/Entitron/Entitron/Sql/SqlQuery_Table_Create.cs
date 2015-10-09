@@ -18,13 +18,17 @@ namespace Entitron.Sql
             if (!_columns.Any(c => c.Name == column.Name))
                 _columns.Add(column);
 
-            foreach (string s in DBColumns.getStringDataType())
+            foreach (string s in DBColumns.getMaxLenghtDataTypes())
             {
                 if (column.type.ToLower() == s)
                 {
                     column.allowColumnLength = true;
                     break;
                 }
+            }
+            if (column.type == SqlDbType.Decimal.ToString() || column.type == SqlDbType.Float.ToString())
+            {
+                column.allowPrecisionScale = true;
             }
 
             return this;
@@ -33,7 +37,10 @@ namespace Entitron.Sql
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision=null,
+            int? scale =null,
             bool canBeNull = true,
             bool isPrimaryKey = false,
             bool isUnique = false,
@@ -44,7 +51,10 @@ namespace Entitron.Sql
                 Name = columnName,
                 type = type,
                 allowColumnLength = allowColumnLength,
+                allowPrecisionScale = allowPrecisionScale,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions

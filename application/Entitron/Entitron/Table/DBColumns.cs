@@ -28,6 +28,8 @@ namespace Entitron
                         Name = (string)i["name"],
                         type = (string)i["typeName"],
                         maxLength = Convert.ToInt32((Int16)i["max_length"]),
+                        precision = Convert.ToInt32((Int16)i["precision"]),
+                        scale = Convert.ToInt32((Int16)i["scale"]),
                         canBeNull = (bool)i["is_nullable"]
                     };
                     Add(column);
@@ -56,7 +58,10 @@ namespace Entitron
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision = null,
+            int? scale = null,
             bool canBeNull = true,
             bool isUnique = false,
             string additionalOptions = null)
@@ -66,6 +71,8 @@ namespace Entitron
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
@@ -111,7 +118,10 @@ namespace Entitron
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision = null,
+            int? scale = null,
             bool canBeNull = true,
             bool isUnique = false,
             string additionalOptions = null)
@@ -121,6 +131,8 @@ namespace Entitron
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
@@ -140,16 +152,16 @@ namespace Entitron
             return _table;
         }
 
-        public static List<string> getStringDataType()
+        public static List<string> getMaxLenghtDataTypes()
         {
-            List<string> stringsDataType = new List<string>();
+            List<string> maxLenghtDataType = new List<string>();
             SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
 
             foreach (DBItem s in query.ExecuteWithRead())
             {
-                stringsDataType.Add(s["name"].ToString());
+                maxLenghtDataType.Add(s["name"].ToString());
             }
-            return stringsDataType;
+            return maxLenghtDataType;
         }
     }
 }

@@ -13,6 +13,9 @@ namespace Entitron
         public string type { get; set; }
         public bool allowColumnLength { get; set; }
         public int? maxLength { get; set; }
+        public bool allowPrecisionScale { get; set; }
+        public int? precision { get; set; }
+        public int? scale { get; set; }
         public bool canBeNull { get; set; }
         public bool isUnique { get; set; }
         public string additionalOptions = "";
@@ -24,7 +27,8 @@ namespace Entitron
                     "{0} {1}{2} {3} {4} {5}",
                     Name,
                     type,
-                    (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : "",
+                    (allowColumnLength) ? string.Format("({0})", (maxLength != null || maxLength>8000) ? maxLength.ToString() : "MAX") : "",
+                    (allowPrecisionScale) ? string.Format("({0}, {1})", (precision > 38) ? precision.ToString() : "38", (scale > 38) ? scale.ToString() : "38") : "", //avoiding that the value of precision or scale was greater than the range
                     (canBeNull==true) ? "NULL" : "NOT NULL",
                     (isUnique == true) ? "UNIQUE" : "",
                     additionalOptions

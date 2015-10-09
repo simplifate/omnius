@@ -296,6 +296,16 @@ namespace Entitron
             });
         }
 
+        public void EnableConstraint(string constraintName)
+        {
+            queries.Add(new SqlQuery_ConstraintEnable()
+            {
+                applicationName = AppName,
+                tableName = tableName,
+                constraintName = constraintName
+            });
+        }
+
         public List<string> getConstraints()
         {
             SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains();
