@@ -72,6 +72,7 @@
     <Compile Include="Sql\SqlQuery_SelectStringsTypes.cs" />
     <Compile Include="Sql\SqlQuery_Select_ColumnList.cs" />
     <Compile Include="Sql\SqlQuery_Select_TableList.cs" />
+    <Compile Include="Sql\SqlQuery_TableTruncate.cs" />
     <Compile Include="Sql\SqlQuery_Table_Create.cs" />
     <Compile Include="Sql\SqlQuery_Table_Drop.cs" />
     <Compile Include="Sql\SqlQuery_Table_exists.cs" />

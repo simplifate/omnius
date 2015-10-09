@@ -170,6 +170,16 @@ namespace Entitron
 
             return this;
         }
+        public DBTable Truncate()
+        {
+            queries.Add(new SqlQuery_TableTruncate()
+            {
+                applicationName = AppName,
+                tableName = tableName
+            });
+
+            return this;
+        }
         public bool isInDB()
         {
             if (string.IsNullOrWhiteSpace(AppName) || string.IsNullOrWhiteSpace(tableName))
