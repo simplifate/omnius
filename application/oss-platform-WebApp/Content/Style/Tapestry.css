@@ -104,11 +104,11 @@
     bottom: 0px;
     right: 270px;
     left: 1176px;
-    background-color: #ffc49c; 
-    border: 1px solid #c55a11; 
+    background-color: #ffc49c;
+    border: 1px solid #c55a11;
     color: #c55a11;
     height: 110px;
-    margin: 20px; 
+    margin: 20px;
     padding: 5px 10px;
     font-size: 1.5em;
 }
@@ -118,8 +118,8 @@
     color: white;
 }
 #attributesPanel .attribute {
-    background-color: #ff99ff; 
-    border: 1px solid #ff66ff; 
+    background-color: #ff99ff;
+    border: 1px solid #ff66ff;
     color: white;
 }
 #viewsPanel .view {
@@ -195,8 +195,8 @@
     color: white;
 }
 .rule .port {
-    background-color: #c55a11; 
-    border: 1px solid #833c0b; 
+    background-color: #c55a11;
+    border: 1px solid #833c0b;
     color: white;
 }
 .ruleHeader {
@@ -257,7 +257,7 @@
     padding: 3px 10px;
     font-size: 0.8em;
 }
-.item, .menuPanel, #blockPanel, .formRow, ._jsPlumb_overlay {
+.item, .menuPanel, #rulesPanel, .header, .formRow, ._jsPlumb_overlay {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -389,7 +389,7 @@
     color: white;
     background-color: #4d41e7;
 }
-.decisionRhombus {
+.decisionRhombus, .conditionEllipse {
     width: 70px;
     height: 60px;
     margin-top: -22px;
@@ -402,4 +402,27 @@
     background-color: #c5e0b3;
     z-index: 100;
     padding: 1px 5px;
+}
+#btnAddCondition {
+    margin-top: 10px;
+}
+#edit-condition-dialog {
+    width: auto !important;
+}
+.logicTable {
+    width: 660px;
+}
+.logicTable tr {
+    width: 100%;
+    height: 40px;
+}
+.logicTable tr td {
+    padding: 10px 5px;
+}
+.logicTable .btnRemoveCondition {
+    float: right;
+    color: black;
+}
+.logicTable .selectField {
+    width: 230px;
 }

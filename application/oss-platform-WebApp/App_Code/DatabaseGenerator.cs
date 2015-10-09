@@ -1,4 +1,5 @@
-﻿using FSPOC.Models;
+﻿using System.Collections.Generic;
+using FSPOC.Models;
 
 namespace FSPOC
 {
@@ -12,20 +13,23 @@ namespace FSPOC
             Entitron.DBTable.ApplicationName = "ApplicationTest";
             foreach (DbTable efTable in scheme.Tables)
             {
-                Entitron.DBTable writeTable = new Entitron.DBTable();
-                writeTable.tableName = efTable.Name;
+                Entitron.DBTable entitronTable = new Entitron.DBTable();
+                entitronTable.tableName = efTable.Name;
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
-                    Entitron.DBColumn writeColumn = new Entitron.DBColumn();
-                    writeColumn.Name = efColumn.Name;
-                    writeColumn.isPrimaryKey = efColumn.PrimaryKey;
-                    writeColumn.isUnique = efColumn.Unique;
-                    writeColumn.canBeNull = efColumn.AllowNull;
-                    writeColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
-                    writeColumn.type = efColumn.Type;
-                    writeTable.columns.AddToDB(writeColumn);
+                    Entitron.DBColumn entitronColumn = new Entitron.DBColumn();
+                    entitronColumn.Name = efColumn.Name;
+                    entitronColumn.isUnique = efColumn.Unique;
+                    entitronColumn.canBeNull = efColumn.AllowNull;
+                    entitronColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
+                    entitronColumn.type = efColumn.Type;
+                    entitronTable.columns.AddToDB(entitronColumn);
                 }
-                writeTable.Create();
+                foreach (DbIndex efIndex in efTable.Indices)
+                {
+                    entitronTable.indices.AddToDB(efIndex.Name, new List<string>(efIndex.ColumnNames.Split(',')));
+                }
+                entitronTable.Create();
             }
             Entitron.DBTable.SaveChanges();
         }
