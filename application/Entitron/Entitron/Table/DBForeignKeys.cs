@@ -18,7 +18,7 @@ namespace Entitron
 
             if (_table.isInDB())
             {
-                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { applicationName = table.AppName, tableName = table.tableName };
+                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { application = table.Application, table = table };
 
                 foreach (DBItem i in query.ExecuteWithRead())
                 {
@@ -28,16 +28,16 @@ namespace Entitron
                     // is source table
                     if (table.tableName == (string)i["sourceTable"])
                     {
-                        fk.sourceTable = (string)i["sourceTable"];
-                        fk.targetTable = (string)i["targetTable"];
+                        fk.sourceTable = table.Application.GetTable((string)i["sourceTable"]);
+                        fk.targetTable = table.Application.GetTable((string)i["targetTable"]);
                         fk.sourceColumn = (string)i["sourceColumn"];
                         fk.targetColumn = (string)i["targetColumn"];
                     }
                     // is target table
                     else
                     {
-                        fk.sourceTable = (string)i["targetTable"];
-                        fk.targetTable = (string)i["sourceTable"];
+                        fk.sourceTable = table.Application.GetTable((string)i["targetTable"]);
+                        fk.targetTable = table.Application.GetTable((string)i["sourceTable"]);
                         fk.sourceColumn = (string)i["targetColumn"];
                         fk.targetColumn = (string)i["sourceColumn"];
                     }
@@ -49,12 +49,12 @@ namespace Entitron
 
         public DBForeignKeys AddToDB(DBForeignKey fk)
         {
-            DBTable.queries.Add(new SqlQuery_ForeignKeyAdd()
+            table.Application.queries.Add(new SqlQuery_ForeignKeyAdd()
             {
-                applicationName = table.AppName,
+                application = table.Application,
                 foreignName = fk.name,
-                tableName = fk.sourceTable,
-                table2Name = fk.targetTable,
+                table = fk.sourceTable,
+                table2 = fk.targetTable,
                 foreignKey = fk.sourceColumn,
                 primaryKey = fk.targetColumn,
                 onDelete = fk.onDelete,
@@ -66,10 +66,10 @@ namespace Entitron
         }
         public DBForeignKeys DropFromDB(string fkName)
         {
-            DBTable.queries.Add(new SqlQuery_ForeignKeyDrop()
+            table.Application.queries.Add(new SqlQuery_ForeignKeyDrop()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 foreignKeyName = fkName
             });
 

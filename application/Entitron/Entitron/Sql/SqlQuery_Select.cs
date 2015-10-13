@@ -13,10 +13,10 @@ namespace Entitron.Sql
         
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('SELECT {2} FROM ', @realTableName, ' {3} {4} {5} {6};');" +
                 "exec sp_executesql @sql, N'{7}', {8};", 
@@ -35,12 +35,18 @@ namespace Entitron.Sql
 
         public List<DBItem> ToList()
         {
+            List<DBItem> output = ExecuteWithRead();
+            
+            foreach (DBItem item in output)
+            {
+                item.table = table;
+            }
             return ExecuteWithRead();
         }
 
         public override string ToString()
         {
-            return string.Format("Select row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Select row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

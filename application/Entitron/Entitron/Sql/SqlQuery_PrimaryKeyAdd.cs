@@ -16,27 +16,26 @@ namespace Entitron.Sql
             if (keyColumns == null || keyColumns.Count < 1)
                 throw new ArgumentNullException("keyColumn");
 
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
 
             if (isClusterCreated != true)
             {
-                _sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' , " +
-                "' CREATE CLUSTERED INDEX index_', @{0}, @{1} , ' ON ', @realTableName, '(', @{2},');');" +
-                "exec (@sql)",
-                parAppName, parTableName, parColumns);
+                sqlString = string.Format(
+                    "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                    "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' , " +
+                    "' CREATE CLUSTERED INDEX index_', @{0}, @{1} , ' ON ', @realTableName, '(', @{2},');');" +
+                    "exec (@sql)",
+                    parAppName, parTableName, parColumns);
             }
             else
             {
-                _sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' );" +
-                "exec (@sql)",
-                parAppName, parTableName, parColumns);
-
+                sqlString = string.Format(
+                    "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                    "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT PK_', @realTableName, ' PRIMARY KEY NONCLUSTERED (', @{2}, ');' );" +
+                    "exec (@sql)",
+                    parAppName, parTableName, parColumns);
             }
 
 
@@ -45,7 +44,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Add primary key to {0}[{1}]", tableName, applicationName);
+            return string.Format("Add primary key to {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

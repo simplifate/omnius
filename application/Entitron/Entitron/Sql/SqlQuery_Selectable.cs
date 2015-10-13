@@ -21,25 +21,25 @@ namespace Entitron.Sql
         }
         public T join(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join.Add(string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
+            _join.Add(string.Format(" JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, table.tableName, originColumnName, joinedColumnName));
 
             return (T)this;
         }
         public T leftOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join.Add(string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
+            _join.Add(string.Format(" LEFT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, table.tableName, originColumnName, joinedColumnName));
 
             return (T)this;
         }
         public T rightOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join.Add(string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
+            _join.Add(string.Format(" RIGHT OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, table.tableName, originColumnName, joinedColumnName));
 
             return (T)this;
         }
         public T fullOuterJoin(string joinedTableName, string originColumnName, string joinedColumnName)
         {
-            _join.Add(string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, tableName, originColumnName, joinedColumnName));
+            _join.Add(string.Format(" FULL OUTER JOIN {0} ON {1}.{2}={0}{3}", joinedTableName, table.tableName, originColumnName, joinedColumnName));
 
             return (T)this;
         }

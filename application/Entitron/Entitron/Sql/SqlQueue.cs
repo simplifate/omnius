@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Entitron;
 
 namespace Entitron.Sql
 {
@@ -20,7 +21,7 @@ namespace Entitron.Sql
         }
         public T GetQuery<T>(string tableName) where T : SqlQuery_withApp
         {
-            return (T)_queries.FirstOrDefault(q => q is T && (q as T).tableName == tableName);
+            return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
         }
         public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withApp
         {
@@ -28,7 +29,7 @@ namespace Entitron.Sql
             for(int i = 0; i < _queries.Count; i++)
             {
                 SqlQuery q = _queries[i];
-                if (q is T && (q as T).tableName == tableName)
+                if (q is T && (q as T).table.tableName == tableName)
                 {
                     output.Add((T)q);
                     _queries.RemoveAt(i);
@@ -41,10 +42,10 @@ namespace Entitron.Sql
 
         public void ExecuteAll()
         {
-            if (connectionString == null)
+            if (connectionString == null && DBApp.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString ?? DBApp.connectionString))
             {
                 connection.Open();
 

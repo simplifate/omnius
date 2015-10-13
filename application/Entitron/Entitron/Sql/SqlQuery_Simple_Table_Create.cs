@@ -63,7 +63,7 @@ namespace Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "CREATE TABLE {0}({1});",
                 tableName,
                 string.Join(",", _columns.Select(c => c.getSqlDefinition()))

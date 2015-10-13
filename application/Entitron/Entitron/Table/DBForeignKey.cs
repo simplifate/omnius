@@ -10,8 +10,8 @@ namespace Entitron
     {
         public string name { get; set; }
 
-        public string sourceTable { get; set; }
-        public string targetTable { get; set; }
+        public DBTable sourceTable { get; set; }
+        public DBTable targetTable { get; set; }
         public string sourceColumn { get; set; }
         public string targetColumn { get; set; }
         public string onDelete { get; set; }

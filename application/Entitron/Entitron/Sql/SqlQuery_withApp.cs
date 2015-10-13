@@ -8,37 +8,26 @@ namespace Entitron.Sql
 {
     public class SqlQuery_withApp : SqlQuery
     {
-        public string applicationName;
-        public string tableName;
-
-        public SqlQuery_withApp(string applicationName = null, string SqlString = "", Dictionary<string, object> param = null) : base(SqlString, param)
-        {
-            this.applicationName = applicationName;
-        }
+        public DBApp application;
+        public DBTable table;
 
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            if (applicationName == null)
-                throw new ArgumentNullException("applicationName");
-            if (tableName == null)
-                throw new ArgumentNullException("tableName");
+            if (string.IsNullOrWhiteSpace(application.Name))
+                throw new ArgumentNullException("application");
+            if (table == null)
+                throw new ArgumentNullException("table");
 
             base.BaseExecution(connection);
         }
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            if (applicationName == null)
-                throw new ArgumentNullException("applicationName");
-            if (tableName == null)
-                throw new ArgumentNullException("tableName");
+            if (string.IsNullOrWhiteSpace(application.Name))
+                throw new ArgumentNullException("application");
+            if (table == null)
+                throw new ArgumentNullException("table");
 
-            List<DBItem> output = base.BaseExecutionWithRead(connection);
-            foreach (DBItem item in output)
-            {
-                item.table = DBTable.GetTable(tableName);
-            }
-
-            return output;
+            return base.BaseExecutionWithRead(connection);
         }
     }
 }

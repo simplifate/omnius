@@ -17,7 +17,7 @@ namespace Entitron
 
             if (_table.isInDB())
             {
-                SqlQuery_SelectIndexes query = new SqlQuery_SelectIndexes() { applicationName = table.AppName, tableName = table.tableName };
+                SqlQuery_SelectIndexes query = new SqlQuery_SelectIndexes() { application = table.Application, table = table };
 
                 foreach (DBItem i in query.ExecuteWithRead())
                 {
@@ -36,11 +36,11 @@ namespace Entitron
 
         public DBIndices AddToDB(string indexName, List<string> columns)
         {
-            DBTable.queries.Add(new SqlQuery_IndexCreate()
+            table.Application.queries.Add(new SqlQuery_IndexCreate()
             {
-                applicationName = table.AppName,
+                application = table.Application,
                 columnsName = columns,
-                tableName = table.tableName,
+                table = table,
                 indexName = indexName
             });
 
@@ -49,10 +49,10 @@ namespace Entitron
         }
         public DBIndices DropFromDB(string indexName)
         {
-            DBTable.queries.Add(new SqlQuery_IndexDrop()
+            table.Application.queries.Add(new SqlQuery_IndexDrop()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 indexName = indexName
             });
 

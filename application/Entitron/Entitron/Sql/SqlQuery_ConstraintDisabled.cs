@@ -12,11 +12,11 @@ namespace Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
 
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("TableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("TableName", table.tableName);
             string parConName = safeAddParam("ConstraintName", constraintName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' NOCHECK CONSTRAINT ', @{2}, ' ;');" +
                 "exec @sql;",

@@ -19,7 +19,7 @@ namespace Entitron
             // if table exists - get columns
             if (_table.isInDB())
             {
-                SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
+                SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { application = table.Application, table = table };
 
                 foreach (DBItem i in query.ExecuteWithRead())
                 {
@@ -39,14 +39,14 @@ namespace Entitron
 
         public DBTable AddToDB(DBColumn column)
         {
-            SqlQuery_Table_Create query = DBTable.queries.GetQuery<SqlQuery_Table_Create>(table.tableName);
+            SqlQuery_Table_Create query = table.Application.queries.GetQuery<SqlQuery_Table_Create>(table.tableName);
             if (query != null)
                 query.AddColumn(column);
             else
-                DBTable.queries.Add(new SqlQuery_Column_Add()
+                table.Application.queries.Add(new SqlQuery_Column_Add()
                 {
-                    applicationName = table.AppName,
-                    tableName = table.tableName,
+                    application = table.Application,
+                    table = table,
                     column = column
                 });
 
@@ -90,10 +90,10 @@ namespace Entitron
 
         public DBTable RenameInDB(string originColumnName, string newColumnName)
         {
-            DBTable.queries.Add(new SqlQuery_Column_Rename()
+            table.Application.queries.Add(new SqlQuery_Column_Rename()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 originColumnName = originColumnName,
                 newColumnName = newColumnName
             });
@@ -106,8 +106,8 @@ namespace Entitron
         {
             new SqlQuery_Column_Modify()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 column = column
             };
 
@@ -141,10 +141,10 @@ namespace Entitron
 
         public DBTable DropFromDB(string columnName)
         {
-            DBTable.queries.Add(new SqlQuery_Column_Drop()
+            table.Application.queries.Add(new SqlQuery_Column_Drop()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 columnName = columnName
             });
 

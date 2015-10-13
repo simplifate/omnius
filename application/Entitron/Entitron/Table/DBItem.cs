@@ -28,8 +28,7 @@ namespace Entitron
                     if (!_foreignKeys.ContainsKey(propertyName))
                     {
                         // read data
-                        DBTable targetTable = DBTable.GetTable(fk.targetTable);
-                        _foreignKeys[propertyName] = targetTable.Select().where(c => c.column(fk.targetColumn).Equal(this[fk.sourceColumn])).ToList();
+                        _foreignKeys[propertyName] = fk.targetTable.Select().where(c => c.column(fk.targetColumn).Equal(this[fk.sourceColumn])).ToList();
                     }
 
                     return _foreignKeys[propertyName];

@@ -11,7 +11,7 @@ namespace Entitron.Sql
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
 
-            _sqlString = "SELECT name FROM sys.types WHERE max_length=8000;";
+            sqlString = "SELECT name FROM sys.types WHERE max_length=8000;";
 
             return base.BaseExecutionWithRead(connection);
         }

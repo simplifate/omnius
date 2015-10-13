@@ -13,12 +13,12 @@ namespace Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);
             string parColumnName = safeAddParam("columnName", string.Join(", ",columnsName));
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');')" +
                 "exec (@sql)",
@@ -29,7 +29,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Add index {0} in {1}[{2}]", indexName, tableName, applicationName);
+            return string.Format("Add index {0} in {1}[{2}]", indexName, table.tableName, application.Name);
         }
     }
 }

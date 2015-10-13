@@ -10,50 +10,16 @@ namespace Entitron
     public class DBTable
     {
         #region static
-        internal static SqlQueue queries = new SqlQueue();
-
         public static DBTable Create(string name)
         {
             return new DBTable() { tableName = name }.Create();
         }
-        public static DBTable GetTable(string name)
-        {
-            SqlQuery_Table_exists query = new SqlQuery_Table_exists()
-            {
-                applicationName = ApplicationName,
-                tableName = name
-            };
-
-            // if table exists
-            if (query.ExecuteWithRead() != null)
-            {
-                return new DBTable(name);
-            }
-
-            return null;
-        }
-        public static List<DBTable> GetAll()
-        {
-            List<DBItem> items = (new SqlQuery_Select_TableList() { ApplicationName = ApplicationName }).ExecuteWithRead();
-            
-            return items.Select(i => new DBTable((string)i["Name"])).ToList();
-        }
-        public static void SaveChanges()
-        {
-            queries.ExecuteAll();
-        }
-        public static string connectionString
-        {
-            get { return queries.connectionString; }
-            set { queries.connectionString = value; }
-        }
-        public static string ApplicationName;
         #endregion
 
-        private string _tableNameInDB;
+        private int? _tableId;
 
         public string tableName { get; set; }
-        public string AppName { get; set; }
+        public DBApp Application { get; set; }
         private DBColumns _columns;
         public DBColumns columns
         {
@@ -83,7 +49,7 @@ namespace Entitron
             {
                 if (_primaryKeys == null || _primaryKeys.Count < 1)
                 {
-                    List<DBItem> primaryKeyItem = new SqlQuery_Table_GetPrimaryKey() { applicationName = ApplicationName, tableName = tableName }.ExecuteWithRead();
+                    List<DBItem> primaryKeyItem = new SqlQuery_Table_GetPrimaryKey() { application = Application, table = this }.ExecuteWithRead();
                     _primaryKeys = primaryKeyItem.Select(pk => (string)pk["column_name"]).ToList();
                 }
 
@@ -117,24 +83,25 @@ namespace Entitron
             return output;
         }
 
-        public DBTable(string tableNameInDB = null)
+        public DBTable()
         {
-            _tableNameInDB = tableNameInDB;
-            AppName = ApplicationName;
-
-            tableName = _tableNameInDB;
+            _tableId = null;
+        }
+        public DBTable(int tableId)
+        {
+            _tableId = tableId;
         }
 
         public DBTable Create()
         {
             SqlQuery_Table_Create query = new SqlQuery_Table_Create()
             {
-                applicationName = ApplicationName,
-                tableName = tableName
+                application = Application,
+                table = this
             };
 
             // add columns from queries
-            foreach(SqlQuery_Column_Add columnQuery in queries.GetAndRemoveQueries<SqlQuery_Column_Add>(tableName))
+            foreach(SqlQuery_Column_Add columnQuery in Application.queries.GetAndRemoveQueries<SqlQuery_Column_Add>(tableName))
             {
                 query.AddColumn(columnQuery.column);
             }
@@ -145,26 +112,26 @@ namespace Entitron
                 query.AddColumn(column);
             }
 
-            queries.Add(query);
+            Application.queries.Add(query);
 
             return this;
         }
         public DBTable Drop()
         {
-            queries.Add(new SqlQuery_Table_Drop()
+            Application.queries.Add(new SqlQuery_Table_Drop()
             {
-                applicationName = ApplicationName,
-                tableName = tableName
+                application = Application,
+                table = this
             });
 
             return this;
         }
         public DBTable Rename(string newName)
         {
-            queries.Add(new SqlQuery_Table_Rename()
+            Application.queries.Add(new SqlQuery_Table_Rename()
             {
-                applicationName = ApplicationName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 newName = newName
             });
 
@@ -172,20 +139,20 @@ namespace Entitron
         }
         public DBTable Truncate()
         {
-            queries.Add(new SqlQuery_TableTruncate()
+            Application.queries.Add(new SqlQuery_TableTruncate()
             {
-                applicationName = AppName,
-                tableName = tableName
+                application = Application,
+                table = this
             });
 
             return this;
         }
         public bool isInDB()
         {
-            if (string.IsNullOrWhiteSpace(AppName) || string.IsNullOrWhiteSpace(tableName))
+            if (Application == null || string.IsNullOrWhiteSpace(tableName))
                 return false;
 
-            return (_tableNameInDB != null);
+            return (_tableId != null);
         }
 
         public DBTable Add(DBItem item)
@@ -196,10 +163,10 @@ namespace Entitron
                 data.Add(column, item[column.Name]);
             }
 
-            queries.Add(new SqlQuery_Insert()
+            Application.queries.Add(new SqlQuery_Insert()
             {
-                applicationName = ApplicationName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 data = data
             });
 
@@ -219,10 +186,10 @@ namespace Entitron
                 row.Add(pkColum, selectRow[pkColum.Name]);
             }
 
-            queries.Add(new SqlQuery_Update()
+            Application.queries.Add(new SqlQuery_Update()
             {
-              applicationName  = AppName,
-              tableName = tableName,
+              application  = Application,
+              table = this,
               changes = data,
               rowSelect = row
             });
@@ -238,10 +205,10 @@ namespace Entitron
                 columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
             }
 
-            queries.Add(new SqlQuery_Delete()
+            Application.queries.Add(new SqlQuery_Delete()
             {
-                applicationName = ApplicationName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 rowSelect = columnValueCondition
             });
 
@@ -252,8 +219,9 @@ namespace Entitron
         {
             return new SqlQuery_Select()
             {
-                applicationName = ApplicationName,
-                columns = columns.ToList(), tableName = tableName
+                application = Application,
+                table = this,
+                columns = columns.ToList()
             };
         }
 
@@ -265,7 +233,7 @@ namespace Entitron
             {
                 foreach (DBIndex index in indices)
                 {
-                    if (index.indexName == "index_" + AppName + tableName)
+                    if (index.indexName == "index_" + Application.Name + tableName)
                     {
                         isClusterAlreadyCreate = true;
                         break;
@@ -273,21 +241,21 @@ namespace Entitron
                     }
                 }
             }
-         
-            queries.Add(new SqlQuery_PrimaryKeyAdd()
+
+            Application.queries.Add(new SqlQuery_PrimaryKeyAdd()
             {
-                applicationName = AppName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 keyColumns = primaryKey,
                 isClusterCreated = isClusterAlreadyCreate
             });
         }
         public void DropPrimaryKey()
         {
-            queries.Add(new SqlQuery_PrimaryKeyDrop()
+            Application.queries.Add(new SqlQuery_PrimaryKeyDrop()
             {
-                applicationName = AppName,
-                tableName = tableName
+                application = Application,
+                table = this
             });
         }
 
@@ -298,20 +266,19 @@ namespace Entitron
 
         public void DisableConstraint(string constraintName)
         {
-            queries.Add(new SqlQuery_ConstraintDisabled()
+            Application.queries.Add(new SqlQuery_ConstraintDisabled()
             {
-                applicationName = AppName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 constraintName = constraintName
             });
         }
-
         public void EnableConstraint(string constraintName)
         {
-            queries.Add(new SqlQuery_ConstraintEnable()
+            Application.queries.Add(new SqlQuery_ConstraintEnable()
             {
-                applicationName = AppName,
-                tableName = tableName,
+                application = Application,
+                table = this,
                 constraintName = constraintName
             });
         }

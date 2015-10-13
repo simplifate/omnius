@@ -6,27 +6,31 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    class SqlQuery_Table_exists : SqlQuery_withApp
+    class SqlQuery_Table_exists : SqlQuery
     {
+        public string applicationName;
+        public string tableName;
+
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
+            if (string.IsNullOrWhiteSpace(applicationName))
+                throw new ArgumentNullException("applicationName");
+            if (string.IsNullOrWhiteSpace(tableName))
+                throw new ArgumentNullException("tableName");
+
             string parAppName = safeAddParam("appName", applicationName);
             string parTableName = safeAddParam("tableName", tableName);
 
-            _sqlString = string.Format(
-                "DECLARE @meta NVARCHAR(50),@count INT;" +
-                "SELECT @meta = DbMetaTables FROM {0} WHERE Name=@{1};" +
-                "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT @count = count(*) FROM ', @meta, ' WHERE Name=@tableName;');" +
-                "exec sp_executesql @sql, N'@count INT OUTPUT, @tableName NVARCHAR(50)', @count output, @{2};" +
-                "SELECT @count count;",
-                SqlInitScript.aplicationTableName,
+            sqlString = string.Format(
+                "SELECT e.Name,e.tableId,a.Name AppName FROM {1} e " +
+                "INNER JOIN {0} a ON a.Id=e.ApplicationId " +
+                "WHERE e.Name=@{3} AND a.Name=@{2};",
+                DB_MasterApplication,
+                DB_EntitronMeta,
                 parAppName,
-                parTableName
-                );
+                parTableName);
 
-            List<DBItem> items = base.BaseExecutionWithRead(connection);
-
-            return ((int)items.First()["count"] != 0) ? items : null;
+            return base.BaseExecutionWithRead(connection);
         }
     }
 }

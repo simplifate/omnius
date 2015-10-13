@@ -83,6 +83,7 @@
     <Compile Include="Sql\SqlQuery_Update.cs" />
     <Compile Include="Sql\SqlQuery_withApp.cs" />
     <Compile Include="Table\AdditionalSqlDefinition.cs" />
+    <Compile Include="Table\DBApp.cs" />
     <Compile Include="Table\DBColumn.cs" />
     <Compile Include="Table\DBColumns.cs" />
     <Compile Include="Table\DBForeignKey.cs" />

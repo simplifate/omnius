@@ -15,11 +15,11 @@ namespace Entitron.Sql
             if (data == null || data.Count < 1)
                 throw new ArgumentNullException("data");
 
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             Dictionary<DBColumn, string> values = safeAddParam(data);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('INSERT INTO ', @realTableName, ' ({2}) VALUES ({3}) ;');" +
                 "exec sp_executesql @sql, N'{4}', {5};",
@@ -36,7 +36,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Insert row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Insert row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

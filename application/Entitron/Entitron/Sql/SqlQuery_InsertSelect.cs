@@ -14,14 +14,14 @@ namespace Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTable1Name = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTable1Name = safeAddParam("tableName", table.tableName);
             string parTable2Name = safeAddParam("tableName", table2Name);
             string parColumn1Name = safeAddParam("columnName", string.Join(", ", columns1));
             string parColumn2Name = safeAddParam("columnName", string.Join(", ", columns2));
             string parWhere = safeAddParam("where", _where);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTable1Name OUTPUT; exec getRealTableName @{0}, @{2}, @realTable2Name OUTPUT;" +
                 "SET @sql=CONCAT('INSERT INTO ', @realTable1Name, '({3}) SELECT ', @realTable2Name, '({4})', @{5}, ';'"+
                 "exec (@sql)",
@@ -32,7 +32,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Insert row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Insert row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

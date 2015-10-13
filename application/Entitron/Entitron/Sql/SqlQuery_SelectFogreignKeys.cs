@@ -10,10 +10,10 @@ namespace Entitron.Sql
     {
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @metaTable NVARCHAR(50) = (SELECT DbMetaTables meta FROM dbo.Applications WHERE dbo.Applications.Name = @{0});" +
                 "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT fk.name name, sourceT.Name sourceTable, sourceC.name sourceColumn, targetT.Name targetTable, targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
                 "INNER JOIN sys.foreign_keys fk ON fk.object_id = fkc.constraint_object_id " +
