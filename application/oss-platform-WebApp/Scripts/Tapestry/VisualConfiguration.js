@@ -46,6 +46,15 @@ noEndpoint = $.extend({}, sourceEndpoint, {
         }]
     ]
 });
+dataSourceConnectorPaintStyle = {
+    lineWidth: 2,
+    strokeStyle: "#00a000",
+    joinstyle: "round"
+};
+dataSourceEndpoint = $.extend({}, sourceEndpoint, {
+    paintStyle: { fillStyle: "#00d000", width: 10, height: 18 },
+    connectorStyle: dataSourceConnectorPaintStyle,
+});
 
 jsPlumb.ready(function () {
     $("#rulesPanel .rule").each(function (ruleIndex, rule) {

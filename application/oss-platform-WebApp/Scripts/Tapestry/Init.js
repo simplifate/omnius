@@ -107,6 +107,10 @@
                         CurrentItem = item;
                         chooseEmailTemplateDialog.dialog("open");
                         break;
+                    case "port":
+                        CurrentItem = item;
+                        choosePortDialog.dialog("open");
+                        break;
                     case "condition":
                         CurrentItem = item;
                         editConditionDialog.dialog("open");

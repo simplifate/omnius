@@ -18,6 +18,20 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
     newInstance.bind("click", function (con) {
         this.detach(con);
     });
+    newInstance.bind("beforeDrop", function (info) {
+        if (!$(info.connection.source).hasClass("dataSource")) {
+            instance = $(info.connection.source).parents(".rule").data("jsPlumbInstance");
+            connectionArray = instance.getConnections({ target: info.targetId });
+            for (i = 0; i < connectionArray.length; i++) {
+                if (!$(connectionArray[i].source).hasClass("dataSource")) {
+                    alert("An item can take multiple data sources (green arrows), but only one activating action (blue arrow).\n"
+                    + "There already is a blue arrow pointing to this item.");
+                    return false;
+                }
+            }
+        }
+        return true;
+    });
     $(ruleElement).data("jsPlumbInstance", newInstance);
     return newInstance;
 }
@@ -64,12 +78,17 @@ function AddToJsPlumb(instance, item) {
     else {
         instance.draggable(item, { containment: "parent" });
         itemId = $(item).attr("id");
-        instance.addEndpoint(itemId, sourceEndpoint, {
-            anchor: "RightMiddle", uuid: itemId + "RightMiddle"
-        });
+        if ($(item).hasClass("dataSource"))
+            instance.addEndpoint(itemId, dataSourceEndpoint, {
+                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
+            });
+        else
+            instance.addEndpoint(itemId, sourceEndpoint, {
+                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
+            });
         instance.makeTarget(item, {
             dropOptions: { hoverClass: "dragHover" },
-            anchor: "LeftMiddle",
+            anchor: ["Continuous", { faces: ["left"] }],
             allowLoopback: false
         });
     }

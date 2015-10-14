@@ -31,21 +31,21 @@
     </div>
     <div id="attributesPanel" class="menuPanel">
         Attributes<br />
-        <div class="menuItem attribute">Username</div>
-        <div class="menuItem attribute">Password</div>
+        <div class="menuItem attribute dataSource">Username</div>
+        <div class="menuItem attribute dataSource">Password</div>
     </div>
     <div id="rulesPanel">
         <button type="button" class="btn btn-primary" id="btnAddRule">Add rule</button>
         Rules<br />
         <div id="rule1" class="rule" style="left: 20px; top: 45px; width: 355px; height: 70px;">
             <div class="ruleHeader"></div>
-            <div id="item1" class="item view" style="left: 34px; top: 21px;">Username</div>
-            <div id="item2" class="item attribute" style="left: 197px; top: 22px;">Username</div>
+            <div id="item1" class="item view dataSource" style="left: 34px; top: 21px;">Username</div>
+            <div id="item2" class="item attribute dataSource" style="left: 197px; top: 22px;">Username</div>
         </div>
         <div id="rule2" class="rule" style="left: 400px; top: 45px; width: 355px; height: 70px;">
             <div class="ruleHeader"></div>
-            <div id="item3" class="item view" style="left: 34px; top: 21px;">Password</div>
-            <div id="item4" class="item attribute" style="left: 197px; top: 22px;">Password</div>
+            <div id="item3" class="item view dataSource" style="left: 34px; top: 21px;">Password</div>
+            <div id="item4" class="item attribute dataSource" style="left: 197px; top: 22px;">Password</div>
         </div>
         <div id="rule3" class="rule" style="left: 20px; top: 155px; width: 737px; height: 222px;">
             <div class="ruleHeader"></div>
@@ -62,21 +62,21 @@
     </div>
     <div id="viewsPanel" class="menuPanel">
         Views<br />
-        <div class="menuItem view">Username</div>
-        <div class="menuItem view">Password</div>
+        <div class="menuItem view dataSource">Username</div>
+        <div class="menuItem view dataSource">Password</div>
         <div class="menuItem view">Log In</div>
     </div>
     <div id="statesPanel" class="menuPanel">
         States<br />
-        <div class="menuItem state">Logged Out</div>
+        <div class="menuItem state dataSource">Logged Out</div>
     </div>
     <div id="portsPanel" class="menuPanel">
         Ports<br />
-        <div class="menuItem port">Overview Screen</div>
+        <div class="menuItem port" dialogType="port">Overview Screen</div>
     </div>
     <div id="rolesPanel" class="menuPanel">
         Roles<br />
-        <div class="menuItem role">None</div>
+        <div class="menuItem role dataSource">None</div>
     </div>
     <div id="actionsPanel" class="menuPanel">
         <button type="button" class="btn btn-primary" id="btnAddActions">Add actions</button>
@@ -135,6 +135,18 @@
         <theader>
             <tr>
                 <th>Template name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="choose-port-dialog" title="Choose port">
+    <table id="choice-port" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Port</th>
             </tr>
         </theader>
         <tbody>
