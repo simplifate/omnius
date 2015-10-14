@@ -283,12 +283,13 @@ namespace Entitron
             });
         }
 
-        public List<string> getConstraints()
+        public List<string> getConstraints(bool isDisabled)
         {
             SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains()
             {
                 application = Application,
-                table = this
+                table = this,
+                isDisable = isDisabled
             };
             List<string> constraints=new List<string>();
 
