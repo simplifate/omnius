@@ -14,9 +14,9 @@ namespace Entitron.Sql
             string parTableName = safeAddParam("tableName", table.tableName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql=CONCAT('TRUNCATE TABLE ', @realTableName, ';');" +
-                "exec @sql",
+                "exec (@sql)",
                 parAppName,parTableName
                 );
 

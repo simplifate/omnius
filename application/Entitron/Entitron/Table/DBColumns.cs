@@ -27,9 +27,9 @@ namespace Entitron
                     {
                         Name = (string)i["name"],
                         type = (string)i["typeName"],
-                        maxLength = Convert.ToInt32((Int16)i["max_length"]),
-                        precision = Convert.ToInt32((Int16)i["precision"]),
-                        scale = Convert.ToInt32((Int16)i["scale"]),
+                        maxLength = Convert.ToInt32(i["max_length"]),
+                        precision = Convert.ToInt32(i["precision"]),
+                        scale = Convert.ToInt32(i["scale"]),
                         canBeNull = (bool)i["is_nullable"]
                     };
                     Add(column);

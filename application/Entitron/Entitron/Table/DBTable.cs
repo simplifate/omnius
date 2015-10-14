@@ -285,7 +285,11 @@ namespace Entitron
 
         public List<string> getConstraints()
         {
-            SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains();
+            SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains()
+            {
+                application = Application,
+                table = this
+            };
             List<string> constraints=new List<string>();
 
             foreach (DBItem i in query.ExecuteWithRead())
