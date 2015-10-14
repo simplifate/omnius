@@ -7,13 +7,13 @@ namespace Mozaic.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class conventionRelationRepaired : IMigrationMetadata
+    public sealed partial class Css : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(conventionRelationRepaired));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Css));
         
         string IMigrationMetadata.Id
         {
-            get { return "201509301041224_conventionRelationRepaired"; }
+            get { return "201510141123379_Css"; }
         }
         
         string IMigrationMetadata.Source

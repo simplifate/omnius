@@ -1,8 +1,0 @@
-﻿@model Mozaic.Models.Page
-@{
-    Layout = null;
-    Entitron.DBTable.connectionString = (new Mozaic.Models.DBMozaic()).Database.Connection.ConnectionString;
-    Entitron.DBTable.ApplicationName = "Test";
-}
-
-@Html.Raw(Model.Render(Entitron.DBTable.GetTable("test2").Select().ToList().First()))
