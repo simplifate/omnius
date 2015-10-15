@@ -15,11 +15,12 @@ namespace Mozaic
 
             routes.MapRoute(
                 name: "Config",
-                url: "config/{action}",
+                url: "config/{action}/{url}",
                 defaults: new
                 {
                     controller = "Config",
-                    action = "Index"
+                    action = "Index",
+                    url = UrlParameter.Optional
                 }
             );
 
