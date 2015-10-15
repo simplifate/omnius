@@ -27,7 +27,7 @@ namespace Entitron
             {
                 if (_columns == null)
                     _columns = new DBColumns(this);
-                
+
                 return _columns;
             }
         }
@@ -74,7 +74,7 @@ namespace Entitron
         public List<DBColumn> getPrimaryColumns()
         {
             List<DBColumn> output = new List<DBColumn>();
-            foreach(DBColumn column in columns)
+            foreach (DBColumn column in columns)
             {
                 if (primaryKeys.Contains(column.Name))
                     output.Add(column);
@@ -101,13 +101,13 @@ namespace Entitron
             };
 
             // add columns from queries
-            foreach(SqlQuery_Column_Add columnQuery in Application.queries.GetAndRemoveQueries<SqlQuery_Column_Add>(tableName))
+            foreach (SqlQuery_Column_Add columnQuery in Application.queries.GetAndRemoveQueries<SqlQuery_Column_Add>(tableName))
             {
                 query.AddColumn(columnQuery.column);
             }
-            
+
             // add columns from list
-            foreach(DBColumn column in columns)
+            foreach (DBColumn column in columns)
             {
                 query.AddColumn(column);
             }
@@ -158,7 +158,7 @@ namespace Entitron
         public DBTable Add(DBItem item)
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
-            foreach(DBColumn column in columns)
+            foreach (DBColumn column in columns)
             {
                 data.Add(column, item[column.Name]);
             }
@@ -172,7 +172,7 @@ namespace Entitron
 
             return this;
         }
-        public DBTable Update(DBItem item, DBItem selectRow )
+        public DBTable Update(DBItem item, DBItem selectRow)
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
             Dictionary<DBColumn, object> row = new Dictionary<DBColumn, object>();
@@ -188,10 +188,10 @@ namespace Entitron
 
             Application.queries.Add(new SqlQuery_Update()
             {
-              application  = Application,
-              table = this,
-              changes = data,
-              rowSelect = row
+                application = Application,
+                table = this,
+                changes = data,
+                rowSelect = row
             });
 
             return this;
@@ -252,10 +252,21 @@ namespace Entitron
         }
         public void DropPrimaryKey()
         {
-            Application.queries.Add(new SqlQuery_PrimaryKeyDrop()
+            SqlQuery_SelectPrimaryKeyName query = new SqlQuery_SelectPrimaryKeyName()
             {
                 application = Application,
                 table = this
+            };
+            string primarykeyName="";
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                 primarykeyName = i["name"].ToString();
+            }
+            Application.queries.Add(new SqlQuery_PrimaryKeyDrop()
+            {
+                application = Application,
+                table = this,
+                primaryKeyName = primarykeyName
             });
         }
 
@@ -291,13 +302,14 @@ namespace Entitron
                 table = this,
                 isDisable = isDisabled
             };
-            List<string> constraints=new List<string>();
+            List<string> constraints = new List<string>();
 
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 constraints.Add(i["name"].ToString());
             }
             return constraints;
-        } 
+        }
+
     }
 }

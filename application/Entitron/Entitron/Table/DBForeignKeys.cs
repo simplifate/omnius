@@ -11,14 +11,14 @@ namespace Entitron
     {
         public DBTable table { get { return _table; } }
         private DBTable _table;
-
+        public bool? isForDrop { get; set; }
         public DBForeignKeys(DBTable table)
         {
             _table = table;
 
             if (_table.isInDB())
             {
-                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { application = table.Application, table = table };
+                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { application = table.Application, table = table,isForDrop = isForDrop};
 
                 foreach (DBItem i in query.ExecuteWithRead())
                 {
@@ -76,5 +76,22 @@ namespace Entitron
             Remove(this.SingleOrDefault(i => i.name == fkName));
             return this;
         }
+        public List<string> GetForeignKeyForDrop()
+        {
+            SqlQuery_GetForeignKeysForDrop query = new SqlQuery_GetForeignKeysForDrop()
+            {
+                application = table.Application,
+                table = table
+            };
+            List<string> fkList = new List<string>();
+
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                DBForeignKey fk = new DBForeignKey();
+                fk.name = (string)i["name"];
+                fkList.Add(fk.name);
+            }
+            return fkList;
+        } 
     }
 }
