@@ -25,6 +25,7 @@ namespace Mozaic.Controllers
         public ActionResult Create(string app, Page model)
         {
             // TODO
+            return View();
         }
 
         public ActionResult Update(string app, int id)
@@ -47,6 +48,7 @@ namespace Mozaic.Controllers
                 return RedirectToAction("Index");
 
             // TODO
+            return View();
         }
 
         public ActionResult Delete(string app, int id)

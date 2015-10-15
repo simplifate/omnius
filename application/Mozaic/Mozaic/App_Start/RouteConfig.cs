@@ -40,7 +40,10 @@ namespace Mozaic
                 defaults: new
                 {
                     controller = "Renderer",
-                    action = "Show"
+                    action = "Show",
+                    
+                    tableName = UrlParameter.Optional,
+                    modelId = UrlParameter.Optional
                 }
             );
         }

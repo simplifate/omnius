@@ -70,6 +70,9 @@ namespace Mozaic.Models
 
                     switch (type)
                     {
+                        case "V": // value
+                            replacement += name;
+                            break;
                         case "P": // partial
                             replacement += entity.Templates.FirstOrDefault(t => t.Name == name)
                                 .Render(master, Relations, Model, entity, currentAddress);
