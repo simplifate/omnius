@@ -14,21 +14,32 @@ namespace CORE
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Config",
-                url: "config/{modul}/{url}",
+                name: "Config CORE",
+                url: "config/CORE/{action}/{id}",
                 defaults: new
                 {
                     controller = "Config",
                     action = "Index",
+                    id = UrlParameter.Optional
+                });
+
+            routes.MapRoute(
+                name: "Config",
+                url: "config/{modul}/{*url}",
+                defaults: new
+                {
+                    controller = "Redirect",
+                    action = "Config",
+                    
                     url = UrlParameter.Optional
                 });
 
             routes.MapRoute(
                 name: "Default",
-                url: "{modul}/{app}/{url}",
+                url: "{modul}/{app}/{*url}",
                 defaults: new
                 {
-                    controller = "Home",
+                    controller = "Redirect",
                     action = "Index",
 
                     modul = "Master",
