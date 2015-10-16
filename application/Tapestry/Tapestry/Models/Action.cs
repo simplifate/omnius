@@ -19,8 +19,7 @@ namespace Tapestry.Models
         public string MethodName { get; set; }
         [StringLength(200)]
         public string RequiredAttributes { get; set; }
-
-        [Required]
+        
         public int CategoryId { get; set; }
         public virtual ActionCategory Category { get; set; }
         public virtual ICollection<ActionRole_Action> ActionRoles { get; set; }

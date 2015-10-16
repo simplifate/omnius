@@ -24,6 +24,16 @@ namespace Tapestry
                 });
 
             routes.MapRoute(
+                name: "Builder",
+                url: "builder/{app}/{action}/{id}",
+                defaults: new
+                {
+                    controller = "Builder",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                });
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

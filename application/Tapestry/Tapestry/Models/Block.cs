@@ -18,8 +18,7 @@ namespace Tapestry.Models
         public string ModelName { get; set; }
         [Required]
         public bool IsVirtual { get; set; }
-
-        [Required]
+        
         public int WorkFlowId { get; set; }
         public virtual WorkFlow WorkFlow { get; set; }
         public virtual WorkFlow InitToWF { get; set; }

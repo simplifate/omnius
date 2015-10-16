@@ -10,7 +10,6 @@ namespace Tapestry.Models
     [Table("Tapestry_Actors")]
     public class Actor
     {
-        [Required]
         public int Id { get; set; }
         [Required]
         [StringLength(50)]

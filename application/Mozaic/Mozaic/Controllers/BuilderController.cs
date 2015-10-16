@@ -101,6 +101,14 @@ namespace Mozaic.Controllers
                 return View(model);
             }
         }
+
+        public JsonResult GetTemplate(int id)
+        {
+            DBMozaic e = new DBMozaic();
+            Template template = e.Templates.SingleOrDefault(t => t.Id == id);
+
+            return Json(template.Html);
+        }
         #endregion
 
         #region Category

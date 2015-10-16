@@ -16,9 +16,9 @@ namespace Tapestry.Migrations
         protected override void Seed(Tapestry.Models.DBEntities context)
         {
             context.WorkFlow_Types.AddOrUpdate(
-                new WorkFlow_Type { Name = "Base" },
-                new WorkFlow_Type { Name = "Overview" },
-                new WorkFlow_Type { Name = "Partial" }
+                new WorkFlowType { Name = "Base" },
+                new WorkFlowType { Name = "Overview" },
+                new WorkFlowType { Name = "Partial" }
                 );
 
             context.Actors.AddOrUpdate(

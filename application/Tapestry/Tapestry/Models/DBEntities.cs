@@ -14,7 +14,7 @@ namespace Tapestry.Models
 
         public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
-        public virtual DbSet<WorkFlow_Type> WorkFlow_Types { get; set; }
+        public virtual DbSet<WorkFlowType> WorkFlow_Types { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
         public virtual DbSet<ActionRole> ActionRoles { get; set; }
         public virtual DbSet<AttributeRule> AttributeRoles { get; set; }
@@ -33,7 +33,7 @@ namespace Tapestry.Models
 
             // WorkFlow - WorkFlow Type
             modelBuilder.Entity<WorkFlow>()
-                        .HasRequired<WorkFlow_Type>(wf => wf.Type)
+                        .HasRequired<WorkFlowType>(wf => wf.Type)
                         .WithMany(t => t.WorkFlows)
                         .HasForeignKey(wf => wf.TypeId);
 

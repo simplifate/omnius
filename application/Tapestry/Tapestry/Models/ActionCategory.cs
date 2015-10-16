@@ -15,7 +15,7 @@ namespace Tapestry.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
         public virtual ActionCategory Parent { get; set; }
         public virtual ICollection<ActionCategory> Children { get; set; }
         public virtual ICollection<Action> Actions { get; set; }

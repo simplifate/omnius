@@ -17,8 +17,7 @@ namespace Tapestry.Models
         [Required]
         [StringLength(50)]
         public string AttributeName { get; set; }
-
-        [Required]
+        
         public int BlockId { get; set; }
         public Block Block { get; set; }
     }

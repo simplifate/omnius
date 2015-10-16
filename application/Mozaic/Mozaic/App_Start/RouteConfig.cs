@@ -26,7 +26,7 @@ namespace Mozaic
 
             routes.MapRoute(
                 name: "Builder",
-                url: "{app}/builder/{action}/{id}",
+                url: "/builder/{app}/{action}/{id}",
                 defaults: new
                 {
                     controller = "Builder",

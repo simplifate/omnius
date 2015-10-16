@@ -8,7 +8,7 @@ using System.Web;
 namespace Tapestry.Models
 {
     [Table("Tapestry_WorkFlow_Types")]
-    public class WorkFlow_Type
+    public class WorkFlowType
     {
         public int Id { get; set; }
         [Required]
