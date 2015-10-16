@@ -6,7 +6,7 @@
 
 <h2>Index</h2>
 
-<table>
+<table class="table table-bordered table-responsive">
     <thead>
     <tr>
         <th>Id</th>
@@ -22,7 +22,7 @@
     {
         <tr>
             <td>@m.Id</td>
-            <td>@m.Name</td>
+            <td>@Ajax.ActionLink(m.Name, "Detail", new { @id = m.Id }, new AjaxOptions(){InsertionMode = InsertionMode.Replace})</td>
             <td>@m.Address</td>
             <td>@m.Description</td>
             <td>@m.IsEnabled</td>

@@ -6,15 +6,8 @@
 <h2>Create</h2>
 @using (Html.BeginForm("Create", "Config", FormMethod.Post, new {@class = "form-horizontal", enctype = "multipart/form-data"}))
 {
-    <div class="form-group">
-        <div class="col-sm-2">
-            <label class="control-label">Id</label>
-        </div>
-        <div class="col-sm-3">
-            @Html.TextBoxFor(x => x.Id, new {@class = "form-control"})
-            @Html.ValidationMessageFor(x => x.Id)
-        </div>
-    </div>
+
+    @Html.HiddenFor(x=>x.Id)
     <div class="form-group">
         <div class="col-sm-2">
             <label class="control-label">Name</label>
