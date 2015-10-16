@@ -23,7 +23,8 @@ namespace CORE.Controllers
         [HttpPost]
         public ActionResult Create(Module model)
         {
-            // TODO
+            DBEntities e =new DBEntities();
+            e.Modules.Add(model);
 
             return RedirectToAction("Details", new { @id = model.Id });
         }
@@ -38,13 +39,18 @@ namespace CORE.Controllers
         public ActionResult Update(int id)
         {
             DBEntities e = new DBEntities();
-
+            
             return View(e.Modules.SingleOrDefault(m => m.Id == id));
         }
         [HttpPost]
         public ActionResult Update(int id, Module model)
         {
-            // TODO
+            DBEntities e= new DBEntities();
+            Module m = e.Modules.SingleOrDefault(x => x.Id == model.Id);
+            if (m !=null)
+            {
+                m.Update(model);
+            }
 
             return RedirectToAction("Details", new { @id = model.Id });
         }

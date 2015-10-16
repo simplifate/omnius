@@ -19,5 +19,15 @@ namespace CORE.Models
         public string Address { get; set; }
         public string Description { get; set; }
         public bool IsEnabled { get; set; }
+
+        public Module Update(Module model)
+        {
+            Name = model.Name;
+            Address = model.Address;
+            Description = model.Description;
+            IsEnabled = model.IsEnabled;
+
+            return this;
+        }
     }
 }

@@ -1,0 +1,37 @@
+﻿@using CORE.Models
+@model System.Data.Entity.DbSet<CORE.Models.Module>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Desscription</th>
+        <th>Enable?</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (Module m in Model)
+    {
+        <tr>
+            <td>@m.Id</td>
+            <td>@m.Name</td>
+            <td>@m.Address</td>
+            <td>@m.Description</td>
+            <td>@m.IsEnabled</td>
+            <td>
+                @Html.ActionLink("Update", "Update", new {@id = m.Id}, new {@class = "btn btn-success"})
+                @Html.ActionLink(" ", "Delete", new {@id = m.Id}, new {@class = "glyphicon glyphicon-trash btn btn-danger"})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@Html.ActionLink("Create Module","Create",null,new{@class="btn btn-primary"})

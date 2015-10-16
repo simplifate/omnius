@@ -221,10 +221,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Config\Create.cshtml" />
+    <Content Include="Views\Config\Update.cshtml" />
+    <Content Include="Views\Config\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Config\" />
     <Folder Include="Views\Redirect\" />
   </ItemGroup>
   <ItemGroup>
