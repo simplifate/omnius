@@ -52,7 +52,7 @@ namespace FSPOC.DAL
             }
             catch (Exception ex)
             {
-                Log.Error(String.Format("An error occurred when Entity Framework was creating a new database. "
+                Log.Error(String.Format("An error occurred while Entity Framework was creating a new database. "
                     + "Exception message: {0}", ex.Message));
             }
         }
