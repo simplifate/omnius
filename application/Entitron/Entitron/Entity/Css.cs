@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Css()
         {
-            Mozaic_Pages = new HashSet<Pages>();
+            Mozaic_Pages = new HashSet<Page>();
         }
 
         public int Id { get; set; }
@@ -25,6 +25,6 @@ namespace Entitron.Entity
         public string Value { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pages> Mozaic_Pages { get; set; }
+        public virtual ICollection<Page> Mozaic_Pages { get; set; }
     }
 }

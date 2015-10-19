@@ -7,7 +7,7 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("CORE_Modules")]
-    public partial class Modules
+    public partial class Module
     {
         public int Id { get; set; }
 

@@ -6,13 +6,13 @@ namespace Entitron.Entity
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Tapestry_Actors")]
-    public partial class Actors
+    [Table("Tapestry_WorkFlow_Types")]
+    public partial class WorkFlow_Type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Actors()
+        public WorkFlow_Type()
         {
-            Tapestry_ActionRoles = new HashSet<ActionRoles>();
+            Tapestry_WorkFlows = new HashSet<WorkFlow>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Entitron.Entity
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRoles> Tapestry_ActionRoles { get; set; }
+        public virtual ICollection<WorkFlow> Tapestry_WorkFlows { get; set; }
     }
 }

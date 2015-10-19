@@ -7,10 +7,10 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Tapestry_ActionRoles")]
-    public partial class ActionRoles
+    public partial class ActionRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ActionRoles()
+        public ActionRole()
         {
             Tapestry_ActionRole_Action = new HashSet<ActionRole_Action>();
         }
@@ -26,10 +26,10 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActionRole_Action> Tapestry_ActionRole_Action { get; set; }
 
-        public virtual Actors Tapestry_Actors { get; set; }
+        public virtual Actor Tapestry_Actors { get; set; }
 
-        public virtual Blocks Tapestry_Blocks { get; set; }
+        public virtual Block Tapestry_Blocks { get; set; }
 
-        public virtual Blocks Tapestry_Blocks1 { get; set; }
+        public virtual Block Tapestry_Blocks1 { get; set; }
     }
 }

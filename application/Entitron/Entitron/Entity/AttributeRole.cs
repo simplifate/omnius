@@ -7,7 +7,7 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Tapestry_AttributeRoles")]
-    public partial class AttributeRoles
+    public partial class AttributeRole
     {
         public int Id { get; set; }
 
@@ -21,6 +21,6 @@ namespace Entitron.Entity
 
         public int BlockId { get; set; }
 
-        public virtual Blocks Tapestry_Blocks { get; set; }
+        public virtual Block Tapestry_Blocks { get; set; }
     }
 }

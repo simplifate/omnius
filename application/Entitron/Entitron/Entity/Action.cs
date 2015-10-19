@@ -6,14 +6,13 @@ namespace Entitron.Entity
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Master_Applications")]
-    public partial class Applications
+    [Table("Tapestry_Actions")]
+    public partial class Action
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Applications()
+        public Action()
         {
-            Mozaic_Pages = new HashSet<Pages>();
-            Tapestry_WorkFlows = new HashSet<WorkFlows>();
+            Tapestry_ActionRole_Action = new HashSet<ActionRole_Action>();
         }
 
         public int Id { get; set; }
@@ -22,13 +21,18 @@ namespace Entitron.Entity
         [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
         [StringLength(100)]
-        public string DisplayName { get; set; }
+        public string MethodName { get; set; }
+
+        [StringLength(200)]
+        public string RequiredAttributes { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public virtual ActionCategory Tapestry_ActionCategories { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pages> Mozaic_Pages { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkFlows> Tapestry_WorkFlows { get; set; }
+        public virtual ICollection<ActionRole_Action> Tapestry_ActionRole_Action { get; set; }
     }
 }

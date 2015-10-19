@@ -7,10 +7,10 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Mozaic_Pages")]
-    public partial class Pages
+    public partial class Page
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Pages()
+        public Page()
         {
             Mozaic_Css = new HashSet<Css>();
         }
@@ -24,7 +24,7 @@ namespace Entitron.Entity
 
         public int ApplicationId { get; set; }
 
-        public virtual Applications Master_Applications { get; set; }
+        public virtual Application Master_Applications { get; set; }
 
         public virtual Template Mozaic_Template { get; set; }
 

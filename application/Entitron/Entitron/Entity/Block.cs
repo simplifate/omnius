@@ -7,14 +7,14 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Tapestry_Blocks")]
-    public partial class Blocks
+    public partial class Block
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Blocks()
+        public Block()
         {
-            Tapestry_ActionRoles = new HashSet<ActionRoles>();
-            Tapestry_ActionRoles1 = new HashSet<ActionRoles>();
-            Tapestry_AttributeRoles = new HashSet<AttributeRoles>();
+            Tapestry_ActionRoles = new HashSet<ActionRole>();
+            Tapestry_ActionRoles1 = new HashSet<ActionRole>();
+            Tapestry_AttributeRoles = new HashSet<AttributeRole>();
         }
 
         public int Id { get; set; }
@@ -33,16 +33,16 @@ namespace Entitron.Entity
         public int? MozaicPageId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRoles> Tapestry_ActionRoles { get; set; }
+        public virtual ICollection<ActionRole> Tapestry_ActionRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRoles> Tapestry_ActionRoles1 { get; set; }
+        public virtual ICollection<ActionRole> Tapestry_ActionRoles1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AttributeRoles> Tapestry_AttributeRoles { get; set; }
+        public virtual ICollection<AttributeRole> Tapestry_AttributeRoles { get; set; }
 
-        public virtual WorkFlows Tapestry_WorkFlows { get; set; }
+        public virtual WorkFlow Tapestry_WorkFlows { get; set; }
 
-        public virtual WorkFlows Tapestry_WorkFlows1 { get; set; }
+        public virtual WorkFlow Tapestry_WorkFlows1 { get; set; }
     }
 }

@@ -54,22 +54,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\Modules.cs" />
+    <Compile Include="Entity\Module.cs" />
     <Compile Include="Entity\DBEntities.cs" />
-    <Compile Include="Entity\Applications.cs" />
+    <Compile Include="Entity\Application.cs" />
     <Compile Include="Entity\Css.cs" />
-    <Compile Include="Entity\Pages.cs" />
+    <Compile Include="Entity\Page.cs" />
     <Compile Include="Entity\Template.cs" />
-    <Compile Include="Entity\TemplateCategories.cs" />
-    <Compile Include="Entity\ActionCategories.cs" />
-    <Compile Include="Entity\ActionRoles.cs" />
+    <Compile Include="Entity\TemplateCategory.cs" />
+    <Compile Include="Entity\ActionCategory.cs" />
+    <Compile Include="Entity\ActionRole.cs" />
     <Compile Include="Entity\ActionRole_Action.cs" />
-    <Compile Include="Entity\Actions.cs" />
-    <Compile Include="Entity\Actors.cs" />
-    <Compile Include="Entity\AttributeRoles.cs" />
-    <Compile Include="Entity\Blocks.cs" />
-    <Compile Include="Entity\WorkFlows.cs" />
-    <Compile Include="Entity\WorkFlow_Types.cs" />
+    <Compile Include="Entity\Action.cs" />
+    <Compile Include="Entity\Actor.cs" />
+    <Compile Include="Entity\AttributeRole.cs" />
+    <Compile Include="Entity\Block.cs" />
+    <Compile Include="Entity\WorkFlow.cs" />
+    <Compile Include="Entity\WorkFlow_Type.cs" />
     <Compile Include="Sql\Conditions.cs" />
     <Compile Include="Sql\Condition_concat.cs" />
     <Compile Include="Sql\Condition_Operators.cs" />
