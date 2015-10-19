@@ -21,6 +21,6 @@ namespace Entitron.Entity
 
         public int BlockId { get; set; }
 
-        public virtual Block Tapestry_Blocks { get; set; }
+        public virtual Block Block { get; set; }
     }
 }

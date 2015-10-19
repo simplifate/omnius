@@ -12,9 +12,9 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Block()
         {
-            Tapestry_ActionRoles = new HashSet<ActionRole>();
-            Tapestry_ActionRoles1 = new HashSet<ActionRole>();
-            Tapestry_AttributeRoles = new HashSet<AttributeRole>();
+            SourceTo_ActionRoles = new HashSet<ActionRole>();
+            TargetTo_ActionRoles = new HashSet<ActionRole>();
+            AttributeRoles = new HashSet<AttributeRole>();
         }
 
         public int Id { get; set; }
@@ -34,16 +34,16 @@ namespace Entitron.Entity
         public virtual Page MozaicPage { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole> Tapestry_ActionRoles { get; set; }
+        public virtual ICollection<ActionRole> SourceTo_ActionRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole> Tapestry_ActionRoles1 { get; set; }
+        public virtual ICollection<ActionRole> TargetTo_ActionRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AttributeRole> Tapestry_AttributeRoles { get; set; }
+        public virtual ICollection<AttributeRole> AttributeRoles { get; set; }
 
-        public virtual WorkFlow Tapestry_WorkFlows { get; set; }
+        public virtual WorkFlow WorkFlow { get; set; }
 
-        public virtual WorkFlow Tapestry_WorkFlows1 { get; set; }
+        public virtual WorkFlow InitForWorkFlow { get; set; }
     }
 }

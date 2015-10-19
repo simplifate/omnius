@@ -24,8 +24,8 @@ namespace Entitron.Entity
         [StringLength(200)]
         public string ResultVariables { get; set; }
 
-        public virtual ActionRole Tapestry_ActionRoles { get; set; }
+        public virtual ActionRole ActionRole { get; set; }
 
-        public virtual Action Tapestry_Actions { get; set; }
+        public virtual Action Action { get; set; }
     }
 }

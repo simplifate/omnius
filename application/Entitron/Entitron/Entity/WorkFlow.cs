@@ -12,8 +12,8 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WorkFlow()
         {
-            Tapestry_Blocks = new HashSet<Block>();
-            Tapestry_WorkFlows1 = new HashSet<WorkFlow>();
+            Blocks = new HashSet<Block>();
+            Children = new HashSet<WorkFlow>();
         }
 
         [Key]
@@ -32,18 +32,18 @@ namespace Entitron.Entity
 
         public int TypeId { get; set; }
 
-        public virtual Application Master_Applications { get; set; }
+        public virtual Application Application { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Block> Tapestry_Blocks { get; set; }
+        public virtual ICollection<Block> Blocks { get; set; }
 
-        public virtual Block Tapestry_Blocks1 { get; set; }
+        public virtual Block InitBlock { get; set; }
 
-        public virtual WorkFlow_Type Tapestry_WorkFlow_Types { get; set; }
+        public virtual WorkFlow_Type Type { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkFlow> Tapestry_WorkFlows1 { get; set; }
+        public virtual ICollection<WorkFlow> Children { get; set; }
 
-        public virtual WorkFlow Tapestry_WorkFlows2 { get; set; }
+        public virtual WorkFlow Parent { get; set; }
     }
 }

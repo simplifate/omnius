@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Page()
         {
-            Mozaic_Css = new HashSet<Css>();
+            Css = new HashSet<Css>();
         }
 
         public int Id { get; set; }
@@ -24,13 +24,13 @@ namespace Entitron.Entity
 
         public int ApplicationId { get; set; }
 
-        public virtual Application Master_Applications { get; set; }
+        public virtual Application Application { get; set; }
 
-        public virtual Template Mozaic_Template { get; set; }
+        public virtual Template MasterTemplate { get; set; }
 
         public virtual Block Block { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Css> Mozaic_Css { get; set; }
+        public virtual ICollection<Css> Css { get; set; }
     }
 }

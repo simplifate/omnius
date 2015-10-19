@@ -31,95 +31,95 @@ namespace Entitron.Entity
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Application>()
-                .HasMany(e => e.Mozaic_Pages)
-                .WithRequired(e => e.Master_Applications)
+                .HasMany(e => e.Pages)
+                .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<Application>()
-                .HasMany(e => e.Tapestry_WorkFlows)
-                .WithRequired(e => e.Master_Applications)
+                .HasMany(e => e.WorkFlows)
+                .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<Css>()
-                .HasMany(e => e.Mozaic_Pages)
-                .WithMany(e => e.Mozaic_Css)
+                .HasMany(e => e.Pages)
+                .WithMany(e => e.Css)
                 .Map(m => m.ToTable("Mozaic_CssPages").MapLeftKey("CssId").MapRightKey("PageId"));
 
             modelBuilder.Entity<Template>()
-                .HasMany(e => e.Mozaic_Pages)
-                .WithRequired(e => e.Mozaic_Template)
+                .HasMany(e => e.Pages)
+                .WithRequired(e => e.MasterTemplate)
                 .HasForeignKey(e => e.MasterTemplateId);
 
             modelBuilder.Entity<TemplateCategory>()
-                .HasMany(e => e.Mozaic_Template)
-                .WithRequired(e => e.Mozaic_TemplateCategories)
+                .HasMany(e => e.Templates)
+                .WithRequired(e => e.Category)
                 .HasForeignKey(e => e.CategoryId);
 
             modelBuilder.Entity<TemplateCategory>()
-                .HasMany(e => e.Mozaic_TemplateCategories1)
-                .WithOptional(e => e.Mozaic_TemplateCategories2)
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<ActionCategory>()
-                .HasMany(e => e.Tapestry_ActionCategories1)
-                .WithOptional(e => e.Tapestry_ActionCategories2)
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<ActionCategory>()
-                .HasMany(e => e.Tapestry_Actions)
-                .WithRequired(e => e.Tapestry_ActionCategories)
+                .HasMany(e => e.Actions)
+                .WithRequired(e => e.Category)
                 .HasForeignKey(e => e.CategoryId);
 
             modelBuilder.Entity<ActionRole>()
-                .HasMany(e => e.Tapestry_ActionRole_Action)
-                .WithRequired(e => e.Tapestry_ActionRoles)
+                .HasMany(e => e.ActionRole_Actions)
+                .WithRequired(e => e.ActionRole)
                 .HasForeignKey(e => e.ActionRoleId);
 
             modelBuilder.Entity<Action>()
-                .HasMany(e => e.Tapestry_ActionRole_Action)
-                .WithRequired(e => e.Tapestry_Actions)
+                .HasMany(e => e.ActionRole_Actions)
+                .WithRequired(e => e.Action)
                 .HasForeignKey(e => e.ActionId);
 
             modelBuilder.Entity<Actor>()
-                .HasMany(e => e.Tapestry_ActionRoles)
-                .WithRequired(e => e.Tapestry_Actors)
+                .HasMany(e => e.ActionRoles)
+                .WithRequired(e => e.Actor)
                 .HasForeignKey(e => e.ActorId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Block>()
-                .HasMany(e => e.Tapestry_ActionRoles)
-                .WithRequired(e => e.Tapestry_Blocks)
+                .HasMany(e => e.SourceTo_ActionRoles)
+                .WithRequired(e => e.SourceBlock)
                 .HasForeignKey(e => e.SourceBlockId);
 
             modelBuilder.Entity<Block>()
-                .HasMany(e => e.Tapestry_ActionRoles1)
-                .WithRequired(e => e.Tapestry_Blocks1)
+                .HasMany(e => e.TargetTo_ActionRoles)
+                .WithRequired(e => e.TargetBlock)
                 .HasForeignKey(e => e.TargetBlockId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Block>()
-                .HasMany(e => e.Tapestry_AttributeRoles)
-                .WithRequired(e => e.Tapestry_Blocks)
+                .HasMany(e => e.AttributeRoles)
+                .WithRequired(e => e.Block)
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
-                .HasOptional(e => e.Tapestry_WorkFlows1)
-                .WithRequired(e => e.Tapestry_Blocks1);
+                .HasOptional(e => e.InitForWorkFlow)
+                .WithRequired(e => e.InitBlock);
 
             modelBuilder.Entity<WorkFlow_Type>()
-                .HasMany(e => e.Tapestry_WorkFlows)
-                .WithRequired(e => e.Tapestry_WorkFlow_Types)
+                .HasMany(e => e.WorkFlows)
+                .WithRequired(e => e.Type)
                 .HasForeignKey(e => e.TypeId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<WorkFlow>()
-                .HasMany(e => e.Tapestry_Blocks)
-                .WithRequired(e => e.Tapestry_WorkFlows)
+                .HasMany(e => e.Blocks)
+                .WithRequired(e => e.WorkFlow)
                 .HasForeignKey(e => e.WorkFlowId);
 
             modelBuilder.Entity<WorkFlow>()
-                .HasMany(e => e.Tapestry_WorkFlows1)
-                .WithOptional(e => e.Tapestry_WorkFlows2)
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<Block>()
