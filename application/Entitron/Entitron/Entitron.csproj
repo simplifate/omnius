@@ -51,6 +51,7 @@
     <Compile Include="Sql\SqlQuery_CheckDrop.cs" />
     <Compile Include="Sql\SqlQuery_ConstraintDisabled.cs" />
     <Compile Include="Sql\SqlQuery_ConstraintEnable.cs" />
+    <Compile Include="Sql\SqlQuery_DefaultAdd.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_ForeignKeyDrop.cs" />
     <Compile Include="Sql\SqlQuery_GetForeignKeysForDrop.cs" />

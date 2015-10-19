@@ -152,6 +152,19 @@ namespace Entitron
             return _table;
         }
 
+        public DBTable AddDefaultValue(string column, object defValue)
+        {
+            table.Application.queries.Add(new SqlQuery_DefaultAdd()
+            {
+                application = table.Application,
+                table = table,
+                column = column,
+                value = defValue
+            });
+
+            return _table;
+        }
+
         public static List<string> getMaxLenghtDataTypes()
         {
             List<string> maxLenghtDataType = new List<string>();

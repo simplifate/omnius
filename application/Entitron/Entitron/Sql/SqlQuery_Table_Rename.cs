@@ -13,15 +13,14 @@ namespace Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             string parNewName = safeAddParam("newName", newName);
 
             sqlString =string.Format(
-                "DECLARE @MetaTables NVARCHAR(100) = (SELECT DbMetaTables FROM {3} WHERE Name = @{0});" +
-                "DECLARE @sql NVARCHAR(MAX) = CONCAT('UPDATE ', @MetaTables, ' SET Name = @{1} WHERE Name = @{2};');" +
-                "exec sp_executesql @sql, N'@{2} NVARCHAR(50), @{1} NVARCHAR(50)', @{2} = @{2}, @{1} = @{1};",
-                parAppName,parNewName,parTableName, DB_MasterApplication);
+                "DECLARE @sql NVARCHAR(MAX);" +
+                "SET @sql= CONCAT('UPDATE {2} SET Name = ', @{0},' WHERE Name = ', @{1}, ';');" +
+                "exec sp_executesql @sql, N'@{1} NVARCHAR(50), @{0} NVARCHAR(50)', @{1} = @{1}, @{0} = @{0};",
+                parNewName,parTableName, DB_EntitronMeta);
 
             base.BaseExecution(transaction);
         }
