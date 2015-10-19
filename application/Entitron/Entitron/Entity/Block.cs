@@ -31,6 +31,7 @@ namespace Entitron.Entity
         public int WorkFlowId { get; set; }
 
         public int? MozaicPageId { get; set; }
+        public virtual Page MozaicPage { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActionRole> Tapestry_ActionRoles { get; set; }

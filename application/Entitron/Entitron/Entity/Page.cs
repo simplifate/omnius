@@ -28,6 +28,8 @@ namespace Entitron.Entity
 
         public virtual Template Mozaic_Template { get; set; }
 
+        public virtual Block Block { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Css> Mozaic_Css { get; set; }
     }

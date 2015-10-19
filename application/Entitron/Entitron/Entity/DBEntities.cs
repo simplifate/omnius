@@ -121,6 +121,12 @@ namespace Entitron.Entity
                 .HasMany(e => e.Tapestry_WorkFlows1)
                 .WithOptional(e => e.Tapestry_WorkFlows2)
                 .HasForeignKey(e => e.ParentId);
+
+            modelBuilder.Entity<Block>()
+                .HasKey(e => e.MozaicPageId);
+            modelBuilder.Entity<Page>()
+                .HasOptional(e => e.Block)
+                .WithRequired(e => e.MozaicPage);
         }
     }
 }
