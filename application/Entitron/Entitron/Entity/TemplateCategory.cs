@@ -12,8 +12,8 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TemplateCategory()
         {
-            Mozaic_Template = new HashSet<Template>();
-            Mozaic_TemplateCategories1 = new HashSet<TemplateCategory>();
+            Templates = new HashSet<Template>();
+            Children = new HashSet<TemplateCategory>();
         }
 
         public int Id { get; set; }
@@ -25,11 +25,11 @@ namespace Entitron.Entity
         public int? ParentId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Template> Mozaic_Template { get; set; }
+        public virtual ICollection<Template> Templates { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TemplateCategory> Mozaic_TemplateCategories1 { get; set; }
+        public virtual ICollection<TemplateCategory> Children { get; set; }
 
-        public virtual TemplateCategory Mozaic_TemplateCategories2 { get; set; }
+        public virtual TemplateCategory Parent { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Action()
         {
-            Tapestry_ActionRole_Action = new HashSet<ActionRole_Action>();
+            ActionRole_Actions = new HashSet<ActionRole_Action>();
         }
 
         public int Id { get; set; }
@@ -30,9 +30,9 @@ namespace Entitron.Entity
 
         public int CategoryId { get; set; }
 
-        public virtual ActionCategory Tapestry_ActionCategories { get; set; }
+        public virtual ActionCategory Category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole_Action> Tapestry_ActionRole_Action { get; set; }
+        public virtual ICollection<ActionRole_Action> ActionRole_Actions { get; set; }
     }
 }

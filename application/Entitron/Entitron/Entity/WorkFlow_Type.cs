@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WorkFlow_Type()
         {
-            Tapestry_WorkFlows = new HashSet<WorkFlow>();
+            WorkFlows = new HashSet<WorkFlow>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Entitron.Entity
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkFlow> Tapestry_WorkFlows { get; set; }
+        public virtual ICollection<WorkFlow> WorkFlows { get; set; }
     }
 }
