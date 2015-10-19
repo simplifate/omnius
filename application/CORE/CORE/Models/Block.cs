@@ -5,20 +5,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Tapestry.Models
+namespace CORE.Models
 {
     [Table("Tapestry_Blocks")]
     public class Block
     {
         public int Id { get; set; }
         [Required]
+        [Index(IsUnique = true)]
         [StringLength(50)]
         public string Name { get; set; }
         [StringLength(50)]
         public string ModelName { get; set; }
-        [Required]
         public bool IsVirtual { get; set; }
-        
+        public int? MozaicPageId { get; set; }
+
         public int WorkFlowId { get; set; }
         public virtual WorkFlow WorkFlow { get; set; }
         public virtual WorkFlow InitToWF { get; set; }

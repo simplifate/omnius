@@ -1,4 +1,4 @@
-namespace Tapestry.Models
+namespace CORE.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace Tapestry.Models
         public int Id { get; set; }
 
         [Required]
+        [Index(IsUnique = true)]
         [StringLength(50)]
         public string Name { get; set; }
 

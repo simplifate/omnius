@@ -5,13 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Tapestry.Models
+namespace CORE.Models
 {
     [Table("Tapestry_WorkFlow_Types")]
     public class WorkFlowType
     {
         public int Id { get; set; }
         [Required]
+        [Index(IsUnique = true)]
         [StringLength(50)]
         public string Name { get; set; }
 

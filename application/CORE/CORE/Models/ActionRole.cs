@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Tapestry.Models
+namespace CORE.Models
 {
     [Table("Tapestry_ActionRoles")]
     public class ActionRole
