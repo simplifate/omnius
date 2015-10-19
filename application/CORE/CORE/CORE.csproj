@@ -224,7 +224,9 @@
     <Content Include="Views\Config\Create.cshtml" />
     <Content Include="Views\Config\Update.cshtml" />
     <Content Include="Views\Config\Index.cshtml" />
-    <Content Include="Views\Config\Details.cshtml" />
+    <Content Include="Views\Config\Details.cshtml">
+      <BrowseToURL>~/Config/Details</BrowseToURL>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
