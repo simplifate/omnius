@@ -9,6 +9,7 @@ using Entitron;
 
 namespace Mozaic.Models
 {
+    [Table("Mozaic_Template")]
     public class Template
     {
         #region Attributes
@@ -22,21 +23,17 @@ namespace Mozaic.Models
         [Required]
         [DefaultValue("")]
         public string Html { get; set; }
-
-        [Required]
-        [DefaultValue("")]
-        public string Css { get; set; }
         
         [Required]
         public int CategoryId { get; set; }
-        public TemplateCategory Category { get; set; }
+        public virtual TemplateCategory Category { get; set; }
         #endregion
 
         private string startKey = "<%% ";
         private string endingKey = " %%>";
         private string cssKey = "<%%css%%>";
 
-        public string Render(Dictionary<string, string> Relations, DBItem Model, DBMozaic entity = null, string address = null)
+        public string Render(Page master, Dictionary<string, string> Relations, DBItem Model, DBMozaic entity = null, string address = null)
         {
             string output = string.Copy(Html);
 
@@ -45,7 +42,7 @@ namespace Mozaic.Models
             if (indexOfCss != -1)
             {
                 output = output.Remove(indexOfCss, cssKey.Length);
-                output = output.Insert(indexOfCss, Css);
+                output = output.Insert(indexOfCss, string.Join("", master.Css.Select(c => c.Value)));
             }
 
             // replace other
@@ -73,9 +70,12 @@ namespace Mozaic.Models
 
                     switch (type)
                     {
+                        case "V": // value
+                            replacement += name;
+                            break;
                         case "P": // partial
                             replacement += entity.Templates.FirstOrDefault(t => t.Name == name)
-                                .Render(Relations, Model, entity, currentAddress);
+                                .Render(master, Relations, Model, entity, currentAddress);
                             break;
                         case "D": // datasource
                             replacement += Model[name];
@@ -87,7 +87,7 @@ namespace Mozaic.Models
                             {
                                 listItem["__parent__"] = Model;
                                 replacement += entity.Templates.FirstOrDefault(t => t.Name == templateName)
-                                    .Render(Relations, listItem, entity, currentAddress);
+                                    .Render(master, Relations, listItem, entity, currentAddress);
                             }
                             break;
                         default:

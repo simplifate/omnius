@@ -11,47 +11,50 @@ namespace Entitron
     {
         public DBTable table { get { return _table; } }
         private DBTable _table;
-
+        public bool? isForDrop { get; set; }
         public DBForeignKeys(DBTable table)
         {
             _table = table;
 
-            SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { applicationName = table.AppName, tableName = table.tableName };
-
-            foreach (DBItem i in query.ExecuteWithRead())
+            if (_table.isInDB())
             {
-                DBForeignKey fk = new DBForeignKey();
-                fk.name = (string)i["name"];
+                SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { application = table.Application, table = table,isForDrop = isForDrop};
 
-                // is source table
-                if (table.tableName == (string)i["sourceTable"])
+                foreach (DBItem i in query.ExecuteWithRead())
                 {
-                    fk.sourceTable = (string)i["sourceTable"];
-                    fk.targetTable = (string)i["targetTable"];
-                    fk.sourceColumn = (string)i["sourceColumn"];
-                    fk.targetColumn = (string)i["targetColumn"];
-                }
-                // is target table
-                else
-                {
-                    fk.sourceTable = (string)i["targetTable"];
-                    fk.targetTable = (string)i["sourceTable"];
-                    fk.sourceColumn = (string)i["targetColumn"];
-                    fk.targetColumn = (string)i["sourceColumn"];
-                }
+                    DBForeignKey fk = new DBForeignKey();
+                    fk.name = (string)i["name"];
 
-                Add(fk);
+                    // is source table
+                    if (table.tableName == (string)i["sourceTable"])
+                    {
+                        fk.sourceTable = table.Application.GetTable((string)i["sourceTable"]);
+                        fk.targetTable = table.Application.GetTable((string)i["targetTable"]);
+                        fk.sourceColumn = (string)i["sourceColumn"];
+                        fk.targetColumn = (string)i["targetColumn"];
+                    }
+                    // is target table
+                    else
+                    {
+                        fk.sourceTable = table.Application.GetTable((string)i["targetTable"]);
+                        fk.targetTable = table.Application.GetTable((string)i["sourceTable"]);
+                        fk.sourceColumn = (string)i["targetColumn"];
+                        fk.targetColumn = (string)i["sourceColumn"];
+                    }
+
+                    Add(fk);
+                }
             }
         }
 
         public DBForeignKeys AddToDB(DBForeignKey fk)
         {
-            DBTable.queries.Add(new SqlQuery_ForeignKeyAdd()
+            table.Application.queries.Add(new SqlQuery_ForeignKeyAdd()
             {
-                applicationName = table.AppName,
+                application = table.Application,
                 foreignName = fk.name,
-                tableName = fk.sourceTable,
-                table2Name = fk.targetTable,
+                table = fk.sourceTable,
+                table2 = fk.targetTable,
                 foreignKey = fk.sourceColumn,
                 primaryKey = fk.targetColumn,
                 onDelete = fk.onDelete,
@@ -63,15 +66,32 @@ namespace Entitron
         }
         public DBForeignKeys DropFromDB(string fkName)
         {
-            DBTable.queries.Add(new SqlQuery_ForeignKeyDrop()
+            table.Application.queries.Add(new SqlQuery_ForeignKeyDrop()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 foreignKeyName = fkName
             });
 
             Remove(this.SingleOrDefault(i => i.name == fkName));
             return this;
         }
+        public List<string> GetForeignKeyForDrop()
+        {
+            SqlQuery_GetForeignKeysForDrop query = new SqlQuery_GetForeignKeysForDrop()
+            {
+                application = table.Application,
+                table = table
+            };
+            List<string> fkList = new List<string>();
+
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                DBForeignKey fk = new DBForeignKey();
+                fk.name = (string)i["name"];
+                fkList.Add(fk.name);
+            }
+            return fkList;
+        } 
     }
 }

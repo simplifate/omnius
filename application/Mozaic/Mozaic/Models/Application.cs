@@ -6,6 +6,7 @@ namespace Mozaic.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
+    [Table("Master_Applications")]
     public partial class Application
     {
         public int Id { get; set; }

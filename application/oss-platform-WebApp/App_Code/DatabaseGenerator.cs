@@ -1,4 +1,5 @@
-﻿using FSPOC.Models;
+﻿using System.Collections.Generic;
+using FSPOC.Models;
 
 namespace FSPOC
 {
@@ -8,26 +9,23 @@ namespace FSPOC
 
         public void GenerateFrom(DbSchemeCommit scheme)
         {
-            Entitron.DBTable.connectionString = connectionString;
-            Entitron.DBTable.ApplicationName = "ApplicationTest";
+            Entitron.DBApp.connectionString = connectionString;
+            Entitron.DBApp entitronApp = new Entitron.DBApp();
+            entitronApp.Name = "ApplicationTest";
             foreach (DbTable efTable in scheme.Tables)
             {
-                Entitron.DBTable writeTable = new Entitron.DBTable();
-                writeTable.tableName = efTable.Name;
+                Entitron.DBTable entitronTable = Entitron.DBTable.Create(efTable.Name);
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
-                    Entitron.DBColumn writeColumn = new Entitron.DBColumn();
-                    writeColumn.Name = efColumn.Name;
-                    writeColumn.isPrimaryKey = efColumn.PrimaryKey;
-                    writeColumn.isUnique = efColumn.Unique;
-                    writeColumn.canBeNull = efColumn.AllowNull;
-                    writeColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
-                    writeColumn.type = efColumn.Type;
-                    writeTable.columns.AddToDB(writeColumn);
+                    entitronTable.columns.AddToDB(efColumn.Name, efColumn.Type, false, false,
+                        efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength, isUnique: efColumn.Unique, canBeNull: efColumn.AllowNull);
                 }
-                writeTable.Create();
+                foreach (DbIndex efIndex in efTable.Indices)
+                {
+                    entitronTable.indices.AddToDB(efIndex.Name, new List<string>(efIndex.ColumnNames.Split(',')));
+                }
             }
-            Entitron.DBTable.SaveChanges();
+            entitronApp.SaveChanges();
         }
 
         public DatabaseGenerator()

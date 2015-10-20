@@ -9,7 +9,6 @@ namespace Entitron.Sql
     class SqlQuery_Select_TableList : SqlQuery
     {
         public string ApplicationName;
-        public List<string> columns { get; set; }
         
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
@@ -17,13 +16,13 @@ namespace Entitron.Sql
                 throw new ArgumentNullException("ApplicationName");
 
             string parAppName = safeAddParam("applicationName", ApplicationName);
-            string parColumnName = safeAddParam("columnNames",
-                (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*");
 
-            _sqlString =string.Format(
-                "DECLARE @tableName NVARCHAR(50) = (SELECT DbMetaTables FROM {0} WHERE Name = @{1});" +
-                "DECLARE @sql NVARCHAR(MAX) = CONCAT('SELECT ', @{2}, ' FROM ', @tableName, ';');" +
-                "exec(@sql);", SqlInitScript.aplicationTableName, parAppName,parColumnName);
+            sqlString = string.Format(
+                "SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
+                DB_MasterApplication,
+                DB_EntitronMeta,
+                parAppName
+                );
 
             return base.BaseExecutionWithRead(connection);
         }

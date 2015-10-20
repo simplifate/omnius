@@ -14,8 +14,22 @@ namespace Entitron.Sql
 
         public SqlQuery_Table_Create AddColumn(DBColumn column)
         {
+
             if (!_columns.Any(c => c.Name == column.Name))
                 _columns.Add(column);
+
+            foreach (string s in DBColumns.getMaxLenghtDataTypes())
+            {
+                if (column.type.ToLower() == s)
+                {
+                    column.allowColumnLength = true;
+                    break;
+                }
+            }
+            if (column.type == SqlDbType.Decimal.ToString() || column.type == SqlDbType.Float.ToString())
+            {
+                column.allowPrecisionScale = true;
+            }
 
             return this;
         }
@@ -23,7 +37,10 @@ namespace Entitron.Sql
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision=null,
+            int? scale =null,
             bool canBeNull = true,
             bool isPrimaryKey = false,
             bool isUnique = false,
@@ -34,9 +51,11 @@ namespace Entitron.Sql
                 Name = columnName,
                 type = type,
                 allowColumnLength = allowColumnLength,
+                allowPrecisionScale = allowPrecisionScale,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
@@ -53,32 +72,27 @@ namespace Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             string parColumnDef = safeAddParam("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
 
-            _sqlString = string.Format(
-                "DECLARE @_DbMetaTables NVARCHAR(50), @_sql NVARCHAR(MAX);" +
-                "SELECT @_DbMetaTables = DbMetaTables FROM {0} WHERE Name = @{1};" +
-                "SET @_sql = CONCAT('INSERT INTO ', @_DbMetaTables, '(Name) VALUES(@{2});');" +
-                "exec sp_executesql @_sql, N'@{2} NVARCHAR(50)', @{2};" +
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{1}, @{2}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('CREATE TABLE ', @realTableName, '(', @{3}, ');');" +
-                "exec(@sql);" +
-                "SET @_sql = CONCAT('UPDATE ', @_DbMetaTables, ' SET tableId=(SELECT object_id FROM sys.tables t WHERE t.name=@realTableName) WHERE Name=@tableName;');" +
-                "exec sp_executesql @_sql, N'@realTableName NVARCHAR(50), @tableName NVARCHAR(50)', @realTableName, @tableName;",
-                SqlInitScript.aplicationTableName,
+            sqlString = string.Format(
+                "DECLARE @_sql NVARCHAR(MAX),@_realTableName NVARCHAR(50);" +
+                "SET @_realTableName=CONCAT('Entitron_',@{2},'_',(checksum(RAND())%500000)+500000);" +
+                "SET @_sql=CONCAT('CREATE TABLE ',@_realTableName,'(',@{4},');');exec(@_sql);" +
+                "INSERT INTO {1}(Name,ApplicationId,tableId)VALUES(@{3},(SELECT Id FROM {0} WHERE Name=@{2}),(SELECT object_id FROM sys.tables WHERE name=@_realTableName));",
+                DB_MasterApplication,
+                DB_EntitronMeta,
                 parAppName,
                 parTableName,
-                parColumnDef
-                );
+                parColumnDef);
             
             base.BaseExecution(transaction);
         }
 
         public override string ToString()
         {
-            return string.Format("Create table {0} in [{1}]", tableName, applicationName);
+            return string.Format("Create table {0} in [{1}]", table.tableName, application.Name);
         }
     }
 }

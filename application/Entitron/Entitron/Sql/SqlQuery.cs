@@ -10,20 +10,22 @@ namespace Entitron.Sql
 {
     public class SqlQuery
     {
-        protected string _sqlString;
+        public const string DB_MasterApplication = "dbo.Master_Applications";
+        public const string DB_EntitronMeta = "dbo.Entitron___META";
+
+        public string sqlString;
         protected Dictionary<string, object> _params;
         protected Dictionary<string, string> _datatypes;
 
-        public SqlQuery(string SqlString = "", Dictionary<string, object> param = null)
+        public SqlQuery()
         {
-            _sqlString = SqlString;
-            _params = (param != null) ? param : new Dictionary<string, object>();
+            _params = new Dictionary<string, object>();
             _datatypes = new Dictionary<string, string>();
         }
 
         public void Execute(string connectionString = null)
         {
-            connectionString = connectionString ?? DBTable.connectionString;
+            connectionString = connectionString ?? DBApp.connectionString;
             if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
@@ -52,11 +54,11 @@ namespace Entitron.Sql
         }
         public virtual List<DBItem> ExecuteWithRead()
         {
-            if (DBTable.connectionString == null)
+            if (DBApp.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
             List<DBItem> items = null;
-            using (SqlConnection connection = new SqlConnection(DBTable.connectionString))
+            using (SqlConnection connection = new SqlConnection(DBApp.connectionString))
             {
                 connection.Open();
 
@@ -74,7 +76,7 @@ namespace Entitron.Sql
             }
             catch(SqlException e)
             {
-                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
+                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'"))
                 {
                     new SqlInitScript().Execute(connection);
                     cmd.ExecuteNonQuery();
@@ -111,9 +113,9 @@ namespace Entitron.Sql
         {
             SqlCommand cmd = null;
             if (transaction is SqlConnection)
-                cmd = new SqlCommand(_sqlString, (SqlConnection)transaction);
+                cmd = new SqlCommand(sqlString, (SqlConnection)transaction);
             else if (transaction is SqlTransaction)
-                cmd = new SqlCommand(_sqlString, (transaction as SqlTransaction).Connection, (SqlTransaction)transaction);
+                cmd = new SqlCommand(sqlString, (transaction as SqlTransaction).Connection, (SqlTransaction)transaction);
             else
                 return null;
 

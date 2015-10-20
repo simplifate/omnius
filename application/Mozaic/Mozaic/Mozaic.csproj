@@ -171,38 +171,25 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\BuilderController.cs" />
+    <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\FilterIPAttribute.cs" />
+    <Compile Include="Controllers\RendererController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509291138476_CreateInit.cs" />
-    <Compile Include="Migrations\201509291138476_CreateInit.Designer.cs">
-      <DependentUpon>201509291138476_CreateInit.cs</DependentUpon>
+    <Compile Include="Migrations\201510140948488_Init.cs" />
+    <Compile Include="Migrations\201510140948488_Init.Designer.cs">
+      <DependentUpon>201510140948488_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509291144520_CreatePage.cs" />
-    <Compile Include="Migrations\201509291144520_CreatePage.Designer.cs">
-      <DependentUpon>201509291144520_CreatePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509291239027_PageForeignKey.cs" />
-    <Compile Include="Migrations\201509291239027_PageForeignKey.Designer.cs">
-      <DependentUpon>201509291239027_PageForeignKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509300847299_RequiredAttributesTemplatePage.cs" />
-    <Compile Include="Migrations\201509300847299_RequiredAttributesTemplatePage.Designer.cs">
-      <DependentUpon>201509300847299_RequiredAttributesTemplatePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509301029005_PageRelationsMerged.cs" />
-    <Compile Include="Migrations\201509301029005_PageRelationsMerged.Designer.cs">
-      <DependentUpon>201509301029005_PageRelationsMerged.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509301041224_conventionRelationRepaired.cs" />
-    <Compile Include="Migrations\201509301041224_conventionRelationRepaired.Designer.cs">
-      <DependentUpon>201509301041224_conventionRelationRepaired.cs</DependentUpon>
+    <Compile Include="Migrations\201510141123379_Css.cs" />
+    <Compile Include="Migrations\201510141123379_Css.Designer.cs">
+      <DependentUpon>201510141123379_Css.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Application.cs" />
+    <Compile Include="Models\Css.cs" />
     <Compile Include="Models\DBMozaic.cs" />
-    <Compile Include="Models\extension.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Models\TemplateCategory.cs" />
@@ -243,12 +230,18 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Builder\TemplateIndex.cshtml" />
+    <Content Include="Views\Builder\TemplateCreate.cshtml" />
+    <Content Include="Views\Config\Index.cshtml" />
+    <Content Include="Views\Builder\Index.cshtml" />
+    <Content Include="Views\Builder\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\PageBuilder\" />
+    <Folder Include="Views\Renderer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -259,23 +252,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509291138476_CreateInit.resx">
-      <DependentUpon>201509291138476_CreateInit.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510140948488_Init.resx">
+      <DependentUpon>201510140948488_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509291144520_CreatePage.resx">
-      <DependentUpon>201509291144520_CreatePage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509291239027_PageForeignKey.resx">
-      <DependentUpon>201509291239027_PageForeignKey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509300847299_RequiredAttributesTemplatePage.resx">
-      <DependentUpon>201509300847299_RequiredAttributesTemplatePage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509301029005_PageRelationsMerged.resx">
-      <DependentUpon>201509301029005_PageRelationsMerged.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509301041224_conventionRelationRepaired.resx">
-      <DependentUpon>201509301041224_conventionRelationRepaired.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510141123379_Css.resx">
+      <DependentUpon>201510141123379_Css.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

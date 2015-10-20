@@ -12,11 +12,11 @@ namespace Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             var parColumn = safeAddParam("columnDefinition", column.getSqlDefinition());
 
-            _sqlString =string.Format(
+            sqlString =string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('ALTER TABLE ', @realTableName, ' ALTER COLUMN ', @{2});" +
                 "exec(@sql);", parAppName, parTableName, parColumn);
@@ -26,7 +26,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Modify column {0} in {1}[{2}]", column.Name, tableName, applicationName);
+            return string.Format("Modify column {0} in {1}[{2}]", column.Name, table.tableName, application.Name);
         }
     }
 }

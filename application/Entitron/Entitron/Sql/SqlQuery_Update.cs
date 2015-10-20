@@ -16,13 +16,13 @@ namespace Entitron.Sql
             if (changes == null || changes.Count < 1)
                 throw new ArgumentNullException("changes");
 
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("TableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("TableName", table.tableName);
             Dictionary<DBColumn, string> values = safeAddParam(rowSelect);
             Dictionary<DBColumn, string> parChanges = safeAddParam(changes);
 
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('UPDATE ', @realTableName, ' SET {2} WHERE {3};')" +
                 "exec sp_executesql @sql, N'{4}', {5};",
@@ -38,7 +38,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Update row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Update row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

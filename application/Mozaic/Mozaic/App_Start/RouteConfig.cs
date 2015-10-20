@@ -14,9 +14,38 @@ namespace Mozaic
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Config",
+                url: "config/{action}/{id}",
+                defaults: new
+                {
+                    controller = "Config",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                }
+            );
+
+            routes.MapRoute(
+                name: "Builder",
+                url: "/builder/{app}/{action}/{id}",
+                defaults: new
+                {
+                    controller = "Builder",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                }
+            );
+
+            routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{app}/{pageId}/{tableName}/{modelId}",
+                defaults: new
+                {
+                    controller = "Renderer",
+                    action = "Show",
+                    
+                    tableName = UrlParameter.Optional,
+                    modelId = UrlParameter.Optional
+                }
             );
         }
     }

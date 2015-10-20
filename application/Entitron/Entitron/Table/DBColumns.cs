@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Entitron.Sql;
 
@@ -8,42 +9,48 @@ namespace Entitron
 {
     public class DBColumns : List<DBColumn>
     {
-        public DBTable table { get { return _table; }  }
+        public DBTable table { get { return _table; } }
         private DBTable _table { get; set; }
 
         public DBColumns(DBTable table)
         {
             _table = table;
 
-            SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { applicationName = table.AppName, tableName = table.tableName };
-            
-            foreach(DBItem i in query.ExecuteWithRead())
+            // if table exists - get columns
+            if (_table.isInDB())
             {
-                DBColumn column = new DBColumn()
+                SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { application = table.Application, table = table };
+
+                foreach (DBItem i in query.ExecuteWithRead())
                 {
-                    Name = (string)i["name"],
-                    type = (string)i["typeName"],
-                    maxLength = Convert.ToInt32((Int16)i["max_length"]),
-                    canBeNull = (bool)i["is_nullable"]
-                };
-                Add(column);
+                    DBColumn column = new DBColumn()
+                    {
+                        Name = (string)i["name"],
+                        type = (string)i["typeName"],
+                        maxLength = Convert.ToInt32(i["max_length"]),
+                        precision = Convert.ToInt32(i["precision"]),
+                        scale = Convert.ToInt32(i["scale"]),
+                        canBeNull = (bool)i["is_nullable"]
+                    };
+                    Add(column);
+                }
             }
         }
 
         public DBTable AddToDB(DBColumn column)
         {
-            SqlQuery_Table_Create query;
-            if ((query = DBTable.queries.GetCreate(table.tableName)) != null)
+            SqlQuery_Table_Create query = table.Application.queries.GetQuery<SqlQuery_Table_Create>(table.tableName);
+            if (query != null)
                 query.AddColumn(column);
             else
-                DBTable.queries.Add(new SqlQuery_Column_Add()
+                table.Application.queries.Add(new SqlQuery_Column_Add()
                 {
-                    applicationName = table.AppName,
-                    tableName = table.tableName,
+                    application = table.Application,
+                    table = table,
                     column = column
                 });
 
-            this.Add(column);
+            Add(column);
 
             return _table;
         }
@@ -51,9 +58,11 @@ namespace Entitron
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision = null,
+            int? scale = null,
             bool canBeNull = true,
-            bool isPrimaryKey = false,
             bool isUnique = false,
             string additionalOptions = null)
         {
@@ -62,15 +71,16 @@ namespace Entitron
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
         }
         public DBTable AddRangeToDB(DBColumns columns)
         {
-            foreach(DBColumn column in columns)
+            foreach (DBColumn column in columns)
             {
                 Add(column);
             }
@@ -80,10 +90,10 @@ namespace Entitron
 
         public DBTable RenameInDB(string originColumnName, string newColumnName)
         {
-            DBTable.queries.Add(new SqlQuery_Column_Rename()
+            table.Application.queries.Add(new SqlQuery_Column_Rename()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 originColumnName = originColumnName,
                 newColumnName = newColumnName
             });
@@ -96,11 +106,11 @@ namespace Entitron
         {
             new SqlQuery_Column_Modify()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 column = column
             };
-            
+
             this[this.IndexOf(c => c.Name == column.Name)] = column;
             return _table;
         }
@@ -108,9 +118,11 @@ namespace Entitron
             string columnName,
             string type,
             bool allowColumnLength,
+            bool allowPrecisionScale,
             int? maxLength = null,
+            int? precision = null,
+            int? scale = null,
             bool canBeNull = true,
-            bool isPrimaryKey = false,
             bool isUnique = false,
             string additionalOptions = null)
         {
@@ -119,8 +131,9 @@ namespace Entitron
                 Name = columnName,
                 type = type,
                 maxLength = maxLength,
+                precision = precision,
+                scale = scale,
                 canBeNull = canBeNull,
-                isPrimaryKey = isPrimaryKey,
                 isUnique = isUnique,
                 additionalOptions = additionalOptions
             });
@@ -128,15 +141,40 @@ namespace Entitron
 
         public DBTable DropFromDB(string columnName)
         {
-            DBTable.queries.Add(new SqlQuery_Column_Drop()
+            table.Application.queries.Add(new SqlQuery_Column_Drop()
             {
-                applicationName = table.AppName,
-                tableName = table.tableName,
+                application = table.Application,
+                table = table,
                 columnName = columnName
             });
 
             Remove(this.SingleOrDefault(c => c.Name == columnName));
             return _table;
+        }
+
+        public DBTable AddDefaultValue(string column, object defValue)
+        {
+            table.Application.queries.Add(new SqlQuery_DefaultAdd()
+            {
+                application = table.Application,
+                table = table,
+                column = column,
+                value = defValue
+            });
+
+            return _table;
+        }
+
+        public static List<string> getMaxLenghtDataTypes()
+        {
+            List<string> maxLenghtDataType = new List<string>();
+            SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
+
+            foreach (DBItem s in query.ExecuteWithRead())
+            {
+                maxLenghtDataType.Add(s["name"].ToString());
+            }
+            return maxLenghtDataType;
         }
     }
 }

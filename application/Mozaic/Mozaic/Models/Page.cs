@@ -9,11 +9,16 @@ using Entitron;
 
 namespace Mozaic.Models
 {
+    [Table("Mozaic_Pages")]
     public class Page
     {
         #region attributes
         [Required]
         public int Id { get; set; }
+
+        [Required]
+        public int ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
         
         [Required]
         [DefaultValue("")]
@@ -21,7 +26,9 @@ namespace Mozaic.Models
         
         [Required]
         public int MasterTemplateId { get; set; }
-        public Template MasterTemplate { get; set; }
+        public virtual Template MasterTemplate { get; set; }
+
+        public virtual ICollection<Css> Css { get; set; }
         #endregion
 
 
@@ -30,7 +37,7 @@ namespace Mozaic.Models
             entity = entity ?? new DBMozaic();
 
             return entity.Templates.FirstOrDefault(t => t.Id == MasterTemplateId)
-                .Render(parseKeyValueString(Relations), Model, entity);
+                .Render(this, parseKeyValueString(Relations), Model, entity);
         }
         private Dictionary<string, string> parseKeyValueString(string value, char relationSeparator = ';', char keyValueSeparator = '=')
         {

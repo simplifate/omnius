@@ -19,6 +19,25 @@ namespace Mozaic.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Template>()
+                        .HasRequired(t => t.Category)
+                        .WithMany(c => c.Templates)
+                        .HasForeignKey(t => t.CategoryId);
+
+            modelBuilder.Entity<TemplateCategory>()
+                        .HasOptional(c => c.Parent)
+                        .WithMany(c => c.Children)
+                        .HasForeignKey(c => c.ParentId);
+
+            modelBuilder.Entity<Page>()
+                        .HasMany(p => p.Css)
+                        .WithMany(c => c.Pages)
+                        .Map(cs =>
+                        {
+                            cs.MapLeftKey("PageId");
+                            cs.MapRightKey("CssId");
+                            cs.ToTable("Mozaic_CssPages");
+                        });
         }
     }
 }

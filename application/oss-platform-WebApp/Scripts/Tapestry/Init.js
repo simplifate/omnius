@@ -26,16 +26,22 @@
                 leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
                 topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
                 if (droppedElement.hasClass("operator")) {
-                    newOperator = $('<div id="newOperator" class="decisionRhombus"><svg width="70" height="60">'
-                      + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                    if (droppedElement.attr("operatorType") == "decision")
+                        newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
+                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
+                    else if (droppedElement.attr("operatorType") == "condition")
+                        newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
+                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
                     newOperator.appendTo(this);
                     newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                    newOperator.attr("dialogType", droppedElement.attr("dialogType"));
                     droppedElement.remove();
                     AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
                 }
                 else {
                     droppedElement.removeClass("menuItem");
                     droppedElement.addClass("item");
+                    AddIconToItem(droppedElement);
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                     AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
                 }
@@ -86,20 +92,35 @@
         revert: true
     });
     $.contextMenu({
-        selector: '.rule .item, .rule .decisionRhombus',
+        selector: '.rule .item, .rule .operatorSymbol',
         trigger: 'right',
         zIndex: 300,
         callback: function (key, options) {
+            item = options.$trigger;
             if (key == "delete") {
-                item = options.$trigger;
                 currentInstance = item.parents(".rule").data("jsPlumbInstance");
                 currentInstance.removeAllEndpoints(item, true);
                 item.remove();
             }
             else if (key == "edit") {
-                alert("TODO: Show a dialog with item properties.");
+                switch(item.attr("dialogType")) {
+                    case "emailTemplate":
+                        CurrentItem = item;
+                        chooseEmailTemplateDialog.dialog("open");
+                        break;
+                    case "port":
+                        CurrentItem = item;
+                        choosePortDialog.dialog("open");
+                        break;
+                    case "condition":
+                        CurrentItem = item;
+                        editConditionDialog.dialog("open");
+                        break;
+                    default:
+                        alert("This item doesn't have any properties to edit.");
+                        break;
+                }
             }
-
         },
         items: {
             "edit": { name: "Edit", icon: "edit" },
@@ -130,16 +151,22 @@
             leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
             topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
             if (droppedElement.hasClass("operator")) {
-                newOperator = $('<div id="newOperator" class="decisionRhombus"><svg width="70" height="60">'
-                  + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                if(droppedElement.attr("operatorType")=="decision")
+                    newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
+                      + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
+                else if (droppedElement.attr("operatorType") == "condition")
+                    newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
+                      + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
                 newOperator.appendTo(this);
                 newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                newOperator.attr("dialogType", droppedElement.attr("dialogType"));
                 droppedElement.remove();
                 AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
             }
             else {
                 droppedElement.removeClass("menuItem");
                 droppedElement.addClass("item");
+                AddIconToItem(droppedElement);
                 droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                 AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
             }

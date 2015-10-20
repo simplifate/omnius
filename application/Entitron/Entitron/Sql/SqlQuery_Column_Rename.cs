@@ -13,12 +13,12 @@ namespace Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             string parOriginName = safeAddParam("originColumnName", originColumnName);
             string parNewName = safeAddParam("newColumnName", newColumnName);
 
-            _sqlString =
+            sqlString =
                 string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@fullOriginName NVARCHAR(100);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @fullOriginName = CONCAT(@realTableName, '.', @{2});" +
@@ -30,7 +30,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Rename column {0} in {1}[{2}]", originColumnName, tableName, applicationName);
+            return string.Format("Rename column {0} in {1}[{2}]", originColumnName, table.tableName, application.Name);
         }
     }
 }

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Entitron;
 
 namespace Entitron.Sql
 {
     class SqlQueue
     {
         public string connectionString;
-        private List<SqlQuery> _queries = new List<SqlQuery>();
+        internal static List<SqlQuery> _queries = new List<SqlQuery>();
 
         public SqlQueue Add(SqlQuery query)
         {
@@ -18,23 +19,33 @@ namespace Entitron.Sql
 
             return this;
         }
-        public SqlQuery_Table_Create GetCreate(string tableName)
+        public T GetQuery<T>(string tableName) where T : SqlQuery_withApp
         {
-            foreach(SqlQuery query in _queries)
+            return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
+        }
+        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withApp
+        {
+            List<T> output = new List<T>();
+            for(int i = 0; i < _queries.Count; i++)
             {
-                if (query is SqlQuery_Table_Create && (query as SqlQuery_Table_Create).tableName == tableName)
-                    return (SqlQuery_Table_Create)query;
+                SqlQuery q = _queries[i];
+                if (q is T && (q as T).table.tableName == tableName)
+                {
+                    output.Add((T)q);
+                    _queries.RemoveAt(i);
+                    i--;
+                }
             }
 
-            return null;
+            return output;
         }
 
         public void ExecuteAll()
         {
-            if (connectionString == null)
+            if (connectionString == null && DBApp.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString ?? DBApp.connectionString))
             {
                 connection.Open();
 

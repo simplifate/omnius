@@ -8,23 +8,25 @@ namespace Entitron.Sql
 {
     class SqlQuery_PrimaryKeyDrop : SqlQuery_withApp
     {
+        public string primaryKeyName { get; set; }
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
+            string parPrimaryKeyName = safeAddParam("primaryKeyName", primaryKeyName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' DROP CONSTRAINT PK_', @realTableName, ';');"+ 
+                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' DROP CONSTRAINT ', @{2} ,';');"+ 
                 "exec(@sql);",
-                parAppName, parTableName);
+                parAppName, parTableName,parPrimaryKeyName);
 
             base.BaseExecution(transaction);
         }
 
         public override string ToString()
         {
-            return string.Format("Drop primary key in {0}[{1}]", tableName, applicationName);
+            return string.Format("Drop primary key in {0}[{1}]", table.tableName, application.Name);
         }
     }
 

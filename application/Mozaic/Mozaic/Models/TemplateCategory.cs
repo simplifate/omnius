@@ -6,8 +6,13 @@ using System.Data.Entity.Spatial;
 
 namespace Mozaic.Models
 {
+    [Table("Mozaic_TemplateCategories")]
     public class TemplateCategory
     {
+        public TemplateCategory()
+        {
+        }
+
         [Required]
         public int Id { get; set; }
 
@@ -15,7 +20,9 @@ namespace Mozaic.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public TemplateCategory Parent { get; set; }
-        public ICollection<TemplateCategory> Children { get; set; }
+        public int? ParentId { get; set; }
+        public virtual TemplateCategory Parent { get; set; }
+        public virtual ICollection<TemplateCategory> Children { get; set; }
+        public virtual ICollection<Template> Templates { get; set; }
     }
 }

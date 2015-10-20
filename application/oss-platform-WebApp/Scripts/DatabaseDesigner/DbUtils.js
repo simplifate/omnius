@@ -99,7 +99,7 @@ function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValu
     newColumn.data("dbAllowNull", allowNull);
     newColumn.data("dbUnique", unique);
     newColumn.data("dbDefaultValue", defaultValue);
-    newColumn.data("dbColumnType", type);
+    newColumn.attr("dbColumnType", type);
     newColumn.data("dbColumnLength", length);
     newColumn.data("dbColumnLengthMax", lengthMax);
     AddColumnToJsPlumb(newColumn);

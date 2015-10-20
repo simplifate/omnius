@@ -104,4 +104,170 @@
         else
             alert("No table selected");
     }
+    chooseEmailTemplateDialog = $("#choose-email-template-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 500,
+        buttons: {
+            "Choose": function () {
+                chooseEmailTemplateDialog_SubmitData();
+            },
+            Cancel: function () {
+                chooseEmailTemplateDialog.dialog("close");
+            }
+        },
+        open: function (event, ui) {
+            $(this).find("#choice-template:first tbody:nth-child(2) tr").remove();
+            tbody = $(this).find("#choice-template tbody:nth-child(2)");
+            for (i = 1; i <= 5; i++)
+                tbody.append($('<tr class="emailTemplateRow formRow" templateId="' + i + '"><td>' + 'Email template ' + i + '</td></tr>'));
+            if(CurrentItem.data("emailTemplate"))
+                tbody.find('tr[templateId="' + CurrentItem.data("emailTemplate") + '"]').addClass("highlightedRow");
+            $(document).on("click", "tr.emailTemplateRow", function (event) {
+                chooseEmailTemplateDialog.find("#choice-template tbody:nth-child(2) tr").removeClass("highlightedRow");
+                $(this).addClass("highlightedRow");
+            });
+        }
+    });
+    function chooseEmailTemplateDialog_SubmitData() {
+        selectedRow = chooseEmailTemplateDialog.find("#choice-template:first tbody:nth-child(2) tr.highlightedRow");
+        if (selectedRow.length) {
+            CurrentItem.data("emailTemplate", selectedRow.attr("templateId"));
+            chooseEmailTemplateDialog.dialog("close");
+        }
+        else
+            alert("No template selected");
+    }
+
+    editConditionDialog = $("#edit-condition-dialog").dialog({
+        autoOpen: false,
+        width: 700,
+        height: 500,
+        buttons: {
+            "Save": function () {
+                editConditionDialog_SubmitData();
+            },
+            Cancel: function () {
+                editConditionDialog.dialog("close");
+            }
+        },
+        open: function (event, ui) {
+            $(this).find(".logicTable tr").remove();
+            firstRow = $('<tr><td width="71px">IF</td><td>'
+                + '<select class="selectField"></select></td>'
+                + '<td><select class="selectOperator"></select></td>'
+                + '<td><input type="text" class="constantValue"/></td>'
+                + '<td width="91px"></td></tr>');
+            $(this).find(".logicTable").append(firstRow);
+            FillConditionsForLogicTableRow(firstRow);
+            conditionArrayPair = ConditionData.filter(function (val) {
+                return val[0] == CurrentItem.attr("id");
+            })[0];
+            if (conditionArrayPair) {
+                conditionArray = conditionArrayPair[1];
+                if(conditionArray.length > 0) {
+                    firstRow.find(".selectField").val(conditionArray[0].Field);
+                    firstRow.find(".selectOperator").val(conditionArray[0].Operator);
+                    firstRow.find(".constantValue").val(conditionArray[0].Constant);
+
+                    for (j = 1; j < conditionArray.length; j++) {
+                        newRow = $('<tr><td><select class="selectRelation"></select></td>'
+                            + '<td><select class="selectField"></select></td>'
+                            + '<td><select class="selectOperator"></select></td>'
+                            + '<td><input type="text" class="constantValue"/></td>'
+                            + '<td><button type="button" class="btnRemoveCondition">Remove</button></td></tr>');
+                        FillConditionsForLogicTableRow(newRow);
+                        newRow.find(".selectRelation").val(conditionArray[j].Relation);
+                        newRow.find(".selectField").val(conditionArray[j].Field);
+                        newRow.find(".selectOperator").val(conditionArray[j].Operator);
+                        newRow.find(".constantValue").val(conditionArray[j].Constant);
+
+                        newRow.find(".btnRemoveCondition").on("click", function () {
+                            $(this).parents("tr").remove();
+                        });
+                        $(this).find(".logicTable").append(newRow);
+                    }
+                }
+            }
+        }
+    });
+    function editConditionDialog_SubmitData() {
+        conditionArray = [];
+        editConditionDialog.find(".logicTable tr").each(function (index, value) {
+            logicTableRow = $(value);
+            conditionArray.push({
+                Relation: logicTableRow.find(".selectRelation").val(),
+                Field: logicTableRow.find(".selectField").val(),
+                Operator: logicTableRow.find(".selectOperator").val(),
+                Constant: logicTableRow.find(".constantValue").val()
+            });
+        });
+        currentItemDataRecord = ConditionData.filter(function (val) {
+            return val[0] == CurrentItem.attr("id");
+        })[0];
+        dataRecordIndex = ConditionData.indexOf(currentItemDataRecord);
+        if (dataRecordIndex != -1)
+            ConditionData[dataRecordIndex] = [CurrentItem.attr("id"), conditionArray];
+        else
+            ConditionData.push([CurrentItem.attr("id"), conditionArray]);
+            
+        editConditionDialog.dialog("close");        
+    }
+    $("#btnAddCondition").on("click", function () {
+        newRow = $('<tr><td><select class="selectRelation"></select></td>'
+            + '<td><select class="selectField"></select></td>'
+            + '<td><select class="selectOperator"></select></td>'
+            + '<td><input type="text" class="constantValue"/></td>'
+            + '<td><button type="button" class="btnRemoveCondition">Remove</button></td></tr>');
+        FillConditionsForLogicTableRow(newRow);
+        newRow.find(".selectRelation option:first").attr('selected', 'selected');
+        newRow.find(".selectField option:first").attr('selected', 'selected');
+        newRow.find(".selectOperator option:first").attr('selected', 'selected');
+        
+        newRow.find(".btnRemoveCondition").on("click", function () {
+            $(this).parents("tr").remove();
+        });
+        $("#edit-condition-dialog .logicTable").append(newRow);
+    });
+    $(".btnRemoveCondition").on("click", function () {
+        $(this).parents("tr").remove();
+    });
+
+    choosePortDialog = $("#choose-port-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 500,
+        buttons: {
+            "Choose": function () {
+                choosePortDialog_SubmitData();
+            },
+            Cancel: function () {
+                choosePortDialog.dialog("close");
+            }
+        },
+        open: function (event, ui) {
+            $(this).find("#choice-port:first tbody:nth-child(2) tr").remove();
+            tbody = $(this).find("#choice-port tbody:nth-child(2)");
+            for (i = 1; i <= 5; i++)
+                tbody.append($('<tr class="portRow formRow" portId="' + i + '"><td>' + 'Port' + i + '</td></tr>'));
+            if (CurrentItem.data("portId"))
+                tbody.find('tr[portId="' + CurrentItem.data("portId") + '"]').addClass("highlightedRow");
+            $(document).on("click", "tr.portRow", function (event) {
+                choosePortDialog.find("#choice-port tbody:nth-child(2) tr").removeClass("highlightedRow");
+                $(this).addClass("highlightedRow");
+            });
+        }
+    });
+    function choosePortDialog_SubmitData() {
+        selectedRow = choosePortDialog.find("#choice-port:first tbody:nth-child(2) tr.highlightedRow");
+        if (selectedRow.length) {
+            CurrentItem.data("portId", selectedRow.attr("portId"));
+            CurrentItem.text(selectedRow.find("td").text());
+            CurrentItem.parents(".rule").data("jsPlumbInstance").recalculateOffsets();
+            CurrentItem.parents(".rule").data("jsPlumbInstance").repaintEverything();
+            choosePortDialog.dialog("close");
+        }
+        else
+            alert("No port selected");
+    }
 });

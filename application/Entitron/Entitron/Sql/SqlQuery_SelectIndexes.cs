@@ -11,10 +11,10 @@ namespace Entitron.Sql
     {
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @sql NVARCHAR(MAX), @realTableName NVARCHAR(50);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
                 "SET @sql = 'SELECT i.name IndexName FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND t.name=@realTableName';" + 
@@ -27,7 +27,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Get index list in {0}[{1}]", tableName, applicationName);
+            return string.Format("Get index list in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

@@ -265,8 +265,8 @@ namespace FSPOC.Controllers
             }
             catch (Exception ex)
             {
-                //Log.Error(String.Format("DatabaseDesigner: error when loading the latest commit (GET api/database/commits/latest). "
-                //    + "Exception message: {0}", ex.Message));
+                Log.Error(String.Format("DatabaseDesigner: error when generating a database (GET api/database/generate). "
+                    + "Exception message: {0}", ex.Message));
                 return new HttpStatusCodeResult(500);
             }
         }

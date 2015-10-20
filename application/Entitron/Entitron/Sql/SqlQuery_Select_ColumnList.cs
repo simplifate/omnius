@@ -10,10 +10,10 @@ namespace Entitron.Sql
     {
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SELECT columns.*, types.name typeName FROM sys.columns columns JOIN sys.types types ON columns.user_type_id = types.user_type_id WHERE object_id = OBJECT_ID(@realTableName)", parAppName, parTableName);
 
@@ -22,7 +22,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Get coulmn list row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Get coulmn list row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

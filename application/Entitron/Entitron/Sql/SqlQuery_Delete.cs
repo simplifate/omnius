@@ -12,12 +12,12 @@ namespace Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", applicationName);
-            string parTableName = safeAddParam("TableName", tableName);
+            string parAppName = safeAddParam("AppName", application.Name);
+            string parTableName = safeAddParam("TableName", table.tableName);
             Dictionary<DBColumn, string> values = safeAddParam(rowSelect);
            
             
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE {2} ;')"+
                 "exec sp_executesql @sql, N'{3}', {4};" 
@@ -33,7 +33,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Delete row in {0}[{1}]", tableName, applicationName);
+            return string.Format("Delete row in {0}[{1}]", table.tableName, application.Name);
         }
     }
 }

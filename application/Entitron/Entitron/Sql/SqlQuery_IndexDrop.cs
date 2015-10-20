@@ -12,11 +12,11 @@ namespace Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", applicationName);
-            string parTableName = safeAddParam("tableName", tableName);
+            string parAppName = safeAddParam("applicationName", application.Name);
+            string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);
 
-            _sqlString = string.Format(
+            sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('DROP INDEX ', @{2}, ' ON ', @realTableName, ';')" +
                 "exec (@sql)",
@@ -26,7 +26,7 @@ namespace Entitron.Sql
 
         public override string ToString()
         {
-            return string.Format("Drop index {0} in {1}[{2}]", indexName, tableName, applicationName);
+            return string.Format("Drop index {0} in {1}[{2}]", indexName, table.tableName, application.Name);
         }
     }
 }
