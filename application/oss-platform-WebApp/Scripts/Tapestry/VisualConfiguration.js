@@ -5,20 +5,20 @@
 };
 connectorPaintStyle = {
     lineWidth: 2,
-    strokeStyle: "#0070c0",
+    strokeStyle: "#467ea8",
     joinstyle: "round"
 };
 connectorHoverStyle = {
     lineWidth: 2,
-    strokeStyle: "#ff0000"
+    strokeStyle: "#dc555f"
 };
 endpointHoverStyle = {
-    fillStyle: "#000000",
-    strokeStyle: "#000000"
+    fillStyle: "#dc555f",
+    strokeStyle: "#dc555f"
 };
 sourceEndpoint = {
     endpoint: "Rectangle",
-    paintStyle: { fillStyle: "#35acff", width: 10, height: 18 },
+    paintStyle: { fillStyle: "#f98e4b", width: 10, height: 18 },
     isSource: true,
     connector: ["Straight", { stub: [0, 0], gap: 10 }],
     connectorStyle: connectorPaintStyle,
@@ -37,7 +37,7 @@ yesEndpoint = $.extend({}, sourceEndpoint, {
     ]
 });
 noEndpoint = $.extend({}, sourceEndpoint, {
-    paintStyle: { fillStyle: "#35acff", width: 18, height: 10 },
+    paintStyle: { fillStyle: "#f98e4b", width: 18, height: 10 },
     overlays: [
         ["Label", {
             location: [0.7, 2],
@@ -48,15 +48,19 @@ noEndpoint = $.extend({}, sourceEndpoint, {
 });
 dataSourceConnectorPaintStyle = {
     lineWidth: 2,
-    strokeStyle: "#00a000",
-    joinstyle: "round"
+    strokeStyle: "#467ea8",
+    joinstyle: "round",
+    "stroke-dasharray": "10, 5"
 };
 dataSourceEndpoint = $.extend({}, sourceEndpoint, {
-    paintStyle: { fillStyle: "#00d000", width: 10, height: 18 },
+    paintStyle: { fillStyle: "#f98e4b", width: 10, height: 18 },
     connectorStyle: dataSourceConnectorPaintStyle,
 });
 
 jsPlumb.ready(function () {
+    $("#rulesPanel .item").each(function (index, element) {
+        AddIconToItem($(element));
+    });
     $("#rulesPanel .rule").each(function (ruleIndex, rule) {
         currentInstance = CreateJsPlumbInstanceForRule(rule);
 
