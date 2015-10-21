@@ -1,7 +1,7 @@
 ﻿#overviewPanel {
     position: absolute;
-    background-color: #f2f2f2;
-    border: 1px solid #c8c8c8;
+    background-color: #c0c0c0;
+    border: 1px solid #467ea8;
     width: 90%;
     min-height: 820px;
     margin: 40px 20px;
@@ -10,8 +10,9 @@
     position: absolute;
     width: 160px;
     height: 86px;
-    background-color: #e0e0e0;
-    border: 1px solid #808080;
+    background-color: #467ea8;
+    color: white;
+    border: none;
     font-size: 16px;
 }
 .block .blockName {
@@ -26,6 +27,8 @@
     top: 50px;
     text-align: center;
     width: 100%;
+    color: #f1a57a;
+    font-weight: bold;
 }
 .block {
     -webkit-touch-callout: none;
@@ -47,16 +50,17 @@
     height: 32px;
     z-index: 200;
     color: white;
-    background-color: #4d41e7;
+    background-color: #467ea8;
+    border: none;
 }
 .ui-dialog {
     padding: 0px 0px;
-    border: 1px solid #45525e;
+    border: 1px solid black;
     border-radius: 4px;
 }
 .ui-widget-header {
     background-image: none;
-    background-color: #45525e;
+    background-color: #2d74b2;
     color: white;
 }
 .ui-dialog .ui-dialog-buttonpane {
@@ -83,4 +87,15 @@
 }
 .ui-dialog-content .formTable tr td:first-child {
     width: 150px;
+}
+.btn-tapestry {
+    background-color: #49c3f1;
+    color: black;
+}
+.btn-tapestry:hover {
+    background-color: #2ddef9;
+    color: black;
+}
+body {
+    background-color: #455d73;
 }

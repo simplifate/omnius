@@ -28,10 +28,10 @@
                 if (droppedElement.hasClass("operator")) {
                     if (droppedElement.attr("operatorType") == "decision")
                         newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
                     else if (droppedElement.attr("operatorType") == "condition")
                         newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /><text x="17" y="39" fill="#00FEFE" font-size="30">{&#931;}</text></svg></div>');
+                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
                     newOperator.appendTo(this);
                     newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                     newOperator.attr("dialogType", droppedElement.attr("dialogType"));
@@ -41,6 +41,7 @@
                 else {
                     droppedElement.removeClass("menuItem");
                     droppedElement.addClass("item");
+                    AddIconToItem(droppedElement);
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                     AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
                 }
@@ -152,10 +153,10 @@
             if (droppedElement.hasClass("operator")) {
                 if(droppedElement.attr("operatorType")=="decision")
                     newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                      + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /></svg></div>');
+                      + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
                 else if (droppedElement.attr("operatorType") == "condition")
                     newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                      + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#4f88bb; stroke:#41719c; stroke-width:2;" /><text x="17" y="39" fill="#00FEFE" font-size="30">{&#931;}</text></svg></div>');
+                      + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
                 newOperator.appendTo(this);
                 newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                 newOperator.attr("dialogType", droppedElement.attr("dialogType"));
@@ -165,6 +166,7 @@
             else {
                 droppedElement.removeClass("menuItem");
                 droppedElement.addClass("item");
+                AddIconToItem(droppedElement);
                 droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                 AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
             }

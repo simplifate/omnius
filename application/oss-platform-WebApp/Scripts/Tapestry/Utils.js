@@ -24,8 +24,8 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
             connectionArray = instance.getConnections({ target: info.targetId });
             for (i = 0; i < connectionArray.length; i++) {
                 if (!$(connectionArray[i].source).hasClass("dataSource")) {
-                    alert("An item can take multiple data sources (green arrows), but only one activating action (blue arrow).\n"
-                    + "There already is a blue arrow pointing to this item.");
+                    alert("An item can take multiple data sources (dashed arrows), but only one activating action (solid arrow).\n"
+                    + "There already is a solid arrow pointing to this item.");
                     return false;
                 }
             }
@@ -97,4 +97,24 @@ function AddToJsPlumb(instance, item) {
 function AssingOperatorID() {
     LastAssignedOperatorNumber++;
     return "operator" + LastAssignedOperatorNumber;
+}
+function AddIconToItem(item) {
+    if (item.hasClass("attribute")) {
+        item.prepend($('<i class="fa fa-database" style="margin-right: 6px;"></i>'));
+    }
+    else if (item.hasClass("port")) {
+        item.prepend($('<i class="fa fa-sign-out" style="margin-left: 1px; margin-right: 5px;"></i>'));
+    }
+    else if (item.hasClass("role")) {
+        item.prepend($('<i class="fa fa-user" style="margin-left: 1px; margin-right: 6px;"></i>'));
+    }
+    else if (item.hasClass("view")) {
+        item.prepend($('<i class="fa fa-paint-brush" style="margin-left: 1px; margin-right: 6px;"></i>'));
+    }
+    else if (item.hasClass("action")) {
+        item.prepend($('<i class="fa fa-cogs" style="margin-left: 1px; margin-right: 6px;"></i>'));
+    }
+    else if (item.hasClass("state")) {
+        item.prepend($('<i class="fa fa-ellipsis-v" style="margin-left: 4px; margin-right: 8px;"></i>'));
+    }
 }
