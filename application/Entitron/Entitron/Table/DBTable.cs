@@ -160,7 +160,10 @@ namespace Entitron
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
             foreach (DBColumn column in columns)
             {
-                data.Add(column, item[column.Name]);
+                if (item[column.Name] != null)
+                {                
+                    data.Add(column, item[column.Name]);
+                }
             }
 
             Application.queries.Add(new SqlQuery_Insert()

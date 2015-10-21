@@ -18,8 +18,8 @@ namespace Entitron.Sql
 
             sqlString =string.Format(
                 "DECLARE @sql NVARCHAR(MAX);" +
-                "SET @sql= CONCAT('UPDATE {2} SET Name = ', @{0},' WHERE Name = ', @{1}, ';');" +
-                "exec sp_executesql @sql, N'@{1} NVARCHAR(50), @{0} NVARCHAR(50)', @{1} = @{1}, @{0} = @{0};",
+                "SET @sql= CONCAT('UPDATE {2} SET Name = ', '''', @{0}, '''' ,' WHERE Name = ', '''', @{1}, '''',' ;');" +
+                "exec sp_executesql @sql, N'@{0} NVARCHAR(50), @{1} NVARCHAR(50)', @{0}, @{1};",
                 parNewName,parTableName, DB_EntitronMeta);
 
             base.BaseExecution(transaction);

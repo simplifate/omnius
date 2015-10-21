@@ -104,12 +104,12 @@ namespace Entitron
 
         public DBTable ModifyInDB(DBColumn column)
         {
-            new SqlQuery_Column_Modify()
+            table.Application.queries.Add(new SqlQuery_Column_Modify()
             {
                 application = table.Application,
                 table = table,
                 column = column
-            };
+            });
 
             this[this.IndexOf(c => c.Name == column.Name)] = column;
             return _table;

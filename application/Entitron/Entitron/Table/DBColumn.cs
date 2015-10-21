@@ -22,6 +22,19 @@ namespace Entitron
 
         public virtual string getSqlDefinition()
         {
+            foreach (string s in DBColumns.getMaxLenghtDataTypes())
+            {
+                if (type.ToLower() == s)
+                {
+                    allowColumnLength = true;
+                    break;
+                }
+            }
+            if (type == SqlDbType.Decimal.ToString() || type == SqlDbType.Float.ToString())
+            {
+                allowPrecisionScale = true;
+            }
+
             return
                 string.Format(
                     "{0} {1}{2} {3} {4} {5}",
