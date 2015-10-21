@@ -98,7 +98,8 @@ function AssingOperatorID() {
     LastAssignedOperatorNumber++;
     return "operator" + LastAssignedOperatorNumber;
 }
-function AddIconToItem(item) {
+function AddIconToItem(element) {
+    item = $(element);
     if (item.hasClass("attribute")) {
         item.prepend($('<i class="fa fa-database" style="margin-right: 6px;"></i>'));
     }

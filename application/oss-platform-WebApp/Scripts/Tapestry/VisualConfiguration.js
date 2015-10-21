@@ -58,13 +58,11 @@ dataSourceEndpoint = $.extend({}, sourceEndpoint, {
 });
 
 jsPlumb.ready(function () {
-    $("#rulesPanel .item").each(function (index, element) {
-        AddIconToItem($(element));
-    });
     $("#rulesPanel .rule").each(function (ruleIndex, rule) {
         currentInstance = CreateJsPlumbInstanceForRule(rule);
 
         $(rule).find(".item").each(function (itemIndex, item) {
+            AddIconToItem(item);
             AddToJsPlumb(currentInstance, item);
         });
         $(rule).find(".decisionRhombus").each(function (itemIndex, item) {
