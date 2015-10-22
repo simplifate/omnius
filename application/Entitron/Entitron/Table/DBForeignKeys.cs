@@ -64,18 +64,6 @@ namespace Entitron
             Add(fk);
             return this;
         }
-        public DBForeignKeys DropFromDB(string fkName)
-        {
-            table.Application.queries.Add(new SqlQuery_ForeignKeyDrop()
-            {
-                application = table.Application,
-                table = table,
-                foreignKeyName = fkName
-            });
-
-            Remove(this.SingleOrDefault(i => i.name == fkName));
-            return this;
-        }
         public List<string> GetForeignKeyForDrop()
         {
             SqlQuery_GetForeignKeysForDrop query = new SqlQuery_GetForeignKeysForDrop()

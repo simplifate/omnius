@@ -253,23 +253,27 @@ namespace Entitron
                 isClusterCreated = isClusterAlreadyCreate
             });
         }
-        public void DropPrimaryKey()
+        public void DropConstraint(string constraintName, bool? isPrimaryKey=null)
         {
-            SqlQuery_SelectPrimaryKeyName query = new SqlQuery_SelectPrimaryKeyName()
+            if (isPrimaryKey == true)
             {
-                application = Application,
-                table = this
-            };
-            string primarykeyName="";
-            foreach (DBItem i in query.ExecuteWithRead())
-            {
-                 primarykeyName = i["name"].ToString();
+                SqlQuery_SelectPrimaryKeyName query = new SqlQuery_SelectPrimaryKeyName()
+                {
+                    application = Application,
+                    table = this
+                };
+                foreach (DBItem i in query.ExecuteWithRead())
+                {
+                    constraintName = i["name"].ToString();
+                }
+
             }
-            Application.queries.Add(new SqlQuery_PrimaryKeyDrop()
+
+            Application.queries.Add(new SqlQuery_ConstraintDrop()
             {
                 application = Application,
                 table = this,
-                primaryKeyName = primarykeyName
+                constraintName = constraintName
             });
         }
 

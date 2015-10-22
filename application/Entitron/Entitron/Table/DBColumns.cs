@@ -165,6 +165,42 @@ namespace Entitron
             return _table;
         }
 
+        public List<string> GetDefaults()
+        {
+            SqlQuery_SelectDefaultVal query = new SqlQuery_SelectDefaultVal(){application = table.Application,table = table};
+            List<string> defaultVal= new List<string>();
+
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                defaultVal.Add(i["name"].ToString());
+            }
+            return defaultVal;
+        } 
+        public DBTable AddUniqueValue(string uniqueName, List<string> uniqueColumns)
+        {
+            table.Application.queries.Add(new SqlQuery_UniqueAdd()
+            {
+                application = table.Application,
+                table = table,
+                uniqueName = uniqueName,
+                keyColumns = uniqueColumns
+            });
+
+            return _table;
+        }
+
+        public List<string> GetUniqueConstrainst(bool? all=null)
+        {
+            List<string> uniqueConstraints=new List<string>();
+            SqlQuery_SelectUniqueConstraints query = new SqlQuery_SelectUniqueConstraints(){application = table.Application,table = table, all = all};
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                uniqueConstraints.Add(i["uniqueName"].ToString());
+            }
+            
+            return uniqueConstraints;
+        }
+
         public static List<string> getMaxLenghtDataTypes()
         {
             List<string> maxLenghtDataType = new List<string>();

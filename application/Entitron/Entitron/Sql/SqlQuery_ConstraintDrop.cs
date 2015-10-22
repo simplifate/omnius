@@ -6,30 +6,28 @@ using System.Threading.Tasks;
 
 namespace Entitron.Sql
 {
-    class SqlQuery_UniqueAdd : SqlQuery_withApp
+    class SqlQuery_ConstraintDrop : SqlQuery_withApp
     {
-        public List<string> keyColumns { get; set; }
-        public string uniqueName { get; set; }
-
+        public string constraintName { get; set; }
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
-            string parUniqueName = safeAddParam("uniqueName", uniqueName);
-            string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
+            string parConstraintName = safeAddParam("primaryKeyName", constraintName);
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @{2}, ' UNIQUE (', @{3}, ');')" +
-                "exec (@sql)",
-                parAppName, parTableName, parUniqueName ,parColumns);
+                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' DROP CONSTRAINT ', @{2} ,';');"+ 
+                "exec(@sql);",
+                parAppName, parTableName,parConstraintName);
 
             base.BaseExecution(transaction);
         }
 
         public override string ToString()
         {
-            return string.Format("Add unique in {0}[{1}]", table.tableName, application.Name);
+            return string.Format("Drop primary key in {0}[{1}]", table.tableName, application.Name);
         }
     }
+
 }
