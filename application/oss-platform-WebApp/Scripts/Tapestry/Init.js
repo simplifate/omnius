@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var ZoomFactor = 1.0;
+$(function () {
     $("#headerBlockName").on("click", function () {
         renameBlockDialog.dialog("open");
     });
@@ -13,7 +14,7 @@
     });
     $("#btnAddRule").on("click", function () {
         newRule = $('<div class="rule"><div class="ruleHeader"></div></div>');
-        $("#rulesPanel").append(newRule);
+        $("#rulesPanel .scrollArea").append(newRule);
         newRule.resizable();
         newRule.draggable({ handle: ".ruleHeader" });
         CreateJsPlumbInstanceForRule(newRule);
@@ -48,7 +49,6 @@
             }
         });
     });
-    $(".blockPanel").resizable();
     $(".rule").resizable();
     $(".rule").draggable({ handle: ".ruleHeader" });
     $("#upperVerticalDivider").draggable({
@@ -171,5 +171,16 @@
                 AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
             }
         }
+    });
+    $("#btnZoomIn").on("click", function () {
+        ZoomFactor += 0.1;
+        $("#rulesPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+        $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
+    });
+    $("#btnZoomOut").on("click", function () {
+        if (ZoomFactor >= 0.2)
+            ZoomFactor -= 0.1;
+        $("#rulesPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+        $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
     });
 });

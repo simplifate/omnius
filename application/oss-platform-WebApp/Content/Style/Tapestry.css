@@ -28,6 +28,7 @@
     margin: 20px;
     padding: 5px 10px; 
     font-size: 1.5em;
+    overflow: scroll;
 }
 #viewsPanel {
     position: absolute;
@@ -146,11 +147,12 @@
     cursor: pointer;
 }
 #btnAddRule {
-    position: absolute;
-    right: 5px;
-    top: 5px;
+    position: fixed;
+    right: 340px;
+    top: 245px;
     padding: 3px 10px;
     font-size: 0.8em;
+    z-index: 1000;
 }
 #btnAddActions {
     position: absolute;
@@ -325,6 +327,15 @@
     color: black !important;
     border: none !important;
 }
+.scrollArea {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    transform-origin: 0px 0px;
+    min-width: 4500px;
+    min-height: 2500px;
+}
+
 .ruleHeader {
     position: relative;
     top: -20px;
@@ -354,4 +365,25 @@
 }
 body {
     background-color: #404040;
+}
+#zoomPanel {
+    position: fixed;
+    right: 345px;
+    bottom: 215px;
+    text-align: center;
+    z-index: 1000;
+}
+#zoomPanel button {
+    font-size: 12px;
+    background-color: #49c3f1;
+    color: black;
+    border: none;
+}
+#zoomPanel button:hover {
+    background-color: #2ddef9;
+}
+#zoomLabel {
+    font-size: 20px;
+    color: black;
+    margin-bottom: -2px;
 }
