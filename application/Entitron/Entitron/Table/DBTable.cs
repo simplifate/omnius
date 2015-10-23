@@ -301,6 +301,76 @@ namespace Entitron
             });
         }
 
+        public object ConvertValue(DBColumn column, string value)
+        {
+            object val;
+            switch (column.type.ToLower())
+            {
+                case "int":
+                    val = Convert.ToInt32(value);
+                    break;
+                case "bigint":
+                    val = Convert.ToInt64(value);
+                    break;
+                case "smallint":
+                    val = Convert.ToInt16(value);
+                    break;
+                case "tinyint":
+                    val = Convert.ToByte(value);
+                    break;
+                case "decimal":
+                    val = Convert.ToDecimal(value);
+                    break;
+                case "smallmoney":
+                    val = Convert.ToDecimal(value);
+                    break;
+                case "money":
+                    val = Convert.ToDecimal(value);
+                    break;
+                case "float":
+                    val = Convert.ToDouble(value);
+                    break;
+                case "real":
+                    val = Convert.ToSingle(value);
+                    break;
+                case "date":
+                    val = Convert.ToDateTime(value);
+                    break;
+                case "time":
+                    val = TimeSpan.Parse(value);
+                    break;
+                case "datetime":
+                    val = Convert.ToDateTime(value);
+                    break;
+                case "datetime2":
+                    val = Convert.ToDateTime(value);
+                    break;
+                case "datetimeoffset":
+                    val = DateTimeOffset.Parse(value);
+                    break;
+                case "timestamp":
+                    val = Convert.ToByte(value);
+                    break;
+                case "varbinary":
+                    val = Convert.ToByte(value);
+                    break;
+                case "bit":
+                    val = Convert.ToBoolean(value);
+                    break;
+                case "binary":
+                    val = Convert.ToByte(value);
+                    break;
+                case "uniqueidentifier":
+                    val = Guid.Parse(value);
+                    break;
+                default:
+                    val = value;
+                    break;
+            }
+
+            return val;
+        }
+
         public List<string> getConstraints(bool isDisabled)
         {
             SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains()
