@@ -41,8 +41,8 @@ namespace FSPOC.Models
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
-        public virtual ICollection<DbColumn> Columns { get; set; }
-        public virtual ICollection<DbIndex> Indices { get; set; }
+        public virtual List<DbColumn> Columns { get; set; }
+        public virtual List<DbIndex> Indices { get; set; }
 
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 
@@ -56,10 +56,10 @@ namespace FSPOC.Models
     {
         public int Id { get; set; }
         public int Type { get; set; }
-        public int LeftTable { get; set; }
-        public int LeftColumn { get; set; }
-        public int RightTable { get; set; }
-        public int RightColumn { get; set; }
+        public virtual DbTable SourceTable { get; set; }
+        public virtual DbColumn SourceColumn { get; set; }
+        public virtual DbTable TargetTable { get; set; }
+        public virtual DbColumn TargetColumn { get; set; }
 
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
@@ -79,9 +79,9 @@ namespace FSPOC.Models
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public virtual ICollection<DbTable> Tables { get; set; }
-        public virtual ICollection<DbRelation> Relations { get; set; }
-        public virtual ICollection<DbView> Views { get; set; }
+        public virtual List<DbTable> Tables { get; set; }
+        public virtual List<DbRelation> Relations { get; set; }
+        public virtual List<DbView> Views { get; set; }
 
         public DbSchemeCommit()
         {

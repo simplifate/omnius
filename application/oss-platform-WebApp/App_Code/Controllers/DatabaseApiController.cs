@@ -111,10 +111,10 @@ namespace FSPOC.Controllers
                 {
                     result.Relations.Add(new AjaxTransferDbRelation
                     {
-                        LeftTable = relation.LeftTable,
-                        RightTable = relation.RightTable,
-                        LeftColumn = relation.LeftColumn,
-                        RightColumn = relation.RightColumn,
+                        LeftTable = relation.SourceTable.Id,
+                        RightTable = relation.TargetTable.Id,
+                        LeftColumn = relation.SourceColumn.Id,
+                        RightColumn = relation.TargetColumn.Id,
                         Type = relation.Type
                     });
                 }
@@ -215,16 +215,18 @@ namespace FSPOC.Controllers
                     }
                     foreach (var ajaxRelation in postData.Relations)
                     {
-                        int leftTable = tableIdMapping[ajaxRelation.LeftTable];
-                        int rightTable = tableIdMapping[ajaxRelation.RightTable];
-                        int leftColumn = columnIdMapping[ajaxRelation.LeftColumn];
-                        int rightColumn = columnIdMapping[ajaxRelation.RightColumn];
+                        int leftTableId = tableIdMapping[ajaxRelation.LeftTable];
+                        int rightTableId = tableIdMapping[ajaxRelation.RightTable];
+                        int leftColumnId = columnIdMapping[ajaxRelation.LeftColumn];
+                        int rightColumnId = columnIdMapping[ajaxRelation.RightColumn];
+                        var leftTable = commit.Tables.Find(t => t.Id == leftTableId);
+                        var rightTable = commit.Tables.Find(t => t.Id == rightTableId);
                         commit.Relations.Add(new DbRelation
                         {
-                            LeftTable = leftTable,
-                            RightTable = rightTable,
-                            LeftColumn = leftColumn,
-                            RightColumn = rightColumn,
+                            SourceTable = leftTable,
+                            TargetTable = rightTable,
+                            SourceColumn = leftTable.Columns.Find(c => c.Id == leftColumnId),
+                            TargetColumn = rightTable.Columns.Find(c => c.Id == rightColumnId),
                             Type = ajaxRelation.Type
                         });
                     }
