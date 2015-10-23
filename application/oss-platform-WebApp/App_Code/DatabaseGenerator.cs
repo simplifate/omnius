@@ -11,15 +11,25 @@ namespace FSPOC
         {
             Entitron.DBApp.connectionString = connectionString;
             Entitron.DBApp entitronApp = new Entitron.DBApp();
-            entitronApp.Name = "ApplicationTest";
+            entitronApp.Name = "EntitronTest1";
             foreach (DbTable efTable in scheme.Tables)
             {
-                Entitron.DBTable entitronTable = Entitron.DBTable.Create(efTable.Name);
+                Entitron.DBTable entitronTable = new Entitron.DBTable();
+                entitronTable.tableName = efTable.Name;
+                entitronTable.Application = entitronApp;
+
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
-                    entitronTable.columns.AddToDB(efColumn.Name, efColumn.Type, false, false,
-                        efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength, isUnique: efColumn.Unique, canBeNull: efColumn.AllowNull);
+                    Entitron.DBColumn entitronColumn = new Entitron.DBColumn();
+                    entitronColumn.Name = efColumn.Name;
+                    entitronColumn.type = efColumn.Type;
+                    entitronColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
+                    entitronColumn.isUnique = efColumn.Unique;
+                    entitronColumn.canBeNull = efColumn.AllowNull;
+
+                    entitronTable.columns.Add(entitronColumn);
                 }
+                entitronTable.Create();
                 foreach (DbIndex efIndex in efTable.Indices)
                 {
                     entitronTable.indices.AddToDB(efIndex.Name, new List<string>(efIndex.ColumnNames.Split(',')));
