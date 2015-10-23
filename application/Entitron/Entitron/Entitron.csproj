@@ -54,11 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\Group.cs" />
     <Compile Include="Entity\Module.cs" />
     <Compile Include="Entity\DBEntities.cs" />
     <Compile Include="Entity\Application.cs" />
     <Compile Include="Entity\Css.cs" />
     <Compile Include="Entity\Page.cs" />
+    <Compile Include="Entity\ActionRight.cs" />
     <Compile Include="Entity\Template.cs" />
     <Compile Include="Entity\TemplateCategory.cs" />
     <Compile Include="Entity\ActionCategory.cs" />
@@ -68,8 +70,10 @@
     <Compile Include="Entity\Actor.cs" />
     <Compile Include="Entity\AttributeRole.cs" />
     <Compile Include="Entity\Block.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="Entity\WorkFlow.cs" />
     <Compile Include="Entity\WorkFlow_Type.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Sql\Conditions.cs" />
     <Compile Include="Sql\Condition_concat.cs" />
     <Compile Include="Sql\Condition_Operators.cs" />

@@ -27,6 +27,9 @@ namespace Entitron.Entity
         public virtual DbSet<Block> Blocks { get; set; }
         public virtual DbSet<WorkFlow_Type> WorkFlow_Types { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<ActionRight> ActionRights { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -127,6 +130,21 @@ namespace Entitron.Entity
             modelBuilder.Entity<Page>()
                 .HasOptional(e => e.Block)
                 .WithRequired(e => e.MozaicPage);
+            
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Groups)
+                .WithMany(e => e.Users)
+                .Map(m => m.ToTable("Persona_Groups_Users").MapLeftKey("UserId").MapRightKey("GroupId"));
+
+            modelBuilder.Entity<ActionRight>()
+                .HasRequired(e => e.Group)
+                .WithMany(e => e.ActionRigths)
+                .HasForeignKey(e => e.GroupId);
+
+            modelBuilder.Entity<ActionRight>()
+                .HasRequired(e => e.Action)
+                .WithMany(e => e.Rigths)
+                .HasForeignKey(e => e.ActionId);
         }
     }
 }

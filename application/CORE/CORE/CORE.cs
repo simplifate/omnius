@@ -8,10 +8,11 @@ namespace CORE
 {
     public class CORE
     {
-        private IEnumerable<Entitron.Entity.Module> _enabledModules = null;
+        private IQueryable<Entitron.Entity.Module> _enabledModules = null;
 
         private Entitron.Entitron _Entitron;
         private Mozaic.Mozaic _Mozaic;
+        private Tapestry.Tapestry _Tapestry;
 
         public CORE()
         {
@@ -25,7 +26,6 @@ namespace CORE
             else
                 return null;
         }
-
         public Mozaic.Mozaic Mozaic()
         {
             if (isModuleEnabled("Mozaic"))
@@ -34,6 +34,18 @@ namespace CORE
                     _Mozaic = new Mozaic.Mozaic(this);
 
                 return _Mozaic;
+            }
+            else
+                return null;
+        }
+        public Tapestry.Tapestry Tapestry()
+        {
+            if (isModuleEnabled("Tapestry"))
+            {
+                if (_Tapestry == null)
+                    _Tapestry = new Tapestry.Tapestry(this);
+
+                return _Tapestry;
             }
             else
                 return null;
