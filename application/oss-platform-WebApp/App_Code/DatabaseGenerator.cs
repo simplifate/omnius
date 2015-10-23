@@ -14,6 +14,7 @@ namespace FSPOC
             Entitron.DBApp.connectionString = connectionString;
             Entitron.DBApp entitronApp = new Entitron.DBApp();
             entitronApp.Name = "EntitronTest1";
+            entitronApp.DisplayName = "EntitronTest1";
             foreach (DbTable efTable in scheme.Tables)
             {
                 Entitron.DBTable entitronTable = new Entitron.DBTable();
