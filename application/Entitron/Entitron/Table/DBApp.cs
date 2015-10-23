@@ -8,15 +8,34 @@ namespace Entitron
     public class DBApp
     {
         public static string connectionString;
+        private static List<DBApp> _all = null;
         public static IEnumerable<DBApp> GetAll()
         {
             SqlQuery query = new SqlQuery();
             query.sqlString = string.Format("SELECT * FROM {0};", SqlQuery.DB_MasterApplication);
             List<DBItem> apps = query.ExecuteWithRead();
-            
-            return apps.Select(a => new DBApp() { Name = (string)a["Name"], DisplayName = a["DisplayName"] is string ? (string)a["DisplayName"] : (string)a["Name"], ConnectionString = connectionString });
-        }
 
+            _all = apps.Select(a => new DBApp() { Name = (string)a["Name"], DisplayName = a["DisplayName"] is string ? (string)a["DisplayName"] : (string)a["Name"], ConnectionString = connectionString }).ToList();
+            return _all;
+        }
+        public static DBApp GetOrCreate(string name, string displayName = null, string connectionString = null)
+        {
+            displayName = displayName ?? name;
+            if (connectionString != null)
+                DBApp.connectionString = connectionString;
+
+            if (_all == null)
+                GetAll();
+
+            DBApp app = new DBApp { Name = name, DisplayName = displayName };
+            if (!_all.Any(a => a.Name == name))
+            {
+                app.Create();
+            }
+
+            return app;
+        }
+        
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string ConnectionString

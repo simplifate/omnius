@@ -16,12 +16,12 @@ namespace Entitron.Sql
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);
-            string parColumnName = safeAddParam("columnName", string.Join(", ",columnsName));
+            string parColumnName = safeAddParam("columnName", string.Join(", ", columnsName));
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');')" +
-                "exec (@sql)",
+                "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
+                "exec (@sql);",
                 parAppName, parTableName,parIndexName, parColumnName);
 
             base.BaseExecution(transaction);
