@@ -30,6 +30,7 @@ namespace Entitron.Entity
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ActionRight> ActionRights { get; set; }
+        public virtual DbSet<AppRight> ApplicationRights { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -138,13 +139,23 @@ namespace Entitron.Entity
 
             modelBuilder.Entity<ActionRight>()
                 .HasRequired(e => e.Group)
-                .WithMany(e => e.ActionRigths)
+                .WithMany(e => e.ActionRights)
                 .HasForeignKey(e => e.GroupId);
 
             modelBuilder.Entity<ActionRight>()
                 .HasRequired(e => e.Action)
                 .WithMany(e => e.Rigths)
                 .HasForeignKey(e => e.ActionId);
+
+            modelBuilder.Entity<AppRight>()
+                .HasRequired(e => e.Group)
+                .WithMany(e => e.ApplicationRights)
+                .HasForeignKey(e => e.GroupId);
+
+            modelBuilder.Entity<AppRight>()
+                .HasRequired(e => e.Application)
+                .WithMany(e => e.Rights)
+                .HasForeignKey(e => e.ApplicationId);
         }
     }
 }

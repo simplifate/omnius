@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 namespace Entitron.Entity
 {
     [Table("Persona_ActionRights")]
-    public class ActionRight
+    public partial class AppRight
     {
         [Key]
         [Column(Order = 1)]
         public int GroupId { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int ActionId { get; set; }
-        
+        public int ApplicationId { get; set; }
+
         public bool Readable { get; set; }
         public bool Executable { get; set; }
-        
+
         public virtual Group Group { get; set; }
-        public virtual Action Action { get; set; }
+        public virtual Application Application { get; set; }
     }
 }

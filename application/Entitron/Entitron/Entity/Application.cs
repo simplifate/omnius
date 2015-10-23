@@ -30,5 +30,7 @@ namespace Entitron.Entity
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
+
+        public virtual ICollection<AppRight> Rights { get; set; }
     }
 }

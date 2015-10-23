@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\AppRight.cs" />
     <Compile Include="Entity\Group.cs" />
     <Compile Include="Entity\Module.cs" />
     <Compile Include="Entity\DBEntities.cs" />
