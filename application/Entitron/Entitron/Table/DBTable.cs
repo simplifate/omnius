@@ -175,6 +175,39 @@ namespace Entitron
 
             return this;
         }
+
+        public DBTable AddCheck(string where)
+        {
+            Application.queries.Add(new SqlQuery_CheckAdd()
+            {
+                application = Application,
+                table = this
+            });
+
+            return this;
+        }
+
+        public List<string> GetOperators()
+        {
+            List<string> operators = new List<string>();
+            operators.Add("Equal");
+            operators.Add("Not Equal");
+            operators.Add("Less");
+            operators.Add("Less or Equal");
+            operators.Add("Greater");
+            operators.Add("Greater or Equal");
+            operators.Add("Like");
+            operators.Add("Not Like");
+            operators.Add("Between");
+            operators.Add("Not Between");
+            operators.Add("Null");
+            operators.Add("Not Null");
+            operators.Add("In");
+            operators.Add("Not In");
+
+            return operators;
+        } 
+
         public DBTable Update(DBItem item, DBItem selectRow)
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();

@@ -42,7 +42,6 @@ namespace Entitron.Sql
             int? precision=null,
             int? scale =null,
             bool canBeNull = true,
-            bool isPrimaryKey = false,
             bool isUnique = false,
             string additionalOptions = null)
         {
