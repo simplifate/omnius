@@ -42,6 +42,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FSS.FSPOC.BussinesObjects\FSS.FSPOC.BussinesObjects.csproj">
+      <Project>{3a3d8476-80e5-45f3-8361-672f6ffc43d9}</Project>
+      <Name>FSS.FSPOC.BussinesObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
