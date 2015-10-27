@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Rules";
+}
+<script>
+    $(function () {
+        var configModel = JSON.parse($("#configRoute").val());
+         var url = configModel.pathSourceFile;
+         $.getJSON(url, function (data) {
+            var model = new BlockViewModel(configModel, data);
+            ko.applyBindings(model);
+        });
+    });
+</script>
+
+<div class="container">
+    <input type="hidden" id="configRoute" value="@ViewBag.ConfigRoute" />
+    @Html.Raw(ViewBag.SourceBlock)
+</div>

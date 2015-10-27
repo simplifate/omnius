@@ -1,0 +1,261 @@
+﻿@{
+    ViewBag.Title = "FSS Database Designer";
+}
+@section Styles
+{
+    <link href="@Url.Content("~/Content/Common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/DbDesigner.css")" rel="stylesheet" type="text/css" />
+}
+<script src="~/Scripts/DatabaseDesigner/DbSqlServerDef.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbDialogs.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbInit.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbVisualConfiguration.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbUtils.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbSave.js"></script>
+<script src="~/Scripts/DatabaseDesigner/DbLoad.js"></script>
+<div class="top-bar-container">Default database scheme</div>
+<select id="moduleSwitcher">
+    <option value="apps">Application Manager</option>
+    <option value="workflow">Workflow Designer</option>
+    <option value="database" selected="selected">Database Designer</option>
+    <option value="tapestry">Tapestry</option>
+    <option value="overview">Overview</option>
+</select>
+<div class="toolbox">
+    <div class="menuButtons">
+        <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+        <button type="button" id="btnAddView" class="btn btn-primary btn-lg">Add view</button>
+        <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
+        <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load latest</button>
+        <button type="button" id="btnOpenHistory" class="btn btn-default btn-lg">History</button>
+        <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
+        <button type="button" id="btnGenerate" class="btn btn-default btn-lg">Generate</button>
+        <center>
+            <div id="zoomLabel">Zoom 100%</div>
+            <button type="button" id="btnZoomIn">Zoom in</button>
+            <button type="button" id="btnZoomOut">Zoom out</button>
+        </center>
+    </div>
+</div>
+<div class="work-area-container">
+    <div id="database-container" class="database-container"></div>
+</div>
+<div id="add-table-dialog" title="Add table">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="new-table-name">Table name</label></td>
+                    <td><input type="text" name="new-table-name" id="new-table-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="edit-table-dialog" title="Edit table">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="table-name">Table name</label></td>
+                    <td><input type="text" name="table-name" id="table-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="add-index">Indices</label></td>
+                    <td><button type="button" name="add-index" id="add-index-button">Add index</button></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="add-column-dialog" title="Add column">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="column-name">Column name</label></td>
+                    <td><input type="text" name="column-name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="column-type-dropdown">Type</label></td>
+                    <td><select name="column-type-dropdown" id="column-type-dropdown"></select></td>
+                </tr>
+                <tr>
+                    <td><label for="column-length">Column length</label></td>
+                    <td>
+                        <span id="columnLengthNotSupported">Not supported by this type</span>
+                        <input type="checkbox" name="column-length-max" id="column-length-max" class="text ui-widget-content ui-corner-all">
+                        <label for="column-length-max">MAX</label>
+                        <input type="number" name="column-length" id="column-length" value="100" min="1" class="text ui-widget-content ui-corner-all field-length-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="primary-key-checkbox">Primary key</label></td>
+                    <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="unique-checkbox">Unique</label></td>
+                    <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="allow-null-checkbox">Allow Null</label></td>
+                    <td><input type="checkbox" name="allow-null-checkbox" id="allow-null-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="default-value">Default value</label></td>
+                    <td><input type="text" name="default-value" id="default-value" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="edit-column-dialog" title="Edit column">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="column-name">Column name</label></td>
+                    <td><input type="text" name="column-name" id="column-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="column-type-dropdown">Type</label></td>
+                    <td><select name="column-type-dropdown" id="column-type-dropdown"></select></td>
+                </tr>
+                <tr>
+                    <td><label for="column-length">Column length</label></td>
+                    <td>
+                        <span id="columnLengthNotSupported">Not supported by this type</span>
+                        <input type="checkbox" name="column-length-max" id="column-length-max" class="text ui-widget-content ui-corner-all">
+                        <label for="column-length-max">MAX</label>
+                        <input type="number" name="column-length" id="column-length" value="100" min="1" class="text ui-widget-content ui-corner-all field-length-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="primary-key-checkbox">Primary key</label></td>
+                    <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="unique-checkbox">Unique</label></td>
+                    <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="allow-null-checkbox">Allow Null</label></td>
+                    <td><input type="checkbox" name="allow-null-checkbox" id="allow-null-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="default-value">Default value</label></td>
+                    <td><input type="text" name="default-value" id="default-value" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="edit-relation-dialog" title="Edit relation">
+    <form>
+        <fieldset>
+            <label for="relation-type">Relation type</label><br />
+            <input type="radio" name="relation-type" value="1" checked> 1:1 - one to one<br>
+            <input type="radio" name="relation-type" value="2"> 1:N - one to many<br>
+            <input type="radio" name="relation-type" value="3"> N:1 - many to one<br>
+            <input type="radio" name="relation-type" value="4"> M:N - many to many<br>
+            <span class="deleteRelation"><input type="radio" name="relation-type" value="Delete"> none - delete this relation</span><br>
+        </fieldset>
+    </form>
+</div>
+<div id="save-dialog" title="Save scheme">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="history-dialog" title="Load from history">
+    <table id="commit-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="add-view-dialog" title="Add view">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="new-view-name">View name</label></td>
+                    <td><input type="text" name="new-view-name" id="new-view-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+            <label for="new-view-query">SQL query:</label>
+            <textarea name="new-view-query" id="new-view-query" cols="40" rows="5"></textarea>
+        </fieldset>
+    </form>
+</div>
+<div id="edit-view-dialog" title="Edit view">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="view-name">View name</label></td>
+                    <td><input type="text" name="view-name" id="view-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+            <label for="view-query">SQL query:</label>
+            <textarea name="view-query" id="view-query" cols="40" rows="5"></textarea>
+        </fieldset>
+    </form>
+</div>
+<div id="add-index-dialog" title="Add index">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="index-name">Index name</label></td>
+                    <td><input type="text" name="index-name" id="index-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="first-column">1. column</label></td>
+                    <td><select name="first-column" id="first-column"></select></td>
+                </tr>
+                <tr id="addIndexColumnFormRow">
+                    <td><label for="add-index-column">More columns</label></td>
+                    <td><button type="button" name="add-index-column" id="btn-add-index-column">Add index column</button></td>
+                </tr>
+                <tr>
+                    <td><label for="unique-checkbox">Unique</label></td>
+                    <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="edit-index-dialog" title="Edit index">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="index-name">Index name</label></td>
+                    <td><input type="text" name="index-name" id="index-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="first-column">1. column</label></td>
+                    <td><select name="first-column" id="first-column"></select></td>
+                </tr>
+                <tr id="addIndexColumnFormRow">
+                    <td><label for="add-index-column">More columns</label></td>
+                    <td><button type="button" name="add-index-column" id="btn-add-index-column">Add index column</button></td>
+                </tr>
+                <tr>
+                    <td><label for="unique-checkbox">Unique</label></td>
+                    <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>

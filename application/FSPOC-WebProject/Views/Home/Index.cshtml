@@ -1,0 +1,36 @@
+﻿@using System.Collections
+@using FSPOC_WebProject.Models
+@{
+    ViewBag.Title = "FSPOC App Manager";
+}
+@section Styles
+{
+    <link href="@Url.Content("~/Content/AppManager.css")" rel="stylesheet" type="text/css" />
+}   
+
+<script src="~/Scripts/AppManager.js"></script>
+
+<select id="moduleSwitcher">
+    <option value="apps" selected="selected">Application Manager</option>
+    <option value="workflow">Workflow Designer</option>
+    <option value="database">Database Designer</option>
+    <option value="tapestry">Tapestry</option>
+    <option value="overview">Overview</option>
+    <option value="block">Test workflow</option>
+    <option value="rules">Rules</option>
+</select>
+
+@foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
+{
+    <div class="appPanel" style="width: @(app.TileWidth*120)px; height: @(app.TileHeight*120)px; left: @(app.PositionX)px; top: @(app.PositionY)px;">
+        <div class="appPanelContents appColor@(app.Color)">
+            <div class="appPanelHeader">
+                <div class="appIcon">
+                    <i class="fa @(app.Icon)"></i>
+                </div>
+                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@app.Name</div>
+            </div>
+            @Html.Raw(app.InnerHTML)
+        </div>
+    </div>
+}
