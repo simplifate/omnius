@@ -1,9 +1,10 @@
-﻿using FSS.FSPOC.BussinesObjects.Common;
+﻿using FSS.FSPOC.Actions.ReservationSystem.Actions;
+using FSS.FSPOC.BussinesObjects.Common;
 using FSS.FSPOC.BussinesObjects.Service;
 
 namespace FSS.FSPOC.Actions.ReservationSystem.Service
 {
-    public class ReservationSystemActionProvider :IActionProvider
+    public class ReservationSystemActionProvider : IReservationSystemActionProvider
     {
         public int ActionIdFrom => 1;
 
@@ -11,7 +12,7 @@ namespace FSS.FSPOC.Actions.ReservationSystem.Service
 
         public IAction GetAction(int actionId)
         {
-            throw new System.NotImplementedException();
+            return new CheckConfigurationSettings();
         }
     }
 }
