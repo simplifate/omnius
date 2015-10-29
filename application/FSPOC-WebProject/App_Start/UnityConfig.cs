@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using FSPOC_WebProject.Actions;
 using FSPOC_WebProject.Service;
 using FSS.FSPOC.Actions.ReservationSystem.Service;
+using FSS.FSPOC.BussinesObjects.Actions;
 using FSS.FSPOC.BussinesObjects.DAL;
 using FSS.FSPOC.BussinesObjects.Entities.Actions;
 using FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner;
@@ -33,6 +34,7 @@ namespace FSPOC_WebProject
             container.RegisterType<IFactoryAction, FactoryAction>();
             container.RegisterType<IExecuteActionService, ExecuteActionService>();
             container.RegisterType<IReservationSystemActionProvider, ReservationSystemActionProvider>();
+            container.RegisterType<ICommonActionsProvider, CommonActionsProvider>();
             //SMAZAT!!!
             container.RegisterType<ISaveEntity, SaveEntity>();
 
