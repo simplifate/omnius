@@ -28,10 +28,10 @@ namespace FSS.FSPOC.BussinesObjects.Service
             try
             {
                 var actionActionRules = ActionActionRuleRepository.Get(a => a.ActionRuleId == actionRuleId,
-                    q => q.OrderBy(a => a.Order));
+                    q => q.OrderBy(a => a.Order), "Action");
 
                 listResult.AddRange(actionActionRules
-                    .Select(actionActionRule => FactoryAction.GetAction(actionActionRule.ActionId))
+                    .Select(actionActionRule => FactoryAction.GetAction(actionActionRule.Action.IdentifierAction))
                     .Select(action => action.Run(sourceAction)).Where(resultAction => resultAction != null));
 
             }
