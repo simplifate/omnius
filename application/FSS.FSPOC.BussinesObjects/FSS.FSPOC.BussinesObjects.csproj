@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\CommonActionsProvider.cs" />
     <Compile Include="Actions\SendNotification.cs" />
     <Compile Include="Common\IAction.cs" />
     <Compile Include="Common\ResultAction.cs" />
