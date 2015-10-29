@@ -10,5 +10,7 @@ namespace FSS.FSPOC.BussinesObjects.Entities.Actions
         public int ActionCategoryId { get; set; }
         public virtual ICollection<ActionActionRule> ActionActionRules { get; set; }
 
+        public int IdentifierAction { get; set; }
+
     }
 }

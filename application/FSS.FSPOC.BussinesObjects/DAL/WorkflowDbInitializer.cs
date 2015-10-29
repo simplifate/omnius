@@ -21,17 +21,21 @@ namespace FSS.FSPOC.BussinesObjects.DAL
                 new Action
                 {
                     ActionCategory = category,
-                    Name = "Save entity"
+                    Name = "Check Configuration Settings",
+                    IdentifierAction = 1
                 },
                 new Action
                 {
                     ActionCategory = category,
-                    Name = "Send email"
+                    Name = "Send email",
+                    IdentifierAction = 100
+
                 },
                 new Action
                 {
                     ActionCategory = category,
-                    Name = "Move to another page"
+                    Name = "Move to another page",
+                    IdentifierAction = 101
                 }
             };
             actions.ForEach(a=> context.Actions.Add(a));
@@ -54,16 +58,16 @@ namespace FSS.FSPOC.BussinesObjects.DAL
             {
                 new ActionActionRule
                 {
-                    Order=1,
+                    Order      = 1,
                     ActionRule = actionRule[0],
-                    Action = actions[0],
+                    Action     = actions[0],
                     
                 },
                 new ActionActionRule
                 {
                     Order= 2,
                     ActionRule = actionRule[0],
-                    Action = actions[2],
+                    Action = actions[1],
                 },
                 new ActionActionRule
                 {
