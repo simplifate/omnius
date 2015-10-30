@@ -113,12 +113,19 @@ namespace Entitron.Sql
 
             return new Condition_concat(_conditions);
         }
-        //public SqlQuery_Selectable In(List<object> values)
-        //{
-        //    string paramName = _query.safeAddParam("param", values);
-        //    _query._where += string.Format(" {0} IN ({1})", _columnName, );
+        public Condition_concat In(List<object> values)
+        {
+            string paramNames = _conditions._query.safeAddParam("param", values);
+            _conditions._sql += string.Format(" {0} IN ({1})", _conditions._columnName, string.Join(", ", paramNames) );
 
-        //    return _query;
-        //}
+            return new Condition_concat(_conditions);
+        }
+        public Condition_concat NotIn(List<object> values)
+        {
+            string paramNames = _conditions._query.safeAddParam("param", values);
+            _conditions._sql += string.Format(" {0} NOT IN ({1})", _conditions._columnName, string.Join(", ", paramNames));
+
+            return new Condition_concat(_conditions);
+        }
     }
 }
