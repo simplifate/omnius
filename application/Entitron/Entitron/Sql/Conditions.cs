@@ -11,6 +11,7 @@ namespace Entitron.Sql
         internal SqlQuery _query;
 
         internal string _columnName = null;
+        public bool isCheck = false;
         internal string _sql = "";
         internal string _concat = "WHERE ";
 
