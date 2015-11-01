@@ -1,5 +1,6 @@
 ﻿@{
     Page.Title = "Omnius Overview";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
 }
 @section Styles
 {
@@ -11,14 +12,6 @@
 <script src="~/Scripts/Overview/Init.js"></script>
 <script src="~/Scripts/Overview/VisualConfiguration.js"></script>
 <script src="~/Scripts/Overview/Dialogs.js"></script>
-
-<select id="moduleSwitcher">
-    <option value="apps">Application Manager</option>
-    <option value="workflow">Workflow Designer</option>
-    <option value="database">Database Designer</option>
-    <option value="tapestry">Tapestry</option>
-    <option value="overview" selected="selected">Overview</option>
-</select>
 
 <div id="overviewPanel">
     <button id="btnAddBlock" class="btn btn-lg btn-tapestry">Add block</button>

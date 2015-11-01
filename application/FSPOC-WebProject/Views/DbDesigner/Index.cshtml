@@ -1,5 +1,6 @@
 ﻿@{
-    ViewBag.Title = "FSS Database Designer";
+    Page.Title = "Omnius Database Designer";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
 }
 @section Styles
 {
@@ -14,13 +15,6 @@
 <script src="~/Scripts/DatabaseDesigner/DbSave.js"></script>
 <script src="~/Scripts/DatabaseDesigner/DbLoad.js"></script>
 <div class="top-bar-container">Default database scheme</div>
-<select id="moduleSwitcher">
-    <option value="apps">Application Manager</option>
-    <option value="workflow">Workflow Designer</option>
-    <option value="database" selected="selected">Database Designer</option>
-    <option value="tapestry">Tapestry</option>
-    <option value="overview">Overview</option>
-</select>
 <div class="toolbox">
     <div class="menuButtons">
         <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>

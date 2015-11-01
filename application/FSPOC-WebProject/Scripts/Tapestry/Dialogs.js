@@ -141,7 +141,7 @@
 
     editConditionDialog = $("#edit-condition-dialog").dialog({
         autoOpen: false,
-        width: 700,
+        width: 750,
         height: 500,
         buttons: {
             "Save": function () {

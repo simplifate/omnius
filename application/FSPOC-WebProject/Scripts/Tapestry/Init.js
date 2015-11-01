@@ -103,7 +103,7 @@ $(function () {
                 item.remove();
             }
             else if (key == "edit") {
-                switch(item.attr("dialogType")) {
+                switch (item.attr("dialogType")) {
                     case "emailTemplate":
                         CurrentItem = item;
                         chooseEmailTemplateDialog.dialog("open");
@@ -151,7 +151,7 @@ $(function () {
             leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
             topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
             if (droppedElement.hasClass("operator")) {
-                if(droppedElement.attr("operatorType")=="decision")
+                if (droppedElement.attr("operatorType") == "decision")
                     newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
                       + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
                 else if (droppedElement.attr("operatorType") == "condition")

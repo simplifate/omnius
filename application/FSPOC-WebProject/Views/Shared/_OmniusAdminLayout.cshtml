@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>@Page.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Portal.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", false)
+</head>
+<body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/CommonLibraries")
+    <div id="topBar">
+        <div id="omniusLogo"></div>
+        <div class="searchField">
+            <img class="searchIcon" src="~/Content/images/SearchIcon.png" />
+            <input type = "text" class="searchInput" />
+        </div>
+        <div class="userLabel">
+            <div class="avatar"></div>
+            <div class="name">Jana Nováková</div>
+            <div class="role">Technical administrator</div>
+            <div class="fa fa-caret-down"></div>
+        </div>
+    </div>
+    <div id = "leftBar">
+        <ul class="leftMenu">
+            <li class="active"><a href="/Portal">Centrální administrace</a></li>
+            <li>Identity management</li>
+            <li>Správa aplikací</li>
+            <li>Integrace</li>
+            <li class="expanded">Vytvoření apliakce</li>
+            <li class="subMenu"><a href="/Tapestry">Návrh workflow</a></li>
+            <li class="subMenu"><a href="/DbDesigner">Datové struktury</a></li>
+            <li class="subMenu">Návrh UI</li>
+            <li>Asynchornní úlohy</li>
+            <li>Audity a logování</li>
+            <li>Analytycký modul</li>
+            <li>Vyhledávání</li>
+            <li>Bezpečnost</li>
+        </ul>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/knockout")
+    @*@Scripts.Render("~/bundles/Overview")*@
+    @*@Scripts.Render("~/bundles/WorkflowDesigner")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

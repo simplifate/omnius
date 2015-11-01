@@ -147,11 +147,11 @@
 }
 .top-bar-container {
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 225px;
+    top: 75px;
     right: 205px;
     height: 32px;
-    background-color: #337AB7;
+    background-color: #455d73;
     color: white;
     text-align: center;
     padding-top: 6px;
@@ -169,8 +169,8 @@
 }
 .work-area-container {
     position: absolute;
-    left: 0px;
-    top: 32px;
+    left: 225px;
+    top: 105px;
     right: 205px;
     bottom: 0px;
     overflow: scroll;

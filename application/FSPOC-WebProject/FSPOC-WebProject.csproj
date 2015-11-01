@@ -209,6 +209,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OverviewController.cs" />
+    <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\SourceBlockController.cs" />
     <Compile Include="Controllers\TapestryController.cs" />
@@ -244,14 +245,32 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Common.css" />
     <Content Include="Content\DbDesigner.css" />
+    <Content Include="Content\images\AdminBackgroundLower.png" />
+    <Content Include="Content\images\AdminBackgroundUpper.png" />
     <Content Include="Content\images\animated-overlay.gif" />
     <Content Include="Content\images\cut.png" />
     <Content Include="Content\images\door.png" />
+    <Content Include="Content\images\ModuleConfigBackground.png" />
+    <Content Include="Content\images\ModuleIcons\athena.png" />
+    <Content Include="Content\images\ModuleIcons\core.png" />
+    <Content Include="Content\images\ModuleIcons\cortex.png" />
+    <Content Include="Content\images\ModuleIcons\entitron.png" />
+    <Content Include="Content\images\ModuleIcons\hermes.png" />
+    <Content Include="Content\images\ModuleIcons\master.png" />
+    <Content Include="Content\images\ModuleIcons\mozaic.png" />
+    <Content Include="Content\images\ModuleIcons\nexus.png" />
+    <Content Include="Content\images\ModuleIcons\persona.png" />
+    <Content Include="Content\images\ModuleIcons\plus.png" />
+    <Content Include="Content\images\ModuleIcons\sentry.png" />
+    <Content Include="Content\images\ModuleIcons\tapestry.png" />
+    <Content Include="Content\images\ModuleIcons\watchtower.png" />
+    <Content Include="Content\images\OmniusLogo.png" />
     <Content Include="Content\images\page_white_add.png" />
     <Content Include="Content\images\page_white_copy.png" />
     <Content Include="Content\images\page_white_delete.png" />
     <Content Include="Content\images\page_white_edit.png" />
     <Content Include="Content\images\page_white_paste.png" />
+    <Content Include="Content\images\SearchIcon.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -268,6 +287,7 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.contextMenu.css" />
     <Content Include="Content\Overview.css" />
+    <Content Include="Content\Portal.css" />
     <Content Include="Content\Tapestry.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -387,12 +407,14 @@
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
+    <Content Include="Scripts\Portal\Init.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
+    <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
     <Content Include="Scripts\Tapestry\Init.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
@@ -447,6 +469,8 @@
     <Content Include="Views\Rules\RuleDetail.cshtml" />
     <Content Include="Views\DbDesigner\Index.cshtml" />
     <None Include="Views\Block\Index.cshtml" />
+    <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
+    <Content Include="Views\Portal\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

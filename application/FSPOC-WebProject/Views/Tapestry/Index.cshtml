@@ -1,26 +1,18 @@
-﻿@{
+@{
     Page.Title = "Omnius Tapestry";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
 }
+
 @section Styles
 {
-    <!-- <link href="~/Content/Style/base/jquery.contextMenu.css" rel="stylesheet" /> -->
     <link href="@Url.Content("~/Content/Tapestry.css")" rel="stylesheet" type="text/css" />
 }
-<script src="~/Scripts/CommonLibraries/jquery.contextMenu.js"></script>
-<script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
+
 <script src="~/Scripts/Tapestry/Utils.js"></script>
 <script src="~/Scripts/Tapestry/Init.js"></script>
 <script src="~/Scripts/Tapestry/VisualConfiguration.js"></script>
 <script src="~/Scripts/Tapestry/Conditions.js"></script>
 <script src="~/Scripts/Tapestry/Dialogs.js"></script>
-
-<select id="moduleSwitcher">
-    <option value="apps">Application Manager</option>
-    <option value="workflow">Workflow Designer</option>
-    <option value="database">Database Designer</option>
-    <option value="tapestry" selected="selected">Tapestry</option>
-    <option value="overview">Overview</option>
-</select>
 
 <div class="blockPanel">
     <div class="header">
@@ -162,8 +154,7 @@
 <div id="edit-condition-dialog" title="Edit condition">
     <form>
         <fieldset>
-            <table class="formTable logicTable">
-            </table>
+            <table class="formTable logicTable"></table>
             <button type="button" id="btnAddCondition">Add condition</button>
         </fieldset>
     </form>

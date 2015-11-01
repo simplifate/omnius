@@ -23,6 +23,9 @@
             case "overview":
                 window.location.href = $("#overview").attr("href");
                 break;
+            case "portal":
+                window.location.href = "/Portal";
+                break;
         }
     });
 });
