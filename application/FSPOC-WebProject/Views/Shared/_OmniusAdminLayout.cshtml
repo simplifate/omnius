@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <title>@Page.Title</title>
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/Portal.css")
+    @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
 </head>
-<body>
+<body class="@Page.ModuleClass">
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/CommonLibraries")
+    @Scripts.Render("~/bundles/OmniusScripts")
     <div id="topBar">
         <div id="omniusLogo"></div>
         <div class="searchField">

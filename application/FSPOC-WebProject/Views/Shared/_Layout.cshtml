@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
 </head>
-<body>
+<body class="@Page.ModuleClass">
     <a id="tapestry" href="@Url.Action("Index","Tapestry")" style="visibility: hidden">Tapestry</a>
     <a id="wfdesigner" href="@Url.Action("Index", "WFDesigner")" style="visibility: hidden">WF designer</a>
     <a id="overview" href="@Url.Action("Index", "Overview")" style="visibility: hidden">WF designer</a>

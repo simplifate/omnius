@@ -1,17 +1,8 @@
 ﻿@{
     Page.Title = "Omnius Overview";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "overviewModule";
 }
-@section Styles
-{
-    <!-- <link href="~/Content/Style/base/jquery.contextMenu.css" rel="stylesheet" /> -->
-    <link href="@Url.Content("~/Content/Overview.css")" rel="stylesheet" type="text/css" />
-}
-<script src="~/Scripts/CommonLibraries/jquery.contextMenu.js"></script>
-<script src="~/Scripts/CommonLibraries/ModuleSwitcher.js"></script>
-<script src="~/Scripts/Overview/Init.js"></script>
-<script src="~/Scripts/Overview/VisualConfiguration.js"></script>
-<script src="~/Scripts/Overview/Dialogs.js"></script>
 
 <div id="overviewPanel">
     <button id="btnAddBlock" class="btn btn-lg btn-tapestry">Add block</button>

@@ -58,21 +58,23 @@ dataSourceEndpoint = $.extend({}, sourceEndpoint, {
 });
 
 jsPlumb.ready(function () {
-    $("#rulesPanel .rule").each(function (ruleIndex, rule) {
-        currentInstance = CreateJsPlumbInstanceForRule(rule);
+    if ($("body.tapestryModule").length) {
+        $("#rulesPanel .rule").each(function (ruleIndex, rule) {
+            currentInstance = CreateJsPlumbInstanceForRule(rule);
 
-        $(rule).find(".item").each(function (itemIndex, item) {
-            AddIconToItem(item);
-            AddToJsPlumb(currentInstance, item);
+            $(rule).find(".item").each(function (itemIndex, item) {
+                AddIconToItem(item);
+                AddToJsPlumb(currentInstance, item);
+            });
+            $(rule).find(".decisionRhombus").each(function (itemIndex, item) {
+                AddToJsPlumb(currentInstance, item);
+            });
         });
-        $(rule).find(".decisionRhombus").each(function (itemIndex, item) {
-            AddToJsPlumb(currentInstance, item);
-        });
-    });
-    $("#rule1").data("jsPlumbInstance").connect({ uuids: ["item1RightMiddle"], target: "item2", editable: true });
-    $("#rule2").data("jsPlumbInstance").connect({ uuids: ["item3RightMiddle"], target: "item4", editable: true });
-    $("#rule3").data("jsPlumbInstance").connect({ uuids: ["item5RightMiddle"], target: "item6", editable: true });
-    $("#rule3").data("jsPlumbInstance").connect({ uuids: ["item6RightMiddle"], target: "decision1", editable: true });
-    $("#rule3").data("jsPlumbInstance").connect({ uuids: ["decision1RightMiddle"], target: "item7", editable: true });
-    $("#rule3").data("jsPlumbInstance").connect({ uuids: ["decision1BottomCenter"], target: "item8", editable: true });
+        $("#rule1").data("jsPlumbInstance").connect({ uuids: ["item1RightMiddle"], target: "item2", editable: true });
+        $("#rule2").data("jsPlumbInstance").connect({ uuids: ["item3RightMiddle"], target: "item4", editable: true });
+        $("#rule3").data("jsPlumbInstance").connect({ uuids: ["item5RightMiddle"], target: "item6", editable: true });
+        $("#rule3").data("jsPlumbInstance").connect({ uuids: ["item6RightMiddle"], target: "decision1", editable: true });
+        $("#rule3").data("jsPlumbInstance").connect({ uuids: ["decision1RightMiddle"], target: "item7", editable: true });
+        $("#rule3").data("jsPlumbInstance").connect({ uuids: ["decision1BottomCenter"], target: "item8", editable: true });
+    }
 });

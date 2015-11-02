@@ -27,6 +27,9 @@
     background-color: lightblue;
     padding-top: 3px;
 }
+.idColumn {
+    padding-left: 27px;
+}
 .dbColumnName {
     color: black;
     font-weight: normal;

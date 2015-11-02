@@ -1,3 +1,5 @@
 ﻿$(function () {
-    $(".appPanel").draggable({ snap: true });
+    if ($("body.appManagerModule").length) {
+        $(".appPanel").draggable({ snap: true });
+    }
 });

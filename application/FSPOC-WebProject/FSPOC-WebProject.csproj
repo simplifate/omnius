@@ -288,6 +288,12 @@
     <Content Include="Content\jquery.contextMenu.css" />
     <Content Include="Content\Overview.css" />
     <Content Include="Content\Portal.css" />
+    <Content Include="Content\scss\Bundled.css">
+      <DependentUpon>Bundled.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\Bundled.min.css">
+      <DependentUpon>Bundled.css</DependentUpon>
+    </Content>
     <Content Include="Content\Tapestry.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -379,6 +385,18 @@
     <Content Include="fonts\rweheadline-regularcondens-webfont.ttf" />
     <Content Include="fonts\rwetext-medium-webfont.ttf" />
     <Content Include="JSLintNet.json" />
+    <Content Include="Content\scss\AppManager.scss" />
+    <Content Include="Content\scss\Bundled.scss" />
+    <Content Include="Content\scss\DbDesigner.scss" />
+    <Content Include="Content\scss\Tapestry.scss" />
+    <Content Include="Content\scss\Overview.scss" />
+    <Content Include="Content\scss\Portal.scss" />
+    <None Include="compilerconfig.json" />
+    <Content Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\AdminSectionLayout.scss" />
+    <Content Include="Content\scss\Mixins.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />

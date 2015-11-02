@@ -9,7 +9,9 @@
             for (i = 0; i < data.Tables.length; i++) {
                 newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
                     + data.Tables[i].Name + '</div><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
-                    + '<div class="dbTableBody"></div><div class="dbTableIndexArea"></div></div>');
+                    + '<div class="dbTableBody"><div class="dbColumn idColumn dbPrimaryKey" dbColumnType="integer" dbColumnId="'
+                    + data.Tables[i].Columns[0].Id + '"><div class="dbColumnName">id</div></div></div>'
+                    + '<div class="dbTableIndexArea"></div></div>');
                 $("#database-container").append(newTable);
                 $(".editTableIcon").on("click", function () {
                     CurrentTable = $(this).parents(".dbTable");
@@ -34,7 +36,7 @@
                 newTable.css("left", data.Tables[i].PositionX);
                 newTable.css("top", data.Tables[i].PositionY);
                 instance.draggable(newTable);
-                for (j = 0; j < data.Tables[i].Columns.length; j++) {
+                for (j = 1; j < data.Tables[i].Columns.length; j++) {
                     if (data.Tables[i].Columns[j].DefaultValue != null)
                         defaultValue = data.Tables[i].Columns[j].DefaultValue;
                     else

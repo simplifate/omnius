@@ -1,18 +1,8 @@
 @{
     Page.Title = "Omnius Tapestry";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "tapestryModule";
 }
-
-@section Styles
-{
-    <link href="@Url.Content("~/Content/Tapestry.css")" rel="stylesheet" type="text/css" />
-}
-
-<script src="~/Scripts/Tapestry/Utils.js"></script>
-<script src="~/Scripts/Tapestry/Init.js"></script>
-<script src="~/Scripts/Tapestry/VisualConfiguration.js"></script>
-<script src="~/Scripts/Tapestry/Conditions.js"></script>
-<script src="~/Scripts/Tapestry/Dialogs.js"></script>
 
 <div class="blockPanel">
     <div class="header">
