@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using FSS.FSPOC.Actions.ReservationSystem.Service;
 using FSS.FSPOC.BussinesObjects.Actions;
 using FSS.FSPOC.BussinesObjects.Common;
 using FSS.FSPOC.BussinesObjects.Service;
@@ -25,10 +24,10 @@ namespace FSPOC_WebProject.Service
 
         private void CreateProviders()
         {
-            var commonActionsProvider            = DependencyResolver.Current.GetService<ICommonActionsProvider>();
-            var reservationSystemActionProvider  = DependencyResolver.Current.GetService<IReservationSystemActionProvider>();
+            var commonActionsProvider           = DependencyResolver.Current.GetService<ICommonActionsProvider>();
+            var reservationSystemActionProvider = DependencyResolver.Current.GetService<IReservationSystemActionProvider>();
 
-            if (commonActionsProvider !=null)
+            if (commonActionsProvider != null)
             {
                 ActionProviders.Add(commonActionsProvider);
             }
@@ -36,7 +35,6 @@ namespace FSPOC_WebProject.Service
             {
                 ActionProviders.Add(reservationSystemActionProvider);
             }
-
         }
     }
 }

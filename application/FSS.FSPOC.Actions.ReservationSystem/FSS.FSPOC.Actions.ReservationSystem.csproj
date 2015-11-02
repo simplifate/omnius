@@ -43,7 +43,6 @@
     <Compile Include="Actions\CheckAgainstAssignedRule.cs" />
     <Compile Include="Actions\CheckConfigurationSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\IReservationSystemActionProvider.cs" />
     <Compile Include="Service\ReservationSystemActionProvider.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Actions\CommonActionsProvider.cs" />
     <Compile Include="Actions\ICommonActionsProvider.cs" />
+    <Compile Include="Actions\IReservationSystemActionProvider.cs" />
     <Compile Include="Actions\SendNotification.cs" />
     <Compile Include="Common\IAction.cs" />
     <Compile Include="Common\ResultAction.cs" />
