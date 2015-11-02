@@ -2,9 +2,12 @@
     position: absolute;
     background-color: #c0c0c0;
     border: 1px solid #467ea8;
-    width: 90%;
-    min-height: 820px;
-    margin: 40px 20px;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    bottom: 0px;
+    border-left: 4px solid #3a3a3a;
+    border-top: 4px solid #3a3a3a;
 }
 .block {
     position: absolute;

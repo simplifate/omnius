@@ -157,8 +157,24 @@ namespace Entitron.Sql
             // save param
             _params[key] = value;
             var a = new SqlParameter("to koukáš, co?", value);
-            _datatypes[key] = (a.Size != 0) ? string.Format("{0}({1})", a.SqlDbType.ToString(), (a.Size != -1) ? a.Size.ToString() : "MAX") : a.SqlDbType.ToString();
+            string type = a.SqlDbType.ToString();
+           
+            if (type == "Decimal")//precision a scale je pořád nula, je potřeba zjistit jak je naplňovat
+            {
+                _datatypes[key] = string.Format("{0}({1}, {2})", a.SqlDbType.ToString(),
+                    (a.Precision != -1) ? a.Precision.ToString() : "18", (a.Scale != -1) ? a.Scale.ToString() : "0");
+            }
+            else if (type == "Float")
+            {
+                _datatypes[key] = string.Format("{0}({1})", a.SqlDbType.ToString(),
+                    (a.Precision != -1) ? a.Precision.ToString() : "53");
+            }
+            else
+            {
+                _datatypes[key] = (a.Size != 0) ? string.Format("{0}({1})", a.SqlDbType.ToString(), (a.Size != -1) ? a.Size.ToString() : "MAX") : a.SqlDbType.ToString();
+            }
 
+            
             // return new key
             return key;
         }

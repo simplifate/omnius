@@ -176,12 +176,14 @@ namespace Entitron
             return this;
         }
 
-        public DBTable AddCheck(string where)
+        public DBTable AddCheck(string checkName,Condition_Operators where)
         {
             Application.queries.Add(new SqlQuery_CheckAdd()
             {
                 application = Application,
-                table = this
+                table = this,
+                where = where,
+                checkName = checkName
             });
 
             return this;
@@ -404,6 +406,56 @@ namespace Entitron
             return val;
         }
 
+        public Condition_Operators GetConditionOperators(Conditions condition, string conditionOperator, object value)
+        {
+            Condition_Operators ope = new Condition_Operators(condition);
+            switch (conditionOperator)
+            {
+                case "Equal":
+                    ope.Equal(value);
+                    break;
+                case "Not Equal":
+                    ope.NotEqual(value);
+                    break;
+                case "Less":
+                    ope.Less(value);
+                    break;
+                case "Less or Equal":
+                    ope.LessOrEqual(value);
+                    break;
+                case "Greater":
+                    ope.Greater(value);
+                    break;
+                case "Greater or Equal":
+                    ope.GreaterOrEqual(value);
+                    break;
+                case "Like":
+                    ope.Like(value);
+                    break;
+                case "Not Like":
+                    ope.NotLike(value);
+                    break;
+                //case "Between":
+                //    ope.Between(value);
+                //    break;
+                //case "Not Between":
+                //    ope.NotBetween(value);
+                //    break;
+                case "Null":
+                    ope.Null();
+                    break;
+                case "Not Null":
+                    ope.NotNull();
+                    break;
+                //case "In":
+                //    ope.In(value);
+                //    break;
+                //case "Not In":
+                //    ope.NotIn(value);
+                //    break;
+            }
+            return ope;
+        }
         public List<string> getConstraints(bool isDisabled)
         {
             SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains()
