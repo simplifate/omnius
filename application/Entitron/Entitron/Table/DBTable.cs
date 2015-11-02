@@ -176,18 +176,33 @@ namespace Entitron
             return this;
         }
 
-        public DBTable AddCheck(string checkName,Condition_Operators where)
+        public DBTable AddCheck(string checkName,Conditions where)
         {
             Application.queries.Add(new SqlQuery_CheckAdd()
             {
                 application = Application,
                 table = this,
-                where = where,
+                where = where.ToString(),
                 checkName = checkName
             });
 
             return this;
         }
+
+        public List<string> GetCheckConstraints()
+        {
+            List<string> checks=new List<string>();
+            SqlQuery_SelectCheckConstraints query = new SqlQuery_SelectCheckConstraints()
+            {
+                application = Application,
+                table = this
+            };
+            foreach (DBItem item in query.ExecuteWithRead())
+            {
+                checks.Add(item["name"].ToString());
+            }
+            return checks;
+        } 
 
         public List<string> GetOperators()
         {

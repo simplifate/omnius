@@ -98,6 +98,7 @@
     <Compile Include="Sql\SqlQuery_PrimaryKeyAdd.cs" />
     <Compile Include="Sql\SqlQuery_Select.cs" />
     <Compile Include="Sql\SqlQuery_Selectable.cs" />
+    <Compile Include="Sql\SqlQuery_SelectCheckConstraints.cs" />
     <Compile Include="Sql\SqlQuery_SelectConstrains.cs" />
     <Compile Include="Sql\SqlQuery_SelectDefaultVal.cs" />
     <Compile Include="Sql\SqlQuery_SelectFogreignKeys.cs" />
