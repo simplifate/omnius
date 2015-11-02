@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Actions\CheckAgainstAssignedRule.cs" />
     <Compile Include="Actions\CheckConfigurationSettings.cs" />
+    <Compile Include="BussinesObjects\ConfigSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IReservationSystemService.cs" />
     <Compile Include="Service\ReservationSystemActionProvider.cs" />
