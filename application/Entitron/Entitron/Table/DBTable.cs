@@ -207,6 +207,7 @@ namespace Entitron
         public List<string> GetOperators()
         {
             List<string> operators = new List<string>();
+            operators.Add("");
             operators.Add("Equal");
             operators.Add("Not Equal");
             operators.Add("Less");
@@ -471,6 +472,22 @@ namespace Entitron
             }
             return ope;
         }
+
+        public DBTable InsertSelect(List<string> tableColumns, string insertTable, 
+            List<string> insertTableColumns, string whereClause)
+        {
+            Application.queries.Add(new SqlQuery_InsertSelect()
+            {
+                application = Application,
+                table = this,
+                columns1 = tableColumns,
+                table2Name = insertTable,
+                columns2 = insertTableColumns,
+                where = whereClause
+            });
+            return this;
+        }
+
         public List<string> getConstraints(bool isDisabled)
         {
             SqlQuery_SelectConstrains query = new SqlQuery_SelectConstrains()
