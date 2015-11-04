@@ -221,10 +221,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\WorkflowDbContext.mdf" />
-    <Content Include="App_Data\WorkflowDbContext_log.ldf">
-      <DependentUpon>WorkflowDbContext.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\AppManager.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -477,7 +473,9 @@
     <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
     <Content Include="Views\Portal\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
