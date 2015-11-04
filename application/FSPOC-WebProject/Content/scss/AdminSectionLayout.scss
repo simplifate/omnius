@@ -1,0 +1,124 @@
+﻿@import "Mixins.scss";
+
+#topBar {
+    @include no-select();
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    height: 75px;
+    background-color: #457fa9;
+
+    #omniusLogo {
+        width: 225px;
+        height: 75px;
+        background-image: url(/Content/images/OmniusLogo.png)
+    }
+    .searchField {
+        position: absolute;
+        top: 0px;
+        right: 312px;
+        width: 755px;
+        height: 75px;
+        background-color: #f2f2f3;
+
+        .searchIcon {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+        }
+        .searchInput {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 32px;
+            background-color: #f2f2f3;
+            padding-left: 75px;
+        }
+    }
+    .userLabel {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 312px;
+        height: 75px;
+        background-color: #457fa9;
+
+        .name {
+            position: absolute;
+            left: 100px;
+            top: 15px;
+            color: white;
+            font-size: 22px;
+            font-family: MyriadPro;
+        }
+        .role {
+            position: absolute;
+            left: 100px;
+            top: 42px;
+            color: #59c9e7;
+            font-size: 13px;
+            font-family: MyriadPro;
+        }
+        .avatar {
+            position: absolute;
+            left: 25px;
+            top: 8px;
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50%;
+        }
+    }
+    .fa-caret-down {
+        position: absolute;
+        left: 255px;
+        top: 18px;
+        color: white;
+        font-size: 36px;
+    }
+}
+
+#leftBar {
+    @include no-select();
+    position: fixed;
+    top: 75px;
+    bottom: 0px;
+    width: 225px;
+    background-color: #455d73;
+
+    .leftMenu {
+        padding-left: 0px;
+
+        li {
+            display: block;
+            width: 100%;
+            height: 50px;
+            background-color: #455d73;
+            color: white;
+            padding-top: 12px;
+            text-align: left;
+            font-size: 18px;
+            font-family: MyriadPro;
+            padding-left: 25px;
+        }
+        li a, li a:hover {
+            color: white;
+        }
+        li.active {
+            padding-left: 18px;
+            border-left: 7px solid #21a7b5;
+            background-color: #446782;
+        }
+        li.expanded {
+            padding-left: 18px;
+            border-left: 7px solid #59c9e7;
+            background-color: #446782;
+        }
+        li.subMenu {
+            background-color: #457fa9;
+        }
+    }
+}

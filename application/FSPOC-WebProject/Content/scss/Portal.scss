@@ -1,0 +1,289 @@
+﻿@import "Mixins.scss";
+
+@font-face {
+  font-family: "FatTec";
+  src: url(/fonts/Fat-TecA07.otf) format("opentype");
+}
+@font-face {
+  font-family: "MyriadPro";
+  src: url(/fonts/MYRIADPRO-REGULAR.OTF) format("opentype");
+}
+body.portalModule {
+    background-color: #f2f2f3;
+
+    #centralAdminPanel {
+        @include no-select();
+        position: absolute;
+        left: 225px;
+        top: 75px;
+        right: 0px;
+        height: 357px;
+        background: url(/Content/images/AdminBackgroundUpper.png) no-repeat #3a3a3a;
+
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 24px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: white;
+        }
+        .indicatorRectangle {
+            width: 308px;
+            height: 147px;
+        }
+        .indicatorBar {
+            width: 232px;
+            height: 38px;
+            font-family: MyriadPro;
+            color: white;
+        }
+        .indicatorBar .fa {
+            position: absolute;
+            font-size: 17px;
+            left: 10px;
+            top: 10px;
+        }
+        .indicatorBar .message {
+            position: absolute;
+            font-size: 15px;
+            left: 26px;
+            top: 8px;
+
+        }
+        .indicatorBar.error {
+            background-color: #dd5660;
+        }
+        .indicatorBar.warning {
+            background-color: #f3a67b;
+        }
+        .indicatorBar.info {
+            background-color: #21a7b5;
+        }
+
+        #errorSample {
+            position: absolute;
+            left: 394px;
+            top: 110px;
+        }
+        #warningSample {
+            position: absolute;
+            left: 394px;
+            top: 164px;
+        }
+        #infoSample {
+            position: absolute;
+            left: 394px;
+            top: 218px;
+        }
+        #usersOnlineIndicator {
+            position: absolute;
+            left: 70px;
+            top: 110px;
+            background-color: #21a7b5;
+        }
+        #usersOnlineIndicator .bigNumber {
+            position: absolute;
+            left: 20px;
+            top: -10px;
+            color: white;
+            font-size: 110px;
+            font-family: MyriadPro;
+        }
+        #usersOnlineIndicator .indicatorLabel {
+            position: absolute;
+            left: 150px;
+            top: 30px;
+            color: white;
+            font-size: 22px;
+            font-family: MyriadPro;
+        }
+        #activeProfileIndicator {
+            position: absolute;
+            left: 640px;
+            top: 110px;
+            background-color: #21a7b5;
+        }
+        #activeProfileIndicator .bigTextLine {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            color: white;
+            font-size: 52px;
+            font-family: MyriadPro;
+        }
+        #activeProfileIndicator .indicatorLabel {
+            position: absolute;
+            left: 150px;
+            top: 85px;
+            color: white;
+            font-size: 22px;
+            font-family: MyriadPro;
+        }
+        #maintenanceIndicator .bigTextLine {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            color: white;
+            font-size: 52px;
+            font-family: MyriadPro;
+        }
+        #maintenanceIndicator .indicatorLabel {
+            position: absolute;
+            left: 20px;
+            top: 85px;
+            color: white;
+            font-size: 22px;
+            font-family: MyriadPro;
+        }
+        #activeModulesIndicator {
+            position: absolute;
+            left: 970px;
+            top: 110px;
+            background-color: #f68d4d;
+        }
+        #activeModulesIndicator .bigNumber {
+            position: absolute;
+            left: 20px;
+            top: -10px;
+            color: white;
+            font-size: 110px;
+            font-family: MyriadPro;
+        }
+        #activeModulesIndicator .indicatorLabel {
+            position: absolute;
+            left: 150px;
+            top: 30px;
+            color: white;
+            font-size: 22px;
+            font-family: MyriadPro;
+        }
+        #maintenanceIndicator {
+            position: absolute;
+            left: 1300px;
+            top: 110px;
+            background-color: #f48b99;
+        }
+    }
+
+    #moduleAdminPanel {
+        @include no-select();
+        position: absolute;
+        left: 225px;
+        top: 432px;
+        width: 1200px;
+        height: 357px;
+        background: url(/Content/images/AdminBackgroundLower.png) no-repeat #f2f2f3;
+
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 24px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: #3e3e3e;
+        }
+        .moduleArea {
+            vertical-align: top;
+            margin-left: 66px;
+            margin-top: 108px;
+        }
+        .moduleSquare {
+            display: inline-block;
+            width: 160px;
+            height: 160px;
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            border: 10px solid #f2f2f3;
+            background-repeat: no-repeat;
+        }
+        .moduleSquare.selectedSquare {
+            border: 10px solid #f68d4d;
+        }
+    }
+
+    #moduleConfigPanel {
+        @include no-select();
+        position: absolute;
+        top: 432px;
+        right: 0px;
+        width: 755px;
+        height: 357px;
+        background: url(/Content/images/ModuleConfigBackground.png) no-repeat;
+        background-position: top right;
+
+        .panelLabel {
+            position: absolute;
+            right: 56px;
+            top: 24px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: #3e3e3e;
+        }
+        .currentModuleIcon {
+            position: absolute;
+            left: 265px;
+            top: 110px;
+            width: 105px;
+            height: 105px;
+            background-repeat: no-repeat;
+            background-size: 105px;
+        }
+        .currentModuleName {
+            position: absolute;
+            left: 400px;
+            top: 110px;
+            color: #3a3a3a;
+            font-family: FatTec;
+        }
+        .currentModuleDescription {
+            position: absolute;
+            left: 400px;
+            top: 140px;
+            color: #3a3a3a;
+            font-size: 18px;
+            font-family: MyriadPro;
+        }
+        .currentModuleLastChange {
+            position: absolute;
+            left: 400px;
+            top: 175px;
+            color: #3a3a3a;
+            font-size: 18px;
+            font-family: MyriadPro;
+        }
+        .moduleConfigTable {
+            position: absolute;
+            left: 265px;
+            top: 240px;
+            width: 410px;
+            table-layout: fixed;
+            font-size: 18px;
+            font-family: MyriadPro;
+            border-collapse:collapse;
+            border: 1px solid #727273;
+        }
+        .moduleConfigTable tr {
+            height: 30px;
+        }
+        .moduleConfigTable td {
+            padding-left: 16px;
+            border: 1px solid #727273;
+        }
+        .moduleConfigTable tr.headerRow {
+            background-color: #aaabab;
+            color: white;
+        }
+        .moduleConfigTable td.inactive {
+            background-color: #dd5660;
+            color: white;
+        }
+        .moduleConfigTable td .fa {
+            float: right;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    }
+}

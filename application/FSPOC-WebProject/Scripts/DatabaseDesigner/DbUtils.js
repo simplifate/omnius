@@ -46,8 +46,8 @@ function EditRelation(connection, sourceLabel, targetLabel) {
 function AddTable(tableName) {
     newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
         + tableName + '</div><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
-        + '<div class="dbTableBody"><div class="dbColumn dbPrimaryKey" dbColumnType="integer"><div class="deleteColumnIcon fa fa-remove"></div>'
-        + '<div class="dbColumnName">id</div><div class="editColumnIcon fa fa-pencil"></div></div></div>'
+        + '<div class="dbTableBody"><div class="dbColumn idColumn dbPrimaryKey" dbColumnType="integer">'
+        + '<div class="dbColumnName">id</div></div></div>'
         + '<div class="dbTableIndexArea"></div></div>');
     newTable.find(".dbColumn").data("dbColumnType", "integer");
     $("#database-container").append(newTable);
@@ -63,16 +63,6 @@ function AddTable(tableName) {
         addColumnDialog.data("currentTable", $(this).parents(".dbTable"));
         addColumnDialog.dialog("open");
     })
-    newTable.find(".deleteColumnIcon").on("click", function () {
-        $(this).parents(".dbColumn").remove();
-        instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
-        instance.recalculateOffsets();
-        instance.repaintEverything();
-    });
-    newTable.find(".editColumnIcon").on("click", function () {
-        CurrentColumn = $(this).parents(".dbColumn");
-        editColumnDialog.dialog("open");
-    });
     instance.draggable(newTable);
     AddColumnToJsPlumb(newTable.find(".dbColumn"));
 }
@@ -134,7 +124,6 @@ function AddIndex(table, name, indexColumnArray, unique) {
 }
 
 function AddView(viewName, viewQuery) {
-    alert(viewName);
     newView = $('<div class="dbView" style="top: 100px; left: 20px;"><div class="dbViewHeader"><div class="deleteViewIcon fa fa-remove"></div>'
     + '<div class="dbViewName">View: ' + viewName + '</div><div class="editViewIcon fa fa-pencil"></div></div></div>');
 

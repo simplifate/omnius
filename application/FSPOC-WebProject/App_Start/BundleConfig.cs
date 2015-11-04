@@ -39,10 +39,16 @@ namespace FSPOC_WebProject
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/CommonLibraries").IncludeDirectory(
-            "~/Scripts/CommonLibraries", "*.js"
-    ));
+                      "~/Scripts/CommonLibraries", "*.js"
+            ));
 
-
+            bundles.Add(new ScriptBundle("~/bundles/OmniusScripts")
+                .IncludeDirectory("~/Scripts/Tapestry", "*.js")
+                .IncludeDirectory("~/Scripts/Overview", "*.js")
+                .IncludeDirectory("~/Scripts/Portal", "*.js")
+                .IncludeDirectory("~/Scripts/DatabaseDesigner", "*.js")
+                .Include("~/Scripts/AppManager.js")
+            );
         }
     }
 }

@@ -1,19 +1,9 @@
 ﻿@{
     Page.Title = "Omnius Database Designer";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "dbDesignerModule";
 }
-@section Styles
-{
-    <link href="@Url.Content("~/Content/Common.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/DbDesigner.css")" rel="stylesheet" type="text/css" />
-}
-<script src="~/Scripts/DatabaseDesigner/DbSqlServerDef.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbDialogs.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbInit.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbVisualConfiguration.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbUtils.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbSave.js"></script>
-<script src="~/Scripts/DatabaseDesigner/DbLoad.js"></script>
+
 <div class="top-bar-container">Default database scheme</div>
 <div class="toolbox">
     <div class="menuButtons">
