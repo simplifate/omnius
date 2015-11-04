@@ -34,7 +34,7 @@ namespace FSPOC_WebProject
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
-                      "~/css/font-awesome.css",
+                      "~/Content/css/font-awesome.css",
                       "~/Content/jquery.contextMenu.css"
                       ));
 
