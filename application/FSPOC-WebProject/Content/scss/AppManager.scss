@@ -2,11 +2,11 @@
 
 @font-face {
     font-family: "RweHeadlineRegular";
-    src: url('/fonts/rweheadline-regularcondens-webfont.ttf') format('truetype');
+    src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype");
 }
 @font-face {
   font-family: "RweTextMedium";
-  src: url(/fonts/rwetext-medium-webfont.ttf) format("truetype");
+  src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype");
 }
 body.appManagerModule {
     background: white;

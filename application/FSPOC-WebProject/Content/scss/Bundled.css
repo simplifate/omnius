@@ -1,10 +1,10 @@
 ﻿@font-face {
   font-family: "RweHeadlineRegular";
-  src: url("/fonts/rweheadline-regularcondens-webfont.ttf") format("truetype"); }
+  src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
 
 @font-face {
   font-family: "RweTextMedium";
-  src: url(/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
+  src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
 
 body.appManagerModule {
   background: white; }
@@ -830,11 +830,11 @@ body.dbDesignerModule {
 
 @font-face {
   font-family: "FatTec";
-  src: url(/fonts/Fat-TecA07.otf) format("opentype"); }
+  src: url(/Content/fonts/Fat-TecA07.otf) format("opentype"); }
 
 @font-face {
   font-family: "MyriadPro";
-  src: url(/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
+  src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 body.portalModule {
   background-color: #f2f2f3; }
@@ -850,7 +850,7 @@ body.portalModule {
     top: 75px;
     right: 0px;
     height: 357px;
-    background: url(/Content/images/AdminBackgroundUpper.png) no-repeat #3a3a3a; }
+    background-color: #3a3a3a; }
     body.portalModule #centralAdminPanel .panelLabel {
       position: absolute;
       left: 52px;
@@ -858,119 +858,119 @@ body.portalModule {
       font-size: 18px;
       font-family: FatTec;
       color: white; }
-    body.portalModule #centralAdminPanel .indicatorRectangle {
+    body.portalModule #centralAdminPanel .backgroundDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px; }
+    body.portalModule #centralAdminPanel .indicatorRectangle, body.portalModule #centralAdminPanel .clickableIndicatorRectangle {
       width: 308px;
       height: 147px; }
+    body.portalModule #centralAdminPanel .clickableIndicatorRectangle {
+      background-color: #21a7b5; }
+    body.portalModule #centralAdminPanel .clickableIndicatorRectangle.highlighted {
+      background-color: #f68d4d !important; }
     body.portalModule #centralAdminPanel .indicatorBar {
+      position: relative;
+      display: block;
       width: 232px;
       height: 38px;
+      margin-bottom: 16px;
       font-family: MyriadPro;
       color: white; }
-    body.portalModule #centralAdminPanel .indicatorBar .fa {
-      position: absolute;
-      font-size: 17px;
-      left: 10px;
-      top: 10px; }
-    body.portalModule #centralAdminPanel .indicatorBar .message {
-      position: absolute;
-      font-size: 15px;
-      left: 26px;
-      top: 8px; }
+      body.portalModule #centralAdminPanel .indicatorBar .fa {
+        position: absolute;
+        font-size: 17px;
+        left: 10px;
+        top: 10px; }
+      body.portalModule #centralAdminPanel .indicatorBar .message {
+        position: absolute;
+        font-size: 15px;
+        left: 26px;
+        top: 8px; }
     body.portalModule #centralAdminPanel .indicatorBar.error {
       background-color: #dd5660; }
     body.portalModule #centralAdminPanel .indicatorBar.warning {
       background-color: #f3a67b; }
     body.portalModule #centralAdminPanel .indicatorBar.info {
       background-color: #21a7b5; }
-    body.portalModule #centralAdminPanel #errorSample {
+    body.portalModule #centralAdminPanel #notificationArea {
       position: absolute;
-      left: 394px;
+      left: 1390px;
       top: 110px; }
-    body.portalModule #centralAdminPanel #warningSample {
-      position: absolute;
-      left: 394px;
-      top: 164px; }
-    body.portalModule #centralAdminPanel #infoSample {
-      position: absolute;
-      left: 394px;
-      top: 218px; }
     body.portalModule #centralAdminPanel #usersOnlineIndicator {
       position: absolute;
       left: 70px;
-      top: 110px;
-      background-color: #21a7b5; }
-    body.portalModule #centralAdminPanel #usersOnlineIndicator .bigNumber {
-      position: absolute;
-      left: 20px;
-      top: -10px;
-      color: white;
-      font-size: 110px;
-      font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #usersOnlineIndicator .indicatorLabel {
-      position: absolute;
-      left: 150px;
-      top: 30px;
-      color: white;
-      font-size: 22px;
-      font-family: MyriadPro; }
+      top: 110px; }
+      body.portalModule #centralAdminPanel #usersOnlineIndicator .bigNumber {
+        position: absolute;
+        left: 20px;
+        top: -10px;
+        color: white;
+        font-size: 110px;
+        font-family: MyriadPro; }
+      body.portalModule #centralAdminPanel #usersOnlineIndicator .indicatorLabel {
+        position: absolute;
+        left: 150px;
+        top: 30px;
+        color: white;
+        font-size: 22px;
+        font-family: MyriadPro; }
     body.portalModule #centralAdminPanel #activeProfileIndicator {
       position: absolute;
-      left: 640px;
-      top: 110px;
-      background-color: #21a7b5; }
-    body.portalModule #centralAdminPanel #activeProfileIndicator .bigTextLine {
-      position: absolute;
-      left: 20px;
-      top: 10px;
-      color: white;
-      font-size: 52px;
-      font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #activeProfileIndicator .indicatorLabel {
-      position: absolute;
-      left: 150px;
-      top: 85px;
-      color: white;
-      font-size: 22px;
-      font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #maintenanceIndicator .bigTextLine {
-      position: absolute;
-      left: 20px;
-      top: 10px;
-      color: white;
-      font-size: 52px;
-      font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #maintenanceIndicator .indicatorLabel {
-      position: absolute;
-      left: 20px;
-      top: 85px;
-      color: white;
-      font-size: 22px;
-      font-family: MyriadPro; }
+      left: 400px;
+      top: 110px; }
+      body.portalModule #centralAdminPanel #activeProfileIndicator .bigTextLine {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        color: white;
+        font-size: 52px;
+        font-family: MyriadPro; }
+      body.portalModule #centralAdminPanel #activeProfileIndicator .indicatorLabel {
+        position: absolute;
+        left: 150px;
+        top: 85px;
+        color: white;
+        font-size: 22px;
+        font-family: MyriadPro; }
     body.portalModule #centralAdminPanel #activeModulesIndicator {
       position: absolute;
-      left: 970px;
-      top: 110px;
-      background-color: #f68d4d; }
-    body.portalModule #centralAdminPanel #activeModulesIndicator .bigNumber {
-      position: absolute;
-      left: 20px;
-      top: -10px;
-      color: white;
-      font-size: 110px;
-      font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #activeModulesIndicator .indicatorLabel {
-      position: absolute;
-      left: 150px;
-      top: 30px;
-      color: white;
-      font-size: 22px;
-      font-family: MyriadPro; }
+      left: 730px;
+      top: 110px; }
+      body.portalModule #centralAdminPanel #activeModulesIndicator .bigNumber {
+        position: absolute;
+        left: 20px;
+        top: -10px;
+        color: white;
+        font-size: 110px;
+        font-family: MyriadPro; }
+      body.portalModule #centralAdminPanel #activeModulesIndicator .indicatorLabel {
+        position: absolute;
+        left: 150px;
+        top: 30px;
+        color: white;
+        font-size: 22px;
+        font-family: MyriadPro; }
     body.portalModule #centralAdminPanel #maintenanceIndicator {
       position: absolute;
-      left: 1300px;
+      left: 1060px;
       top: 110px;
       background-color: #f48b99; }
-  body.portalModule #moduleAdminPanel {
+      body.portalModule #centralAdminPanel #maintenanceIndicator .bigTextLine {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        color: white;
+        font-size: 52px;
+        font-family: MyriadPro; }
+      body.portalModule #centralAdminPanel #maintenanceIndicator .indicatorLabel {
+        position: absolute;
+        left: 20px;
+        top: 85px;
+        color: white;
+        font-size: 22px;
+        font-family: MyriadPro; }
+  body.portalModule #lowerPanel {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -980,9 +980,20 @@ body.portalModule {
     position: absolute;
     left: 225px;
     top: 432px;
+    right: 0px;
+    bottom: 0px; }
+  body.portalModule #moduleAdminPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 0px;
+    top: 0px;
     width: 1200px;
-    height: 357px;
-    background: url(/Content/images/AdminBackgroundLower.png) no-repeat #f2f2f3; }
+    height: 357px; }
     body.portalModule #moduleAdminPanel .panelLabel {
       position: absolute;
       left: 52px;
@@ -1014,12 +1025,10 @@ body.portalModule {
     user-select: none;
     cursor: default;
     position: absolute;
-    top: 432px;
+    top: 0px;
     right: 0px;
     width: 755px;
-    height: 357px;
-    background: url(/Content/images/ModuleConfigBackground.png) no-repeat;
-    background-position: top right; }
+    height: 357px; }
     body.portalModule #moduleConfigPanel .panelLabel {
       position: absolute;
       right: 56px;
@@ -1080,4 +1089,14 @@ body.portalModule {
       float: right;
       font-size: 24px;
       margin-right: 10px; }
+  body.portalModule .lowerLeftDecoration {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -10; }
+  body.portalModule .lowerRightDecoration {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: -10; }
 

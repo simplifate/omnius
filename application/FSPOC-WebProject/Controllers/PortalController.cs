@@ -13,5 +13,17 @@ namespace FSPOC_WebProject.Controllers
         {
             return View();
         }
+        public ActionResult ModuleAdmin()
+        {
+            return View();
+        }
+        public ActionResult UsersOnline()
+        {
+            return View();
+        }
+        public ActionResult ActiveProfile()
+        {
+            return View();
+        }
     }
 }
