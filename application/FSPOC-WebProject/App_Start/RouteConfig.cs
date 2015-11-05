@@ -16,7 +16,7 @@ namespace FSPOC_WebProject
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Portal", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
