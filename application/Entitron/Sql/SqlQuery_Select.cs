@@ -41,7 +41,14 @@ namespace Entitron.Sql
             {
                 item.table = table;
             }
-            return ExecuteWithRead();
+            return output;
+        }
+        public DBItem First()
+        {
+            DBItem output = ExecuteWithRead().First();
+            output.table = table;
+
+            return output;
         }
 
         public override string ToString()
