@@ -7,7 +7,7 @@ using Entitron.Entity;
 
 namespace Entitron
 {
-    public class Entitron
+    public class Entitron : CORE.Module
     {
         private string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=FSPOC-2.0;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework";
         private CORE.CORE CORE;
@@ -27,7 +27,7 @@ namespace Entitron
             }
         }
         
-        public Entitron(CORE.CORE core, string ApplicationName = null)
+        public Entitron(CORE.CORE core, string ApplicationName = null) : base("Entitron")
         {
             CORE = core;
             AppName = ApplicationName;

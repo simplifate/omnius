@@ -8,23 +8,26 @@ using Entitron.Entity;
 
 namespace Mozaic
 {
-    public class Mozaic
+    public class Mozaic : CORE.Module
     {
         private CORE.CORE CORE;
-        public Mozaic(CORE.CORE core)
+        public Mozaic(CORE.CORE core) : base("Mozaic")
         {
             CORE = core;
         }
 
         public string Render(int pageId, DBItem model)
         {
-            DBEntities e = CORE.Entitron().GetStaticTables();
-            Entitron.Entity.Page page = e.Pages.FirstOrDefault(p => p.Id == pageId);
+            Entitron.Entitron entitron = (Entitron.Entitron)CORE.GetModule("Entitron");
+            if (entitron == null)
+                throw new ModuleNotFoundOrEnabledException("Entitron");
+
+            Page page = entitron.GetStaticTables().Pages.FirstOrDefault(p => p.Id == pageId);
 
             if (page == null)
                 return "Page not found";
 
-            return new MozaicPage(page).Render(model, e);
+            return new MozaicPage(page).Render(model, entitron.GetStaticTables());
         }
     }
 }

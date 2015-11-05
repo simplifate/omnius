@@ -6,57 +6,86 @@ using System.Threading.Tasks;
 
 namespace CORE
 {
-    public class CORE
+    public class CORE : Module
     {
         private IQueryable<Entitron.Entity.Module> _enabledModules = null;
 
-        private Entitron.Entitron _Entitron;
-        private Mozaic.Mozaic _Mozaic;
-        private Tapestry.Tapestry _Tapestry;
+        private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
 
-        public CORE()
+        private RunableModule _activeModule;
+        public Entitron.Entity.User ActiveUser { get; set; }
+        public CORE() : base("CORE")
         {
-            _Entitron = new Entitron.Entitron(this);
+            _modules["CORE"] = this;
+            _modules["Entitron"] = new Entitron.Entitron(this);
         }
 
-        public Entitron.Entitron Entitron()
+        public string html
         {
-            if (isModuleEnabled("Entitron"))
-                return _Entitron;
-            else
-                return null;
+            get { return _activeModule.GetHtmlOutput(); }
         }
-        public Mozaic.Mozaic Mozaic()
+        public string json
         {
-            if (isModuleEnabled("Mozaic"))
-            {
-                if (_Mozaic == null)
-                    _Mozaic = new Mozaic.Mozaic(this);
+            get { return _activeModule.GetJsonOutput(); }
+        }
+        public string mail
+        {
+            get { return _activeModule.GetMailOutput(); }
+        }
+        public void masterRun(Entitron.Entity.User user, string moduleName, string url)
+        {
+            ActiveUser = user;
 
-                return _Mozaic;
-            }
-            else
-                return null;
-        }
-        public Tapestry.Tapestry Tapestry()
-        {
-            if (isModuleEnabled("Tapestry"))
-            {
-                if (_Tapestry == null)
-                    _Tapestry = new Tapestry.Tapestry(this);
+            _activeModule = GetRunableModule(moduleName);
+            if (_activeModule == null)
+                throw new ModuleNotFoundOrEnabledException(moduleName);
 
-                return _Tapestry;
-            }
-            else
-                return null;
+            _activeModule.run(url);
         }
-        
+
+        public Module GetModule(string moduleName)
+        {
+            if (!isModuleEnabled(moduleName))
+                throw new ModuleNotFoundOrEnabledException(moduleName);
+
+            if (_modules[moduleName] == null)
+                _modules[moduleName] = GetNewModuleInstance(moduleName);
+
+            return _modules[moduleName];
+        }
+        public RunableModule GetRunableModule(string moduleName)
+        {
+            Module module = GetModule(moduleName);
+            if (module is RunableModule)
+                return (RunableModule)module;
+
+            throw new ModuleNotFoundOrEnabledException(moduleName);
+        }
+
         private bool isModuleEnabled(string moduleName)
         {
             if (_enabledModules == null)
-                _enabledModules = _Entitron.GetStaticTables().Modules.Where(m => m.IsEnabled);
+                _enabledModules = (_modules["Entitron"] as Entitron.Entitron).GetStaticTables().Modules.Where(m => m.IsEnabled);
 
             return _enabledModules.FirstOrDefault(m => m.Name == moduleName) != null;
+        }
+        private Module GetNewModuleInstance(string moduleName)
+        {
+            switch (moduleName)
+            {
+                case "CORE":
+                    return this;
+                case "Entitron":
+                    return new Entitron.Entitron(this);
+                case "Mozaic":
+                    return new Mozaic.Mozaic(this);
+                case "Tapestry":
+                    return new Tapestry.Tapestry(this);
+                case "Persona":
+                    return new Persona.Persona(this);
+                default:
+                    throw new ModuleNotFoundOrEnabledException(moduleName);
+            }
         }
     }
 }
