@@ -33,6 +33,13 @@ body.portalModule {
             left: 0px;
             top: 0px;
         }
+        .decorationWatcheye {
+            position: absolute;
+            left: 19px;
+            top: 56px;
+            width: 24px;
+            height: 24px;
+        }
         .indicatorRectangle, .clickableIndicatorRectangle {
             width: 308px;
             height: 147px;
@@ -42,6 +49,9 @@ body.portalModule {
         }
         .clickableIndicatorRectangle.highlighted {
             background-color: #f68d4d !important;
+        }
+        .maintenanceActive {
+            background-color: #2d74b2 !important;
         }
         .indicatorBar {
             position: relative;
@@ -219,7 +229,7 @@ body.portalModule {
         position: absolute;
         top: 0px;
         right: 0px;
-        width: 755px;
+        width: 490px;
         height: 357px;
 
         .panelLabel {
@@ -232,7 +242,7 @@ body.portalModule {
         }
         .currentModuleIcon {
             position: absolute;
-            left: 265px;
+            left: 0px;
             top: 110px;
             width: 105px;
             height: 105px;
@@ -241,14 +251,14 @@ body.portalModule {
         }
         .currentModuleName {
             position: absolute;
-            left: 400px;
+            left: 135px;
             top: 110px;
             color: #3a3a3a;
             font-family: FatTec;
         }
         .currentModuleDescription {
             position: absolute;
-            left: 400px;
+            left: 135px;
             top: 140px;
             color: #3a3a3a;
             font-size: 18px;
@@ -256,7 +266,7 @@ body.portalModule {
         }
         .currentModuleLastChange {
             position: absolute;
-            left: 400px;
+            left: 135px;
             top: 175px;
             color: #3a3a3a;
             font-size: 18px;
@@ -264,7 +274,7 @@ body.portalModule {
         }
         .moduleConfigTable {
             position: absolute;
-            left: 265px;
+            left: 0px;
             top: 240px;
             width: 410px;
             table-layout: fixed;
@@ -300,10 +310,30 @@ body.portalModule {
         top: 0px;
         z-index: -10;
     }
+    .lowerLeftDecorationEditSymbol {
+        position: absolute;
+        left: 22px;
+        top: 58px;
+        color: #F68D4D;
+        font-size: 22px;
+    }
     .lowerRightDecoration {
         position: absolute;
         right: 0px;
         top: 0px;
         z-index: -10;
+    }
+    .placeholderPanel {
+        @include no-select();
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 1200px;
+        height: 357px;
+        margin-left: 66px;
+        margin-top: 108px;
+        color: #3A3A3A;
+        font-size: 18px;
+        font-family: MyriadPro;
     }
 }

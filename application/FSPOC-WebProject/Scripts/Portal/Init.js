@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿var maintenanceModeActive = false;
+
+$(function () {
     $("#leftBar .leftMenu li.expanded").on("click", function () {
         $("#leftBar .leftMenu li.subMenu").slideToggle();
     });
@@ -23,5 +25,20 @@
             $("#lowerPanelDynamicContainer").html(result);
             LoadModuleAdminScript();
         });
+    });
+    $("#maintenanceIndicator").on("click", function () {
+        if (maintenanceModeActive) {
+            $("#maintenanceIndicator").removeClass("maintenanceActive");
+            $("#maintenanceIndicator .indicatorLabel").text("vypnuta");
+            maintenanceModeActive = false;
+        }
+        else {
+            $("#maintenanceIndicator").addClass("maintenanceActive");
+            $("#maintenanceIndicator .indicatorLabel").text("zapnuta");
+            maintenanceModeActive = true;
+        }
+    });
+    $("#notificationArea .indicatorBar").on("click", function () {
+        $(this).remove();
     });
 });
