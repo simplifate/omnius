@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Actor()
         {
-            ActionRoles = new HashSet<ActionRole>();
+            ActionRoles = new HashSet<ActionRule>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Entitron.Entity
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole> ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> ActionRoles { get; set; }
     }
 }

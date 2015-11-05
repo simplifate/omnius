@@ -10,15 +10,15 @@ namespace Mozaic
 {
     public class Mozaic : CORE.Module
     {
-        private CORE.CORE CORE;
+        private CORE.CORE _CORE;
         public Mozaic(CORE.CORE core) : base("Mozaic")
         {
-            CORE = core;
+            _CORE = core;
         }
 
         public string Render(int pageId, DBItem model)
         {
-            Entitron.Entitron entitron = (Entitron.Entitron)CORE.GetModule("Entitron");
+            Entitron.Entitron entitron = (Entitron.Entitron)_CORE.GetModule("Entitron");
             if (entitron == null)
                 throw new ModuleNotFoundOrEnabledException("Entitron");
 

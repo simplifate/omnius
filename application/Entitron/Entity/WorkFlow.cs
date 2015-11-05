@@ -39,7 +39,7 @@ namespace Entitron.Entity
 
         public virtual Block InitBlock { get; set; }
 
-        public virtual WorkFlow_Type Type { get; set; }
+        public virtual WorkFlowType Type { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> Children { get; set; }

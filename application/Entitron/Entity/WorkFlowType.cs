@@ -7,10 +7,10 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Tapestry_WorkFlow_Types")]
-    public partial class WorkFlow_Type
+    public partial class WorkFlowType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public WorkFlow_Type()
+        public WorkFlowType()
         {
             WorkFlows = new HashSet<WorkFlow>();
         }

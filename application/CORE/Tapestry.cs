@@ -32,7 +32,7 @@ namespace Tapestry
 
             // get actionRule, model, pageId
             Entitron.Entitron entitron = (Entitron.Entitron)_CORE.GetModule("Entitron");
-            Action actionRule = new Action(entitron.GetStaticTables().ActionRoles.SingleOrDefault(ar => ar.Id == ActionRuleId));
+            Action actionRule = new Action(entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId));
             _model = entitron.GetDynamicTable(actionRule.entity.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();
             _PageId = actionRule.entity.TargetBlock.MozaicPageId ?? -1;
 
@@ -59,6 +59,8 @@ namespace Tapestry
         private void splitUrl(string url, out int ActionRuleId, out int modelId)
         {
             string[] ids = url.Split('/');
+            if (ids.Count() != 2)
+                throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
 
             ActionRuleId = Convert.ToInt32(ids[0]);
             modelId = Convert.ToInt32(ids[1]);

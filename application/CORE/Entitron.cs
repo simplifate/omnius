@@ -10,7 +10,7 @@ namespace Entitron
     public class Entitron : CORE.Module
     {
         private string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=FSPOC-2.0;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework";
-        private CORE.CORE CORE;
+        private CORE.CORE _CORE;
         private DBEntities entities = null;
 
         public DBApp Application { get; set; }
@@ -29,7 +29,7 @@ namespace Entitron
         
         public Entitron(CORE.CORE core, string ApplicationName = null) : base("Entitron")
         {
-            CORE = core;
+            _CORE = core;
             AppName = ApplicationName;
         }
 

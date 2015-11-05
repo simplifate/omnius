@@ -12,7 +12,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Action()
         {
-            ActionRole_Actions = new HashSet<ActionRole_Action>();
+            ActionRule_Actions = new HashSet<ActionRule_Action>();
         }
 
         public int Id { get; set; }
@@ -33,7 +33,7 @@ namespace Entitron.Entity
         public virtual ActionCategory Category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole_Action> ActionRole_Actions { get; set; }
+        public virtual ICollection<ActionRule_Action> ActionRule_Actions { get; set; }
         public virtual ICollection<ActionRight> Rigths { get; set; }
     }
 }

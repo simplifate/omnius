@@ -7,12 +7,12 @@ namespace Entitron.Entity
     using System.Data.Entity.Spatial;
 
     [Table("Tapestry_ActionRole_Action")]
-    public partial class ActionRole_Action
+    public partial class ActionRule_Action
     {
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ActionRoleId { get; set; }
+        public int ActionRuleId { get; set; }
 
         [Key]
         [Column(Order = 1)]
@@ -24,7 +24,7 @@ namespace Entitron.Entity
         [StringLength(200)]
         public string ResultVariables { get; set; }
 
-        public virtual ActionRole ActionRole { get; set; }
+        public virtual ActionRule ActionRule { get; set; }
 
         public virtual Action Action { get; set; }
     }

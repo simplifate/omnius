@@ -14,6 +14,7 @@ namespace Entitron.Entity
         {
             Pages = new HashSet<Page>();
             WorkFlows = new HashSet<WorkFlow>();
+            Tables = new HashSet<Table>();
         }
 
         public int Id { get; set; }
@@ -32,5 +33,7 @@ namespace Entitron.Entity
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
 
         public virtual ICollection<AppRight> Rights { get; set; }
+
+        public virtual ICollection<Table> Tables { get; set; }
     }
 }

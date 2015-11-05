@@ -19,18 +19,19 @@ namespace Entitron.Entity
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
         public virtual DbSet<ActionCategory> ActionCategories { get; set; }
-        public virtual DbSet<ActionRole_Action> ActionRole_Action { get; set; }
-        public virtual DbSet<ActionRole> ActionRoles { get; set; }
+        public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<ActionRule> ActionRules { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRole> AttributeRoles { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
-        public virtual DbSet<WorkFlow_Type> WorkFlow_Types { get; set; }
+        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ActionRight> ActionRights { get; set; }
         public virtual DbSet<AppRight> ApplicationRights { get; set; }
+        public virtual DbSet<Table> Tables { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -74,13 +75,13 @@ namespace Entitron.Entity
                 .WithRequired(e => e.Category)
                 .HasForeignKey(e => e.CategoryId);
 
-            modelBuilder.Entity<ActionRole>()
-                .HasMany(e => e.ActionRole_Actions)
-                .WithRequired(e => e.ActionRole)
-                .HasForeignKey(e => e.ActionRoleId);
+            modelBuilder.Entity<ActionRule>()
+                .HasMany(e => e.ActionRule_Actions)
+                .WithRequired(e => e.ActionRule)
+                .HasForeignKey(e => e.ActionRuleId);
 
             modelBuilder.Entity<Action>()
-                .HasMany(e => e.ActionRole_Actions)
+                .HasMany(e => e.ActionRule_Actions)
                 .WithRequired(e => e.Action)
                 .HasForeignKey(e => e.ActionId);
 
@@ -110,7 +111,7 @@ namespace Entitron.Entity
                 .HasOptional(e => e.InitForWorkFlow)
                 .WithRequired(e => e.InitBlock);
 
-            modelBuilder.Entity<WorkFlow_Type>()
+            modelBuilder.Entity<WorkFlowType>()
                 .HasMany(e => e.WorkFlows)
                 .WithRequired(e => e.Type)
                 .HasForeignKey(e => e.TypeId)
@@ -155,6 +156,11 @@ namespace Entitron.Entity
             modelBuilder.Entity<AppRight>()
                 .HasRequired(e => e.Application)
                 .WithMany(e => e.Rights)
+                .HasForeignKey(e => e.ApplicationId);
+
+            modelBuilder.Entity<Application>()
+                .HasMany(e => e.Tables)
+                .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
         }
     }

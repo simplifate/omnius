@@ -48,7 +48,7 @@ namespace CORE
             if (!isModuleEnabled(moduleName))
                 throw new ModuleNotFoundOrEnabledException(moduleName);
 
-            if (_modules[moduleName] == null)
+            if (!_modules.ContainsKey(moduleName))
                 _modules[moduleName] = GetNewModuleInstance(moduleName);
 
             return _modules[moduleName];

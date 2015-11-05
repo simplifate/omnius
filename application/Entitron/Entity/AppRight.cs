@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entitron.Entity
 {
-    [Table("Persona_ActionRights")]
+    [Table("Persona_AppRights")]
     public partial class AppRight
     {
         [Key]

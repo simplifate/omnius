@@ -12,8 +12,8 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Block()
         {
-            SourceTo_ActionRoles = new HashSet<ActionRole>();
-            TargetTo_ActionRoles = new HashSet<ActionRole>();
+            SourceTo_ActionRoles = new HashSet<ActionRule>();
+            TargetTo_ActionRoles = new HashSet<ActionRule>();
             AttributeRoles = new HashSet<AttributeRole>();
         }
 
@@ -34,10 +34,10 @@ namespace Entitron.Entity
         public virtual Page MozaicPage { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole> SourceTo_ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> SourceTo_ActionRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRole> TargetTo_ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> TargetTo_ActionRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeRole> AttributeRoles { get; set; }

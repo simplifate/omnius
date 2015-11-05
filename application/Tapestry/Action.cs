@@ -9,8 +9,8 @@ namespace Tapestry
 {
     public class Action
     {
-        public ActionRole entity;
-        public Action(ActionRole actionRule)
+        public ActionRule entity;
+        public Action(ActionRule actionRule)
         {
             entity = actionRule;
         }
