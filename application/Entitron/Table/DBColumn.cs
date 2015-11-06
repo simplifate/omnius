@@ -40,9 +40,14 @@ namespace Entitron
                     "{0} {1}{2} {3} {4}",
                     Name,
                     type,
-                    (allowColumnLength) ? string.Format("({0})", (maxLength != null || maxLength>8000) ? maxLength.ToString() : "MAX") : "",
-                    (allowPrecisionScale) ? string.Format("({0}, {1})", (precision > 38) ? precision.ToString() : "38", (scale > 38) ? scale.ToString() : "38") : "", //avoiding that the value of precision or scale was greater than the range
-                    (canBeNull==true) ? "NULL" : "NOT NULL"
+                    (allowColumnLength)
+                        ? string.Format("({0})", (maxLength != null || maxLength > 8000) ? maxLength.ToString() : "MAX")
+                        : "",
+                    (allowPrecisionScale)
+                        ? string.Format("({0}, {1})",
+                            (precision < 38) ? precision.ToString() : "38",
+                            (scale < precision) ? scale.ToString() : precision.ToString()) : "", //avoiding that the value of precision or scale was greater than the range
+                    (canBeNull) ? "NULL" : "NOT NULL"
                     );
         }
         public virtual string getShortSqlDefinition()
