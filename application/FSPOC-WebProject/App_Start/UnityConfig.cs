@@ -31,6 +31,7 @@ namespace FSPOC_WebProject
             container.RegisterType<IRepository<DbSchemeCommit>, DefaultEFRepository<DbSchemeCommit>>();
             container.RegisterType<IRepository<ActionActionRule>, DefaultEFRepository<ActionActionRule>>();
             container.RegisterType<IDatabaseGenerateService, DatabaseGenerateService>();
+            container.RegisterType<IBackupGeneratorService, BackupGeneratorService>();
             container.RegisterType<IFactoryAction, FactoryAction>();
             container.RegisterType<IExecuteActionService, ExecuteActionService>();
             container.RegisterType<IReservationSystemActionProvider, ReservationSystemActionProvider>();
