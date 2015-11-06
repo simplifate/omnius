@@ -103,7 +103,8 @@ body.appManagerModule {
   left: 0px;
   right: 0px;
   height: 75px;
-  background-color: #457fa9; }
+  background-color: #457fa9;
+  z-index: 30; }
   #topBar #omniusLogo {
     width: 225px;
     height: 75px;
@@ -119,7 +120,7 @@ body.appManagerModule {
       position: absolute;
       top: 15px;
       left: 15px;
-      z-index: 10; }
+      z-index: 50; }
     #topBar .searchField .searchInput {
       position: absolute;
       top: 0px;
@@ -128,7 +129,8 @@ body.appManagerModule {
       height: 100%;
       font-size: 32px;
       background-color: #f2f2f3;
-      padding-left: 75px; }
+      padding-left: 75px;
+      z-index: 40; }
   #topBar .userLabel {
     position: absolute;
     right: 0px;
@@ -202,6 +204,12 @@ body.appManagerModule {
       background-color: #446782; }
     #leftBar .leftMenu li.subMenu {
       background-color: #457fa9; }
+
+@media only screen and (max-width: 1600px) {
+  .searchField {
+    left: 520px !important;
+    right: 312px !important;
+    width: auto !important; } }
 
 body.tapestryModule {
   background-color: #404040; }
@@ -869,8 +877,12 @@ body.portalModule {
       width: 24px;
       height: 24px; }
     body.portalModule #centralAdminPanel .indicatorRectangle, body.portalModule #centralAdminPanel .clickableIndicatorRectangle {
+      position: relative;
+      display: inline-block;
       width: 308px;
-      height: 147px; }
+      height: 147px;
+      margin-right: 17px;
+      white-space: normal; }
     body.portalModule #centralAdminPanel .clickableIndicatorRectangle {
       background-color: #21a7b5; }
     body.portalModule #centralAdminPanel .clickableIndicatorRectangle.highlighted {
@@ -901,68 +913,61 @@ body.portalModule {
       background-color: #f3a67b; }
     body.portalModule #centralAdminPanel .indicatorBar.info {
       background-color: #21a7b5; }
-    body.portalModule #centralAdminPanel #notificationArea {
-      position: absolute;
-      left: 1390px;
-      top: 110px; }
-    body.portalModule #centralAdminPanel #usersOnlineIndicator {
+    body.portalModule #centralAdminPanel #upperResponsiveArea {
       position: absolute;
       left: 70px;
-      top: 110px; }
-      body.portalModule #centralAdminPanel #usersOnlineIndicator .bigNumber {
-        position: absolute;
-        left: 20px;
-        top: -10px;
-        color: white;
-        font-size: 110px;
-        font-family: MyriadPro; }
-      body.portalModule #centralAdminPanel #usersOnlineIndicator .indicatorLabel {
-        position: absolute;
-        left: 150px;
-        top: 30px;
-        color: white;
-        font-size: 22px;
-        font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #activeProfileIndicator {
-      position: absolute;
-      left: 400px;
-      top: 110px; }
-      body.portalModule #centralAdminPanel #activeProfileIndicator .bigTextLine {
-        position: absolute;
-        left: 20px;
-        top: 10px;
-        color: white;
-        font-size: 52px;
-        font-family: MyriadPro; }
-      body.portalModule #centralAdminPanel #activeProfileIndicator .indicatorLabel {
-        position: absolute;
-        left: 150px;
-        top: 85px;
-        color: white;
-        font-size: 22px;
-        font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #activeModulesIndicator {
-      position: absolute;
-      left: 730px;
-      top: 110px; }
-      body.portalModule #centralAdminPanel #activeModulesIndicator .bigNumber {
-        position: absolute;
-        left: 20px;
-        top: -10px;
-        color: white;
-        font-size: 110px;
-        font-family: MyriadPro; }
-      body.portalModule #centralAdminPanel #activeModulesIndicator .indicatorLabel {
-        position: absolute;
-        left: 150px;
-        top: 30px;
-        color: white;
-        font-size: 22px;
-        font-family: MyriadPro; }
-    body.portalModule #centralAdminPanel #maintenanceIndicator {
-      position: absolute;
-      left: 1060px;
       top: 110px;
+      width: 100%;
+      white-space: nowrap;
+      vertical-align: top;
+      transform-origin: left top; }
+    body.portalModule #centralAdminPanel #notificationArea, body.portalModule #centralAdminPanel #rectangleIndicatorsArea {
+      display: inline-block;
+      white-space: nowrap;
+      vertical-align: top; }
+    body.portalModule #centralAdminPanel #usersOnlineIndicator .bigNumber {
+      position: absolute;
+      left: 20px;
+      top: -10px;
+      color: white;
+      font-size: 110px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #usersOnlineIndicator .indicatorLabel {
+      position: absolute;
+      left: 150px;
+      top: 30px;
+      color: white;
+      font-size: 22px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #activeProfileIndicator .bigTextLine {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      color: white;
+      font-size: 52px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #activeProfileIndicator .indicatorLabel {
+      position: absolute;
+      left: 150px;
+      top: 85px;
+      color: white;
+      font-size: 22px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #activeModulesIndicator .bigNumber {
+      position: absolute;
+      left: 20px;
+      top: -10px;
+      color: white;
+      font-size: 110px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #activeModulesIndicator .indicatorLabel {
+      position: absolute;
+      left: 150px;
+      top: 30px;
+      color: white;
+      font-size: 22px;
+      font-family: MyriadPro; }
+    body.portalModule #centralAdminPanel #maintenanceIndicator {
       background-color: #f48b99; }
       body.portalModule #centralAdminPanel #maintenanceIndicator .bigTextLine {
         position: absolute;
@@ -1000,7 +1005,8 @@ body.portalModule {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 1200px;
+    max-width: 1200px;
+    margin-right: 0px;
     height: 357px; }
     body.portalModule #moduleAdminPanel .panelLabel {
       position: absolute;
@@ -1012,7 +1018,8 @@ body.portalModule {
     body.portalModule #moduleAdminPanel .moduleArea {
       vertical-align: top;
       margin-left: 66px;
-      margin-top: 108px; }
+      margin-top: 108px;
+      transform-origin: left top; }
     body.portalModule #moduleAdminPanel .moduleSquare {
       display: inline-block;
       width: 160px;
@@ -1127,7 +1134,44 @@ body.portalModule {
     height: 357px;
     margin-left: 66px;
     margin-top: 108px;
-    color: #3A3A3A;
+    color: #3e3e3e;
     font-size: 18px;
     font-family: MyriadPro; }
+  body.portalModule #usersOnlinePanel .panelLabel, body.portalModule #activeProfilePanel .panelLabel {
+    position: absolute;
+    left: 52px;
+    top: 24px;
+    font-size: 18px;
+    font-family: FatTec;
+    color: #3e3e3e; }
+
+@media only screen and (max-width: 1920px) {
+  #upperResponsiveArea {
+    transform: scale(0.9); }
+  #moduleAdminPanel .moduleArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1810px) {
+  #upperResponsiveArea {
+    transform: scale(0.8); }
+  #moduleAdminPanel .moduleArea {
+    transform: scale(0.8); } }
+
+@media only screen and (max-width: 1700px) {
+  #upperResponsiveArea {
+    transform: scale(0.7); }
+  #moduleAdminPanel .moduleArea {
+    transform: scale(0.7); } }
+
+@media only screen and (max-width: 1580px) {
+  #moduleAdminPanel {
+    margin-right: 550px !important; }
+  #moduleAdminPanel .moduleArea {
+    width: 135%; }
+  #upperResponsiveArea {
+    white-space: normal !important; }
+  #notificationArea .indicatorBar {
+    display: inline-block !important;
+    margin-top: 28px;
+    margin-right: 17px; } }
 

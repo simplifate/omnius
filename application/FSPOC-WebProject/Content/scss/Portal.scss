@@ -41,8 +41,12 @@ body.portalModule {
             height: 24px;
         }
         .indicatorRectangle, .clickableIndicatorRectangle {
+            position: relative;
+            display: inline-block;
             width: 308px;
             height: 147px;
+            margin-right: 17px;
+            white-space: normal;
         }
         .clickableIndicatorRectangle {
             background-color: #21a7b5;
@@ -84,16 +88,21 @@ body.portalModule {
         .indicatorBar.info {
             background-color: #21a7b5;
         }
-        #notificationArea {
-            position: absolute;
-            left: 1390px;
-            top: 110px;
-        }
-        #usersOnlineIndicator {
+        #upperResponsiveArea {
             position: absolute;
             left: 70px;
             top: 110px;
-
+            width: 100%;
+            white-space: nowrap;
+            vertical-align: top;
+            transform-origin: left top;
+        }
+        #notificationArea, #rectangleIndicatorsArea {
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+        #usersOnlineIndicator {
             .bigNumber {
                 position: absolute;
                 left: 20px;
@@ -112,10 +121,6 @@ body.portalModule {
             }
         }
         #activeProfileIndicator {
-            position: absolute;
-            left: 400px;
-            top: 110px;
-
             .bigTextLine {
                 position: absolute;
                 left: 20px;
@@ -134,10 +139,6 @@ body.portalModule {
             }
         }
         #activeModulesIndicator {
-            position: absolute;
-            left: 730px;
-            top: 110px;
-
             .bigNumber {
                 position: absolute;
                 left: 20px;
@@ -156,11 +157,8 @@ body.portalModule {
             }
         }
         #maintenanceIndicator {
-            position: absolute;
-            left: 1060px;
-            top: 110px;
             background-color: #f48b99;
-            
+
             .bigTextLine {
                 position: absolute;
                 left: 20px;
@@ -192,7 +190,8 @@ body.portalModule {
         position: absolute;
         left: 0px;
         top: 0px;
-        width: 1200px;
+        max-width: 1200px;
+        margin-right: 0px;
         height: 357px;
 
         .panelLabel {
@@ -207,6 +206,7 @@ body.portalModule {
             vertical-align: top;
             margin-left: 66px;
             margin-top: 108px;
+            transform-origin: left top;
         }
         .moduleSquare {
             display: inline-block;
@@ -332,8 +332,58 @@ body.portalModule {
         height: 357px;
         margin-left: 66px;
         margin-top: 108px;
-        color: #3A3A3A;
+        color: #3e3e3e;
         font-size: 18px;
         font-family: MyriadPro;
+    }
+    #usersOnlinePanel, #activeProfilePanel {
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 24px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: #3e3e3e;
+        }
+    }
+}
+@media only screen and (max-width: 1920px) {
+    #upperResponsiveArea {
+        transform: scale(0.9);
+    }
+    #moduleAdminPanel .moduleArea {
+        transform: scale(0.9);
+    }
+}
+@media only screen and (max-width: 1810px) {
+    #upperResponsiveArea {
+        transform: scale(0.8);
+    }
+    #moduleAdminPanel .moduleArea {
+        transform: scale(0.8);
+    }
+}
+@media only screen and (max-width: 1700px) {
+    #upperResponsiveArea {
+        transform: scale(0.7);
+    }
+    #moduleAdminPanel .moduleArea {
+        transform: scale(0.7);
+    }
+}
+@media only screen and (max-width: 1580px) {
+    #moduleAdminPanel {
+        margin-right: 550px !important;
+    }
+    #moduleAdminPanel .moduleArea {
+        width: 135%;
+    }
+    #upperResponsiveArea {
+        white-space: normal !important;
+    }
+    #notificationArea .indicatorBar {
+        display: inline-block !important;
+        margin-top: 28px;
+        margin-right: 17px;
     }
 }
