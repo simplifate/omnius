@@ -32,12 +32,14 @@ namespace FSPOC_WebProject
             container.RegisterType<IRepository<ActionActionRule>, DefaultEFRepository<ActionActionRule>>();
             container.RegisterType<IDatabaseGenerateService, DatabaseGenerateService>();
             container.RegisterType<IBackupGeneratorService, BackupGeneratorService>();
+            container.RegisterType<IActionService, ActionService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IFactoryAction, FactoryAction>();
             container.RegisterType<IExecuteActionService, ExecuteActionService>();
+            //Reservation System
+            container.RegisterType<IReservationSystemService, ReservationSystemService>();
             container.RegisterType<IReservationSystemActionProvider, ReservationSystemActionProvider>();
+            //end reservation system
             container.RegisterType<ICommonActionsProvider, CommonActionsProvider>();
-            //SMAZAT!!!
-            container.RegisterType<ISaveEntity, SaveEntity>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
 

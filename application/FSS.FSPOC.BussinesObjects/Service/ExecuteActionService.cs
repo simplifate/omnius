@@ -24,7 +24,19 @@ namespace FSS.FSPOC.BussinesObjects.Service
 
         public IEnumerable<ResultAction> RunAction(int actionRuleId,object sourceAction)
         {
+            
+
             var listResult = new List<ResultAction>();
+
+            //pouze pro ukazku SMAZAT po predevedeni!!!!!!
+            //comon Action
+            var commonAction = FactoryAction.GetAction(100);
+            listResult.Add(commonAction.Run(sourceAction));
+            //reservatin system action
+            var testAction = FactoryAction.GetAction(1);
+            listResult.Add(testAction.Run(sourceAction));
+            return listResult;
+            //konec testu
             try
             {
                 var actionActionRules = ActionActionRuleRepository.Get(a => a.ActionRuleId == actionRuleId,

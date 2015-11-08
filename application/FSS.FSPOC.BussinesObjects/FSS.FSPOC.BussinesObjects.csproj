@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\CommonActionsProvider.cs" />
+    <Compile Include="Actions\CommonParamApplication.cs" />
     <Compile Include="Actions\ICommonActionsProvider.cs" />
     <Compile Include="Actions\IReservationSystemActionProvider.cs" />
     <Compile Include="Actions\SendNotification.cs" />
@@ -92,10 +93,12 @@
     <Compile Include="Entities\Workflow\Workflow.cs" />
     <Compile Include="Entities\Workflow\WorkflowCommit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ActionService.cs" />
     <Compile Include="Service\BackupGeneratorService.cs" />
     <Compile Include="Service\DatabaseGenerateService.cs" />
     <Compile Include="Service\ExecuteActionService.cs" />
     <Compile Include="Service\IActionProvider.cs" />
+    <Compile Include="Service\IActionService.cs" />
     <Compile Include="Service\IBackupGeneratorService.cs" />
     <Compile Include="Service\IDatabaseGenerateService.cs" />
     <Compile Include="Service\IExecuteActionService.cs" />
