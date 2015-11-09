@@ -7,6 +7,9 @@
   src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
 
 body.appManagerModule {
+  position: fixed;
+  width: 100%;
+  height: 100%;
   background: white; }
   body.appManagerModule .appColor0 {
     background: -webkit-linear-gradient(top, #0086be, #0065a9);
@@ -31,27 +34,21 @@ body.appManagerModule {
     background: linear-gradient(to bottom, #c3dc89, #8aba18);
     color: white; }
   body.appManagerModule .appPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
     position: absolute;
-    width: 200px;
-    height: 200px;
-    padding: 10px 10px;
-    font-size: 14px;
-    display: inline-block; }
+    width: auto;
+    height: auto;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px; }
     body.appManagerModule .appPanel .appPanelHeader {
       height: 36px; }
-    body.appManagerModule .appPanel .appPanelContents {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: default;
-      font-family: RweTextMedium;
-      width: 100%;
-      height: 100%;
-      padding: 12px 12px;
-      border-radius: 4px;
-      font-size: 11px; }
     body.appManagerModule .appPanel .smallFont {
       font-size: 11px; }
     body.appManagerModule .appPanel .mediumFont {
