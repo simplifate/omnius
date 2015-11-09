@@ -189,10 +189,10 @@ namespace Entitron
             return _table;
         }
 
-        public List<string> GetUniqueConstrainst(bool? all=null)
+        public List<string> GetUniqueConstrainst()
         {
             List<string> uniqueConstraints=new List<string>();
-            SqlQuery_SelectUniqueConstraints query = new SqlQuery_SelectUniqueConstraints(){application = table.Application,table = table, all = all};
+            SqlQuery_SelectUniqueConstraints query = new SqlQuery_SelectUniqueConstraints(){application = table.Application,table = table};
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 uniqueConstraints.Add(i["uniqueName"].ToString());

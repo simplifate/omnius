@@ -8,26 +8,18 @@ namespace Entitron.Sql
 {
     class SqlQuery_SelectUniqueConstraints:SqlQuery_withApp
     {
-        public bool? all { get; set; }
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
-            if (all==true)
-            {
-                sqlString =
-                    "SELECT i.name uniqueName FROM sys.indexes i INNER JOIN sys.tables t ON t.object_id=i.object_id WHERE i.is_unique_constraint=1 ;";
-            }
-            else
-            {
-                sqlString =string.Format(
+              
+            sqlString =string.Format(
                 "DECLARE @sql NVARCHAR(MAX), @realTableName NVARCHAR(50);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
                 "SET @sql= 'SELECT i.name uniqueName FROM sys.indexes i INNER JOIN sys.tables t ON t.object_id=i.object_id WHERE i.is_unique_constraint=1 AND t.name = @realTableName ;';"+
                 "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
                 parAppName,parTableName
                 );
-            }
             
             return base.BaseExecutionWithRead(connection);
         }

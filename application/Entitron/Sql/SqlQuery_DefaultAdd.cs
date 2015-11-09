@@ -20,9 +20,9 @@ namespace Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT DEF_{4}_', @realTableName , @{2},' DEFAULT ''', @{3},''' FOR ', @{2},';');" +
+                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT DEF_{4}_{5}_', @realTableName , @{2},' DEFAULT ''', @{3},''' FOR ', @{2},';');" +
                 "exec (@sql);",
-                parAppName,parTableName,parColName,parValName,application.Name
+                parAppName,parTableName,parColName,parValName,application.Name, table.tableName
                 );
             base.BaseExecution(transaction);
         }

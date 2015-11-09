@@ -173,7 +173,7 @@ namespace Entitron.Sql
             else if (type == "Float")
             {
                 _datatypes[key] = string.Format("{0}({1})", a.SqlDbType.ToString(),
-                   (a.Precision != -1) ? a.Precision.ToString() : "53");
+                   (a.Precision != -1 || a.Precision != null) ? a.Precision.ToString() : "53");
             }
             else
             {
