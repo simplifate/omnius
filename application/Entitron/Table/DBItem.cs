@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Entitron.Sql;
 
 namespace Entitron
 {
@@ -10,8 +12,9 @@ namespace Entitron
     {
         public DBTable table { get; set; }
 
-        private Dictionary<string, object> _properties = new Dictionary<string, object>();
+        private Dictionary<string, int> _properties = new Dictionary<string, int>();
         private Dictionary<string, object> _foreignKeys = new Dictionary<string, object>();
+        private Dictionary<int, object> _idProperties = new Dictionary<int, object>(); 
         
         public object this[string propertyName]
         {
@@ -19,7 +22,7 @@ namespace Entitron
             {
                 // property
                 if (_properties.ContainsKey(propertyName))
-                    return _properties[propertyName];
+                    return _idProperties[_properties[propertyName]];
 
                 // foreign keys
                 DBForeignKey fk = null;
@@ -39,9 +42,20 @@ namespace Entitron
             }
             set
             {
-                _properties[propertyName] = value;
+                if (!_properties.ContainsKey(propertyName))
+                    throw new KeyNotFoundException();
+
+                int columnId = _properties[propertyName];
+                _idProperties[columnId] = value;
             }
         }
+
+        public void createProperty(int columnId, string name, object value)
+        {
+            _idProperties.Add(columnId,value);
+            _properties.Add(name,columnId);
+        }
+
 
         public List<string> getColumnNames()
         {
@@ -50,7 +64,7 @@ namespace Entitron
 
         public List<object> getAllProperties()
         {
-            return _properties.Values.ToList();
+            return _idProperties.Values.ToList();
         } 
     }
 }

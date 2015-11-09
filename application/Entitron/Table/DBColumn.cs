@@ -9,6 +9,7 @@ namespace Entitron
 {
     public class DBColumn
     {
+        public int ColumnId { get; set; }
         public string Name { get; set; }
         public string type { get; set; }
         public bool allowColumnLength { get; set; }

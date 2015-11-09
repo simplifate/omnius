@@ -25,6 +25,7 @@ namespace Entitron
                 {
                     DBColumn column = new DBColumn()
                     {
+                        ColumnId = Convert.ToInt32(i["column_id"]),
                         Name = (string)i["name"],
                         type = (string)i["typeName"],
                         maxLength = Convert.ToInt32(i["max_length"]),

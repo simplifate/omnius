@@ -33,6 +33,27 @@ namespace Entitron.Sql
             return base.BaseExecutionWithRead(connection);
         }
 
+        protected override List<DBItem> Read(SqlDataReader reader)
+        {
+            List<DBItem> items = new List<DBItem>();
+
+            while (reader.Read())
+            {
+                DBItem newItem = new DBItem();
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    string columnName = reader.GetName(i);
+                    int columnId = table.columns.Single(x => x.Name == columnName).ColumnId;
+                    newItem.createProperty(columnId, columnName, reader[columnName]);
+                }
+
+                items.Add(newItem);
+            }
+
+            return items;
+        }
+
         public List<DBItem> ToList()
         {
             List<DBItem> output = ExecuteWithRead();

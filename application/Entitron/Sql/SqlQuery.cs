@@ -128,7 +128,7 @@ namespace Entitron.Sql
 
             return cmd;
         }
-        protected List<DBItem> Read(SqlDataReader reader)
+        protected virtual List<DBItem> Read(SqlDataReader reader)
         {
             List<DBItem> items = new List<DBItem>();
 
@@ -139,7 +139,8 @@ namespace Entitron.Sql
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     string columnName = reader.GetName(i);
-                    newItem[columnName] = reader[columnName];
+                    int columnId = reader.GetOrdinal(columnName);
+                    newItem.createProperty(columnId, columnName, reader[columnName]);
                 }
 
                 items.Add(newItem);
@@ -173,7 +174,7 @@ namespace Entitron.Sql
             else if (type == "Float")
             {
                 _datatypes[key] = string.Format("{0}({1})", a.SqlDbType.ToString(),
-                   (a.Precision != -1 || a.Precision != null) ? a.Precision.ToString() : "53");
+                   (a.Precision != -1||a.Precision!=null) ? a.Precision.ToString() : "53");
             }
             else
             {
