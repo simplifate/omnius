@@ -56,6 +56,10 @@ namespace Entitron
             _properties.Add(name,columnId);
         }
 
+        public object GetIdProperty(int columnId)
+        {
+            return _idProperties[columnId];
+        }
 
         public List<string> getColumnNames()
         {
