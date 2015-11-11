@@ -49,6 +49,9 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CORE">
+      <HintPath>..\CORE\bin\Debug\CORE.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -522,6 +525,12 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CreateItem Include="$(ProjectDir)..\CORE\mvc\Views\**\*.*">
+      <Output TaskParameter="Include" ItemName="Copy_CORE_Views" />
+    </CreateItem>
+    <Copy SourceFiles="@(Copy_CORE_Views)" DestinationFiles="@(Copy_CORE_Views->'$(ProjectDir)Views\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>

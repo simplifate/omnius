@@ -1,0 +1,35 @@
+﻿@using Entitron.Entity
+@model System.Data.Entity.DbSet<Module>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table table-bordered table-responsive">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Desscription</th>
+        <th>Enable?</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (Module m in Model)
+    {
+        <tr>
+            <td>@m.Id</td>
+            <td>@Ajax.ActionLink(m.Name, "Details", new { @id = m.Id }, new AjaxOptions(){InsertionMode = InsertionMode.Replace})</td>
+            <td>@m.Description</td>
+            <td>@m.IsEnabled</td>
+            <td>
+                @Html.ActionLink("Update", "Update", new {@id = m.Id}, new {@class = "btn btn-success"})
+                @Html.ActionLink(" ", "Delete", new {@id = m.Id}, new {@class = "glyphicon glyphicon-trash btn btn-danger"})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@Html.ActionLink("Create Module","Create",null,new{@class="btn btn-primary"})
