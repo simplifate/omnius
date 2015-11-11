@@ -1,4 +1,4 @@
-﻿var LastAssignedOperatorNumber = 0;
+﻿var LastAssignedNumber = 0;
 
 function CreateJsPlumbInstanceForRule(ruleElement) {
     newInstance = jsPlumb.getInstance({
@@ -14,7 +14,9 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
             }]
         ]
     });
-    newInstance.setContainer($(ruleElement).attr("id"));
+    ruleContent = $(ruleElement).find(".ruleContent");
+    ruleContent.attr("id", AssingID());
+    newInstance.setContainer(ruleContent.attr("id"));
     newInstance.bind("click", function (con) {
         this.detach(con);
     });
@@ -37,6 +39,13 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
 }
 
 function AddToJsPlumb(instance, item) {
+    if (!$(item).attr("id")) {
+        itemId = AssingID();
+        $(item).attr("id", itemId);
+    }
+    else {
+        itemId = $(item).attr("id");
+    }
     if ($(item).hasClass("operatorSymbol")) {
         $(item).draggable({
             containment: "parent",
@@ -44,13 +53,6 @@ function AddToJsPlumb(instance, item) {
                 instance.repaintEverything();
             }
         });
-        if (!$(item).attr("id")) {
-            itemId = AssingOperatorID();
-            $(item).attr("id", itemId);
-        }
-        else {
-            itemId = $(item).attr("id");
-        }
         if ($(item).hasClass("decisionRhombus")) {
             instance.addEndpoint(itemId, yesEndpoint, {
                 anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -76,7 +78,51 @@ function AddToJsPlumb(instance, item) {
         }
     }
     else {
-        instance.draggable(item, { containment: "parent" });
+        $(item).draggable({
+            drag: function (event, ui) {
+                element = $(this);
+                rule = element.parents(".rule");
+                rule.data("jsPlumbInstance").repaintEverything();
+                elPositionLeft = element.position().left;
+                elPositionTop = element.position().top;
+                if (elPositionLeft - 5 > rule.width() - element.width()) {
+                    rule.width(elPositionLeft + element.width() - 5);
+                }
+                if (elPositionTop + 20 > rule.height() - element.height()) {
+                    rule.height(elPositionTop + element.height() + 20);
+                }                
+            }
+        });
+        $(item).on("mousedown", function () {
+            element = $(this);
+            rule = element.parents(".rule");
+            verticalLimit = 1000000;
+            horizontalLimit = 1000000;
+
+            ruleLeft = rule.offset().left;
+            ruleRight = ruleLeft + rule.width();
+            ruleTop = rule.offset().top;
+            ruleBottom = ruleTop + rule.height();
+
+            $("#rulesPanel .rule").each(function (index, element) {
+                otherRule = $(element);
+                if (otherRule.attr("id") != rule.attr("id")) {
+                    otherRuleLeft = otherRule.offset().left;
+                    otherRuleRight = otherRuleLeft + otherRule.width();
+                    otherRuleTop = otherRule.offset().top;
+                    otherRuleBottom = otherRuleTop + otherRule.height();
+
+                    if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                        && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
+                        verticalLimit = otherRuleTop;
+                    if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                        && otherRuleLeft > ruleRight && otherRuleLeft < horizontalLimit)
+                        horizontalLimit = otherRuleLeft;
+                }
+            });
+            element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + 40,
+                horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
+        });
         itemId = $(item).attr("id");
         if ($(item).hasClass("dataSource"))
             instance.addEndpoint(itemId, dataSourceEndpoint, {
@@ -94,9 +140,9 @@ function AddToJsPlumb(instance, item) {
     }
 
 }
-function AssingOperatorID() {
-    LastAssignedOperatorNumber++;
-    return "operator" + LastAssignedOperatorNumber;
+function AssingID() {
+    LastAssignedNumber++;
+    return "tapestryElement" + LastAssignedNumber;
 }
 function AddIconToItem(element) {
     item = $(element);

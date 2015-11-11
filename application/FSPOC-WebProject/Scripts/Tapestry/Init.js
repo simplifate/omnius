@@ -14,19 +14,92 @@ $(function () {
             addActionsDialog.dialog("open");
         });
         $("#btnAddRule").on("click", function () {
-            newRule = $('<div class="rule"><div class="ruleHeader"></div></div>');
+            lowestRuleBottom = 0;
+            highestRuleNumber = 0;
+            $("#rulesPanel .rule").each(function (index, element) {
+                bottom = $(element).position().top + $(element).height();
+                if (bottom > lowestRuleBottom)
+                    lowestRuleBottom = bottom;
+                name = $(element).find(".ruleHeader").text();
+                if (name.startsWith("Rule") && !isNaN(name.substring(4, name.length))) {
+                    ruleNumber = parseInt(name.substring(4, name.length));
+                    if (ruleNumber > highestRuleNumber)
+                        highestRuleNumber = ruleNumber;
+                }
+            });
+            newRule = $('<div class="rule"><div class="ruleHeader">Rule' + (highestRuleNumber + 1) + '</div>'
+                + '<div class="editRuleIcon fa fa-edit"></div>'
+                + '<div class="deleteRuleIcon fa fa-remove"></div><div class="ruleContent"</div></div>');
             $("#rulesPanel .scrollArea").append(newRule);
-            newRule.resizable();
+            newRule.css("left", 25);
+            newRule.css("top", lowestRuleBottom + 60);
+            newRule.find(".editRuleIcon").on("click", function () {
+                currentRule = $(this).parents(".rule");
+                renameRuleDialog.dialog("open");
+            });
+            newRule.find(".deleteRuleIcon").on("click", function () {
+                $(this).parents(".rule").remove();
+            });
+            newRule.resizable({
+                start: function (event, ui) {
+                    contentsWidth = 120;
+                    contentsHeight = 40;
+                    $(this).find(".item, .operatorSymbol").each(function (index, element) {
+                        rightEdge = $(element).position().left + $(element).width();
+                        if (rightEdge > contentsWidth)
+                            contentsWidth = rightEdge;
+                        bottomEdge = $(element).position().top + $(element).height();
+                        if (bottomEdge > contentsHeight)
+                            contentsHeight = bottomEdge;
+                    });
+                    $(this).css("min-width", contentsWidth + 0);
+                    $(this).css("min-height", contentsHeight + 20);
+
+                    verticalLimit = 1000000;
+                    horizontalLimit = 1000000;
+
+                    ruleLeft = $(this).position().left;
+                    ruleRight = ruleLeft + $(this).width();
+                    ruleTop = $(this).position().top;
+                    ruleBottom = ruleTop + $(this).height();
+
+                    $("#rulesPanel .rule").each(function (index, element) {
+                        otherRule = $(element);
+                        otherRuleLeft = otherRule.position().left;
+                        otherRuleRight = otherRuleLeft + otherRule.width();
+                        otherRuleTop = otherRule.position().top;
+                        otherRuleBottom = otherRuleTop + otherRule.height();
+
+                        if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                            && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
+                            verticalLimit = otherRuleTop - ruleTop;
+                        if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                            && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
+                            horizontalLimit = otherRuleLeft - ruleLeft;
+                    });
+                    $(this).css("max-width", horizontalLimit - 50);
+                    $(this).css("max-height", verticalLimit - 50);
+                }
+            });
             newRule.draggable({ handle: ".ruleHeader" });
+            newRule.attr("id") = AssingID();
             CreateJsPlumbInstanceForRule(newRule);
             newRule.droppable({
-                accept: ".menuItem",
+                containment: ".rule",
+                greedy: true,
+                tolerance: "touch",
+                accept: ".menuItem, .rule",
                 drop: function (e, ui) {
+                    if (ui.helper.hasClass("rule")) {
+                        ui.draggable.draggable("option", "revert", true);
+                        return false;
+                    }
                     droppedElement = ui.helper.clone();
                     ui.helper.remove();
-                    droppedElement.appendTo(this);
-                    leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
-                    topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
+                    ruleContent = $(this).find(".ruleContent");
+                    droppedElement.appendTo(ruleContent);
+                    leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
+                    topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
                     if (droppedElement.hasClass("operator")) {
                         if (droppedElement.attr("operatorType") == "decision")
                             newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
@@ -34,7 +107,7 @@ $(function () {
                         else if (droppedElement.attr("operatorType") == "condition")
                             newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
                               + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                        newOperator.appendTo(this);
+                        newOperator.appendTo(ruleContent);
                         newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
                         newOperator.attr("dialogType", droppedElement.attr("dialogType"));
                         droppedElement.remove();
@@ -50,8 +123,10 @@ $(function () {
                 }
             });
         });
-        $(".rule").resizable();
-        $(".rule").draggable({ handle: ".ruleHeader" });
+        $(".scrollArea").droppable({
+            tolerance: "fit",
+            accept: ".rule"
+        });
         $("#upperVerticalDivider").draggable({
             axis: "x",
             drag: function (event, ui) {
@@ -90,88 +165,14 @@ $(function () {
         $(".menuItem").draggable({
             helper: "clone",
             tolerance: "fit",
-            revert: true
+            revert: true,
+            scroll: false
         });
-        $.contextMenu({
-            selector: '.rule .item, .rule .operatorSymbol',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
-                    currentInstance.removeAllEndpoints(item, true);
-                    item.remove();
-                }
-                else if (key == "edit") {
-                    switch (item.attr("dialogType")) {
-                        case "emailTemplate":
-                            CurrentItem = item;
-                            chooseEmailTemplateDialog.dialog("open");
-                            break;
-                        case "port":
-                            CurrentItem = item;
-                            choosePortDialog.dialog("open");
-                            break;
-                        case "condition":
-                            CurrentItem = item;
-                            editConditionDialog.dialog("open");
-                            break;
-                        default:
-                            alert("This item doesn't have any properties to edit.");
-                            break;
-                    }
-                }
-            },
-            items: {
-                "edit": { name: "Edit", icon: "edit" },
-                "sep1": "---------",
-                "delete": { name: "Delete", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.rule',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "delete") {
-                    options.$trigger.remove();
-                }
-            },
-            items: {
-                "delete": { name: "Delete rule", icon: "delete" }
-            }
-        });
-        $(".rule").droppable({
-            accept: ".menuItem",
-            containment: ".rule",
-            drop: function (e, ui) {
-                droppedElement = ui.helper.clone();
-                ui.helper.remove();
-                droppedElement.appendTo(this);
-                leftOffset = ui.draggable.parent().offset().left - $(this).offset().left;
-                topOffset = ui.draggable.parent().offset().top - $(this).offset().top;
-                if (droppedElement.hasClass("operator")) {
-                    if (droppedElement.attr("operatorType") == "decision")
-                        newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
-                    else if (droppedElement.attr("operatorType") == "condition")
-                        newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                    newOperator.appendTo(this);
-                    newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                    newOperator.attr("dialogType", droppedElement.attr("dialogType"));
-                    droppedElement.remove();
-                    AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
-                }
-                else {
-                    droppedElement.removeClass("menuItem");
-                    droppedElement.addClass("item");
-                    AddIconToItem(droppedElement);
-                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                    AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
-                }
-            }
+        $(".menuItem").on("mousedown", function () {
+            blockPanel = $("#blockPanel");
+            rightScreenEdge = blockPanel.position().left + blockPanel.width();
+            bottomScreenEdge = blockPanel.position().top + blockPanel.height();
+            $(this).draggable("option", "containment", [0, 0, rightScreenEdge - $(this).width() - 20, bottomScreenEdge - $(this).height() - 20]);
         });
         $("#btnZoomIn").on("click", function () {
             ZoomFactor += 0.1;

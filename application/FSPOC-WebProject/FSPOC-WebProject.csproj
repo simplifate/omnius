@@ -399,6 +399,7 @@
     <Content Include="Content\scss\Mixins.scss" />
     <Content Include="Content\fonts\Fat-TecA07.otf" />
     <Content Include="Content\fonts\MYRIADPRO-REGULAR.OTF" />
+    <Content Include="Content\scss\Common.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
@@ -436,8 +437,10 @@
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
+    <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
     <Content Include="Scripts\Tapestry\Init.js" />
+    <Content Include="Scripts\Tapestry\InitDemo.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
@@ -495,6 +498,7 @@
     <Content Include="Views\Portal\ModuleAdmin.cshtml" />
     <Content Include="Views\Portal\UsersOnline.cshtml" />
     <Content Include="Views\Portal\ActiveProfile.cshtml" />
+    <Content Include="Views\Shared\_PartialViewAjaxLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

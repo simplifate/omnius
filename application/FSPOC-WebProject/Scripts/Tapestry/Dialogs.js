@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var currentRule;
+$(function () {
     if ($("body.tapestryModule").length) {
         renameBlockDialog = $("#rename-block-dialog").dialog({
             autoOpen: false,
@@ -270,6 +271,34 @@
             }
             else
                 alert("No port selected");
+        }
+        renameRuleDialog = $("#rename-rule-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    renameRuleDialog_SubmitData();
+                },
+                Cancel: function () {
+                    renameRuleDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        renameRuleDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                renameRuleDialog.find("#rule-name").val(currentRule.find(".ruleHeader").text());
+            }
+        });
+        function renameRuleDialog_SubmitData() {
+            renameRuleDialog.dialog("close");
+            currentRule.find(".ruleHeader").text(renameRuleDialog.find("#rule-name").val());
         }
     }
 });
