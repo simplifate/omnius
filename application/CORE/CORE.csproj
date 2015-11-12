@@ -79,14 +79,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="mvc\Views\CORE\Create.cshtml" />
-    <None Include="mvc\Views\CORE\Details.cshtml" />
-    <None Include="mvc\Views\CORE\Index.cshtml" />
-    <None Include="mvc\Views\CORE\Update.cshtml" />
-    <None Include="mvc\Views\Shared\Error.cshtml" />
-    <None Include="mvc\Views\Shared\Lockout.cshtml" />
-    <None Include="mvc\Views\Shared\_Layout.cshtml" />
-    <None Include="mvc\Views\Shared\_LoginPartial.cshtml" />
+    <None Include="mvc\Views\Create.cshtml" />
+    <None Include="mvc\Views\Details.cshtml" />
+    <None Include="mvc\Views\Error.cshtml" />
+    <None Include="mvc\Views\Index.cshtml" />
+    <None Include="mvc\Views\Lockout.cshtml" />
+    <None Include="mvc\Views\Update.cshtml" />
+    <None Include="mvc\Views\_Layout.cshtml" />
+    <None Include="mvc\Views\_LoginPartial.cshtml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

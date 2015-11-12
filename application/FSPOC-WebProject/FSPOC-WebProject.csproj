@@ -531,7 +531,7 @@
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
   <Target Name="AfterBuild">
-    <CreateItem Include="$(ProjectDir)..\CORE\mvc\Views\**\*.*">
+    <CreateItem Include="$(ProjectDir)..\*\mvc\Views\*.*">
       <Output TaskParameter="Include" ItemName="Copy_CORE_Views" />
     </CreateItem>
     <Copy SourceFiles="@(Copy_CORE_Views)" DestinationFiles="@(Copy_CORE_Views->'$(ProjectDir)Views\%(RecursiveDir)%(Filename)%(Extension)')" />
