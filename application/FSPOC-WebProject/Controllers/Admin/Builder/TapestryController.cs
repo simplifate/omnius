@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Admin.Builder
 {
     public class TapestryController : Controller
     {
