@@ -442,6 +442,7 @@ body.tapestryModule {
     background-color: #455d73;
     border: none; }
   body.tapestryModule .operatorSymbol {
+    position: absolute !important;
     width: 70px;
     height: 60px;
     margin-top: -22px;

@@ -46,13 +46,52 @@ function AddToJsPlumb(instance, item) {
     else {
         itemId = $(item).attr("id");
     }
-    if ($(item).hasClass("operatorSymbol")) {
-        $(item).draggable({
-            containment: "parent",
-            drag: function () {
-                instance.repaintEverything();
+    $(item).draggable({
+        drag: function (event, ui) {
+            element = $(this);
+            rule = element.parents(".rule");
+            rule.data("jsPlumbInstance").repaintEverything();
+            rightEdge = element.position().left + element.width() + element.data("rightOffset");
+            bottomEdge = element.position().top + element.height() + element.data("bottomOffset");
+            if (rightEdge > rule.width()) {
+                rule.width(rightEdge);
+            }
+            if (bottomEdge > rule.height()) {
+                rule.height(bottomEdge);
+            }
+        }
+    });
+    $(item).on("mousedown", function () {
+        element = $(this);
+        rule = element.parents(".rule");
+        verticalLimit = 1000000;
+        horizontalLimit = 1000000;
+
+        ruleLeft = rule.offset().left;
+        ruleRight = ruleLeft + rule.width();
+        ruleTop = rule.offset().top;
+        ruleBottom = ruleTop + rule.height();
+
+        $("#rulesPanel .rule").each(function (index, element) {
+            otherRule = $(element);
+            if (otherRule.attr("id") != rule.attr("id")) {
+                otherRuleLeft = otherRule.offset().left;
+                otherRuleRight = otherRuleLeft + otherRule.width();
+                otherRuleTop = otherRule.offset().top;
+                otherRuleBottom = otherRuleTop + otherRule.height();
+
+                if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                    && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
+                    verticalLimit = otherRuleTop;
+                if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                    && otherRuleLeft > ruleRight && otherRuleLeft < horizontalLimit)
+                    horizontalLimit = otherRuleLeft;
             }
         });
+        element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + 40,
+            horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
+    });
+    if ($(item).hasClass("operatorSymbol")) {
         if ($(item).hasClass("decisionRhombus")) {
             instance.addEndpoint(itemId, yesEndpoint, {
                 anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -65,6 +104,8 @@ function AddToJsPlumb(instance, item) {
                 anchor: "LeftMiddle",
                 allowLoopback: false
             });
+            $(item).data("rightOffset", -10);
+            $(item).data("bottomOffset", 5);
         }
         else if ($(item).hasClass("conditionEllipse")) {
             instance.addEndpoint(itemId, sourceEndpoint, {
@@ -75,55 +116,11 @@ function AddToJsPlumb(instance, item) {
                 anchor: "Continuous",
                 allowLoopback: false
             });
+            $(item).data("rightOffset", -10);
+            $(item).data("bottomOffset", -20);
         }
     }
     else {
-        $(item).draggable({
-            drag: function (event, ui) {
-                element = $(this);
-                rule = element.parents(".rule");
-                rule.data("jsPlumbInstance").repaintEverything();
-                elPositionLeft = element.position().left;
-                elPositionTop = element.position().top;
-                if (elPositionLeft - 5 > rule.width() - element.width()) {
-                    rule.width(elPositionLeft + element.width() - 5);
-                }
-                if (elPositionTop + 20 > rule.height() - element.height()) {
-                    rule.height(elPositionTop + element.height() + 20);
-                }                
-            }
-        });
-        $(item).on("mousedown", function () {
-            element = $(this);
-            rule = element.parents(".rule");
-            verticalLimit = 1000000;
-            horizontalLimit = 1000000;
-
-            ruleLeft = rule.offset().left;
-            ruleRight = ruleLeft + rule.width();
-            ruleTop = rule.offset().top;
-            ruleBottom = ruleTop + rule.height();
-
-            $("#rulesPanel .rule").each(function (index, element) {
-                otherRule = $(element);
-                if (otherRule.attr("id") != rule.attr("id")) {
-                    otherRuleLeft = otherRule.offset().left;
-                    otherRuleRight = otherRuleLeft + otherRule.width();
-                    otherRuleTop = otherRule.offset().top;
-                    otherRuleBottom = otherRuleTop + otherRule.height();
-
-                    if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                        && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
-                        verticalLimit = otherRuleTop;
-                    if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
-                        && otherRuleLeft > ruleRight && otherRuleLeft < horizontalLimit)
-                        horizontalLimit = otherRuleLeft;
-                }
-            });
-            element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + 40,
-                horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
-        });
-        itemId = $(item).attr("id");
         if ($(item).hasClass("dataSource"))
             instance.addEndpoint(itemId, dataSourceEndpoint, {
                 anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -137,6 +134,8 @@ function AddToJsPlumb(instance, item) {
             anchor: ["Continuous", { faces: ["left"] }],
             allowLoopback: false
         });
+        $(item).data("rightOffset", 0);
+        $(item).data("bottomOffset", 20);
     }
 
 }

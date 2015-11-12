@@ -31,9 +31,9 @@
                     otherRuleBottom = otherRuleTop + otherRule.height();
 
                     if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                        && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
+                        && otherRuleTop - 30 > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
                         verticalLimit = otherRuleTop - ruleTop;
-                    if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                    if (otherRuleTop - 30 < ruleBottom && otherRuleBottom > ruleTop - 30
                         && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
                         horizontalLimit = otherRuleLeft - ruleLeft;
                 });

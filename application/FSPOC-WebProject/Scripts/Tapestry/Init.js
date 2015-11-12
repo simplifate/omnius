@@ -29,7 +29,7 @@ $(function () {
             });
             newRule = $('<div class="rule"><div class="ruleHeader">Rule' + (highestRuleNumber + 1) + '</div>'
                 + '<div class="editRuleIcon fa fa-edit"></div>'
-                + '<div class="deleteRuleIcon fa fa-remove"></div><div class="ruleContent"</div></div>');
+                + '<div class="deleteRuleIcon fa fa-remove"></div><div class="ruleContent"></div></div>');
             $("#rulesPanel .scrollArea").append(newRule);
             newRule.css("left", 25);
             newRule.css("top", lowestRuleBottom + 60);
@@ -82,7 +82,7 @@ $(function () {
                 }
             });
             newRule.draggable({ handle: ".ruleHeader" });
-            newRule.attr("id") = AssingID();
+            newRule.attr("id", AssingID());
             CreateJsPlumbInstanceForRule(newRule);
             newRule.droppable({
                 containment: ".rule",
