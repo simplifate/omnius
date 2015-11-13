@@ -69,16 +69,16 @@ function AddToJsPlumb(instance, item) {
 
         ruleLeft = rule.offset().left;
         ruleRight = ruleLeft + rule.width();
-        ruleTop = rule.offset().top;
-        ruleBottom = ruleTop + rule.height();
+        ruleTop = rule.offset().top - 40;
+        ruleBottom = rule.offset().top + rule.height();
 
         $("#rulesPanel .rule").each(function (index, element) {
             otherRule = $(element);
             if (otherRule.attr("id") != rule.attr("id")) {
                 otherRuleLeft = otherRule.offset().left;
                 otherRuleRight = otherRuleLeft + otherRule.width();
-                otherRuleTop = otherRule.offset().top;
-                otherRuleBottom = otherRuleTop + otherRule.height();
+                otherRuleTop = otherRule.offset().top - 40;
+                otherRuleBottom = otherRule.offset().top + otherRule.height();
 
                 if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
                     && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
@@ -88,7 +88,7 @@ function AddToJsPlumb(instance, item) {
                     horizontalLimit = otherRuleLeft;
             }
         });
-        element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + 40,
+        element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + element.data("topOffset") + 40,
             horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
     });
     if ($(item).hasClass("operatorSymbol")) {
@@ -104,8 +104,9 @@ function AddToJsPlumb(instance, item) {
                 anchor: "LeftMiddle",
                 allowLoopback: false
             });
-            $(item).data("rightOffset", -10);
-            $(item).data("bottomOffset", 5);
+            $(item).data("topOffset", 10);
+            $(item).data("rightOffset", -25);
+            $(item).data("bottomOffset", -5);
         }
         else if ($(item).hasClass("conditionEllipse")) {
             instance.addEndpoint(itemId, sourceEndpoint, {
@@ -116,8 +117,9 @@ function AddToJsPlumb(instance, item) {
                 anchor: "Continuous",
                 allowLoopback: false
             });
-            $(item).data("rightOffset", -10);
-            $(item).data("bottomOffset", -20);
+            $(item).data("topOffset", 10);
+            $(item).data("rightOffset", -25);
+            $(item).data("bottomOffset", -30);
         }
     }
     else {
@@ -134,8 +136,9 @@ function AddToJsPlumb(instance, item) {
             anchor: ["Continuous", { faces: ["left"] }],
             allowLoopback: false
         });
-        $(item).data("rightOffset", 0);
-        $(item).data("bottomOffset", 20);
+        $(item).data("topOffset", 0);
+        $(item).data("rightOffset", -15);
+        $(item).data("bottomOffset", 10);
     }
 
 }

@@ -1,45 +1,46 @@
 ﻿$(function () {
     if ($("body.tapestryModule").length) {
         $(".rule").resizable({
-            start: function (event, ui) {
-                contentsWidth = 120;
-                contentsHeight = 40;
-                $(this).find(".item, .operatorSymbol").each(function (index, element) {
-                    rightEdge = $(element).position().left + $(element).width();
-                    if (rightEdge > contentsWidth)
-                        contentsWidth = rightEdge;
-                    bottomEdge = $(element).position().top + $(element).height();
-                    if (bottomEdge > contentsHeight)
-                        contentsHeight = bottomEdge;
-                });
-                $(this).css("min-width", contentsWidth + 0);
-                $(this).css("min-height", contentsHeight + 20);
+            $(".rule").resizable({
+                start: function (event, ui) {
+                    contentsWidth = 120;
+                    contentsHeight = 40;
+                    $(this).find(".item, .operatorSymbol").each(function (index, element) {
+                        rightEdge = $(element).position().left + $(element).width();
+                        if (rightEdge > contentsWidth)
+                            contentsWidth = rightEdge;
+                        bottomEdge = $(element).position().top + $(element).height();
+                        if (bottomEdge > contentsHeight)
+                            contentsHeight = bottomEdge;
+                    });
+                    $(this).css("min-width", contentsWidth - 10);
+                    $(this).css("min-height", contentsHeight + 20);
 
-                verticalLimit = 1000000;
-                horizontalLimit = 1000000;
+                    verticalLimit = 1000000;
+                    horizontalLimit = 1000000;
 
-                ruleLeft = $(this).position().left;
-                ruleRight = ruleLeft + $(this).width();
-                ruleTop = $(this).position().top;
-                ruleBottom = ruleTop + $(this).height();
+                    ruleLeft = $(this).position().left;
+                    ruleRight = ruleLeft + $(this).width();
+                    ruleTop = $(this).position().top - 40;
+                    ruleBottom = $(this).position().top + $(this).height();
 
-                $("#rulesPanel .rule").each(function (index, element) {
-                    otherRule = $(element);
-                    otherRuleLeft = otherRule.position().left;
-                    otherRuleRight = otherRuleLeft + otherRule.width();
-                    otherRuleTop = otherRule.position().top;
-                    otherRuleBottom = otherRuleTop + otherRule.height();
+                    $("#rulesPanel .rule").each(function (index, element) {
+                        otherRule = $(element);
+                        otherRuleLeft = otherRule.position().left;
+                        otherRuleRight = otherRuleLeft + otherRule.width();
+                        otherRuleTop = otherRule.position().top - 40;
+                        otherRuleBottom = otherRule.position().top + otherRule.height();
 
-                    if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                        && otherRuleTop - 30 > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
-                        verticalLimit = otherRuleTop - ruleTop;
-                    if (otherRuleTop - 30 < ruleBottom && otherRuleBottom > ruleTop - 30
-                        && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
-                        horizontalLimit = otherRuleLeft - ruleLeft;
-                });
-                $(this).css("max-width", horizontalLimit - 50);
-                $(this).css("max-height", verticalLimit - 50);
-            }
+                        if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                            && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
+                            verticalLimit = otherRuleTop - ruleTop;
+                        if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                            && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
+                            horizontalLimit = otherRuleLeft - ruleLeft;
+                    });
+                    $(this).css("max-width", horizontalLimit - 50);
+                    $(this).css("max-height", verticalLimit - 50);
+                }
         });
         $(".rule").draggable({
             handle: ".ruleHeader",
@@ -58,9 +59,15 @@
                     ui.draggable.draggable("option", "revert", true);
                     return false;
                 }
+                ruleContent = $(this).find(".ruleContent");
+                if (ui.offset.left < ruleContent.offset().left || ui.offset.top < ruleContent.offset().top
+                    || ui.offset.left + ui.helper.width() > ruleContent.offset().left + ruleContent.width() - 20
+                    || ui.offset.top + ui.helper.height() > ruleContent.offset().top + ruleContent.height() - 20) {
+                    ui.draggable.draggable("option", "revert", true);
+                    return false;
+                }
                 droppedElement = ui.helper.clone();
                 ui.helper.remove();
-                ruleContent = $(this).find(".ruleContent");
                 droppedElement.appendTo(ruleContent);
                 leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
                 topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
@@ -80,8 +87,10 @@
                 else {
                     droppedElement.removeClass("menuItem");
                     droppedElement.addClass("item");
-                    AddIconToItem(droppedElement);
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                    AddIconToItem(droppedElement);
+                    if (droppedElement.position().left + droppedElement.width() > ruleContent.width() - 25)
+                        droppedElement.css("left", ruleContent.width() - droppedElement.width() - 25);
                     AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
                 }
             }

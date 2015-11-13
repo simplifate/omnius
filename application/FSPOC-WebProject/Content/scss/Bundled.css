@@ -513,8 +513,7 @@ body.tapestryModule {
       top: 30px;
       left: 0px;
       right: 0px;
-      bottom: 0px;
-      margin: 10px; }
+      bottom: 0px; }
       body.tapestryModule .rule .ruleContent .item {
         text-align: center;
         vertical-align: middle;

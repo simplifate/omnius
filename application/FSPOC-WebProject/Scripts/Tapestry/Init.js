@@ -52,7 +52,7 @@ $(function () {
                         if (bottomEdge > contentsHeight)
                             contentsHeight = bottomEdge;
                     });
-                    $(this).css("min-width", contentsWidth + 0);
+                    $(this).css("min-width", contentsWidth - 10);
                     $(this).css("min-height", contentsHeight + 20);
 
                     verticalLimit = 1000000;
@@ -60,15 +60,15 @@ $(function () {
 
                     ruleLeft = $(this).position().left;
                     ruleRight = ruleLeft + $(this).width();
-                    ruleTop = $(this).position().top;
-                    ruleBottom = ruleTop + $(this).height();
+                    ruleTop = $(this).position().top - 40;
+                    ruleBottom = $(this).position().top + $(this).height();
 
                     $("#rulesPanel .rule").each(function (index, element) {
                         otherRule = $(element);
                         otherRuleLeft = otherRule.position().left;
                         otherRuleRight = otherRuleLeft + otherRule.width();
-                        otherRuleTop = otherRule.position().top;
-                        otherRuleBottom = otherRuleTop + otherRule.height();
+                        otherRuleTop = otherRule.position().top - 40;
+                        otherRuleBottom = otherRule.position().top + otherRule.height();
 
                         if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
                             && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
@@ -94,9 +94,15 @@ $(function () {
                         ui.draggable.draggable("option", "revert", true);
                         return false;
                     }
+                    ruleContent = $(this).find(".ruleContent");
+                    if (ui.offset.left < ruleContent.offset().left || ui.offset.top < ruleContent.offset().top
+                        || ui.offset.left + ui.helper.width() > ruleContent.offset().left + ruleContent.width() - 20
+                        || ui.offset.top + ui.helper.height() > ruleContent.offset().top + ruleContent.height() - 20) {
+                        ui.draggable.draggable("option", "revert", true);
+                        return false;
+                    }
                     droppedElement = ui.helper.clone();
                     ui.helper.remove();
-                    ruleContent = $(this).find(".ruleContent");
                     droppedElement.appendTo(ruleContent);
                     leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
                     topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
@@ -116,8 +122,10 @@ $(function () {
                     else {
                         droppedElement.removeClass("menuItem");
                         droppedElement.addClass("item");
-                        AddIconToItem(droppedElement);
                         droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
+                        AddIconToItem(droppedElement);
+                        if (droppedElement.position().left + droppedElement.width() > ruleContent.width() - 25)
+                            droppedElement.css("left", ruleContent.width() - droppedElement.width() - 25);
                         AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
                     }
                 }
