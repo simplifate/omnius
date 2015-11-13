@@ -49,9 +49,6 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CORE">
-      <HintPath>..\CORE\bin\Debug\CORE.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -517,6 +514,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CORE\CORE.csproj">
+      <Project>{9e8bf028-1cf0-4d2a-85e2-90d8c2de1a05}</Project>
+      <Name>CORE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entitron\Entitron.csproj">
+      <Project>{927c1dcc-1fda-4fd0-8247-c051aa22469c}</Project>
+      <Name>Entitron</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FSS.FSPOC.Actions.ReservationSystem\FSS.FSPOC.Actions.ReservationSystem.csproj">
       <Project>{897fb481-2509-45ff-a2af-5e5b41ca3ba1}</Project>
       <Name>FSS.FSPOC.Actions.ReservationSystem</Name>
@@ -539,12 +544,6 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
-  <Target Name="AfterBuild">
-    <CreateItem Include="$(ProjectDir)..\*\mvc\Views\*.*">
-      <Output TaskParameter="Include" ItemName="Copy_CORE_Views" />
-    </CreateItem>
-    <Copy SourceFiles="@(Copy_CORE_Views)" DestinationFiles="@(Copy_CORE_Views->'$(ProjectDir)Views\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
