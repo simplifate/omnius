@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Common
 {
-    public class TapestryController : Controller
+    public class TapestryyController : Controller
     {
         public string Index(string url)
         {
