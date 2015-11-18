@@ -4,7 +4,7 @@
     Page.ModuleClass = "tapestryModule";
 }
 
-<div class="blockPanel">
+<div id="blockPanel" class="blockPanel">
     <div class="header">
         <div class="headerItem" id="headerBlockName">Log In Screen</div>
         <div class="headerItem" id="headerTableName">User</div>
@@ -23,26 +23,38 @@
             <button type="button" id="btnZoomOut">Zoom out</button>
         </div>
         <div class="scrollArea">
-            <div id="rule1" class="rule" style="left: 24px; top: 35px; width: 400px; height: 70px;">
-                <div class="ruleHeader"></div>
-                <div id="item1" class="item view dataSource" style="left: 34px; top: 21px;">Username</div>
-                <div id="item2" class="item attribute dataSource" style="left: 237px; top: 21px;">Username</div>
+            <div id="rule1" class="rule" style="left: 24px; top: 35px; width: 380px; height: 80px;">
+                <div class="ruleHeader">Rule1</div>
+                <div class="editRuleIcon fa fa-edit"></div>
+                <div class="deleteRuleIcon fa fa-remove"></div>
+                <div class="ruleContent">
+                    <div id="item1" class="item view dataSource" style="left: 34px; top: 21px;">Username</div>
+                    <div id="item2" class="item attribute dataSource" style="left: 237px; top: 21px;">Username</div>
+                </div>
             </div>
-            <div id="rule2" class="rule" style="left: 468px; top: 35px; width: 400px; height: 70px;">
-                <div class="ruleHeader"></div>
-                <div id="item3" class="item view dataSource" style="left: 34px; top: 21px;">Password</div>
-                <div id="item4" class="item attribute dataSource" style="left: 237px; top: 21px;">Password</div>
+            <div id="rule2" class="rule" style="left: 488px; top: 35px; width: 380px; height: 80px;">
+                <div class="ruleHeader">Rule2</div>
+                <div class="editRuleIcon fa fa-edit"></div>
+                <div class="deleteRuleIcon fa fa-remove"></div>
+                <div class="ruleContent">
+                    <div id="item3" class="item view dataSource" style="left: 34px; top: 21px;">Password</div>
+                    <div id="item4" class="item attribute dataSource" style="left: 237px; top: 21px;">Password</div>
+                </div>
             </div>
-            <div id="rule3" class="rule" style="left: 24px; top: 155px; width: 845px; height: 186px;">
-                <div class="ruleHeader"></div>
-                <div id="item5" class="item view" style="left: 36px; top: 28px;">Log In</div>
-                <div id="item6" class="item action" style="left: 207px; top: 28px;">Check Credentials</div>
-                <div id="item7" class="item action" style="left: 648px; top: 28px;">Log In</div>
-                <div id="item8" class="item action" style="left: 590px; top: 132px;">Validation message</div>
-                <div id="decision1" class="decisionRhombus operatorSymbol" style="left: 480px; top: 17px;">
-                    <svg width="70" height="60">
-                        <polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" />
-                    </svg>
+            <div id="rule3" class="rule" style="left: 24px; top: 185px; width: 845px; height: 195px;">
+                <div class="ruleHeader">Rule3</div>
+                <div class="editRuleIcon fa fa-edit"></div>
+                <div class="deleteRuleIcon fa fa-remove"></div>
+                <div class="ruleContent">
+                    <div id="item5" class="item view" style="left: 36px; top: 28px;">Log In</div>
+                    <div id="item6" class="item action" style="left: 207px; top: 28px;">Check Credentials</div>
+                    <div id="item7" class="item action" style="left: 648px; top: 28px;">Log In</div>
+                    <div id="item8" class="item action" style="left: 590px; top: 132px;">Validation message</div>
+                    <div id="decision1" class="decisionRhombus operatorSymbol" style="left: 480px; top: 37px;">
+                        <svg width="70" height="60">
+                            <polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" />
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -146,6 +158,14 @@
         <fieldset>
             <table class="formTable logicTable"></table>
             <button type="button" id="btnAddCondition">Add condition</button>
+        </fieldset>
+    </form>
+</div>
+<div id="rename-rule-dialog" title="Rename rule">
+    <form>
+        <fieldset>
+            <label for="rule-name">Choose a new name</label>
+            <input type="text" name="rule-name" id="rule-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
 </div>

@@ -96,7 +96,7 @@ body.appManagerModule {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
-  position: fixed;
+  position: absolute;
   left: 0px;
   right: 0px;
   height: 75px;
@@ -164,6 +164,14 @@ body.appManagerModule {
     color: white;
     font-size: 36px; }
 
+#leftBarArea {
+  position: fixed;
+  top: 75px;
+  width: 225px;
+  bottom: 0px;
+  background-color: #455d73;
+  z-index: -10; }
+
 #leftBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -171,9 +179,9 @@ body.appManagerModule {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
-  position: fixed;
+  position: absolute;
+  left: 0px;
   top: 75px;
-  bottom: 0px;
   width: 225px;
   background-color: #455d73; }
   #leftBar .leftMenu {
@@ -302,12 +310,6 @@ body.tapestryModule {
     font-size: 0.8em;
     white-space: nowrap;
     z-index: 10; }
-  body.tapestryModule .rule .item {
-    text-align: center;
-    vertical-align: middle;
-    display: inline-block;
-    font-size: 0.8em;
-    white-space: nowrap; }
   body.tapestryModule .header {
     width: 740px;
     background-color: #49c3f1;
@@ -343,7 +345,7 @@ body.tapestryModule {
     top: 300px;
     padding: 3px 10px;
     font-size: 0.8em;
-    z-index: 1000; }
+    z-index: 2000; }
   body.tapestryModule #btnAddActions {
     position: absolute;
     right: 5px;
@@ -375,11 +377,6 @@ body.tapestryModule {
     padding: 3px; }
   body.tapestryModule .ui-dialog .ui-dialog-buttonset button {
     margin: 3px; }
-  body.tapestryModule .ui-dialog-titlebar-close {
-    background: url("/Content/Style/base/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
-    border: medium none; }
-  body.tapestryModule .ui-dialog-titlebar-close:hover {
-    background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
   body.tapestryModule .sourceEndpoint._jsPlumb_dragging, body.tapestryModule .sourceEndpoint.jsplumb-drag {
     visibility: hidden !important; }
   body.tapestryModule .sourceEndpoint.jsplumb-drag-active {
@@ -445,6 +442,7 @@ body.tapestryModule {
     background-color: #455d73;
     border: none; }
   body.tapestryModule .operatorSymbol {
+    position: absolute !important;
     width: 70px;
     height: 60px;
     margin-top: -22px;
@@ -474,12 +472,56 @@ body.tapestryModule {
       width: 230px; }
   body.tapestryModule .rule {
     position: absolute;
-    margin: 15px;
+    padding: 20px;
     width: 500px;
-    padding: 5px;
-    min-height: 80px;
+    min-width: 120px;
+    min-height: 60px;
     background-color: #c0c0c0;
-    border: 1px solid #467ea8; }
+    border: 1px solid #467ea8;
+    box-sizing: initial; }
+    body.tapestryModule .rule .ruleHeader {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      height: 30px;
+      padding-left: 38px;
+      padding-top: 2px;
+      background-color: #455d73;
+      color: white;
+      font-size: 20px; }
+    body.tapestryModule .rule .editRuleIcon {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      font-size: 18px;
+      color: #49c3f1;
+      z-index: 100; }
+    body.tapestryModule .rule .editRuleIcon:hover {
+      color: white; }
+    body.tapestryModule .rule .deleteRuleIcon {
+      position: absolute;
+      right: 6px;
+      top: 5px;
+      font-size: 19px;
+      color: #f06771;
+      z-index: 100; }
+    body.tapestryModule .rule .deleteRuleIcon:hover {
+      color: #f88b98; }
+    body.tapestryModule .rule .ruleContent {
+      position: absolute;
+      top: 30px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px; }
+      body.tapestryModule .rule .ruleContent .item {
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        font-size: 0.8em;
+        white-space: nowrap; }
+  body.tapestryModule .rule.ui-draggable-dragging {
+    z-index: 1000; }
   body.tapestryModule #rulesPanel {
     background-color: #467ea8 !important;
     color: black !important;
@@ -491,12 +533,6 @@ body.tapestryModule {
     transform-origin: 0px 0px;
     min-width: 4500px;
     min-height: 2500px; }
-  body.tapestryModule .ruleHeader {
-    position: relative;
-    top: -20px;
-    height: 15px;
-    width: 180px;
-    background-color: #49c3f1; }
   body.tapestryModule .item, body.tapestryModule .menuItem {
     background-color: #467ea8;
     color: white; }
@@ -517,7 +553,7 @@ body.tapestryModule {
     right: 345px;
     bottom: 215px;
     text-align: center;
-    z-index: 1000; }
+    z-index: 2000; }
     body.tapestryModule #zoomPanel button {
       font-size: 12px;
       background-color: #49c3f1;
@@ -594,11 +630,6 @@ body.overviewModule {
     padding: 3px; }
   body.overviewModule .ui-dialog .ui-dialog-buttonset button {
     margin: 3px; }
-  body.overviewModule .ui-dialog-titlebar-close {
-    background: url("/Content/Style/base/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
-    border: medium none; }
-  body.overviewModule .ui-dialog-titlebar-close:hover {
-    background: url("/Content/Style/base/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
   body.overviewModule .ui-dialog-content .formTable label {
     margin-bottom: 0px; }
   body.overviewModule .ui-dialog-content .formTable tr {
@@ -817,11 +848,6 @@ body.dbDesignerModule {
     padding: 3px; }
   body.dbDesignerModule .ui-dialog .ui-dialog-buttonset button {
     margin: 3px; }
-  body.dbDesignerModule .ui-dialog-titlebar-close {
-    background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
-    border: medium none; }
-  body.dbDesignerModule .ui-dialog-titlebar-close:hover {
-    background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
   body.dbDesignerModule .highlightedCommitRow {
     background-color: lightblue !important; }
   body.dbDesignerModule #moduleSwitcher {
@@ -991,7 +1017,7 @@ body.portalModule {
     left: 225px;
     top: 432px;
     right: 0px;
-    bottom: 0px; }
+    height: auto; }
   body.portalModule #moduleAdminPanel {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1171,4 +1197,11 @@ body.portalModule {
     display: inline-block !important;
     margin-top: 28px;
     margin-right: 17px; } }
+
+.ui-dialog .ui-dialog-titlebar-close {
+  background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
+  border: medium none; }
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
 

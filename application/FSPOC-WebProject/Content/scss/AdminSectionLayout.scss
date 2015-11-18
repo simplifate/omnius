@@ -2,7 +2,7 @@
 
 #topBar {
     @include no-select();
-    position: fixed;
+    position: absolute;
     left: 0px;
     right: 0px;
     height: 75px;
@@ -82,12 +82,19 @@
         font-size: 36px;
     }
 }
-
-#leftBar {
-    @include no-select();
+#leftBarArea {
     position: fixed;
     top: 75px;
+    width: 225px;
     bottom: 0px;
+    background-color: #455d73;
+    z-index: -10;
+}
+#leftBar {
+    @include no-select();
+    position: absolute;
+    left: 0px;
+    top: 75px;
     width: 225px;
     background-color: #455d73;
 

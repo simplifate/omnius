@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -121,6 +121,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="Tapestry, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tapestry\bin\Debug\Tapestry.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mvc5">
       <HintPath>..\packages\Unity.Mvc5.1.1\lib\net45\Unity.Mvc5.dll</HintPath>
       <Private>True</Private>
@@ -203,7 +207,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActionHandlerController.cs" />
+    <Compile Include="Controllers\Admin\Builder\COREController.cs" />
     <Compile Include="Controllers\BlockController.cs" />
+    <Compile Include="Controllers\Common\TapestryController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\DbDesignerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -215,6 +221,7 @@
     <Compile Include="Controllers\SourceBlockController.cs" />
     <Compile Include="Controllers\TapestryController.cs" />
     <Compile Include="Controllers\NexusController.cs" />
+    <Compile Include="Controllers\Admin\Builder\TapestryController.cs" />
     <Compile Include="Controllers\WFDesignerController.cs" />
     <Compile Include="Controllers\WorkflowController.cs" />
     <Compile Include="Global.asax.cs">
@@ -398,6 +405,7 @@
     <Content Include="Content\scss\Mixins.scss" />
     <Content Include="Content\fonts\Fat-TecA07.otf" />
     <Content Include="Content\fonts\MYRIADPRO-REGULAR.OTF" />
+    <Content Include="Content\scss\Common.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
@@ -435,8 +443,10 @@
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
+    <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
     <Content Include="Scripts\Tapestry\Init.js" />
+    <Content Include="Scripts\Tapestry\InitDemo.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
@@ -496,6 +506,11 @@
     <Content Include="Views\Portal\ActiveProfile.cshtml" />
     <Content Include="Views\Nexus\Index.cshtml" />
     <Content Include="Views\Nexus\LDAP\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialViewAjaxLayout.cshtml" />
+    <Content Include="Views\CORE\Create.cshtml" />
+    <Content Include="Views\CORE\Details.cshtml" />
+    <Content Include="Views\CORE\Index.cshtml" />
+    <Content Include="Views\CORE\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -505,6 +520,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CORE\CORE.csproj">
+      <Project>{9e8bf028-1cf0-4d2a-85e2-90d8c2de1a05}</Project>
+      <Name>CORE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entitron\Entitron.csproj">
+      <Project>{927c1dcc-1fda-4fd0-8247-c051aa22469c}</Project>
+      <Name>Entitron</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FSS.FSPOC.Actions.ReservationSystem\FSS.FSPOC.Actions.ReservationSystem.csproj">
       <Project>{897fb481-2509-45ff-a2af-5e5b41ca3ba1}</Project>
       <Name>FSS.FSPOC.Actions.ReservationSystem</Name>
@@ -532,7 +555,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54446</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

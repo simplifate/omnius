@@ -183,7 +183,7 @@ body.portalModule {
         left: 225px;
         top: 432px;
         right: 0px;
-        bottom: 0px;
+        height: auto;
     }
     #moduleAdminPanel {
         @include no-select();

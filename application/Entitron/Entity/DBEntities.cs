@@ -8,7 +8,7 @@ namespace Entitron.Entity
     public partial class DBEntities : DbContext
     {
         public DBEntities()
-            : base("name=DBEntities")
+            : base("data source=vo8qh1qcem.database.windows.net;initial catalog=FSPOC-2.0;persist security info=True;user id=binu;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 

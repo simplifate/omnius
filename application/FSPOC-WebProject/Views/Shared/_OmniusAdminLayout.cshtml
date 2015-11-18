@@ -28,7 +28,8 @@
             <div class="fa fa-caret-down"></div>
         </div>
     </div>
-    <div id = "leftBar">
+    <div id="leftBarArea"></div>
+    <div id="leftBar">
         <ul class="leftMenu">
             <li class="active"><a href="/Portal">Centrální administrace</a></li>
             <li>Identity management</li>
@@ -47,9 +48,7 @@
             <li><a href="/Home">Správce aplikací</a></li>
         </ul>
     </div>
-    <div>
-        @RenderBody()
-    </div>
+    @RenderBody()
 
     @Scripts.Render("~/bundles/knockout")
     @*@Scripts.Render("~/bundles/Overview")*@

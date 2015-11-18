@@ -17,5 +17,15 @@ namespace Entitron.Entity
         public string Description { get; set; }
 
         public bool IsEnabled { get; set; }
+
+
+        public Module Update(Module model)
+        {
+            Name = model.Name;
+            Description = model.Description;
+            IsEnabled = model.IsEnabled;
+
+            return this;
+        }
     }
 }

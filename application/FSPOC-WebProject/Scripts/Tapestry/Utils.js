@@ -1,4 +1,4 @@
-﻿var LastAssignedOperatorNumber = 0;
+﻿var LastAssignedNumber = 0;
 
 function CreateJsPlumbInstanceForRule(ruleElement) {
     newInstance = jsPlumb.getInstance({
@@ -14,7 +14,9 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
             }]
         ]
     });
-    newInstance.setContainer($(ruleElement).attr("id"));
+    ruleContent = $(ruleElement).find(".ruleContent");
+    ruleContent.attr("id", AssingID());
+    newInstance.setContainer(ruleContent.attr("id"));
     newInstance.bind("click", function (con) {
         this.detach(con);
     });
@@ -37,20 +39,59 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
 }
 
 function AddToJsPlumb(instance, item) {
-    if ($(item).hasClass("operatorSymbol")) {
-        $(item).draggable({
-            containment: "parent",
-            drag: function () {
-                instance.repaintEverything();
+    if (!$(item).attr("id")) {
+        itemId = AssingID();
+        $(item).attr("id", itemId);
+    }
+    else {
+        itemId = $(item).attr("id");
+    }
+    $(item).draggable({
+        drag: function (event, ui) {
+            element = $(this);
+            rule = element.parents(".rule");
+            rule.data("jsPlumbInstance").repaintEverything();
+            rightEdge = element.position().left + element.width() + element.data("rightOffset");
+            bottomEdge = element.position().top + element.height() + element.data("bottomOffset");
+            if (rightEdge > rule.width()) {
+                rule.width(rightEdge);
+            }
+            if (bottomEdge > rule.height()) {
+                rule.height(bottomEdge);
+            }
+        }
+    });
+    $(item).on("mousedown", function () {
+        element = $(this);
+        rule = element.parents(".rule");
+        verticalLimit = 1000000;
+        horizontalLimit = 1000000;
+
+        ruleLeft = rule.offset().left;
+        ruleRight = ruleLeft + rule.width();
+        ruleTop = rule.offset().top - 40;
+        ruleBottom = rule.offset().top + rule.height();
+
+        $("#rulesPanel .rule").each(function (index, element) {
+            otherRule = $(element);
+            if (otherRule.attr("id") != rule.attr("id")) {
+                otherRuleLeft = otherRule.offset().left;
+                otherRuleRight = otherRuleLeft + otherRule.width();
+                otherRuleTop = otherRule.offset().top - 40;
+                otherRuleBottom = otherRule.offset().top + otherRule.height();
+
+                if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                    && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
+                    verticalLimit = otherRuleTop;
+                if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                    && otherRuleLeft > ruleRight && otherRuleLeft < horizontalLimit)
+                    horizontalLimit = otherRuleLeft;
             }
         });
-        if (!$(item).attr("id")) {
-            itemId = AssingOperatorID();
-            $(item).attr("id", itemId);
-        }
-        else {
-            itemId = $(item).attr("id");
-        }
+        element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + element.data("topOffset") + 40,
+            horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
+    });
+    if ($(item).hasClass("operatorSymbol")) {
         if ($(item).hasClass("decisionRhombus")) {
             instance.addEndpoint(itemId, yesEndpoint, {
                 anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -63,6 +104,9 @@ function AddToJsPlumb(instance, item) {
                 anchor: "LeftMiddle",
                 allowLoopback: false
             });
+            $(item).data("topOffset", 10);
+            $(item).data("rightOffset", -25);
+            $(item).data("bottomOffset", -5);
         }
         else if ($(item).hasClass("conditionEllipse")) {
             instance.addEndpoint(itemId, sourceEndpoint, {
@@ -73,11 +117,12 @@ function AddToJsPlumb(instance, item) {
                 anchor: "Continuous",
                 allowLoopback: false
             });
+            $(item).data("topOffset", 10);
+            $(item).data("rightOffset", -25);
+            $(item).data("bottomOffset", -30);
         }
     }
     else {
-        instance.draggable(item, { containment: "parent" });
-        itemId = $(item).attr("id");
         if ($(item).hasClass("dataSource"))
             instance.addEndpoint(itemId, dataSourceEndpoint, {
                 anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -91,12 +136,15 @@ function AddToJsPlumb(instance, item) {
             anchor: ["Continuous", { faces: ["left"] }],
             allowLoopback: false
         });
+        $(item).data("topOffset", 0);
+        $(item).data("rightOffset", -15);
+        $(item).data("bottomOffset", 10);
     }
 
 }
-function AssingOperatorID() {
-    LastAssignedOperatorNumber++;
-    return "operator" + LastAssignedOperatorNumber;
+function AssingID() {
+    LastAssignedNumber++;
+    return "tapestryElement" + LastAssignedNumber;
 }
 function AddIconToItem(element) {
     item = $(element);
