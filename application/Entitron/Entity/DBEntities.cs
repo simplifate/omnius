@@ -1,7 +1,9 @@
 namespace Entitron.Entity
 {
-    using System;
     using System.Data.Entity;
+    using FSS.FSPOC.Entitron.Entity.Nexus;
+    using FSS.FSPOC.Entitron.Entity.Entitron;
+    using FSS.FSPOC.Entitron.Entity.Tapestry;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
@@ -26,12 +28,17 @@ namespace Entitron.Entity
         public virtual DbSet<AttributeRole> AttributeRoles { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
-        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+        public virtual DbSet<Workflow> WorkFlows { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ActionRight> ActionRights { get; set; }
         public virtual DbSet<AppRight> ApplicationRights { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
+        public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<WorkflowCommit> WorkflowCommits { get; set; }
+        public virtual DbSet<DbTable> DbTables { get; set; }
+        public virtual DbSet<ActionActionRule> ActionActionRules { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -65,25 +72,10 @@ namespace Entitron.Entity
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
-            modelBuilder.Entity<ActionCategory>()
-                .HasMany(e => e.Children)
-                .WithOptional(e => e.Parent)
-                .HasForeignKey(e => e.ParentId);
-
-            modelBuilder.Entity<ActionCategory>()
-                .HasMany(e => e.Actions)
-                .WithRequired(e => e.Category)
-                .HasForeignKey(e => e.CategoryId);
-
             modelBuilder.Entity<ActionRule>()
-                .HasMany(e => e.ActionRule_Actions)
+                .HasMany(e => e.ActionActionRules)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
-
-            modelBuilder.Entity<Action>()
-                .HasMany(e => e.ActionRule_Actions)
-                .WithRequired(e => e.Action)
-                .HasForeignKey(e => e.ActionId);
 
             modelBuilder.Entity<Actor>()
                 .HasMany(e => e.ActionRoles)
@@ -117,12 +109,12 @@ namespace Entitron.Entity
                 .HasForeignKey(e => e.TypeId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<WorkFlow>()
+            modelBuilder.Entity<Workflow>()
                 .HasMany(e => e.Blocks)
                 .WithRequired(e => e.WorkFlow)
                 .HasForeignKey(e => e.WorkFlowId);
 
-            modelBuilder.Entity<WorkFlow>()
+            modelBuilder.Entity<Workflow>()
                 .HasMany(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
@@ -162,6 +154,51 @@ namespace Entitron.Entity
                 .HasMany(e => e.Tables)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
+
+            // Workflow Designer
+            modelBuilder.Entity<Activity>()
+                        .HasMany(s => s.Inputs)
+                        .WithRequired(s => s.Activity);
+            modelBuilder.Entity<Activity>()
+                        .HasMany(s => s.Outputs)
+                        .WithRequired(s => s.Activity);
+            modelBuilder.Entity<WorkflowCommit>()
+                        .HasMany(s => s.Activities)
+                        .WithRequired(s => s.WorkflowCommit);
+            modelBuilder.Entity<Workflow>()
+                        .HasMany(s => s.WorkflowCommits)
+                        .WithRequired(s => s.Workflow);
+
+            // Database Designer
+            modelBuilder.Entity<DbTable>()
+                        .HasMany(s => s.Columns)
+                        .WithRequired(s => s.DbTable);
+            modelBuilder.Entity<DbTable>()
+                        .HasMany(s => s.Indices)
+                        .WithRequired(s => s.DbTable);
+            modelBuilder.Entity<DbSchemeCommit>()
+                        .HasMany(s => s.Tables)
+                        .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<DbSchemeCommit>()
+                        .HasMany(s => s.Relations)
+                        .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<DbSchemeCommit>()
+                        .HasMany(s => s.Views)
+                        .WithRequired(s => s.DbSchemeCommit);
+
+            //Actions
+            modelBuilder.Entity<ActionActionRule>()
+                .HasRequired(a => a.ActionRule)
+                .WithMany(a => a.ActionActionRules);
+
+            modelBuilder.Entity<ActionActionRule>()
+                .HasRequired(a => a.Action)
+                .WithMany(a => a.ActionActionRules);
+
+            modelBuilder.Entity<ActionCategory>()
+                .HasMany(a => a.Actions)
+                .WithRequired(a => a.ActionCategory);
+
         }
     }
 }

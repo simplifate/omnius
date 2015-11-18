@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner;
+using FSS.FSPOC.Entitron.Entity.Entitron;
 
 namespace FSS.FSPOC.BussinesObjects.Service
 {

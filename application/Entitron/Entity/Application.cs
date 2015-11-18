@@ -5,6 +5,7 @@ namespace Entitron.Entity
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using FSS.FSPOC.Entitron.Entity.Tapestry;
 
     [Table("Master_Applications")]
     public partial class Application
@@ -13,7 +14,7 @@ namespace Entitron.Entity
         public Application()
         {
             Pages = new HashSet<Page>();
-            WorkFlows = new HashSet<WorkFlow>();
+            WorkFlows = new HashSet<Workflow>();
             Tables = new HashSet<Table>();
         }
 
@@ -30,7 +31,7 @@ namespace Entitron.Entity
         public virtual ICollection<Page> Pages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkFlow> WorkFlows { get; set; }
+        public virtual ICollection<Workflow> WorkFlows { get; set; }
 
         public virtual ICollection<AppRight> Rights { get; set; }
 

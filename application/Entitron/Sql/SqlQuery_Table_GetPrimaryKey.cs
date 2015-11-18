@@ -13,10 +13,9 @@ namespace Entitron.Sql
             string parAppName = safeAddParam("AppName", application.Name);
             string parTabName = safeAddParam("TableName", table.tableName);
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SELECT column_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE OBJECTPROPERTY(OBJECT_ID(constraint_name), 'IsPrimaryKey') = 1 AND table_name = @realTableName",
-                parAppName, parTabName);
+            sqlString =
+                $"DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{parAppName}, @{parTabName}, @realTableName OUTPUT;" +
+                "SELECT column_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE OBJECTPROPERTY(OBJECT_ID(constraint_name), 'IsPrimaryKey') = 1 AND table_name = @realTableName";
 
             return base.BaseExecutionWithRead(connection);
         }

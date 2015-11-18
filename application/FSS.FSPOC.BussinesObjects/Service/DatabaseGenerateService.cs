@@ -1,7 +1,8 @@
 ﻿using System.Configuration;
 //using System.Linq;
-using FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner;
 using System.Collections.Generic;
+using FSS.FSPOC.Entitron.Entity.Entitron;
+using Entitron;
 
 namespace FSS.FSPOC.BussinesObjects.Service
 {
@@ -12,20 +13,20 @@ namespace FSS.FSPOC.BussinesObjects.Service
         /// <param name="dbSchemeCommit"></param>
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit)
         {
-            List<Entitron.DBTable> entitronTables = new List<Entitron.DBTable>();
-            Entitron.DBApp.connectionString = ConfigurationManager.ConnectionStrings["EntitronTestingLocal"].ConnectionString;
-            Entitron.DBApp entitronApp = new Entitron.DBApp();
+            List<DBTable> entitronTables = new List<DBTable>();
+            DBApp.connectionString = ConfigurationManager.ConnectionStrings["EntitronTestingLocal"].ConnectionString;
+            DBApp entitronApp = new DBApp();
             entitronApp.Name = "EntitronTest1";
             entitronApp.DisplayName = "EntitronTest1";
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                Entitron.DBTable entitronTable = new Entitron.DBTable();
+                DBTable entitronTable = new DBTable();
                 entitronTable.tableName = efTable.Name;
                 entitronTable.Application = entitronApp;
 
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
-                    Entitron.DBColumn entitronColumn = new Entitron.DBColumn();
+                    DBColumn entitronColumn = new DBColumn();
                     entitronColumn.Name = efColumn.Name;
                     entitronColumn.type = efColumn.Type;
                     entitronColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;

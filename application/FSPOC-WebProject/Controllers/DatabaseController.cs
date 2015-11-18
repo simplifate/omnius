@@ -8,8 +8,9 @@ using System.Web.Http;
 using FSPOC_WebProject.Models.DbDesigner;
 using FSPOC_WebProject.Models.DbDesigner.FSPOC.Models;
 using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner;
-using FSS.FSPOC.BussinesObjects.Entities.Workflow;
+using FSS.FSPOC.Entitron.Entity.Entitron;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
+using Entitron.Entity;
 using FSS.FSPOC.BussinesObjects.Service;
 using Logger;
 using static System.String;
@@ -120,11 +121,11 @@ namespace FSPOC_WebProject.Controllers
             try
             {
                 DbSchemeCommit commit = new DbSchemeCommit();
-                using (var context = new OmniusDbContext())
+                using (var context = new DBEntities())
                 {
                     commit.Timestamp = DateTime.Now;
                     commit.CommitMessage = postData.CommitMessage;
-                    context.DbSchemeCommits.Add(commit);
+                    context.DBSchemeCommits.Add(commit);
                     Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
 

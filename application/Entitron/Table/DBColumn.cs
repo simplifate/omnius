@@ -55,16 +55,13 @@ namespace Entitron
         {
             return
                 string.Format(
-                    "{0} {1}{2}",
+                    $"{0} {1}{2}",
                     Name,
                     type,
                     (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : ""
                 );
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

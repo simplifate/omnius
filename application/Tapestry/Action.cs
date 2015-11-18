@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entitron.Entity;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
 
 namespace Tapestry
 {

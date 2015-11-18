@@ -21,7 +21,7 @@ namespace Entitron.Sql
             {
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             }
-            _conditions._sql += string.Format("{0}({1}=@{2})", _conditions._concat, _conditions._columnName, value);
+            _conditions._sql += $"{_conditions._concat} ({_conditions._columnName} =@ {value})";
 
             return new Condition_concat(_conditions);
         }

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
-using FSS.FSPOC.BussinesObjects.Entities.Actions;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
+using Entitron.Entity;
 
 namespace FSS.FSPOC.BussinesObjects.DAL
 {
-    public class WorkflowDbInitializer : DropCreateDatabaseIfModelChanges<OmniusDbContext>
+    public class WorkflowDbInitializer : DropCreateDatabaseIfModelChanges<DBEntities>
     {
-        protected override void Seed(OmniusDbContext context)
+        protected override void Seed(DBEntities context)
         {
 
             var category = new ActionCategory

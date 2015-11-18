@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.FSPOC.BussinesObjects.Entities.Workflow
+namespace FSS.FSPOC.Entitron.Entity.Tapestry
 {
     public class AjaxTransferWorkflowSate
     {

@@ -6,7 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.BussinesObjects.Entities.Workflow;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
+using Entitron.Entity;
 using FSS.FSPOC.BussinesObjects.Service;
 using Logger;
 using static System.String;
@@ -214,7 +215,7 @@ namespace FSPOC_WebProject.Controllers
             try
             {
                 if (postData.Activities == null) return;
-                using (var context = new OmniusDbContext())
+                using (var context = new DBEntities())
                 {
                     WorkflowCommit newCommit = new WorkflowCommit
                     {
@@ -222,7 +223,7 @@ namespace FSPOC_WebProject.Controllers
                         Timestamp = DateTime.Now,
                         Activities = new List<Activity>()
                     };
-                    Workflow workflow = (from w in context.Workflows where w.Id.Equals(postData.WorkflowId) select w).First();
+                    Workflow workflow = (from w in context.WorkFlows where w.Id.Equals(postData.WorkflowId) select w).First();
                     workflow.WorkflowCommits.Add(newCommit);
 
                     // All connection keys will be re-mapped to the primary IDs assigned to activities by the database provider
@@ -283,9 +284,9 @@ namespace FSPOC_WebProject.Controllers
         private AjaxTransferWorkflowSate getCommit(int workflowId, int commitId = -1)
         {
             var transferState = new AjaxTransferWorkflowSate();
-            using (var context = new OmniusDbContext())
+            using (var context = new DBEntities())
             {
-                Workflow workflow = (from w in context.Workflows where w.Id.Equals(workflowId) select w).First();
+                Workflow workflow = (from w in context.WorkFlows where w.Id.Equals(workflowId) select w).First();
                 WorkflowCommit requestedCommit = new WorkflowCommit();
                 try
                 {

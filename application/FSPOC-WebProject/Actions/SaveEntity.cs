@@ -1,7 +1,7 @@
 ﻿using FSPOC_WebProject.Controllers;
 using FSS.FSPOC.BussinesObjects.Common;
 using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.BussinesObjects.Entities.Workflow;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
 using Newtonsoft.Json;
 
 namespace FSPOC_WebProject.Actions

@@ -6,9 +6,9 @@ using FSPOC_WebProject.Service;
 using FSS.FSPOC.Actions.ReservationSystem.Service;
 using FSS.FSPOC.BussinesObjects.Actions;
 using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.BussinesObjects.Entities.Actions;
-using FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner;
-using FSS.FSPOC.BussinesObjects.Entities.Workflow;
+using FSS.FSPOC.Entitron.Entity.Tapestry;
+using FSS.FSPOC.Entitron.Entity.Entitron;
+using Entitron.Entity;
 using FSS.FSPOC.BussinesObjects.Service;
 using Unity.Mvc5;
 
@@ -24,7 +24,7 @@ namespace FSPOC_WebProject
             // register all your components with the container here
             // it is NOT necessary to register your controllers
 
-            container.RegisterType<IDbContext, OmniusDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<IDbContext, DBEntities>(new HierarchicalLifetimeManager());
             container.RegisterType<IUnitWork, UnitWork>();
             container.RegisterType<IWorkflowService, WorkflowService>();
             container.RegisterType<IRepository<Workflow>, DefaultEFRepository<Workflow>>();

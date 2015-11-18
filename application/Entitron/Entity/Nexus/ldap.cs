@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.FSPOC.BussinesObjects.Entities.Nexus
+namespace FSS.FSPOC.Entitron.Entity.Nexus
 {
-    class Ldap
+    public class Ldap
     {
     }
 }

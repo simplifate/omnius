@@ -1,4 +1,4 @@
-namespace FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner
+namespace FSS.FSPOC.Entitron.Entity.Entitron
 {
     public enum RelationTypes
     {

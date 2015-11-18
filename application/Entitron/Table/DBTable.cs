@@ -26,6 +26,7 @@ namespace Entitron
         {
             get
             {
+
                 if (_columns == null)
                     _columns = new DBColumns(this);
 
@@ -329,10 +330,7 @@ namespace Entitron
             });
         }
 
-        public override string ToString()
-        {
-            return tableName;
-        }
+        public override string ToString() => tableName;
 
         public void DisableConstraint(string constraintName)
         {

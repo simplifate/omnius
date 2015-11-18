@@ -1,4 +1,4 @@
-﻿namespace FSS.FSPOC.BussinesObjects.Entities.Actions
+﻿namespace FSS.FSPOC.Entitron.Entity.Tapestry
 {
     public class ActionActionRule
     {

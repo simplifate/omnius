@@ -52,25 +52,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\AppRight.cs" />
+    <Compile Include="Entity\Entitron\DbColumn.cs" />
+    <Compile Include="Entity\Entitron\DbIndex.cs" />
+    <Compile Include="Entity\Entitron\DbRelation.cs" />
+    <Compile Include="Entity\Entitron\DbSchemeCommit.cs" />
+    <Compile Include="Entity\Entitron\DbTable.cs" />
+    <Compile Include="Entity\Entitron\DbView.cs" />
+    <Compile Include="Entity\Entitron\RelationTypes.cs" />
     <Compile Include="Entity\Group.cs" />
     <Compile Include="Entity\Module.cs" />
     <Compile Include="Entity\DBEntities.cs" />
     <Compile Include="Entity\Application.cs" />
     <Compile Include="Entity\Css.cs" />
+    <Compile Include="Entity\Nexus\ldap.cs" />
     <Compile Include="Entity\Page.cs" />
     <Compile Include="Entity\ActionRight.cs" />
     <Compile Include="Entity\Table.cs" />
+    <Compile Include="Entity\Tapestry\Action.cs" />
+    <Compile Include="Entity\Tapestry\ActionActionRule.cs" />
+    <Compile Include="Entity\Tapestry\ActionCategory.cs" />
+    <Compile Include="Entity\Tapestry\ActionRule.cs" />
+    <Compile Include="Entity\Tapestry\Activity.cs" />
+    <Compile Include="Entity\Tapestry\ActivityTypes.cs" />
+    <Compile Include="Entity\Tapestry\AjaxTransferActivity.cs" />
+    <Compile Include="Entity\Tapestry\AjaxTransferCommitHeader.cs" />
+    <Compile Include="Entity\Tapestry\AjaxTransferConnection.cs" />
+    <Compile Include="Entity\Tapestry\AjaxTransferWorkflowHeader.cs" />
+    <Compile Include="Entity\Tapestry\AjaxTransferWorkflowSate.cs" />
+    <Compile Include="Entity\Tapestry\Input.cs" />
+    <Compile Include="Entity\Tapestry\Output.cs" />
+    <Compile Include="Entity\Tapestry\Workflow.cs" />
+    <Compile Include="Entity\Tapestry\WorkflowCommit.cs" />
     <Compile Include="Entity\Template.cs" />
     <Compile Include="Entity\TemplateCategory.cs" />
-    <Compile Include="Entity\ActionCategory.cs" />
-    <Compile Include="Entity\ActionRule.cs" />
     <Compile Include="Entity\ActionRule_Action.cs" />
-    <Compile Include="Entity\Action.cs" />
     <Compile Include="Entity\Actor.cs" />
     <Compile Include="Entity\AttributeRole.cs" />
     <Compile Include="Entity\Block.cs" />
     <Compile Include="Entity\User.cs" />
-    <Compile Include="Entity\WorkFlow.cs" />
     <Compile Include="Entity\WorkFlowType.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Sql\Conditions.cs" />
@@ -141,6 +160,7 @@
       <Name>ND.Logger</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

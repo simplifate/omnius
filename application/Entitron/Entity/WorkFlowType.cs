@@ -1,5 +1,6 @@
 namespace Entitron.Entity
 {
+    using FSS.FSPOC.Entitron.Entity.Tapestry;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace Entitron.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WorkFlowType()
         {
-            WorkFlows = new HashSet<WorkFlow>();
+            WorkFlows = new HashSet<Workflow>();
         }
 
         public int Id { get; set; }
@@ -22,6 +23,6 @@ namespace Entitron.Entity
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkFlow> WorkFlows { get; set; }
+        public virtual ICollection<Workflow> WorkFlows { get; set; }
     }
 }

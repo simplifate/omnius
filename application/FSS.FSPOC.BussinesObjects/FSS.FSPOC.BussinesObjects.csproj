@@ -63,36 +63,12 @@
     <Compile Include="Common\IAction.cs" />
     <Compile Include="Common\ResultAction.cs" />
     <Compile Include="Common\TypeResult.cs" />
-    <Compile Include="Entities\Actions\Action.cs" />
-    <Compile Include="Entities\Actions\ActionActionRule.cs" />
-    <Compile Include="Entities\Actions\ActionCategory.cs" />
-    <Compile Include="Entities\Actions\ActionRule.cs" />
     <Compile Include="DAL\DefaultEFRepository.cs" />
     <Compile Include="DAL\IDbContext.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\IUnitWork.cs" />
     <Compile Include="DAL\UnitWork.cs" />
-    <Compile Include="DAL\WorkflowDbContext.cs" />
     <Compile Include="DAL\WorkflowDbInitializer.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbColumn.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbIndex.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbRelation.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbSchemeCommit.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbTable.cs" />
-    <Compile Include="Entities\DatabaseDesigner\DbView.cs" />
-    <Compile Include="Entities\DatabaseDesigner\RelationTypes.cs" />
-    <Compile Include="Entities\Nexus\Ldap.cs" />
-    <Compile Include="Entities\Workflow\Activity.cs" />
-    <Compile Include="Entities\Workflow\ActivityTypes.cs" />
-    <Compile Include="Entities\Workflow\AjaxTransferActivity.cs" />
-    <Compile Include="Entities\Workflow\AjaxTransferCommitHeader.cs" />
-    <Compile Include="Entities\Workflow\AjaxTransferConnection.cs" />
-    <Compile Include="Entities\Workflow\AjaxTransferWorkflowHeader.cs" />
-    <Compile Include="Entities\Workflow\AjaxTransferWorkflowSate.cs" />
-    <Compile Include="Entities\Workflow\Input.cs" />
-    <Compile Include="Entities\Workflow\Output.cs" />
-    <Compile Include="Entities\Workflow\Workflow.cs" />
-    <Compile Include="Entities\Workflow\WorkflowCommit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ActionService.cs" />
     <Compile Include="Service\BackupGeneratorService.cs" />
@@ -123,6 +99,7 @@
       <Name>Nexus</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

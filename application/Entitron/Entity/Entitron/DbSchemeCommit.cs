@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FSS.FSPOC.BussinesObjects.Entities.DatabaseDesigner
+namespace FSS.FSPOC.Entitron.Entity.Entitron
 {
     public class DbSchemeCommit
     {
