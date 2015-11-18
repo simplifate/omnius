@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSPOC-WebProject", "FSPOC-WebProject\FSPOC-WebProject.csproj", "{35F32832-EA98-4EDE-B4A9-8881570F688B}"
 EndProject
@@ -20,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persona", "Persona\Persona.csproj", "{85F52358-03B7-4E68-9220-444C168E89E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapestry", "Tapestry\Tapestry.csproj", "{E2E5BC80-12C0-40FF-B41B-AD22A47C8DDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "Nexus\Nexus.csproj", "{C69A0EFD-2689-47CD-9D72-83BD140F0527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +64,10 @@ Global
 		{E2E5BC80-12C0-40FF-B41B-AD22A47C8DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2E5BC80-12C0-40FF-B41B-AD22A47C8DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2E5BC80-12C0-40FF-B41B-AD22A47C8DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C69A0EFD-2689-47CD-9D72-83BD140F0527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C69A0EFD-2689-47CD-9D72-83BD140F0527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C69A0EFD-2689-47CD-9D72-83BD140F0527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C69A0EFD-2689-47CD-9D72-83BD140F0527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

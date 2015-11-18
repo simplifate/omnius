@@ -208,11 +208,13 @@
     <Compile Include="Controllers\DbDesignerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Nexus\LDAPController.cs" />
     <Compile Include="Controllers\OverviewController.cs" />
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\SourceBlockController.cs" />
     <Compile Include="Controllers\TapestryController.cs" />
+    <Compile Include="Controllers\NexusController.cs" />
     <Compile Include="Controllers\WFDesignerController.cs" />
     <Compile Include="Controllers\WorkflowController.cs" />
     <Compile Include="Global.asax.cs">
@@ -492,9 +494,12 @@
     <Content Include="Views\Portal\ModuleAdmin.cshtml" />
     <Content Include="Views\Portal\UsersOnline.cshtml" />
     <Content Include="Views\Portal\ActiveProfile.cshtml" />
+    <Content Include="Views\Nexus\Index.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\LDAP\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

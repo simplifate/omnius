@@ -81,6 +81,7 @@
     <Compile Include="Entities\DatabaseDesigner\DbTable.cs" />
     <Compile Include="Entities\DatabaseDesigner\DbView.cs" />
     <Compile Include="Entities\DatabaseDesigner\RelationTypes.cs" />
+    <Compile Include="Entities\Nexus\Ldap.cs" />
     <Compile Include="Entities\Workflow\Activity.cs" />
     <Compile Include="Entities\Workflow\ActivityTypes.cs" />
     <Compile Include="Entities\Workflow\AjaxTransferActivity.cs" />
@@ -103,7 +104,9 @@
     <Compile Include="Service\IDatabaseGenerateService.cs" />
     <Compile Include="Service\IExecuteActionService.cs" />
     <Compile Include="Service\IFactoryAction.cs" />
+    <Compile Include="Service\INexusService.cs" />
     <Compile Include="Service\IWorkflowService.cs" />
+    <Compile Include="Service\NexusService .cs" />
     <Compile Include="Service\WorkflowService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +117,10 @@
     <ProjectReference Include="..\Entitron\Entitron.csproj">
       <Project>{927c1dcc-1fda-4fd0-8247-c051aa22469c}</Project>
       <Name>Entitron</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nexus\Nexus.csproj">
+      <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>
+      <Name>Nexus</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
