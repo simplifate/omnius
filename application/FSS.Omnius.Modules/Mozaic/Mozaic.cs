@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using FSS.Omnius.Entitron;
 using FSS.Omnius.Entitron.Entity.CORE;
 using FSS.Omnius.Entitron.Entity.Mozaic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Mozaic
 {
+    [NotMapped]
     public class Mozaic : Module
     {
         private CORE.CORE _CORE;

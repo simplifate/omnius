@@ -4,14 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FSS.Omnius.Controllers.Nexus
+namespace FSPOC_WebProject.Controllers.Mozaic
 {
-    public class LDAPController : Controller
+    public class BuilderController : Controller
     {
-        // GET: LDAP
         public ActionResult Index()
         {
-            return View("~/Views/Nexus/LDAP/Index.cshtml");
+            return View();
         }
     }
 }
