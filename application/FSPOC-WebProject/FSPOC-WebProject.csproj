@@ -237,13 +237,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\AppManager.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Common.css" />
-    <Content Include="Content\DbDesigner.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
     <Content Include="Content\images\animated-overlay.gif" />
@@ -286,15 +283,12 @@
     <Content Include="Content\images\watcheye_small.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.contextMenu.css" />
-    <Content Include="Content\Overview.css" />
-    <Content Include="Content\Portal.css" />
     <Content Include="Content\scss\Bundled.css">
       <DependentUpon>Bundled.scss</DependentUpon>
     </Content>
     <Content Include="Content\scss\Bundled.min.css">
       <DependentUpon>Bundled.css</DependentUpon>
     </Content>
-    <Content Include="Content\Tapestry.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -402,7 +396,9 @@
     <Content Include="Content\scss\Common.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
+    <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
+    <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
     <Content Include="Scripts\DatabaseDesigner\DbDialogs.js" />
     <Content Include="Scripts\DatabaseDesigner\DbInit.js" />
@@ -415,6 +411,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-collision.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -533,6 +530,10 @@
     <ProjectReference Include="..\ND.Logger\ND.Logger.csproj">
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
       <Name>ND.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nexus\Nexus.csproj">
+      <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>
+      <Name>Nexus</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

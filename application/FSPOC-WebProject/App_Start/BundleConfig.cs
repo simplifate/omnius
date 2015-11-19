@@ -10,7 +10,9 @@ namespace FSPOC_WebProject
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui-{version}.js"
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery.contextMenu.js",
+                        "~/Scripts/jquery-collision.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
