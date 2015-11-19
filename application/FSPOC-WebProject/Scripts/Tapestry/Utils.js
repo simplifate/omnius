@@ -50,46 +50,36 @@ function AddToJsPlumb(instance, item) {
         drag: function (event, ui) {
             element = $(this);
             rule = element.parents(".rule");
-            rule.data("jsPlumbInstance").repaintEverything();
-            rightEdge = element.position().left + element.width() + element.data("rightOffset");
-            bottomEdge = element.position().top + element.height() + element.data("bottomOffset");
+            limits = CheckRuleResizeLimits(rule);
+
+            if (ui.position.left < 10)
+                ui.position.left = 10;
+            else if (ui.position.left > limits.horizontal - element.width() - 40)
+                ui.position.left = limits.horizontal - element.width() - 40;
+            if (ui.position.top < 10)
+                ui.position.top = 10;
+            else if (ui.position.top > limits.vertical - element.height() - 60)
+                ui.position.top = limits.vertical - element.height() - 60;
+
+            rightEdge = ui.position.left + element.width() + element.data("rightOffset");
+            bottomEdge = ui.position.top + element.height() + element.data("bottomOffset");
+
             if (rightEdge > rule.width()) {
                 rule.width(rightEdge);
             }
+            else if (rule.width() > limits.horizontal - 50)
+                rule.width(limits.horizontal - 50);
             if (bottomEdge > rule.height()) {
                 rule.height(bottomEdge);
             }
-        }
-    });
-    $(item).on("mousedown", function () {
-        element = $(this);
-        rule = element.parents(".rule");
-        verticalLimit = 1000000;
-        horizontalLimit = 1000000;
-
-        ruleLeft = rule.offset().left;
-        ruleRight = ruleLeft + rule.width();
-        ruleTop = rule.offset().top - 40;
-        ruleBottom = rule.offset().top + rule.height();
-
-        $("#rulesPanel .rule").each(function (index, element) {
-            otherRule = $(element);
-            if (otherRule.attr("id") != rule.attr("id")) {
-                otherRuleLeft = otherRule.offset().left;
-                otherRuleRight = otherRuleLeft + otherRule.width();
-                otherRuleTop = otherRule.offset().top - 40;
-                otherRuleBottom = otherRule.offset().top + otherRule.height();
-
-                if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                    && otherRuleTop > ruleBottom && otherRuleTop < verticalLimit)
-                    verticalLimit = otherRuleTop;
-                if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
-                    && otherRuleLeft > ruleRight && otherRuleLeft < horizontalLimit)
-                    horizontalLimit = otherRuleLeft;
-            }
-        });
-        element.draggable("option", "containment", [rule.offset().left + 10, rule.offset().top + element.data("topOffset") + 40,
-            horizontalLimit - element.width() - 30, verticalLimit - element.height() - 30]);
+            rule.data("jsPlumbInstance").repaintEverything();
+        },
+        revert: "invalid",
+        revertDuration: 0,
+        stop: function () {
+            $(this).draggable("option", "revert", "invalid");
+            $(this).parents(".rule").data("jsPlumbInstance").repaintEverything();
+        },
     });
     if ($(item).hasClass("operatorSymbol")) {
         if ($(item).hasClass("decisionRhombus")) {
@@ -166,4 +156,31 @@ function AddIconToItem(element) {
     else if (item.hasClass("state")) {
         item.prepend($('<i class="fa fa-ellipsis-v" style="margin-left: 4px; margin-right: 8px;"></i>'));
     }
+}
+function CheckRuleResizeLimits(rule) {
+    horizontalLimit = 1000000;
+    verticalLimit = 1000000;
+
+    ruleLeft = rule.position().left;
+    ruleRight = ruleLeft + rule.width();
+    ruleTop = rule.position().top - 40;
+    ruleBottom = rule.position().top + rule.height();
+
+    $("#rulesPanel .rule").each(function (index, element) {
+        otherRule = $(element);
+        if (otherRule.attr("id") != rule.attr("id")) {
+            otherRuleLeft = otherRule.position().left;
+            otherRuleRight = otherRuleLeft + otherRule.width();
+            otherRuleTop = otherRule.position().top - 40;
+            otherRuleBottom = otherRule.position().top + otherRule.height();
+
+            if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
+                && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
+                horizontalLimit = otherRuleLeft - ruleLeft;
+            if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
+                && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
+                verticalLimit = otherRuleTop - ruleTop;
+        }
+    });
+    return { horizontal: horizontalLimit, vertical: verticalLimit }
 }

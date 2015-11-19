@@ -104,36 +104,33 @@ body.tapestryModule {
         display: inline-block;
         font-size: 0.8em;
         white-space: nowrap;
-        z-index: 10;
+        z-index: 400;
     }
     .header {
-        width: 740px;
-        background-color: #49c3f1;
+        width: auto;
         color: black;
         font-size: 1.5em;
         height: 40px;
+        margin-left: 3px;
+        margin-top: 3px;
     }
     .headerItem {
+        background-color: #49c3f1;
         width: 180px;
         text-align: center;
         vertical-align: middle;
         display: inline-block;
         height: 40px;
         padding-top: 5px;
+        margin-left: -3px;
     }
     #headerBlockName {
-        border-right: 3px solid #467ea8;
-        position: absolute;
         width: 250px;
     }
     #headerTableName {
-        border-right: 3px solid #467ea8;
-        position: absolute;
-        left: 250px;
         width: 190px;
     }
     #headerOverview {
-        position: absolute;
         left: 440px;
         width: 300px;
     }
