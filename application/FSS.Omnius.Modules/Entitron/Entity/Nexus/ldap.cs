@@ -1,12 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FSS.Omnius.Entitron.Entity.Nexus
 {
-    public class Ldap
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using Master;
+
+    [Table("Nexus_Ldap")]
+    public partial class Ldap
     {
+        public int Id { get; set; }
+        
+        [StringLength(50)]
+        public string Domain_Ntlm { get; set; }
+
+        [StringLength(255)]
+        public string Domain_Kerberos { get; set; }
+
+        [Required]
+        public string Domain_Server { get; set; }
+
+        [Required]
+        public string Bind_User { get; set; }
+
+        public string Bind_Password { get; set; }
+
+        public bool Active { get; set; }
+        public bool Use_SSL { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace FSPOC_WebProject
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Nexus",
+                url: "Nexus/{controller}/{action}/{id}",
+                defaults: new { controller = "Nexus", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Portal", action = "Index", id = UrlParameter.Optional }

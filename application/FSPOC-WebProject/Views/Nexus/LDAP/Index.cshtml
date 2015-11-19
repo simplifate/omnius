@@ -1,3 +1,6 @@
+@using FSS.Omnius.Entitron.Entity.Nexus
+@model System.Data.Entity.DbSet<Ldap>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 @{
     Page.Title = "Omnius Nexus";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
@@ -8,8 +11,18 @@
         position: relative;
         top: 75px;
         margin-left: 225px;
+        margin-bottom: 75px;
         background: #3a3a3a;
         overflow: hidden;
+    }
+    .top-panel-content {
+        position: relative;
+        z-index: 2;
+        padding: 1.5em 52px;
+    }
+    .bottom-panel {
+        margin-left: 225px;
+        padding: 0px 52px;
     }
     .panelLabel {
         padding: 25px 52px;
@@ -37,6 +50,9 @@
         z-index: 2;
         padding: 25px 55px;
     }
+    .top-panel table th, .top-panel table td {
+        color: #fff;
+    }
 </style>
 
 <div class="top-panel">
@@ -61,5 +77,50 @@
             Externí databáze
         </a>
     </div>
+    <div class="top-panel-content">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NTLM Doména</th>
+                    <th>Server</th>
+                    <th>SSL</th>
+                    <th>Aktivní</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if(Model.Count() > 0)
+            {
+                foreach(Ldap l in Model)
+                {
+                    <tr>
+                        <td>@l.Id</td>
+                        <td>@l.Domain_Ntlm</td>
+                        <td>@l.Domain_Server</td>
+                        <td>@(l.Use_SSL == true ? "ano" : "ne")</td>
+                        <td>@(l.Active == true ? "ano" : "ne")</td>
+                        <td>
+                            @Ajax.ActionLink("", "Detail", new { @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye btn btn-default", @title = "Detail" })
+                            @Ajax.ActionLink("", "Edit", new { @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil btn btn-primary", @title = "Upravit" })
+                            @Html.ActionLink("", "Delete", new { @id = l.Id }, new { @class = "fa fa-times btn btn-danger", @title = "Smazat" });
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">Nemáte nakonfigurovaný žádný LDAP server</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        @Ajax.ActionLink("Pøidat LDAP server", "Create", null, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+<div id="ContentContainer" class="bottom-panel">
+
+
 </div>
 

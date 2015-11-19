@@ -1,7 +1,6 @@
 ﻿$(function () {
     if ($("body.tapestryModule").length) {
         $(".rule").resizable({
-            $(".rule").resizable({
                 start: function (event, ui) {
                     contentsWidth = 120;
                     contentsHeight = 40;

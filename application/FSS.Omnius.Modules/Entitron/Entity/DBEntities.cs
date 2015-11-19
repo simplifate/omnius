@@ -43,6 +43,7 @@ namespace FSS.Omnius.Entitron.Entity
         public virtual DbSet<WorkflowCommit> WorkflowCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
         public virtual DbSet<ActionActionRule> ActionActionRules { get; set; }
+        public virtual DbSet<Ldap> Ldaps { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -203,6 +204,8 @@ namespace FSS.Omnius.Entitron.Entity
                 .HasMany(a => a.Actions)
                 .WithRequired(a => a.ActionCategory);
 
+            //Nexus
+            modelBuilder.Entity<Ldap>();
         }
     }
 }
