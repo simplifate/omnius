@@ -1,6 +1,6 @@
-﻿using FSS.FSPOC.BussinesObjects.Common;
+﻿using FSS.Omnius.BussinesObjects.Common;
 
-namespace FSS.FSPOC.Actions.ReservationSystem.Actions
+namespace FSS.Omnius.Actions.ReservationSystem.Actions
 {
     public class CheckAgainstAssignedRule :IAction
     {

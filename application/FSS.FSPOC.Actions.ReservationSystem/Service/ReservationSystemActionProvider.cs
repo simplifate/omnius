@@ -1,10 +1,10 @@
 ﻿using System;
-using FSS.FSPOC.Actions.ReservationSystem.Actions;
-using FSS.FSPOC.BussinesObjects.Actions;
-using FSS.FSPOC.BussinesObjects.Common;
-using FSS.FSPOC.BussinesObjects.Service;
+using FSS.Omnius.Actions.ReservationSystem.Actions;
+using FSS.Omnius.BussinesObjects.Actions;
+using FSS.Omnius.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.Service;
 
-namespace FSS.FSPOC.Actions.ReservationSystem.Service
+namespace FSS.Omnius.Actions.ReservationSystem.Service
 {
     public class ReservationSystemActionProvider : IReservationSystemActionProvider
     {

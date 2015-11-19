@@ -1,7 +1,7 @@
-﻿using FSS.FSPOC.BussinesObjects.Common;
-using FSS.FSPOC.BussinesObjects.Service;
+﻿using FSS.Omnius.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.Service;
 
-namespace FSS.FSPOC.BussinesObjects.Actions
+namespace FSS.Omnius.BussinesObjects.Actions
 {
     public class CommonActionsProvider : ICommonActionsProvider
     {

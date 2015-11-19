@@ -1,6 +1,6 @@
 ﻿using Nexus.Gate;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public class NexusService : INexusService
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
-using FSS.FSPOC.Entitron.Entity.Tapestry;
-using Entitron.Entity;
+using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Entitron.Entity;
 
-namespace FSS.FSPOC.BussinesObjects.DAL
+namespace FSS.Omnius.BussinesObjects.DAL
 {
     public class WorkflowDbInitializer : DropCreateDatabaseIfModelChanges<DBEntities>
     {

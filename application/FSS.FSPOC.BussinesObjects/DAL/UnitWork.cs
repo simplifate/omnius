@@ -1,16 +1,17 @@
-﻿using System;
+﻿using FSS.Omnius.Entitron.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.FSPOC.BussinesObjects.DAL
+namespace FSS.Omnius.BussinesObjects.DAL
 {
     public class UnitWork :IUnitWork
     {
-        private IDbContext Context { get; set; }
+        private DBEntities Context { get; set; }
 
-        public UnitWork(IDbContext context)
+        public UnitWork(DBEntities context)
         {
             Context = context;
         }

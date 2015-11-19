@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Entitron.Entity;
+using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Entitron.Entity.CORE;
 
 namespace FSPOC_WebProject.Controllers.Admin
 {

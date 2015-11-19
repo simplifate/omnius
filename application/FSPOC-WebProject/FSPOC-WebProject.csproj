@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -219,7 +219,6 @@
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\SourceBlockController.cs" />
-    <Compile Include="Controllers\TapestryController.cs" />
     <Compile Include="Controllers\NexusController.cs" />
     <Compile Include="Controllers\Admin\Builder\TapestryController.cs" />
     <Compile Include="Controllers\WFDesignerController.cs" />
@@ -520,14 +519,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CORE\CORE.csproj">
-      <Project>{9e8bf028-1cf0-4d2a-85e2-90d8c2de1a05}</Project>
-      <Name>CORE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Entitron\Entitron.csproj">
-      <Project>{927c1dcc-1fda-4fd0-8247-c051aa22469c}</Project>
-      <Name>Entitron</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FSS.FSPOC.Actions.ReservationSystem\FSS.FSPOC.Actions.ReservationSystem.csproj">
       <Project>{897fb481-2509-45ff-a2af-5e5b41ca3ba1}</Project>
       <Name>FSS.FSPOC.Actions.ReservationSystem</Name>
@@ -535,6 +526,10 @@
     <ProjectReference Include="..\FSS.FSPOC.BussinesObjects\FSS.FSPOC.BussinesObjects.csproj">
       <Project>{3a3d8476-80e5-45f3-8361-672f6ffc43d9}</Project>
       <Name>FSS.FSPOC.BussinesObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
+      <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
+      <Name>FSS.Omnius.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\ND.Logger\ND.Logger.csproj">
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>

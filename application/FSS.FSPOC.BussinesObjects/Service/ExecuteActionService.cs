@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FSS.FSPOC.BussinesObjects.Common;
-using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.Entitron.Entity.Tapestry;
+using FSS.Omnius.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.DAL;
+using FSS.Omnius.Entitron.Entity.Tapestry;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public class ExecuteActionService : IExecuteActionService
     {

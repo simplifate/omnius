@@ -5,10 +5,10 @@ using System.Management.Instrumentation;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.Entitron.Entity.Tapestry;
-using Entitron.Entity;
-using FSS.FSPOC.BussinesObjects.Service;
+using FSS.Omnius.BussinesObjects.DAL;
+using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.BussinesObjects.Service;
 using Logger;
 using static System.String;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using FSPOC_WebProject.Models;
-using FSS.FSPOC.BussinesObjects.Common;
-using FSS.FSPOC.BussinesObjects.Service;
+using FSS.Omnius.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.Service;
 using Newtonsoft.Json;
 
 namespace FSPOC_WebProject.Controllers

@@ -1,6 +1,6 @@
-﻿using FSS.FSPOC.Actions.ReservationSystem.BussinesObjects;
+﻿using FSS.Omnius.Actions.ReservationSystem.BussinesObjects;
 
-namespace FSS.FSPOC.Actions.ReservationSystem.Service
+namespace FSS.Omnius.Actions.ReservationSystem.Service
 {
     public class ReservationSystemService :IReservationSystemService
     {

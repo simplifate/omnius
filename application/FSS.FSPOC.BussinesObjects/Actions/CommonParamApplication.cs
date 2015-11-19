@@ -1,4 +1,4 @@
-namespace FSS.FSPOC.BussinesObjects.Actions
+namespace FSS.Omnius.BussinesObjects.Actions
 {
     public class CommonParamApplication
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using FSS.FSPOC.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.Common;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public interface IExecuteActionService
     {

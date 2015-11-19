@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.FSPOC.Entitron.Entity.Entitron;
+using FSS.Omnius.Entitron.Entity.Entitron;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public interface IDatabaseGenerateService
     {

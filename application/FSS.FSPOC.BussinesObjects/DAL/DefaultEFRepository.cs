@@ -1,18 +1,19 @@
-﻿using System;
+﻿using FSS.Omnius.Entitron.Entity;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace FSS.FSPOC.BussinesObjects.DAL
+namespace FSS.Omnius.BussinesObjects.DAL
 {
     // ReSharper disable once InconsistentNaming
     public class DefaultEFRepository<T> : IRepository<T>
                                         where T : class
     {
-        private IDbContext DbContext { get; set; }
+        private DBEntities DbContext { get; set; }
 
-        public DefaultEFRepository ( IDbContext context )
+        public DefaultEFRepository (DBEntities context )
         {
             if ( context == null ) throw new ArgumentNullException ( nameof(context) );
             DbContext = context;

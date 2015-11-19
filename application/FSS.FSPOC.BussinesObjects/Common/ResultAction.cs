@@ -1,4 +1,4 @@
-﻿namespace FSS.FSPOC.BussinesObjects.Common
+﻿namespace FSS.Omnius.BussinesObjects.Common
 {
     public class ResultAction
     {

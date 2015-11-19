@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using Entitron.Entity;
+using FSS.Omnius.Entitron.Entity;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public class BackupGeneratorService : IBackupGeneratorService
     {

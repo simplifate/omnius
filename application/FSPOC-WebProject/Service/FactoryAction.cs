@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using FSS.FSPOC.BussinesObjects.Actions;
-using FSS.FSPOC.BussinesObjects.Common;
-using FSS.FSPOC.BussinesObjects.Service;
+using FSS.Omnius.BussinesObjects.Actions;
+using FSS.Omnius.BussinesObjects.Common;
+using FSS.Omnius.BussinesObjects.Service;
 
 namespace FSPOC_WebProject.Service
 {

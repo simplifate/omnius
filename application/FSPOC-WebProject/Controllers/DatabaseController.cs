@@ -7,11 +7,11 @@ using System.Net.Http;
 using System.Web.Http;
 using FSPOC_WebProject.Models.DbDesigner;
 using FSPOC_WebProject.Models.DbDesigner.FSPOC.Models;
-using FSS.FSPOC.BussinesObjects.DAL;
-using FSS.FSPOC.Entitron.Entity.Entitron;
-using FSS.FSPOC.Entitron.Entity.Tapestry;
-using Entitron.Entity;
-using FSS.FSPOC.BussinesObjects.Service;
+using FSS.Omnius.BussinesObjects.DAL;
+using FSS.Omnius.Entitron.Entity.Entitron;
+using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.BussinesObjects.Service;
 using Logger;
 using static System.String;
 

@@ -90,9 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entitron\Entitron.csproj">
-      <Project>{927c1dcc-1fda-4fd0-8247-c051aa22469c}</Project>
-      <Name>Entitron</Name>
+    <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
+      <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
+      <Name>FSS.Omnius.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nexus\Nexus.csproj">
       <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>

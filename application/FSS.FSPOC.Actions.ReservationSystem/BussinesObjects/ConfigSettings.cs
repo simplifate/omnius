@@ -1,4 +1,4 @@
-﻿namespace FSS.FSPOC.Actions.ReservationSystem.BussinesObjects
+﻿namespace FSS.Omnius.Actions.ReservationSystem.BussinesObjects
 {
     public class ConfigSettings
     {

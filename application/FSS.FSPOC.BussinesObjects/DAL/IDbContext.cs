@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 
-namespace FSS.FSPOC.BussinesObjects.DAL
+namespace FSS.Omnius.BussinesObjects.DAL
 {
     public interface IDbContext : IDisposable
     {

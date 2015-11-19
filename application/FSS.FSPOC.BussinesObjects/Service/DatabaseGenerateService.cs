@@ -1,10 +1,10 @@
 ﻿using System.Configuration;
 //using System.Linq;
 using System.Collections.Generic;
-using FSS.FSPOC.Entitron.Entity.Entitron;
-using Entitron;
+using FSS.Omnius.Entitron.Entity.Entitron;
+using FSS.Omnius.Entitron;
 
-namespace FSS.FSPOC.BussinesObjects.Service
+namespace FSS.Omnius.BussinesObjects.Service
 {
     public class DatabaseGenerateService : IDatabaseGenerateService
     {

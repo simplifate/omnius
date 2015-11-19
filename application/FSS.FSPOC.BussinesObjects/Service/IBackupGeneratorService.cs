@@ -1,4 +1,4 @@
-﻿namespace FSS.FSPOC.BussinesObjects.Service
+﻿namespace FSS.Omnius.BussinesObjects.Service
 {
     public interface IBackupGeneratorService
     {

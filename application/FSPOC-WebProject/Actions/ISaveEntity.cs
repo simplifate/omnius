@@ -1,4 +1,4 @@
-﻿using FSS.FSPOC.BussinesObjects.Common;
+﻿using FSS.Omnius.BussinesObjects.Common;
 
 namespace FSPOC_WebProject.Actions
 {

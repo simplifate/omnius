@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace FSS.FSPOC.BussinesObjects.DAL
+namespace FSS.Omnius.BussinesObjects.DAL
 {
     public interface IRepository<T> where T : class
     {
