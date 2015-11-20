@@ -14,15 +14,16 @@ namespace FSS.Omnius.BussinesObjects.Service
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit)
         {
             List<DBTable> entitronTables = new List<DBTable>();
-            DBApp.connectionString = ConfigurationManager.ConnectionStrings["EntitronTestingLocal"].ConnectionString;
-            DBApp entitronApp = new DBApp();
-            entitronApp.Name = "EntitronTest1";
-            entitronApp.DisplayName = "EntitronTest1";
+
+            CORE.CORE core = new CORE.CORE();
+            Entitron.Entitron e = (Entitron.Entitron)core.GetModule("Entitron");
+            e.Application = new DBApp() { Name = "EntitronTest1", DisplayName = "EntitronTest1" };
+
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
                 DBTable entitronTable = new DBTable();
                 entitronTable.tableName = efTable.Name;
-                entitronTable.Application = entitronApp;
+                entitronTable.Application = e.Application;
 
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
@@ -53,7 +54,7 @@ namespace FSS.Omnius.BussinesObjects.Service
                 foreignKey.targetColumn = efRelation.TargetColumn.Name;
                 foreignKey.sourceTable.foreignKeys.AddToDB(foreignKey);
             }*/
-            entitronApp.SaveChanges();
+            e.Application.SaveChanges();
         }
 
         private static string GetConnectionString()

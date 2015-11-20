@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_DbRelation")]
     public class DbRelation
     {
         public int Id { get; set; }
@@ -15,6 +18,7 @@ namespace FSS.Omnius.Entitron.Entity.Entitron
         public virtual DbColumn TargetColumn { get; set; }
         */
 
+        public int DbSchemeCommitId { get; set; }
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }
