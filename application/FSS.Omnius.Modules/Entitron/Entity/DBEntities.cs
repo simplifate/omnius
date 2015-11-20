@@ -45,6 +45,14 @@ namespace FSS.Omnius.Entitron.Entity
         public virtual DbSet<ActionActionRule> ActionActionRules { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
 
+        public virtual DbSet<AjaxTransferDbColumn> AjaxTransferDbColumn { get; set; }
+        public virtual DbSet<AjaxTransferDbIndex> AjaxTransferDbIndex { get; set; }
+        public virtual DbSet<AjaxTransferDbRelation> AjaxTransferDbRelation { get; set; }
+        public virtual DbSet<AjaxTransferDbScheme> AjaxTransferDbScheme { get; set; }
+        public virtual DbSet<AjaxTransferDbTable> AjaxTransferDbTable { get; set; }
+        public virtual DbSet<AjaxTransferDbView> AjaxTransferDbView { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Application>()

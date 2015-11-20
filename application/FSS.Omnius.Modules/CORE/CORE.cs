@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using FSS.Omnius.Entitron;
 using FSS.Omnius.Entitron.Entity.CORE;
 using FSS.Omnius.Entitron.Entity.Persona;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.CORE
 {
+    [NotMapped]
     public class CORE : Module
     {
         private IQueryable<Module> _enabledModules = null;
@@ -72,7 +74,7 @@ namespace FSS.Omnius.CORE
             if (_enabledModules == null)
                 _enabledModules = (_modules["Entitron"] as Entitron.Entitron).GetStaticTables().Modules.Where(m => m.IsEnabled);
 
-            return _enabledModules.FirstOrDefault(m => m.Name == moduleName) != null;
+            return _enabledModules.Any(m => m.Name == moduleName);
         }
         private Module GetNewModuleInstance(string moduleName)
         {

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FSS.Omnius.Entitron.Entity;
 
-namespace FSPOC_WebProject.Controllers.Nexus
+namespace FSS.Omnius.Controllers.Nexus
 {
     public class LDAPController : Controller
     {
@@ -13,13 +13,12 @@ namespace FSPOC_WebProject.Controllers.Nexus
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
-
-            return View("../Nexus/LDAP/Index", e.Ldaps);
+            return View("~/Views/Nexus/LDAP/Index", e.Ldaps);
         }
 
         public ActionResult Create()
         {
-            return View("../Nexus/LDAP/Form");
+            return View("~/Views/Nexus/LDAP/Form");
         }
     }
 }

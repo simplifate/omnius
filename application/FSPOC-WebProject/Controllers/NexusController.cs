@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using FSS.Omnius.BussinesObjects.Service;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Nexus
 {
     public class NexusController : Controller
     {
@@ -11,7 +11,7 @@ namespace FSPOC_WebProject.Controllers
 
             //string test = service.searchByLogin("martin.novak");
 
-            return View();
+            return View("~/Views/Nexus/Index.cshtml");
         }
 
     }

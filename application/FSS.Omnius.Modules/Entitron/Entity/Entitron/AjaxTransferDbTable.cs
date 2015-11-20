@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSPOC_WebProject.Models.DbDesigner
+namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_AjaxTransferDbTable")]
     public class AjaxTransferDbTable
     {
         public int Id { get; set; }

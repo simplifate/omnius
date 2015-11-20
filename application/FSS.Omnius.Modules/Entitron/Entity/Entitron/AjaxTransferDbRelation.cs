@@ -1,5 +1,8 @@
-﻿namespace FSPOC_WebProject.Models.DbDesigner
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_AjaxTransferDbRelation")]
     public class AjaxTransferDbRelation
     {
         public int Type { get; set; }

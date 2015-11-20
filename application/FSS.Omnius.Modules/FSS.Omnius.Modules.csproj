@@ -54,6 +54,12 @@
     <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Entitron\Entitron.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbRelation.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
+    <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
