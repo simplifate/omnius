@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_DbSchemeCommit")]
     public class DbSchemeCommit
     {
         public int Id { get; set; }

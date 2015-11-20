@@ -222,6 +222,7 @@
     <Compile Include="Controllers\RulesController.cs" />
     <Compile Include="Controllers\SourceBlockController.cs" />
     <Compile Include="Controllers\NexusController.cs" />
+    <Compile Include="Controllers\WFDesignerController.cs" />
     <Compile Include="Controllers\WorkflowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
