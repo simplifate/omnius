@@ -1,45 +1,29 @@
 ﻿$(function () {
     if ($("body.tapestryModule").length) {
         $(".rule").resizable({
-                start: function (event, ui) {
-                    contentsWidth = 120;
-                    contentsHeight = 40;
-                    $(this).find(".item, .operatorSymbol").each(function (index, element) {
-                        rightEdge = $(element).position().left + $(element).width();
-                        if (rightEdge > contentsWidth)
-                            contentsWidth = rightEdge;
-                        bottomEdge = $(element).position().top + $(element).height();
-                        if (bottomEdge > contentsHeight)
-                            contentsHeight = bottomEdge;
-                    });
-                    $(this).css("min-width", contentsWidth - 10);
-                    $(this).css("min-height", contentsHeight + 20);
+            start: function (event, ui) {
+                contentsWidth = 120;
+                contentsHeight = 40;
+                $(this).find(".item, .operatorSymbol").each(function (index, element) {
+                    rightEdge = $(element).position().left + $(element).width();
+                    if (rightEdge > contentsWidth)
+                        contentsWidth = rightEdge;
+                    bottomEdge = $(element).position().top + $(element).height();
+                    if (bottomEdge > contentsHeight)
+                        contentsHeight = bottomEdge;
+                });
+                $(this).css("min-width", contentsWidth - 10);
+                $(this).css("min-height", contentsHeight + 20);
 
-                    verticalLimit = 1000000;
-                    horizontalLimit = 1000000;
-
-                    ruleLeft = $(this).position().left;
-                    ruleRight = ruleLeft + $(this).width();
-                    ruleTop = $(this).position().top - 40;
-                    ruleBottom = $(this).position().top + $(this).height();
-
-                    $("#rulesPanel .rule").each(function (index, element) {
-                        otherRule = $(element);
-                        otherRuleLeft = otherRule.position().left;
-                        otherRuleRight = otherRuleLeft + otherRule.width();
-                        otherRuleTop = otherRule.position().top - 40;
-                        otherRuleBottom = otherRule.position().top + otherRule.height();
-
-                        if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                            && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
-                            verticalLimit = otherRuleTop - ruleTop;
-                        if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
-                            && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
-                            horizontalLimit = otherRuleLeft - ruleLeft;
-                    });
-                    $(this).css("max-width", horizontalLimit - 50);
-                    $(this).css("max-height", verticalLimit - 50);
-                }
+                limits = CheckRuleResizeLimits($(this));
+                $(this).css("max-width", limits.horizontal - 50);
+                $(this).css("max-height", limits.vertical - 50);
+            },
+            resize: function (event, ui) {
+                limits = CheckRuleResizeLimits($(this));
+                $(this).css("max-width", limits.horizontal - 50);
+                $(this).css("max-height", limits.vertical - 50);
+            }
         });
         $(".rule").draggable({
             handle: ".ruleHeader",
@@ -50,14 +34,21 @@
         });
         $(".rule").droppable({
             containment: ".rule",
-            greedy: true,
+            greedy: false,
             tolerance: "touch",
-            accept: ".menuItem, .rule",
+            accept: ".item, .operatorSymbol, .menuItem, .rule",
             drop: function (e, ui) {
+                if (ui.helper.hasClass("item") || ui.helper.hasClass("operatorSymbol")) {
+                    return false;
+                }
                 if (ui.helper.hasClass("rule")) {
                     ui.draggable.draggable("option", "revert", true);
                     return false;
                 }
+                if (ui.helper.collision(".item, .operatorSymbol").length > 0) {
+                    ui.draggable.draggable("option", "revert", true);
+                    return false;
+                };
                 ruleContent = $(this).find(".ruleContent");
                 if (ui.offset.left < ruleContent.offset().left || ui.offset.top < ruleContent.offset().top
                     || ui.offset.left + ui.helper.width() > ruleContent.offset().left + ruleContent.width() - 20
@@ -82,6 +73,15 @@
                     newOperator.attr("dialogType", droppedElement.attr("dialogType"));
                     droppedElement.remove();
                     AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
+                    newOperator.droppable({
+                        greedy: true,
+                        tolerance: "touch",
+                        accept: ".item, .operatorSymbol",
+                        drop: function (event, ui) {
+                            ui.draggable.draggable("option", "revert", true);
+                            revertActive = true;
+                        }
+                    });
                 }
                 else {
                     droppedElement.removeClass("menuItem");
@@ -91,6 +91,15 @@
                     if (droppedElement.position().left + droppedElement.width() > ruleContent.width() - 25)
                         droppedElement.css("left", ruleContent.width() - droppedElement.width() - 25);
                     AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
+                    droppedElement.droppable({
+                        greedy: true,
+                        tolerance: "touch",
+                        accept: ".item, .operatorSymbol",
+                        drop: function (event, ui) {
+                            ui.draggable.draggable("option", "revert", true);
+                            revertActive = true;
+                        }
+                    });
                 }
             }
         });
@@ -100,6 +109,14 @@
         });
         $(".rule .deleteRuleIcon").on("click", function () {
             $(this).parents(".rule").remove();
+        });
+        $(".item, .operatorSymbol").droppable({
+            greedy: true,
+            tolerance: "touch",
+            accept: ".menuItem, .item, .operatorSymbol",
+            drop: function (event, ui) {
+                ui.draggable.draggable("option", "revert", true);
+            }
         });
     }
 });
