@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Web.Http;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Tapestry
 {
     public class SourceBlockController : ApiController
     {

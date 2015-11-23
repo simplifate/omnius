@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using FSPOC_WebProject.Models;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Master
 {
     public class HomeController : Controller
     {

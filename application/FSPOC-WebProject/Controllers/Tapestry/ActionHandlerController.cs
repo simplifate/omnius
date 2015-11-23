@@ -5,7 +5,7 @@ using FSS.Omnius.BussinesObjects.Common;
 using FSS.Omnius.BussinesObjects.Service;
 using Newtonsoft.Json;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Tapestry
 {
     public class ActionHandlerController : ApiController
     {

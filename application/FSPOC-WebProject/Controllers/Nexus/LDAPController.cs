@@ -11,7 +11,7 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: LDAP
         public ActionResult Index()
         {
-            return View("~/Views/Nexus/LDAP/Index.cshtml");
+            return View();
         }
     }
 }

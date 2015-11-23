@@ -11,7 +11,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
             //string test = service.searchByLogin("martin.novak");
 
-            return View("~/Views/Nexus/Index.cshtml");
+            return View();
         }
 
     }

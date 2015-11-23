@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FSPOC_WebProject.Models;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSPOC_WebProject.Controllers.Persona
 {
     [Authorize]
     public class AccountController : Controller

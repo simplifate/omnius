@@ -12,7 +12,7 @@ using FSS.Omnius.BussinesObjects.Service;
 using Logger;
 using static System.String;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Tapestry
 {
     public class WorkflowController : ApiController
     {

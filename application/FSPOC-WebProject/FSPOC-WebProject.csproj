@@ -50,7 +50,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -205,24 +204,23 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\PortalController.cs" />
-    <Compile Include="Controllers\ActionHandlerController.cs" />
+    <Compile Include="Controllers\Persona\AccountController.cs" />
+    <Compile Include="Controllers\CORE\PortalController.cs" />
+    <Compile Include="Controllers\Tapestry\ActionHandlerController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
-    <Compile Include="Controllers\BlockController.cs" />
+    <Compile Include="Controllers\Tapestry\BlockController.cs" />
     <Compile Include="Controllers\Mozaic\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
-    <Compile Include="Controllers\DatabaseController.cs" />
-    <Compile Include="Controllers\DbDesignerController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Entitron\DatabaseController.cs" />
+    <Compile Include="Controllers\Entitron\DbDesignerController.cs" />
+    <Compile Include="Controllers\Master\HomeController.cs" />
+    <Compile Include="Controllers\Persona\ManageController.cs" />
     <Compile Include="Controllers\Nexus\LDAPController.cs" />
-    <Compile Include="Controllers\OverviewController.cs" />
-    <Compile Include="Controllers\RulesController.cs" />
-    <Compile Include="Controllers\SourceBlockController.cs" />
-    <Compile Include="Controllers\NexusController.cs" />
-    <Compile Include="Controllers\WorkflowController.cs" />
+    <Compile Include="Controllers\Persona\RulesController.cs" />
+    <Compile Include="Controllers\Tapestry\SourceBlockController.cs" />
+    <Compile Include="Controllers\Nexus\NexusController.cs" />
+    <Compile Include="Controllers\Tapestry\WorkflowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -235,6 +233,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\FactoryAction.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\MyRazorViewEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -460,56 +459,53 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Master\Home\About.cshtml" />
+    <Content Include="Views\Master\Home\Contact.cshtml" />
+    <Content Include="Views\Master\Home\Index.cshtml" />
+    <Content Include="Views\Persona\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Persona\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Persona\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Persona\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Persona\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\Login.cshtml" />
+    <Content Include="Views\Persona\Account\Register.cshtml" />
+    <Content Include="Views\Persona\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Persona\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Persona\Account\SendCode.cshtml" />
+    <Content Include="Views\Persona\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Persona\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Persona\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Persona\Manage\Index.cshtml" />
+    <Content Include="Views\Persona\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Persona\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Persona\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Tapestry\Index.cshtml" />
-    <Content Include="Views\Overview\index.cshtml" />
-    <Content Include="Views\Rules\Index.cshtml" />
-    <Content Include="Views\Rules\RuleDetail.cshtml" />
-    <Content Include="Views\DbDesigner\Index.cshtml" />
-    <None Include="Views\Block\Index.cshtml" />
+    <Content Include="Views\Tapestry\Builder\Index.cshtml" />
+    <Content Include="Views\Persona\Rules\Index.cshtml" />
+    <Content Include="Views\Persona\Rules\RuleDetail.cshtml" />
+    <Content Include="Views\Entitron\DbDesigner\Index.cshtml" />
+    <None Include="Views\Tapestry\Block\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
-    <Content Include="Views\Portal\Index.cshtml" />
-    <Content Include="Views\Portal\ModuleAdmin.cshtml" />
-    <Content Include="Views\Portal\UsersOnline.cshtml" />
-    <Content Include="Views\Portal\ActiveProfile.cshtml" />
-    <Content Include="Views\Nexus\Index.cshtml" />
+    <Content Include="Views\CORE\Portal\Index.cshtml" />
+    <Content Include="Views\CORE\Portal\ModuleAdmin.cshtml" />
+    <Content Include="Views\CORE\Portal\UsersOnline.cshtml" />
+    <Content Include="Views\CORE\Portal\ActiveProfile.cshtml" />
     <Content Include="Views\Nexus\LDAP\Index.cshtml" />
     <Content Include="Views\Shared\_PartialViewAjaxLayout.cshtml" />
-    <Content Include="Views\CORE\Create.cshtml" />
-    <Content Include="Views\CORE\Details.cshtml" />
-    <Content Include="Views\CORE\Index.cshtml" />
-    <Content Include="Views\CORE\Update.cshtml" />
-    <Content Include="Views\WFDesigner\Index.cshtml" />
+    <Content Include="Views\CORE\Builder\Create.cshtml" />
+    <Content Include="Views\CORE\Builder\Details.cshtml" />
+    <Content Include="Views\CORE\Builder\Index.cshtml" />
+    <Content Include="Views\CORE\Builder\Update.cshtml" />
+    <Content Include="Views\Tapestry\WFDesigner\Index.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\Entitron\" />
-    <Folder Include="Controllers\Master\" />
-    <Folder Include="Controllers\Persona\" />
-    <Folder Include="Views\Builder\" />
-    <Folder Include="Views\LDAP\" />
+    <Folder Include="Views\Mozaic\Builder\" />
+    <Folder Include="Views\Tapestry\ActionHandler\" />
+    <Folder Include="Views\Tapestry\Workflow\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
