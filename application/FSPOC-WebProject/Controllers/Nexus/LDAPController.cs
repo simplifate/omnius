@@ -13,12 +13,15 @@ namespace FSS.Omnius.Controllers.Nexus
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
-            return View("~/Views/Nexus/LDAP/Index", e.Ldaps);
+            return View("~/Views/Nexus/LDAP/Index.cshtml", e.Ldaps);
         }
 
         public ActionResult Create()
         {
-            return View("~/Views/Nexus/LDAP/Form");
+            if (Request.IsAjaxRequest())
+                return PartialView("~/Views/Nexus/LDAP/Form.cshtml");
+            else
+                return View("~/Views/Nexus/LDAP/Form.cshtml");
         }
     }
 }

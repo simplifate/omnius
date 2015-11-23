@@ -10,7 +10,7 @@ namespace FSS.Omnius.Entitron.Entity.Nexus
     public partial class Ldap
     {
         public int Id { get; set; }
-        
+
         [StringLength(50)]
         public string Domain_Ntlm { get; set; }
 
@@ -18,9 +18,11 @@ namespace FSS.Omnius.Entitron.Entity.Nexus
         public string Domain_Kerberos { get; set; }
 
         [Required]
+        [Display(Name = "Server")]
         public string Domain_Server { get; set; }
 
         [Required]
+        [Display(Name = "Uživatel")]
         public string Bind_User { get; set; }
 
         public string Bind_Password { get; set; }
