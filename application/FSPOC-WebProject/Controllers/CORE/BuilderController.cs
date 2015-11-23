@@ -10,12 +10,12 @@ namespace FSS.Omnius.Controllers.CORE
     {
         public ActionResult Index()
         {
-            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             if (Request.IsAjaxRequest())
             {
                 return PartialView(e.Modules);
             }
-            return View("~/Views/CORE/Index.cshtml", e.Modules);
+            return View(e.Modules);
         }
 
         public ActionResult Create()
@@ -25,7 +25,7 @@ namespace FSS.Omnius.Controllers.CORE
         [HttpPost]
         public ActionResult Create(Module model)
         {
-            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             e.Modules.Add(model);
             e.SaveChanges();
 
@@ -34,7 +34,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Details(int id)
         {
-            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             
             if (Request.IsAjaxRequest())
             {
@@ -45,7 +45,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Update(int id)
         {
-            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             if (Request.IsAjaxRequest())
             {
                 return PartialView(e.Modules.SingleOrDefault(m => m.Id == id));
@@ -55,7 +55,7 @@ namespace FSS.Omnius.Controllers.CORE
         [HttpPost]
         public ActionResult Update(Module model)
         {
-            DBEntities e= (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e= (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             Module m = e.Modules.SingleOrDefault(x => x.Id == model.Id);
             if (m !=null)
             {
@@ -67,7 +67,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Entitron.Entitron).GetStaticTables();
+            DBEntities e = (new Omnius.CORE.CORE().GetModule("Entitron") as Omnius.Entitron.Entitron).GetStaticTables();
             Module module = e.Modules.SingleOrDefault(m => m.Id == id);
 
             e.Modules.Remove(module);

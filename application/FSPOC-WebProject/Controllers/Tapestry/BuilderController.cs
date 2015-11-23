@@ -7,7 +7,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         // GET: Builder
         public ActionResult Index()
         {
-            return View("~/Views/Tapestry/Index.cshtml");
+            return View();
         }
     }
 }

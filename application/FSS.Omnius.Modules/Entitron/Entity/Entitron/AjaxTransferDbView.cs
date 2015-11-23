@@ -1,8 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FSS.Omnius.Entitron.Entity.Entitron
 {
-    [Table("Entitron_AjaxTransferDbView")]
     public class AjaxTransferDbView
     {
         public int Id { get; set; }

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Tapestry
 {
     public class BlockController : Controller
     {

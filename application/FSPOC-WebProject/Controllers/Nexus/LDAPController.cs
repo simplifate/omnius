@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,8 +12,9 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: LDAP
         public ActionResult Index()
         {
+
             DBEntities e = new DBEntities();
-            return View("~/Views/Nexus/LDAP/Index.cshtml", e.Ldaps);
+				return View(e.Ldaps);
         }
 
         public ActionResult Create()

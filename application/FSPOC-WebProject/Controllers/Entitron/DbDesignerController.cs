@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSS.Omnius.Controllers.Entitron
 {
     public class DbDesignerController : Controller
     {

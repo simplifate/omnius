@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSPOC_WebProject.Controllers.Persona
 {
     public class RulesController : Controller
     {
