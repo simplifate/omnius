@@ -94,10 +94,6 @@
       <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
       <Name>FSS.Omnius.Modules</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nexus\Nexus.csproj">
-      <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>
-      <Name>Nexus</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

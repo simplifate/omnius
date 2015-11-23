@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_DbTable")]
     public class DbTable
     {
         public int Id { get; set; }
@@ -12,6 +14,7 @@ namespace FSS.Omnius.Entitron.Entity.Entitron
         public virtual ICollection<DbColumn> Columns { get; set; }
         public virtual ICollection<DbIndex> Indices { get; set; }
 
+        public int DbSchemeCommitId { get; set; }
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 
         public DbTable()

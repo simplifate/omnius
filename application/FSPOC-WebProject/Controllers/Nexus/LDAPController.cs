@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FSS.Omnius.Entitron.Entity;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -10,6 +11,13 @@ namespace FSS.Omnius.Controllers.Nexus
     {
         // GET: LDAP
         public ActionResult Index()
+        {
+
+            DBEntities e = new DBEntities();
+            return View(e.Ldaps);
+        }
+
+        public ActionResult Create()
         {
             return View();
         }

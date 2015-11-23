@@ -221,6 +221,7 @@
     <Compile Include="Controllers\Tapestry\SourceBlockController.cs" />
     <Compile Include="Controllers\Nexus\NexusController.cs" />
     <Compile Include="Controllers\Tapestry\WorkflowController.cs" />
+    <Compile Include="Controllers\Tapestry\WFDesignerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -413,6 +414,8 @@
     <Content Include="Scripts\jquery-collision.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -486,6 +489,7 @@
     <Content Include="Views\Persona\Rules\Index.cshtml" />
     <Content Include="Views\Persona\Rules\RuleDetail.cshtml" />
     <Content Include="Views\Entitron\DbDesigner\Index.cshtml" />
+    <Content Include="Views\Nexus\LDAP\Form.cshtml" />
     <None Include="Views\Tapestry\Block\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
     <Content Include="Views\CORE\Portal\Index.cshtml" />

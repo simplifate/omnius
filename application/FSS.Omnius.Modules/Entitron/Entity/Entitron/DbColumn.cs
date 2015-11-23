@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FSS.Omnius.Entitron.Entity.Entitron
 {
+    [Table("Entitron_DbColumn")]
     public class DbColumn
     {
         public int Id { get; set; }
@@ -12,6 +15,7 @@ namespace FSS.Omnius.Entitron.Entity.Entitron
         public bool ColumnLengthIsMax { get; set; }
         public string DefaultValue { get; set; }
 
+        public int DbTableId { get; set; }
         public virtual DbTable DbTable { get; set; }
     }
 }
