@@ -1,7 +1,30 @@
-﻿
+﻿@using FSS.Omnius.Entitron.Entity.Mozaic
+@model System.Data.Entity.DbSet<FSS.Omnius.Entitron.Entity.Mozaic.Template>
 @{
-    ViewBag.Title = "Index";
+    Page.Title = "Omnius Mozaic";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicModule";
 }
 
 <h2>Index</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Kategorie</th>
+            <th>Stránky</th>
+        </tr>
+    </thead>
+    <tbody>
 
+        @foreach (Template t in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(t.Name, "Detail", "TemplateCategory", new { @id = t.Id })</td>
+                <td>@t.Category.Name</td>
+                <td>@t.Pages</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Nová šablona", "Create", "Template", new { @class = "btn btn-default" })

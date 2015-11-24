@@ -30,8 +30,10 @@ namespace FSPOC_WebProject.Controllers.Mozaic
 
         public ActionResult Create()
         {
+            DBEntities e = new DBEntities();
             Template temp= new Template();
-
+            ViewBag.Categories = e.TemplateCategories.Select(x => x.Name);
+            ViewBag.Pages = e.Pages.Select(x => x.MasterTemplate);
             return View(temp);
         }
 
