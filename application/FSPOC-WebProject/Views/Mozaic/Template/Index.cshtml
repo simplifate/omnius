@@ -20,7 +20,7 @@
         @foreach (Template t in Model)
         {
             <tr>
-                <td>@Html.ActionLink(t.Name, "Detail", "TemplateCategory", new { @id = t.Id })</td>
+                <td>@Html.ActionLink(t.Name, "Detail", "Template", new { @id = t.Id })</td>
                 <td>@t.Category.Name</td>
                 <td>@t.Pages</td>
             </tr>

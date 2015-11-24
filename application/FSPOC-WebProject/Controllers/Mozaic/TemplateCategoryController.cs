@@ -50,7 +50,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
-
+            ViewBag.Children = tempCategory.Children.Select(x => x.Name);
             return View(tempCategory);
         }
 

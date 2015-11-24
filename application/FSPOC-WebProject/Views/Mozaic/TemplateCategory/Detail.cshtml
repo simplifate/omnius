@@ -14,7 +14,7 @@
         </label>
     </div>
     <div>
-        <input type="text"/>@Model.Name
+        <input type="text" />@Model.Name
     </div>
 </div>
 <div class="form-group">
@@ -24,7 +24,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Templates.Select(x=>x.Name)
+        <input type="text" />@Model.Templates.Select(x => x.Name)
     </div>
 </div>
 <div class="form-group">
@@ -44,7 +44,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Children.Select(x=>x.Name)
+        <input type="text" />@Model.Children.Select(x => x.Name)
     </div>
 </div>
-@Html.ActionLink("Zpět","Index", new {@class= "btn btn-default" })
+@Html.ActionLink("Zpět", "Index", new { @class = "btn btn-default" })

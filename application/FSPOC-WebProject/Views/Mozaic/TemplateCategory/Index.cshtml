@@ -4,25 +4,25 @@
     Page.Title = "Omnius Mozaic";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "mozaicModule";
- }
+}
 
 <h2>Index</h2>
 <table class="table table-hover">
     <thead>
-    <tr>
-        <th>Název</th>
-        <th>Šablony</th>
-    </tr>
+        <tr>
+            <th>Název</th>
+            <th>Šablony</th>
+        </tr>
     </thead>
     <tbody>
 
-    @foreach (TemplateCategory t in Model)
-    {
-        <tr>
-            <td>@Html.ActionLink(t.Name,"Detail", "TemplateCategory", new {@id=t.Id})</td>
-            <td>@t.Templates.Select(x => x.Name)</td>
-        </tr>
-    }
+        @foreach (TemplateCategory t in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(t.Name, "Detail", "TemplateCategory", new { @id = t.Id })</td>
+                <td>@t.Templates.Select(x => x.Name)</td>
+            </tr>
+        }
     </tbody>
-</table >
-@Html.ActionLink("Nová kategorie", "Create", "TemplateCategory", new {@class="btn btn-default"})
+</table>
+@Html.ActionLink("Nová kategorie", "Create", "TemplateCategory", new { @class = "btn btn-default" })

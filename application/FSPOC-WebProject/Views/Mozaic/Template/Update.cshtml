@@ -1,4 +1,4 @@
-﻿
+﻿@model FSS.Omnius.Entitron.Entity.Mozaic.Template
 @{
     Page.Title = "Omnius Mozaic";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
@@ -7,3 +7,50 @@
 
 <h2>Update</h2>
 
+@using (Html.BeginForm("Update", "Template", FormMethod.Post))
+{
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Název
+            </label>
+        </div>
+        <div>
+            @Html.TextBoxFor(x => x.Name)
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Kategorie
+            </label>
+        </div>
+        <div>
+            @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories))
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                HTML
+            </label>
+        </div>
+        <div id="children">
+            @Html.TextAreaFor(x => x.Html)
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Stránky
+            </label>
+        </div>
+        <div>
+            @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Pages))
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Upravit šablonu</button>
+        @Html.ActionLink("Zpět", "Index", new { @class = "btn btn-default" })
+    </div>
