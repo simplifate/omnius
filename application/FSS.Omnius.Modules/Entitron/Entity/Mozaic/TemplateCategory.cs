@@ -31,5 +31,6 @@ namespace FSS.Omnius.Entitron.Entity.Mozaic
         public virtual ICollection<TemplateCategory> Children { get; set; }
 
         public virtual TemplateCategory Parent { get; set; }
+
     }
 }

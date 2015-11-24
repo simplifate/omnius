@@ -49,6 +49,9 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Entitron">
+      <HintPath>..\Entitron\bin\Debug\Entitron.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -204,12 +207,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
+    <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\Tapestry\ActionHandlerController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\BlockController.cs" />
-    <Compile Include="Controllers\Mozaic\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
     <Compile Include="Controllers\Entitron\DatabaseController.cs" />
@@ -504,10 +508,17 @@
     <Content Include="Views\CORE\Builder\Update.cshtml" />
     <Content Include="Views\Tapestry\WFDesigner\Index.cshtml" />
     <Content Include="Views\Nexus\Nexus\Index.cshtml" />
+    <Content Include="Views\Mozaic\Template\Index.cshtml" />
+    <Content Include="Views\Mozaic\Template\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Template\Create.cshtml" />
+    <Content Include="Views\Mozaic\Template\Update.cshtml" />
+    <Content Include="Views\Mozaic\TemplateCategory\Index.cshtml" />
+    <Content Include="Views\Mozaic\TemplateCategory\Detail.cshtml" />
+    <Content Include="Views\Mozaic\TemplateCategory\Create.cshtml" />
+    <Content Include="Views\Mozaic\TemplateCategory\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Mozaic\Builder\" />
     <Folder Include="Views\Tapestry\ActionHandler\" />
     <Folder Include="Views\Tapestry\Workflow\" />
   </ItemGroup>
