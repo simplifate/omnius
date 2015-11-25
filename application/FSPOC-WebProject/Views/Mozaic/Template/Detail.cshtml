@@ -1,0 +1,51 @@
+﻿@model FSS.Omnius.Entitron.Entity.Mozaic.Template
+@{
+    Page.Title = "Omnius Mozaic";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicModule";
+}
+
+<h2>Detail</h2>
+
+<div class="form-group">
+    <div>
+        <label class="control-label">
+            Název
+        </label>
+    </div>
+    <div>
+        <input type="text" />@Model.Name
+    </div>
+</div>
+<div class="form-group">
+    <div>
+        <label class="control-label">
+            Kategorie
+        </label>
+    </div>
+    <div>
+        <input type="text" />@Model.Category.Name
+    </div>
+</div>
+<div class="form-group">
+    <div>
+        <label class="control-label">
+            HTML
+        </label>
+    </div>
+    <div>
+        <input type="text" />@Model.Html
+    </div>
+</div>
+<div class="form-group">
+    <div>
+        <label class="control-label">
+            Stránky
+        </label>
+    </div>
+    <div>
+        <input type="text" />@Model.Pages
+    </div>
+</div>
+
+@Html.ActionLink("Zpět", "Index", new { @class = "btn btn-default" })

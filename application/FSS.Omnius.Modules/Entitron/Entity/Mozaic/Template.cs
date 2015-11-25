@@ -30,5 +30,6 @@ namespace FSS.Omnius.Entitron.Entity.Mozaic
         public virtual ICollection<Page> Pages { get; set; }
 
         public virtual TemplateCategory Category { get; set; }
+
     }
 }
