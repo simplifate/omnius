@@ -1,8 +1,8 @@
 ﻿@model FSS.Omnius.Entitron.Entity.Nexus.Ldap
 
 
-@using (Html.BeginForm()) 
-{
+@using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post))
+{ 
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
@@ -42,9 +42,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Bind_Password, "Heslo:", htmlAttributes: new { @class = "control-label col-md-2", @type = "password" })
+            @Html.LabelFor(model => model.Bind_Password, "Heslo:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Bind_Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Bind_Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                 @Html.ValidationMessageFor(model => model.Bind_Password, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,6 +71,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @type = "hidden" } })
                 <input type="submit" value="Uložit" class="btn btn-primary" />
             </div>
         </div>

@@ -13,9 +13,8 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: LDAP
         public ActionResult Index()
         {
-
             DBEntities e = new DBEntities();
-				return View(e.Ldaps);
+            return View(e.Ldaps);
         }
 
         public ActionResult Create()
@@ -24,26 +23,59 @@ namespace FSS.Omnius.Controllers.Nexus
         }
 
         [HttpPost]
-        public ActionResult Create(Ldap model)
+        public ActionResult Save(Ldap model)
         {
-            // Záznam již existuje a proto nepožadujeme heslo
-            if(!model.Id.Equals(null))
+            DBEntities e = new DBEntities();
+            if (ModelState.IsValid)
             {
-                ModelState["Bind_Password"].Errors.Clear();
-            }
+                // Záznam již existuje - pouze upravujeme
+                if (!model.Id.Equals(null))
+                {
+                    Ldap row = e.Ldaps.Single(m => m.Id == model.Id);
+                    row.Domain_Ntlm = model.Domain_Ntlm;
+                    row.Domain_Kerberos = model.Domain_Kerberos;
+                    row.Domain_Server = model.Domain_Server;
+                    row.Bind_User = model.Bind_User;
+                    row.Bind_Password = model.Bind_Password.Length > 0 ? model.Bind_Password : row.Bind_Password;
+                    row.Use_SSL = model.Use_SSL;
+                    row.Active = model.Active;
 
-            if(ModelState.IsValid)
-            {
-                DBEntities e = new DBEntities();
-                e.Ldaps.Add(model);
-                e.SaveChanges();
-
-                return RedirectToAction("Index");
+                    e.SaveChanges();
+                }
+                else
+                {
+                    e.Ldaps.Add(model);
+                    e.SaveChanges();
+                }
+                return RedirectToRoute("Nexus", new { @action = "Index" });
             }
             else
             {
-                return PartialView("~/Views/Nexus/LDAP/Form.cshtml");
+                return View("~/Views/Nexus/LDAP/Form.cshtml", model);
             }
+        }
+
+        public ActionResult Detail(int id)
+        {
+            DBEntities e = new DBEntities();
+            return View("~/Views/Nexus/LDAP/Detail.cshtml", e.Ldaps.Single(m => m.Id == id));
+        }
+
+        public ActionResult Edit(int id)
+        {
+            DBEntities e = new DBEntities();
+            return View("~/Views/Nexus/LDAP/Form.cshtml", e.Ldaps.Single(m => m.Id == id));
+        }
+
+        public ActionResult Delete(int id)
+        {
+            DBEntities e = new DBEntities();
+            Ldap row = e.Ldaps.Single(m => m.Id == id);
+
+            e.Ldaps.Remove(row);
+            e.SaveChanges();
+
+            return RedirectToRoute("Nexus", new { @action = "Index" });
         }
     }
 }

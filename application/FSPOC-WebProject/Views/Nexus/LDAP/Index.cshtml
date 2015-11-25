@@ -53,6 +53,10 @@
     }
     .top-panel table th, .top-panel table td {
         color: #fff;
+        vertical-align: middle !important;
+    }
+    td.table-row-action {
+        white-space: nowrap;
     }
 </style>
 
@@ -80,6 +84,14 @@
     </div>
     <div class="top-panel-content">
         <table class="table table-bordered table-responsive">
+            <colgroup>
+                <col width="50" />
+                <col />
+                <col />
+                <col width="80" />
+                <col width="80" />
+                <col width="60" />
+            </colgroup>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -99,12 +111,12 @@
                         <td>@l.Id</td>
                         <td>@l.Domain_Ntlm</td>
                         <td>@l.Domain_Server</td>
-                        <td>@(l.Use_SSL == true ? "ano" : "ne")</td>
-                        <td>@(l.Active == true ? "ano" : "ne")</td>
-                        <td>
-                            @Ajax.ActionLink("", "Detail", new { @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye btn btn-default", @title = "Detail" })
-                            @Ajax.ActionLink("", "Edit", new { @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil btn btn-primary", @title = "Upravit" })
-                            @Html.ActionLink("", "Delete", new { @id = l.Id }, new { @class = "fa fa-times btn btn-danger", @title = "Smazat" });
+                        <td class="text-center">@(l.Use_SSL == true ? "ano" : "ne")</td>
+                        <td class="text-center">@(l.Active == true ? "ano" : "ne")</td>
+                        <td class="table-row-action">
+                            @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye btn btn-default", @title = "Detail" })
+                            @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil btn btn-primary", @title = "Upravit" })
+                            @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = l.Id }, new { @class = "fa fa-times btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
                         </td>
                     </tr>
                 }
