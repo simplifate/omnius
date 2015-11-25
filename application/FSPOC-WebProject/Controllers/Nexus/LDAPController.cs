@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Entitron.Entity.Nexus;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -19,10 +20,30 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Create()
         {
-            if (Request.IsAjaxRequest())
-                return PartialView("~/Views/Nexus/LDAP/Form.cshtml");
+            return View("~/Views/Nexus/LDAP/Form.cshtml");
+        }
+
+        [HttpPost]
+        public ActionResult Create(Ldap model)
+        {
+            // Záznam již existuje a proto nepožadujeme heslo
+            if(!model.Id.Equals(null))
+            {
+                ModelState["Bind_Password"].Errors.Clear();
+            }
+
+            if(ModelState.IsValid)
+            {
+                DBEntities e = new DBEntities();
+                e.Ldaps.Add(model);
+                e.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
             else
-                return View("~/Views/Nexus/LDAP/Form.cshtml");
+            {
+                return PartialView("~/Views/Nexus/LDAP/Form.cshtml");
+            }
         }
     }
 }

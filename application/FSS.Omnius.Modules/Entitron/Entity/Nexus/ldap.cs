@@ -25,6 +25,8 @@ namespace FSS.Omnius.Entitron.Entity.Nexus
         [Display(Name = "Uživatel")]
         public string Bind_User { get; set; }
 
+        [Required]
+        [Display(Name = "Heslo")]
         public string Bind_Password { get; set; }
 
         public bool Active { get; set; }
