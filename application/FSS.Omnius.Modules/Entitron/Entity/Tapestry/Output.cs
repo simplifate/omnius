@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FSS.Omnius.Entitron.Entity.Tapestry
 {
+    [Table("Tapestry_Output")]
     public class Output
     {
         public int Id { get; set; }

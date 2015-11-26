@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSS.Omnius.Entitron;
 using FSS.Omnius.Entitron.Entity.CORE;
 using FSS.Omnius.Entitron.Entity.Persona;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,7 +15,7 @@ namespace FSS.Omnius.CORE
         private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
 
         private RunableModule _activeModule;
-        public Entitron.Entity.Persona.User ActiveUser { get; set; }
+        public User ActiveUser { get; set; }
         public CORE()
         {
             Name = "CORE";
@@ -49,24 +46,80 @@ namespace FSS.Omnius.CORE
 
             _activeModule.run(url);
         }
-
-        public Module GetModule(string moduleName)
+        
+        public RunableModule GetRunableModule(string moduleName)
         {
+            // not enabled
             if (!isModuleEnabled(moduleName))
                 throw new ModuleNotFoundOrEnabledException(moduleName);
 
+            // create new instance
             if (!_modules.ContainsKey(moduleName))
-                _modules[moduleName] = GetNewModuleInstance(moduleName);
+            {
+                switch (moduleName)
+                {
+                    case "Tapestry":
+                        _modules["Tapestry"] = new Tapestry.Tapestry(this);
+                        break;
+                    default:
+                        throw new ModuleNotFoundOrEnabledException(moduleName);
+                }
+            }
 
-            return _modules[moduleName];
+            // return
+            return (RunableModule)_modules[moduleName];
         }
-        public RunableModule GetRunableModule(string moduleName)
+        public Entitron.Entitron Entitron
         {
-            Module module = GetModule(moduleName);
-            if (module is RunableModule)
-                return (RunableModule)module;
+            get
+            {
+                if (!isModuleEnabled("Entitron"))
+                    throw new ModuleNotFoundOrEnabledException("Entitron");
 
-            throw new ModuleNotFoundOrEnabledException(moduleName);
+                if (!_modules.ContainsKey("Entitron"))
+                    _modules["Entitron"] = new Entitron.Entitron(this);
+
+                return (Entitron.Entitron)_modules["Entitron"];
+            }
+        }
+        public Mozaic.Mozaic Mozaic
+        {
+            get
+            {
+                if (!isModuleEnabled("Mozaic"))
+                    throw new ModuleNotFoundOrEnabledException("Mozaic");
+
+                if (!_modules.ContainsKey("Mozaic"))
+                    _modules["Mozaic"] = new Mozaic.Mozaic(this);
+
+                return (Mozaic.Mozaic)_modules["Mozaic"];
+            }
+        }
+        public Tapestry.Tapestry Tapestry
+        {
+            get
+            {
+                if (!isModuleEnabled("Tapestry"))
+                    throw new ModuleNotFoundOrEnabledException("Tapestry");
+
+                if (!_modules.ContainsKey("Tapestry"))
+                    _modules["Tapestry"] = new Tapestry.Tapestry(this);
+
+                return (Tapestry.Tapestry)_modules["Tapestry"];
+            }
+        }
+        public Persona.Persona Persona
+        {
+            get
+            {
+                if (!isModuleEnabled("Persona"))
+                    throw new ModuleNotFoundOrEnabledException("Persona");
+
+                if (!_modules.ContainsKey("Persona"))
+                    _modules["Persona"] = new Persona.Persona(this);
+
+                return (Persona.Persona)_modules["Persona"];
+            }
         }
 
         private bool isModuleEnabled(string moduleName)
@@ -75,24 +128,6 @@ namespace FSS.Omnius.CORE
                 _enabledModules = (_modules["Entitron"] as Entitron.Entitron).GetStaticTables().Modules.Where(m => m.IsEnabled);
 
             return _enabledModules.Any(m => m.Name == moduleName);
-        }
-        private Module GetNewModuleInstance(string moduleName)
-        {
-            switch (moduleName)
-            {
-                case "CORE":
-                    return this;
-                case "Entitron":
-                    return new Entitron.Entitron(this);
-                case "Mozaic":
-                    return new Mozaic.Mozaic(this);
-                case "Tapestry":
-                    return new Tapestry.Tapestry(this);
-                case "Persona":
-                    return new Persona.Persona(this);
-                default:
-                    throw new ModuleNotFoundOrEnabledException(moduleName);
-            }
         }
     }
 }

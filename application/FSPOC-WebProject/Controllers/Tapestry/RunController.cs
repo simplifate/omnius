@@ -10,13 +10,12 @@ namespace FSS.Omnius.Controllers.Tapestry
 {
     public class RunController : Controller
     {
-        public string Index(string url)
+        public string Index(int appId, int actionRuleId, int modelId)
         {
-            Omnius.CORE.CORE core = new Omnius.CORE.CORE();
-            Omnius.Tapestry.Tapestry tapestry = (Omnius.Tapestry.Tapestry)core.GetModule("Tapestry");
-            tapestry.run(url);
+            var core = new Omnius.CORE.CORE();
+            core.Tapestry.run(appId, actionRuleId, modelId);
 
-            return tapestry.GetHtmlOutput();
+            return core.Tapestry.GetHtmlOutput();
         }
     }
 }

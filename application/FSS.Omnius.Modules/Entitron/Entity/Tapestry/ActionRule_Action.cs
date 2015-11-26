@@ -5,7 +5,7 @@ using System.Data.Entity.Spatial;
 
 namespace FSS.Omnius.Entitron.Entity.Tapestry
 {
-    [Table("Tapestry_ActionRole_Action")]
+    [Table("Tapestry_Run_ActionRule_Action")]
     public partial class ActionRule_Action
     {
         [Key]
@@ -21,10 +21,11 @@ namespace FSS.Omnius.Entitron.Entity.Tapestry
         public int Order { get; set; }
 
         [StringLength(200)]
-        public string ResultVariables { get; set; }
+        public string InputVariablesMapping { get; set; } // target=source;c=d
+
+        [StringLength(200)]
+        public string OutputVariablesMapping { get; set; } // target=source;c=d
 
         public virtual ActionRule ActionRule { get; set; }
-
-        public virtual Action Action { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace FSS.Omnius.BussinesObjects.Service
 {
     public class ExecuteActionService : IExecuteActionService
     {
-        public ExecuteActionService(IRepository<ActionActionRule> actionActionRuleRepository,
+        public ExecuteActionService(IRepository<ActionRule_Action> actionActionRuleRepository,
             IFactoryAction factoryAction)
         {
             if (actionActionRuleRepository == null) throw new ArgumentNullException(nameof(actionActionRuleRepository));
@@ -19,7 +19,7 @@ namespace FSS.Omnius.BussinesObjects.Service
             FactoryAction              = factoryAction;
         }
 
-        private IRepository<ActionActionRule> ActionActionRuleRepository { get; }
+        private IRepository<ActionRule_Action> ActionActionRuleRepository { get; }
         private IFactoryAction FactoryAction { get; set; }
 
         public IEnumerable<ResultAction> RunAction(int actionRuleId,object sourceAction)
@@ -42,9 +42,9 @@ namespace FSS.Omnius.BussinesObjects.Service
                 var actionActionRules = ActionActionRuleRepository.Get(a => a.ActionRuleId == actionRuleId,
                     q => q.OrderBy(a => a.Order), "Action");
 
-                listResult.AddRange(actionActionRules
-                    .Select(actionActionRule => FactoryAction.GetAction(actionActionRule.Action.IdentifierAction))
-                    .Select(action => action.Run(sourceAction)).Where(resultAction => resultAction != null));
+                //listResult.AddRange(actionActionRules
+                //    .Select(actionActionRule => FactoryAction.GetAction(actionActionRule.Action.IdentifierAction))
+                //    .Select(action => action.Run(sourceAction)).Where(resultAction => resultAction != null));
 
             }
             catch (Exception e)

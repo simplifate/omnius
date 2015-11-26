@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-namespace FSS.Omnius.Entitron.Entity.Master
+namespace FSS.Omnius.Entitron.Entity.Persona
 {
-    using Persona;
+    using Master;
 
     [Table("Persona_AppRights")]
     public partial class AppRight

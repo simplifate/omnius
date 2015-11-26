@@ -30,11 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -64,7 +66,7 @@
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
-    <Compile Include="Entitron\Entity\Master\AppRight.cs" />
+    <Compile Include="Entitron\Entity\Persona\AppRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AttributeRole.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
@@ -81,9 +83,6 @@
     <Compile Include="Entitron\Entity\Nexus\ldap.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Page.cs" />
     <Compile Include="Entitron\Entity\Entitron\Table.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\Action.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\ActionActionRule.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\ActionCategory.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Activity.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActivityTypes.cs" />
@@ -94,13 +93,14 @@
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferWorkflowSate.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Input.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Output.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\WF.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Workflow.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkflowCommit.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Template.cs" />
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
     <Compile Include="Entitron\Entity\Persona\User.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
-    <Compile Include="Entitron\extend.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\WFType.cs" />
+    <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
     <Compile Include="Entitron\Sql\Condition_Operators.cs" />
@@ -163,7 +163,14 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Action.cs" />
+    <Compile Include="Tapestry\ActionRule_Action.cs" />
+    <Compile Include="Tapestry\Actions\ActionRepository.cs" />
+    <Compile Include="Tapestry\ActionResult.cs" />
     <Compile Include="Tapestry\ActionRule.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
+    <Compile Include="Tapestry\Block.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +181,10 @@
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
       <Name>ND.Logger</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

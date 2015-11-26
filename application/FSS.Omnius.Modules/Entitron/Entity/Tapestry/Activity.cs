@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Entitron.Entity.Tapestry
 {
+    [Table("Tapestry_Activity")]
     public class Activity
     {
         public int Id { get; set; }

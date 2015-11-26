@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Entitron.Entity.Tapestry
 {
+    [Table("Tapestry_WorkFlowCommit")]
     public class WorkflowCommit
     {
         public int Id { get; set; }

@@ -22,16 +22,12 @@ namespace FSS.Omnius.Mozaic
 
         public string Render(int pageId, DBItem model)
         {
-            Entitron.Entitron entitron = (Entitron.Entitron)_CORE.GetModule("Entitron");
-            if (entitron == null)
-                throw new ModuleNotFoundOrEnabledException("Entitron");
-
-            Page page = entitron.GetStaticTables().Pages.FirstOrDefault(p => p.Id == pageId);
+            Page page = _CORE.Entitron.GetStaticTables().Pages.FirstOrDefault(p => p.Id == pageId);
 
             if (page == null)
                 return "Page not found";
 
-            return page.Render(model, entitron.GetStaticTables());
+            return page.Render(model, _CORE.Entitron.GetStaticTables());
         }
     }
 }

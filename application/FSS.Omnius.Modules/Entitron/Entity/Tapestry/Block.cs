@@ -8,7 +8,7 @@ namespace FSS.Omnius.Entitron.Entity.Tapestry
 {
     using Mozaic;
 
-    [Table("Tapestry_Blocks")]
+    [Table("Tapestry_Run_Blocks")]
     public partial class Block
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -44,8 +44,8 @@ namespace FSS.Omnius.Entitron.Entity.Tapestry
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeRole> AttributeRoles { get; set; }
 
-        public virtual Workflow WorkFlow { get; set; }
+        public virtual WF WorkFlow { get; set; }
 
-        public virtual Workflow InitForWorkFlow { get; set; }
+        public virtual WF InitForWorkFlow { get; set; }
     }
 }

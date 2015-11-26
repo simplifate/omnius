@@ -24,14 +24,13 @@ namespace FSS.Omnius.Entitron.Entity
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
-        public virtual DbSet<ActionCategory> ActionCategories { get; set; }
         public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
         public virtual DbSet<ActionRule> ActionRules { get; set; }
-        public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRole> AttributeRoles { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
-        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
+        public virtual DbSet<WF> WF { get; set; }
+        public virtual DbSet<WFType> WFTypes { get; set; }
         public virtual DbSet<Workflow> WorkFlows { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
@@ -42,7 +41,6 @@ namespace FSS.Omnius.Entitron.Entity
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<WorkflowCommit> WorkflowCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
-        public virtual DbSet<ActionActionRule> ActionActionRules { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
@@ -83,7 +81,7 @@ namespace FSS.Omnius.Entitron.Entity
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<ActionRule>()
-                .HasMany(e => e.ActionActionRules)
+                .HasMany(e => e.ActionRule_Actions)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
 
@@ -113,18 +111,18 @@ namespace FSS.Omnius.Entitron.Entity
                 .HasOptional(e => e.InitForWorkFlow)
                 .WithRequired(e => e.InitBlock);
 
-            modelBuilder.Entity<WorkFlowType>()
+            modelBuilder.Entity<WFType>()
                 .HasMany(e => e.WorkFlows)
                 .WithRequired(e => e.Type)
                 .HasForeignKey(e => e.TypeId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Workflow>()
+            modelBuilder.Entity<WF>()
                 .HasMany(e => e.Blocks)
                 .WithRequired(e => e.WorkFlow)
                 .HasForeignKey(e => e.WorkFlowId);
 
-            modelBuilder.Entity<Workflow>()
+            modelBuilder.Entity<WF>()
                 .HasMany(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
@@ -144,11 +142,6 @@ namespace FSS.Omnius.Entitron.Entity
                 .HasRequired(e => e.Group)
                 .WithMany(e => e.ActionRights)
                 .HasForeignKey(e => e.GroupId);
-
-            modelBuilder.Entity<ActionRight>()
-                .HasRequired(e => e.Action)
-                .WithMany(e => e.Rigths)
-                .HasForeignKey(e => e.ActionId);
 
             modelBuilder.Entity<AppRight>()
                 .HasRequired(e => e.Group)
@@ -197,17 +190,9 @@ namespace FSS.Omnius.Entitron.Entity
                         .WithRequired(s => s.DbSchemeCommit);
 
             //Actions
-            modelBuilder.Entity<ActionActionRule>()
+            modelBuilder.Entity<ActionRule_Action>()
                 .HasRequired(a => a.ActionRule)
-                .WithMany(a => a.ActionActionRules);
-
-            modelBuilder.Entity<ActionActionRule>()
-                .HasRequired(a => a.Action)
-                .WithMany(a => a.ActionActionRules);
-
-            modelBuilder.Entity<ActionCategory>()
-                .HasMany(a => a.Actions)
-                .WithRequired(a => a.ActionCategory);
+                .WithMany(a => a.ActionRule_Actions);
 
             //Nexus
             modelBuilder.Entity<Ldap>();

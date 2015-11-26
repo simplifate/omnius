@@ -18,6 +18,5 @@ namespace FSS.Omnius.Entitron.Entity.Persona
         public bool Executable { get; set; }
         
         public virtual Group Group { get; set; }
-        public virtual Action Action { get; set; }
     }
 }

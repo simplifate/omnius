@@ -16,7 +16,7 @@ namespace FSS.Omnius.BussinesObjects.Service
             List<DBTable> entitronTables = new List<DBTable>();
 
             CORE.CORE core = new CORE.CORE();
-            Entitron.Entitron e = (Entitron.Entitron)core.GetModule("Entitron");
+            Entitron.Entitron e = core.Entitron;
             e.Application = new DBApp() { Name = "EntitronTest1", DisplayName = "EntitronTest1" };
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)

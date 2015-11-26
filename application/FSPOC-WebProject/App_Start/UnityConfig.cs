@@ -29,7 +29,7 @@ namespace FSPOC_WebProject
             container.RegisterType<IWorkflowService, WorkflowService>();
             container.RegisterType<IRepository<Workflow>, DefaultEFRepository<Workflow>>();
             container.RegisterType<IRepository<DbSchemeCommit>, DefaultEFRepository<DbSchemeCommit>>();
-            container.RegisterType<IRepository<ActionActionRule>, DefaultEFRepository<ActionActionRule>>();
+            container.RegisterType<IRepository<ActionRule_Action>, DefaultEFRepository<ActionRule_Action>>();
             container.RegisterType<IDatabaseGenerateService, DatabaseGenerateService>();
             container.RegisterType<IBackupGeneratorService, BackupGeneratorService>();
             container.RegisterType<IActionService, ActionService>(new ContainerControlledLifetimeManager());

@@ -209,6 +209,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
+    <Compile Include="Controllers\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\Tapestry\ActionHandlerController.cs" />
@@ -229,7 +230,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActionModel.cs" />
     <Compile Include="Models\AppTile.cs" />
@@ -495,6 +495,7 @@
     <Content Include="Views\Entitron\DbDesigner\Index.cshtml" />
     <Content Include="Views\Nexus\LDAP\Form.cshtml" />
     <Content Include="Views\Nexus\LDAP\Detail.cshtml" />
+    <Content Include="Views\Tapestry\Overview\index.cshtml" />
     <None Include="Views\Tapestry\Block\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
     <Content Include="Views\CORE\Portal\Index.cshtml" />

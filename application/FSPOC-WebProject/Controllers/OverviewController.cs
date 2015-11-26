@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSPOC_WebProject.Controllers.Tapestry
 {
-    public class OverviewController :Controller
+    public class OverviewController : Controller
     {
         public ActionResult Index()
         {

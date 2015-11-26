@@ -8,6 +8,7 @@ namespace FSS.Omnius.Entitron.Entity.Master
     using Tapestry;
     using Mozaic;
     using Entitron;
+    using Persona;
 
     [Table("Master_Applications")]
     public partial class Application
@@ -21,7 +22,7 @@ namespace FSS.Omnius.Entitron.Entity.Master
             TitleFontSize = 20;
 
             Pages = new HashSet<Page>();
-            WorkFlows = new HashSet<Workflow>();
+            WorkFlows = new HashSet<WF>();
             Tables = new HashSet<Table>();
         }
 
@@ -44,7 +45,7 @@ namespace FSS.Omnius.Entitron.Entity.Master
         public virtual ICollection<Page> Pages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Workflow> WorkFlows { get; set; }
+        public virtual ICollection<WF> WorkFlows { get; set; }
 
         public virtual ICollection<AppRight> Rights { get; set; }
 
