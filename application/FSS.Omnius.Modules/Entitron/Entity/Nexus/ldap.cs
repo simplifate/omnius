@@ -36,5 +36,8 @@ namespace FSS.Omnius.Entitron.Entity.Nexus
 
         [Display(Name = "Použít SSL")]
         public bool Use_SSL { get; set; }
+
+        [Display(Name = "Výchozí")]
+        public bool Is_Default { get; set; }
     }
 }
