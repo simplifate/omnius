@@ -13,6 +13,7 @@
             Children = new HashSet<WF>();
         }
 
+        public int Id { get; set; }
         public int InitBlockId { get; set; }
         public int? ParentId { get; set; }
         public int ApplicationId { get; set; }

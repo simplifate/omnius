@@ -8,7 +8,7 @@ $(function () {
             chooseTableDialog.dialog("open");
         });
         $("#headerOverview").on("click", function () {
-            window.location.href = "/overview";
+            window.location.href = "/Tapestry/Overview";
         });
         $("#headerClearButton").on("click", function () {
             $("#rulesPanel .rule").remove();
