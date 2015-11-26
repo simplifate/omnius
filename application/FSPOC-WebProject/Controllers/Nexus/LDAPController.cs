@@ -73,7 +73,7 @@ namespace FSS.Omnius.Controllers.Nexus
             Ldap row = e.Ldaps.Single(m => m.Id == id);
 
             e.Ldaps.Remove(row);
-            e.SaveChanges();
+            e.SaveChanges(); 
 
             return RedirectToRoute("Nexus", new { @action = "Index" });
         }
