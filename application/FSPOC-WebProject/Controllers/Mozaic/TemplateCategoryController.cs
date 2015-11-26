@@ -23,24 +23,34 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
-            ViewBag.Categories = e.TemplateCategories.Select(x=>x.Name);
 
             return View(tempCategory);
         }
 
         public ActionResult Create()
         {
+            DBEntities e = new DBEntities();
             TemplateCategory tempCategory = new TemplateCategory();
+
+            List<string> categories = new List<string>();
+            categories = e.TemplateCategories.Select(x => x.Name).ToList();
+            categories.Add("");
+
+            List<string> children = new List<string>();
+            children = tempCategory.Children.Select(x => x.Name).ToList();
+            children.Add("");
+
+            ViewBag.Categories = categories;
+            ViewBag.Children = children;
 
             return View(tempCategory);
         }
-
+        [HttpPost]
         public ActionResult Create(TemplateCategory model)
         {
             DBEntities e = new DBEntities();
-            TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == model.Id);
 
-            e.TemplateCategories.Add(tempCategory);
+            e.TemplateCategories.Add(model);
             e.SaveChanges();
 
             return RedirectToAction("Index");
@@ -50,10 +60,20 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
-            ViewBag.Children = tempCategory.Children.Select(x => x.Name);
+
+            List<string> categories= new List<string>();
+            categories = e.TemplateCategories.Select(x => x.Name).ToList();
+            categories.Add("");
+            List<string> children = new List<string>();
+            children = tempCategory.Children.Select(x => x.Name).ToList();
+            children.Add("");
+
+            ViewBag.Categories = categories;
+            ViewBag.Children = children;
             return View(tempCategory);
         }
 
+        [HttpPost]
         public ActionResult Update(TemplateCategory model)
         {
             DBEntities e = new DBEntities();

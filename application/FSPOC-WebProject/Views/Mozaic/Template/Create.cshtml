@@ -5,53 +5,131 @@
     Page.ModuleClass = "mozaicModule";
 }
 
-<h2>Create</h2>
+<script type="text/javascript">
+    $('#addChildren').onclick(function () {
+        $('#children').clone(true);
+    })
+</script>
 
-@using (Html.BeginForm("Create", "Template", FormMethod.Post))
-{
-    <div class="form-group">
-        <div>
-            <label class="control-label">
-                Název
-            </label>
-        </div>
-        <div>
-            @Html.TextBoxFor(x => x.Name)
-        </div>
-    </div>
-    <div class="form-group">
-        <div>
-            <label class="control-label">
-                Kategorie
-            </label>
-        </div>
-        <div>
-            @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories))
-        </div>
-    </div>
-    <div class="form-group">
-        <div>
-            <label class="control-label">
-                HTML
-            </label>
-        </div>
-        <div id="children">
-            @Html.TextAreaFor(x => x.Html)
-        </div>
-    </div>
-    <div class="form-group">
-        <div>
-            <label class="control-label">
-                Stránky
-            </label>
-        </div>
-        <div>
-            @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Pages))
-        </div>
-    </div>
+<style type="text/css">
+    .top-panel {
+        position: relative;
+        top: 75px;
+        margin-left: 225px;
+        padding-bottom: 20px;
+        background: #3a3a3a;
+        overflow: hidden;
+    }
 
-    <div>
-        <button type="submit" class="btn btn-primary">Vytvořit šablonu</button>
-        @Html.ActionLink("Zpět", "Index", new { @class = "btn btn-default" })
+    .top-panel-content {
+        position: relative;
+        z-index: 2;
+        padding: 1.5em 52px;
+    }
+
+    .bottom-panel {
+        margin-left: 225px;
+        padding: 0px 52px;
+        position: relative;
+        top: 75px;
+    }
+
+    .panelLabel {
+        padding: 25px 52px;
+        color: #fff;
+        font-size: 18px;
+        font-family: FatTec;
+        float: left;
+        width: 420px;
+    }
+
+    .backgroundDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 0;
+    }
+
+    .decorationWatcheye {
+        position: absolute;
+        left: 19px;
+        top: 56px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .tabs {
+        position: relative;
+        z-index: 2;
+        padding: 25px 55px;
+    }
+
+    .top-panel table th, .top-panel table td {
+        color: #fff;
+    }
+
+    .control-label {
+        color: whitesmoke;
+    }
+</style>
+
+<div class="top-panel">
+    <div class="panelLabel">Nová kategorie</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="/Content/images/watcheye_small.png">
+    <div class="top-panel-content">
+
+        @using (Html.BeginForm("Create", "Template", FormMethod.Post))
+        {
+            <div class="form-group col-sm-12" style="padding-top: 10px">
+                <div>
+                    <label class="control-label col-sm-2">
+                        Název
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(x => x.Name)
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div>
+                    <label class="control-label col-sm-2">
+                        Kategorie
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories))
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div>
+                    <label class="control-label col-sm-2">
+                        HTML
+                    </label>
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextAreaFor(x => x.Html, new { @style = "width: 100%", @rows = "5" })
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div>
+                    <label class="control-label col-sm-2">
+                        Stránky
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Pages))
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">Vytvořit šablonu</button>
+                @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+            </div>
+        }
     </div>
-}
+</div>

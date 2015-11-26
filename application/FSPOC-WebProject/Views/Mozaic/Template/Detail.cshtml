@@ -1,11 +1,4 @@
 ﻿@model FSS.Omnius.Entitron.Entity.Mozaic.Template
-@{
-    Page.Title = "Omnius Mozaic";
-    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
-    Page.ModuleClass = "mozaicModule";
-}
-
-<h2>Detail</h2>
 
 <div class="form-group">
     <div>
@@ -14,7 +7,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Name
+        <p>@Model.Name</p>
     </div>
 </div>
 <div class="form-group">
@@ -24,7 +17,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Category.Name
+        <p>@Model.Category.Name</p>
     </div>
 </div>
 <div class="form-group">
@@ -34,7 +27,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Html
+        <p>@Model.Html</p>
     </div>
 </div>
 <div class="form-group">
@@ -44,8 +37,7 @@
         </label>
     </div>
     <div>
-        <input type="text" />@Model.Pages
+        <p>@Model.Pages</p>
     </div>
 </div>
 
-@Html.ActionLink("Zpět", "Index", new { @class = "btn btn-default" })

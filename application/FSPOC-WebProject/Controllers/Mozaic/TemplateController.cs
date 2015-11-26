@@ -11,19 +11,17 @@ namespace FSPOC_WebProject.Controllers.Mozaic
     public class TemplateController : Controller
     {
         // GET: Template
-        public ActionResult Index(int idCat)
-        { 
-            DBEntities e =  new DBEntities();
-            TemplateCategory tempCat = e.TemplateCategories.SingleOrDefault(x=>x.Id==idCat);
-            
-            return View(tempCat.Templates);
+        public ActionResult Index()
+        {             
+            DBEntities e =new DBEntities();
+
+            return View(e.Templates);
         }
 
-        public ActionResult Detail(int idCat, int idTemp)
+        public ActionResult Detail(int id)
         {
             DBEntities e = new DBEntities();
-            TemplateCategory tempCat = e.TemplateCategories.SingleOrDefault(x => x.Id == idCat);
-            Template temp = tempCat.Templates.SingleOrDefault(x => x.Id == idTemp); ;
+            Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
 
             return View(temp);
         }
@@ -32,23 +30,34 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             Template temp= new Template();
-            ViewBag.Categories = e.TemplateCategories.Select(x => x.Name);
-            ViewBag.Pages = e.Pages.Select(x => x.MasterTemplate);
+
+            List<string> categories = new List<string>();
+            categories = e.TemplateCategories.Select(x => x.Name).ToList();
+            categories.Add("");
+
+            List<int> pages = new List<int>();
+            pages = e.Pages.Select(x=>x.Id).ToList();
+            pages.Add(-1);
+
+            ViewBag.Categories = categories;
+            ViewBag.Pages = pages;
+
             return View(temp);
         }
-
-        public ActionResult Create(Template model,int idCat)
+        [HttpPost]
+        public ActionResult Create(Template model)
         {
             DBEntities e = new DBEntities();
-            TemplateCategory tempCat = e.TemplateCategories.SingleOrDefault(x => x.Id == idCat);
-            foreach (Template t in tempCat.Templates)
+            foreach (Template t in e.Templates)
             {
                 if (t.Name == model.Name)
                 {
-                    //todo return some error message
+                    TempData["error"] = "Šablona s názvem " + model.Name + " už existuje.";
+                    return RedirectToAction("Index");
                 }
             }
-            tempCat.Templates.Add(model);
+           
+            e.Templates.Add(model);
             e.SaveChanges();
 
             return RedirectToAction("Index");
@@ -56,32 +65,41 @@ namespace FSPOC_WebProject.Controllers.Mozaic
 
         public ActionResult Update(int id)
         {
-            TemplateCategory tempCategory = new TemplateCategory();
-            Template temp = tempCategory.Templates.SingleOrDefault(x => x.Id == id);
+            DBEntities e = new DBEntities();
+            Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
+
+            List<string> categories = new List<string>();
+            categories = e.TemplateCategories.Select(x => x.Name).ToList();
+            categories.Add("");
+
+            List<int> pages = new List<int>();
+            pages = e.Pages.Select(x => x.Id).ToList();
+            pages.Add(-1);
+
+            ViewBag.Categories = categories;
+            ViewBag.Pages = pages;
 
             return View(temp);
         }
-
-        public ActionResult Update(Template model, int idCat)
+        [HttpPost]
+        public ActionResult Update(Template model)
         {
             DBEntities e = new DBEntities();
-            TemplateCategory tempCat = e.TemplateCategories.SingleOrDefault(x => x.Id == idCat);
-            Template temp = tempCat.Templates.SingleOrDefault(x => x.Id == model.Id);
+            Template temp = e.Templates.SingleOrDefault(x => x.Id == model.Id);
 
-            tempCat.Templates.Remove(temp);
-            tempCat.Templates.Add(model);
+            e.Templates.Remove(temp);
+            e.Templates.Add(model);
             e.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int idTemp, int idCat)
+        public ActionResult Delete(int id)
         {
             DBEntities e = new DBEntities();
-            TemplateCategory tempCat = e.TemplateCategories.SingleOrDefault(x => x.Id == idCat);
-            Template temp = tempCat.Templates.SingleOrDefault(x => x.Id == idTemp); ;
+            Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
 
-            tempCat.Templates.Remove(temp);
+            e.Templates.Remove(temp);
             e.SaveChanges();
 
             return RedirectToAction("Index");
