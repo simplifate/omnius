@@ -9,6 +9,10 @@
         <div class="headerItem" id="headerBlockName">Log In Screen</div>
         <div class="headerItem" id="headerTableName">User</div>
         <div class="headerItem" id="headerOverview">Return to Overview</div>
+        <div class="headerItem" id="headerSaveButton">Save</div>
+        <div class="headerItem" id="headerLoadButton">Load</div>
+        <div class="headerItem" id="headerHistoryButton">History</div>
+        <div class="headerItem" id="headerClearButton">Clear</div>
     </div>
     <div id="attributesPanel" class="menuPanel">
         <i class="fa fa-database" style="margin-right: 6px;"></i>Attributes<br />
@@ -166,6 +170,27 @@
         <fieldset>
             <label for="rule-name">Choose a new name</label>
             <input type="text" name="rule-name" id="rule-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="history-dialog" title="Load from history">
+    <table id="commit-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="save-dialog" title="Save scheme">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
 </div>

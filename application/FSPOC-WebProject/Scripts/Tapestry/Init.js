@@ -1,4 +1,4 @@
-﻿var ZoomFactor = 1.0;
+var ZoomFactor = 1.0;
 $(function () {
     if ($("body.tapestryModule").length) {
         $("#headerBlockName").on("click", function () {
@@ -9,6 +9,15 @@ $(function () {
         });
         $("#headerOverview").on("click", function () {
             window.location.href = "/Tapestry/Overview";
+        });
+	$("#headerHistoryButton").on("click", function () {
+            historyDialog.dialog("open");
+        });
+        $("#headerSaveButton").on("click", function () {
+            saveDialog.dialog("open");
+        });
+        $("#headerLoadButton").on("click", function () {
+            LoadBlock();
         });
         $("#headerClearButton").on("click", function () {
             $("#rulesPanel .rule").remove();

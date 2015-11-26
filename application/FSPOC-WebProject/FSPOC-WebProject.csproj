@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -214,6 +214,7 @@
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\Tapestry\ActionHandlerController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
+    <Compile Include="Controllers\TapestryApiController.cs" />
     <Compile Include="Controllers\Tapestry\BlockController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
@@ -444,6 +445,8 @@
     <Content Include="Scripts\Tapestry\Dialogs.js" />
     <Content Include="Scripts\Tapestry\Init.js" />
     <Content Include="Scripts\Tapestry\InitDemo.js" />
+    <Content Include="Scripts\Tapestry\Load.js" />
+    <Content Include="Scripts\Tapestry\Save.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />

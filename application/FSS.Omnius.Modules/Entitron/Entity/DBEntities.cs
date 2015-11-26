@@ -42,6 +42,8 @@ namespace FSS.Omnius.Entitron.Entity
         public virtual DbSet<WorkflowCommit> WorkflowCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
+        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -196,6 +198,31 @@ namespace FSS.Omnius.Entitron.Entity
 
             //Nexus
             modelBuilder.Entity<Ldap>();
+
+            // Tapestry designer
+            modelBuilder.Entity<TapestryDesignerApp>()
+                .HasMany(s => s.MetaBlocks)
+                .WithOptional(s => s.ParentApp);
+
+            modelBuilder.Entity<TapestryDesignerMetaBlock>()
+                .HasMany(s => s.MetaBlocks)
+                .WithOptional(s => s.ParentMetaBlock);
+
+            modelBuilder.Entity<TapestryDesignerMetaBlock>()
+                .HasMany(s => s.Blocks)
+                .WithRequired(s => s.ParentMetaBlock);
+
+            modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany(s => s.BlockCommits)
+                .WithRequired(s => s.ParentBlock);
+
+            modelBuilder.Entity<TapestryDesignerBlockCommit>()
+                .HasMany(s => s.Rules)
+                .WithRequired(s => s.ParentBlockCommit);
+
+            modelBuilder.Entity<TapestryDesignerRule>()
+                .HasMany(s => s.Items)
+                .WithRequired(s => s.ParentRule);
         }
     }
 }

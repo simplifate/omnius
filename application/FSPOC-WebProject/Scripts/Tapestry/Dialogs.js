@@ -300,5 +300,88 @@ $(function () {
             renameRuleDialog.dialog("close");
             currentRule.find(".ruleHeader").text(renameRuleDialog.find("#rule-name").val());
         }
+        historyDialog = $("#history-dialog").dialog({
+            autoOpen: false,
+            width: 700,
+            height: 540,
+            buttons: {
+                "Load": function () {
+                    historyDialog_SubmitData();
+                },
+                Cancel: function () {
+                    historyDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+                historyDialog.data("selectedCommitId", null);
+                // TODO: replace hardcoded IDs with real app/block IDs
+                $.ajax({
+                    type: "GET",
+                    url: "/api/tapestry/apps/1/blocks/30/commits",
+                    dataType: "json",
+                    error: function () { alert("Error loading commit history") },
+                    success: function (data) {
+                        historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
+                        tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
+                        commitIdArray = [];
+
+                        // Fill in the history rows
+                        for (i = 0; i < data.length; i++) {
+                            commitIdArray.push(data[i].Id);
+                            if (data[i].CommitMessage != null)
+                                tbody.append($('<tr class="commitRow"><td>' + data[i].TimeString
+                                    + '</td><td>' + data[i].CommitMessage + '</td></tr>'));
+                            else
+                                tbody.append($('<tr class="commitRow"><td>' + data[i].TimeString
+                                    + '</td><td style="color: darkgrey;">(no message)</td></tr>'));
+                        }
+
+                        // Highlight the selected row
+                        $(document).on('click', 'tr.commitRow', function (event) {
+                            historyDialog.find("#commit-table tbody:nth-child(2) tr").removeClass("highlightedRow");
+                            $(this).addClass("highlightedRow");
+                            var rowIndex = $(this).index();
+                            historyDialog.data("selectedCommitId", commitIdArray[rowIndex]);
+                        });
+                    }
+                });
+            }
+        });
+        function historyDialog_SubmitData() {
+            if (historyDialog.data("selectedCommitId")) {
+                LoadBlock(historyDialog.data("selectedCommitId"));
+                historyDialog.dialog("close");
+            }
+            else
+                alert("Please select a commit");
+        }
+        saveDialog = $("#save-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    saveDialog_SubmitData();
+                },
+                Cancel: function () {
+                    saveDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        saveDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                saveDialog.find("#message").val("");
+            }
+        });
+        function saveDialog_SubmitData() {
+            saveDialog.dialog("close");
+            SaveBlock(saveDialog.find("#message").val());
+        }
     }
 });
