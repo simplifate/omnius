@@ -36,6 +36,12 @@ namespace System
                 source[pair.Key] = pair.Value;
             }
         }
+        public static void ChangeKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey oldKey, TKey newKey)
+        {
+            TValue value = source[oldKey];
+            source.Remove(oldKey);
+            source.Add(newKey, value);
+        }
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             int i = 0;

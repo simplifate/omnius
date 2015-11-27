@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -198,8 +198,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\ISaveEntity.cs" />
-    <Compile Include="Actions\SaveEntity.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -209,13 +207,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
-    <Compile Include="Controllers\OverviewController.cs" />
+    <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
-    <Compile Include="Controllers\Tapestry\ActionHandlerController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
-    <Compile Include="Controllers\TapestryApiController.cs" />
-    <Compile Include="Controllers\Tapestry\BlockController.cs" />
+    <Compile Include="Controllers\Tapestry\TapestryApiController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
     <Compile Include="Controllers\Entitron\DatabaseController.cs" />
@@ -224,10 +220,7 @@
     <Compile Include="Controllers\Persona\ManageController.cs" />
     <Compile Include="Controllers\Nexus\LDAPController.cs" />
     <Compile Include="Controllers\Persona\RulesController.cs" />
-    <Compile Include="Controllers\Tapestry\SourceBlockController.cs" />
     <Compile Include="Controllers\Nexus\NexusController.cs" />
-    <Compile Include="Controllers\Tapestry\WorkflowController.cs" />
-    <Compile Include="Controllers\Tapestry\WFDesignerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -499,7 +492,6 @@
     <Content Include="Views\Nexus\LDAP\Form.cshtml" />
     <Content Include="Views\Nexus\LDAP\Detail.cshtml" />
     <Content Include="Views\Tapestry\Overview\index.cshtml" />
-    <None Include="Views\Tapestry\Block\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusAdminLayout.cshtml" />
     <Content Include="Views\CORE\Portal\Index.cshtml" />
     <Content Include="Views\CORE\Portal\ModuleAdmin.cshtml" />
@@ -511,7 +503,6 @@
     <Content Include="Views\CORE\Builder\Details.cshtml" />
     <Content Include="Views\CORE\Builder\Index.cshtml" />
     <Content Include="Views\CORE\Builder\Update.cshtml" />
-    <Content Include="Views\Tapestry\WFDesigner\Index.cshtml" />
     <Content Include="Views\Nexus\Nexus\Index.cshtml" />
     <Content Include="Views\Mozaic\Template\Index.cshtml" />
     <Content Include="Views\Mozaic\Template\Detail.cshtml" />
@@ -524,8 +515,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Tapestry\ActionHandler\" />
-    <Folder Include="Views\Tapestry\Workflow\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             return _actions[id];
         }
-        public static ActionResult RunAction(int id, Dictionary<string, object> vars)
+        public static ActionResultCollection RunAction(int id, Dictionary<string, object> vars)
         {
             Type actionType = GetAction(id);
             Action action = (Action)Activator.CreateInstance(actionType);
@@ -75,6 +75,6 @@ namespace FSS.Omnius.Modules.Tapestry
         public abstract string[] InputVar { get; }
         public abstract string[] OutputVar { get; }
         
-        public abstract ActionResult run(Dictionary<string, object> vars);
+        public abstract ActionResultCollection run(Dictionary<string, object> vars);
     }
 }

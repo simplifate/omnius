@@ -5,7 +5,7 @@ using System.Data.Entity.Spatial;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    [Table("Tapestry_Run_ActionRule_Action")]
+    [Table("Tapestry_ActionRule_Action")]
     public partial class ActionRule_Action
     {
         [Key]

@@ -6,7 +6,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Tapestry_Run_AttributeRoles")]
+    [Table("Tapestry_AttributeRoles")]
     public partial class AttributeRole
     {
         public int Id { get; set; }

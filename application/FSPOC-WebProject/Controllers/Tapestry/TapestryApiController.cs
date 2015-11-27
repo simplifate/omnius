@@ -8,7 +8,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 
-namespace FSPOC_WebProject.Controllers
+namespace FSPOC_WebProject.Controllers.Tapestry
 {
     public class TapestryApiController : ApiController
     {

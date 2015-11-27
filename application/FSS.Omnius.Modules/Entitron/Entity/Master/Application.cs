@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TitleFontSize = 20;
 
             Pages = new HashSet<Page>();
-            WorkFlows = new HashSet<WF>();
+            WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
         }
 
@@ -45,7 +45,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<Page> Pages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WF> WorkFlows { get; set; }
+        public virtual ICollection<WorkFlow> WorkFlows { get; set; }
 
         public virtual ICollection<AppRight> Rights { get; set; }
 

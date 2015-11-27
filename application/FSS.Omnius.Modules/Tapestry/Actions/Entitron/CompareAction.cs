@@ -50,9 +50,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override ActionResult run(Dictionary<string, object> vars)
+        public override ActionResultCollection run(Dictionary<string, object> vars)
         {
-            ActionResult ar = new ActionResult();
+            var outputVars = new Dictionary<string, object>();
+            var outputStatus = ActionResultType.Success;
+            var outputMessage = "OK";
+
             try
             {
                 DBItem model = (DBItem)vars["model"];
@@ -60,15 +63,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 object value = vars["value"];
 
                 bool areSame = model[parameter] == value;
-                ar.outputData = new Dictionary<string, object>() { { "comparation", areSame } };
+                outputVars.Add("comparation", areSame);
             }
             catch(Exception ex)
             {
-                ar.type = ActionResultType.Error;
-                ar.Message = ex.Message;
+                outputStatus = ActionResultType.Error;
+                outputMessage = ex.Message;
             }
 
-            return ar;
+            return new ActionResultCollection(outputStatus, outputMessage, outputVars);
         }
     }
 }

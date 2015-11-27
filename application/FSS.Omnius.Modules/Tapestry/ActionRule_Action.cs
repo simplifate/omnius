@@ -23,20 +23,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
             return output;
         }
-        public Dictionary<string, object> getOutputVariables(Dictionary<string, object> actionVars)
+        public void RemapOutputVariables(Dictionary<string, object> actionVars)
         {
-            Dictionary<string, object> output = new Dictionary<string, object>();
             var data = OutputVariablesMapping.Split(';').Select(s => s.Split('='));
 
             foreach (string[] mappingPair in data)
             {
-                string target = mappingPair[0];
-                string source = mappingPair[1];
-
-                output.Add(target, actionVars[source]);
+                actionVars.ChangeKey(mappingPair[1], mappingPair[0]);
             }
-
-            return output;
         }
     }
 }

@@ -20,6 +20,13 @@ namespace FSS.Omnius.Modules.Tapestry
             Messages = new List<string>();
             outputData = new Dictionary<string, object>();
         }
+        public ActionResultCollection(ActionResultType type, string Message, Dictionary<string, object> outputData)
+        {
+            Count = 1;
+            types = new List<ActionResultType> { type };
+            Messages = new List<string> { Message };
+            this.outputData = outputData;
+        }
 
         public void Add(ActionResult newActionResult)
         {

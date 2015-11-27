@@ -1,14 +1,12 @@
 using Microsoft.Practices.Unity;
 using System.Web.Http;
 using System.Web.Mvc;
-using FSPOC_WebProject.Actions;
 using FSPOC_WebProject.Service;
 using FSS.Omnius.Actions.ReservationSystem.Service;
 using FSS.Omnius.BussinesObjects.Actions;
 using FSS.Omnius.BussinesObjects.DAL;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.BussinesObjects.Service;
 using Unity.Mvc5;
 
@@ -27,7 +25,7 @@ namespace FSPOC_WebProject
             //container.RegisterType<IDbContext, DBEntities>(new HierarchicalLifetimeManager());
             container.RegisterType<IUnitWork, UnitWork>();
             container.RegisterType<IWorkflowService, WorkflowService>();
-            container.RegisterType<IRepository<Workflow>, DefaultEFRepository<Workflow>>();
+            container.RegisterType<IRepository<WorkFlow>, DefaultEFRepository<WorkFlow>>();
             container.RegisterType<IRepository<DbSchemeCommit>, DefaultEFRepository<DbSchemeCommit>>();
             container.RegisterType<IRepository<ActionRule_Action>, DefaultEFRepository<ActionRule_Action>>();
             container.RegisterType<IDatabaseGenerateService, DatabaseGenerateService>();

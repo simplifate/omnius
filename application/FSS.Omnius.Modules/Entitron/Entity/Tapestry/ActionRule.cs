@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    [Table("Tapestry_Run_ActionRule")]
+    [Table("Tapestry_ActionRule")]
     public partial class ActionRule
     {
         public ActionRule()

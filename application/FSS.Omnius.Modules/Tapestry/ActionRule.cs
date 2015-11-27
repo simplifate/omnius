@@ -53,15 +53,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
                 // namapovaní InputVars
                 var remapedParams = aar.getInputVariables(tempVars);
                 // Action
-                ActionResult ar = Modules.Tapestry.Action.RunAction(aar.ActionId, remapedParams);
+                ActionResultCollection result = Modules.Tapestry.Action.RunAction(aar.ActionId, remapedParams);
                 // namapování OutputVars
                 //!! pozor na přepisování promněných !!
-                var outputData = aar.getOutputVariables(ar.outputData);
+                aar.RemapOutputVariables(result.outputData);
                 // zpracování výstupů
-                results.Add(ar.type, ar.Message, outputData);
+                results.Join = result;
                 
                 // errory
-                if (ar.type == ActionResultType.Error)
+                if (result.types.Any(r => r == ActionResultType.Error))
                     // přerušit? inverzní akce?
                     throw new NotImplementedException();
             }

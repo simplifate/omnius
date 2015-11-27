@@ -29,17 +29,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRole> AttributeRoles { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
-        public virtual DbSet<WF> WF { get; set; }
-        public virtual DbSet<WFType> WFTypes { get; set; }
-        public virtual DbSet<Workflow> WorkFlows { get; set; }
+        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ActionRight> ActionRights { get; set; }
         public virtual DbSet<AppRight> ApplicationRights { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
-        public virtual DbSet<Activity> Activities { get; set; }
-        public virtual DbSet<WorkflowCommit> WorkflowCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
         public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
@@ -113,18 +110,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasOptional(e => e.InitForWorkFlow)
                 .WithRequired(e => e.InitBlock);
 
-            modelBuilder.Entity<WFType>()
+            modelBuilder.Entity<WorkFlowType>()
                 .HasMany(e => e.WorkFlows)
                 .WithRequired(e => e.Type)
                 .HasForeignKey(e => e.TypeId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<WF>()
+            modelBuilder.Entity<WorkFlow>()
                 .HasMany(e => e.Blocks)
                 .WithRequired(e => e.WorkFlow)
                 .HasForeignKey(e => e.WorkFlowId);
 
-            modelBuilder.Entity<WF>()
+            modelBuilder.Entity<WorkFlow>()
                 .HasMany(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
@@ -159,20 +156,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.Tables)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
-
-            // Workflow Designer
-            modelBuilder.Entity<Activity>()
-                        .HasMany(s => s.Inputs)
-                        .WithRequired(s => s.Activity);
-            modelBuilder.Entity<Activity>()
-                        .HasMany(s => s.Outputs)
-                        .WithRequired(s => s.Activity);
-            modelBuilder.Entity<WorkflowCommit>()
-                        .HasMany(s => s.Activities)
-                        .WithRequired(s => s.WorkflowCommit);
-            modelBuilder.Entity<Workflow>()
-                        .HasMany(s => s.WorkflowCommits)
-                        .WithRequired(s => s.Workflow);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()
