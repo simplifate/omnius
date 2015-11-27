@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
-using FSS.Omnius.Entitron.Entity.Tapestry;
-using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.BussinesObjects.DAL
 {

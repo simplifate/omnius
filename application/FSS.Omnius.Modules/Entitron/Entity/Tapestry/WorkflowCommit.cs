@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSS.Omnius.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     [Table("Tapestry_WorkFlowCommit")]
     public class WorkflowCommit

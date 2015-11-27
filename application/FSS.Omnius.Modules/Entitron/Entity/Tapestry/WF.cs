@@ -1,4 +1,4 @@
-﻿namespace FSS.Omnius.Entitron.Entity.Tapestry
+﻿namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     using Master;
     using System.Collections.Generic;

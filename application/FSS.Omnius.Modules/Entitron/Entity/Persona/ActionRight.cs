@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
-namespace FSS.Omnius.Entitron.Entity.Persona
+namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_ActionRights")]
     public class ActionRight

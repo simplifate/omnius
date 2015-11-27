@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace FSS.Omnius.Entitron.Sql
+namespace FSS.Omnius.Modules.Entitron.Sql
 {
     public class SqlQuery_SelectIndexes : SqlQuery_withApp
     {

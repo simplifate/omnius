@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 
-namespace FSS.Omnius.Entitron
+namespace FSS.Omnius.Modules.Entitron
 {
     public class DBColumn
     {

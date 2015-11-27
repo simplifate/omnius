@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace FSS.Omnius.Entitron.Sql
+namespace FSS.Omnius.Modules.Entitron.Sql
 {
     public class SqlQuery_Simple_Table_Create : SqlQuery
     {

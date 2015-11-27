@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using FSS.Omnius.Entitron.Sql;
+using FSS.Omnius.Modules.Entitron.Sql;
 
-namespace FSS.Omnius.Entitron
+namespace FSS.Omnius.Modules.Entitron
 {
     public class DBColumns : List<DBColumn>
     {

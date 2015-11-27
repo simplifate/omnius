@@ -5,33 +5,68 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     public partial class ActionRule
     {
-        public void Run()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tempVars"></param>
+        public ActionResultCollection MainRun(Dictionary<string, object> tempVars = null)
         {
-            Dictionary<string, object> tempVars = new Dictionary<string, object>();
-            List<string> messages = new List<string>();
+            tempVars = tempVars ?? new Dictionary<string, object>();
+            var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount).OrderBy(aar => aar.Order);
 
-            foreach (ActionRule_Action aar in ActionRule_Actions.OrderBy(aar => aar.Order))
+            return Run(tempVars, aars);
+        }
+
+        /// <summary>
+        /// Check Conditions
+        /// </summary>
+        /// <param name="tempVars">temporary variables to check</param>
+        /// <returns>are conditions ok?</returns>
+        public bool CanRun(Dictionary<string, object> tempVars)
+        {
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Run function to prepare conditions
+        /// </summary>
+        /// <param name="tempVars"></param>
+        public ActionResultCollection PreRun(Dictionary<string, object> tempVars = null)
+        {
+            tempVars = tempVars ?? new Dictionary<string, object>();
+            var aars = ActionRule_Actions.Where(aar => aar.Order < PreFunctionCount).OrderBy(aar => aar.Order);
+
+            return Run(tempVars, aars);
+        }
+
+        private ActionResultCollection Run(Dictionary<string, object> tempVars, IEnumerable<ActionRule_Action> aars)
+        {
+            ActionResultCollection results = new ActionResultCollection();
+
+            foreach (ActionRule_Action aar in aars)
             {
                 // namapovaní InputVars
                 var remapedParams = aar.getInputVariables(tempVars);
                 // Action
                 ActionResult ar = Modules.Tapestry.Action.RunAction(aar.ActionId, remapedParams);
-                // zpracování výstupů
-                if (ar.type != ActionResultType.Success)
-                {
-                    messages.Add(ar.Message);
-                    // errory
-                    if (ar.type == ActionResultType.Error)
-                        // přerušit? inverzní akce?
-                        throw new NotImplementedException();
-                }
                 // namapování OutputVars
-                tempVars.AddOrUpdateRange(aar.getOutputVariables(ar.outputData));
+                //!! pozor na přepisování promněných !!
+                var outputData = aar.getOutputVariables(ar.outputData);
+                // zpracování výstupů
+                results.Add(ar.type, ar.Message, outputData);
+                
+                // errory
+                if (ar.type == ActionResultType.Error)
+                    // přerušit? inverzní akce?
+                    throw new NotImplementedException();
             }
+
+            return results;
         }
     }
 }

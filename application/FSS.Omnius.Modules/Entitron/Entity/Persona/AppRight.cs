@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-namespace FSS.Omnius.Entitron.Entity.Persona
+namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     using Master;
 

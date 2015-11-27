@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FSS.Omnius.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     public class AjaxTapestryDesignerApp
     {

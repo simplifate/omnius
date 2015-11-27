@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FSS.Omnius.Entitron.Entity.CORE;
-using FSS.Omnius.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSS.Omnius.CORE
+namespace FSS.Omnius.Modules.CORE
 {
     [NotMapped]
     public class CORE : Module

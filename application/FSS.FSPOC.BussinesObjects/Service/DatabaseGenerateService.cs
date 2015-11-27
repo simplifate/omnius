@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 //using System.Linq;
 using System.Collections.Generic;
-using FSS.Omnius.Entitron.Entity.Entitron;
-using FSS.Omnius.Entitron;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.BussinesObjects.Service
 {
@@ -15,8 +16,8 @@ namespace FSS.Omnius.BussinesObjects.Service
         {
             List<DBTable> entitronTables = new List<DBTable>();
 
-            CORE.CORE core = new CORE.CORE();
-            Entitron.Entitron e = core.Entitron;
+            CORE core = new CORE();
+            Entitron e = core.Entitron;
             e.Application = new DBApp() { Name = "EntitronTest1", DisplayName = "EntitronTest1" };
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)

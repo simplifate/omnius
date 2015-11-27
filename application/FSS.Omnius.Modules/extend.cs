@@ -28,6 +28,9 @@ namespace System
         }
         public static void AddOrUpdateRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)
         {
+            if (range == null)
+                return;
+
             foreach (var pair in range)
             {
                 source[pair.Key] = pair.Value;

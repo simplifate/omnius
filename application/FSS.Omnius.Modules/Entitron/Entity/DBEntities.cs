@@ -1,4 +1,4 @@
-namespace FSS.Omnius.Entitron.Entity
+namespace FSS.Omnius.Modules.Entitron.Entity
 {
     using System.Data.Entity;
     using CORE;

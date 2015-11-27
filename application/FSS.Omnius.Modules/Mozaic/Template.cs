@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Entitron.Entity.Mozaic
+namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     public partial class Template
     {

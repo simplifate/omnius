@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Entitron.Sql
+namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQuery_Table_Drop : SqlQuery_withApp
     {

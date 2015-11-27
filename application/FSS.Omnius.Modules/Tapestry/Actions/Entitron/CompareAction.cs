@@ -1,4 +1,4 @@
-﻿using FSS.Omnius.Entitron;
+﻿using FSS.Omnius.Modules.Entitron;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -8,7 +8,7 @@ using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using Logger;
 
-namespace FSS.Omnius.Entitron.Sql
+namespace FSS.Omnius.Modules.Entitron.Sql
 {
     public class SqlQuery
     {

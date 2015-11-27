@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Tapestry
 {
-    public partial class Block
+    class NotAllowedExcetption : Exception
     {
     }
 }

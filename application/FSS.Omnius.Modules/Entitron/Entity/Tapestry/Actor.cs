@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 
-namespace FSS.Omnius.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
 
     [Table("Tapestry_Actors")]

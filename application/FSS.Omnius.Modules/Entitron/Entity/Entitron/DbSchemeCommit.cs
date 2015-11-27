@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSS.Omnius.Entitron.Entity.Entitron
+namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
     [Table("Entitron_DbSchemeCommit")]
     public class DbSchemeCommit

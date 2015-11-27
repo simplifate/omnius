@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
-using FSS.Omnius.Entitron;
+using FSS.Omnius.Modules.Entitron;
 
-namespace FSS.Omnius.Entitron.Sql
+namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQueue
     {

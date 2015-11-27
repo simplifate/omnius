@@ -4,8 +4,8 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using FSS.Omnius.Entitron.Entity;
-using FSS.Omnius.Entitron.Entity.Mozaic;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {

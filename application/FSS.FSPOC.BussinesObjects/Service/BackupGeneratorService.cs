@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.BussinesObjects.Service
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSS.Omnius.Entitron.Entity.CORE
+namespace FSS.Omnius.Modules.Entitron.Entity.CORE
 {
     [NotMapped]
     public abstract class RunableModule : Module

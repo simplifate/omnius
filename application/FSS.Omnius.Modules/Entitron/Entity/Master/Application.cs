@@ -1,4 +1,4 @@
-namespace FSS.Omnius.Entitron.Entity.Master
+namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
     using System;
     using System.Collections.Generic;

@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
-namespace FSS.Omnius.Entitron.Entity.Persona
+namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     public partial class User
     {

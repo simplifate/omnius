@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.Omnius.Entitron;
-using FSS.Omnius.Entitron.Entity.CORE;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Tapestry;
 
-namespace FSS.Omnius.Tapestry
+namespace FSS.Omnius.Modules.Tapestry
 {
     public class Tapestry : RunableModule
     {
@@ -38,19 +39,34 @@ namespace FSS.Omnius.Tapestry
             if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
-            // get actionRule, model, pageId
-            ActionRule actionRule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
-            _model = _CORE.Entitron.GetDynamicTable(actionRule.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();
-            _PageId = actionRule.TargetBlock.MozaicPageId ?? -1;
+            // init - get actionRule
+            ActionResultCollection results;
+            ActionRule actionRule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);// confirm conditions
 
+            // preRun & conditions
+            results = actionRule.PreRun();
+            if (!actionRule.CanRun(results.outputData))
+                throw new NotAllowedExcetption();
+            
             // execute
-            actionRule.Run();
+            results.Join = actionRule.MainRun(results.outputData);
 
+            // execute auto function
             Block finalBlock = actionRule.TargetBlock;
             foreach(ActionRule ar in finalBlock.SourceTo_ActionRoles.Where(ar => ar.Actor.Name == "Auto"))
             {
-                throw new NotImplementedException();
+                ActionResultCollection tempResults = ar.PreRun(results.outputData);
+                if (ar.CanRun(results.outputData))
+                {
+                    results.Join = tempResults;
+                    results.Join = ar.MainRun(results.outputData);
+                    break;
+                }
             }
+            
+            // get model, pageId for Mozaic
+            _model = _CORE.Entitron.GetDynamicTable(actionRule.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();
+            _PageId = actionRule.TargetBlock.MozaicPageId ?? -1;
         }
         public override string GetHtmlOutput()
         {

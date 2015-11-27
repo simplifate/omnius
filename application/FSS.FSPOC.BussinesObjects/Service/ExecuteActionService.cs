@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FSS.Omnius.BussinesObjects.Common;
 using FSS.Omnius.BussinesObjects.DAL;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
 namespace FSS.Omnius.BussinesObjects.Service
 {

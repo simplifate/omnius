@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace FSS.Omnius.Entitron.Entity.Persona
+namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

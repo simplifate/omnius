@@ -1,4 +1,4 @@
-namespace FSS.Omnius.Entitron.Entity.CORE
+namespace FSS.Omnius.Modules.Entitron.Entity.CORE
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

@@ -4,9 +4,9 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.Omnius.Entitron.Sql;
+using FSS.Omnius.Modules.Entitron.Sql;
 
-namespace FSS.Omnius.Entitron
+namespace FSS.Omnius.Modules.Entitron
 {
     public class DBTable
     {

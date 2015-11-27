@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using FSS.Omnius.Entitron.Entity;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 
 namespace FSPOC_WebProject.Controllers

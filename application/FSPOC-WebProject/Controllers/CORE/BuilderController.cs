@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using FSS.Omnius.Entitron.Entity;
-using FSS.Omnius.Entitron.Entity.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -10,7 +9,7 @@ namespace FSS.Omnius.Controllers.CORE
     {
         public ActionResult Index()
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
             if (Request.IsAjaxRequest())
             {
                 return PartialView(e.Modules);
@@ -25,7 +24,7 @@ namespace FSS.Omnius.Controllers.CORE
         [HttpPost]
         public ActionResult Create(Module model)
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
             e.Modules.Add(model);
             e.SaveChanges();
 
@@ -34,7 +33,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Details(int id)
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
 
             if (Request.IsAjaxRequest())
             {
@@ -45,7 +44,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Update(int id)
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
             if (Request.IsAjaxRequest())
             {
                 return PartialView(e.Modules.SingleOrDefault(m => m.Id == id));
@@ -55,7 +54,7 @@ namespace FSS.Omnius.Controllers.CORE
         [HttpPost]
         public ActionResult Update(Module model)
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
             Module m = e.Modules.SingleOrDefault(x => x.Id == model.Id);
             if (m !=null)
             {
@@ -67,7 +66,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new Omnius.CORE.CORE().Entitron.GetStaticTables();
+            DBEntities e = new Modules.CORE.CORE().Entitron.GetStaticTables();
             Module module = e.Modules.SingleOrDefault(m => m.Id == id);
 
             e.Modules.Remove(module);

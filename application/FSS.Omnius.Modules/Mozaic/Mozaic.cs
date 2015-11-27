@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.Omnius.Entitron;
-using FSS.Omnius.Entitron.Entity.CORE;
-using FSS.Omnius.Entitron.Entity.Mozaic;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSS.Omnius.Mozaic
+namespace FSS.Omnius.Modules.Mozaic
 {
     [NotMapped]
     public class Mozaic : Module

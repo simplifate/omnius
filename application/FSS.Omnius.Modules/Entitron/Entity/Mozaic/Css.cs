@@ -1,4 +1,4 @@
-namespace FSS.Omnius.Entitron.Entity.Mozaic
+namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     using System;
     using System.Collections.Generic;

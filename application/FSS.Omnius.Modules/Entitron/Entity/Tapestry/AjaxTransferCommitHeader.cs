@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Entitron.Entity.Tapestry
+namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     public class AjaxTransferCommitHeader
     {

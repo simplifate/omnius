@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Entitron.Entity.Persona
+namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_Users")]
     public partial class User

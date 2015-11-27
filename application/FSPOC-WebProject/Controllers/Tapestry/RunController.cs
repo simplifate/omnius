@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -12,7 +6,7 @@ namespace FSS.Omnius.Controllers.Tapestry
     {
         public string Index(int appId, int actionRuleId, int modelId)
         {
-            var core = new Omnius.CORE.CORE();
+            var core = new Modules.CORE.CORE();
             core.Tapestry.run(appId, actionRuleId, modelId);
 
             return core.Tapestry.GetHtmlOutput();

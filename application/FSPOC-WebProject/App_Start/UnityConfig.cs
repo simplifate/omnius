@@ -6,9 +6,9 @@ using FSPOC_WebProject.Service;
 using FSS.Omnius.Actions.ReservationSystem.Service;
 using FSS.Omnius.BussinesObjects.Actions;
 using FSS.Omnius.BussinesObjects.DAL;
-using FSS.Omnius.Entitron.Entity.Tapestry;
-using FSS.Omnius.Entitron.Entity.Entitron;
-using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.BussinesObjects.Service;
 using Unity.Mvc5;
 

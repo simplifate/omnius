@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FSS.Omnius.Entitron.Entity.Nexus
+namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

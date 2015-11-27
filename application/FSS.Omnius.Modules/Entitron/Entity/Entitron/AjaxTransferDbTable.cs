@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FSS.Omnius.Entitron.Entity.Entitron
+namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
     public class AjaxTransferDbTable
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FSS.Omnius.Entitron;
-using FSS.Omnius.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity;
 
-namespace FSS.Omnius.Entitron.Entity.Mozaic
+namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     public partial class Page
     {

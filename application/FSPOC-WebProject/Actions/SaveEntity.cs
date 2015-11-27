@@ -2,7 +2,7 @@
 using FSS.Omnius.BussinesObjects.Common;
 using FSS.Omnius.BussinesObjects.DAL;
 using FSS.Omnius.Controllers.Tapestry;
-using FSS.Omnius.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Newtonsoft.Json;
 
 namespace FSPOC_WebProject.Actions
