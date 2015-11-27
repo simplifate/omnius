@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -31,21 +32,14 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             DBEntities e = new DBEntities();
             Template temp= new Template();
 
-            List<string> categories = new List<string>();
-            categories = e.TemplateCategories.Select(x => x.Name).ToList();
-            categories.Add("");
-
-            List<int> pages = new List<int>();
-            pages = e.Pages.Select(x=>x.Id).ToList();
-            pages.Add(-1);
-
-            ViewBag.Categories = categories;
-            ViewBag.Pages = pages;
+            ViewBag.Categories = e.TemplateCategories;
+            ViewBag.Pages = e.Pages;
 
             return View(temp);
         }
         [HttpPost]
-        public ActionResult Create(Template model)
+        [ValidateInput(false)]
+        public ActionResult Create(Template model, int cat, int pages)
         {
             DBEntities e = new DBEntities();
             foreach (Template t in e.Templates)
@@ -56,7 +50,13 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     return RedirectToAction("Index");
                 }
             }
-           
+            TemplateCategory tempCategory =  e.TemplateCategories.SingleOrDefault(x => x.Id == cat);
+            model.CategoryId = cat;
+            model.Category = tempCategory;
+
+            Page p = e.Pages.SingleOrDefault(x => x.Id == pages);
+            model.Pages.Add(p);
+
             e.Templates.Add(model);
             e.SaveChanges();
 
@@ -67,28 +67,35 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
-
-            List<string> categories = new List<string>();
-            categories = e.TemplateCategories.Select(x => x.Name).ToList();
-            categories.Add("");
-
-            List<int> pages = new List<int>();
-            pages = e.Pages.Select(x => x.Id).ToList();
-            pages.Add(-1);
-
-            ViewBag.Categories = categories;
-            ViewBag.Pages = pages;
+           
+            ViewBag.Categories = e.TemplateCategories;
+            ViewBag.Pages = e.Pages;
 
             return View(temp);
         }
         [HttpPost]
-        public ActionResult Update(Template model)
+        [ValidateInput(false)]
+        public ActionResult Update(Template model, int cat, int pages)
         {
             DBEntities e = new DBEntities();
             Template temp = e.Templates.SingleOrDefault(x => x.Id == model.Id);
 
-            e.Templates.Remove(temp);
-            e.Templates.Add(model);
+            foreach (Template t in e.Templates)
+            {
+                if (t.Name == model.Name)
+                {
+                    TempData["error"] = "Šablona s názvem " + model.Name + " už existuje.";
+                    return RedirectToAction("Index");
+                }
+            }
+            TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == cat);
+            model.CategoryId = cat;
+            model.Category = tempCategory;
+
+            Page p = e.Pages.SingleOrDefault(x => x.Id == pages);
+            model.Pages.Add(p);
+
+            e.Templates.AddOrUpdate(temp, model);
             e.SaveChanges();
 
             return RedirectToAction("Index");

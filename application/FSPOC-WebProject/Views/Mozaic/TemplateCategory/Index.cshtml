@@ -105,7 +105,9 @@
                     <td>
                         @Ajax.RouteLink(t.Name, "Mozaic", new {@action = "Detail", @id = t.Id}, new AjaxOptions() {InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer"})
                     </td>
-                    <td>@t.Templates.Select(x => x.Name)</td>
+                    <td>
+                       @string.Join(", ",t.Templates.Select(x=>x.Name))
+                    </td>
                     <td>
                         @Ajax.RouteLink(" ", "Mozaic", new { @action = "Update", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil btn btn-primary" })
                         @Html.RouteLink(" ", "Mozaic", new { @action = "Delete", @id = t.Id }, new { @class = "fa fa-trash btn btn-danger" })

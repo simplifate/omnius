@@ -1,5 +1,40 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Template
 
+<link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
+<link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
+<script src="~/Scripts/cm/lib/codemirror.js"></script>
+<script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+<script src="~/Scripts/cm/mode/xml/xml.js"></script>
+<script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+<script src="~/Scripts/cm/mode/css/css.js"></script>
+<script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
+
+<script>
+    $(function() {
+        var area = $('#selector');
+        var cm = CodeMirror.fromTextArea(area[0], {
+            lineNumbers: true,
+            mode: "htmlmixed",
+            extraKeys: { "Ctrl-Space": "autocomplete" }
+        });
+
+        cm.on('blur', function() {
+            cm.save();
+        });
+
+        // Pokud by byl nějaký přepínač html / wysiwyg
+        area.change(function() {
+            cm.setValue(this.value);
+        });
+        area.next().resizable({
+            resize: function() {
+                cm.setSize($(this).width(), $(this).height());
+            }
+        });
+    });
+</script>
 @using (Html.BeginRouteForm("Mozaic", new {@action = "Update"}, FormMethod.Post))
 {
     <div class="form-group col-sm-12">
@@ -19,7 +54,7 @@
             </label>
         </div>
         <div class="col-sm-3">
-            @Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories))
+            @Html.DropDownList("cat", new SelectList(ViewBag.Categories, "Id", "Name"))
         </div>
     </div>
     <div class="form-group col-sm-12">
@@ -29,7 +64,7 @@
             </label>
         </div>
         <div class="col-sm-7">
-            @Html.TextAreaFor(x => x.Html, new { @style = "width: 100%", @rows="5" })
+            @Html.TextAreaFor(x => x.Html, new { @id= "selector" })
         </div>
     </div>
     <div class="form-group col-sm-12">
@@ -39,7 +74,7 @@
             </label>
         </div>
         <div class="col-sm-3">
-            @Html.DropDownListFor(x => x.Pages, new SelectList(ViewBag.Pages))
+            @Html.DropDownList("pages", new SelectList(ViewBag.Pages, "Id", "Id"))
         </div>
     </div>
 
