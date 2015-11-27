@@ -17,11 +17,11 @@
         <div class="notificationIcon fa fa-bell"></div>
         <div class="avatar"></div>
         <div class="fullName">Eliška Nováková</div>
-        <div class="commands">odhlásit | upravit</div>
+        <div class="commands"><a href="#">odhlásit</a> | <a href="#">upravit</a></div>
     </div>
     <div class="searchBox">
         <div class="searchArrow"><div class="fa fa-caret-down"></div></div>
-        <div class="searchInputField">Vyhledat v aplikaci</div>
+        <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField"></input>
         <div class="searchIcon fa fa-search"></div>
     </div>
 </div>
@@ -38,9 +38,11 @@
     <div class="appList">
         @foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
         {
-            <div class="appListItem"><div class="icon fa @(app.Icon)"></div>@app.Name</div>
+            <div class="appListItem">
+                <div class="icon fa @(app.Icon)"></div>
+                <div class="appName">@app.Name</div>
+            </div>
         }
-        <div class="dotsIcon"></div>
     </div>
     <div class="infoBox">
         <div class="icon fa fa-info-circle"></div>

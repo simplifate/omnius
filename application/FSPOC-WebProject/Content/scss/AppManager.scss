@@ -15,6 +15,7 @@ body.appManagerModule {
     background: white;
 
     .clientTopBar {
+        @include no-select();
         @include linear-gradient(#edf8fe, #ceeaf8);
         position: fixed;
         left: 0px;
@@ -35,6 +36,7 @@ body.appManagerModule {
         }
         .activeIcon {
             background-color: #edf8fe;
+            cursor: default;
         }
 
         .clientTitle {
@@ -53,27 +55,31 @@ body.appManagerModule {
             position: absolute;
             top: 0px;
             right: 290px;
-            width: 230px;
+            width: 250px;
             height: 50px;
             .avatar {
                 position: absolute;
-                left: 0px;
-                top: 4px;
+                left: 5px;
+                top: 5px;
                 width: 40px;
                 height: 40px;
-                border-radius: 50%;
-                background-color: grey;
+                cursor: pointer;
+                background-image: url(/Content/images/UserIconSample.png);
             }
             .fullName {
                 position: absolute;
-                left: 50px;
-                top: 4px;
+                left: 65px;
+                top: 6px;
+                font-family: RweTextMedium;
+                font-size: 14px;
             }
             .commands {
                 position: absolute;
-                left: 50px;
-                top: 25px;
+                left: 65px;
+                top: 24px;
                 color: #0065a9;
+                font-family: RweTextMedium;
+                font-size: 14px;
             }
             .notificationIcon {
                 position: absolute;
@@ -81,6 +87,7 @@ body.appManagerModule {
                 top: 8px;
                 font-size: 30px;
                 color: #0065a9;
+                cursor: pointer;
             }
 
         }
@@ -88,7 +95,7 @@ body.appManagerModule {
             position: absolute;
             top: 0px;
             right: 0px;
-            width: 350px;
+            width: 310px;
             height: 50px;
             .searchArrow {
                 position: absolute;
@@ -98,6 +105,7 @@ body.appManagerModule {
                 height: 28px;
                 background-color: white;
                 color: #0065a9;
+                cursor: pointer;
                 .fa {
                     position: absolute;
                     left: 6px;
@@ -115,6 +123,9 @@ body.appManagerModule {
                 color: #a2b4cc;
                 padding-left: 14px;
                 padding-top: 4px;
+                font-family: RweTextMedium;
+                font-size: 14px;
+                border: none;
             }
             .searchIcon {
                 position: absolute;
@@ -122,11 +133,13 @@ body.appManagerModule {
                 top: 8px;
                 font-size: 30px;
                 color: #0065a9;
+                cursor: pointer;
             }
 
         }
     }
     .clientLeftBar {
+        @include no-select();
         background-color: #edf8fe;
         position: fixed;
         left: 0px;
@@ -166,19 +179,27 @@ body.appManagerModule {
             font-size: 17px;
             font-weight: 100;
             color: #0065a9;
-            left: 32px;
+            left: 0px;
             top: 120px;
+            right: 0px;
             .appListItem {
+                position: relative;
                 height: 40px;
                 border-top: 1px solid #d6dfe6;
-                padding-top: 10px;
+                cursor: pointer;
                 .icon {
-                    margin-right: 10px;
+                    position: absolute;
+                    top: 10px;
+                    left: 32px;
+                }
+                .appName {
+                    position: absolute;
+                    top: 8px;
+                    left: 62px;
                 }
             }
-            .dotsIcon {
-                font-weight: 100;
-                font-size: 30px;
+            .appListItem:hover{
+                background-color: #ceeaf8;
             }
         }
         .infoBox {

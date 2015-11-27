@@ -278,6 +278,7 @@
     <Content Include="Content\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\UserIconSample.png" />
     <Content Include="Content\images\watcheye_small.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.contextMenu.css" />

@@ -12,6 +12,12 @@ body.appManagerModule {
   height: 100%;
   background: white; }
   body.appManagerModule .clientTopBar {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
     background: -webkit-linear-gradient(top, #edf8fe, #ceeaf8);
     background: -o-linear-gradient(bottom, #edf8fe, #ceeaf8);
     background: -moz-linear-gradient(bottom, #edf8fe, #ceeaf8);
@@ -32,7 +38,8 @@ body.appManagerModule {
       color: #0065a9;
       cursor: pointer; }
     body.appManagerModule .clientTopBar .activeIcon {
-      background-color: #edf8fe; }
+      background-color: #edf8fe;
+      cursor: default; }
     body.appManagerModule .clientTopBar .clientTitle {
       position: absolute;
       font-family: RweHeadlineRegular;
@@ -48,36 +55,41 @@ body.appManagerModule {
       position: absolute;
       top: 0px;
       right: 290px;
-      width: 230px;
+      width: 250px;
       height: 50px; }
       body.appManagerModule .clientTopBar .userBox .avatar {
         position: absolute;
-        left: 0px;
-        top: 4px;
+        left: 5px;
+        top: 5px;
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        background-color: grey; }
+        cursor: pointer;
+        background-image: url(/Content/images/UserIconSample.png); }
       body.appManagerModule .clientTopBar .userBox .fullName {
         position: absolute;
-        left: 50px;
-        top: 4px; }
+        left: 65px;
+        top: 6px;
+        font-family: RweTextMedium;
+        font-size: 14px; }
       body.appManagerModule .clientTopBar .userBox .commands {
         position: absolute;
-        left: 50px;
-        top: 25px;
-        color: #0065a9; }
+        left: 65px;
+        top: 24px;
+        color: #0065a9;
+        font-family: RweTextMedium;
+        font-size: 14px; }
       body.appManagerModule .clientTopBar .userBox .notificationIcon {
         position: absolute;
         right: 30px;
         top: 8px;
         font-size: 30px;
-        color: #0065a9; }
+        color: #0065a9;
+        cursor: pointer; }
     body.appManagerModule .clientTopBar .searchBox {
       position: absolute;
       top: 0px;
       right: 0px;
-      width: 350px;
+      width: 310px;
       height: 50px; }
       body.appManagerModule .clientTopBar .searchBox .searchArrow {
         position: absolute;
@@ -86,7 +98,8 @@ body.appManagerModule {
         width: 28px;
         height: 28px;
         background-color: white;
-        color: #0065a9; }
+        color: #0065a9;
+        cursor: pointer; }
         body.appManagerModule .clientTopBar .searchBox .searchArrow .fa {
           position: absolute;
           left: 6px;
@@ -101,14 +114,24 @@ body.appManagerModule {
         background-color: white;
         color: #a2b4cc;
         padding-left: 14px;
-        padding-top: 4px; }
+        padding-top: 4px;
+        font-family: RweTextMedium;
+        font-size: 14px;
+        border: none; }
       body.appManagerModule .clientTopBar .searchBox .searchIcon {
         position: absolute;
         right: 30px;
         top: 8px;
         font-size: 30px;
-        color: #0065a9; }
+        color: #0065a9;
+        cursor: pointer; }
   body.appManagerModule .clientLeftBar {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
     background-color: #edf8fe;
     position: fixed;
     left: 0px;
@@ -142,17 +165,24 @@ body.appManagerModule {
       font-size: 17px;
       font-weight: 100;
       color: #0065a9;
-      left: 32px;
-      top: 120px; }
+      left: 0px;
+      top: 120px;
+      right: 0px; }
       body.appManagerModule .clientLeftBar .appList .appListItem {
+        position: relative;
         height: 40px;
         border-top: 1px solid #d6dfe6;
-        padding-top: 10px; }
+        cursor: pointer; }
         body.appManagerModule .clientLeftBar .appList .appListItem .icon {
-          margin-right: 10px; }
-      body.appManagerModule .clientLeftBar .appList .dotsIcon {
-        font-weight: 100;
-        font-size: 30px; }
+          position: absolute;
+          top: 10px;
+          left: 32px; }
+        body.appManagerModule .clientLeftBar .appList .appListItem .appName {
+          position: absolute;
+          top: 8px;
+          left: 62px; }
+      body.appManagerModule .clientLeftBar .appList .appListItem:hover {
+        background-color: #ceeaf8; }
     body.appManagerModule .clientLeftBar .infoBox {
       position: absolute;
       left: 0px;
