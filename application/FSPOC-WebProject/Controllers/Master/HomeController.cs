@@ -17,8 +17,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileHeight      = 2,
                     Color           = 1,
                     Icon            = "fa-calendar",
-                    PositionX       = 710,
-                    PositionY       = 100,
+                    PositionX       = 530,
+                    PositionY       = 50,
                     InnerHTML       =
                         "<span class='mediumFont'>Zasedací místnost A:<br />12:30-14:00<hr />Zasedací místnost B:<br /><span class=\"highlight\">volná</span></span>"
                 },
@@ -29,8 +29,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileHeight = 1,
                     Color      = 2,
                     Icon       = "fa-copy",
-                    PositionX  = 950,
-                    PositionY  = 340,
+                    PositionX  = 770,
+                    PositionY  = 290,
                     InnerHTML  = ""
                 },
                 new AppTile
@@ -40,8 +40,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileHeight    = 1,
                     Icon          = "fa-wifi",
                     TitleFontSize = 13,
-                    PositionX     = 710,
-                    PositionY     = 340,
+                    PositionX     = 530,
+                    PositionY     = 290,
                     InnerHTML     = ""
                 },
                 new AppTile
@@ -51,8 +51,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileHeight      = 2,
                     Icon            = "fa-check",
                     TitleFontSize   = 15,
-                    PositionX       = 950,
-                    PositionY       = 100,
+                    PositionX       = 770,
+                    PositionY       = 50,
                     InnerHTML       =
                         "<span class='mediumFont'>Výsledky auditu z <span class=\"highlight\">6.10.2015</span> jsou nyní dostupné ke stažení</span>"
                 },
@@ -62,8 +62,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileWidth  = 4,
                     TileHeight = 4,
                     Icon       = "fa-line-chart",
-                    PositionX  = 230,
-                    PositionY  = 100,
+                    PositionX  = 50,
+                    PositionY  = 50,
                     InnerHTML  = "<svg width=\"430\" height=\"400\">"
                                 +
                                 "<path d=\"M 0 100 L 430 100\"  stroke=\"#53ccff\" stroke-width=\"1\" stroke-opacity=\"0.50\" fill=\"none\" />"
@@ -99,8 +99,8 @@ namespace FSS.Omnius.Controllers.Master
                     TileHeight = 1,
                     Color      = 1,
                     Icon       = "fa-eye",
-                    PositionX  = 710,
-                    PositionY  = 460,
+                    PositionX  = 530,
+                    PositionY  = 410,
                     InnerHTML  = ""
                 }
             };

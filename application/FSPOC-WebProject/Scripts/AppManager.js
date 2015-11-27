@@ -1,5 +1,8 @@
 ﻿$(function () {
     if ($("body.appManagerModule").length) {
+        $("#adminSectionIcon").on("click", function () {
+            window.location.href = "/Portal";
+        });
         $(".appPanel").draggable({
             grid: [120, 120],
             revert: "invalid",
@@ -7,7 +10,7 @@
                 $(this).draggable("option", "revert", "invalid");
             }
         });
-        $(".appManagerModule").droppable({
+        $(".appWorkspace").droppable({
             tolerance: "fit"
         });
         $(".appPanel").droppable({
