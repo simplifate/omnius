@@ -1,4 +1,4 @@
-﻿using Nexus.Gate;
+﻿using FSS.Omnius.Nexus.Gate;
 
 namespace FSS.Omnius.BussinesObjects.Service
 {

@@ -8,12 +8,12 @@ using System.DirectoryServices;
 namespace FSS.Omnius.Nexus.Gate
 {
     using System.Data.Entity;
-    using FSS.Omnius.Entitron.Entity;
+    using FSS.Omnius.Modules.Entitron.Entity;
 
     public class Ldap
     {
         private DirectoryEntry connection;
-        private DbSet<FSS.Omnius.Entitron.Entity.Nexus.Ldap> ldapList;
+        private DbSet<Modules.Entitron.Entity.Nexus.Ldap> ldapList;
 
         public Ldap()
         {
@@ -21,7 +21,7 @@ namespace FSS.Omnius.Nexus.Gate
             ldapList = e.Ldaps;
         }
 
-        private void Connect(Entitron.Entity.Nexus.Ldap server)
+        private void Connect(Modules.Entitron.Entity.Nexus.Ldap server)
         {
             try {
                 //connection = new DirectoryEntry("LDAP://test.fss.com", "CN=Kerberos,OU=Users,OU=FSS,DC=test,DC=fss,DC=com", "FssSecret1.");
@@ -39,7 +39,7 @@ namespace FSS.Omnius.Nexus.Gate
 
         public void UseServer(string server)
         {
-            Entitron.Entity.Nexus.Ldap serverModel;
+            Modules.Entitron.Entity.Nexus.Ldap serverModel;
             if (server == "default") {
                 serverModel = ldapList.SingleOrDefault(e => e.Is_Default == true);
             }
