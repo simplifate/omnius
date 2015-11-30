@@ -1,5 +1,5 @@
 ﻿@using System.Collections
-@using FSPOC_WebProject.Models
+@using FSS.Omnius.Modules.Entitron.Entity.Master
 @{
     ViewBag.Title = "Omnius App Manager";
     Page.ModuleClass = "appManagerModule";
@@ -36,7 +36,7 @@
     </div>
     <div class="exchangeIcon fa fa-exchange"></div>
     <div class="appList">
-        @foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
+        @foreach (Application app in (List<Application>)ViewData["Tiles"])
         {
             <div class="appListItem">
                 <div class="icon fa @(app.Icon)"></div>
@@ -54,7 +54,7 @@
     </div>
 </div>
 <div class="appWorkspace">
-    @foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
+    @foreach (Application app in (List<Application>)ViewData["Tiles"])
     {
         <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
          left: @(app.PositionX+10)px; top: @(app.PositionY+10)px;">
