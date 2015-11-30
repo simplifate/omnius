@@ -5,18 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.DirectoryServices;
 
-namespace Nexus.Gate
+namespace FSS.Omnius.Nexus.Gate
 {
+    using System.Data.Entity;
+    using FSS.Omnius.Entitron.Entity;
+
     public class Ldap
     {
         private DirectoryEntry connection;
+        private DbSet<FSS.Omnius.Entitron.Entity.Nexus.Ldap> ldapList;
 
         public Ldap()
         {
-            Connect();
+            DBEntities e = new DBEntities();
+            ldapList = e.Ldaps;
         }
 
-        private void Connect()
+        private void Connect(Entitron.Entity.Nexus.Ldap server)
         {
             try {
                 //connection = new DirectoryEntry("LDAP://test.fss.com", "CN=Kerberos,OU=Users,OU=FSS,DC=test,DC=fss,DC=com", "FssSecret1.");
@@ -30,6 +35,19 @@ namespace Nexus.Gate
             {
                 var a = e;
             }
+        }
+
+        public void UseServer(string server)
+        {
+            Entitron.Entity.Nexus.Ldap serverModel;
+            if (server == "default") {
+                serverModel = ldapList.SingleOrDefault(e => e.Is_Default == true);
+            }
+            else {
+                serverModel = ldapList.SingleOrDefault(e => e.Domain_Ntlm == server || e.Domain_Kerberos == server || e.Domain_Server == server);
+            }
+
+            Connect(serverModel);
         }
 
         public string SearchByAdLogin(string adLogin)

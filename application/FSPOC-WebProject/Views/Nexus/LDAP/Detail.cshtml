@@ -14,10 +14,12 @@
         <dd>@Html.DisplayFor(model => model.Bind_User)</dd>
         <dt>@Html.DisplayNameFor(model => model.Bind_Password)</dt>
         <dd>@(Model.Bind_Password.Length > 0 ? "********" : "")</dd>
-        <dt>@Html.DisplayNameFor(model => model.Active)</dt>
-        <dd>@(Model.Active == true ? "ano" : "ne")</dd>
         <dt>@Html.DisplayNameFor(model => model.Use_SSL)</dt>
         <dd>@(Model.Use_SSL == true ? "ano" : "ne")</dd>
+        <dt>@Html.DisplayNameFor(model => model.Is_Default)</dt>
+        <dd>@(Model.Is_Default == true ? "ano" : "ne")</dd>
+        <dt>@Html.DisplayNameFor(model => model.Active)</dt>
+        <dd>@(Model.Active == true ? "ano" : "ne")</dd>
     </dl>
 </div>
 <p>
