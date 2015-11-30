@@ -927,8 +927,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Master\Home\About.cshtml" />
-    <Content Include="Views\Master\Home\Contact.cshtml" />
     <Content Include="Views\Master\Home\Index.cshtml" />
     <Content Include="Views\Persona\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Persona\Account\ConfirmEmail.cshtml" />
