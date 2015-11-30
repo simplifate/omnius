@@ -156,6 +156,10 @@
     <Compile Include="Migrations\201511301834451_init.Designer.cs">
       <DependentUpon>201511301834451_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511302216543_applicationAttr.cs" />
+    <Compile Include="Migrations\201511302216543_applicationAttr.Designer.cs">
+      <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -194,6 +198,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201511301834451_init.resx">
       <DependentUpon>201511301834451_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511302216543_applicationAttr.resx">
+      <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

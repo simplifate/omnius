@@ -40,6 +40,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public int TileHeight { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public bool ShowInAppManager { get; set; }
+
+        [StringLength(100)]
+        public string DisplayName { get; set; } // Used by Entitron
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Page> Pages { get; set; }
