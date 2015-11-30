@@ -23,16 +23,12 @@ namespace FSS.Omnius.Modules.Migrations
                 new Entitron.Entity.CORE.Module { Name = "Tapestry", Description = "WorkFlow", IsEnabled = true },
                 new Entitron.Entity.CORE.Module { Name = "Persona", Description = "Manage Rights, Users, Group", IsEnabled = true }
             );
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+
+            context.Actors.AddOrUpdate(
+                new Entitron.Entity.Tapestry.Actor { Name = "Manual" },
+                new Entitron.Entity.Tapestry.Actor { Name = "Time" },
+                new Entitron.Entity.Tapestry.Actor { Name = "Auto" }
+            );
         }
     }
 }
