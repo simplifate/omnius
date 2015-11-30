@@ -402,16 +402,12 @@
     <Content Include="Scripts\cm\.npmignore" />
     <Content Include="Scripts\cm\.travis.yml" />
     <Content Include="Scripts\cm\AUTHORS" />
-    <Content Include="Scripts\cm\bin\authors.sh" />
-    <Content Include="Scripts\cm\bin\compress" />
-    <Content Include="Scripts\cm\bin\lint" />
-    <Content Include="Scripts\cm\bin\release" />
-    <Content Include="Scripts\cm\bin\source-highlight" />
     <Content Include="Scripts\cm\bower.json" />
     <Content Include="Scripts\cm\CONTRIBUTING.md" />
     <Content Include="Scripts\cm\LICENSE" />
     <Content Include="Scripts\cm\package.json" />
     <Content Include="Scripts\cm\README.md" />
+    <None Include="Properties\PublishProfiles\RWE.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
