@@ -23,5 +23,9 @@ namespace FSS.Omnius.Modules.Persona
         {
             return _CORE.ActiveUser.Groups.Any(g => g.ActionRights.Any(ar => ar.ActionId == ActionRuleId && ar.Executable));
         }
+        public bool isUserAdmin()
+        {
+            return false;
+        }
     }
 }

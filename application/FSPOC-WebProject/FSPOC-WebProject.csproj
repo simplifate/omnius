@@ -208,6 +208,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
@@ -977,6 +978,8 @@
     <Content Include="Views\Mozaic\TemplateCategory\Update.cshtml" />
     <Content Include="Views\Nexus\LDAP\Search.cshtml" />
     <Content Include="Views\Nexus\LDAP\GroupList.cshtml" />
+    <Content Include="Views\Mozaic\Page\Create.cshtml" />
+    <Content Include="Views\Mozaic\Page\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
