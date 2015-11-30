@@ -1,10 +1,14 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using System.DirectoryServices;
+using System;
+using System.Text;
+using System.Collections;
+using System.Reflection;
+using FSS.Omnius.BussinesObjects.Service;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -16,6 +20,8 @@ namespace FSS.Omnius.Controllers.Nexus
             DBEntities e = new DBEntities();
             return View(e.Ldaps);
         }
+
+        #region configuration methods
 
         public ActionResult Create()
         {
@@ -77,5 +83,124 @@ namespace FSS.Omnius.Controllers.Nexus
 
             return RedirectToRoute("Nexus", new { @action = "Index" });
         }
+
+        #endregion
+
+        #region tools
+
+        public ActionResult Search()
+        {
+            ViewBag.Result = String.Empty;
+            if(Request.HttpMethod == "POST")
+            {
+                string query = Request.Form["query"];
+                NexusService service = new NexusService();
+
+                SearchResult user = service.SearchByLogin(query);
+                ViewBag.Result = var_dump(user, 0);
+            }
+            
+            return View("~/Views/Nexus/LDAP/Search.cshtml");
+        }
+
+        public ActionResult Groups()
+        {
+            SearchResultCollection groups;
+            List<string> groupList = new List<string>();
+            NexusService service = new NexusService();
+
+            if(Request.HttpMethod == "POST")
+            {
+                string baseDN = Request.Form["query"];
+                groups = service.GetGroups(baseDN);
+            }
+            else
+            {
+                groups = service.GetGroups();
+            }
+            
+            foreach (SearchResult group in groups) {
+                groupList.Add(var_dump(group, 0));
+            }
+
+            ViewBag.Result = groupList;
+
+            return View("~/Views/Nexus/LDAP/GroupList.cshtml");
+
+        }
+        
+        #endregion
+
+        #region helper methods
+
+        private string var_dump(object obj, int recursion)
+        {
+            StringBuilder result = new StringBuilder();
+            if (recursion < 5)
+            {
+                Type t = obj.GetType();
+                PropertyInfo[] properties = t.GetProperties();
+
+                foreach (PropertyInfo property in properties)
+                {
+                    try
+                    {
+                        object value = property.GetValue(obj, null);
+
+                        string indent = String.Empty;
+                        string spaces = "|   ";
+                        string trail = "|...";
+
+                        if (recursion > 0)
+                        {
+                            indent = new StringBuilder(trail).Insert(0, spaces, recursion - 1).ToString();
+                        }
+
+                        if (value != null)
+                        {
+                            string displayValue = value.ToString();
+                            if (value is string) displayValue = String.Concat('"', displayValue, '"');
+
+                            result.AppendFormat("{0}{1} = {2}\n", indent, property.Name, displayValue);
+
+                            try
+                            {
+                                if (!(value is ICollection))
+                                {
+                                    result.Append(var_dump(value, recursion + 1));
+                                }
+                                else
+                                {
+                                    int elementCount = 0;
+                                    foreach (object element in ((ICollection)value))
+                                    {
+                                        string elementName = String.Format("{0}[{1}]", property.Name, elementCount);
+                                        indent = new StringBuilder(trail).Insert(0, spaces, recursion).ToString();
+
+                                        result.AppendFormat("{0}{1} = {2}\n", indent, elementName, element.ToString());
+                                        result.Append(var_dump(element, recursion + 2));
+                                        elementCount++;
+                                    }
+
+                                    result.Append(var_dump(value, recursion + 1));
+                                }
+                            }
+                            catch { }
+                        }
+                        else
+                        {
+                            result.AppendFormat("{0}{1} = {2}\n", indent, property.Name, "null");
+                        }
+                    }
+                    catch
+                    {
+                        
+                    }
+                }
+            }
+            return result.ToString();
+        }
+        
+        #endregion
     }
 }

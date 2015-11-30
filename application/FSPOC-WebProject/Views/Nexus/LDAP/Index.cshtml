@@ -139,7 +139,8 @@
             </tbody>
         </table>
         @Ajax.RouteLink("Pøidat LDAP server", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-plus" })
-        @Ajax.RouteLink("Hledat", "Nexus", new { @action = "Search" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-search" })
+        @Ajax.RouteLink("Uživatelé", "Nexus", new { @action = "Search" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-search" })
+        @Ajax.RouteLink("Skupiny", "Nexus", new { @action = "Groups" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-object-group" })
     </div>
 </div>
 <div id="ContentContainer" class="bottom-panel">

@@ -8,12 +8,13 @@ using System.DirectoryServices;
 namespace FSS.Omnius.Nexus.Gate
 {
     using System.Data.Entity;
-    using FSS.Omnius.Entitron.Entity;
+    using Modules.Entitron.Entity;
+    using System.Collections.Specialized;
 
     public class Ldap
     {
         private DirectoryEntry connection;
-        private DbSet<FSS.Omnius.Entitron.Entity.Nexus.Ldap> ldapList;
+        private DbSet<Modules.Entitron.Entity.Nexus.Ldap> ldapList;
 
         public Ldap()
         {
@@ -21,25 +22,25 @@ namespace FSS.Omnius.Nexus.Gate
             ldapList = e.Ldaps;
         }
 
-        private void Connect(Entitron.Entity.Nexus.Ldap server)
+        private void Connect(Modules.Entitron.Entity.Nexus.Ldap server)
         {
             try {
-                //connection = new DirectoryEntry("LDAP://test.fss.com", "CN=Kerberos,OU=Users,OU=FSS,DC=test,DC=fss,DC=com", "FssSecret1.");
-                connection = new DirectoryEntry("LDAP://192.168.1.24/OU=FSS,DC=test,DC=fss,DC=com");
-                connection.AuthenticationType = AuthenticationTypes.Secure;
-                connection.Username = "Kerberos";
-                connection.Password = "FssSecret1.";
-                
+                string protocol = server.Use_SSL == true ? "LDAPS://" : "LDAP://";
+
+                connection = new DirectoryEntry(protocol + server.Domain_Server);
+                connection.AuthenticationType = server.Use_SSL == true ? AuthenticationTypes.SecureSocketsLayer : AuthenticationTypes.Secure;
+                connection.Username = server.Bind_User;
+                connection.Password = server.Bind_Password;                
             }
             catch(DirectoryServicesCOMException e)
             {
-                var a = e;
+                
             }
         }
 
         public void UseServer(string server)
         {
-            Entitron.Entity.Nexus.Ldap serverModel;
+            Modules.Entitron.Entity.Nexus.Ldap serverModel;
             if (server == "default") {
                 serverModel = ldapList.SingleOrDefault(e => e.Is_Default == true);
             }
@@ -50,14 +51,89 @@ namespace FSS.Omnius.Nexus.Gate
             Connect(serverModel);
         }
 
-        public string SearchByAdLogin(string adLogin)
+        private void EnsureConnection()
         {
-            DirectorySearcher search = new DirectorySearcher(connection);
-            search.Filter = "(SAMAccountname=" + adLogin + ")";
-
-            SearchResult user = search.FindOne();
-            int a = 1 + 1;
-            return String.Empty;
+            if (connection == null) {
+                UseServer("default");
+            }
         }
+
+        private DirectoryEntry GetRoot(string baseDN = null)
+        {
+            DirectoryEntry root = connection;
+            if (baseDN.Length > 0)
+            {
+                DirectorySearcher rs = new DirectorySearcher(connection) { Filter = "(distinguishedname=" + baseDN + ")" };
+                root = rs.FindOne().GetDirectoryEntry();
+            }
+            return root;
+        }
+
+        #region Users
+
+        public SearchResult SearchByAdLogin(string adLogin, string baseDN = null, string[] properties = null)
+        {
+            return FindOne("(SAMAccountname=" + adLogin + ")", baseDN, properties);
+        }
+
+        public SearchResult SearchByEmail(string email, string baseDN = null, string[] properties = null)
+        {
+            return FindOne("(Mail=" + email + ")", baseDN, properties);
+        }
+
+        public SearchResultCollection GetUsers(string baseDN = "", string[] properties = null)
+        {
+            return Search("(objectCategory=User)", baseDN, properties);
+        }
+
+        #endregion
+
+        #region Group
+
+        public SearchResultCollection GetGroups(string baseDN = "", string[] properties = null)
+        {
+            return Search("(objectCategory=Group)", baseDN, properties);
+        }
+
+        #endregion
+
+        #region misc
+           
+        public SearchResultCollection Search(string filter, string baseDN = "", string[] properties = null)
+        {
+            EnsureConnection();
+            DirectoryEntry root = GetRoot(baseDN);
+
+            DirectorySearcher search = new DirectorySearcher(root);
+            search.Filter = filter;
+            search.SearchScope = SearchScope.Subtree;
+
+            if (properties != null) {
+                search.PropertiesToLoad.AddRange(properties);
+            }
+
+            SearchResultCollection result = search.FindAll();
+            return result;
+        }
+
+        public SearchResult FindOne(string filter, string baseDN = "", string[] properties = null)
+        {
+            EnsureConnection();
+            DirectoryEntry root = GetRoot(baseDN);
+
+            DirectorySearcher search = new DirectorySearcher(root);
+            search.Filter = filter;
+            search.SearchScope = SearchScope.Subtree;
+
+            if (properties != null)
+            {
+                search.PropertiesToLoad.AddRange(properties);
+            }
+
+            SearchResult result = search.FindOne();
+            return result;
+        }
+
+        #endregion
     }
 }
