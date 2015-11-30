@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.DirectoryServices;
 
 namespace FSS.Omnius.Nexus.Gate
 {
     using System.Data.Entity;
     using Modules.Entitron.Entity;
-    using System.Collections.Specialized;
 
     public class Ldap
     {

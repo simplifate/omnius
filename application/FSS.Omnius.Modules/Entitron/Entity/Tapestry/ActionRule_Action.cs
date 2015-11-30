@@ -20,6 +20,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int Order { get; set; }
 
+        /// <summary>
+        /// Target1=source1;target2=source2
+        /// pro vstup dat uvozovky - Target1=s$nìjaký text
+        /// s - string
+        /// b - boolean
+        /// i - int
+        /// d - double
+        /// </summary>
         [StringLength(200)]
         public string InputVariablesMapping { get; set; } // target=source;c=d
 

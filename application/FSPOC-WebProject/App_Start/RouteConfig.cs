@@ -29,7 +29,7 @@ namespace FSPOC_WebProject
             routes.MapRoute(
                 name: "Master",
                 url: "Master/{controller}/{action}/{id}",
-                defaults: new { controller = "Config", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Master" }
             );
 
@@ -69,7 +69,8 @@ namespace FSPOC_WebProject
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Portal", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Master" }
             );
         }
     }

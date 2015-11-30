@@ -50,6 +50,24 @@ namespace FSS.Omnius.Modules.Entitron
             }
         }
 
+        public object this[int columnId]
+        {
+            get
+            {
+                if (_idProperties.ContainsKey(columnId))
+                    return _idProperties[columnId];
+
+                return null;
+            }
+            set
+            {
+                if (!_idProperties.ContainsKey(columnId))
+                    throw new KeyNotFoundException();
+
+                _idProperties[columnId] = value;
+            }
+        }
+
         public void createProperty(int columnId, string name, object value)
         {
             _idProperties.Add(columnId,value);

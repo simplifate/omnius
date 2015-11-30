@@ -14,7 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         {
             Pages = new HashSet<Page>();
         }
-
+        
         public int Id { get; set; }
 
         [Required]

@@ -101,7 +101,7 @@
                     </label>
                 </div>
                 <div class="col-sm-3">
-                    @Html.DropDownListFor(x => x.Parent, new SelectList(ViewBag.Categories))
+                    @Html.DropDownListFor(x => x.Parent, new SelectList(ViewBag.Categories, "Name"))
                 </div>
             </div>
             <div class="form-group col-sm-12">
