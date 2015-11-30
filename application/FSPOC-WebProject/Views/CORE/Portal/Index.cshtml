@@ -1,0 +1,58 @@
+﻿@{
+    Page.Title = "Omnius Portal";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "portalModule";
+}
+
+<div id="centralAdminPanel">
+    <div class="panelLabel">Centrální administrace</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="upperResponsiveArea">
+        <div id="rectangleIndicatorsArea">
+            <div id="usersOnlineIndicator" class="clickableIndicatorRectangle">
+                <div class="bigNumber">26</div>
+                <div class="indicatorLabel">přihlášených uživatelů</div>
+            </div>
+            <div id="activeProfileIndicator" class="clickableIndicatorRectangle">
+                <div class="bigTextLine">RWE_PROD</div>
+                <div class="indicatorLabel">profil aktivní</div>
+            </div>
+            <div id="activeModulesIndicator" class="clickableIndicatorRectangle highlighted">
+                <div class="bigNumber">11</div>
+                <div class="indicatorLabel">aktivních modulů</div>
+            </div>
+            <div id="maintenanceIndicator" class="indicatorRectangle">
+                <div class="bigTextLine">ÚDRŽBA</div>
+                <div class="indicatorLabel">vypnuta</div>
+            </div>
+        </div>
+        <div id="notificationArea">
+            <div id="errorSample" class="indicatorBar error"><i class="fa fa-bolt"></i><div class="message">Chyba: Datový tok SN</div></div>
+            <div id="warningSample" class="indicatorBar warning"><i class="fa fa-warning"></i><div class="message">Varování: 2GB místa na disku E:</div></div>
+            <div id="infoSample" class="indicatorBar info"><i class="fa fa-check"></i><div class="message">Vymazání HR cache úspěšné</div></div>
+        </div>
+    </div>
+</div>
+<div id="lowerPanel">
+    <svg class="lowerLeftDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+    <div class="fa fa-edit lowerLeftDecorationEditSymbol"></div>
+    <svg class="lowerRightDecoration" width="540px" height="565px">
+        <path d="M507 0 L507 27 L473 62 L45 62" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M507 357 L507 108 L472 74 L45 74 L9 110" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M507 47 L528 68 L507 89 L486 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+    <div id="lowerPanelDynamicContainer">
+        @Html.Partial("ModuleAdmin")
+    </div>
+</div>
+
+   

@@ -1,0 +1,96 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.Ldap
+
+
+@using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post))
+{ 
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava LDAP serveru" : "Nový LDAP server")</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Domain_Ntlm, "NTLM doména:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Domain_Ntlm, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Domain_Ntlm, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Domain_Kerberos, "Kerberos doména:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Domain_Kerberos, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Domain_Kerberos, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Domain_Server, "Server:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Domain_Server, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Domain_Server, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Bind_User, "Uživatel:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Bind_User, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Bind_User, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Bind_Password, "Heslo:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Bind_Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                @Html.ValidationMessageFor(model => model.Bind_Password, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Use_SSL, "Použít SSL:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Use_SSL)
+                    @Html.ValidationMessageFor(model => model.Use_SSL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Is_Default, "Výchozí:", htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Is_Default)
+                    @Html.ValidationMessageFor(model => model.Is_Default, "", new { @class = "text-danger"})
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Active, "Aktivní:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @type = "hidden" } })
+                <input type="submit" value="Uložit" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

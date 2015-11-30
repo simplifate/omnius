@@ -1,0 +1,53 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.TemplateCategory
+
+<div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Název
+            </label>
+        </div>
+        <div>
+            <p>@Model.Name</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Šablony
+            </label>
+        </div>
+        <div>
+            <p>@Model.Templates.Select(x => x.Name)</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Předek
+            </label>
+        </div>
+        <div>
+            @if (@Model.Parent != null)
+            {
+                <p>
+                    @Model.Parent.Name
+                </p>
+            }
+            else
+            {
+                <p> Nemá předka </p>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Potomci
+            </label>
+        </div>
+        <div>
+            <p>@Model.Children.Select(x => x.Name)</p>
+        </div>
+    </div>
+</div> 

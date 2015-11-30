@@ -1,0 +1,315 @@
+﻿@import "Mixins.scss";
+
+@font-face {
+    font-family: "RweHeadlineRegular";
+    src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype");
+}
+@font-face {
+    font-family: "RweTextMedium";
+    src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype");
+}
+body.appManagerModule {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: white;
+
+    .clientTopBar {
+        @include no-select();
+        @include linear-gradient(#edf8fe, #ceeaf8);
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        height: 50px;
+
+        .icon {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            padding-top: 5px;
+            padding-left: 10px;
+            z-index: 50;
+            font-size: 32px;
+            color: #0065a9;
+            cursor: pointer;
+        }
+        .activeIcon {
+            background-color: #edf8fe;
+            cursor: default;
+        }
+
+        .clientTitle {
+            position: absolute;
+            font-family: RweHeadlineRegular;
+            text-transform: uppercase;
+            font-size: 20px;
+            color: #59575c;
+            padding-top: 10px;
+            top: 0px;
+            left: 320px;
+            right: 320px;
+            text-align: center;
+        }
+        .userBox {
+            position: absolute;
+            top: 0px;
+            right: 290px;
+            width: 250px;
+            height: 50px;
+            .avatar {
+                position: absolute;
+                left: 5px;
+                top: 5px;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                background-image: url(/Content/images/UserIconSample.png);
+            }
+            .fullName {
+                position: absolute;
+                left: 65px;
+                top: 6px;
+                font-family: RweTextMedium;
+                font-size: 14px;
+            }
+            .commands {
+                position: absolute;
+                left: 65px;
+                top: 24px;
+                color: #0065a9;
+                font-family: RweTextMedium;
+                font-size: 14px;
+            }
+            .notificationIcon {
+                position: absolute;
+                right: 30px;
+                top: 8px;
+                font-size: 30px;
+                color: #0065a9;
+                cursor: pointer;
+            }
+
+        }
+        .searchBox {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 310px;
+            height: 50px;
+            .searchArrow {
+                position: absolute;
+                top: 11px;
+                right: 273px;
+                width: 28px;
+                height: 28px;
+                background-color: white;
+                color: #0065a9;
+                cursor: pointer;
+                .fa {
+                    position: absolute;
+                    left: 6px;
+                    top: 2px;
+                    font-size: 26px;
+                }
+            }
+            .searchInputField {
+                position: absolute;
+                top: 11px;
+                right: 85px;
+                width: 185px;
+                height: 28px;
+                background-color: white;
+                color: #a2b4cc;
+                padding-left: 14px;
+                padding-top: 4px;
+                font-family: RweTextMedium;
+                font-size: 14px;
+                border: none;
+            }
+            .searchIcon {
+                position: absolute;
+                right: 30px;
+                top: 8px;
+                font-size: 30px;
+                color: #0065a9;
+                cursor: pointer;
+            }
+
+        }
+    }
+    .clientLeftBar {
+        @include no-select();
+        background-color: #edf8fe;
+        position: fixed;
+        left: 0px;
+        top: 50px;
+        bottom: 0px;
+        width: 310px;
+        border-right: 1px solid #f1f0ee;
+        
+        .widgetLabel {
+            position: absolute;
+            font-family: RweHeadlineRegular;
+            text-transform: uppercase;
+            font-size: 20px;
+            color: #0065a9;
+            left: 30px;
+            top: 30px;
+        }
+        .circles {
+            position: absolute;
+            color: #0065a9;
+            left: 32px;
+            top: 65px;
+
+            .fa {
+                margin-right: 9px;
+            }
+        }
+        .exchangeIcon {
+            position: absolute;
+            font-size: 18px;
+            color: #0065a9;
+            left: 260px;
+            top: 35px;
+        }
+        .appList {
+            position: absolute;
+            font-size: 17px;
+            font-weight: 100;
+            color: #0065a9;
+            left: 0px;
+            top: 120px;
+            right: 0px;
+            .appListItem {
+                position: relative;
+                height: 40px;
+                border-top: 1px solid #d6dfe6;
+                cursor: pointer;
+                .icon {
+                    position: absolute;
+                    top: 10px;
+                    left: 32px;
+                }
+                .appName {
+                    position: absolute;
+                    top: 8px;
+                    left: 62px;
+                }
+            }
+            .appListItem:hover{
+                background-color: #ceeaf8;
+            }
+        }
+        .infoBox {
+             position: absolute;
+             left: 0px;
+             bottom: 0px;
+             width: 100%;
+             height: 90px;
+             color: #919296;
+             .icon {
+                 position: absolute;
+                 left: 15px;
+                 font-size: 60px;
+             }
+             .infoText {
+                 position: absolute;
+                 left: 85px;
+                 top: 5px;
+                 font-size: 12px;
+
+             }
+        }
+    }
+    .appWorkspace {
+        position: fixed;
+        left: 310px;
+        top: 50px;
+        right: 0px;
+        bottom: 0px;
+    }
+
+    .appColor0 {
+        @include linear-gradient(#0086be, #0065a9);
+        color: white;
+    }
+    .appColor0 .highlight {
+        color: #ffdf00;
+    }
+    .appColor1 {
+        @include linear-gradient(#87ba15, #019a32);
+        color: white;
+    }
+    .appColor1 .highlight {
+        color: #ffdf00;
+    }
+    .appColor2 {
+        @include linear-gradient(#c3dc89, #8aba18);
+        color: white;
+    }
+
+    .appPanel {
+        @include no-select();
+        position: absolute;
+        width: auto;
+        height: auto;
+        font-family: RweTextMedium;
+        padding: 12px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+
+        .appPanelHeader {
+            height: 36px;
+        }
+        .smallFont {
+            font-size: 11px;
+        }
+        .mediumFont {
+            font-size: 16px;
+        }
+        .largeFont {
+            font-size: 22px;
+        }
+        hr {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .highlight {
+            font-weight: bold;
+        }
+        .appTitle {
+            font-family: RweHeadlineRegular;
+            text-transform: uppercase;
+            font-size: 20px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+        }
+        .appIcon {
+            float: left;
+            font-weight: 100;
+            margin-right: 7px;
+            margin-bottom: 0px;
+            text-align: center;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 19px;
+        }
+    }
+    .ui-draggable-dragging {
+        z-index: 200;
+    }
+    #moduleSwitcher {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 32px;
+        z-index: 200;
+        color: white;
+        background-color: #4d41e7;
+    }
+}

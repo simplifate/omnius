@@ -1,0 +1,20 @@
+﻿@model IQueryable<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Page>
+@{
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Master template</th>
+        <th>Application Id</th>
+    </tr>
+    @foreach(var page in Model)
+    {
+        <tr>
+            <td>@page.Id</td>
+            <td>@page.MasterTemplateId</td>
+            <td>@page.ApplicationId</td>
+        </tr>
+    }
+</table>

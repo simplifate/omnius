@@ -1,0 +1,416 @@
+﻿@import "Mixins.scss";
+
+body.tapestryModule {
+    background-color: #404040;
+
+    .blockPanel {
+        position: absolute;
+        left: 225px;
+        top: 75px;
+        right: 0px;
+        bottom: 0px;
+        background-color: #455d73;
+        border-left: 4px solid #3a3a3a;
+        border-top: 4px solid #3a3a3a;
+    }
+    #attributesPanel {
+        position: absolute;
+        left: 0px;
+        width: 876px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    #rulesPanel {
+        position: absolute;
+        left: 0px;
+        top: 170px;
+        right: 270px;
+        bottom: 140px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+        overflow: scroll;
+    }
+    #viewsPanel {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 876px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+        height: 110px;
+    }
+    #actionsPanel {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 560px;
+        width: 240px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    #operatorsPanel {
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        top: 598px;
+        width: 240px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    #operatorsPanel .operator {
+        background-color: #4f88bb;
+        border: 1px solid #41719c;
+        color: white;
+    }
+    #rolesPanel {
+        position: absolute;
+        right: 270px;
+        left: 906px;
+        top: 40px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    #statesPanel {
+        position: absolute;
+        bottom: 0px;
+        left: 906px;
+        width: 240px;
+        height: 110px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    #portsPanel {
+        position: absolute;
+        bottom: 0px;
+        right: 270px;
+        left: 1176px;
+        height: 110px;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size: 1.5em;
+    }
+    .menuPanel .menuItem {
+        margin: 8px 3px;
+        padding: 5px;
+        text-align:center;
+        vertical-align: middle;
+        display: inline-block;
+        font-size: 0.8em;
+        white-space: nowrap;
+        z-index: 400;
+    }
+    .header {
+        width: auto;
+        color: black;
+        font-size: 1.5em;
+        height: 40px;
+        margin-left: 3px;
+        margin-top: 3px;
+    }
+    .headerItem {
+        background-color: #49c3f1;
+        width: 180px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        height: 40px;
+        padding-top: 5px;
+        margin-left: -3px;
+    }
+    #headerBlockName {
+        width: 250px;
+    }
+    #headerTableName {
+        width: 190px;
+    }
+    #headerOverview {
+        left: 440px;
+        width: 300px;
+    }
+    .headerItem:hover {
+        background-color: #2ddef9;
+        cursor: pointer;
+    }
+    #btnAddRule {
+        position: fixed;
+        right: 340px;
+        top: 300px;
+        padding: 3px 10px;
+        font-size: 0.8em;
+        z-index: 2000;
+    }
+    #btnAddActions {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        padding: 3px 10px;
+        font-size: 0.8em;
+    }
+    .item, .menuPanel, #rulesPanel, .header, ._jsPlumb_overlay, .ui-dialog-content table {
+        @include no-select();
+    }
+    .item {
+        position: absolute;
+        margin: -1px;
+        padding: 5px;
+    }
+    .sourceEndpoint {
+        margin-left: 4px;
+    }
+    .ui-dialog {
+        padding: 0px 0px;
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+    .ui-widget-header {
+        background-image: none;
+        background-color: #2d74b2;
+        color: white;
+    }
+    .ui-dialog .ui-dialog-buttonpane {
+        padding: 3px;
+    }
+    .ui-dialog .ui-dialog-buttonset button {
+        margin: 3px;
+    }
+    .sourceEndpoint._jsPlumb_dragging, .sourceEndpoint.jsplumb-drag {
+        visibility: hidden !important;
+    }
+    .sourceEndpoint.jsplumb-drag-active {
+        visibility: visible !important;
+    }
+    #upperVerticalDivider {
+        position: absolute;
+        left: 900px;
+        top: 60px;
+        width: 23px;
+        height: 90px;
+        cursor: ew-resize;
+    }
+    #lowerLeftVerticalDivider {
+        position: absolute;
+        left: 900px;
+        bottom: 20px;
+        width: 23px;
+        height: 110px;
+        cursor: ew-resize;
+    }
+    #lowerRightVerticalDivider {
+        position: absolute;
+        left: 1170px;
+        bottom: 20px;
+        width: 23px;
+        height: 110px;
+        cursor: ew-resize;
+    }
+    #rightHorizontalDivider {
+        position: absolute;
+        top: 587px;
+        right: 20px;
+        width: 240px;
+        height: 23px;
+        cursor: ns-resize;
+    }
+    .verticalDividerBar {
+        background-color: #467ea8;
+        width: 3px;
+        height: 100%;
+        margin: 0px 10px;
+    }
+    .horizontalDividerBar {
+        background-color: #467ea8;
+        height: 3px;
+        width: 100%;
+        margin: 10px 0px;
+    }
+    .highlightedRow {
+        background-color: #49c3f1 !important;
+        color: white !important;
+    }
+    .contextMenu {
+        height: 100%;
+        width: auto;
+        padding: 5px;
+        background-color: #bf9000;
+        color: black;
+        display: inline-block;
+    }
+    .itemLabel {
+        display: inline-block;
+        padding: 5px;
+    }
+    #moduleSwitcher {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 32px;
+        z-index: 200;
+        color: white;
+        background-color: #455d73;
+        border: none;
+    }
+    .operatorSymbol {
+        position: absolute !important;
+        width: 70px;
+        height: 60px;
+        margin-top: -22px;
+        margin-left: -7px;
+    }
+    .endpointSourceLabel {
+        color: #41719c;
+        font-size: 12px;
+        font-weight: bold;
+        background-color: #c0c0c0;
+        z-index: 100;
+        padding: 1px 5px;
+    }
+    #btnAddCondition {
+        margin-top: 10px;
+    }
+    #edit-condition-dialog {
+        width: auto !important;
+    }
+    .logicTable {
+        width: 660px;
+
+        tr {
+            width: 100%;
+            height: 40px;
+        }
+        tr td {
+            padding: 10px 5px;
+        }
+        .btnRemoveCondition {
+            float: right;
+            color: black;
+        }
+        .selectField {
+            width: 230px;
+        }
+    }
+    .rule {
+        position: absolute;
+        padding: 20px;
+        width: 500px;
+        min-width: 120px;
+        min-height: 60px;
+        background-color: #c0c0c0;
+        border: 1px solid #467ea8;
+        box-sizing: initial;
+
+        .ruleHeader {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            height: 30px;
+            padding-left: 38px;
+            padding-top: 2px;
+            background-color: #455d73;
+            color: white;
+            font-size: 20px;
+        }
+        .editRuleIcon {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            font-size: 18px;
+            color: #49c3f1;
+            z-index: 100;
+        }
+        .editRuleIcon:hover {
+            color: white;
+        }
+        .deleteRuleIcon {
+            position: absolute;
+            right: 6px;
+            top: 5px;
+            font-size: 19px;
+            color: #f06771;
+            z-index: 100;
+        }
+        .deleteRuleIcon:hover {
+            color: #f88b98;
+        }
+        .ruleContent {
+            position: absolute;
+            top: 30px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+
+            .item {
+                text-align: center;
+                vertical-align: middle;
+                display: inline-block;
+                font-size: 0.8em;
+                white-space: nowrap;
+            }
+        }
+    }
+    .rule.ui-draggable-dragging {
+        z-index: 1000;
+    }
+    #rulesPanel {
+        background-color: #467ea8 !important;
+        color: black !important;
+        border: none !important;
+    }
+    .scrollArea {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        transform-origin: 0px 0px;
+        min-width: 4500px;
+        min-height: 2500px;
+    }
+    .item, .menuItem {
+        background-color: #467ea8;
+        color: white;
+    }
+    .item .fa {
+        color: #f1a57a;
+    }
+    .menuPanel {
+        background-color: #c0c0c0;
+        color: #455d73;
+        border: none;
+    }
+    .btn-tapestry {
+        background-color: #49c3f1;
+        color: black;
+    }
+    .btn-tapestry:hover {
+        background-color: #2ddef9;
+        color: black;
+    }
+    #zoomPanel {
+        position: fixed;
+        right: 345px;
+        bottom: 215px;
+        text-align: center;
+        z-index: 2000;
+
+        button {
+            font-size: 12px;
+            background-color: #49c3f1;
+            color: black;
+            border: none;
+        }
+        button:hover {
+            background-color: #2ddef9;
+        }
+        #zoomLabel {
+            font-size: 20px;
+            color: black;
+            margin-bottom: -2px;
+        }
+    }
+}

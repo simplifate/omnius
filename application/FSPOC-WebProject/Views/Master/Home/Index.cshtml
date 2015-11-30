@@ -1,0 +1,71 @@
+﻿@using System.Collections
+@using FSPOC_WebProject.Models
+@{
+    ViewBag.Title = "Omnius App Manager";
+    Page.ModuleClass = "appManagerModule";
+}
+
+<script src="~/Scripts/AppManager.js"></script>
+<div class="clientTopBar">
+    <div class="icon activeIcon"><div class="fa fa-th"></div></div>
+    <div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div>
+    <div class="icon"><div class="fa fa-question-circle"></div></div>
+
+    <div class="clientTitle">Oss Portál</div>
+
+    <div class="userBox">
+        <div class="notificationIcon fa fa-bell"></div>
+        <div class="avatar"></div>
+        <div class="fullName">Eliška Nováková</div>
+        <div class="commands"><a href="#">odhlásit</a> | <a href="#">upravit</a></div>
+    </div>
+    <div class="searchBox">
+        <div class="searchArrow"><div class="fa fa-caret-down"></div></div>
+        <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField"></input>
+        <div class="searchIcon fa fa-search"></div>
+    </div>
+</div>
+<div class="clientLeftBar">
+    <div class="widgetLabel">Nejpoužívanější aplikace</div>
+    <div class="circles">
+        <div class="fa fa-circle"></div>
+        <div class="fa fa-circle-o"></div>
+        <div class="fa fa-circle-o"></div>
+        <div class="fa fa-circle-o"></div>
+        <div class="fa fa-circle-o"></div>
+    </div>
+    <div class="exchangeIcon fa fa-exchange"></div>
+    <div class="appList">
+        @foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
+        {
+            <div class="appListItem">
+                <div class="icon fa @(app.Icon)"></div>
+                <div class="appName">@app.Name</div>
+            </div>
+        }
+    </div>
+    <div class="infoBox">
+        <div class="icon fa fa-info-circle"></div>
+        <div class="infoText">
+            Kliknutím na navigační šipku v hlavičce
+            můžete měnit způsob zobrazených
+            aplikací v menu.
+        </div>
+    </div>
+</div>
+<div class="appWorkspace">
+    @foreach (AppTile app in (IEnumerable<AppTile>)ViewData["Tiles"])
+    {
+        <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
+         left: @(app.PositionX+10)px; top: @(app.PositionY+10)px;">
+
+            <div class="appPanelHeader">
+                <div class="appIcon">
+                    <i class="fa @(app.Icon)"></i>
+                </div>
+                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@app.Name</div>
+            </div>
+            @Html.Raw(app.InnerHTML)
+        </div>
+    }
+</div>

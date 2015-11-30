@@ -1,0 +1,28 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.Ldap
+
+<div>
+    <h4>Detail záznamu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Domain_Ntlm)</dt>
+        <dd>@Html.DisplayFor(model => model.Domain_Ntlm)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Domain_Kerberos)</dt>
+        <dd>@Html.DisplayFor(model => model.Domain_Kerberos)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Domain_Server)</dt>
+        <dd>@Html.DisplayFor(model => model.Domain_Server)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Bind_User)</dt>
+        <dd>@Html.DisplayFor(model => model.Bind_User)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Bind_Password)</dt>
+        <dd>@(Model.Bind_Password.Length > 0 ? "********" : "")</dd>
+        <dt>@Html.DisplayNameFor(model => model.Use_SSL)</dt>
+        <dd>@(Model.Use_SSL == true ? "ano" : "ne")</dd>
+        <dt>@Html.DisplayNameFor(model => model.Is_Default)</dt>
+        <dd>@(Model.Is_Default == true ? "ano" : "ne")</dd>
+        <dt>@Html.DisplayNameFor(model => model.Active)</dt>
+        <dd>@(Model.Active == true ? "ano" : "ne")</dd>
+    </dl>
+</div>
+<p>
+    @Ajax.RouteLink("Upravit", "Nexus", new {@action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
+    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-danger" })
+</p>

@@ -1,0 +1,84 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Template
+
+<link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
+<link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
+<script src="~/Scripts/cm/lib/codemirror.js"></script>
+<script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+<script src="~/Scripts/cm/mode/xml/xml.js"></script>
+<script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+<script src="~/Scripts/cm/mode/css/css.js"></script>
+<script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
+
+<script>
+    $(function() {
+        var area = $('#selector');
+        var cm = CodeMirror.fromTextArea(area[0], {
+            lineNumbers: true,
+            mode: "htmlmixed",
+            extraKeys: { "Ctrl-Space": "autocomplete" }
+        });
+
+        cm.on('blur', function() {
+            cm.save();
+        });
+
+        // Pokud by byl nějaký přepínač html / wysiwyg
+        area.change(function() {
+            cm.setValue(this.value);
+        });
+        area.next().resizable({
+            resize: function() {
+                cm.setSize($(this).width(), $(this).height());
+            }
+        });
+    });
+</script>
+@using (Html.BeginRouteForm("Mozaic", new {@action = "Update"}, FormMethod.Post))
+{
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                Název
+            </label>
+        </div>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(x => x.Name)
+        </div>
+    </div>
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                Kategorie
+            </label>
+        </div>
+        <div class="col-sm-3">
+            @Html.DropDownList("cat", new SelectList(ViewBag.Categories, "Id", "Name"))
+        </div>
+    </div>
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                HTML
+            </label>
+        </div>
+        <div class="col-sm-7">
+            @Html.TextAreaFor(x => x.Html, new { @id= "selector" })
+        </div>
+    </div>
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                Stránky
+            </label>
+        </div>
+        <div class="col-sm-3">
+            @Html.DropDownList("pages", new SelectList(ViewBag.Pages, "Id", "Id"))
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <button type="submit" class="btn btn-primary">Upravit šablonu</button>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/scss/Bundled.min.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", false)
+</head>
+<body class="@Page.ModuleClass">
+    <a id="tapestry" href="@Url.Action("Index","Tapestry")" style="visibility: hidden">Tapestry</a>
+    <a id="wfdesigner" href="@Url.Action("Index", "WFDesigner")" style="visibility: hidden">WF designer</a>
+    <a id="overview" href="@Url.Action("Index", "Overview")" style="visibility: hidden">WF designer</a>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/CommonLibraries")
+    <div>
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/knockout")
+    @*@Scripts.Render("~/bundles/Overview")*@
+    @*@Scripts.Render("~/bundles/WorkflowDesigner")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>
