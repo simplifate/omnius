@@ -40,11 +40,15 @@ namespace FSS.Omnius.Modules.Tapestry
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             // init - get actionRule
-            ActionResultCollection results;
+            ActionResultCollection results = new ActionResultCollection();
             ActionRule actionRule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);// confirm conditions
 
+            // get model
+            _model = _CORE.Entitron.GetDynamicTable(actionRule.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();
+            results.outputData.Add("__MODEL__", _model);
+
             // preRun & conditions
-            results = actionRule.PreRun();
+            results.Join = actionRule.PreRun();
             if (!actionRule.CanRun(results.outputData))
                 throw new NotAllowedExcetption();
             
@@ -65,7 +69,6 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             
             // get model, pageId for Mozaic
-            _model = _CORE.Entitron.GetDynamicTable(actionRule.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();
             _PageId = actionRule.TargetBlock.MozaicPageId ?? -1;
         }
         public override string GetHtmlOutput()
