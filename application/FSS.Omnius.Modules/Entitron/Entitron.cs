@@ -13,7 +13,7 @@ namespace FSS.Omnius.Modules.Entitron
     [NotMapped]
     public class Entitron : Module
     {
-        private string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=FSPOC-2.0;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework";
+        public const string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=Omnius;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework";
         private CORE.CORE _CORE;
         private DBEntities entities = null;
 
