@@ -16,8 +16,25 @@
 <script src="~/Scripts/cm/mode/css/css.js"></script>
 <script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
 
+<div class="modal fade" id="AdminModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body" id="ModalContent">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script>
-    $(function () {
+    $(function() {
         var area = $('#selector');
         var cm = CodeMirror.fromTextArea(area[0], {
             lineNumbers: true,
@@ -25,24 +42,31 @@
             extraKeys: { "Ctrl-Space": "autocomplete" }
         });
 
-        cm.on('blur', function () {
+        cm.on('blur', function() {
             cm.save();
         });
 
         // Pokud by byl nějaký přepínač html / wysiwyg
-        area.change(function () {
+        area.change(function() {
             cm.setValue(this.value);
         });
         area.next().resizable({
-            resize: function () {
+            resize: function() {
                 cm.setSize($(this).width(), $(this).height());
             }
         });
     });
+    $(document).ready(function() {
+        function getHtml() {
+            var html = document.getElementById('#selector').value;
+            return html;
+        }
 
-    $('#addChildren').onclick(function () {
-        $('#children').clone(true);
-    })
+        $(document).getElementById('#preview').onclick(function () {
+            var page = getHtml();
+            window.open("", "Preview").append('<html>' + page + '</html');
+        });
+    });
 </script>
 
 <style type="text/css">
@@ -145,8 +169,13 @@
                         HTML
                     </label>
                 </div>
-                <div class="col-sm-10" >
-                    @Html.TextAreaFor(x=>x.Html, new {@id="selector", @style="width:500px;height:300px"})
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(x => x.Html, new {@id = "selector", @style = "width:500px;height:300px", @name="html"})
+                </div>
+                <div>
+                    <button id="preview">
+                        Preview
+                    </button>
                 </div>
             </div>
             <div class="form-group col-sm-12">
