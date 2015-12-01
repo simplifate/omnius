@@ -2,7 +2,7 @@
 
 namespace FSS.Omnius.BussinesObjects.Service
 {
-    public interface INexusService
+    public interface INexusLdapService
     {
         SearchResult SearchByLogin(string login, string baseDN = "", string[] properties = null);
         SearchResult SearchByEmail(string email, string baseDN = "", string[] properties = null);

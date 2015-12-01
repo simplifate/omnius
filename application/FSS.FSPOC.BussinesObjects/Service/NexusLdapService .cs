@@ -3,11 +3,11 @@ using System.DirectoryServices;
 
 namespace FSS.Omnius.BussinesObjects.Service
 {
-    public class NexusService : INexusService
+    public class NexusLdapService : INexusLdapService
     {
         Ldap ldap;
 
-        public NexusService()
+        public NexusLdapService()
         {
             ldap = new Ldap();
         }

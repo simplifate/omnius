@@ -7,7 +7,7 @@ namespace FSS.Omnius.Controllers.Nexus
     {
         public ActionResult Index()
         {
-            NexusService service = new NexusService();
+            NexusLdapService service = new NexusLdapService();
 
             //string test = service.searchByLogin("martin.novak");
 
