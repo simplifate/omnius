@@ -1,0 +1,31 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+@{
+    Page.Title = "Aplikační profily";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+<table class="adminAppTable table table-striped">
+    <thead>
+        <tr>
+            <th>Jméno aplikace</th>
+            <th>DB Schéma</th>
+            <th>Mozaic</th>
+            <th>Publikováno?</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Application app in (List<Application>)ViewData["Apps"])
+        {
+            var published = app.ShowInAppManager ? "Ano" : "Ne";
+            var buttonText = app.ShowInAppManager ? "Aktualizovat" : "Vytvořit";
+            var buttonClass = app.ShowInAppManager ? "btn-success" : "btn-primary";
+            <tr>
+                <td>@app.Name</td>
+                <td>(žádné)</td>
+                <td>(žádné)</td>
+                <td>@published</td>
+                <td class="actions"><button class="btn @buttonClass">@buttonText</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

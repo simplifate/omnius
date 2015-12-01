@@ -1,0 +1,76 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/scss/Bundled.min.css")
+    @RenderSection("Styles", false)
+</head>
+<body class="@Page.ModuleClass">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/CommonLibraries")
+    <div id="userTopBar">
+        <div class="icon activeIcon"><div class="fa fa-th"></div></div>
+        <div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div>
+        <div class="icon"><div class="fa fa-question-circle"></div></div>
+
+        <div class="clientTitle">Oss Portál</div>
+
+        <div class="userBox">
+            <div class="notificationIcon fa fa-bell"></div>
+            <div class="avatar"></div>
+            <div class="fullName">Eliška Nováková</div>
+            <div class="commands"><a href="#">odhlásit</a> | <a href="#">detail</a></div>
+        </div>
+        <div class="searchBox">
+            <div class="searchArrow"><div class="fa fa-caret-down"></div></div>
+            <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField"></input>
+            <div class="searchIcon fa fa-search"></div>
+        </div>
+    </div>
+    <div id="userLeftBar">
+        <div class="widgetLabel">Nejpoužívanější aplikace</div>
+        <div class="circles">
+            <div class="fa fa-circle"></div>
+            <div class="fa fa-circle-o"></div>
+            <div class="fa fa-circle-o"></div>
+            <div class="fa fa-circle-o"></div>
+            <div class="fa fa-circle-o"></div>
+        </div>
+        @if ((string)ViewData["Mode"] == "App")
+        {
+            <div id="switchMenuIcon" class="fa fa-exchange"></div>
+        }
+        <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
+        <div class="appList">
+            @foreach (Application app in (List<Application>)ViewData["Apps"])
+            {
+                <div class="appListItem">
+                    <div class="icon fa @(app.Icon)"></div>
+                    <div class="appName">@app.Name</div>
+                </div>
+            }
+        </div>
+        <div class="infoBox">
+            <div class="icon fa fa-info-circle"></div>
+            <div class="infoText">
+                Kliknutím na navigační šipku v hlavičce
+                můžete měnit způsob zobrazených
+                aplikací v menu.
+            </div>
+        </div>
+    </div>
+    <div id="userLeftBarMinimized">
+        <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
+    </div>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/OmniusScripts")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

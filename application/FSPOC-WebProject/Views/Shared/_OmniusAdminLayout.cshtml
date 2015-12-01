@@ -33,7 +33,7 @@
         <ul class="leftMenu">
             <li class="active"><a href="/CORE/Portal">Centrální administrace</a></li>
             <li>Identity management</li>
-            <li>Správa aplikací</li>
+            <li><a href="/Portal/Applications">Správa aplikací</a></li>
             <li>Integrace</li>
             <li class="expanded">Vytvoření apliakce</li>
             <li class="subMenu"><a href="/Tapestry/Builder">Návrh workflow</a></li>
@@ -51,8 +51,6 @@
     @RenderBody()
 
     @Scripts.Render("~/bundles/knockout")
-    @*@Scripts.Render("~/bundles/Overview")*@
-    @*@Scripts.Render("~/bundles/WorkflowDesigner")*@
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -23,7 +23,7 @@ namespace FSS.Omnius.Controllers.Master
                         if (app.ShowInAppManager)
                             filteredAppList.Add(app);
                     }
-                    ViewData["Tiles"] = filteredAppList;
+                    ViewData["Apps"] = filteredAppList;
                     return View();
                 }
             }

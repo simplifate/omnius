@@ -412,6 +412,7 @@
     <Content Include="Scripts\cm\LICENSE" />
     <Content Include="Scripts\cm\package.json" />
     <Content Include="Scripts\cm\README.md" />
+    <Content Include="Content\scss\UserLayout.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -980,6 +981,8 @@
     <Content Include="Views\Nexus\LDAP\GroupList.cshtml" />
     <Content Include="Views\Mozaic\Page\Create.cshtml" />
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
+    <Content Include="Views\CORE\Portal\Applications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -132,6 +132,22 @@
     }
 }
 
+.adminAppTable {
+    position: absolute;
+    left: 290px;
+    top: 125px;
+    width: 70%;
+    td {
+        min-width: 180px;
+    }
+    td.actions {
+        min-width: unset;
+        .btn {
+            width: 100px;
+        }
+    }
+}
+
 @media only screen and (max-width: 1600px) {
     .searchField {
         left: 520px !important;

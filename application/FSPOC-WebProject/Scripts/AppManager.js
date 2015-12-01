@@ -3,6 +3,16 @@
         $("#adminSectionIcon").on("click", function () {
             window.location.href = "/Portal";
         });
+        $("#hideMenuIcon").on("click", function () {
+            $("#userLeftBar").hide();
+            $("#userLeftBarMinimized").show();
+            $(".appWorkspace").css("left", 60);
+        });
+        $("#showMenuIcon").on("click", function () {
+            $("#userLeftBarMinimized").hide();
+            $("#userLeftBar").show();
+            $(".appWorkspace").css("left", 310);
+        });
         $(".appPanel").draggable({
             grid: [120, 120],
             revert: "invalid",
