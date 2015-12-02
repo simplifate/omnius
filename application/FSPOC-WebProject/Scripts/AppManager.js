@@ -1,5 +1,4 @@
 ﻿$(function () {
-    appManagerIcon
     $("#appManagerIcon").on("click", function () {
         if(!$("#appManagerIcon").hasClass("activeIcon"))
             window.location.href = "/Master/Home";
