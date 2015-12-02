@@ -49,9 +49,6 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Entitron">
-      <HintPath>..\Entitron\bin\Debug\Entitron.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -125,10 +122,6 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Tapestry, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Tapestry\bin\Debug\Tapestry.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mvc5">
       <HintPath>..\packages\Unity.Mvc5.1.1\lib\net45\Unity.Mvc5.dll</HintPath>
@@ -1008,10 +1001,6 @@
     <ProjectReference Include="..\ND.Logger\ND.Logger.csproj">
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
       <Name>ND.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nexus\Nexus.csproj">
-      <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>
-      <Name>Nexus</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
