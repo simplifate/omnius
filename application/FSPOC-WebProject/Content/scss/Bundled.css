@@ -507,6 +507,13 @@ body.adminAppValidationModule #validationResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
+#helpContainer {
+  position: absolute;
+  left: 310px;
+  top: 50px;
+  right: 0px;
+  margin-left: 40px; }
+
 body.tapestryModule {
   background-color: #404040; }
   body.tapestryModule .blockPanel {

@@ -9,7 +9,7 @@ namespace FSS.Omnius.Controllers.Master
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private List<Application> getAppList()
         {
             try
             {
@@ -23,15 +23,25 @@ namespace FSS.Omnius.Controllers.Master
                         if (app.ShowInAppManager)
                             filteredAppList.Add(app);
                     }
-                    ViewData["Apps"] = filteredAppList;
-                    return View();
+                    return filteredAppList;
                 }
             }
             catch (Exception ex)
             {
                 Log.Error("Error while loading application list. Exception message: " + ex.Message);
-                return new HttpStatusCodeResult(500);
+                throw ex;
             }
+        }
+        public ActionResult Index()
+        {
+            ViewData["Apps"] = getAppList();
+            return View();
+        }
+
+        public ActionResult Help()
+        {
+            ViewData["Apps"] = getAppList();
+            return View();
         }
     }
 }
