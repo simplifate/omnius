@@ -67,6 +67,14 @@
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
+        <div class="appIconToolbar">
+            @foreach (Application app in (List<Application>)ViewData["Apps"])
+                {
+                <div class="appIconToolbarItem">
+                    <div class="icon fa @(app.Icon)"></div>
+                </div>
+                }
+        </div>
     </div>
     @RenderBody()
 

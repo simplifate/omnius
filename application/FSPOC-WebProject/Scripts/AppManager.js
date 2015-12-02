@@ -16,7 +16,7 @@
         $(".appPanel").draggable({
             grid: [120, 120],
             revert: "invalid",
-            stop: function(){
+            stop: function () {
                 $(this).draggable("option", "revert", "invalid");
             }
         });
@@ -35,4 +35,9 @@
             ui.originalPosition.left = $(this).position().left;
         });
     }
+    else if ($("body.adminAppTableModule").length) {
+        $(".adminAppTable .actions .btn").on("click", function () {
+            window.location.href = "/Portal/AppValidation";
+        });
+    };
 });

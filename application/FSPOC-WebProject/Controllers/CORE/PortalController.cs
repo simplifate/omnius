@@ -41,5 +41,9 @@ namespace FSS.Omnius.Controllers.CORE
                 return View();
             }
         }
+        public ActionResult AppValidation()
+        {
+            return View();
+        }
     }
 }

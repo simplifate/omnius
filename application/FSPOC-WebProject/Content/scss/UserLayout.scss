@@ -1,4 +1,7 @@
-﻿#userTopBar {
+﻿@import "Mixins.scss";
+@import "Fonts.scss";
+
+#userTopBar {
     @include no-select();
     @include linear-gradient(#edf8fe, #ceeaf8);
     position: fixed;
@@ -231,5 +234,23 @@
         left: 18px;
         top: 30px;
         cursor: pointer;   
+    }
+    .appIconToolbar {
+        position: absolute;
+        font-size: 18px;
+        color: #0065a9;
+        left: 0px;
+        top: 117px;
+        width: 100%;
+        .appIconToolbarItem {
+            height: 40px;
+            width: 100%;
+            padding-top: 7px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .appIconToolbarItem:hover {
+            background-color: #ceeaf8;
+        }
     }
 }

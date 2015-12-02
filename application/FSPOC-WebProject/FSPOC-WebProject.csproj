@@ -413,6 +413,7 @@
     <Content Include="Scripts\cm\package.json" />
     <Content Include="Scripts\cm\README.md" />
     <Content Include="Content\scss\UserLayout.scss" />
+    <Content Include="Content\scss\Fonts.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -983,6 +984,7 @@
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
     <Content Include="Views\CORE\Portal\Applications.cshtml" />
+    <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

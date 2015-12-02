@@ -6,6 +6,14 @@
   font-family: "RweTextMedium";
   src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
 
+@font-face {
+  font-family: "FatTec";
+  src: url(/Content/fonts/Fat-TecA07.otf) format("opentype"); }
+
+@font-face {
+  font-family: "MyriadPro";
+  src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
+
 body.appManagerModule {
   position: fixed;
   width: 100%;
@@ -94,6 +102,33 @@ body.appManagerModule {
     z-index: 200;
     color: white;
     background-color: #4d41e7; }
+
+body.adminAppTableModule .adminAppTable {
+  position: absolute;
+  left: 290px;
+  top: 125px;
+  width: 70%; }
+  body.adminAppTableModule .adminAppTable td {
+    min-width: 180px; }
+  body.adminAppTableModule .adminAppTable td.actions {
+    min-width: unset; }
+    body.adminAppTableModule .adminAppTable td.actions .btn {
+      width: 100px; }
+
+body.adminAppValidationModule #validationResults {
+  position: absolute;
+  left: 290px;
+  top: 125px;
+  width: 70%; }
+  body.adminAppValidationModule #validationResults #errorPanel {
+    background-color: #ffe0e0;
+    padding: 20px; }
+    body.adminAppValidationModule #validationResults #errorPanel h1 {
+      margin-bottom: 30px; }
+    body.adminAppValidationModule #validationResults #errorPanel .errorList {
+      font-size: 20px; }
+    body.adminAppValidationModule #validationResults #errorPanel #btnRetryValidation {
+      margin-top: 30px; }
 
 #topBar {
   -webkit-touch-callout: none;
@@ -216,23 +251,27 @@ body.appManagerModule {
     #leftBar .leftMenu li.subMenu {
       background-color: #457fa9; }
 
-.adminAppTable {
-  position: absolute;
-  left: 290px;
-  top: 125px;
-  width: 70%; }
-  .adminAppTable td {
-    min-width: 180px; }
-  .adminAppTable td.actions {
-    min-width: unset; }
-    .adminAppTable td.actions .btn {
-      width: 100px; }
-
 @media only screen and (max-width: 1600px) {
   .searchField {
     left: 520px !important;
     right: 312px !important;
     width: auto !important; } }
+
+@font-face {
+  font-family: "RweHeadlineRegular";
+  src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "RweTextMedium";
+  src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "FatTec";
+  src: url(/Content/fonts/Fat-TecA07.otf) format("opentype"); }
+
+@font-face {
+  font-family: "MyriadPro";
+  src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
 #userTopBar {
   -webkit-touch-callout: none;
@@ -452,6 +491,21 @@ body.appManagerModule {
     left: 18px;
     top: 30px;
     cursor: pointer; }
+  #userLeftBarMinimized .appIconToolbar {
+    position: absolute;
+    font-size: 18px;
+    color: #0065a9;
+    left: 0px;
+    top: 117px;
+    width: 100%; }
+    #userLeftBarMinimized .appIconToolbar .appIconToolbarItem {
+      height: 40px;
+      width: 100%;
+      padding-top: 7px;
+      text-align: center;
+      cursor: pointer; }
+    #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
+      background-color: #ceeaf8; }
 
 body.tapestryModule {
   background-color: #404040; }
@@ -1092,6 +1146,14 @@ body.dbDesignerModule {
     z-index: 200;
     color: white;
     background-color: #4d41e7; }
+
+@font-face {
+  font-family: "RweHeadlineRegular";
+  src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
+
+@font-face {
+  font-family: "RweTextMedium";
+  src: url(/Content/fonts/rwetext-medium-webfont.ttf) format("truetype"); }
 
 @font-face {
   font-family: "FatTec";

@@ -1,13 +1,6 @@
 ﻿@import "Mixins.scss";
+@import "Fonts.scss";
 
-@font-face {
-  font-family: "FatTec";
-  src: url(/Content/fonts/Fat-TecA07.otf) format("opentype");
-}
-@font-face {
-  font-family: "MyriadPro";
-  src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype");
-}
 body.portalModule {
     background-color: #f2f2f3;
 
