@@ -39,6 +39,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
+        public virtual DbSet<WS> WSs { get; set; }
         public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
 
@@ -181,6 +182,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             //Nexus
             modelBuilder.Entity<Ldap>();
+            modelBuilder.Entity<WS>();
 
             // Tapestry designer
             modelBuilder.Entity<TapestryDesignerApp>()

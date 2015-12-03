@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
+﻿namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using Master;
 
     [Table("Nexus_Ldap")]
     public partial class Ldap

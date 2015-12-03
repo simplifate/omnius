@@ -204,6 +204,7 @@
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
+    <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -979,9 +980,12 @@
     <Content Include="Views\CORE\Portal\Applications.cshtml" />
     <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
     <Content Include="Views\Master\Home\Help.cshtml" />
+    <Content Include="Views\Nexus\WS\Index.cshtml" />
+    <Content Include="Views\Nexus\WS\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\WS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

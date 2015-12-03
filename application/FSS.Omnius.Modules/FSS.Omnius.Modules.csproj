@@ -44,6 +44,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,6 +63,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
@@ -160,11 +162,16 @@
     <Compile Include="Migrations\201511302216543_applicationAttr.Designer.cs">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512031302475_add-nexus-ws.cs" />
+    <Compile Include="Migrations\201512031302475_add-nexus-ws.Designer.cs">
+      <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
     <Compile Include="Mozaic\Template.cs" />
     <Compile Include="Nexus\Gate\Ldap.cs" />
+    <Compile Include="Nexus\Gate\WS.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511302216543_applicationAttr.resx">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512031302475_add-nexus-ws.resx">
+      <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
