@@ -1,0 +1,22 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
+
+<div>
+    <h4>Detial webové služby</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+        <dt>@Html.DisplayNameFor(model => model.WSDL_Url)</dt>
+        <dd>@Html.DisplayFor(model => model.WSDL_Url)</dd>
+        <dt>@Html.DisplayNameFor(model => model.WSDL_File)</dt>
+        <dd>@Html.DisplayFor(model => model.WSDL_File)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Auth_User)</dt>
+        <dd>@Html.DisplayFor(model => model.Auth_User)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Auth_Password)</dt>
+        <dd>@(Model.Auth_Password != null ? "********" : "")</dd>
+    </dl>
+</div>
+<p>
+    @Ajax.RouteLink("Upravit", "Nexus", new {@action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
+    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-danger" })
+</p>

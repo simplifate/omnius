@@ -81,9 +81,11 @@
     <Compile Include="Service\IDatabaseGenerateService.cs" />
     <Compile Include="Service\IExecuteActionService.cs" />
     <Compile Include="Service\IFactoryAction.cs" />
+    <Compile Include="Service\INexusWSService.cs" />
     <Compile Include="Service\INexusLdapService.cs" />
     <Compile Include="Service\IWorkflowService.cs" />
     <Compile Include="Service\NexusLdapService .cs" />
+    <Compile Include="Service\NexusWSService.cs" />
     <Compile Include="Service\WorkflowService.cs" />
   </ItemGroup>
   <ItemGroup>
