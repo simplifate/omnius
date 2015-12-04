@@ -166,6 +166,14 @@
     <Compile Include="Migrations\201512031302475_add-nexus-ws.Designer.cs">
       <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512041443397_userAttributes.cs" />
+    <Compile Include="Migrations\201512041443397_userAttributes.Designer.cs">
+      <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512041505231_UniqueUsername.cs" />
+    <Compile Include="Migrations\201512041505231_UniqueUsername.Designer.cs">
+      <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -211,6 +219,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512031302475_add-nexus-ws.resx">
       <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041443397_userAttributes.resx">
+      <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041505231_UniqueUsername.resx">
+      <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

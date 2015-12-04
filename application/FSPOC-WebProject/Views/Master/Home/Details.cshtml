@@ -2,6 +2,7 @@
     Page.Title = "Omnius - User details";
     Page.ModuleClass = "userDetailsModule";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
+    var user = User.GetLogged();
 }
 
 <div id="detailsContainer">
@@ -9,39 +10,39 @@
     <table class="userDetailsTable table table-striped">
         <tr>
             <td>Jméno</td>
-            <td>@ViewData["UserFullName"]</td>
+            <td>@user.DisplayName</td>
         </tr>
         <tr>
             <td>Společnost</td>
-            <td>@ViewData["Company"]</td>
+            <td>@user.Company</td>
         </tr>
         <tr>
             <td>Oddělení</td>
-            <td>@ViewData["Department"]</td>
+            <td>@user.Department</td>
         </tr>
         <tr>
             <td>Tým</td>
-            <td>@ViewData["Team"]</td>
+            <td>@user.Team</td>
         </tr>
         <tr>
             <td>Email</td>
-            <td>@ViewData["Email"]</td>
+            <td>@user.Email</td>
         </tr>
         <tr>
             <td>Telefon do zaměstnání</td>
-            <td>@ViewData["WorkPhone"]</td>
+            <td>@user.WorkPhone</td>
         </tr>
         <tr>
             <td>Mobilní telefon</td>
-            <td>@ViewData["MobilePhone"]</td>
+            <td>@user.MobilPhone</td>
         </tr>
         <tr>
             <td>Adresa</td>
-            <td>@ViewData["Address"]</td>
+            <td>@user.Address</td>
         </tr>
         <tr>
             <td>Poslední přihlášení</td>
-            <td>@ViewData["LastLogin"]</td>
+            <td>@user.LastLogin</td>
         </tr>
     </table>
 </div>

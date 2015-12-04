@@ -35,7 +35,6 @@ namespace FSS.Omnius.Controllers.Master
         private void loadUserInterfaceData()
         {
             ViewData["Apps"] = getAppList();
-            ViewData["UserFullName"] = "Eliška Nováková";
         }
 
         public ActionResult Index()
@@ -46,16 +45,7 @@ namespace FSS.Omnius.Controllers.Master
         public ActionResult Details()
         {
             loadUserInterfaceData();
-
-            // TODO: Load real data from Nexus
-            ViewData["Company"] = "RWE";
-            ViewData["Department"] = "?";
-            ViewData["Team"] = "?";
-            ViewData["Email"] = "?";
-            ViewData["WorkPhone"] = "?";
-            ViewData["MobilePhone"] = "?";
-            ViewData["Address"] = "?";
-            ViewData["LastLogin"] = "?";
+            
             return View();
         }
         public ActionResult Help()

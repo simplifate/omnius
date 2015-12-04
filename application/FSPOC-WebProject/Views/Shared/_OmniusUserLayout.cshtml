@@ -24,7 +24,7 @@
         <div class="userBox">
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
-            <div class="fullName">@ViewData["UserFullName"]</div>
+            <div class="fullName">@User.GetLogged().DisplayName</div>
             <div class="commands"><a href="/Master/Home/Details">detail</a></div>
         </div>
         <div class="searchBox">
