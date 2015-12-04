@@ -9,39 +9,39 @@
     <table class="userDetailsTable table table-striped">
         <tr>
             <td>Jméno</td>
-            <td>Eliška Nováková</td>
+            <td>@ViewData["UserFullName"]</td>
         </tr>
         <tr>
             <td>Společnost</td>
-            <td>RWE</td>
+            <td>@ViewData["Company"]</td>
         </tr>
         <tr>
             <td>Oddělení</td>
-            <td>?</td>
+            <td>@ViewData["Department"]</td>
         </tr>
         <tr>
             <td>Tým</td>
-            <td>?</td>
+            <td>@ViewData["Team"]</td>
         </tr>
         <tr>
             <td>Email</td>
-            <td>?</td>
+            <td>@ViewData["Email"]</td>
         </tr>
         <tr>
             <td>Telefon do zaměstnání</td>
-            <td>?</td>
+            <td>@ViewData["WorkPhone"]</td>
         </tr>
         <tr>
             <td>Mobilní telefon</td>
-            <td>?</td>
+            <td>@ViewData["MobilePhone"]</td>
         </tr>
         <tr>
             <td>Adresa</td>
-            <td>?</td>
+            <td>@ViewData["Address"]</td>
         </tr>
         <tr>
             <td>Poslední přihlášení</td>
-            <td>?</td>
+            <td>@ViewData["LastLogin"]</td>
         </tr>
     </table>
 </div>

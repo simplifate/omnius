@@ -32,19 +32,35 @@ namespace FSS.Omnius.Controllers.Master
                 throw ex;
             }
         }
-        public ActionResult Index()
+        private void loadUserInterfaceData()
         {
             ViewData["Apps"] = getAppList();
+            ViewData["UserFullName"] = "Eliška Nováková";
+        }
+
+        public ActionResult Index()
+        {
+            loadUserInterfaceData();
             return View();
         }
         public ActionResult Details()
         {
-            ViewData["Apps"] = getAppList();
+            loadUserInterfaceData();
+
+            // TODO: Load real data from Nexus
+            ViewData["Company"] = "RWE";
+            ViewData["Department"] = "?";
+            ViewData["Team"] = "?";
+            ViewData["Email"] = "?";
+            ViewData["WorkPhone"] = "?";
+            ViewData["MobilePhone"] = "?";
+            ViewData["Address"] = "?";
+            ViewData["LastLogin"] = "?";
             return View();
         }
         public ActionResult Help()
         {
-            ViewData["Apps"] = getAppList();
+            loadUserInterfaceData();
             return View();
         }
     }
