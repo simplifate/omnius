@@ -37,7 +37,11 @@ namespace FSS.Omnius.Controllers.Master
             ViewData["Apps"] = getAppList();
             return View();
         }
-
+        public ActionResult Details()
+        {
+            ViewData["Apps"] = getAppList();
+            return View();
+        }
         public ActionResult Help()
         {
             ViewData["Apps"] = getAppList();

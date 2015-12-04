@@ -54,5 +54,8 @@
     else if ($("body.helpModule").length) {
         $("#appManagerIcon").removeClass("activeIcon");
         $("#helpIcon").addClass("activeIcon");
+    }
+    else if ($("body.userDetailsModule").length) {
+        $("#appManagerIcon").removeClass("activeIcon");
     };
 });
