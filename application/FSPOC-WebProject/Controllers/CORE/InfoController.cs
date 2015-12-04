@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.CORE
 {
-    [Authorize]
     public class InfoController : Controller
     {
         // GET: Info

@@ -1,11 +1,11 @@
 ﻿$(function () {
     $("#appManagerIcon").on("click", function () {
         if(!$("#appManagerIcon").hasClass("activeIcon"))
-            window.location.href = "/Master/Home";
+            window.location.href = "/Master";
     });
     $("#adminSectionIcon").on("click", function () {
         if (!$("#adminSectionIcon").hasClass("activeIcon"))
-            window.location.href = "/Portal";
+            window.location.href = "/CORE";
     });
     $("#helpIcon").on("click", function () {
         if (!$("#helpIcon").hasClass("activeIcon"))
