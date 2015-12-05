@@ -1,4 +1,4 @@
-﻿namespace FSS.Omnius.BussinesObjects.Service
+﻿namespace FSS.Omnius.Modules.Entitron.Service
 {
     public interface IBackupGeneratorService
     {

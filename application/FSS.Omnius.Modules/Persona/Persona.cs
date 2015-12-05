@@ -7,12 +7,15 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using System.ComponentModel.DataAnnotations.Schema;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Nexus.Service;
+using System.DirectoryServices;
 
 namespace FSS.Omnius.Modules.Persona
 {
     [NotMapped]
     public class Persona : Module
     {
+        private TimeSpan _expirationTime = TimeSpan.FromDays(1);
         private CORE.CORE _CORE;
 
         public Persona(CORE.CORE core)
@@ -23,6 +26,7 @@ namespace FSS.Omnius.Modules.Persona
 
         public User getUser(string username)
         {
+            // REMOVE ON PRODUCTION !!!
             username = string.IsNullOrWhiteSpace(username) ? "annonymous" : username;
 
             DBEntities e = _CORE.Entitron.GetStaticTables();
@@ -37,37 +41,28 @@ namespace FSS.Omnius.Modules.Persona
                 e.Users.Add(user);
             }
             // expiration || new user -> get from AD
-            if (user == null || user.localExpiresAt < DateTime.UtcNow)
+            if (user.localExpiresAt < DateTime.UtcNow)
             {
-                // TODO
-                user.DisplayName = "Franta Nový";
-                user.Email = "franta.novy@rwe.cz";
-                user.Company = "FSS";
-                user.Department = "Headoffice";
-                user.Team = "Leaders";
-                user.WorkPhone = "+420 222 222 222";
-                user.MobilPhone = "+420 777 777 777";
-                user.Address = "Závišova 66";
-                user.Job = "Technical administrator";
-                user.LastLogin = DateTime.UtcNow;
-                user.localExpiresAt = DateTime.UtcNow + TimeSpan.FromDays(1);
-                //NexusLdapService search = new NexusLdapService();
-                //SearchResult result = search.SearchByLogin("samuel.la");
+                NexusLdapService search = new NexusLdapService();
+                SearchResult result = search.SearchByLogin(username);
 
-                //if (result == null)
-                //    return null;
+                if (result == null)
+                    return null;
 
-                //var prop = result.Properties;
-                //user = new User
-                //{
-                //    username = (string)prop["samaccountname"][0],
-                //    DisplayName = (string)prop["displayname"][0],
-                //    Job = (string)prop["title"][0],
-                //    Mail = (string)prop["mail"][0],
-                //    // Groups = 
-                //    LastLogon = (DateTime)prop["lastlogon"][0]
-                //};
+                var prop = result.Properties;
+                user.DisplayName = (string)prop["displayname"][0];
+                user.Email = (string)prop["mail"][0];
+                user.Address = "";
+                user.Company = "";
+                user.Department = "";
+                user.Team = "";
+                user.Job = (string)prop["title"][0];
+                user.WorkPhone = "";
+                user.MobilPhone = "";
+                user.LastLogin = (DateTime)prop["lastlogon"][0];
 
+                user.localExpiresAt = DateTime.UtcNow + _expirationTime;
+                
                 e.SaveChanges();
             }
 

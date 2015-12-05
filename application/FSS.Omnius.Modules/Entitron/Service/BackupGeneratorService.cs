@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Entitron.Service
 {
     public class BackupGeneratorService : IBackupGeneratorService
     {

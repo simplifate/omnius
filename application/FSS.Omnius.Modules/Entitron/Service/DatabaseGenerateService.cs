@@ -1,11 +1,8 @@
-﻿using System.Configuration;
-//using System.Linq;
-using System.Collections.Generic;
-using FSS.Omnius.Modules.CORE;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using FSS.Omnius.Modules.Entitron;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Entitron.Service
 {
     public class DatabaseGenerateService : IDatabaseGenerateService
     {
@@ -16,7 +13,7 @@ namespace FSS.Omnius.BussinesObjects.Service
         {
             List<DBTable> entitronTables = new List<DBTable>();
 
-            CORE core = new CORE();
+            CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
             e.Application = new DBApp() { Name = "EntitronTest1", DisplayName = "EntitronTest1" };
 

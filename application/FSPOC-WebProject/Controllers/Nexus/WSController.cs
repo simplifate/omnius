@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Nexus.Service;
 using System.Text;
 using System.Reflection;
 using System.Collections;

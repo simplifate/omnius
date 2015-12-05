@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Entitron.Service
 {
     public interface IDatabaseGenerateService
     {

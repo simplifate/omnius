@@ -1,6 +1,6 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Nexus.Service
 {
     public interface INexusWSService
     {

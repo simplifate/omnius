@@ -1,6 +1,6 @@
 ﻿using FSS.Omnius.Modules.Nexus.Gate;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Nexus.Service
 {
     public class NexusWSService : INexusWSService
     {

@@ -7,7 +7,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Reflection;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.Nexus

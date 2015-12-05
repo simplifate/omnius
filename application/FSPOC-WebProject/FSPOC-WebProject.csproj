@@ -230,7 +230,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\FactoryAction.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />
   </ItemGroup>
@@ -997,14 +996,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FSS.FSPOC.Actions.ReservationSystem\FSS.FSPOC.Actions.ReservationSystem.csproj">
-      <Project>{897fb481-2509-45ff-a2af-5e5b41ca3ba1}</Project>
-      <Name>FSS.FSPOC.Actions.ReservationSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FSS.FSPOC.BussinesObjects\FSS.FSPOC.BussinesObjects.csproj">
-      <Project>{3a3d8476-80e5-45f3-8361-672f6ffc43d9}</Project>
-      <Name>FSS.FSPOC.BussinesObjects</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
       <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
       <Name>FSS.Omnius.Modules</Name>

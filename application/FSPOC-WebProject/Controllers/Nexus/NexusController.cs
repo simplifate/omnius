@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Nexus.Service;
 
 namespace FSS.Omnius.Controllers.Nexus
 {

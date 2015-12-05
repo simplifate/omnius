@@ -1,6 +1,6 @@
 ﻿using System.DirectoryServices;
 
-namespace FSS.Omnius.BussinesObjects.Service
+namespace FSS.Omnius.Modules.Nexus.Service
 {
     public interface INexusLdapService
     {
