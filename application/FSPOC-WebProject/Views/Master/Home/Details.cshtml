@@ -1,0 +1,48 @@
+﻿@{
+    Page.Title = "Omnius - User details";
+    Page.ModuleClass = "userDetailsModule";
+    Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
+    var user = User.GetLogged();
+}
+
+<div id="detailsContainer">
+    <h1 class="title">Detail uživatele</h1>
+    <table class="userDetailsTable table table-striped">
+        <tr>
+            <td>Jméno</td>
+            <td>@user.DisplayName</td>
+        </tr>
+        <tr>
+            <td>Společnost</td>
+            <td>@user.Company</td>
+        </tr>
+        <tr>
+            <td>Oddělení</td>
+            <td>@user.Department</td>
+        </tr>
+        <tr>
+            <td>Tým</td>
+            <td>@user.Team</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>@user.Email</td>
+        </tr>
+        <tr>
+            <td>Telefon do zaměstnání</td>
+            <td>@user.WorkPhone</td>
+        </tr>
+        <tr>
+            <td>Mobilní telefon</td>
+            <td>@user.MobilPhone</td>
+        </tr>
+        <tr>
+            <td>Adresa</td>
+            <td>@user.Address</td>
+        </tr>
+        <tr>
+            <td>Poslední přihlášení</td>
+            <td>@user.LastLogin</td>
+        </tr>
+    </table>
+</div>

@@ -317,7 +317,7 @@ $(function () {
                 // TODO: replace hardcoded IDs with real app/block IDs
                 $.ajax({
                     type: "GET",
-                    url: "/api/tapestry/apps/1/blocks/30/commits",
+                    url: "/api/tapestry/apps/1/blocks/1/commits",
                     dataType: "json",
                     error: function () { alert("Error loading commit history") },
                     success: function (data) {

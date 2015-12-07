@@ -7,6 +7,7 @@ using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry;
+using System.Collections.Specialized;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -25,23 +26,29 @@ namespace FSS.Omnius.Modules.Tapestry
             _PageId = -1;
         }
 
-        public override void run(string url) // url = ApplicationId/ActionRuleId/ModelId
+        public override void run(string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
         {
             // init
             int ApplicationId, ActionRuleId, modelId;
             splitUrl(url, out ApplicationId, out ActionRuleId, out modelId);
 
-            run(ApplicationId, ActionRuleId, modelId);
+            run(ApplicationId, ActionRuleId, modelId, fc);
         }
-        public void run(int ApplicationId, int ActionRuleId, int modelId)
+        public void run(int ApplicationId, int ActionRuleId, int modelId, NameValueCollection fc)
         {
             // confirm rights
             if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
-
+            
             // init - get actionRule
             ActionResultCollection results = new ActionResultCollection();
             ActionRule actionRule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);// confirm conditions
+
+            // load inputs
+            foreach (AttributeRule attr in actionRule.SourceBlock.AttributeRules)
+            {
+                results.outputData.Add(attr.AttributeName, fc[attr.InputName]);
+            }
 
             // get model
             _model = _CORE.Entitron.GetDynamicTable(actionRule.SourceBlock.ModelName).Select().where(c => c.column("Id").Equal(modelId)).First();

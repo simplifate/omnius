@@ -1,0 +1,284 @@
+﻿@import "Mixins.scss";
+@import "Fonts.scss";
+
+#userTopBar {
+    @include no-select();
+    @include linear-gradient(#edf8fe, #ceeaf8);
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    height: 50px;
+
+    .icon {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        padding-top: 5px;
+        padding-left: 10px;
+        z-index: 50;
+        font-size: 32px;
+        color: #0065a9;
+        cursor: pointer;
+    }
+    .activeIcon {
+        background-color: #edf8fe;
+        cursor: default;
+    }
+
+    .clientTitle {
+        position: absolute;
+        font-family: RweHeadlineRegular;
+        text-transform: uppercase;
+        font-size: 20px;
+        color: #59575c;
+        padding-top: 10px;
+        top: 0px;
+        left: 320px;
+        right: 320px;
+        text-align: center;
+    }
+    .userBox {
+        position: absolute;
+        top: 0px;
+        right: 290px;
+        width: 250px;
+        height: 50px;
+        .avatar {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            background-image: url(/Content/images/UserIconSample.png);
+        }
+        .fullName {
+            position: absolute;
+            left: 65px;
+            top: 6px;
+            font-family: RweTextMedium;
+            font-size: 14px;
+        }
+        .commands {
+            position: absolute;
+            left: 65px;
+            top: 24px;
+            color: #0065a9;
+            font-family: RweTextMedium;
+            font-size: 14px;
+        }
+        .notificationIcon {
+            position: absolute;
+            right: 30px;
+            top: 8px;
+            font-size: 30px;
+            color: #0065a9;
+            cursor: pointer;
+        }
+
+    }
+    .searchBox {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 310px;
+        height: 50px;
+        .searchArrow {
+            position: absolute;
+            top: 11px;
+            right: 273px;
+            width: 28px;
+            height: 28px;
+            background-color: white;
+            color: #0065a9;
+            cursor: pointer;
+            .fa {
+                position: absolute;
+                left: 6px;
+                top: 2px;
+                font-size: 26px;
+            }
+        }
+        .searchInputField {
+            position: absolute;
+            top: 11px;
+            right: 85px;
+            width: 185px;
+            height: 28px;
+            background-color: white;
+            color: #a2b4cc;
+            padding-left: 14px;
+            padding-top: 4px;
+            font-family: RweTextMedium;
+            font-size: 14px;
+            border: none;
+        }
+        .searchIcon {
+            position: absolute;
+            right: 30px;
+            top: 8px;
+            font-size: 30px;
+            color: #0065a9;
+            cursor: pointer;
+        }
+
+    }
+}
+#userLeftBar {
+    @include no-select();
+    background-color: #edf8fe;
+    position: fixed;
+    left: 0px;
+    top: 50px;
+    bottom: 0px;
+    width: 310px;
+    border-right: 1px solid #f1f0ee;
+        
+    .widgetLabel {
+        position: absolute;
+        font-family: RweHeadlineRegular;
+        text-transform: uppercase;
+        font-size: 20px;
+        color: #0065a9;
+        left: 30px;
+        top: 30px;
+    }
+    .circles {
+        position: absolute;
+        color: #0065a9;
+        left: 32px;
+        top: 65px;
+
+        .fa {
+            margin-right: 9px;
+        }
+    }
+    #switchMenuIcon {
+        position: absolute;
+        font-size: 18px;
+        color: #0065a9;
+        left: 260px;
+        top: 35px;
+    }
+    #hideMenuIcon {
+        position: absolute;
+        font-size: 28px;
+        color: #0065a9;
+        left: 280px;
+        top: 30px;
+        cursor: pointer;            
+    }
+    .appList {
+        position: absolute;
+        font-size: 17px;
+        font-weight: 100;
+        color: #0065a9;
+        left: 0px;
+        top: 120px;
+        right: 0px;
+        .appListItem {
+            position: relative;
+            height: 40px;
+            border-top: 1px solid #d6dfe6;
+            cursor: pointer;
+            .icon {
+                position: absolute;
+                top: 10px;
+                left: 32px;
+            }
+            .appName {
+                position: absolute;
+                top: 8px;
+                left: 62px;
+            }
+        }
+        .appListItem:hover{
+            background-color: #ceeaf8;
+        }
+    }
+    .infoBox {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 90px;
+        color: #919296;
+        .icon {
+            position: absolute;
+            left: 15px;
+            font-size: 60px;
+        }
+        .infoText {
+            position: absolute;
+            left: 85px;
+            top: 5px;
+            font-size: 12px;
+
+        }
+    }
+}
+#userLeftBarMinimized {
+    @include no-select();
+    background-color: #edf8fe;
+    position: fixed;
+    left: 0px;
+    top: 50px;
+    bottom: 0px;
+    width: 50px;
+    border-right: 1px solid #f1f0ee;
+    display: none;
+    #showMenuIcon {
+        position: absolute;
+        font-size: 28px;
+        color: #0065a9;
+        left: 18px;
+        top: 30px;
+        cursor: pointer;   
+    }
+    .appIconToolbar {
+        position: absolute;
+        font-size: 18px;
+        color: #0065a9;
+        left: 0px;
+        top: 117px;
+        width: 100%;
+        .appIconToolbarItem {
+            height: 40px;
+            width: 100%;
+            padding-top: 7px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .appIconToolbarItem:hover {
+            background-color: #ceeaf8;
+        }
+    }
+}
+
+#helpContainer, #detailsContainer {
+    position: absolute;
+    left: 310px;
+    top: 50px;
+    right: 0px;
+    margin-left: 40px;
+
+    .title {
+        position: absolute;
+        left: 100px;
+        top: 75px;
+        font-family: RweHeadlineRegular;
+        text-transform: uppercase;
+        font-size: 26px;
+        color: #0065A9;
+    }
+
+    .userDetailsTable {
+        position: absolute;
+        left: 100px;
+        top: 150px;
+        width: 75%;
+        font-size: 17px;
+        font-weight: 100;
+        color: #0065a9;
+    }
+}

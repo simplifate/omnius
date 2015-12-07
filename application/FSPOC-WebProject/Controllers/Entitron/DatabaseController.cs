@@ -5,11 +5,11 @@ using System.Management.Instrumentation;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FSS.Omnius.Modules.Entitron.DAL;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using FSS.Omnius.BussinesObjects.DAL;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Entitron.Service;
 using Logger;
 using static System.String;
 

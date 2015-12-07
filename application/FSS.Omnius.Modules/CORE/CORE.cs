@@ -4,6 +4,7 @@ using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Specialized;
 
 namespace FSS.Omnius.Modules.CORE
 {
@@ -36,7 +37,7 @@ namespace FSS.Omnius.Modules.CORE
         {
             get { return _activeModule.GetMailOutput(); }
         }
-        public void masterRun(User user, string moduleName, string url)
+        public void masterRun(User user, string moduleName, string url, NameValueCollection fc)
         {
             ActiveUser = user;
 
@@ -44,7 +45,7 @@ namespace FSS.Omnius.Modules.CORE
             if (_activeModule == null)
                 throw new ModuleNotFoundOrEnabledException(moduleName);
 
-            _activeModule.run(url);
+            _activeModule.run(url, fc);
         }
         
         public RunableModule GetRunableModule(string moduleName)

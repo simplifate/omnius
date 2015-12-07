@@ -7,7 +7,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Reflection;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.Nexus
@@ -94,7 +94,7 @@ namespace FSS.Omnius.Controllers.Nexus
             if(Request.HttpMethod == "POST")
             {
                 string query = Request.Form["query"];
-                NexusService service = new NexusService();
+                NexusLdapService service = new NexusLdapService();
 
                 SearchResult user = service.SearchByLogin(query);
                 ViewBag.Result = var_dump(user, 0);
@@ -107,7 +107,7 @@ namespace FSS.Omnius.Controllers.Nexus
         {
             SearchResultCollection groups;
             List<string> groupList = new List<string>();
-            NexusService service = new NexusService();
+            NexusLdapService service = new NexusLdapService();
 
             if(Request.HttpMethod == "POST")
             {

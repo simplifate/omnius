@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using FSS.Omnius.BussinesObjects.Service;
+using FSS.Omnius.Modules.Nexus.Service;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -7,7 +7,7 @@ namespace FSS.Omnius.Controllers.Nexus
     {
         public ActionResult Index()
         {
-            NexusService service = new NexusService();
+            NexusLdapService service = new NexusLdapService();
 
             //string test = service.searchByLogin("martin.novak");
 

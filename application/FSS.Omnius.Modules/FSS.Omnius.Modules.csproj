@@ -38,12 +38,18 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +61,8 @@
     <Compile Include="CORE\CORE.cs" />
     <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
+    <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
+    <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -62,12 +70,13 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
     <Compile Include="Entitron\Entity\Persona\AppRight.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\AttributeRole.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
     <Compile Include="Entitron\Entity\DBEntities.cs" />
@@ -96,6 +105,10 @@
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
     <Compile Include="Entitron\Entity\Persona\User.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
+    <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
@@ -160,11 +173,37 @@
     <Compile Include="Migrations\201511302216543_applicationAttr.Designer.cs">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512031302475_add-nexus-ws.cs" />
+    <Compile Include="Migrations\201512031302475_add-nexus-ws.Designer.cs">
+      <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512041443397_userAttributes.cs" />
+    <Compile Include="Migrations\201512041443397_userAttributes.Designer.cs">
+      <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512041505231_UniqueUsername.cs" />
+    <Compile Include="Migrations\201512041505231_UniqueUsername.Designer.cs">
+      <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512071351124_ws-type.cs" />
+    <Compile Include="Migrations\201512071351124_ws-type.Designer.cs">
+      <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512071429383_actionRule.cs" />
+    <Compile Include="Migrations\201512071429383_actionRule.Designer.cs">
+      <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
     <Compile Include="Mozaic\Template.cs" />
     <Compile Include="Nexus\Gate\Ldap.cs" />
+    <Compile Include="Nexus\Gate\WS.cs" />
+    <Compile Include="Nexus\Service\INexusLdapService.cs" />
+    <Compile Include="Nexus\Service\INexusWSService.cs" />
+    <Compile Include="Nexus\Service\NexusLdapService .cs" />
+    <Compile Include="Nexus\Service\NexusWSService.cs" />
+    <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,6 +241,25 @@
     <EmbeddedResource Include="Migrations\201511302216543_applicationAttr.resx">
       <DependentUpon>201511302216543_applicationAttr.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512031302475_add-nexus-ws.resx">
+      <DependentUpon>201512031302475_add-nexus-ws.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041443397_userAttributes.resx">
+      <DependentUpon>201512041443397_userAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512041505231_UniqueUsername.resx">
+      <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512071351124_ws-type.resx">
+      <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512071429383_actionRule.resx">
+      <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Nexus\Proxy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

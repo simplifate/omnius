@@ -13,7 +13,7 @@ namespace FSPOC_WebProject
             routes.MapRoute(
                 name: "CORE",
                 url: "CORE/{controller}/{action}/{id}",
-                defaults: new { controller = "Config", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Portal", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.CORE" }
             );
 

@@ -1,9 +1,9 @@
 ﻿function LoadBlock(commitId) {
     // TODO: replace hardcoded IDs with real app/block IDs
     if (commitId)
-        url = "/api/tapestry/apps/1/blocks/30/commits/" + commitId;
+        url = "/api/tapestry/apps/1/blocks/1/commits/" + commitId;
     else
-        url = "/api/tapestry/apps/1/blocks/30";
+        url = "/api/tapestry/apps/1/blocks/1";
     $.ajax({
         type: "GET",
         url: url,

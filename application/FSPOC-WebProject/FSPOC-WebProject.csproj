@@ -19,8 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -48,9 +48,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Entitron">
-      <HintPath>..\Entitron\bin\Debug\Entitron.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -125,10 +122,6 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Tapestry, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Tapestry\bin\Debug\Tapestry.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mvc5">
       <HintPath>..\packages\Unity.Mvc5.1.1\lib\net45\Unity.Mvc5.dll</HintPath>
@@ -208,9 +201,12 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CORE\InfoController.cs" />
+    <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
+    <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -234,7 +230,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\FactoryAction.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />
   </ItemGroup>
@@ -402,12 +397,18 @@
     <Content Include="Scripts\cm\.npmignore" />
     <Content Include="Scripts\cm\.travis.yml" />
     <Content Include="Scripts\cm\AUTHORS" />
+    <Content Include="Scripts\cm\bin\authors.sh" />
+    <Content Include="Scripts\cm\bin\compress" />
+    <Content Include="Scripts\cm\bin\lint" />
+    <Content Include="Scripts\cm\bin\release" />
+    <Content Include="Scripts\cm\bin\source-highlight" />
     <Content Include="Scripts\cm\bower.json" />
     <Content Include="Scripts\cm\CONTRIBUTING.md" />
     <Content Include="Scripts\cm\LICENSE" />
     <Content Include="Scripts\cm\package.json" />
     <Content Include="Scripts\cm\README.md" />
-    <None Include="Properties\PublishProfiles\RWE.pubxml" />
+    <Content Include="Content\scss\UserLayout.scss" />
+    <Content Include="Content\scss\Fonts.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -913,7 +914,9 @@
     <Content Include="Scripts\WorkflowDesigner\WfUtils.js" />
     <Content Include="Scripts\WorkflowDesigner\WfVisualConfiguration.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -976,6 +979,15 @@
     <Content Include="Views\Nexus\LDAP\GroupList.cshtml" />
     <Content Include="Views\Mozaic\Page\Create.cshtml" />
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
+    <Content Include="Views\CORE\Portal\Applications.cshtml" />
+    <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
+    <Content Include="Views\Master\Home\Help.cshtml" />
+    <Content Include="Views\Nexus\WS\Form.cshtml" />
+    <Content Include="Views\Nexus\WS\Detail.cshtml" />
+    <Content Include="Views\Nexus\WS\Test.cshtml" />
+    <Content Include="Views\Nexus\WS\Index.cshtml" />
+    <Content Include="Views\Master\Home\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -984,14 +996,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FSS.FSPOC.Actions.ReservationSystem\FSS.FSPOC.Actions.ReservationSystem.csproj">
-      <Project>{897fb481-2509-45ff-a2af-5e5b41ca3ba1}</Project>
-      <Name>FSS.FSPOC.Actions.ReservationSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FSS.FSPOC.BussinesObjects\FSS.FSPOC.BussinesObjects.csproj">
-      <Project>{3a3d8476-80e5-45f3-8361-672f6ffc43d9}</Project>
-      <Name>FSS.FSPOC.BussinesObjects</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
       <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
       <Name>FSS.Omnius.Modules</Name>
@@ -1000,14 +1004,13 @@
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
       <Name>ND.Logger</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nexus\Nexus.csproj">
-      <Project>{c69a0efd-2689-47cd-9d72-83bd140f0527}</Project>
-      <Name>Nexus</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -1019,7 +1022,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54446</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

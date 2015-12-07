@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,6 +24,24 @@ namespace FSS.Omnius.Controllers.CORE
             return View();
         }
         public ActionResult ActiveProfile()
+        {
+            return View();
+        }
+        public ActionResult Applications()
+        {
+            using (var context = new DBEntities())
+            {
+                var appList = new List<Application>();
+
+                foreach (var app in context.Applications)
+                {
+                    appList.Add(app);
+                }
+                ViewData["Apps"] = appList;
+                return View();
+            }
+        }
+        public ActionResult AppValidation()
         {
             return View();
         }

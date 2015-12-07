@@ -96,7 +96,7 @@
     // TODO: replace hardcoded IDs with real app/block IDs
     $.ajax({
         type: "POST",
-        url: "/api/tapestry/apps/1/blocks/30",
+        url: "/api/tapestry/apps/1/blocks/1",
         data: postData,
         success: function () { alert("OK") },
         error: function () { alert("ERROR") }
