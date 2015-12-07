@@ -189,9 +189,9 @@
     <Compile Include="Migrations\201512071351124_ws-type.Designer.cs">
       <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201512071353552_actionRule.cs" />
-    <Compile Include="Migrations\201512071353552_actionRule.Designer.cs">
-      <DependentUpon>201512071353552_actionRule.cs</DependentUpon>
+    <Compile Include="Migrations\201512071429383_actionRule.cs" />
+    <Compile Include="Migrations\201512071429383_actionRule.Designer.cs">
+      <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -253,8 +253,9 @@
     <EmbeddedResource Include="Migrations\201512071351124_ws-type.resx">
       <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512071353552_actionRule.resx">
-      <DependentUpon>201512071353552_actionRule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512071429383_actionRule.resx">
+      <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
