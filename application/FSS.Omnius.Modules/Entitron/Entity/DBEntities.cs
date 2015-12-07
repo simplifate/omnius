@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
         public virtual DbSet<ActionRule> ActionRules { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
-        public virtual DbSet<AttributeRole> AttributeRoles { get; set; }
+        public virtual DbSet<AttributeRule> AttributeRules { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
@@ -103,7 +103,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Block>()
-                .HasMany(e => e.AttributeRoles)
+                .HasMany(e => e.AttributeRules)
                 .WithRequired(e => e.Block)
                 .HasForeignKey(e => e.BlockId);
 

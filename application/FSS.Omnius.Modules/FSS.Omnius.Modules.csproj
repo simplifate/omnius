@@ -76,7 +76,7 @@
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
     <Compile Include="Entitron\Entity\Persona\AppRight.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\AttributeRole.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
     <Compile Include="Entitron\Entity\DBEntities.cs" />
@@ -195,6 +195,7 @@
     <Compile Include="Nexus\Service\INexusWSService.cs" />
     <Compile Include="Nexus\Service\NexusLdapService .cs" />
     <Compile Include="Nexus\Service\NexusWSService.cs" />
+    <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -47,7 +47,7 @@ namespace FSS.Omnius.Modules.Persona
                 SearchResult result = search.SearchByLogin(username);
 
                 if (result == null)
-                    return null;
+                    throw new NotAuthorizedException("User not found");
 
                 var prop = result.Properties;
                 user.DisplayName = (string)prop["displayname"][0];
