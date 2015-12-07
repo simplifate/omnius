@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Reflection;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Web.Services.Description;
+using System.Xml;
 using FSS.Omnius.Modules.Entitron.Entity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
@@ -20,11 +22,14 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             Stream stream;
             System.Net.WebClient client = new System.Net.WebClient();
 
-            if (model.WSDL_Url.Length > 0) {
+            if (model.WSDL_Url != null && model.WSDL_Url.Length > 0) {
                 stream = client.OpenRead(model.WSDL_Url);
             }
-            else { //!!!
-                stream = client.OpenRead(model.WSDL_Url);
+            else if(model.WSDL_File != null && model.WSDL_File.Length > 0) {
+                stream = new MemoryStream(model.WSDL_File);
+            }
+            else {
+                throw new Exception("Chyba při ukládání webové služby. Nebyl zadán xml soubor s definicí ani URL definice.");
             }
 
             ServiceDescription description = ServiceDescription.Read(stream);
@@ -83,7 +88,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
 
         [SecurityPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
-        public object CallWebService(string serviceName, string methodName, object[] args)
+        public JObject CallWebService(string serviceName, string methodName, object[] args)
         {
             DBEntities e = new DBEntities();
             Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
@@ -92,8 +97,26 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             Type type = asm.GetTypes()[0];
             var ws = Activator.CreateInstance(type);
 
-            MethodInfo mi = ws.GetType().GetMethod(methodName);
-            return mi.Invoke(ws, args);
+            if(!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
+            {
+                string url = ws.GetType().GetProperty("Url").GetValue(ws) as string;
+                Uri uri = new Uri(url);
+
+                ws.GetType().GetProperty("PreAuthenticate").SetValue(ws, true);
+                ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host));
+            }
+
+            MethodInfo mi = ws.GetType().GetMethod(methodName);        
+
+            object response = mi.Invoke(ws, args);
+
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(response as string);
+
+            string jsonText = JsonConvert.SerializeXmlNode(xml);
+            JObject json = JObject.Parse(jsonText);
+
+            return json;
         }
     }
 }

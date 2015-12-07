@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Nexus.Gate;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
@@ -16,7 +17,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return ws.CreateProxyForWS(model);
         }
 
-        public object CallWebService(string serviceName, string methodName, object[] args)
+        public JObject CallWebService(string serviceName, string methodName, object[] args)
         {
             return ws.CallWebService(serviceName, methodName, args);
         }

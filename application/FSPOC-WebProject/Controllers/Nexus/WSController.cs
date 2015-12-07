@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Nexus.Service;
 using System.Text;
 using System.Reflection;
 using System.Collections;
+using Newtonsoft.Json.Linq;
 
 namespace FSPOC_WebProject.Controllers.Nexus
 {
@@ -53,6 +54,9 @@ namespace FSPOC_WebProject.Controllers.Nexus
 
                     if (model.WSDL_File != null) {
                         row.WSDL_File = model.WSDL_File;
+                    }
+                    else {
+                        model.WSDL_File = row.WSDL_File;
                     }
 
                     e.SaveChanges();
@@ -106,9 +110,9 @@ namespace FSPOC_WebProject.Controllers.Nexus
             NexusWSService service = new NexusWSService();
 
             object[] parameters = new[] { "Praha / Ruzyne", "Czech Republic" };
-            object result = service.CallWebService("Global Weather", "GetWeather", parameters);
+            JObject result = service.CallWebService("Global Weather", "GetWeather", parameters);
 
-            ViewBag.result = var_dump(result, 0);
+            ViewBag.result = var_dump(result.SelectToken("CurrentWeather"), 0);
 
             return View("~/Views/Nexus/WS/Test.cshtml");
         }

@@ -185,6 +185,10 @@
     <Compile Include="Migrations\201512041505231_UniqueUsername.Designer.cs">
       <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512071351124_ws-type.cs" />
+    <Compile Include="Migrations\201512071351124_ws-type.Designer.cs">
+      <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -241,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512041505231_UniqueUsername.resx">
       <DependentUpon>201512041505231_UniqueUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512071351124_ws-type.resx">
+      <DependentUpon>201512071351124_ws-type.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
