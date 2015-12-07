@@ -67,8 +67,12 @@ namespace FSPOC_WebProject.Controllers.Nexus
                     e.SaveChanges();
                 }
 
-                NexusWSService service = new NexusWSService();
-                bool result = service.CreateProxyForWS(model);
+                // Pokud se jedná o SOAP WS, vygenerujeme proxy class
+                if (model.Type == WSType.SOAP)
+                {
+                    NexusWSService service = new NexusWSService();
+                    bool result = service.CreateProxyForWS(model);
+                }
                 
                 return RedirectToRoute("Nexus", new { @action = "Index" });
             }
@@ -113,6 +117,13 @@ namespace FSPOC_WebProject.Controllers.Nexus
             JObject result = service.CallWebService("Global Weather", "GetWeather", parameters);
 
             ViewBag.result = var_dump(result.SelectToken("CurrentWeather"), 0);
+
+            return View("~/Views/Nexus/WS/Test.cshtml");
+        }
+
+        public ActionResult TestRest()
+        {
+            NexusWSService service = new NexusWSService();
 
             return View("~/Views/Nexus/WS/Test.cshtml");
         }

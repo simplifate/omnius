@@ -90,14 +90,17 @@ namespace FSS.Omnius.Modules.Nexus.Gate
         [SecurityPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
         public JObject CallWebService(string serviceName, string methodName, object[] args)
         {
-            DBEntities e = new DBEntities();
-            Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
+            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
+
+            if (row.Type != Entitron.Entity.Nexus.WSType.SOAP) {
+                throw new Exception("Neplatné SOAP volání webové služby. Webová služba je typu REST");
+            }
 
             Assembly asm = Assembly.LoadFile(@"C:\Temp\WSProxy" + row.Id + ".dll");
             Type type = asm.GetTypes()[0];
             var ws = Activator.CreateInstance(type);
 
-            if(!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
+            if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
             {
                 string url = ws.GetType().GetProperty("Url").GetValue(ws) as string;
                 Uri uri = new Uri(url);
@@ -106,7 +109,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
                 ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host));
             }
 
-            MethodInfo mi = ws.GetType().GetMethod(methodName);        
+            MethodInfo mi = ws.GetType().GetMethod(methodName);
 
             object response = mi.Invoke(ws, args);
 
@@ -117,6 +120,27 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             JObject json = JObject.Parse(jsonText);
 
             return json;
+        }
+
+        public JObject CallRestService(string serviceName, string methodName, object[] queryString)
+        {
+            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
+
+            if(row.Type != Entitron.Entity.Nexus.WSType.REST) {
+                throw new Exception("Neplatné REST volání webové služby. Služba je typu SOAP");
+            }
+
+            //!!!!
+            JObject json = new JObject();
+
+            return json;
+        }
+
+        private static Entitron.Entity.Nexus.WS GetModel(string serviceName)
+        {
+            DBEntities e = new DBEntities();
+            Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
+            return row;
         }
     }
 }

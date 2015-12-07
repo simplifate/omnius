@@ -93,12 +93,14 @@
             <colgroup>
                 <col width="50" />
                 <col />
+                <col width="100" />
                 <col width="60" />
             </colgroup>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Název</th>
+                    <th>Typ</th>
                     <th>Akce</th>
                 </tr>
             </thead>
@@ -110,6 +112,7 @@
                     <tr>
                         <td>@s.Id</td>
                         <td>@s.Name</td>
+                        <td>@s.Type</td>
                         <td class="table-row-action">
                             @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                             @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
@@ -127,7 +130,8 @@
             </tbody>
         </table>
         @Ajax.RouteLink("Pøidat WS", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-plus" })        
-        @Ajax.RouteLink("Test", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-play-circle-O" })
+        @Ajax.RouteLink("Test - SOAP", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-play-circle" })
+        @Ajax.RouteLink("Test - REST", "Nexus", new { @action = "TestRest" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-play-circle" })
     </div>
 </div>
 <div id="ContentContainer" class="bottom-panel">
