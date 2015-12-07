@@ -26,9 +26,6 @@ namespace FSS.Omnius.Modules.Persona
 
         public User getUser(string username)
         {
-            // REMOVE ON PRODUCTION !!!
-            username = string.IsNullOrWhiteSpace(username) ? "annonymous" : username;
-
             DBEntities e = _CORE.Entitron.GetStaticTables();
             User user = e.Users.SingleOrDefault(u => u.username == username);
 
