@@ -29,11 +29,19 @@ namespace FSPOC_WebProject.Controllers.Nexus
         }
 
         [HttpPost]
-        public ActionResult Save(WS model)
+        public ActionResult Save(WS model, HttpPostedFileBase upload)
         {
             DBEntities e = new DBEntities();
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream)) {
+                        model.WSDL_File = reader.ReadBytes(upload.ContentLength);
+                    }
+                }
+
+
                 // Záznam již existuje - pouze upravujeme
                 if (!model.Id.Equals(null))
                 {
@@ -44,7 +52,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
                     row.Auth_Password = model.Auth_Password;
 
                     if (model.WSDL_File != null) {
-                        row.WSDL_File = model.WSDL_File.Length > 0 ? model.WSDL_File : row.WSDL_File;
+                        row.WSDL_File = model.WSDL_File;
                     }
 
                     e.SaveChanges();
