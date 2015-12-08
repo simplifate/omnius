@@ -40,7 +40,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public int TileHeight { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
-        public bool ShowInAppManager { get; set; }
+        public bool IsPublished { get; set; }
+        public bool IsEnabled { get; set; }
 
         [StringLength(100)]
         public string DisplayName { get; set; } // Used by Entitron
