@@ -207,6 +207,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
+    <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
@@ -362,6 +363,9 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\AppManager.js" />
+    <Content Include="Scripts\AppManager\AdminInit.js" />
+    <Content Include="Scripts\AppManager\Dialogs.js" />
+    <Content Include="Scripts\AppManager\UserInit.js" />
     <Content Include="Scripts\BlockViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -71,6 +71,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
@@ -195,9 +196,17 @@
     <Compile Include="Migrations\201512071429383_actionRule.Designer.cs">
       <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512081245349_App properties.cs" />
+    <Compile Include="Migrations\201512081245349_App properties.Designer.cs">
+      <DependentUpon>201512081245349_App properties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201512081250576_nexus-extdb.cs" />
     <Compile Include="Migrations\201512081250576_nexus-extdb.Designer.cs">
       <DependentUpon>201512081250576_nexus-extdb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512081321277_App properties 2.cs" />
+    <Compile Include="Migrations\201512081321277_App properties 2.Designer.cs">
+      <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -264,8 +273,14 @@
       <DependentUpon>201512071429383_actionRule.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512081245349_App properties.resx">
+      <DependentUpon>201512081245349_App properties.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512081250576_nexus-extdb.resx">
       <DependentUpon>201512081250576_nexus-extdb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512081321277_App properties 2.resx">
+      <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

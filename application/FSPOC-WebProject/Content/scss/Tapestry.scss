@@ -164,22 +164,6 @@ body.tapestryModule {
     .sourceEndpoint {
         margin-left: 4px;
     }
-    .ui-dialog {
-        padding: 0px 0px;
-        border: 1px solid black;
-        border-radius: 4px;
-    }
-    .ui-widget-header {
-        background-image: none;
-        background-color: #2d74b2;
-        color: white;
-    }
-    .ui-dialog .ui-dialog-buttonpane {
-        padding: 3px;
-    }
-    .ui-dialog .ui-dialog-buttonset button {
-        margin: 3px;
-    }
     .sourceEndpoint._jsPlumb_dragging, .sourceEndpoint.jsplumb-drag {
         visibility: hidden !important;
     }

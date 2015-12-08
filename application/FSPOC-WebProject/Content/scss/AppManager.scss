@@ -114,6 +114,28 @@ body.adminAppTableModule {
             }
         }
     }
+    .formTable {
+        label, select {
+            margin-bottom: 0px;
+            padding: 2px;
+            height: 30px;
+        }
+        select {
+            width: 180px;
+        }
+        tr {
+            height: 36px;
+        }
+        td {
+            vertical-align: middle;
+        }
+        tr td:first-child {
+            width: 230px;
+        }
+        #app-name {
+            width: 310px;
+        }
+    }
 }
 
 body.adminAppValidationModule {
