@@ -362,7 +362,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\AppManager.js" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\AppManager\UserInit.js" />
