@@ -1,34 +1,102 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Web.Services.Description;
 using System.Xml;
-using FSS.Omnius.Modules.Entitron.Entity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
     public class WS
     {
-        [SecurityPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
+        [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
+        public JObject CallWebService(string serviceName, string methodName, object[] args)
+        {
+            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
+
+            if (row.Type != Entitron.Entity.Nexus.WSType.SOAP) {
+                throw new Exception("Neplatné SOAP volání webové služby. Webová služba je typu REST");
+            }
+
+            Assembly asm = Assembly.LoadFile(@"C:\Temp\WSProxy" + row.Id + ".dll");
+            Type type = asm.GetTypes()[0];
+            var ws = Activator.CreateInstance(type);
+
+            if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
+            {
+                string url = ws.GetType().GetProperty("Url").GetValue(ws) as string;
+                Uri uri = new Uri(url);
+
+                ws.GetType().GetProperty("PreAuthenticate").SetValue(ws, true);
+                ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host));
+            }
+
+            MethodInfo mi = ws.GetType().GetMethod(methodName);
+
+            object response = mi.Invoke(ws, args);
+
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(response as string);
+
+            string jsonText = JsonConvert.SerializeXmlNode(xml);
+            JObject json = JObject.Parse(jsonText);
+
+            return json;
+        }
+
+        public JObject CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
+        {
+            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
+
+            if(row.Type != Entitron.Entity.Nexus.WSType.REST) {
+                throw new Exception("Neplatné REST volání webové služby. Služba je typu SOAP");
+            }
+
+            string url = row.REST_Base_Url;
+            url += !url.EndsWith("/") && !methodName.StartsWith("/") ? "/" : "";
+            url += methodName;
+
+            WebClient client = new WebClient();
+            client.QueryString = queryParams;
+
+            if(!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
+            {
+                Uri uri = new Uri(url);
+                client.Credentials = new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host);
+            }
+
+            string jsonText = client.DownloadString(url);
+            JObject json = JObject.Parse(jsonText);
+
+            return json;
+        }
+
+        #region Tools
+
+        [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
         public bool CreateProxyForWS(Entitron.Entity.Nexus.WS model)
         {
             Stream stream;
             System.Net.WebClient client = new System.Net.WebClient();
 
-            if (model.WSDL_Url != null && model.WSDL_Url.Length > 0) {
+            if (model.WSDL_Url != null && model.WSDL_Url.Length > 0)
+            {
                 stream = client.OpenRead(model.WSDL_Url);
             }
-            else if(model.WSDL_File != null && model.WSDL_File.Length > 0) {
+            else if (model.WSDL_File != null && model.WSDL_File.Length > 0)
+            {
                 stream = new MemoryStream(model.WSDL_File);
             }
-            else {
+            else
+            {
                 throw new Exception("Chyba při ukládání webové služby. Nebyl zadán xml soubor s definicí ani URL definice.");
             }
 
@@ -86,61 +154,13 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             }
         }
 
-
-        [SecurityPermissionAttribute(SecurityAction.Demand, Unrestricted = true)]
-        public JObject CallWebService(string serviceName, string methodName, object[] args)
-        {
-            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
-
-            if (row.Type != Entitron.Entity.Nexus.WSType.SOAP) {
-                throw new Exception("Neplatné SOAP volání webové služby. Webová služba je typu REST");
-            }
-
-            Assembly asm = Assembly.LoadFile(@"C:\Temp\WSProxy" + row.Id + ".dll");
-            Type type = asm.GetTypes()[0];
-            var ws = Activator.CreateInstance(type);
-
-            if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
-            {
-                string url = ws.GetType().GetProperty("Url").GetValue(ws) as string;
-                Uri uri = new Uri(url);
-
-                ws.GetType().GetProperty("PreAuthenticate").SetValue(ws, true);
-                ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host));
-            }
-
-            MethodInfo mi = ws.GetType().GetMethod(methodName);
-
-            object response = mi.Invoke(ws, args);
-
-            XmlDocument xml = new XmlDocument();
-            xml.LoadXml(response as string);
-
-            string jsonText = JsonConvert.SerializeXmlNode(xml);
-            JObject json = JObject.Parse(jsonText);
-
-            return json;
-        }
-
-        public JObject CallRestService(string serviceName, string methodName, object[] queryString)
-        {
-            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
-
-            if(row.Type != Entitron.Entity.Nexus.WSType.REST) {
-                throw new Exception("Neplatné REST volání webové služby. Služba je typu SOAP");
-            }
-
-            //!!!!
-            JObject json = new JObject();
-
-            return json;
-        }
-
         private static Entitron.Entity.Nexus.WS GetModel(string serviceName)
         {
             DBEntities e = new DBEntities();
             Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
             return row;
         }
+               
+        #endregion
     }
 }
