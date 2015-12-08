@@ -254,14 +254,17 @@
         }
     }
 }
-
-#helpContainer, #detailsContainer {
-    position: absolute;
+#userContentArea {
+    position: fixed;
     left: 310px;
     top: 50px;
     right: 0px;
+    bottom: 0px;
+}
+#helpContainer {
     margin-left: 40px;
-
+}
+#detailsContainer {
     .title {
         position: absolute;
         left: 100px;
@@ -271,7 +274,6 @@
         font-size: 26px;
         color: #0065A9;
     }
-
     .userDetailsTable {
         position: absolute;
         left: 100px;

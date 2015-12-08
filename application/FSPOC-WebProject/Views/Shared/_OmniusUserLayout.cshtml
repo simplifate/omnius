@@ -76,7 +76,9 @@
                 }
         </div>
     </div>
-    @RenderBody()
+    <div id="userContentArea">
+        @RenderBody()
+    </div>
 
     @Scripts.Render("~/bundles/OmniusScripts")
     @RenderSection("scripts", required: false)

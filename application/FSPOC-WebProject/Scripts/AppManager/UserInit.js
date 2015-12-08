@@ -14,13 +14,13 @@
     $("#hideMenuIcon").on("click", function () {
         $("#userLeftBar").hide();
         $("#userLeftBarMinimized").show();
-        $(".appWorkspace").css("left", 60);
+        $("#userContentArea").css("left", 60);
         $("#helpContainer").css("left", 60);
     });
     $("#showMenuIcon").on("click", function () {
         $("#userLeftBarMinimized").hide();
         $("#userLeftBar").show();
-        $(".appWorkspace").css("left", 310);
+        $("#userContentArea").css("left", 310);
         $("#helpContainer").css("left", 310);
     });
     if ($("body.appManagerModule").length) {

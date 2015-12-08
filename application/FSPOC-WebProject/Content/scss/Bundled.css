@@ -19,12 +19,6 @@ body.appManagerModule {
   width: 100%;
   height: 100%;
   background: white; }
-  body.appManagerModule .appWorkspace {
-    position: fixed;
-    left: 310px;
-    top: 50px;
-    right: 0px;
-    bottom: 0px; }
   body.appManagerModule .appColor0 {
     background: -webkit-linear-gradient(top, #0086be, #0065a9);
     background: -o-linear-gradient(bottom, #0086be, #0065a9);
@@ -527,28 +521,33 @@ body.adminAppValidationModule #validationResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
-#helpContainer, #detailsContainer {
-  position: absolute;
+#userContentArea {
+  position: fixed;
   left: 310px;
   top: 50px;
   right: 0px;
+  bottom: 0px; }
+
+#helpContainer {
   margin-left: 40px; }
-  #helpContainer .title, #detailsContainer .title {
-    position: absolute;
-    left: 100px;
-    top: 75px;
-    font-family: RweHeadlineRegular;
-    text-transform: uppercase;
-    font-size: 26px;
-    color: #0065A9; }
-  #helpContainer .userDetailsTable, #detailsContainer .userDetailsTable {
-    position: absolute;
-    left: 100px;
-    top: 150px;
-    width: 75%;
-    font-size: 17px;
-    font-weight: 100;
-    color: #0065a9; }
+
+#detailsContainer .title {
+  position: absolute;
+  left: 100px;
+  top: 75px;
+  font-family: RweHeadlineRegular;
+  text-transform: uppercase;
+  font-size: 26px;
+  color: #0065A9; }
+
+#detailsContainer .userDetailsTable {
+  position: absolute;
+  left: 100px;
+  top: 150px;
+  width: 75%;
+  font-size: 17px;
+  font-weight: 100;
+  color: #0065a9; }
 
 body.tapestryModule {
   background-color: #404040; }

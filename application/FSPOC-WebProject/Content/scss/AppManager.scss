@@ -7,14 +7,6 @@ body.appManagerModule {
     height: 100%;
     background: white;
 
-    .appWorkspace {
-        position: fixed;
-        left: 310px;
-        top: 50px;
-        right: 0px;
-        bottom: 0px;
-    }
-
     .appColor0 {
         @include linear-gradient(#0086be, #0065a9);
         color: white;

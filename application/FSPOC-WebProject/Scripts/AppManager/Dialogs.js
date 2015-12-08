@@ -7,10 +7,10 @@ $(function () {
         width: 600,
         height: 320,
         buttons: {
-            "Save": function () {
+            "Uložit": function () {
                 appPropertiesDialog_SubmitData();
             },
-            Cancel: function () {
+            "Zrušit": function () {
                 appPropertiesDialog.dialog("close");
             }
         },
