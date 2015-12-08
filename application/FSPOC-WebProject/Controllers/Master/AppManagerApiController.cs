@@ -15,7 +15,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
     {
         [Route("api/master/apps/{appId}/properties")]
         [HttpGet]
-        public AjaxAppProperties GetApp(int appId)
+        public AjaxAppProperties LoadAppProperties(int appId)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         [Route("api/master/apps/{appId}/properties")]
         [HttpPost]
-        public void SaveBlock(int appId, AjaxAppProperties postData)
+        public void SaveAppProperties(int appId, AjaxAppProperties postData)
         {
             try
             {
