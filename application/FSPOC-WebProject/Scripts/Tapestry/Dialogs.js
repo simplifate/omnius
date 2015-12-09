@@ -1,6 +1,6 @@
 ﻿var currentRule;
 $(function () {
-    if ($("body.tapestryModule").length) {
+    if (CurrentModuleIs("tapestryModule")) {
         renameBlockDialog = $("#rename-block-dialog").dialog({
             autoOpen: false,
             width: 400,

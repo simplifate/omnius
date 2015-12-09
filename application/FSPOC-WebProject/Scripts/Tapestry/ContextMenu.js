@@ -1,5 +1,5 @@
 ﻿$(function () {
-    if ($("body.tapestryModule").length) {
+    if (CurrentModuleIs("tapestryModule")) {
         $.contextMenu({
             selector: '.rule .item, .rule .operatorSymbol',
             trigger: 'right',

@@ -97,51 +97,51 @@ body.appManagerModule {
     color: white;
     background-color: #4d41e7; }
 
-body.adminAppTableModule .adminAppTable {
+body.adminAppModule .adminAppTable {
   position: absolute;
   left: 290px;
   top: 125px;
   width: 70%; }
-  body.adminAppTableModule .adminAppTable td {
+  body.adminAppModule .adminAppTable td {
     min-width: 180px; }
-  body.adminAppTableModule .adminAppTable td.actions {
+  body.adminAppModule .adminAppTable td.actions {
     min-width: unset; }
-    body.adminAppTableModule .adminAppTable td.actions .btn {
+    body.adminAppModule .adminAppTable td.actions .btn {
       width: 100px; }
 
-body.adminAppTableModule .formTable label, body.adminAppTableModule .formTable select {
+body.adminAppModule .formTable label, body.adminAppModule .formTable select {
   margin-bottom: 0px;
   padding: 2px;
   height: 30px; }
 
-body.adminAppTableModule .formTable select {
+body.adminAppModule .formTable select {
   width: 180px; }
 
-body.adminAppTableModule .formTable tr {
+body.adminAppModule .formTable tr {
   height: 36px; }
 
-body.adminAppTableModule .formTable td {
+body.adminAppModule .formTable td {
   vertical-align: middle; }
 
-body.adminAppTableModule .formTable tr td:first-child {
+body.adminAppModule .formTable tr td:first-child {
   width: 230px; }
 
-body.adminAppTableModule .formTable #app-name {
+body.adminAppModule .formTable #app-name {
   width: 310px; }
 
-body.adminAppValidationModule #validationResults {
+body.adminAppModule #validationResults {
   position: absolute;
   left: 290px;
   top: 125px;
   width: 70%; }
-  body.adminAppValidationModule #validationResults #errorPanel {
+  body.adminAppModule #validationResults #errorPanel {
     background-color: #ffe0e0;
     padding: 20px; }
-    body.adminAppValidationModule #validationResults #errorPanel h1 {
+    body.adminAppModule #validationResults #errorPanel h1 {
       margin-bottom: 30px; }
-    body.adminAppValidationModule #validationResults #errorPanel .errorList {
+    body.adminAppModule #validationResults #errorPanel .errorList {
       font-size: 20px; }
-    body.adminAppValidationModule #validationResults #errorPanel #btnRetryValidation {
+    body.adminAppModule #validationResults #errorPanel #btnRetryValidation {
       margin-top: 30px; }
 
 #topBar {
@@ -263,7 +263,8 @@ body.adminAppValidationModule #validationResults {
       border-left: 7px solid #59c9e7;
       background-color: #446782; }
     #leftBar .leftMenu li.subMenu {
-      background-color: #457fa9; }
+      background-color: #457fa9;
+      display: none; }
 
 @media only screen and (max-width: 1600px) {
   .searchField {

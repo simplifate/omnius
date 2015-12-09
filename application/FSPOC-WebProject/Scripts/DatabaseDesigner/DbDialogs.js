@@ -1,7 +1,7 @@
-﻿var CurrentTable, CurrentColumn, CurrentConnection, CurrentView, CurrentIndex;
+﻿ var CurrentTable, CurrentColumn, CurrentConnection, CurrentView, CurrentIndex;
 
 $(function () {
-    if ($("body.dbDesignerModule").length) {
+    if (CurrentModuleIs("dbDesignerModule")) {
         addTableDialog = $("#add-table-dialog").dialog({
             autoOpen: false,
             resizable: false,

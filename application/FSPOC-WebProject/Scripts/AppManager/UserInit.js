@@ -23,7 +23,7 @@
         $("#userContentArea").css("left", 310);
         $("#helpContainer").css("left", 310);
     });
-    if ($("body.appManagerModule").length) {
+    if (CurrentModuleIs("appManagerModule")) {
         $(".appPanel").draggable({
             grid: [120, 120],
             revert: "invalid",
@@ -46,11 +46,11 @@
             ui.originalPosition.left = $(this).position().left;
         });
     }
-    else if ($("body.helpModule").length) {
+    else if (CurrentModuleIs("helpModule")) {
         $("#appManagerIcon").removeClass("activeIcon");
         $("#helpIcon").addClass("activeIcon");
     }
-    else if ($("body.userDetailsModule").length) {
+    else if (CurrentModuleIs("userDetailsModule")) {
         $("#appManagerIcon").removeClass("activeIcon");
     };
 });

@@ -1,5 +1,5 @@
 ﻿$(function () {
-    if ($("body.tapestryModule").length) {
+    if (CurrentModuleIs("tapestryModule")) {
         $(".rule").resizable({
             start: function (event, ui) {
                 contentsWidth = 120;

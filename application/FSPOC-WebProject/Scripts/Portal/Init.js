@@ -4,6 +4,28 @@ $(function () {
     $("#leftBar .leftMenu li.expanded").on("click", function () {
         $("#leftBar .leftMenu li.subMenu").slideToggle();
     });
+
+    if (CurrentModuleIs("portalModule"))
+        $("#adminMenuPortal").addClass("active");
+    else if (CurrentModuleIs("adminAppModule"))
+        $("#adminMenuApps").addClass("active");
+    else if (CurrentModuleIs("portalModule"))
+        $("#adminMenuApps").addClass("active");
+    else if (CurrentModuleIs("nexusModule"))
+        $("#adminMenuNexus").addClass("active");
+    else if (CurrentModuleIs("tapestryModule")) {
+        $("#adminMenuTapestry").addClass("active");
+        $("#leftBar .leftMenu li.subMenu").show();
+    }
+    else if (CurrentModuleIs("mozaicModule")) {
+        $("#adminMenuMozaic").addClass("active");
+        $("#leftBar .leftMenu li.subMenu").show();
+    }
+    else if (CurrentModuleIs("dbDesignerModule")) {
+        $("#adminMenuDbDesigner").addClass("active");
+        $("#leftBar .leftMenu li.subMenu").show();
+    }
+
     $("#usersOnlineIndicator").on("click", function () {
         $(".clickableIndicatorRectangle").removeClass("highlighted");
         $("#usersOnlineIndicator").addClass("highlighted");

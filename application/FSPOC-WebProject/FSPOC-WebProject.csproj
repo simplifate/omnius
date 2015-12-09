@@ -895,6 +895,7 @@
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
+    <Content Include="Scripts\PlatformUtils.js" />
     <Content Include="Scripts\Portal\Init.js" />
     <Content Include="Scripts\Portal\ModuleAdmin.js" />
     <Content Include="Scripts\respond.js" />
