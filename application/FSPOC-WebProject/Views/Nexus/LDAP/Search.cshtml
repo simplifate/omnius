@@ -18,7 +18,11 @@
             </div>
         </div>
 
-        @if(ViewBag.Result.Length > 0)
+        @if(Request.HttpMethod == "POST" && string.IsNullOrWhiteSpace(ViewBag.Result))
+        {
+            <span class="error">Not found</span>
+        }
+        else if(ViewBag.Result.Length > 0)
         {
             <pre>@ViewBag.Result</pre>
         }

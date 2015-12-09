@@ -20,7 +20,7 @@ namespace FSS.Omnius.Controllers.Master
                     foreach (var app in context.Applications)
                     {
                         // TODO: Implement filtering by user privileges
-                        if (app.ShowInAppManager)
+                        if (app.IsPublished && app.IsEnabled)
                             filteredAppList.Add(app);
                     }
                     return filteredAppList;

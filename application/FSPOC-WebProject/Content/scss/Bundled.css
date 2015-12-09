@@ -19,12 +19,6 @@ body.appManagerModule {
   width: 100%;
   height: 100%;
   background: white; }
-  body.appManagerModule .appWorkspace {
-    position: fixed;
-    left: 310px;
-    top: 50px;
-    right: 0px;
-    bottom: 0px; }
   body.appManagerModule .appColor0 {
     background: -webkit-linear-gradient(top, #0086be, #0065a9);
     background: -o-linear-gradient(bottom, #0086be, #0065a9);
@@ -114,6 +108,26 @@ body.adminAppTableModule .adminAppTable {
     min-width: unset; }
     body.adminAppTableModule .adminAppTable td.actions .btn {
       width: 100px; }
+
+body.adminAppTableModule .formTable label, body.adminAppTableModule .formTable select {
+  margin-bottom: 0px;
+  padding: 2px;
+  height: 30px; }
+
+body.adminAppTableModule .formTable select {
+  width: 180px; }
+
+body.adminAppTableModule .formTable tr {
+  height: 36px; }
+
+body.adminAppTableModule .formTable td {
+  vertical-align: middle; }
+
+body.adminAppTableModule .formTable tr td:first-child {
+  width: 230px; }
+
+body.adminAppTableModule .formTable #app-name {
+  width: 310px; }
 
 body.adminAppValidationModule #validationResults {
   position: absolute;
@@ -507,28 +521,33 @@ body.adminAppValidationModule #validationResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
-#helpContainer, #detailsContainer {
-  position: absolute;
+#userContentArea {
+  position: fixed;
   left: 310px;
   top: 50px;
   right: 0px;
+  bottom: 0px; }
+
+#helpContainer {
   margin-left: 40px; }
-  #helpContainer .title, #detailsContainer .title {
-    position: absolute;
-    left: 100px;
-    top: 75px;
-    font-family: RweHeadlineRegular;
-    text-transform: uppercase;
-    font-size: 26px;
-    color: #0065A9; }
-  #helpContainer .userDetailsTable, #detailsContainer .userDetailsTable {
-    position: absolute;
-    left: 100px;
-    top: 150px;
-    width: 75%;
-    font-size: 17px;
-    font-weight: 100;
-    color: #0065a9; }
+
+#detailsContainer .title {
+  position: absolute;
+  left: 100px;
+  top: 75px;
+  font-family: RweHeadlineRegular;
+  text-transform: uppercase;
+  font-size: 26px;
+  color: #0065A9; }
+
+#detailsContainer .userDetailsTable {
+  position: absolute;
+  left: 100px;
+  top: 150px;
+  width: 75%;
+  font-size: 17px;
+  font-weight: 100;
+  color: #0065a9; }
 
 body.tapestryModule {
   background-color: #404040; }
@@ -676,18 +695,6 @@ body.tapestryModule {
     padding: 5px; }
   body.tapestryModule .sourceEndpoint {
     margin-left: 4px; }
-  body.tapestryModule .ui-dialog {
-    padding: 0px 0px;
-    border: 1px solid black;
-    border-radius: 4px; }
-  body.tapestryModule .ui-widget-header {
-    background-image: none;
-    background-color: #2d74b2;
-    color: white; }
-  body.tapestryModule .ui-dialog .ui-dialog-buttonpane {
-    padding: 3px; }
-  body.tapestryModule .ui-dialog .ui-dialog-buttonset button {
-    margin: 3px; }
   body.tapestryModule .sourceEndpoint._jsPlumb_dragging, body.tapestryModule .sourceEndpoint.jsplumb-drag {
     visibility: hidden !important; }
   body.tapestryModule .sourceEndpoint.jsplumb-drag-active {
@@ -1516,6 +1523,33 @@ body.portalModule {
     display: inline-block !important;
     margin-top: 28px;
     margin-right: 17px; } }
+
+body.watchtowerLogModule #logContainer {
+  position: absolute;
+  left: 220px;
+  top: 50px;
+  right: 100px;
+  margin-left: 40px; }
+  body.watchtowerLogModule #logContainer .watchtowerLogTable {
+    position: absolute;
+    width: 100%;
+    top: 150px; }
+
+.ui-dialog .ui-dialog {
+  padding: 0px 0px;
+  border: 1px solid black;
+  border-radius: 4px; }
+
+.ui-dialog .ui-widget-header {
+  background-image: none;
+  background-color: #2d74b2;
+  color: white; }
+
+.ui-dialog .ui-dialog .ui-dialog-buttonpane {
+  padding: 3px; }
+
+.ui-dialog .ui-dialog .ui-dialog-buttonset button {
+  margin: 3px; }
 
 .ui-dialog .ui-dialog-titlebar-close {
   background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;

@@ -1,6 +1,6 @@
 ﻿$(function () {
     $("#appManagerIcon").on("click", function () {
-        if(!$("#appManagerIcon").hasClass("activeIcon"))
+        if (!$("#appManagerIcon").hasClass("activeIcon"))
             window.location.href = "/Master";
     });
     $("#adminSectionIcon").on("click", function () {
@@ -14,13 +14,13 @@
     $("#hideMenuIcon").on("click", function () {
         $("#userLeftBar").hide();
         $("#userLeftBarMinimized").show();
-        $(".appWorkspace").css("left", 60);
+        $("#userContentArea").css("left", 60);
         $("#helpContainer").css("left", 60);
     });
     $("#showMenuIcon").on("click", function () {
         $("#userLeftBarMinimized").hide();
         $("#userLeftBar").show();
-        $(".appWorkspace").css("left", 310);
+        $("#userContentArea").css("left", 310);
         $("#helpContainer").css("left", 310);
     });
     if ($("body.appManagerModule").length) {
@@ -44,11 +44,6 @@
         $(".appPanel").bind("dragstart", function (event, ui) {
             ui.originalPosition.top = $(this).position().top;
             ui.originalPosition.left = $(this).position().left;
-        });
-    }
-    else if ($("body.adminAppTableModule").length) {
-        $(".adminAppTable .actions .btn").on("click", function () {
-            window.location.href = "/Portal/AppValidation";
         });
     }
     else if ($("body.helpModule").length) {

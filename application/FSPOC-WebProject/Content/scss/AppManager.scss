@@ -7,14 +7,6 @@ body.appManagerModule {
     height: 100%;
     background: white;
 
-    .appWorkspace {
-        position: fixed;
-        left: 310px;
-        top: 50px;
-        right: 0px;
-        bottom: 0px;
-    }
-
     .appColor0 {
         @include linear-gradient(#0086be, #0065a9);
         color: white;
@@ -112,6 +104,28 @@ body.adminAppTableModule {
             .btn {
                 width: 100px;
             }
+        }
+    }
+    .formTable {
+        label, select {
+            margin-bottom: 0px;
+            padding: 2px;
+            height: 30px;
+        }
+        select {
+            width: 180px;
+        }
+        tr {
+            height: 36px;
+        }
+        td {
+            vertical-align: middle;
+        }
+        tr td:first-child {
+            width: 230px;
+        }
+        #app-name {
+            width: 310px;
         }
     }
 }

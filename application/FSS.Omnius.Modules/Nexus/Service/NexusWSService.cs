@@ -1,5 +1,6 @@
-﻿using FSS.Omnius.Modules.Nexus.Gate;
+﻿using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Nexus.Gate;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
@@ -20,6 +21,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
         public JObject CallWebService(string serviceName, string methodName, object[] args)
         {
             return ws.CallWebService(serviceName, methodName, args);
+        }
+
+        public JObject CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
+        {
+            return ws.CallRestService(serviceName, methodName, queryParams);
         }
 
     }

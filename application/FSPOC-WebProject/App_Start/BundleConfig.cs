@@ -48,7 +48,7 @@ namespace FSPOC_WebProject
                 .IncludeDirectory("~/Scripts/Overview", "*.js")
                 .IncludeDirectory("~/Scripts/Portal", "*.js")
                 .IncludeDirectory("~/Scripts/DatabaseDesigner", "*.js")
-                .Include("~/Scripts/AppManager.js")
+                .IncludeDirectory("~/Scripts/AppManager", "*.js")
             );
         }
     }

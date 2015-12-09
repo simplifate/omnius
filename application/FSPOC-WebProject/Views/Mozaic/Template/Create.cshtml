@@ -61,12 +61,12 @@
             var html = document.getElementById('#selector').value;
             return html;
         }
-
-        $(document).getElementById('#preview').onclick(function () {
+        $('#preview').click(function () {
             var page = getHtml();
-            window.open("", "Preview").append('<html>' + page + '</html');
+            document.getElementById('#previewfield').appendChild(page);
         });
     });
+    
 </script>
 
 <style type="text/css">
@@ -166,21 +166,6 @@
             <div class="form-group col-sm-12">
                 <div>
                     <label class="control-label col-sm-2">
-                        HTML
-                    </label>
-                </div>
-                <div class="col-sm-10">
-                    @Html.TextAreaFor(x => x.Html, new {@id = "selector", @style = "width:500px;height:300px", @name="html"})
-                </div>
-                <div>
-                    <button id="preview">
-                        Preview
-                    </button>
-                </div>
-            </div>
-            <div class="form-group col-sm-12">
-                <div>
-                    <label class="control-label col-sm-2">
                         Stránky
                     </label>
                 </div>
@@ -188,11 +173,32 @@
                     @Html.DropDownList("pages", new SelectList(ViewBag.Pages, "Id","Id"))
                 </div>
             </div>
-
+            <div class="form-group col-sm-12">
+                <div>
+                    <label class="control-label col-sm-2">
+                        HTML
+                    </label>
+                </div>
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(x => x.Html, new { @id = "selector", @style = "width:500px;height:300px", @name = "html" })
+                </div>
+            </div>
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary">Vytvořit šablonu</button>
                 @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
             </div>
         }
+        <div class="form-group col-sm-12">
+            <div id="previewfield">
+
+            </div>
+            <div>
+                <button id="preview">
+                    Preview
+                </button>
+            </div> 
+        </div>
+        
+       
     </div>
 </div>

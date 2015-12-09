@@ -23,7 +23,7 @@ namespace FSS.Omnius.Controllers.Entitron
             if (repositoryDbSchemeCommit == null) throw new ArgumentNullException(nameof(repositoryDbSchemeCommit));
             if (databaseGenerateService == null) throw new ArgumentNullException(nameof(databaseGenerateService));
             RepositoryDbSchemeCommit = repositoryDbSchemeCommit;
-            DatabaseGenerateService  = databaseGenerateService;
+            DatabaseGenerateService = databaseGenerateService;
         }
 
         private IRepository<DbSchemeCommit> RepositoryDbSchemeCommit { get; }
@@ -40,8 +40,8 @@ namespace FSS.Omnius.Controllers.Entitron
                         .Select(c => new AjaxTransferCommitHeader
                         {
                             CommitMessage = c.CommitMessage,
-                            Id            = c.Id,
-                            TimeCommit    = c.Timestamp
+                            Id = c.Id,
+                            TimeCommit = c.Timestamp
                         });
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage ="DatabaseDesigner: error when loading the latest commit (GET api/database/commits/latest). " +
+                var errorMessage = "DatabaseDesigner: error when loading the latest commit (GET api/database/commits/latest). " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
@@ -109,7 +109,7 @@ namespace FSS.Omnius.Controllers.Entitron
             catch (Exception ex)
             {
                 throw GetHttpInternalServerErrorResponseException(ex.Message);
-            }            
+            }
         }
 
         [Route("api/database/commits")]
@@ -200,7 +200,7 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage ="DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/commits). "+
+                var errorMessage = "DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/commits). " +
                         $"Exception message: {ex.Message}";
                 Log.Error(errorMessage);
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
@@ -208,10 +208,109 @@ namespace FSS.Omnius.Controllers.Entitron
 
         }
 
+        public void SaveChanges(DbSchemeCommit SchemeCommit)
+        {
+            DBEntities e = new DBEntities();
+            foreach (DbTable schemeTable in SchemeCommit.Tables)
+            {
+                //IEnumerable<DbTable> removeTables = SchemeCommit.Tables.Where(x1 => !e.DbTables.Any(x2 => x2.Id == x1.Id));
+                //e.DbTables.Except<DbTable>(removeTables); //maže všechny tabulky které se už nenachází na schématu uživatele
+
+                if (e.DbTables.SingleOrDefault(x => x.Id == schemeTable.Id) == null) //pokud je ve schématu uživatele vytvořena nová tabulka
+                {
+                    e.DbTables.Add(schemeTable);
+                }
+                else
+                {
+                    DbTable DatabaseTable = e.DbTables.SingleOrDefault(x => x.Id == schemeTable.Id);
+                    if (DatabaseTable.Name != schemeTable.Name) DatabaseTable.Name = schemeTable.Name;
+
+                    foreach (DbColumn schemeColumn in schemeTable.Columns)
+                    {
+                        //TODO smazat sloupec který už není ve schématu
+
+                        if (DatabaseTable.Columns.SingleOrDefault(x=>x.Id==schemeColumn.Id) == null) //pokud je ve schématu uživatele vytvořen nový sloupec
+                        {
+                            DatabaseTable.Columns.Add(schemeColumn);
+                        }
+                        else
+                        {
+                            DbColumn DatabaseColumn = DatabaseTable.Columns.SingleOrDefault(x => x.Id == schemeColumn.Id);
+
+                            if (DatabaseColumn.Name != schemeColumn.Name) DatabaseColumn.Name = schemeColumn.Name;
+                            if (DatabaseColumn.PrimaryKey != schemeColumn.PrimaryKey) DatabaseColumn.PrimaryKey = schemeColumn.PrimaryKey;
+                            if (DatabaseColumn.Type != schemeColumn.Type) DatabaseColumn.Type = schemeColumn.Type;
+                            if (DatabaseColumn.Unique != schemeColumn.Unique) DatabaseColumn.Unique = schemeColumn.Unique;
+                            if (DatabaseColumn.AllowNull != schemeColumn.AllowNull) DatabaseColumn.AllowNull = schemeColumn.AllowNull;
+                            if (DatabaseColumn.ColumnLength != schemeColumn.ColumnLength) DatabaseColumn.ColumnLength = schemeColumn.ColumnLength;
+                            if (DatabaseColumn.ColumnLengthIsMax != schemeColumn.ColumnLengthIsMax) DatabaseColumn.ColumnLengthIsMax = schemeColumn.ColumnLengthIsMax;
+                            if (DatabaseColumn.DefaultValue != schemeColumn.DefaultValue) DatabaseColumn.DefaultValue = schemeColumn.DefaultValue;
+                        }
+                    }
+                    foreach(DbIndex schemeIndex in schemeTable.Indices)
+                    {
+                        //TODO smazat index který už není ve schématu
+
+                        if (DatabaseTable.Indices.SingleOrDefault(x => x.Id == schemeIndex.Id) == null) //pokud je ve schématu uživatele vytvořen nový index
+                        {
+                            DatabaseTable.Indices.Add(schemeIndex);
+                        }
+                        else
+                        {
+                            DbIndex databaseIndex = DatabaseTable.Indices.SingleOrDefault(x => x.Id == schemeIndex.Id);
+
+                            if (databaseIndex.ColumnNames != schemeIndex.ColumnNames) databaseIndex.ColumnNames = schemeIndex.ColumnNames;
+                            if (databaseIndex.Name != schemeIndex.Name) databaseIndex.Name = schemeIndex.Name;
+                            if (databaseIndex.Unique != schemeIndex.Unique) databaseIndex.Unique = schemeIndex.Unique;
+                        }
+                    }
+
+                }
+                
+            }
+
+            foreach (DbRelation schemeRelation in SchemeCommit.Relations)
+            {
+                //TODO smazat vztah který už není ve schématu
+
+                if (e.DbRelation.SingleOrDefault(x => x.Id == schemeRelation.Id) == null) //pokud je ve schématu uživatele vytvořen nový vztah
+                {
+                    e.DbRelation.Add(schemeRelation);
+                }
+                else
+                {
+                    DbRelation databaseRelation = e.DbRelation.SingleOrDefault(x => x.Id == schemeRelation.Id);
+
+                    if (databaseRelation.LeftTable != schemeRelation.LeftTable) databaseRelation.LeftTable = schemeRelation.LeftTable;
+                    if (databaseRelation.RightTable != schemeRelation.RightTable) databaseRelation.RightTable = schemeRelation.RightTable;
+                    if (databaseRelation.LeftColumn != schemeRelation.LeftColumn) databaseRelation.LeftColumn = schemeRelation.LeftColumn;
+                    if (databaseRelation.RightColumn != schemeRelation.RightColumn) databaseRelation.RightColumn = schemeRelation.RightColumn;
+                    if (databaseRelation.Type != schemeRelation.Type) databaseRelation.Type = schemeRelation.Type;
+                }
+            }
+
+            foreach(DbView schemeView in SchemeCommit.Views)
+            {
+                //TODO smazat pohled který už není ve schématu
+
+                if (e.DbView.SingleOrDefault(x => x.Id == schemeView.Id) == null) //pokud je ve schématu uživatele vytvořen nový pohled
+                {
+                    e.DbView.Add(schemeView);
+                }
+                else
+                {
+                    DbView databaseView = e.DbView.SingleOrDefault(x => x.Id == schemeView.Id);
+
+                    if (databaseView.Name != schemeView.Name) databaseView.Name = schemeView.Name;
+                    if (databaseView.Query != schemeView.Query) databaseView.Query = schemeView.Query;
+                }
+            }
+        }
+
         /// <exception cref="InstanceNotFoundException">Not found commit for commitId</exception>
         private AjaxTransferDbScheme GetCommit(int commitId = -1)
         {
-            var result          = new AjaxTransferDbScheme();
+            var result = new AjaxTransferDbScheme();
             var requestedCommit = FetchDbSchemeCommit(commitId);
             //Latest commit was requested, but there are no commits yet. Returning an empty commit.
             if (requestedCommit == null)
@@ -241,11 +340,11 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 result.Views.Add(new AjaxTransferDbView
                 {
-                    Id        = view.Id,
-                    Name      = view.Name,
+                    Id = view.Id,
+                    Name = view.Name,
                     PositionX = view.PositionX,
                     PositionY = view.PositionY,
-                    Query     = view.Query,
+                    Query = view.Query,
                 });
             }
         }
@@ -256,11 +355,11 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 result.Relations.Add(new AjaxTransferDbRelation
                 {
-                    LeftColumn  = relation.LeftColumn,
-                    LeftTable   = relation.LeftTable,
+                    LeftColumn = relation.LeftColumn,
+                    LeftTable = relation.LeftTable,
                     RightColumn = relation.RightColumn,
-                    RightTable  = relation.RightTable,
-                    Type        = relation.Type
+                    RightTable = relation.RightTable,
+                    Type = relation.Type
                 });
             }
         }
@@ -271,8 +370,8 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 var ajaxTable = new AjaxTransferDbTable
                 {
-                    Id        = table.Id,
-                    Name      = table.Name,
+                    Id = table.Id,
+                    Name = table.Name,
                     PositionX = table.PositionX,
                     PositionY = table.PositionY
                 };
@@ -280,15 +379,15 @@ namespace FSS.Omnius.Controllers.Entitron
                 {
                     ajaxTable.Columns.Add(new AjaxTransferDbColumn
                     {
-                        AllowNull         = column.AllowNull,
-                        ColumnLength      = column.ColumnLength,
+                        AllowNull = column.AllowNull,
+                        ColumnLength = column.ColumnLength,
                         ColumnLengthIsMax = column.ColumnLengthIsMax,
-                        DefaultValue      = column.DefaultValue,
-                        Id                = column.Id,
-                        Name              = column.Name,
-                        PrimaryKey        = column.PrimaryKey,
-                        Type              = column.Type,
-                        Unique            = column.Unique,
+                        DefaultValue = column.DefaultValue,
+                        Id = column.Id,
+                        Name = column.Name,
+                        PrimaryKey = column.PrimaryKey,
+                        Type = column.Type,
+                        Unique = column.Unique,
                     });
                 }
                 foreach (var index in table.Indices)
@@ -296,9 +395,9 @@ namespace FSS.Omnius.Controllers.Entitron
                     ajaxTable.Indices.Add(new AjaxTransferDbIndex
                     {
                         ColumnNames = index.ColumnNames.Split(',').ToList(),
-                        Id          = index.Id,
-                        Name        = index.Name,
-                        Unique      = index.Unique,
+                        Id = index.Id,
+                        Name = index.Name,
+                        Unique = index.Unique,
                     });
                 }
                 result.Tables.Add(ajaxTable);
