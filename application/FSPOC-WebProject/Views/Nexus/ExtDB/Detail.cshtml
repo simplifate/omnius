@@ -1,0 +1,25 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.ExtDB
+
+<div>
+    <h4>Detail záznamu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.DB_Type)</dt>
+        <dd>@Html.DisplayFor(model => model.DB_Type)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DB_Server)</dt>
+        <dd>@Html.DisplayFor(model => model.DB_Server)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DB_Port)</dt>
+        <dd>@Html.DisplayFor(model => model.DB_Port)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DB_Name)</dt>
+        <dd>@Html.DisplayFor(model => model.DB_Name)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DB_User)</dt>
+        <dd>@Html.DisplayFor(model => model.DB_User)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DB_Password)</dt>
+        <dd>********</dd>
+
+    </dl>
+</div>
+<p>
+    @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
+    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-danger" })
+</p>
