@@ -97,7 +97,8 @@ namespace FSS.Omnius.Controllers.Nexus
                 NexusLdapService service = new NexusLdapService();
 
                 SearchResult user = service.SearchByLogin(query);
-                ViewBag.Result = var_dump(user, 0);
+                if (user != null)
+                    ViewBag.Result = var_dump(user, 0);
             }
             
             return View("~/Views/Nexus/LDAP/Search.cshtml");
