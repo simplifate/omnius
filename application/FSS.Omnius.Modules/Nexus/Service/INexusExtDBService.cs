@@ -12,8 +12,8 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         JToken FetchAll();
         JToken FetchOne();
-        Object FetchCell(string column);
-        List FetchArray(string column);
+        object FetchCell(string column);
+        List<object> FetchArray(string column);
 
         #region SqlBuilderProxy
 

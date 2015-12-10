@@ -82,6 +82,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public NexusExtDBService With(string body) { db.With(body); return this; }
         public NexusExtDBService With(string format, params Object[] args) { db.With(format, args); return this; }
+
+        List<object> INexusExtDBService.FetchArray(string column)
+        {
+            throw new NotImplementedException();
+        }
         //public NexusExtDBService With(SqlBuilder sql, string alias) { db.With(sql, alias); return this; }
 
         #endregion
