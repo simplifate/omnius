@@ -133,7 +133,8 @@
             </tbody>
         </table>
         @Ajax.RouteLink("Pøidat externí databázi", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary fa fa-plus" })
-        @Ajax.RouteLink("Test", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-play-circle" })
+        @Ajax.RouteLink("Test MySQL", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-play-circle" })
+        @Ajax.RouteLink("Test MSSQL", "Nexus", new { @action = "TestMSSQL" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-default fa fa-play-circle" })
     </div>
 </div>
 <div id="ContentContainer" class="bottom-panel">

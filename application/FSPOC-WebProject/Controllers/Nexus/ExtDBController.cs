@@ -182,6 +182,26 @@ namespace FSPOC_WebProject.Controllers.Nexus
             return View("~/Views/Nexus/ExtDB/Test.cshtml");
         }
 
+        public ActionResult TestMSSQL()
+        {
+            string result = "";
+
+            NexusExtDBService service = new NexusExtDBService("vo8qh1qcem.database.windows.net", "Omnius");
+
+            JToken rows = service.NewQuery()
+                .Select("*")
+                .From("Nexus_WS")
+                .OrderBy("Id desc")
+                .FetchAll();
+
+            result += "<p>" + service.sql + "</p>";
+            result += "<pre>" + rows.ToString() + "</pre>";
+
+            ViewBag.result = result;
+
+            return View("~/Views/Nexus/ExtDB/Test.cshtml");
+        }
+
         #endregion
     }
 }

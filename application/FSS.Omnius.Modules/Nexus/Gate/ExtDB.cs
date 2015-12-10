@@ -176,6 +176,14 @@ namespace FSS.Omnius.Modules.Nexus.Gate
                         DbConnection conn = new MySql.Data.MySqlClient.MySqlConnection(cs);
                         return conn;
                     }
+                case Entitron.Entity.Nexus.ExtDBType.MSSQL:
+                    {
+                        string cs = string.Format("Server={0};Database={1};User Id={2};Password={3};",
+                                row.DB_Server, row.DB_Name, row.DB_User, row.DB_Password
+                            );
+                        DbConnection conn = new System.Data.SqlClient.SqlConnection(cs);
+                        return conn;
+                    }
                 default: {
                         throw new Exception("Formát connection stringu nebyl nalezen");
                     }
