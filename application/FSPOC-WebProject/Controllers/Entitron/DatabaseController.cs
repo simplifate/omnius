@@ -213,8 +213,8 @@ namespace FSS.Omnius.Controllers.Entitron
             DBEntities e = new DBEntities();
             foreach (DbTable schemeTable in SchemeCommit.Tables)
             {
-                //IEnumerable<DbTable> removeTables = SchemeCommit.Tables.Where(x1 => !e.DbTables.Any(x2 => x2.Id == x1.Id));
-                //e.DbTables.Except<DbTable>(removeTables); //maže všechny tabulky které se už nenachází na schématu uživatele
+                IEnumerable<DbTable> removeTables = SchemeCommit.Tables.Where(x1 => !e.DbTables.Any(x2 => x2.Id == x1.Id));
+                e.DbTables.Except<DbTable>(removeTables); //maže všechny tabulky, které se už nenachází na schématu uživatele
 
                 if (e.DbTables.SingleOrDefault(x => x.Id == schemeTable.Id) == null) //pokud je ve schématu uživatele vytvořena nová tabulka
                 {
@@ -227,7 +227,8 @@ namespace FSS.Omnius.Controllers.Entitron
 
                     foreach (DbColumn schemeColumn in schemeTable.Columns)
                     {
-                        //TODO smazat sloupec který už není ve schématu
+                        IEnumerable<DbColumn> removeColumns = schemeTable.Columns.Where(x1 => !DatabaseTable.Columns.Any(x2 => x2.Id == x1.Id));
+                        DatabaseTable.Columns.Except<DbColumn>(removeColumns); //maže všechny sloupce tabulky, které se už nenachází na schématu uživatele
 
                         if (DatabaseTable.Columns.SingleOrDefault(x=>x.Id==schemeColumn.Id) == null) //pokud je ve schématu uživatele vytvořen nový sloupec
                         {
@@ -249,7 +250,8 @@ namespace FSS.Omnius.Controllers.Entitron
                     }
                     foreach(DbIndex schemeIndex in schemeTable.Indices)
                     {
-                        //TODO smazat index který už není ve schématu
+                        IEnumerable<DbIndex> removeIndeces = schemeTable.Indices.Where(x1 => !DatabaseTable.Indices.Any(x2 => x2.Id == x1.Id));
+                        DatabaseTable.Indices.Except<DbIndex>(removeIndeces); //maže všechny indexy tabulky, které se už nenachází na schématu uživatele
 
                         if (DatabaseTable.Indices.SingleOrDefault(x => x.Id == schemeIndex.Id) == null) //pokud je ve schématu uživatele vytvořen nový index
                         {
@@ -271,7 +273,8 @@ namespace FSS.Omnius.Controllers.Entitron
 
             foreach (DbRelation schemeRelation in SchemeCommit.Relations)
             {
-                //TODO smazat vztah který už není ve schématu
+                IEnumerable<DbRelation> removeRelations = SchemeCommit.Relations.Where(x1 => !e.DbRelation.Any(x2 => x2.Id == x1.Id));
+                e.DbRelation.Except<DbRelation>(removeRelations); //maže všechny vztahy, které se už nenachází ve schématu uživatele
 
                 if (e.DbRelation.SingleOrDefault(x => x.Id == schemeRelation.Id) == null) //pokud je ve schématu uživatele vytvořen nový vztah
                 {
@@ -291,7 +294,8 @@ namespace FSS.Omnius.Controllers.Entitron
 
             foreach(DbView schemeView in SchemeCommit.Views)
             {
-                //TODO smazat pohled který už není ve schématu
+                IEnumerable<DbView> removeRelations = SchemeCommit.Views.Where(x1 => !e.DbView.Any(x2 => x2.Id == x1.Id));
+                e.DbView.Except<DbView>(removeRelations); //maže všechny pohledy, které se už nenachází ve schématu uživatele
 
                 if (e.DbView.SingleOrDefault(x => x.Id == schemeView.Id) == null) //pokud je ve schématu uživatele vytvořen nový pohled
                 {
