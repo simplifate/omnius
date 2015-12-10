@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using FSS.Omnius.Modules.Nexus.Gate;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,16 @@ namespace FSS.Omnius.Modules.Nexus.Service
     public interface INexusExtDBService
     {
         NexusExtDBService NewQuery();
+        ExtDBSubquery NewSubquery();
 
         JToken FetchAll();
         JToken FetchOne();
+        JToken FetchHash(string keyColumn, string valueColumn);
+        JToken FetchAllAsHash(string keyColumn);
+        JToken FetchAllAsHashArray(string keyColumn);
+        List<Object> FetchArray(string column);
         Object FetchCell(string column);
-        List FetchArray(string column);
-
+        
         #region SqlBuilderProxy
 
         NexusExtDBService _(string body);
@@ -22,7 +27,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         NexusExtDBService From(string table);
         NexusExtDBService From(string table, params Object[] args);
-        //NexusExtDBService From(SqlBuilder sql, string alias);
+        NexusExtDBService From(ExtDBSubquery query, string alias);
 
         NexusExtDBService GroupBy();
         NexusExtDBService GroupBy(string body);
@@ -71,7 +76,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         NexusExtDBService With(string body);
         NexusExtDBService With(string format, params Object[] args);
-        //NexusExtDBService With(SqlBuilder sql, string alias);
+        NexusExtDBService With(ExtDBSubquery query, string alias);
 
         #endregion   
     }

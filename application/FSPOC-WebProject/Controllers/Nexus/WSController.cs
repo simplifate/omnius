@@ -115,7 +115,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
             NexusWSService service = new NexusWSService();
 
             object[] parameters = new[] { "Praha / Ruzyne", "Czech Republic" };
-            JObject result = service.CallWebService("Global Weather", "GetWeather", parameters);
+            JToken result = service.CallWebService("Global Weather", "GetWeather", parameters);
 
             ViewBag.result = result.ToString();
 
@@ -130,7 +130,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
             queryParams.Add("text", "republic");
 
             // zavolá http://services.groupkt.com/country/search?text=republic
-            JObject result = service.CallRestService("Country Search", "search", queryParams);
+            JToken result = service.CallRestService("Country Search", "search", queryParams);
 
             ViewBag.result = result.ToString();
 

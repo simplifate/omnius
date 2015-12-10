@@ -7,6 +7,8 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Nexus.Service;
 using System;
+using System.Collections.Generic;
+using DbExtensions;
 
 namespace FSPOC_WebProject.Controllers.Nexus
 {
@@ -93,17 +95,17 @@ namespace FSPOC_WebProject.Controllers.Nexus
             NexusExtDBService service = new NexusExtDBService("localhost", "fss_rating");
 
             // Multiple rows
-            JToken rows = service.NewQuery()
+            /*JToken rows = service.NewQuery()
                 .Select("*")
                 .From("fss_employee")
                 .OrderBy("lastname, firstname")
                 .FetchAll();
 
             result += "<p>" + service.sql + "</p>";
-            result += "<pre>" + rows.ToString() + "</pre>";
+            result += "<pre>" + rows.ToString() + "</pre>";*/
 
             // Single row
-            JToken row = service.NewQuery()
+            /*JToken row = service.NewQuery()
                 .Select("*")
                 .From("fss_employee")
                 .Where()
@@ -112,10 +114,10 @@ namespace FSPOC_WebProject.Controllers.Nexus
                 .FetchOne();
 
             result += "<p>" + service.sql + "</p>";
-            result += "<pre>" + row.ToString() + "</pre>";
+            result += "<pre>" + row.ToString() + "</pre>";*/
 
             // Single cell
-            object value = service.NewQuery()
+            /*object value = service.NewQuery()
                 .Select("email")
                 .From("fss_employee")
                 .Limit(1)
@@ -123,12 +125,12 @@ namespace FSPOC_WebProject.Controllers.Nexus
                 .FetchCell("email");
 
             result += "<p>" + service.sql + "</p>";
-            result += "<pre>" + value.ToString() + "</pre>";
+            result += "<pre>" + value.ToString() + "</pre>";*/
 
             // Array of values
-            int[] ids = new int[] { 1, 2, 3, 4, 5 };
+            /*int[] ids = new int[] { 1, 2, 3, 4, 5 };
 
-            /*Array arr = service.NewQuery()
+            List<Object> arr = service.NewQuery()
                 .Select("email")
                 .From("fss_employee")
                 .Where("id in ({0})", ids)
@@ -138,6 +140,43 @@ namespace FSPOC_WebProject.Controllers.Nexus
             result += "<p>" + service.sql + "</p>";
             result += "<pre>" + string.Join(", ", arr) + "</pre>";*/
 
+            // hash
+            JToken hash = service.NewQuery()
+                .Select("CONCAT_WS(' ', lastname, firstname) as name, email")
+                .From("fss_employee")
+                .OrderBy("lastname desc, firstname desc")
+                .FetchHash("name", "email");
+
+            result += "<p>" + service.sql + "</p>";
+            result += "<pre>" + hash.ToString() + "</pre>";
+
+            // řádky jako hash
+            JToken rowsAsHash = service.NewQuery()
+                .Select("*")
+                .From("fss_employee")
+                .OrderBy("lastname, firstname")
+                .FetchAllAsHash("email");
+
+            result += "<p>" + service.sql + "</p>";
+            result += "<pre>" + rowsAsHash.ToString() + "</pre>";
+
+            // hash řádků se subquery
+            JToken rowsAsHashArray = service.NewQuery()
+                .Select()
+                    ._("({0}) as email", service.NewSubquery()
+                        .Select("email")
+                        .From("fss_employee")
+                        .Where("id = r.fss_employee_id")
+                        .sql
+                    )
+                    ._("r.role")
+                .From("fss_employee_role r")
+                .OrderBy("email")
+                .FetchAllAsHashArray("email");
+
+            result += "<p>" + service.sql + "</p>";
+            result += "<pre>" + rowsAsHashArray.ToString() + "</pre>";
+            
             ViewBag.result = result;
 
             return View("~/Views/Nexus/ExtDB/Test.cshtml");

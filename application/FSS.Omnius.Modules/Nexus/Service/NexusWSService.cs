@@ -18,12 +18,12 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return ws.CreateProxyForWS(model);
         }
 
-        public JObject CallWebService(string serviceName, string methodName, object[] args)
+        public JToken CallWebService(string serviceName, string methodName, object[] args)
         {
             return ws.CallWebService(serviceName, methodName, args);
         }
 
-        public JObject CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
+        public JToken CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
         {
             return ws.CallRestService(serviceName, methodName, queryParams);
         }

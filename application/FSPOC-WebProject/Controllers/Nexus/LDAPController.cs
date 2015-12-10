@@ -9,6 +9,7 @@ using System.Collections;
 using System.Reflection;
 using FSS.Omnius.Modules.Nexus.Service;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
@@ -96,9 +97,9 @@ namespace FSS.Omnius.Controllers.Nexus
                 string query = Request.Form["query"];
                 NexusLdapService service = new NexusLdapService();
 
-                SearchResult user = service.SearchByLogin(query);
+                JToken user = service.SearchByLogin(query);
                 if (user != null)
-                    ViewBag.Result = var_dump(user, 0);
+                    ViewBag.Result = user.ToString();
             }
             
             return View("~/Views/Nexus/LDAP/Search.cshtml");
@@ -106,7 +107,7 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Groups()
         {
-            SearchResultCollection groups;
+            JToken groups;
             List<string> groupList = new List<string>();
             NexusLdapService service = new NexusLdapService();
 
@@ -120,11 +121,7 @@ namespace FSS.Omnius.Controllers.Nexus
                 groups = service.GetGroups();
             }
             
-            foreach (SearchResult group in groups) {
-                groupList.Add(var_dump(group, 0));
-            }
-
-            ViewBag.Result = groupList;
+            ViewBag.Result = groups.ToString();
 
             return View("~/Views/Nexus/LDAP/GroupList.cshtml");
 

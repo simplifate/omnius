@@ -8,10 +8,12 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
-    class ExtDB
+    public class ExtDB
     {
         private Database db;
         public SqlBuilder sql;
+
+        public ExtDB() { }
 
         public ExtDB(string serverName, string dbName)
         {
@@ -31,7 +33,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             sql = new SqlBuilder();
             return this;
         }
-
+        
         public JToken FetchAll()
         {
             SqlSet set = new SqlSet(sql, db.Connection);
@@ -60,7 +62,45 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             return list;
         }
 
+        public JToken FetchHash(string keyColumn, string valueColumn)
+        {
+            JToken hash = JToken.FromObject(new { });
 
+            JToken rows = FetchAll();
+            foreach(JToken row in rows) {
+                hash[(string)row[keyColumn]] = row[valueColumn];
+            }
+
+            return hash;
+        }
+
+        public JToken FetchAllAsHash(string keyColumn)
+        {
+            JToken hash = JToken.FromObject(new { });
+
+            JToken rows = FetchAll();
+            foreach(JToken row in rows) {
+                hash[(string)row[keyColumn]] = row;
+            }
+
+            return hash;
+        }
+
+        public JToken FetchAllAsHashArray(string keyColumn)
+        {
+            JToken hash = JToken.FromObject(new { });
+
+            JToken rows = FetchAll();
+            foreach(JToken row in rows)
+            {
+                if(hash[(string)row[keyColumn]] == null) {
+                    hash[(string)row[keyColumn]] = new JArray();
+                }
+                ((JArray)hash[(string)row[keyColumn]]).Add(row);          
+            }
+
+            return hash;
+        }
 
         #region SqlBuilderProxy
 
@@ -69,7 +109,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         public ExtDB From(string table) { sql.FROM(table); return this; }
         public ExtDB From(string table, params Object[] args) { sql.FROM(table, args); return this; }
-        //public ExtDB From(SqlBuilder sql, string alias) { sql.FROM(sql, alias); return this; }
+        public ExtDB From(ExtDBSubquery query, string alias) { sql.FROM(query.sql, alias); return this; }
 
         public ExtDB GroupBy() { sql.GROUP_BY(); return this; }
         public ExtDB GroupBy(string body) { sql.GROUP_BY(body); return this; }
@@ -118,7 +158,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         public ExtDB With(string body) { sql.WITH(body); return this; }
         public ExtDB With(string format, params Object[] args) { sql.WITH(format, args); return this; }
-        //public ExtDB With(SqlBuilder sql, string alias) { sql.WITH(sql, alias); return this; }
+        public ExtDB With(ExtDBSubquery query, string alias) { sql.WITH(query.sql, alias); return this; }
 
         #endregion
 
@@ -143,5 +183,13 @@ namespace FSS.Omnius.Modules.Nexus.Gate
         }
 
         #endregion
+    }
+
+    public class ExtDBSubquery : ExtDB
+    {
+        public ExtDBSubquery()
+        {
+            sql = new SqlBuilder();
+        }
     }
 }

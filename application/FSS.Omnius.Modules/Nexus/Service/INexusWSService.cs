@@ -7,7 +7,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
     public interface INexusWSService
     {
         bool CreateProxyForWS(WS model);
-        JObject CallWebService(string serviceName, string methodName, object[] args);
-        JObject CallRestService(string serviceName, string methodName, NameValueCollection queryParams);
+        JToken CallWebService(string serviceName, string methodName, object[] args);
+        JToken CallRestService(string serviceName, string methodName, NameValueCollection queryParams);
     }
 }

@@ -19,12 +19,50 @@ namespace FSS.Omnius.Modules.Nexus.Service
             db = new ExtDB(serverName, dbName);
         }
 
+        /// <summary>
+        /// Inicializuje novou SQL Query
+        /// </summary>
         public NexusExtDBService NewQuery() { db.NewQuery(); return this; }
 
+        /// <summary>
+        /// Inicializuje novou subquery. SqlBuilder očekává jako parametr SqlBuilder, proto je nutné sestavení dotazu ukončit .sql
+        /// </summary>
+        public ExtDBSubquery NewSubquery() { return new ExtDBSubquery(); }
+
+        /// <summary>
+        /// Vrátí všechny řádky jako JToken [ {...}, {...}, {...} ]
+        /// </summary>
         public JToken FetchAll() { return db.FetchAll(); }
+
+        /// <summary>
+        /// Vratí první řádek jako JToken {...}
+        /// </summary>
         public JToken FetchOne() { return db.FetchOne(); }
-        public Object FetchCell(string column) { return db.FetchCell(column); }
+
+        /// <summary>
+        /// Vrací key => value páry ze všech řádků jako JToken { k1:v1, k2:v2, ... }
+        /// </summary>     
+        public JToken FetchHash(string keyColumn, string valueColumn) { return db.FetchHash(keyColumn, valueColumn); }
+
+        /// <summary>
+        /// Vrací všechny řádky jako asociativní JToken { k1:{r1}, k2:{r2}, ... }
+        /// </summary>
+        public JToken FetchAllAsHash(string keyColumn) { return db.FetchAllAsHash(keyColumn); }
+
+        /// <summary>
+        /// Vrací všechny řádky jako JToken { k1:[ {...}, {...}, ... ], k2:[ {...}, {...}, ... ], ... }
+        /// </summary>
+        public JToken FetchAllAsHashArray(string keyColumn) { return db.FetchAllAsHashArray(keyColumn); }
+
+        /// <summary>
+        /// Vrací hodnoty vybraného sloupce ze všech řádků jako List<Object>
+        /// </summary>
         public List<Object> FetchArray(string column) { return db.FetchArray(column); }
+
+        /// <summary>
+        /// Vrací hodnotu vybraného sloupce v prvním řádku jako Object
+        /// </summary>
+        public Object FetchCell(string column) { return db.FetchCell(column); }
 
         #region SqlBuilderProxy
 
@@ -33,7 +71,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public NexusExtDBService From(string table) { db.From(table); return this; }
         public NexusExtDBService From(string table, params Object[] args) { db.From(table, args); return this; }
-        //public NexusExtDBService From(SqlBuilder sql, string alias) { db.From(sql, alias); return this; }
+        public NexusExtDBService From(ExtDBSubquery query, string alias) { db.From(sql, alias); return this; }
 
         public NexusExtDBService GroupBy() { db.GroupBy(); return this; }
         public NexusExtDBService GroupBy(string body) { db.GroupBy(body); return this; }
@@ -82,7 +120,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public NexusExtDBService With(string body) { db.With(body); return this; }
         public NexusExtDBService With(string format, params Object[] args) { db.With(format, args); return this; }
-        //public NexusExtDBService With(SqlBuilder sql, string alias) { db.With(sql, alias); return this; }
+        public NexusExtDBService With(ExtDBSubquery query, string alias) { db.With(sql, alias); return this; }
 
         #endregion
 
