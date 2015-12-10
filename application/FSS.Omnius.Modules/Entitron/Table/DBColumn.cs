@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Entitron
 
             return
                 string.Format(
-                    "{0} {1}{2} {3} {4}",
+                    "[{0}] {1}{2} {3} {4}",
                     Name,
                     type,
                     (allowColumnLength)
@@ -55,7 +55,7 @@ namespace FSS.Omnius.Modules.Entitron
         {
             return
                 string.Format(
-                    $"{0} {1}{2}",
+                    $"[{0}] {1}{2}",
                     Name,
                     type,
                     (allowColumnLength) ? string.Format("({0})", (maxLength != null) ? maxLength.ToString() : "MAX") : ""
