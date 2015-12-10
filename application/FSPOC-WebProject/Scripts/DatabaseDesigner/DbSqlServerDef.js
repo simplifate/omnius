@@ -7,6 +7,7 @@ SqlServerDataTypes = [
     ["currency", "Currency", false],
     ["date", "Date", false],
     ["time", "Time", false],
+    ["datetime", "DateTime", false],
     ["timestamp", "Timestamp", false],
     ["xml", "XML", true],
     ["blob", "Blob", true],

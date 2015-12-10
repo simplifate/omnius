@@ -15,7 +15,7 @@
                 <div class="appIcon">
                     <i class="fa @(app.Icon)"></i>
                 </div>
-                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@app.Name</div>
+                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@(app.DisplayName ?? app.Name)</div>
             </div>
             @Html.Raw(app.InnerHTML)
         </div>

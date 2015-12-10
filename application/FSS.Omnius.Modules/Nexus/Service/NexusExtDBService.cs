@@ -123,8 +123,5 @@ namespace FSS.Omnius.Modules.Nexus.Service
         public NexusExtDBService With(ExtDBSubquery query, string alias) { db.With(sql, alias); return this; }
 
         #endregion
-
-
-
     }
 }

@@ -57,7 +57,7 @@ namespace FSS.Omnius.Nexus.Gate
             }
             catch(DirectoryServicesCOMException e)
             {
-                
+                Logger.Log.Error($"Cannot connect to LDAP: {e.Message}");
             }
         }
 
