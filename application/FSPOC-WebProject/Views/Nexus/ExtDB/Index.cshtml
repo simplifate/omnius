@@ -1,4 +1,4 @@
-@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+Ôªø@using FSS.Omnius.Modules.Entitron.Entity.Nexus
 @model System.Data.Entity.DbSet<ExtDB>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 @{
@@ -10,7 +10,7 @@
 <div id="nexusLowerPanel">
     @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
     <div id="extDbMenuArea">
-        @Ajax.RouteLink("P¯idat externÌ datab·zi", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+        @Ajax.RouteLink("P≈ôidat extern√≠ datab√°zi", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
         @Ajax.RouteLink("Test MySQL", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-play-circle" })
         @Ajax.RouteLink("Test MSSQL", "Nexus", new { @action = "TestMSSQL" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-play-circle" })
     </div>
@@ -28,7 +28,7 @@
                     <th>ID</th>
                     <th>Typ</th>
                     <th>Server</th>
-                    <th>JmÈno datab·ze</th>
+                    <th>Jm√©no datab√°ze</th>
                     <th>Akce</th>
                 </tr>
             </thead>
@@ -45,7 +45,7 @@
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = db.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = db.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = db.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete z·znam smazat?')" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = db.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete z√°znam smazat?')" })
                             </td>
                         </tr>
                     }
@@ -53,7 +53,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="5">Nem·te nakonfigurovanu û·dnou externÌ datab·zi</td>
+                        <td colspan="5">Nem√°te nakonfigurovanu ≈æ√°dnou extern√≠ datab√°zi</td>
                     </tr>
                 }
             </tbody>

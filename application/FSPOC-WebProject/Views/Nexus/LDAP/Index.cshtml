@@ -1,4 +1,4 @@
-@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+ï»¿@using FSS.Omnius.Modules.Entitron.Entity.Nexus
 @model System.Data.Entity.DbSet<Ldap>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 @{
@@ -10,8 +10,8 @@
 <div id="nexusLowerPanel">
     @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
     <div id="ldapMenuArea">
-        @Ajax.RouteLink("Pøidat LDAP server", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
-        @Ajax.RouteLink("Uživatelé", "Nexus", new { @action = "Search" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-search" })
+        @Ajax.RouteLink("PÅ™idat LDAP server", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+        @Ajax.RouteLink("UÅ¾ivatelÃ©", "Nexus", new { @action = "Search" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-search" })
         @Ajax.RouteLink("Skupiny", "Nexus", new { @action = "Groups" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-object-group" })
     </div>
     <div id="nexusLowerPanelContainer">
@@ -28,11 +28,11 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>NTLM Doména</th>
+                    <th>NTLM DomÃ©na</th>
                     <th>Server</th>
                     <th>SSL</th>
-                    <th>Výchozí</th>
-                    <th>Aktivní</th>
+                    <th>VÃ½chozÃ­</th>
+                    <th>AktivnÃ­</th>
                     <th>Akce</th>
                 </tr>
             </thead>
@@ -51,7 +51,7 @@
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = l.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = l.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete zÃ¡znam smazat?')" })
                             </td>
                         </tr>
                     }
@@ -59,7 +59,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="6">Nemáte nakonfigurovaný žádný LDAP server</td>
+                        <td colspan="6">NemÃ¡te nakonfigurovanÃ½ Å¾Ã¡dnÃ½ LDAP server</td>
                     </tr>
                 }
             </tbody>

@@ -1,4 +1,4 @@
-@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+Ôªø@using FSS.Omnius.Modules.Entitron.Entity.Nexus
 @model System.Data.Entity.DbSet<WS>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 @{
@@ -10,7 +10,7 @@
 <div id="nexusLowerPanel">
     @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
     <div id="wsMenuArea">
-        @Ajax.RouteLink("P¯idat WS", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+        @Ajax.RouteLink("P≈ôidat WS", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
         @Ajax.RouteLink("Test - SOAP", "Nexus", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-play-circle" })
         @Ajax.RouteLink("Rest - REST", "Nexus", new { @action = "TestRest" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-play-circle" })
     </div>
@@ -25,7 +25,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>N·zev</th>
+                    <th>N√°zev</th>
                     <th>Typ</th>
                     <th>Akce</th>
                 </tr>
@@ -42,7 +42,7 @@
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete z·znam smazat?')" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete z√°znam smazat?')" })
                             </td>
                         </tr>
                     }
@@ -50,7 +50,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="4">Nem·te nakonfigurov·nu û·dnou webovou sluûbu</td>
+                        <td colspan="4">Nem√°te nakonfigurov√°nu ≈æ√°dnou webovou slu≈æbu</td>
                     </tr>
                 }
             </tbody>
