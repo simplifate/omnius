@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
 @using (Ajax.BeginRouteForm("Nexus", new { @action = "Search" }, new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }))
 {
     @Html.AntiForgeryToken()

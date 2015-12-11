@@ -1,5 +1,7 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.ExtDB
-
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
 @using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
