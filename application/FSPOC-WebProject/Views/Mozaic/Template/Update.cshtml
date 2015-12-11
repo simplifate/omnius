@@ -34,6 +34,18 @@
             }
         });
     });
+    $(document).ready(function () {
+        $('#preview').click(function () {
+            document.getElementById('previewContent').setAttribute("style", "display:block");
+            var page = document.getElementById('selector').value;
+            document.getElementById('previewfield').innerHTML = page;
+        });
+
+        $('#closePreview').click(function () {
+            document.getElementById('previewContent').setAttribute("style", "display:none");
+        });
+    });
+
 </script>
 @using (Html.BeginRouteForm("Mozaic", new {@action = "Update"}, FormMethod.Post))
 {
@@ -78,7 +90,28 @@
         </div>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-sm-11">
         <button type="submit" class="btn btn-primary">Upravit šablonu</button>
+        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
     </div>
 }
+<div class="form-group col-sm-1">
+    <button id="preview" class="btn btn-default">
+        Náhled
+    </button>
+</div>
+
+<div class="bottom-panel" id="previewContent" style="display:none">
+    <div class="panelLabel">Náhled</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+
+    <div id="previewfield" class="col-sm-12" style="padding-top:20px">
+    </div>
+    <div class="col-sm-12" style="padding-top:20px">
+        <button class="btn btn-default" id="closePreview">Zavřít náhled</button>
+    </div>
+</div>
