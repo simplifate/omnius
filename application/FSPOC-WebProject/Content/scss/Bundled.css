@@ -1263,6 +1263,12 @@ body.portalModule {
       background-color: #f3a67b; }
     body.portalModule #centralAdminPanel .indicatorBar.info {
       background-color: #21a7b5; }
+    body.portalModule #centralAdminPanel #hidePortalPanelIcon {
+      position: absolute;
+      color: white;
+      top: 15px;
+      right: 37px;
+      font-size: 36px; }
     body.portalModule #centralAdminPanel #upperResponsiveArea {
       position: absolute;
       left: 70px;
@@ -1333,6 +1339,33 @@ body.portalModule {
         color: white;
         font-size: 22px;
         font-family: MyriadPro; }
+  body.portalModule #minimizedCentralAdminPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    height: 40px;
+    background-color: #3a3a3a;
+    display: none; }
+    body.portalModule #minimizedCentralAdminPanel .panelLabel {
+      position: absolute;
+      left: 52px;
+      top: 10px;
+      font-size: 18px;
+      font-family: FatTec;
+      color: white; }
+    body.portalModule #minimizedCentralAdminPanel #showPortalPanelIcon {
+      position: absolute;
+      color: white;
+      top: 0px;
+      right: 37px;
+      font-size: 36px; }
   body.portalModule #lowerPanel {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1525,16 +1558,269 @@ body.portalModule {
     margin-top: 28px;
     margin-right: 17px; } }
 
-body.watchtowerLogModule #logContainer {
+body.nexusModule #nexusUpperPanel {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
   position: absolute;
-  left: 220px;
-  top: 50px;
-  right: 100px;
-  margin-left: 40px; }
-  body.watchtowerLogModule #logContainer .watchtowerLogTable {
+  left: 225px;
+  top: 75px;
+  right: 0px;
+  height: 357px;
+  background-color: #3a3a3a; }
+  body.nexusModule #nexusUpperPanel .panelLabel {
     position: absolute;
-    width: 100%;
-    top: 150px; }
+    left: 55px;
+    top: 22px;
+    font-size: 18px;
+    font-family: FatTec;
+    color: white; }
+  body.nexusModule #nexusUpperPanel .backgroundDecoration {
+    position: absolute;
+    left: 0px;
+    top: 0px; }
+  body.nexusModule #nexusUpperPanel .decorationWatcheye {
+    position: absolute;
+    left: 19px;
+    top: 56px;
+    width: 24px;
+    height: 24px; }
+  body.nexusModule #nexusUpperPanel #nexusMenuArea {
+    position: absolute;
+    left: 80px;
+    top: 105px;
+    right: 0px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top; }
+    body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem {
+      position: relative;
+      display: inline-block;
+      width: 308px;
+      height: 147px;
+      margin-right: 17px;
+      white-space: nowrap;
+      background-color: #21a7b5;
+      color: white;
+      font-size: 38px;
+      text-align: center;
+      font-family: MyriadPro; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .fa {
+        position: absolute;
+        font-size: 90px;
+        color: black;
+        opacity: 0.1;
+        z-index: 0;
+        left: 0px;
+        right: 0px; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .fa-book {
+        font-size: 110px;
+        top: 18px; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .fa-globe {
+        font-size: 120px;
+        top: 8px; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .fa-database {
+        font-size: 100px;
+        top: 20px; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .buttonLabel {
+        position: absolute;
+        top: 40px;
+        z-index: 10;
+        text-align: center;
+        width: 100%; }
+      body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem .itemCount {
+        position: absolute;
+        right: 12px;
+        bottom: 0px;
+        font-size: 32px; }
+    body.nexusModule #nexusUpperPanel #nexusMenuArea .nexusMenuItem.highlighted {
+      background-color: #f68d4d !important; }
+  body.nexusModule #nexusUpperPanel #hideNexusPanelIcon {
+    position: absolute;
+    color: white;
+    top: 15px;
+    right: 37px;
+    font-size: 36px; }
+
+body.nexusModule #minimizedNexusUpperPanel {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  position: absolute;
+  left: 225px;
+  top: 75px;
+  right: 0px;
+  height: 40px;
+  background-color: #3a3a3a;
+  display: none; }
+  body.nexusModule #minimizedNexusUpperPanel .panelLabel {
+    position: absolute;
+    left: 52px;
+    top: 10px;
+    font-size: 18px;
+    font-family: FatTec;
+    color: white; }
+  body.nexusModule #minimizedNexusUpperPanel #showNexusPanelIcon {
+    position: absolute;
+    color: white;
+    top: 0px;
+    right: 37px;
+    font-size: 36px; }
+
+body.nexusModule #nexusLowerPanel {
+  position: absolute;
+  left: 225px;
+  top: 432px;
+  right: 0px;
+  height: auto; }
+  body.nexusModule #nexusLowerPanel #ldapMenuArea, body.nexusModule #nexusLowerPanel #wsMenuArea, body.nexusModule #nexusLowerPanel #extDbMenuArea {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 420px;
+    top: 49px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top; }
+  body.nexusModule #nexusLowerPanel .btn-nexus {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #49c3f1;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome; }
+  body.nexusModule #nexusLowerPanel .btn-nexus:hover {
+    background-color: #2ddef9; }
+  body.nexusModule #nexusLowerPanel .btn-nexus-red {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #d9534f;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome; }
+  body.nexusModule #nexusLowerPanel .btn-nexus-red:hover {
+    background-color: #f06771; }
+  body.nexusModule #nexusLowerPanel .lowerLeftDecoration {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -10; }
+  body.nexusModule #nexusLowerPanel .lowerLeftDecorationEditSymbol {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 22px;
+    top: 58px;
+    color: #F68D4D;
+    font-size: 22px; }
+  body.nexusModule #nexusLowerPanel .lowerRightDecoration {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: -10; }
+  body.nexusModule #nexusLowerPanel #nexusLowerPanelContainer {
+    position: absolute;
+    left: 70px;
+    top: 120px;
+    right: 80px; }
+  body.nexusModule #nexusLowerPanel #ldapTable thead, body.nexusModule #nexusLowerPanel #webServicesTable thead, body.nexusModule #nexusLowerPanel #extDbTable thead {
+    background-color: #457fa9;
+    color: white; }
+  body.nexusModule #nexusLowerPanel #ldapTable tbody td, body.nexusModule #nexusLowerPanel #webServicesTable tbody td, body.nexusModule #nexusLowerPanel #extDbTable tbody td {
+    vertical-align: middle; }
+  body.nexusModule #nexusLowerPanel .form-horizontal, body.nexusModule #nexusLowerPanel .details-list {
+    color: #455d73; }
+  body.nexusModule #nexusLowerPanel .details-list {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 35px;
+    width: auto; }
+    body.nexusModule #nexusLowerPanel .details-list td:first-child {
+      width: 300px; }
+    body.nexusModule #nexusLowerPanel .details-list td:nth-child(2) {
+      width: 400px; }
+  body.nexusModule #nexusLowerPanel .wsdlFileString {
+    width: 700px;
+    text-overflow: clip;
+    overflow: hidden; }
+
+body.nexusModule #ContentContainer {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+  margin-bottom: 60px; }
+  body.nexusModule #ContentContainer h4 {
+    font-family: FatTec;
+    font-size: 20px;
+    color: #457fa9;
+    margin-left: 25px; }
+  body.nexusModule #ContentContainer .nexusDetailsButtons {
+    margin-left: 35px; }
+  body.nexusModule #ContentContainer .btn-nexus, body.nexusModule #ContentContainer .btn-nexus-red {
+    padding-top: 4px;
+    margin-right: 14px;
+    height: 35px; }
+
+body.nexusModule .top-panel {
+  position: relative;
+  top: 75px;
+  margin-left: 225px;
+  background: #3a3a3a;
+  overflow: hidden; }
+
+body.nexusModule .top-panel-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.5em 52px; }
+
+body.nexusModule .bottom-panel {
+  margin-left: 225px;
+  padding: 0px 52px;
+  position: relative;
+  top: 75px; }
+
+body.nexusModule .tabs {
+  position: relative;
+  z-index: 2;
+  padding: 25px 55px; }
+
+body.nexusModule .top-panel table th, body.nexusModule .top-panel table td {
+  color: #fff;
+  vertical-align: middle !important; }
+
+body.nexusModule td.table-row-action {
+  white-space: nowrap; }
+
+body.nexusModule .btn.fa:before {
+  margin-right: 10px; }
+
+body.nexusModule .btn.fa.ico-only:before {
+  margin-right: 0px; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;

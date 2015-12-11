@@ -1,5 +1,7 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.Ldap
-
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
 
 @using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post))
 { 
@@ -85,7 +87,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @type = "hidden" } })
-                <input type="submit" value="Uložit" class="btn btn-primary" />
+                <input type="submit" value="Uložit" class="btn btn-nexus" />
             </div>
         </div>
     </div>

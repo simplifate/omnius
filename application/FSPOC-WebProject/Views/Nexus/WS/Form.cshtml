@@ -1,5 +1,7 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
-
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
 @using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -71,7 +73,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Uložit" class="btn btn-primary" />
+                <input type="submit" value="Uložit" class="btn btn-nexus" />
             </div>
         </div>
 </div>

@@ -1,32 +1,49 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
-
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
 <div>
     <h4>Detial webové služby</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>@Html.DisplayNameFor(model => model.Type)</dt>
-        <dd>@Html.DisplayFor(model => model.Type)</dd>
-        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
-        <dd>@Html.DisplayFor(model => model.Name)</dd>
+    <table class="details-list table table-striped">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Type)</td>
+            <td>@Html.DisplayFor(model => model.Type)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+        </tr>
         @if (Model.Type == FSS.Omnius.Modules.Entitron.Entity.Nexus.WSType.SOAP)
         {
-            <dt>@Html.DisplayNameFor(model => model.WSDL_Url)</dt>
-            <dd>@Html.DisplayFor(model => model.WSDL_Url)</dd>
-            <dt>@Html.DisplayNameFor(model => model.WSDL_File)</dt>
-            <dd>@Html.DisplayFor(model => model.WSDL_File)</dd>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.WSDL_Url)</td>
+                <td>@Html.DisplayFor(model => model.WSDL_Url)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.WSDL_File)</td>
+                <td>
+                    <div class="wsdlFileString">@Html.DisplayFor(model => model.WSDL_File)</div>
+                </td>
+            </tr>
         }
         else
         {
-            <dt>@Html.DisplayNameFor(model => model.REST_Base_Url)</dt>
-            <dd>@Html.DisplayFor(model => model.REST_Base_Url)</dd>
-        }        
-        <dt>@Html.DisplayNameFor(model => model.Auth_User)</dt>
-        <dd>@Html.DisplayFor(model => model.Auth_User)</dd>
-        <dt>@Html.DisplayNameFor(model => model.Auth_Password)</dt>
-        <dd>@(Model.Auth_Password != null ? "********" : "")</dd>
-    </dl>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.REST_Base_Url)</td>
+                <td>@Html.DisplayFor(model => model.REST_Base_Url)</td>
+            </tr>
+        }
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Auth_User)</td>
+            <td>@Html.DisplayFor(model => model.Auth_User)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Auth_Password)</td>
+            <td>@(Model.Auth_Password != null ? "********" : "")</td>
+        </tr>
+    </table>
 </div>
-<p>
-    @Ajax.RouteLink("Upravit", "Nexus", new {@action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
-    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-danger" })
+<p class="nexusDetailsButtons">
+    @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus" })
+    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-nexus-red" })
 </p>

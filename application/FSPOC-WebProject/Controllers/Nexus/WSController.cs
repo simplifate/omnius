@@ -20,6 +20,9 @@ namespace FSPOC_WebProject.Controllers.Nexus
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
+            ViewData["LdapServersCount"] = e.Ldaps.Count();
+            ViewData["WebServicesCount"] = e.WSs.Count();
+            ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
             return View(e.WSs);
         }
 

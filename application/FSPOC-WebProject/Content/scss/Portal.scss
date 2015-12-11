@@ -81,6 +81,13 @@ body.portalModule {
         .indicatorBar.info {
             background-color: #21a7b5;
         }
+        #hidePortalPanelIcon {
+            position: absolute;
+            color: white;
+            top: 15px;
+            right: 37px;
+            font-size: 36px;
+        }
         #upperResponsiveArea {
             position: absolute;
             left: 70px;
@@ -168,6 +175,31 @@ body.portalModule {
                 font-size: 22px;
                 font-family: MyriadPro;
             }
+        }
+    }
+    #minimizedCentralAdminPanel {
+        @include no-select();
+        position: absolute;
+        left: 225px;
+        top: 75px;
+        right: 0px;
+        height: 40px;
+        background-color: #3a3a3a;
+        display: none;
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 10px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: white;
+        }
+        #showPortalPanelIcon {
+            position: absolute;
+            color: white;
+            top: 0px;
+            right: 37px;
+            font-size: 36px;
         }
     }
     #lowerPanel {

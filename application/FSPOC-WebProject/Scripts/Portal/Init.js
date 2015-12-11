@@ -63,4 +63,14 @@ $(function () {
     $("#notificationArea .indicatorBar").on("click", function () {
         $(this).remove();
     });
+    $("#hidePortalPanelIcon").on("click", function () {
+        $("#centralAdminPanel").hide();
+        $("#minimizedCentralAdminPanel").show();
+        $("#lowerPanel").css("top", 115);
+    });
+    $("#showPortalPanelIcon").on("click", function () {
+        $("#minimizedCentralAdminPanel").hide();
+        $("#centralAdminPanel").show();
+        $("#lowerPanel").css("top", 432);
+    });
 });
