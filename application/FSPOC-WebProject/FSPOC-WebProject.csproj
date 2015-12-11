@@ -218,6 +218,7 @@
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
+    <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -1010,6 +1011,10 @@
     <Content Include="Views\Nexus\ExtDB\Test.cshtml" />
     <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
     <Content Include="Views\Nexus\Nexus\Header.cshtml" />
+    <Content Include="Views\Persona\Rights\ActionIndex.cshtml">
+      <BrowseToURL>~/Rights/ActionIndex</BrowseToURL>
+    </Content>
+    <Content Include="Views\Persona\Rights\AppIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

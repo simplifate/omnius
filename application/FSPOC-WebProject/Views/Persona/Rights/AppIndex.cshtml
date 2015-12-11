@@ -1,0 +1,109 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@model System.Data.Entity.DbSet<AppRight>
+@{
+    Page.Title = "Omnius Persona";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "personaModule";
+}
+
+<style type="text/css">
+    .top-panel {
+        position: relative;
+        top: 75px;
+        margin-left: 225px;
+        background: #3a3a3a;
+        overflow: hidden;
+    }
+
+    .top-panel-content {
+        position: relative;
+        z-index: 2;
+        padding: 1.5em 52px;
+    }
+
+    .bottom-panel {
+        margin-left: 225px;
+        padding: 0px 52px;
+        position: relative;
+        top: 75px;
+    }
+
+    .panelLabel {
+        padding: 25px 52px;
+        font-size: 18px;
+        font-family: FatTec;
+        float: left;
+        width: 420px;
+    }
+
+    .backgroundDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 0;
+    }
+
+    .decorationWatcheye {
+        position: absolute;
+        left: 19px;
+        top: 56px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .tabs {
+        position: relative;
+        z-index: 2;
+        padding: 25px 55px;
+    }
+
+    .top-panel table th, .top-panel table td {
+        color: #fff;
+        vertical-align: middle !important;
+    }
+
+    td.table-row-action {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="top-panel">
+    <div class="panelLabel" style="color: #fff">Oprávnění aplikací</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="/Content/images/watcheye_small.png">
+    <div class="tabs">
+        <a href="/Persona/Rights/ActionIndex" class="btn btn-default">
+            <span class="fa fa-book"></span>&nbsp;&nbsp;
+            Aplikace
+        </a>
+    </div>
+    <div class="top-panel-content">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Skupina</th>
+                    <th>Aplikace</th>
+                    <th>Číst</th>
+                    <th>Spustit</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (AppRight app in Model)
+            {
+                    <tr>
+                        <td>@app.Application.Name</td>
+                        <td>@app.Group.Name</td>
+                        <td><input type="checkbox" value="@app.Readable" disabled="disabled" /></td>
+                        <td><input type="checkbox" value="@app.Executable" disabled="disabled" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
