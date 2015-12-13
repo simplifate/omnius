@@ -1011,10 +1011,9 @@
     <Content Include="Views\Nexus\ExtDB\Test.cshtml" />
     <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
     <Content Include="Views\Nexus\Nexus\Header.cshtml" />
-    <Content Include="Views\Persona\Rights\ActionIndex.cshtml">
+    <Content Include="Views\Persona\Rights\Index.cshtml">
       <BrowseToURL>~/Rights/ActionIndex</BrowseToURL>
     </Content>
-    <Content Include="Views\Persona\Rights\AppIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

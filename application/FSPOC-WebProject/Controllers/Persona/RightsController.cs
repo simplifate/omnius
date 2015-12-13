@@ -10,17 +10,11 @@ namespace FSPOC_WebProject.Controllers.Persona
     public class RightsController : Controller
     {
         // GET: Rights
-        public ActionResult ActionIndex()
+        public ActionResult Index()
         {
             DBEntities e = new DBEntities();
+            ViewBag.Applications = e.ApplicationRights;
             return View(e.ActionRights);
-        }
-
-        public ActionResult AppIndex()
-        {
-            DBEntities e = new DBEntities();
-
-            return View(e.ApplicationRights);
         }
     }
 }

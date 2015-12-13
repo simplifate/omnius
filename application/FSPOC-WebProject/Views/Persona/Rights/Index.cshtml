@@ -30,19 +30,29 @@
 
     .panelLabel {
         padding: 25px 52px;
+        color: #fff;
         font-size: 18px;
         font-family: FatTec;
         float: left;
         width: 420px;
     }
-
+    .panelLabelSecond{
+        padding: 25px 52px;
+        color: #fff;
+        font-size: 18px;
+        font-family: FatTec;
+        float: right;
+    }
     .backgroundDecoration {
         position: absolute;
         left: 0px;
         top: 0px;
         z-index: 0;
     }
-
+    .lowerRightDecoration{
+        position:absolute;
+        right:0px;
+    }
     .decorationWatcheye {
         position: absolute;
         left: 19px;
@@ -68,20 +78,14 @@
 </style>
 
 <div class="top-panel">
-    <div class="panelLabel" style="color: #fff">Oprávnění akcí</div>
+    <div class="panelLabel">Oprávnění akcí</div>
     <svg class="backgroundDecoration" width="540px" height="565px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
     </svg>
     <img class="decorationWatcheye" src="/Content/images/watcheye_small.png">
-    <div class="tabs">
-        <a href="/Persona/Rights/AppIndex" class="btn btn-default">
-            <span class="fa fa-book"></span>&nbsp;&nbsp;
-            Aplikace
-        </a>
-    </div>
-    <div class="top-panel-content">
+    <div class="top-panel-content" style="padding-top:100px">
         <table class="table table-bordered table-responsive">
             <thead>
                 <tr>
@@ -104,6 +108,36 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="panelLabelSecond">Oprávnění aplikací</div>
+    <svg class="lowerRightDecoration" width="540px" height="565px">
+        <path d="M507 0 L507 27 L473 62 L45 62" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M507 357 L507 108 L472 74 L45 74 L9" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M507 47 L528 68 L507 89 L486 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+        <div class="top-panel-content" style="padding-top:100px">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>Skupina</th>
+                        <th>Aplikace</th>
+                        <th>Číst</th>
+                        <th>Spustit</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (AppRight app in ViewBag.Applications)
+            {
+                        <tr>
+                            <td>@app.Application.Name</td>
+                            <td>@app.Group.Name</td>
+                            <td><input type="checkbox" value="@app.Readable" disabled="disabled" /></td>
+                            <td><input type="checkbox" value="@app.Executable" disabled="disabled" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
     </div>
 </div>
 
