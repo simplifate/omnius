@@ -1,5 +1,4 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
-@model System.Data.Entity.DbSet<ActionRight>
 @{
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
@@ -78,7 +77,7 @@
 </style>
 
 <div class="top-panel">
-    <div class="panelLabel">Oprávnění akcí</div>
+    <div class="panelLabelSecond">Práva k aplikacím</div>
     <svg class="backgroundDecoration" width="540px" height="565px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -89,55 +88,58 @@
         <table class="table table-bordered table-responsive">
             <thead>
                 <tr>
-                    <th>Skupina</th>
-                    <th>Akce</th>
-                    <th>Číst</th>
-                    <th>Spustit</th>
+                    <th>Skupina\Aplikace</th>
+                    @foreach (string app in ViewBag.AppNames)
+                    {
+                        <td>@app</td>
+                    }
                 </tr>
             </thead>
             <tbody>
+                @foreach (string group in ViewBag.Groups)
+                {
+                    foreach (string app in ViewBag.AppNames)
+                    {
+                        <tr>
+                            <td>@group</td>
+                            <td>@AppRight.GetSpecificRights(group,app).ToString()</td>
+                        </tr>
+                    }
 
-                @foreach (ActionRight a in Model)
-            {
-                    <tr>
-                        <td>@a.ActionId</td>
-                        <td>@a.Group.Name</td>
-                        <td><input type="checkbox" value="@a.Readable" disabled="disabled" /></td>
-                        <td><input type="checkbox" value="@a.Executable" disabled="disabled" /></td>
-                    </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div class="panelLabelSecond">Oprávnění aplikací</div>
+    <div class="panelLabel">Práva k akcím</div>
     <svg class="lowerRightDecoration" width="540px" height="565px">
         <path d="M507 0 L507 27 L473 62 L45 62" stroke="#457fa9" stroke-width="1" fill="none" />
         <path d="M507 357 L507 108 L472 74 L45 74 L9" stroke="#457fa9" stroke-width="1" fill="none" />
         <path d="M507 47 L528 68 L507 89 L486 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
     </svg>
-        <div class="top-panel-content" style="padding-top:100px">
-            <table class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th>Skupina</th>
-                        <th>Aplikace</th>
-                        <th>Číst</th>
-                        <th>Spustit</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (AppRight app in ViewBag.Applications)
-            {
+    <div class="top-panel-content" style="padding-top:100px">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Skupina\Akce</th>
+                    @foreach (string act in ViewBag.Actions)
+                    {
+                        <td>@act</td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (string group in ViewBag.Groups)
+                {
+                    foreach (string act in ViewBag.Actions)
+                    {
                         <tr>
-                            <td>@app.Application.Name</td>
-                            <td>@app.Group.Name</td>
-                            <td><input type="checkbox" value="@app.Readable" disabled="disabled" /></td>
-                            <td><input type="checkbox" value="@app.Executable" disabled="disabled" /></td>
+                            <td>@group</td>
+                            <td>@ActionRight.GetSpecificRights(group,act).ToString()</td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
