@@ -80,6 +80,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
@@ -217,6 +218,10 @@
     <Compile Include="Migrations\201512081321277_App properties 2.Designer.cs">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512141524186_hermes-smtp.cs" />
+    <Compile Include="Migrations\201512141524186_hermes-smtp.Designer.cs">
+      <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -292,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512081321277_App properties 2.resx">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141524186_hermes-smtp.resx">
+      <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
