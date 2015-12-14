@@ -73,19 +73,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         {
             string parAppName = safeAddParam("AppName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
-            string parColumnDef = safeAddParam("columnDefinition", string.Join(",", _columns.Select(c => c.getSqlDefinition())));
 
-            sqlString = string.Format(
-                "DECLARE @_sql NVARCHAR(MAX),@_realTableName NVARCHAR(50);" +
-                "SET @_realTableName=CONCAT('Entitron_',@{2},'_',(checksum(RAND())%500000)+500000);" +
-                "WHILE (SELECT COUNT(*) FROM sys.tables WHERE name=@_realTableName)>0 BEGIN SET @_realTableName=CONCAT('Entitron_',@appName,'_',(checksum(RAND())%500000)+500000);END;" +
-                "SET @_sql=CONCAT('CREATE TABLE [',@_realTableName,'](',@{4},');');exec(@_sql);" +
-                "INSERT INTO {1}(Name,ApplicationId,tableId)VALUES(@{3},(SELECT Id FROM {0} WHERE Name=@{2}),(SELECT object_id FROM sys.tables WHERE name=@_realTableName));",
-                DB_MasterApplication,
-                DB_EntitronMeta,
-                parAppName,
-                parTableName,
-                parColumnDef);
+            string columnDefinition = string.Join(",", _columns.Select(c => c.getSqlDefinition()));
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
+
+            sqlString =
+                $"CREATE TABLE [{realTableName}]({columnDefinition});" +
+                $"INSERT INTO {DB_EntitronMeta}(Name,ApplicationId,tableId)VALUES(@{parTableName},(SELECT Id FROM {DB_MasterApplication} WHERE Name=@{parAppName}),(SELECT object_id FROM sys.tables WHERE name='{realTableName}'));";
             
             base.BaseExecution(transaction);
         }
