@@ -1,0 +1,64 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Hermes
+@model System.Data.Entity.DbSet<Smtp>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+@{
+    Page.Title = "Omnius Hermes";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "nexusModule";
+}
+@Html.Partial("~/Views/Hermes/Hermes/Header.cshtml")
+<div id="nexusLowerPanel">
+    @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
+    <div id="ldapMenuArea">
+        @Ajax.RouteLink("Přidat SMTP server", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+    </div>
+    <div id="nexusLowerPanelContainer">
+        <table id="ldapTable" class="table table-bordered table-striped table-responsive">
+            <colgroup>
+                <col width="50">
+                <col>
+                <col>
+                <col width="80">
+                <col width="80">
+                <col width="60">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Název</th>
+                    <th>Server</th>
+                    <th>SSL</th>
+                    <th>Výchozí</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (Smtp s in Model)
+                    {
+                        <tr>
+                            <td>@s.Id</td>
+                            <td>@s.Name</td>
+                            <td>@s.Server</td>
+                            <td class="text-center">@(s.Use_SSL == true ? "ano" : "ne")</td>
+                            <td class="text-center">@(s.Is_Default == true ? "ano" : "ne")</td>
+                            <td class="table-row-action">
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">Nemáte nakonfigurovaný žádný SMTP server</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

@@ -222,6 +222,10 @@
     <Compile Include="Migrations\201512141524186_hermes-smtp.Designer.cs">
       <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512141602551_hermes-smtp-2.cs" />
+    <Compile Include="Migrations\201512141602551_hermes-smtp-2.Designer.cs">
+      <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -300,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512141524186_hermes-smtp.resx">
       <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141602551_hermes-smtp-2.resx">
+      <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

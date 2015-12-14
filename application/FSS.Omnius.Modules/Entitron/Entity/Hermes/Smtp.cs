@@ -19,12 +19,10 @@
         [Display(Name = "Server")]
         public string Server { get; set; }
 
-        [Required]
         [StringLength(255)]
         [Display(Name = "Uživatelské jméno")]
         public string Auth_User { get; set; }
 
-        [Required]
         [StringLength(255)]
         [Display(Name = "Heslo")]
         public string Auth_Password { get; set; }

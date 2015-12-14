@@ -211,6 +211,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
+    <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
@@ -1009,11 +1010,14 @@
     <Content Include="Views\Nexus\ExtDB\Detail.cshtml" />
     <Content Include="Views\Nexus\ExtDB\Form.cshtml" />
     <Content Include="Views\Nexus\ExtDB\Test.cshtml" />
-    <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
-    <Content Include="Views\Nexus\Nexus\Header.cshtml" />
+    <Content Include="Views\Hermes\Hermes\Decoration.cshtml" />
+    <Content Include="Views\Hermes\Hermes\Header.cshtml" />
     <Content Include="Views\Persona\Rights\Index.cshtml">
       <BrowseToURL>~/Rights/ActionIndex</BrowseToURL>
     </Content>
+    <Content Include="Views\Hermes\SMTP\Index.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Form.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
