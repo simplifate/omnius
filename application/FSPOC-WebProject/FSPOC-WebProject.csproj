@@ -875,6 +875,7 @@
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
+    <Content Include="Scripts\Hermes\Init.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
     <Content Include="Scripts\DatabaseDesigner\DbDialogs.js" />
@@ -1018,6 +1019,8 @@
     <Content Include="Views\Hermes\SMTP\Index.cshtml" />
     <Content Include="Views\Hermes\SMTP\Form.cshtml" />
     <Content Include="Views\Hermes\SMTP\Detail.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Header.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

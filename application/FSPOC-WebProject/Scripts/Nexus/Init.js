@@ -21,18 +21,5 @@
             if (!$("#nexusMenuExtDB").hasClass("highlighted"))
                 window.location.href = "/Nexus/ExtDB";
         });
-        $("#nexusMenuExtDB").on("click", function () {
-            //window.location.href = "/Nexus/LDAP";
-        });
-        $("#hideNexusPanelIcon").on("click", function () {
-            $("#nexusUpperPanel").hide();
-            $("#minimizedNexusUpperPanel").show();
-            $("#nexusLowerPanel").css("top", 115);
-        });
-        $("#showNexusPanelIcon").on("click", function () {
-            $("#minimizedNexusUpperPanel").hide();
-            $("#nexusUpperPanel").show();
-            $("#nexusLowerPanel").css("top", 432);
-        });
     }
 });
