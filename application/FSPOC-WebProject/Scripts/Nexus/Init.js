@@ -23,3 +23,8 @@
         });
     }
 });
+function ShowWsdlButtonClick(button) {
+    encodedString = $(button).parents("td").find(".wsdlFileString").text();
+    CurrentWsdlFile = $("<div/>").html(encodedString).text();
+    showWsdlDialog.dialog("open");
+};

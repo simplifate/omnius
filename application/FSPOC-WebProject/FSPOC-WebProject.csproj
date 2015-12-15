@@ -902,6 +902,7 @@
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Nexus\Dialogs.js" />
     <Content Include="Scripts\Nexus\Init.js" />
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />

@@ -1547,36 +1547,12 @@ body.portalModule {
     margin-right: 17px; } }
 
 body.nexusModule #lowerPanel .wsdlFileString {
-  width: 700px;
-  text-overflow: clip;
-  overflow: hidden; }
+  display: none; }
 
-body.nexusModule .top-panel {
-  position: relative;
-  top: 75px;
-  margin-left: 225px;
-  background: #3a3a3a;
-  overflow: hidden; }
-
-body.nexusModule .top-panel-content {
-  position: relative;
-  z-index: 2;
-  padding: 1.5em 52px; }
-
-body.nexusModule .bottom-panel {
-  margin-left: 225px;
-  padding: 0px 52px;
-  position: relative;
-  top: 75px; }
-
-body.nexusModule .tabs {
-  position: relative;
-  z-index: 2;
-  padding: 25px 55px; }
-
-body.nexusModule .top-panel table th, body.nexusModule .top-panel table td {
-  color: #fff;
-  vertical-align: middle !important; }
+body.nexusModule #show-wsdl-dialog {
+  padding: 7px 4px; }
+  body.nexusModule #show-wsdl-dialog textarea {
+    width: 100%; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
