@@ -45,6 +45,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<Smtp> SMTPs { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -215,6 +217,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Hermes
             modelBuilder.Entity<Smtp>();
+
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.PlaceholderList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
         }
     }
 }
