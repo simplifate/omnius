@@ -58,7 +58,7 @@ namespace FSS.Omnius.Controllers.Hermes
                         model.Num_Order = 1;
                     }
                     else {
-                        model.Num_Order = e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).OrderBy(p => p.Num_Order).Last().Num_Order + 1;
+                        model.Num_Order = e.EmailPlaceholders.Where(p => p.Hermes_Email_Template_Id == emailId).OrderByDescending(p => p.Num_Order).First().Num_Order + 1;
                     }
 
                     e.EmailPlaceholders.Add(model);

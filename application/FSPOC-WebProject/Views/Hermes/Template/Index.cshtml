@@ -8,12 +8,12 @@
     Page.ModuleClass = "hermesModule";
 }
 @Html.Partial("~/Views/Hermes/Hermes/Header.cshtml")
-<div id="nexusLowerPanel">
+<div id="lowerPanel">
     @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
-    <div id="ldapMenuArea">
-        @Ajax.RouteLink("Přidat šablonu e-mailu", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+    <div id="hermesMenuArea" class="moduleSubMenuArea">
+        @Ajax.RouteLink("Přidat šablonu e-mailu", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
-    <div id="nexusLowerPanelContainer">
+    <div id="lowerPanelContainer">
         <table id="ldapTable" class="table table-bordered table-striped table-responsive">
             <colgroup>
                 <col width="50">
@@ -48,7 +48,7 @@
                                      new { @title = "Spravovat proměnné" }
                                  )
                             </td>
-                            <td class="table-row-action">
+                            <td class="table-row-action" nowrap>
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "EditContent", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-file-text-o ico-only btn btn-default", @title = "Upravit obsah" })
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
