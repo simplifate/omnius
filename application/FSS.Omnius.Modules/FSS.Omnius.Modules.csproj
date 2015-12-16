@@ -120,6 +120,7 @@
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
     <Compile Include="Entitron\Entity\Persona\User.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
+    <Compile Include="Entitron\Entity\Watchtower\LogModels.cs" />
     <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
