@@ -24,6 +24,12 @@ namespace FSS.Omnius.Modules.Migrations
                 new Entitron.Entity.CORE.Module { Name = "Persona", Description = "Manage Rights, Users, Group", IsEnabled = true }
             );
 
+            context.WorkFlowTypes.AddOrUpdate(
+                new Entitron.Entity.Tapestry.WorkFlowType { Name = "Init" },
+                new Entitron.Entity.Tapestry.WorkFlowType { Name = "Partial" },
+                new Entitron.Entity.Tapestry.WorkFlowType { Name = "Preview" }
+            );
+
             context.Actors.AddOrUpdate(
                 new Entitron.Entity.Tapestry.Actor { Name = "Manual" },
                 new Entitron.Entity.Tapestry.Actor { Name = "Time" },

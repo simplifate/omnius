@@ -269,6 +269,7 @@
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
     <Compile Include="Tapestry\Block.cs" />
     <Compile Include="Tapestry\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
