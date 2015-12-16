@@ -11,6 +11,7 @@
     @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
     <div id="ldapMenuArea">
         @Ajax.RouteLink("Přidat SMTP server", "Hermes", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-plus" })
+        @Ajax.RouteLink("Test", "Hermes", new { @action = "Test" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus fa fa-play-circle" })
     </div>
     <div id="nexusLowerPanelContainer">
         <table id="ldapTable" class="table table-bordered table-striped table-responsive">

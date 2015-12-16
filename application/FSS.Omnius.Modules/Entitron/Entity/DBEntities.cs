@@ -217,11 +217,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Hermes
             modelBuilder.Entity<Smtp>();
+            modelBuilder.Entity<EmailPlaceholder>();
 
             modelBuilder.Entity<EmailTemplate>()
                 .HasMany(s => s.PlaceholderList)
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            
         }
     }
 }

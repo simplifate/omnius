@@ -211,6 +211,9 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
+    <Compile Include="Controllers\CORE\Utilities.cs" />
+    <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
+    <Compile Include="Controllers\Hermes\TemplateController.cs" />
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
@@ -1018,6 +1021,14 @@
     <Content Include="Views\Hermes\SMTP\Index.cshtml" />
     <Content Include="Views\Hermes\SMTP\Form.cshtml" />
     <Content Include="Views\Hermes\SMTP\Detail.cshtml" />
+    <Content Include="Views\Hermes\Template\Index.cshtml" />
+    <Content Include="Views\Hermes\Template\Form.cshtml" />
+    <Content Include="Views\Hermes\Template\Detail.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\Index.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\Form.cshtml" />
+    <Content Include="Views\Hermes\Placeholder\NumOrder.cshtml" />
+    <Content Include="Views\Hermes\Template\Content.cshtml" />
+    <Content Include="Views\Hermes\SMTP\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -41,5 +41,5 @@
 </div>
 <p class="nexusDetailsButtons">
     @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus" })
-    @Ajax.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new AjaxOptions() { Confirm = "Opravdu chcete záznam smazat?" }, new { @class = "btn btn-nexus-red" })
+    @Html.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-nexus-red" })
 </p>

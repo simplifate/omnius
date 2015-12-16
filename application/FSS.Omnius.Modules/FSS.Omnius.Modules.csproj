@@ -180,6 +180,7 @@
     <Compile Include="Entitron\Table\DBIndices.cs" />
     <Compile Include="Entitron\Table\DBItem.cs" />
     <Compile Include="Entitron\Table\DBTable.cs" />
+    <Compile Include="Hermes\Mailer.cs" />
     <Compile Include="Migrations\201511301834451_init.cs" />
     <Compile Include="Migrations\201511301834451_init.Designer.cs">
       <DependentUpon>201511301834451_init.cs</DependentUpon>

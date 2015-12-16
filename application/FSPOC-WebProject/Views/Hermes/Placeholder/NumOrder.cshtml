@@ -1,0 +1,40 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Hermes
+@model List<EmailPlaceholder>
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@using (Html.BeginRouteForm("HermesPlaceholders", new { @action = "SaveNumOrder", @emailId = ViewData["emailId"] }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Úprava pořadí proměnných</h4>
+        <hr />
+        
+        <div class="form-group">
+            <ul id="NumOrderList">
+                @foreach(EmailPlaceholder p in Model)
+                {
+                    <li>
+                        <input type="hidden" name="ids" value="@p.Id" />
+                        @p.Prop_Name
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Uložit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    /* <![CDATA[ */
+    $('#NumOrderList').sortable();
+    /* ]]> */
+</script>
+

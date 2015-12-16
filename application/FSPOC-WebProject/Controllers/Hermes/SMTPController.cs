@@ -2,12 +2,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
-using System;
-using System.Text;
-using System.Collections;
-using System.Reflection;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Hermes;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -18,6 +13,7 @@ namespace FSS.Omnius.Controllers.Hermes
         {
             DBEntities e = new DBEntities();
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
+            ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             return View(e.SMTPs);
         }
 
@@ -87,6 +83,16 @@ namespace FSS.Omnius.Controllers.Hermes
 
         #region tools
 
+        public ActionResult Test()
+        {
+            DBEntities e = new DBEntities();
+            Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+
+            Mailer mail = new Mailer();
+            ViewData["result"] = mail.SendMail("Test", m);
+
+            return View("~/Views/Hermes/SMTP/Test.cshtml");
+        }
        
         #endregion
     }
