@@ -30,6 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         [Required]
         [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
         public string Icon { get; set; }
         public int TitleFontSize { get; set; }
