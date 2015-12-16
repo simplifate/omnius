@@ -234,6 +234,14 @@
     <Compile Include="Migrations\201512141700362_hermes-email-templates.Designer.cs">
       <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512161325143_Watchtower_log.cs" />
+    <Compile Include="Migrations\201512161325143_Watchtower_log.Designer.cs">
+      <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512161418357_repair.cs" />
+    <Compile Include="Migrations\201512161418357_repair.Designer.cs">
+      <DependentUpon>201512161418357_repair.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -318,6 +326,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512141700362_hermes-email-templates.resx">
       <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161325143_Watchtower_log.resx">
+      <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161418357_repair.resx">
+      <DependentUpon>201512161418357_repair.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
