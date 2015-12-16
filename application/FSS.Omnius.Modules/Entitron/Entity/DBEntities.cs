@@ -9,6 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Mozaic;
     using Persona;
     using Hermes;
+    using Watchtower;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
@@ -47,6 +48,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Smtp> SMTPs { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
         public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
+        public virtual DbSet<LogItem> LogItems { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
