@@ -1,4 +1,5 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
+@using System.Text;
 @{
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
 }
@@ -22,7 +23,8 @@
             <tr>
                 <td>@Html.DisplayNameFor(model => model.WSDL_File)</td>
                 <td>
-                    <div class="wsdlFileString">@Html.DisplayFor(model => model.WSDL_File)</div>
+                    <button id="btnShowWsdlFile" onclick="ShowWsdlButtonClick(this)">Náhled</button>
+                    <div class="wsdlFileString">@(HttpUtility.HtmlEncode(UTF8Encoding.UTF8.GetString(Model.WSDL_File)))</div>
                 </td>
             </tr>
         }

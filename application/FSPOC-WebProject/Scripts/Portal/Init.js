@@ -35,6 +35,9 @@ $(function () {
     else if (CurrentModuleIs("watchtowerModule")) {
         $("#adminMenuWatchtower").addClass("active");
     }
+    else if (CurrentModuleIs("hermesModule")) {
+        $("#adminMenuHermes").addClass("active");
+    }
 
     $("#usersOnlineIndicator").on("click", function () {
         $(".clickableIndicatorRectangle").removeClass("highlighted");
@@ -73,14 +76,14 @@ $(function () {
     $("#notificationArea .indicatorBar").on("click", function () {
         $(this).remove();
     });
-    $("#hidePortalPanelIcon").on("click", function () {
-        $("#centralAdminPanel").hide();
-        $("#minimizedCentralAdminPanel").show();
+    $("#hideUpperPanelIcon").on("click", function () {
+        $("#upperPanel").hide();
+        $("#minimizedUpperPanel").show();
         $("#lowerPanel").css("top", 115);
     });
-    $("#showPortalPanelIcon").on("click", function () {
-        $("#minimizedCentralAdminPanel").hide();
-        $("#centralAdminPanel").show();
+    $("#showUpperPanelIcon").on("click", function () {
+        $("#minimizedUpperPanel").hide();
+        $("#upperPanel").show();
         $("#lowerPanel").css("top", 432);
     });
 });

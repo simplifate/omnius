@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -878,6 +878,7 @@
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
+    <Content Include="Scripts\Hermes\Init.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
     <Content Include="Scripts\DatabaseDesigner\DbDialogs.js" />
@@ -904,6 +905,7 @@
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Nexus\Dialogs.js" />
     <Content Include="Scripts\Nexus\Init.js" />
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
@@ -1029,6 +1031,8 @@
     <Content Include="Views\Hermes\Placeholder\NumOrder.cshtml" />
     <Content Include="Views\Hermes\Template\Content.cshtml" />
     <Content Include="Views\Hermes\SMTP\Test.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Header.cshtml" />
+    <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
