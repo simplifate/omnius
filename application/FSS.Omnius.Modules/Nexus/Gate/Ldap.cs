@@ -5,6 +5,34 @@ namespace FSS.Omnius.Nexus.Gate
 {
     using System.Data.Entity;
     using Modules.Entitron.Entity;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+
+    public enum LdapUACFlags
+    {
+        password_expired                = 8388608,
+        dont_req_preauth                = 4194304,
+        use_des_key_only                = 2097152,
+        not_delegated                   = 1048576,
+        trusted_for_delegation          = 524288,
+        smartcard_required              = 262144,
+        mns_logon_account               = 131072,
+        dont_expire_password            = 65536,
+        server_trust_account            = 8192,
+        workstation_trust_account       = 4096,
+        interdomain_trust_account       = 2048,
+        normal_account                  = 512,
+        temp_duplicate_account          = 256,
+        encrypted_text_pwd_allowed      = 128,
+        passwd_cant_change              = 64,
+        passwd_notreqd                  = 32,
+        lockout                         = 16,
+        homedir_required                = 8,
+        account_disabled                = 2,
+        script                          = 1,
+        trusted_to_auth_for_delegation = 16777216
+    }
 
     public class Ldap
     {
@@ -29,7 +57,7 @@ namespace FSS.Omnius.Nexus.Gate
             }
             catch(DirectoryServicesCOMException e)
             {
-                
+                Logger.Log.Error($"Cannot connect to LDAP: {e.Message}");
             }
         }
 
@@ -66,17 +94,17 @@ namespace FSS.Omnius.Nexus.Gate
 
         #region Users
 
-        public SearchResult SearchByAdLogin(string adLogin, string baseDN = null, string[] properties = null)
+        public JToken SearchByAdLogin(string adLogin, string baseDN = null, string[] properties = null)
         {
             return FindOne("(SAMAccountname=" + adLogin + ")", baseDN, properties);
         }
 
-        public SearchResult SearchByEmail(string email, string baseDN = null, string[] properties = null)
+        public JToken SearchByEmail(string email, string baseDN = null, string[] properties = null)
         {
             return FindOne("(Mail=" + email + ")", baseDN, properties);
         }
 
-        public SearchResultCollection GetUsers(string baseDN = "", string[] properties = null)
+        public JArray GetUsers(string baseDN = "", string[] properties = null)
         {
             return Search("(objectCategory=User)", baseDN, properties);
         }
@@ -85,7 +113,7 @@ namespace FSS.Omnius.Nexus.Gate
 
         #region Group
 
-        public SearchResultCollection GetGroups(string baseDN = "", string[] properties = null)
+        public JArray GetGroups(string baseDN = "", string[] properties = null)
         {
             return Search("(objectCategory=Group)", baseDN, properties);
         }
@@ -94,7 +122,7 @@ namespace FSS.Omnius.Nexus.Gate
 
         #region misc
            
-        public SearchResultCollection Search(string filter, string baseDN = "", string[] properties = null)
+        public JArray Search(string filter, string baseDN = "", string[] properties = null)
         {
             EnsureConnection();
             DirectoryEntry root = GetRoot(baseDN);
@@ -108,10 +136,11 @@ namespace FSS.Omnius.Nexus.Gate
             }
 
             SearchResultCollection result = search.FindAll();
-            return result;
+
+            return CollectionToJToken(result);
         }
 
-        public SearchResult FindOne(string filter, string baseDN = "", string[] properties = null)
+        public JToken FindOne(string filter, string baseDN = "", string[] properties = null)
         {
             EnsureConnection();
             DirectoryEntry root = GetRoot(baseDN);
@@ -126,7 +155,75 @@ namespace FSS.Omnius.Nexus.Gate
             }
 
             SearchResult result = search.FindOne();
-            return result;
+
+            return ResultToJToken(result);
+        }
+
+        private JArray CollectionToJToken(SearchResultCollection collection)
+        {
+            JArray json = new JArray();
+            foreach(SearchResult result in collection) {
+                json.Add(ResultToJToken(result));
+            }
+
+            return json;
+        }
+
+        private JToken ResultToJToken(SearchResult result)
+        {
+            JToken json = JToken.FromObject(new { });
+
+            foreach (string propName in result.Properties.PropertyNames)
+            {
+                ResultPropertyValueCollection valueCollection = result.Properties[propName];
+                if (valueCollection.Count == 1)
+                {
+                    json[propName] = JValue.FromObject(valueCollection[0]);
+                }
+                else if (valueCollection.Count > 1)
+                {
+                    json[propName] = new JArray();
+                    foreach (Object value in valueCollection)
+                    {
+                        ((JArray)json[propName]).Add(JValue.FromObject(value));
+                    }
+                }
+                else
+                {
+                    json[propName] = null;
+                }
+            }
+
+            ParseUAC(ref json);
+
+            return json;
+        }
+
+        private void ParseUAC(ref JToken json)
+        {
+            List<string> flags = new List<string>();
+            if(json["useraccountcontrol"] != null)
+            {
+                int temp;
+                int uac = (int)json["useraccountcontrol"];
+                while(uac > 0)
+                {
+                    Array flagList = Enum.GetValues(typeof(LdapUACFlags));
+                    Array.Reverse(flagList);
+
+                    foreach (var flag in flagList)
+                    {
+                        temp = uac - (int)flag;
+                        if(temp >= 0)
+                        {
+                            flags.Add(flag.ToString());
+                            uac = temp;
+                        }
+                    }
+                }
+
+                json["useraccountcontrol"] = JArray.FromObject(flags);
+            }
         }
 
         #endregion

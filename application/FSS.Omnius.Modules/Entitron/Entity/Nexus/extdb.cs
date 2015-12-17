@@ -5,7 +5,8 @@
 
     public enum ExtDBType
     {
-        MySQL
+        MySQL,
+        MSSQL
     }
     
     [Table("Nexus_Ext_DB")]

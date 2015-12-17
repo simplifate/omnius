@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
-            e.Application = new DBApp() { Name = "EntitronTest1", DisplayName = "EntitronTest1" };
+            e.Application = DBApp.GetOrCreate("TestApp");
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
@@ -52,6 +52,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 foreignKey.targetColumn = efRelation.TargetColumn.Name;
                 foreignKey.sourceTable.foreignKeys.AddToDB(foreignKey);
             }*/
+            
             e.Application.SaveChanges();
         }
 

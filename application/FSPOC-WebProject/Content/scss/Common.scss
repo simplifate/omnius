@@ -22,5 +22,251 @@
     .ui-dialog-titlebar-close:hover {
         background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
     }
+}
+.lowerLeftDecoration {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -10;
+}
+.lowerLeftDecorationEditSymbol {
+    @include no-select();
+    position: absolute;
+    left: 22px;
+    top: 58px;
+    color: #F68D4D;
+    font-size: 22px;
+}
+.lowerRightDecoration {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: -10;
+}
+.table-omnius {
+    thead {
+        background-color: #457fa9;
+        color: white;
+    }
+    tbody td {
+        vertical-align: middle !important;
+    }
+    td.table-row-action {
+        white-space: nowrap;
+    }
+}
+.btn-omnius-blue {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #49c3f1;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome;
+}
+.btn-omnius-blue:hover {
+    background-color: #2ddef9;
+}
+.btn-omnius-red {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #d9534f;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome;
+}
+.btn-omnius-red:hover {
+    background-color: #f06771;
+}
+.btn.fa:before {
+    margin-right: 10px;
+}
+.btn.fa.ico-only:before {
+    margin-right: 0px;
+}
+.tileMenuArea {
+    position: absolute;
+    left: 80px;
+    top: 105px;
+    right: 0px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top;
 
+    .tileMenuItem {
+        position: relative;
+        display: inline-block;
+        width: 308px;
+        height: 147px;
+        margin-right: 17px;
+        white-space: nowrap;
+        background-color: #21a7b5;
+        color: white;
+        font-size: 38px;
+        text-align: center;
+        font-family: MyriadPro;
+        .fa{
+            position: absolute;
+            font-size: 90px;
+            color: black;
+            opacity: 0.1;
+            z-index: 0;
+            left: 0px;
+            right: 0px;
+        }
+        .fa-book {
+            font-size: 110px;
+            top: 18px;
+        }
+        .fa-globe {
+            font-size: 120px;
+            top: 8px;
+        }
+        .fa-database {
+            font-size: 100px;
+            top: 20px;
+        }
+        .fa-server {
+            font-size: 110px;
+            top: 18px;
+        }
+        .buttonLabel {
+            position: absolute;
+            top: 40px;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        .itemCount {
+            position: absolute;
+            right: 12px;
+            bottom: 0px;
+            font-size: 32px;
+        }
+    }
+    .tileMenuItem.highlighted {
+        background-color: #f68d4d !important;
+    }
+}
+#upperPanel {
+    @include no-select();
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    height: 357px;
+    background-color: #3a3a3a;
+
+    .panelLabel {
+        position: absolute;
+        left: 55px;
+        top: 22px;
+        font-size: 18px;
+        font-family: FatTec;
+        color: white;
+    }
+    .backgroundDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+    .decorationWatcheye {
+        position: absolute;
+        left: 19px;
+        top: 56px;
+        width: 24px;
+        height: 24px;
+    }
+}
+#minimizedUpperPanel {
+    @include no-select();
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    height: 40px;
+    background-color: #3a3a3a;
+    display: none;
+    .panelLabel {
+        position: absolute;
+        left: 52px;
+        top: 10px;
+        font-size: 18px;
+        font-family: FatTec;
+        color: white;
+    }
+}
+#hideUpperPanelIcon, #showUpperPanelIcon {
+    position: absolute;
+    color: white;
+    top: 3px;
+    right: 37px;
+    font-size: 36px;
+}
+#lowerPanel {
+    position: absolute;
+    left: 225px;
+    top: 432px;
+    right: 0px;
+    height: auto;
+}
+#lowerPanelContainer {
+    position: absolute;
+    left: 70px;
+    top: 120px;
+    right: 80px;
+}
+#ContentContainer {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    h4 {
+        font-family: FatTec;
+        font-size: 20px;
+        color: #457fa9;
+        margin-left: 25px;
+    }
+    .form-horizontal, .details-list {
+        color: #455d73;
+    }
+    .details-list {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        margin-left: 35px;
+        width: auto;
+        td:first-child {
+            width: 300px;
+        }
+        td:nth-child(2) {
+            width: 400px;
+        }
+    }
+    .nexusDetailsButtons {
+        margin-left: 35px;
+    }
+    .btn-omnius-blue, .btn-omnius-red {
+        padding-top: 4px;
+        margin-right: 14px;
+        height: 35px;
+    }
+}
+.moduleSubMenuArea {
+    @include no-select();
+    position: absolute;
+    left: 420px;
+    top: 49px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top;
 }

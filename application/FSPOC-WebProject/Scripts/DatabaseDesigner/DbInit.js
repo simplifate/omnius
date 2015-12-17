@@ -1,6 +1,6 @@
 ﻿var ZoomFactor = 1.0;
 $(function () {
-    if ($("body.dbDesignerModule").length) {
+    if (CurrentModuleIs("dbDesignerModule")) {
         $("#btnAddTable").on("click", function () {
             addTableDialog.dialog("open");
         });

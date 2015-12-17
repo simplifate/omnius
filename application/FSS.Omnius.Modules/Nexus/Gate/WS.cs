@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
     public class WS
     {
         [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
-        public JObject CallWebService(string serviceName, string methodName, object[] args)
+        public JToken CallWebService(string serviceName, string methodName, object[] args)
         {
             Entitron.Entity.Nexus.WS row = GetModel(serviceName);
 
@@ -47,12 +47,12 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             xml.LoadXml(response as string);
 
             string jsonText = JsonConvert.SerializeXmlNode(xml);
-            JObject json = JObject.Parse(jsonText);
+            JToken json = JToken.Parse(jsonText);
 
             return json;
         }
 
-        public JObject CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
+        public JToken CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
         {
             Entitron.Entity.Nexus.WS row = GetModel(serviceName);
 
@@ -74,7 +74,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             }
 
             string jsonText = client.DownloadString(url);
-            JObject json = JObject.Parse(jsonText);
+            JToken json = JToken.Parse(jsonText);
 
             return json;
         }

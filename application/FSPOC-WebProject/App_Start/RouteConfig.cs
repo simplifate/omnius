@@ -65,6 +65,21 @@ namespace FSPOC_WebProject
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );
 
+            // Hermes
+            routes.MapRoute(
+                name: "HermesPlaceholders",
+                url: "Hermes/Placeholder/{action}/{emailId}/{id}",
+                defaults: new { controller = "Placeholder", action = "Index", emailId = "", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Hermes" }
+            );
+
+            routes.MapRoute(
+                name: "Hermes",
+                url: "Hermes/{controller}/{action}/{id}",
+                defaults: new { controller = "SMTP", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Hermes" }
+            );
+           
             // Start
             routes.MapRoute(
                 name: "Default",

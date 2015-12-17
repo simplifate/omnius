@@ -30,12 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DbExtensions, Version=5.1.0.0, Culture=neutral, PublicKeyToken=6b3b4f54da52bca4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DbExtensions.5.1.0\lib\net40\DbExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -46,6 +54,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
@@ -71,6 +80,9 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
+    <Compile Include="Entitron\Entity\Hermes\EmailTemplate.cs" />
+    <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
@@ -108,6 +120,7 @@
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
     <Compile Include="Entitron\Entity\Persona\User.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
+    <Compile Include="Entitron\Entity\Watchtower\LogModels.cs" />
     <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
@@ -168,6 +181,7 @@
     <Compile Include="Entitron\Table\DBIndices.cs" />
     <Compile Include="Entitron\Table\DBItem.cs" />
     <Compile Include="Entitron\Table\DBTable.cs" />
+    <Compile Include="Hermes\Mailer.cs" />
     <Compile Include="Migrations\201511301834451_init.cs" />
     <Compile Include="Migrations\201511301834451_init.Designer.cs">
       <DependentUpon>201511301834451_init.cs</DependentUpon>
@@ -208,6 +222,30 @@
     <Compile Include="Migrations\201512081321277_App properties 2.Designer.cs">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512141524186_hermes-smtp.cs" />
+    <Compile Include="Migrations\201512141524186_hermes-smtp.Designer.cs">
+      <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512141602551_hermes-smtp-2.cs" />
+    <Compile Include="Migrations\201512141602551_hermes-smtp-2.Designer.cs">
+      <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512141700362_hermes-email-templates.cs" />
+    <Compile Include="Migrations\201512141700362_hermes-email-templates.Designer.cs">
+      <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512161325143_Watchtower_log.cs" />
+    <Compile Include="Migrations\201512161325143_Watchtower_log.Designer.cs">
+      <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512161418357_repair.cs" />
+    <Compile Include="Migrations\201512161418357_repair.Designer.cs">
+      <DependentUpon>201512161418357_repair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512161558233_UniqueSeed.cs" />
+    <Compile Include="Migrations\201512161558233_UniqueSeed.Designer.cs">
+      <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -216,8 +254,10 @@
     <Compile Include="Nexus\Gate\Ldap.cs" />
     <Compile Include="Nexus\Gate\WS.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
+    <Compile Include="Nexus\Service\INexusExtDBService.cs" />
     <Compile Include="Nexus\Service\INexusWSService.cs" />
     <Compile Include="Nexus\Service\NexusLdapService .cs" />
+    <Compile Include="Nexus\Service\NexusExtDBService.cs" />
     <Compile Include="Nexus\Service\NexusWSService.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
@@ -233,6 +273,7 @@
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
     <Compile Include="Tapestry\Block.cs" />
     <Compile Include="Tapestry\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
@@ -281,6 +322,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512081321277_App properties 2.resx">
       <DependentUpon>201512081321277_App properties 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141524186_hermes-smtp.resx">
+      <DependentUpon>201512141524186_hermes-smtp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141602551_hermes-smtp-2.resx">
+      <DependentUpon>201512141602551_hermes-smtp-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512141700362_hermes-email-templates.resx">
+      <DependentUpon>201512141700362_hermes-email-templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161325143_Watchtower_log.resx">
+      <DependentUpon>201512161325143_Watchtower_log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161418357_repair.resx">
+      <DependentUpon>201512161418357_repair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512161558233_UniqueSeed.resx">
+      <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

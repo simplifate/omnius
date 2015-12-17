@@ -121,13 +121,14 @@
             border-left: 7px solid #21a7b5;
             background-color: #446782;
         }
-        li.expanded {
+        li.expandable {
             padding-left: 18px;
             border-left: 7px solid #59c9e7;
             background-color: #446782;
         }
         li.subMenu {
             background-color: #457fa9;
+            display: none;
         }
     }
 }

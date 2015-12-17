@@ -1,5 +1,5 @@
 ﻿$(function () {
-    if ($("body.overviewModule").length) {
+    if (CurrentModuleIs("overviewModule")) {
         addBlockDialog = $("#add-block-dialog").dialog({
             autoOpen: false,
             resizable: false,

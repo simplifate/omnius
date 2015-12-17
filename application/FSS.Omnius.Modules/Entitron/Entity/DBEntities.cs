@@ -8,6 +8,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Tapestry;
     using Mozaic;
     using Persona;
+    using Hermes;
+    using Watchtower;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
@@ -43,6 +45,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
         public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
+        public virtual DbSet<Smtp> SMTPs { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
+        public virtual DbSet<LogItem> LogItems { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -181,7 +187,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasRequired(a => a.ActionRule)
                 .WithMany(a => a.ActionRule_Actions);
 
-            //Nexus
+            // Nexus
             modelBuilder.Entity<Ldap>();
             modelBuilder.Entity<WS>();
             modelBuilder.Entity<ExtDB>();
@@ -210,6 +216,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<TapestryDesignerRule>()
                 .HasMany(s => s.Items)
                 .WithRequired(s => s.ParentRule);
+
+            // Hermes
+            modelBuilder.Entity<Smtp>();
+            modelBuilder.Entity<EmailPlaceholder>();
+
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.PlaceholderList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            
         }
     }
 }

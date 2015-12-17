@@ -1,5 +1,5 @@
 ﻿$(function () {
-    if ($("body.overviewModule").length) {
+    if (CurrentModuleIs("overviewModule")) {
         $("#overviewPanel").resizable();
         $("#btnAddBlock").on("click", function () {
             addBlockDialog.dialog("open");

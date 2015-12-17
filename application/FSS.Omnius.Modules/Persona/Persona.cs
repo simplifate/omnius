@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Nexus.Service;
 using System.DirectoryServices;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Persona
 {
@@ -24,7 +25,7 @@ namespace FSS.Omnius.Modules.Persona
             _CORE = core;
         }
 
-        public User getUser(string username)
+        public User getUser(string username, string serverName = null)
         {
             DBEntities e = _CORE.Entitron.GetStaticTables();
             User user = e.Users.SingleOrDefault(u => u.username == username);
@@ -41,22 +42,22 @@ namespace FSS.Omnius.Modules.Persona
             if (user.localExpiresAt < DateTime.UtcNow)
             {
                 NexusLdapService search = new NexusLdapService();
-                SearchResult result = search.SearchByLogin(username);
+                if (serverName != null) search.UseServer(serverName);
+                JToken result = search.SearchByLogin(username);
 
                 if (result == null)
                     throw new NotAuthorizedException("User not found");
 
-                var prop = result.Properties;
-                user.DisplayName = (string)prop["displayname"][0];
-                user.Email = (string)prop["mail"][0];
+                user.DisplayName = (string)result["displayname"];
+                user.Email = (string)result["mail"];
                 user.Address = "";
                 user.Company = "";
                 user.Department = "";
                 user.Team = "";
-                user.Job = (string)prop["title"][0];
+                user.Job = (string)result["title"];
                 user.WorkPhone = "";
                 user.MobilPhone = "";
-                user.LastLogin = (DateTime)prop["lastlogon"][0];
+                user.LastLogin = DateTime.FromFileTime((long)result["lastlogon"]);
 
                 user.localExpiresAt = DateTime.UtcNow + _expirationTime;
                 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using FSS.Omnius.Modules.Entitron;
+using Logger;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
@@ -62,6 +63,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     }
                     catch (SqlException e)
                     {
+                        Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
                         transaction.Rollback();
                         _queries.Clear();
                         throw e;

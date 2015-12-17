@@ -58,7 +58,7 @@ dataSourceEndpoint = $.extend({}, sourceEndpoint, {
 });
 
 jsPlumb.ready(function () {
-    if ($("body.tapestryModule").length) {
+    if (CurrentModuleIs("tapestryModule")) {
         $("#rulesPanel .rule").each(function (ruleIndex, rule) {
             currentInstance = CreateJsPlumbInstanceForRule(rule);
 

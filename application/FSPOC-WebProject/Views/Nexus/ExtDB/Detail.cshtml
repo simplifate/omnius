@@ -1,0 +1,38 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.ExtDB
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
+    <h4>Detail záznamu</h4>
+    <hr />
+    <table class="details-list table table-striped">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_Type)</td>
+            <td>@Html.DisplayFor(model => model.DB_Type)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_Server)</td>
+            <td>@Html.DisplayFor(model => model.DB_Server)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_Port)</td>
+            <td>@Html.DisplayFor(model => model.DB_Port)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_Name)</td>
+            <td>@Html.DisplayFor(model => model.DB_Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_User)</td>
+            <td>@Html.DisplayFor(model => model.DB_User)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.DB_Password)</td>
+            <td>********</td>
+        </tr>
+    </table>
+</div>
+<p class="nexusDetailsButtons">
+    @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-nexus" })
+    @Html.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-nexus-red" })
+</p>

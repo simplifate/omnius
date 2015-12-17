@@ -1,5 +1,5 @@
 ﻿$(function () {
-    if ($("body.adminAppTableModule").length) {
+    if (CurrentModuleIs("adminAppModule")) {
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             window.location.href = "/Portal/AppValidation";
         });

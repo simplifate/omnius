@@ -1,0 +1,14 @@
+﻿body.nexusModule {
+    #lowerPanel {
+        .wsdlFileString {
+            display: none;
+        }
+    }
+    #show-wsdl-dialog {
+        padding: 7px 4px;
+
+        textarea {
+            width: 100%;
+        }
+    }
+}

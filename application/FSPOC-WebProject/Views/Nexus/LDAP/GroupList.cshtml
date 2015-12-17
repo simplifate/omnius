@@ -1,4 +1,7 @@
-﻿<div>
+﻿@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
     <h4>Seznam skupin v AD</h4>
     <hr />
 
@@ -12,15 +15,12 @@
                     <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
                 </div>
                 <div class="col-md-2">
-                    <input type="submit" value="Hledat..." class="btn btn-primary" />
+                    <input type="submit" value="Hledat..." class="btn btn-omnius-blue" />
                 </div>
             </div>
         </div>
      }
 
-    @foreach (string group in ViewBag.Result)
-    {
-        <pre>@group</pre>
-    }
-
+     <pre>@ViewBag.Result</pre>
+  
 </div>

@@ -20,6 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [Required]
         [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

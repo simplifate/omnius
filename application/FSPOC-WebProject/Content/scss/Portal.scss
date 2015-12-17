@@ -4,7 +4,7 @@
 body.portalModule {
     background-color: #f2f2f3;
 
-    #centralAdminPanel {
+    #upperPanel {
         @include no-select();
         position: absolute;
         left: 225px;
@@ -168,6 +168,24 @@ body.portalModule {
                 font-size: 22px;
                 font-family: MyriadPro;
             }
+        }
+    }
+    #minimizedUpperPanel {
+        @include no-select();
+        position: absolute;
+        left: 225px;
+        top: 75px;
+        right: 0px;
+        height: 40px;
+        background-color: #3a3a3a;
+        display: none;
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 10px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: white;
         }
     }
     #lowerPanel {

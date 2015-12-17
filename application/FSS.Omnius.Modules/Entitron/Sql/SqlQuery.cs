@@ -84,7 +84,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     cmd.ExecuteNonQuery();
                 }
                 else
-                    Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
+                    throw e;
             }
         }
         protected virtual List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)

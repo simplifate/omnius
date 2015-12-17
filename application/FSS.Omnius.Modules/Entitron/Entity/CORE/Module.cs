@@ -9,6 +9,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.CORE
         public int Id { get; set; }
 
         [Required]
+        [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         public string Description { get; set; }

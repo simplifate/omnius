@@ -1,0 +1,107 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Hermes
+@model FSS.Omnius.Modules.Entitron.Entity.Hermes.EmailTemplate
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@if (!Model.Is_HTML)
+{
+    <link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
+    <link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
+    <script src="~/Scripts/cm/lib/codemirror.js"></script>
+    <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+    <script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+    <script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+    <script src="~/Scripts/cm/mode/xml/xml.js"></script>
+    <script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+    <script src="~/Scripts/cm/mode/css/css.js"></script>
+    <script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
+}
+
+@using (Html.BeginRouteForm("Hermes", new { @action = "SaveContent" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Html.Raw(string.Format("Úprava obsahu e-mailu <em>{0}</em>", Model.Name))</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <h5>Proměnné</h5>
+                <ul class="placeholder-list">
+                    @foreach (EmailPlaceholder p in Model.PlaceholderList.OrderBy(i => i.Num_Order))
+                    {
+                        <li title="@p.Description">{@p.Prop_Name}</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <h5>Obsah</h5>
+                @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @rows = 20 })
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary">
+                    <span class="fa fa-save"></span>&nbsp;&nbsp;
+                    Uložit
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!Model.Is_HTML)
+{
+    <script>
+        /* <![CDATA[ */
+        var cm;
+        setTimeout(function() {
+            var area = $('#Content');
+            cm = CodeMirror.fromTextArea(area[0], {
+                lineNumbers: true,
+                mode: "htmlmixed",
+                extraKeys: { "Ctrl-Space": "autocomplete" }
+            });
+
+            cm.on('blur', function() {
+                cm.save();
+            });
+
+            // Pokud by byl nějaký přepínač html / wysiwyg
+            /*area.change(function() {
+                cm.setValue(this.value);
+            });
+            area.next().resizable({
+                resize: function() {
+                    cm.setSize($(this).width(), $(this).height());
+                }
+            });*/
+        }, 500);
+
+        $(document).on('click', '.placeholder-list li', function () {
+            var placeholder = $(this).text();
+            alert(placeholder);
+
+            if (placeholder.match(/\{list\..+\}/)) {
+                cm.replaceSelection(placeholder + "\r\n\r\n" + placeholder);
+            }
+            else {
+                cm.replaceSelection(placeholder);
+            }
+        });       
+        /* ]]> */
+    </script>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

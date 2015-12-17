@@ -90,7 +90,7 @@ body.appManagerModule {
     }
 }
 
-body.adminAppTableModule {
+body.adminAppModule {
     .adminAppTable {
         position: absolute;
         left: 290px;
@@ -128,9 +128,6 @@ body.adminAppTableModule {
             width: 310px;
         }
     }
-}
-
-body.adminAppValidationModule {
     #validationResults {
         position: absolute;
         left: 290px;

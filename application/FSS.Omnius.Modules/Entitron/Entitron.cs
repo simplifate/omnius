@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron
                 };
             }
         }
-        
+
         public Entitron(CORE.CORE core, string ApplicationName = null)
         {
             Name = "Entitron";
@@ -60,6 +60,13 @@ namespace FSS.Omnius.Modules.Entitron
                 throw new ArgumentNullException("Application");
 
             return Application.GetTable(tableName);
+        }
+
+        public DBItem GetDynamicItem(string ApplicationName, string tableName, int modelId)
+        {
+            AppName = ApplicationName;
+
+            return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().First();
         }
     }
 }

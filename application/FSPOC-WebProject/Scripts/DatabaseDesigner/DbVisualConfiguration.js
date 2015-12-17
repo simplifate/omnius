@@ -1,7 +1,7 @@
 ﻿var instance;
 
 jsPlumb.ready(function () {
-    if ($("body.dbDesignerModule").length) {
+    if (CurrentModuleIs("dbDesignerModule")) {
         instance = jsPlumb.getInstance({
             Endpoint: ["Blank", {}],
             HoverPaintStyle: { strokeStyle: "#ff4000", lineWidth: 2 },

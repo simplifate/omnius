@@ -1,7 +1,7 @@
 ﻿var instance;
 
 jsPlumb.ready(function () {
-    if ($("body.overviewModule").length) {
+    if (CurrentModuleIs("overviewModule")) {
         instance = jsPlumb.getInstance({
             ConnectionOverlays: [
                 ["Arrow", { location: 1 }]
