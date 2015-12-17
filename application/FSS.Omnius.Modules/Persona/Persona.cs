@@ -25,7 +25,7 @@ namespace FSS.Omnius.Modules.Persona
             _CORE = core;
         }
 
-        public User getUser(string username)
+        public User getUser(string username, string serverName = null)
         {
             // REMOVE ON PRODUCTION !!!
             username = string.IsNullOrWhiteSpace(username) ? "annonymous" : username;
@@ -46,6 +46,7 @@ namespace FSS.Omnius.Modules.Persona
             if (user.localExpiresAt < DateTime.UtcNow)
             {
                 NexusLdapService search = new NexusLdapService();
+                if (serverName != null) search.UseServer(serverName);
                 JToken result = search.SearchByLogin(username);
 
                 if (result == null)
