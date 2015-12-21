@@ -250,6 +250,10 @@
     <Compile Include="Migrations\201512211057430_repairTapestry.Designer.cs">
       <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512211246554_BlockWorkflowRelation.cs" />
+    <Compile Include="Migrations\201512211246554_BlockWorkflowRelation.Designer.cs">
+      <DependentUpon>201512211246554_BlockWorkflowRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -348,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512211057430_repairTapestry.resx">
       <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512211246554_BlockWorkflowRelation.resx">
+      <DependentUpon>201512211246554_BlockWorkflowRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

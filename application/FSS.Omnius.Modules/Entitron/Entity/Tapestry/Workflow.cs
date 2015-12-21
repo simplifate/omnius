@@ -14,12 +14,14 @@
         }
 
         public int Id { get; set; }
+        [NotMapped]
         public int? InitBlockId { get; set; }
         public int? ParentId { get; set; }
         public int ApplicationId { get; set; }
         public int TypeId { get; set; }
         public virtual Application Application { get; set; }
         public virtual ICollection<Block> Blocks { get; set; }
+        [NotMapped]
         public virtual Block InitBlock { get; set; }
         public virtual WorkFlowType Type { get; set; }
         public virtual ICollection<WorkFlow> Children { get; set; }

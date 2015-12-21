@@ -114,9 +114,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithRequired(e => e.Block)
                 .HasForeignKey(e => e.BlockId);
 
-            modelBuilder.Entity<Block>()
-                .HasOptional(e => e.InitForWorkFlow)
-                .WithRequired(e => e.InitBlock);
+            //modelBuilder.Entity<Block>()
+            //    .HasMany(e => e.InitForWorkFlow)
+            //    .WithOptional(e => e.InitBlock)
+            //    .HasForeignKey(e => e.InitBlockId);
 
             modelBuilder.Entity<WorkFlowType>()
                 .HasMany(e => e.WorkFlows)
