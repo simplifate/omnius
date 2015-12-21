@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -237,6 +237,7 @@
     <Compile Include="Controllers\Nexus\LDAPController.cs" />
     <Compile Include="Controllers\Persona\RulesController.cs" />
     <Compile Include="Controllers\Nexus\NexusController.cs" />
+    <Compile Include="Controllers\Watchtower\LogController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -428,6 +429,7 @@
     <Content Include="Content\scss\UserLayout.scss" />
     <Content Include="Content\scss\Fonts.scss" />
     <Content Include="Content\scss\Nexus.scss" />
+    <Content Include="Content\scss\Watchtower.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -928,6 +930,7 @@
     <Content Include="Scripts\Tapestry\Save.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
+    <Content Include="Scripts\Watchtower\Init.js" />
     <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
     <Content Include="Scripts\WorkflowDesigner\WfCreate.js" />
     <Content Include="Scripts\WorkflowDesigner\WfDialogs.js" />
@@ -1033,6 +1036,7 @@
     <Content Include="Views\Hermes\SMTP\Test.cshtml" />
     <Content Include="Views\Nexus\Nexus\Header.cshtml" />
     <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
+    <Content Include="Views\Watchtower\Log\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

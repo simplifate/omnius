@@ -221,7 +221,7 @@ body.adminAppModule #validationResults {
 
 #leftBarArea {
   position: fixed;
-  top: 75px;
+  top: 0px;
   width: 225px;
   bottom: 0px;
   background-color: #455d73;
@@ -1553,6 +1553,157 @@ body.nexusModule #show-wsdl-dialog {
   padding: 7px 4px; }
   body.nexusModule #show-wsdl-dialog textarea {
     width: 100%; }
+
+body.watchtowerModule #logContainer {
+  position: absolute;
+  left: 225px;
+  top: 75px;
+  right: 0px; }
+  body.watchtowerModule #logContainer #watchtowerLogButtons {
+    position: absolute;
+    left: 300px;
+    top: 15px; }
+  body.watchtowerModule #logContainer #filterFormPanel {
+    position: relative;
+    width: 100%;
+    height: 357px;
+    background-color: #3a3a3a;
+    color: white;
+    margin-bottom: 30px; }
+    body.watchtowerModule #logContainer #filterFormPanel label {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default; }
+    body.watchtowerModule #logContainer #filterFormPanel .panelLabel {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      left: 55px;
+      top: 22px;
+      font-size: 18px;
+      font-family: FatTec; }
+    body.watchtowerModule #logContainer #filterFormPanel .backgroundDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px; }
+    body.watchtowerModule #logContainer #filterFormPanel .decorationWatcheye {
+      position: absolute;
+      left: 19px;
+      top: 56px;
+      width: 24px;
+      height: 24px; }
+    body.watchtowerModule #logContainer #filterFormPanel #hideFilterIcon {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      top: 3px;
+      right: 37px;
+      font-size: 36px; }
+    body.watchtowerModule #logContainer #filterFormPanel #filterPanelLabel {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      left: 175px;
+      top: 102px;
+      font-size: 20px;
+      font-family: FatTec;
+      color: #455D73; }
+    body.watchtowerModule #logContainer #filterFormPanel #filterPanelDecoration {
+      position: absolute;
+      left: 0px;
+      bottom: 0px; }
+    body.watchtowerModule #logContainer #filterFormPanel #filterLogForm {
+      position: absolute;
+      left: 150px;
+      top: 160px;
+      width: 1040px; }
+    body.watchtowerModule #logContainer #filterFormPanel #filterLogTable td {
+      padding-left: 1px;
+      padding-right: 30px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      vertical-align: middle; }
+    body.watchtowerModule #logContainer #filterFormPanel #filterLogTable select, body.watchtowerModule #logContainer #filterFormPanel #filterLogTable input {
+      min-width: 220px;
+      color: black; }
+    body.watchtowerModule #logContainer #filterFormPanel #formButtonArea {
+      position: absolute;
+      left: 840px;
+      top: 120px;
+      width: 280px; }
+      body.watchtowerModule #logContainer #filterFormPanel #formButtonArea button {
+        margin-right: 14px; }
+      body.watchtowerModule #logContainer #filterFormPanel #formButtonArea .btn-omnius-blue, body.watchtowerModule #logContainer #filterFormPanel #formButtonArea .btn-omnius-red {
+        padding-top: 4px;
+        height: 35px; }
+  body.watchtowerModule #logContainer #filterFormPanelMinimized {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background-color: #3a3a3a;
+    margin-bottom: 30px;
+    display: none; }
+    body.watchtowerModule #logContainer #filterFormPanelMinimized .panelLabel {
+      position: absolute;
+      left: 52px;
+      top: 10px;
+      font-size: 18px;
+      font-family: FatTec;
+      color: white; }
+    body.watchtowerModule #logContainer #filterFormPanelMinimized #showFilterIcon {
+      position: absolute;
+      color: white;
+      top: 3px;
+      right: 37px;
+      font-size: 36px; }
+  body.watchtowerModule #logContainer #watchtowerLogTableContainter {
+    position: absolute;
+    left: 20px;
+    right: 20px; }
+    body.watchtowerModule #logContainer #watchtowerLogTableContainter #watchtowerLogTable {
+      width: 100%; }
+      body.watchtowerModule #logContainer #watchtowerLogTableContainter #watchtowerLogTable thead {
+        background-color: #457fa9;
+        color: white; }
+      body.watchtowerModule #logContainer #watchtowerLogTableContainter #watchtowerLogTable tbody td {
+        vertical-align: middle; }
+
+body.watchtowerModule .btn-watchtower {
+  background-color: #49c3f1;
+  color: black;
+  width: 120px;
+  height: 40px;
+  border: none;
+  font-family: MyriadPro;
+  font-size: 16px; }
+
+body.watchtowerModule .btn-watchtower:hover {
+  background-color: #2ddef9; }
+
+body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
+  font-family: MyriadPro;
+  font-size: 16px; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
