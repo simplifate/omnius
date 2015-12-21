@@ -246,6 +246,10 @@
     <Compile Include="Migrations\201512161558233_UniqueSeed.Designer.cs">
       <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512211057430_repairTapestry.cs" />
+    <Compile Include="Migrations\201512211057430_repairTapestry.Designer.cs">
+      <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -341,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512161558233_UniqueSeed.resx">
       <DependentUpon>201512161558233_UniqueSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512211057430_repairTapestry.resx">
+      <DependentUpon>201512211057430_repairTapestry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

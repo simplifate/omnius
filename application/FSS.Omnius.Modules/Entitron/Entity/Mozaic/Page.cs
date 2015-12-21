@@ -14,6 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Page()
         {
+            Blocks = new HashSet<Block>();
             Css = new HashSet<Css>();
         }
 
@@ -30,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
         public virtual Template MasterTemplate { get; set; }
 
-        public virtual Block Block { get; set; }
+        public virtual ICollection<Block> Blocks { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Css> Css { get; set; }

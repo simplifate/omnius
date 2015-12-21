@@ -134,11 +134,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
-            modelBuilder.Entity<Block>()
-                .HasKey(e => e.MozaicPageId);
             modelBuilder.Entity<Page>()
-                .HasOptional(e => e.Block)
-                .WithRequired(e => e.MozaicPage);
+                .HasMany(e => e.Blocks)
+                .WithOptional(e => e.MozaicPage)
+                .HasForeignKey(e => e.MozaicPageId);
             
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Groups)
