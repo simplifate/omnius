@@ -47,7 +47,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         
         public virtual WorkFlow WorkFlow { get; set; }
         
-        [NotMapped]
         public virtual ICollection<WorkFlow> InitForWorkFlow { get; set; }
     }
 }
