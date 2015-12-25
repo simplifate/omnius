@@ -1841,6 +1841,9 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     .tileMenuArea .tileMenuItem .fa-server {
       font-size: 110px;
       top: 18px; }
+    .tileMenuArea .tileMenuItem .fa-folder {
+      font-size: 120px;
+      top: 8px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -1941,6 +1944,8 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     margin-left: 25px; }
   #ContentContainer .form-horizontal, #ContentContainer .details-list {
     color: #455d73; }
+  #ContentContainer .form-horizontal .radio, #ContentContainer .form-horizontal .checkbox {
+    margin-left: 20px; }
   #ContentContainer .details-list {
     margin-top: 30px;
     margin-bottom: 30px;

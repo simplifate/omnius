@@ -85,6 +85,7 @@
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
+    <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
@@ -258,6 +259,10 @@
     <Compile Include="Migrations\201512211547114_BlockWorkFlowStep2.Designer.cs">
       <DependentUpon>201512211547114_BlockWorkFlowStep2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512251241115_WebDAV.cs" />
+    <Compile Include="Migrations\201512251241115_WebDAV.Designer.cs">
+      <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -265,12 +270,14 @@
     <Compile Include="Nexus\Gate\ExtDB.cs" />
     <Compile Include="Nexus\Gate\Ldap.cs" />
     <Compile Include="Nexus\Gate\WS.cs" />
+    <Compile Include="Nexus\Service\IFileSyncService.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
     <Compile Include="Nexus\Service\INexusExtDBService.cs" />
     <Compile Include="Nexus\Service\INexusWSService.cs" />
     <Compile Include="Nexus\Service\NexusLdapService .cs" />
     <Compile Include="Nexus\Service\NexusExtDBService.cs" />
     <Compile Include="Nexus\Service\NexusWSService.cs" />
+    <Compile Include="Nexus\Service\WebDavFileSyncService.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
@@ -362,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512211547114_BlockWorkFlowStep2.resx">
       <DependentUpon>201512211547114_BlockWorkFlowStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512251241115_WebDAV.resx">
+      <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Watchtower;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
 {
+    [Table("Watchtower_LogItems")]
     public class LogItem
     {
         public int Id { get; set; }

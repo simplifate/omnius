@@ -221,6 +221,7 @@
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
+    <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
@@ -1037,6 +1038,9 @@
     <Content Include="Views\Nexus\Nexus\Header.cshtml" />
     <Content Include="Views\Nexus\Nexus\Decoration.cshtml" />
     <Content Include="Views\Watchtower\Log\Index.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Index.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Detail.cshtml" />
+    <Content Include="Views\Nexus\WebDAV\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

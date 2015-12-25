@@ -49,6 +49,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
         public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
         public virtual DbSet<LogItem> LogItems { get; set; }
+        public virtual DbSet<WebDavServer> WebDavServers { get; set; }
+        public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
+        public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -191,6 +194,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Ldap>();
             modelBuilder.Entity<WS>();
             modelBuilder.Entity<ExtDB>();
+
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional(s => s.WebDavServer);
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional(s => s.CachedCopy)
+                .WithRequired(s => s.FileMetadata);
 
             // Tapestry designer
             modelBuilder.Entity<TapestryDesignerApp>()

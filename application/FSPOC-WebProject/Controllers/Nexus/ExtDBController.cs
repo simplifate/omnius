@@ -21,6 +21,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
+            ViewData["WebDavServersCount"] = e.WebDavServers.Count();
             return View(e.ExtDBs);
         }
 

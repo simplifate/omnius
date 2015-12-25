@@ -9,6 +9,9 @@
         else if ($("#extDbMenuArea").length) {
             $("#nexusMenuExtDB").addClass("highlighted");
         }
+        else if ($("#webDavMenuArea").length) {
+            $("#nexusMenuWebDav").addClass("highlighted");
+        }
         $("#nexusMenuLDAP").on("click", function () {
             if(!$("#nexusMenuLDAP").hasClass("highlighted"))
                 window.location.href = "/Nexus/LDAP";
@@ -20,6 +23,10 @@
         $("#nexusMenuExtDB").on("click", function () {
             if (!$("#nexusMenuExtDB").hasClass("highlighted"))
                 window.location.href = "/Nexus/ExtDB";
+        });
+        $("#nexusMenuWebDav").on("click", function () {
+            if (!$("#nexusMenuWebDav").hasClass("highlighted"))
+                window.location.href = "/Nexus/WebDAV";
         });
     }
 });
