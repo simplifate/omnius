@@ -270,6 +270,20 @@ namespace FSS.Omnius.Modules.Entitron
 
             return this;
         }
+        public DBTable Remove(int itemId)
+        {
+            Dictionary<DBColumn, object> columnValueCondition = new Dictionary<DBColumn, object>();
+            columnValueCondition.Add(new DBColumn() { Name = "Id" }, itemId);
+
+            Application.queries.Add(new SqlQuery_Delete()
+            {
+                application = Application,
+                table = this,
+                rowSelect = columnValueCondition
+            });
+
+            return this;
+        }
 
         public SqlQuery_Select Select(params string[] columns)
         {

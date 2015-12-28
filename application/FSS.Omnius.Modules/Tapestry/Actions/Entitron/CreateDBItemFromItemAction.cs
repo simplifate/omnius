@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Entitron;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    class GetTableAction : Action
+    public class CreateDBItemFromItemAction : Action
     {
         public override int Id
         {
             get
             {
-                return 1003;
+                return 1004;
             }
         }
 
@@ -21,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "ApplicationName", "TableName", "Item" };
             }
         }
 
@@ -29,7 +30,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "GetTable";
+                return "CreateDBItemFromItem";
             }
         }
 
@@ -37,15 +38,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Data" };
+                return new string[0];
             }
         }
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
-            outputVars["Data"] = table.Select().ToList();
+            DBItem item = (DBItem)vars["Item"];
+
+            Modules.Entitron.Entitron ent = core.Entitron;
+            ent.AppName = (string)vars["ApplicationName"];
+            ent.GetDynamicTable((string)vars["TableName"]).Add(item);
+            ent.Application.SaveChanges();
         }
     }
 }

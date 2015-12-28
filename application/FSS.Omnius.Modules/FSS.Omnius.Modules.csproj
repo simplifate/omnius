@@ -127,6 +127,7 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
@@ -268,6 +269,10 @@
     <Compile Include="Migrations\201512281031045_addPreBlockRun.Designer.cs">
       <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512281522191_greatherMappingLimit.cs" />
+    <Compile Include="Migrations\201512281522191_greatherMappingLimit.Designer.cs">
+      <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -295,9 +300,15 @@
     <Compile Include="Tapestry\ActionRule.cs" />
     <Compile Include="Tapestry\Actions\ActionSequence.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\DeleteItem.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\AnyItemAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\SelectAction.cs" />
     <Compile Include="Tapestry\Block.cs" />
     <Compile Include="Tapestry\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\PreBlockAction.cs" />
@@ -381,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512281031045_addPreBlockRun.resx">
       <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512281522191_greatherMappingLimit.resx">
+      <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

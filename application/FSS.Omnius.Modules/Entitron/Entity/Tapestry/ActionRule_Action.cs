@@ -28,10 +28,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// i - int
         /// d - double
         /// </summary>
-        [StringLength(200)]
+        [StringLength(2000)]
         public string InputVariablesMapping { get; set; } // target=source;c=d
 
-        [StringLength(200)]
+        [StringLength(2000)]
         public string OutputVariablesMapping { get; set; } // target=source;c=d
 
         public virtual ActionRule ActionRule { get; set; }

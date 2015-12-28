@@ -7,10 +7,22 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_Select : SqlQuery_Selectable<SqlQuery_Select>
+    public class SqlQuery_SelectCount : SqlQuery_Selectable<SqlQuery_Select>
     {
-        public List<string> columns { get; set; }
-        
+        public SqlQuery_SelectCount()
+        { }
+        public SqlQuery_SelectCount(SqlQuery_Select selectQuery)
+        {
+            application = selectQuery.application;
+            table = selectQuery.table;
+            _datatypes = selectQuery._datatypes;
+            _group = selectQuery._group;
+            _join = selectQuery._join;
+            _order = selectQuery._order;
+            _params = selectQuery._params;
+            _where = selectQuery._where;
+        }
+
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
@@ -18,10 +30,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('SELECT {2} FROM ', @realTableName, ' {3} {4} {5} {6};');" +
-                "exec sp_executesql @sql, N'{7}', {8};", 
+                "SET @sql = CONCAT('SELECT COUNT(*) count FROM ', @realTableName, ' {2} {3} {4} {5};');" +
+                "exec sp_executesql @sql, N'{6}', {7};", 
                 parAppName,parTableName,
-                (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*",
                 _where.ToString(),
                 string.Join(" ", _join),
                 _group,
@@ -54,26 +65,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             return items;
         }
 
-        public List<DBItem> ToList()
-        {
-            List<DBItem> output = ExecuteWithRead();
-            
-            foreach (DBItem item in output)
-            {
-                item.table = table;
-            }
-            return output;
-        }
-        public DBItem First()
-        {
-            DBItem output = ExecuteWithRead().First();
-            output.table = table;
-
-            return output;
-        }
         public int Count()
         {
-            return new SqlQuery_SelectCount(this).Count();
+            List<DBItem> result = ExecuteWithRead();
+            return (int)result.First()["count"];
         }
 
         public override string ToString()

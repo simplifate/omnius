@@ -16,8 +16,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public const string DB_EntitronMeta = "dbo.Entitron___META";
 
         public string sqlString;
-        protected Dictionary<string, object> _params;
-        protected Dictionary<string, string> _datatypes;
+        internal Dictionary<string, object> _params;
+        internal Dictionary<string, string> _datatypes;
 
         public SqlQuery()
         {

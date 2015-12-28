@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    class GetTableAction : Action
+    public class DeleteItemAction : Action
     {
         public override int Id
         {
             get
             {
-                return 1003;
+                return 1010;
             }
         }
 
@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "ItemId", "ApplicationName", "TableName" };
             }
         }
 
@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "GetTable";
+                return "DeleteItem";
             }
         }
 
@@ -37,15 +37,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Data" };
+                return new string[0];
             }
         }
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
-            outputVars["Data"] = table.Select().ToList();
+
+            Modules.Entitron.Entitron ent = core.Entitron;
+            ent.AppName = (string)vars["ApplicationName"];
+            ent.GetDynamicTable((string)vars["TableName"]).Remove((int)vars["ItemId"]);
+            ent.Application.SaveChanges();
         }
     }
 }

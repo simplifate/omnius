@@ -75,6 +75,24 @@ namespace FSS.Omnius.Modules.Tapestry
         public abstract string[] InputVar { get; }
         public abstract string[] OutputVar { get; }
         
-        public abstract ActionResultCollection run(Dictionary<string, object> vars);
+        public virtual ActionResultCollection run(Dictionary<string, object> vars)
+        {
+            var outputVars = new Dictionary<string, object>();
+            var outputStatus = ActionResultType.Success;
+            var outputMessage = "OK";
+
+            try
+            {
+                InnerRun(vars, outputVars);
+            }
+            catch (Exception ex)
+            {
+                outputStatus = ActionResultType.Error;
+                outputMessage = ex.Message;
+            }
+
+            return new ActionResultCollection(outputStatus, outputMessage, outputVars);
+        }
+        public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars);
     }
 }
