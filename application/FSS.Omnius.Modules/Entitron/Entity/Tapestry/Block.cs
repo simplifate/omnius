@@ -36,6 +36,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? MozaicPageId { get; set; }
         public virtual Page MozaicPage { get; set; }
 
+        public int? PreBlockActionRuleId { get; set; }
+        public virtual ActionRule PreBlockActionRule { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActionRule> SourceTo_ActionRoles { get; set; }
 

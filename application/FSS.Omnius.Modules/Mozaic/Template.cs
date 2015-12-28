@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Tapestry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         private string endingKey = " %%>";
         private string cssKey = "<%%css%%>";
         
-        public string Render(Page master, Dictionary<string, string> Relations, DBItem Model, DBEntities entity, string address = null)
+        public string Render(Page master, Dictionary<string, string> Relations, ActionResultCollection results, DBEntities entity, string address = null)
         {
             string output = string.Copy(Html);
+            DBItem Model = (DBItem)results.outputData["__MODEL__"];
 
             // replace css
             int indexOfCss = output.IndexOf(cssKey);
@@ -54,7 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             break;
                         case "P": // partial
                             replacement += entity.Templates.FirstOrDefault(t => t.Name == name)
-                                .Render(master, Relations, Model, entity, currentAddress);
+                                .Render(master, Relations, results, entity, currentAddress);
                             break;
                         case "D": // datasource
                             replacement += Model[name];
@@ -64,10 +66,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             string templateName = a[2];
                             foreach (DBItem listItem in (List<DBItem>)Model[name] ?? new List<DBItem>())
                             {
-                                listItem["__parent__"] = Model;
+                                results.outputData["__PARENT__"] = Model;
+                                results.outputData["__MODEL__"] = listItem;
                                 replacement += entity.Templates.FirstOrDefault(t => t.Name == templateName)
-                                    .Render(master, Relations, listItem, entity, currentAddress);
+                                    .Render(master, Relations, results, entity, currentAddress);
                             }
+                            results.outputData["__MODEL__"] = Model;
                             break;
                         default:
                             throw new FormatException("Template relations in wrong format");

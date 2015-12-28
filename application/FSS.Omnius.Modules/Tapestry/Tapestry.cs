@@ -8,22 +8,23 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry;
 using System.Collections.Specialized;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
     public class Tapestry : RunableModule
     {
         private CORE.CORE _CORE;
-        private DBItem _model;
-        private int _PageId;
+        private ActionResultCollection _results;
+        private Page _page;
 
         public Tapestry(CORE.CORE core)
         {
             Name = "Tapestry";
 
             _CORE = core;
-            _model = null;
-            _PageId = -1;
+            _results = new ActionResultCollection();
+            _page = null;
         }
 
         public override void run(string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
@@ -37,34 +38,34 @@ namespace FSS.Omnius.Modules.Tapestry
         public void run(int ApplicationId, int? ActionRuleId, int? modelId, NameValueCollection fc)
         {
             // init action
-            ActionResultCollection results = new ActionResultCollection();
-            results.outputData.Add("__CORE__", _CORE);
+            _results.outputData.Add("__CORE__", _CORE);
             string AppName = "TestApp";
 
             ActionRule actionRule = 
                 ActionRuleId != null
-                ? GetActionRule(AppName, ActionRuleId.Value, results, modelId) 
+                ? GetActionRule(AppName, ActionRuleId.Value, _results, modelId) 
                 : GetAutoActionRule(
                     AppName,
                     _CORE.Entitron.GetStaticTables().Applications.SingleOrDefault(app => app.Id == ApplicationId).WorkFlows.SingleOrDefault(wf => wf.Type.Name == "Init").InitBlock,
-                    results,
+                    _results,
                     modelId);
 
             while (actionRule != null)
             {
-                results.Join = actionRule.MainRun(results.outputData);
-                actionRule = GetAutoActionRule(AppName, actionRule.TargetBlock, results);
+                _results.Join = actionRule.MainRun(_results.outputData);
+                actionRule = GetAutoActionRule(AppName, actionRule.TargetBlock, _results);
             }
-            
-            // get model, pageId for Mozaic
-            _PageId = actionRule.TargetBlock.MozaicPageId ?? -1;
+
+            // get model, page for Mozaic
+            actionRule.TargetBlock.RunPreActionRule();
+            _page = actionRule.TargetBlock.MozaicPage;
         }
         public override string GetHtmlOutput()
         {
-            if (_PageId == -1)
+            if (_page == null)
                 throw new Exception("Must execute 'run' before get html");
 
-            return _CORE.Mozaic.Render(_PageId, _model);
+            return _CORE.Mozaic.Render(_page, null);
         }
         public override string GetJsonOutput()
         {

@@ -95,6 +95,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
 
+            modelBuilder.Entity<ActionRule>()
+                .HasMany(e => e.PreRunForBlocks)
+                .WithOptional(e => e.PreBlockActionRule)
+                .HasForeignKey(e => e.PreBlockActionRuleId);
+
             modelBuilder.Entity<Actor>()
                 .HasMany(e => e.ActionRoles)
                 .WithRequired(e => e.Actor)

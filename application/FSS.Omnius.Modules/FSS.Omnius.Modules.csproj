@@ -263,6 +263,10 @@
     <Compile Include="Migrations\201512251241115_WebDAV.Designer.cs">
       <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512281031045_addPreBlockRun.cs" />
+    <Compile Include="Migrations\201512281031045_addPreBlockRun.Designer.cs">
+      <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -372,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512251241115_WebDAV.resx">
       <DependentUpon>201512251241115_WebDAV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512281031045_addPreBlockRun.resx">
+      <DependentUpon>201512281031045_addPreBlockRun.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
