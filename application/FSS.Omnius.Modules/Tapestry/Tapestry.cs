@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // get model, page for Mozaic
-            actionRule.TargetBlock.RunPreActionRule();
+            actionRule.TargetBlock.RunPreActionRule(_results.outputData);
             _page = actionRule.TargetBlock.MozaicPage;
         }
         public override string GetHtmlOutput()

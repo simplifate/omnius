@@ -7,16 +7,27 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Tapestry_Blocks", "PreBlockActionRuleId", c => c.Int());
-            CreateIndex("dbo.Tapestry_Blocks", "PreBlockActionRuleId");
-            AddForeignKey("dbo.Tapestry_Blocks", "PreBlockActionRuleId", "dbo.Tapestry_ActionRule", "Id");
+            CreateTable(
+                "dbo.Tapestry_PreBlockActions",
+                c => new
+                    {
+                        BlockId = c.Int(nullable: false),
+                        ActionId = c.Int(nullable: false),
+                        Order = c.Int(nullable: false),
+                        InputVariablesMapping = c.String(maxLength: 200),
+                        OutputVariablesMapping = c.String(maxLength: 200),
+                    })
+                .PrimaryKey(t => new { t.BlockId, t.ActionId })
+                .ForeignKey("dbo.Tapestry_Blocks", t => t.BlockId, cascadeDelete: true)
+                .Index(t => t.BlockId);
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Tapestry_Blocks", "PreBlockActionRuleId", "dbo.Tapestry_ActionRule");
-            DropIndex("dbo.Tapestry_Blocks", new[] { "PreBlockActionRuleId" });
-            DropColumn("dbo.Tapestry_Blocks", "PreBlockActionRuleId");
+            DropForeignKey("dbo.Tapestry_PreBlockActions", "BlockId", "dbo.Tapestry_Blocks");
+            DropIndex("dbo.Tapestry_PreBlockActions", new[] { "BlockId" });
+            DropTable("dbo.Tapestry_PreBlockActions");
         }
     }
 }

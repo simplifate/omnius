@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
         public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
         public virtual DbSet<ActionRule> ActionRules { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRule> AttributeRules { get; set; }
@@ -94,11 +95,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.ActionRule_Actions)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
-
-            modelBuilder.Entity<ActionRule>()
-                .HasMany(e => e.PreRunForBlocks)
-                .WithOptional(e => e.PreBlockActionRule)
-                .HasForeignKey(e => e.PreBlockActionRuleId);
 
             modelBuilder.Entity<Actor>()
                 .HasMany(e => e.ActionRoles)
@@ -194,6 +190,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<ActionRule_Action>()
                 .HasRequired(a => a.ActionRule)
                 .WithMany(a => a.ActionRule_Actions);
+
+            modelBuilder.Entity<PreBlockAction>()
+                .HasRequired(e => e.Block)
+                .WithMany(e => e.PreBlockActions);
 
             // Nexus
             modelBuilder.Entity<Ldap>();

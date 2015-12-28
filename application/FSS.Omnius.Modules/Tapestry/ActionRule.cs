@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             return Run(tempVars, aars);
         }
 
-        private ActionResultCollection Run(Dictionary<string, object> tempVars, IEnumerable<ActionRule_Action> aars)
+        static public ActionResultCollection Run(Dictionary<string, object> tempVars, IEnumerable<ActionRule_Action> aars)
         {
             ActionResultCollection results = new ActionResultCollection();
 

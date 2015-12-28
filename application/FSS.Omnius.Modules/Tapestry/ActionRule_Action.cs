@@ -10,6 +10,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public Dictionary<string, object> getInputVariables(Dictionary<string, object> tempVars)
         {
+            return getInputVariables(InputVariablesMapping, tempVars);
+        }
+        public void RemapOutputVariables(Dictionary<string, object> actionVars)
+        {
+            RemapOutputVariables(OutputVariablesMapping, actionVars);
+        }
+
+        public static Dictionary<string, object> getInputVariables(string InputVariablesMapping, Dictionary<string, object> tempVars)
+        {
             Dictionary<string, object> output = new Dictionary<string, object>();
             var data = InputVariablesMapping.Split(';').Select(s => s.Split('='));
 
@@ -17,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             {
                 string target = mappingPair[0];
                 string source = mappingPair[1];
-                
+
                 // source is value
                 if (source[1] == '$')
                 {
@@ -48,7 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
             return output;
         }
-        public void RemapOutputVariables(Dictionary<string, object> actionVars)
+        public static void RemapOutputVariables(string OutputVariablesMapping, Dictionary<string, object> actionVars)
         {
             var data = OutputVariablesMapping.Split(';').Select(s => s.Split('='));
 

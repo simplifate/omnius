@@ -9,7 +9,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public ActionRule()
         {
             ActionRule_Actions = new HashSet<ActionRule_Action>();
-            PreRunForBlocks = new HashSet<Block>();
         }
 
         public int Id { get; set; }
@@ -25,6 +24,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual Actor Actor { get; set; }
         public virtual Block SourceBlock { get; set; }
         public virtual Block TargetBlock { get; set; }
-        public virtual ICollection<Block> PreRunForBlocks { get; set; }
     }
 }
