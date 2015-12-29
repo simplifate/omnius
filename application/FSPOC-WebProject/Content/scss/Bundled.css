@@ -1705,6 +1705,79 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   font-family: MyriadPro;
   font-size: 16px; }
 
+.personaModulesModule {
+  background-color: #3a3a3a; }
+  .personaModulesModule #personaModulesPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    height: 500px; }
+    .personaModulesModule #personaModulesPanel .panelLabel {
+      position: absolute;
+      left: 52px;
+      top: 24px;
+      font-size: 18px;
+      font-family: FatTec;
+      color: white; }
+    .personaModulesModule #personaModulesPanel .backgroundDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px; }
+    .personaModulesModule #personaModulesPanel .decorationWatcheye {
+      position: absolute;
+      left: 19px;
+      top: 56px;
+      width: 24px;
+      height: 24px; }
+    .personaModulesModule #personaModulesPanel #personaModulesContentContainer {
+      position: absolute;
+      left: 150px;
+      top: 120px; }
+    .personaModulesModule #personaModulesPanel #moduleAccessTable {
+      color: white;
+      font-family: MyriadPro;
+      font-size: 18px; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable th {
+        text-align: center;
+        padding-bottom: 10px; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable td {
+        height: 40px;
+        vertical-align: middle; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable .moduleCell {
+        width: 110px; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable .checkboxCell {
+        width: 140px;
+        text-align: center;
+        border-top: 1px solid #3a3a3a;
+        border-right: 1px solid #3a3a3a; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable .yesCell {
+        background-color: #c6ffc6;
+        color: black; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable .noCell {
+        background-color: #ffdbdb;
+        color: black; }
+      .personaModulesModule #personaModulesPanel #moduleAccessTable .hiddenIdRow {
+        display: none; }
+    .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel {
+      position: relative;
+      margin-left: 10px;
+      margin-top: 90px;
+      margin-bottom: 50px; }
+      .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel .btn-omnius-rectangular {
+        margin-right: 15px; }
+      .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel .modulesFormLowerDecoration {
+        position: absolute;
+        left: -120px;
+        top: -135px;
+        z-index: -10; }
+
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
   border: 1px solid black;
@@ -1800,6 +1873,18 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
 
 .btn.fa.ico-only:before {
   margin-right: 0px; }
+
+.btn-omnius-rectangular {
+  background-color: #49c3f1;
+  color: black;
+  width: 120px;
+  height: 40px;
+  border: none;
+  font-family: MyriadPro;
+  font-size: 16px; }
+
+.btn-omnius-rectangular:hover {
+  background-color: #2ddef9; }
 
 .tileMenuArea {
   position: absolute;

@@ -1,0 +1,88 @@
+﻿.personaModulesModule {
+    background-color: #3a3a3a;
+
+    #personaModulesPanel {
+        @include no-select();
+        position: absolute;
+        left: 225px;
+        top: 75px;
+        right: 0px;
+        height: 500px;
+
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 24px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: white;
+        }
+        .backgroundDecoration {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+        .decorationWatcheye {
+            position: absolute;
+            left: 19px;
+            top: 56px;
+            width: 24px;
+            height: 24px;
+        }
+        #personaModulesContentContainer {
+            position: absolute;
+            left: 150px;
+            top: 120px;
+        }
+        #moduleAccessTable {
+            color: white;
+            font-family: MyriadPro;
+            font-size: 18px;
+
+            th {
+                text-align: center;
+                padding-bottom: 10px;
+            }
+            td {
+                height: 40px;
+                vertical-align: middle;
+            }
+            .moduleCell {
+                width: 110px;
+            }
+            .checkboxCell {
+                width: 140px;
+                text-align: center;
+                border-top: 1px solid #3a3a3a;
+                border-right: 1px solid #3a3a3a;
+            }
+            .yesCell {
+                background-color: #c6ffc6;
+                color: black;
+            }
+            .noCell {
+                background-color: #ffdbdb;
+                color: black;
+            }
+            .hiddenIdRow {
+                display: none;
+            }
+        }
+        #personaModulesFormButtonsPanel {
+            position: relative;
+            margin-left: 10px;
+            margin-top: 90px;
+            margin-bottom: 50px;
+
+            .btn-omnius-rectangular {
+                margin-right: 15px;
+            }
+            .modulesFormLowerDecoration {
+                position: absolute;
+                left: -120px;
+                top: -135px;
+                z-index: -10
+            }
+        }
+    }
+}

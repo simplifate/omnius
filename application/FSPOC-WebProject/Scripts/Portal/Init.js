@@ -32,6 +32,10 @@ $(function () {
         $("#adminMenuPersona").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
     }
+    else if (CurrentModuleIs("personaModulesModule")) {
+        $("#adminMenuPersonaModules").addClass("active");
+        $("#leftBar .leftMenu li.identitySubMenu").show();
+    }
     else if (CurrentModuleIs("watchtowerModule")) {
         $("#adminMenuWatchtower").addClass("active");
     }

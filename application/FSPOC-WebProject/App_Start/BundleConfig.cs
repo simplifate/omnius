@@ -52,6 +52,7 @@ namespace FSPOC_WebProject
                 .IncludeDirectory("~/Scripts/Nexus", "*.js")
                 .IncludeDirectory("~/Scripts/Hermes", "*.js")
                 .IncludeDirectory("~/Scripts/Watchtower", "*.js")
+                .IncludeDirectory("~/Scripts/Persona", "*.js")
                 .Include("~/Scripts/PlatformUtils.js")
             );
         }

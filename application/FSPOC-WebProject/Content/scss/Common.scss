@@ -93,6 +93,18 @@
 .btn.fa.ico-only:before {
     margin-right: 0px;
 }
+.btn-omnius-rectangular {
+    background-color: #49c3f1;
+    color: black;
+    width: 120px;
+    height: 40px;
+    border: none;
+    font-family: MyriadPro;
+    font-size: 16px;
+}
+.btn-omnius-rectangular:hover {
+    background-color: #2ddef9;
+}
 .tileMenuArea {
     position: absolute;
     left: 80px;

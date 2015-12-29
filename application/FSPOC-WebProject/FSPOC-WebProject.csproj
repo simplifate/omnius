@@ -223,6 +223,8 @@
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
+    <Compile Include="Controllers\Persona\ModulesController.cs" />
+    <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
@@ -431,6 +433,7 @@
     <Content Include="Content\scss\Fonts.scss" />
     <Content Include="Content\scss\Nexus.scss" />
     <Content Include="Content\scss\Watchtower.scss" />
+    <Content Include="Content\scss\Persona.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -913,6 +916,8 @@
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
+    <Content Include="Scripts\Persona\Init.js" />
+    <Content Include="Scripts\Persona\SaveModulePermissions.js" />
     <Content Include="Scripts\PlatformUtils.js" />
     <Content Include="Scripts\Portal\Init.js" />
     <Content Include="Scripts\Portal\ModuleAdmin.js" />
@@ -1041,6 +1046,7 @@
     <Content Include="Views\Nexus\WebDAV\Index.cshtml" />
     <Content Include="Views\Nexus\WebDAV\Detail.cshtml" />
     <Content Include="Views\Nexus\WebDAV\Form.cshtml" />
+    <Content Include="Views\Persona\Modules\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

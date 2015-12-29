@@ -88,6 +88,7 @@
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRight.cs" />
+    <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
@@ -273,6 +274,10 @@
     <Compile Include="Migrations\201512281522191_greatherMappingLimit.Designer.cs">
       <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512291444190_Module access permissions.cs" />
+    <Compile Include="Migrations\201512291444190_Module access permissions.Designer.cs">
+      <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -395,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512281522191_greatherMappingLimit.resx">
       <DependentUpon>201512281522191_greatherMappingLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512291444190_Module access permissions.resx">
+      <DependentUpon>201512291444190_Module access permissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

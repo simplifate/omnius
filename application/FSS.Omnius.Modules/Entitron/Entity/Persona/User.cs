@@ -40,5 +40,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public DateTime localExpiresAt { get; set; }
 
         public virtual ICollection<Group> Groups { get; set; }
+        public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
     }
 }

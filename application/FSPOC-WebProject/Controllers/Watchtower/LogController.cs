@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
-using FSS.Omnius.Modules.Watchtower;
 
 namespace FSS.Omnius.Controllers.Watchtower
 {
@@ -65,8 +64,7 @@ namespace FSS.Omnius.Controllers.Watchtower
                 }
                 else
                 {
-                    searchResults = context.LogItems.Where(c => true)
-                        .OrderByDescending(c => c.Timestamp).Take(100).ToList();
+                    searchResults = context.LogItems.OrderByDescending(c => c.Timestamp).Take(100).ToList();
                     ViewData["filter"] = false;
                     ViewData["level"] = "all";
                     ViewData["type"] = "all";

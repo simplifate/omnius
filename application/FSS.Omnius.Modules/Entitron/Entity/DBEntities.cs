@@ -53,6 +53,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<WebDavServer> WebDavServers { get; set; }
         public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
         public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
+        public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -168,6 +169,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.Tables)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
+
+            modelBuilder.Entity<ModuleAccessPermission>()
+                .HasOptional(e => e.User)
+                .WithOptionalDependent(e => e.ModuleAccessPermission);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()
