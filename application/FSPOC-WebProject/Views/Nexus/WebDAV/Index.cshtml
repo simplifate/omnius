@@ -45,7 +45,7 @@
                             <td>@l.UriBasePath</td>
                             <td class="text-center">@(l.AnonymousMode == true ? "ano" : "ne")</td>
                             <td>@l.AuthUsername</td>
-                            <td>@(l.AuthPassword.Length > 0 ? "********" : "")</td>
+                            <td>@(l.AuthPassword != null && l.AuthPassword.Length > 0 ? "********" : "")</td>
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
