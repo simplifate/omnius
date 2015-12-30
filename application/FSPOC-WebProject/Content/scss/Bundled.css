@@ -1778,6 +1778,31 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
         top: -135px;
         z-index: -10; }
 
+h4.variableListTitle {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 15px; }
+
+#NumOrderList li {
+  list-style: none;
+  width: 300px;
+  height: 44px;
+  padding: 10px 15px;
+  margin: 10px;
+  background-color: #467ea8;
+  color: white;
+  cursor: ns-resize;
+  font-family: MyriadPro;
+  font-size: 18px;
+  border-radius: 3px; }
+
+#NumOrderList .ui-sortable-helper {
+  border: 1px solid #49c3f1;
+  box-shadow: 0px 0px 22px #49c3f1; }
+
+#numOrderArea {
+  margin-bottom: 100px; }
+
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
   border: 1px solid black;
@@ -1929,6 +1954,9 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     .tileMenuArea .tileMenuItem .fa-folder {
       font-size: 120px;
       top: 8px; }
+    .tileMenuArea .tileMenuItem .fa-envelope {
+      font-size: 110px;
+      top: 12px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -2015,6 +2043,11 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   left: 70px;
   top: 120px;
   right: 80px; }
+  #lowerPanelContainer h4 {
+    font-family: FatTec;
+    font-size: 20px;
+    color: #457fa9;
+    margin-left: 25px; }
 
 #ContentContainer {
   position: relative;
@@ -2022,11 +2055,6 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   height: auto;
   margin-top: 60px;
   margin-bottom: 60px; }
-  #ContentContainer h4 {
-    font-family: FatTec;
-    font-size: 20px;
-    color: #457fa9;
-    margin-left: 25px; }
   #ContentContainer .form-horizontal, #ContentContainer .details-list {
     color: #455d73; }
   #ContentContainer .form-horizontal .radio, #ContentContainer .form-horizontal .checkbox {

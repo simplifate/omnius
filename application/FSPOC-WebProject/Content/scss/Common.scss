@@ -155,6 +155,10 @@
             font-size: 120px;
             top: 8px;
         }
+        .fa-envelope {
+            font-size: 110px;
+            top: 12px;
+        }
         .buttonLabel {
             position: absolute;
             top: 40px;
@@ -240,6 +244,13 @@
     left: 70px;
     top: 120px;
     right: 80px;
+
+    h4 {
+        font-family: FatTec;
+        font-size: 20px;
+        color: #457fa9;
+        margin-left: 25px;
+    }
 }
 #ContentContainer {
     position: relative;
@@ -247,12 +258,7 @@
     height: auto;
     margin-top: 60px;
     margin-bottom: 60px;
-    h4 {
-        font-family: FatTec;
-        font-size: 20px;
-        color: #457fa9;
-        margin-left: 25px;
-    }
+
     .form-horizontal, .details-list {
         color: #455d73;
     }
