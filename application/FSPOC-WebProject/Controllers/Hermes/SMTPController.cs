@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -86,10 +87,14 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult Test()
         {
             DBEntities e = new DBEntities();
-            Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+            //Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            model.Add("count", e.WSs.Count());
+            model.Add("ws", e.WSs);
 
             Mailer mail = new Mailer();
-            ViewData["result"] = mail.SendMail("Test", m);
+            ViewData["result"] = mail.SendMail("Seznam WS", model);
 
             return View("~/Views/Hermes/SMTP/Test.cshtml");
         }
