@@ -1,15 +1,31 @@
 ﻿$(function () {
     if (CurrentModuleIs("overviewModule")) {
-        $("#overviewPanel").resizable();
+        $("#headerMetablockName").on("click", function () {
+            renameMetaBlockDialog.dialog("open");
+        });
         $("#btnAddBlock").on("click", function () {
             addBlockDialog.dialog("open");
+        });
+        $("#btnAddMetaBlock").on("click", function () {
+            addMetaBlockDialog.dialog("open");
+        });
+        $("#btnLoad").on("click", function () {
+        });
+        $("#btnSave").on("click", function () {
+            SaveMetaBlock();
+        });
+        $("#btnClear").on("click", function () {
+            $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {
+                instance.removeAllEndpoints(element, true);
+                $(element).remove();
+            });
         });
         $(".block").on("dblclick", function () {
             // TODO: Pass block's ID to Tapestry to edit this block
             window.location.href = "/tapestry";
         });
         $.contextMenu({
-            selector: '.block',
+            selector: '.block, .metablock',
             trigger: 'right',
             zIndex: 300,
             callback: function (key, options) {

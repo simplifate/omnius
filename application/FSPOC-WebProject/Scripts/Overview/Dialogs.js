@@ -42,5 +42,66 @@
             instance.draggable(newBlock, { containment: "parent" });
             addBlockDialog.dialog("close");
         }
+        addMetaBlockDialog = $("#add-metablock-dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            width: 400,
+            height: 180,
+            buttons: {
+                "Add": function () {
+                    addMetaBlockDialog_SubmitData();
+                },
+                Cancel: function () {
+                    addMetaBlockDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        addMetaBlockDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                $(this).find("#metablock-name").val("");
+            }
+        });
+        function addMetaBlockDialog_SubmitData() {
+            metaBlockName = addMetaBlockDialog.find("#metablock-name").val();
+            newMetaBlock = $('<div class="metablock"><div class="metablockName">'
+                + metaBlockName + '</div><div class="metablockSymbol fa fa-th-large"></div></div>');
+            $("#overviewPanel").append(newMetaBlock);
+            instance.draggable(newMetaBlock, { containment: "parent" });
+            addMetaBlockDialog.dialog("close");
+        }
+        renameMetaBlockDialog = $("#rename-metablock-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    renameMetaBlockDialog_SubmitData();
+                },
+                Cancel: function () {
+                    renameMetaBlockDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        renameMetaBlockDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                renameMetaBlockDialog.find("#metablock-name").val($("#headerMetablockName").text());
+            }
+        });
+        function renameMetaBlockDialog_SubmitData() {
+            renameMetaBlockDialog.dialog("close");
+            $("#headerMetablockName").text(renameMetaBlockDialog.find("#metablock-name").val());
+        }
     }
 });

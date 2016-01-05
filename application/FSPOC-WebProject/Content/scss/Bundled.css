@@ -886,24 +886,40 @@ body.tapestryModule {
       margin-bottom: -2px; }
 
 body.overviewModule {
-  background-color: #455d73; }
+  background-color: #3a3a3a; }
+  body.overviewModule #overviewHeaderArea {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 235px;
+    top: 82px;
+    text-align: left;
+    font-size: 18px;
+    color: white; }
+    body.overviewModule #overviewHeaderArea #headerAppName, body.overviewModule #overviewHeaderArea #headerMetablockName {
+      font-weight: bold;
+      color: #f1a57a; }
+    body.overviewModule #overviewHeaderArea #headerMetablockName:hover {
+      color: #2ddef9;
+      cursor: pointer; }
   body.overviewModule #overviewPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
     position: absolute;
     background-color: #c0c0c0;
-    border: 1px solid #467ea8;
-    left: 225px;
-    top: 75px;
-    right: 0px;
-    bottom: 0px;
-    border-left: 4px solid #3a3a3a;
-    border-top: 4px solid #3a3a3a; }
+    left: 229px;
+    top: 140px;
+    right: 150px;
+    bottom: 0px; }
     body.overviewModule #overviewPanel .block {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      cursor: default;
       position: absolute;
       width: 160px;
       height: 86px;
@@ -924,19 +940,52 @@ body.overviewModule {
         width: 100%;
         color: #f1a57a;
         font-weight: bold; }
-  body.overviewModule #btnAddBlock {
+    body.overviewModule #overviewPanel .metablock {
+      position: absolute;
+      width: 200px;
+      height: 95px;
+      background-color: #467ea8;
+      color: white;
+      border: none;
+      font-size: 16px; }
+      body.overviewModule #overviewPanel .metablock .metablockName {
+        position: absolute;
+        top: 11px;
+        text-align: center;
+        width: 100%;
+        font-weight: bold; }
+      body.overviewModule #overviewPanel .metablock .metablockSymbol {
+        position: absolute;
+        top: 39px;
+        width: 100%;
+        text-align: center;
+        font-size: 48px;
+        color: #49c3f1; }
+  body.overviewModule #overviewMenu {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
     position: absolute;
-    right: 10px;
-    top: 10px; }
-  body.overviewModule #moduleSwitcher {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 32px;
+    right: 0px;
+    top: 140px;
+    bottom: 0px;
+    width: 150px;
+    background-color: #3a3a3a;
+    padding-left: 15px;
+    padding-right: 15px; }
+    body.overviewModule #overviewMenu button {
+      display: block;
+      margin-bottom: 15px; }
+    body.overviewModule #overviewMenu hr {
+      border-color: #457fa9;
+      border-width: 2px; }
+  body.overviewModule .jsplumb-drag {
     z-index: 200;
-    color: white;
-    background-color: #467ea8;
-    border: none; }
+    border: 1px solid #49c3f1;
+    box-shadow: 0px 0px 22px #49c3f1; }
   body.overviewModule .ui-dialog {
     padding: 0px 0px;
     border: 1px solid black;

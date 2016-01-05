@@ -15,7 +15,7 @@ jsPlumb.ready(function () {
             lineWidth: 4,
             strokeStyle: "#455d73"
         };
-        $(".block").each(function (itemIndex, item) {
+        $(".block, .metablock").each(function (itemIndex, item) {
             instance.draggable(item, { containment: "parent" });
         });
         instance.connect({
