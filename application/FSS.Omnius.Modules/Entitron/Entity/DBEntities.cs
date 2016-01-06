@@ -245,7 +245,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
 
-            
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.ContentList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
         }
     }
 }

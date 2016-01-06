@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-
+    
     [Table("Hermes_Email_Template")]
     public partial class EmailTemplate
     {
@@ -18,10 +18,7 @@
         [Display(Name = "HTML e-mail")]
         public bool Is_HTML { get; set; }
 
-        [Display(Name = "Obsah")]
-        [DataType(DataType.Text)]
-        public string Content { get; set; }
-        
         public virtual ICollection<EmailPlaceholder> PlaceholderList { get; set; }
+        public virtual ICollection<EmailTemplateContent> ContentList { get; set; }
     }
 }

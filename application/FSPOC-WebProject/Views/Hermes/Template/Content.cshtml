@@ -17,6 +17,10 @@
     <script src="~/Scripts/cm/mode/css/css.js"></script>
     <script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
 }
+else
+{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+}
 
 @using (Html.BeginRouteForm("Hermes", new { @action = "SaveContent" }, FormMethod.Post))
 {
@@ -43,8 +47,8 @@
         <div class="form-group">
             <div class="col-xs-12">
                 <h5>Obsah</h5>
-                @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @rows = 20 })
-                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(model => model.Name, new { @class = "form-control", @rows = 20 })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -59,11 +63,14 @@
     </div>
 }
 
+
+
 @if (!Model.Is_HTML)
 {
-    <script>
-        /* <![CDATA[ */
+    <script type="text/javascript">
+    /* <![CDATA[ */
         var cm;
+
         setTimeout(function() {
             var area = $('#Content');
             cm = CodeMirror.fromTextArea(area[0], {
@@ -72,33 +79,64 @@
                 extraKeys: { "Ctrl-Space": "autocomplete" }
             });
 
-            cm.on('blur', function() {
+            cm.on('blur', function () {
                 cm.save();
             });
-
-            // Pokud by byl nějaký přepínač html / wysiwyg
-            /*area.change(function() {
-                cm.setValue(this.value);
-            });
-            area.next().resizable({
-                resize: function() {
-                    cm.setSize($(this).width(), $(this).height());
-                }
-            });*/
         }, 500);
 
-        $(document).on('click', '.placeholder-list li', function () {
+        $('.placeholder-list li').click(function () {
             var placeholder = $(this).text();
-            alert(placeholder);
 
             if (placeholder.match(/\{list\..+\}/)) {
-                cm.replaceSelection(placeholder + "\r\n\r\n" + placeholder);
+                cm.replaceSelection(placeholder + "\r\n\r\n" + placeholder.replace(/\{/, '{end.'));
             }
             else {
                 cm.replaceSelection(placeholder);
             }
-        });       
-        /* ]]> */
+        });
+    /* ]]> */
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        $(function () {
+            var area = $('#Content');
+
+            var editor = CKEDITOR.replace(area.attr('id'), {
+                toolbarGroups : [
+                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                    { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+                    { name: 'forms', groups: ['forms'] },
+                    { name: 'links', groups: ['links'] },
+                    { name: 'insert', groups: ['insert'] },
+                    { name: 'tools', groups: ['tools'] },
+                    '/',
+                    { name: 'styles', groups: ['styles'] },
+                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+                    '/',
+                    { name: 'colors', groups: ['colors'] },
+                    { name: 'others', groups: ['others'] },
+                    { name: 'about', groups: ['about'] }
+                ],
+                removeButtons : 'BGColor,TextColor,Styles,Iframe,PageBreak,Smiley,Flash,Anchor,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Templates,Print,Save,About'
+            });
+
+            $('.placeholder-list li').click(function () {
+                var placeholder = $(this).text();
+
+                if (placeholder.match(/\{list\..+\}/)) {
+                    editor.insertHtml(placeholder + "<br><br>" + placeholder.replace(/\{/, '{end.'));
+                }
+                else {
+                    editor.insertHtml(placeholder);
+                }
+            });
+        });
+    /* ]]> */
     </script>
 }
 

@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(FSS.Omnius.Modules.Entitron.Entity.DBEntities context)

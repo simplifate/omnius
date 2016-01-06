@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Hermes
         {
             EmailTemplate template = e.EmailTemplates.Single(t => t.Name == templateName);
             plcs = template.PlaceholderList.ToList();
-            string content = template.Content;
+            string content = "";// template.Content;
 
             Regex regExpList = new Regex("^\\{list\\.([^\\}]+)}$");
 

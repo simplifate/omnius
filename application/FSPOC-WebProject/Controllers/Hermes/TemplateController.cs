@@ -88,7 +88,7 @@ namespace FSS.Omnius.Controllers.Hermes
             if (!model.Id.Equals(null))
             {
                 EmailTemplate row = e.EmailTemplates.Single(m => m.Id == model.Id);
-                row.Content = model.Content;
+                //row.Content = model.Content;
                 e.SaveChanges();
             }
             else
