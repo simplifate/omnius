@@ -28,8 +28,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// <returns>are conditions ok?</returns>
         public bool CanRun(Dictionary<string, object> tempVars)
         {
-
-            throw new NotImplementedException();
+            KeyValueString condition = new KeyValueString(Condition);
+            return condition.CompareResolved(tempVars);
         }
 
         /// <summary>
