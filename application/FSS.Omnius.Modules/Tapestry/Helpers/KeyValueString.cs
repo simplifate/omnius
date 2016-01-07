@@ -86,8 +86,11 @@ namespace FSS.Omnius.Modules.Tapestry
         /// <returns>separated keyValuePairs</returns>
         private Dictionary<string, string> SplitKeyValue(string value)
         {
-
             Dictionary<string, string> result = new Dictionary<string, string>();
+
+            // empty value
+            if (string.IsNullOrWhiteSpace(value))
+                return result;
 
             string[] keyValues = value.Split(';');
             foreach (string keyValue in keyValues)

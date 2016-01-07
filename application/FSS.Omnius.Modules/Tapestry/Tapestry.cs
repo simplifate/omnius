@@ -50,18 +50,20 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             else
             {
-                ActionRule actionRule = GetActionRule(_CORE.Entitron.Application, ActionRuleId.Value, _results, modelId);
+                ActionRule actionRule = null;
+                ActionRule nextRule = GetActionRule(_CORE.Entitron.Application, ActionRuleId.Value, _results, modelId);
 
-                while (actionRule != null)
+                while (nextRule != null)
                 {
+                    actionRule = nextRule;
                     actionRule.Run(_results);
-                    actionRule = GetAutoActionRule(_CORE.Entitron.Application, actionRule.TargetBlock, _results);
+                    nextRule = GetAutoActionRule(_CORE.Entitron.Application, actionRule.TargetBlock, _results);
                 }
 
                 targetBlock = actionRule.TargetBlock;
             }
 
-            // get model, page for Mozaic
+            // run PreAction & get page
             targetBlock.Run(_results);
             _page = targetBlock.MozaicPage;
         }
@@ -94,8 +96,8 @@ namespace FSS.Omnius.Modules.Tapestry
         
         private ActionRule GetActionRule(Application application, int ActionRuleId, ActionResultCollection results, int? modelId = null)
         {
-            if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
-                throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
+            //if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
+            //    throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
 
