@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -66,20 +67,32 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    TapestryDesignerBlockCommit blockCommit = context.TapestryDesignerBlocks.Where(b => b.Id == blockId).First()
-                        .BlockCommits.OrderByDescending(bc => bc.Timestamp).First();
-
-                    AjaxTapestryDesignerBlockCommit result = new AjaxTapestryDesignerBlockCommit
+                    AjaxTapestryDesignerBlockCommit result;
+                    TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
+                    try
                     {
-                        Id = blockCommit.Id,
-                        Name = blockCommit.Name,
-                        AssociatedTableName = blockCommit.AssociatedTableName,
-                        PositionX = blockCommit.PositionX,
-                        PositionY = blockCommit.PositionY,
-                        Timestamp = blockCommit.Timestamp,
-                        CommitMessage = blockCommit.CommitMessage
-                    };
-                    LoadRules(blockCommit, result);
+                        TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).First();
+
+                        result = new AjaxTapestryDesignerBlockCommit
+                        {
+                            Id = blockCommit.Id,
+                            Name = blockCommit.Name,
+                            AssociatedTableName = blockCommit.AssociatedTableName,
+                            PositionX = blockCommit.PositionX,
+                            PositionY = blockCommit.PositionY,
+                            Timestamp = blockCommit.Timestamp,
+                            CommitMessage = blockCommit.CommitMessage
+                        };
+                        LoadRules(blockCommit, result);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        result = new AjaxTapestryDesignerBlockCommit
+                        {
+                            Name = requestedBlock.Name,
+                            AssociatedTableName = requestedBlock.AssociatedTableName
+                        };
+                    }
                     return result;
                 }
             }
@@ -98,7 +111,13 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 using (var context = new DBEntities())
                 {
                     Dictionary<int, int> idMapping = new Dictionary<int, int>();
-                    TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == blockId).First();
+                    var targetBlock = context.TapestryDesignerBlocks.Find(blockId);
+                    if(targetBlock == null)
+                    {
+                        targetBlock = new TapestryDesignerBlock();
+                        targetBlock.ParentMetablock = context.TapestryDesignerMetablocks.Find(postData.ParentMetablockId);
+                        context.TapestryDesignerBlocks.Add(targetBlock);
+                    }
                     TapestryDesignerBlockCommit blockCommit = new TapestryDesignerBlockCommit
                     {
                         Timestamp = DateTime.Now,
@@ -106,7 +125,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Name = postData.Name,
                         AssociatedTableName = postData.AssociatedTableName
                     };
-                    block.BlockCommits.Add(blockCommit);
+                    targetBlock.BlockCommits.Add(blockCommit);
 
                     foreach (AjaxTapestryDesignerRule ajaxRule in postData.Rules)
                     {
@@ -161,6 +180,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             rule.Connections.Add(connection);
                         }
                     }
+                    targetBlock.Name = postData.Name;
+                    targetBlock.AssociatedTableName = postData.AssociatedTableName;
                     context.SaveChanges();
                 }
             }
@@ -178,7 +199,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    return context.TapestryDesignerBlocks.Where(b=> b.Id == blockId).First().BlockCommits.OrderByDescending(c => c.Timestamp)
+                    return context.TapestryDesignerBlocks.Find(blockId).BlockCommits.OrderByDescending(c => c.Timestamp)
                         .Select(c => new AjaxTapestryDesignerBlockCommitHeader
                         {
                             Id = c.Id,
@@ -224,6 +245,160 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+        [Route("api/tapestry/apps/{appId}/metablocks/{metablockId}")]
+        [HttpPost]
+        public AjaxTapestryDesignerIdMapping SaveMetablock(int appId, int metablockId, AjaxTapestryDesignerMetablock postData)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    AjaxTapestryDesignerIdMapping idMapping = new AjaxTapestryDesignerIdMapping();
+                    var targetMetablock = context.TapestryDesignerMetablocks.Find(metablockId);
+                    if (targetMetablock == null)
+                    {
+                        targetMetablock = new TapestryDesignerMetablock();
+                        if(postData.ParentMetablockId != null)
+                            targetMetablock.ParentMetablock = context.TapestryDesignerMetablocks.Find(postData.ParentMetablockId);
+
+                        context.TapestryDesignerMetablocks.Add(targetMetablock);
+                    }
+                    targetMetablock.Name = postData.Name;
+                    var blocksToDelete = new List<TapestryDesignerBlock>();
+                    foreach (var oldBlock in targetMetablock.Blocks)
+                    {
+                        var match = postData.Blocks.Where(c => !c.IsNew && c.Id == oldBlock.Id);
+                        if (match.Count() == 0)
+                        {
+                            blocksToDelete.Add(oldBlock);
+                        }
+                        else
+                        {
+                            var newBlock = match.First();
+                            oldBlock.Name = newBlock.Name;
+                            oldBlock.AssociatedTableName = newBlock.AssociatedTableName;
+                            oldBlock.PositionX = newBlock.PositionX;
+                            oldBlock.PositionY = newBlock.PositionY;
+                        }
+                    }
+                    foreach (var ajaxBlock in postData.Blocks.Where(c => c.IsNew))
+                    {
+                        int temporaryId = ajaxBlock.Id;
+                        var newBlock = new TapestryDesignerBlock
+                        {
+                            Name = ajaxBlock.Name,
+                            AssociatedTableName = ajaxBlock.AssociatedTableName,
+                            PositionX = ajaxBlock.PositionX,
+                            PositionY = ajaxBlock.PositionY
+                        };
+                        targetMetablock.Blocks.Add(newBlock);
+                        context.SaveChanges();
+                        idMapping.BlockIdPairs.Add(new AjaxTapestryDesignerIdPair
+                        {
+                            TemporaryId = temporaryId,
+                            RealId = newBlock.Id
+                        });
+                    }
+                    foreach(var block in blocksToDelete)
+                    {
+                        DeleteBlock(block, context);
+                    }
+                    var metablocksToDelete = new List<TapestryDesignerMetablock>();
+                    foreach (var oldMetablock in targetMetablock.Metablocks)
+                    {
+                        var match = postData.Metablocks.Where(c => !c.IsNew && c.Id == oldMetablock.Id);
+                        if (match.Count() == 0)
+                        {
+                            metablocksToDelete.Add(oldMetablock);
+                        }
+                        else
+                        {
+                            var newMetablock = match.First();
+                            oldMetablock.Name = newMetablock.Name;
+                            oldMetablock.PositionX = newMetablock.PositionX;
+                            oldMetablock.PositionY = newMetablock.PositionY;
+                        }
+                    }
+                    foreach (var ajaxMetablock in postData.Metablocks.Where(c => c.IsNew))
+                    {
+                        int temporaryId = ajaxMetablock.Id;
+                        var newMetablock = new TapestryDesignerMetablock
+                        {
+                            Name = ajaxMetablock.Name,
+                            PositionX = ajaxMetablock.PositionX,
+                            PositionY = ajaxMetablock.PositionY
+                        };
+                        targetMetablock.Metablocks.Add(newMetablock);
+                        context.SaveChanges();
+                        idMapping.MetablockIdPairs.Add(new AjaxTapestryDesignerIdPair
+                        {
+                            TemporaryId = temporaryId,
+                            RealId = newMetablock.Id
+                        });
+                    }
+                    foreach (var metablock in metablocksToDelete)
+                    {
+                        DeleteMetablock(metablock, context);
+                    }
+                    context.SaveChanges();
+                    return idMapping;
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Overview: error saving metablock (POST api/tapestry/apps/{appId}/metablocks/{metablockId}). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+        [Route("api/tapestry/apps/{appId}/metablocks/{metablockId}")]
+        [HttpGet]
+        public AjaxTapestryDesignerMetablock LoadMetablock(int appId, int metablockId)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    var requestedMetablock = context.TapestryDesignerMetablocks.Find(metablockId);
+                    var blockList = new List<AjaxTapestryDesignerBlock>();
+                    var metablockList = new List<AjaxTapestryDesignerMetablock>();
+
+                    foreach(var sourceBlock in requestedMetablock.Blocks)
+                    {
+                        blockList.Add(new AjaxTapestryDesignerBlock
+                        {
+                            Id = sourceBlock.Id,
+                            Name = sourceBlock.Name,
+                            AssociatedTableName = sourceBlock.AssociatedTableName,
+                            PositionX = sourceBlock.PositionX,
+                            PositionY = sourceBlock.PositionY
+                        });
+                    }
+                    foreach (var sourceMetablock in requestedMetablock.Metablocks)
+                    {
+                        metablockList.Add(new AjaxTapestryDesignerMetablock
+                        {
+                            Id = sourceMetablock.Id,
+                            Name = sourceMetablock.Name,
+                            PositionX = sourceMetablock.PositionX,
+                            PositionY = sourceMetablock.PositionY
+                        });
+                    }
+                    AjaxTapestryDesignerMetablock result = new AjaxTapestryDesignerMetablock
+                    {
+                        Id = requestedMetablock.Id,
+                        Name = requestedMetablock.Name,
+                        Blocks = blockList,
+                        Metablocks = metablockList
+                    };
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Overview: error when loading metablock data (GET api/tapestry/apps/{appId}/metablocks/{metablockId}). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);
@@ -235,34 +410,31 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadApp(TapestryDesignerApp requestedApp, AjaxTapestryDesignerApp result)
         {
-            foreach(TapestryDesignerMetaBlock metaBlock in requestedApp.MetaBlocks)
+            var ajaxMetablock = new AjaxTapestryDesignerMetablock
             {
-                var ajaxMetaBlock = new AjaxTapestryDesignerMetaBlock
-                {
-                    Id = metaBlock.Id,
-                    Name = metaBlock.Name,
-                    PositionX = metaBlock.PositionX,
-                    PositionY = metaBlock.PositionY
-                };
-                LoadMetaBlocks(metaBlock, ajaxMetaBlock);
-                result.MetaBlocks.Add(ajaxMetaBlock);
-            }
+                Id = requestedApp.RootMetablock.Id,
+                Name = requestedApp.RootMetablock.Name,
+                PositionX = requestedApp.RootMetablock.PositionX,
+                PositionY = requestedApp.RootMetablock.PositionY
+            };
+            LoadMetablocks(requestedApp.RootMetablock, ajaxMetablock);
+            result.RootMetablock = ajaxMetablock;
         }
-        private static void LoadMetaBlocks(TapestryDesignerMetaBlock requestedMetaBlock, AjaxTapestryDesignerMetaBlock result)
+        private static void LoadMetablocks(TapestryDesignerMetablock requestedMetablock, AjaxTapestryDesignerMetablock result)
         {
-            foreach (TapestryDesignerMetaBlock metaBlock in requestedMetaBlock.MetaBlocks)
+            foreach (TapestryDesignerMetablock metablock in requestedMetablock.Metablocks)
             {
-                var ajaxMetaBlock = new AjaxTapestryDesignerMetaBlock
+                var ajaxMetablock = new AjaxTapestryDesignerMetablock
                 {
-                    Id = metaBlock.Id,
-                    Name = metaBlock.Name,
-                    PositionX = metaBlock.PositionX,
-                    PositionY = metaBlock.PositionY
+                    Id = metablock.Id,
+                    Name = metablock.Name,
+                    PositionX = metablock.PositionX,
+                    PositionY = metablock.PositionY
                 };
-                LoadMetaBlocks(metaBlock, ajaxMetaBlock);
-                result.MetaBlocks.Add(ajaxMetaBlock);
+                LoadMetablocks(metablock, ajaxMetablock);
+                result.Metablocks.Add(ajaxMetablock);
             }
-            foreach (TapestryDesignerBlock block in requestedMetaBlock.Blocks)
+            foreach (TapestryDesignerBlock block in requestedMetablock.Blocks)
             {
                 var ajaxBlock = new AjaxTapestryDesignerBlock
                 {
@@ -338,6 +510,48 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 };
                 result.Connections.Add(ajaxConnection);
             }
+        }
+        private static void DeleteMetablock(TapestryDesignerMetablock metablockToDelete, DBEntities context)
+        {
+            var blockList = new List<TapestryDesignerBlock>();
+            var metablockList = new List<TapestryDesignerMetablock>();
+            foreach (var metablock in metablockToDelete.Metablocks)
+                metablockList.Add(metablock);
+            foreach (var metablock in metablockList)
+                DeleteMetablock(metablock, context);
+            foreach (var block in metablockToDelete.Blocks)
+                blockList.Add(block);
+            foreach (var block in blockList)
+                DeleteBlock(block, context);
+            context.Entry(metablockToDelete).State = EntityState.Deleted;
+        }
+        private static void DeleteBlock(TapestryDesignerBlock blockToDelete, DBEntities context)
+        {
+            var blockCommitList = new List<TapestryDesignerBlockCommit>();
+            foreach (var blockCommit in blockToDelete.BlockCommits)
+            {
+                var ruleList = new List<TapestryDesignerRule>();
+                foreach (var rule in blockCommit.Rules)
+                {
+                    var itemList = new List<TapestryDesignerItem>();
+                    var connectionList = new List<TapestryDesignerConnection>();
+                    foreach (var item in rule.Items)
+                        itemList.Add(item);
+                    foreach (var item in itemList)
+                        context.Entry(item).State = EntityState.Deleted;
+                    foreach (var connection in rule.Connections)
+                        connectionList.Add(connection);
+                    foreach (var connection in connectionList)
+                        context.Entry(connection).State = EntityState.Deleted;
+                    ruleList.Add(rule);
+                }
+                foreach(var rule in ruleList)
+                    context.Entry(rule).State = EntityState.Deleted;
+                blockCommitList.Add(blockCommit);
+            }
+            foreach (var blockCommit in blockCommitList)
+                context.Entry(blockCommit).State = EntityState.Deleted;
+            context.Entry(blockToDelete).State = EntityState.Deleted;
         }
         public TapestryApiController() { }
     }

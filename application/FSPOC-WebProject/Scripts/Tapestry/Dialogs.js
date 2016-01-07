@@ -314,10 +314,11 @@ $(function () {
             },
             open: function (event, ui) {
                 historyDialog.data("selectedCommitId", null);
-                // TODO: replace hardcoded IDs with real app/block IDs
+                appId = $("#currentAppId").val();
+                blockId = $("#currentBlockId").val();
                 $.ajax({
                     type: "GET",
-                    url: "/api/tapestry/apps/1/blocks/1/commits",
+                    url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits",
                     dataType: "json",
                     error: function () { alert("Error loading commit history") },
                     success: function (data) {

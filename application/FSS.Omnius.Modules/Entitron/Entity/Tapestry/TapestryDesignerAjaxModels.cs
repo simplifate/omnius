@@ -7,30 +7,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<AjaxTapestryDesignerMetaBlock> MetaBlocks { get; set; }
-
-        public AjaxTapestryDesignerApp()
-        {
-            MetaBlocks = new List<AjaxTapestryDesignerMetaBlock>();
-        }
+        public AjaxTapestryDesignerMetablock RootMetablock { get; set; }
     }
     public class AjaxTapestryDesignerAppHeader
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
-    public class AjaxTapestryDesignerMetaBlock
+    public class AjaxTapestryDesignerMetablock
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
-        public List<AjaxTapestryDesignerMetaBlock> MetaBlocks { get; set; }
+        public int? ParentMetablockId { get; set; }
+        public bool IsNew { get; set; }
+
+        public List<AjaxTapestryDesignerMetablock> Metablocks { get; set; }
         public List<AjaxTapestryDesignerBlock> Blocks { get; set; }
 
-        public AjaxTapestryDesignerMetaBlock()
+        public AjaxTapestryDesignerMetablock()
         {
-            MetaBlocks = new List<AjaxTapestryDesignerMetaBlock>();
+            Metablocks = new List<AjaxTapestryDesignerMetablock>();
             Blocks = new List<AjaxTapestryDesignerBlock>();
         }
     }
@@ -39,8 +37,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
         public string AssociatedTableName { get; set; }
+        public string AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public bool IsNew { get; set; }
 
         public List<AjaxTapestryDesignerBlockCommit> BlockCommits { get; set; }
 
@@ -57,6 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
+        public int ParentMetablockId { get; set; }
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
@@ -119,5 +120,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Source { get; set; }
         public int SourceSlot { get; set; }
         public int Target { get; set; }
+    }
+    public class AjaxTapestryDesignerIdPair
+    {
+        public int TemporaryId { get; set; }
+        public int RealId { get; set; }
+    }
+    public class AjaxTapestryDesignerIdMapping
+    {
+        public List<AjaxTapestryDesignerIdPair> BlockIdPairs { get; set; }
+        public List<AjaxTapestryDesignerIdPair> MetablockIdPairs { get; set; }
+
+        public AjaxTapestryDesignerIdMapping()
+        {
+            BlockIdPairs = new List<AjaxTapestryDesignerIdPair>();
+            MetablockIdPairs = new List<AjaxTapestryDesignerIdPair>();
+        }
     }
 }

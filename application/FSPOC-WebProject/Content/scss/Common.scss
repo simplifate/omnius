@@ -105,6 +105,9 @@
 .btn-omnius-rectangular:hover {
     background-color: #2ddef9;
 }
+.btn-omnius-rectangular:disabled {
+    background-color: #a0a0a0;
+}
 .tileMenuArea {
     position: absolute;
     left: 80px;

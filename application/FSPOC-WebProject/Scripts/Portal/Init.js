@@ -16,7 +16,7 @@ $(function () {
         $("#adminMenuApps").addClass("active");
     else if (CurrentModuleIs("nexusModule"))
         $("#adminMenuNexus").addClass("active");
-    else if (CurrentModuleIs("tapestryModule")) {
+    else if (CurrentModuleIs("tapestryModule") || CurrentModuleIs("overviewModule")) {
         $("#adminMenuTapestry").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }

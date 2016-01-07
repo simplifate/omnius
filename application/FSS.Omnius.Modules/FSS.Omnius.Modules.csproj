@@ -311,6 +311,10 @@
     <Compile Include="Migrations\201601061539404_Hermes-Template-Content.Designer.cs">
       <DependentUpon>201601061539404_Hermes-Template-Content.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601071052182_Overview Metablocks.cs" />
+    <Compile Include="Migrations\201601071052182_Overview Metablocks.Designer.cs">
+      <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -440,6 +444,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601061539404_Hermes-Template-Content.resx">
       <DependentUpon>201601061539404_Hermes-Template-Content.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071052182_Overview Metablocks.resx">
+      <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -91,12 +91,15 @@
         CommitMessage: commitMessage,
         Name: $("#headerBlockName").text(),
         AssociatedTableName: $("#headerTableName").text(),
-        Rules: ruleArray
+        AssociatedTableId: $("#associatedTableId").val(),
+        Rules: ruleArray,
+        ParentMetablockId: $("#parentMetablockId").val()
     }
-    // TODO: replace hardcoded IDs with real app/block IDs
+    appId = $("#currentAppId").val();
+    blockId = $("#currentBlockId").val();
     $.ajax({
         type: "POST",
-        url: "/api/tapestry/apps/1/blocks/1",
+        url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId,
         data: postData,
         success: function () { alert("OK") },
         error: function () { alert("ERROR") }

@@ -6,8 +6,8 @@
 
 <div id="blockPanel" class="blockPanel">
     <div class="header">
-        <div class="headerItem" id="headerBlockName">Log In Screen</div>
-        <div class="headerItem" id="headerTableName">User</div>
+        <div class="headerItem" id="headerBlockName">New block</div>
+        <div class="headerItem" id="headerTableName">(select table)</div>
         <div class="headerItem" id="headerOverview">Return to Overview</div>
         <div class="headerItem" id="headerSaveButton">Save</div>
         <div class="headerItem" id="headerLoadButton">Load</div>
@@ -27,6 +27,7 @@
             <button type="button" id="btnZoomOut">Zoom out</button>
         </div>
         <div class="scrollArea">
+            <!--
             <div id="rule1" class="rule" style="left: 24px; top: 35px; width: 380px; height: 80px;">
                 <div class="ruleHeader">Rule1</div>
                 <div class="editRuleIcon fa fa-edit"></div>
@@ -61,6 +62,7 @@
                     </div>
                 </div>
             </div>
+                -->
         </div>
     </div>
     <div id="viewsPanel" class="menuPanel">
@@ -100,7 +102,13 @@
     <div id="lowerRightVerticalDivider"><div class="verticalDividerBar"></div></div>
     <div id="rightHorizontalDivider"><div class="horizontalDividerBar"></div></div>
 </div>
-
+<input type="hidden" id="currentAppId" value="1" />
+<input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
+<input type="hidden" id="associatedTableId" value="1" />
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
 <div id="rename-block-dialog" title="Rename block">
     <form>
         <fieldset>

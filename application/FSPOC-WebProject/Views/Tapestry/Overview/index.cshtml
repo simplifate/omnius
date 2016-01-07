@@ -3,40 +3,52 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "overviewModule";
 }
-
 <div id="overviewHeaderArea">
-    App: <span id="headerAppName">Default app</span><br /> Metablock: <span id="headerMetablockName">Metablock 1</span>
+    App: <span id="headerAppName">Default app</span><br /> Metablock: <span id="headerMetablockName"></span>
 </div>
 <div id="overviewMenu">
     <button id="btnAddBlock" class="btn-omnius-rectangular">Add block</button>
-    <button id="btnAddMetaBlock" class="btn-omnius-rectangular">Add metablock</button>
+    <button id="btnAddMetablock" class="btn-omnius-rectangular">Add metablock</button>
     <hr />
     <button id="btnSave" class="btn-omnius-rectangular">Save</button>
     <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
     <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
+    <hr />
+    <button id="btnGoUp" class="btn-omnius-rectangular" @((int)ViewData["parentMetablockId"]==0?"disabled=disabled":"")>Go up</button>
 </div>
 <div id="overviewPanel">
-    <div class="block" id="block1" style="left: 150px; top: 150px;" blockId="0" tableId="6">
+    <!--
+    <div class="block" id="block1" style="left: 150px; top: 150px;" blockId="1" tableId="6">
         <div class="blockName">Log in screen</div>
         <div class="tableName">Users</div>
     </div>
-    <div class="block" id="block2" style="left: 550px; top: 300px;" blockId="1" tableId="2">
+    <div class="block" id="block2" style="left: 550px; top: 300px;" blockId="2" tableId="2">
         <div class="blockName">Second block</div>
         <div class="tableName">Table2</div>
     </div>
-    <div class="block" id="block3" style="left: 950px; top: 150px;" blockId="2" tableId="3">
+    <div class="block" id="block3" style="left: 950px; top: 150px;" blockId="3" tableId="3">
         <div class="blockName">Third block</div>
         <div class="tableName">Table3</div>
     </div>
-    <div class="block" id="block4" style="left: 950px; top: 450px;" blockId="3" tableId="4">
+    <div class="block" id="block4" style="left: 950px; top: 450px;" blockId="4" tableId="4">
         <div class="blockName">Fourth block</div>
         <div class="tableName">Table4</div>
     </div>
-    <div class="metablock" id="metablock1" style="left: 135px; top: 460px;" metablockId="1">
+    <div class="metablock" id="metablock1" style="left: 135px; top: 460px;" metablockId="2">
         <div class="metablockName">Metablock example</div>
         <div class="metablockSymbol fa fa-th-large"></div>
     </div>
+    -->
 </div>
+<form id="openBlockForm" method="post" action="/Tapestry/Builder">
+    <input type="hidden" name="blockId" />
+</form>
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
+<input type="hidden" id="currentAppId" value="1" />
+<input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <div id="add-block-dialog" title="Add block">
     <form>
         <fieldset>

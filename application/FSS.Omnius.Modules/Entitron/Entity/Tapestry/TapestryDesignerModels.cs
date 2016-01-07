@@ -20,29 +20,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<TapestryDesignerMetaBlock> MetaBlocks { get; set; }
-
-        public TapestryDesignerApp()
-        {
-            MetaBlocks = new List<TapestryDesignerMetaBlock>();
-        }
+        public virtual TapestryDesignerMetablock RootMetablock { get; set; }
     }
-    [Table("TapestryDesigner_MetaBlocks")]
-    public class TapestryDesignerMetaBlock
+    [Table("TapestryDesigner_Metablocks")]
+    public class TapestryDesignerMetablock
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<TapestryDesignerMetaBlock> MetaBlocks { get; set; }
+        public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
         public int PositionX { get; set; } // For visual representation in Overview
         public int PositionY { get; set; }
 
-        public TapestryDesignerMetaBlock ParentMetaBlock { get; set; }
+        public TapestryDesignerMetablock ParentMetablock { get; set; }
         public TapestryDesignerApp ParentApp { get; set; }
 
-        public TapestryDesignerMetaBlock()
+        public TapestryDesignerMetablock()
         {
-            MetaBlocks = new List<TapestryDesignerMetaBlock>();
+            Metablocks = new List<TapestryDesignerMetablock>();
             Blocks = new List<TapestryDesignerBlock>();
         }
     }
@@ -52,12 +47,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
         public string AssociatedTableName { get; set; }
+        public int AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
 
-        public virtual TapestryDesignerMetaBlock ParentMetaBlock { get; set; }
+        public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
 
         public TapestryDesignerBlock()
         {

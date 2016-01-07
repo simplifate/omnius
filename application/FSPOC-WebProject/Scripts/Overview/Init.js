@@ -1,18 +1,21 @@
 ﻿$(function () {
     if (CurrentModuleIs("overviewModule")) {
+        LoadMetablock();
+
         $("#headerMetablockName").on("click", function () {
-            renameMetaBlockDialog.dialog("open");
+            renameMetablockDialog.dialog("open");
         });
         $("#btnAddBlock").on("click", function () {
             addBlockDialog.dialog("open");
         });
-        $("#btnAddMetaBlock").on("click", function () {
-            addMetaBlockDialog.dialog("open");
+        $("#btnAddMetablock").on("click", function () {
+            addMetablockDialog.dialog("open");
         });
         $("#btnLoad").on("click", function () {
+            LoadMetablock();
         });
         $("#btnSave").on("click", function () {
-            SaveMetaBlock();
+            SaveMetablock();
         });
         $("#btnClear").on("click", function () {
             $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {
@@ -20,9 +23,12 @@
                 $(element).remove();
             });
         });
-        $(".block").on("dblclick", function () {
-            // TODO: Pass block's ID to Tapestry to edit this block
-            window.location.href = "/tapestry";
+        $("#btnGoUp").on("click", function () {
+            SaveMetablock(function () {
+                openMetablockForm = $("#openMetablockForm");
+                openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
+                openMetablockForm.submit();
+            });
         });
         $.contextMenu({
             selector: '.block, .metablock',

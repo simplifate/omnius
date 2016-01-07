@@ -45,6 +45,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<WS> WSs { get; set; }
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
         public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<Smtp> SMTPs { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
@@ -213,16 +214,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Tapestry designer
             modelBuilder.Entity<TapestryDesignerApp>()
-                .HasMany(s => s.MetaBlocks)
+                .HasRequired(s => s.RootMetablock)
                 .WithOptional(s => s.ParentApp);
 
-            modelBuilder.Entity<TapestryDesignerMetaBlock>()
-                .HasMany(s => s.MetaBlocks)
-                .WithOptional(s => s.ParentMetaBlock);
+            modelBuilder.Entity<TapestryDesignerMetablock>()
+                .HasMany(s => s.Metablocks)
+                .WithOptional(s => s.ParentMetablock);
 
-            modelBuilder.Entity<TapestryDesignerMetaBlock>()
+            modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
-                .WithRequired(s => s.ParentMetaBlock);
+                .WithRequired(s => s.ParentMetablock);
 
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)

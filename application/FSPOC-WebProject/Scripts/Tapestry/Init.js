@@ -1,6 +1,8 @@
 var ZoomFactor = 1.0;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
+        LoadBlock();
+
         $("#headerBlockName").on("click", function () {
             renameBlockDialog.dialog("open");
         });
@@ -8,9 +10,11 @@ $(function () {
             chooseTableDialog.dialog("open");
         });
         $("#headerOverview").on("click", function () {
-            window.location.href = "/Tapestry/Overview";
+            openMetablockForm = $("#openMetablockForm");
+            openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
+            openMetablockForm.submit();
         });
-	$("#headerHistoryButton").on("click", function () {
+	    $("#headerHistoryButton").on("click", function () {
             historyDialog.dialog("open");
         });
         $("#headerSaveButton").on("click", function () {
