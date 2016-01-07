@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    class CompareAction : Action
+    public class CompareAction : Action
     {
         public override int Id
         {

@@ -1,16 +1,12 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
     public class RightsController : Controller
     {
-        // GET: Rights
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
@@ -19,8 +15,7 @@ namespace FSPOC_WebProject.Controllers.Persona
             List<string> groups = new List<string>();
             foreach(ActionRight act in e.ActionRights)
             {
-                Dictionary<int,string> names = FSS.Omnius.Modules.Tapestry.Action.AllNames;
-                actions.Add(names[act.ActionId]);
+                actions.Add(FSS.Omnius.Modules.Tapestry.Action.All[act.ActionId].Name);
             }
             foreach(AppRight app in e.ApplicationRights)
             {

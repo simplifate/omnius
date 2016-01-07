@@ -1,15 +1,16 @@
 ﻿using FSS.Omnius.Modules.Tapestry.Actions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
     public abstract class Action
     {
-        private static Type[] _repositories;
-        private static Dictionary<int, Type> _actions;
-        private static Dictionary<int, string> _actionNames;
-        public static Type[] Repositories
+        private static IEnumerable<Type> _repositories = null;
+        private static Dictionary<int, Action> _actions = null;
+        public static IEnumerable<Type> Repositories
         {
             get
             {
@@ -19,7 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 return _repositories;
             }
         }
-        public static Dictionary<int, Type> All
+        public static Dictionary<int, Action> All
         {
             get
             {
@@ -29,44 +30,21 @@ namespace FSS.Omnius.Modules.Tapestry
                 return _actions;
             }
         }
-        public static Dictionary<int, string> AllNames
-        {
-            get
-            {
-                if (_actionNames == null)
-                {
-                    _actionNames = new Dictionary<int, string>();
-                    foreach (var pair in All)
-                    {
-                        _actionNames.Add(pair.Key, (string)pair.Value.GetProperty("Name").GetValue(null, null));
-                    }
-                }
-
-                return _actionNames;
-            }
-        }
-        public static Type GetAction(int id)
-        {
-            if (_actions == null)
-                INIT();
-
-            return _actions[id];
-        }
         public static ActionResultCollection RunAction(int id, Dictionary<string, object> vars)
         {
-            Type actionType = GetAction(id);
-            Action action = (Action)Activator.CreateInstance(actionType);
+            Action action = All[id];
 
             return action.run(vars);
         }
         public static void INIT()
         {
-            _repositories = typeof(ActionRepositoryAttribute).GetNestedTypes();
-            _actions = new Dictionary<int, Type>();
-            foreach (Type type in typeof(Action).GetNestedTypes())
+            _repositories = Assembly.GetAssembly(typeof(ActionRepositoryAttribute)).GetTypes().Where(t => t.IsSubclassOf(typeof(ActionRepositoryAttribute)));
+            _actions = new Dictionary<int, Action>();
+            
+            foreach (Type type in Assembly.GetAssembly(typeof(Action)).GetTypes().Where(t => t.IsSubclassOf(typeof(Action)) && !t.IsAbstract))
             {
-                int id = (int)type.GetProperty("Id").GetValue(null, null);
-                _actions.Add(id, type);
+                Action action = (Action)Activator.CreateInstance(type);
+                _actions.Add(action.Id, action);
             }
         }
 

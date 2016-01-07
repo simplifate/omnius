@@ -158,6 +158,7 @@
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
+    <Compile Include="Entitron\Table\Application.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
@@ -205,7 +206,6 @@
     <Compile Include="Entitron\Sql\SqlQuery_withApp.cs" />
     <Compile Include="Entitron\Sql\SqlQueue.cs" />
     <Compile Include="Entitron\Table\AdditionalSqlDefinition.cs" />
-    <Compile Include="Entitron\Table\DBApp.cs" />
     <Compile Include="Entitron\Table\DBColumn.cs" />
     <Compile Include="Entitron\Table\DBColumns.cs" />
     <Compile Include="Entitron\Table\DBForeignKey.cs" />
@@ -334,12 +334,13 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tapestry\Action.cs" />
-    <Compile Include="Tapestry\ActionResultCollection.cs" />
-    <Compile Include="Tapestry\ActionRule_Action.cs" />
+    <Compile Include="Tapestry\Running\Action.cs" />
+    <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
+    <Compile Include="Tapestry\Running\ActionBlock.cs" />
+    <Compile Include="Tapestry\Running\ActionRule_Action.cs" />
     <Compile Include="Tapestry\Actions\ActionRepository.cs" />
-    <Compile Include="Tapestry\ActionResult.cs" />
-    <Compile Include="Tapestry\ActionRule.cs" />
+    <Compile Include="Tapestry\Helpers\ActionResult.cs" />
+    <Compile Include="Tapestry\Running\ActionRule.cs" />
     <Compile Include="Tapestry\Actions\ActionSequence.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
@@ -351,10 +352,11 @@
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AnyItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectAction.cs" />
-    <Compile Include="Tapestry\Block.cs" />
-    <Compile Include="Tapestry\KeyValueString.cs" />
-    <Compile Include="Tapestry\NotAllowedExcetption.cs" />
-    <Compile Include="Tapestry\PreBlockAction.cs" />
+    <Compile Include="Tapestry\Running\Action_ActionBlock.cs" />
+    <Compile Include="Tapestry\Running\Block.cs" />
+    <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
+    <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
+    <Compile Include="Tapestry\Running\PreBlockAction.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Watchtower\WatchtowerLogger.cs" />
   </ItemGroup>

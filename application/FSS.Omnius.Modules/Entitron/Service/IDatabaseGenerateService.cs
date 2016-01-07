@@ -3,11 +3,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
     public interface IDatabaseGenerateService
     {
-        void GenerateDatabase(DbSchemeCommit dbSchemeCommit);
+        void GenerateDatabase(Application application, DbSchemeCommit dbSchemeCommit);
     }
 }

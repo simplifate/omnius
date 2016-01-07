@@ -23,12 +23,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public static List<string> GetSpecificRights(string groupName, string actionName)
         {
             DBEntities e = new DBEntities();
-            Dictionary<int, string> names = Action.AllNames;
             List<string> rights = new List<string>();
 
             foreach (ActionRight act in e.ActionRights)
             {
-                string name = names[act.ActionId];
+                string name = Action.All[act.ActionId].Name;
 
                 if ((act.Group.Name == groupName) && (name == actionName))
                 {

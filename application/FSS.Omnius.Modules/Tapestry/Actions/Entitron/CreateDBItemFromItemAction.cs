@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ApplicationName", "TableName", "Item" };
+                return new string[] { "TableName", "Item" };
             }
         }
 
@@ -48,7 +48,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             DBItem item = (DBItem)vars["Item"];
 
             Modules.Entitron.Entitron ent = core.Entitron;
-            ent.AppName = (string)vars["ApplicationName"];
             ent.GetDynamicTable((string)vars["TableName"]).Add(item);
             ent.Application.SaveChanges();
         }

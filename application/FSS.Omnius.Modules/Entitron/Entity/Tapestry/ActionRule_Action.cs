@@ -16,9 +16,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ActionId { get; set; }
+        public override int ActionId { get; set; }
 
-        public int Order { get; set; }
+        public override int Order { get; set; }
 
         /// <summary>
         /// Target1=source1;target2=source2
@@ -29,10 +29,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// d - double
         /// </summary>
         [StringLength(2000)]
-        public string InputVariablesMapping { get; set; } // target=source;c=d
+        public override string InputVariablesMapping { get; set; } // target=source;c=d
 
         [StringLength(2000)]
-        public string OutputVariablesMapping { get; set; } // target=source;c=d
+        public override string OutputVariablesMapping { get; set; } // target=source;c=d
 
         public virtual ActionRule ActionRule { get; set; }
     }

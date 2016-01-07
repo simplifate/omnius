@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
+    [EntitronRepository]
     public class SelectAction : Action
     {
         public override int Id
@@ -20,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ApplicationName", "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperation[index]" };
+                return new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperation[index]" };
             }
         }
 
@@ -44,7 +45,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            core.Entitron.AppName = (string)vars["ApplicationName"];
             DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
 
             //

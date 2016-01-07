@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ItemId", "ApplicationName", "TableName" };
+                return new string[] { "ItemId", "TableName" };
             }
         }
 
@@ -46,7 +46,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
             Modules.Entitron.Entitron ent = core.Entitron;
-            ent.AppName = (string)vars["ApplicationName"];
             ent.GetDynamicTable((string)vars["TableName"]).Remove((int)vars["ItemId"]);
             ent.Application.SaveChanges();
         }

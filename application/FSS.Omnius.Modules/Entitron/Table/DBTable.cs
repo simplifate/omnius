@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Sql;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron
 {
@@ -20,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron
         private int? _tableId;
 
         public string tableName { get; set; }
-        public DBApp Application { get; set; }
+        public Application Application { get; set; }
         private DBColumns _columns;
         public DBColumns columns
         {

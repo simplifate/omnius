@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -9,13 +10,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
         /// <summary>
         /// </summary>
         /// <param name="dbSchemeCommit"></param>
-        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit)
+        public void GenerateDatabase(Application application, DbSchemeCommit dbSchemeCommit)
         {
             List<DBTable> entitronTables = new List<DBTable>();
 
             CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
-            e.Application = DBApp.GetOrCreate("TestApp");
+            e.Application = application;
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
