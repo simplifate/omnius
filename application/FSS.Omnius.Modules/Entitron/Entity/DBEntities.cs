@@ -50,6 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Smtp> SMTPs { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
         public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
+        public virtual DbSet<EmailLog> EmailLogItems { get; set; }
         public virtual DbSet<LogItem> LogItems { get; set; }
         public virtual DbSet<WebDavServer> WebDavServers { get; set; }
         public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
@@ -252,10 +253,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
 
+            modelBuilder.Entity<EmailLog>();
+
             modelBuilder.Entity<DataType>()
                 .HasMany(e => e.AttributeRules)
                 .WithRequired(e => e.AttributeDataType)
                 .HasForeignKey(e => e.AttributeDataTypeId);
+
+            
         }
     }
 }

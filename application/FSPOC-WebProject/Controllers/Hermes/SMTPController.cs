@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
-using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -93,8 +93,11 @@ namespace FSS.Omnius.Controllers.Hermes
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
 
-            Mailer mail = new Mailer();
-            ViewData["result"] = mail.SendMail("Seznam WS", model);
+            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.SendMail();
+
+            ViewData["result"] = "OK";
 
             return View("~/Views/Hermes/SMTP/Test.cshtml");
         }

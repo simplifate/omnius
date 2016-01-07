@@ -1,36 +1,30 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Hermes
-@model FSS.Omnius.Modules.Entitron.Entity.Hermes.EmailTemplate
+@model EmailTemplate
 @{
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
 }
 
-@if (!Model.Is_HTML)
-{
-    <link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
-    <link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
-    <script src="~/Scripts/cm/lib/codemirror.js"></script>
-    <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
-    <script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
-    <script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
-    <script src="~/Scripts/cm/mode/xml/xml.js"></script>
-    <script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
-    <script src="~/Scripts/cm/mode/css/css.js"></script>
-    <script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
-}
-else
-{
-    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
-}
+<link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
+<link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
+<script src="~/Scripts/cm/lib/codemirror.js"></script>
+<script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+<script src="~/Scripts/cm/mode/xml/xml.js"></script>
+<script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+<script src="~/Scripts/cm/mode/css/css.js"></script>
+<script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
 @using (Html.BeginRouteForm("Hermes", new { @action = "SaveContent" }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id);
     
     <div class="form-horizontal">
         <h4>@Html.Raw(string.Format("Úprava obsahu e-mailu <em>{0}</em>", Model.Name))</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             <div class="col-xs-12">
@@ -44,12 +38,49 @@ else
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-xs-12">
-                <h5>Obsah</h5>
-                @Html.TextAreaFor(model => model.Name, new { @class = "form-control", @rows = 20 })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+        <div id="language-tabs">
+            <ul>
+                @foreach (KeyValuePair<int, string> lang in (Dictionary<int, string>)ViewData["LanguageList"])
+                {
+                    <li data-langid="@lang.Key">
+                        <a href="#Language@(lang.Key)" title="@lang.Value">@lang.Value</a>
+                    </li>
+                }
+            </ul>
+
+            @foreach (KeyValuePair<int, string> lang in (Dictionary<int, string>)ViewData["LanguageList"])
+            {
+                EmailTemplateContent content = Model.ContentList.SingleOrDefault(m => m.LanguageId == lang.Key);
+                string lId = lang.Key.ToString();
+
+                <div id="Language@(lang.Key)">
+                    <div class="form-group">
+                        <label for="content_From_Name_@lId" class="col-md-2 control-label">Jméno odesílatele:</label>
+                        <div class="col-md-10">
+                            <input type="text" name="content.From_Name.@lId" value="@(content == null ? "" : content.From_Name)" id="content_From_Name_@lId" class="form-control" maxlength="255" />
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="content_From_Email_@lId" class="col-md-2 control-label">E-mail odesílatele:</label>
+                        <div class="col-md-10">
+                            <input type="email" name="content.From_Email.@lId" value="@(content == null ? "" : content.From_Email)" id="content_From_Email_@lId" class="form-control" maxlength="1000" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="content_Subject_@lId" class="col-md-2 control-label">Předmět:</label>
+                        <div class="col-md-10">
+                            <input type="text" name="content.Subject.@lId" value="@(content == null ? "" : content.Subject)" id="content_Subject_@lId" class="form-control" maxlength="1000" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="content_Content_@lId" class="col-md-2 control-label">Obsah:</label>
+                        <div class="col-md-10">                            
+                            <textarea name="content.Content.@lId" id="content_Content_@lId" class="form-control editor-@(Model.Is_HTML ? "ck" : "cm")" rows="20" data-langid="@lId">@(content == null ? "" : content.Content)</textarea>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
         </div>
 
         <div class="form-group">
@@ -63,82 +94,74 @@ else
     </div>
 }
 
-
-
-@if (!Model.Is_HTML)
-{
-    <script type="text/javascript">
+<script type="text/javascript">
     /* <![CDATA[ */
-        var cm;
-
+    var listSeparator = "@(Model.Is_HTML ? "<br><br>" : "\\r\\n\\r\\n")";
+    var ckConfig = {
+        toolbarGroups : [
+            { name: 'document', groups: ['mode', 'document', 'doctools'] },
+            { name: 'clipboard', groups: ['clipboard', 'undo'] },
+            { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+            { name: 'forms', groups: ['forms'] },
+            { name: 'links', groups: ['links'] },
+            { name: 'insert', groups: ['insert'] },
+            { name: 'tools', groups: ['tools'] },
+            '/',
+            { name: 'styles', groups: ['styles'] },
+            { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+            { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+            '/',
+            { name: 'colors', groups: ['colors'] },
+            { name: 'others', groups: ['others'] },
+            { name: 'about', groups: ['about'] }
+        ],
+        removeButtons : 'BGColor,TextColor,Styles,Iframe,PageBreak,Smiley,Flash,Anchor,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Templates,Print,Save,About'
+    }
+    var cmConfig = {
+        lineNumbers: true,
+        mode: "htmlmixed",
+        extraKeys: { "Ctrl-Space": "autocomplete" }
+    };
+    var cmList = {};
+    var ckList = {};
+    
+    $(function () {
         setTimeout(function() {
-            var area = $('#Content');
-            cm = CodeMirror.fromTextArea(area[0], {
-                lineNumbers: true,
-                mode: "htmlmixed",
-                extraKeys: { "Ctrl-Space": "autocomplete" }
-            });
+            $('.editor-cm, .editor-ck').each(function() {
+                var $area = $(this);
+                var langId = $area.attr('data-langid');
 
-            cm.on('blur', function () {
-                cm.save();
-            });
-        }, 500);
-
-        $('.placeholder-list li').click(function () {
-            var placeholder = $(this).text();
-
-            if (placeholder.match(/\{list\..+\}/)) {
-                cm.replaceSelection(placeholder + "\r\n\r\n" + placeholder.replace(/\{/, '{end.'));
-            }
-            else {
-                cm.replaceSelection(placeholder);
-            }
-        });
-    /* ]]> */
-    </script>
-}
-else
-{
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        $(function () {
-            var area = $('#Content');
-
-            var editor = CKEDITOR.replace(area.attr('id'), {
-                toolbarGroups : [
-                    { name: 'document', groups: ['mode', 'document', 'doctools'] },
-                    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-                    { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
-                    { name: 'forms', groups: ['forms'] },
-                    { name: 'links', groups: ['links'] },
-                    { name: 'insert', groups: ['insert'] },
-                    { name: 'tools', groups: ['tools'] },
-                    '/',
-                    { name: 'styles', groups: ['styles'] },
-                    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
-                    '/',
-                    { name: 'colors', groups: ['colors'] },
-                    { name: 'others', groups: ['others'] },
-                    { name: 'about', groups: ['about'] }
-                ],
-                removeButtons : 'BGColor,TextColor,Styles,Iframe,PageBreak,Smiley,Flash,Anchor,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Templates,Print,Save,About'
+                if($area.is('.editor-cm')) {
+                    cmList[langId] = CodeMirror.fromTextArea(this, cmConfig);
+                    cmList[langId].on('blur', function () {
+                        cmList[langId].save();
+                    });
+                }
+                else {
+                    ckList[langId] = CKEDITOR.replace(this.id, ckConfig);
+                }
             });
 
             $('.placeholder-list li').click(function () {
                 var placeholder = $(this).text();
+                var plText = placeholder.match(/\{list\..+\}/) ? placeholder + listSeparator + placeholder.replace(/\{/, '{end.') : placeholder;
 
-                if (placeholder.match(/\{list\..+\}/)) {
-                    editor.insertHtml(placeholder + "<br><br>" + placeholder.replace(/\{/, '{end.'));
+                var langId = $('.ui-tabs-active').attr('data-langid');
+                if (typeof cmList[langId] != 'undefined') {
+                    cmList[langId].replaceSelection(plText);
+                    cmList[langId].focus();
                 }
                 else {
-                    editor.insertHtml(placeholder);
+                    ckList[langId].insertHtml(plText);
                 }
             });
-        });
+
+            $('#language-tabs').tabs();
+        }, 250);
+    });
+
     /* ]]> */
-    </script>
-}
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

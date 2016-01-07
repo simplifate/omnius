@@ -32,6 +32,7 @@
 
         [Display(Name = "Obsah")]
         [DataType(DataType.Text)]
+        [AllowHtml]
         public string Content { get; set; }
 
         public EmailTemplate Hermes_Email_Template { get; set; }

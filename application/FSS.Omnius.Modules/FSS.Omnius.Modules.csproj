@@ -111,6 +111,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
+    <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
@@ -321,6 +322,10 @@
     <Compile Include="Migrations\201601071236503_addDataType.Designer.cs">
       <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601071621315_Hermes-email-log.cs" />
+    <Compile Include="Migrations\201601071621315_Hermes-email-log.Designer.cs">
+      <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -458,6 +463,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601071236503_addDataType.resx">
       <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071621315_Hermes-email-log.resx">
+      <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

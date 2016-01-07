@@ -7,7 +7,7 @@ namespace FSS.Omnius.Modules.Watchtower
 {
     public enum LogEventType
     {
-        NotSpecified, NormalUserAction, AccessDenied
+        NotSpecified, NormalUserAction, AccessDenied, EmailSent
     }
     public enum LogLevel
     {
@@ -52,6 +52,7 @@ namespace FSS.Omnius.Modules.Watchtower
             EventTypeMap.Add((int)LogEventType.NotSpecified, "Neznámá akce");
             EventTypeMap.Add((int)LogEventType.NormalUserAction, "Akce uživatele");
             EventTypeMap.Add((int)LogEventType.AccessDenied, "Přístup odepřen");
+            EventTypeMap.Add((int)LogEventType.EmailSent, "Odeslání e-mailu");
 
             LogLevelMap.Add((int)LogLevel.Info, "Informace");
             LogLevelMap.Add((int)LogLevel.Warning, "Varování");
