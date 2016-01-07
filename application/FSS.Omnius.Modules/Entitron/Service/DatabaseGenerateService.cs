@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 
@@ -13,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         public void GenerateDatabase(Application application, DbSchemeCommit dbSchemeCommit)
         {
             List<DBTable> entitronTables = new List<DBTable>();
+            List<DbRelation> entitronRelations = new List<DbRelation>();
 
             CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
@@ -43,17 +46,27 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     entitronTable.indices.AddToDB(efIndex.Name, new List<string>(efIndex.ColumnNames.Split(',')));
                 }
+
             }
-            /*foreach (DbRelation efRelation in dbSchemeCommit.Relations)
+            foreach(DbRelation efRelation in dbSchemeCommit.Relations)
             {
-                Entitron.DBForeignKey foreignKey = new Entitron.DBForeignKey();
-                foreignKey.sourceTable = entitronTables.Find(t => t.tableName == efRelation.SourceTable.Name);
-                foreignKey.targetTable = entitronTables.Find(t => t.tableName == efRelation.TargetTable.Name);
-                foreignKey.sourceColumn = efRelation.SourceColumn.Name;
-                foreignKey.targetColumn = efRelation.TargetColumn.Name;
-                foreignKey.sourceTable.foreignKeys.AddToDB(foreignKey);
-            }*/
-            
+                DbRelation entitronRelation = new DbRelation();
+                entitronRelation.Id = efRelation.Id;
+                entitronRelation.RightTable = efRelation.RightTable;
+                entitronRelation.LeftTable = efRelation.LeftTable;
+                entitronRelation.RightColumn = efRelation.RightColumn;
+                entitronRelation.LeftColumn = efRelation.LeftColumn;
+                entitronRelation.Type = efRelation.Type;
+
+                entitronRelations.Add(entitronRelation);
+
+                //DBForeignKey entitronFK = new DBForeignKey();
+                //entitronFK.sourceTable.tableName = dbSchemeCommit.Tables.SingleOrDefault(x => x.Id == efRelation.RightTable).Name;
+                //entitronFK.targetTable.tableName = dbSchemeCommit.Tables.SingleOrDefault(x => x.Id == efRelation.LeftTable).Name;
+                //entitronFK.sourceColumn = dbSchemeCommit.Tables.SingleOrDefault(x => x.Id == efRelation.RightTable).Columns.SingleOrDefault(c => c.Id == efRelation.Id).Name;
+                //entitronFK.sourceColumn = dbSchemeCommit.Tables.SingleOrDefault(x => x.Id == efRelation.LeftTable).Columns.SingleOrDefault(c => c.Id == efRelation.Id).Name;
+            }
+
             e.Application.SaveChanges();
         }
 
