@@ -56,24 +56,29 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // setConditions
             for (int i = 0; i < CondCount; i++)
             {
-                switch ((string)vars[$"CondOperation[{i}]"])
-                {
-                    case "Less":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Less(vars[$"CondValue[{i.ToString()}]"]);
-                        break;
-                    case "LessOrEqual":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).LessOrEqual(vars[$"CondValue[{i.ToString()}]"]);
-                        break;
-                    case "Greater":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Greater(vars[$"CondValue[{i.ToString()}]"]);
-                        break;
-                    case "GreaterOrEqual":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).GreaterOrEqual(vars[$"CondValue[{i.ToString()}]"]);
-                        break;
-                    default: // ==
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Equal(vars[$"CondValue[{i.ToString()}]"]);
-                        break;
-                }
+                // none -> ==
+                if (!vars.ContainsKey($"CondOperation[{i}]"))
+                    outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Equal(vars[$"CondValue[{i.ToString()}]"]);
+                else
+                    switch ((string)vars[$"CondOperation[{i}]"])
+                    {
+                        case "Less":
+                            outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Less(vars[$"CondValue[{i.ToString()}]"]);
+                            break;
+                        case "LessOrEqual":
+                            outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).LessOrEqual(vars[$"CondValue[{i.ToString()}]"]);
+                            break;
+                        case "Greater":
+                            outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Greater(vars[$"CondValue[{i.ToString()}]"]);
+                            break;
+                        case "GreaterOrEqual":
+                            outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).GreaterOrEqual(vars[$"CondValue[{i.ToString()}]"]);
+                            break;
+                        default: // ==
+                            outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Equal(vars[$"CondValue[{i.ToString()}]"]);
+                            break;
+                    }
+
                 condition = outCondition.and();
             }
 

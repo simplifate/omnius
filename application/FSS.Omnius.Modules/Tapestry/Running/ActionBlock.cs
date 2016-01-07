@@ -19,16 +19,18 @@ namespace FSS.Omnius.Modules.Tapestry
                 var remapedParams = actionMap.getInputVariables(results.outputData);
                 // Action
                 var result = Action.RunAction(actionMap.ActionId, remapedParams);
+
+                // errory
+                if (result.types.Any(r => r == ActionResultType.Error))
+                    // přerušit? inverzní akce?
+                    throw new NotImplementedException();
+
                 // namapování OutputVars
                 //!! pozor na přepisování promněných !!
                 actionMap.RemapOutputVariables(result.outputData);
                 // zpracování výstupů
                 results.Join = result;
 
-                // errory
-                if (result.types.Any(r => r == ActionResultType.Error))
-                    // přerušit? inverzní akce?
-                    throw new NotImplementedException();
             }
         }
     }

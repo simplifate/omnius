@@ -20,25 +20,27 @@ namespace FSS.Omnius.Modules.CORE
         public static object convert(char shortcut, object input)
         {
             DBEntities e = new DBEntities();
-            DataType type = e.DataTypes.SingleOrDefault(dt => dt.shortcut[0] == shortcut);
+            string s = shortcut.ToString();
+            DataType type = e.DataTypes.SingleOrDefault(dt => dt.shortcut == s);
 
             return convert(type, input);
         }
         public static object convert(DataType type, object input)
         {
-            switch (type.Id)
+            switch (type.CSharpName)
             {
-                // int
-                case 1:
+                case "int":
                     return Convert.ToInt32(input);
-                // bool
-                case 2:
+                case "bool":
                     return Convert.ToBoolean(input);
-                // string
-                case 3:
+                case "string":
                     return Convert.ToString(input);
-                case 4:
+                case "float":
                     return Convert.ToDouble(input);
+                case "DateTime":
+                    return Convert.ToDateTime(input);
+                case "blob":
+                    return input;
                 // none
                 default:
                     throw new KeyNotFoundException($"Cannot indentify data type '{type.ToString()}'");

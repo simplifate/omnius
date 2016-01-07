@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
     public partial class Application
     {
-        internal SqlQueue queries;
+        internal SqlQueue queries = new SqlQueue();
 
         public IEnumerable<DBTable> GetTables()
         {
