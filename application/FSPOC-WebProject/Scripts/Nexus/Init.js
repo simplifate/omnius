@@ -12,22 +12,6 @@
         else if ($("#webDavMenuArea").length) {
             $("#nexusMenuWebDav").addClass("highlighted");
         }
-        $("#nexusMenuLDAP").on("click", function () {
-            if(!$("#nexusMenuLDAP").hasClass("highlighted"))
-                window.location.href = "/Nexus/LDAP";
-        });
-        $("#nexusMenuWebServices").on("click", function () {
-            if (!$("#nexusMenuWebServices").hasClass("highlighted"))
-                window.location.href = "/Nexus/WS";
-        });
-        $("#nexusMenuExtDB").on("click", function () {
-            if (!$("#nexusMenuExtDB").hasClass("highlighted"))
-                window.location.href = "/Nexus/ExtDB";
-        });
-        $("#nexusMenuWebDav").on("click", function () {
-            if (!$("#nexusMenuWebDav").hasClass("highlighted"))
-                window.location.href = "/Nexus/WebDAV";
-        });
     }
 });
 function ShowWsdlButtonClick(button) {
