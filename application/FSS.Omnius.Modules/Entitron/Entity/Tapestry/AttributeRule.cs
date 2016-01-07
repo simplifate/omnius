@@ -18,9 +18,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [Required]
         [StringLength(50)]
         public string AttributeName { get; set; }
+        
+        [Required]
+        public int AttributeDataTypeId { get; set; }
 
         public int BlockId { get; set; }
 
+        public virtual CORE.DataType AttributeDataType { get; set; }
         public virtual Block Block { get; set; }
     }
 }

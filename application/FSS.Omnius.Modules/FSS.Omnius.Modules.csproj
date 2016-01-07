@@ -96,12 +96,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
     <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
+    <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbRelation.cs" />
@@ -315,6 +317,10 @@
     <Compile Include="Migrations\201601071052182_Overview Metablocks.Designer.cs">
       <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601071236503_addDataType.cs" />
+    <Compile Include="Migrations\201601071236503_addDataType.Designer.cs">
+      <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -449,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601071052182_Overview Metablocks.resx">
       <DependentUpon>201601071052182_Overview Metablocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601071236503_addDataType.resx">
+      <DependentUpon>201601071236503_addDataType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

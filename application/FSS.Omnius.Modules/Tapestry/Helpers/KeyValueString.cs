@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -113,23 +114,13 @@ namespace FSS.Omnius.Modules.Tapestry
             // value
             if (input.Length > 1 && input[1] == '$')
             {
-                switch (input[0])
-                {
-                    case 's':
-                        return input.Substring(2);
-                    case 'b':
-                        return Convert.ToBoolean(input.Substring(2));
-                    case 'i':
-                        return Convert.ToInt32(input.Substring(2));
-                    case 'd':
-                        return Convert.ToDouble(input.Substring(2));
-                    default:
-                        throw new KeyNotFoundException($"Cannot indentify data type '{input[0]}'");
-                }
+                return Convertor.convert(input[0], input.Substring(2));
             }
             // variable
-            else
+            else if (vars.ContainsKey(input))
                 return vars[input];
+            else
+                return null;
         }
     }
 }

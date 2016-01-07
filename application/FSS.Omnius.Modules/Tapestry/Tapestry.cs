@@ -10,6 +10,7 @@ using FSS.Omnius.Modules.Tapestry;
 using System.Collections.Specialized;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -41,18 +42,28 @@ namespace FSS.Omnius.Modules.Tapestry
             // init action
             _results.outputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppId = ApplicationId;
-
             Block targetBlock;
-            // preRun
+            
+            // get target Block
             if (ActionRuleId == null)
             {
                 targetBlock = _CORE.Entitron.GetStaticTables().Applications.SingleOrDefault(app => app.Id == ApplicationId).WorkFlows.SingleOrDefault(wf => wf.Type.Name == "Init").InitBlock;
             }
             else
             {
+                // get actionRule
                 ActionRule actionRule = null;
                 ActionRule nextRule = GetActionRule(_CORE.Entitron.Application, ActionRuleId.Value, _results, modelId);
 
+                // get inputs
+                string[] keys = fc.AllKeys;
+                foreach(AttributeRule ar in nextRule.SourceBlock.AttributeRules)
+                {
+                    if(keys.Contains(ar.InputName))
+                        _results.outputData.Add(ar.AttributeName, Convertor.convert(ar.AttributeDataType, fc[ar.InputName]));
+                }
+
+                // run all auto Action
                 while (nextRule != null)
                 {
                     actionRule = nextRule;
@@ -60,6 +71,7 @@ namespace FSS.Omnius.Modules.Tapestry
                     nextRule = GetAutoActionRule(_CORE.Entitron.Application, actionRule.TargetBlock, _results);
                 }
 
+                // target Block
                 targetBlock = actionRule.TargetBlock;
             }
 
@@ -67,12 +79,13 @@ namespace FSS.Omnius.Modules.Tapestry
             targetBlock.Run(_results);
             _page = targetBlock.MozaicPage;
         }
+
         public override string GetHtmlOutput()
         {
             if (_page == null)
                 throw new Exception("Must execute 'run' before get html");
 
-            return _CORE.Mozaic.Render(_page, null);
+            return _page.MasterTemplate.Html;
         }
         public override string GetJsonOutput()
         {

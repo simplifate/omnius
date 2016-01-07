@@ -55,6 +55,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
         public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
+        public virtual DbSet<DataType> DataTypes { get; set; }
 
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
@@ -250,6 +251,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.ContentList)
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            modelBuilder.Entity<DataType>()
+                .HasMany(e => e.AttributeRules)
+                .WithRequired(e => e.AttributeDataType)
+                .HasForeignKey(e => e.AttributeDataTypeId);
         }
     }
 }
