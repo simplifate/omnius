@@ -45,7 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry
             foreach(var pair in _result)
             {
                 object key = parseValue(pair.Key, vars);
-                if (key != _result[pair.Key])
+                if (!Equals(key, _result[pair.Key]))
                     return false;
             }
 

@@ -83,7 +83,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
 
             // return
-            vars["Any?"] = select.where(i => outCondition).Count();
+            outputVars["Any?"] = (select.where(i => outCondition).Count() > 0);
         }
     }
 }

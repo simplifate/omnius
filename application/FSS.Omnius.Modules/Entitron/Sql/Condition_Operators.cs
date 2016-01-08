@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += $"{_conditions._concat} ({_conditions._columnName}=@{parValue})";
+            _conditions._sql += $"{_conditions._concat} ([{_conditions._columnName}]=@{parValue})";
 
             return new Condition_concat(_conditions);
         }
@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1}<>@{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}]<>@{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1}>@{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}]>@{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -51,7 +51,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1}>=@{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}]>=@{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -61,7 +61,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat= _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1}<@{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}]<@{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -71,7 +71,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1}<=@{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}]<=@{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -82,7 +82,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             string parValue = _conditions._query.safeAddParam("value", value);
             string parValue2 = _conditions._query.safeAddParam("value", value2);
-            _conditions._sql += string.Format("{0}({1} BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
+            _conditions._sql += string.Format("{0}([{1}] BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
 
             return new Condition_concat(_conditions);
         }
@@ -93,7 +93,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             string parValue = _conditions._query.safeAddParam("value", value);
             string parValue2 = _conditions._query.safeAddParam("value", value2);
-            _conditions._sql += string.Format("{0}({1} NOT BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
+            _conditions._sql += string.Format("{0}([{1}] NOT BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
 
             return new Condition_concat(_conditions);
         }
@@ -103,7 +103,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1} LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}] LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -113,7 +113,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
             string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += string.Format("{0}({1} NOT LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
+            _conditions._sql += string.Format("{0}([{1}] NOT LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
 
             return new Condition_concat(_conditions);
         }
@@ -122,7 +122,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             
-            _conditions._sql += string.Format("{0}({1} IS NULL)", _conditions._concat, _conditions._columnName);
+            _conditions._sql += string.Format("{0}([{1}] IS NULL)", _conditions._concat, _conditions._columnName);
 
             return new Condition_concat(_conditions);
         }
@@ -131,7 +131,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             
-            _conditions._sql += string.Format("{0}({1} IS NOT NULL)", _conditions._concat, _conditions._columnName);
+            _conditions._sql += string.Format("{0}([{1}] IS NOT NULL)", _conditions._concat, _conditions._columnName);
 
             return new Condition_concat(_conditions);
         }
@@ -140,7 +140,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             
-            _conditions._sql += string.Format(" {0} IN ({1})", _conditions._columnName, string.Join(", ", values));
+            _conditions._sql += string.Format(" [{0}] IN ({1})", _conditions._columnName, string.Join(", ", values));
 
             return new Condition_concat(_conditions);
         }
@@ -149,7 +149,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             
-            _conditions._sql += string.Format(" {0} NOT IN ({1})", _conditions._columnName, string.Join(", ", values));
+            _conditions._sql += string.Format(" [{0}] NOT IN ({1})", _conditions._columnName, string.Join(", ", values));
 
             return new Condition_concat(_conditions);
         }

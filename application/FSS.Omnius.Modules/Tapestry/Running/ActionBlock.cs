@@ -30,7 +30,6 @@ namespace FSS.Omnius.Modules.Tapestry
                 actionMap.RemapOutputVariables(result.outputData);
                 // zpracování výstupů
                 results.Join = result;
-
             }
         }
     }

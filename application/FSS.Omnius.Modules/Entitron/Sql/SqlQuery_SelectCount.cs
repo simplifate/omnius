@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('SELECT COUNT(*) count FROM ', @realTableName, ' {2} {3} {4} {5};');" +
+                "SET @sql = CONCAT('SELECT COUNT(*) count FROM [', @realTableName, '] {2} {3} {4} {5};');" +
                 "exec sp_executesql @sql, N'{6}', {7};", 
                 parAppName,parTableName,
                 _where.ToString(),
@@ -55,7 +55,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     string columnName = reader.GetName(i);
-                    int columnId = table.columns.Single(x => x.Name == columnName).ColumnId;
+                    // sloupec, kt. není součástí tabulky (as, count, ...)
+                    DBColumn column = table.columns.SingleOrDefault(x => x.Name == columnName);
+                    int columnId = column != null ? column.ColumnId : -1;
                     newItem.createProperty(columnId, columnName, reader[columnName]);
                 }
 
