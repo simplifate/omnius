@@ -112,6 +112,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />
+    <Compile Include="Entitron\Entity\Hermes\EmailQueue.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
@@ -330,6 +331,10 @@
     <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.Designer.cs">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601111431229_Hermes-queue.cs" />
+    <Compile Include="Migrations\201601111431229_Hermes-queue.Designer.cs">
+      <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -473,6 +478,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111323025_actionRigthsToActionRuleRights.resx">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111431229_Hermes-queue.resx">
+      <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

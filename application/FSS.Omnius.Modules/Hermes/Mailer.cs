@@ -111,14 +111,41 @@ namespace FSS.Omnius.Modules.Hermes
             return content;
         }
 
-        public void SendMail(int? applicationId = null)
+        public bool SendBySender(int? applicationId = null, DateTime? sendAfter = null)
         {
-            client.Send(mail);
-            client.Dispose();
+            EmailQueue item = new EmailQueue();
+            item.Application_Id = applicationId;
+            item.Message = JsonConvert.SerializeObject(mail);
+            item.Date_Send_After = sendAfter == null ? DateTime.Now : (DateTime)sendAfter;
+            item.Date_Inserted = DateTime.Now;
 
+            e.EmailQueueItems.Add(item);
+            e.SaveChanges();
+
+            return true;
+        }
+
+        public bool SendMail(int? applicationId = null)
+        {
+            bool result;
+            string smtpError = "";
+
+            try {
+                client.Send(mail);
+                result = true;
+            }
+            catch(Exception e)
+            {  
+                result = false;
+                smtpError = e.Message;
+            }
+            
             // Uložíme do logu
             EmailLog log = new EmailLog();
             log.Content = JsonConvert.SerializeObject(mail);
+            log.DateSend = DateTime.Now;
+            log.Status = result ? EmailSendStatus.success : EmailSendStatus.failed;
+            log.SMTP_Error = smtpError;
 
             e.EmailLogItems.Add(log);
             e.SaveChanges(); 
@@ -128,10 +155,13 @@ namespace FSS.Omnius.Modules.Hermes
                 string.Format("Odeslání e-mailu \"{0}\" (<a href=\"{1}\" title=\"Detail e-mailu\">detail e-mailu</a>)", mail.Subject, "/Hermes/Log/Detail/" + log.Id + "/"),
                 1, // !!! POZOR !!!
                 LogEventType.EmailSent,
-                LogLevel.Info,
+                result ? LogLevel.Info : LogLevel.Error,
                 applicationId == null ? true : false,
                 applicationId
             );
+
+            client.Dispose();
+            return result;
         }
 
         #region Mail Tools

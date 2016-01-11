@@ -23,6 +23,9 @@ namespace FSS.Omnius.Controllers.Hermes
             ViewData["To"] = mail["To"];
             ViewData["Bcc"] = mail["Bcc"];
             ViewData["CC"] = mail["CC"];
+            ViewData["Date_Send"] = item.DateSend.ToLongDateString();
+            ViewData["Status"] = item.Status == EmailSendStatus.success ? "Odesláno" : "Neodesláno";
+            ViewData["SMTP_Error"] = item.SMTP_Error;
 
             return View("~/Views/Hermes/Log/Detail.cshtml");
         }

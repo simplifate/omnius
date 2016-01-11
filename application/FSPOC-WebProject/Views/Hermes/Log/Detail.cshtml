@@ -19,6 +19,15 @@
             <dl>
                 <dt>ID e-mailu:</dt>
                 <dd>@ViewData["Id"]</dd>
+                <dt>Datum odeslání:</dt>
+                <dd>@ViewData["Date_Send"]</dd>
+                <dt>Stav:</dt>
+                <dd>@ViewData["Status"]</dd>
+                @if(!String.IsNullOrEmpty((string)ViewData["SMTP_Error"]))
+                {
+                    <dt>SMTP chyba:</dt>
+                    <dd>@ViewData["SMTP_Error"]</dd>
+                }
                 <dt>Odesílatel:</dt>
                 <dd>@ViewData["From_Name"] &lt;@ViewData["From_Email"]&gt;</dd>
                 <dt>Příjemci:</dt>
