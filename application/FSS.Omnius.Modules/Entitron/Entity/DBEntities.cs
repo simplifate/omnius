@@ -20,52 +20,80 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
         }
 
+        // CORE
+        public virtual DbSet<DataType> DataTypes { get; set; }
         public virtual DbSet<Module> Modules { get; set; }
-        public virtual DbSet<Application> Applications { get; set; }
-        public virtual DbSet<Css> Css { get; set; }
-        public virtual DbSet<Page> Pages { get; set; }
-        public virtual DbSet<Template> Templates { get; set; }
-        public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
-        public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
-        public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
-        public virtual DbSet<ActionRule> ActionRules { get; set; }
-        public virtual DbSet<Actor> Actors { get; set; }
-        public virtual DbSet<AttributeRule> AttributeRules { get; set; }
-        public virtual DbSet<Block> Blocks { get; set; }
-        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
-        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
-        public virtual DbSet<AppRight> ApplicationRights { get; set; }
+
+        // Entitron
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
-        public virtual DbSet<Ldap> Ldaps { get; set; }
-        public virtual DbSet<WS> WSs { get; set; }
-        public virtual DbSet<ExtDB> ExtDBs { get; set; }
-        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
-        public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
-        public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
-        public virtual DbSet<Smtp> SMTPs { get; set; }
-        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
-        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
-        public virtual DbSet<EmailLog> EmailLogItems { get; set; }
-        public virtual DbSet<EmailQueue> EmailQueueItems { get; set; }
-        public virtual DbSet<LogItem> LogItems { get; set; }
-        public virtual DbSet<WebDavServer> WebDavServers { get; set; }
-        public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
-        public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
-        public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        public virtual DbSet<DataType> DataTypes { get; set; }
-
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
         public virtual DbSet<DbRelation> DbRelation { get; set; }
         public virtual DbSet<DbView> DbView { get; set; }
 
+        // Hermes
+        public virtual DbSet<EmailLog> EmailLogItems { get; set; }
+        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
+        public virtual DbSet<EmailQueue> EmailQueueItems { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<Smtp> SMTPs { get; set; }
+
+        // Master
+        public virtual DbSet<Application> Applications { get; set; }
+
+        // Mozaic
+        public virtual DbSet<Css> Css { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<Template> Templates { get; set; }
+        public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
+
+        // Nexus
+        public virtual DbSet<ExtDB> ExtDBs { get; set; }
+        public virtual DbSet<WebDavServer> WebDavServers { get; set; }
+        public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
+        public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
+        public virtual DbSet<Ldap> Ldaps { get; set; }
+        public virtual DbSet<WS> WSs { get; set; }
+
+        // Persona
+        public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
+        public virtual DbSet<AppRight> ApplicationRights { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+
+        // Tapestry
+        public virtual DbSet<ActionRule> ActionRules { get; set; }
+        public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<Actor> Actors { get; set; }
+        public virtual DbSet<AttributeRule> AttributeRules { get; set; }
+        public virtual DbSet<Block> Blocks { get; set; }
+        public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
+        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
+        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
+        public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
+
+        // Watchtower
+        public virtual DbSet<LogItem> LogItems { get; set; }
+
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Action>()
+                .HasMany(e => e.ActionRule_Actions)
+                .WithRequired(e => e.Action)
+                .HasForeignKey(e => e.ActionId);
+
+            modelBuilder.Entity<Action>()
+                .HasMany(e => e.Slaves)
+                .WithOptional(e => e.Master)
+                .HasForeignKey(e => e.MasterId);
+
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.Pages)
                 .WithRequired(e => e.Application)

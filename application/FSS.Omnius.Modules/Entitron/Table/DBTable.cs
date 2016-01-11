@@ -88,7 +88,7 @@ namespace FSS.Omnius.Modules.Entitron
 
         public DBTable()
         {
-            tableId = null;
+            tableId = -1;
         }
         public DBTable(int tableId)
         {

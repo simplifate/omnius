@@ -122,6 +122,7 @@
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
@@ -335,6 +336,10 @@
     <Compile Include="Migrations\201601111431229_Hermes-queue.Designer.cs">
       <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601111502028_AddActions.cs" />
+    <Compile Include="Migrations\201601111502028_AddActions.Designer.cs">
+      <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -481,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111431229_Hermes-queue.resx">
       <DependentUpon>201601111431229_Hermes-queue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111502028_AddActions.resx">
+      <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
