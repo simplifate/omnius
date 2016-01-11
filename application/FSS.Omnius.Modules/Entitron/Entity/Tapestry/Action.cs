@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             ActionRule_Actions = new HashSet<ActionRule_Action>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public int? MasterId { get; set; }
 

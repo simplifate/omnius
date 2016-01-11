@@ -340,6 +340,10 @@
     <Compile Include="Migrations\201601111502028_AddActions.Designer.cs">
       <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601111538327_ActionWithoutIdentity.cs" />
+    <Compile Include="Migrations\201601111538327_ActionWithoutIdentity.Designer.cs">
+      <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -489,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111502028_AddActions.resx">
       <DependentUpon>201601111502028_AddActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111538327_ActionWithoutIdentity.resx">
+      <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
