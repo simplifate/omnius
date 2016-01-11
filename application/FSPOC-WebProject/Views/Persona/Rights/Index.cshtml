@@ -98,14 +98,13 @@
             <tbody>
                 @foreach (string group in ViewBag.Groups)
                 {
-                    foreach (string app in ViewBag.AppNames)
-                    {
-                        <tr>
-                            <td>@group</td>
-                            <td>@AppRight.GetSpecificRights(group,app).ToString()</td>
-                        </tr>
-                    }
-
+                    <tr>
+                        <td>@group</td>
+                        @foreach (string app in ViewBag.AppNames)
+                        {
+                            <td>@AppRight.GetSpecificRights(group, app)</td>
+                        }
+                    </tr>
                 }
             </tbody>
         </table>
@@ -130,13 +129,13 @@
             <tbody>
                 @foreach (string group in ViewBag.Groups)
                 {
-                    foreach (string act in ViewBag.Actions)
-                    {
-                        <tr>
-                            <td>@group</td>
-                            <td>@ActionRight.GetSpecificRights(group,act).ToString()</td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>@group</td>
+                        @foreach (string act in ViewBag.Actions)
+                        {
+                            <td>@ActionRuleRight.GetSpecificRights(group, act)</td>
+                        }
+                    </tr>
                 }
             </tbody>
         </table>

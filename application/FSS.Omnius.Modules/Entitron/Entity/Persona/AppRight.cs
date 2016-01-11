@@ -23,31 +23,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public virtual Group Group { get; set; }
         public virtual Application Application { get; set; }
 
-        public static List<string> GetSpecificRights(string groupName, string appName)
+        public static string GetSpecificRights(string groupName, string appName)
         {
             DBEntities e = new DBEntities();
             List<string> rights = new List<string>();
 
-            foreach (AppRight app in e.ApplicationRights)
-            {
+            AppRight appR = e.ApplicationRights.SingleOrDefault(ar => ar.Group.Name == groupName && ar.Application.Name == appName);
 
-                if ((app.Group.Name == groupName) && (app.Application.DisplayName == appName))
-                {
-                    if (app.Readable == true)
-                    {
-                        rights.Add("R");
-                    }
-                    else if (app.Executable == true)
-                    {
-                        rights.Add("E");
-                    }
-                    else if (app.Executable == false || app.Readable == false)
-                    {
-                        rights.Add("None");
-                    }
-                }
-            }
-            return rights;
+            return GetShort(appR);
+        }
+
+        public static string GetShort(AppRight arr)
+        {
+            if (arr == null)
+                return "None";
+
+            if (arr.Executable)
+                return "E";
+            if (arr.Readable)
+                return "R";
+
+            return "None";
         }
 
     }

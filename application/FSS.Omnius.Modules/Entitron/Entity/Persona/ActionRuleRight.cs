@@ -23,23 +23,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public virtual Group Group { get; set; }
         public virtual ActionRule ActionRule { get; set; }
 
-        public string GetShort()
+        public static string GetSpecificRights(string groupName, string actionName)
         {
-            if (Executable)
+            DBEntities e = new DBEntities();
+            ActionRuleRight actionrulerights = e.ActionRuleRights
+                .SingleOrDefault(arr => arr.Group.Name == groupName && arr.ActionRule.Name == actionName);
+
+            return GetShort(actionrulerights);
+        }
+
+        public static string GetShort(ActionRuleRight arr)
+        {
+            if (arr == null)
+                return "None";
+
+            if (arr.Executable)
                 return "E";
-            if (Readable)
+            if (arr.Readable)
                 return "R";
 
             return "None";
-        }
-
-        public static List<string> GetSpecificRights(string groupName, string actionName)
-        {
-            DBEntities e = new DBEntities();
-            return e.ActionRuleRights
-                .Where(arr => arr.Group.Name == groupName && arr.ActionRule.Name == actionName)
-                .Select(arr => arr.GetShort())
-                .ToList();
         }
     }
 }
