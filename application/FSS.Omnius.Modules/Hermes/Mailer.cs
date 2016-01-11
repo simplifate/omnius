@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.Text;
+using System.Web.Mvc.Html;
 using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json;
+using System.Web.Mvc;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -119,11 +121,11 @@ namespace FSS.Omnius.Modules.Hermes
             log.Content = JsonConvert.SerializeObject(mail);
 
             e.EmailLogItems.Add(log);
-            e.SaveChanges();
+            e.SaveChanges(); 
 
             WatchtowerLogger logger = WatchtowerLogger.Instance;
             logger.LogEvent(
-                string.Format("Odeslání e-mailu \"{0}\"", mail.Subject),
+                string.Format("Odeslání e-mailu \"{0}\" (<a href=\"{1}\" title=\"Detail e-mailu\">detail e-mailu</a>)", mail.Subject, "/Hermes/Log/Detail/" + log.Id + "/"),
                 1, // !!! POZOR !!!
                 LogEventType.EmailSent,
                 LogLevel.Info,
