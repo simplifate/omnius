@@ -214,6 +214,7 @@
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
+    <Compile Include="Controllers\Hermes\QueueController.cs" />
     <Compile Include="Controllers\Hermes\TemplateController.cs" />
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
@@ -1442,6 +1443,7 @@
     <Content Include="Views\Nexus\WebDAV\Form.cshtml" />
     <Content Include="Views\Persona\Modules\Index.cshtml" />
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
+    <Content Include="Views\Hermes\Queue\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

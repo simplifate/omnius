@@ -11,6 +11,11 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult Detail(int id)
         {
             DBEntities e = new DBEntities();
+
+            ViewData["SMTPServersCount"] = e.SMTPs.Count();
+            ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
+            ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
+
             EmailLog item = e.EmailLogItems.Single(m => m.Id == id);
 
             JToken mail = JToken.Parse(item.Content);

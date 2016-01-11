@@ -21,6 +21,7 @@ namespace FSS.Omnius.Controllers.Hermes
             DBEntities e = new DBEntities();
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
+            ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
             return View(e.EmailTemplates);
         }
 

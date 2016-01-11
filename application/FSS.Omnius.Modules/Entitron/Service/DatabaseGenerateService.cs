@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     entitronTable.tableName = efTable.Name;
                     entitronTable.Application = e.Application;
                     entitronTable.Create();
-                    efTable.Id = entitronTable.tableId; //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
+                    efTable.Id = entitronTable.tableId.Value; //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
                 }
                 else
                 {

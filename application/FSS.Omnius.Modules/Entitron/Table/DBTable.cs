@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron
         }
         #endregion
 
-        public int tableId;
+        public int? tableId;
 
         public string tableName { get; set; }
         public Application Application { get; set; }
