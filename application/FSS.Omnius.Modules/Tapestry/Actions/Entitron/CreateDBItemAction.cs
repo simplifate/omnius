@@ -45,17 +45,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            Modules.Entitron.Entitron ent = core.Entitron;
             DBItem item = new DBItem();
+            DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
 
             var propertyNames = vars.Keys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
             foreach (string propertyName in propertyNames)
             {
                 string itemProperty = propertyName.Substring(5, propertyName.Length - 6);
-                item[itemProperty] = vars[propertyName];
+                item.createProperty(table.columns.Single(c => c.Name == itemProperty).ColumnId, itemProperty, vars[propertyName]);
             }
 
-            Modules.Entitron.Entitron ent = core.Entitron;
-            ent.GetDynamicTable((string)vars["TableName"]).Add(item);
+            table.Add(item);
             ent.Application.SaveChanges();
         }
     }

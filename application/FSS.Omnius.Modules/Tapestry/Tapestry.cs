@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -29,19 +30,20 @@ namespace FSS.Omnius.Modules.Tapestry
             _page = null;
         }
 
-        public override void run(string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
+        public override void run(User user, string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
         {
             // init
             int ApplicationId, ActionRuleId, modelId;
             splitUrl(url, out ApplicationId, out ActionRuleId, out modelId);
 
-            run(ApplicationId, ActionRuleId, modelId, fc);
+            run(user, ApplicationId, ActionRuleId, modelId, fc);
         }
-        public void run(int ApplicationId, int? ActionRuleId, int? modelId, NameValueCollection fc)
+        public void run(User user, int ApplicationId, int? ActionRuleId, int? modelId, NameValueCollection fc)
         {
             // init action
             _results.outputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppId = ApplicationId;
+            _CORE.User = user;
             Block targetBlock;
             
             // get target Block

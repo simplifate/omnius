@@ -90,6 +90,15 @@ namespace FSS.Omnius.Modules.Entitron
             return _idProperties[columnId];
         }
 
+        public bool HasProperty(string propertyName)
+        {
+            return _properties.ContainsKey(propertyName);
+        }
+        public bool HasProperty(int columnId)
+        {
+            return _idProperties.ContainsKey(columnId);
+        }
+
         public List<string> getColumnNames()
         {
             return _properties.Keys.ToList();

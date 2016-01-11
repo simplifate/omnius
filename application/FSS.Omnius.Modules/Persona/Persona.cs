@@ -73,7 +73,7 @@ namespace FSS.Omnius.Modules.Persona
 
         public bool UserCanExecuteActionRule(int ActionRuleId)
         {
-            return _CORE.ActiveUser.Groups.Any(g => g.ActionRights.Any(ar => ar.ActionId == ActionRuleId && ar.Executable));
+            return _CORE.User.Groups.Any(g => g.ActionRuleRights.Any(ar => ar.ActionRuleId == ActionRuleId && ar.Executable));
         }
         public bool isUserAdmin()
         {

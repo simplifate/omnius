@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public override void Run(ActionResultCollection results)
         {
-            var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount).OrderBy(aar => aar.Order);
+            var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
 
             InnerRun(results, aars);
         }

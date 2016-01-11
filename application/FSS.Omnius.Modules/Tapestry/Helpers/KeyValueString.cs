@@ -117,10 +117,60 @@ namespace FSS.Omnius.Modules.Tapestry
                 return Convertor.convert(input[0], input.Substring(2));
             }
             // variable
-            else if (vars.ContainsKey(input))
-                return vars[input];
             else
-                return null;
+            {
+                try
+                {
+                    return GetChainedProperty(input, vars);
+                }
+                // unknown variable
+                catch (MissingFieldException e)
+                {
+                    // TODO: LOG warning
+                    return null;
+                }
+            }
+        }
+
+        private static object GetChainedProperty(string chainedKey, Dictionary<string, object> vars)
+        {
+            int index = chainedKey.IndexOf('.');
+            if (index == -1)
+            {
+                if (vars.ContainsKey(chainedKey))
+                    return vars[chainedKey];
+                else
+                    throw new MissingFieldException($"Missing key '{chainedKey}' on list [{vars.ToString()}].");
+            }
+
+            string key = chainedKey.Substring(0, index);
+            return GetChainedProperty(vars[key], chainedKey.Substring(index + 1));
+        }
+
+        private static object GetChainedProperty(object item, string propertyName)
+        {
+            foreach (string singleProperty in propertyName.Split('.'))
+            {
+                if (HasProperty(item, singleProperty))
+                    item = item.GetType().GetProperty(singleProperty).GetValue(item);
+                else
+                    throw new MissingFieldException($"Missing field '{singleProperty}' on item [{item.ToString()}]. ('{propertyName}' on [{item.ToString()}])");
+            }
+            return item;
+        }
+
+        /// <summary>
+        /// Has the item property of given name
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        private static bool HasProperty(object item, string propertyName)
+        {
+            if (item == null)
+                return false;
+
+            return item.GetType().GetProperty(propertyName) != null;
         }
     }
 }

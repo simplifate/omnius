@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         public bool canUseAction(int actionId, DBEntities e)
         {
-            var right = e.ActionRights.FirstOrDefault(ar => ar.ActionId == actionId && Groups.Contains(ar.Group));
+            var right = e.ActionRuleRights.FirstOrDefault(ar => ar.ActionRuleId == actionId && Groups.Contains(ar.Group));
             return right.Executable;
         }
     }

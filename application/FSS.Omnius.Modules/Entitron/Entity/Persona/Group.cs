@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public string Name { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<ActionRight> ActionRights { get; set; }
+        public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }
         public virtual ICollection<AppRight> ApplicationRights { get; set; }
     }
 }

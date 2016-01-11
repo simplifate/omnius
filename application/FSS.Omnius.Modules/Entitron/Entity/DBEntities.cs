@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<ActionRight> ActionRights { get; set; }
+        public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
         public virtual DbSet<AppRight> ApplicationRights { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
@@ -153,10 +153,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.Users)
                 .Map(m => m.ToTable("Persona_Groups_Users").MapLeftKey("UserId").MapRightKey("GroupId"));
 
-            modelBuilder.Entity<ActionRight>()
-                .HasRequired(e => e.Group)
-                .WithMany(e => e.ActionRights)
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.ActionRuleRights)
+                .WithRequired(e => e.Group)
                 .HasForeignKey(e => e.GroupId);
+
+            modelBuilder.Entity<ActionRule>()
+                .HasMany(e => e.ActionRuleRights)
+                .WithRequired(e => e.ActionRule)
+                .HasForeignKey(e => e.ActionRuleId);
 
             modelBuilder.Entity<AppRight>()
                 .HasRequired(e => e.Group)

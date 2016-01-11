@@ -163,8 +163,8 @@ namespace FSS.Omnius.Modules.Entitron
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
             foreach (DBColumn column in columns)
             {
-                if (item[column.Name] != null)
-                {                
+                if (item.HasProperty(column.Name))
+                {
                     data.Add(column, item[column.Name]);
                 }
             }
