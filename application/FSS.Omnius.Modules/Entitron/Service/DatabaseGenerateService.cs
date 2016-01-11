@@ -20,33 +20,66 @@ namespace FSS.Omnius.Modules.Entitron.Service
             CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
             e.Application = application;
+            List<string> primaryColumnsForTable = new List<string>();
+            DBEntities entity = new DBEntities();
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
+                
                 DBTable entitronTable = new DBTable();
-                entitronTable.tableName = efTable.Name;
-                entitronTable.Application = e.Application;
-
+                if (entity.DbTables.SingleOrDefault(x => x.Id == efTable.Id) == null) //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
+                {
+                    entitronTable.tableName = efTable.Name;
+                    entitronTable.Application = e.Application;
+                    entitronTable.Create();
+                    efTable.Id = entitronTable.tableId; //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
+                }
+                else
+                {
+                    if (entitronTable.tableName != efTable.Name)
+                        entitronTable.Rename(efTable.Name);
+                }
                 foreach (DbColumn efColumn in efTable.Columns)
                 {
                     DBColumn entitronColumn = new DBColumn();
-                    entitronColumn.Name = efColumn.Name;
                     entitronColumn.type = efColumn.Type;
                     entitronColumn.maxLength = efColumn.ColumnLengthIsMax ? null : (int?)efColumn.ColumnLength;
                     entitronColumn.isUnique = efColumn.Unique;
                     entitronColumn.canBeNull = efColumn.AllowNull;
 
-                    entitronTable.columns.Add(entitronColumn);
+                    if (entity.DbColumn.SingleOrDefault(x => x.Id == efColumn.Id) == null)
+                    {
+                        entitronTable.columns.AddToDB(entitronColumn);
+                        efColumn.Id = entitronColumn.ColumnId;
+                    }
+                    else
+                    {
+                        if (entitronColumn.Name != efColumn.Name)
+                            entitronTable.columns.RenameInDB(entitronColumn.Name, efTable.Name);
+                        entitronTable.columns.ModifyInDB(entitronColumn);
+                    }
+
                     if (efColumn.PrimaryKey)
-                        entitronTable.primaryKeys.Add(efColumn.Name);
+                    {
+                        primaryColumnsForTable.Add(efColumn.Name);
+                    }                        
                 }
                 entitronTables.Add(entitronTable);
-                entitronTable.Create();
+                entitronTable.AddPrimaryKey(primaryColumnsForTable);
+
                 foreach (DbIndex efIndex in efTable.Indices)
                 {
+                    //TODO porovnat názvy indexů v entitronu s názvy indexů ve schématu...na tomto základě mazat nebo přidávat indexy
                     entitronTable.indices.AddToDB(efIndex.Name, new List<string>(efIndex.ColumnNames.Split(',')));
                 }
 
+                //foreach (DbRelation efRelation in dbSchemeCommit.Relations)
+                //{
+                //TODO přidat do dbrelations name pro název cizího klíče, podle něj určovat zda se bude FK přidávat nebo mazat
+                //    DBForeignKey entitronFK = new DBForeignKey();
+                //    entitronFK.name;
+                //    efRelation.
+                //}
             }
             foreach(DbRelation efRelation in dbSchemeCommit.Relations)
             {

@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron
         }
         #endregion
 
-        private int? _tableId;
+        public int tableId;
 
         public string tableName { get; set; }
         public Application Application { get; set; }
@@ -88,11 +88,11 @@ namespace FSS.Omnius.Modules.Entitron
 
         public DBTable()
         {
-            _tableId = null;
+            tableId = null;
         }
         public DBTable(int tableId)
         {
-            _tableId = tableId;
+            this.tableId = tableId;
         }
 
         public DBTable Create()
@@ -155,7 +155,7 @@ namespace FSS.Omnius.Modules.Entitron
             if (Application == null || string.IsNullOrWhiteSpace(tableName))
                 return false;
 
-            return (_tableId != null);
+            return (tableId != null);
         }
 
         public DBTable Add(DBItem item)
