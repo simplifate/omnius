@@ -6,6 +6,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     public class DbRelation
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public int Type { get; set; }
         public int LeftTable { get; set; }
         public int LeftColumn { get; set; }
