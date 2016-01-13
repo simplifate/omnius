@@ -177,13 +177,12 @@ namespace FSS.Omnius.Modules.Entitron
             }
             return defaultVal;
         } 
-        public DBTable AddUniqueValue(string uniqueName, List<string> uniqueColumns)
+        public DBTable AddUniqueValue(string uniqueColumns)
         {
             table.Application.queries.Add(new SqlQuery_UniqueAdd()
             {
                 application = table.Application,
                 table = table,
-                uniqueName = uniqueName,
                 keyColumns = uniqueColumns
             });
 

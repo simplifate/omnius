@@ -83,11 +83,20 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     {
                         if (entitronColumn.Name != efColumn.Name)
                             entitronTable.columns.RenameInDB(entitronColumn.Name, efTable.Name);
+
                         if (entitronColumn.canBeNull != efColumn.AllowNull ||
-                            entitronColumn.isUnique != efColumn.Unique ||
                             entitronColumn.maxLength != efColumn.ColumnLength ||
-                            entitronColumn.type != efColumn.Type)   //chybí pár atributů sloupce TODO přidat do schématu atributy, které chybí v entitronu
+                            entitronColumn.type != efColumn.Type)   
                             entitronTable.columns.ModifyInDB(entitronColumn);
+
+                        if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false)
+                            entitronTable.columns.AddUniqueValue(efColumn.Name);
+
+                        if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
+                            entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
+
+                        entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
+                        entitronTable.columns.AddDefaultValue(efColumn.Name,efColumn.DefaultValue);
                     }
 
                     if (efColumn.PrimaryKey)                        //zaznamenává všechny sloupce, ze kterých se skládá primární klíč tabulky
@@ -98,7 +107,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 if (entitronTable.primaryKeys != primaryColumnsForTable 
                     && entitronTable.primaryKeys.Count>0)           //pokud v entitronu se nachází klíč, a pokud seznam sloupců ze kterého klíč je tvořen je v entitronu jiný než ve schématu, tak se musí smazat starý klíč a až potom vytvořit nový
                 {
-                    entitronTable.DropConstraint($"PK_{e.Application.Name}_{entitronTable.tableName}_", true);  //TODO zjistit z čeho se skládá realtablename a doplnit do názvu
+                    entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}", true);  
                     entitronTable.AddPrimaryKey(primaryColumnsForTable);
                 }else if (entitronTable.primaryKeys.Count == 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
                 {
