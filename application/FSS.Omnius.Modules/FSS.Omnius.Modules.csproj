@@ -103,6 +103,7 @@
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
+    <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
     <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -352,6 +353,10 @@
     <Compile Include="Migrations\201601130939278_addNameToDbRelation.Designer.cs">
       <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601131033150_addConfigPairs.cs" />
+    <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
+      <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -510,6 +515,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601130939278_addNameToDbRelation.resx">
       <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
+      <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
