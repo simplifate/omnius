@@ -1,5 +1,6 @@
 ﻿function SaveBlock(commitMessage) {
     ruleArray = [];
+    portTargetsArray = [];
     saveId = 0;
     $("#rulesPanel .rule").each(function (ruleIndex, ruleDiv) {
         itemArray = [];
@@ -7,6 +8,7 @@
         connectionArray = [];
         currentRule = $(ruleDiv);
         currentRule.find(".item").each(function (itemIndex, itemDiv) {
+            propertyArray = [];
             currentItem = $(itemDiv);
             currentItem.attr("saveId", saveId);
             saveId++;
@@ -29,6 +31,16 @@
             else if (currentItem.hasClass("state")) {
                 typeClass = "state";
             }
+            if (typeClass == "port") {
+                portId = currentItem.data("portId");
+                if (portId) {
+                    portTargetsArray.push(portId);
+                    propertyArray.push({
+                        Name: "PortId",
+                        Value: portId
+                    });
+                }
+            }
             itemArray.push({
                 Id: currentItem.attr("saveId"),
                 Label: currentItem.text(),
@@ -36,7 +48,8 @@
                 IsDataSource: currentItem.hasClass("dataSource"),
                 DialogType: currentItem.attr("dialogType"),
                 PositionX: parseInt(currentItem.css("left")),
-                PositionY: parseInt(currentItem.css("top"))
+                PositionY: parseInt(currentItem.css("top")),
+                Properties: propertyArray
             });
         });
         currentRule.find(".operatorSymbol").each(function (operatorIndex, operatorDiv) {
@@ -93,6 +106,7 @@
         AssociatedTableName: $("#headerTableName").text(),
         AssociatedTableId: $("#associatedTableId").val(),
         Rules: ruleArray,
+        PortTargets: portTargetsArray,
         ParentMetablockId: $("#parentMetablockId").val()
     }
     appId = $("#currentAppId").val();

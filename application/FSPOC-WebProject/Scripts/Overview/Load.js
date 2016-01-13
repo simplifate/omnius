@@ -20,7 +20,7 @@
                     + currentBlockData.Id + '" tableId="' + currentBlockData.AssociatedTableId + '"><div class="blockName">'
                     + currentBlockData.Name + '</div><div class="tableName">'
                     + currentBlockData.AssociatedTableName + '</div></div>');
-                $("#overviewPanel").append(newBlock);
+                $("#overviewPanel .scrollArea").append(newBlock);
                 instance.draggable(newBlock, { containment: "parent" });
                 newBlock.on("dblclick", function () {
                     blockToOpen = $(this);
@@ -37,7 +37,7 @@
                     + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
                     currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
                     '</div><div class="metablockSymbol fa fa-th-large"></div></div>');
-                $("#overviewPanel").append(newMetablock);
+                $("#overviewPanel .scrollArea").append(newMetablock);
                 instance.draggable(newMetablock, { containment: "parent" });
                 newMetablock.on("dblclick", function () {
                     metablockToOpen = $(this);
@@ -46,6 +46,22 @@
                         openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
                         openMetablockForm.submit();
                     });
+                });
+            }
+            for (i = 0; i < data.Connections.length; i++) {
+                console.log("Connection");
+                currentConnectonData = data.Connections[i];
+                // TODO: implement remote connection representation
+                if (currentConnectonData.SourceType == 1)
+                    sourceId = "metablock" + currentConnectonData.SourceId;
+                else
+                    sourceId = "block" + currentConnectonData.SourceId;
+                if (currentConnectonData.TargetType == 1)
+                    targetId = "metablock" + currentConnectonData.TargetId;
+                else
+                    targetId = "block" + currentConnectonData.TargetId;
+                instance.connect({
+                    source: sourceId, target: targetId, editable: false, paintStyle: connectorPaintStyle
                 });
             }
         }

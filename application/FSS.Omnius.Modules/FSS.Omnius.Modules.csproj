@@ -365,6 +365,10 @@
     <Compile Include="Migrations\201601131043302_groupsFromAD.Designer.cs">
       <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601131603195_Overview-connections.cs" />
+    <Compile Include="Migrations\201601131603195_Overview-connections.Designer.cs">
+      <DependentUpon>201601131603195_Overview-connections.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -532,6 +536,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601131043302_groupsFromAD.resx">
       <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131603195_Overview-connections.resx">
+      <DependentUpon>201601131603195_Overview-connections.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

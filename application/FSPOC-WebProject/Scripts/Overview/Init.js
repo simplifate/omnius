@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var ZoomFactor = 1.0;
+$(function () {
     if (CurrentModuleIs("overviewModule")) {
         LoadMetablock();
 
@@ -29,6 +30,17 @@
                 openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
                 openMetablockForm.submit();
             });
+        });
+        $("#btnZoomIn").on("click", function () {
+            ZoomFactor += 0.1;
+            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
+        });
+        $("#btnZoomOut").on("click", function () {
+            if (ZoomFactor >= 0.2)
+                ZoomFactor -= 0.1;
+            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
         });
         $.contextMenu({
             selector: '.block, .metablock',

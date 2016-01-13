@@ -35,8 +35,10 @@
             tableName = addBlockDialog.find("#table-dropdown").val();
             newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="tableName">'
                 + tableName + '</div></div>');
-            $("#overviewPanel").append(newBlock);
+            $("#overviewPanel .scrollArea").append(newBlock);
             instance.draggable(newBlock, { containment: "parent" });
+            newBlock.css("top", $("#overviewPanel").scrollTop() + 20);
+            newBlock.css("left", $("#overviewPanel").scrollLeft() + 20);
             newBlock.on("dblclick", function () {
                 blockToOpen = $(this);
                 SaveMetablock(function () {
@@ -76,8 +78,10 @@
             metablockName = addMetablockDialog.find("#metablock-name").val();
             newMetablock = $('<div class="metablock"><div class="metablockName">'
                 + metablockName + '</div><div class="metablockSymbol fa fa-th-large"></div></div>');
-            $("#overviewPanel").append(newMetablock);
+            $("#overviewPanel .scrollArea").append(newMetablock);
             instance.draggable(newMetablock, { containment: "parent" });
+            newMetablock.css("top", $("#overviewPanel").scrollTop() + 20);
+            newMetablock.css("left", $("#overviewPanel").scrollLeft() + 20);
             newMetablock.on("dblclick", function () {
                 metablockToOpen = $(this);
                 SaveMetablock(function () {

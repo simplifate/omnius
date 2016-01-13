@@ -918,7 +918,15 @@ body.overviewModule {
     left: 229px;
     top: 140px;
     right: 150px;
-    bottom: 0px; }
+    bottom: 0px;
+    overflow: scroll; }
+    body.overviewModule #overviewPanel .scrollArea {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      transform-origin: 0px 0px;
+      min-width: 4500px;
+      min-height: 2500px; }
     body.overviewModule #overviewPanel .block {
       position: absolute;
       width: 160px;
@@ -926,7 +934,8 @@ body.overviewModule {
       background-color: #467ea8;
       color: white;
       border: none;
-      font-size: 16px; }
+      font-size: 16px;
+      z-index: 100; }
       body.overviewModule #overviewPanel .block .blockName {
         position: absolute;
         top: 15px;
@@ -947,7 +956,8 @@ body.overviewModule {
       background-color: #467ea8;
       color: white;
       border: none;
-      font-size: 16px; }
+      font-size: 16px;
+      z-index: 100; }
       body.overviewModule #overviewPanel .metablock .metablockName {
         position: absolute;
         top: 11px;
@@ -982,8 +992,31 @@ body.overviewModule {
     body.overviewModule #overviewMenu hr {
       border-color: #457fa9;
       border-width: 2px; }
+  body.overviewModule #zoomPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: fixed;
+    right: 215px;
+    bottom: 55px;
+    text-align: center;
+    z-index: 2000; }
+    body.overviewModule #zoomPanel button {
+      font-size: 12px;
+      background-color: #49c3f1;
+      color: black;
+      border: none; }
+    body.overviewModule #zoomPanel button:hover {
+      background-color: #2ddef9; }
+    body.overviewModule #zoomPanel #zoomLabel {
+      font-size: 20px;
+      color: black;
+      margin-bottom: -2px; }
   body.overviewModule .jsplumb-drag {
-    z-index: 200;
+    z-index: 200 !important;
     border: 1px solid #49c3f1;
     box-shadow: 0px 0px 22px #49c3f1; }
   body.overviewModule .ui-dialog {

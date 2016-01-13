@@ -30,7 +30,16 @@ body.overviewModule {
         top: 140px;
         right: 150px;
         bottom: 0px;
+        overflow: scroll;
 
+        .scrollArea {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            transform-origin: 0px 0px;
+            min-width: 4500px;
+            min-height: 2500px;
+        }
         .block {
             position: absolute;
             width: 160px;
@@ -39,6 +48,7 @@ body.overviewModule {
             color: white;
             border: none;
             font-size: 16px;
+            z-index: 100;
 
             .blockName {
                 position: absolute;
@@ -64,6 +74,7 @@ body.overviewModule {
             color: white;
             border: none;
             font-size: 16px;
+            z-index: 100;
 
             .metablockName {
                 position: absolute;
@@ -102,8 +113,31 @@ body.overviewModule {
             border-width: 2px;
         }
     }
+    #zoomPanel {
+        @include no-select();
+        position: fixed;
+        right: 215px;
+        bottom: 55px;
+        text-align: center;
+        z-index: 2000;
+
+        button {
+            font-size: 12px;
+            background-color: #49c3f1;
+            color: black;
+            border: none;
+        }
+        button:hover {
+            background-color: #2ddef9;
+        }
+        #zoomLabel {
+            font-size: 20px;
+            color: black;
+            margin-bottom: -2px;
+        }
+    }
     .jsplumb-drag {
-        z-index: 200;
+        z-index: 200 !important;
         border: 1px solid #49c3f1;
         box-shadow: 0px 0px 22px #49c3f1;
     }

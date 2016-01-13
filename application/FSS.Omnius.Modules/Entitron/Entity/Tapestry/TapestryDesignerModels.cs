@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public virtual ICollection<TapestryDesignerMetablockConnection> Connections { get; set; }
         public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
         public int PositionX { get; set; } // For visual representation in Overview
@@ -39,7 +40,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         {
             Metablocks = new List<TapestryDesignerMetablock>();
             Blocks = new List<TapestryDesignerBlock>();
+            Connections = new List<TapestryDesignerMetablockConnection>();
         }
+    }
+    [Table("TapestryDesigner_MetablocksConnections")]
+    public class TapestryDesignerMetablockConnection
+    {
+        public int Id { get; set; }
+        public int SourceType { get; set; }
+        public int TargetType { get; set; }
+        public int? SourceId { get; set; }
+        public int? TargetId { get; set; }
     }
     [Table("TapestryDesigner_Blocks")]
     public class TapestryDesignerBlock
@@ -151,10 +162,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
+        public virtual ICollection<TapestryDesignerProperty> Properties { get; set; }
+
         public virtual TapestryDesignerRule ParentRule { get; set; }
 
         public TapestryDesignerItem()
         {
+            Properties = new List<TapestryDesignerProperty>();
         }
     }
     [Table("TapestryDesigner_Operators")]
@@ -179,5 +193,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Source { get; set; }
         public int SourceSlot { get; set; }
         public int Target { get; set; }
+    }
+    [Table("TapestryDesigner_Properties")]
+    public class TapestryDesignerProperty
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -248,15 +248,25 @@ $(function () {
                 }
             },
             open: function (event, ui) {
-                $(this).find("#choice-port:first tbody:nth-child(2) tr").remove();
-                tbody = $(this).find("#choice-port tbody:nth-child(2)");
-                for (i = 1; i <= 5; i++)
-                    tbody.append($('<tr class="portRow formRow" portId="' + i + '"><td>' + 'Port' + i + '</td></tr>'));
-                if (CurrentItem.data("portId"))
-                    tbody.find('tr[portId="' + CurrentItem.data("portId") + '"]').addClass("highlightedRow");
-                $(document).on("click", "tr.portRow", function (event) {
-                    choosePortDialog.find("#choice-port tbody:nth-child(2) tr").removeClass("highlightedRow");
-                    $(this).addClass("highlightedRow");
+                $("#choose-port-dialog").find("#choice-port tbody:nth-child(2) tr").remove();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/tapestry/apps/" + appId + "/blocks",
+                    dataType: "json",
+                    error: function () { alert("Error loading block list") },
+                    success: function (data) {
+                        tbody = $("#choose-port-dialog").find("#choice-port tbody:nth-child(2)");
+                        for (i = 0; i < data.ListItems.length; i++) {
+                            tbody.append($('<tr class="portRow formRow" portId="' + data.ListItems[i].Id + '"><td>'
+                                + data.ListItems[i].Name + '</td></tr>'));
+                        }
+                        if (CurrentItem.data("portId"))
+                            tbody.find('tr[portId="' + CurrentItem.data("portId") + '"]').addClass("highlightedRow");
+                        $(document).on("click", "tr.portRow", function (event) {
+                            choosePortDialog.find("#choice-port tbody:nth-child(2) tr").removeClass("highlightedRow");
+                            $(this).addClass("highlightedRow");
+                        });
+                    }
                 });
             }
         });
@@ -264,7 +274,8 @@ $(function () {
             selectedRow = choosePortDialog.find("#choice-port:first tbody:nth-child(2) tr.highlightedRow");
             if (selectedRow.length) {
                 CurrentItem.data("portId", selectedRow.attr("portId"));
-                CurrentItem.text(selectedRow.find("td").text());
+                CurrentItem.html('<i class="fa fa-sign-out" style="margin-left: 1px; margin-right: 5px;"></i>'
+                    + selectedRow.find("td").text());
                 CurrentItem.parents(".rule").data("jsPlumbInstance").recalculateOffsets();
                 CurrentItem.parents(".rule").data("jsPlumbInstance").repaintEverything();
                 choosePortDialog.dialog("close");

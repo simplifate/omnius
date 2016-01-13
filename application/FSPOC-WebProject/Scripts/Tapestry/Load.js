@@ -45,6 +45,11 @@
                             revertActive = true;
                         }
                     });
+                    for (k = 0; k < currentItemData.Properties.length; k++) {
+                        currentPropertyData = currentItemData.Properties[k];
+                        if (currentPropertyData.Name == "PortId")
+                            newItem.data("portId", currentPropertyData.Value);
+                    }
                 }
                 for (j = 0; j < currentRuleData.Operators.length; j++) {
                     currentOperatorData = currentRuleData.Operators[j];
@@ -173,6 +178,10 @@
                                     revertActive = true;
                                 }
                             });
+                            if (droppedElement.hasClass("port")) {
+                                CurrentItem = droppedElement;
+                                choosePortDialog.dialog("open");
+                            }
                         }
                     }
                 });

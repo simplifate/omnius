@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
+    public enum OverviewConnectionEndpointTypes
+    {
+        LocalBlock = 0,
+        LocalMetablock = 1,
+        Remote = 2
+    }
     public class AjaxTapestryDesignerApp
     {
         public int Id { get; set; }
@@ -23,14 +29,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? ParentMetablockId { get; set; }
         public bool IsNew { get; set; }
 
+        public List<AjaxTapestryDesignerMetablockConnection> Connections { get; set; }
         public List<AjaxTapestryDesignerMetablock> Metablocks { get; set; }
         public List<AjaxTapestryDesignerBlock> Blocks { get; set; }
 
         public AjaxTapestryDesignerMetablock()
         {
+            Connections = new List<AjaxTapestryDesignerMetablockConnection>();
             Metablocks = new List<AjaxTapestryDesignerMetablock>();
             Blocks = new List<AjaxTapestryDesignerBlock>();
         }
+    }
+    public class AjaxTapestryDesignerMetablockConnection
+    {
+        public int Id { get; set; }
+        public int SourceType { get; set; }
+        public int TargetType { get; set; }
+        public int? SourceId { get; set; }
+        public int? TargetId { get; set; }
     }
     public class AjaxTapestryDesignerBlock
     {
@@ -64,10 +80,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public BlockToolboxState ToolboxState { get; set; }
         public List<AjaxTapestryDesignerRule> Rules { get; set; }
+        public List<int> PortTargets { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
             Rules = new List<AjaxTapestryDesignerRule>();
+            PortTargets = new List<int>();
         }
     }
     public class AjaxTapestryDesignerBlockCommitHeader
@@ -105,6 +123,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string DialogType { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+
+        public List<AjaxTapestryDesignerProperty> Properties { get; set; }
+
+        public AjaxTapestryDesignerItem()
+        {
+            Properties = new List<AjaxTapestryDesignerProperty>();
+        }
     }
     public class AjaxTapestryDesignerOperator
     {
@@ -136,5 +161,25 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             BlockIdPairs = new List<AjaxTapestryDesignerIdPair>();
             MetablockIdPairs = new List<AjaxTapestryDesignerIdPair>();
         }
+    }
+    public class AjaxTapestryDesignerBlockListItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+    public class AjaxTapestryDesignerBlockList
+    {
+        public List<AjaxTapestryDesignerBlockListItem> ListItems { get; set; }
+
+        public AjaxTapestryDesignerBlockList()
+        {
+            ListItems = new List<AjaxTapestryDesignerBlockListItem>();
+        }
+    }
+    public class AjaxTapestryDesignerProperty
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

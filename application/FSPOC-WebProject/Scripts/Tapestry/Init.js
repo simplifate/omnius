@@ -152,6 +152,10 @@ $(function () {
                                 revertActive = true;
                             }
                         });
+                        if (droppedElement.hasClass("port")) {
+                            CurrentItem = droppedElement;
+                            choosePortDialog.dialog("open");
+                        }
                     }
                 }
             });
