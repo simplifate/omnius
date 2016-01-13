@@ -328,6 +328,10 @@
     <Compile Include="Migrations\201601071621315_Hermes-email-log.Designer.cs">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601111302087_Hermes-log-update.cs" />
+    <Compile Include="Migrations\201601111302087_Hermes-log-update.Designer.cs">
+      <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.cs" />
     <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.Designer.cs">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
@@ -488,6 +492,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601071621315_Hermes-email-log.resx">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111302087_Hermes-log-update.resx">
+      <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111323025_actionRigthsToActionRuleRights.resx">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>

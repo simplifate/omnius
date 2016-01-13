@@ -220,6 +220,7 @@
     <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
+    <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
@@ -1447,6 +1448,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Show\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
