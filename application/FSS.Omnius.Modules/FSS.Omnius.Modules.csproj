@@ -356,6 +356,7 @@
     <Compile Include="Migrations\201601131308063_generateDatabase.cs" />
     <Compile Include="Migrations\201601131308063_generateDatabase.Designer.cs">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201601131033150_addConfigPairs.cs" />
     <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
@@ -525,6 +526,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601131308063_generateDatabase.resx">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
     </EmbeddedResource>
