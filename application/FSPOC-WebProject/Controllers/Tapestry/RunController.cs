@@ -8,6 +8,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 {
     public class RunController : Controller
     {
+        [PersonaAuthorize]
         public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
         {
             var core = new Modules.CORE.CORE();

@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
+    [PersonaAuthorize]
     public class ShowController : Controller
     {
         // GET: Show

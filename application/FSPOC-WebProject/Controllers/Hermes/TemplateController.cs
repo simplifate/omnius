@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class TemplateController : Controller
     {
         public static readonly Dictionary<int, string> LanguageList = new Dictionary<int, string>

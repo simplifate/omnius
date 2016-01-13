@@ -3,6 +3,7 @@ using FSS.Omnius.Modules.Nexus.Service;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class NexusController : Controller
     {
         public ActionResult Index()

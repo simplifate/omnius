@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class BuilderController : Controller
     {
         public ActionResult Index(FormCollection formParams)

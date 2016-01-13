@@ -10,7 +10,7 @@ using FSPOC_WebProject.Models;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [Authorize]
+    [PersonaAuthorize(Roles = "Admin")]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

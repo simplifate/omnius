@@ -73,7 +73,7 @@ namespace FSS.Omnius.Modules.Persona
                 {
                     string groupName = (string)group;
                     int startI = groupName.IndexOf("CN=") + 3;
-                    int EndI = groupName.IndexOf(',');
+                    int EndI = groupName.IndexOf(',', startI);
                     groupNames.Add(groupName.Substring(startI, EndI - startI));
                 }
                 user.UpdateGroupsFromAd(groupNames, e);

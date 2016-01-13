@@ -8,6 +8,7 @@ namespace FSS.Omnius.Controllers.CORE
 {
     public class InfoController : Controller
     {
+        [PersonaAuthorize]
         // GET: Info
         public void Index()
         {

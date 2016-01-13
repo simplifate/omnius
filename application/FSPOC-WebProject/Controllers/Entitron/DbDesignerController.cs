@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class DbDesignerController : Controller
     {
         // GET: DbDesigner

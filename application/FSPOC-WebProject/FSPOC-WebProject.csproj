@@ -226,6 +226,7 @@
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
+    <Compile Include="Controllers\PersonaAuthorize.cs" />
     <Compile Include="Controllers\Persona\ModulesController.cs" />
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />

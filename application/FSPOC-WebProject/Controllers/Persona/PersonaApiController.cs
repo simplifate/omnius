@@ -9,6 +9,7 @@ using Logger;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
+    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin")]
     public class PersonaApiController : ApiController
     {
         [Route("api/persona/module-permissions")]

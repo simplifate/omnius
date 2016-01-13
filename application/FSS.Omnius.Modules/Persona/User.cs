@@ -40,6 +40,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             }
         }
 
+        public bool isAdmin()
+        {
+            return Groups.Any(g => g.Name == "Admin");
+        }
         public bool isInGroup(string groupName)
         {
             return Groups.Any(g => g.Name == groupName);

@@ -7,6 +7,7 @@ using Logger;
 
 namespace FSS.Omnius.Controllers.Master
 {
+    [PersonaAuthorize]
     public class HomeController : Controller
     {
         private List<Application> getAppList()

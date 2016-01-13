@@ -11,6 +11,7 @@ using Logger;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
+    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin")]
     public class TapestryApiController : ApiController
     {
         [Route("api/tapestry/apps")]

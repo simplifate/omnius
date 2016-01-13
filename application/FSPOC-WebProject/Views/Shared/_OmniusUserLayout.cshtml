@@ -16,7 +16,10 @@
     @Scripts.Render("~/bundles/CommonLibraries")
     <div id="userTopBar">
         <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
-        <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
+        @if (User.GetLogged().isAdmin())
+        {
+            <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
+        }
         <a href="/Master/Home/Help"><div class="icon" id="helpIcon"><div class="fa fa-question-circle"></div></div></a>
 
         <div class="clientTitle">Oss Portál</div>
