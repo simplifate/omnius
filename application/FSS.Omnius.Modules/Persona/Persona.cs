@@ -16,13 +16,16 @@ namespace FSS.Omnius.Modules.Persona
     [NotMapped]
     public class Persona : Module
     {
-        private TimeSpan _expirationTime = TimeSpan.FromDays(1);
+        private TimeSpan _expirationTime;
         private CORE.CORE _CORE;
 
         public Persona(CORE.CORE core)
         {
             Name = "Persona";
             _CORE = core;
+
+            int UserCacheExpirationHours = Convert.ToInt32(_CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours").Value);
+            _expirationTime = TimeSpan.FromHours(UserCacheExpirationHours > 0 ? UserCacheExpirationHours : 24); // default 24h
         }
 
         public User getUser(string username, string serverName = null)
@@ -52,6 +55,7 @@ namespace FSS.Omnius.Modules.Persona
                 if (result == null)
                     throw new NotAuthorizedException("User not found");
 
+                // user attributes
                 user.DisplayName = (string)result["displayname"];
                 user.Email = (string)result["mail"];
                 user.Address = "";
@@ -62,6 +66,17 @@ namespace FSS.Omnius.Modules.Persona
                 user.WorkPhone = "";
                 user.MobilPhone = "";
                 user.LastLogin = DateTime.FromFileTime((long)result["lastlogon"]);
+
+                // groups
+                List<string> groupNames = new List<string>();
+                foreach (JToken group in result["memberof"])
+                {
+                    string groupName = (string)group;
+                    int startI = groupName.IndexOf("CN=") + 3;
+                    int EndI = groupName.IndexOf(',');
+                    groupNames.Add(groupName.Substring(startI, EndI - startI));
+                }
+                user.UpdateGroupsFromAd(groupNames, e);
 
                 user.localExpiresAt = DateTime.UtcNow + _expirationTime;
                 
