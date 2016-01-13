@@ -344,6 +344,10 @@
     <Compile Include="Migrations\201601111538327_ActionWithoutIdentity.Designer.cs">
       <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601130939278_addNameToDbRelation.cs" />
+    <Compile Include="Migrations\201601130939278_addNameToDbRelation.Designer.cs">
+      <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -496,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111538327_ActionWithoutIdentity.resx">
       <DependentUpon>201601111538327_ActionWithoutIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601130939278_addNameToDbRelation.resx">
+      <DependentUpon>201601130939278_addNameToDbRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

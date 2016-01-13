@@ -98,7 +98,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 if (entitronTable.primaryKeys != primaryColumnsForTable 
                     && entitronTable.primaryKeys.Count>0)           //pokud v entitronu se nachází klíč, a pokud seznam sloupců ze kterého klíč je tvořen je v entitronu jiný než ve schématu, tak se musí smazat starý klíč a až potom vytvořit nový
                 {
-                    //chybí sqlquery pro odstranění primárního klíče z tabulky TODO přidat toto sqlquery
+                    entitronTable.DropConstraint($"PK_{e.Application.Name}_{entitronTable.tableName}_", true);  //TODO zjistit z čeho se skládá realtablename a doplnit do názvu
                     entitronTable.AddPrimaryKey(primaryColumnsForTable);
                 }else if (entitronTable.primaryKeys.Count == 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
                 {
@@ -135,20 +135,26 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
             } //end foreach efTable
 
-            List<string> entitronsFKs = new List<string>();
+            List<DBForeignKey> entitronsFKs = new List<DBForeignKey>();
             foreach (DBTable table in e.Application.GetTables())
             {
                 foreach (DBForeignKey key in table.foreignKeys)
                 {
-                    entitronsFKs.Add(key.name);
+                    entitronsFKs.Add(key);
                 }
             }
             List<string> newFK =
                 dbSchemeCommit
                 .Relations
                 .Select(x => x.Name)
-                .Except(entitronsFKs)
+                .Except(entitronsFKs.Select(x=>x.name))
                 .ToList();                                           //list názvů indexů které jsou ve schématu, ale ne v entitronu
+
+            List<string> deletedFK =
+                 entitronsFKs
+                 .Select(x => x.name)
+                .Except(dbSchemeCommit.Relations.Select(x => x.Name))
+                .ToList();                                           //list názvů indexů které jsou v entitronu, ale ne ve schématu
 
             foreach (string fkname in newFK)                         //přidá do entitronu všechny nové cizí klíče
             {
@@ -163,7 +169,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
             }
 
-            //chybí sql_query pro odstranění cizího klíče TODO přidat toto sqlquery
+            foreach (string fkey in deletedFK)
+            {
+                DBForeignKey foreignKeyForDrop = entitronsFKs.SingleOrDefault(x => x.name == fkey);
+                foreignKeyForDrop.sourceTable.DropConstraint(foreignKeyForDrop.name);
+            }
 
             e.Application.SaveChanges();
         }
