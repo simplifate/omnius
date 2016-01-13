@@ -357,6 +357,10 @@
     <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601131043302_groupsFromAD.cs" />
+    <Compile Include="Migrations\201601131043302_groupsFromAD.Designer.cs">
+      <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -518,6 +522,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
       <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131043302_groupsFromAD.resx">
+      <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
