@@ -24,8 +24,8 @@ namespace FSS.Omnius.Modules.Persona
             Name = "Persona";
             _CORE = core;
 
-            int UserCacheExpirationHours = Convert.ToInt32(_CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours").Value);
-            _expirationTime = TimeSpan.FromHours(UserCacheExpirationHours > 0 ? UserCacheExpirationHours : 24); // default 24h
+            ConfigPair pair = _CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");
+            _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
         }
 
         public User getUser(string username, string serverName = null)
