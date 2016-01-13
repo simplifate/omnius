@@ -13,6 +13,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        [Required]
+        public bool IsFromAD { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
         public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }

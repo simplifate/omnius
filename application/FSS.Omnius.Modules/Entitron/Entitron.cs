@@ -67,9 +67,9 @@ namespace FSS.Omnius.Modules.Entitron
             return Application.GetTable(tableName);
         }
 
-        public DBItem GetDynamicItem(Application application, string tableName, int modelId)
+        public DBItem GetDynamicItem(string tableName, int modelId)
         {
-            return application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().First();
+            return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
         }
     }
 }

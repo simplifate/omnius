@@ -103,6 +103,7 @@
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
+    <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
     <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -328,6 +329,10 @@
     <Compile Include="Migrations\201601071621315_Hermes-email-log.Designer.cs">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601111302087_Hermes-log-update.cs" />
+    <Compile Include="Migrations\201601111302087_Hermes-log-update.Designer.cs">
+      <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.cs" />
     <Compile Include="Migrations\201601111323025_actionRigthsToActionRuleRights.Designer.cs">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
@@ -351,6 +356,13 @@
     <Compile Include="Migrations\201601131308063_generateDatabase.cs" />
     <Compile Include="Migrations\201601131308063_generateDatabase.Designer.cs">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201601131033150_addConfigPairs.cs" />
+    <Compile Include="Migrations\201601131033150_addConfigPairs.Designer.cs">
+      <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601131043302_groupsFromAD.cs" />
+    <Compile Include="Migrations\201601131043302_groupsFromAD.Designer.cs">
+      <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -493,6 +505,9 @@
     <EmbeddedResource Include="Migrations\201601071621315_Hermes-email-log.resx">
       <DependentUpon>201601071621315_Hermes-email-log.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601111302087_Hermes-log-update.resx">
+      <DependentUpon>201601111302087_Hermes-log-update.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601111323025_actionRigthsToActionRuleRights.resx">
       <DependentUpon>201601111323025_actionRigthsToActionRuleRights.cs</DependentUpon>
     </EmbeddedResource>
@@ -510,6 +525,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601131308063_generateDatabase.resx">
       <DependentUpon>201601131308063_generateDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601131033150_addConfigPairs.resx">
+      <DependentUpon>201601131033150_addConfigPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601131043302_groupsFromAD.resx">
+      <DependentUpon>201601131043302_groupsFromAD.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

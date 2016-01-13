@@ -1,18 +1,20 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
     public class RunController : Controller
     {
-        public string Index(int appId, int? actionRuleId, int? modelId, FormCollection fc)
+        public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
         {
             var core = new Modules.CORE.CORE();
             User user = User.GetLogged();
-            core.Tapestry.run(user, appId, actionRuleId, modelId, fc);
+            Block targetBlock = core.Tapestry.run(user, AppName, actionRuleId, modelId, fc);
 
-            return core.Tapestry.GetHtmlOutput();
+            return new RedirectToRouteResult("Mozaic", new RouteValueDictionary(new { Controller = "Show", Action = "Index", appName = AppName, blockId = targetBlock.Id, modelId = modelId }));
         }
     }
 }
