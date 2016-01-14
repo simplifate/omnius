@@ -210,8 +210,7 @@ body.adminAppModule #validationResults {
       top: 8px;
       width: 60px;
       height: 60px;
-      background-color: white;
-      border-radius: 50%; }
+      background-image: url(/Content/images/avatar-generic.png); }
   #topBar .fa-caret-down {
     position: absolute;
     left: 255px;
@@ -340,7 +339,8 @@ body.adminAppModule #validationResults {
       top: 5px;
       width: 40px;
       height: 40px;
-      background-image: url(/Content/images/UserIconSample.png); }
+      background-image: url(/Content/images/avatar-generic.png);
+      background-size: 40px 40px; }
     #userTopBar .userBox .fullName {
       position: absolute;
       left: 65px;

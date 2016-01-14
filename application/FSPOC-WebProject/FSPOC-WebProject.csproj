@@ -265,6 +265,7 @@
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
     <Content Include="Content\images\animated-overlay.gif" />
+    <Content Include="Content\images\avatar-generic.png" />
     <Content Include="Content\images\cut.png" />
     <Content Include="Content\images\door.png" />
     <Content Include="Content\images\ModuleConfigBackground.png" />
