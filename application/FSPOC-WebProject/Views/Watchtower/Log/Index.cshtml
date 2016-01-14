@@ -114,7 +114,7 @@
                         <td>@item.LogLevelString</td>
                         <td>@item.UserName</td>
                         <td>@item.LogEventSourceString</td>
-                        <td>@item.Message</td>
+                        <td>@Html.Raw(item.Message)</td>
                     </tr>
                 }
             </table>

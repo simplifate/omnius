@@ -56,7 +56,7 @@
                 <dt>Předmět:</dt>
                 <dd>@ViewData["Subject"]</dd>
                 <dt>E-mail:</dt>
-                <dd>@Html.Raw(ViewData["Content"])</dd>
+                <dd>@Html.Raw((bool)ViewData["Is_HTML"] ? ViewData["Content"] : ViewData["Content"].ToString().Replace("\n", "<br />"))</dd>
             </dl>
 
         </div>

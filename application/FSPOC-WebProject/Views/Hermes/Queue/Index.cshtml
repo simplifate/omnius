@@ -13,7 +13,7 @@
 <div id="lowerPanel">
     @Html.Partial("~/Views/Hermes/Hermes/Decoration.cshtml")
     <div id="smtpMenuArea" class="moduleSubMenuArea">
-        
+        @Ajax.RouteLink("Spustit sender", "Hermes", new { @action = "RunSender" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-play-circle" })
     </div>
     <div id="lowerPanelContainer">
         <table id="queueTable" class="table table-bordered table-striped table-responsive table-omnius">
@@ -51,8 +51,8 @@
                             <td>@mail["Subject"]</td>
                             <td>@Html.Raw(mail["From"]["Address"])</td>
                             <td class="table-row-action">
-                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
-                                @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = item.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = item.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
                             </td>
                         </tr>
                     }

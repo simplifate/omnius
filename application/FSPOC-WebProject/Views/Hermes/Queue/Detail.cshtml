@@ -1,0 +1,70 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Hermes
+@using Newtonsoft.Json.Linq
+@model FSS.Omnius.Modules.Entitron.Entity.Hermes.EmailQueue
+@{
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    JToken message = JToken.Parse(Model.Message);
+}
+<div>
+    <h4>Detail záznamu</h4>
+    <table class="details-list table table-striped">
+        <tr>        
+            <td>ID e-mailu:</td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <td>Datum vložení:</td>
+            <td>@Model.Date_Inserted.ToString("g")</td>
+        </tr>
+        <tr>
+            <td>Datum k odeslání:</td>
+            <td>@Model.Date_Send_After.ToString("g")</td>
+        </tr>
+        <tr>
+            <td>Odesílatel:</td>
+            <td>@message["From"]["DisplayName"] &lt;@message["From"]["Atdress"]&gt;</td>
+        </tr>
+        <tr>
+            <td>Příjemci:</td>
+            <td>
+                @foreach (JToken recipient in message["To"])
+                {
+                    @Html.Raw(recipient["DisplayName"] + " &lt;" + recipient["Atdress"] + "&gt;")<br />
+                }
+            </td>
+        </tr>
+        
+        @if (message["CC"] != null && message["CC"].Count() > 0)
+        {
+            <tr>
+                <td>Kopie:</td>
+                <td>
+                    @foreach (JToken copy in message["CC"])
+                    {
+                        @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Atdress"] + "&gt;")<br />
+                    }
+                </td>
+            </tr>
+        }
+        @if (message["Bcc"] != null && message["Bcc"].Count() > 0)
+        {
+            <tr>
+                <td>Skrytá kopie:</td>
+                <td>
+                    @foreach (JToken copy in message["Bcc"])
+                    {
+                        @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Atdress"] + "&gt;")<br />
+                    }
+                </td>
+            </tr>
+        }        
+        <tr>
+            <td>Předmět:</td>
+            <td>@message["Subject"]</td>
+        </tr>
+        <tr>
+            <td>E-mail:</td>
+            <td>@Html.Raw((bool)message["IsBodyHtml"] ? message["Content"] : message["Content"].ToString().Replace("\n", "<br />"))</td>
+        </tr>
+    </table>
+</div>

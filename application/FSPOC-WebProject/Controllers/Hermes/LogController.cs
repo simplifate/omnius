@@ -32,6 +32,7 @@ namespace FSS.Omnius.Controllers.Hermes
             ViewData["Date_Send"] = item.DateSend.ToLongDateString();
             ViewData["Status"] = item.Status == EmailSendStatus.success ? "Odesláno" : "Neodesláno";
             ViewData["SMTP_Error"] = item.SMTP_Error;
+            ViewData["Is_HTML"] = (bool)mail["IsBodyHtml"];
 
             return View("~/Views/Hermes/Log/Detail.cshtml");
         }

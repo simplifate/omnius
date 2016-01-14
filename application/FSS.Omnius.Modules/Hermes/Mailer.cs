@@ -11,6 +11,7 @@ using System.Web.Mvc.Html;
 using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json;
 using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -125,7 +126,7 @@ namespace FSS.Omnius.Modules.Hermes
             return true;
         }
 
-        public bool SendMail(int? applicationId = null)
+        public bool SendMail(int? applicationId = null, bool disposeClient = true)
         {
             bool result;
             string smtpError = "";
@@ -160,8 +161,49 @@ namespace FSS.Omnius.Modules.Hermes
                 applicationId
             );
 
-            client.Dispose();
+            if (disposeClient) {
+                client.Dispose();
+            }
+
             return result;
+        }
+
+        public void RunSender()
+        {
+            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= DateTime.Now).ToList();
+
+            foreach(EmailQueue row in rows)
+            {
+                JToken m = JToken.Parse(row.Message);
+
+                mail = new MailMessage();
+                mail.From = new MailAddress((string)m["From"]["Address"], (string)m["From"]["DisplayName"]);
+
+                foreach (JToken replyTo in m["ReplyToList"]) {
+                    mail.ReplyToList.Add(new MailAddress((string)replyTo["Address"], (string)replyTo["DisplayName"]));
+                }
+                foreach(JToken to in m["To"]) {
+                    mail.To.Add(new MailAddress((string)to["Address"], (string)to["DisplayName"]));
+                }
+                foreach(JToken bcc in m["Bcc"]) {
+                    mail.Bcc.Add(new MailAddress((string)bcc["Address"], (string)bcc["DisplayName"]));
+                }
+                foreach(JToken cc in m["CC"]) {
+                    mail.CC.Add(new MailAddress((string)cc["Address"], (string)cc["DisplayName"]));
+                }
+                mail.Priority = (MailPriority)((int)m["Priority"]);
+                mail.DeliveryNotificationOptions = (DeliveryNotificationOptions)((int)m["DeliveryNotificationOptions"]);
+                mail.Subject = (string)m["Subject"];
+                mail.Body = (string)m["Body"];
+                mail.BodyTransferEncoding = (System.Net.Mime.TransferEncoding)((int)m["BodyTransferEncoding"]);
+                mail.IsBodyHtml = (bool)m["IsBodyHtml"];
+
+                SendMail(row.Application_Id, false);
+                e.EmailQueueItems.Remove(row);
+            }
+
+            e.SaveChanges();
+            client.Dispose();
         }
 
         #region Mail Tools

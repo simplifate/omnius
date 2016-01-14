@@ -1447,6 +1447,7 @@
     <Content Include="Views\Persona\Modules\Index.cshtml" />
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
+    <Content Include="Views\Hermes\Queue\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
