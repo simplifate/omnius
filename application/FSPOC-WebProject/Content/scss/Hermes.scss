@@ -1,25 +1,33 @@
-﻿h4.variableListTitle {
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 15px;
-}
-#NumOrderList li {
-    list-style: none;
-    width: 300px;
-    height: 44px;
-    padding: 10px 15px;
-    margin: 10px;
-    background-color: #467ea8;
-    color: white;
-    cursor: ns-resize;
-    font-family: MyriadPro;
-    font-size: 18px;
-    border-radius: 3px;
-}
-#NumOrderList .ui-sortable-helper {
-    border: 1px solid #49c3f1;
-    box-shadow: 0px 0px 22px #49c3f1;
-}
-#numOrderArea {
-    margin-bottom: 100px;
+﻿body.hermesModule {
+    #upperPanel {
+        height: 295px;
+    }
+    #lowerPanel {
+        top: 370px;
+    }
+    h4.variableListTitle {
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 15px;
+    }
+    #NumOrderList li {
+        list-style: none;
+        width: 300px;
+        height: 44px;
+        padding: 10px 15px;
+        margin: 10px;
+        background-color: #467ea8;
+        color: white;
+        cursor: ns-resize;
+        font-family: MyriadPro;
+        font-size: 18px;
+        border-radius: 3px;
+    }
+    #NumOrderList .ui-sortable-helper {
+        border: 1px solid #49c3f1;
+        box-shadow: 0px 0px 22px #49c3f1;
+    }
+    #numOrderArea {
+        margin-bottom: 100px;
+    }
 }

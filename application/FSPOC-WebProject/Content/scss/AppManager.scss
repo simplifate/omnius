@@ -91,16 +91,29 @@ body.appManagerModule {
 }
 
 body.adminAppModule {
+    #upperPanel {
+        height: 135px;
+    }
+    #lowerPanel {
+        top: 200px;
+    }
+    .appManagerLowerDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -10
+    }
     .adminAppTable {
         position: absolute;
-        left: 290px;
-        top: 125px;
-        width: 70%;
+        left: 85px;
+        top: 70px;
+        width: 85%;
+
         td {
-            min-width: 180px;
+            min-width: 110px;
         }
         td.actions {
-            min-width: unset;
+            width: 345px;
             .btn {
                 width: 100px;
             }

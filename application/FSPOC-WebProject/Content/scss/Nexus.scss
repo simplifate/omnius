@@ -1,5 +1,9 @@
 ﻿body.nexusModule {
+    #upperPanel {
+        height: 295px;
+    }
     #lowerPanel {
+        top: 370px;
         .wsdlFileString {
             display: none;
         }

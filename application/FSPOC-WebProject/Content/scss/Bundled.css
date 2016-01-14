@@ -97,15 +97,27 @@ body.appManagerModule {
     color: white;
     background-color: #4d41e7; }
 
+body.adminAppModule #upperPanel {
+  height: 135px; }
+
+body.adminAppModule #lowerPanel {
+  top: 200px; }
+
+body.adminAppModule .appManagerLowerDecoration {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -10; }
+
 body.adminAppModule .adminAppTable {
   position: absolute;
-  left: 290px;
-  top: 125px;
-  width: 70%; }
+  left: 85px;
+  top: 70px;
+  width: 85%; }
   body.adminAppModule .adminAppTable td {
-    min-width: 180px; }
+    min-width: 110px; }
   body.adminAppModule .adminAppTable td.actions {
-    min-width: unset; }
+    width: 345px; }
     body.adminAppModule .adminAppTable td.actions .btn {
       width: 100px; }
 
@@ -1628,8 +1640,13 @@ body.portalModule {
     margin-top: 28px;
     margin-right: 17px; } }
 
-body.nexusModule #lowerPanel .wsdlFileString {
-  display: none; }
+body.nexusModule #upperPanel {
+  height: 295px; }
+
+body.nexusModule #lowerPanel {
+  top: 370px; }
+  body.nexusModule #lowerPanel .wsdlFileString {
+    display: none; }
 
 body.nexusModule #show-wsdl-dialog {
   padding: 7px 4px; }
@@ -1788,8 +1805,8 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   font-size: 16px; }
 
 .personaModulesModule {
-  background-color: #3a3a3a; }
-  .personaModulesModule #personaModulesPanel {
+  background-color: #f2f2f3; }
+  .personaModulesModule #upperPanel {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -1800,72 +1817,93 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     left: 225px;
     top: 75px;
     right: 0px;
-    height: 500px; }
-    .personaModulesModule #personaModulesPanel .panelLabel {
+    height: 135px; }
+  .personaModulesModule #lowerPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    top: 200px; }
+    .personaModulesModule #lowerPanel .modulesFormUpperDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -10; }
+    .personaModulesModule #lowerPanel .panelLabel {
       position: absolute;
       left: 52px;
       top: 24px;
       font-size: 18px;
       font-family: FatTec;
-      color: white; }
-    .personaModulesModule #personaModulesPanel .backgroundDecoration {
+      color: black; }
+    .personaModulesModule #lowerPanel .backgroundDecoration {
       position: absolute;
       left: 0px;
       top: 0px; }
-    .personaModulesModule #personaModulesPanel .decorationWatcheye {
+    .personaModulesModule #lowerPanel .decorationWatcheye {
       position: absolute;
       left: 19px;
       top: 56px;
       width: 24px;
       height: 24px; }
-    .personaModulesModule #personaModulesPanel #personaModulesContentContainer {
+    .personaModulesModule #lowerPanel #personaModulesContentContainer {
       position: absolute;
       left: 150px;
-      top: 120px; }
-    .personaModulesModule #personaModulesPanel #moduleAccessTable {
+      top: 50px; }
+    .personaModulesModule #lowerPanel #moduleAccessTable {
       color: white;
       font-family: MyriadPro;
-      font-size: 18px; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable th {
+      font-size: 18px;
+      font-weight: normal;
+      color: black; }
+      .personaModulesModule #lowerPanel #moduleAccessTable th {
+        font-weight: normal;
         text-align: center;
         padding-bottom: 10px; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable td {
+      .personaModulesModule #lowerPanel #moduleAccessTable td {
         height: 40px;
         vertical-align: middle; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable .moduleCell {
+      .personaModulesModule #lowerPanel #moduleAccessTable .moduleCell {
         width: 110px; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable .checkboxCell {
+      .personaModulesModule #lowerPanel #moduleAccessTable .checkboxCell {
         width: 140px;
         text-align: center;
-        border-top: 1px solid #3a3a3a;
-        border-right: 1px solid #3a3a3a; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable .yesCell {
+        border: 1px solid #3a3a3a; }
+      .personaModulesModule #lowerPanel #moduleAccessTable .yesCell {
         background-color: #c6ffc6;
         color: black; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable .noCell {
+      .personaModulesModule #lowerPanel #moduleAccessTable .noCell {
         background-color: #ffdbdb;
         color: black; }
-      .personaModulesModule #personaModulesPanel #moduleAccessTable .hiddenIdRow {
+      .personaModulesModule #lowerPanel #moduleAccessTable .hiddenIdRow {
         display: none; }
-    .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel {
+    .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel {
       position: relative;
       margin-left: 10px;
       margin-top: 90px;
       margin-bottom: 50px; }
-      .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel .btn-omnius-rectangular {
+      .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel .btn-omnius-rectangular {
         margin-right: 15px; }
-      .personaModulesModule #personaModulesPanel #personaModulesFormButtonsPanel .modulesFormLowerDecoration {
+      .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel .modulesFormLowerDecoration {
         position: absolute;
         left: -120px;
         top: -135px;
         z-index: -10; }
 
-h4.variableListTitle {
+body.hermesModule #upperPanel {
+  height: 295px; }
+
+body.hermesModule #lowerPanel {
+  top: 370px; }
+
+body.hermesModule h4.variableListTitle {
   text-align: center;
   padding-top: 20px;
   padding-bottom: 15px; }
 
-#NumOrderList li {
+body.hermesModule #NumOrderList li {
   list-style: none;
   width: 300px;
   height: 44px;
@@ -1878,11 +1916,11 @@ h4.variableListTitle {
   font-size: 18px;
   border-radius: 3px; }
 
-#NumOrderList .ui-sortable-helper {
+body.hermesModule #NumOrderList .ui-sortable-helper {
   border: 1px solid #49c3f1;
   box-shadow: 0px 0px 22px #49c3f1; }
 
-#numOrderArea {
+body.hermesModule #numOrderArea {
   margin-bottom: 100px; }
 
 .ui-dialog .ui-dialog {
@@ -2067,7 +2105,6 @@ h4.variableListTitle {
   left: 225px;
   top: 75px;
   right: 0px;
-  height: 357px;
   background-color: #3a3a3a; }
   #upperPanel .panelLabel {
     position: absolute;
@@ -2119,7 +2156,6 @@ h4.variableListTitle {
 #lowerPanel {
   position: absolute;
   left: 225px;
-  top: 432px;
   right: 0px;
   height: auto; }
 
