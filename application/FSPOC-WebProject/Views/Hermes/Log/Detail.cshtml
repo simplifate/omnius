@@ -12,53 +12,75 @@
     <div id="lowerPanelContainer">
         <div id="ContentContainer">
 
-            <dl>
-                <dt>ID e-mailu:</dt>
-                <dd>@ViewData["Id"]</dd>
-                <dt>Datum odeslání:</dt>
-                <dd>@ViewData["Date_Send"]</dd>
-                <dt>Stav:</dt>
-                <dd>@ViewData["Status"]</dd>
-                @if(!String.IsNullOrEmpty((string)ViewData["SMTP_Error"]))
-                {
-                    <dt>SMTP chyba:</dt>
-                    <dd>@ViewData["SMTP_Error"]</dd>
-                }
-                <dt>Odesílatel:</dt>
-                <dd>@ViewData["From_Name"] &lt;@ViewData["From_Email"]&gt;</dd>
-                <dt>Příjemci:</dt>
-                <dd>
-                    @foreach(JToken recipient in (JToken)ViewData["To"])
+            <div>
+                <h4>Detail záznamu</h4>
+                <table class="details-list table table-striped">
+                    <tr>
+                        <td>ID e-mailu:</td>
+                        <td>@ViewData["Id"]</td>
+                    </tr>
+                    <tr>
+                        <td>Datum vložení:</td>
+                        <td>@ViewData["Date_Send"]</td>
+                    </tr>
+                    <tr>
+                        <td>Stav:</td>
+                        <td>@ViewData["Status"]</td>
+                    </tr>
+                    @if (!String.IsNullOrEmpty((string)ViewData["SMTP_Error"]))
                     {
-                        @Html.Raw(recipient["DisplayName"] + " &lt;" + recipient["Address"] + "&gt;")<br />
+                        <tr>
+                            <td>SMTP chyba:</td>
+                            <td>@ViewData["SMTP_Error"]</td>
+                        </tr>
                     }
-                </dd>
-                @if(((JToken)ViewData["CC"]).Count() > 0)
-                {
-                    <dt>Kopie:</dt>
-                    <dd>
-                        @foreach(JToken copy in (JToken)ViewData["CC"])
-                        {
-                            @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Address"] + "&gt;")<br />
-                        }
-                    </dd>
-                }
-                @if (((JToken)ViewData["Bcc"]).Count() > 0)
-                {
-                    <dt>Skrytá kopie:</dt>
-                    <dd>
-                        @foreach (JToken copy in (JToken)ViewData["Bcc"])
-                        {
-                            @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Address"] + "&gt;")<br />
-                        }
-                    </dd>
-                }
-                <dt>Předmět:</dt>
-                <dd>@ViewData["Subject"]</dd>
-                <dt>E-mail:</dt>
-                <dd>@Html.Raw((bool)ViewData["Is_HTML"] ? ViewData["Content"] : ViewData["Content"].ToString().Replace("\n", "<br />"))</dd>
-            </dl>
-
+                    <tr>
+                        <td>Odesílatel:</td>
+                        <td>@ViewData["From_Name"] &lt;@ViewData["From_Email"]&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Příjemci:</td>
+                        <td>
+                            @foreach (JToken recipient in (JToken)ViewData["To"])
+                            {
+                                @Html.Raw(recipient["DisplayName"] + " &lt;" + recipient["Address"] + "&gt;")<br />
+                            }
+                        </td>
+                    </tr>
+                    @if ((JToken)ViewData["CC"] != null && ((JToken)ViewData["CC"]).Count() > 0)
+                    {
+                        <tr>
+                            <td>Kopie:</td>
+                            <td>
+                                @foreach (JToken copy in (JToken)ViewData["CC"])
+                                {
+                                    @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Address"] + "&gt;")<br />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if ((JToken)ViewData["Bcc"] != null && ((JToken)ViewData["Bcc"]).Count() > 0)
+                    {
+                        <tr>
+                            <td>Skrytá kopie:</td>
+                            <td>
+                                @foreach (JToken copy in (JToken)ViewData["Bcc"])
+                                {
+                                    @Html.Raw(copy["DisplayName"] + " &lt;" + copy["Address"] + "&gt;")<br />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>Předmět:</td>
+                        <td>@ViewData["Subject"]</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail:</td>
+                        <td>@Html.Raw((bool)ViewData["Is_HTML"] ? ViewData["Content"] : ViewData["Content"].ToString().Replace("\n", "<br />"))</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>

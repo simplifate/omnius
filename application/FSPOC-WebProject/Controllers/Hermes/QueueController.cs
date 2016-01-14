@@ -27,6 +27,17 @@ namespace FSS.Omnius.Controllers.Hermes
             return PartialView("~/Views/Hermes/Queue/Detail.cshtml", e.EmailQueueItems.Single(m => m.Id == id));
         }
 
+        public ActionResult Delete(int id)
+        {
+            DBEntities e = new DBEntities();
+            EmailQueue row = e.EmailQueueItems.Single(m => m.Id == id);
+
+            e.EmailQueueItems.Remove(row);
+            e.SaveChanges();
+
+            return RedirectToRoute("Hermes", new { @action = "Index" });
+        }
+
         public ActionResult RunSender()
         {
             Mailer mailer = new Mailer("Test");
