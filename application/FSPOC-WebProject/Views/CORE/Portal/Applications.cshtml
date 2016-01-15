@@ -37,7 +37,7 @@
             @foreach (Application app in (List<Application>)ViewData["Apps"])
             {
                 <tr appId="@app.Id">
-                    <td>@app.Name</td>
+                    <td>@app.DisplayName</td>
                     <td>(žádné)</td>
                     <td>(žádné)</td>
                     <td>@(app.IsPublished ? "Ano" : "Ne")</td>
