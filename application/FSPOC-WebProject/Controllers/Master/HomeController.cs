@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using Logger;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -12,19 +14,16 @@ namespace FSS.Omnius.Controllers.Master
     {
         private List<Application> getAppList()
         {
+            User currentUser = User.GetLogged();
             try
             {
                 using (var context = new DBEntities())
                 {
-                    var filteredAppList = new List<Application>();
-
-                    foreach (var app in context.Applications)
-                    {
-                        // TODO: Implement filtering by user privileges
-                        if (app.IsPublished && app.IsEnabled)
-                            filteredAppList.Add(app);
-                    }
-                    return filteredAppList;
+                    return context.Applications.Where(a =>
+                        a.IsPublished
+                        && a.IsEnabled
+                        && a.Rights.Any(r => r.Group.Users.Any(u => u.Id == currentUser.Id) && r.Executable)
+                    ).ToList();
                 }
             }
             catch (Exception ex)

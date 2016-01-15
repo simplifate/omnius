@@ -39,7 +39,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             run(user, AppName, ActionRuleId, modelId, fc);
         }
-        public Block run(User user, string AppName, int ActionRuleId, int? modelId, NameValueCollection fc)
+        public Block run(User user, string AppName, int ActionRuleId, int modelId, NameValueCollection fc)
         {
             // init action
             _results.outputData.Add("__CORE__", _CORE);
@@ -94,15 +94,15 @@ namespace FSS.Omnius.Modules.Tapestry
             modelId = Convert.ToInt32(ids[2]);
         }
         
-        private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int? modelId = null)
+        private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int modelId)
         {
             if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
 
-            if (modelId != null)
-                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId.Value);
+            if (modelId > 0)
+                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
             rule.PreRun(results);
             if (!rule.CanRun(results.outputData))

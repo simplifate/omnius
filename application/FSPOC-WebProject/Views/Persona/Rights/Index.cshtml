@@ -1,8 +1,13 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@using FSS.Omnius.Modules.Entitron.Entity.Master;
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+@using FSS.Omnius.Modules.Entitron.Entity;
 @{
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "personaModule";
+
+    DBEntities e = new DBEntities();
 }
 
 <style type="text/css">
@@ -89,20 +94,20 @@
             <thead>
                 <tr>
                     <th>Skupina\Aplikace</th>
-                    @foreach (string app in ViewBag.AppNames)
+                    @foreach (Application app in ViewBag.Apps)
                     {
-                        <td>@app</td>
+                        <td>@app.DisplayName</td>
                     }
                 </tr>
             </thead>
             <tbody>
-                @foreach (string group in ViewBag.Groups)
+                @foreach (Group group in ViewBag.Groups)
                 {
                     <tr>
-                        <td>@group</td>
-                        @foreach (string app in ViewBag.AppNames)
+                        <td>@group.Name</td>
+                        @foreach (Application app in ViewBag.Apps)
                         {
-                            <td>@AppRight.GetSpecificRights(group, app)</td>
+                            <td>@AppRight.GetSpecificRights(group, app, e)</td>
                         }
                     </tr>
                 }
@@ -120,20 +125,20 @@
             <thead>
                 <tr>
                     <th>Skupina\Akce</th>
-                    @foreach (string act in ViewBag.Actions)
+                    @foreach (ActionRule act in ViewBag.Actions)
                     {
-                        <td>@act</td>
+                        <td>@act.Name</td>
                     }
                 </tr>
             </thead>
             <tbody>
-                @foreach (string group in ViewBag.Groups)
+                @foreach (Group group in ViewBag.Groups)
                 {
                     <tr>
-                        <td>@group</td>
-                        @foreach (string act in ViewBag.Actions)
+                        <td>@group.Name</td>
+                        @foreach (ActionRule act in ViewBag.Actions)
                         {
-                            <td>@ActionRuleRight.GetSpecificRights(group, act)</td>
+                            <td>@ActionRuleRight.GetSpecificRights(group, act, e)</td>
                         }
                     </tr>
                 }
