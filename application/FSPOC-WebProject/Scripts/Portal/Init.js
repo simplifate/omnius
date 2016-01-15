@@ -36,6 +36,7 @@ $(function () {
     else if (CurrentModuleIs("personaModule")) {
         $("#adminMenuPersona").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
+        LowerPanelTop = 200;
     }
     else if (CurrentModuleIs("personaModulesModule")) {
         $("#adminMenuPersonaModules").addClass("active");

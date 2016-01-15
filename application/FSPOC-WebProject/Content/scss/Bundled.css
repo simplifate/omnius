@@ -1804,6 +1804,19 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   font-family: MyriadPro;
   font-size: 16px; }
 
+.personaModule {
+  background-color: #f2f2f3; }
+  .personaModule #upperPanel {
+    height: 135px; }
+  .personaModule #lowerPanel {
+    top: 200px;
+    padding: 50px; }
+    .personaModule #lowerPanel h4 {
+      font-family: FatTec;
+      font-size: 20px;
+      color: #457fa9;
+      margin-left: 25px; }
+
 .personaModulesModule {
   background-color: #f2f2f3; }
   .personaModulesModule #upperPanel {
@@ -1852,33 +1865,22 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       position: absolute;
       left: 150px;
       top: 50px; }
-    .personaModulesModule #lowerPanel #moduleAccessTable {
-      color: white;
-      font-family: MyriadPro;
-      font-size: 18px;
-      font-weight: normal;
-      color: black; }
-      .personaModulesModule #lowerPanel #moduleAccessTable th {
-        font-weight: normal;
-        text-align: center;
-        padding-bottom: 10px; }
-      .personaModulesModule #lowerPanel #moduleAccessTable td {
-        height: 40px;
-        vertical-align: middle; }
-      .personaModulesModule #lowerPanel #moduleAccessTable .moduleCell {
-        width: 110px; }
-      .personaModulesModule #lowerPanel #moduleAccessTable .checkboxCell {
-        width: 140px;
-        text-align: center;
-        border: 1px solid #3a3a3a; }
-      .personaModulesModule #lowerPanel #moduleAccessTable .yesCell {
-        background-color: #c6ffc6;
-        color: black; }
-      .personaModulesModule #lowerPanel #moduleAccessTable .noCell {
-        background-color: #ffdbdb;
-        color: black; }
-      .personaModulesModule #lowerPanel #moduleAccessTable .hiddenIdRow {
-        display: none; }
+    .personaModulesModule #lowerPanel #moduleAccessTable th {
+      font-weight: bold;
+      text-align: center; }
+    .personaModulesModule #lowerPanel #moduleAccessTable .moduleCell {
+      width: 110px;
+      font-weight: bold; }
+    .personaModulesModule #lowerPanel #moduleAccessTable .checkboxCell {
+      width: 140px;
+      text-align: center;
+      font-size: 17px; }
+    .personaModulesModule #lowerPanel #moduleAccessTable .yesCell {
+      color: #00d000; }
+    .personaModulesModule #lowerPanel #moduleAccessTable .noCell {
+      color: #f06771; }
+    .personaModulesModule #lowerPanel #moduleAccessTable .hiddenIdRow {
+      display: none; }
     .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel {
       position: relative;
       margin-left: 10px;

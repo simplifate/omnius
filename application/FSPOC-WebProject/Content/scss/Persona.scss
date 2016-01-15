@@ -1,4 +1,23 @@
-﻿.personaModulesModule {
+﻿.personaModule {
+    background-color: #f2f2f3;
+
+    #upperPanel {
+        height: 135px;
+    }
+
+    #lowerPanel {
+        top: 200px;
+        padding: 50px;
+
+        h4 {
+            font-family: FatTec;
+            font-size: 20px;
+            color: #457fa9;
+            margin-left: 25px;
+        }
+    }
+}
+.personaModulesModule {
     background-color: #f2f2f3;
 
     #upperPanel {
@@ -45,36 +64,24 @@
             top: 50px;
         }
         #moduleAccessTable {
-            color: white;
-            font-family: MyriadPro;
-            font-size: 18px;
-            font-weight: normal;
-            color: black;
-
             th {
-                font-weight: normal;
+                font-weight: bold;
                 text-align: center;
-                padding-bottom: 10px;
-            }
-            td {
-                height: 40px;
-                vertical-align: middle;
             }
             .moduleCell {
                 width: 110px;
+                font-weight: bold;
             }
             .checkboxCell {
                 width: 140px;
                 text-align: center;
-                border: 1px solid #3a3a3a;
+                font-size: 17px;
             }
             .yesCell {
-                background-color: #c6ffc6;
-                color: black;
+                color: #00d000;
             }
             .noCell {
-                background-color: #ffdbdb;
-                color: black;
+                color: #f06771;
             }
             .hiddenIdRow {
                 display: none;

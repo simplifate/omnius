@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Hermes
             var result = new JObject();
             result.Add("From", GetJTokenOrNull(message.From));
             result.Add("Sender", GetJTokenOrNull(message.Sender));
+            result.Add("ReplyTo", null);
             result.Add("ReplyToList", GetJTokenOrNull(message.ReplyToList));
             result.Add("To", GetJTokenOrNull(message.To));
             result.Add("Bcc", GetJTokenOrNull(message.Bcc));
@@ -29,6 +30,8 @@ namespace FSS.Omnius.Modules.Hermes
             result.Add("BodyEncoding", GetJTokenOrNull(message.BodyEncoding));
             result.Add("BodyTransferEncoding", (int)message.BodyTransferEncoding);
             result.Add("IsBodyHtml", message.IsBodyHtml);
+            result.Add("Attachments", new JArray());
+            result.Add("AlternateViews", new JArray());
             return result;
         }
         public static JToken GetJTokenOrNull(object input)
