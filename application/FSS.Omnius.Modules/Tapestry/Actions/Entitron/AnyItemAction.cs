@@ -17,6 +17,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
+        public override int? ReverseActionId
+        {
+            get
+            {
+                return null;
+                
+            }
+        }
+
         public override string[] InputVar
         {
             get
@@ -41,7 +50,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars)
+        public override string[] ReverseInputVar
+        {
+            get
+            {
+                return new string[] {"Id"};
+            }
+        }
+
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> invertedVars )
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
@@ -57,7 +74,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             for (int i = 0; i < CondCount; i++)
             {
                 // none -> ==
-                if (!vars.ContainsKey($"CondOperation[{i}]"))
+                if (!vars.ContainsKey($"CondOperation[{i}]")) 
                     outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Equal(vars[$"CondValue[{i.ToString()}]"]);
                 else
                     switch ((string)vars[$"CondOperation[{i}]"])

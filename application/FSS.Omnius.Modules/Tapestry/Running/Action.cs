@@ -1,6 +1,7 @@
 ﻿using FSS.Omnius.Modules.Tapestry.Actions;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
@@ -49,19 +50,22 @@ namespace FSS.Omnius.Modules.Tapestry
         }
 
         public abstract int Id { get; }
+        public abstract int? ReverseActionId { get; }
         public abstract string Name { get; }
         public abstract string[] InputVar { get; }
         public abstract string[] OutputVar { get; }
+        public abstract string[] ReverseInputVar { get; }
         
         public virtual ActionResultCollection run(Dictionary<string, object> vars)
         {
             var outputVars = new Dictionary<string, object>();
             var outputStatus = ActionResultType.Success;
             var outputMessage = "OK";
+            var invertedVar = new Dictionary<string, object>();
 
             try
             {
-                InnerRun(vars, outputVars);
+                InnerRun(vars, outputVars, invertedVar);
             }
             catch (Exception ex)
             {
@@ -69,8 +73,15 @@ namespace FSS.Omnius.Modules.Tapestry
                 outputMessage = ex.Message;
             }
 
-            return new ActionResultCollection(outputStatus, outputMessage, outputVars);
+            return new ActionResultCollection(outputStatus, outputMessage, invertedVar, outputVars);
         }
-        public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars);
+
+        public virtual void reverseRun(Dictionary<string, object> vars)
+        {
+            if(ReverseActionId!=null)
+            RunAction(ReverseActionId.Value, vars);
+        }
+        public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars);
+
     }
 }

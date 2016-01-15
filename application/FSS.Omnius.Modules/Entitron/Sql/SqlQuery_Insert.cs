@@ -10,7 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         public Dictionary<DBColumn, object> data { get; set; }
         
-        protected override void BaseExecution(MarshalByRefObject transaction)
+        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             if (data == null || data.Count < 1)
                 throw new ArgumentNullException("data");
@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('INSERT INTO ', @realTableName, ' ({2}) VALUES ({3}) ;');" +
+                "SET @sql = CONCAT('INSERT INTO ', @realTableName, ' ({2}) Output Inserted.Id VALUES ({3}) ;');" +
                 "exec sp_executesql @sql, N'{4}', {5};",
                 parAppName, // 0
                 parTableName, // 1
@@ -30,8 +30,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 string.Join(", ", _datatypes.Select(s => "@" + s.Key + " " + s.Value)),
                 string.Join(", ", _datatypes.Select(s => "@" + s.Key))
                 );
-            
-            base.BaseExecution(transaction);
+
+            return base.BaseExecutionWithRead(connection);
+        }
+
+        public int GetInsertedId()
+        {
+            return Convert.ToInt32(ExecuteWithRead().First()["Id"]);
         }
 
         public override string ToString()

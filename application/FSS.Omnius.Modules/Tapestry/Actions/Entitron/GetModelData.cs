@@ -17,7 +17,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 return 1002;
             }
         }
-
+        public override int? ReverseActionId
+        {
+            get
+            {
+                return null;
+            }
+        }
         public override string[] InputVar
         {
             get
@@ -42,7 +48,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars)
+        public override string[] ReverseInputVar
+        {
+            get
+            {
+                return new string[] { "Id" };
+
+            }
+        }
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars)
         {
             DBItem model = (DBItem)vars["__MODEL__"];
             outputVars["Data"] = model[(int)vars["ColumnId"]];
