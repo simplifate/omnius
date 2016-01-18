@@ -412,6 +412,7 @@
     <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Running\PreBlockAction.cs" />
+    <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Watchtower\WatchtowerLogger.cs" />
   </ItemGroup>
