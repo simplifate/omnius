@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
+using System.Net.Mail;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -93,9 +94,10 @@ namespace FSS.Omnius.Controllers.Hermes
             Dictionary<string, object> model = new Dictionary<string, object>();
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
-
+            
             Mailer mail = new Mailer("Test", "Seznam WS", model);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");
             mail.SendMail();
 
             ViewData["result"] = "OK";
@@ -107,9 +109,10 @@ namespace FSS.Omnius.Controllers.Hermes
         {
             DBEntities e = new DBEntities();
             Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
-
+            
             Mailer mail = new Mailer("Test", "Založení AD serveru", m);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");
             mail.SendBySender();
 
             ViewData["result"] = "OK";

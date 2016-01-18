@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.Text;
+using System.Data.Entity;
 using System.Web.Mvc.Html;
 using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json;
@@ -22,6 +23,7 @@ namespace FSS.Omnius.Modules.Hermes
         private List<EmailPlaceholder> plcs;
         private Object data;
         private SmtpClient client;
+        private JArray attachmentList = new JArray();
 
         public MailMessage mail;
 
@@ -116,10 +118,11 @@ namespace FSS.Omnius.Modules.Hermes
         {
             EmailQueue item = new EmailQueue();
             item.Application_Id = applicationId;
-            item.Message = JsonConvert.SerializeObject(mail);
+            item.Message = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
             item.Date_Send_After = sendAfter == null ? DateTime.Now : (DateTime)sendAfter;
             item.Date_Inserted = DateTime.Now;
-
+            item.AttachmentList = attachmentList.ToString();
+            
             e.EmailQueueItems.Add(item);
             e.SaveChanges();
 
@@ -131,6 +134,17 @@ namespace FSS.Omnius.Modules.Hermes
             bool result;
             string smtpError = "";
 
+            if (attachmentList.Count() > 0)
+            {
+                mail.Attachments.Clear();
+                for(int i = 0; i < attachmentList.Count(); i++)
+                {
+                    string path = attachmentList[i].ToString();
+                    Attachment att = new Attachment(path);
+                    mail.Attachments.Add(att);
+                }
+            }
+
             try {
                 client.Send(mail);
                 result = true;
@@ -140,10 +154,10 @@ namespace FSS.Omnius.Modules.Hermes
                 result = false;
                 smtpError = e.Message;
             }
-            
+
             // Uložíme do logu
             EmailLog log = new EmailLog();
-            log.Content = JsonConvert.SerializeObject(mail);
+            log.Content = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
             log.DateSend = DateTime.Now;
             log.Status = result ? EmailSendStatus.success : EmailSendStatus.failed;
             log.SMTP_Error = smtpError;
@@ -170,7 +184,8 @@ namespace FSS.Omnius.Modules.Hermes
 
         public void RunSender()
         {
-            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= DateTime.Now).ToList();
+            DateTime now = DateTime.Now;
+            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now).ToList();
 
             foreach(EmailQueue row in rows)
             {
@@ -197,6 +212,8 @@ namespace FSS.Omnius.Modules.Hermes
                 mail.Body = (string)m["Body"];
                 mail.BodyTransferEncoding = (System.Net.Mime.TransferEncoding)((int)m["BodyTransferEncoding"]);
                 mail.IsBodyHtml = (bool)m["IsBodyHtml"];
+
+                attachmentList = JArray.Parse(row.AttachmentList);
 
                 SendMail(row.Application_Id, false);
                 e.EmailQueueItems.Remove(row);
@@ -258,9 +275,25 @@ namespace FSS.Omnius.Modules.Hermes
             }
         }
 
+        public void Attachment(string path)
+        {
+            attachmentList.Clear();
+            attachmentList.Add(path);
+        }
+
+        public void Attachment(List<string> attList)
+        {
+            attachmentList.Clear();
+            foreach(string path in attList)
+            {
+                attachmentList.Add(path);
+            }
+        }
+
         public void AddTo(string email, string displayName = "") { mail.To.Add(new MailAddress(email, displayName)); }
         public void AddCC(string email, string displayName = "") { mail.CC.Add(new MailAddress(email, displayName)); }
         public void AddBCC(string email, string displayName = "") { mail.Bcc.Add(new MailAddress(email, displayName)); }
+        public void AddAttachment(string path) { attachmentList.Add(path); }
 
         public void Subject(string subject) { mail.Subject = subject; }
 

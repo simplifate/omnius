@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Hermes
             result.Add("BodyTransferEncoding", (int)message.BodyTransferEncoding);
             result.Add("IsBodyHtml", message.IsBodyHtml);
             result.Add("Attachments", new JArray());
-            result.Add("AlternateViews", new JArray());
+            result.Add("AlternateViews", GetJTokenOrNull(message.AlternateViews));
             return result;
         }
         public static JToken GetJTokenOrNull(object input)

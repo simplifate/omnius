@@ -17,6 +17,9 @@
 
         public DateTime Date_Inserted { get; set; }
 
+        [DataType(DataType.Text)]
+        public string AttachmentList { get; set; }
+
         public int? Application_Id { get; set; }
     }
 }
