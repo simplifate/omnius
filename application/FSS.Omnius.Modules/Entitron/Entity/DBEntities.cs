@@ -68,6 +68,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
         public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<ActionSequence_Action> ActionSequence_Actions { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRule> AttributeRules { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
@@ -87,16 +88,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Action>()
-                .HasMany(e => e.ActionRule_Actions)
-                .WithRequired(e => e.Action)
-                .HasForeignKey(e => e.ActionId);
-
-            modelBuilder.Entity<Action>()
-                .HasMany(e => e.Slaves)
-                .WithOptional(e => e.Master)
-                .HasForeignKey(e => e.MasterId);
-
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.Pages)
                 .WithRequired(e => e.Application)

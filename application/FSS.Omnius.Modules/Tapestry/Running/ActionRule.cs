@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public partial class ActionRule : ActionBlock
+    public partial class ActionRule : ActionRuleBase
     {
         /// <summary>
         /// Check Conditions
