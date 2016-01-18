@@ -88,14 +88,12 @@ body.appManagerModule {
       font-size: 19px; }
   body.appManagerModule .ui-draggable-dragging {
     z-index: 200; }
-  body.appManagerModule #moduleSwitcher {
+  body.appManagerModule .appWorkspace {
     position: absolute;
     left: 0px;
     top: 0px;
-    height: 32px;
-    z-index: 200;
-    color: white;
-    background-color: #4d41e7; }
+    right: 0px;
+    bottom: 0px; }
 
 body.adminAppModule #upperPanel {
   height: 135px; }
@@ -1816,6 +1814,11 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       font-size: 20px;
       color: #457fa9;
       margin-left: 25px; }
+    .personaModule #lowerPanel .rightsFormUpperDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -10; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }
@@ -1924,6 +1927,14 @@ body.hermesModule #NumOrderList .ui-sortable-helper {
 
 body.hermesModule #numOrderArea {
   margin-bottom: 100px; }
+
+body.mozaicComponentManagerModule {
+  background-color: #f2f2f3; }
+  body.mozaicComponentManagerModule #upperPanel {
+    height: 295px; }
+  body.mozaicComponentManagerModule #lowerPanel {
+    top: 360px;
+    padding: 50px; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
@@ -2082,6 +2093,9 @@ body.hermesModule #numOrderArea {
     .tileMenuArea .tileMenuItem .fa-envelope {
       font-size: 110px;
       top: 12px; }
+    .tileMenuArea .tileMenuItem .fa-copy {
+      font-size: 100px;
+      top: 16px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;

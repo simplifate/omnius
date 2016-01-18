@@ -15,6 +15,12 @@
             color: #457fa9;
             margin-left: 25px;
         }
+        .rightsFormUpperDecoration {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: -10
+        }
     }
 }
 .personaModulesModule {

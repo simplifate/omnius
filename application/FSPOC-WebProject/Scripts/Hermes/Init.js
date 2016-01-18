@@ -6,5 +6,8 @@
         if ($("#templateMenuArea").length) {
             $("#hermesMenuTemplate").addClass("highlighted");
         }
+        if ($("#queueMenuArea").length) {
+            $("#hermesMenuQueue").addClass("highlighted");
+        }
     }
 });

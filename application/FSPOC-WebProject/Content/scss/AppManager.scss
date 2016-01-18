@@ -79,14 +79,12 @@ body.appManagerModule {
     .ui-draggable-dragging {
         z-index: 200;
     }
-    #moduleSwitcher {
+    .appWorkspace {
         position: absolute;
         left: 0px;
         top: 0px;
-        height: 32px;
-        z-index: 200;
-        color: white;
-        background-color: #4d41e7;
+        right: 0px;
+        bottom: 0px;
     }
 }
 
