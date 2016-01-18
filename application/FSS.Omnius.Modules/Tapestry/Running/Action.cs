@@ -76,7 +76,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return new ActionResultCollection(outputStatus, outputMessage, invertedVar, outputVars);
         }
 
-        public virtual void reverseRun(Dictionary<string, object> vars)
+        public virtual void ReverseRun(Dictionary<string, object> vars)
         {
             if(ReverseActionId!=null)
             RunAction(ReverseActionId.Value, vars);
