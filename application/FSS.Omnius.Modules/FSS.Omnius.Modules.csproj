@@ -384,6 +384,10 @@
     <Compile Include="Migrations\201601191221159_App roles.Designer.cs">
       <DependentUpon>201601191221159_App roles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601191401555_hermes-email-plain-template.cs" />
+    <Compile Include="Migrations\201601191401555_hermes-email-plain-template.Designer.cs">
+      <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -567,6 +571,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601191221159_App roles.resx">
       <DependentUpon>201601191221159_App roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601191401555_hermes-email-plain-template.resx">
+      <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

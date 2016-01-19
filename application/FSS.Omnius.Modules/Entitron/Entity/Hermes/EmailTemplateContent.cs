@@ -30,10 +30,14 @@
         [MaxLength(1000)]
         public string Subject { get; set; }
 
-        [Display(Name = "Obsah")]
+        [Display(Name = "Obsah (HTML)")]
         [DataType(DataType.Text)]
         [AllowHtml]
         public string Content { get; set; }
+
+        [Display(Name = "Obsah (plain)")]
+        [DataType(DataType.Text)]
+        public string Content_Plain { get; set; }
 
         public EmailTemplate Hermes_Email_Template { get; set; }
     }
