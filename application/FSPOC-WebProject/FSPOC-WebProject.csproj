@@ -230,6 +230,7 @@
     <Compile Include="Controllers\Persona\ModulesController.cs" />
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
+    <Compile Include="Controllers\Persona\RolesController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -830,6 +831,7 @@
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
+    <Content Include="Content\scss\Mozaic.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
@@ -1448,6 +1450,7 @@
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
     <Content Include="Views\Hermes\Queue\Detail.cshtml" />
+    <Content Include="Views\Persona\Roles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

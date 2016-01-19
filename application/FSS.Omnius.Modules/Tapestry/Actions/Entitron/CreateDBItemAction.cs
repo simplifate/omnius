@@ -50,16 +50,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 return new string[0];
             }
         }
-
-        public override string[] ReverseInputVar
-        {
-            get
-            {
-                return new string[] {"Id"};
-                
-            }
-        }
-
+        
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];

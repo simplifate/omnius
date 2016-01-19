@@ -10,9 +10,9 @@
     if (allowed)
     {
         <td class="checkboxCell yesCell"><i class="fa fa-check"></i></td>
-}
-else
-{
+    }
+    else
+    {
         <td class="checkboxCell noCell"><i class="fa fa-times"></i></td>
     }
 }
@@ -35,6 +35,12 @@ else
         <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
     </svg>
     <div id="personaModulesContentContainer">
+        @if (Model.Count == 0)
+        {
+            <div class="modelErrorMessage">V databázi zatím nejsou žádná nastavení oprávnění k modulům (tabulka Persona_ModuleAccessPermissions)</div>
+        }
+        else
+        {
         <table id="moduleAccessTable" class="table table-bordered table-striped table-omnius">
             <thead>
                 <tr>
@@ -146,5 +152,6 @@ else
             <button id="btnReloadModuleAccessTable" class="btn-omnius-rectangular">Zrušit</button>
             <button id="btnSaveModuleAccessTable" class="btn-omnius-rectangular">Uložit</button>
         </div>
+        }
     </div>
 </div>

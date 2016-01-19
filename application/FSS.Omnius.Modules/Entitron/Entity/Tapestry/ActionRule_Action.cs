@@ -35,6 +35,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public override string OutputVariablesMapping { get; set; } // target=source;c=d
 
         public virtual ActionRule ActionRule { get; set; }
-        public virtual Action Action { get; set; }
     }
 }

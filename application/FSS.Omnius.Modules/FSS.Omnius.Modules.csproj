@@ -122,9 +122,11 @@
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
+    <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
-    <Compile Include="Entitron\Entity\Tapestry\Action.cs" />
+    <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
     <Compile Include="Entitron\Entity\Persona\AppRight.cs" />
@@ -374,6 +376,14 @@
     <Compile Include="Migrations\201601181334425_hermes-email-attachment.Designer.cs">
       <DependentUpon>201601181334425_hermes-email-attachment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601181552255_actionSequence.cs" />
+    <Compile Include="Migrations\201601181552255_actionSequence.Designer.cs">
+      <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601191221159_App roles.cs" />
+    <Compile Include="Migrations\201601191221159_App roles.Designer.cs">
+      <DependentUpon>201601191221159_App roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -395,7 +405,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
-    <Compile Include="Tapestry\Running\ActionBlock.cs" />
+    <Compile Include="Tapestry\Running\ActionBase.cs" />
+    <Compile Include="Tapestry\Running\ActionRuleBase.cs" />
     <Compile Include="Tapestry\Running\ActionRule_Action.cs" />
     <Compile Include="Tapestry\Actions\ActionRepository.cs" />
     <Compile Include="Tapestry\Helpers\ActionResult.cs" />
@@ -411,7 +422,9 @@
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AnyItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectAction.cs" />
-    <Compile Include="Tapestry\Running\Action_ActionBlock.cs" />
+    <Compile Include="Tapestry\Running\ActionSequence.cs" />
+    <Compile Include="Tapestry\Running\ActionRule_ActionBase.cs" />
+    <Compile Include="Tapestry\Running\ActionSequence_Action.cs" />
     <Compile Include="Tapestry\Running\Block.cs" />
     <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
@@ -548,6 +561,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601181334425_hermes-email-attachment.resx">
       <DependentUpon>201601181334425_hermes-email-attachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601181552255_actionSequence.resx">
+      <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601191221159_App roles.resx">
+      <DependentUpon>201601191221159_App roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -46,15 +46,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 return new string[] { "Data" };
             }
         }
-
-        public override string[] ReverseInputVar
-        {
-            get
-            {
-                return new string[] { "Id" };
-
-            }
-        }
+        
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars)
         {
             // init

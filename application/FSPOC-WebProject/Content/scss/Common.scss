@@ -162,6 +162,10 @@
             font-size: 110px;
             top: 12px;
         }
+        .fa-copy {
+            font-size: 100px;
+            top: 16px;
+        }
         .buttonLabel {
             position: absolute;
             top: 40px;
@@ -295,4 +299,10 @@
     white-space: nowrap;
     vertical-align: top;
     transform-origin: left top;
+}
+.modelErrorMessage {
+    margin-top: 40px;
+    color: #f06771;
+    font-family: Myriad-Pro;
+    font-size: 22px;
 }

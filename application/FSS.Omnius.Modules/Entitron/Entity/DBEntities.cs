@@ -64,10 +64,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
         public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<ActionSequence_Action> ActionSequence_Actions { get; set; }
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<AttributeRule> AttributeRules { get; set; }
         public virtual DbSet<Block> Blocks { get; set; }
@@ -87,16 +89,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Action>()
-                .HasMany(e => e.ActionRule_Actions)
-                .WithRequired(e => e.Action)
-                .HasForeignKey(e => e.ActionId);
-
-            modelBuilder.Entity<Action>()
-                .HasMany(e => e.Slaves)
-                .WithOptional(e => e.Master)
-                .HasForeignKey(e => e.MasterId);
-
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.Pages)
                 .WithRequired(e => e.Application)
@@ -213,6 +205,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<ModuleAccessPermission>()
                 .HasOptional(e => e.User)
                 .WithOptionalDependent(e => e.ModuleAccessPermission);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasRequired(e => e.Application)
+                .WithMany(e => e.Roles);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()

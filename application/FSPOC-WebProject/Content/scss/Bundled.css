@@ -88,14 +88,12 @@ body.appManagerModule {
       font-size: 19px; }
   body.appManagerModule .ui-draggable-dragging {
     z-index: 200; }
-  body.appManagerModule #moduleSwitcher {
+  body.appManagerModule .appWorkspace {
     position: absolute;
     left: 0px;
     top: 0px;
-    height: 32px;
-    z-index: 200;
-    color: white;
-    background-color: #4d41e7; }
+    right: 0px;
+    bottom: 0px; }
 
 body.adminAppModule #upperPanel {
   height: 135px; }
@@ -1816,6 +1814,11 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       font-size: 20px;
       color: #457fa9;
       margin-left: 25px; }
+    .personaModule #lowerPanel .rightsFormUpperDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -10; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }
@@ -1872,6 +1875,12 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       width: 110px;
       font-weight: bold; }
     .personaModulesModule #lowerPanel #moduleAccessTable .checkboxCell {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
       width: 140px;
       text-align: center;
       font-size: 17px; }
@@ -1893,6 +1902,45 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
         left: -120px;
         top: -135px;
         z-index: -10; }
+
+.personaRolesModule #upperPanel {
+  height: 135px; }
+
+.personaRolesModule #lowerPanel {
+  top: 200px;
+  padding: 50px; }
+  .personaRolesModule #lowerPanel .appName {
+    color: #f1a57a; }
+  .personaRolesModule #lowerPanel #groupRolesTable {
+    width: auto;
+    margin-top: 40px; }
+    .personaRolesModule #lowerPanel #groupRolesTable th {
+      font-weight: bold;
+      text-align: center; }
+    .personaRolesModule #lowerPanel #groupRolesTable .userNameCell {
+      min-width: 110px;
+      font-weight: bold; }
+    .personaRolesModule #lowerPanel #groupRolesTable .checkboxCell {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      width: 140px;
+      text-align: center;
+      font-size: 17px; }
+    .personaRolesModule #lowerPanel #groupRolesTable .yesCell {
+      color: #00d000; }
+    .personaRolesModule #lowerPanel #groupRolesTable .noCell {
+      color: #f06771; }
+    .personaRolesModule #lowerPanel #groupRolesTable .hiddenIdRow {
+      display: none; }
+  .personaRolesModule #lowerPanel h4 {
+    font-family: FatTec;
+    font-size: 20px;
+    color: #457fa9;
+    margin-left: 25px; }
 
 body.hermesModule #upperPanel {
   height: 295px; }
@@ -1924,6 +1972,14 @@ body.hermesModule #NumOrderList .ui-sortable-helper {
 
 body.hermesModule #numOrderArea {
   margin-bottom: 100px; }
+
+body.mozaicComponentManagerModule {
+  background-color: #f2f2f3; }
+  body.mozaicComponentManagerModule #upperPanel {
+    height: 295px; }
+  body.mozaicComponentManagerModule #lowerPanel {
+    top: 360px;
+    padding: 50px; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
@@ -2082,6 +2138,9 @@ body.hermesModule #numOrderArea {
     .tileMenuArea .tileMenuItem .fa-envelope {
       font-size: 110px;
       top: 12px; }
+    .tileMenuArea .tileMenuItem .fa-copy {
+      font-size: 100px;
+      top: 16px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -2211,4 +2270,10 @@ body.hermesModule #numOrderArea {
   white-space: nowrap;
   vertical-align: top;
   transform-origin: left top; }
+
+.modelErrorMessage {
+  margin-top: 40px;
+  color: #f06771;
+  font-family: Myriad-Pro;
+  font-size: 22px; }
 

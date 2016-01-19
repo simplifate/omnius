@@ -33,9 +33,9 @@ namespace FSS.Omnius.Modules.Tapestry
 
         public void Add(ActionResult newActionResult)
         {
-            Add(newActionResult.type, newActionResult.Message,newActionResult.ReverseInputData ,newActionResult.outputData);
+            Add(newActionResult.type, newActionResult.Message, newActionResult.ReverseInputData, newActionResult.outputData);
         }
-        public void Add(ActionResultType type, string Message, Dictionary<string,object> ReverseInputData,  Dictionary<string, object> outputData)
+        public void Add(ActionResultType type, string Message, Dictionary<string, object> ReverseInputData,  Dictionary<string, object> outputData)
         {
             types.Add(type);
             Messages.Add(Message);

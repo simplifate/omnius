@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public abstract class Action_ActionBlock
+    public abstract class ActionRule_ActionBase
     {
         public abstract int ActionId { get; set; }
         public abstract int Order { get; set; }
