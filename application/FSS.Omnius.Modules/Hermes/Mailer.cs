@@ -97,6 +97,7 @@ namespace FSS.Omnius.Modules.Hermes
                     string contentPlain = SetData(contentModel.Content_Plain);
                     mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(contentPlain, Encoding.UTF8, MediaTypeNames.Text.Plain));
                 }
+                mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(content, Encoding.UTF8, MediaTypeNames.Text.Html));
             }
         }
 
@@ -220,6 +221,14 @@ namespace FSS.Omnius.Modules.Hermes
                 mail.Body = (string)m["Body"];
                 mail.BodyTransferEncoding = (System.Net.Mime.TransferEncoding)((int)m["BodyTransferEncoding"]);
                 mail.IsBodyHtml = (bool)m["IsBodyHtml"];
+
+                if(m["AlternateViews"].Children().Count() > 0)
+                {
+                    foreach(JObject view in m["AlternateViews"].Children())
+                    {
+                        mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(view["Content"].ToString(), Encoding.UTF8, view["Type"]["MediaType"].ToString()));
+                    }
+                }
 
                 attachmentList = JArray.Parse(row.AttachmentList);
 

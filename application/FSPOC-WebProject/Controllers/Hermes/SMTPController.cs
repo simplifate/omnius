@@ -108,11 +108,18 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult TestSender()
         {
             DBEntities e = new DBEntities();
-            Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+            /*Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
             
             Mailer mail = new Mailer("Test", "Založení AD serveru", m);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
-            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");
+            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");*/
+
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            model.Add("count", e.WSs.Count());
+            model.Add("ws", e.WSs);
+
+            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.SendBySender();
 
             ViewData["result"] = "OK";

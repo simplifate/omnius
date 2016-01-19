@@ -1,6 +1,7 @@
 ﻿using System.Net.Mail;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -31,7 +32,23 @@ namespace FSS.Omnius.Modules.Hermes
             result.Add("BodyTransferEncoding", (int)message.BodyTransferEncoding);
             result.Add("IsBodyHtml", message.IsBodyHtml);
             result.Add("Attachments", new JArray());
-            result.Add("AlternateViews", GetJTokenOrNull(message.AlternateViews));
+            result.Add("AlternateViews", new JArray());
+
+            if(message.AlternateViews.Count > 0)
+            {
+                foreach(AlternateView view in message.AlternateViews)
+                {
+                    JObject jView = new JObject();
+                    jView.Add("Type", GetJTokenOrNull(view.ContentType));
+                    jView.Add("Encoding", GetJTokenOrNull(view.TransferEncoding));
+
+                    using(StreamReader reader = new StreamReader(view.ContentStream)) {
+                        jView.Add("Content", GetJTokenOrNull(reader.ReadToEnd()));
+                    }
+
+                    ((JArray)result["AlternateViews"]).Add(jView);
+                }
+            }
             return result;
         }
         public static JToken GetJTokenOrNull(object input)
