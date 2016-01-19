@@ -113,9 +113,9 @@ namespace FSS.Omnius.Nexus.Gate
 
         #region Group
 
-        public JArray GetGroups(string baseDN = "", string[] properties = null)
+        public JArray GetGroups(string CN = "", string baseDN = "", string[] properties = null)
         {
-            return Search("(objectCategory=Group)", baseDN, properties);
+            return Search("(&(objectCategory=Group)(cn="+CN+"))", baseDN, properties);
         }
 
         #endregion

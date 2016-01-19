@@ -32,9 +32,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return ldap.GetUsers(baseDN, properties);
         }
 
-        public JToken GetGroups(string baseDN = "", string[] properties = null)
+        public JToken GetGroups(string CN, string baseDN = "", string[] properties = null)
         {
-            return ldap.GetGroups(baseDN, properties);
+            return ldap.GetGroups(CN, baseDN, properties);
         }
 
         public JToken Search(string filter, string baseDN = "", string[] properties = null)
