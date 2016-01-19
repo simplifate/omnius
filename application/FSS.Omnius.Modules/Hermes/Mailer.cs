@@ -13,6 +13,7 @@ using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Net.Mime;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -89,7 +90,14 @@ namespace FSS.Omnius.Modules.Hermes
                 mail.Body = content;
 
             if (template.Is_HTML)
+            {
                 mail.IsBodyHtml = true;
+                if(!string.IsNullOrWhiteSpace(contentModel.Content_Plain))
+                {
+                    string contentPlain = SetData(contentModel.Content_Plain);
+                    mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(contentPlain, Encoding.UTF8, MediaTypeNames.Text.Plain));
+                }
+            }
         }
 
         public string SetData(string content)

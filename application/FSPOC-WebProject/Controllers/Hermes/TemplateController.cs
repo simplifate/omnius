@@ -122,6 +122,7 @@ namespace FSS.Omnius.Controllers.Hermes
                     contentModel.From_Email = form["content.From_Email." + lId];
                     contentModel.Subject = form["content.Subject." + lId];
                     contentModel.Content = form["content.Content." + lId];
+                    contentModel.Content_Plain = form["content.Content_Plain." + lId];
                     
                     if(!exists)
                         row.ContentList.Add(contentModel);

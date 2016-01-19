@@ -73,11 +73,20 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="content_Content_@lId" class="col-md-2 control-label">Obsah:</label>
+                        <label for="content_Content_@lId" class="col-md-2 control-label">Obsah@(Model.Is_HTML ? " (HTML)" : ""):</label>
                         <div class="col-md-10">                            
-                            <textarea name="content.Content.@lId" id="content_Content_@lId" class="form-control editor-@(Model.Is_HTML ? "ck" : "cm")" rows="20" data-langid="@lId">@(content == null ? "" : content.Content)</textarea>
+                            <textarea name="content.Content.@lId" id="content_Content_@lId" class="form-control editor-@(Model.Is_HTML ? "ck" : "cm")" rows="40" data-langid="@lId">@(content == null ? "" : content.Content)</textarea>
                         </div>
                     </div>
+                    @if(Model.Is_HTML)
+                    {
+                        <div class="form-group">
+                            <label for="content_Content_Plain_@lId" class="col-md-2 control-label">Obsah (plain):</label>
+                            <div class="col-md-10">
+                                <textarea name="content.Content_Plain.@lId" id="content_Content_Plain_@lId" class="form-control editor-cm" rows="40" data-langid="@lId">@(content == null ? "" : content.Content_Plain)</textarea>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             <div class="clearfix"></div>
@@ -96,7 +105,8 @@
 
 <script type="text/javascript">
     /* <![CDATA[ */
-    var listSeparator = "@(Model.Is_HTML ? "<br><br>" : "\\r\\n\\r\\n")";
+    var listSeparatorPlain = "\r\n\r\n";
+    var listSeparatorHtml = "<br><br>";
     var ckConfig = {
         toolbarGroups : [
             { name: 'document', groups: ['mode', 'document', 'doctools'] },
@@ -124,6 +134,9 @@
     };
     var cmList = {};
     var ckList = {};
+
+    var activeEditor = null;
+    var activeEditorType = null;
     
     $(function () {
         setTimeout(function() {
@@ -136,23 +149,39 @@
                     cmList[langId].on('blur', function () {
                         cmList[langId].save();
                     });
+                    cmList[langId].on('focus', function () {
+                        activeEditor = cmList[langId];
+                        activeEditorType = 'cm';
+                    });
                 }
                 else {
                     ckList[langId] = CKEDITOR.replace(this.id, ckConfig);
+                    ckList[langId].on('focus', function () {
+                        activeEditor = ckList[langId];
+                        activeEditorType = 'ck';
+                    });
                 }
             });
 
             $('.placeholder-list li').click(function () {
-                var placeholder = $(this).text();
-                var plText = placeholder.match(/\{list\..+\}/) ? placeholder + listSeparator + placeholder.replace(/\{/, '{end.') : placeholder;
+                if (!activeEditorType || !activeEditor)
+                    return;
 
-                var langId = $('.ui-tabs-active').attr('data-langid');
-                if (typeof cmList[langId] != 'undefined') {
-                    cmList[langId].replaceSelection(plText);
-                    cmList[langId].focus();
-                }
-                else {
-                    ckList[langId].insertHtml(plText);
+                var placeholder = $(this).text();
+                
+                switch(activeEditorType)
+                {
+                    case 'cm':
+                        var plText = placeholder.match(/\{list\..+\}/) ? placeholder + listSeparatorPlain + placeholder.replace(/\{/, '{end.') : placeholder;
+
+                        activeEditor.replaceSelection(plText);
+                        activeEditor.focus();
+                        break;
+                    case 'ck':
+                        var plText = placeholder.match(/\{list\..+\}/) ? placeholder + listSeparatorHtml + placeholder.replace(/\{/, '{end.') : placeholder;
+
+                        activeEditor.insertHtml(plText);
+                        break;
                 }
             });
 
