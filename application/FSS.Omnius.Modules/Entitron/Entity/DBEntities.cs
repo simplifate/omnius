@@ -64,6 +64,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -204,6 +205,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<ModuleAccessPermission>()
                 .HasOptional(e => e.User)
                 .WithOptionalDependent(e => e.ModuleAccessPermission);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasRequired(e => e.Application)
+                .WithMany(e => e.Roles);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()

@@ -79,6 +79,7 @@
                 font-weight: bold;
             }
             .checkboxCell {
+                @include no-select();
                 width: 140px;
                 text-align: center;
                 font-size: 17px;
@@ -108,6 +109,54 @@
                 top: -135px;
                 z-index: -10
             }
+        }
+    }
+}
+.personaRolesModule {
+    #upperPanel {
+        height: 135px;
+    }
+    #lowerPanel {
+        top: 200px;
+        padding: 50px;
+
+        .appName {
+            color: #f1a57a;
+        }
+        #groupRolesTable {
+            width: auto;
+            margin-top: 40px;
+
+            th {
+                font-weight: bold;
+                text-align: center;
+            }
+            .userNameCell {
+                min-width: 110px;
+                font-weight: bold;
+            }
+            .checkboxCell {
+                @include no-select();
+                width: 140px;
+                text-align: center;
+                font-size: 17px;
+            }
+            .yesCell {
+                color: #00d000;
+            }
+            .noCell {
+                color: #f06771;
+            }
+            .hiddenIdRow {
+                display: none;
+            }
+        }
+
+        h4 {
+            font-family: FatTec;
+            font-size: 20px;
+            color: #457fa9;
+            margin-left: 25px;
         }
     }
 }

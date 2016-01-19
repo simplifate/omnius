@@ -122,7 +122,9 @@
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
+    <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
+    <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
@@ -378,6 +380,10 @@
     <Compile Include="Migrations\201601181552255_actionSequence.Designer.cs">
       <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601191221159_App roles.cs" />
+    <Compile Include="Migrations\201601191221159_App roles.Designer.cs">
+      <DependentUpon>201601191221159_App roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -558,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601181552255_actionSequence.resx">
       <DependentUpon>201601181552255_actionSequence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601191221159_App roles.resx">
+      <DependentUpon>201601191221159_App roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

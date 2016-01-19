@@ -56,5 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<AppRight> Rights { get; set; }
 
         public virtual ICollection<Table> Tables { get; set; }
+
+        public virtual ICollection<PersonaAppRole> Roles { get; set; }
     }
 }

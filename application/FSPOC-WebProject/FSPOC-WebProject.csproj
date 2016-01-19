@@ -230,6 +230,7 @@
     <Compile Include="Controllers\Persona\ModulesController.cs" />
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
+    <Compile Include="Controllers\Persona\RolesController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -1449,6 +1450,7 @@
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
     <Content Include="Views\Hermes\Queue\Detail.cshtml" />
+    <Content Include="Views\Persona\Roles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
