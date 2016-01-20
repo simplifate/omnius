@@ -141,7 +141,6 @@
     <Compile Include="Entitron\Entity\Entitron\DbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\DbView.cs" />
     <Compile Include="Entitron\Entity\Entitron\RelationTypes.cs" />
-    <Compile Include="Entitron\Entity\Persona\Group.cs" />
     <Compile Include="Entitron\Entity\CORE\Module.cs" />
     <Compile Include="Entitron\Entity\Nexus\ldap.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Page.cs" />
@@ -388,6 +387,10 @@
     <Compile Include="Migrations\201601191401555_hermes-email-plain-template.Designer.cs">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601201400125_appRights.cs" />
+    <Compile Include="Migrations\201601201400125_appRights.Designer.cs">
+      <DependentUpon>201601201400125_appRights.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -403,6 +406,7 @@
     <Compile Include="Nexus\Service\NexusExtDBService.cs" />
     <Compile Include="Nexus\Service\NexusWSService.cs" />
     <Compile Include="Nexus\Service\WebDavFileSyncService.cs" />
+    <Compile Include="Persona\AppRight.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
@@ -574,6 +578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601191401555_hermes-email-plain-template.resx">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601201400125_appRights.resx">
+      <DependentUpon>201601201400125_appRights.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

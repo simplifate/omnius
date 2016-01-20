@@ -61,7 +61,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         // Persona
         public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
         public virtual DbSet<AppRight> ApplicationRights { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
@@ -171,26 +170,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.Blocks)
                 .WithOptional(e => e.MozaicPage)
                 .HasForeignKey(e => e.MozaicPageId);
-            
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Groups)
-                .WithMany(e => e.Users)
-                .Map(m => m.ToTable("Persona_Groups_Users").MapLeftKey("UserId").MapRightKey("GroupId"));
-
-            modelBuilder.Entity<Group>()
-                .HasMany(e => e.ActionRuleRights)
-                .WithRequired(e => e.Group)
-                .HasForeignKey(e => e.GroupId);
 
             modelBuilder.Entity<ActionRule>()
                 .HasMany(e => e.ActionRuleRights)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
 
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasMany(e => e.ActionRuleRights)
+                .WithRequired(e => e.AppRole)
+                .HasForeignKey(e => e.AppRoleId);
+
             modelBuilder.Entity<AppRight>()
-                .HasRequired(e => e.Group)
+                .HasRequired(e => e.User)
                 .WithMany(e => e.ApplicationRights)
-                .HasForeignKey(e => e.GroupId);
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<AppRight>()
                 .HasRequired(e => e.Application)
@@ -292,9 +286,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<DataType>()
                 .HasMany(e => e.AttributeRules)
                 .WithRequired(e => e.AttributeDataType)
-                .HasForeignKey(e => e.AttributeDataTypeId);
-
-            
+                .HasForeignKey(e => e.AttributeDataTypeId);   
         }
     }
 }

@@ -10,7 +10,7 @@
     DBEntities e = new DBEntities();
 }
 <div id="upperPanel">
-    <div class="panelLabel">Práva</div>
+    <div class="panelLabel">Přístup k aplikacím</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -20,11 +20,10 @@
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>
 <div id="minimizedUpperPanel">
-    <div class="panelLabel">Práva</div>
+    <div class="panelLabel">Přístup k aplikacím</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
 <div id="lowerPanel">
-    <h4>Práva k aplikacím</h4>
     <svg class="rightsFormUpperDecoration" width="40px" height="240px">
         <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
     </svg>
@@ -32,45 +31,20 @@
         <thead>
             <tr>
                 <th>Skupina\Aplikace</th>
-                @foreach (Application app in ViewBag.Apps)
+                @foreach (Application app in e.Applications)
                 {
                     <td>@app.DisplayName</td>
                 }
             </tr>
         </thead>
         <tbody>
-            @foreach (Group group in ViewBag.Groups)
+            @foreach (User user in e.Users)
             {
                 <tr>
-                    <td>@group.Name</td>
-                    @foreach (Application app in ViewBag.Apps)
+                    <td>@user.DisplayName</td>
+                    @foreach (AppRight right in user.ApplicationRights.OrderBy(a => a.Application.Name))
                     {
-                        <td>@AppRight.GetSpecificRights(group, app, e)</td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-    <br />
-    <h4>Práva k akcím</h4>
-    <table class="table table-bordered table-striped table-responsive table-omnius">
-        <thead>
-            <tr>
-                <th>Skupina\Akce</th>
-                @foreach (ActionRule act in ViewBag.Actions)
-                {
-                    <td>@act.Name</td>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Group group in ViewBag.Groups)
-            {
-                <tr>
-                    <td>@group.Name</td>
-                    @foreach (ActionRule act in ViewBag.Actions)
-                    {
-                        <td>@ActionRuleRight.GetSpecificRights(group, act, e)</td>
+                        <td>@right.hasAccess.ToString()</td>
                     }
                 </tr>
             }

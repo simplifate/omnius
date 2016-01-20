@@ -12,43 +12,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     {
         [Key]
         [Column(Order = 1)]
-        public int GroupId { get; set; }
+        public int AppRoleId { get; set; }
         [Key]
         [Column(Order = 2)]
         public int ActionRuleId { get; set; }
-
-        public bool Readable { get; set; }
+        
         public bool Executable { get; set; }
 
-        public virtual Group Group { get; set; }
+        public virtual PersonaAppRole AppRole { get; set; }
         public virtual ActionRule ActionRule { get; set; }
-
-        public static string GetSpecificRights(string groupName, string actionName, DBEntities e)
-        {
-            ActionRuleRight actionrulerights = e.ActionRuleRights
-                .SingleOrDefault(arr => arr.Group.Name == groupName && arr.ActionRule.Name == actionName);
-
-            return GetShort(actionrulerights);
-        }
-        public static string GetSpecificRights(Group group, ActionRule actionR, DBEntities e)
-        {
-            ActionRuleRight actionrulerights = e.ActionRuleRights
-                .SingleOrDefault(arr => arr.Group.Id == group.Id && arr.ActionRule.Id == actionR.Id);
-
-            return GetShort(actionrulerights);
-        }
-
-        public static string GetShort(ActionRuleRight arr)
-        {
-            if (arr == null)
-                return "None";
-
-            if (arr.Executable)
-                return "E";
-            if (arr.Readable)
-                return "R";
-
-            return "None";
-        }
     }
 }

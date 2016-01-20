@@ -13,9 +13,8 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             DBEntities e = new DBEntities();
 
-            ViewBag.Apps = e.Applications;
-            ViewBag.Groups = e.Groups;
-            ViewBag.Actions = e.ActionRules;
+            AppRight.RefreshFromAD(e);
+            e.SaveChanges();
 
             return View();
         }

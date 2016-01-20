@@ -12,47 +12,56 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         /// without saving...
         /// </summary>
         /// <param name="groupNames"></param>
-        public void UpdateGroupsFromAd(IEnumerable<string> groupNames, DBEntities e)
+        public void UpdateAppRightFromAd(IEnumerable<string> newAppNames, DBEntities context)
         {
-            var groups = Groups.Where(g => g.IsFromAD == true).ToList();
+            List<AppRight> rightsDB = ApplicationRights.ToList();
 
-            // added groups
-            foreach (string groupName in groupNames)
+            // in NEW
+            foreach (string newAppName in newAppNames)
             {
-                // if not in original, but in new
-                Group newGroup = groups.SingleOrDefault(g => g.Name == groupName);
-                if (newGroup == null)
+                AppRight dbRight = rightsDB.SingleOrDefault(r => r.UserId == Id && r.Application.Name == newAppName);
+                // in DB
+                if (dbRight != null)
                 {
-                    newGroup = e.Groups.SingleOrDefault(g => g.Name == groupName && g.IsFromAD == true);
-                    // skupina není v DB
-                    if (newGroup == null)
-                        newGroup = new Group { Name = groupName, IsFromAD = true };
-                    Groups.Add(newGroup);
+                    dbRight.hasAccess = true;
+                    rightsDB.Remove(dbRight);
                 }
+                // not DB - create
                 else
-                    groups.Remove(newGroup);
+                {
+                    dbRight = new AppRight
+                    {
+                        Application = context.Applications.Single(a => a.Name == newAppName),
+                        User = this,
+                        hasAccess = true
+                    };
+                    context.ApplicationRights.Add(dbRight);
+                }
             }
 
-            // removed groups
-            foreach(Group group in groups)
+            // not NEW but DB
+            foreach (AppRight rightDB in rightsDB)
             {
-                Groups.Remove(group);
+                rightDB.hasAccess = false;
             }
         }
 
         public bool isAdmin()
         {
-            return Groups.Any(g => g.Name == "Admin");
+            // TODO
+            return true;
+            //return Groups.Any(g => g.Name == "Admin");
         }
-        public bool isInGroup(string groupName)
+        public bool HasRole(string roleName, DBEntities context)
         {
-            return Groups.Any(g => g.Name == groupName);
+            PersonaAppRole role = context.PersonaAppRoles.Single(ar => ar.RoleName == roleName);
+            return role.MembersList.Split(',').Contains(Id.ToString());
         }
 
-        public bool canUseAction(int actionId, DBEntities e)
+        public bool canUseAction(int actionId, DBEntities context)
         {
-            var right = e.ActionRuleRights.FirstOrDefault(ar => ar.ActionRuleId == actionId && Groups.Contains(ar.Group));
-            return right.Executable;
+            // TODO
+            return true;
         }
     }
 }

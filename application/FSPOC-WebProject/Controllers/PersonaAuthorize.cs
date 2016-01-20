@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity.Persona;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace System.Web.Mvc
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            User user = filterContext.HttpContext.User.GetLogged();
+            CORE core = new CORE();
+            User user = filterContext.HttpContext.User.GetLogged(core);
             if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles) && user != null)
                 return;
 
@@ -19,7 +21,7 @@ namespace System.Web.Mvc
 
             foreach(string role in Roles.Split(' '))
             {
-                if (user.Groups.Any(g => g.Name == role))
+                if (user.HasRole(role, core.Entitron.GetStaticTables()))
                     return;
             }
 

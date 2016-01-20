@@ -76,7 +76,7 @@ namespace FSS.Omnius.Modules.Persona
                     int EndI = groupName.IndexOf(',', startI);
                     groupNames.Add(groupName.Substring(startI, EndI - startI));
                 }
-                user.UpdateGroupsFromAd(groupNames, e);
+                user.UpdateAppRightFromAd(groupNames, e);
 
                 user.localExpiresAt = DateTime.UtcNow + _expirationTime;
                 
@@ -88,10 +88,12 @@ namespace FSS.Omnius.Modules.Persona
 
         public bool UserCanExecuteActionRule(int ActionRuleId)
         {
-            return _CORE.User.Groups.Any(g => g.ActionRuleRights.Any(ar => ar.ActionRuleId == ActionRuleId && ar.Executable));
+            // TODO
+            return true;
         }
         public bool isUserAdmin()
         {
+            // TODO
             return false;
         }
     }
