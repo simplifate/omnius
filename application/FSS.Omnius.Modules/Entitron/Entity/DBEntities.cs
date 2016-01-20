@@ -182,6 +182,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithRequired(e => e.Group)
                 .HasForeignKey(e => e.GroupId);
 
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+
             modelBuilder.Entity<ActionRule>()
                 .HasMany(e => e.ActionRuleRights)
                 .WithRequired(e => e.ActionRule)
