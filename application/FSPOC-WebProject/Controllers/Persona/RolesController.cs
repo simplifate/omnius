@@ -26,8 +26,12 @@ namespace FSPOC_WebProject.Controllers.Persona
                 foreach (var role in context.PersonaAppRoles.Where(c => c.Application.Id == app.Id))
                 {
                     var memberList = new List<int>();
+                    int parsedId;
                     foreach (string token in role.MembersList.Split(','))
-                        memberList.Add(int.Parse(token));
+                    {
+                        if(int.TryParse(token, out parsedId))
+                            memberList.Add(parsedId);
+                    }
                     model.Roles.Add(new AjaxPersonaAppRoles_Role { Id = role.Id, Name = role.RoleName, MemberList = memberList });
                 }
                 return View(model);
