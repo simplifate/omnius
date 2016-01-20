@@ -610,7 +610,8 @@ body.tapestryModule #upperPanel {
   body.tapestryModule #upperPanel #tapestryLibraryArea {
     position: absolute;
     left: 66px;
-    top: 96px; }
+    top: 96px;
+    width: 1564px; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategory {
       width: 220px;
       display: inline-block;
