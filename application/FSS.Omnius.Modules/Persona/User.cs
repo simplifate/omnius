@@ -42,7 +42,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             // not NEW but DB
             foreach (AppRight rightDB in rightsDB)
             {
-                rightDB.hasAccess = false;
+                // Uncomment on Production
+                // rightDB.hasAccess = false;
             }
         }
 
