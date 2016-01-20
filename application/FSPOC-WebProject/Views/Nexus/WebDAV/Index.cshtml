@@ -1,0 +1,67 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+@model System.Data.Entity.DbSet<WebDavServer>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+@{
+    Page.Title = "Omnius Nexus";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "nexusModule";
+}
+@Html.Partial("~/Views/Nexus/Nexus/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
+    <div id="webDavMenuArea" class="moduleSubMenuArea">
+        @Ajax.RouteLink("Přidat WebDAV server", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <div id="lowerPanelContainer">
+        <table id="webDavTable" class="table table-bordered table-striped table-responsive table-omnius">
+            <colgroup>
+                <col width="50">
+                <col>
+                <col>
+                <col width="180">
+                <col width="140">
+                <col width="140">
+                <col width="80">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Název</th>
+                    <th>Bázové URL</th>
+                    <th>Anonymní přihlášení?</th>
+                    <th>Uživatel</th>
+                    <th>Heslo</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (WebDavServer l in Model)
+                    {
+                        <tr>
+                            <td>@l.Id</td>
+                            <td>@l.Name</td>
+                            <td>@l.UriBasePath</td>
+                            <td class="text-center">@(l.AnonymousMode == true ? "ano" : "ne")</td>
+                            <td>@l.AuthUsername</td>
+                            <td>@(l.AuthPassword != null && l.AuthPassword.Length > 0 ? "********" : "")</td>
+                            <td class="table-row-action">
+                                @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = l.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = l.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">Nemáte nakonfigurovaný žádný WebDAV server</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

@@ -14,7 +14,7 @@
         }
 
         public int Id { get; set; }
-        public int InitBlockId { get; set; }
+        public int? InitBlockId { get; set; }
         public int? ParentId { get; set; }
         public int ApplicationId { get; set; }
         public int TypeId { get; set; }

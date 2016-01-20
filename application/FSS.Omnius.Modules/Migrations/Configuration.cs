@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(FSS.Omnius.Modules.Entitron.Entity.DBEntities context)
@@ -36,6 +36,17 @@ namespace FSS.Omnius.Modules.Migrations
                     new Entitron.Entity.Tapestry.Actor { Name = "Manual" },
                     new Entitron.Entity.Tapestry.Actor { Name = "Time" },
                     new Entitron.Entity.Tapestry.Actor { Name = "Auto" }
+                );
+
+            if (!context.DataTypes.Any())
+                context.DataTypes.AddOrUpdate(
+                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "NVarChar", shortcut = "s", limited = true },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "bool", SqlName = "Boolean", shortcut = "b", limited = false },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "int", SqlName = "Integer", shortcut = "i", limited = false },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "float", SqlName = "Float", shortcut = "f", limited = false },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "DateTime", SqlName = "DateTime", shortcut = "d", limited = false },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "XML", shortcut = "x", limited = true },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "blob", SqlName = "Blob", shortcut = "l", limited = true }
                 );
         }
     }

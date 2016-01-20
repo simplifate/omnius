@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             SourceTo_ActionRoles = new HashSet<ActionRule>();
             TargetTo_ActionRoles = new HashSet<ActionRule>();
             AttributeRules = new HashSet<AttributeRule>();
+            InitForWorkFlow = new HashSet<WorkFlow>();
         }
 
         public int Id { get; set; }
@@ -29,11 +30,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ModelName { get; set; }
 
         public bool IsVirtual { get; set; }
-
+        
         public int WorkFlowId { get; set; }
 
         public int? MozaicPageId { get; set; }
         public virtual Page MozaicPage { get; set; }
+        
+        public virtual ICollection<PreBlockAction> PreBlockActions { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActionRule> SourceTo_ActionRoles { get; set; }
@@ -43,9 +46,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeRule> AttributeRules { get; set; }
-
+        
         public virtual WorkFlow WorkFlow { get; set; }
-
-        public virtual WorkFlow InitForWorkFlow { get; set; }
+        
+        public virtual ICollection<WorkFlow> InitForWorkFlow { get; set; }
     }
 }

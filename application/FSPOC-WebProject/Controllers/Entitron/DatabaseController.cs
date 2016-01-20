@@ -15,6 +15,7 @@ using static System.String;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
+    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin")]
     public class DatabaseController : ApiController
     {
         public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,
@@ -99,12 +100,14 @@ namespace FSS.Omnius.Controllers.Entitron
         [Route("api/database/generate")]
         [HttpGet]
         //not add reference Entitron
-        public void Generate()
+        public void Generate(int AppId)
         {
             try
             {
+                Modules.CORE.CORE core = new Modules.CORE.CORE();
+                core.Entitron.AppId = AppId;
                 var dbSchemeCommit = RepositoryDbSchemeCommit.Get(orderBy: q => q.OrderByDescending(d => d.Timestamp)).First();
-                DatabaseGenerateService.GenerateDatabase(dbSchemeCommit);
+                DatabaseGenerateService.GenerateDatabase(core.Entitron.Application, dbSchemeCommit);
             }
             catch (Exception ex)
             {

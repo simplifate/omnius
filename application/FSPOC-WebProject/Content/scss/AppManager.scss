@@ -79,28 +79,39 @@ body.appManagerModule {
     .ui-draggable-dragging {
         z-index: 200;
     }
-    #moduleSwitcher {
+    .appWorkspace {
         position: absolute;
         left: 0px;
         top: 0px;
-        height: 32px;
-        z-index: 200;
-        color: white;
-        background-color: #4d41e7;
+        right: 0px;
+        bottom: 0px;
     }
 }
 
 body.adminAppModule {
+    #upperPanel {
+        height: 135px;
+    }
+    #lowerPanel {
+        top: 200px;
+    }
+    .appManagerLowerDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -10
+    }
     .adminAppTable {
         position: absolute;
-        left: 290px;
-        top: 125px;
-        width: 70%;
+        left: 85px;
+        top: 70px;
+        width: 85%;
+
         td {
-            min-width: 180px;
+            min-width: 110px;
         }
         td.actions {
-            min-width: unset;
+            width: 345px;
             .btn {
                 width: 100px;
             }

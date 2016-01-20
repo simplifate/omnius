@@ -1,145 +1,54 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@using FSS.Omnius.Modules.Entitron.Entity.Master;
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+@using FSS.Omnius.Modules.Entitron.Entity;
 @{
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "personaModule";
+
+    DBEntities e = new DBEntities();
 }
-
-<style type="text/css">
-    .top-panel {
-        position: relative;
-        top: 75px;
-        margin-left: 225px;
-        background: #3a3a3a;
-        overflow: hidden;
-    }
-
-    .top-panel-content {
-        position: relative;
-        z-index: 2;
-        padding: 1.5em 52px;
-    }
-
-    .bottom-panel {
-        margin-left: 225px;
-        padding: 0px 52px;
-        position: relative;
-        top: 75px;
-    }
-
-    .panelLabel {
-        padding: 25px 52px;
-        color: #fff;
-        font-size: 18px;
-        font-family: FatTec;
-        float: left;
-        width: 420px;
-    }
-    .panelLabelSecond{
-        padding: 25px 52px;
-        color: #fff;
-        font-size: 18px;
-        font-family: FatTec;
-        float: right;
-    }
-    .backgroundDecoration {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        z-index: 0;
-    }
-    .lowerRightDecoration{
-        position:absolute;
-        right:0px;
-    }
-    .decorationWatcheye {
-        position: absolute;
-        left: 19px;
-        top: 56px;
-        width: 24px;
-        height: 24px;
-    }
-
-    .tabs {
-        position: relative;
-        z-index: 2;
-        padding: 25px 55px;
-    }
-
-    .top-panel table th, .top-panel table td {
-        color: #fff;
-        vertical-align: middle !important;
-    }
-
-    td.table-row-action {
-        white-space: nowrap;
-    }
-</style>
-
-<div class="top-panel">
-    <div class="panelLabelSecond">Práva k aplikacím</div>
-    <svg class="backgroundDecoration" width="540px" height="565px">
+<div id="upperPanel">
+    <div class="panelLabel">Přístup k aplikacím</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
-        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
     </svg>
-    <img class="decorationWatcheye" src="/Content/images/watcheye_small.png">
-    <div class="top-panel-content" style="padding-top:100px">
-        <table class="table table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th>Skupina\Aplikace</th>
-                    @foreach (string app in ViewBag.AppNames)
-                    {
-                        <td>@app</td>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (string group in ViewBag.Groups)
-                {
-                    foreach (string app in ViewBag.AppNames)
-                    {
-                        <tr>
-                            <td>@group</td>
-                            <td>@AppRight.GetSpecificRights(group,app).ToString()</td>
-                        </tr>
-                    }
-
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="panelLabel">Práva k akcím</div>
-    <svg class="lowerRightDecoration" width="540px" height="565px">
-        <path d="M507 0 L507 27 L473 62 L45 62" stroke="#457fa9" stroke-width="1" fill="none" />
-        <path d="M507 357 L507 108 L472 74 L45 74 L9" stroke="#457fa9" stroke-width="1" fill="none" />
-        <path d="M507 47 L528 68 L507 89 L486 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
-    </svg>
-    <div class="top-panel-content" style="padding-top:100px">
-        <table class="table table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th>Skupina\Akce</th>
-                    @foreach (string act in ViewBag.Actions)
-                    {
-                        <td>@act</td>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (string group in ViewBag.Groups)
-                {
-                    foreach (string act in ViewBag.Actions)
-                    {
-                        <tr>
-                            <td>@group</td>
-                            <td>@ActionRight.GetSpecificRights(group,act).ToString()</td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>
-
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Přístup k aplikacím</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="rightsFormUpperDecoration" width="40px" height="240px">
+        <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <table class="table table-bordered table-striped table-responsive table-omnius">
+        <thead>
+            <tr>
+                <th>Skupina\Aplikace</th>
+                @foreach (Application app in e.Applications)
+                {
+                    <td>@app.DisplayName</td>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User user in e.Users)
+            {
+                <tr>
+                    <td>@user.DisplayName</td>
+                    @foreach (Application app in e.Applications)
+                    {
+                        AppRight ar = e.ApplicationRights.SingleOrDefault(a => a.ApplicationId == app.Id && a.UserId == user.Id);
+                        <td class="checkboxCell @(ar != null ? (ar.hasAccess ? "yesCell" : "noCell") : "noCell")"><i class="fa @(ar != null ? (ar.hasAccess ? "fa-check" : "fa fa-times") : "fa fa-times")"></i></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

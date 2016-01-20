@@ -71,6 +71,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return output;
         }
+        public int Count()
+        {
+            return new SqlQuery_SelectCount(this).Count();
+        }
 
         public override string ToString()
         {

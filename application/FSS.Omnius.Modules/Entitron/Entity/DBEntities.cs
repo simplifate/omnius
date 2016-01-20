@@ -20,40 +20,71 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
         }
 
+        // CORE
+        public virtual DbSet<DataType> DataTypes { get; set; }
         public virtual DbSet<Module> Modules { get; set; }
-        public virtual DbSet<Application> Applications { get; set; }
-        public virtual DbSet<Css> Css { get; set; }
-        public virtual DbSet<Page> Pages { get; set; }
-        public virtual DbSet<Template> Templates { get; set; }
-        public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
-        public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
-        public virtual DbSet<ActionRule> ActionRules { get; set; }
-        public virtual DbSet<Actor> Actors { get; set; }
-        public virtual DbSet<AttributeRule> AttributeRules { get; set; }
-        public virtual DbSet<Block> Blocks { get; set; }
-        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
-        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<ActionRight> ActionRights { get; set; }
-        public virtual DbSet<AppRight> ApplicationRights { get; set; }
+        public virtual DbSet<ConfigPair> ConfigPairs { get; set; }
+
+        // Entitron
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<DbSchemeCommit> DBSchemeCommits { get; set; }
         public virtual DbSet<DbTable> DbTables { get; set; }
-        public virtual DbSet<Ldap> Ldaps { get; set; }
-        public virtual DbSet<WS> WSs { get; set; }
-        public virtual DbSet<ExtDB> ExtDBs { get; set; }
-        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
-        public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
-        public virtual DbSet<Smtp> SMTPs { get; set; }
-        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
-        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
-        public virtual DbSet<LogItem> LogItems { get; set; }
-
         public virtual DbSet<DbColumn> DbColumn { get; set; }
         public virtual DbSet<DbIndex> DbIndex { get; set; }
         public virtual DbSet<DbRelation> DbRelation { get; set; }
         public virtual DbSet<DbView> DbView { get; set; }
+
+        // Hermes
+        public virtual DbSet<EmailLog> EmailLogItems { get; set; }
+        public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
+        public virtual DbSet<EmailQueue> EmailQueueItems { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<Smtp> SMTPs { get; set; }
+
+        // Master
+        public virtual DbSet<Application> Applications { get; set; }
+
+        // Mozaic
+        public virtual DbSet<Css> Css { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<Template> Templates { get; set; }
+        public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
+
+        // Nexus
+        public virtual DbSet<ExtDB> ExtDBs { get; set; }
+        public virtual DbSet<WebDavServer> WebDavServers { get; set; }
+        public virtual DbSet<FileMetadata> FileMetadataRecords { get; set; }
+        public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
+        public virtual DbSet<Ldap> Ldaps { get; set; }
+        public virtual DbSet<WS> WSs { get; set; }
+
+        // Persona
+        public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
+        public virtual DbSet<AppRight> ApplicationRights { get; set; }
+        public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
+
+        // Tapestry
+        public virtual DbSet<ActionRule> ActionRules { get; set; }
+        public virtual DbSet<ActionRule_Action> ActionRule_Action { get; set; }
+        public virtual DbSet<ActionSequence_Action> ActionSequence_Actions { get; set; }
+        public virtual DbSet<Actor> Actors { get; set; }
+        public virtual DbSet<AttributeRule> AttributeRules { get; set; }
+        public virtual DbSet<Block> Blocks { get; set; }
+        public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
+        public virtual DbSet<WorkFlow> WorkFlows { get; set; }
+        public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
+        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
+        public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
+        public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
+        public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
+
+        // Watchtower
+        public virtual DbSet<LogItem> LogItems { get; set; }
+
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -115,8 +146,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
-                .HasOptional(e => e.InitForWorkFlow)
-                .WithRequired(e => e.InitBlock);
+                .HasMany(e => e.InitForWorkFlow)
+                .WithOptional(e => e.InitBlock)
+                .HasForeignKey(e => e.InitBlockId);
 
             modelBuilder.Entity<WorkFlowType>()
                 .HasMany(e => e.WorkFlows)
@@ -134,26 +166,25 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
-            modelBuilder.Entity<Block>()
-                .HasKey(e => e.MozaicPageId);
             modelBuilder.Entity<Page>()
-                .HasOptional(e => e.Block)
-                .WithRequired(e => e.MozaicPage);
-            
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Groups)
-                .WithMany(e => e.Users)
-                .Map(m => m.ToTable("Persona_Groups_Users").MapLeftKey("UserId").MapRightKey("GroupId"));
+                .HasMany(e => e.Blocks)
+                .WithOptional(e => e.MozaicPage)
+                .HasForeignKey(e => e.MozaicPageId);
 
-            modelBuilder.Entity<ActionRight>()
-                .HasRequired(e => e.Group)
-                .WithMany(e => e.ActionRights)
-                .HasForeignKey(e => e.GroupId);
+            modelBuilder.Entity<ActionRule>()
+                .HasMany(e => e.ActionRuleRights)
+                .WithRequired(e => e.ActionRule)
+                .HasForeignKey(e => e.ActionRuleId);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasMany(e => e.ActionRuleRights)
+                .WithRequired(e => e.AppRole)
+                .HasForeignKey(e => e.AppRoleId);
 
             modelBuilder.Entity<AppRight>()
-                .HasRequired(e => e.Group)
+                .HasRequired(e => e.User)
                 .WithMany(e => e.ApplicationRights)
-                .HasForeignKey(e => e.GroupId);
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<AppRight>()
                 .HasRequired(e => e.Application)
@@ -164,6 +195,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.Tables)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
+
+            modelBuilder.Entity<ModuleAccessPermission>()
+                .HasOptional(e => e.User)
+                .WithOptionalDependent(e => e.ModuleAccessPermission);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasRequired(e => e.Application)
+                .WithMany(e => e.Roles);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()
@@ -187,23 +226,33 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasRequired(a => a.ActionRule)
                 .WithMany(a => a.ActionRule_Actions);
 
+            modelBuilder.Entity<PreBlockAction>()
+                .HasRequired(e => e.Block)
+                .WithMany(e => e.PreBlockActions);
+
             // Nexus
             modelBuilder.Entity<Ldap>();
             modelBuilder.Entity<WS>();
             modelBuilder.Entity<ExtDB>();
 
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional(s => s.WebDavServer);
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional(s => s.CachedCopy)
+                .WithRequired(s => s.FileMetadata);
+
             // Tapestry designer
             modelBuilder.Entity<TapestryDesignerApp>()
-                .HasMany(s => s.MetaBlocks)
+                .HasRequired(s => s.RootMetablock)
                 .WithOptional(s => s.ParentApp);
 
-            modelBuilder.Entity<TapestryDesignerMetaBlock>()
-                .HasMany(s => s.MetaBlocks)
-                .WithOptional(s => s.ParentMetaBlock);
+            modelBuilder.Entity<TapestryDesignerMetablock>()
+                .HasMany(s => s.Metablocks)
+                .WithOptional(s => s.ParentMetablock);
 
-            modelBuilder.Entity<TapestryDesignerMetaBlock>()
+            modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
-                .WithRequired(s => s.ParentMetaBlock);
+                .WithRequired(s => s.ParentMetablock);
 
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)
@@ -226,7 +275,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
 
-            
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.ContentList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            modelBuilder.Entity<EmailLog>();
+            modelBuilder.Entity<EmailQueue>();
+
+            modelBuilder.Entity<DataType>()
+                .HasMany(e => e.AttributeRules)
+                .WithRequired(e => e.AttributeDataType)
+                .HasForeignKey(e => e.AttributeDataTypeId);   
         }
     }
 }

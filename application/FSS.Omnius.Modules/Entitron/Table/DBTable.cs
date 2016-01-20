@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Sql;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron
 {
@@ -17,10 +18,10 @@ namespace FSS.Omnius.Modules.Entitron
         }
         #endregion
 
-        private int? _tableId;
+        public int? tableId;
 
         public string tableName { get; set; }
-        public DBApp Application { get; set; }
+        public Application Application { get; set; }
         private DBColumns _columns;
         public DBColumns columns
         {
@@ -87,11 +88,11 @@ namespace FSS.Omnius.Modules.Entitron
 
         public DBTable()
         {
-            _tableId = null;
+            tableId = -1;
         }
         public DBTable(int tableId)
         {
-            _tableId = tableId;
+            this.tableId = tableId;
         }
 
         public DBTable Create()
@@ -154,7 +155,7 @@ namespace FSS.Omnius.Modules.Entitron
             if (Application == null || string.IsNullOrWhiteSpace(tableName))
                 return false;
 
-            return (_tableId != null);
+            return (tableId != null);
         }
 
         public DBTable Add(DBItem item)
@@ -162,8 +163,8 @@ namespace FSS.Omnius.Modules.Entitron
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
             foreach (DBColumn column in columns)
             {
-                if (item[column.Name] != null)
-                {                
+                if (item.HasProperty(column.Name))
+                {
                     data.Add(column, item[column.Name]);
                 }
             }
@@ -260,6 +261,20 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 columnValueCondition.Add(primaryColumn, item[primaryColumn.Name]);
             }
+
+            Application.queries.Add(new SqlQuery_Delete()
+            {
+                application = Application,
+                table = this,
+                rowSelect = columnValueCondition
+            });
+
+            return this;
+        }
+        public DBTable Remove(int itemId)
+        {
+            Dictionary<DBColumn, object> columnValueCondition = new Dictionary<DBColumn, object>();
+            columnValueCondition.Add(new DBColumn() { Name = "Id" }, itemId);
 
             Application.queries.Add(new SqlQuery_Delete()
             {

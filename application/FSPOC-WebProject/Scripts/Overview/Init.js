@@ -1,15 +1,49 @@
-﻿$(function () {
+﻿var ZoomFactor = 1.0;
+$(function () {
     if (CurrentModuleIs("overviewModule")) {
-        $("#overviewPanel").resizable();
+        LoadMetablock();
+
+        $("#headerMetablockName").on("click", function () {
+            renameMetablockDialog.dialog("open");
+        });
         $("#btnAddBlock").on("click", function () {
             addBlockDialog.dialog("open");
         });
-        $(".block").on("dblclick", function () {
-            // TODO: Pass block's ID to Tapestry to edit this block
-            window.location.href = "/tapestry";
+        $("#btnAddMetablock").on("click", function () {
+            addMetablockDialog.dialog("open");
+        });
+        $("#btnLoad").on("click", function () {
+            LoadMetablock();
+        });
+        $("#btnSave").on("click", function () {
+            SaveMetablock();
+        });
+        $("#btnClear").on("click", function () {
+            $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {
+                instance.removeAllEndpoints(element, true);
+                $(element).remove();
+            });
+        });
+        $("#btnGoUp").on("click", function () {
+            SaveMetablock(function () {
+                openMetablockForm = $("#openMetablockForm");
+                openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
+                openMetablockForm.submit();
+            });
+        });
+        $("#btnZoomIn").on("click", function () {
+            ZoomFactor += 0.1;
+            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
+        });
+        $("#btnZoomOut").on("click", function () {
+            if (ZoomFactor >= 0.2)
+                ZoomFactor -= 0.1;
+            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
+            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
         });
         $.contextMenu({
-            selector: '.block',
+            selector: '.block, .metablock',
             trigger: 'right',
             zIndex: 300,
             callback: function (key, options) {

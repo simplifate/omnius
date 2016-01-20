@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
@@ -9,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public ActionRule()
         {
             ActionRule_Actions = new HashSet<ActionRule_Action>();
+            ActionRuleRights = new HashSet<ActionRuleRight>();
         }
 
         public int Id { get; set; }
@@ -24,5 +26,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual Actor Actor { get; set; }
         public virtual Block SourceBlock { get; set; }
         public virtual Block TargetBlock { get; set; }
+        public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }
     }
 }

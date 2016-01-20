@@ -1,0 +1,13 @@
+﻿@import "Mixins.scss";
+body.mozaicComponentManagerModule {
+    background-color: #f2f2f3;
+
+    #upperPanel {
+        height: 295px;
+    }
+
+    #lowerPanel {
+        top: 360px;
+        padding: 50px;
+    }
+}

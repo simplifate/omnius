@@ -6,6 +6,7 @@
     <title>@Page.Title</title>
     @Styles.Render("~/bundles/css")
     @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/jquery.contextMenu.css")
     @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
@@ -33,16 +34,18 @@
         <ul class="leftMenu">
             <li id="adminMenuPortal"><a href="/CORE/Portal">Centrální administrace</a></li>
             <li id="identitySuperMenu" class="expandable">Identity management</li>
-            <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Práva</a></li>
-            <li id="adminMenuApps"><a href="/Portal/Applications">Správa aplikací</a></li>
+            <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Přístup k aplikacím</a></li>
+            <li id="adminMenuPersonaModules" class="subMenu identitySubMenu"><a href="/Persona/Modules">Přístup k modulům</a></li>
+            <li id="adminMenuApps"><a href="/CORE/Portal/Applications">Správa aplikací</a></li>
             <li id="adminMenuNexus"><a href="/Nexus/LDAP">Integrace</a></li>
             <li id="appSuperMenu" class="expandable">Vytvoření aplikace</li>
-            <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Builder">Návrh workflow</a></li>
+            <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Návrh workflow</a></li>
             <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Datové struktury</a></li>
             <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/TemplateCategory">Návrh UI</a></li>
+            <li id="adminMenuRoles" class="subMenu appSubMenu"><a href="/Persona/Roles">Role</a></li>
             <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
             <li>Asynchronní úlohy</li>
-            <li>Audity a logování</li>
+            <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>
             <li>Analytický modul</li>
             <li>Vyhledávání</li>
             <li>Bezpečnost</li>

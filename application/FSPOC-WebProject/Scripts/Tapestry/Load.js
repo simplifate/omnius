@@ -1,17 +1,19 @@
 ﻿function LoadBlock(commitId) {
-    // TODO: replace hardcoded IDs with real app/block IDs
+    appId = $("#currentAppId").val();
+    blockId = $("#currentBlockId").val();
     if (commitId)
-        url = "/api/tapestry/apps/1/blocks/1/commits/" + commitId;
+        url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits/" + commitId;
     else
-        url = "/api/tapestry/apps/1/blocks/1";
+        url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId;
     $.ajax({
         type: "GET",
         url: url,
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {
-            $("#headerBlockName").text(data.Name),
-            $("#headerTableName").text(data.AssociatedTableName),
+            $("#headerBlockName").text(data.Name);
+            $("#headerTableName").text(data.AssociatedTableName);
+            $("#associatedTableId").text(data.AssociatedTableId),
             $("#rulesPanel .rule").remove();
             for (i = 0; i < data.Rules.length; i++) {
                 currentRuleData = data.Rules[i];
@@ -43,6 +45,11 @@
                             revertActive = true;
                         }
                     });
+                    for (k = 0; k < currentItemData.Properties.length; k++) {
+                        currentPropertyData = currentItemData.Properties[k];
+                        if (currentPropertyData.Name == "PortId")
+                            newItem.data("portId", currentPropertyData.Value);
+                    }
                 }
                 for (j = 0; j < currentRuleData.Operators.length; j++) {
                     currentOperatorData = currentRuleData.Operators[j];
@@ -171,6 +178,10 @@
                                     revertActive = true;
                                 }
                             });
+                            if (droppedElement.hasClass("port")) {
+                                CurrentItem = droppedElement;
+                                choosePortDialog.dialog("open");
+                            }
                         }
                     }
                 });

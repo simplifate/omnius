@@ -93,6 +93,21 @@
 .btn.fa.ico-only:before {
     margin-right: 0px;
 }
+.btn-omnius-rectangular {
+    background-color: #49c3f1;
+    color: black;
+    width: 120px;
+    height: 40px;
+    border: none;
+    font-family: MyriadPro;
+    font-size: 16px;
+}
+.btn-omnius-rectangular:hover {
+    background-color: #2ddef9;
+}
+.btn-omnius-rectangular:disabled {
+    background-color: #a0a0a0;
+}
 .tileMenuArea {
     position: absolute;
     left: 80px;
@@ -139,6 +154,18 @@
             font-size: 110px;
             top: 18px;
         }
+        .fa-folder {
+            font-size: 120px;
+            top: 8px;
+        }
+        .fa-envelope {
+            font-size: 110px;
+            top: 12px;
+        }
+        .fa-copy {
+            font-size: 100px;
+            top: 16px;
+        }
         .buttonLabel {
             position: absolute;
             top: 40px;
@@ -163,7 +190,6 @@
     left: 225px;
     top: 75px;
     right: 0px;
-    height: 357px;
     background-color: #3a3a3a;
 
     .panelLabel {
@@ -215,7 +241,6 @@
 #lowerPanel {
     position: absolute;
     left: 225px;
-    top: 432px;
     right: 0px;
     height: auto;
 }
@@ -224,6 +249,13 @@
     left: 70px;
     top: 120px;
     right: 80px;
+
+    h4 {
+        font-family: FatTec;
+        font-size: 20px;
+        color: #457fa9;
+        margin-left: 25px;
+    }
 }
 #ContentContainer {
     position: relative;
@@ -231,14 +263,12 @@
     height: auto;
     margin-top: 60px;
     margin-bottom: 60px;
-    h4 {
-        font-family: FatTec;
-        font-size: 20px;
-        color: #457fa9;
-        margin-left: 25px;
-    }
+
     .form-horizontal, .details-list {
         color: #455d73;
+    }
+    .form-horizontal .radio, .form-horizontal .checkbox {
+        margin-left: 20px;
     }
     .details-list {
         margin-top: 30px;
@@ -269,4 +299,10 @@
     white-space: nowrap;
     vertical-align: top;
     transform-origin: left top;
+}
+.modelErrorMessage {
+    margin-top: 40px;
+    color: #f06771;
+    font-family: Myriad-Pro;
+    font-size: 22px;
 }

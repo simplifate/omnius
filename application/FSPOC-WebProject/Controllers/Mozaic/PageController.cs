@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class PageController : Controller
     {
         public ActionResult Index(int id)

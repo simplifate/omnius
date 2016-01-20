@@ -1,29 +1,29 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using Logger;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Controllers.Master
 {
+    [PersonaAuthorize]
     public class HomeController : Controller
     {
         private List<Application> getAppList()
         {
+            User currentUser = User.GetLogged();
             try
             {
                 using (var context = new DBEntities())
                 {
-                    var filteredAppList = new List<Application>();
-
-                    foreach (var app in context.Applications)
-                    {
-                        // TODO: Implement filtering by user privileges
-                        if (app.IsPublished && app.IsEnabled)
-                            filteredAppList.Add(app);
-                    }
-                    return filteredAppList;
+                    return context.Applications.Where(a =>
+                        a.IsPublished
+                        && a.IsEnabled
+                        && a.Rights.Any(r => r.UserId == currentUser.Id && r.hasAccess)
+                    ).ToList();
                 }
             }
             catch (Exception ex)

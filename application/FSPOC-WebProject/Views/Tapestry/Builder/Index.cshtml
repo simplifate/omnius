@@ -1,196 +1,177 @@
-@{
+﻿@{
     Page.Title = "Omnius Tapestry";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "tapestryModule";
 }
-
-<div id="blockPanel" class="blockPanel">
-    <div class="header">
-        <div class="headerItem" id="headerBlockName">Log In Screen</div>
-        <div class="headerItem" id="headerTableName">User</div>
-        <div class="headerItem" id="headerOverview">Return to Overview</div>
-        <div class="headerItem" id="headerSaveButton">Save</div>
-        <div class="headerItem" id="headerLoadButton">Load</div>
-        <div class="headerItem" id="headerHistoryButton">History</div>
-        <div class="headerItem" id="headerClearButton">Clear</div>
-    </div>
-    <div id="attributesPanel" class="menuPanel">
-        <i class="fa fa-database" style="margin-right: 6px;"></i>Attributes<br />
-        <div class="menuItem attribute dataSource">Username</div>
-        <div class="menuItem attribute dataSource">Password</div>
-    </div>
-    <div id="rulesPanel">
-        <button type="button" class="btn btn-tapestry" id="btnAddRule">Add rule</button>
-        <div id="zoomPanel">
-            <div id="zoomLabel">Zoom 100%</div>
-            <button type="button" id="btnZoomIn">Zoom in</button>
-            <button type="button" id="btnZoomOut">Zoom out</button>
+<div id="upperPanel">
+    <div class="panelLabel">Tapestry</div>
+    <svg class="backgroundDecoration" width="540px" height="357px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+    <div id="upperPanelHistoryButton" class="tapestryUpperPanelButton">Historie</div>
+    <div id="upperPanelLibrariesButton" class="tapestryUpperPanelButton highlighted">Knihovny</div>
+    <div id="tapestryLibraryArea">
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Akce</div>
+            <div class="libraryItem">Log In</div>
+            <div class="libraryItem">Log Out</div>
+            <div class="libraryItem highlighted">Validate</div>
+            <div class="libraryItem">Check config values</div>
+            <div class="libraryItem highlighted">Create</div>
+            <div class="libraryItem">Delete</div>
         </div>
-        <div class="scrollArea">
-            <div id="rule1" class="rule" style="left: 24px; top: 35px; width: 380px; height: 80px;">
-                <div class="ruleHeader">Rule1</div>
-                <div class="editRuleIcon fa fa-edit"></div>
-                <div class="deleteRuleIcon fa fa-remove"></div>
-                <div class="ruleContent">
-                    <div id="item1" class="item view dataSource" style="left: 34px; top: 21px;">Username</div>
-                    <div id="item2" class="item attribute dataSource" style="left: 237px; top: 21px;">Username</div>
-                </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Atributy</div>
+            <div class="libraryItem highlighted">Name</div>
+            <div class="libraryItem highlighted">Title</div>
+            <div class="libraryItem highlighted">Description</div>
+            <div class="libraryItem">Priority</div>
+            <div class="libraryItem highlighted">Category</div>
+            <div class="libraryItem">Content</div>
+        </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">UI kompnenty</div>
+            <div class="libraryItem highlighted">Textbox175</div>
+            <div class="libraryItem">Combobox</div>
+            <div class="libraryItem">Picture</div>
+            <div class="libraryItem">Carousel</div>
+            <div class="libraryItem">Dropdown-toggle</div>
+            <div class="libraryItem highlighted">Button125</div>
+        </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Role</div>
+            <div class="libraryItem highlighted">RS_admin</div>
+            <div class="libraryItem">RS_approver</div>
+            <div class="libraryItem highlighted">RS_key_user</div>
+            <div class="libraryItem">RS_reader</div>
+            <div class="libraryItem">RS_observer</div>
+            <div class="libraryItem">RS_room_manager</div>
+        </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Stavy</div>
+            <div class="libraryItem">New</div>
+            <div class="libraryItem">Canceled</div>
+            <div class="libraryItem">Rejected</div>
+            <div class="libraryItem">Awaiting</div>
+            <div class="libraryItem">Accepted</div>
+            <div class="libraryItem">Closed</div>
+        </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Cíle</div>
+            <div class="libraryItem highlighted">Detail rezervace</div>
+            <div class="libraryItem">Založení rezervace</div>
+            <div class="libraryItem">Zrušení rezervace</div>
+            <div class="libraryItem">Notifikace</div>
+        </div>
+        <div class="libraryCategory">
+            <div class="libraryCategoryHeader">Šablony</div>
+            <div class="libraryItem highlighted">Založení rezervace</div>
+        </div>
+    </div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Tapestry</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <div id="tapestryLeftBar">
+        <div class="leftBarHeader">Paleta</div>
+        <ul class="tapestryToolbox">
+            <li class="toolboxCategoryHeader_Symbols"><span class="toolboxCategoryLabel">Symboly</span></li>
+            <li class="symbolToolboxSpace">
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;"/>
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
+                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
+            </li>
+            <li class="toolboxCategoryHeader_Actions"><span class="toolboxCategoryLabel">Akce</span></li>
+            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Validate</div></li>
+            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Create</div></li>
+            <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Name</div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Title</div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Description</div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Category</div></li>
+            <li class="toolboxCategoryHeader_UI"><span class="toolboxCategoryLabel">UI komponenty</span></li>
+            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Textbox</div></li>
+            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Button</div></li>
+            <li class="toolboxCategoryHeader_Roles"><span class="toolboxCategoryLabel">Role</span></li>
+            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_admin</div></li>
+            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_key_user</div></li>
+            <li class="toolboxCategoryHeader_States"><span class="toolboxCategoryLabel">Stavy</span></li>
+            <li class="toolboxCategoryHeader_Targets"><span class="toolboxCategoryLabel">Cíle</span></li>
+            <li class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem">Detail Rezervace</div></li>
+            <li class="toolboxCategoryHeader_Templates"><span class="toolboxCategoryLabel">Šablony</span></li>
+            <li class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem">Založení Rezervace</div></li>
+        </ul>
+    </div>
+    <div id="tapestryLeftBarBackground"></div>
+    <div id="tapestryWorkspace">
+        <div id="blockHeaderPanel">
+            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">2</span> 
+            Obrazkovky <span id="blockHeaderScreenCount">2</span>
+        </div>
+        <div id="assignResourcesPanel">
+            <div class="panelHeader">Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div></div>
+            <div id="resRule1" class="ruleItem resourceRule" style="width: 250px; height: 60px; left: 10px; top: 36px;">
+                <div id="resItem1" class="item attributeItem" style="left: 20px; top: 20px;">Name</div>
+                <div id="resItem2" class="item uiItem" style="left: 146px; top: 20px;">Textbox</div>
             </div>
-            <div id="rule2" class="rule" style="left: 488px; top: 35px; width: 380px; height: 80px;">
-                <div class="ruleHeader">Rule2</div>
-                <div class="editRuleIcon fa fa-edit"></div>
-                <div class="deleteRuleIcon fa fa-remove"></div>
-                <div class="ruleContent">
-                    <div id="item3" class="item view dataSource" style="left: 34px; top: 21px;">Password</div>
-                    <div id="item4" class="item attribute dataSource" style="left: 237px; top: 21px;">Password</div>
-                </div>
+            <div id="resRule2" class="ruleItem resourceRule" style="width: 390px; height: 60px; left: 290px; top: 36px;">
+                <div id="resItem3" class="item roleItem" style="left: 20px; top: 20px;">RS_admin</div>
+                <div id="resItem4" class="item uiItem" style="left: 146px; top: 20px;">Button</div>
+                <div id="resItem5" class="item actionItem" style="left: 270px; top: 20px;">Create</div>
             </div>
-            <div id="rule3" class="rule" style="left: 24px; top: 185px; width: 845px; height: 195px;">
-                <div class="ruleHeader">Rule3</div>
-                <div class="editRuleIcon fa fa-edit"></div>
-                <div class="deleteRuleIcon fa fa-remove"></div>
-                <div class="ruleContent">
-                    <div id="item5" class="item view" style="left: 36px; top: 28px;">Log In</div>
-                    <div id="item6" class="item action" style="left: 207px; top: 28px;">Check Credentials</div>
-                    <div id="item7" class="item action" style="left: 648px; top: 28px;">Log In</div>
-                    <div id="item8" class="item action" style="left: 590px; top: 132px;">Validation message</div>
-                    <div id="decision1" class="decisionRhombus operatorSymbol" style="left: 480px; top: 37px;">
-                        <svg width="70" height="60">
-                            <polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" />
-                        </svg>
+        </div>
+        <div id="workflowRulesPanel">
+            <div class="panelHeader">Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
+            <div id="wfRule1" class="ruleItem workflowRule" style="width: 766px; height: 360px; left: 46px; top: 97px;">
+                <div class="workflowRuleHeader">
+                    <div class="vericalLabel">Založení rezervace</div>
+                </div>
+                <div class="swimlaneArea">
+                    <div class="swimlane">
+                        <div class="swimlaneRolesArea">
+                            <div class="rolePlaceholder">
+                                <div class="rolePlaceholderLabel">
+                                    Pokud chcete specifikovat roli<br />
+                                    přetáhněte ji do této oblasti
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swimlaneContentArea">
+                            <img id="wfItem1" class="symbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
+                            <div id="wfItem2" class="item actionItem" style="left: 145px; top: 60px;">Create
+                                <img id="wfItem6" class="subSymbol" src="~/Content/images/TapestryIcons/small-message-double-circle.png" style="left: 15px; top: 45px;" />
+                            </div>
+                            <img id="wfItem5" class="symbol" src="~/Content/images/TapestryIcons/orange-port-arrow.png" style="left: 526px; top: 68px;" />
+                        </div>
+                    </div>
+                    <div class="swimlane">
+                        <div class="swimlaneRolesArea">
+                            <div class="roleItem">RS_key_user</div>
+                        </div>
+                        <div class="swimlaneContentArea">
+                            <div id="wfItem3" class="item templateItem" style="left: 145px; top: 60px;">Založení rezervace
+                                <div id="wfItem7" class="subSymbolCounterpart" style="left: 30px; top: -2px;"></div>
+                            </div>
+                            <img id="wfItem4" class="symbol" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="viewsPanel" class="menuPanel">
-        <i class="fa fa-paint-brush" style="margin-left: 1px; margin-right: 6px;"></i>Views<br />
-        <div class="menuItem view dataSource">Username</div>
-        <div class="menuItem view dataSource">Password</div>
-        <div class="menuItem view">Log In</div>
-    </div>
-    <div id="statesPanel" class="menuPanel">
-        <i class="fa fa-ellipsis-v" style="margin-left: 4px; margin-right: 8px;"></i>States<br />
-        <div class="menuItem state dataSource">Logged Out</div>
-    </div>
-    <div id="portsPanel" class="menuPanel">
-        <i class="fa fa-sign-out" style="margin-left: 1px; margin-right: 5px;"></i>Ports<br />
-        <div class="menuItem port" dialogType="port">Overview Screen</div>
-    </div>
-    <div id="rolesPanel" class="menuPanel">
-        <i class="fa fa-user" style="margin-left: 1px; margin-right: 6px;"></i>Roles<br />
-        <div class="menuItem role dataSource">None</div>
-    </div>
-    <div id="actionsPanel" class="menuPanel">
-        <button type="button" class="btn btn-tapestry" id="btnAddActions">Add actions</button>
-        <i class="fa fa-cogs" style="margin-left: 1px; margin-right: 6px;"></i>Actions<br />
-        <div class="menuItem action" dialogType="emailTemplate">Send Email</div>
-        <div class="menuItem action">Log In</div>
-        <div class="menuItem action">Check Credentials</div>
-        <div class="menuItem action">Forgot password</div>
-        <div class="menuItem action">Validation message</div>
-    </div>
-    <div id="operatorsPanel" class="menuPanel">
-        Operators<br />
-        <div class="menuItem operator" operatorType="decision">Decision</div>
-        <div class="menuItem operator" operatorType="condition" dialogType="condition">Condition</div>
-    </div>
-    <div id="upperVerticalDivider"><div class="verticalDividerBar"></div></div>
-    <div id="lowerLeftVerticalDivider"><div class="verticalDividerBar"></div></div>
-    <div id="lowerRightVerticalDivider"><div class="verticalDividerBar"></div></div>
-    <div id="rightHorizontalDivider"><div class="horizontalDividerBar"></div></div>
-</div>
-
-<div id="rename-block-dialog" title="Rename block">
-    <form>
-        <fieldset>
-            <label for="block-name">Choose a new name</label>
-            <input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
-        </fieldset>
-    </form>
-</div>
-<div id="add-actions-dialog" title="Add actions">
-    <table id="action-table" class="table table-hover">
-        <theader>
-            <tr>
-                <th>Action name</th>
-            </tr>
-        </theader>
-        <tbody>
-            <tr></tr>
-        </tbody>
-    </table>
-</div>
-<div id="choose-table-dialog" title="Choose table">
-    <table id="choice-table" class="table table-hover">
-        <theader>
-            <tr>
-                <th>Table name</th>
-            </tr>
-        </theader>
-        <tbody>
-            <tr></tr>
-        </tbody>
-    </table>
-</div>
-<div id="choose-email-template-dialog" title="Choose email template">
-    <table id="choice-template" class="table table-hover">
-        <theader>
-            <tr>
-                <th>Template name</th>
-            </tr>
-        </theader>
-        <tbody>
-            <tr></tr>
-        </tbody>
-    </table>
-</div>
-<div id="choose-port-dialog" title="Choose port">
-    <table id="choice-port" class="table table-hover">
-        <theader>
-            <tr>
-                <th>Port</th>
-            </tr>
-        </theader>
-        <tbody>
-            <tr></tr>
-        </tbody>
-    </table>
-</div>
-<div id="edit-condition-dialog" title="Edit condition">
-    <form>
-        <fieldset>
-            <table class="formTable logicTable"></table>
-            <button type="button" id="btnAddCondition">Add condition</button>
-        </fieldset>
-    </form>
-</div>
-<div id="rename-rule-dialog" title="Rename rule">
-    <form>
-        <fieldset>
-            <label for="rule-name">Choose a new name</label>
-            <input type="text" name="rule-name" id="rule-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
-        </fieldset>
-    </form>
-</div>
-<div id="history-dialog" title="Load from history">
-    <table id="commit-table" class="table table-hover">
-        <theader>
-            <tr>
-                <th style="width:240px;">Date created</th>
-                <th>Commit message</th>
-            </tr>
-        </theader>
-        <tbody>
-            <tr></tr>
-        </tbody>
-    </table>
-</div>
-<div id="save-dialog" title="Save scheme">
-    <form>
-        <fieldset>
-            <label for="message">Add a message (optional)</label>
-            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
-        </fieldset>
-    </form>
 </div>

@@ -16,7 +16,8 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
     });
     ruleContent = $(ruleElement).find(".ruleContent");
     ruleContent.attr("id", AssingID());
-    newInstance.setContainer(ruleContent.attr("id"));
+    // newInstance.setContainer(ruleContent.attr("id"));
+    newInstance.setContainer(ruleElement);
     newInstance.bind("click", function (con) {
         this.detach(con);
     });

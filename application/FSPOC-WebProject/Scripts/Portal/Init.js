@@ -1,4 +1,5 @@
 ﻿var maintenanceModeActive = false;
+var LowerPanelTop = 432;
 
 $(function () {
     $("#identitySuperMenu").on("click", function () {
@@ -8,15 +9,19 @@ $(function () {
         $("#leftBar .leftMenu li.appSubMenu").slideToggle();
     });
 
-    if (CurrentModuleIs("portalModule"))
+    if (CurrentModuleIs("portalModule")) {
         $("#adminMenuPortal").addClass("active");
-    else if (CurrentModuleIs("adminAppModule"))
+        LowerPanelTop = 432;
+    }
+    else if (CurrentModuleIs("adminAppModule")) {
         $("#adminMenuApps").addClass("active");
-    else if (CurrentModuleIs("portalModule"))
-        $("#adminMenuApps").addClass("active");
-    else if (CurrentModuleIs("nexusModule"))
+        LowerPanelTop = 200;
+    }
+    else if (CurrentModuleIs("nexusModule")) {
         $("#adminMenuNexus").addClass("active");
-    else if (CurrentModuleIs("tapestryModule")) {
+        LowerPanelTop = 370;
+    }
+    else if (CurrentModuleIs("tapestryModule") || CurrentModuleIs("overviewModule")) {
         $("#adminMenuTapestry").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
@@ -28,15 +33,27 @@ $(function () {
         $("#adminMenuDbDesigner").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
+    else if (CurrentModuleIs("personaRolesModule")) {
+        $("#adminMenuRoles").addClass("active");
+        $("#leftBar .leftMenu li.appSubMenu").show();
+        LowerPanelTop = 200;
+    }
     else if (CurrentModuleIs("personaModule")) {
         $("#adminMenuPersona").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
+        LowerPanelTop = 200;
+    }
+    else if (CurrentModuleIs("personaModulesModule")) {
+        $("#adminMenuPersonaModules").addClass("active");
+        $("#leftBar .leftMenu li.identitySubMenu").show();
+        LowerPanelTop = 200;
     }
     else if (CurrentModuleIs("watchtowerModule")) {
         $("#adminMenuWatchtower").addClass("active");
     }
     else if (CurrentModuleIs("hermesModule")) {
         $("#adminMenuHermes").addClass("active");
+        LowerPanelTop = 370;
     }
 
     $("#usersOnlineIndicator").on("click", function () {
@@ -84,6 +101,6 @@ $(function () {
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
-        $("#lowerPanel").css("top", 432);
+        $("#lowerPanel").css("top", LowerPanelTop);
     });
 });

@@ -8,13 +8,21 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    class CompareAction : Action
+    public class CompareAction : Action
     {
         public override int Id
         {
             get
             {
                 return 1001;
+            }
+        }
+
+        public override int? ReverseActionId
+        {
+            get
+            {
+                return null;
             }
         }
 
@@ -49,29 +57,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 };
             }
         }
-
-        public override ActionResultCollection run(Dictionary<string, object> vars)
+        
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars)
         {
-            var outputVars = new Dictionary<string, object>();
-            var outputStatus = ActionResultType.Success;
-            var outputMessage = "OK";
+            DBItem model = (DBItem)vars["model"];
+            string parameter = (string)vars["parameter"];
+            object value = vars["value"];
 
-            try
-            {
-                DBItem model = (DBItem)vars["model"];
-                string parameter = (string)vars["parameter"];
-                object value = vars["value"];
-
-                bool areSame = model[parameter] == value;
-                outputVars.Add("comparation", areSame);
-            }
-            catch(Exception ex)
-            {
-                outputStatus = ActionResultType.Error;
-                outputMessage = ex.Message;
-            }
-
-            return new ActionResultCollection(outputStatus, outputMessage, outputVars);
+            bool areSame = model[parameter] == value;
+            outputVars.Add("comparation", areSame);
         }
     }
 }

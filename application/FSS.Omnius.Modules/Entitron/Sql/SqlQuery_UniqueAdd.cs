@@ -8,21 +8,19 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQuery_UniqueAdd : SqlQuery_withApp
     {
-        public List<string> keyColumns { get; set; }
-        public string uniqueName { get; set; }
+        public string keyColumns { get; set; }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
-            string parUniqueName = safeAddParam("uniqueName", uniqueName);
-            string parColumns = safeAddParam("columns", string.Join(",", keyColumns));
+            string parColumns = safeAddParam("columns", keyColumns);
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_{4}_{5}_', @{2}, ' UNIQUE (', @{3}, ');')" +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @realTableName, @{2}, ' UNIQUE (', @{2}, ');')" +
                 "exec (@sql)",
-                parAppName, parTableName, parUniqueName ,parColumns,application.Name, table.tableName);
+                parAppName, parTableName, parColumns);
 
             base.BaseExecution(transaction);
         }

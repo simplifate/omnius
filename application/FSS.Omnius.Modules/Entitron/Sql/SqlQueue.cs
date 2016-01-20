@@ -43,10 +43,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void ExecuteAll()
         {
-            if (connectionString == null && DBApp.connectionString == null)
+            if (connectionString == null && Entitron.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(connectionString ?? DBApp.connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString ?? Entitron.connectionString))
             {
                 connection.Open();
 

@@ -1,19 +1,23 @@
 using System.Linq;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
+using System.Net.Mail;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
     public class SMTPController : Controller
     {
+        [PersonaAuthorize(Roles = "Admin")]
         // GET: SMTP
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
+            ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
             return View(e.SMTPs);
         }
 
@@ -86,10 +90,39 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult Test()
         {
             DBEntities e = new DBEntities();
-            Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+            
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            model.Add("count", e.WSs.Count());
+            model.Add("ws", e.WSs);
+            
+            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");
+            mail.SendMail();
 
-            Mailer mail = new Mailer();
-            ViewData["result"] = mail.SendMail("Test", m);
+            ViewData["result"] = "OK";
+
+            return View("~/Views/Hermes/SMTP/Test.cshtml");
+        }
+
+        public ActionResult TestSender()
+        {
+            DBEntities e = new DBEntities();
+            /*Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
+            
+            Mailer mail = new Mailer("Test", "Založení AD serveru", m);
+            mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");*/
+
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            model.Add("count", e.WSs.Count());
+            model.Add("ws", e.WSs);
+
+            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.SendBySender();
+
+            ViewData["result"] = "OK";
 
             return View("~/Views/Hermes/SMTP/Test.cshtml");
         }

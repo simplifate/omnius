@@ -10,6 +10,17 @@ namespace FSS.Omnius.Modules.Entitron
 {
     public class DBItem
     {
+        public DBItem()
+        {
+        }
+        public DBItem(IEnumerable<KeyValuePair<string, object>> dict)
+        {
+            foreach (KeyValuePair<string, object> pair in dict)
+            {
+                this[pair.Key] = pair.Value;
+            }
+        }
+
         public DBTable table { get; set; }
 
         private Dictionary<string, int> _properties = new Dictionary<string, int>();
@@ -77,6 +88,15 @@ namespace FSS.Omnius.Modules.Entitron
         public object GetIdProperty(int columnId)
         {
             return _idProperties[columnId];
+        }
+
+        public bool HasProperty(string propertyName)
+        {
+            return _properties.ContainsKey(propertyName);
+        }
+        public bool HasProperty(int columnId)
+        {
+            return _idProperties.ContainsKey(columnId);
         }
 
         public List<string> getColumnNames()

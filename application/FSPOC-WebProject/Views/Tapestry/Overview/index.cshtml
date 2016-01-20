@@ -3,27 +3,37 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "overviewModule";
 }
-
+<div id="overviewHeaderArea">
+    App: <span id="headerAppName">Default app</span><br /> Metablock: <span id="headerMetablockName"></span>
+</div>
+<div id="overviewMenu">
+    <button id="btnAddBlock" class="btn-omnius-rectangular">Add block</button>
+    <button id="btnAddMetablock" class="btn-omnius-rectangular">Add metablock</button>
+    <hr />
+    <button id="btnSave" class="btn-omnius-rectangular">Save</button>
+    <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
+    <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
+    <hr />
+    <button id="btnGoUp" class="btn-omnius-rectangular" @((int)ViewData["parentMetablockId"]==0?"disabled=disabled":"")>Go up</button>
+</div>
 <div id="overviewPanel">
-    <button id="btnAddBlock" class="btn btn-lg btn-tapestry">Add block</button>
-    <div class="block" id="block1" style="left: 150px; top: 150px;">
-        <div class="blockName">Log in screen</div>
-        <div class="tableName">Users</div>
-    </div>
-    <div class="block" id="block2" style="left: 550px; top: 300px;">
-        <div class="blockName">Second block</div>
-        <div class="tableName">Table2</div>
-    </div>
-    <div class="block" id="block3" style="left: 950px; top: 150px;">
-        <div class="blockName">Third block</div>
-        <div class="tableName">Table3</div>
-    </div>
-    <div class="block" id="block4" style="left: 950px; top: 450px;">
-        <div class="blockName">Fourth block</div>
-        <div class="tableName">Table4</div>
+    <div class="scrollArea">
     </div>
 </div>
-
+<div id="zoomPanel">
+    <div id="zoomLabel">Zoom 100%</div>
+    <button type="button" id="btnZoomIn">Zoom in</button>
+    <button type="button" id="btnZoomOut">Zoom out</button>
+</div>
+<form id="openBlockForm" method="post" action="/Tapestry/Builder">
+    <input type="hidden" name="blockId" />
+</form>
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
+<input type="hidden" id="currentAppId" value="1" />
+<input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <div id="add-block-dialog" title="Add block">
     <form>
         <fieldset>
@@ -37,6 +47,26 @@
                     <td><select name="table-dropdown" id="table-dropdown"></select></td>
                 </tr>
             </table>
+        </fieldset>
+    </form>
+</div>
+<div id="add-metablock-dialog" title="Add metablock">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="metablock-name">Metablock name</label></td>
+                    <td><input type="text" name="metablock-name" id="metablock-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="rename-metablock-dialog" title="Rename metablock">
+    <form>
+        <fieldset>
+            <label for="metablock-name">Choose a new name</label>
+            <input type="text" name="metablock-name" id="metablock-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
 </div>

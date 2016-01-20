@@ -11,6 +11,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     [Table("Persona_Users")]
     public partial class User
     {
+        public User()
+        {
+            ApplicationRights = new HashSet<AppRight>();
+        }
+
         public int Id { get; set; }
         [Required]
         [Index(IsUnique = true)]
@@ -38,7 +43,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public DateTime LastLogin { get; set; }
         [Required]
         public DateTime localExpiresAt { get; set; }
-
-        public virtual ICollection<Group> Groups { get; set; }
+        
+        public virtual ICollection<AppRight> ApplicationRights { get; set; }
+        public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
     }
 }

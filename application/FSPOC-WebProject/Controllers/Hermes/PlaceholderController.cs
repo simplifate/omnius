@@ -7,6 +7,7 @@ using System;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class PlaceholderController : Controller
     {
         // GET: Placeholder list
@@ -17,6 +18,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
+            ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
             ViewData["TemplateName"] = template.Name;
             ViewData["emailId"] = template.Id;
 

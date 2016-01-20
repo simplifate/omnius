@@ -35,8 +35,7 @@ namespace FSPOC_WebProject
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/jquery-ui.css",
-                      "~/Content/jquery.contextMenu.css"
+                      "~/Content/jquery-ui.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/CommonLibraries").IncludeDirectory(
@@ -51,6 +50,8 @@ namespace FSPOC_WebProject
                 .IncludeDirectory("~/Scripts/AppManager", "*.js")
                 .IncludeDirectory("~/Scripts/Nexus", "*.js")
                 .IncludeDirectory("~/Scripts/Hermes", "*.js")
+                .IncludeDirectory("~/Scripts/Watchtower", "*.js")
+                .IncludeDirectory("~/Scripts/Persona", "*.js")
                 .Include("~/Scripts/PlatformUtils.js")
             );
         }

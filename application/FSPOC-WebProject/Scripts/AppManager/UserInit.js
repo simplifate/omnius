@@ -1,16 +1,4 @@
 ﻿$(function () {
-    $("#appManagerIcon").on("click", function () {
-        if (!$("#appManagerIcon").hasClass("activeIcon"))
-            window.location.href = "/Master";
-    });
-    $("#adminSectionIcon").on("click", function () {
-        if (!$("#adminSectionIcon").hasClass("activeIcon"))
-            window.location.href = "/CORE";
-    });
-    $("#helpIcon").on("click", function () {
-        if (!$("#helpIcon").hasClass("activeIcon"))
-            window.location.href = "/Master/Home/Help";
-    });
     $("#hideMenuIcon").on("click", function () {
         $("#userLeftBar").hide();
         $("#userLeftBarMinimized").show();

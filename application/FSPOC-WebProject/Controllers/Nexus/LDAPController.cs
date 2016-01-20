@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class LDAPController : Controller
     {
         // GET: LDAP
@@ -22,6 +23,7 @@ namespace FSS.Omnius.Controllers.Nexus
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
+            ViewData["WebDavServersCount"] = e.WebDavServers.Count();
             return View(e.Ldaps);
         }
 
@@ -114,17 +116,14 @@ namespace FSS.Omnius.Controllers.Nexus
             List<string> groupList = new List<string>();
             NexusLdapService service = new NexusLdapService();
 
-            if(Request.HttpMethod == "POST")
+            ViewBag.Result = "";
+            if (Request.HttpMethod == "POST")
             {
-                string baseDN = Request.Form["query"];
-                groups = service.GetGroups(baseDN);
+                string CN = Request.Form["query"];
+                groups = service.GetGroups(CN);
+                ViewBag.Result = groups.ToString();
             }
-            else
-            {
-                groups = service.GetGroups();
-            }
-            
-            ViewBag.Result = groups.ToString();
+        
 
             return View("~/Views/Nexus/LDAP/GroupList.cshtml");
 

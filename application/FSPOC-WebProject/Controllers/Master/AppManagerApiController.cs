@@ -12,6 +12,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
 {
     public class AppManagerApiController : ApiController
     {
+        [System.Web.Mvc.PersonaAuthorize]
         [Route("api/master/apps/{appId}/properties")]
         [HttpGet]
         public AjaxAppProperties LoadAppProperties(int appId)

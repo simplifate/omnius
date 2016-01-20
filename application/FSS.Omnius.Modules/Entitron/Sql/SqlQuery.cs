@@ -16,8 +16,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public const string DB_EntitronMeta = "dbo.Entitron___META";
 
         public string sqlString;
-        protected Dictionary<string, object> _params;
-        protected Dictionary<string, string> _datatypes;
+        internal Dictionary<string, object> _params;
+        internal Dictionary<string, string> _datatypes;
 
         public SqlQuery()
         {
@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void Execute(string connectionString = null)
         {
-            connectionString = connectionString ?? DBApp.connectionString;
+            connectionString = connectionString ?? Entitron.connectionString;
             if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
@@ -56,11 +56,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public virtual List<DBItem> ExecuteWithRead()
         {
-            if (DBApp.connectionString == null)
+            if (Entitron.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
             List<DBItem> items = null;
-            using (SqlConnection connection = new SqlConnection(DBApp.connectionString))
+            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
             {
                 connection.Open();
 

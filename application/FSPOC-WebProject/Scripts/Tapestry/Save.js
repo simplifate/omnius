@@ -1,5 +1,6 @@
 ﻿function SaveBlock(commitMessage) {
     ruleArray = [];
+    portTargetsArray = [];
     saveId = 0;
     $("#rulesPanel .rule").each(function (ruleIndex, ruleDiv) {
         itemArray = [];
@@ -7,6 +8,7 @@
         connectionArray = [];
         currentRule = $(ruleDiv);
         currentRule.find(".item").each(function (itemIndex, itemDiv) {
+            propertyArray = [];
             currentItem = $(itemDiv);
             currentItem.attr("saveId", saveId);
             saveId++;
@@ -29,6 +31,16 @@
             else if (currentItem.hasClass("state")) {
                 typeClass = "state";
             }
+            if (typeClass == "port") {
+                portId = currentItem.data("portId");
+                if (portId) {
+                    portTargetsArray.push(portId);
+                    propertyArray.push({
+                        Name: "PortId",
+                        Value: portId
+                    });
+                }
+            }
             itemArray.push({
                 Id: currentItem.attr("saveId"),
                 Label: currentItem.text(),
@@ -36,7 +48,8 @@
                 IsDataSource: currentItem.hasClass("dataSource"),
                 DialogType: currentItem.attr("dialogType"),
                 PositionX: parseInt(currentItem.css("left")),
-                PositionY: parseInt(currentItem.css("top"))
+                PositionY: parseInt(currentItem.css("top")),
+                Properties: propertyArray
             });
         });
         currentRule.find(".operatorSymbol").each(function (operatorIndex, operatorDiv) {
@@ -91,12 +104,16 @@
         CommitMessage: commitMessage,
         Name: $("#headerBlockName").text(),
         AssociatedTableName: $("#headerTableName").text(),
-        Rules: ruleArray
+        AssociatedTableId: $("#associatedTableId").val(),
+        Rules: ruleArray,
+        PortTargets: portTargetsArray,
+        ParentMetablockId: $("#parentMetablockId").val()
     }
-    // TODO: replace hardcoded IDs with real app/block IDs
+    appId = $("#currentAppId").val();
+    blockId = $("#currentBlockId").val();
     $.ajax({
         type: "POST",
-        url: "/api/tapestry/apps/1/blocks/1",
+        url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId,
         data: postData,
         success: function () { alert("OK") },
         error: function () { alert("ERROR") }

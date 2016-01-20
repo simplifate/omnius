@@ -9,6 +9,7 @@ namespace FSS.Omnius.Modules.Entitron
 {
     using Entity;
     using Entity.CORE;
+    using Entity.Master;
 
     [NotMapped]
     public class Entitron : Module
@@ -17,17 +18,21 @@ namespace FSS.Omnius.Modules.Entitron
         private CORE.CORE _CORE;
         private DBEntities entities = null;
 
-        public DBApp Application { get; set; }
+        public Application Application { get; set; }
         public string AppName
         {
             get { return (Application != null) ? Application.Name : null; }
             set
             {
-                Application = new DBApp()
-                {
-                    Name = value,
-                    ConnectionString = connectionString
-                };
+                Application = GetStaticTables().Applications.SingleOrDefault(a => a.Name == value);
+            }
+        }
+        public int AppId
+        {
+            get { return Application.Id; }
+            set
+            {
+                Application = GetStaticTables().Applications.SingleOrDefault(a => a.Id == value);
             }
         }
 
@@ -62,11 +67,9 @@ namespace FSS.Omnius.Modules.Entitron
             return Application.GetTable(tableName);
         }
 
-        public DBItem GetDynamicItem(string ApplicationName, string tableName, int modelId)
+        public DBItem GetDynamicItem(string tableName, int modelId)
         {
-            AppName = ApplicationName;
-
-            return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().First();
+            return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
         }
     }
 }

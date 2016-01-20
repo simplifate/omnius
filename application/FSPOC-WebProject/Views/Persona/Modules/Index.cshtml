@@ -1,0 +1,157 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@model List<AjaxModuleAccessPermission>
+@{
+    Page.Title = "Omnius Persona";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "personaModulesModule";
+}
+@helper CheckboxCell(bool allowed)
+{
+    if (allowed)
+    {
+        <td class="checkboxCell yesCell"><i class="fa fa-check"></i></td>
+    }
+    else
+    {
+        <td class="checkboxCell noCell"><i class="fa fa-times"></i></td>
+    }
+}
+<div id="upperPanel">
+    <div class="panelLabel">Přístup k modulům</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Přístup k modulům</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="modulesFormUpperDecoration" width="40px" height="240px">
+        <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <div id="personaModulesContentContainer">
+        @if (Model.Count == 0)
+        {
+            <div class="modelErrorMessage">V databázi zatím nejsou žádná nastavení oprávnění k modulům (tabulka Persona_ModuleAccessPermissions)</div>
+        }
+        else
+        {
+        <table id="moduleAccessTable" class="table table-bordered table-striped table-omnius">
+            <thead>
+                <tr>
+                    <th></th>
+                    @foreach (var user in Model)
+                    {
+                        <th>@user.UserName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr moduleId="Core">
+                    <td class="moduleCell">CORE</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Core);
+                    }
+                </tr>
+                <tr moduleId="Master">
+                    <td class="moduleCell">Master</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Master);
+                    }
+                </tr>
+                <tr moduleId="Tapestry">
+                    <td class="moduleCell">Tapestry</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Tapestry);
+                    }
+                </tr>
+                <tr moduleId="Entitron">
+                    <td class="moduleCell">Entitron</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Entitron);
+                    }
+                </tr>
+                <tr moduleId="Mozaic">
+                    <td class="moduleCell">Mozaic</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Mozaic);
+                    }
+                </tr>
+                <tr moduleId="Persona">
+                    <td class="moduleCell">Persona</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Persona);
+                    }
+                </tr>
+                <tr moduleId="Nexus">
+                    <td class="moduleCell">Nexus</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Nexus);
+                    }
+                </tr>
+                <tr moduleId="Sentry">
+                    <td class="moduleCell">Sentry</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Sentry);
+                    }
+                </tr>
+                <tr moduleId="Hermes">
+                    <td class="moduleCell">Hermes</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Hermes);
+                    }
+                </tr>
+                <tr moduleId="Athena">
+                    <td class="moduleCell">Athena</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Athena);
+                    }
+                </tr>
+                <tr moduleId="Watchtower">
+                    <td class="moduleCell">Watchtower</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Watchtower);
+                    }
+                </tr>
+                <tr moduleId="Cortex">
+                    <td class="moduleCell">Cortex</td>
+                    @foreach (var user in Model)
+                    {
+                        @CheckboxCell(user.Cortex);
+                    }
+                </tr>
+                <tr class="hiddenIdRow">
+                    <td></td>
+                    @foreach (var user in Model)
+                    {
+                        <td>@user.Id</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+        <div id="personaModulesFormButtonsPanel">
+            <svg class="modulesFormLowerDecoration" width="500px" height="102px">
+                <path d="M1 1 L101 101 L499 101" stroke="#457fa9" stroke-width="1" fill="none"></path>
+            </svg>
+            <button id="btnReloadModuleAccessTable" class="btn-omnius-rectangular">Zrušit</button>
+            <button id="btnSaveModuleAccessTable" class="btn-omnius-rectangular">Uložit</button>
+        </div>
+        }
+    </div>
+</div>

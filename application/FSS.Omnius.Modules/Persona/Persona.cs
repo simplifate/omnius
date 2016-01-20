@@ -16,13 +16,16 @@ namespace FSS.Omnius.Modules.Persona
     [NotMapped]
     public class Persona : Module
     {
-        private TimeSpan _expirationTime = TimeSpan.FromDays(1);
+        private TimeSpan _expirationTime;
         private CORE.CORE _CORE;
 
         public Persona(CORE.CORE core)
         {
             Name = "Persona";
             _CORE = core;
+
+            ConfigPair pair = _CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");
+            _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
         }
 
         public User getUser(string username, string serverName = null)
@@ -48,6 +51,7 @@ namespace FSS.Omnius.Modules.Persona
                 if (result == null)
                     throw new NotAuthorizedException("User not found");
 
+                // user attributes
                 user.DisplayName = (string)result["displayname"];
                 user.Email = (string)result["mail"];
                 user.Address = "";
@@ -59,6 +63,17 @@ namespace FSS.Omnius.Modules.Persona
                 user.MobilPhone = "";
                 user.LastLogin = DateTime.FromFileTime((long)result["lastlogon"]);
 
+                // groups
+                List<string> groupNames = new List<string>();
+                foreach (JToken group in result["memberof"])
+                {
+                    string groupName = (string)group;
+                    int startI = groupName.IndexOf("CN=") + 3;
+                    int EndI = groupName.IndexOf(',', startI);
+                    groupNames.Add(groupName.Substring(startI, EndI - startI));
+                }
+                user.UpdateAppRightFromAd(groupNames, e);
+
                 user.localExpiresAt = DateTime.UtcNow + _expirationTime;
                 
                 e.SaveChanges();
@@ -69,10 +84,12 @@ namespace FSS.Omnius.Modules.Persona
 
         public bool UserCanExecuteActionRule(int ActionRuleId)
         {
-            return _CORE.ActiveUser.Groups.Any(g => g.ActionRights.Any(ar => ar.ActionId == ActionRuleId && ar.Executable));
+            // TODO
+            return true;
         }
         public bool isUserAdmin()
         {
+            // TODO
             return false;
         }
     }

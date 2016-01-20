@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.CORE
         private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
 
         private RunableModule _activeModule;
-        public User ActiveUser { get; set; }
+        public User User { get; set; }
         public CORE()
         {
             Name = "CORE";
@@ -39,13 +39,13 @@ namespace FSS.Omnius.Modules.CORE
         }
         public void masterRun(User user, string moduleName, string url, NameValueCollection fc)
         {
-            ActiveUser = user;
+            User = user;
 
             _activeModule = GetRunableModule(moduleName);
             if (_activeModule == null)
                 throw new ModuleNotFoundOrEnabledException(moduleName);
 
-            _activeModule.run(url, fc);
+            _activeModule.run(user, url, fc);
         }
         
         public RunableModule GetRunableModule(string moduleName)

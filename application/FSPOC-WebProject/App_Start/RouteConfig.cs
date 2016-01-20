@@ -79,7 +79,15 @@ namespace FSPOC_WebProject
                 defaults: new { controller = "SMTP", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Hermes" }
             );
-           
+
+            // Watchtower
+            routes.MapRoute(
+                name: "Watchtower",
+                url: "Watchtower/{controller}/{action}",
+                defaults: new { controller = "Log", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Watchtower" }
+            );
+
             // Start
             routes.MapRoute(
                 name: "Default",

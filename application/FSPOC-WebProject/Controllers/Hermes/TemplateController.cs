@@ -1,18 +1,28 @@
-using System.Linq;
+Ôªøusing System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class TemplateController : Controller
     {
+        public static readonly Dictionary<int, string> LanguageList = new Dictionary<int, string>
+        {
+            {1, "ƒåe≈°tina" },
+            {2, "English" }
+        };
+
         // GET: SMTP
         public ActionResult Index()
         {
             DBEntities e = new DBEntities();
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
+            ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
             return View(e.EmailTemplates);
         }
 
@@ -29,7 +39,7 @@ namespace FSS.Omnius.Controllers.Hermes
             DBEntities e = new DBEntities();
             if (ModelState.IsValid)
             {
-                // Z·znam jiû existuje - pouze upravujeme
+                // Z√°znam ji≈æ existuje - pouze upravujeme
                 if (!model.Id.Equals(null))
                 {
                     EmailTemplate row = e.EmailTemplates.Single(m => m.Id == model.Id);
@@ -77,23 +87,51 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult EditContent(int id)
         {
             DBEntities e = new DBEntities();
-            return View("~/Views/Hermes/Template/Content.cshtml", e.EmailTemplates.Single(m => m.Id == id));
+            EmailTemplate template = e.EmailTemplates.Single(m => m.Id == id);
+
+            ViewData["LanguageList"] = LanguageList;
+
+            return View("~/Views/Hermes/Template/Content.cshtml", template);
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult SaveContent(EmailTemplate model)
         {
             DBEntities e = new DBEntities();
-            // Z·znam jiû existuje - pouze upravujeme
+
             if (!model.Id.Equals(null))
             {
                 EmailTemplate row = e.EmailTemplates.Single(m => m.Id == model.Id);
-                row.Content = model.Content;
+
+                NameValueCollection form = Request.Unvalidated.Form;
+                foreach(KeyValuePair<int, string> lang in LanguageList)
+                {
+                    int langId = lang.Key;
+                    string lId = langId.ToString();
+
+                    EmailTemplateContent contentModel = row.ContentList.SingleOrDefault(c => c.LanguageId == langId);
+                    bool exists = contentModel != null;
+
+                    if (!exists)
+                        contentModel = new EmailTemplateContent();
+
+                    contentModel.LanguageId = langId;
+                    contentModel.Hermes_Email_Template_Id = row.Id;
+                    contentModel.From_Name = form["content.From_Name." + lId];
+                    contentModel.From_Email = form["content.From_Email." + lId];
+                    contentModel.Subject = form["content.Subject." + lId];
+                    contentModel.Content = form["content.Content." + lId];
+                    contentModel.Content_Plain = form["content.Content_Plain." + lId];
+                    
+                    if(!exists)
+                        row.ContentList.Add(contentModel);
+                }
                 e.SaveChanges();
             }
             else
             {
-                throw new System.Exception("Poûadovan· öablona neexistuje.");
+                throw new System.Exception("Po≈æadovan√° ≈°ablona neexistuje.");
             }
 
             return RedirectToRoute("Hermes", new { @action = "Index" });            

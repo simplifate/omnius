@@ -5,15 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Tapestry;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     public partial class Page
     {
-        public string Render(DBItem Model, DBEntities entity)
+        public string Render(ActionResultCollection results, DBEntities entity)
         {
             return entity.Templates.FirstOrDefault(t => t.Id == MasterTemplateId)
-                .Render(this, parseKeyValueString(Relations), Model, entity);
+                .Render(this, parseKeyValueString(Relations), results, entity);
         }
         private Dictionary<string, string> parseKeyValueString(string value, char relationSeparator = ';', char keyValueSeparator = '=')
         {

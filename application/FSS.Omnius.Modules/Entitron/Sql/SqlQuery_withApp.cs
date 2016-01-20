@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     public class SqlQuery_withApp : SqlQuery
     {
-        public DBApp application;
+        public Application application;
         public DBTable table;
 
         protected override void BaseExecution(MarshalByRefObject connection)

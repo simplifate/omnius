@@ -8,63 +8,71 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry;
 using System.Collections.Specialized;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
     public class Tapestry : RunableModule
     {
         private CORE.CORE _CORE;
-        private DBItem _model;
-        private int _PageId;
+        private ActionResultCollection _results;
+        private Page _page;
 
         public Tapestry(CORE.CORE core)
         {
             Name = "Tapestry";
 
             _CORE = core;
-            _model = null;
-            _PageId = -1;
+            _results = new ActionResultCollection();
+            _page = null;
         }
 
-        public override void run(string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
+        public override void run(User user, string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
         {
             // init
-            int ApplicationId, ActionRuleId, modelId;
-            splitUrl(url, out ApplicationId, out ActionRuleId, out modelId);
+            string AppName;
+            int ActionRuleId, modelId;
+            splitUrl(url, out AppName, out ActionRuleId, out modelId);
 
-            run(ApplicationId, ActionRuleId, modelId, fc);
+            run(user, AppName, ActionRuleId, modelId, fc);
         }
-        public void run(int ApplicationId, int? ActionRuleId, int? modelId, NameValueCollection fc)
+        public Block run(User user, string AppName, int ActionRuleId, int modelId, NameValueCollection fc)
         {
             // init action
-            ActionResultCollection results = new ActionResultCollection();
-            results.outputData.Add("__CORE__", _CORE);
-            string AppName = "TestApp";
-
-            ActionRule actionRule = 
-                ActionRuleId != null
-                ? GetActionRule(AppName, ActionRuleId.Value, results, modelId) 
-                : GetAutoActionRule(
-                    AppName,
-                    _CORE.Entitron.GetStaticTables().Applications.SingleOrDefault(app => app.Id == ApplicationId).WorkFlows.SingleOrDefault(wf => wf.Type.Name == "Init").InitBlock,
-                    results,
-                    modelId);
-
-            while (actionRule != null)
-            {
-                results.Join = actionRule.MainRun(results.outputData);
-                actionRule = GetAutoActionRule(AppName, actionRule.TargetBlock, results);
-            }
+            _results.outputData.Add("__CORE__", _CORE);
+            _CORE.Entitron.AppName = AppName;
+            _CORE.User = user;
             
-            // get model, pageId for Mozaic
-            _PageId = actionRule.TargetBlock.MozaicPageId ?? -1;
+            // get actionRule
+            ActionRule actionRule = null;
+            ActionRule nextRule = GetActionRule(ActionRuleId, _results, modelId);
+
+            // get inputs
+            string[] keys = fc.AllKeys;
+            foreach(AttributeRule ar in nextRule.SourceBlock.AttributeRules)
+            {
+                if(keys.Contains(ar.InputName))
+                    _results.outputData.Add(ar.AttributeName, Convertor.convert(ar.AttributeDataType, fc[ar.InputName]));
+            }
+
+            // run all auto Action
+            while (nextRule != null)
+            {
+                actionRule = nextRule;
+                actionRule.Run(_results);
+                nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
+            }
+
+            // target Block
+            return actionRule.TargetBlock;
         }
+
         public override string GetHtmlOutput()
         {
-            if (_PageId == -1)
-                throw new Exception("Must execute 'run' before get html");
-
-            return _CORE.Mozaic.Render(_PageId, _model);
+            throw new NotImplementedException();
         }
         public override string GetJsonOutput()
         {
@@ -75,46 +83,43 @@ namespace FSS.Omnius.Modules.Tapestry
             throw new NotImplementedException();
         }
 
-        private void splitUrl(string url, out int ApplicationId, out int ActionRuleId, out int modelId)
+        private void splitUrl(string url, out string ApplicationId, out int ActionRuleId, out int modelId)
         {
             string[] ids = url.Split('/');
             if (ids.Count() != 3)
                 throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
 
-            ApplicationId = Convert.ToInt32(ids[0]);
+            ApplicationId = ids[0];
             ActionRuleId = Convert.ToInt32(ids[1]);
             modelId = Convert.ToInt32(ids[2]);
         }
         
-        private ActionRule GetActionRule(string AppName, int ActionRuleId, ActionResultCollection results, int? modelId = null)
+        private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int modelId)
         {
             if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
 
-            if (modelId != null)
-                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(AppName, rule.SourceBlock.ModelName, modelId.Value);
+            if (modelId > 0)
+                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
-            results.Join = rule.PreRun(results.outputData);
+            rule.PreRun(results);
             if (!rule.CanRun(results.outputData))
                 throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", ActionRuleId));
 
             return rule;
         }
-        private ActionRule GetAutoActionRule(string AppName, Block block, ActionResultCollection results, int? modelId = null)
+        private ActionRule GetAutoActionRule(Block block, ActionResultCollection results, int? modelId = null)
         {
             foreach (ActionRule ar in block.SourceTo_ActionRoles.Where(ar => ar.Actor.Name == "Auto" && _CORE.Persona.UserCanExecuteActionRule(ar.Id)))
             {
                 if (modelId != null)
-                    results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(AppName, block.ModelName, modelId ?? -1); // never happened
+                    results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
 
-                ActionResultCollection tempResults = ar.PreRun(results.outputData);
+                ar.PreRun(results);
                 if (ar.CanRun(results.outputData))
-                {
-                    results.Join = tempResults;
                     return ar;
-                }
             }
 
             return null;

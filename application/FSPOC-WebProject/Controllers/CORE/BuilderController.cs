@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 
 namespace FSS.Omnius.Controllers.CORE
 {
+    [PersonaAuthorize(Roles = "Admin")]
     public class BuilderController : Controller
     {
         public ActionResult Index()
