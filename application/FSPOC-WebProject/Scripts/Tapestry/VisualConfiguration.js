@@ -59,9 +59,41 @@ dataSourceEndpoint = $.extend({}, sourceEndpoint, {
 
 jsPlumb.ready(function () {
     if (CurrentModuleIs("tapestryModule")) {
-        $("#rulesPanel .rule").each(function (ruleIndex, rule) {
-            currentInstance = CreateJsPlumbInstanceForRule(rule);
 
+        $(".resourceRule, .workflowRule").each(function (ruleIndex, rule) {
+            currentInstance = CreateJsPlumbInstanceForRule(rule);
+        });
+        $("#resRule1").data("jsPlumbInstance").connect({
+            source: "resItem1", target: "resItem2", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        }).removeAllOverlays();
+        $("#resRule2").data("jsPlumbInstance").connect({
+            source: "resItem3", target: "resItem4", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        }).removeAllOverlays();
+        $("#resRule2").data("jsPlumbInstance").connect({
+            source: "resItem4", target: "resItem5", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        }).removeAllOverlays();
+
+        $("#wfRule1").data("jsPlumbInstance").connect({
+            source: "wfItem1", target: "wfItem2", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        });
+        $("#wfRule1").data("jsPlumbInstance").connect({
+            source: "wfItem6", target: "wfItem7", anchors: ["BottomCenter", "TopCenter"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0', "stroke-dasharray": "7, 7" },
+        });
+        $("#wfRule1").data("jsPlumbInstance").connect({
+            source: "wfItem3", target: "wfItem4", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        });
+        $("#wfRule1").data("jsPlumbInstance").connect({
+            source: "wfItem2", target: "wfItem5", anchors: ["RightMiddle", "LeftMiddle"], editable: false, connector: "Straight",
+            paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' },
+        });
+
+            /*
             $(rule).find(".item").each(function (itemIndex, item) {
                 AddIconToItem(item);
                 AddToJsPlumb(currentInstance, item);
@@ -69,6 +101,6 @@ jsPlumb.ready(function () {
             $(rule).find(".decisionRhombus").each(function (itemIndex, item) {
                 AddToJsPlumb(currentInstance, item);
             });
-        });
+            */
     }
 });

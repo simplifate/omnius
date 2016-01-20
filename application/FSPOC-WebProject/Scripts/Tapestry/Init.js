@@ -1,7 +1,7 @@
 var ZoomFactor = 1.0;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
-        LoadBlock();
+//        LoadBlock();
 
         $("#headerBlockName").on("click", function () {
             renameBlockDialog.dialog("open");

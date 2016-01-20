@@ -1,6 +1,6 @@
 ﻿$(function () {
     if (CurrentModuleIs("tapestryModule")) {
-        $.contextMenu({
+        /*$.contextMenu({
             selector: '.rule .item, .rule .operatorSymbol',
             trigger: 'right',
             zIndex: 300,
@@ -36,7 +36,7 @@
                 "sep1": "---------",
                 "delete": { name: "Delete", icon: "delete" }
             }
-        });
+        });*/
         /*$.contextMenu({
             selector: '.rule',
             trigger: 'right',
