@@ -20,6 +20,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             foreach (Application app in context.Applications)
             {
                 var ADapps = ldap.GetGroups(app.Name);
+                if (ADapps.Count() == 0)
+                    continue;
+
                 foreach (JToken member in ADapps["member"])
                 {
                     string userName = (string)member;

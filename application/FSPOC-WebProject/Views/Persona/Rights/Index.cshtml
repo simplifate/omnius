@@ -42,9 +42,10 @@
             {
                 <tr>
                     <td>@user.DisplayName</td>
-                    @foreach (AppRight right in user.ApplicationRights.OrderBy(a => a.Application.Name))
+                    @foreach (Application app in e.Applications)
                     {
-                        <td>@right.hasAccess.ToString()</td>
+                        AppRight ar = e.ApplicationRights.SingleOrDefault(a => a.ApplicationId == app.Id && a.UserId == user.Id);
+                        <td class="checkboxCell @(ar != null ? (ar.hasAccess ? "yesCell" : "noCell") : "noCell")"><i class="fa @(ar != null ? (ar.hasAccess ? "fa-check" : "fa fa-times") : "fa fa-times")"></i></td>
                     }
                 </tr>
             }
