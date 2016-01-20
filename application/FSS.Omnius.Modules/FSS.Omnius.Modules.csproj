@@ -388,10 +388,6 @@
     <Compile Include="Migrations\201601191401555_hermes-email-plain-template.Designer.cs">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601200949555_childGroups.cs" />
-    <Compile Include="Migrations\201601200949555_childGroups.Designer.cs">
-      <DependentUpon>201601200949555_childGroups.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -578,9 +574,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601191401555_hermes-email-plain-template.resx">
       <DependentUpon>201601191401555_hermes-email-plain-template.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601200949555_childGroups.resx">
-      <DependentUpon>201601200949555_childGroups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
