@@ -20,6 +20,7 @@ namespace FSPOC_WebProject
             FilterConfig       .RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig        .RegisterRoutes(RouteTable.Routes);
             BundleConfig       .RegisterBundles(BundleTable.Bundles);
+            Logger.Log.Info("Omnius Starts");
         }
     }
 }
