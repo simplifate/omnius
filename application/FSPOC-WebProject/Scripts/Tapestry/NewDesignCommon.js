@@ -1,5 +1,12 @@
-﻿$(function () {
+﻿function RecalculateToolboxHeight() {
+    leftBar = $("#tapestryLeftBar");
+    scrollTop = $(window).scrollTop();
+    lowerPanelTop = $("#lowerPanel").offset().top;
+    leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+};
+$(function () {
     if (CurrentModuleIs("tapestryModule")) {
+        RecalculateToolboxHeight();
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
         });
@@ -228,11 +235,6 @@
                 "delete": { name: "Delete rule", icon: "delete" }
             }
         });
-        leftBar = $("#tapestryLeftBar");
-        scrollTop = $(window).scrollTop();
-        lowerPanelTop = $("#lowerPanel").offset().top;
-        leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
-
         $(window).scroll(function () {
             leftBar = $("#tapestryLeftBar");
             scrollTop = $(window).scrollTop();
@@ -241,13 +243,10 @@
                 leftBar.css("top", scrollTop - lowerPanelTop);
             else
                 leftBar.css("top", 0);
-            leftBar.height($(window).height() + scrollTop  - lowerPanelTop - leftBar.position().top);
+            RecalculateToolboxHeight();
         });
         $(window).resize(function () {
-            leftBar = $("#tapestryLeftBar");
-            scrollTop = $(window).scrollTop();
-            lowerPanelTop = $("#lowerPanel").offset().top;
-            leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+            RecalculateToolboxHeight();
         });
     }
 });

@@ -97,10 +97,14 @@ $(function () {
         $("#upperPanel").hide();
         $("#minimizedUpperPanel").show();
         $("#lowerPanel").css("top", 115);
+        if (CurrentModuleIs("tapestryModule"))
+            RecalculateToolboxHeight();
     });
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
         $("#lowerPanel").css("top", LowerPanelTop);
+        if (CurrentModuleIs("tapestryModule"))
+            RecalculateToolboxHeight();
     });
 });
