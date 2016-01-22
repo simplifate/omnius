@@ -22,7 +22,7 @@ namespace FSS.Omnius.Controllers.Master
                     return context.Applications.Where(a =>
                         a.IsPublished
                         && a.IsEnabled
-                        && a.Rights.Any(r => r.UserId == currentUser.Id && r.hasAccess)
+                        && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id)
                     ).ToList();
                 }
             }

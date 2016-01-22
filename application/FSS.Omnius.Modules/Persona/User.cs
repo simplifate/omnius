@@ -12,39 +12,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         /// without saving...
         /// </summary>
         /// <param name="groupNames"></param>
-        public void UpdateAppRightFromAd(IEnumerable<string> newAppNames, DBEntities context)
+        public void UpdateAppRightFromAd(IEnumerable<string> newADgroupNames, DBEntities context)
         {
-            List<AppRight> rightsDB = ApplicationRights.ToList();
+            // AD groups
+            List<ADgroup_User> newADgroups = context.ADgroups.Where(ad => newADgroupNames.Contains(ad.Name)).Select(ad => new ADgroup_User { ADgroup = ad, User = this }).ToList();
 
-            // in NEW
-            foreach (string newAppName in newAppNames)
-            {
-                AppRight dbRight = rightsDB.SingleOrDefault(r => r.UserId == Id && r.Application.Name == newAppName);
-                // in DB
-                if (dbRight != null)
-                {
-                    dbRight.hasAccess = true;
-                    rightsDB.Remove(dbRight);
-                }
-                // not DB - create
-                else
-                {
-                    dbRight = new AppRight
-                    {
-                        Application = context.Applications.Single(a => a.Name == newAppName),
-                        User = this,
-                        hasAccess = true
-                    };
-                    context.ApplicationRights.Add(dbRight);
-                }
-            }
+            // DB groups
+            List<ADgroup_User> oldADgroups = context.ADgroup_Users.Where(adu => adu.UserId == Id).ToList();
 
-            // not NEW but DB
-            foreach (AppRight rightDB in rightsDB)
-            {
-                // Uncomment on Production
-                // rightDB.hasAccess = false;
-            }
+            // update
+            ADgroup.RemoveDuplicated(oldADgroups, newADgroups, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
+            context.ADgroup_Users.RemoveRange(oldADgroups);
+            context.ADgroup_Users.AddRange(newADgroups);
         }
 
         public bool isAdmin()

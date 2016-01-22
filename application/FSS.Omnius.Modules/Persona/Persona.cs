@@ -28,14 +28,52 @@ namespace FSS.Omnius.Modules.Persona
             _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
         }
 
-        public User getUser(string username, string serverName = null)
+        public User getUser(string username)
+        {
+            JToken ldap;
+            User user = getUserWithAD(username, out ldap);
+
+            if (ldap != null)
+            {
+                // groups
+                List<string> groupNames = new List<string>();
+                foreach (JToken group in ldap["memberof"])
+                {
+                    string groupName = (string)group;
+                    int startI = groupName.IndexOf("CN=") + 3;
+                    int EndI = groupName.IndexOf(',', startI);
+                    groupNames.Add(groupName.Substring(startI, EndI - startI));
+                }
+                user.UpdateAppRightFromAd(groupNames, _CORE.Entitron.GetStaticTables());
+            }
+
+            return user;
+        }
+        public User getUserWithoutGroups(string username)
+        {
+            JToken ldap;
+            return getUserWithAD(username, out ldap);
+        }
+
+        private User getUserWithAD(string username, out JToken ldapResult)
         {
             // REMOVE ON PRODUCTION !!!
             username = string.IsNullOrWhiteSpace(username) ? "annonymous" : username;
             //username = string.IsNullOrWhiteSpace(username) ? "martin.novak" : username;
-
+            
+            // init
             DBEntities e = _CORE.Entitron.GetStaticTables();
             User user = e.Users.SingleOrDefault(u => u.username == username);
+            ldapResult = null;
+
+            // split username & domain
+            int domainIndex = username.IndexOf('\\');
+            string serverName = null;
+            if (domainIndex != -1)
+            {
+                serverName = username.Substring(0, domainIndex);
+                username = username.Substring(domainIndex + 1);
+            }
 
             // new user
             if (user == null)
@@ -50,51 +88,29 @@ namespace FSS.Omnius.Modules.Persona
             {
                 NexusLdapService search = new NexusLdapService();
                 if (serverName != null) search.UseServer(serverName);
-                JToken result = search.SearchByLogin(username);
+                ldapResult = search.SearchByLogin(username);
 
-                if (result == null)
+                if (ldapResult == null)
                     throw new NotAuthorizedException("User not found");
 
                 // user attributes
-                user.DisplayName = (string)result["displayname"];
-                user.Email = (string)result["mail"];
+                user.DisplayName = (string)ldapResult["displayname"];
+                user.Email = (string)ldapResult["mail"];
                 user.Address = "";
                 user.Company = "";
                 user.Department = "";
                 user.Team = "";
-                user.Job = (string)result["title"];
+                user.Job = (string)ldapResult["title"];
                 user.WorkPhone = "";
                 user.MobilPhone = "";
-                user.LastLogin = DateTime.FromFileTime((long)result["lastlogon"]);
-
-                // groups
-                List<string> groupNames = new List<string>();
-                foreach (JToken group in result["memberof"])
-                {
-                    string groupName = (string)group;
-                    int startI = groupName.IndexOf("CN=") + 3;
-                    int EndI = groupName.IndexOf(',', startI);
-                    groupNames.Add(groupName.Substring(startI, EndI - startI));
-                }
-                user.UpdateAppRightFromAd(groupNames, e);
+                user.LastLogin = DateTime.FromFileTime((long)ldapResult["lastlogon"]);
 
                 user.localExpiresAt = DateTime.UtcNow + _expirationTime;
-                
+
                 e.SaveChanges();
             }
 
             return user;
-        }
-
-        public bool UserCanExecuteActionRule(int ActionRuleId)
-        {
-            // TODO
-            return true;
-        }
-        public bool isUserAdmin()
-        {
-            // TODO
-            return false;
         }
     }
 }

@@ -60,7 +60,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         // Persona
         public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
-        public virtual DbSet<AppRight> ApplicationRights { get; set; }
+        public virtual DbSet<ADgroup> ADgroups { get; set; }
+        public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
@@ -88,123 +89,163 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // CORE
+            
+            // Entitron
             modelBuilder.Entity<Application>()
-                .HasMany(e => e.Pages)
+                .HasMany<Table>(e => e.Tables)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
+            // Hermes
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.PlaceholderList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            modelBuilder.Entity<EmailTemplate>()
+                .HasMany(s => s.ContentList)
+                .WithOptional(s => s.Hermes_Email_Template)
+                .HasForeignKey(s => s.Hermes_Email_Template_Id);
+            
+            modelBuilder.Entity<DataType>()
+                .HasMany(e => e.AttributeRules)
+                .WithRequired(e => e.AttributeDataType)
+                .HasForeignKey(e => e.AttributeDataTypeId);
+
+            // Master
+
+            // Mozaic
             modelBuilder.Entity<Application>()
-                .HasMany(e => e.WorkFlows)
+                .HasMany<Page>(e => e.Pages)
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
+            
+            modelBuilder.Entity<Page>()
+                .HasMany<Block>(e => e.Blocks)
+                .WithOptional(e => e.MozaicPage)
+                .HasForeignKey(e => e.MozaicPageId);
 
             modelBuilder.Entity<Css>()
-                .HasMany(e => e.Pages)
+                .HasMany<Page>(e => e.Pages)
                 .WithMany(e => e.Css)
                 .Map(m => m.ToTable("Mozaic_CssPages").MapLeftKey("CssId").MapRightKey("PageId"));
 
             modelBuilder.Entity<Template>()
-                .HasMany(e => e.Pages)
+                .HasMany<Page>(e => e.Pages)
                 .WithRequired(e => e.MasterTemplate)
                 .HasForeignKey(e => e.MasterTemplateId);
 
             modelBuilder.Entity<TemplateCategory>()
-                .HasMany(e => e.Templates)
+                .HasMany<Template>(e => e.Templates)
                 .WithRequired(e => e.Category)
                 .HasForeignKey(e => e.CategoryId);
 
             modelBuilder.Entity<TemplateCategory>()
-                .HasMany(e => e.Children)
+                .HasMany<TemplateCategory>(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
+            // Nexus
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional<WebDavServer>(s => s.WebDavServer);
+
+            modelBuilder.Entity<FileMetadata>()
+                .HasOptional<FileSyncCache>(s => s.CachedCopy)
+                .WithRequired(s => s.FileMetadata);
+
+            // Persona
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasRequired<Application>(e => e.Application)
+                .WithMany(e => e.Roles);
+
+            modelBuilder.Entity<ModuleAccessPermission>()
+                .HasOptional<User>(e => e.User)
+                .WithOptionalDependent(e => e.ModuleAccessPermission);
+
             modelBuilder.Entity<ActionRule>()
-                .HasMany(e => e.ActionRule_Actions)
+                .HasMany<ActionRuleRight>(e => e.ActionRuleRights)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
 
-            modelBuilder.Entity<Actor>()
-                .HasMany(e => e.ActionRoles)
-                .WithRequired(e => e.Actor)
-                .HasForeignKey(e => e.ActorId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasMany<ActionRuleRight>(e => e.ActionRuleRights)
+                .WithRequired(e => e.AppRole)
+                .HasForeignKey(e => e.AppRoleId);
 
-            modelBuilder.Entity<Block>()
-                .HasMany(e => e.SourceTo_ActionRoles)
-                .WithRequired(e => e.SourceBlock)
-                .HasForeignKey(e => e.SourceBlockId);
+            modelBuilder.Entity<ADgroup>()
+                .HasMany<ADgroup_User>(e => e.ADgroup_Users)
+                .WithRequired(e => e.ADgroup)
+                .HasForeignKey(e => e.ADgroupId);
 
-            modelBuilder.Entity<Block>()
-                .HasMany(e => e.TargetTo_ActionRoles)
-                .WithRequired(e => e.TargetBlock)
-                .HasForeignKey(e => e.TargetBlockId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<User>()
+                .HasMany<ADgroup_User>(e => e.ADgroup_Users)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId);
 
-            modelBuilder.Entity<Block>()
-                .HasMany(e => e.AttributeRules)
-                .WithRequired(e => e.Block)
-                .HasForeignKey(e => e.BlockId);
-
-            modelBuilder.Entity<Block>()
-                .HasMany(e => e.InitForWorkFlow)
-                .WithOptional(e => e.InitBlock)
-                .HasForeignKey(e => e.InitBlockId);
+            // Tapestry
+            modelBuilder.Entity<Application>()
+                .HasMany<WorkFlow>(e => e.WorkFlows)
+                .WithRequired(e => e.Application)
+                .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<WorkFlowType>()
-                .HasMany(e => e.WorkFlows)
+                .HasMany<WorkFlow>(e => e.WorkFlows)
                 .WithRequired(e => e.Type)
                 .HasForeignKey(e => e.TypeId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<WorkFlow>()
-                .HasMany(e => e.Blocks)
-                .WithRequired(e => e.WorkFlow)
-                .HasForeignKey(e => e.WorkFlowId);
-
-            modelBuilder.Entity<WorkFlow>()
-                .HasMany(e => e.Children)
+                .HasMany<WorkFlow>(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
-            modelBuilder.Entity<Page>()
-                .HasMany(e => e.Blocks)
-                .WithOptional(e => e.MozaicPage)
-                .HasForeignKey(e => e.MozaicPageId);
+            modelBuilder.Entity<Block>()
+                .HasMany<WorkFlow>(e => e.InitForWorkFlow)
+                .WithOptional(e => e.InitBlock)
+                .HasForeignKey(e => e.InitBlockId);
+            
+            modelBuilder.Entity<WorkFlow>()
+                .HasMany<Block>(e => e.Blocks)
+                .WithRequired(e => e.WorkFlow)
+                .HasForeignKey(e => e.WorkFlowId);
+
+            modelBuilder.Entity<Block>()
+                .HasMany<AttributeRule>(e => e.AttributeRules)
+                .WithRequired(e => e.Block)
+                .HasForeignKey(e => e.BlockId);
+
+            modelBuilder.Entity<Block>()
+                .HasMany<ActionRule>(e => e.SourceTo_ActionRules)
+                .WithRequired(e => e.SourceBlock)
+                .HasForeignKey(e => e.SourceBlockId);
+
+            modelBuilder.Entity<Block>()
+                .HasMany<ActionRule>(e => e.TargetTo_ActionRules)
+                .WithRequired(e => e.TargetBlock)
+                .HasForeignKey(e => e.TargetBlockId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ActionRule>()
-                .HasMany(e => e.ActionRuleRights)
+                .HasMany<ActionRule_Action>(e => e.ActionRule_Actions)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
+            
+            modelBuilder.Entity<Actor>()
+                .HasMany<ActionRule>(e => e.ActionRules)
+                .WithRequired(e => e.Actor)
+                .HasForeignKey(e => e.ActorId)
+                .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<PersonaAppRole>()
-                .HasMany(e => e.ActionRuleRights)
-                .WithRequired(e => e.AppRole)
-                .HasForeignKey(e => e.AppRoleId);
+            modelBuilder.Entity<ActionRule_Action>()
+                .HasRequired<ActionRule>(a => a.ActionRule)
+                .WithMany(a => a.ActionRule_Actions);
 
-            modelBuilder.Entity<AppRight>()
-                .HasRequired(e => e.User)
-                .WithMany(e => e.ApplicationRights)
-                .HasForeignKey(e => e.UserId);
+            modelBuilder.Entity<PreBlockAction>()
+                .HasRequired<Block>(e => e.Block)
+                .WithMany(e => e.PreBlockActions);
 
-            modelBuilder.Entity<AppRight>()
-                .HasRequired(e => e.Application)
-                .WithMany(e => e.Rights)
-                .HasForeignKey(e => e.ApplicationId);
-
-            modelBuilder.Entity<Application>()
-                .HasMany(e => e.Tables)
-                .WithRequired(e => e.Application)
-                .HasForeignKey(e => e.ApplicationId);
-
-            modelBuilder.Entity<ModuleAccessPermission>()
-                .HasOptional(e => e.User)
-                .WithOptionalDependent(e => e.ModuleAccessPermission);
-
-            modelBuilder.Entity<PersonaAppRole>()
-                .HasRequired(e => e.Application)
-                .WithMany(e => e.Roles);
-
-            // Database Designer
+            // Tapestry - Database Designer
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)
                         .WithRequired(s => s.DbTable);
@@ -221,72 +262,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                         .HasMany(s => s.Views)
                         .WithRequired(s => s.DbSchemeCommit);
 
-            //Actions
-            modelBuilder.Entity<ActionRule_Action>()
-                .HasRequired(a => a.ActionRule)
-                .WithMany(a => a.ActionRule_Actions);
-
-            modelBuilder.Entity<PreBlockAction>()
-                .HasRequired(e => e.Block)
-                .WithMany(e => e.PreBlockActions);
-
-            // Nexus
-            modelBuilder.Entity<Ldap>();
-            modelBuilder.Entity<WS>();
-            modelBuilder.Entity<ExtDB>();
-
-            modelBuilder.Entity<FileMetadata>()
-                .HasOptional(s => s.WebDavServer);
-            modelBuilder.Entity<FileMetadata>()
-                .HasOptional(s => s.CachedCopy)
-                .WithRequired(s => s.FileMetadata);
-
-            // Tapestry designer
             modelBuilder.Entity<TapestryDesignerApp>()
                 .HasRequired(s => s.RootMetablock)
                 .WithOptional(s => s.ParentApp);
-
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock);
-
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
                 .WithRequired(s => s.ParentMetablock);
-
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)
                 .WithRequired(s => s.ParentBlock);
-
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.Rules)
                 .WithRequired(s => s.ParentBlockCommit);
-
             modelBuilder.Entity<TapestryDesignerRule>()
                 .HasMany(s => s.Items)
                 .WithRequired(s => s.ParentRule);
-
-            // Hermes
-            modelBuilder.Entity<Smtp>();
-            modelBuilder.Entity<EmailPlaceholder>();
-
-            modelBuilder.Entity<EmailTemplate>()
-                .HasMany(s => s.PlaceholderList)
-                .WithOptional(s => s.Hermes_Email_Template)
-                .HasForeignKey(s => s.Hermes_Email_Template_Id);
-
-            modelBuilder.Entity<EmailTemplate>()
-                .HasMany(s => s.ContentList)
-                .WithOptional(s => s.Hermes_Email_Template)
-                .HasForeignKey(s => s.Hermes_Email_Template_Id);
-
-            modelBuilder.Entity<EmailLog>();
-            modelBuilder.Entity<EmailQueue>();
-
-            modelBuilder.Entity<DataType>()
-                .HasMany(e => e.AttributeRules)
-                .WithRequired(e => e.AttributeDataType)
-                .HasForeignKey(e => e.AttributeDataTypeId);   
+            
+            // Watchtower
         }
     }
 }

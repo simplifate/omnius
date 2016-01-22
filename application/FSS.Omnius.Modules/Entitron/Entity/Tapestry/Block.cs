@@ -14,8 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Block()
         {
-            SourceTo_ActionRoles = new HashSet<ActionRule>();
-            TargetTo_ActionRoles = new HashSet<ActionRule>();
+            SourceTo_ActionRules = new HashSet<ActionRule>();
+            TargetTo_ActionRules = new HashSet<ActionRule>();
             AttributeRules = new HashSet<AttributeRule>();
             InitForWorkFlow = new HashSet<WorkFlow>();
         }
@@ -39,10 +39,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<PreBlockAction> PreBlockActions { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRule> SourceTo_ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> SourceTo_ActionRules { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRule> TargetTo_ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> TargetTo_ActionRules { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeRule> AttributeRules { get; set; }

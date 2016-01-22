@@ -122,6 +122,8 @@
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
+    <Compile Include="Entitron\Entity\Persona\ADgroup.cs" />
+    <Compile Include="Entitron\Entity\Persona\ADgroup_User.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
     <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
@@ -129,7 +131,6 @@
     <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
-    <Compile Include="Entitron\Entity\Persona\AppRight.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
@@ -391,6 +392,10 @@
     <Compile Include="Migrations\201601201400125_appRights.Designer.cs">
       <DependentUpon>201601201400125_appRights.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601221000214_ADgroups.cs" />
+    <Compile Include="Migrations\201601221000214_ADgroups.Designer.cs">
+      <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -406,7 +411,7 @@
     <Compile Include="Nexus\Service\NexusExtDBService.cs" />
     <Compile Include="Nexus\Service\NexusWSService.cs" />
     <Compile Include="Nexus\Service\WebDavFileSyncService.cs" />
-    <Compile Include="Persona\AppRight.cs" />
+    <Compile Include="Persona\ADgroup.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
@@ -581,6 +586,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601201400125_appRights.resx">
       <DependentUpon>201601201400125_appRights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601221000214_ADgroups.resx">
+      <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

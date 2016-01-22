@@ -11,11 +11,8 @@ namespace FSPOC_WebProject.Controllers.Persona
     {
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
-
-            AppRight.RefreshFromAD(e);
-            e.SaveChanges();
-
+            ADgroup.RefreshFromAD(new FSS.Omnius.Modules.CORE.CORE());
+         
             return View();
         }
     }

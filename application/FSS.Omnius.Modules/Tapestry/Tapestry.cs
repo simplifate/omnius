@@ -96,7 +96,7 @@ namespace FSS.Omnius.Modules.Tapestry
         
         private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int modelId)
         {
-            if (!_CORE.Persona.UserCanExecuteActionRule(ActionRuleId))
+            if (!_CORE.User.canUseAction(ActionRuleId, _CORE.Entitron.GetStaticTables()))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
@@ -112,7 +112,7 @@ namespace FSS.Omnius.Modules.Tapestry
         }
         private ActionRule GetAutoActionRule(Block block, ActionResultCollection results, int? modelId = null)
         {
-            foreach (ActionRule ar in block.SourceTo_ActionRoles.Where(ar => ar.Actor.Name == "Auto" && _CORE.Persona.UserCanExecuteActionRule(ar.Id)))
+            foreach (ActionRule ar in block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto" && _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())))
             {
                 if (modelId != null)
                     results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);

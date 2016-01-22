@@ -13,7 +13,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Actor()
         {
-            ActionRoles = new HashSet<ActionRule>();
+            ActionRules = new HashSet<ActionRule>();
         }
 
         public int Id { get; set; }
@@ -24,6 +24,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActionRule> ActionRoles { get; set; }
+        public virtual ICollection<ActionRule> ActionRules { get; set; }
     }
 }

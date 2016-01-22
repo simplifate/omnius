@@ -24,6 +24,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             Pages = new HashSet<Page>();
             WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
+            ADgroups = new HashSet<ADgroup>();
+            Roles = new HashSet<PersonaAppRole>();
         }
 
         public int Id { get; set; }
@@ -53,7 +55,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
 
-        public virtual ICollection<AppRight> Rights { get; set; }
+        public virtual ICollection<ADgroup> ADgroups { get; set; }
 
         public virtual ICollection<Table> Tables { get; set; }
 
