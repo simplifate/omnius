@@ -58,12 +58,25 @@ namespace FSS.Omnius.Modules.Tapestry
                     _results.outputData.Add(ar.AttributeName, Convertor.convert(ar.AttributeDataType, fc[ar.InputName]));
             }
 
+            List<ActionRule> prevActionRules= new List<ActionRule>();
             // run all auto Action
             while (nextRule != null)
             {
                 actionRule = nextRule;
                 actionRule.Run(_results);
+
+                if (_results.types.Any(x => x == ActionResultType.Error))
+                {
+                    prevActionRules.Reverse();
+                    foreach (ActionRule actRule  in prevActionRules)
+                    {
+                        actRule.ReverseRun(_results);
+                    }
+                    break;
+                }
+
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
+                prevActionRules.Add(nextRule);
             }
 
             // target Block
