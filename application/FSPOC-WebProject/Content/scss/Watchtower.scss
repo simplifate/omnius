@@ -1,4 +1,8 @@
 ﻿body.watchtowerModule {
+    #watchtowerFormResponiveArea {
+        position: absolute;
+        transform-origin: left top;
+    }
     #logContainer {
         position: absolute;
         left: 225px;
@@ -61,7 +65,8 @@
             #filterPanelDecoration {
                 position: absolute;
                 left: 0px;
-                bottom: 0px;
+                top: 0px;
+                transform-origin: left top;
             }
             #filterLogForm {
                 position: absolute;
@@ -157,5 +162,29 @@
     .logIsEmpty, .noSearchResults {
         font-family: MyriadPro;
         font-size: 16px;
+    }
+    @media only screen and (max-width: 1500px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.9);
+        }
+        .filterPanelDecoration {
+            transform: scale(0.9);
+        }
+    }
+    @media only screen and (max-width: 1360px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.8);
+        }
+        .filterPanelDecoration {
+            transform: scale(0.8);
+        }
+    }
+    @media only screen and (max-width: 1240px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.75);
+        }
+        .filterPanelDecoration {
+            transform: scale(0.75);
+        }
     }
 }

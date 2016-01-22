@@ -24,7 +24,9 @@ namespace FSS.Omnius.Modules.Tapestry
                 // errory
                 if (result.types.Any(r => r == ActionResultType.Error))
                 {
-                    foreach (ActionRule_ActionBase reverseActionMap in actions.Where(a => a.Order < actionMap.Order).OrderByDescending(a => a.Order))
+                    foreach (
+                        ActionRule_ActionBase reverseActionMap in
+                            actions.Where(a => a.Order < actionMap.Order).OrderByDescending(a => a.Order))
                     {
                         var action = Action.All[reverseActionMap.ActionId];
                         action.ReverseRun(results.ReverseInputData.Last());
@@ -40,6 +42,16 @@ namespace FSS.Omnius.Modules.Tapestry
                 actionMap.RemapOutputVariables(result.outputData);
                 // zpracování výstupů
                 results.Join = result;
+            }
+        }
+
+        protected void ReverseInnerRun(ActionResultCollection results, IEnumerable<ActionRule_ActionBase> actions)
+        {
+            foreach (ActionRule_ActionBase reverseActionMap in actions.OrderByDescending(a => a.Order))
+            {
+                var action = Action.All[reverseActionMap.ActionId];
+                action.ReverseRun(results.ReverseInputData.Last());
+                results.ReverseInputData.Remove(results.ReverseInputData.Last());
             }
         }
     }

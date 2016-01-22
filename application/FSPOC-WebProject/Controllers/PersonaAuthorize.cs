@@ -21,7 +21,7 @@ namespace System.Web.Mvc
 
             foreach(string role in Roles.Split(' '))
             {
-                if (user.HasRole(role, core.Entitron.GetStaticTables()))
+                if (user.IsInGroup(role))
                     return;
             }
 

@@ -13,7 +13,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     {
         public User()
         {
-            ApplicationRights = new HashSet<AppRight>();
+            ADgroup_Users = new HashSet<ADgroup_User>();
         }
 
         public int Id { get; set; }
@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [Required]
         public DateTime localExpiresAt { get; set; }
         
-        public virtual ICollection<AppRight> ApplicationRights { get; set; }
+        public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
         public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
     }
 }

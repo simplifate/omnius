@@ -37,5 +37,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
             InnerRun(results, aars);
         }
+
+        public void ReverseRun(ActionResultCollection results)
+        {
+            var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
+
+            ReverseInnerRun(results, aars);
+        }
     }
 }

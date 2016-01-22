@@ -30,4 +30,47 @@
     #numOrderArea {
         margin-bottom: 100px;
     }
+    @media only screen and (max-width: 1460px) {
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1290px) {
+        .tileMenuArea {
+            transform: scale(0.9);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1190px) {
+        .tileMenuArea {
+            transform: scale(0.8);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1120px) {
+        .tileMenuArea {
+            transform: scale(0.8);
+        }
+        .moduleSubMenuArea {
+            transform: scale(0.9);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1090px) {
+        .tileMenuArea {
+            transform: scale(0.75);
+        }
+        .moduleSubMenuArea {
+            transform: scale(0.8);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
 }

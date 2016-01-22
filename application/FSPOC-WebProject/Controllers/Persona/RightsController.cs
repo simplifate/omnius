@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace FSPOC_WebProject.Controllers.Persona
     {
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            CORE core = new CORE();
+            ADgroup.RefreshFromAD(core);
+            DBEntities context = core.Entitron.GetStaticTables();
 
-            AppRight.RefreshFromAD(e);
-            e.SaveChanges();
+            ViewBag.ADgroups = context.ADgroups.OrderBy(ad => ad.Name).ToList();
+            ViewBag.ADgroups_Users = context.ADgroup_Users.OrderBy(adu => new { adu.User.DisplayName, adu.ADgroup.Name }).ToList();
 
             return View();
         }

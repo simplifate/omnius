@@ -6,8 +6,6 @@
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "personaModule";
-
-    DBEntities e = new DBEntities();
 }
 <div id="upperPanel">
     <div class="panelLabel">Přístup k aplikacím</div>
@@ -30,22 +28,30 @@
     <table class="table table-bordered table-striped table-responsive table-omnius">
         <thead>
             <tr>
-                <th>Skupina\Aplikace</th>
-                @foreach (Application app in e.Applications)
+                <th>Uživatel\Applikace</th>
+                @foreach (ADgroup group in ViewBag.ADgroups)
                 {
-                    <td>@app.DisplayName</td>
+                    <td>@group.ToString()</td>
                 }
             </tr>
         </thead>
         <tbody>
-            @foreach (User user in e.Users)
+            @{ int aduIndex = 0; }
+            @while(aduIndex < ViewBag.ADgroups_Users.Count)
             {
                 <tr>
-                    <td>@user.DisplayName</td>
-                    @foreach (Application app in e.Applications)
+                    <td>@ViewBag.ADgroups_Users[aduIndex].User.DisplayName</td>
+                    @foreach(ADgroup group in ViewBag.ADgroups)
                     {
-                        AppRight ar = e.ApplicationRights.SingleOrDefault(a => a.ApplicationId == app.Id && a.UserId == user.Id);
-                        <td class="checkboxCell @(ar != null ? (ar.hasAccess ? "yesCell" : "noCell") : "noCell")"><i class="fa @(ar != null ? (ar.hasAccess ? "fa-check" : "fa fa-times") : "fa fa-times")"></i></td>
+                        if (aduIndex < ViewBag.ADgroups_Users.Count && group.Id == ViewBag.ADgroups_Users[aduIndex].ADgroupId)
+                        {
+                            aduIndex++;
+                            <td><i class="fa fa-check"></i></td>
+                        }
+                        else
+                        {
+                            <td><i class="fa fa-times"></i></td>
+                        }
                     }
                 </tr>
             }

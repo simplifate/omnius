@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
-    using Master;
-    [Table("Persona_AppRights")]
-    public partial class AppRight
+    [Table("Persona_ADgroup_User")]
+    public partial class ADgroup_User
     {
         [Key]
         [Column(Order = 1)]
-        public int UserId { get; set; }
+        public int ADgroupId { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int ApplicationId { get; set; }
+        public int UserId { get; set; }
 
-        public bool hasAccess { get; set; }
-
+        public virtual ADgroup ADgroup { get; set; }
         public virtual User User { get; set; }
-        public virtual Application Application { get; set; }
     }
 }
