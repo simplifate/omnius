@@ -1661,6 +1661,48 @@ body.nexusModule #show-wsdl-dialog {
   body.nexusModule #show-wsdl-dialog textarea {
     width: 100%; }
 
+@media only screen and (max-width: 1630px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1490px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.nexusModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1360px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.7); }
+  body.nexusModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1230px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.nexusModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1130px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.nexusModule .lowerRightDecoration {
+    display: none; }
+  body.nexusModule .moduleSubMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1090px) {
+  body.nexusModule .tileMenuArea {
+    transform: scale(0.55); }
+  body.nexusModule .lowerRightDecoration {
+    display: none; }
+  body.nexusModule .moduleSubMenuArea {
+    transform: scale(0.75); } }
+
+body.watchtowerModule #watchtowerFormResponiveArea {
+  position: absolute;
+  transform-origin: left top; }
+
 body.watchtowerModule #logContainer {
   position: absolute;
   left: 225px;
@@ -1733,7 +1775,8 @@ body.watchtowerModule #logContainer {
     body.watchtowerModule #logContainer #filterFormPanel #filterPanelDecoration {
       position: absolute;
       left: 0px;
-      bottom: 0px; }
+      top: 0px;
+      transform-origin: left top; }
     body.watchtowerModule #logContainer #filterFormPanel #filterLogForm {
       position: absolute;
       left: 150px;
@@ -1811,6 +1854,24 @@ body.watchtowerModule .btn-watchtower:hover {
 body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   font-family: MyriadPro;
   font-size: 16px; }
+
+@media only screen and (max-width: 1500px) {
+  body.watchtowerModule #watchtowerFormResponiveArea {
+    transform: scale(0.9); }
+  body.watchtowerModule .filterPanelDecoration {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1360px) {
+  body.watchtowerModule #watchtowerFormResponiveArea {
+    transform: scale(0.8); }
+  body.watchtowerModule .filterPanelDecoration {
+    transform: scale(0.8); } }
+
+@media only screen and (max-width: 1240px) {
+  body.watchtowerModule #watchtowerFormResponiveArea {
+    transform: scale(0.75); }
+  body.watchtowerModule .filterPanelDecoration {
+    transform: scale(0.75); } }
 
 .personaModule {
   background-color: #f2f2f3; }
@@ -1982,6 +2043,38 @@ body.hermesModule #NumOrderList .ui-sortable-helper {
 
 body.hermesModule #numOrderArea {
   margin-bottom: 100px; }
+
+@media only screen and (max-width: 1460px) {
+  body.hermesModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1290px) {
+  body.hermesModule .tileMenuArea {
+    transform: scale(0.9); }
+  body.hermesModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1190px) {
+  body.hermesModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.hermesModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1120px) {
+  body.hermesModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.hermesModule .moduleSubMenuArea {
+    transform: scale(0.9); }
+  body.hermesModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1090px) {
+  body.hermesModule .tileMenuArea {
+    transform: scale(0.75); }
+  body.hermesModule .moduleSubMenuArea {
+    transform: scale(0.8); }
+  body.hermesModule .lowerRightDecoration {
+    display: none; } }
 
 body.mozaicComponentManagerModule {
   background-color: #f2f2f3; }
