@@ -58,9 +58,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             // update
             List<ADgroup_User> rightsDB = context.ADgroup_Users.ToList();
             RemoveDuplicated(rightsDB, rightsLdap, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            context.ADgroup_Users.RemoveRange(rightsDB);
+            // uncoment on PRODUCTION !!!
+            //context.ADgroup_Users.RemoveRange(rightsDB);
             context.ADgroup_Users.AddRange(rightsLdap);
             context.SaveChanges();
+        }
+
+        public override string ToString()
+        {
+            return Application != null ? Application.DisplayName : Name;
         }
     }
 }

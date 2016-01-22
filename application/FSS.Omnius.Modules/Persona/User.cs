@@ -22,26 +22,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
             // update
             ADgroup.RemoveDuplicated(oldADgroups, newADgroups, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            context.ADgroup_Users.RemoveRange(oldADgroups);
+            // uncoment on PRODUCTION !!!
+            //context.ADgroup_Users.RemoveRange(oldADgroups);
             context.ADgroup_Users.AddRange(newADgroups);
         }
 
         public bool isAdmin()
         {
-            // TODO
-            return true;
-            //return Groups.Any(g => g.Name == "Admin");
+            return ADgroup_Users.Any(adu => adu.ADgroup.Name == "Admin");
+        }
+        public bool canUseAction(int actionId, DBEntities context)
+        {
+            ActionRule actionRule = context.ActionRules.Single(ar => ar.Id == actionId);
+            return actionRule.ActionRuleRights.Any(arr => arr.AppRole.MembersList.Split(',').Contains(Id.ToString()));
         }
         public bool HasRole(string roleName, DBEntities context)
         {
             PersonaAppRole role = context.PersonaAppRoles.Single(ar => ar.RoleName == roleName);
             return role.MembersList.Split(',').Contains(Id.ToString());
         }
-
-        public bool canUseAction(int actionId, DBEntities context)
+        public bool IsInGroup(string groupName)
         {
-            // TODO
-            return true;
+            return ADgroup_Users.Any(adu => adu.ADgroup.Name == groupName);
         }
     }
 }

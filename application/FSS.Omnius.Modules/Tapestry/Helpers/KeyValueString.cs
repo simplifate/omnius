@@ -124,9 +124,9 @@ namespace FSS.Omnius.Modules.Tapestry
                     return GetChainedProperty(input, vars);
                 }
                 // unknown variable
-                catch (MissingFieldException e)
+                catch (MissingFieldException)
                 {
-                    // TODO: LOG warning
+                    Logger.Log.Warn($"Variable '{input}' not found in vars [{string.Join(", ", vars.Select(v => v.Key))}]");
                     return null;
                 }
             }
