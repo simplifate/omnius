@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
 using System.Net.Mail;
+using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
@@ -94,10 +95,12 @@ namespace FSS.Omnius.Controllers.Hermes
             Dictionary<string, object> model = new Dictionary<string, object>();
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
-            
+
+            FileMetadata file = e.FileMetadataRecords.First();
+
             Mailer mail = new Mailer("Test", "Seznam WS", model);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
-            mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");
+            mail.Attachment(new KeyValuePair<int, string>(file.Id, file.Filename));
             mail.SendMail();
 
             ViewData["result"] = "OK";
@@ -114,12 +117,15 @@ namespace FSS.Omnius.Controllers.Hermes
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.Attachment("c:\\Users\\mnvk8\\Pictures\\Wallpapers\\world2.jpg");*/
 
+            FileMetadata file = e.FileMetadataRecords.First();
+
             Dictionary<string, object> model = new Dictionary<string, object>();
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
 
             Mailer mail = new Mailer("Test", "Seznam WS", model);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
+            mail.Attachment(new KeyValuePair<int, string>(1, "neexistujici-soubor.doc"));
             mail.SendBySender();
 
             ViewData["result"] = "OK";

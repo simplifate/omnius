@@ -396,6 +396,10 @@
     <Compile Include="Migrations\201601221000214_ADgroups.Designer.cs">
       <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601221627553_hermes-queue-status.cs" />
+    <Compile Include="Migrations\201601221627553_hermes-queue-status.Designer.cs">
+      <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -589,6 +593,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601221000214_ADgroups.resx">
       <DependentUpon>201601221000214_ADgroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601221627553_hermes-queue-status.resx">
+      <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
