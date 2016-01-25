@@ -33,12 +33,7 @@ $(function () {
         $("#adminMenuDbDesigner").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
-    else if (CurrentModuleIs("personaRolesModule")) {
-        $("#adminMenuRoles").addClass("active");
-        $("#leftBar .leftMenu li.appSubMenu").show();
-        LowerPanelTop = 200;
-    }
-    else if (CurrentModuleIs("personaModule")) {
+    else if (CurrentModuleIs("personaModule") || CurrentModuleIs("personaRolesModule")) {
         $("#adminMenuPersona").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
         LowerPanelTop = 200;

@@ -1926,6 +1926,13 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       left: 0px;
       top: 0px;
       z-index: -10; }
+    .personaModule #lowerPanel .editAppRolesIcon {
+      font-size: 16px;
+      margin-left: 8px;
+      color: white; }
+    .personaModule #lowerPanel .editAppRolesIcon:hover {
+      text-decoration: none;
+      color: #f98e4b; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }

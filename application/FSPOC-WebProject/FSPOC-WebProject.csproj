@@ -1466,7 +1466,7 @@
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
     <Content Include="Views\Hermes\Queue\Detail.cshtml" />
-    <Content Include="Views\Persona\Roles\Index.cshtml" />
+    <Content Include="Views\Persona\Roles\App.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,10 +28,10 @@
     <table class="table table-bordered table-striped table-responsive table-omnius">
         <thead>
             <tr>
-                <th>Uživatel\Applikace</th>
+                <th>Uživatel / Aplikace</th>
                 @foreach (ADgroup group in ViewBag.ADgroups)
                 {
-                    <td>@group.ToString()</td>
+                    <td>@group.ToString() <a href="/Persona/Roles/App/@group.ApplicationId" class="fa fa-pencil editAppRolesIcon"></a></td>
                 }
             </tr>
         </thead>

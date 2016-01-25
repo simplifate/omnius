@@ -12,7 +12,7 @@ namespace FSPOC_WebProject.Controllers.Persona
     public class RolesController : Controller
     {
         // GET: Roles
-        public ActionResult Index(int? Id)
+        public ActionResult App(int? Id)
         {
             using (var context = new DBEntities())
             {
