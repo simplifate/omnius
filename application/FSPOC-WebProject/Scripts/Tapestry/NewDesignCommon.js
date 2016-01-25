@@ -235,6 +235,22 @@ $(function () {
                 "delete": { name: "Delete rule", icon: "delete" }
             }
         });
+        $.contextMenu({
+            selector: '.swimlaneRolesArea .roleItem',
+            trigger: 'right',
+            zIndex: 300,
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    item.parents(".swimlaneRolesArea").append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
+                        + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+                    item.remove();
+                }
+            },
+            items: {
+                "delete": { name: "Remove role", icon: "delete" }
+            }
+        });
         $(window).scroll(function () {
             leftBar = $("#tapestryLeftBar");
             scrollTop = $(window).scrollTop();
