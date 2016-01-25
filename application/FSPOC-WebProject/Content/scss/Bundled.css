@@ -108,9 +108,8 @@ body.adminAppModule .appManagerLowerDecoration {
   z-index: -10; }
 
 body.adminAppModule .adminAppTable {
-  position: absolute;
-  left: 85px;
-  top: 70px;
+  margin-left: 85px;
+  margin-top: 70px;
   width: 85%; }
   body.adminAppModule .adminAppTable td {
     min-width: 110px; }
@@ -118,6 +117,10 @@ body.adminAppModule .adminAppTable {
     width: 345px; }
     body.adminAppModule .adminAppTable td.actions .btn {
       width: 100px; }
+
+body.adminAppModule #btnAddApp {
+  margin-left: 85px;
+  margin-top: 10px; }
 
 body.adminAppModule .formTable label, body.adminAppModule .formTable select {
   margin-bottom: 0px;
@@ -334,9 +337,15 @@ body.adminAppModule #validationResults {
     color: #59575c;
     padding-top: 10px;
     top: 0px;
-    left: 320px;
-    right: 320px;
+    left: 0px;
+    right: 0px;
     text-align: center; }
+  #userTopBar .clientTitleArea {
+    position: absolute;
+    left: 310px;
+    top: 0px;
+    right: 540px;
+    height: 50px; }
   #userTopBar .userBox {
     position: absolute;
     top: 0px;

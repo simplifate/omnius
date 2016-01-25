@@ -50,5 +50,8 @@
                 });
             }
         });
+        $("#btnAddApp").on("click", function () {
+            addAppDialog.dialog("open");
+        });
     }
 });

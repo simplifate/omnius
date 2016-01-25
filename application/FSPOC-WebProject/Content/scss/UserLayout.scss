@@ -34,9 +34,16 @@
         color: #59575c;
         padding-top: 10px;
         top: 0px;
-        left: 320px;
-        right: 320px;
+        left: 0px;
+        right: 0px;
         text-align: center;
+    }
+    .clientTitleArea {
+        position: absolute;
+        left: 310px;
+        top: 0px;
+        right: 540px;
+        height: 50px;
     }
     .userBox {
         position: absolute;

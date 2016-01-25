@@ -102,9 +102,8 @@ body.adminAppModule {
         z-index: -10
     }
     .adminAppTable {
-        position: absolute;
-        left: 85px;
-        top: 70px;
+        margin-left: 85px;
+        margin-top: 70px;
         width: 85%;
 
         td {
@@ -116,6 +115,10 @@ body.adminAppModule {
                 width: 100px;
             }
         }
+    }
+    #btnAddApp {
+        margin-left: 85px;
+        margin-top: 10px;
     }
     .formTable {
         label, select {
