@@ -61,16 +61,7 @@ namespace FSS.Omnius.Modules.Persona
             DBEntities e = _CORE.Entitron.GetStaticTables();
             User user = e.Users.SingleOrDefault(u => u.username == username);
             ldapResult = null;
-
-            // split username & domain
-            int domainIndex = username.IndexOf('\\');
-            string serverName = null;
-            if (domainIndex != -1)
-            {
-                serverName = username.Substring(0, domainIndex);
-                username = username.Substring(domainIndex + 1);
-            }
-
+            
             // new user
             if (user == null)
             {
@@ -82,6 +73,16 @@ namespace FSS.Omnius.Modules.Persona
             // expiration || new user -> get from AD
             if (user.localExpiresAt < DateTime.UtcNow)
             {
+                // split username & domain
+                int domainIndex = username.IndexOf('\\');
+                string serverName = null;
+                if (domainIndex != -1)
+                {
+                    serverName = username.Substring(0, domainIndex);
+                    username = username.Substring(domainIndex + 1);
+                }
+
+                // search in AD
                 NexusLdapService search = new NexusLdapService();
                 if (serverName != null) search.UseServer(serverName);
                 ldapResult = search.SearchByLogin(username);
