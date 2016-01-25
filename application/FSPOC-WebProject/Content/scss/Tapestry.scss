@@ -29,6 +29,16 @@ body.tapestryModule {
         background-color: #58bf8f;
         color: #375949;
     }
+    .toolboxItem {
+        width: 218px;
+        font-family: MyriadPro;
+        font-size: 18px;
+        color: white;
+    }
+    .toolboxItem.ui-draggable-dragging {
+        z-index: 1000;
+        border-bottom: none;
+    }
     #upperPanel {
         height: 357px;
 
@@ -58,6 +68,7 @@ body.tapestryModule {
             left: 66px;
             top: 96px;
             width: 1564px;
+            transform-origin: left top;
 
             .libraryCategory {
                 width: 220px;
@@ -99,7 +110,9 @@ body.tapestryModule {
         #tapestryLeftBar {
             @include no-select();
             position: absolute;
-            width: 218px;
+            width: 236px;
+            height: 600px;
+            overflow-y: auto;
 
             .leftBarHeader {
                 width: 100%;
@@ -130,13 +143,6 @@ body.tapestryModule {
                 }
                 .toolboxLi {
                     padding-top: 0px;
-                }
-                .toolboxItem {
-                     width: 218px;
-                }
-                .toolboxItem.ui-draggable-dragging {
-                     z-index: 1000;
-                     border-bottom: none;
                 }
                 .toolboxCategoryHeader_Symbols {
                     background-color: #b3b2b2
@@ -220,7 +226,7 @@ body.tapestryModule {
         }
         #tapestryLeftBarBackground {
             position: fixed;
-            width: 218px;
+            width: 236px;
             left: 225px;
             top: 0px;
             bottom: 0px;
@@ -230,7 +236,7 @@ body.tapestryModule {
         #tapestryWorkspace {
             @include no-select();
             position: absolute;
-            left: 218px;
+            left: 236px;
             right: 0px;
             top: 0px;
             min-height: 100px;
@@ -423,6 +429,26 @@ body.tapestryModule {
                     }
                 }
             }
+        }
+    }
+    @media only screen and (max-width: 1855px) {
+        #tapestryLibraryArea {
+            transform: scale(0.9);
+        }
+    }
+    @media only screen and (max-width: 1710px) {
+        #tapestryLibraryArea {
+            transform: scale(0.8);
+        }
+    }
+    @media only screen and (max-width: 1555px) {
+        #tapestryLibraryArea {
+            transform: scale(0.7);
+        }
+    }
+    @media only screen and (max-width: 1395px) {
+        #tapestryLibraryArea {
+            transform: scale(0.6);
         }
     }
 }

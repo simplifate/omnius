@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Net.Mime;
+using System.IO;
+using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -25,6 +27,7 @@ namespace FSS.Omnius.Modules.Hermes
         private Object data;
         private SmtpClient client;
         private JArray attachmentList = new JArray();
+        private static Dictionary<int, string> queuStatusNames = new Dictionary<int, string>();
 
         public MailMessage mail;
 
@@ -131,6 +134,7 @@ namespace FSS.Omnius.Modules.Hermes
             item.Date_Send_After = sendAfter == null ? DateTime.Now : (DateTime)sendAfter;
             item.Date_Inserted = DateTime.Now;
             item.AttachmentList = attachmentList.ToString();
+            item.Status = EmailQueueStatus.waiting;
             
             e.EmailQueueItems.Add(item);
             e.SaveChanges();
@@ -148,8 +152,34 @@ namespace FSS.Omnius.Modules.Hermes
                 mail.Attachments.Clear();
                 for(int i = 0; i < attachmentList.Count(); i++)
                 {
-                    string path = attachmentList[i].ToString();
-                    Attachment att = new Attachment(path);
+                    Attachment att;
+                    if (!attachmentList[i].GetType().Equals(typeof(JValue)))
+                    {
+                        FileMetadata fileInfo = e.FileMetadataRecords.Find((int)attachmentList[i]["Key"]);
+                        try {
+                            byte[] data = fileInfo.CachedCopy.Blob;
+                            Stream fileContent = new MemoryStream(data);
+
+                            att = new Attachment(fileContent, fileInfo.Filename);
+                        }
+                        catch(NullReferenceException e)
+                        {
+                            WatchtowerLogger.Instance.LogEvent(
+                                String.Format("Odeslání e-mailu se nezdařilo - příloha <b>{0}</b> nebyla nalezena", attachmentList[i]["Value"].ToString()),
+                                1, /* !!! */
+                                LogEventType.EmailSent,
+                                LogLevel.Error,
+                                applicationId == null ? true : false,
+                                applicationId
+                            );
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        string path = attachmentList[i].ToString();
+                        att = new Attachment(path);
+                    }
                     mail.Attachments.Add(att);
                 }
             }
@@ -194,7 +224,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void RunSender()
         {
             DateTime now = DateTime.Now;
-            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now).ToList();
+            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now && m.Status != EmailQueueStatus.error).ToList();
 
             foreach(EmailQueue row in rows)
             {
@@ -232,8 +262,13 @@ namespace FSS.Omnius.Modules.Hermes
 
                 attachmentList = JArray.Parse(row.AttachmentList);
 
-                SendMail(row.Application_Id, false);
-                e.EmailQueueItems.Remove(row);
+                bool sent = SendMail(row.Application_Id, false);
+                if(sent) {
+                    e.EmailQueueItems.Remove(row);
+                }
+                else {
+                    row.Status = EmailQueueStatus.error;
+                }
             }
 
             e.SaveChanges();
@@ -241,11 +276,6 @@ namespace FSS.Omnius.Modules.Hermes
         }
 
         #region Mail Tools
-
-        public void From(string email, string displayName = "")
-        {
-            mail.From = new MailAddress(email, displayName);
-        }
 
         public void To(string email, string displayName = "")
         {
@@ -256,8 +286,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void To(Dictionary<string,string>addressList)
         {
             mail.To.Clear();
-            foreach(KeyValuePair<string, string> addr in addressList)
-            {
+            foreach(KeyValuePair<string, string> addr in addressList) {
                 mail.To.Add(new MailAddress(addr.Key, addr.Value));
             }
         }
@@ -271,8 +300,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void CC (Dictionary<string,string> addressList)
         {
             mail.CC.Clear();
-            foreach(KeyValuePair<string, string> addr in addressList)
-            {
+            foreach(KeyValuePair<string, string> addr in addressList) {
                 mail.CC.Add(new MailAddress(addr.Key, addr.Value));
             }
         }
@@ -286,8 +314,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void BCC(Dictionary<string, string> addressList)
         {
             mail.Bcc.Clear();
-            foreach (KeyValuePair<string, string> addr in addressList)
-            {
+            foreach (KeyValuePair<string, string> addr in addressList) {
                 mail.Bcc.Add(new MailAddress(addr.Key, addr.Value));
             }
         }
@@ -301,9 +328,22 @@ namespace FSS.Omnius.Modules.Hermes
         public void Attachment(List<string> attList)
         {
             attachmentList.Clear();
-            foreach(string path in attList)
-            {
+            foreach(string path in attList) {
                 attachmentList.Add(path);
+            }
+        }
+
+        public void Attachment(KeyValuePair<int, string> file)
+        {
+            attachmentList.Clear();
+            attachmentList.Add(JToken.FromObject(file));
+        }
+
+        public void Attachment(List<KeyValuePair<int, string>> attList)
+        {
+            attachmentList.Clear();
+            foreach(KeyValuePair<int, string> file in attList) {
+                attachmentList.Add(JToken.FromObject(file));
             }
         }
 
@@ -311,7 +351,9 @@ namespace FSS.Omnius.Modules.Hermes
         public void AddCC(string email, string displayName = "") { mail.CC.Add(new MailAddress(email, displayName)); }
         public void AddBCC(string email, string displayName = "") { mail.Bcc.Add(new MailAddress(email, displayName)); }
         public void AddAttachment(string path) { attachmentList.Add(path); }
+        public void AddAttachment(KeyValuePair<int, string> file) { attachmentList.Add(JToken.FromObject(file)); }
 
+        public void From(string email, string displayName = "") { mail.From = new MailAddress(email, displayName); }
         public void Subject(string subject) { mail.Subject = subject; }
 
         #endregion
@@ -358,6 +400,17 @@ namespace FSS.Omnius.Modules.Hermes
             {
                 return model.GetType().GetProperty(propName).GetValue(model) as object;
             }
+        }
+
+        public static string QueuStatusName(int status)
+        {
+            if(queuStatusNames.Count() == 0)
+            {
+                queuStatusNames.Add((int)EmailQueueStatus.error, "Chyba");
+                queuStatusNames.Add((int)EmailQueueStatus.waiting, "Čeká na odeslání");
+            }
+
+            return queuStatusNames[status];
         }
 
         #endregion

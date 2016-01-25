@@ -124,50 +124,58 @@
             Obrazkovky <span id="blockHeaderScreenCount">2</span>
         </div>
         <div id="assignResourcesPanel">
-            <div class="panelHeader">Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div></div>
-            <div id="resRule1" class="ruleItem resourceRule" style="width: 250px; height: 60px; left: 10px; top: 36px;">
-                <div id="resItem1" class="item attributeItem" style="left: 20px; top: 20px;">Name</div>
-                <div id="resItem2" class="item uiItem" style="left: 146px; top: 20px;">Textbox</div>
-            </div>
-            <div id="resRule2" class="ruleItem resourceRule" style="width: 390px; height: 60px; left: 290px; top: 36px;">
-                <div id="resItem3" class="item roleItem" style="left: 20px; top: 20px;">RS_admin</div>
-                <div id="resItem4" class="item uiItem" style="left: 146px; top: 20px;">Button</div>
-                <div id="resItem5" class="item actionItem" style="left: 270px; top: 20px;">Create</div>
+            <div class="scrollArea">
+                <div class="panelHeader">Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div></div>
+                <div id="resRule1" class="ruleItem resourceRule" style="width: 250px; height: 60px; left: 10px; top: 36px;">
+                    <div id="resItem1" class="item attributeItem" style="left: 20px; top: 20px;">Name</div>
+                    <div id="resItem2" class="item uiItem" style="left: 146px; top: 20px;">Textbox</div>
+                </div>
+                <div id="resRule2" class="ruleItem resourceRule" style="width: 390px; height: 60px; left: 290px; top: 36px;">
+                    <div id="resItem3" class="item roleItem" style="left: 20px; top: 20px;">RS_admin</div>
+                    <div id="resItem4" class="item uiItem" style="left: 146px; top: 20px;">Button</div>
+                    <div id="resItem5" class="item actionItem" style="left: 270px; top: 20px;">Create</div>
+                </div>
             </div>
         </div>
         <div id="workflowRulesPanel">
-            <div class="panelHeader">Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
-            <div id="wfRule1" class="ruleItem workflowRule" style="width: 766px; height: 360px; left: 46px; top: 97px;">
-                <div class="workflowRuleHeader">
-                    <div class="vericalLabel">Založení rezervace</div>
-                </div>
-                <div class="swimlaneArea">
-                    <div class="swimlane">
-                        <div class="swimlaneRolesArea">
-                            <div class="rolePlaceholder">
-                                <div class="rolePlaceholderLabel">
-                                    Pokud chcete specifikovat roli<br />
-                                    přetáhněte ji do této oblasti
+            <div class="scrollArea">
+                <div class="panelHeader">
+                    Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
+                    <div id="wfRule1" class="ruleItem workflowRule" style="width: 766px; height: 360px; left: 46px; top: 97px;">
+                        <div class="workflowRuleHeader">
+                            <div class="vericalLabel">Založení rezervace</div>
+                        </div>
+                        <div class="swimlaneArea">
+                            <div class="swimlane">
+                                <div class="swimlaneRolesArea">
+                                    <div class="rolePlaceholder">
+                                        <div class="rolePlaceholderLabel">
+                                            Pokud chcete specifikovat roli<br />
+                                            přetáhněte ji do této oblasti
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swimlaneContentArea">
+                                    <img id="wfItem1" class="symbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
+                                    <div id="wfItem2" class="item actionItem" style="left: 145px; top: 60px;">
+                                        Create
+                                        <img id="wfItem6" class="subSymbol" src="~/Content/images/TapestryIcons/small-message-double-circle.png" style="left: 15px; top: 45px;" />
+                                    </div>
+                                    <img id="wfItem5" class="symbol" src="~/Content/images/TapestryIcons/orange-port-arrow.png" style="left: 526px; top: 68px;" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="swimlaneContentArea">
-                            <img id="wfItem1" class="symbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
-                            <div id="wfItem2" class="item actionItem" style="left: 145px; top: 60px;">Create
-                                <img id="wfItem6" class="subSymbol" src="~/Content/images/TapestryIcons/small-message-double-circle.png" style="left: 15px; top: 45px;" />
+                            <div class="swimlane">
+                                <div class="swimlaneRolesArea">
+                                    <div class="roleItem">RS_key_user</div>
+                                </div>
+                                <div class="swimlaneContentArea">
+                                    <div id="wfItem3" class="item templateItem" style="left: 145px; top: 60px;">
+                                        Založení rezervace
+                                        <div id="wfItem7" class="subSymbolCounterpart" style="left: 30px; top: -2px;"></div>
+                                    </div>
+                                    <img id="wfItem4" class="symbol" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
+                                </div>
                             </div>
-                            <img id="wfItem5" class="symbol" src="~/Content/images/TapestryIcons/orange-port-arrow.png" style="left: 526px; top: 68px;" />
-                        </div>
-                    </div>
-                    <div class="swimlane">
-                        <div class="swimlaneRolesArea">
-                            <div class="roleItem">RS_key_user</div>
-                        </div>
-                        <div class="swimlaneContentArea">
-                            <div id="wfItem3" class="item templateItem" style="left: 145px; top: 60px;">Založení rezervace
-                                <div id="wfItem7" class="subSymbolCounterpart" style="left: 30px; top: -2px;"></div>
-                            </div>
-                            <img id="wfItem4" class="symbol" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
                         </div>
                     </div>
                 </div>

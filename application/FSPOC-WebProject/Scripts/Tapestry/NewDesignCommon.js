@@ -1,5 +1,12 @@
-﻿$(function () {
+﻿function RecalculateToolboxHeight() {
+    leftBar = $("#tapestryLeftBar");
+    scrollTop = $(window).scrollTop();
+    lowerPanelTop = $("#lowerPanel").offset().top;
+    leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+};
+$(function () {
     if (CurrentModuleIs("tapestryModule")) {
+        RecalculateToolboxHeight();
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
         });
@@ -40,8 +47,8 @@
                     droppedElement.addClass("item");
                     $(this).append(droppedElement);
                     ruleContent = $(this);
-                    leftOffset = ui.draggable.parent().parent().offset().left - ruleContent.offset().left + 45;
-                    topOffset = ui.draggable.parent().parent().offset().top - ruleContent.offset().top - 27;
+                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                     droppedElement.draggable({ containment: "parent" });
                     ui.helper.remove();
@@ -80,27 +87,22 @@
                         ui.draggable.draggable("option", "revert", true);
                         return false;
                     }
+                    $(this).append(droppedElement);
+                    ruleContent = $(this);
                     if (droppedElement.hasClass("toolboxSymbol")) {
                         droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
                         droppedElement.addClass("symbol");
-                        $(this).append(droppedElement);
-                        ruleContent = $(this);
-                        leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
-                        topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
-                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        droppedElement.draggable({ containment: "parent" });
+                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                     }
                     else {
                         droppedElement.removeClass("toolboxItem");
                         droppedElement.addClass("item");
-                        $(this).append(droppedElement);
-                        ruleContent = $(this);
-                        leftOffset = ui.draggable.parent().parent().offset().left - ruleContent.offset().left + 30;
-                        topOffset = ui.draggable.parent().parent().offset().top - ruleContent.offset().top - 45;
-                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        droppedElement.draggable({ containment: "parent" });
+                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
                     }
-
+                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                    droppedElement.draggable({ containment: "parent" });
                     ui.helper.remove();
                 }
             });
@@ -137,9 +139,11 @@
         });
         $(".toolboxItem, .toolboxSymbol").draggable({
             helper: "clone",
+            appendTo: '#tapestryWorkspace',
+            containment: 'window',
             tolerance: "fit",
             revert: true,
-            scroll: false
+            scroll: true
         });
         $(".resourceRule").droppable({
             containment: ".resourceRule",
@@ -152,8 +156,8 @@
                 droppedElement.addClass("item");
                 $(this).append(droppedElement);
                 ruleContent = $(this);
-                leftOffset = ui.draggable.parent().parent().offset().left - ruleContent.offset().left + 45;
-                topOffset = ui.draggable.parent().parent().offset().top - ruleContent.offset().top - 27;
+                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                 droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                 droppedElement.draggable({ containment: "parent" });
                 ui.helper.remove();
@@ -182,27 +186,22 @@
                     ui.draggable.draggable("option", "revert", true);
                     return false;
                 }
+                $(this).append(droppedElement);
+                ruleContent = $(this);
                 if (droppedElement.hasClass("toolboxSymbol")) {
                     droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
                     droppedElement.addClass("symbol");
-                    $(this).append(droppedElement);
-                    ruleContent = $(this);
-                    leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
-                    topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
-                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                    droppedElement.draggable({ containment: "parent" });
+                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                 }
                 else {
                     droppedElement.removeClass("toolboxItem");
                     droppedElement.addClass("item");
-                    $(this).append(droppedElement);
-                    ruleContent = $(this);
-                    leftOffset = ui.draggable.parent().parent().offset().left - ruleContent.offset().left + 30;
-                    topOffset = ui.draggable.parent().parent().offset().top - ruleContent.offset().top - 45;
-                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                    droppedElement.draggable({ containment: "parent" });
+                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
                 }
-                
+                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                droppedElement.draggable({ containment: "parent" });
                 ui.helper.remove();
             }
         });
@@ -235,6 +234,19 @@
             items: {
                 "delete": { name: "Delete rule", icon: "delete" }
             }
+        });
+        $(window).scroll(function () {
+            leftBar = $("#tapestryLeftBar");
+            scrollTop = $(window).scrollTop();
+            lowerPanelTop = $("#lowerPanel").offset().top;
+            if (scrollTop > lowerPanelTop)
+                leftBar.css("top", scrollTop - lowerPanelTop);
+            else
+                leftBar.css("top", 0);
+            RecalculateToolboxHeight();
+        });
+        $(window).resize(function () {
+            RecalculateToolboxHeight();
         });
     }
 });

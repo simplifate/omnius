@@ -4,6 +4,13 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Net.Mail;
+
+    public enum EmailQueueStatus
+    {
+        waiting,
+        error
+    };
+
     [Table("Hermes_Email_Queue")]
     public partial class EmailQueue
     {
@@ -21,5 +28,7 @@
         public string AttachmentList { get; set; }
 
         public int? Application_Id { get; set; }
+
+        public EmailQueueStatus Status { get; set; }
     }
 }
