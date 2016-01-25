@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public void UpdateAppRightFromAd(IEnumerable<string> newADgroupNames, DBEntities context)
         {
             // AD groups
-            List<ADgroup_User> newADgroups = context.ADgroups.Where(ad => newADgroupNames.Contains(ad.Name)).Select(ad => new ADgroup_User { ADgroup = ad, User = this }).ToList();
+            List<ADgroup_User> newADgroups = context.ADgroups.Where(ad => newADgroupNames.Contains(ad.Name)).ToList().Select(ad => new ADgroup_User { ADgroup = ad, User = this }).ToList();
 
             // DB groups
             List<ADgroup_User> oldADgroups = context.ADgroup_Users.Where(adu => adu.UserId == Id).ToList();
