@@ -219,6 +219,7 @@
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
+    <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
@@ -1467,9 +1468,12 @@
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
     <Content Include="Views\Hermes\Queue\Detail.cshtml" />
     <Content Include="Views\Persona\Roles\App.cshtml" />
+    <Content Include="Views\Mozaic\Css\Index.cshtml" />
+    <Content Include="Views\Mozaic\UpperPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Css\" />
     <Folder Include="Views\Show\" />
   </ItemGroup>
   <ItemGroup>
