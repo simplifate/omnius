@@ -7,7 +7,7 @@ using System;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Hermes")]
     public class PlaceholderController : Controller
     {
         // GET: Placeholder list

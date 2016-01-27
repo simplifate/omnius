@@ -4,7 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Tapestry")]
     public class OverviewController : Controller
     {
         public ActionResult Index(FormCollection formParams)

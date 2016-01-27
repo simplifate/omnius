@@ -45,5 +45,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             return ADgroup_Users.Any(adu => adu.ADgroup.Name == groupName);
         }
+        public bool canUseModule(string moduleName)
+        {
+            return ModuleAccessPermission.hasAccess(moduleName);
+        }
     }
 }

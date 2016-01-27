@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "mozaicComponentManagerModule";
 }
+
 @Html.Partial("~/Views/Mozaic/UpperPanel.cshtml");
 
 <div id="lowerPanel">
@@ -21,7 +22,7 @@
         <path d="M507 357 L507 108 L472 74 L238 74" stroke="#457fa9" stroke-width="1" fill="none" />
     </svg>
     <div id="ldapMenuArea" class="moduleSubMenuArea">
-        @Html.ActionLink("Nová kategorie", "Create", "TemplateCategory", new { @class = "btn btn-omnius-blue fa fa-plus" })
+        @Html.ActionLink("Nové CSS", "Create", "Css", new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
     <div id="ContentContainer">
         <table class="table table-bordered table-striped table-omnius">
@@ -33,23 +34,18 @@
             <thead>
                 <tr>
                     <th>Název</th>
-                    <th>Šablony</th>
                     <th>Akce</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (TemplateCategory t in Model)
+                @foreach (int i in new int[] { 1, 2, 3, 4, 5 })
                 {
                     <tr>
                         <td>
-                            @Ajax.RouteLink(t.Name, "Mozaic", new { @action = "Detail", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" })
+                            <!-- Interaktivní tlačítko na Detail -->
                         </td>
                         <td>
-                            @string.Join(", ", t.Templates.Select(x => x.Name))
-                        </td>
-                        <td>
-                            @Ajax.RouteLink(" ", "Mozaic", new { @action = "Update", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
-                            @Html.RouteLink(" ", "Mozaic", new { @action = "Delete", @id = t.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                            <!--Tlačítko na Update a tlačítko na Delete-->
                         </td>
                     </tr>
                 }
@@ -57,3 +53,4 @@
         </table>
     </div>
 </div>
+

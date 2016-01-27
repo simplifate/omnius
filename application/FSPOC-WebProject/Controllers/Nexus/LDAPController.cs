@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
     public class LDAPController : Controller
     {
         // GET: LDAP

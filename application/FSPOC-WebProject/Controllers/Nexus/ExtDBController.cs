@@ -12,7 +12,7 @@ using DbExtensions;
 
 namespace FSPOC_WebProject.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
     public class ExtDBController : Controller
     {
         // GET: ExtDB list

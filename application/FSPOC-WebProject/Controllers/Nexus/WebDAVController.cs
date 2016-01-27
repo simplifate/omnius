@@ -5,7 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
     public class WebDAVController : Controller
     {
         public ActionResult Index()

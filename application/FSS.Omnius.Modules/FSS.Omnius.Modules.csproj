@@ -420,6 +420,7 @@
     <Compile Include="Nexus\Service\NexusWSService.cs" />
     <Compile Include="Nexus\Service\WebDavFileSyncService.cs" />
     <Compile Include="Persona\ADgroup.cs" />
+    <Compile Include="Persona\ModuleAccessPermission.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />

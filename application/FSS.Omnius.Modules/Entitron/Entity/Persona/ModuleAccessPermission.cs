@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_ModuleAccessPermissions")]
-    public class ModuleAccessPermission
+    public partial class ModuleAccessPermission
     {
         public int Id { get; set; }
 
