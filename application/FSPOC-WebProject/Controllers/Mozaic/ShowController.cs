@@ -35,7 +35,8 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             block.Run(results);
 
             // show 
-            return block.MozaicPage.MasterTemplate.Html;
+            return block.MozaicPage.ViewContent;
+            //return block.MozaicPage.MasterTemplate.Html;
         }
     }
 }
