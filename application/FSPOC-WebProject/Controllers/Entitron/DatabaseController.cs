@@ -15,7 +15,7 @@ using static System.String;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
-    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin")]
+    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin", Module = "Entitron")]
     public class DatabaseController : ApiController
     {
         public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.CORE
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "CORE")]
     public class PortalController : Controller
     {
         // GET: Portal

@@ -6,9 +6,9 @@ using System.Web.Routing;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
+    [PersonaAuthorize]
     public class RunController : Controller
     {
-        [PersonaAuthorize]
         public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
         {
             var core = new Modules.CORE.CORE();
