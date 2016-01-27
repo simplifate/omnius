@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Hermes")]
     public class LogController : Controller
     {
         public ActionResult Detail(int id)

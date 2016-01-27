@@ -8,7 +8,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 {
     public class ModulesController : Controller
     {
-        [PersonaAuthorize(Roles = "Admin")]
+        [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
         public ActionResult Index()
         {
             using (var context = new DBEntities())

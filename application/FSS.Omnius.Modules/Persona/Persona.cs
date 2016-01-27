@@ -73,6 +73,24 @@ namespace FSS.Omnius.Modules.Persona
                 user.username = username;
                 user.localExpiresAt = DateTime.MinValue;
                 e.Users.Add(user);
+
+                ModuleAccessPermission map = new ModuleAccessPermission
+                {
+                    User = user,
+                    Athena = false,
+                    Core = false,
+                    Cortex = false,
+                    Entitron = false,
+                    Hermes = false,
+                    Master = false,
+                    Mozaic = false,
+                    Nexus = false,
+                    Persona = false,
+                    Sentry = false,
+                    Tapestry = false,
+                    Watchtower = false
+                };
+                e.ModuleAccessPermissions.Add(map);
             }
             // expiration || new user -> get from AD
             if (user.localExpiresAt < DateTime.UtcNow)

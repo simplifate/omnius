@@ -11,7 +11,7 @@ namespace FSS.Omnius.Controllers.Hermes
 {
     public class SMTPController : Controller
     {
-        [PersonaAuthorize(Roles = "Admin")]
+        [PersonaAuthorize(Roles = "Admin", Module = "Hermes")]
         // GET: SMTP
         public ActionResult Index()
         {

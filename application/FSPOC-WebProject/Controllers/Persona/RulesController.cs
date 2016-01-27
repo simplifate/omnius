@@ -2,7 +2,7 @@
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
     public class RulesController : Controller
     {
         // GET: Rules

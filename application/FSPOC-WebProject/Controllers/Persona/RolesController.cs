@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
+    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
     public class RolesController : Controller
     {
         // GET: Roles

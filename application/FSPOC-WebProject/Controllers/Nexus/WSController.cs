@@ -14,7 +14,7 @@ using System.Collections.Specialized;
 
 namespace FSPOC_WebProject.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
     public class WSController : Controller
     {
         // GET: WS
