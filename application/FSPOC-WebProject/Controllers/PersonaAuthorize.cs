@@ -21,11 +21,12 @@ namespace System.Web.Mvc
             if (!string.IsNullOrWhiteSpace(Module) && !user.canUseModule(Module))
                 throw new UnauthorizedAccessException();
 
-            if (string.IsNullOrWhiteSpace(Users) || Users.Split(' ').Contains(user.username))
+            if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles))
                 return;
 
-            if (string.IsNullOrWhiteSpace(Roles))
+            if (Users.Split(' ').Contains(user.username))
                 return;
+            
             foreach(string role in Roles.Split(' '))
             {
                 if (user.IsInGroup(role))
