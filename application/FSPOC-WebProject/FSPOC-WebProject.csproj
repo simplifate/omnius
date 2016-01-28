@@ -218,6 +218,7 @@
     <Compile Include="Controllers\Hermes\TemplateController.cs" />
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
+    <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
@@ -1431,7 +1432,7 @@
     <Content Include="Views\Mozaic\Page\Create.cshtml" />
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
-    <Content Include="Views\CORE\Portal\Applications.cshtml" />
+    <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
     <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
     <Content Include="Views\Master\Home\Help.cshtml" />
     <Content Include="Views\Nexus\WS\Form.cshtml" />
@@ -1475,6 +1476,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AppAdminManager\" />
     <Folder Include="Views\Css\" />
     <Folder Include="Views\Show\" />
   </ItemGroup>
