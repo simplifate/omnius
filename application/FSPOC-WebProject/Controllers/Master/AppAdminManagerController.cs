@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers.Master
+namespace FSS.Omnius.Controllers.Master
 {
     [PersonaAuthorize(Roles = "Admin", Module = "Master")]
     public class AppAdminManagerController : Controller

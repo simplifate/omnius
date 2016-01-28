@@ -212,6 +212,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
+    <Compile Include="Controllers\CORE\ErrorController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
     <Compile Include="Controllers\Hermes\QueueController.cs" />
@@ -1473,11 +1474,13 @@
     <Content Include="Views\Persona\Roles\App.cshtml" />
     <Content Include="Views\Mozaic\Css\Index.cshtml" />
     <Content Include="Views\Mozaic\UpperPanel.cshtml" />
+    <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />
+    <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
+    <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AppAdminManager\" />
-    <Folder Include="Views\Css\" />
     <Folder Include="Views\Show\" />
   </ItemGroup>
   <ItemGroup>

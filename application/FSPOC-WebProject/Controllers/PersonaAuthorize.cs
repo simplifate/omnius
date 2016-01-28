@@ -7,6 +7,14 @@ using System.Web;
 
 namespace System.Web.Mvc
 {
+    internal class Http403Result : ActionResult
+    {
+        public override void ExecuteResult(ControllerContext context)
+        {
+            context.HttpContext.Response.StatusCode = 403;
+        }
+    }
+
     public class PersonaAuthorizeAttribute : AuthorizeAttribute
     {
         public string Module { get; set; }
@@ -16,10 +24,10 @@ namespace System.Web.Mvc
             CORE core = new CORE();
             User user = filterContext.HttpContext.User.GetLogged(core);
             if (user == null)
-                throw new UnauthorizedAccessException();
+                filterContext.Result = new Http403Result();
 
             if (!string.IsNullOrWhiteSpace(Module) && !user.canUseModule(Module))
-                throw new UnauthorizedAccessException();
+                filterContext.Result = new Http403Result();
 
             if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles))
                 return;
@@ -33,7 +41,7 @@ namespace System.Web.Mvc
                     return;
             }
 
-            throw new UnauthorizedAccessException();
+            filterContext.Result = new Http403Result();
         }
     }
 }
