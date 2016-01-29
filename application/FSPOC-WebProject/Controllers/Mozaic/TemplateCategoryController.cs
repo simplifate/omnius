@@ -15,8 +15,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         // GET: TemplateCategory
         public ActionResult Index()
         {
+            
             DBEntities e = new DBEntities();
-
+            
             return View(e.TemplateCategories);
         }
 

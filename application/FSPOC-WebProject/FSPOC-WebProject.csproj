@@ -1470,6 +1470,7 @@
     <Content Include="Views\Persona\Roles\App.cshtml" />
     <Content Include="Views\Mozaic\Css\Index.cshtml" />
     <Content Include="Views\Mozaic\UpperPanel.cshtml" />
+    <Content Include="Views\Mozaic\Css\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

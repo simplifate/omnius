@@ -1,5 +1,5 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
-@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.TemplateCategory>
+@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 
 @{
@@ -38,11 +38,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (int i in new int[] { 1, 2, 3, 4, 5 })
+                @foreach (Css css in Model)
                 {
                     <tr>
                         <td>
-                            <!-- Interaktivní tlačítko na Detail -->
+                            <!-- Interaktivní text na Detail -->
+                            @Ajax.RouteLink(css.Name, "Mozaic", new { @action = "Detail", @id = css.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" })
                         </td>
                         <td>
                             <!--Tlačítko na Update a tlačítko na Delete-->

@@ -15,9 +15,18 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         // GET: Css
         public ActionResult Index()
         {
-            return View();
+            DBEntities e = new DBEntities();
+
+            return View(e.Css);
         }
 
-        
+        public ActionResult Detail(int id)
+        {
+            DBEntities e = new DBEntities();
+            Css css = e.Css.SingleOrDefault(x => x.Id == id);
+
+            return View(css);
+        }
+
     }
 }

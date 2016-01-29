@@ -1,0 +1,29 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css
+
+<div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Název
+            </label>
+        </div>
+        <div>
+            <p>@Model.Name</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Obsah
+            </label>
+        </div>
+        <div>
+            @if (@Model.Value != null)
+            {
+                <p>
+                    @Model.Value
+                </p>
+            }
+        </div>
+    </div>
+</div> 
