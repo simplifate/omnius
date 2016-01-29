@@ -15,8 +15,17 @@ namespace System
         public static User GetLogged(this IPrincipal user, CORE core = null)
         {
             core = core ?? new CORE();
-            
-            return core.Persona.getUser(user.Identity.Name);
+
+            User usr = core.Persona.getUser(user.Identity.Name);
+            if (usr.LastLogout != null)
+            {
+                usr.LastLogin = usr.CurrentLogin;
+                usr.CurrentLogin = DateTime.UtcNow;
+                usr.LastLogout = null;
+                core.Entitron.GetStaticTables().SaveChanges();
+            }
+
+            return usr;
         }
     }
 }

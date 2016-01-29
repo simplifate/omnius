@@ -40,7 +40,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public string Address { get; set; }
         [StringLength(100)]
         public string Job { get; set; }
+        
+        public DateTime CurrentLogin { get; set; }
         public DateTime LastLogin { get; set; }
+        public DateTime? LastLogout { get; set; }
+
         [Required]
         public DateTime localExpiresAt { get; set; }
         
