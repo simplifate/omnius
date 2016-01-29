@@ -102,6 +102,15 @@ body.tapestryModule {
                 color: #425b33;
             }
         }
+        #controlButtonArea {
+            position: absolute;
+            left: 810px;
+            top: 39px;
+
+            button {
+                height: 38px;
+            }
+        }
     }
     #lowerPanel {
         top: 432px;
@@ -430,6 +439,10 @@ body.tapestryModule {
                 }
             }
         }
+    }
+    .highlightedRow {
+        background-color: #49c3f1 !important;
+        color: white !important;
     }
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryArea {

@@ -27,11 +27,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int PositionX { get; set; } // For visual representation in Overview
+        public int PositionY { get; set; }
+
         public virtual ICollection<TapestryDesignerMetablockConnection> Connections { get; set; }
         public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
-        public int PositionX { get; set; } // For visual representation in Overview
-        public int PositionY { get; set; }
 
         public TapestryDesignerMetablock ParentMetablock { get; set; }
         public TapestryDesignerApp ParentApp { get; set; }
@@ -85,27 +86,30 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
 
         //public BlockToolboxState ToolboxState { get; set; }
-        public virtual ICollection<TapestryDesignerRule> Rules { get; set; }
+        public virtual ICollection<TapestryDesignerResourceRule> ResourceRules { get; set; }
+        public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
 
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
 
         public TapestryDesignerBlockCommit()
         {
-            Rules = new List<TapestryDesignerRule>();
+            ResourceRules = new List<TapestryDesignerResourceRule>();
+            WorkflowRules = new List<TapestryDesignerWorkflowRule>();
         }
     }
     [Table("TapestryDesigner_Rules")]
-    public class TapestryDesignerRule
+    public class TapestryDesignerRule // TODO: remove after switching to new workflow model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<TapestryDesignerItem> Items { get; set; }
-        public virtual ICollection<TapestryDesignerOperator> Operators { get; set; }
-        public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public virtual ICollection<TapestryDesignerItem> Items { get; set; }
+        public virtual ICollection<TapestryDesignerOperator> Operators { get; set; }
+        public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
 
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
@@ -115,6 +119,100 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             Operators = new List<TapestryDesignerOperator>();
             Connections = new List<TapestryDesignerConnection>();
         }
+    }
+    [Table("TapestryDesigner_ResourceRules")]
+    public class TapestryDesignerResourceRule
+    {
+        public int Id { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
+        public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
+
+        public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
+
+        public TapestryDesignerResourceRule()
+        {
+            ResourceItems = new List<TapestryDesignerResourceItem>();
+            Connections = new List<TapestryDesignerConnection>();
+        }
+    }
+    [Table("TapestryDesigner_WorkflowRules")]
+    public class TapestryDesignerWorkflowRule
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public virtual ICollection<TapestryDesignerSwimlane> Swimlanes { get; set; }
+        public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
+
+        public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
+
+        public TapestryDesignerWorkflowRule()
+        {
+            Swimlanes = new List<TapestryDesignerSwimlane>();
+            Connections = new List<TapestryDesignerConnection>();
+        }
+    }
+    [Table("TapestryDesigner_Swimlanes")]
+    public class TapestryDesignerSwimlane
+    {
+        public int Id { get; set; }
+        public int SwimlaneIndex { get; set; }
+        public int Height { get; set; }
+        public string Roles { get; set; }
+
+        public virtual ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+        public virtual ICollection<TapestryDesignerWorkflowSymbol> WorkflowSymbols { get; set; }
+
+        public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
+
+        public TapestryDesignerSwimlane()
+        {
+            WorkflowItems = new List<TapestryDesignerWorkflowItem>();
+            WorkflowSymbols = new List<TapestryDesignerWorkflowSymbol>();
+        }
+    }
+    [Table("TapestryDesigner_ResourceItems")]
+    public class TapestryDesignerResourceItem
+    {
+        public int Id { get; set; }
+        public string Label { get; set; }
+        public string TypeClass { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+
+        public virtual TapestryDesignerResourceRule ParentRule { get; set; }
+    }
+    [Table("TapestryDesigner_WorkflowItems")]
+    public class TapestryDesignerWorkflowItem
+    {
+        public int Id { get; set; }
+        public string Label { get; set; }
+        public string TypeClass { get; set; }
+        public string DialogType { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+
+        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
+    }
+    [Table("TapestryDesigner_WorkflowSymbols")]
+    public class TapestryDesignerWorkflowSymbol
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+        public string DialogType { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+
+        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
     public class BlockToolboxState
@@ -191,8 +289,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public int Source { get; set; }
+        public int SourceType { get; set; }
         public int SourceSlot { get; set; }
         public int Target { get; set; }
+        public int TargetType { get; set; }
+        public int TargetSlot { get; set; }
     }
     [Table("TapestryDesigner_Properties")]
     public class TapestryDesignerProperty

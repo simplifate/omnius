@@ -273,12 +273,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.BlockCommits)
                 .WithRequired(s => s.ParentBlock);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
-                .HasMany(s => s.Rules)
+                .HasMany(s => s.ResourceRules)
                 .WithRequired(s => s.ParentBlockCommit);
-            modelBuilder.Entity<TapestryDesignerRule>()
-                .HasMany(s => s.Items)
-                .WithRequired(s => s.ParentRule);
-            
+            modelBuilder.Entity<TapestryDesignerBlockCommit>()
+                .HasMany(s => s.WorkflowRules)
+                .WithRequired(s => s.ParentBlockCommit);
+            modelBuilder.Entity<TapestryDesignerWorkflowRule>()
+                .HasMany(s => s.Swimlanes)
+                .WithRequired(s => s.ParentWorkflowRule);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.WorkflowItems);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.WorkflowSymbols);
+
             // Watchtower
         }
     }

@@ -7,6 +7,19 @@
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
+        $("#btnClear").on("click", function () {
+            $("#assignResourcesPanel .resourceRule").remove();
+            $("#workflowRulesPanel .workflowRule").remove();
+        });
+        $("#btnSave").on("click", function () {
+            saveDialog.dialog("open");
+        });
+        $("#btnLoad").on("click", function () {
+            LoadBlock();
+        });
+        $("#btnHistory").on("click", function () {
+            historyDialog.dialog("open");
+        });
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
         });
@@ -36,6 +49,7 @@ $(function () {
             $("#assignResourcesPanel").append(newRule);
             newRule.draggable({ containment: "#assignResourcesPanel" });
             newRule.resizable();
+            CreateJsPlumbInstanceForRule(newRule);
             newRule.droppable({
                 containment: ".resourceRule",
                 tolerance: "touch",
@@ -64,6 +78,7 @@ $(function () {
             $("#workflowRulesPanel").append(newRule);
             newRule.draggable({ containment: "#workflowRulesPanel" });
             newRule.resizable();
+            CreateJsPlumbInstanceForRule(newRule);
             newRule.find(".swimlaneRolesArea").droppable({
                 containment: ".swimlaneContentArea",
                 tolerance: "touch",

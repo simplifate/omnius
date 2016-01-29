@@ -307,8 +307,8 @@
     <Content Include="Content\images\TapestryIcons\gateway-pentagon.png" />
     <Content Include="Content\images\TapestryIcons\gateway-plus.png" />
     <Content Include="Content\images\TapestryIcons\gateway-x.png" />
-    <Content Include="Content\images\TapestryIcons\orange-port-arrow.png" />
     <Content Include="Content\images\TapestryIcons\page.png" />
+    <Content Include="Content\images\TapestryIcons\port-arrow.png" />
     <Content Include="Content\images\TapestryIcons\small-message-double-circle.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1475,7 +1475,7 @@
     <Content Include="Views\Persona\Roles\App.cshtml" />
     <Content Include="Views\Mozaic\Css\Index.cshtml" />
     <Content Include="Views\Mozaic\UpperPanel.cshtml" />
-<!--<<<<<<< HEAD-->
+    <!--<<<<<<< HEAD-->
     <Content Include="Views\Mozaic\Css\Detail.cshtml" />
     <!--=======-->
     <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />

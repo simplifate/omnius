@@ -11,180 +11,163 @@
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {
-            $("#headerBlockName").text(data.Name);
-            $("#headerTableName").text(data.AssociatedTableName);
-            $("#associatedTableId").text(data.AssociatedTableId),
-            $("#rulesPanel .rule").remove();
-            for (i = 0; i < data.Rules.length; i++) {
-                currentRuleData = data.Rules[i];
-                newRule = $('<div class="rule" style="left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px; '
-                   + 'width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height + 'px;"><div class="ruleHeader">'
-                   + currentRuleData.Name + '</div><div class="editRuleIcon fa fa-edit"></div>'
-                   + '<div class="deleteRuleIcon fa fa-remove"></div><div class="ruleContent"></div></div>');
-                $("#rulesPanel .scrollArea").append(newRule);
-                currentInstance = CreateJsPlumbInstanceForRule(newRule);
-                for (j = 0; j < currentRuleData.Items.length; j++) {
-                    currentItemData = currentRuleData.Items[j];
-                    newItem = $('<div class="item" style="left: '
-                        + currentItemData.PositionX + 'px; top: ' + currentItemData.PositionY + 'px;">'
+            $("#assignResourcesPanel .resourceRule").remove();
+            $("#workflowRulesPanel .workflowRule").remove();
+            for (i = 0; i < data.ResourceRules.length; i++) {
+                currentRuleData = data.ResourceRules[i];
+                newRule = $('<div class="ruleItem resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
+                    +currentRuleData.PositionX+'px; top: '+currentRuleData.PositionY+'px;"></div>');
+                $("#assignResourcesPanel .scrollArea").append(newRule);
+                newRule.draggable({ containment: "#assignResourcesPanel" });
+                newRule.resizable();
+                CreateJsPlumbInstanceForRule(newRule);
+                newRule.droppable({
+                    containment: ".resourceRule",
+                    tolerance: "touch",
+                    accept: ".toolboxItem",
+                    greedy: true,
+                    drop: function (e, ui) {
+                        droppedElement = ui.helper.clone();
+                        droppedElement.removeClass("toolboxItem");
+                        droppedElement.addClass("item");
+                        $(this).append(droppedElement);
+                        ruleContent = $(this);
+                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                        droppedElement.draggable({ containment: "parent" });
+                        ui.helper.remove();
+                    }
+                });
+                for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
+                    currentItemData = currentRuleData.ResourceItems[j];
+                    newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                        + currentItemData.PositionY + 'px;">'
                         + currentItemData.Label + '</div>');
                     newItem.addClass(currentItemData.TypeClass);
-                    if (currentItemData.IsDataSource)
-                        newItem.addClass("dataSource");
-                    newItem.attr("saveId", currentItemData.Id);
-                    newItem.attr("dialogType", currentItemData.DialogType);
-                    newRule.find(".ruleContent").append(newItem);
-                    AddIconToItem(newItem);
-                    AddToJsPlumb(currentInstance, newItem);
-                    newItem.droppable({
-                        greedy: true,
-                        tolerance: "touch",
-                        accept: ".item, .operatorSymbol",
-                        drop: function (event, ui) {
-                            ui.draggable.draggable("option", "revert", true);
-                            revertActive = true;
+                    newRule.append(newItem);
+                    newItem.draggable({
+                        containment: "parent",
+                        drag: function () {
+                            instance = $(this).parents(".resourceRule").data("jsPlumbInstance");
+                            instance.recalculateOffsets();
+                            instance.repaintEverything();
                         }
                     });
-                    for (k = 0; k < currentItemData.Properties.length; k++) {
-                        currentPropertyData = currentItemData.Properties[k];
-                        if (currentPropertyData.Name == "PortId")
-                            newItem.data("portId", currentPropertyData.Value);
-                    }
                 }
-                for (j = 0; j < currentRuleData.Operators.length; j++) {
-                    currentOperatorData = currentRuleData.Operators[j];
-                    if (currentOperatorData.Type == "decision")
-                        newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
-                    else if (currentOperatorData.Type == "condition")
-                        newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                    newRule.find(".ruleContent").append(newOperator);
-                    newOperator.css("left", currentOperatorData.PositionX);
-                    newOperator.css("top", currentOperatorData.PositionY);
-                    newOperator.attr("saveId", currentOperatorData.Id);
-                    newOperator.attr("dialogType", currentOperatorData.DialogType);
-                    AddToJsPlumb(currentInstance, newOperator);
-                }
+                currentInstance = newRule.data("jsPlumbInstance");
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
-                    sourceDiv = newRule.find(".item[saveId='" + currentConnectionData.Source + "'], .operatorSymbol[saveId='" + currentConnectionData.Source + "']");
-                    targetDiv = newRule.find(".item[saveId='" + currentConnectionData.Target + "'], .operatorSymbol[saveId='" + currentConnectionData.Target + "']");
-                    if (currentConnectionData.SourceSlot == 1)
-                        sourceEndpointUuid = "BottomCenter";
-                    else
-                        sourceEndpointUuid = "RightMiddle";
-                    currentInstance.connect({ uuids: [sourceDiv.attr("id") + sourceEndpointUuid], target: targetDiv.attr("id"), editable: true });
+                    currentInstance.connect({
+                        source: "resItem" + currentConnectionData.Source, target: "resItem" + currentConnectionData.Target,
+                        anchors: ["Continuous", "Continuous"], editable: false, connector: "Straight",
+                        paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' }}).removeAllOverlays();
                 }
-                newRule.find(".editRuleIcon").on("click", function () {
-                    currentRule = $(this).parents(".rule");
-                    renameRuleDialog.dialog("open");
-                });
-                newRule.find(".deleteRuleIcon").on("click", function () {
-                    $(this).parents(".rule").remove();
-                });
-                newRule.resizable({
-                    start: function (event, ui) {
-                        contentsWidth = 120;
-                        contentsHeight = 40;
-                        $(this).find(".item, .operatorSymbol").each(function (index, element) {
-                            rightEdge = $(element).position().left + $(element).width();
-                            if (rightEdge > contentsWidth)
-                                contentsWidth = rightEdge;
-                            bottomEdge = $(element).position().top + $(element).height();
-                            if (bottomEdge > contentsHeight)
-                                contentsHeight = bottomEdge;
-                        });
-                        $(this).css("min-width", contentsWidth - 10);
-                        $(this).css("min-height", contentsHeight + 20);
-
-                        limits = CheckRuleResizeLimits($(this));
-                        $(this).css("max-width", limits.horizontal - 50);
-                        $(this).css("max-height", limits.vertical - 50);
-                    },
-                    resize: function (event, ui) {
-                        limits = CheckRuleResizeLimits($(this));
-                        $(this).css("max-width", limits.horizontal - 50);
-                        $(this).css("max-height", limits.vertical - 50);
+            }
+            for (i = 0; i < data.WorkflowRules.length; i++) {
+                currentRuleData = data.WorkflowRules[i];
+                newRule = $('<div id="wfRule1" class="ruleItem workflowRule" style="width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height
+                    + 'px; left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"><div class="workflowRuleHeader">'
+                    + '<div class="vericalLabel">' + currentRuleData.Name + '</div></div><div class="swimlaneArea"><div class="swimlane">'
+                    + '<div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
+                + '<div class="swimlane"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div></div></div>');
+                $("#workflowRulesPanel").append(newRule);
+                newRule.draggable({ containment: "#workflowRulesPanel" });
+                newRule.resizable();
+                CreateJsPlumbInstanceForRule(newRule);
+                newRule.find(".swimlaneRolesArea").droppable({
+                    containment: ".swimlaneContentArea",
+                    tolerance: "touch",
+                    accept: ".toolboxItem.roleItem",
+                    greedy: true,
+                    drop: function (e, ui) {
+                        droppedElement = ui.helper.clone();
+                        $(this).find(".rolePlaceholder, .roleItem").remove();
+                        $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                        ui.helper.remove();
                     }
                 });
-                newRule.draggable({ handle: ".ruleHeader" });
-                newRule.attr("id", AssingID());
-                newRule.droppable({
-                    containment: ".rule",
-                    greedy: false,
+                newRule.find(".swimlaneContentArea").droppable({
+                    containment: ".swimlaneContentArea",
                     tolerance: "touch",
-                    accept: ".item, .operatorSymbol, .menuItem, .rule",
+                    accept: ".toolboxSymbol, .toolboxItem",
+                    greedy: false,
                     drop: function (e, ui) {
-                        if (ui.helper.hasClass("item") || ui.helper.hasClass("operatorSymbol")) {
-                            return false;
-                        }
-                        if (ui.helper.hasClass("rule")) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        }
-                        if (ui.helper.collision(".item, .operatorSymbol").length > 0) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        };
-                        ruleContent = $(this).find(".ruleContent");
-                        if (ui.offset.left < ruleContent.offset().left || ui.offset.top < ruleContent.offset().top
-                            || ui.offset.left + ui.helper.width() > ruleContent.offset().left + ruleContent.width() - 20
-                            || ui.offset.top + ui.helper.height() > ruleContent.offset().top + ruleContent.height() - 20) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        }
                         droppedElement = ui.helper.clone();
-                        ui.helper.remove();
-                        droppedElement.appendTo(ruleContent);
-                        leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
-                        topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
-                        if (droppedElement.hasClass("operator")) {
-                            if (droppedElement.attr("operatorType") == "decision")
-                                newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                                  + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
-                            else if (droppedElement.attr("operatorType") == "condition")
-                                newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                                  + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                            newOperator.appendTo(ruleContent);
-                            newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                            newOperator.attr("dialogType", droppedElement.attr("dialogType"));
-                            droppedElement.remove();
-                            AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
-                            newOperator.droppable({
-                                greedy: true,
-                                tolerance: "touch",
-                                accept: ".item, .operatorSymbol",
-                                drop: function (event, ui) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    revertActive = true;
-                                }
-                            });
+                        if (droppedElement.hasClass("roleItem")) {
+                            ui.draggable.draggable("option", "revert", true);
+                            return false;
+                        }
+                        $(this).append(droppedElement);
+                        ruleContent = $(this);
+                        if (droppedElement.hasClass("toolboxSymbol")) {
+                            droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
+                            droppedElement.addClass("symbol");
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                         }
                         else {
-                            droppedElement.removeClass("menuItem");
+                            droppedElement.removeClass("toolboxItem");
                             droppedElement.addClass("item");
-                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                            AddIconToItem(droppedElement);
-                            if (droppedElement.position().left + droppedElement.width() > ruleContent.width() - 25)
-                                droppedElement.css("left", ruleContent.width() - droppedElement.width() - 25);
-                            AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
-                            droppedElement.droppable({
-                                greedy: true,
-                                tolerance: "touch",
-                                accept: ".item, .operatorSymbol",
-                                drop: function (event, ui) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    revertActive = true;
-                                }
-                            });
-                            if (droppedElement.hasClass("port")) {
-                                CurrentItem = droppedElement;
-                                choosePortDialog.dialog("open");
-                            }
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
                         }
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                        droppedElement.draggable({ containment: "parent" });
+                        ui.helper.remove();
                     }
                 });
+                for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
+                    currentSwimlaneData = currentRuleData.Swimlanes[j];
+                    if (currentSwimlaneData.Roles.length > 0) {
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneRolesArea");
+                        targetSwimlane.find(".rolePlaceholder, .roleItem").remove();
+                        targetSwimlane.append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
+                        currentItemData = currentSwimlaneData.WorkflowItems[k];
+                        newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                            + currentItemData.PositionY + 'px;">' + currentItemData.Label + '</div>');
+                        newItem.addClass(currentItemData.TypeClass);
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newItem);
+                        newItem.draggable({
+                            containment: "parent",
+                            drag: function () {
+                                instance = $(this).parents(".workflowRule").data("jsPlumbInstance");
+                                instance.recalculateOffsets();
+                                instance.repaintEverything();
+                            }
+                        });
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowSymbols.length; k++) {
+                        currentSymbolData = currentSwimlaneData.WorkflowSymbols[k];
+                        newSymbol = $('<img id="wfSymbol' + currentSymbolData.Id + '" class="symbol" symbolType="' + currentSymbolData.Type +
+                            '" src="/Content/images/TapestryIcons/' + currentSymbolData.Type + '.png" style="left: ' + currentSymbolData.PositionX + 'px; top: '
+                            + currentSymbolData.PositionY + 'px;" />');
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newSymbol);
+                        newSymbol.draggable({
+                            containment: "parent",
+                            drag: function () {
+                                instance = $(this).parents(".workflowRule").data("jsPlumbInstance");
+                                instance.recalculateOffsets();
+                                instance.repaintEverything();
+                            }
+                        });
+                    }
+                }
+                currentInstance = newRule.data("jsPlumbInstance");
+                for (j = 0; j < currentRuleData.Connections.length; j++) {
+                    currentConnectionData = currentRuleData.Connections[j];
+                    sourceId = (currentConnectionData.SourceType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Source;
+                    targetId = (currentConnectionData.TargetType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Target;
+                    currentInstance.connect({
+                        source: sourceId, target: targetId, anchors: ["Continuous", "Continuous"], editable: false, connector: "Straight",
+                        paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' } });
+                }
             }
         }
     });

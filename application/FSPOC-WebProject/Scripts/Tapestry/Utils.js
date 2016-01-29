@@ -14,8 +14,8 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
             }]
         ]
     });
-    ruleContent = $(ruleElement).find(".ruleContent");
-    ruleContent.attr("id", AssingID());
+    //ruleContent = $(ruleElement).find(".ruleContent");
+    //ruleContent.attr("id", AssingID());
     // newInstance.setContainer(ruleContent.attr("id"));
     newInstance.setContainer(ruleElement);
     newInstance.bind("click", function (con) {
@@ -184,4 +184,30 @@ function CheckRuleResizeLimits(rule) {
         }
     });
     return { horizontal: horizontalLimit, vertical: verticalLimit }
+}
+function GetItemTypeClass(item) {
+    if (item.hasClass("actionItem")) {
+        typeClass = "actionItem";
+    }
+    else if (item.hasClass("attributeItem")) {
+        typeClass = "attributeItem";
+    }
+    else if (item.hasClass("uiItem")) {
+        typeClass = "uiItem";
+    }
+    else if (item.hasClass("roleItem")) {
+        typeClass = "roleItem";
+    }
+    else if (item.hasClass("stateItem")) {
+        typeClass = "stateItem";
+    }
+    else if (item.hasClass("targetItem")) {
+        typeClass = "targetItem";
+    }
+    else if (item.hasClass("templateItem")) {
+        typeClass = "templateItem";
+    }
+    else
+        typeClass = "";
+    return typeClass;
 }

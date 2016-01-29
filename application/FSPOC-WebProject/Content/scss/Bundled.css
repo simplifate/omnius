@@ -659,6 +659,12 @@ body.tapestryModule #upperPanel {
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryItem.highlighted {
       background-color: #84c441;
       color: #425b33; }
+  body.tapestryModule #upperPanel #controlButtonArea {
+    position: absolute;
+    left: 810px;
+    top: 39px; }
+    body.tapestryModule #upperPanel #controlButtonArea button {
+      height: 38px; }
 
 body.tapestryModule #lowerPanel {
   top: 432px;
@@ -921,6 +927,10 @@ body.tapestryModule #lowerPanel {
               color: black; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
+
+body.tapestryModule .highlightedRow {
+  background-color: #49c3f1 !important;
+  color: white !important; }
 
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryArea {

@@ -14,6 +14,12 @@
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
     <div id="upperPanelHistoryButton" class="tapestryUpperPanelButton">Historie</div>
     <div id="upperPanelLibrariesButton" class="tapestryUpperPanelButton highlighted">Knihovny</div>
+    <div id="controlButtonArea">
+        <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
+        <button id="btnSave" class="btn-omnius-rectangular">Save</button>
+        <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
+        <button id="btnHistory" class="btn-omnius-rectangular">History</button>
+    </div>
     <div id="tapestryLibraryArea">
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Akce</div>
@@ -83,38 +89,38 @@
         <ul class="tapestryToolbox">
             <li class="toolboxCategoryHeader_Symbols"><span class="toolboxCategoryLabel">Symboly</span></li>
             <li class="symbolToolboxSpace">
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;"/>
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
+                <img class="toolboxSymbol" symbolType="circle-single" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;"/>
+                <img class="toolboxSymbol" symbolType="circle-double" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-thick" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-single-dashed" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
+                <img class="toolboxSymbol" symbolType="circle-souble-dashed" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
+                <img class="toolboxSymbol" symbolType="gateway-plus" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
+                <img class="toolboxSymbol" symbolType="gateway-x" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
+                <img class="toolboxSymbol" symbolType="gateway-circle" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
+                <img class="toolboxSymbol" symbolType="gateway-pentagon" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="page" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="database" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
+                <img class="toolboxSymbol" symbolType="comment" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
             </li>
             <li class="toolboxCategoryHeader_Actions"><span class="toolboxCategoryLabel">Akce</span></li>
-            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Validate</div></li>
-            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Create</div></li>
+            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Validate</span></div></li>
+            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Create</span></div></li>
             <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Name</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Title</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Description</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Category</div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Name</span></div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Title</span></div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Description</span></div></li>
+            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Category</span></div></li>
             <li class="toolboxCategoryHeader_UI"><span class="toolboxCategoryLabel">UI komponenty</span></li>
-            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Textbox</div></li>
-            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Button</div></li>
+            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem"><span class="itemLabel">Textbox</span></div></li>
+            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem"><span class="itemLabel">Button</span></div></li>
             <li class="toolboxCategoryHeader_Roles"><span class="toolboxCategoryLabel">Role</span></li>
-            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_admin</div></li>
-            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_key_user</div></li>
+            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_admin</span></div></li>
+            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_key_user</span></div></li>
             <li class="toolboxCategoryHeader_States"><span class="toolboxCategoryLabel">Stavy</span></li>
             <li class="toolboxCategoryHeader_Targets"><span class="toolboxCategoryLabel">Cíle</span></li>
-            <li class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem">Detail Rezervace</div></li>
+            <li class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem"><span class="itemLabel">Detail Rezervace</span></div></li>
             <li class="toolboxCategoryHeader_Templates"><span class="toolboxCategoryLabel">Šablony</span></li>
-            <li class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem">Založení Rezervace</div></li>
+            <li class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">Založení Rezervace</span></div></li>
         </ul>
     </div>
     <div id="tapestryLeftBarBackground"></div>
@@ -156,12 +162,12 @@
                                     </div>
                                 </div>
                                 <div class="swimlaneContentArea">
-                                    <img id="wfItem1" class="symbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
+                                    <img id="wfItem1" class="symbol" symbolType="circle-single" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
                                     <div id="wfItem2" class="item actionItem" style="left: 145px; top: 60px;">
-                                        Create
+                                        <span class="itemLabel">Create</span>
                                         <img id="wfItem6" class="subSymbol" src="~/Content/images/TapestryIcons/small-message-double-circle.png" style="left: 15px; top: 45px;" />
                                     </div>
-                                    <img id="wfItem5" class="symbol" src="~/Content/images/TapestryIcons/orange-port-arrow.png" style="left: 526px; top: 68px;" />
+                                    <img id="wfItem5" class="symbol" symbolType="port-arrow" src="~/Content/images/TapestryIcons/port-arrow.png" style="left: 526px; top: 68px;" />
                                 </div>
                             </div>
                             <div class="swimlane">
@@ -170,10 +176,10 @@
                                 </div>
                                 <div class="swimlaneContentArea">
                                     <div id="wfItem3" class="item templateItem" style="left: 145px; top: 60px;">
-                                        Založení rezervace
+                                        <span class="itemLabel">Založení rezervace</span>
                                         <div id="wfItem7" class="subSymbolCounterpart" style="left: 30px; top: -2px;"></div>
                                     </div>
-                                    <img id="wfItem4" class="symbol" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
+                                    <img id="wfItem4" class="symbol" symbolType="circle-filled" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
                                 </div>
                             </div>
                         </div>
@@ -182,4 +188,32 @@
             </div>
         </div>
     </div>
+</div>
+<input type="hidden" id="currentAppId" value="1" />
+<input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
+<input type="hidden" id="associatedTableId" value="1" />
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
+<div id="history-dialog" title="Load from history">
+    <table id="commit-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="save-dialog" title="Save block">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
 </div>

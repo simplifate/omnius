@@ -1,74 +1,22 @@
 ﻿function SaveBlock(commitMessage) {
-    ruleArray = [];
+    resourceRulesArray = [];
+    workflowRulesArray = [];
     portTargetsArray = [];
     saveId = 0;
-    $("#rulesPanel .rule").each(function (ruleIndex, ruleDiv) {
+    $("#assignResourcesPanel .resourceRule").each(function (ruleIndex, ruleDiv) {
         itemArray = [];
-        operatorArray = [];
         connectionArray = [];
         currentRule = $(ruleDiv);
         currentRule.find(".item").each(function (itemIndex, itemDiv) {
-            propertyArray = [];
             currentItem = $(itemDiv);
             currentItem.attr("saveId", saveId);
             saveId++;
-            typeClass = "";
-            if (currentItem.hasClass("attribute")) {
-                typeClass = "attribute";
-            }
-            else if (currentItem.hasClass("port")) {
-                typeClass = "port";
-            }
-            else if (currentItem.hasClass("role")) {
-                typeClass = "role";
-            }
-            else if (currentItem.hasClass("view")) {
-                typeClass = "view";
-            }
-            else if (currentItem.hasClass("action")) {
-                typeClass = "action";
-            }
-            else if (currentItem.hasClass("state")) {
-                typeClass = "state";
-            }
-            if (typeClass == "port") {
-                portId = currentItem.data("portId");
-                if (portId) {
-                    portTargetsArray.push(portId);
-                    propertyArray.push({
-                        Name: "PortId",
-                        Value: portId
-                    });
-                }
-            }
             itemArray.push({
                 Id: currentItem.attr("saveId"),
                 Label: currentItem.text(),
-                TypeClass: typeClass,
-                IsDataSource: currentItem.hasClass("dataSource"),
-                DialogType: currentItem.attr("dialogType"),
+                TypeClass: GetItemTypeClass(currentItem),
                 PositionX: parseInt(currentItem.css("left")),
-                PositionY: parseInt(currentItem.css("top")),
-                Properties: propertyArray
-            });
-        });
-        currentRule.find(".operatorSymbol").each(function (operatorIndex, operatorDiv) {
-            currentOperator = $(operatorDiv);
-            currentOperator.attr("saveId", saveId);
-            saveId++;
-            operatorType = "";
-            if (currentOperator.hasClass("decisionRhombus")) {
-                operatorType = "decision";
-            }
-            else if (currentOperator.hasClass("conditionEllipse")) {
-                operatorType = "condition";
-            }
-            operatorArray.push({
-                Id: currentOperator.attr("saveId"),
-                Type: operatorType,
-                DialogType: currentOperator.attr("dialogType"),
-                PositionX: parseInt(currentOperator.css("left")),
-                PositionY: parseInt(currentOperator.css("top"))
+                PositionY: parseInt(currentItem.css("top"))
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");
@@ -77,38 +25,110 @@
             currentConnection = jsPlumbConnections[i];
             sourceDiv = $(currentConnection.source);
             targetDiv = $(currentConnection.target);
-            sourceEndpointUuid = currentConnection.endpoints[0].getUuid();
-            if (sourceEndpointUuid.match("BottomCenter$"))
-                sourceSlot = 1;
-            else
-                sourceSlot = 0;
             connectionArray.push({
                 Source: sourceDiv.attr("saveId"),
+                SourceType: 0,
+                SourceSlot: 0,
                 Target: targetDiv.attr("saveId"),
-                SourceSlot: sourceSlot
+                TargetType: 0,
+                TargetSlot: 0
             });
         }
-        ruleArray.push({
-            Name: currentRule.find(".ruleHeader").text(),
+        resourceRulesArray.push({
+            Id: ruleIndex,
             Width: parseInt(currentRule.css("width")),
             Height: parseInt(currentRule.css("height")),
             PositionX: parseInt(currentRule.css("left")),
             PositionY: parseInt(currentRule.css("top")),
-            Items: itemArray,
-            Operators: operatorArray,
+            ResourceItems: itemArray,
             Connections: connectionArray
         });
     });
-
+    $("#workflowRulesPanel .workflowRule").each(function (ruleIndex, ruleDiv) {
+        swimlanesArray = [];
+        currentRule = $(ruleDiv);
+        currentRule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
+            currentSwimlane = $(swimlaneDiv);
+            currentSwimlane.attr("swimlaneIndex", swimlaneIndex);
+            rolesArray = [];
+            itemArray = [];
+            symbolArray = [];
+            connectionArray = [];
+            currentSwimlane.find(".swimlaneRolesArea .roleItem").each(function (roleIndex, roleDiv) {
+                rolesArray.push($(roleDiv).text());
+            });
+            currentSwimlane.find(".item").each(function (itemIndex, itemDiv) {
+                currentItem = $(itemDiv);
+                currentItem.attr("saveId", saveId);
+                saveId++;
+                itemArray.push({
+                    Id: currentItem.attr("saveId"),
+                    Label: currentItem.find(".itemLabel").text(),
+                    TypeClass: GetItemTypeClass(currentItem),
+                    DialogType: currentItem.attr("dialogType"),
+                    PositionX: parseInt(currentItem.css("left")),
+                    PositionY: parseInt(currentItem.css("top"))
+                });
+            });
+            currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
+                currentSymbol = $(symbolDiv);
+                currentSymbol.attr("saveId", saveId);
+                saveId++;
+                symbolArray.push({
+                    Id: currentSymbol.attr("saveId"),
+                    Label: currentSymbol.find(".itemLabel").text(),
+                    Type: currentSymbol.attr("symbolType"),
+                    DialogType: currentSymbol.attr("dialogType"),
+                    PositionX: parseInt(currentSymbol.css("left")),
+                    PositionY: parseInt(currentSymbol.css("top"))
+                });
+            });
+            swimlanesArray.push({
+                SwimlaneIndex: swimlaneIndex,
+                Height: parseInt(currentSwimlane.css("height")),
+                Roles: rolesArray,
+                WorkflowItems: itemArray,
+                WorkflowSymbols: symbolArray
+            });
+        });
+        currentInstance = currentRule.data("jsPlumbInstance");
+        jsPlumbConnections = currentInstance.getAllConnections();
+        for (i = 0; i < jsPlumbConnections.length; i++) {
+            currentConnection = jsPlumbConnections[i];
+            sourceDiv = $(currentConnection.source);
+            targetDiv = $(currentConnection.target);
+            if (!sourceDiv.hasClass("subSymbol")) {
+                connectionArray.push({
+                    Source: sourceDiv.attr("saveId"),
+                    SourceType: sourceDiv.hasClass("symbol") ? 1 : 0,
+                    SourceSlot: 0,
+                    Target: targetDiv.attr("saveId"),
+                    TargetType: targetDiv.hasClass("symbol") ? 1 : 0,
+                    TargetSlot: 0
+                });
+            }
+        }
+        workflowRulesArray.push({
+            Id: ruleIndex,
+            Name: currentRule.find(".workflowRuleHeader .vericalLabel").text(),
+            Width: parseInt(currentRule.css("width")),
+            Height: parseInt(currentRule.css("height")),
+            PositionX: parseInt(currentRule.css("left")),
+            PositionY: parseInt(currentRule.css("top")),
+            Swimlanes: swimlanesArray,
+            Connections: connectionArray
+        });
+    });
     postData = {
         CommitMessage: commitMessage,
-        Name: $("#headerBlockName").text(),
-        AssociatedTableName: $("#headerTableName").text(),
-        AssociatedTableId: $("#associatedTableId").val(),
-        Rules: ruleArray,
+        Name: $("#blockHeaderBlockName").text(),
+        AssociatedTableName: "",
+        AssociatedTableId: 0,
+        ResourceRules: resourceRulesArray,
+        WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
         ParentMetablockId: $("#parentMetablockId").val()
-    }
+    }    
     appId = $("#currentAppId").val();
     blockId = $("#currentBlockId").val();
     $.ajax({
