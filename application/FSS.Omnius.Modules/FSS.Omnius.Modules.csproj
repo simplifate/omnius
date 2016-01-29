@@ -412,6 +412,10 @@
     <Compile Include="Migrations\201601291108499_update tapestry designer models.Designer.cs">
       <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601291246147_pageOldRelation.cs" />
+    <Compile Include="Migrations\201601291246147_pageOldRelation.Designer.cs">
+      <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -618,6 +622,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601291108499_update tapestry designer models.resx">
       <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291246147_pageOldRelation.resx">
+      <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -20,8 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             Color = 0;
             Icon = "fa-question";
             TitleFontSize = 20;
-
-            Pages = new HashSet<Page>();
+            
             WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
@@ -48,9 +47,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         [StringLength(100)]
         public string DisplayName { get; set; } // Used by Entitron
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Page> Pages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }

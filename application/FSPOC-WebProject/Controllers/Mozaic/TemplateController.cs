@@ -40,7 +40,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Create(Template model, int cat, int pages)
+        public ActionResult Create(Template model, int cat)
         {
             DBEntities e = new DBEntities();
             foreach (Template t in e.Templates)
@@ -54,9 +54,6 @@ namespace FSS.Omnius.Controllers.Mozaic
             TemplateCategory tempCategory =  e.TemplateCategories.SingleOrDefault(x => x.Id == cat);
             model.CategoryId = cat;
             model.Category = tempCategory;
-
-            Page p = e.Pages.SingleOrDefault(x => x.Id == pages);
-            model.Pages.Add(p);
 
             e.Templates.Add(model);
             e.SaveChanges();
@@ -76,7 +73,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Update(Template model, int cat, int pages)
+        public ActionResult Update(Template model, int cat)
         {
             DBEntities e = new DBEntities();
             Template temp = e.Templates.SingleOrDefault(x => x.Id == model.Id);
@@ -92,9 +89,6 @@ namespace FSS.Omnius.Controllers.Mozaic
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == cat);
             model.CategoryId = cat;
             model.Category = tempCategory;
-
-            Page p = e.Pages.SingleOrDefault(x => x.Id == pages);
-            model.Pages.Add(p);
 
             e.Templates.AddOrUpdate(temp, model);
             e.SaveChanges();
