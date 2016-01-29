@@ -43,6 +43,7 @@ namespace FSPOC_WebProject
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/OmniusScripts")
+                .IncludeDirectory("~/Scripts/CORE", "*.js")
                 .IncludeDirectory("~/Scripts/Tapestry", "*.js")
                 .IncludeDirectory("~/Scripts/Overview", "*.js")
                 .IncludeDirectory("~/Scripts/Portal", "*.js")

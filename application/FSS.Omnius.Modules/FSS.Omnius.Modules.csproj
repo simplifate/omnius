@@ -404,6 +404,10 @@
     <Compile Include="Migrations\201601271825013_dropPages.Designer.cs">
       <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601291003556_logout.cs" />
+    <Compile Include="Migrations\201601291003556_logout.Designer.cs">
+      <DependentUpon>201601291003556_logout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -604,6 +608,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601271825013_dropPages.resx">
       <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291003556_logout.resx">
+      <DependentUpon>201601291003556_logout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
