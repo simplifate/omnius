@@ -28,6 +28,11 @@ namespace FSS.Omnius.Modules.Persona
             _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
         }
 
+        public int getLoggedCount()
+        {
+            return _CORE.Entitron.GetStaticTables().Users.Where(u => u.LastLogout == null).Count();
+        }
+
         public User getUser(string username)
         {
             if (_CORE.User != null)
