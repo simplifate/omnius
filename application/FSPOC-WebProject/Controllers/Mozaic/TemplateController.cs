@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
-namespace FSPOC_WebProject.Controllers.Mozaic
+namespace FSS.Omnius.Controllers.Mozaic
 {
     [PersonaAuthorize(Roles = "Admin", Module = "Mozaic")]
     public class TemplateController : Controller

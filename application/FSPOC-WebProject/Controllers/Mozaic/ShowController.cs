@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers.Mozaic
+namespace FSS.Omnius.Controllers.Mozaic
 {
     [PersonaAuthorize]
     public class ShowController : Controller
@@ -18,7 +18,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         public string Index(string appName, int blockId = -1, int modelId = -1)
         {
             // init
-            CORE core = new CORE();
+            Modules.CORE.CORE core = new Modules.CORE.CORE();
             core.Entitron.AppName = appName;
             core.User = User.GetLogged();
             DBEntities e = core.Entitron.GetStaticTables();
@@ -35,7 +35,8 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             block.Run(results);
 
             // show 
-            return block.MozaicPage.MasterTemplate.Html;
+            return block.MozaicPage.ViewContent;
+            //return block.MozaicPage.MasterTemplate.Html;
         }
     }
 }

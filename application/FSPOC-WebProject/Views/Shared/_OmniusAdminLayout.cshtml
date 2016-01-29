@@ -10,6 +10,7 @@
     @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
+    @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = User.GetLogged().ModuleAccessPermission; }
 </head>
 <body class="@Page.ModuleClass">
     @Scripts.Render("~/bundles/jquery")
@@ -32,19 +33,49 @@
     <div id="leftBarArea"></div>
     <div id="leftBar">
         <ul class="leftMenu">
-            <li id="adminMenuPortal"><a href="/CORE/Portal">Centrální administrace</a></li>
-            <li id="identitySuperMenu" class="expandable">Identity management</li>
-            <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Přístup k aplikacím</a></li>
-            <li id="adminMenuPersonaModules" class="subMenu identitySubMenu"><a href="/Persona/Modules">Přístup k modulům</a></li>
-            <li id="adminMenuApps"><a href="/CORE/Portal/Applications">Správa aplikací</a></li>
-            <li id="adminMenuNexus"><a href="/Nexus/LDAP">Integrace</a></li>
-            <li id="appSuperMenu" class="expandable">Vytvoření aplikace</li>
-            <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Návrh workflow</a></li>
-            <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Datové struktury</a></li>
-            <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/TemplateCategory">Návrh UI</a></li>
-            <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
+            @if (map.Core)
+            {
+                <li id="adminMenuPortal"><a href="/CORE/Portal">Centrální administrace</a></li>
+            }
+            @if (map.Persona)
+            {
+                <li id="identitySuperMenu" class="expandable">Identity management</li>
+                <li id="adminMenuPersona" class="subMenu identitySubMenu"><a href="/Persona/Rights">Přístup k aplikacím</a></li>
+                <li id="adminMenuPersonaModules" class="subMenu identitySubMenu"><a href="/Persona/Modules">Přístup k modulům</a></li>
+            }
+            @if (map.Master)
+            {
+                <li id="adminMenuApps"><a href="/Master/AppAdminManager">Správa aplikací</a></li>
+            }
+            @if (map.Nexus)
+            {
+                <li id="adminMenuNexus"><a href="/Nexus/LDAP">Integrace</a></li>
+            }
+            @if (map.Tapestry || map.Entitron || map.Mozaic)
+            {
+                <li id="appSuperMenu" class="expandable">Vytvoření aplikace</li>
+                if (map.Tapestry)
+                {
+                    <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Návrh workflow</a></li>
+                }
+                if (map.Entitron)
+                {
+                    <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Datové struktury</a></li>
+                }
+                if (map.Mozaic)
+                {
+                    <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/TemplateCategory">Návrh UI</a></li>
+                }
+            }
+            @if (map.Hermes)
+            {
+                <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
+            }
             <li>Asynchronní úlohy</li>
-            <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>
+            @if (map.Watchtower)
+            {
+                <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>
+            }
             <li>Analytický modul</li>
             <li>Vyhledávání</li>
             <li>Bezpečnost</li>

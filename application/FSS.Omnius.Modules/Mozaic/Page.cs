@@ -11,11 +11,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     public partial class Page
     {
-        public string Render(ActionResultCollection results, DBEntities entity)
-        {
-            return entity.Templates.FirstOrDefault(t => t.Id == MasterTemplateId)
-                .Render(this, parseKeyValueString(Relations), results, entity);
-        }
+        //public string Render(ActionResultCollection results, DBEntities entity)
+        //{
+        //    return entity.Templates.FirstOrDefault(t => t.Id == MasterTemplateId)
+        //        .Render(this, parseKeyValueString(Relations), results, entity);
+        //}
         private Dictionary<string, string> parseKeyValueString(string value, char relationSeparator = ';', char keyValueSeparator = '=')
         {
             Dictionary<string, string> output = new Dictionary<string, string>();

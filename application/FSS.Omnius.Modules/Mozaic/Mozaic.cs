@@ -21,18 +21,18 @@ namespace FSS.Omnius.Modules.Mozaic
             _CORE = core;
         }
 
-        public string Render(int pageId, ActionResultCollection results)
-        {
-            Page page = _CORE.Entitron.GetStaticTables().Pages.FirstOrDefault(p => p.Id == pageId);
+        //public string Render(int pageId, ActionResultCollection results)
+        //{
+        //    Page page = _CORE.Entitron.GetStaticTables().Pages.FirstOrDefault(p => p.Id == pageId);
 
-            return Render(page, results);
-        }
-        public string Render(Page page, ActionResultCollection results)
-        {
-            if (page == null)
-                return "Page not found";
+        //    return Render(page, results);
+        //}
+        //public string Render(Page page, ActionResultCollection results)
+        //{
+        //    if (page == null)
+        //        return "Page not found";
 
-            return page.Render(results, _CORE.Entitron.GetStaticTables());
-        }
+        //    return page.Render(results, _CORE.Entitron.GetStaticTables());
+        //}
     }
 }

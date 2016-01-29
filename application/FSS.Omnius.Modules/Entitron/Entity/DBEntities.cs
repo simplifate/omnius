@@ -116,10 +116,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // Master
 
             // Mozaic
-            modelBuilder.Entity<Application>()
-                .HasMany<Page>(e => e.Pages)
-                .WithRequired(e => e.Application)
-                .HasForeignKey(e => e.ApplicationId);
+            //modelBuilder.Entity<Application>()
+            //    .HasMany<Page>(e => e.Pages);
+            //    .WithRequired(e => e.Application);
             
             modelBuilder.Entity<Page>()
                 .HasMany<Block>(e => e.Blocks)
@@ -131,10 +130,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.Css)
                 .Map(m => m.ToTable("Mozaic_CssPages").MapLeftKey("CssId").MapRightKey("PageId"));
 
-            modelBuilder.Entity<Template>()
-                .HasMany<Page>(e => e.Pages)
-                .WithRequired(e => e.MasterTemplate)
-                .HasForeignKey(e => e.MasterTemplateId);
+ //           modelBuilder.Entity<Template>()
+ //               .HasMany<Page>(e => e.Pages);
+ ////               .WithRequired(e => e.MasterTemplate);
 
             modelBuilder.Entity<TemplateCategory>()
                 .HasMany<Template>(e => e.Templates)
