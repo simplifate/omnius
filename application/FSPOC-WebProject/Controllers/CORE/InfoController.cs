@@ -21,5 +21,25 @@ namespace FSS.Omnius.Controllers.CORE
             Response.Write("User name: ");
             Response.Write(User.Identity.Name + "<br/>");
         }
+
+        public bool Leave()
+        {
+            Modules.CORE.CORE core = new Modules.CORE.CORE();
+
+            core.Persona.getUser(User.Identity.Name).LastLogout = null;
+            core.Entitron.GetStaticTables().SaveChanges();
+
+            return true;
+        }
+
+        public bool LogOut()
+        {
+            Modules.CORE.CORE core = new Modules.CORE.CORE();
+
+            core.Persona.getUser(User.Identity.Name).LastLogout = DateTime.UtcNow;
+            core.Entitron.GetStaticTables().SaveChanges();
+
+            return true;
+        }
     }
 }

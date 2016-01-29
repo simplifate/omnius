@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FSPOC_WebProject.Controllers.Mozaic
+namespace FSS.Omnius.Controllers.Mozaic
 {
     [PersonaAuthorize(Roles = "Admin", Module = "Mozaic")]
     public class PageController : Controller

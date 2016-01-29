@@ -1,0 +1,13 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+
+@{
+    Page.Title = "Omnius Mozaic";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicComponentManagerModule";
+}
+
+@Html.Partial("~/Views/Mozaic/UpperPanel.cshtml");
+
+<p>CAU</p>

@@ -1,4 +1,7 @@
 ﻿using FSPOC_WebProject.Views;
+using FSS.Omnius.Controllers.CORE;
+using System;
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -20,6 +23,35 @@ namespace FSPOC_WebProject
             FilterConfig       .RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig        .RegisterRoutes(RouteTable.Routes);
             BundleConfig       .RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_EndRequest()
+        {
+            // error
+            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode))
+            {
+                Response.Clear();
+
+                var rd = new RouteData();
+                rd.DataTokens["area"] = "AreaName"; // In case controller is in another area
+                rd.Values["controller"] = "Error";
+
+                switch (Context.Response.StatusCode)
+                {
+                    case 403:
+                        rd.Values["action"] = "UserNotAuthorized";
+                        break;
+                    case 404:
+                        rd.Values["action"] = "PageNotFound";
+                        break;
+                    case 500:
+                        rd.Values["action"] = "InternalServerError";
+                        break;
+                }
+
+                IController c = new ErrorController();
+                c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
+            }
         }
     }
 }
