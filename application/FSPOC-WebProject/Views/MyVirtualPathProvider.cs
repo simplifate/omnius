@@ -57,16 +57,26 @@ namespace FSPOC_WebProject.Views
 
             return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
         }
-
+        //zde budou rozřazeny pohledy vzniklé v mozaiku od ostatních 
         private Page GetViewFromDatabase(string virtualPath)
         {
             virtualPath = virtualPath.Replace("~", "");
 
-            DBEntities db = new DBEntities();
-            var view = from v in db.Pages
-                       where v.ViewPath == virtualPath
-                       select v;
-            return view.SingleOrDefault();
+            //je zde zatím nějaká blbost
+            //je to protože zatím není známo jaký rozlišovacími znaky budou mít pohledy z mozaicu
+            if (virtualPath.StartsWith("kjhdaskd"))
+            {
+                DBEntities db = new DBEntities();
+                //var view = from v in db.Pages
+                //where v.ViewPath == virtualPath
+                //select v;
+                var view = db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);
+                return view;
+            }
+            else
+            {
+                return null;
+            }            
         }
     }
 }

@@ -12,8 +12,7 @@ namespace FSPOC_WebProject.Views
     {
         private byte[] viewContent;
 
-        public MyVirtualFile(string virtualPath,
-           byte[] viewContent) : base(virtualPath)
+        public MyVirtualFile(string virtualPath, byte[] viewContent) : base(virtualPath)
     {
             this.viewContent = viewContent;
         }
