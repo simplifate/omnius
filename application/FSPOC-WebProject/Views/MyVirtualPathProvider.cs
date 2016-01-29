@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,21 +45,18 @@ namespace FSPOC_WebProject.Views
             }
         }
 
-        //public override CacheDependency GetCacheDependency
-        // (string virtualPath, Enumerable virtualPathDependencies,
-        //  DateTime utcStart)
-        //{
+        public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
+        {
 
-        //    var view = GetViewFromDatabase(virtualPath);
+            var view = GetViewFromDatabase(virtualPath);
 
-        //    if (view != null)
-        //    {
-        //        return null;
-        //    }
+            if (view != null)
+            {
+                return null;
+            }
 
-        //    return Previous.GetCacheDependency(virtualPath,
-        //       virtualPathDependencies, utcStart);
-        //}
+            return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
+        }
 
         private Page GetViewFromDatabase(string virtualPath)
         {
