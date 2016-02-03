@@ -62,16 +62,12 @@ namespace FSPOC_WebProject.Views
         {
             virtualPath = virtualPath.Replace("~", "");
 
-            //je zde zatím nějaká blbost
-            //je to protože zatím není známo jaký rozlišovacími znaky budou mít pohledy z mozaicu
+            // ve startwith je zatím nějaká blbost 
+            //je to protože zatím není známo jaký rozlišovací cestu budou mít pohledy z mozaicu
             if (virtualPath.StartsWith("kjhdaskd"))
             {
                 DBEntities db = new DBEntities();
-                //var view = from v in db.Pages
-                //where v.ViewPath == virtualPath
-                //select v;
-                var view = db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);
-                return view;
+                return db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);
             }
             else
             {

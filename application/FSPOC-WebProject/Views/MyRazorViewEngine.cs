@@ -69,10 +69,9 @@ namespace FSPOC_WebProject.Views
         {
             var nameSpace = controllerContext.Controller.GetType().Namespace;
             nameSpace = nameSpace.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Last();
-            string pathMaster = masterPath.Replace("%1", nameSpace);
             string pathView = viewPath.Replace("%1", nameSpace);
 
-            return base.CreateView(controllerContext, pathView, pathMaster);
+            return base.CreateView(controllerContext, pathView, masterPath);
         }
 
         protected override bool FileExists(ControllerContext controllerContext, string virtualPath)
@@ -133,10 +132,9 @@ namespace FSPOC_WebProject.Views
         {
             var nameSpace = controllerContext.Controller.GetType().Namespace;
             nameSpace = nameSpace.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Last();
-            string pathMaster = masterPath.Replace("%1", nameSpace);
             string pathView = viewPath.Replace("%1", nameSpace);
 
-            return base.CreateView(controllerContext, pathView, pathMaster);
+            return base.CreateView(controllerContext, pathView, masterPath);
         }
 
         protected override bool FileExists(ControllerContext controllerContext, string virtualPath)
