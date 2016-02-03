@@ -1,13 +1,28 @@
-﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
-@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css>
-@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css
 
-@{
-    Page.Title = "Omnius Mozaic";
-    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
-    Page.ModuleClass = "mozaicComponentManagerModule";
-}
-
-@Html.Partial("~/Views/Mozaic/UpperPanel.cshtml");
-
-<p>CAU</p>
+<div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Název
+            </label>
+        </div>
+        <div>
+            <p>@Model.Name</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">
+                Obsah
+            </label>
+        </div>
+        <div>
+            <p>
+                <pre>
+@Model.Value
+                </pre>
+            </p>
+        </div>
+    </div>
+</div> 

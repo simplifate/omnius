@@ -66,6 +66,7 @@ namespace FSS.Omnius.Controllers.Mozaic
             List<string> categories= new List<string>();
             categories = e.TemplateCategories.Select(x => x.Name).ToList();
             categories.Add("");
+
             List<string> children = new List<string>();
             children = tempCategory.Children.Select(x => x.Name).ToList();
             children.Add("");

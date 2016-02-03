@@ -1,17 +1,50 @@
-﻿@{
-    Layout = null;
-}
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css
 
-<!DOCTYPE html>
+<script type="text/javascript">
+    $('#addChildren').onclick(function () {
+        $('#children').clone(true);
+    })
+</script>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+@using (Html.BeginForm("Update", "Css", FormMethod.Post))
+{
+    <div style="background-color: yellow" class="form-group col-sm-8">
+        <div>
+            <label class="control-label col-sm-2">
+                Název
+            </label>
+        </div>
+        <div class="col-sm-6">
+            @Html.TextBoxFor(x => x.Name)
+        </div>
     </div>
-</body>
-</html>
+    <div class="form-group col-sm-8" style="background-color: black">
+        <div style="background-color: red">
+            <label class="control-label">
+                Upravit soubor
+            </label>
+        </div>
+    </div>
+
+    <div style="background-color: red; display:inline">
+        @Html.TextArea("EditCss", (string)ViewBag.CssValue, new { style = "width: 200px; height: 100px;" })
+    </div>
+
+    <div class="form-group col-sm-12" style="background-color: blue">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-1">
+            <button id="removeChild" class="btn btn-danger">Odebrat</button>
+        </div>
+        <div class="col-sm-1">
+            <label>Přidat</label>
+        </div>
+        <div id="children" class="col-sm-3">
+        </div>
+    </div>
+
+    <div class="col-sm-8">
+        <button type="submit" class="btn btn-primary">Uložit</button>
+        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+    </div>
+}

@@ -1481,6 +1481,7 @@
     <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />
     <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
     <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Mozaic\Css\Update.cshtml" />
     <!-->>>>>>> f0535bb54521d8115aaa03fbc30328c6a33d580b-->
   </ItemGroup>
   <ItemGroup>
