@@ -35,10 +35,16 @@ namespace FSS.Omnius.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
             Css css = e.Css.SingleOrDefault(x => x.Id == id);
+            
+            return SetUpdateCss(css);
+        }
+        
+        public ActionResult SetUpdateCss(Css css)
+        {
 
             ViewBag.CssValue = css.Value;
-            
-            return View(css);
+
+            return View("Update", css);
         }
 
         // Save updates
@@ -47,35 +53,15 @@ namespace FSS.Omnius.Controllers.Mozaic
         public ActionResult Update(Css model)
         {
             DBEntities e = new DBEntities();
-            try
-            {
-                //document.getElementById("myTextarea").value = "Fifth Avenue, New York City";
-                model.Value = Request.Form["EditCss"];
 
-                e.Css.AddOrUpdate(model);
-                e.SaveChanges();
-            }
-            catch (DbEntityValidationException message)
-            {
-                foreach (var eve in message.EntityValidationErrors)
-                {
-                    string errorMessageG = "Entity of type " + eve.Entry.Entity.GetType().Name.ToString() + " in state "
-                        + eve.Entry.State.ToString() + " has the following validation errors:";
-                    Console.WriteLine(errorMessageG);
+            //document.getElementById("myTextarea").value = "Fifth Avenue, New York City";
+            model.Value = Request.Form["EditCss"];
 
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        string errorMessage = 
-                        "- Property: "+ ve.PropertyName.ToString() + " , Error: " + ve.ErrorMessage.ToString();
-
-                        Console.WriteLine(errorMessage);
-                    }
-                }
-                throw;
-            }
+            e.Css.AddOrUpdate(model);
+            e.SaveChanges();
 
             return RedirectToAction("Index");
-        } 
+        }
         #endregion
 
         public ActionResult Delete(int id)
@@ -87,6 +73,17 @@ namespace FSS.Omnius.Controllers.Mozaic
             e.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        //Create is like Update - but it is not taking CSS file from DB, it creates new
+        
+        public ActionResult Create()
+        {
+            Css newCss = new Css();
+            newCss.Name = "New CSS";
+            newCss.Value = "";
+
+            return SetUpdateCss(newCss);
         }
     }
 }
