@@ -3,7 +3,7 @@
     workflowRulesArray = [];
     portTargetsArray = [];
     saveId = 0;
-    $("#assignResourcesPanel .resourceRule").each(function (ruleIndex, ruleDiv) {
+    $("#resourceRulesPanel .resourceRule").each(function (ruleIndex, ruleDiv) {
         itemArray = [];
         connectionArray = [];
         currentRule = $(ruleDiv);
@@ -97,11 +97,16 @@
             currentConnection = jsPlumbConnections[i];
             sourceDiv = $(currentConnection.source);
             targetDiv = $(currentConnection.target);
+            sourceEndpointUuid = currentConnection.endpoints[0].getUuid();
+            if (sourceEndpointUuid.match("BottomCenter$"))
+                sourceSlot = 1;
+            else
+                sourceSlot = 0;
             if (!sourceDiv.hasClass("subSymbol")) {
                 connectionArray.push({
                     Source: sourceDiv.attr("saveId"),
                     SourceType: sourceDiv.hasClass("symbol") ? 1 : 0,
-                    SourceSlot: 0,
+                    SourceSlot: sourceSlot,
                     Target: targetDiv.attr("saveId"),
                     TargetType: targetDiv.hasClass("symbol") ? 1 : 0,
                     TargetSlot: 0
@@ -110,7 +115,7 @@
         }
         workflowRulesArray.push({
             Id: ruleIndex,
-            Name: currentRule.find(".workflowRuleHeader .vericalLabel").text(),
+            Name: currentRule.find(".workflowRuleHeader .verticalLabel").text(),
             Width: parseInt(currentRule.css("width")),
             Height: parseInt(currentRule.css("height")),
             PositionX: parseInt(currentRule.css("left")),

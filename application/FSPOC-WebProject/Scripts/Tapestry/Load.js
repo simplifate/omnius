@@ -11,15 +11,51 @@
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {
-            $("#assignResourcesPanel .resourceRule").remove();
+            $("#resourceRulesPanel .resourceRule").remove();
             $("#workflowRulesPanel .workflowRule").remove();
+            $("#blockHeaderBlockName").text(data.Name);
             for (i = 0; i < data.ResourceRules.length; i++) {
                 currentRuleData = data.ResourceRules[i];
-                newRule = $('<div class="ruleItem resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
-                    +currentRuleData.PositionX+'px; top: '+currentRuleData.PositionY+'px;"></div>');
-                $("#assignResourcesPanel .scrollArea").append(newRule);
-                newRule.draggable({ containment: "#assignResourcesPanel" });
-                newRule.resizable();
+                newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
+                    + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
+                newRule.attr("id", AssingID());
+                $("#resourceRulesPanel .scrollArea").append(newRule);
+                newRule.draggable({
+                    containment: "parent",
+                    revert: function (event, ui) {
+                        return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
+                    }
+                });
+                newRule.resizable({
+                    start: function (event, ui) {
+                        rule = $(this);
+                        contentsWidth = 120;
+                        contentsHeight = 40;
+                        rule.find(".item").each(function (index, element) {
+                            rightEdge = $(element).position().left + $(element).width();
+                            if (rightEdge > contentsWidth)
+                                contentsWidth = rightEdge;
+                            bottomEdge = $(element).position().top + $(element).height();
+                            if (bottomEdge > contentsHeight)
+                                contentsHeight = bottomEdge;
+                        });
+                        rule.css("min-width", contentsWidth + 40);
+                        rule.css("min-height", contentsHeight + 20);
+
+                        limits = CheckRuleResizeLimits(rule, true);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    resize: function (event, ui) {
+                        rule = $(this);
+                        limits = CheckRuleResizeLimits(rule, true);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    stop: function (event, ui) {
+                        $(this).data("jsPlumbInstance").recalculateOffsets().repaintEverything();
+                    }
+                });
                 CreateJsPlumbInstanceForRule(newRule);
                 newRule.droppable({
                     containment: ".resourceRule",
@@ -35,8 +71,8 @@
                         leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
                         topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                         droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        droppedElement.draggable({ containment: "parent" });
                         ui.helper.remove();
+                        AddToJsPlumb(droppedElement);
                     }
                 });
                 for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
@@ -46,39 +82,94 @@
                         + currentItemData.Label + '</div>');
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
-                    newItem.draggable({
-                        containment: "parent",
-                        drag: function () {
-                            instance = $(this).parents(".resourceRule").data("jsPlumbInstance");
-                            instance.recalculateOffsets();
-                            instance.repaintEverything();
-                        }
-                    });
+                    AddToJsPlumb(newItem);
                 }
                 currentInstance = newRule.data("jsPlumbInstance");
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
                     currentInstance.connect({
-                        source: "resItem" + currentConnectionData.Source, target: "resItem" + currentConnectionData.Target,
-                        anchors: ["Continuous", "Continuous"], editable: false, connector: "Straight",
-                        paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' }}).removeAllOverlays();
+                        uuids: ["resItem" + currentConnectionData.Source + "RightMiddle"], target: "resItem" + currentConnectionData.Target
+                    });
                 }
             }
             for (i = 0; i < data.WorkflowRules.length; i++) {
                 currentRuleData = data.WorkflowRules[i];
-                newRule = $('<div id="wfRule1" class="ruleItem workflowRule" style="width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height
+                newRule = $('<div class="rule workflowRule" style="width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height
                     + 'px; left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"><div class="workflowRuleHeader">'
-                    + '<div class="vericalLabel">' + currentRuleData.Name + '</div></div><div class="swimlaneArea"><div class="swimlane">'
-                    + '<div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
-                + '<div class="swimlane"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div></div></div>');
-                $("#workflowRulesPanel").append(newRule);
-                newRule.draggable({ containment: "#workflowRulesPanel" });
-                newRule.resizable();
+                    + '<div class="verticalLabel" style="margin-top: 0px;">' + currentRuleData.Name + '</div></div><div class="swimlaneArea"></div></div>');
+                newRule.attr("id", AssingID());
+                $("#workflowRulesPanel .scrollArea").append(newRule);
+                newRule.draggable({
+                    containment: "parent",
+                    handle: ".workflowRuleHeader",
+                    revert: function (event, ui) {
+                        return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
+                    }
+                });
+                newRule.resizable({
+                    start: function (event, ui) {
+                        rule = $(this);
+                        contentsWidth = 120;
+                        contentsHeight = 40;
+                        rule.find(".item").each(function (index, element) {
+                            rightEdge = $(element).position().left + $(element).width();
+                            if (rightEdge > contentsWidth)
+                                contentsWidth = rightEdge;
+                            bottomEdge = $(element).position().top + $(element).height();
+                            if (bottomEdge > contentsHeight)
+                                contentsHeight = bottomEdge;
+                        });
+                        rule.css("min-width", contentsWidth + 40);
+                        rule.css("min-height", contentsHeight + 20);
+
+                        limits = CheckRuleResizeLimits(rule, false);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    resize: function (event, ui) {
+                        rule = $(this);
+                        instance = rule.data("jsPlumbInstance");
+                        instance.recalculateOffsets();
+                        instance.repaintEverything();
+                        limits = CheckRuleResizeLimits(rule, false);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    }
+                });
                 CreateJsPlumbInstanceForRule(newRule);
+                for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
+                    currentSwimlaneData = currentRuleData.Swimlanes[j];
+                    newSwimlane = $('<div class="swimlane" style="height: ' + (100/currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                        + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
+                    newRule.find(".swimlaneArea").append(newSwimlane);
+                    if (currentSwimlaneData.Roles.length > 0) {
+                        newSwimlane.find(".rolePlaceholder").remove();
+                        newSwimlane.find(".swimlaneRolesArea").append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
+                        currentItemData = currentSwimlaneData.WorkflowItems[k];
+                        newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                            + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
+                        newItem.addClass(currentItemData.TypeClass);
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newItem);
+                        AddToJsPlumb(newItem);
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowSymbols.length; k++) {
+                        currentSymbolData = currentSwimlaneData.WorkflowSymbols[k];
+                        newSymbol = $('<img id="wfSymbol' + currentSymbolData.Id + '" class="symbol" symbolType="' + currentSymbolData.Type +
+                            '" src="/Content/images/TapestryIcons/' + currentSymbolData.Type + '.png" style="left: ' + currentSymbolData.PositionX + 'px; top: '
+                            + currentSymbolData.PositionY + 'px;" />');
+                        if (currentSymbolData.Type == "circle-thick")
+                            newSymbol.attr("endpoints", "final");
+                        else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
+                            newSymbol.attr("endpoints", "gateway");
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newSymbol);
+                        AddToJsPlumb(newSymbol);
+                    }
+                }
                 newRule.find(".swimlaneRolesArea").droppable({
-                    containment: ".swimlaneContentArea",
                     tolerance: "touch",
                     accept: ".toolboxItem.roleItem",
                     greedy: true,
@@ -115,58 +206,20 @@
                             topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
                         }
                         droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        droppedElement.draggable({ containment: "parent" });
                         ui.helper.remove();
+                        AddToJsPlumb(droppedElement);
                     }
                 });
-                for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
-                    currentSwimlaneData = currentRuleData.Swimlanes[j];
-                    if (currentSwimlaneData.Roles.length > 0) {
-                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneRolesArea");
-                        targetSwimlane.find(".rolePlaceholder, .roleItem").remove();
-                        targetSwimlane.append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
-                    }
-                    for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
-                        currentItemData = currentSwimlaneData.WorkflowItems[k];
-                        newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
-                            + currentItemData.PositionY + 'px;">' + currentItemData.Label + '</div>');
-                        newItem.addClass(currentItemData.TypeClass);
-                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
-                        targetSwimlane.append(newItem);
-                        newItem.draggable({
-                            containment: "parent",
-                            drag: function () {
-                                instance = $(this).parents(".workflowRule").data("jsPlumbInstance");
-                                instance.recalculateOffsets();
-                                instance.repaintEverything();
-                            }
-                        });
-                    }
-                    for (k = 0; k < currentSwimlaneData.WorkflowSymbols.length; k++) {
-                        currentSymbolData = currentSwimlaneData.WorkflowSymbols[k];
-                        newSymbol = $('<img id="wfSymbol' + currentSymbolData.Id + '" class="symbol" symbolType="' + currentSymbolData.Type +
-                            '" src="/Content/images/TapestryIcons/' + currentSymbolData.Type + '.png" style="left: ' + currentSymbolData.PositionX + 'px; top: '
-                            + currentSymbolData.PositionY + 'px;" />');
-                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
-                        targetSwimlane.append(newSymbol);
-                        newSymbol.draggable({
-                            containment: "parent",
-                            drag: function () {
-                                instance = $(this).parents(".workflowRule").data("jsPlumbInstance");
-                                instance.recalculateOffsets();
-                                instance.repaintEverything();
-                            }
-                        });
-                    }
-                }
                 currentInstance = newRule.data("jsPlumbInstance");
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
                     sourceId = (currentConnectionData.SourceType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Source;
                     targetId = (currentConnectionData.TargetType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Target;
-                    currentInstance.connect({
-                        source: sourceId, target: targetId, anchors: ["Continuous", "Continuous"], editable: false, connector: "Straight",
-                        paintStyle: { lineWidth: 2, strokeStyle: '#54c6f0' } });
+                    if (currentConnectionData.SourceSlot == 1)
+                        sourceEndpointUuid = "BottomCenter";
+                    else
+                        sourceEndpointUuid = "RightMiddle";
+                    currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
                 }
             }
         }

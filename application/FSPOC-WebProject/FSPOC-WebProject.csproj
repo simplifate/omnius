@@ -1355,7 +1355,6 @@
     <Content Include="Scripts\Tapestry\InitDemo.js" />
     <Content Include="Scripts\Tapestry\Load.js" />
     <Content Include="Scripts\Tapestry\Save.js" />
-    <Content Include="Scripts\Tapestry\NewDesignCommon.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />

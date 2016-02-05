@@ -1,39 +1,10 @@
 ﻿@import "Mixins.scss";
 
 body.tapestryModule {
-    .actionItem {
-        background-color: #5bb3e4;
-        color: black;
-    }
-    .attributeItem {
-        background-color: #8e67ad;
-        color: white;
-    }
-    .uiItem {
-        background-color: #f4e80b;
-        color: black;
-    }
-    .roleItem {
-        background-color: #db4c91;
-        color: white;
-    }
-    .stateItem {
-        background-color: #4d77db;
-        color: #28334e;
-    }
-    .targetItem {
-        background-color: #f26822;
-        color: #6a3d26;
-    }
-    .templateItem {
-        background-color: #58bf8f;
-        color: #375949;
-    }
     .toolboxItem {
         width: 218px;
         font-family: MyriadPro;
         font-size: 18px;
-        color: white;
     }
     .toolboxItem.ui-draggable-dragging {
         z-index: 1000;
@@ -72,11 +43,13 @@ body.tapestryModule {
 
             .libraryCategory {
                 width: 220px;
+                height: 232px;
                 display: inline-block;
                 vertical-align: top;
+                overflow-y: auto;
             }
             .libraryCategoryHeader {
-                width: 218px;
+                width: 100%;
                 height: 30px;
                 background-color: #aaabab;
                 font-family: MyriadPro;
@@ -85,9 +58,11 @@ body.tapestryModule {
                 padding-left: 8px;
                 padding-top: 3px;
                 margin-bottom: 6px;
+                border-left: 3px solid #3a3a3a;
+                border-right: 5px solid #3a3a3a;
             }
             .libraryItem {
-                width: 218px;
+                width: 100%;
                 height: 30px;
                 background-color: white;
                 font-family: MyriadPro;
@@ -96,19 +71,12 @@ body.tapestryModule {
                 padding-left: 8px;
                 padding-top: 3px;
                 margin-bottom: 3px;
+                border-left: 3px solid #3a3a3a;
+                border-right: 5px solid #3a3a3a;
             }
             .libraryItem.highlighted {
                 background-color: #84c441;
                 color: #425b33;
-            }
-        }
-        #controlButtonArea {
-            position: absolute;
-            left: 810px;
-            top: 39px;
-
-            button {
-                height: 38px;
             }
         }
     }
@@ -123,6 +91,14 @@ body.tapestryModule {
             height: 600px;
             overflow-y: auto;
 
+            #hideTapestryTooboxIcon {
+                position: absolute;
+                font-size: 30px;
+                color: #3a3a3a;
+                right: 10px;
+                top: 2px;
+                cursor: pointer;
+            }
             .leftBarHeader {
                 width: 100%;
                 height: 32px;
@@ -233,14 +209,31 @@ body.tapestryModule {
                 }
             }
         }
-        #tapestryLeftBarBackground {
-            position: fixed;
-            width: 236px;
-            left: 225px;
-            top: 0px;
-            bottom: 0px;
-            background-color: #e0e2e2;
-            z-index: -20;
+        #tapestryLeftBarMinimized {
+            @include no-select();
+            position: absolute;
+            width: 32px;
+            height: 600px;
+            background-color: #bdbbbc;
+            display: none;
+
+            #showTapestryTooboxIcon {
+                position: absolute;
+                font-size: 30px;
+                color: #3a3a3a;
+                right: 10px;
+                top: 2px;
+                cursor: pointer;
+            }
+            .leftBarHeader {
+                position: absolute;
+                left: 18px;
+                top: 95px;
+                background-color: #bdbbbc;
+                font-family: FatTec;
+                font-size: 16px;
+                transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+            }
         }
         #tapestryWorkspace {
             @include no-select();
@@ -255,47 +248,102 @@ body.tapestryModule {
                 font-size: 20px;
                 color: #457fa9;
                 margin-left: 8px;
+                cursor: pointer;
             }
             .item, .symbol {
                 z-index: 20;
             }
-            .ruleItem.ui-draggable-dragging, .item.ui-draggable-dragging, .symbol.ui-draggable-dragging {
+            .rule.ui-draggable-dragging, .item.ui-draggable-dragging, .symbol.ui-draggable-dragging {
                 z-index: 1000;
+            }
+            .actionItem {
+                background-color: #5bb3e4;
+                color: black;
+            }
+            .attributeItem {
+                background-color: #8e67ad;
+                color: white;
+            }
+            .uiItem {
+                background-color: #f4e80b;
+                color: black;
+            }
+            .roleItem {
+                background-color: #db4c91;
+                color: white;
+            }
+            .stateItem {
+                background-color: #4d77db;
+                color: white;
+            }
+            .targetItem {
+                background-color: #f26822;
+                color: black;
+            }
+            .templateItem {
+                background-color: #58bf8f;
+                color: black;
             }
 
             #blockHeaderPanel {
-                height: 34px;
+                height: 38px;
                 border-bottom: 2px solid #455d73;
                 font-family: MyriadPro;
                 font-size: 14px;
                 vertical-align: middle;
                 padding-left: 10px;
+                padding-top: 2px;
 
+                #blockHeaderBlockName {
+                    cursor: pointer;
+                }
                 #blockHeaderBlockName, #blockHeaderDbResCount, #blockHeaderScreenCount{
                     color: #457fa9;
                     font-size: 20px;
                     padding-left: 2px;
                     padding-right: 10px;
                 }
-            }
-            #assignResourcesPanel, #workflowRulesPanel {
-                margin: 15px 13px;
-                border: 1px solid #455d73;
-                padding: 7px 5px;
+                #controlButtonArea {
+                    position: absolute;
+                    top: 3px;
+                    left: 360px;
+                    right: 14px;
+                    text-align: right;
 
-                .panelHeader {
-                    font-family: FatTec;
-                    font-size: 16px;
+                    button {
+                        max-width: 18%;
+                        height: 30px;
+                    }
                 }
             }
-            #assignResourcesPanel {
-                position: relative;
-                min-height: 350px;
-                padding-top: 27px;
+            #resourceRulesPanel, #workflowRulesPanel {
+                margin: 15px 13px;
+                border: 1px solid #455d73;
+                padding: 0px;
 
                 .panelHeader {
-                    position: relative;
-                    top: -27px;
+                    position: absolute;
+                    font-family: FatTec;
+                    font-size: 16px;
+                    padding-left: 7px;
+                    padding-top: 5px;
+                }
+            }
+            #resourceRulesPanel {
+                position: relative;
+                height: 350px;
+
+                .scrollContainer {
+                    position: absolute;
+                    top: 34px;
+                    left: 0px;
+                    right: 0px;
+                    bottom: 0px;
+                    overflow-x: scroll;
+                }
+                .scrollArea {
+                    width: 6000px;
+                    height: 290px;
                 }
                 .resourceRule {
                     position: absolute;
@@ -314,12 +362,19 @@ body.tapestryModule {
             }
             #workflowRulesPanel {
                 position: relative;
-                min-height: 900px;
-                padding-top: 27px;
-
-                .panelHeader {
-                    position: relative;
-                    top: -27px;
+                height: 900px;
+                
+                .scrollContainer {
+                    position: absolute;
+                    top: 34px;
+                    left: 0px;
+                    right: 0px;
+                    bottom: 0px;
+                    overflow: scroll;
+                }
+                .scrollArea {
+                    width: 6000px;
+                    height: 4000px;
                 }
                 .workflowRule {
                     position: absolute;
@@ -332,17 +387,18 @@ body.tapestryModule {
                         top: 0px;
                         bottom: 0px;
                         width: 56px;
+                        height: 100%;
                         border-right: 2px solid #bcbbbc;
 
-                        .vericalLabel {
+                        .verticalLabel {
                             position: absolute;
-                            left: -50px;
-                            top: 150px;
-                            width: 150px;
+                            top: 50%;
+                            left: 50%;
                             font-family: MyriadPro;
                             font-size: 18px;
-	                        transform: rotate(-90deg);
-	                        transform-origin: 50% 50%;
+	                        transform:  translateX(-50%) translateY(-50%) rotate(-90deg);
+                            overflow: visible;
+                            white-space: nowrap;
                         }
                      }
                     .swimlaneArea {
@@ -365,6 +421,7 @@ body.tapestryModule {
                             bottom: 0px;
                             width: 56px;
                             border-right: 2px solid #bcbbbc;
+                            overflow: hidden;
 
                             .rolePlaceholder {
                                 position: absolute;
@@ -373,34 +430,39 @@ body.tapestryModule {
                                 right: 5px;
                                 bottom: 5px;
                                 border: 2px dashed #bcbbbc;
+                                overflow: hidden;
 
                                 .rolePlaceholderLabel {
-                                    position: absolute;
-                                    left: -55px;
-                                    top: 58px;
-                                    width: 150px;
+                                    position: relative;
+                                    width: 100%;
+                                    top: 50%;
+                                    margin-top: 30px;
                                     color: #bcbbbc;
                                     font-family: MyriadPro;
                                     font-size: 11px;
 	                                transform: rotate(-90deg);
 	                                transform-origin: 50% 50%;
+                                    white-space: nowrap;
                                  }
                             }
 
                             .roleItem {
                                 position: absolute;
-                                left: -12px;
-                                top: 72px;
-                                width: 77px;
+                                left: 50%;
+                                top: 50%;
+                                width: auto;
                                 height: 22px;
                                 color: white;
                                 background-color: #db4c91;
                                 font-family: MyriadPro;
                                 font-size: 12px;
                                 text-align: center;
-	                            transform: rotate(-90deg);
-	                            transform-origin: 50% 50%;
+	                            transform:  translateX(-50%) translateY(-50%) rotate(-90deg);
                                 border-radius: 4px;
+                                overflow: visible;
+                                white-space: nowrap;
+                                padding-left: 6px;
+                                padding-right: 6px;
                             }
                         }
                         .swimlaneContentArea {
@@ -444,24 +506,65 @@ body.tapestryModule {
         background-color: #49c3f1 !important;
         color: white !important;
     }
+    .sourceEndpoint._jsPlumb_dragging, .sourceEndpoint.jsplumb-drag {
+        visibility: hidden !important;
+    }
+    .sourceEndpoint.jsplumb-drag-active {
+        visibility: visible !important;
+    }
+    .endpointSourceLabel {
+        color: #467ea8;
+    }
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryArea {
             transform: scale(0.9);
+        }
+        #upperPanel {
+            height: 333px;
+        }
+        #lowerPanel {
+            top: 408px;
         }
     }
     @media only screen and (max-width: 1710px) {
         #tapestryLibraryArea {
             transform: scale(0.8);
         }
+        #upperPanel {
+            height: 309px;
+        }
+        #lowerPanel {
+            top: 384px;
+        }
     }
     @media only screen and (max-width: 1555px) {
         #tapestryLibraryArea {
             transform: scale(0.7);
         }
+        #upperPanel {
+            height: 286px;
+        }
+        #lowerPanel {
+            top: 361px;
+        }
     }
     @media only screen and (max-width: 1395px) {
         #tapestryLibraryArea {
             transform: scale(0.6);
+        }
+        #upperPanel {
+            height: 286px;
+        }
+        #lowerPanel {
+            top: 361px;
+        }
+    }
+    @media only screen and (max-width: 1325px) {
+        #upperPanel {
+            height: 264px;
+        }
+        #lowerPanel {
+            top: 339px;
         }
     }
 }

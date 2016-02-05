@@ -569,39 +569,10 @@ body.adminAppModule #validationResults {
   font-weight: 100;
   color: #0065a9; }
 
-body.tapestryModule .actionItem {
-  background-color: #5bb3e4;
-  color: black; }
-
-body.tapestryModule .attributeItem {
-  background-color: #8e67ad;
-  color: white; }
-
-body.tapestryModule .uiItem {
-  background-color: #f4e80b;
-  color: black; }
-
-body.tapestryModule .roleItem {
-  background-color: #db4c91;
-  color: white; }
-
-body.tapestryModule .stateItem {
-  background-color: #4d77db;
-  color: #28334e; }
-
-body.tapestryModule .targetItem {
-  background-color: #f26822;
-  color: #6a3d26; }
-
-body.tapestryModule .templateItem {
-  background-color: #58bf8f;
-  color: #375949; }
-
 body.tapestryModule .toolboxItem {
   width: 218px;
   font-family: MyriadPro;
-  font-size: 18px;
-  color: white; }
+  font-size: 18px; }
 
 body.tapestryModule .toolboxItem.ui-draggable-dragging {
   z-index: 1000;
@@ -634,10 +605,12 @@ body.tapestryModule #upperPanel {
     transform-origin: left top; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategory {
       width: 220px;
+      height: 232px;
       display: inline-block;
-      vertical-align: top; }
+      vertical-align: top;
+      overflow-y: auto; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategoryHeader {
-      width: 218px;
+      width: 100%;
       height: 30px;
       background-color: #aaabab;
       font-family: MyriadPro;
@@ -645,9 +618,11 @@ body.tapestryModule #upperPanel {
       color: white;
       padding-left: 8px;
       padding-top: 3px;
-      margin-bottom: 6px; }
+      margin-bottom: 6px;
+      border-left: 3px solid #3a3a3a;
+      border-right: 5px solid #3a3a3a; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryItem {
-      width: 218px;
+      width: 100%;
       height: 30px;
       background-color: white;
       font-family: MyriadPro;
@@ -655,16 +630,12 @@ body.tapestryModule #upperPanel {
       color: black;
       padding-left: 8px;
       padding-top: 3px;
-      margin-bottom: 3px; }
+      margin-bottom: 3px;
+      border-left: 3px solid #3a3a3a;
+      border-right: 5px solid #3a3a3a; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryItem.highlighted {
       background-color: #84c441;
       color: #425b33; }
-  body.tapestryModule #upperPanel #controlButtonArea {
-    position: absolute;
-    left: 810px;
-    top: 39px; }
-    body.tapestryModule #upperPanel #controlButtonArea button {
-      height: 38px; }
 
 body.tapestryModule #lowerPanel {
   top: 432px;
@@ -680,6 +651,13 @@ body.tapestryModule #lowerPanel {
     width: 236px;
     height: 600px;
     overflow-y: auto; }
+    body.tapestryModule #lowerPanel #tapestryLeftBar #hideTapestryTooboxIcon {
+      position: absolute;
+      font-size: 30px;
+      color: #3a3a3a;
+      right: 10px;
+      top: 2px;
+      cursor: pointer; }
     body.tapestryModule #lowerPanel #tapestryLeftBar .leftBarHeader {
       width: 100%;
       height: 32px;
@@ -760,14 +738,33 @@ body.tapestryModule #lowerPanel {
         background-color: #58bf8f;
         border-bottom: 2px solid #509c78;
         color: #375949; }
-  body.tapestryModule #lowerPanel #tapestryLeftBarBackground {
-    position: fixed;
-    width: 236px;
-    left: 225px;
-    top: 0px;
-    bottom: 0px;
-    background-color: #e0e2e2;
-    z-index: -20; }
+  body.tapestryModule #lowerPanel #tapestryLeftBarMinimized {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    width: 32px;
+    height: 600px;
+    background-color: #bdbbbc;
+    display: none; }
+    body.tapestryModule #lowerPanel #tapestryLeftBarMinimized #showTapestryTooboxIcon {
+      position: absolute;
+      font-size: 30px;
+      color: #3a3a3a;
+      right: 10px;
+      top: 2px;
+      cursor: pointer; }
+    body.tapestryModule #lowerPanel #tapestryLeftBarMinimized .leftBarHeader {
+      position: absolute;
+      left: 18px;
+      top: 95px;
+      background-color: #bdbbbc;
+      font-family: FatTec;
+      font-size: 16px;
+      transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
   body.tapestryModule #lowerPanel #tapestryWorkspace {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -784,41 +781,84 @@ body.tapestryModule #lowerPanel {
       display: inline-block;
       font-size: 20px;
       color: #457fa9;
-      margin-left: 8px; }
+      margin-left: 8px;
+      cursor: pointer; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .item, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol {
       z-index: 20; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace .ruleItem.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
+    body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
+      background-color: #5bb3e4;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .attributeItem {
+      background-color: #8e67ad;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .uiItem {
+      background-color: #f4e80b;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .roleItem {
+      background-color: #db4c91;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .stateItem {
+      background-color: #4d77db;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .targetItem {
+      background-color: #f26822;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .templateItem {
+      background-color: #58bf8f;
+      color: black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel {
-      height: 34px;
+      height: 38px;
       border-bottom: 2px solid #455d73;
       font-family: MyriadPro;
       font-size: 14px;
       vertical-align: middle;
-      padding-left: 10px; }
+      padding-left: 10px;
+      padding-top: 2px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName {
+        cursor: pointer; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderDbResCount, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderScreenCount {
         color: #457fa9;
         font-size: 20px;
         padding-left: 2px;
         padding-right: 10px; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
+      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea {
+        position: absolute;
+        top: 3px;
+        left: 360px;
+        right: 14px;
+        text-align: right; }
+        body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea button {
+          max-width: 18%;
+          height: 30px; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       margin: 15px 13px;
       border: 1px solid #455d73;
-      padding: 7px 5px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .panelHeader, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
+      padding: 0px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .panelHeader, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
+        position: absolute;
         font-family: FatTec;
-        font-size: 16px; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel {
+        font-size: 16px;
+        padding-left: 7px;
+        padding-top: 5px; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel {
       position: relative;
-      min-height: 350px;
-      padding-top: 27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .panelHeader {
-        position: relative;
-        top: -27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .resourceRule {
+      height: 350px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .scrollContainer {
+        position: absolute;
+        top: 34px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow-x: scroll; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .scrollArea {
+        width: 6000px;
+        height: 290px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule {
         position: absolute;
         background-color: #e0e2e2; }
-        body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .resourceRule .item {
+        body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .item {
           position: absolute;
           min-width: 80px;
           height: 20px;
@@ -828,11 +868,17 @@ body.tapestryModule #lowerPanel {
           padding-right: 10px; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
-      min-height: 900px;
-      padding-top: 27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
-        position: relative;
-        top: -27px; }
+      height: 900px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .scrollContainer {
+        position: absolute;
+        top: 34px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow: scroll; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .scrollArea {
+        width: 6000px;
+        height: 4000px; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule {
         position: absolute;
         border: 2px solid #bcbbbc;
@@ -843,16 +889,17 @@ body.tapestryModule #lowerPanel {
           top: 0px;
           bottom: 0px;
           width: 56px;
+          height: 100%;
           border-right: 2px solid #bcbbbc; }
-          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .workflowRuleHeader .vericalLabel {
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .workflowRuleHeader .verticalLabel {
             position: absolute;
-            left: -50px;
-            top: 150px;
-            width: 150px;
+            top: 50%;
+            left: 50%;
             font-family: MyriadPro;
             font-size: 18px;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%; }
+            transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+            overflow: visible;
+            white-space: nowrap; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea {
           position: absolute;
           left: 56px;
@@ -870,38 +917,44 @@ body.tapestryModule #lowerPanel {
             top: 0px;
             bottom: 0px;
             width: 56px;
-            border-right: 2px solid #bcbbbc; }
+            border-right: 2px solid #bcbbbc;
+            overflow: hidden; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .rolePlaceholder {
               position: absolute;
               left: 5px;
               top: 5px;
               right: 5px;
               bottom: 5px;
-              border: 2px dashed #bcbbbc; }
+              border: 2px dashed #bcbbbc;
+              overflow: hidden; }
               body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .rolePlaceholder .rolePlaceholderLabel {
-                position: absolute;
-                left: -55px;
-                top: 58px;
-                width: 150px;
+                position: relative;
+                width: 100%;
+                top: 50%;
+                margin-top: 30px;
                 color: #bcbbbc;
                 font-family: MyriadPro;
                 font-size: 11px;
                 transform: rotate(-90deg);
-                transform-origin: 50% 50%; }
+                transform-origin: 50% 50%;
+                white-space: nowrap; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .roleItem {
               position: absolute;
-              left: -12px;
-              top: 72px;
-              width: 77px;
+              left: 50%;
+              top: 50%;
+              width: auto;
               height: 22px;
               color: white;
               background-color: #db4c91;
               font-family: MyriadPro;
               font-size: 12px;
               text-align: center;
-              transform: rotate(-90deg);
-              transform-origin: 50% 50%;
-              border-radius: 4px; }
+              transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+              border-radius: 4px;
+              overflow: visible;
+              white-space: nowrap;
+              padding-left: 6px;
+              padding-right: 6px; }
           body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea {
             position: absolute;
             left: 56px;
@@ -932,21 +985,52 @@ body.tapestryModule .highlightedRow {
   background-color: #49c3f1 !important;
   color: white !important; }
 
+body.tapestryModule .sourceEndpoint._jsPlumb_dragging, body.tapestryModule .sourceEndpoint.jsplumb-drag {
+  visibility: hidden !important; }
+
+body.tapestryModule .sourceEndpoint.jsplumb-drag-active {
+  visibility: visible !important; }
+
+body.tapestryModule .endpointSourceLabel {
+  color: #467ea8; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.9); } }
+    transform: scale(0.9); }
+  body.tapestryModule #upperPanel {
+    height: 333px; }
+  body.tapestryModule #lowerPanel {
+    top: 408px; } }
 
 @media only screen and (max-width: 1710px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.8); } }
+    transform: scale(0.8); }
+  body.tapestryModule #upperPanel {
+    height: 309px; }
+  body.tapestryModule #lowerPanel {
+    top: 384px; } }
 
 @media only screen and (max-width: 1555px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.7); } }
+    transform: scale(0.7); }
+  body.tapestryModule #upperPanel {
+    height: 286px; }
+  body.tapestryModule #lowerPanel {
+    top: 361px; } }
 
 @media only screen and (max-width: 1395px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.6); } }
+    transform: scale(0.6); }
+  body.tapestryModule #upperPanel {
+    height: 286px; }
+  body.tapestryModule #lowerPanel {
+    top: 361px; } }
+
+@media only screen and (max-width: 1325px) {
+  body.tapestryModule #upperPanel {
+    height: 264px; }
+  body.tapestryModule #lowerPanel {
+    top: 339px; } }
 
 body.overviewModule {
   background-color: #3a3a3a; }
@@ -2368,7 +2452,8 @@ body.mozaicComponentManagerModule {
   color: white;
   top: 3px;
   right: 37px;
-  font-size: 36px; }
+  font-size: 36px;
+  cursor: pointer; }
 
 #lowerPanel {
   position: absolute;
@@ -2403,7 +2488,8 @@ body.mozaicComponentManagerModule {
     margin-left: 35px;
     width: auto; }
     #ContentContainer .details-list td:first-child {
-      width: 300px; }
+      width: 3px;
+      height: 300px; }
     #ContentContainer .details-list td:nth-child(2) {
       width: 400px; }
   #ContentContainer .nexusDetailsButtons {

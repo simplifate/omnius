@@ -22,12 +22,12 @@ $(function () {
                 })
             },
             open: function () {
-                renameBlockDialog.find("#block-name").val($("#headerBlockName").text());
+                renameBlockDialog.find("#block-name").val($("#blockHeaderBlockName").text());
             }
         });
         function renameBlockDialog_SubmitData() {
             renameBlockDialog.dialog("close");
-            $("#headerBlockName").text(renameBlockDialog.find("#block-name").val());
+            $("#blockHeaderBlockName").text(renameBlockDialog.find("#block-name").val());
         }
         addActionsDialog = $("#add-actions-dialog").dialog({
             autoOpen: false,
@@ -304,12 +304,12 @@ $(function () {
                 })
             },
             open: function () {
-                renameRuleDialog.find("#rule-name").val(currentRule.find(".ruleHeader").text());
+                renameRuleDialog.find("#rule-name").val(currentRule.find(".workflowRuleHeader .verticalLabel").text());
             }
         });
         function renameRuleDialog_SubmitData() {
             renameRuleDialog.dialog("close");
-            currentRule.find(".ruleHeader").text(renameRuleDialog.find("#rule-name").val());
+            currentRule.find(".workflowRuleHeader .verticalLabel").text(renameRuleDialog.find("#rule-name").val());
         }
         historyDialog = $("#history-dialog").dialog({
             autoOpen: false,

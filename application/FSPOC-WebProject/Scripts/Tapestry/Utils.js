@@ -14,124 +14,132 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
             }]
         ]
     });
-    //ruleContent = $(ruleElement).find(".ruleContent");
-    //ruleContent.attr("id", AssingID());
-    // newInstance.setContainer(ruleContent.attr("id"));
+    if(!ruleElement.attr("id"))
+        ruleElement.attr("id", AssingID());
     newInstance.setContainer(ruleElement);
     newInstance.bind("click", function (con) {
         this.detach(con);
     });
-    newInstance.bind("beforeDrop", function (info) {
-        if (!$(info.connection.source).hasClass("dataSource")) {
-            instance = $(info.connection.source).parents(".rule").data("jsPlumbInstance");
-            connectionArray = instance.getConnections({ target: info.targetId });
-            for (i = 0; i < connectionArray.length; i++) {
-                if (!$(connectionArray[i].source).hasClass("dataSource")) {
-                    alert("An item can take multiple data sources (dashed arrows), but only one activating action (solid arrow).\n"
-                    + "There already is a solid arrow pointing to this item.");
-                    return false;
-                }
-            }
-        }
-        return true;
-    });
-    $(ruleElement).data("jsPlumbInstance", newInstance);
+    ruleElement.data("jsPlumbInstance", newInstance);
     return newInstance;
 }
 
-function AddToJsPlumb(instance, item) {
-    if (!$(item).attr("id")) {
+function AddToJsPlumb(item) {
+    if (!item.attr("id")) {
         itemId = AssingID();
-        $(item).attr("id", itemId);
+        item.attr("id", itemId);
     }
     else {
-        itemId = $(item).attr("id");
+        itemId = item.attr("id");
     }
-    $(item).draggable({
+    item.draggable({
+        revert: false,
         drag: function (event, ui) {
             element = $(this);
             rule = element.parents(".rule");
-            limits = CheckRuleResizeLimits(rule);
+            rule.data("jsPlumbInstance").repaintEverything();
+            resourceRuleMode = rule.hasClass("resourceRule");
 
-            if (ui.position.left < 10)
-                ui.position.left = 10;
-            else if (ui.position.left > limits.horizontal - element.width() - 40)
-                ui.position.left = limits.horizontal - element.width() - 40;
-            if (ui.position.top < 10)
-                ui.position.top = 10;
-            else if (ui.position.top > limits.vertical - element.height() - 60)
-                ui.position.top = limits.vertical - element.height() - 60;
+            rightEdge = ui.position.left + element.width() + (resourceRuleMode ? 20 : 122);
+            bottomEdge = ui.position.top + element.height() + 20;
 
-            rightEdge = ui.position.left + element.width() + element.data("rightOffset");
-            bottomEdge = ui.position.top + element.height() + element.data("bottomOffset");
+            limitChecked = false;
 
-            if (rightEdge > rule.width()) {
-                rule.width(rightEdge);
+            if (rule.width() < rightEdge + 30) {
+                limits = CheckRuleResizeLimits(rule, resourceRuleMode);
+                limitChecked = true;
+                rule.width(rightEdge + 30);
             }
-            else if (rule.width() > limits.horizontal - 50)
-                rule.width(limits.horizontal - 50);
-            if (bottomEdge > rule.height()) {
+            if (rule.height() < bottomEdge) {
+                if (!limitChecked) {
+                    limits = CheckRuleResizeLimits(rule, resourceRuleMode);
+                    limitChecked = true;
+                }
                 rule.height(bottomEdge);
             }
-            rule.data("jsPlumbInstance").repaintEverything();
+            if (limitChecked) {
+                if (rule.width() > limits.horizontal - 10)
+                    rule.width(limits.horizontal - 10);
+                if (rule.height() > limits.vertical - 10)
+                    rule.height(limits.vertical - 10);
+                limitChecked = false;
+            }
+            if (resourceRuleMode) {
+                if (ui.position.left < 10)
+                    ui.position.left = 10;
+                else if (ui.position.left + element.width() + 40 > rule.width())
+                    ui.position.left = rule.width() - element.width() - 40;
+                if (ui.position.top < 10)
+                    ui.position.top = 10;
+                else if (ui.position.top + element.height() + 20 > rule.height())
+                    ui.position.top = rule.height() - element.height() - 20;
+            }
+            else {
+                swimlane = element.parents(".swimlane");
+                if (ui.position.left < 0)
+                    ui.position.left = 0;
+                else if (ui.position.left + element.width() + 40 > swimlane.width())
+                    ui.position.left = swimlane.width() - element.width() - 40;
+                if (ui.position.top < 0 && ui.position.top > -50)
+                    ui.position.top = 0;
+                else if (ui.position.top <= -50) {
+                    currentSwimlaneIndex = swimlane.index();
+                    swimlaneCount = rule.find(".swimlane").length;
+                    if (currentSwimlaneIndex > 0) {
+                        higherSwimlane = rule.find(".swimlane").eq(currentSwimlaneIndex-1).find(".swimlaneContentArea");
+                        element.detach();
+                        higherSwimlane.append(element);
+                        element.position.top = 0;
+                        return false;
+                    }
+                    else
+                        ui.position.top = 0;
+                }
+                else if (ui.position.top + element.height() > swimlane.height() - 20 && ui.position.top + element.height() <= swimlane.height() + 30)
+                    ui.position.top = swimlane.height() - element.height() - 20;
+                else if (ui.position.top + element.height() > swimlane.height() + 30) {
+                    currentSwimlaneIndex = swimlane.index();
+                    swimlaneCount = rule.find(".swimlane").length;
+                    if (currentSwimlaneIndex < swimlaneCount - 1) {
+                        lowerSwimlane = rule.find(".swimlane").eq(currentSwimlaneIndex + 1).find(".swimlaneContentArea");
+                        element.detach();
+                        lowerSwimlane.append(element);
+                        element.position.top = lowerSwimlane.height() - element.height();
+                        return false;
+                    }
+                    else
+                        ui.position.top = swimlane.height() - element.height() - 20;
+                }
+            }
         },
-        revert: "invalid",
-        revertDuration: 0,
-        stop: function () {
-            $(this).draggable("option", "revert", "invalid");
-            $(this).parents(".rule").data("jsPlumbInstance").repaintEverything();
-        },
+        stop: function (event, ui) {
+            instance = $(this).parents(".rule").data("jsPlumbInstance");
+            instance.recalculateOffsets();
+            instance.repaintEverything();
+        }
     });
-    if ($(item).hasClass("operatorSymbol")) {
-        if ($(item).hasClass("decisionRhombus")) {
-            instance.addEndpoint(itemId, yesEndpoint, {
-                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
-            });
-            instance.addEndpoint(itemId, noEndpoint, {
-                anchor: [0.5, 1, 0, 1, -5, 0], uuid: itemId + "BottomCenter"
-            });
-            instance.makeTarget(item, {
-                dropOptions: { hoverClass: "dragHover" },
-                anchor: "LeftMiddle",
-                allowLoopback: false
-            });
-            $(item).data("topOffset", 10);
-            $(item).data("rightOffset", -25);
-            $(item).data("bottomOffset", -5);
-        }
-        else if ($(item).hasClass("conditionEllipse")) {
-            instance.addEndpoint(itemId, sourceEndpoint, {
-                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
-            });
-            instance.makeTarget(item, {
-                dropOptions: { hoverClass: "dragHover" },
-                anchor: "Continuous",
-                allowLoopback: false
-            });
-            $(item).data("topOffset", 10);
-            $(item).data("rightOffset", -25);
-            $(item).data("bottomOffset", -30);
-        }
-    }
-    else {
-        if ($(item).hasClass("dataSource"))
-            instance.addEndpoint(itemId, dataSourceEndpoint, {
-                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
-            });
-        else
-            instance.addEndpoint(itemId, sourceEndpoint, {
-                anchor: "RightMiddle", uuid: itemId + "RightMiddle"
-            });
-        instance.makeTarget(item, {
-            dropOptions: { hoverClass: "dragHover" },
-            anchor: ["Continuous", { faces: ["left"] }],
-            allowLoopback: false
+    instance = item.parents(".rule").data("jsPlumbInstance");
+    specialEndpointsType = item.attr("endpoints");
+    if (specialEndpointsType == "gateway") {
+        instance.addEndpoint(itemId, trueEndpoint, {
+            anchor: "RightMiddle", uuid: itemId + "RightMiddle"
         });
-        $(item).data("topOffset", 0);
-        $(item).data("rightOffset", -15);
-        $(item).data("bottomOffset", 10);
-    }
+        instance.addEndpoint(itemId, falseEndpoint, {
+            anchor: "BottomCenter", uuid: itemId + "BottomCenter"
+        });
 
+    }
+    else if (specialEndpointsType == "final" || item.hasClass("targetItem")) { }
+    else {
+        instance.addEndpoint(itemId, sourceEndpoint, {
+            anchor: "RightMiddle", uuid: itemId + "RightMiddle"
+        });
+    }
+    instance.makeTarget(item, {
+        dropOptions: { hoverClass: "dragHover" },
+        anchor: "Continuous",
+        allowLoopback: false
+    });
 }
 function AssingID() {
     LastAssignedNumber++;
@@ -158,28 +166,28 @@ function AddIconToItem(element) {
         item.prepend($('<i class="fa fa-ellipsis-v" style="margin-left: 4px; margin-right: 8px;"></i>'));
     }
 }
-function CheckRuleResizeLimits(rule) {
+function CheckRuleResizeLimits(rule, resourceRuleMode) {
     horizontalLimit = 1000000;
     verticalLimit = 1000000;
 
     ruleLeft = rule.position().left;
     ruleRight = ruleLeft + rule.width();
-    ruleTop = rule.position().top - 40;
+    ruleTop = rule.position().top;
     ruleBottom = rule.position().top + rule.height();
 
-    $("#rulesPanel .rule").each(function (index, element) {
+    $(resourceRuleMode ? "#resourceRulesPanel .resourceRule" : "#workflowRulesPanel .workflowRule").each(function (index, element) {
         otherRule = $(element);
         if (otherRule.attr("id") != rule.attr("id")) {
             otherRuleLeft = otherRule.position().left;
             otherRuleRight = otherRuleLeft + otherRule.width();
-            otherRuleTop = otherRule.position().top - 40;
+            otherRuleTop = otherRule.position().top;
             otherRuleBottom = otherRule.position().top + otherRule.height();
 
             if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
-                && otherRuleLeft > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
+                && otherRuleLeft + 30 > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
                 horizontalLimit = otherRuleLeft - ruleLeft;
             if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                && otherRuleTop > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
+                && otherRuleTop  + 20 > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
                 verticalLimit = otherRuleTop - ruleTop;
         }
     });
@@ -210,4 +218,12 @@ function GetItemTypeClass(item) {
     else
         typeClass = "";
     return typeClass;
+}
+function RecalculateToolboxHeight() {
+    leftBar = $("#tapestryLeftBar");
+    scrollTop = $(window).scrollTop();
+    lowerPanelTop = $("#lowerPanel").offset().top;
+    leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+    $("#workflowRulesPanel").height($(window).height() - 30);
+    $("#tapestryLeftBarMinimized").height($("#workflowRulesPanel").offset().top + $("#workflowRulesPanel").height() - lowerPanelTop);
 }
