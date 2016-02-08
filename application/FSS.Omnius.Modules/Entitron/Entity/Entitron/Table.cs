@@ -17,7 +17,7 @@
         public string Name { get; set; }
 
         [Index("UNIQUE_Entitron___META_Name", IsUnique = true, Order = 1)]
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
 
         public int tableId { get; set; }
 

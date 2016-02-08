@@ -19,6 +19,8 @@ namespace FSS.Omnius.Modules.Migrations
                     ViewName = c.String(nullable: true, maxLength: 50),
                     ViewPath = c.String(nullable: true, maxLength: 500),
                     ViewContent = c.String(nullable: true),
+                    Application_Id = c.Int(),
+                    Template_Id = c.Int()
                 })
                 .PrimaryKey(i => i.Id);
         }

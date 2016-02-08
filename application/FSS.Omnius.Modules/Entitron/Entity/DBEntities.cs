@@ -94,7 +94,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // Entitron
             modelBuilder.Entity<Application>()
                 .HasMany<Table>(e => e.Tables)
-                .WithRequired(e => e.Application)
+                .WithOptional(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
             // Hermes
