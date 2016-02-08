@@ -1884,7 +1884,8 @@ body.watchtowerModule #logContainer {
       position: absolute;
       top: 3px;
       right: 37px;
-      font-size: 36px; }
+      font-size: 36px;
+      cursor: pointer; }
     body.watchtowerModule #logContainer #filterFormPanel #filterPanelLabel {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -1952,7 +1953,8 @@ body.watchtowerModule #logContainer {
       color: white;
       top: 3px;
       right: 37px;
-      font-size: 36px; }
+      font-size: 36px;
+      cursor: pointer; }
   body.watchtowerModule #logContainer #watchtowerLogTableContainter {
     position: absolute;
     left: 20px;
@@ -2460,6 +2462,9 @@ body.mozaicComponentManagerModule {
   left: 225px;
   right: 0px;
   height: auto; }
+
+#lowerPanel.minimizedPanelMode {
+  top: 115px !important; }
 
 #lowerPanelContainer {
   position: absolute;

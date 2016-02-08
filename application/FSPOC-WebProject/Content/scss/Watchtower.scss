@@ -51,6 +51,7 @@
                 top: 3px;
                 right: 37px;
                 font-size: 36px;
+                cursor: pointer;
             }
             #filterPanelLabel {
                 @include no-select();
@@ -124,6 +125,7 @@
                 top: 3px;
                 right: 37px;
                 font-size: 36px;
+                cursor: pointer;
             }
         }
 
