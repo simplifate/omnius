@@ -140,7 +140,10 @@
         type: "POST",
         url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId,
         data: postData,
-        success: function () { alert("OK") },
+        success: function () {
+            ChangedSinceLastSave = false;
+            alert("OK");
+        },
         error: function () { alert("ERROR") }
     });
 }

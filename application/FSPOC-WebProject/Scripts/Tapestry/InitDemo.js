@@ -2,10 +2,13 @@
     if (CurrentModuleIs("tapestryModule")) {
 
         // Resource rules
-        $("#resourceRulesPanel  .resourceRule").draggable({
+        $("#resourceRulesPanel .resourceRule").draggable({
             containment: "parent",
             revert: function (event, ui) {
                 return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
+            },
+            stop: function (event, ui) {
+                ChangedSinceLastSave = true;
             }
         });
         $("#resourceRulesPanel .resourceRule").droppable({
@@ -24,6 +27,7 @@
                 droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                 ui.helper.remove();
                 AddToJsPlumb(droppedElement);
+                ChangedSinceLastSave = true;
             }
         });
         $("#resourceRulesPanel .resourceRule").resizable({
@@ -56,6 +60,7 @@
                 instance = $(this).data("jsPlumbInstance");
                 instance.recalculateOffsets();
                 instance.repaintEverything();
+                ChangedSinceLastSave = true;
             }
         });
 
@@ -65,6 +70,9 @@
             handle: ".workflowRuleHeader",
             revert: function (event, ui) {
                 return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
+            },
+            stop: function (event, ui) {
+                ChangedSinceLastSave = true;
             }
         });
         $(".swimlaneRolesArea").droppable({
@@ -76,6 +84,7 @@
                 $(this).find(".rolePlaceholder, .roleItem").remove();
                 $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                 ui.helper.remove();
+                ChangedSinceLastSave = true;
             }
         });
         $(".swimlaneContentArea").droppable({
@@ -106,6 +115,7 @@
                 droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                 ui.helper.remove();
                 AddToJsPlumb(droppedElement);
+                ChangedSinceLastSave = true;
             }
         });
         $("#workflowRulesPanel .workflowRule").resizable({
@@ -136,6 +146,9 @@
                 limits = CheckRuleResizeLimits(rule, false);
                 rule.css("max-width", limits.horizontal - 10);
                 rule.css("max-height", limits.vertical - 10);
+            },
+            stop: function (event, ui) {
+                ChangedSinceLastSave = true;
             }
         });
     }

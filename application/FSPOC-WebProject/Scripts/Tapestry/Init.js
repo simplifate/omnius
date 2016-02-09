@@ -1,4 +1,5 @@
 ﻿var ZoomFactor = 1.0;
+var ChangedSinceLastSave = false;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
@@ -8,20 +9,33 @@ $(function () {
         $("#btnClear").on("click", function () {
             $("#resourceRulesPanel .resourceRule").remove();
             $("#workflowRulesPanel .workflowRule").remove();
+            ChangedSinceLastSave = true;
         });
         $("#btnSave").on("click", function () {
             saveDialog.dialog("open");
         });
         $("#btnLoad").on("click", function () {
-            LoadBlock();
+            if(ChangedSinceLastSave)
+                confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+            else
+                confirmed = true;
+            if (confirmed) {
+                LoadBlock();
+            }
         });
         $("#btnHistory").on("click", function () {
             historyDialog.dialog("open");
         });
         $("#btnOverview").on("click", function () {
-            openMetablockForm = $("#openMetablockForm");
-            openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
-            openMetablockForm.submit();
+            if(ChangedSinceLastSave)
+                confirmed = confirm("Máte neuložené změny, opravdu si přejete opustit blok?");
+            else
+                confirmed = true;
+            if(confirmed) {
+                openMetablockForm = $("#openMetablockForm");
+                openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
+                openMetablockForm.submit();
+            }
         });
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
@@ -86,6 +100,7 @@ $(function () {
 
         // Add rules
         $("#btnAddResRule").on("click", function () {
+            ChangedSinceLastSave = true;
             rightmostRuleEdge = 0;
             $("#resourceRulesPanel .resourceRule").each(function (index, element) {
                 edge = $(element).position().left + $(element).width() + $("#resourceRulesPanel .scrollContainer").scrollLeft();
@@ -98,6 +113,9 @@ $(function () {
                 containment: "parent",
                 revert: function (event, ui) {
                     return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
+                },
+                stop: function (event, ui) {
+                    ChangedSinceLastSave = true;
                 }
             });
             newRule.resizable({
@@ -130,6 +148,7 @@ $(function () {
                     instance = $(this).data("jsPlumbInstance");
                     instance.recalculateOffsets();
                     instance.repaintEverything();
+                    ChangedSinceLastSave = true;
                 }
             });
             CreateJsPlumbInstanceForRule(newRule);
@@ -149,10 +168,12 @@ $(function () {
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                     ui.helper.remove();
                     AddToJsPlumb(droppedElement);
+                    ChangedSinceLastSave = true;
                 }
             });
         });
         $("#btnAddWfRule").on("click", function () {
+            ChangedSinceLastSave = true;
             lowestRuleBottom = 0;
             highestRuleNumber = 0;
             $("#workflowRulesPanel .workflowRule").each(function (index, element) {
@@ -176,6 +197,9 @@ $(function () {
                 handle: ".workflowRuleHeader",
                 revert: function (event, ui) {
                     return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
+                },
+                stop: function (event, ui) {
+                    ChangedSinceLastSave = true;
                 }
             });
             newRule.resizable({
@@ -206,6 +230,9 @@ $(function () {
                     limits = CheckRuleResizeLimits(rule, false);
                     rule.css("max-width", limits.horizontal - 10);
                     rule.css("max-height", limits.vertical - 10);
+                },
+                stop: function (event, ui) {
+                    ChangedSinceLastSave = true;
                 }
             });
             CreateJsPlumbInstanceForRule(newRule);
@@ -219,6 +246,7 @@ $(function () {
                     $(this).find(".rolePlaceholder, .roleItem").remove();
                     $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                     ui.helper.remove();
+                    ChangedSinceLastSave = true;
                 }
             });
             newRule.find(".swimlaneContentArea").droppable({
@@ -249,6 +277,7 @@ $(function () {
                     droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                     ui.helper.remove();
                     AddToJsPlumb(droppedElement);
+                    ChangedSinceLastSave = true;
                 }
             });
         });

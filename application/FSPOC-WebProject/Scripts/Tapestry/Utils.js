@@ -19,6 +19,7 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
     newInstance.setContainer(ruleElement);
     newInstance.bind("click", function (con) {
         this.detach(con);
+        ChangedSinceLastSave = true;
     });
     ruleElement.data("jsPlumbInstance", newInstance);
     return newInstance;
@@ -116,6 +117,7 @@ function AddToJsPlumb(item) {
             instance = $(this).parents(".rule").data("jsPlumbInstance");
             instance.recalculateOffsets();
             instance.repaintEverything();
+            ChangedSinceLastSave = true;
         }
     });
     instance = item.parents(".rule").data("jsPlumbInstance");

@@ -10,6 +10,7 @@
                     currentInstance = item.parents(".rule").data("jsPlumbInstance");
                     currentInstance.removeAllEndpoints(item, true);
                     item.remove();
+                    ChangedSinceLastSave = true;
                 }
             },
             items: {
@@ -24,6 +25,7 @@
                 item = options.$trigger;
                 if (key == "delete") {
                     item.remove();
+                    ChangedSinceLastSave = true;
                 }
             },
             items: {
@@ -40,6 +42,7 @@
                     item.parents(".swimlaneRolesArea").append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
                         + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
                     item.remove();
+                    ChangedSinceLastSave = true;
                 }
             },
             items: {
@@ -57,6 +60,7 @@
                 }
                 else if (key == "delete") {
                     options.$trigger.remove();
+                    ChangedSinceLastSave = true;
                 }
                 else if (key == "add-swimlane") {
                     rule = options.$trigger;
@@ -72,6 +76,7 @@
                             $(this).find(".rolePlaceholder, .roleItem").remove();
                             $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                             ui.helper.remove();
+                            ChangedSinceLastSave = true;
                         }
                     });
                     newSwimlane.find(".swimlaneContentArea").droppable({
@@ -102,6 +107,7 @@
                             droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                             ui.helper.remove();
                             AddToJsPlumb(droppedElement);
+                            ChangedSinceLastSave = true;
                         }
                     });
                     rule.find(".swimlaneArea").append(newSwimlane);
@@ -112,6 +118,7 @@
                     instance = options.$trigger.data("jsPlumbInstance");
                     instance.recalculateOffsets();
                     instance.repaintEverything();
+                    ChangedSinceLastSave = true;
                 }
             },
             items: {
@@ -138,6 +145,7 @@
                         });
                         instance.recalculateOffsets();
                         instance.repaintEverything();
+                        ChangedSinceLastSave = true;
                     }
                     else
                         alert("Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.");
