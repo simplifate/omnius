@@ -420,6 +420,10 @@
     <Compile Include="Migrations\201602081506423_sharedTables.Designer.cs">
       <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602091209188_isLocalUser.cs" />
+    <Compile Include="Migrations\201602091209188_isLocalUser.Designer.cs">
+      <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -632,6 +636,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602081506423_sharedTables.resx">
       <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602091209188_isLocalUser.resx">
+      <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -234,6 +234,7 @@
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Persona\RolesController.cs" />
+    <Compile Include="Controllers\Persona\UsersController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
@@ -1479,6 +1480,9 @@
     <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
     <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
     <Content Include="Views\Mozaic\Css\Update.cshtml" />
+    <Content Include="Views\Persona\Users\Index.cshtml" />
+    <Content Include="Views\Persona\Users\Create.cshtml" />
+    <Content Include="Views\Persona\Users\Update.cshtml" />
     <!-->>>>>>> f0535bb54521d8115aaa03fbc30328c6a33d580b-->
   </ItemGroup>
   <ItemGroup>

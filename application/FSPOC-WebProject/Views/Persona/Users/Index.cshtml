@@ -1,0 +1,58 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
+@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Persona.User>
+@{
+    Page.Title = "Omnius Persona";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "personaModule";
+}
+
+<div id="upperPanel">
+    <div class="panelLabel">Uživatelé</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+</div>
+<div id="lowerPanel">
+
+    <table class="table table-bordered table-striped table-omnius">
+        <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Firma</th>
+            <th>Oddělení</th>
+            <th>Tým</th>
+            <th>Práce</th>
+            <th>Adresa</th>
+            <th>Email</th>
+            <th>Pracovní telefon</th>
+            <th>Upravit/Smazat</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (User u in Model)
+        {
+            <tr>
+                <td>@u.DisplayName</td>
+                <td>@u.Company</td>
+                <td>@u.Department</td>
+                <td>@u.Team</td>
+                <td>@u.Job</td>
+                <td>@u.Address</td>
+                <td>@u.Email</td>
+                <td>@u.WorkPhone</td>
+                <td>
+                    @Html.ActionLink(" ", "Edit", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
+                    @Html.ActionLink(" ", "Delete", new {@id = u.Id}, new {@class = "fa fa-trash ico-only btn btn-danger"})
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div>
+        @Html.ActionLink("Přidat uživatele", "Create", new {},new {@class="btn btn-primary"})
+    </div>
+</div>
+
