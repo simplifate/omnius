@@ -21,11 +21,11 @@
         <thead>
         <tr>
             <th>Jméno</th>
+            <th>Uživatelské jméno</th>
             <th>Firma</th>
             <th>Oddělení</th>
             <th>Tým</th>
             <th>Práce</th>
-            <th>Adresa</th>
             <th>Email</th>
             <th>Pracovní telefon</th>
             <th>Upravit/Smazat</th>
@@ -35,16 +35,18 @@
         @foreach (User u in Model)
         {
             <tr>
-                <td>@u.DisplayName</td>
+                <td>
+                    @Ajax.ActionLink(u.DisplayName, "Detail", new {@id = u.Id}, new AjaxOptions() {InsertionMode = InsertionMode.Replace, UpdateTargetId = "user_detail"})
+                </td>
+                <td>@u.username</td>
                 <td>@u.Company</td>
                 <td>@u.Department</td>
                 <td>@u.Team</td>
                 <td>@u.Job</td>
-                <td>@u.Address</td>
                 <td>@u.Email</td>
                 <td>@u.WorkPhone</td>
                 <td>
-                    @Html.ActionLink(" ", "Edit", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
+                    @Html.ActionLink(" ", "Update", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
                     @Html.ActionLink(" ", "Delete", new {@id = u.Id}, new {@class = "fa fa-trash ico-only btn btn-danger"})
                 </td>
             </tr>
@@ -55,4 +57,6 @@
         @Html.ActionLink("Přidat uživatele", "Create", new {},new {@class="btn btn-primary"})
     </div>
 </div>
-
+<div id="user_detail">
+    
+</div>

@@ -1480,12 +1480,12 @@
     <Content Include="Views\Persona\Users\Index.cshtml" />
     <Content Include="Views\Persona\Users\Create.cshtml" />
     <Content Include="Views\Persona\Users\Update.cshtml" />
+    <Content Include="Views\Persona\Users\Detail.cshtml" />
     <!-->>>>>>> f0535bb54521d8115aaa03fbc30328c6a33d580b-->
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AppAdminManager\" />
-    <Folder Include="Views\Show\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
