@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Migrations
             DropIndex("dbo.Persona_AppRoles", new[] { "Application_Id" });
             DropIndex("dbo.Persona_Users", new[] { "username" });
             CreateTable(
-                "dbo.UserClaims",
+                "dbo.Persona_UserClaim",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.UserLogins",
+                "dbo.Persona_UserLogin",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -77,12 +77,12 @@ namespace FSS.Omnius.Modules.Migrations
             DropForeignKey("dbo.Persona_User_Role", "RoleId", "dbo.Persona_AppRoles");
             DropForeignKey("dbo.Persona_AppRoles", "ADgroupId", "dbo.Persona_ADgroups");
             DropForeignKey("dbo.Persona_User_Role", "UserId", "dbo.Persona_Users");
-            DropForeignKey("dbo.UserLogins", "UserId", "dbo.Persona_Users");
-            DropForeignKey("dbo.UserClaims", "UserId", "dbo.Persona_Users");
+            DropForeignKey("dbo.Persona_UserLogin", "UserId", "dbo.Persona_Users");
+            DropForeignKey("dbo.Persona_UserClaim", "UserId", "dbo.Persona_Users");
             DropIndex("dbo.Persona_User_Role", new[] { "RoleId" });
             DropIndex("dbo.Persona_User_Role", new[] { "UserId" });
-            DropIndex("dbo.UserLogins", new[] { "UserId" });
-            DropIndex("dbo.UserClaims", new[] { "UserId" });
+            DropIndex("dbo.Persona_UserLogin", new[] { "UserId" });
+            DropIndex("dbo.Persona_UserClaim", new[] { "UserId" });
             DropIndex("dbo.Persona_AppRoles", new[] { "ADgroupId" });
             AlterColumn("dbo.Persona_Users", "Email", c => c.String(maxLength: 100));
             AlterColumn("dbo.Persona_Users", "UserName", c => c.String(nullable: false, maxLength: 50));
@@ -98,8 +98,8 @@ namespace FSS.Omnius.Modules.Migrations
             DropColumn("dbo.Persona_AppRoles", "Name");
             DropColumn("dbo.Persona_AppRoles", "ADgroupId");
             DropTable("dbo.Persona_User_Role");
-            DropTable("dbo.UserLogins");
-            DropTable("dbo.UserClaims");
+            DropTable("dbo.Persona_UserLogin");
+            DropTable("dbo.Persona_UserClaim");
             CreateIndex("dbo.Persona_Users", "username", unique: true);
             CreateIndex("dbo.Persona_AppRoles", "Application_Id");
             AddForeignKey("dbo.Persona_AppRoles", "Application_Id", "dbo.Master_Applications", "Id", cascadeDelete: true);
