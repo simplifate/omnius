@@ -31,7 +31,7 @@
                 <th>Uživatel / Aplikace</th>
                 @foreach (ADgroup group in ViewBag.ADgroups)
                 {
-                    <td>@group.ToString() <a href="/Persona/Roles/App/@group.ApplicationId" class="fa fa-pencil editAppRolesIcon"></a></td>
+                    <td>@group.ToString() @Html.Raw(group.ApplicationId != null ? $"<a href=\"/Persona/Roles/App/{group.ApplicationId}\" class=\"fa fa-pencil editAppRolesIcon\"></a>" : "")</td>
                 }
             </tr>
         </thead>
