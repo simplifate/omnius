@@ -35,7 +35,7 @@ namespace FSPOC_WebProject.Controllers.Persona
             DBEntities e=new DBEntities();
 
             //unikátní username, TODO lepší řešení vymyslet přes javascript
-            if (e.Users.Where(x => x.username == model.username).ToList().Count > 0)
+            if (e.Users.Where(x => x.UserName == model.UserName).ToList().Count > 0)
             {
                 TempData["error"] = "Uživatelské jméno již existuje. Změňte prosím své uživatelské jméno.";
                 return RedirectToAction("Create");

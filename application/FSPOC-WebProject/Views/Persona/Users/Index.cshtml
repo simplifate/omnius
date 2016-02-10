@@ -1,11 +1,12 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
 @model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Persona.User>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+
 @{
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "personaModule";
 }
-
 <div id="upperPanel">
     <div class="panelLabel">Uživatelé</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
@@ -16,47 +17,44 @@
     <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
 </div>
 <div id="lowerPanel">
-
-    <table class="table table-bordered table-striped table-omnius">
-        <thead>
-        <tr>
-            <th>Jméno</th>
-            <th>Uživatelské jméno</th>
-            <th>Firma</th>
-            <th>Oddělení</th>
-            <th>Tým</th>
-            <th>Práce</th>
-            <th>Email</th>
-            <th>Pracovní telefon</th>
-            <th>Upravit/Smazat</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (User u in Model)
-        {
+        <table class="table table-bordered table-striped table-omnius">
+            <thead>
             <tr>
-                <td>
-                    @Ajax.ActionLink(u.DisplayName, "Detail", new {@id = u.Id}, new AjaxOptions() {InsertionMode = InsertionMode.Replace, UpdateTargetId = "user_detail"})
-                </td>
-                <td>@u.username</td>
-                <td>@u.Company</td>
-                <td>@u.Department</td>
-                <td>@u.Team</td>
-                <td>@u.Job</td>
-                <td>@u.Email</td>
-                <td>@u.WorkPhone</td>
-                <td>
-                    @Html.ActionLink(" ", "Update", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
-                    @Html.ActionLink(" ", "Delete", new {@id = u.Id}, new {@class = "fa fa-trash ico-only btn btn-danger"})
-                </td>
+                <th>Jméno</th>
+                <th>Uživatelské jméno</th>
+                <th>Firma</th>
+                <th>Oddělení</th>
+                <th>Tým</th>
+                <th>Práce</th>
+                <th>Email</th>
+                <th>Pracovní telefon</th>
+                <th>Upravit/Smazat</th>
             </tr>
-        }
-        </tbody>
-    </table>
-    <div>
-        @Html.ActionLink("Přidat uživatele", "Create", new {},new {@class="btn btn-primary"})
-    </div>
-</div>
-<div id="user_detail">
-    
+            </thead>
+            <tbody>
+            @foreach (User u in Model)
+            {
+                <tr>
+                    <td>
+                        @Ajax.ActionLink(u.DisplayName, "Detail", new {@id = u.Id}, new AjaxOptions() {UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace})
+                    </td>
+                    <td>@u.UserName</td>
+                    <td>@u.Company</td>
+                    <td>@u.Department</td>
+                    <td>@u.Team</td>
+                    <td>@u.Job</td>
+                    <td>@u.Email</td>
+                    <td>@u.WorkPhone</td>
+                    <td>
+                        @Html.ActionLink(" ", "Update", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
+                        @Html.ActionLink(" ", "Delete", new {@id = u.Id}, new {@class = "fa fa-trash ico-only btn btn-danger"})
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div>
+            @Html.ActionLink("Přidat uživatele", "Create", new {}, new {@class = "btn btn-primary"})
+        </div>
+    <div id="DetailUser"></div>
 </div>
