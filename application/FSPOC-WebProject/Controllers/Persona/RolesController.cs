@@ -24,16 +24,9 @@ namespace FSPOC_WebProject.Controllers.Persona
                 {
                     model.Users.Add(new AjaxPersonaAppRoles_User { Id = user.Id, Name = user.DisplayName });
                 }
-                foreach (var role in context.PersonaAppRoles.Where(c => c.Application.Id == app.Id))
+                foreach (var role in context.Roles.Where(c => c.ADgroup.ApplicationId == app.Id))
                 {
-                    var memberList = new List<int>();
-                    int parsedId;
-                    foreach (string token in role.MembersList.Split(','))
-                    {
-                        if(int.TryParse(token, out parsedId))
-                            memberList.Add(parsedId);
-                    }
-                    model.Roles.Add(new AjaxPersonaAppRoles_Role { Id = role.Id, Name = role.RoleName, MemberList = memberList });
+                    model.Roles.Add(new AjaxPersonaAppRoles_Role { Id = role.Id, Name = role.Name, MemberList = role.Users.Select(u => u.UserId).ToList() });
                 }
                 return View(model);
             }

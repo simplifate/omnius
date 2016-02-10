@@ -11,7 +11,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQueue
     {
-        public string connectionString;
         internal static List<SqlQuery> _queries = new List<SqlQuery>();
 
         public SqlQueue Add(SqlQuery query)
@@ -43,10 +42,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void ExecuteAll()
         {
-            if (connectionString == null && Entitron.connectionString == null)
+            if (Entitron.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(connectionString ?? Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
             {
                 connection.Open();
 

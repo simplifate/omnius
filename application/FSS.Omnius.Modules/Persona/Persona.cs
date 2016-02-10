@@ -72,14 +72,14 @@ namespace FSS.Omnius.Modules.Persona
             
             // init
             DBEntities e = _CORE.Entitron.GetStaticTables();
-            User user = e.Users.SingleOrDefault(u => u.username == username);
+            User user = e.Users.SingleOrDefault(u => u.UserName == username);
             ldapResult = null;
             
             // new user
             if (user == null)
             {
                 user = new User();
-                user.username = username;
+                user.UserName = username;
                 user.localExpiresAt = DateTime.MinValue;
                 e.Users.Add(user);
 

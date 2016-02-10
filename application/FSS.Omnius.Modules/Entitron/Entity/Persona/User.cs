@@ -2,30 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_Users")]
-    public partial class User
+    public partial class User : IdentityUser<int, UserLogin, User_Role, UserClaim>
     {
         public User()
         {
             ADgroup_Users = new HashSet<ADgroup_User>();
         }
-
-        public int Id { get; set; }
-        [Required]
-        [Index(IsUnique = true)]
-        [StringLength(50)]
-        public string username { get; set; }
+        
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }
-        [StringLength(100)]
-        public string Email { get; set; }
         [StringLength(100)]
         public string Company { get; set; }
         [StringLength(100)]

@@ -3,11 +3,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     public partial class User
     {
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            return userIdentity;
+        }
+
         /// <summary>
         /// without saving...
         /// </summary>
@@ -33,13 +43,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
         public bool canUseAction(int actionId, DBEntities context)
         {
-            ActionRule actionRule = context.ActionRules.Single(ar => ar.Id == actionId);
-            return actionRule.ActionRuleRights.Any(arr => arr.AppRole.MembersList.Split(',').Contains(Id.ToString()));
+            return Roles.Any(r => r.AppRole.ActionRuleRights.Any(arr => arr.ActionRuleId == actionId));
         }
         public bool HasRole(string roleName, DBEntities context)
         {
-            PersonaAppRole role = context.PersonaAppRoles.Single(ar => ar.RoleName == roleName);
-            return role.MembersList.Split(',').Contains(Id.ToString());
+            return Roles.Any(r => r.AppRole.Name == roleName);
         }
         public bool IsInGroup(string groupName)
         {

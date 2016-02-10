@@ -35,7 +35,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         public ActionResult Update(int id)
         {
             DBEntities e = new DBEntities();
-            FSS.Omnius.Modules.Entitron.Entity.Persona.User u = e.Users.SingleOrDefault(x => x.Id == id);
+            User u = e.Users.SingleOrDefault(x => x.Id == id);
 
             return View(u);
         }

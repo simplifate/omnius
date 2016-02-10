@@ -2,22 +2,21 @@
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_AppRoles")]
-    public class PersonaAppRole
+    public class PersonaAppRole : IdentityRole<int, User_Role>
     {
         public PersonaAppRole()
         {
             ActionRuleRights = new HashSet<ActionRuleRight>();
         }
 
-        public int Id { get; set; }
-        public string RoleName { get; set; }
-        public string MembersList { get; set; }
+        public int ADgroupId { get; set; }
+        public virtual ADgroup ADgroup { get; set; }
 
-        public virtual Application Application { get; set; }
         public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }
     }
 }

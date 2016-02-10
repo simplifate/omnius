@@ -24,7 +24,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
-            Roles = new HashSet<PersonaAppRole>();
         }
 
         public int Id { get; set; }
@@ -54,7 +53,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<ADgroup> ADgroups { get; set; }
 
         public virtual ICollection<Table> Tables { get; set; }
-
-        public virtual ICollection<PersonaAppRole> Roles { get; set; }
     }
 }

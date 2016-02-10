@@ -12,9 +12,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Watchtower;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
-    public partial class DBEntities : DbContext
+    public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
+        public static DBEntities Create()
+        {
+            return new DBEntities();
+        }
+
         public DBEntities()
             : base(Omnius.Modules.Entitron.Entitron.connectionString)
         {
@@ -63,8 +69,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -154,8 +158,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Persona
             modelBuilder.Entity<PersonaAppRole>()
-                .HasRequired<Application>(e => e.Application)
-                .WithMany(e => e.Roles);
+                .HasRequired<ADgroup>(e => e.ADgroup)
+                .WithMany(e => e.AppRoles)
+                .HasForeignKey(e => e.ADgroupId);
 
             modelBuilder.Entity<ModuleAccessPermission>()
                 .HasOptional<User>(e => e.User)
@@ -180,6 +185,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<ADgroup_User>(e => e.ADgroup_Users)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany<User_Role>(e => e.Roles)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasMany<User_Role>(e => e.Users)
+                .WithRequired(e => e.AppRole)
+                .HasForeignKey(e => e.RoleId);
 
             // Tapestry
             modelBuilder.Entity<Application>()

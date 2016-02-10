@@ -32,7 +32,7 @@ namespace System.Web.Mvc
             if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles))
                 return;
 
-            if (Users.Split(' ').Contains(user.username))
+            if (Users.Split(' ').Contains(user.UserName))
                 return;
             
             foreach(string role in Roles.Split(' '))
