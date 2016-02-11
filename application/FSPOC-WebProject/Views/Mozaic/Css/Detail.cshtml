@@ -17,17 +17,17 @@
                 Obsah
             </label>
         </div>
-        <div>
-            <text>
-                <pre style="font-family:inherit">
-@Model.Value.Replace("\n", "<br/>");
-                </pre>
+        <div style="margin-bottom:2em">
+            <text style="white-space: pre-line">
+                @Model.Value
             </text>
         </div>
 
+        <div>
         @Ajax.RouteLink("Upravit", "Mozaic", new { @action = "Update", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-primary" })
         @Html.RouteLink("Odstranit", "Mozaic", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-danger" })
 
         @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+        </div>
     </div>
 </div>

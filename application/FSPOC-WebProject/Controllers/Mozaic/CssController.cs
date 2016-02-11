@@ -41,8 +41,8 @@ namespace FSS.Omnius.Controllers.Mozaic
         
         public ActionResult SetUpdateCss(Css css)
         {
-
             ViewBag.CssValue = css.Value;
+            ViewBag.CssName = css.Name;
 
             return View("Update", css);
         }
@@ -54,13 +54,15 @@ namespace FSS.Omnius.Controllers.Mozaic
         {
             DBEntities e = new DBEntities();
 
-            //document.getElementById("myTextarea").value = "Fifth Avenue, New York City";
-            model.Value = Request.Form["EditCss"];
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                return View("Update", model);
+            }
 
             e.Css.AddOrUpdate(model);
             e.SaveChanges();
 
-            return RedirectToAction("Index");
+            return View("BaseIndex", e.Css);
         }
         #endregion
 

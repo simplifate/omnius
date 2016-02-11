@@ -1,0 +1,31 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@model System.Data.Entity.DbSet<Css>
+<table class="table table-bordered table-striped table-omnius">
+    <colgroup>
+        <col>
+        <col>
+        <col width="100">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Css css in Model)
+        {
+            <tr>
+                <td>
+                    <!-- Interaktivní text na Detail -->
+                    @Ajax.RouteLink(css.Name, "Mozaic", new { @action = "Detail", @id = css.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" })
+                </td>
+                <td style="width:96px">
+                    <!--Tlačítko na Update a tlačítko na Delete-->
+                    @Ajax.RouteLink(" ", "Mozaic", new { @action = "Update", @id = css.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
+                    @Html.RouteLink(" ", "Mozaic", new { @action = "Delete", @id = css.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
