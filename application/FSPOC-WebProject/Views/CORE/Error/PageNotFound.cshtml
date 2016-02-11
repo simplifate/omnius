@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Page not found";
-    Layout = User.GetLogged().isAdmin() ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
+    Layout = Context.GetLoggedUser().isAdmin() ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
 }
 
 <div id="upperPanel">

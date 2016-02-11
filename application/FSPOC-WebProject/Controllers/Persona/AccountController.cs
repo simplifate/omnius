@@ -10,10 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FSPOC_WebProject.Models;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -55,7 +55,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/Login
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -65,7 +64,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -94,7 +92,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/VerifyCode
-        [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
@@ -108,7 +105,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/VerifyCode
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
@@ -137,7 +133,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -146,13 +141,36 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName };
+                var user = new User
+                {
+                    UserName = model.UserName,
+                    DisplayName = model.UserName,
+                    isLocalUser = true,
+                    localExpiresAt = DateTime.UtcNow,
+                    LastLogin = DateTime.UtcNow,
+                    LastLogout = DateTime.UtcNow,
+                    CurrentLogin = DateTime.UtcNow,
+                    ModuleAccessPermission = new ModuleAccessPermission
+                    {
+                        Athena = false,
+                        Core = false,
+                        Cortex = false,
+                        Entitron = false,
+                        Hermes = false,
+                        Master = false,
+                        Mozaic = false,
+                        Nexus = false,
+                        Persona = false,
+                        Sentry = false,
+                        Tapestry = false,
+                        Watchtower = false
+                    }
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -175,7 +193,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(int userId, string code)
         {
             if (userId == default(int) || code == null)
@@ -188,7 +205,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ForgotPassword
-        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
@@ -197,7 +213,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -224,7 +239,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ForgotPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -232,7 +246,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ResetPassword
-        [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
@@ -241,7 +254,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -266,7 +278,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -275,7 +286,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
@@ -285,7 +295,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/SendCode
-        [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
@@ -301,7 +310,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/SendCode
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
@@ -320,7 +328,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -351,7 +358,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
@@ -389,21 +395,26 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [PersonaAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            CORE core = HttpContext.GetCORE();
+            core.Persona.LogOff(User.Identity.Name);
+
             return RedirectToAction("Index", "Home");
         }
 
         //
         // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
         }
 
+        [PersonaAuthorize]
         protected override void Dispose(bool disposing)
         {
             if (disposing)

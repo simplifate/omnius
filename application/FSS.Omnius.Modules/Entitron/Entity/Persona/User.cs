@@ -38,9 +38,51 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public DateTime? LastLogout { get; set; }
 
         [Required]
-        public DateTime localExpiresAt { get; set; }
+        public DateTime? localExpiresAt { get; set; }
         
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
         public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
+        
+
+        public void Update(User updateFrom)
+        {
+            if (updateFrom.DisplayName != null)
+                DisplayName = updateFrom.DisplayName;
+
+            if (updateFrom.Company != null)
+                Company = updateFrom.Company;
+
+            if (updateFrom.Department != null)
+                Department = updateFrom.Department;
+
+            if (updateFrom.Team != null)
+                Team = updateFrom.Team;
+
+            if (updateFrom.WorkPhone != null)
+                WorkPhone = updateFrom.WorkPhone;
+
+            if (updateFrom.MobilPhone != null)
+                MobilPhone = updateFrom.MobilPhone;
+
+            if (updateFrom.Address != null)
+                Address = updateFrom.Address;
+
+            if (updateFrom.Job != null)
+                Job = updateFrom.Job;
+            
+            //isLocalUser = updateFrom.isLocalUser;
+
+            //if (updateFrom.CurrentLogin != null)
+            //    CurrentLogin = updateFrom.CurrentLogin;
+
+            //if (updateFrom.LastLogin != null)
+            //    LastLogin = updateFrom.LastLogin;
+
+            //if (updateFrom.LastLogout != null)
+            //    LastLogout = updateFrom.LastLogout;
+
+            if (updateFrom.localExpiresAt != null)
+                localExpiresAt = updateFrom.localExpiresAt;
+        }
     }
 }

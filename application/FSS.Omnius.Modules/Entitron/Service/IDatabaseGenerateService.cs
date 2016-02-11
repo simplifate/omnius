@@ -9,6 +9,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
 {
     public interface IDatabaseGenerateService
     {
-        void GenerateDatabase(Application application, DbSchemeCommit dbSchemeCommit);
+        void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core);
     }
 }

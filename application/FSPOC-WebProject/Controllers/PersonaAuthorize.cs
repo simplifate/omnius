@@ -21,13 +21,28 @@ namespace System.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            CORE core = new CORE();
+            CORE core = filterContext.HttpContext.GetCORE();
+
             User user = filterContext.HttpContext.User.GetLogged(core);
+            // not logged -> redirect
             if (user == null)
-                filterContext.Result = new Http403Result();
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                    "Persona",
+                    new Web.Routing.RouteValueDictionary(new {
+                        @controller = "Account",
+                        @action = "Login",
+                        @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
+                    })
+                );
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(Module) && !user.canUseModule(Module))
+            {
                 filterContext.Result = new Http403Result();
+                return;
+            }
 
             if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles))
                 return;

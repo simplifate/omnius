@@ -49,9 +49,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
                     int startI = userName.IndexOf("CN=") + 3;
                     int EndI = userName.IndexOf(',', startI);
 
-                    User user = core.Persona.getUserWithoutGroups(userName);
-
-                    rightsLdap.Add(new ADgroup_User { ADgroup = group, User = user });
+                    // save user with groups
+                    core.Persona.GetUser(userName);
                 }
             }
 

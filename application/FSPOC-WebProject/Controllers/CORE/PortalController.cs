@@ -14,8 +14,8 @@ namespace FSS.Omnius.Controllers.CORE
         // GET: Portal
         public ActionResult Index()
         {
-            Modules.CORE.CORE core = new Modules.CORE.CORE();
-            ViewBag.loggedUserCount = core.Persona.getLoggedCount();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+            ViewBag.loggedUserCount = core.Persona.GetLoggedCount();
 
             return View();
         }

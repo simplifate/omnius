@@ -49,8 +49,7 @@ namespace FSPOC_WebProject.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required]
@@ -65,7 +64,6 @@ namespace FSPOC_WebProject.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
         [Display(Name = "User Name")]
         public string UserName { get; set; }
 

@@ -55,7 +55,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
         public bool canUseModule(string moduleName)
         {
-            return ModuleAccessPermission.hasAccess(moduleName);
+            return ModuleAccessPermission == null || ModuleAccessPermission.hasAccess(moduleName);
         }
     }
 }

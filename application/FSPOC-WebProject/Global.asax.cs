@@ -30,7 +30,7 @@ namespace FSPOC_WebProject
         protected void Application_EndRequest()
         {
             // error
-            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode))
+            if (new int[] { 403, 404 }.Contains(Context.Response.StatusCode))
             {
                 Response.Clear();
 

@@ -24,20 +24,18 @@ namespace FSS.Omnius.Controllers.CORE
 
         public bool Leave()
         {
-            Modules.CORE.CORE core = new Modules.CORE.CORE();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
 
-            core.Persona.getUser(User.Identity.Name).LastLogout = null;
-            core.Entitron.GetStaticTables().SaveChanges();
+            core.Persona.NotLogOff(User.Identity.Name);
 
             return true;
         }
 
         public bool LogOut()
         {
-            Modules.CORE.CORE core = new Modules.CORE.CORE();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
 
-            core.Persona.getUser(User.Identity.Name).LastLogout = DateTime.UtcNow;
-            core.Entitron.GetStaticTables().SaveChanges();
+            core.Persona.LogOff(User.Identity.Name);
 
             return true;
         }

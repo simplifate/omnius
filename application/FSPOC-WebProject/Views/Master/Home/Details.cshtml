@@ -2,7 +2,7 @@
     Page.Title = "Omnius - User details";
     Page.ModuleClass = "userDetailsModule";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
-    var user = User.GetLogged();
+    var user = Context.GetLoggedUser();
 }
 
 <div id="detailsContainer">

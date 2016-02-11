@@ -18,9 +18,9 @@ namespace FSS.Omnius.Controllers.Mozaic
         public string Index(string appName, int blockId = -1, int modelId = -1)
         {
             // init
-            Modules.CORE.CORE core = new Modules.CORE.CORE();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
             core.Entitron.AppName = appName;
-            core.User = User.GetLogged();
+            core.User = User.GetLogged(core);
             DBEntities e = core.Entitron.GetStaticTables();
             Block block =
                 blockId > 0

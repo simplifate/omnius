@@ -104,10 +104,10 @@ namespace FSS.Omnius.Controllers.Entitron
         {
             try
             {
-                Modules.CORE.CORE core = new Modules.CORE.CORE();
+                Modules.CORE.CORE core = (Modules.CORE.CORE)Request.Properties["CORE"];
                 core.Entitron.AppId = AppId;
                 var dbSchemeCommit = RepositoryDbSchemeCommit.Get(orderBy: q => q.OrderByDescending(d => d.Timestamp)).First();
-                DatabaseGenerateService.GenerateDatabase(core.Entitron.Application, dbSchemeCommit);
+                DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
             }
             catch (Exception ex)
             {

@@ -12,11 +12,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
         /// <summary>
         /// </summary>
         /// <param name="dbSchemeCommit"></param>
-        public void GenerateDatabase(Application application, DbSchemeCommit dbSchemeCommit)
+        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
         {
-            CORE.CORE core = new CORE.CORE();
             Entitron e = core.Entitron;
-            e.Application = application;
 
             List<string> deletedTables =
                             e.Application.GetTables()

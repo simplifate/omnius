@@ -10,7 +10,7 @@
     @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
-    @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = User.GetLogged().ModuleAccessPermission; }
+    @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = Context.GetLoggedUser().ModuleAccessPermission; }
 </head>
 <body class="@Page.ModuleClass">
     @Scripts.Render("~/bundles/jquery")
@@ -25,8 +25,8 @@
         </div>
         <div class="userLabel">
             <div class="avatar"></div>
-            <div class="name">@User.GetLogged().DisplayName</div>
-            <div class="role">@User.GetLogged().Job</div>
+            <div class="name">@Context.GetLoggedUser().DisplayName</div>
+            <div class="role">@Context.GetLoggedUser().Job</div>
             <div class="fa fa-caret-down"></div>
         </div>
     </div>

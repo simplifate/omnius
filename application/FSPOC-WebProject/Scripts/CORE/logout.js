@@ -16,4 +16,8 @@
                 });
             });
     });
+    $('#logoutLink').click(function () {
+        $('#logoutForm').submit();
+        return false;
+    });
 });
