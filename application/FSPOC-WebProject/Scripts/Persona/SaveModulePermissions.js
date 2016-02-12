@@ -4,7 +4,7 @@
 
     moduleAccessTable.find("tr.hiddenIdRow td").each(function (index, element) {
         if(index > 0)
-            permissionArray.push({ Id: parseInt($(element).text()) })
+            permissionArray.push({ UserId: parseInt($(element).text()) })
     });
     moduleAccessTable.find("thead th").each(function (index, element) {
         if (index > 0)
