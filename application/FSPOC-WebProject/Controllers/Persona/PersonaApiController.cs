@@ -22,7 +22,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                 {
                     foreach(AjaxModuleAccessPermission ajaxPermission in postData.PermissionList)
                     {
-                        var permission = context.ModuleAccessPermissions.Find(ajaxPermission.Id);
+                        var permission = context.ModuleAccessPermissions.Find(ajaxPermission.UserId);
 
                         permission.Core = ajaxPermission.Core;
                         permission.Master = ajaxPermission.Master;
@@ -58,7 +58,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                     AjaxModuleAccessPermissionSettings result = new AjaxModuleAccessPermissionSettings();
                     result.PermissionList = context.ModuleAccessPermissions.Select(c => new AjaxModuleAccessPermission
                     {
-                        Id = c.Id,
+                        UserId = c.UserId,
                         UserName = c.User.DisplayName,
                         Core = c.Core,
                         Master = c.Master,

@@ -16,7 +16,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                 List<AjaxModuleAccessPermission> model = context.ModuleAccessPermissions
                     .Select(c => new AjaxModuleAccessPermission
                     {
-                        Id = c.Id,
+                        UserId = c.UserId,
                         UserName = c.User.DisplayName,
                         Core = c.Core,
                         Master = c.Master,

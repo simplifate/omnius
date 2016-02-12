@@ -439,6 +439,10 @@
     <Compile Include="Migrations\201602101151279_IdentityUser.Designer.cs">
       <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602120828421_requiredModulePermissions.cs" />
+    <Compile Include="Migrations\201602120828421_requiredModulePermissions.Designer.cs">
+      <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -659,6 +663,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602101151279_IdentityUser.resx">
       <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602120828421_requiredModulePermissions.resx">
+      <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -163,8 +163,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.ADgroupId);
 
             modelBuilder.Entity<ModuleAccessPermission>()
-                .HasOptional<User>(e => e.User)
-                .WithOptionalDependent(e => e.ModuleAccessPermission);
+                .HasRequired(e => e.User)
+                .WithOptional(e => e.ModuleAccessPermission)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<ActionRule>()
                 .HasMany<ActionRuleRight>(e => e.ActionRuleRights)
