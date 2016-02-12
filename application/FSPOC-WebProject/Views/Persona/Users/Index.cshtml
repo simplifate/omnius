@@ -17,44 +17,47 @@
     <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
 </div>
 <div id="lowerPanel">
+    <svg class="lowerLeftDecoration" width="40px" height="320px">
+        <path d="M31 0 L31 320" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
         <table class="table table-bordered table-striped table-omnius">
             <thead>
-            <tr>
-                <th>Jméno</th>
-                <th>Uživatelské jméno</th>
-                <th>Firma</th>
-                <th>Oddělení</th>
-                <th>Tým</th>
-                <th>Práce</th>
-                <th>Email</th>
-                <th>Pracovní telefon</th>
-                <th>Upravit/Smazat</th>
-            </tr>
+                <tr>
+                    <th>Jméno</th>
+                    <th>Uživatelské jméno</th>
+                    <th>Firma</th>
+                    <th>Oddělení</th>
+                    <th>Tým</th>
+                    <th>Práce</th>
+                    <th>Email</th>
+                    <th>Pracovní telefon</th>
+                    <th>Upravit/Smazat</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (User u in Model)
+                @foreach (User u in Model)
             {
-                <tr>
-                    <td>
-                        @Ajax.ActionLink(u.DisplayName, "Detail", new {@id = u.Id}, new AjaxOptions() {UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace})
-                    </td>
-                    <td>@u.UserName</td>
-                    <td>@u.Company</td>
-                    <td>@u.Department</td>
-                    <td>@u.Team</td>
-                    <td>@u.Job</td>
-                    <td>@u.Email</td>
-                    <td>@u.WorkPhone</td>
-                    <td>
-                        @Html.ActionLink(" ", "Update", new {@id = u.Id}, new {@class = "fa fa-pencil ico-only btn btn-primary"})
-                        @Html.ActionLink(" ", "Delete", new {@id = u.Id}, new {@class = "fa fa-trash ico-only btn btn-danger"})
-                    </td>
-                </tr>
-            }
+                    <tr>
+                        <td>
+                            @Ajax.ActionLink(u.DisplayName, "Detail", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace })
+                        </td>
+                        <td>@u.UserName</td>
+                        <td>@u.Company</td>
+                        <td>@u.Department</td>
+                        <td>@u.Team</td>
+                        <td>@u.Job</td>
+                        <td>@u.Email</td>
+                        <td>@u.WorkPhone</td>
+                        <td>
+                            @Ajax.ActionLink(" ", "Update", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
+                            @Html.ActionLink(" ", "Delete", new { @id = u.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
-        <div>
-            @Html.ActionLink("Přidat uživatele", "Create", new {}, new {@class = "btn btn-primary"})
-        </div>
+    <div>
+        @Html.ActionLink("Přidat uživatele", "Create", new {}, new {@class = "btn btn-primary"})
+    </div>
     <div id="DetailUser"></div>
 </div>

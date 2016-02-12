@@ -1,10 +1,5 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Persona.User
-@{
-    Page.Title = "Omnius Persona";
-    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
-    Page.ModuleClass = "personaModule";
-}
-<div id="upperPanel">
+@*<div id="upperPanel">
     <div class="panelLabel">Upravit uživatele </div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -12,9 +7,13 @@
         <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
     </svg>
     <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
-</div>
-
-<div id="lowerPanel">
+</div>*@
+<script type="text/javascript">
+    $('#closeButton').onclick(function () {
+        getElementById('DetailUser').empty();
+    });
+</script>
+<div>
     @if (TempData["error"] != null)
     {
         <div class="alert alert-warning alert-dismissible" role="alert">
@@ -133,5 +132,6 @@
         </div>
         <div class="clearfix"></div>
         <button type="submit" class="btn btn-primary">Upravit</button>
+        <button id="closeButton" class="btn btn-default">Zavřít</button>
     }
 </div>

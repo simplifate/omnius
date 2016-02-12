@@ -2,6 +2,7 @@
     ViewBag.Title = "Not authorized";
     Layout = Context.GetLoggedUser().isAdmin() ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
 }
+<link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
 <div id="upperPanel">
     <div class="panelLabel">Not authorized</div>

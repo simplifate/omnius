@@ -1,10 +1,11 @@
 ﻿@{
     ViewBag.Title = "Page not found";
-    Layout = Context.GetLoggedUser().isAdmin() ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
+    Layout = (Context.GetLoggedUser().isAdmin()) ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
 }
+<link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
 <div id="upperPanel">
-    <div class="panelLabel">Page not found</div>
+    <div class="panelLabel">Page Not Found</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
         <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />

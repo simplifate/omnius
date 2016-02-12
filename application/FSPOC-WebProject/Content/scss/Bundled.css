@@ -2223,6 +2223,31 @@ body.mozaicComponentManagerModule {
     top: 360px;
     padding: 50px; }
 
+  .errorModule {
+  background-color: #f2f2f3; }
+  .errorModule #upperPanel {
+    height: 135px; }
+  .errorModule #lowerPanel {
+    top: 200px;
+    padding: 50px; }
+    .errorModule #lowerPanel h4 {
+      font-family: FatTec;
+      font-size: 20px;
+      color: #457fa9;
+      margin-left: 25px; }
+    .errorModule #lowerPanel .rightsFormUpperDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -10; }
+    .errorModule #lowerPanel .editAppRolesIcon {
+      font-size: 16px;
+      margin-left: 8px;
+      color: white; }
+    .errorModule #lowerPanel .editAppRolesIcon:hover {
+      text-decoration: none;
+      color: #f98e4b; }
+
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
   border: 1px solid black;

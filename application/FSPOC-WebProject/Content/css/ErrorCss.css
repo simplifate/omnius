@@ -1,0 +1,24 @@
+﻿
+   #upperPanel {
+    height: 135px; }
+   #lowerPanel {
+    top: 200px;
+    padding: 50px; }
+    #lowerPanel h4 {
+      font-family: FatTec;
+      font-size: 20px;
+      color: #457fa9;
+      margin-left: 25px; }
+    #lowerPanel .rightsFormUpperDecoration {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -10; }
+    #lowerPanel .editAppRolesIcon {
+      font-size: 16px;
+      margin-left: 8px;
+      color: white; }
+    #lowerPanel .editAppRolesIcon:hover {
+      text-decoration: none;
+      color: #f98e4b; 
+      }
