@@ -16,6 +16,19 @@ namespace FSS.Omnius.Modules.Migrations
             CreateIndex("dbo.Persona_ModuleAccessPermissions", "UserId");
             AddForeignKey("dbo.Persona_ModuleAccessPermissions", "UserId", "dbo.Persona_Users", "Id", cascadeDelete: true);
             DropColumn("dbo.Persona_ModuleAccessPermissions", "Id");
+
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Core", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Master", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Tapestry", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Entitron", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Mozaic", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Persona", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Nexus", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Sentry", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Hermes", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Athena", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Watchtower", c => c.Boolean(nullable: false, defaultValue: false));
+            AlterColumn("dbo.Persona_ModuleAccessPermissions", "Cortex", c => c.Boolean(nullable: false, defaultValue: false));
         }
         
         public override void Down()

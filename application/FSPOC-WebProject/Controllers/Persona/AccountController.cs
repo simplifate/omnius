@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using FSPOC_WebProject.Models;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
@@ -154,26 +155,16 @@ namespace FSPOC_WebProject.Controllers.Persona
                     localExpiresAt = DateTime.UtcNow,
                     LastLogin = DateTime.UtcNow,
                     LastLogout = DateTime.UtcNow,
-                    CurrentLogin = DateTime.UtcNow,
-                    ModuleAccessPermission = new ModuleAccessPermission
-                    {
-                        Athena = false,
-                        Core = false,
-                        Cortex = false,
-                        Entitron = false,
-                        Hermes = false,
-                        Master = false,
-                        Mozaic = false,
-                        Nexus = false,
-                        Persona = false,
-                        Sentry = false,
-                        Tapestry = false,
-                        Watchtower = false
-                    }
+                    CurrentLogin = DateTime.UtcNow
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // module Access permissions
+                    DBEntities context = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+                    context.ModuleAccessPermissions.Add(new ModuleAccessPermission { User = context.Users.Single(u => u.UserName == user.UserName) });
+                    context.SaveChanges();
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
