@@ -1,5 +1,23 @@
 ﻿$(function () {
     if (CurrentModuleIs("adminAppModule")) {
+        $(".adminAppTable .btnOpenWorkflow").on("click", function () {
+            CurrentAppId = $(this).parents("tr").attr("appId");
+            openMetablockForm = $("#openMetablockForm");
+            openMetablockForm.find("input[name='appId']").val(CurrentAppId);
+            openMetablockForm.submit();
+        });
+        $(".adminAppTable .btnOpenDbScheme").on("click", function () {
+            CurrentAppId = $(this).parents("tr").attr("appId");
+            openMetablockForm = $("#openDbSchemeForm");
+            openMetablockForm.find("input[name='appId']").val(CurrentAppId);
+            openMetablockForm.submit();
+        });
+        $(".adminAppTable .btnOpenMozaic").on("click", function () {
+            CurrentAppId = $(this).parents("tr").attr("appId");
+            openMetablockForm = $("#openMozaicForm");
+            openMetablockForm.find("input[name='appId']").val(CurrentAppId);
+            openMetablockForm.submit();
+        });
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             window.location.href = "/Portal/AppValidation";
         });

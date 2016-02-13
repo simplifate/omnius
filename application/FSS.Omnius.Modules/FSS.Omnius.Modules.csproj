@@ -126,6 +126,8 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
@@ -443,6 +445,10 @@
     <Compile Include="Migrations\201602120828421_requiredModulePermissions.Designer.cs">
       <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.cs" />
+    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.Designer.cs">
+      <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -666,6 +672,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602120828421_requiredModulePermissions.resx">
       <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602131234533_Mozaic editor and app profiles.resx">
+      <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

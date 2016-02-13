@@ -24,6 +24,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
+
+            MozaicEditorPages = new List<MozaicEditorPage>();
+            DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
         }
 
         public int Id { get; set; }
@@ -53,5 +56,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<ADgroup> ADgroups { get; set; }
 
         public virtual ICollection<Table> Tables { get; set; }
+
+        // Workflow, UI and DB designers' data
+        public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
+        public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
+        public virtual TapestryDesignerMetablock TapestryDesignerRootMetablock { get; set; }
     }
 }

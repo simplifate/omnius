@@ -21,7 +21,7 @@ $(function () {
         $("#adminMenuTapestry").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
-    else if (CurrentModuleIs("mozaicModule")) {
+    else if (CurrentModuleIs("mozaicModule") || CurrentModuleIs("mozaicEditorModule")) {
         $("#adminMenuMozaic").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
@@ -87,6 +87,8 @@ $(function () {
         $("#lowerPanel").addClass("minimizedPanelMode");
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
+        else if (CurrentModuleIs("mozaicEditorModule"))
+            RecalculateMozaicToolboxHeight();
     });
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
@@ -94,5 +96,7 @@ $(function () {
         $("#lowerPanel").removeClass("minimizedPanelMode");
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
+        else if (CurrentModuleIs("mozaicEditorModule"))
+            RecalculateMozaicToolboxHeight();
     });
 });

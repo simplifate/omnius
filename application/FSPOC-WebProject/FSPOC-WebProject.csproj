@@ -222,6 +222,8 @@
     <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\CssController.cs" />
+    <Compile Include="Controllers\Mozaic\EditorController.cs" />
+    <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
@@ -1327,6 +1329,11 @@
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\MozaicEditor\Dialogs.js" />
+    <Content Include="Scripts\MozaicEditor\Init.js" />
+    <Content Include="Scripts\MozaicEditor\Load.js" />
+    <Content Include="Scripts\MozaicEditor\Save.js" />
+    <Content Include="Scripts\MozaicEditor\Utils.js" />
     <Content Include="Scripts\Nexus\Dialogs.js" />
     <Content Include="Scripts\Nexus\Init.js" />
     <Content Include="Scripts\Overview\Dialogs.js" />
@@ -1481,6 +1488,7 @@
     <Content Include="Views\Persona\Users\Create.cshtml" />
     <Content Include="Views\Persona\Users\Update.cshtml" />
     <Content Include="Views\Persona\Users\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Editor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

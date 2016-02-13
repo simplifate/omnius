@@ -60,12 +60,11 @@ $(function () {
             error: function () { alert("ERROR") }
         });
     }
-    addAppDialog = $("#app-properties-dialog").dialog({
+    addAppDialog = $("#new-app-dialog").dialog({
         autoOpen: false,
         resizable: false,
         width: 600,
         height: 320,
-        title: "Nová aplikace",
         buttons: {
             "Přidat": function () {
                 addAppDialog_SubmitData();

@@ -55,6 +55,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
+        public virtual DbSet<MozaicEditorPage> MozaicEditorPages { get; set; }
 
         // Nexus
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
@@ -147,6 +148,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<TemplateCategory>(e => e.Children)
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
+
+            modelBuilder.Entity<MozaicEditorPage>()
+                .HasMany(e => e.Components);
+            modelBuilder.Entity<Application>()
+                .HasMany(e => e.MozaicEditorPages)
+                .WithRequired(e => e.ParentApp);
 
             // Nexus
             modelBuilder.Entity<FileMetadata>()
@@ -259,7 +266,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasRequired<Block>(e => e.Block)
                 .WithMany(e => e.PreBlockActions);
 
-            // Tapestry - Database Designer
+            // Database Designer
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)
                         .WithRequired(s => s.DbTable);
@@ -275,10 +282,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<DbSchemeCommit>()
                         .HasMany(s => s.Views)
                         .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<Application>()
+                        .HasMany(e => e.DatabaseDesignerSchemeCommits);
 
-            modelBuilder.Entity<TapestryDesignerApp>()
-                .HasRequired(s => s.RootMetablock)
-                .WithOptional(s => s.ParentApp);
+            modelBuilder.Entity<Application>()
+                .HasOptional(s => s.TapestryDesignerRootMetablock)
+                .WithOptionalDependent(s => s.ParentApp);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock);

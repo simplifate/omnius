@@ -11,3 +11,287 @@ body.mozaicComponentManagerModule {
         padding: 50px;
     }
 }
+body.mozaicEditorModule {
+    background-color: #f2f2f3;
+
+    #upperPanel {
+        height: 295px;
+
+        #controlButtonArea {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+        #appInfoPanel {
+            position: absolute;
+            left: 440px;
+            top: 27px;
+            text-align: left;
+            font-size: 18px;
+            color: white;
+            font-family: MyriadPro;
+
+            #headerAppName, #headerPageName {
+                font-weight: bold;
+                color: #f1a57a;
+            }
+        }
+        #gridControlPanel {
+            position: absolute;
+            left: 100px;
+            top: 200px;
+
+            label {
+                color: white;
+            }
+            #gridResolutionDropdown {
+                margin-left: 8px;
+                margin-right: 14px;
+            }
+            #gridShowCheckbox {
+                margin-left: 6px;
+            }
+        }
+    }
+
+    #lowerPanel {
+        top: 370px;
+        padding: 0px;
+    }
+    #mozaicContainer {
+        height: 900px;
+        font-family: MyriadPro;
+        
+        #mozaicLeftBar {
+            @include no-select();
+            position: absolute;
+            width: 300px;
+            height: 500px;
+            overflow-y: scroll;
+            background-color: #e0e2e2;
+
+            .toolboxItem {
+                position: relative;
+                margin: 10px;
+            }
+            div.toolboxItem {
+                margin-bottom: 20px;
+            }
+            .toolboxCategoryLabel {
+                width: 100%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-family: FatTec;
+                font-size: 16px;
+                text-align: center;
+            }
+            .toolboxCategoryHr {
+                width: 80%;
+                border-color: #606060;
+            }
+            .leftBarHeader {
+                width: 100%;
+                height: 32px;
+                background-color: #bdbbbc;
+                font-family: FatTec;
+                font-size: 16px;
+                padding: 8px 10px;
+            }
+            #hideMozaicTooboxIcon {
+                position: absolute;
+                font-size: 30px;
+                color: #3a3a3a;
+                right: 10px;
+                top: 2px;
+                cursor: pointer;
+            }
+        }
+        #mozaicLeftBarMinimized {
+            @include no-select();
+            position: absolute;
+            width: 32px;
+            height: 600px;
+            background-color: #bdbbbc;
+            display: none;
+
+            #showMozaicTooboxIcon {
+                position: absolute;
+                font-size: 30px;
+                color: #3a3a3a;
+                right: 10px;
+                top: 2px;
+                cursor: pointer;
+            }
+            .leftBarHeader {
+                position: absolute;
+                left: 18px;
+                top: 95px;
+                background-color: #bdbbbc;
+                font-family: FatTec;
+                font-size: 16px;
+                transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+            }
+        }
+    }
+    #mozaicPageContainer {
+        position: absolute;
+        left: 300px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        background-color: white;
+    }
+    #mozaicPageContainer.showGrid {
+        background-image: url(/Content/images/MozaicGrid.png);
+        background-repeat: repeat;
+    }    
+    .toolboxItem, .uic {
+        cursor: default;
+    }
+    .uic {
+        position: absolute;
+    }
+    .button-simple {
+        background-color: #4b8ad1;
+        border: 1px solid #4b8ad1;
+        color: white;
+    }
+    .button-dropdown {
+        background-color: white;
+        border: 1px solid #4b8ad1;
+        color: #4b8ad1;
+    }
+    .button-large {
+        width: 198px;
+        height: 31px;
+        font-size: 18px;
+        .fa-caret-down {
+            padding-left: 7px;
+        }
+    }
+    .button-small {
+        width: 112px;
+        height: 23px;
+        font-size: 14px;
+        .fa-caret-down {
+            padding-left: 5px;
+        }
+    }
+    .button-extra-small {
+        width: 78px;
+        height: 19px;
+        font-size: 11px;
+        .fa-caret-down {
+            padding-left: 3px;
+        }
+    }
+    .input-single-line {
+        width: 220px;
+        height: 25px;
+        border: 1px solid #b8b4ab;
+        padding-left: 6px;
+    }
+    .input-multiline {
+        width: 260px;
+        height: 75px;
+        border: 1px solid #b8b4ab;
+        padding-left: 6px;
+    }
+    .info-container {
+        color: #58585a;
+        position: relative;
+        width: 260px;
+
+        .info-container-icon {
+            position: absolute;
+            left: 0px;
+            top: 4px;
+            font-size: 18px;
+        }
+        .info-container-header {
+            position: absolute;
+            left: 24px;
+            top: 0px;
+            font-size: 18px;
+        }
+        .info-container-body {
+            padding-top: 26px;
+        }
+    }
+    .info-container.ui-draggable-dragging {
+        border: 1px solid #00d000;
+    }
+    .breadcrumb-navigation {
+        @include linear-gradient(#0086be, #0065a9);
+        color: white;
+        font-family: RweTextMedium;
+        padding: 12px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        width: 200px;
+        height: 55px;
+
+        .app-icon {
+            position: absolute;
+            font-weight: 100;
+            width: 30px;
+            height: 30px;
+            padding-top: 3px;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 19px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .nav-text {
+            position: absolute;
+            left: 54px;
+            font-family: RweHeadlineRegular;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+    }
+    .tab-navigation {
+        .tab {
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+            border-bottom: 1px solid #0065a9;
+            text-align: center;
+            padding-top: 4px;
+            color: #0065a9;
+            font-family: RweHeadlineRegular;
+            font-size: 16px;
+            border-collapse: collapse;
+            margin-right: -4px;
+        }
+        .tab.active-tab {
+            border-left: 1px solid #0065a9;
+            border-right: 1px solid #0065a9;
+            border-top: 1px solid #0065a9;
+            border-bottom: none;
+        }
+    }
+    .uic.ui-draggable-dragging {
+        z-index: 500;
+    }
+    .ui-dialog {
+        z-index: 600;
+    }
+    .ui-dialog-content .formTable label {
+        margin-bottom: 0px;
+    }
+    .ui-dialog-content .formTable tr {
+        height: 32px;
+    }
+    .ui-dialog-content .formTable td {
+        vertical-align: middle;
+    }
+    .ui-dialog-content .formTable tr td:first-child {
+        width: 100px;
+    }
+    .highlightedRow {
+        background-color: #49c3f1 !important;
+        color: white !important;
+    }
+}

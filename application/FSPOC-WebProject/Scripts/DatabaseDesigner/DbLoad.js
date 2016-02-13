@@ -1,7 +1,8 @@
 ﻿function LoadDbScheme(commitId) {
+    appId = $("#currentAppId").val();
     $.ajax({
         type: "GET",
-        url: "/api/database/commits/" + commitId,
+        url: "/api/database/apps/" + appId + "/commits/" + commitId,
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {

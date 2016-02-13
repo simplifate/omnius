@@ -2223,30 +2223,239 @@ body.mozaicComponentManagerModule {
     top: 360px;
     padding: 50px; }
 
-  .errorModule {
+body.mozaicEditorModule {
   background-color: #f2f2f3; }
-  .errorModule #upperPanel {
-    height: 135px; }
-  .errorModule #lowerPanel {
-    top: 200px;
-    padding: 50px; }
-    .errorModule #lowerPanel h4 {
-      font-family: FatTec;
-      font-size: 20px;
-      color: #457fa9;
-      margin-left: 25px; }
-    .errorModule #lowerPanel .rightsFormUpperDecoration {
+  body.mozaicEditorModule #upperPanel {
+    height: 295px; }
+    body.mozaicEditorModule #upperPanel #controlButtonArea {
+      position: absolute;
+      left: 100px;
+      top: 100px; }
+    body.mozaicEditorModule #upperPanel #appInfoPanel {
+      position: absolute;
+      left: 440px;
+      top: 27px;
+      text-align: left;
+      font-size: 18px;
+      color: white;
+      font-family: MyriadPro; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerAppName, body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName {
+        font-weight: bold;
+        color: #f1a57a; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel {
+      position: absolute;
+      left: 100px;
+      top: 200px; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel label {
+        color: white; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {
+        margin-left: 8px;
+        margin-right: 14px; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
+        margin-left: 6px; }
+  body.mozaicEditorModule #lowerPanel {
+    top: 370px;
+    padding: 0px; }
+  body.mozaicEditorModule #mozaicContainer {
+    height: 900px;
+    font-family: MyriadPro; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBar {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 300px;
+      height: 500px;
+      overflow-y: scroll;
+      background-color: #e0e2e2; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxItem {
+        position: relative;
+        margin: 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar div.toolboxItem {
+        margin-bottom: 20px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryLabel {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-family: FatTec;
+        font-size: 16px;
+        text-align: center; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryHr {
+        width: 80%;
+        border-color: #606060; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .leftBarHeader {
+        width: 100%;
+        height: 32px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        padding: 8px 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar #hideMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 32px;
+      height: 600px;
+      background-color: #bdbbbc;
+      display: none; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized #showMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized .leftBarHeader {
+        position: absolute;
+        left: 18px;
+        top: 95px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
+  body.mozaicEditorModule #mozaicPageContainer {
+    position: absolute;
+    left: 300px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: white; }
+  body.mozaicEditorModule #mozaicPageContainer.showGrid {
+    background-image: url(/Content/images/MozaicGrid.png);
+    background-repeat: repeat; }
+  body.mozaicEditorModule .toolboxItem, body.mozaicEditorModule .uic {
+    cursor: default; }
+  body.mozaicEditorModule .uic {
+    position: absolute; }
+  body.mozaicEditorModule .button-simple {
+    background-color: #4b8ad1;
+    border: 1px solid #4b8ad1;
+    color: white; }
+  body.mozaicEditorModule .button-dropdown {
+    background-color: white;
+    border: 1px solid #4b8ad1;
+    color: #4b8ad1; }
+  body.mozaicEditorModule .button-large {
+    width: 198px;
+    height: 31px;
+    font-size: 18px; }
+    body.mozaicEditorModule .button-large .fa-caret-down {
+      padding-left: 7px; }
+  body.mozaicEditorModule .button-small {
+    width: 112px;
+    height: 23px;
+    font-size: 14px; }
+    body.mozaicEditorModule .button-small .fa-caret-down {
+      padding-left: 5px; }
+  body.mozaicEditorModule .button-extra-small {
+    width: 78px;
+    height: 19px;
+    font-size: 11px; }
+    body.mozaicEditorModule .button-extra-small .fa-caret-down {
+      padding-left: 3px; }
+  body.mozaicEditorModule .input-single-line {
+    width: 220px;
+    height: 25px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .input-multiline {
+    width: 260px;
+    height: 75px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .info-container {
+    color: #58585a;
+    position: relative;
+    width: 260px; }
+    body.mozaicEditorModule .info-container .info-container-icon {
       position: absolute;
       left: 0px;
+      top: 4px;
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-header {
+      position: absolute;
+      left: 24px;
       top: 0px;
-      z-index: -10; }
-    .errorModule #lowerPanel .editAppRolesIcon {
-      font-size: 16px;
-      margin-left: 8px;
-      color: white; }
-    .errorModule #lowerPanel .editAppRolesIcon:hover {
-      text-decoration: none;
-      color: #f98e4b; }
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-body {
+      padding-top: 26px; }
+  body.mozaicEditorModule .info-container.ui-draggable-dragging {
+    border: 1px solid #00d000; }
+  body.mozaicEditorModule .breadcrumb-navigation {
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 200px;
+    height: 55px; }
+    body.mozaicEditorModule .breadcrumb-navigation .app-icon {
+      position: absolute;
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 50%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+    body.mozaicEditorModule .breadcrumb-navigation .nav-text {
+      position: absolute;
+      left: 54px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      white-space: nowrap; }
+  body.mozaicEditorModule .tab-navigation .tab {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    border-bottom: 1px solid #0065a9;
+    text-align: center;
+    padding-top: 4px;
+    color: #0065a9;
+    font-family: RweHeadlineRegular;
+    font-size: 16px;
+    border-collapse: collapse;
+    margin-right: -4px; }
+  body.mozaicEditorModule .tab-navigation .tab.active-tab {
+    border-left: 1px solid #0065a9;
+    border-right: 1px solid #0065a9;
+    border-top: 1px solid #0065a9;
+    border-bottom: none; }
+  body.mozaicEditorModule .uic.ui-draggable-dragging {
+    z-index: 500; }
+  body.mozaicEditorModule .ui-dialog {
+    z-index: 600; }
+  body.mozaicEditorModule .ui-dialog-content .formTable label {
+    margin-bottom: 0px; }
+  body.mozaicEditorModule .ui-dialog-content .formTable tr {
+    height: 32px; }
+  body.mozaicEditorModule .ui-dialog-content .formTable td {
+    vertical-align: middle; }
+  body.mozaicEditorModule .ui-dialog-content .formTable tr td:first-child {
+    width: 100px; }
+  body.mozaicEditorModule .highlightedRow {
+    background-color: #49c3f1 !important;
+    color: white !important; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
@@ -2408,6 +2617,9 @@ body.mozaicComponentManagerModule {
     .tileMenuArea .tileMenuItem .fa-copy {
       font-size: 100px;
       top: 16px; }
+    .tileMenuArea .tileMenuItem .fa-paint-brush {
+      font-size: 110px;
+      top: 18px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;

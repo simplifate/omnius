@@ -26,7 +26,8 @@
         <thead>
             <tr>
                 <th>Jméno aplikace</th>
-                <th>DB Schéma</th>
+                <th>Tapestry</th>
+                <th>Entitron</th>
                 <th>Mozaic</th>
                 <th>Publikováno?</th>
                 <th>Povoleno?</th>
@@ -38,8 +39,9 @@
             {
                 <tr appId="@app.Id">
                     <td>@app.DisplayName</td>
-                    <td>(žádné)</td>
-                    <td>(žádné)</td>
+                    <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
+                    <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
+                    <td><button class="btn btn-info btnOpenMozaic">Mozaic</button></td>
                     <td>@(app.IsPublished ? "Ano" : "Ne")</td>
                     <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
                     <td class="actions">
@@ -66,50 +68,103 @@
         </tbody>
     </table>
     <button id="btnAddApp" class="btn btn-primary">Přidat aplikaci</button>
-
-    <div id="app-properties-dialog" title="Vlastnosti aplikace">
-        <form>
-            <fieldset>
-                <table class="formTable">
-                    <tr>
-                        <td><label for="app-name">Název aplikace</label></td>
-                        <td><input type="text" name="app-name" id="app-name" value=""></td>
-                    </tr>
-                    <tr>
-                        <td><label for="tile-width">Šířka dlaždice</label></td>
-                        <td>
-                            <select name="tile-width" id="tile-width">
-                                <option value="2" selected="selected">Výchozí (x2)</option>
-                                <option value="4">Široká (x4)</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="tile-height">Výška dlaždice</label></td>
-                        <td>
-                            <select name="tile-height" id="tile-height">
-                                <option value="1" selected="selected">Nízká (x1)</option>
-                                <option value="2">Střední (x2)</option>
-                                <option value="4">Vysoká (x4)</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="bg-color">Barva pozadí</label></td>
-                        <td>
-                            <select name="bg-color" id="bg-color">
-                                <option value="0" selected="selected">Modrá</option>
-                                <option value="1">Sytě zelená</option>
-                                <option value="2">Světle zelená</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="icon-class">Ikona (font awesome)</label></td>
-                        <td><input type="text" name="icon-class" id="icon-class" value=""></td>
-                    </tr>
-                </table>
-            </fieldset>
-        </form>
-    </div>
+</div>
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="appId" />
+</form>
+<form id="openDbSchemeForm" method="post" action="/Entitron/DbDesigner">
+    <input type="hidden" name="appId" />
+</form>
+<form id="openMozaicForm" method="post" action="/Mozaic/Editor">
+    <input type="hidden" name="appId" />
+</form>
+<div id="app-properties-dialog" title="Vlastnosti aplikace">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><input type="text" name="app-name" id="app-name" value=""></td>
+                </tr>
+                <tr>
+                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td>
+                        <select name="tile-width" id="tile-width">
+                            <option value="2" selected="selected">Výchozí (x2)</option>
+                            <option value="4">Široká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td>
+                        <select name="tile-height" id="tile-height">
+                            <option value="1" selected="selected">Nízká (x1)</option>
+                            <option value="2">Střední (x2)</option>
+                            <option value="4">Vysoká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td>
+                        <select name="bg-color" id="bg-color">
+                            <option value="0" selected="selected">Modrá</option>
+                            <option value="1">Sytě zelená</option>
+                            <option value="2">Světle zelená</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><input type="text" name="icon-class" id="icon-class" value=""></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="new-app-dialog" title="Nová aplikace">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><input type="text" name="app-name" id="app-name" value=""></td>
+                </tr>
+                <tr>
+                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td>
+                        <select name="tile-width" id="tile-width">
+                            <option value="2" selected="selected">Výchozí (x2)</option>
+                            <option value="4">Široká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td>
+                        <select name="tile-height" id="tile-height">
+                            <option value="1" selected="selected">Nízká (x1)</option>
+                            <option value="2">Střední (x2)</option>
+                            <option value="4">Vysoká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td>
+                        <select name="bg-color" id="bg-color">
+                            <option value="0" selected="selected">Modrá</option>
+                            <option value="1">Sytě zelená</option>
+                            <option value="2">Světle zelená</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><input type="text" name="icon-class" id="icon-class" value=""></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
 </div>

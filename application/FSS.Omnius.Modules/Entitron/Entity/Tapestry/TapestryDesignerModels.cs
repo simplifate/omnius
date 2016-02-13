@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using FSS.Omnius.Modules.Entitron.Entity.Master;
+
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     public enum ItemTypes
@@ -35,7 +37,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
 
         public TapestryDesignerMetablock ParentMetablock { get; set; }
-        public TapestryDesignerApp ParentApp { get; set; }
+        public Application ParentApp { get; set; }
 
         public TapestryDesignerMetablock()
         {

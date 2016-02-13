@@ -4,7 +4,7 @@
     Page.ModuleClass = "dbDesignerModule";
 }
 
-<div class="top-bar-container">Default database scheme</div>
+<div class="top-bar-container">@ViewData["appName"]</div>
 <div class="toolbox">
     <div class="menuButtons">
         <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
@@ -24,6 +24,7 @@
 <div class="work-area-container">
     <div id="database-container" class="database-container"></div>
 </div>
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
 <div id="add-table-dialog" title="Add table">
     <form>
         <fieldset>
