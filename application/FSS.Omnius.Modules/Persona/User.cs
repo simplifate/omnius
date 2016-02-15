@@ -43,6 +43,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
         public bool canUseAction(int actionId, DBEntities context)
         {
+            // REMOVE ON PRODUCTION !!!
+            return true;
             return Roles.Any(r => r.AppRole.ActionRuleRights.Any(arr => arr.ActionRuleId == actionId));
         }
         public bool HasRole(string roleName, DBEntities context)
