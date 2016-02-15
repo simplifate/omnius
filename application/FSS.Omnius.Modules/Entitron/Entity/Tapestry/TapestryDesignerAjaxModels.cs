@@ -28,6 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int? ParentMetablockId { get; set; }
         public bool IsNew { get; set; }
+        public bool IsInitial { get; set; }
 
         public List<AjaxTapestryDesignerMetablockConnection> Connections { get; set; }
         public List<AjaxTapestryDesignerMetablock> Metablocks { get; set; }
@@ -57,6 +58,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public bool IsNew { get; set; }
+        public bool IsInitial { get; set; }
 
         public List<AjaxTapestryDesignerBlockCommit> BlockCommits { get; set; }
 

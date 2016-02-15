@@ -33,8 +33,7 @@
         function addBlockDialog_SubmitData() {
             blockName = addBlockDialog.find("#block-name").val();
             tableName = addBlockDialog.find("#table-dropdown").val();
-            newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="tableName">'
-                + tableName + '</div></div>');
+            newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="blockInfo"></div></div>');
             $("#overviewPanel .scrollArea").append(newBlock);
             instance.draggable(newBlock, { containment: "parent" });
             newBlock.css("top", $("#overviewPanel").scrollTop() + 20);
@@ -77,7 +76,7 @@
         function addMetablockDialog_SubmitData() {
             metablockName = addMetablockDialog.find("#metablock-name").val();
             newMetablock = $('<div class="metablock"><div class="metablockName">'
-                + metablockName + '</div><div class="metablockSymbol fa fa-th-large"></div></div>');
+                + metablockName + '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo"></div></div>');
             $("#overviewPanel .scrollArea").append(newMetablock);
             instance.draggable(newMetablock, { containment: "parent" });
             newMetablock.css("top", $("#overviewPanel").scrollTop() + 20);

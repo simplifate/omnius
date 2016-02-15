@@ -14,11 +14,12 @@
         blockArray.push({
             Id: currentBlock.attr("blockId"),
             Name: currentBlock.find(".blockName").text(),
-            AssociatedTableName: currentBlock.find(".tableName").text(),
+            AssociatedTableName: "",
             AssociatedTableId: currentBlock.attr("tableId"),
             PositionX: parseInt(currentBlock.css("left")),
             PositionY: parseInt(currentBlock.css("top")),
-            IsNew: isNew
+            IsNew: isNew,
+            IsInitial: (currentBlock.attr("isInitial") == "true")
         });
     });
     $("#overviewPanel .metablock").each(function (metablockIndex, metablockDiv) {
@@ -35,7 +36,8 @@
             Name: currentMetablock.find(".metablockName").text(),
             PositionX: parseInt(currentMetablock.css("left")),
             PositionY: parseInt(currentMetablock.css("top")),
-            IsNew: isNew
+            IsNew: isNew,
+            IsInitial: (currentMetablock.attr("isInitial") == "true")
         });
     });
     postData = {

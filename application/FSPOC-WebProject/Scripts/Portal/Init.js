@@ -99,4 +99,11 @@ $(function () {
         else if (CurrentModuleIs("mozaicEditorModule"))
             RecalculateMozaicToolboxHeight();
     });
+    $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    $(window).scroll(function () {
+        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    });
+    $(window).resize(function () {
+        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    });
 });

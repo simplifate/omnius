@@ -231,14 +231,6 @@ body.adminAppModule #validationResults {
     color: white;
     font-size: 36px; }
 
-#leftBarArea {
-  position: fixed;
-  top: 0px;
-  width: 225px;
-  bottom: 0px;
-  background-color: #455d73;
-  z-index: -10; }
-
 #leftBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -1089,7 +1081,7 @@ body.overviewModule {
         text-align: center;
         width: 100%;
         font-weight: bold; }
-      body.overviewModule #overviewPanel .block .tableName {
+      body.overviewModule #overviewPanel .block .blockInfo {
         position: absolute;
         top: 50px;
         text-align: center;
@@ -1118,6 +1110,12 @@ body.overviewModule {
         text-align: center;
         font-size: 48px;
         color: #49c3f1; }
+      body.overviewModule #overviewPanel .metablock .metablockInfo {
+        position: absolute;
+        top: 11px;
+        right: 10px;
+        color: #f1a57a;
+        font-weight: bold; }
   body.overviewModule #overviewMenu {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

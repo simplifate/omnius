@@ -376,6 +376,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             oldBlock.AssociatedTableName = newBlock.AssociatedTableName;
                             oldBlock.PositionX = newBlock.PositionX;
                             oldBlock.PositionY = newBlock.PositionY;
+                            oldBlock.IsInitial = newBlock.IsInitial;
                         }
                     }
                     foreach (var ajaxBlock in postData.Blocks.Where(c => c.IsNew))
@@ -386,7 +387,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             Name = ajaxBlock.Name,
                             AssociatedTableName = ajaxBlock.AssociatedTableName,
                             PositionX = ajaxBlock.PositionX,
-                            PositionY = ajaxBlock.PositionY
+                            PositionY = ajaxBlock.PositionY,
+                            IsInitial = ajaxBlock.IsInitial
                         };
                         targetMetablock.Blocks.Add(newBlock);
                         context.SaveChanges();
@@ -414,6 +416,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             oldMetablock.Name = newMetablock.Name;
                             oldMetablock.PositionX = newMetablock.PositionX;
                             oldMetablock.PositionY = newMetablock.PositionY;
+                            oldMetablock.IsInitial = newMetablock.IsInitial;
                         }
                     }
                     foreach (var ajaxMetablock in postData.Metablocks.Where(c => c.IsNew))
@@ -423,7 +426,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         {
                             Name = ajaxMetablock.Name,
                             PositionX = ajaxMetablock.PositionX,
-                            PositionY = ajaxMetablock.PositionY
+                            PositionY = ajaxMetablock.PositionY,
+                            IsInitial = ajaxMetablock.IsInitial
                         };
                         targetMetablock.Metablocks.Add(newMetablock);
                         context.SaveChanges();
@@ -468,7 +472,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             Name = sourceBlock.Name,
                             AssociatedTableName = sourceBlock.AssociatedTableName,
                             PositionX = sourceBlock.PositionX,
-                            PositionY = sourceBlock.PositionY
+                            PositionY = sourceBlock.PositionY,
+                            IsInitial = sourceBlock.IsInitial
                         });
                     }
                     foreach (var sourceMetablock in requestedMetablock.Metablocks)
@@ -478,7 +483,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             Id = sourceMetablock.Id,
                             Name = sourceMetablock.Name,
                             PositionX = sourceMetablock.PositionX,
-                            PositionY = sourceMetablock.PositionY
+                            PositionY = sourceMetablock.PositionY,
+                            IsInitial = sourceMetablock.IsInitial
                         });
                     }
                     foreach (var sourceMetablockConnection in requestedMetablock.Connections)

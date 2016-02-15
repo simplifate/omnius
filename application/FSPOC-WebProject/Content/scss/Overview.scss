@@ -57,7 +57,7 @@ body.overviewModule {
                 width: 100%;
                 font-weight: bold;
             }
-            .tableName {
+            .blockInfo {
                 position: absolute;
                 top: 50px;
                 text-align: center;
@@ -91,6 +91,13 @@ body.overviewModule {
                 font-size: 48px;
                 color: #49c3f1;
             }
+            .metablockInfo {
+                position: absolute;
+                top: 11px;
+                right: 10px;
+                color: #f1a57a;
+                font-weight: bold;
+             }
         }
     }
     #overviewMenu {
