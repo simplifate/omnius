@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -182,6 +183,18 @@ namespace FSPOC_WebProject.Controllers.Persona
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangeUserPassword(ChangePasswordViewModel model)
+        {
+            UserManager.ChangePassword(ControllerContext.HttpContext.GetLoggedUser().Id, model.OldPassword, model.NewPassword);
+
+            return new RedirectToRouteResult("Master", new RouteValueDictionary(new { Controller = "Home", Action = "Details" }));
         }
 
         //

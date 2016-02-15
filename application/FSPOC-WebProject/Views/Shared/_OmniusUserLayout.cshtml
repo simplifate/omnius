@@ -53,7 +53,11 @@
         }
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         <div class="appList">
-            @foreach (Application app in (List<Application>)ViewData["Apps"])
+            @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
+                    a.IsPublished
+                    && a.IsEnabled
+                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
+                ))
             {
                 <div class="appListItem">
                     <div class="icon fa @(app.Icon)"></div>
@@ -73,7 +77,11 @@
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
         <div class="appIconToolbar">
-            @foreach (Application app in (List<Application>)ViewData["Apps"])
+            @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
+                    a.IsPublished
+                    && a.IsEnabled
+                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
+                ))
                 {
                 <div class="appIconToolbarItem">
                     <div class="icon fa @(app.Icon)"></div>

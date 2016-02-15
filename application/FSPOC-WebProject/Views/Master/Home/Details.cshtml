@@ -40,5 +40,10 @@
             <td>Adresa</td>
             <td>@user.Address</td>
         </tr>
+        <tr>
+            <td>
+                @Html.RouteLink("Změnit heslo", "Persona", new { @action = "ChangePassword", @controller = "Account" }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
     </table>
 </div>

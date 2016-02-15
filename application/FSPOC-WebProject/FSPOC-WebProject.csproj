@@ -1490,9 +1490,11 @@
     <Content Include="Views\Persona\Users\Update.cshtml" />
     <Content Include="Views\Persona\Users\Detail.cshtml" />
     <Content Include="Views\Mozaic\Editor\Index.cshtml" />
+    <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="Views\AppAdminManager\" />
   </ItemGroup>
   <ItemGroup>
