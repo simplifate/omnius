@@ -21,10 +21,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     public class AjaxMozaicEditorComponent
     {
         public int Id { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+
+        public string PositionX { get; set; }
+        public string PositionY { get; set; }
+        public string Width { get; set; }
+        public string Height { get; set; }
 
         public string Tag { get; set; }
         public string Attributes { get; set; }
