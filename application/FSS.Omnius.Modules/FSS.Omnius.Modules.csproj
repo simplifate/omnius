@@ -457,6 +457,10 @@
     <Compile Include="Migrations\201602160832402_removeOldWFDesignerModels.Designer.cs">
       <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602161059316_Mozaic editor properties.cs" />
+    <Compile Include="Migrations\201602161059316_Mozaic editor properties.Designer.cs">
+      <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -689,6 +693,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602160832402_removeOldWFDesignerModels.resx">
       <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161059316_Mozaic editor properties.resx">
+      <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
