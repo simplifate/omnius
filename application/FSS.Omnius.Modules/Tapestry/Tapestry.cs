@@ -109,7 +109,7 @@ namespace FSS.Omnius.Modules.Tapestry
         
         private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int modelId)
         {
-            if (!_CORE.User.canUseAction(ActionRuleId, _CORE.Entitron.GetStaticTables()))
+            if (false && !_CORE.User.canUseAction(ActionRuleId, _CORE.Entitron.GetStaticTables()))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
 
             ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);

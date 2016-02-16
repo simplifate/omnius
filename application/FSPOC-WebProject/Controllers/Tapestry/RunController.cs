@@ -13,6 +13,9 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             var core = HttpContext.GetCORE();
             User user = User.GetLogged(core);
+
+            //fc = (FormCollection)Request.Form;
+
             Block targetBlock = core.Tapestry.run(user, AppName, actionRuleId, modelId, fc);
 
             return new RedirectToRouteResult("Mozaic", new RouteValueDictionary(new { Controller = "Show", Action = "Index", appName = AppName, blockId = targetBlock.Id, modelId = modelId }));
