@@ -22,8 +22,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
             foreach(MozaicEditorComponent c in this.Components)
             {
-                stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"{c.Classes}\" style=\"left: {c.PositionX}px; top: {c.PositionY}px;");
-                stringBuilder.Append($"width: {c.Width}px; height: {c.Height}px; {c.Styles}\">{c.Content}</{c.Tag}>");
+                if (c.Tag == "info-container")
+                {
+                    stringBuilder.Append($"<div class=\"uic info-container {c.Classes} style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"<div class=\"fa fa-info-circle info-container-icon\"></div>");
+                    stringBuilder.Append($"<div class=\"info-container-header\">{c.Label}</div>");
+                    stringBuilder.Append($"<div class=\"info-container-body\">{c.Content}</div></div>");
+                }
+                else
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Content}</{c.Tag}>");
+                }
             }
             stringBuilder.Append("</form>");
             CompiledPartialView = stringBuilder.ToString();
@@ -38,10 +49,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     public class MozaicEditorComponent
     {
         public int Id { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string PositionX { get; set; }
+        public string PositionY { get; set; }
+        public string Width { get; set; }
+        public string Height { get; set; }
 
         public string Tag { get; set; }
         public string Attributes { get; set; }
