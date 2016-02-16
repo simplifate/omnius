@@ -57,6 +57,20 @@ namespace FSPOC_WebProject.Views
 
             return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
         }
+
+        public override String GetFileHash(String virtualPath, IEnumerable virtualPathDependencies)
+        {
+            var view = GetViewFromDatabase(virtualPath);
+
+            if (view != null)
+            {
+                return Guid.NewGuid().ToString();
+            }
+
+            return Previous.GetFileHash(virtualPath, virtualPathDependencies);
+        }
+
+
         //zde budou rozřazeny pohledy vzniklé v mozaiku od ostatních 
         private Page GetViewFromDatabase(string virtualPath)
         {
