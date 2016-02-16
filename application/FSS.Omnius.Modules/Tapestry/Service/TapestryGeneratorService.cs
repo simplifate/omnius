@@ -14,42 +14,42 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         {
             _core = core;
             _core.Entitron.AppName = designApp.Name;
-            DBEntities e = core.Entitron.GetStaticTables();
-            
-            WorkFlow wf = saveMetaBlock(e, designApp.RootMetablock, true);
-            e.WorkFlows.Add(wf);
+            DBEntities context = core.Entitron.GetStaticTables();
 
-            e.SaveChanges();
+            WorkFlow wf = saveMetaBlock(context, designApp.RootMetablock, true);
+            context.WorkFlows.Add(wf);
+
+            context.SaveChanges();
         }
 
-        private WorkFlow saveMetaBlock(DBEntities e, TapestryDesignerMetablock block, bool init = false)
+        private WorkFlow saveMetaBlock(DBEntities context, TapestryDesignerMetablock block, bool init = false)
         {
             WorkFlow resultWF = new WorkFlow
             {
                 ApplicationId = _core.Entitron.AppId,
-                Type = init ? e.WorkFlowTypes.Single(t => t.Name == "Init") : e.WorkFlowTypes.Single(t => t.Name == "Partial"),
+                Type = init ? context.WorkFlowTypes.Single(t => t.Name == "Init") : context.WorkFlowTypes.Single(t => t.Name == "Partial"),
             };
 
             // child meta block
             foreach (TapestryDesignerMetablock childMetaBlock in block.Metablocks)
             {
-                WorkFlow wf = saveMetaBlock(e, childMetaBlock);
+                WorkFlow wf = saveMetaBlock(context, childMetaBlock);
                 resultWF.Children.Add(wf);
             }
 
             // child block
-            foreach(TapestryDesignerBlock childBlock in block.Blocks)
+            foreach (TapestryDesignerBlock childBlock in block.Blocks)
             {
-                Block bl = saveBlock(e, childBlock);
+                Block bl = saveBlock(context, childBlock);
                 resultWF.Blocks.Add(bl);
 
                 _blockMapping.Add(childBlock.Id, bl);
             }
 
             // rules
-            foreach (TapestryDesignerRule rule in e.TapestryDesignerRules.Where(r => _blockMapping.Keys.Contains(r.ParentBlockCommit.ParentBlock.Id)))
+            foreach (TapestryDesignerWorkflowRule rule in context.TapestryDesignerWorkflowRules.Where(r => _blockMapping.Keys.Contains(r.ParentBlockCommit.ParentBlock.Id)))
             {
-                saveActionRule(e, rule);
+                saveActionRule(context, rule);
             }
 
             // DONE :)
@@ -63,36 +63,36 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Name = block.Name,
                 ModelName = block.AssociatedTableName
             };
-            
+
             return resultBlock;
         }
 
-        private void saveActionRule(DBEntities e, TapestryDesignerRule rule)
+        private void saveActionRule(DBEntities e, TapestryDesignerWorkflowRule rule)
         {
-            //-- attribute --//
-            TapestryDesignerItem view = rule.Items.FirstOrDefault(i => i.TypeClass == "view");
-            if (view != null) // TODO: opravit. tohle sežere všechny rules
-            {
-                AttributeRule attrRule = new AttributeRule
-                {
-                    InputName = view.Label,
-                    AttributeName = rule.Items.Single(i => i.Id != view.Id).Label,
-                    // TODO: datatype
-                    Block = _blockMapping[rule.ParentBlockCommit.ParentBlock.Id]
-                };
-                e.AttributeRules.Add(attrRule);
-                return;
-            }
+            ////-- attribute --//
+            //TapestryDesignerItem view = rule.Items.FirstOrDefault(i => i.TypeClass == "view");
+            //if (view != null) // TODO: opravit. tohle sežere všechny rules
+            //{
+            //    AttributeRule attrRule = new AttributeRule
+            //    {
+            //        InputName = view.Label,
+            //        AttributeName = rule.Items.Single(i => i.Id != view.Id).Label,
+            //        // TODO: datatype
+            //        Block = _blockMapping[rule.ParentBlockCommit.ParentBlock.Id]
+            //    };
+            //    e.AttributeRules.Add(attrRule);
+            //    return;
+            //}
 
-            //-- Action Rule --//
-            // find virtual block
-            Dictionary<TapestryDesignerOperator, Block> operatorMapping = new Dictionary<TapestryDesignerOperator, Block>();
-            foreach(TapestryDesignerOperator opr in rule.Operators)
-            {
-                // TODO
-            }
-            // create actionRules
-            // TODO
+            ////-- Action Rule --//
+            //// find virtual block
+            //Dictionary<TapestryDesignerOperator, Block> operatorMapping = new Dictionary<TapestryDesignerOperator, Block>();
+            //foreach (TapestryDesignerOperator opr in rule.Operators)
+            //{
+            //    // TODO
+            //}
+            //// create actionRules
+            //// TODO
         }
     }
 }

@@ -101,29 +101,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             WorkflowRules = new List<TapestryDesignerWorkflowRule>();
         }
     }
-    [Table("TapestryDesigner_Rules")]
-    public class TapestryDesignerRule // TODO: remove after switching to new workflow model
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+    //[Table("TapestryDesigner_Rules")]
+    //public class TapestryDesignerRule // TODO: remove after switching to new workflow model
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //    public int PositionX { get; set; }
+    //    public int PositionY { get; set; }
+    //    public int Width { get; set; }
+    //    public int Height { get; set; }
 
-        public virtual ICollection<TapestryDesignerItem> Items { get; set; }
-        public virtual ICollection<TapestryDesignerOperator> Operators { get; set; }
-        public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
+    //    public virtual ICollection<TapestryDesignerItem> Items { get; set; }
+    //    public virtual ICollection<TapestryDesignerOperator> Operators { get; set; }
+    //    public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
 
-        public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
+    //    public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
-        public TapestryDesignerRule()
-        {
-            Items = new List<TapestryDesignerItem>();
-            Operators = new List<TapestryDesignerOperator>();
-            Connections = new List<TapestryDesignerConnection>();
-        }
-    }
+    //    public TapestryDesignerRule()
+    //    {
+    //        Items = new List<TapestryDesignerItem>();
+    //        Operators = new List<TapestryDesignerOperator>();
+    //        Connections = new List<TapestryDesignerConnection>();
+    //    }
+    //}
     [Table("TapestryDesigner_ResourceRules")]
     public class TapestryDesignerResourceRule
     {
@@ -252,42 +252,42 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string DialogType { get; set; }
         public bool IsDataSource { get; set; }
     }
-    [Table("TapestryDesigner_Items")]
-    public class TapestryDesignerItem
-    {
-        public int Id { get; set; }
-        public int ItemReferenceId { get; set; }
-        public string Label { get; set; }
-        public string TypeClass { get; set; }
-        public string DialogType { get; set; }
-        public bool IsDataSource { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+    //[Table("TapestryDesigner_Items")]
+    //public class TapestryDesignerItem
+    //{
+    //    public int Id { get; set; }
+    //    public int ItemReferenceId { get; set; }
+    //    public string Label { get; set; }
+    //    public string TypeClass { get; set; }
+    //    public string DialogType { get; set; }
+    //    public bool IsDataSource { get; set; }
+    //    public int PositionX { get; set; }
+    //    public int PositionY { get; set; }
 
-        public virtual ICollection<TapestryDesignerProperty> Properties { get; set; }
+    //    public virtual ICollection<TapestryDesignerProperty> Properties { get; set; }
 
-        public virtual TapestryDesignerRule ParentRule { get; set; }
+    //    public virtual TapestryDesignerRule ParentRule { get; set; }
 
-        public TapestryDesignerItem()
-        {
-            Properties = new List<TapestryDesignerProperty>();
-        }
-    }
-    [Table("TapestryDesigner_Operators")]
-    public class TapestryDesignerOperator
-    {
-        public int Id { get; set; }
-        public string Type { get; set; }
-        public string DialogType { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+    //    public TapestryDesignerItem()
+    //    {
+    //        Properties = new List<TapestryDesignerProperty>();
+    //    }
+    //}
+    //[Table("TapestryDesigner_Operators")]
+    //public class TapestryDesignerOperator
+    //{
+    //    public int Id { get; set; }
+    //    public string Type { get; set; }
+    //    public string DialogType { get; set; }
+    //    public int PositionX { get; set; }
+    //    public int PositionY { get; set; }
 
-        public virtual TapestryDesignerRule ParentRule { get; set; }
+    //    public virtual TapestryDesignerRule ParentRule { get; set; }
 
-        public TapestryDesignerOperator()
-        {
-        }
-    }
+    //    public TapestryDesignerOperator()
+    //    {
+    //    }
+    //}
     [Table("TapestryDesigner_Connections")]
     public class TapestryDesignerConnection
     {
@@ -298,12 +298,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Target { get; set; }
         public int TargetType { get; set; }
         public int TargetSlot { get; set; }
+
+        public int? WorkflowRuleId { get; set; }
+        public int? ResourceRuleId { get; set; }
+
+        public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
+        public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
-    [Table("TapestryDesigner_Properties")]
-    public class TapestryDesignerProperty
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
+    //[Table("TapestryDesigner_Properties")]
+    //public class TapestryDesignerProperty
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //    public string Value { get; set; }
+    //}
 }

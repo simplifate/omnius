@@ -85,7 +85,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
-        public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
+        //public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
@@ -265,6 +266,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<PreBlockAction>()
                 .HasRequired<Block>(e => e.Block)
                 .WithMany(e => e.PreBlockActions);
+
+            modelBuilder.Entity<TapestryDesignerResourceRule>()
+                .HasMany<TapestryDesignerConnection>(e => e.Connections)
+                .WithOptional(e => e.ResourceRule)
+                .HasForeignKey(e => e.ResourceRuleId);
+
+            modelBuilder.Entity<TapestryDesignerWorkflowRule>()
+                .HasMany<TapestryDesignerConnection>(e => e.Connections)
+                .WithOptional(e => e.WorkflowRule)
+                .HasForeignKey(e => e.WorkflowRuleId);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()
