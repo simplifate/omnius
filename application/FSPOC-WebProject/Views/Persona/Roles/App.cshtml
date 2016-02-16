@@ -16,6 +16,14 @@ else
         <td class="checkboxCell noCell"><i class="fa fa-times"></i></td>
 }
 }
+
+<style>
+    a:hover {
+        color:orangered;
+        text-emphasis:none;
+    }
+</style>
+
 <div id="upperPanel">
     <div class="panelLabel">Role</div>
     <svg class="backgroundDecoration" width="540px" height="135px">
@@ -30,8 +38,17 @@ else
     <div class="panelLabel">Role</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
+
 <div id="lowerPanel">
     <h4>Role uživatelů pro aplikaci <span class="appName">@Model.AppName</span></h4>
+
+    <div>
+        @using (Html.BeginForm("App", "Roles", "post"))
+        {
+            <input type="submit" value="Sign Up" />
+        }
+    </div>
+
     @if (Model.Users.Count == 0 || Model.Roles.Count == 0)
     {
         <div class="modelErrorMessage">Tato aplikace nemá žádné role (tabulka Persona_AppRoles)</div>
@@ -44,15 +61,17 @@ else
                     <th></th>
                     @foreach (var role in Model.Roles)
                     {
-                        <th>@role.Name</th>
+                        <th>
+                            @role.Name
+                            <a onclick="alert()" class= "fa fa-fw fa-pencil" style=""></a>
+                        </th>
                     }
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model.Users)
                 {
-                    <tr>
-
+                    <tr><text>ABBBA</text>
                         <td class="userNameCell">@user.Name</td>
                         @foreach (var role in Model.Roles)
                         {
