@@ -190,11 +190,15 @@ namespace FSPOC_WebProject.Controllers.Persona
             return View();
         }
         [HttpPost]
-        public ActionResult ChangeUserPassword(ChangePasswordViewModel model)
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            UserManager.ChangePassword(ControllerContext.HttpContext.GetLoggedUser().Id, model.OldPassword, model.NewPassword);
+            IdentityResult result = UserManager.ChangePassword(ControllerContext.HttpContext.GetLoggedUser().Id, model.OldPassword, model.NewPassword);
 
-            return new RedirectToRouteResult("Master", new RouteValueDictionary(new { Controller = "Home", Action = "Details" }));
+            if (result.Succeeded)
+                return new RedirectToRouteResult("Master", new RouteValueDictionary(new { Controller = "Home", Action = "Details" }));
+
+            AddErrors(result);
+            return View(model);
         }
 
         //
