@@ -264,10 +264,16 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         public async Task<ActionResult> SetPassword(string password, int userId)
         {
-            
-            await UserManager.AddPasswordAsync(userId, password);
-
+            SetPasswordViewModel model = new SetPasswordViewModel();
+            DBEntities e = new DBEntities();
+            model.NewPassword = password;
+            model.user = e.Users.SingleOrDefault(x => x.Id == userId);
+            IdentityResult result=  await UserManager.AddPasswordAsync(userId, password);
+            if (result.Succeeded)
             return RedirectToRoute("Persona", new {@action = "Index", @controller = "Users"});
+
+            AddErrors(result);
+            return View("~/Views/Persona/Users/Create.cshtml",model);
         }
 
         //

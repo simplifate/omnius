@@ -23,6 +23,7 @@
     }
     @using (Html.BeginForm("Create", "Users", FormMethod.Post))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
