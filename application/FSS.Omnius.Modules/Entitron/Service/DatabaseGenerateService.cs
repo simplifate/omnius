@@ -167,11 +167,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name == fkname);
                 DBForeignKey entitronFK = new DBForeignKey();
-                entitronFK.name = efRelation.Name;                   //TODO nějakým způsobem zapisovat název cizího klíče, možná přidat atributy ondelete a onupdate
                 entitronFK.sourceTable = e.Application.GetTables().SingleOrDefault(x => x.tableId == efRelation.RightTable);
                 entitronFK.targetTable = e.Application.GetTables().SingleOrDefault(x => x.tableId == efRelation.LeftTable);
                 entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.ColumnId == efRelation.RightColumn).Name;
                 entitronFK.sourceColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.ColumnId == efRelation.LeftColumn).Name;
+                entitronFK.name = entitronFK.sourceTable.tableName + entitronFK.sourceColumn + "_" + entitronFK.targetTable.tableName + entitronFK.targetColumn;                  
 
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
             }
