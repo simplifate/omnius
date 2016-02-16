@@ -1,4 +1,4 @@
-﻿@model FSS.Omnius.Modules.Entitron.Entity.Persona.User
+﻿@model FSPOC_WebProject.Models.SetPasswordViewModel
 @{
     Page.Title = "Omnius Persona";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
@@ -26,102 +26,122 @@
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.DisplayName, "Jméno a příjmení")
+                    @Html.LabelFor(x => x.user.DisplayName, "Jméno a příjmení")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.DisplayName)
-                    @Html.ValidationMessageFor(x => x.DisplayName)
+                    @Html.TextBoxFor(x => x.user.DisplayName)
+                    @Html.ValidationMessageFor(x => x.user.DisplayName)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.UserName, "Uživatelské jméno")
+                    @Html.LabelFor(x => x.user.UserName, "Uživatelské jméno")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.UserName)
-                    @Html.ValidationMessageFor(x => x.UserName)
+                    @Html.TextBoxFor(x => x.user.UserName)
+                    @Html.ValidationMessageFor(x => x.user.UserName)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Company, "Firma")
+                    @Html.LabelFor(x => x.NewPassword, "Heslo")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Company)
-                    @Html.ValidationMessageFor(x => x.Company)
+                    @Html.PasswordFor(x=>x.NewPassword)
+                    @Html.ValidationMessageFor(x => x.NewPassword)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Department, "Oddělení")
+                    @Html.LabelFor(x => x.ConfirmPassword, "Heslo znovu")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Department)
-                    @Html.ValidationMessageFor(x => x.Department)
+                    @Html.PasswordFor(x=>x.ConfirmPassword)
+                    @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.user.Company, "Firma")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.user.Company)
+                    @Html.ValidationMessageFor(x => x.user.Company)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.user.Department, "Oddělení")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.user.Department)
+                    @Html.ValidationMessageFor(x => x.user.Department)
                 </div>
             </div>
 
             <div class="form-group  col-sm-12 ">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Team, "Tým")
+                    @Html.LabelFor(x => x.user.Team, "Tým")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Team)
-                    @Html.ValidationMessageFor(x => x.Team)
+                    @Html.TextBoxFor(x => x.user.Team)
+                    @Html.ValidationMessageFor(x => x.user.Team)
                 </div>
             </div>
 
             <div class="form-group  col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Job, "Práce")
+                    @Html.LabelFor(x => x.user.Job, "Práce")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Job)
-                    @Html.ValidationMessageFor(x => x.Job)
+                    @Html.TextBoxFor(x => x.user.Job)
+                    @Html.ValidationMessageFor(x => x.user.Job)
                 </div>
             </div>
         </div>
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Address, "Adresa")
+                    @Html.LabelFor(x => x.user.Address, "Adresa")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Address)
-                    @Html.ValidationMessageFor(x => x.Address)
+                    @Html.TextBoxFor(x => x.user.Address)
+                    @Html.ValidationMessageFor(x => x.user.Address)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.Email)
+                    @Html.LabelFor(x => x.user.Email)
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.Email)
-                    @Html.ValidationMessageFor(x => x.Email)
+                    @Html.TextBoxFor(x => x.user.Email)
+                    @Html.ValidationMessageFor(x => x.user.Email)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.MobilPhone, "Telefon")
+                    @Html.LabelFor(x => x.user.MobilPhone, "Telefon")
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(x => x.MobilPhone)
-                    @Html.ValidationMessageFor(x => x.MobilPhone)
+                    @Html.TextBoxFor(x => x.user.MobilPhone)
+                    @Html.ValidationMessageFor(x => x.user.MobilPhone)
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.WorkPhone, "Pracovní telefon")
+                    @Html.LabelFor(x => x.user.WorkPhone, "Pracovní telefon")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.WorkPhone)
-                    @Html.ValidationMessageFor(x => x.WorkPhone)
+                    @Html.TextBoxFor(x => x.user.WorkPhone)
+                    @Html.ValidationMessageFor(x => x.user.WorkPhone)
                 </div>
             </div>
         </div>

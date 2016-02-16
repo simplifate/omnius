@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -37,6 +38,8 @@ namespace FSPOC_WebProject.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public User user { get; set; } 
     }
 
     public class ChangePasswordViewModel

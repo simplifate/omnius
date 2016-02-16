@@ -49,8 +49,8 @@
                         <td>@u.Email</td>
                         <td>@u.WorkPhone</td>
                         <td>
-                            @Ajax.ActionLink(" ", "Update", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
-                            @Html.ActionLink(" ", "Delete", new { @id = u.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                            @Ajax.ActionLink(" ", "Update", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title= "Upravit" })
+                            @Html.ActionLink(" ", "Delete", new { @id = u.Id }, new { @class = "fa fa-trash ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
                         </td>
                     </tr>
                 }

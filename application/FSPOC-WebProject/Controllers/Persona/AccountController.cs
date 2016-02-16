@@ -262,6 +262,14 @@ namespace FSPOC_WebProject.Controllers.Persona
             return code == null ? View("Error") : View();
         }
 
+        public async Task<ActionResult> SetPassword(string password, int userId)
+        {
+            
+            await UserManager.AddPasswordAsync(userId, password);
+
+            return RedirectToRoute("Persona", new {@action = "Index", @controller = "Users"});
+        }
+
         //
         // POST: /Account/ResetPassword
         [HttpPost]
