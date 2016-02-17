@@ -157,6 +157,19 @@ body.adminAppModule #validationResults {
     body.adminAppModule #validationResults #errorPanel #btnRetryValidation {
       margin-top: 30px; }
 
+body.adminAppModule #appBuildResults {
+  position: absolute;
+  left: 290px;
+  top: 125px;
+  width: 70%; }
+  body.adminAppModule #appBuildResults .buildSuccess {
+    margin-left: 15px;
+    margin-bottom: 30px;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #dff0d8;
+    border-radius: 10px; }
+
 #topBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -560,6 +573,133 @@ body.adminAppModule #validationResults {
   font-size: 17px;
   font-weight: 100;
   color: #0065a9; }
+
+.mozaicForm .uic {
+  position: absolute; }
+
+.mozaicForm .button-simple {
+  background-color: #4b8ad1;
+  border: 1px solid #4b8ad1;
+  color: white; }
+
+.mozaicForm .button-dropdown {
+  background-color: white;
+  border: 1px solid #4b8ad1;
+  color: #4b8ad1; }
+
+.mozaicForm .button-large {
+  width: 198px;
+  height: 31px;
+  font-size: 18px; }
+  .mozaicForm .button-large .fa-caret-down {
+    padding-left: 7px; }
+
+.mozaicForm .button-small {
+  width: 112px;
+  height: 23px;
+  font-size: 14px; }
+  .mozaicForm .button-small .fa-caret-down {
+    padding-left: 5px; }
+
+.mozaicForm .button-extra-small {
+  width: 78px;
+  height: 19px;
+  font-size: 11px; }
+  .mozaicForm .button-extra-small .fa-caret-down {
+    padding-left: 3px; }
+
+.mozaicForm .input-single-line {
+  width: 220px;
+  height: 25px;
+  border: 1px solid #b8b4ab;
+  padding-left: 6px; }
+
+.mozaicForm .input-multiline {
+  width: 260px;
+  height: 75px;
+  border: 1px solid #b8b4ab;
+  padding-left: 6px; }
+
+.mozaicForm .info-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  color: #58585a;
+  position: relative;
+  width: 260px; }
+  .mozaicForm .info-container .info-container-icon {
+    position: absolute;
+    left: 0px;
+    top: 4px;
+    font-size: 18px; }
+  .mozaicForm .info-container .info-container-header {
+    position: absolute;
+    left: 24px;
+    top: 0px;
+    font-size: 18px; }
+  .mozaicForm .info-container .info-container-body {
+    padding-top: 26px; }
+
+.mozaicForm .breadcrumb-navigation {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: -webkit-linear-gradient(top, #0086be, #0065a9);
+  background: -o-linear-gradient(bottom, #0086be, #0065a9);
+  background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+  background: linear-gradient(to bottom, #0086be, #0065a9);
+  color: white;
+  font-family: RweTextMedium;
+  padding: 12px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  width: 200px;
+  height: 55px; }
+  .mozaicForm .breadcrumb-navigation .app-icon {
+    position: absolute;
+    font-weight: 100;
+    width: 30px;
+    height: 30px;
+    padding-top: 3px;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 19px;
+    text-align: center;
+    vertical-align: middle; }
+  .mozaicForm .breadcrumb-navigation .nav-text {
+    position: absolute;
+    left: 54px;
+    font-family: RweHeadlineRegular;
+    font-size: 20px;
+    white-space: nowrap; }
+
+.mozaicForm .control-label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  font-family: MyriadPro;
+  font-size: 14px;
+  color: #58585a; }
+
+.mozaicForm .form-heading {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  font-family: RweHeadlineRegular;
+  font-size: 28px;
+  color: #58585a; }
 
 body.tapestryModule .toolboxItem {
   width: 218px;
@@ -2391,7 +2531,7 @@ body.mozaicEditorModule {
       font-size: 18px; }
     body.mozaicEditorModule .info-container .info-container-body {
       padding-top: 26px; }
-  body.mozaicEditorModule .info-container.ui-draggable-dragging {
+  body.mozaicEditorModule .info-container.ui-draggable-dragging, body.mozaicEditorModule .form-heading.ui-draggable-dragging, body.mozaicEditorModule .control-label.ui-draggable-dragging {
     border: 1px solid #00d000; }
   body.mozaicEditorModule .breadcrumb-navigation {
     background: -webkit-linear-gradient(top, #0086be, #0065a9);
@@ -2439,18 +2579,37 @@ body.mozaicEditorModule {
     border-right: 1px solid #0065a9;
     border-top: 1px solid #0065a9;
     border-bottom: none; }
+  body.mozaicEditorModule .control-label {
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a; }
+  body.mozaicEditorModule .form-heading {
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a; }
+  body.mozaicEditorModule .checkbox-control .checkbox-label {
+    margin-left: 6px;
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {
     z-index: 600; }
-  body.mozaicEditorModule .ui-dialog-content .formTable label {
-    margin-bottom: 0px; }
-  body.mozaicEditorModule .ui-dialog-content .formTable tr {
-    height: 32px; }
-  body.mozaicEditorModule .ui-dialog-content .formTable td {
-    vertical-align: middle; }
-  body.mozaicEditorModule .ui-dialog-content .formTable tr td:first-child {
-    width: 100px; }
+    body.mozaicEditorModule .ui-dialog .formTable {
+      width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable label {
+        margin-bottom: 0px; }
+      body.mozaicEditorModule .ui-dialog .formTable tr {
+        height: 32px; }
+      body.mozaicEditorModule .ui-dialog .formTable td {
+        vertical-align: middle; }
+      body.mozaicEditorModule .ui-dialog .formTable input {
+        width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable td:first-child {
+        width: 110px; }
+      body.mozaicEditorModule .ui-dialog .formTable #component-width, body.mozaicEditorModule .ui-dialog .formTable #component-height {
+        width: 100px; }
   body.mozaicEditorModule .highlightedRow {
     background-color: #49c3f1 !important;
     color: white !important; }

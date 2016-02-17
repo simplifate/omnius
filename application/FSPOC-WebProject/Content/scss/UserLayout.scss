@@ -292,3 +292,119 @@
         color: #0065a9;
     }
 }
+.mozaicForm {
+    .uic {
+        position: absolute;
+    }
+    .button-simple {
+        background-color: #4b8ad1;
+        border: 1px solid #4b8ad1;
+        color: white;
+    }
+    .button-dropdown {
+        background-color: white;
+        border: 1px solid #4b8ad1;
+        color: #4b8ad1;
+    }
+    .button-large {
+        width: 198px;
+        height: 31px;
+        font-size: 18px;
+        .fa-caret-down {
+            padding-left: 7px;
+        }
+    }
+    .button-small {
+        width: 112px;
+        height: 23px;
+        font-size: 14px;
+        .fa-caret-down {
+            padding-left: 5px;
+        }
+    }
+    .button-extra-small {
+        width: 78px;
+        height: 19px;
+        font-size: 11px;
+        .fa-caret-down {
+            padding-left: 3px;
+        }
+    }
+    .input-single-line {
+        width: 220px;
+        height: 25px;
+        border: 1px solid #b8b4ab;
+        padding-left: 6px;
+    }
+    .input-multiline {
+        width: 260px;
+        height: 75px;
+        border: 1px solid #b8b4ab;
+        padding-left: 6px;
+    }
+    .info-container {
+        @include no-select();
+        color: #58585a;
+        position: relative;
+        width: 260px;
+
+        .info-container-icon {
+            position: absolute;
+            left: 0px;
+            top: 4px;
+            font-size: 18px;
+        }
+        .info-container-header {
+            position: absolute;
+            left: 24px;
+            top: 0px;
+            font-size: 18px;
+        }
+        .info-container-body {
+            padding-top: 26px;
+        }
+    }
+    .breadcrumb-navigation {
+        @include no-select();
+        @include linear-gradient(#0086be, #0065a9);
+        color: white;
+        font-family: RweTextMedium;
+        padding: 12px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        width: 200px;
+        height: 55px;
+
+        .app-icon {
+            position: absolute;
+            font-weight: 100;
+            width: 30px;
+            height: 30px;
+            padding-top: 3px;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 19px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .nav-text {
+            position: absolute;
+            left: 54px;
+            font-family: RweHeadlineRegular;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+    }
+    .control-label {
+        @include no-select();
+        font-family: MyriadPro;
+        font-size: 14px;
+        color: #58585a;
+    }
+    .form-heading {
+        @include no-select();
+        font-family: RweHeadlineRegular;
+        font-size: 28px;
+        color: #58585a;
+    }
+}

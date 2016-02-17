@@ -62,8 +62,14 @@
                 <div class="toolboxCategoryLabel">Inputs</div>
                 <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
                 <textarea placeholder="Multiline input" class="toolboxItem input-multiline" uicClasses="input-multiline"></textarea>
+                <select class="toolboxItem dropdown-select"><option selected="selected">Dropdown</option></select>
+                <div class="toolboxItem checkbox-control" uicClasses="checkbox-control">
+                    <input type="checkbox" /><span class="checkbox-label">Checkbox</span>
+                </div>
                 <hr class="toolboxCategoryHr" />
                 <div class="toolboxCategoryLabel">Labels</div>
+            <div class="toolboxItem form-heading" uicClasses="form-heading">Form heading</div>
+                <div class="toolboxItem control-label" uicClasses="control-label">Control label</div>
                 <div class="toolboxItem info-container" uicClasses="info-container">
                     <div class="fa fa-info-circle info-container-icon"></div>
                     <div class="info-container-header">Info container</div>
@@ -71,15 +77,12 @@
                 </div>
                 <hr class="toolboxCategoryHr" />
                 <div class="toolboxCategoryLabel">Navigation</div>
-                <div class="toolboxItem breadcrumb-navigation">
+                <div class="toolboxItem breadcrumb-navigation" uicClasses="breadcrumb-navigation">
                     <div class="app-icon fa fa-question"></div>
                     <div class="nav-text">APP NAME &gt; Nav</div>
                 </div>
-                <div class="toolboxItem tab-navigation">
-                    <div class="tab active-tab">Home</div>
-                    <div class="tab">Profile</div>
-                    <div class="tab">Messages</div>
-                </div>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Tables</div>
         </div>
         <div id="mozaicLeftBarMinimized">
             <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
@@ -96,12 +99,32 @@
         <fieldset>
             <table class="formTable">
                 <tr>
+                    <td><label for="component-name">Name</label></td>
+                    <td><input type="text" name="component-name" id="component-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-width">Width</label></td>
+                    <td><input type="text" name="component-width" id="component-width" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-height">Height</label></td>
+                    <td><input type="text" name="component-height" id="component-height" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
                     <td><label for="component-label">Label</label></td>
                     <td><input type="text" name="component-label" id="component-label" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
-                    <td><label for="component-body">Body</label></td>
-                    <td><input type="text" name="component-body" id="component-body" value="" class="text ui-widget-content ui-corner-all"></td>
+                    <td><label for="component-placeholder">Placeholder</label></td>
+                    <td><input type="text" name="component-placeholder" id="component-placeholder" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-content">Content</label></td>
+                    <td><input type="text" name="component-content" id="component-content" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-content">CSS Styles</label></td>
+                    <td><input type="text" name="component-styles" id="component-styles" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
         </fieldset>

@@ -11,11 +11,31 @@
             label = currentUic.find(".info-container-header").text();
             content = currentUic.find(".info-container-body").text();
         }
+        else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
+            label = currentUic.text();
+            type = "label";
+        }
+        if(currentUic.hasClass("info-container"))
+            type = "info-container";
+        else if (currentUic.hasClass("breadcrumb-navigation"))
+            type = "breadcrumb";
+        else if (currentUic.hasClass("button-simple"))
+            type = "button-simple";
+        else if (currentUic.hasClass("button-dropdown"))
+            type = "button-dropdown";
+        else if (currentUic.hasClass("checkbox-control")) {
+            type = "checkbox";
+            label = currentUic.find(".checkbox-label").text();
+        }
+        else
+            type = "control";
         componentArray.push({
-            PositionX: parseInt(currentUic.css("left")),
-            PositionY: parseInt(currentUic.css("top")),
-            Width: parseInt(currentUic.css("width")),
-            Height: parseInt(currentUic.css("height")),
+            Name: currentUic.attr("uicName"),
+            Type: type,
+            PositionX: currentUic.css("left"),
+            PositionY: currentUic.css("top"),
+            Width: currentUic.css("width"),
+            Height: currentUic.css("height"),
             Tag: currentUic.prop("tagName").toLowerCase(),
             Attributes: "",
             Classes: currentUic.attr("uicClasses"),
@@ -27,6 +47,7 @@
 
     });
     postData = {
+        Name: $("#headerPageName").text(),
         Components: componentArray
     }
     appId = $("#currentAppId").val();

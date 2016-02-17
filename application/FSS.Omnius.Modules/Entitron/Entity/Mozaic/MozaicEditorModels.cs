@@ -19,16 +19,45 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public void Recompile()
         {
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserLayout.cshtml\"; }");
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
             foreach(MozaicEditorComponent c in this.Components)
             {
-                if (c.Tag == "info-container")
+                if (c.Type == "info-container")
                 {
-                    stringBuilder.Append($"<div class=\"uic info-container {c.Classes} style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<div class=\"uic info-container {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<div class=\"fa fa-info-circle info-container-icon\"></div>");
                     stringBuilder.Append($"<div class=\"info-container-header\">{c.Label}</div>");
                     stringBuilder.Append($"<div class=\"info-container-body\">{c.Content}</div></div>");
+                }
+                else if(c.Type == "button-simple")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
+                }
+                else if (c.Type == "button-dropdown")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
+                }
+                else if (c.Tag == "input" || c.Tag == "textarea")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
+                }
+                else if(c.Type == "breadcrumb")
+                {
+                    stringBuilder.Append($"<div class=\"uic breadcrumb-navigation {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"<div class=\"app-icon fa @ViewData[\"appIcon\"]\"></div>");
+                    stringBuilder.Append($"<div class=\"nav-text\">@ViewData[\"appName\"] &gt; @ViewData[\"pageName\"]</div></div>");
+                }
+                else if (c.Type == "checkbox")
+                {
+                    stringBuilder.Append($"<div class=\"uic checkbox-control {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"<input type=\"checkbox\" /><span class=\"checkbox-label\">{c.Label}</span></div>");
                 }
                 else
                 {

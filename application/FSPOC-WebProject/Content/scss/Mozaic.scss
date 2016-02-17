@@ -218,7 +218,7 @@ body.mozaicEditorModule {
             padding-top: 26px;
         }
     }
-    .info-container.ui-draggable-dragging {
+    .info-container.ui-draggable-dragging, .form-heading.ui-draggable-dragging, .control-label.ui-draggable-dragging {
         border: 1px solid #00d000;
     }
     .breadcrumb-navigation {
@@ -272,23 +272,52 @@ body.mozaicEditorModule {
             border-bottom: none;
         }
     }
+    .control-label {
+        font-family: MyriadPro;
+        font-size: 14px;
+        color: #58585a;
+    }
+    .form-heading {
+        font-family: RweHeadlineRegular;
+        font-size: 28px;
+        color: #58585a;
+    }
+    .checkbox-control {
+        .checkbox-label {
+            margin-left: 6px;
+            font-family: MyriadPro;
+            font-size: 14px;
+            color: #58585a;
+        }
+    }
     .uic.ui-draggable-dragging {
         z-index: 500;
     }
     .ui-dialog {
         z-index: 600;
-    }
-    .ui-dialog-content .formTable label {
-        margin-bottom: 0px;
-    }
-    .ui-dialog-content .formTable tr {
-        height: 32px;
-    }
-    .ui-dialog-content .formTable td {
-        vertical-align: middle;
-    }
-    .ui-dialog-content .formTable tr td:first-child {
-        width: 100px;
+    
+        .formTable {
+            width: 100%;
+
+            label {
+                margin-bottom: 0px;
+            }
+            tr {
+                height: 32px;
+            }
+            td {
+                vertical-align: middle;
+            }
+            input {
+                width: 100%;
+            }
+            td:first-child {
+                width: 110px;
+            }
+            #component-width, #component-height {
+                width: 100px;
+            }
+        }
     }
     .highlightedRow {
         background-color: #49c3f1 !important;

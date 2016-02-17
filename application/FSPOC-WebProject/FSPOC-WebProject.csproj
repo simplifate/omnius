@@ -228,6 +228,7 @@
     <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
+    <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
@@ -1491,6 +1492,7 @@
     <Content Include="Views\Persona\Users\Detail.cshtml" />
     <Content Include="Views\Mozaic\Editor\Index.cshtml" />
     <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Master\AppAdminManager\BuildApp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

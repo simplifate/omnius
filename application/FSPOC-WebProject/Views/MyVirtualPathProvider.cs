@@ -78,7 +78,7 @@ namespace FSPOC_WebProject.Views
 
             // ve startwith je zatím nějaká blbost 
             //je to protože zatím není známo jaký rozlišovací cestu budou mít pohledy z mozaicu
-            if (virtualPath.StartsWith("kjhdaskd"))
+            if (virtualPath.StartsWith("/Views/App/"))
             {
                 DBEntities db = new DBEntities();
                 return db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);

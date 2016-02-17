@@ -50,6 +50,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
                     app.Name = postData.Name;
+                    app.DisplayName = postData.Name;
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
