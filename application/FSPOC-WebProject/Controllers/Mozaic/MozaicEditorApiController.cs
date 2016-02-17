@@ -48,14 +48,16 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     result.Components.Add(new AjaxMozaicEditorComponent
                     {
                         Id = component.Id,
+                        Name = component.Name ?? "",
+                        Type = component.Type,
                         PositionX = component.PositionX,
                         PositionY = component.PositionY,
                         Width = component.Width,
                         Height = component.Height,
                         Tag = component.Tag,
                         Attributes = component.Attributes,
-                        Classes = component.Classes,
-                        Styles = component.Styles,
+                        Classes = component.Classes ?? "",
+                        Styles = component.Styles ?? "",
                         Content = component.Content,
                         Label = component.Label,
                         Placeholder = component.Placeholder,
@@ -101,6 +103,8 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             return new MozaicEditorComponent
             {
+                Name = ajaxComponent.Name,
+                Type = ajaxComponent.Type,
                 PositionX = ajaxComponent.PositionX,
                 PositionY = ajaxComponent.PositionY,
                 Width = ajaxComponent.Width,

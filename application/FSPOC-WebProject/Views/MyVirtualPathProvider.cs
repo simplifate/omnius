@@ -38,10 +38,8 @@ namespace FSPOC_WebProject.Views
             }
             else
             {
-                byte[] content = ASCIIEncoding.ASCII.
-                                 GetBytes(view.ViewContent);
-                return new MyVirtualFile
-                              (virtualPath, content);
+                byte[] content = Encoding.GetEncoding("Windows-1250").GetBytes(view.ViewContent);
+                return new MyVirtualFile (virtualPath, content);
             }
         }
 
@@ -78,7 +76,7 @@ namespace FSPOC_WebProject.Views
 
             // ve startwith je zatím nějaká blbost 
             //je to protože zatím není známo jaký rozlišovací cestu budou mít pohledy z mozaicu
-            if (virtualPath.StartsWith("kjhdaskd"))
+            if (virtualPath.StartsWith("/Views/App/"))
             {
                 DBEntities db = new DBEntities();
                 return db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);

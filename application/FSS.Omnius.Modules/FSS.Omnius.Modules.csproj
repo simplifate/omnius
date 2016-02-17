@@ -486,9 +486,10 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\MozaicRepository.cs" />
-    <Compile Include="Tapestry\Actions\Mozaic\ReadAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />

@@ -519,5 +519,10 @@ namespace FSS.Omnius.Modules.Entitron
             return constraints;
         }
 
+        public DBItem GetById(int id)
+        {
+            return Select().where(c => c.column("Id").Equal(id)).ToList().First();
+        }
+
     }
 }

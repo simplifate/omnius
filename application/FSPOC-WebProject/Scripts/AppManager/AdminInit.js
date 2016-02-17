@@ -19,7 +19,8 @@
             openMetablockForm.submit();
         });
         $(".adminAppTable .actions .btnValidate").on("click", function () {
-            window.location.href = "/Portal/AppValidation";
+            CurrentAppId = $(this).parents("tr").attr("appId");
+            window.location.href = "/Master/AppAdminManager/BuildApp/" + CurrentAppId;
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");

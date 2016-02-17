@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Specialized;
+using System.Web.Mvc;
 
 namespace FSS.Omnius.Modules.CORE
 {
@@ -17,6 +18,8 @@ namespace FSS.Omnius.Modules.CORE
 
         private RunableModule _activeModule;
         public User User { get; set; }
+        public FormCollection _form { get; set; }
+
         public CORE()
         {
             Name = "CORE";

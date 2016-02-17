@@ -81,6 +81,12 @@ $(function () {
                 droppedElement.removeClass("toolboxItem");
                 droppedElement.removeClass("ui-draggable-dragging");
                 droppedElement.addClass("uic");
+                droppedElement.attr("uicName", "");
+                droppedElement.attr("uicStyles", "");
+                droppedElement.attr("placeholder", "");
+                if (droppedElement.hasClass("breadcrumb-navigation")) {
+                    droppedElement.css("width", "600px");
+                }
                 $(this).append(droppedElement);
                 if (GridResolution > 0) {
                     droppedElement.css("left", droppedElement.position().left - (droppedElement.position().left % GridResolution));

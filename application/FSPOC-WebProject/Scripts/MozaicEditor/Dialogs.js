@@ -3,8 +3,8 @@ $(function () {
     if (CurrentModuleIs("mozaicEditorModule")) {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
             autoOpen: false,
-            width: 400,
-            height: 190,
+            width: 700,
+            height: 400,
             buttons: {
                 "Save": function () {
                     componentPropertiesDialog_SubmitData();
@@ -22,17 +22,35 @@ $(function () {
                 })
             },
             open: function () {
+                componentPropertiesDialog.find("#component-name").val(CurrentComponent.attr("uicName"));
+                componentPropertiesDialog.find("#component-width").val(CurrentComponent.css("width"));
+                componentPropertiesDialog.find("#component-height").val(CurrentComponent.css("height"));
+                componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".info-container-header").text());
-                    componentPropertiesDialog.find("#component-body").val(CurrentComponent.find(".info-container-body").text());
+                    componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
                 }
-                else
+                else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
+                    componentPropertiesDialog.find("#component-content").val("");
+                }
+                else if (CurrentComponent.hasClass("checkbox-control")) {
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".checkbox-label").text());
+                    componentPropertiesDialog.find("#component-content").val("");
+                }
+                else {
+                    componentPropertiesDialog.find("#component-label").val("");
+                    componentPropertiesDialog.find("#component-content").val("");
+                }
             }
         });
         function componentPropertiesDialog_SubmitData() {
+            CurrentComponent.attr(("uicName"), componentPropertiesDialog.find("#component-name").val());
+            CurrentComponent.css("width", componentPropertiesDialog.find("#component-width").val());
+            CurrentComponent.css("height", componentPropertiesDialog.find("#component-height").val());
+            CurrentComponent.attr(("uicStyles"), componentPropertiesDialog.find("#component-styles").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
@@ -41,7 +59,13 @@ $(function () {
                 CurrentComponent.attr("placeholder", componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
-                CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-body").val());
+            }
+            else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
+                CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
+            }
+            else if (CurrentComponent.hasClass("checkbox-control")) {
+                CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
+                CurrentComponent.find(".checkbox-label").text(componentPropertiesDialog.find("#component-label").val());
             }
             componentPropertiesDialog.dialog("close");
         }

@@ -13,9 +13,9 @@
 
             for (i = 0; i < data.Components.length; i++) {
                 cData = data.Components[i];
-                newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" ' + cData.Attributes + ' class="uic ' + cData.Classes
-                    + '" uicClasses="' + cData.Classes + '" ' + 'style="left: ' + cData.PositionX + 'px; top: ' + cData.PositionY + 'px; width: '
-                    + cData.Width + 'px; height: ' + cData.Height + 'px; ' + cData.Styles + '"></' + cData.Tag + '>');
+                newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + '" ' + cData.Attributes + ' class="uic ' + cData.Classes
+                    + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
+                    + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
                 if (cData.Placeholder)
                     newComponent.attr("placeholder", cData.Placeholder);
                 if (newComponent.hasClass("button-simple"))
@@ -28,6 +28,15 @@
                         + '<div class="info-container-body"></div>'));
                     newComponent.find(".info-container-header").text(cData.Label);
                     newComponent.find(".info-container-body").text(cData.Content);
+                }
+                else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
+                    newComponent.text(cData.Label);
+                }
+                else if (newComponent.hasClass("checkbox-control")) {
+                    newComponent.append($('<input type="checkbox" /><span class="checkbox-label">' + cData.Label + '</span>'));
+                }
+                else if (newComponent.hasClass("breadcrumb-navigation")) {
+                    newComponent.append($('<div class="app-icon fa fa-question"></div><div class="nav-text">APP NAME &gt; Nav</div>'));
                 }
                 $("#mozaicPageContainer").append(newComponent);
                 newComponent.draggable({

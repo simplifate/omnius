@@ -12,9 +12,9 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
         {
             var core = HttpContext.GetCORE();
-            User user = User.GetLogged(core);
+            core._form = fc;
 
-            //fc = (FormCollection)Request.Form;
+            User user = User.GetLogged(core);
 
             Block targetBlock = core.Tapestry.run(user, AppName, actionRuleId, modelId, fc);
 
