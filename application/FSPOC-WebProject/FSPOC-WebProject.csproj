@@ -237,7 +237,6 @@
     <Compile Include="Controllers\Persona\PersonaApiController.cs" />
     <Compile Include="Controllers\Persona\RightsController.cs" />
     <Compile Include="Controllers\Persona\RolesController.cs" />
-    <Compile Include="Controllers\Persona\UsersController.cs" />
     <Compile Include="Controllers\Tapestry\OverviewController.cs" />
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
