@@ -211,7 +211,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             {
                                 TapestryDesignerWorkflowSymbol symbol = new TapestryDesignerWorkflowSymbol
                                 {
-                                    Type = ajaxSymbol.Type,
+                                    TypeClass = ajaxSymbol.Type,
                                     DialogType = ajaxSymbol.DialogType,
                                     PositionX = ajaxSymbol.PositionX,
                                     PositionY = ajaxSymbol.PositionY
@@ -651,7 +651,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 var ajaxSymbol = new AjaxTapestryDesignerWorkflowSymbol
                 {
                     Id = symbol.Id,
-                    Type = symbol.Type,
+                    Type = symbol.TypeClass,
                     DialogType = symbol.DialogType,
                     PositionX = symbol.PositionX,
                     PositionY = symbol.PositionY

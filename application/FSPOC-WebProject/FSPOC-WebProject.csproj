@@ -1494,8 +1494,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\AppAdminManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

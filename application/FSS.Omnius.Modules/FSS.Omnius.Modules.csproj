@@ -461,6 +461,10 @@
     <Compile Include="Migrations\201602161059316_Mozaic editor properties.Designer.cs">
       <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.cs" />
+    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.Designer.cs">
+      <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -698,6 +702,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602161059316_Mozaic editor properties.resx">
       <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602170920573_renameType_WorkFlowItem.resx">
+      <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
