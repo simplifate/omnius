@@ -1,6 +1,4 @@
-﻿using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
+﻿using FSS.Omnius.Modules.Watchtower;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +8,13 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
     [MozaicRepository]
-    public class ReadAction : Action
+    public class LogAction : Action
     {
         public override int Id
         {
             get
             {
-                return 2001;
+                return 2002;
             }
         }
         public override int? ReverseActionId
@@ -30,7 +28,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "TableName", "Id" };
+                return new string[] { "Message", "?Level" };
             }
         }
 
@@ -38,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return "Read";
+                return "Log";
             }
         }
 
@@ -46,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "Data" };
+                return null;
             }
         }
 
@@ -54,31 +52,32 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
-            var select = table.Select();
-            Conditions condition = new Conditions(select);
-            Condition_concat outCondition = null;
+            WatchtowerLogger logger = WatchtowerLogger.Instance;
 
-            outCondition = condition.column("Id").Equal(vars["Id"]);
-            condition = outCondition.and();
+            string message = vars.ContainsKey("Message") ? (string)vars["Message"] : string.Empty;
+            int level = vars.ContainsKey("Level") ? (int)vars["Level"] : (int)LogLevel.Info;
 
-            vars["Data"] = select.where(i => outCondition).ToList();
-            if(((List<DBItem>)vars["Data"]).Count() == 0)
+            if(string.IsNullOrEmpty(message))
             {
-                string message = String.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
-
-                WatchtowerLogger logger = WatchtowerLogger.Instance;
                 logger.LogEvent(
+                        string.Format("Zpráva nebyla předána (Akce: {0} ({1}))", Name, Id),
+                        core.User.Id,
+                        LogEventType.Tapestry,
+                        LogLevel.Error,
+                        false,
+                        core.Entitron.AppId
+                    );
+                throw new Exception("Zpráva k zalogování nebyla předána");
+            }
+
+            logger.LogEvent(
                     message,
                     core.User.Id,
-                    LogEventType.Tapestry,
-                    LogLevel.Error,
+                    LogEventType.NormalUserAction,
+                    (LogLevel)level,
                     false,
                     core.Entitron.AppId
                 );
-
-                throw new Exception(message);
-            }
         }
     }
 }
