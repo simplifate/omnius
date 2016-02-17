@@ -1485,15 +1485,17 @@
     <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
     <Content Include="Views\Mozaic\Css\Update.cshtml" />
     <Content Include="Views\Mozaic\Css\BaseIndex.cshtml" />
-    <Content Include="Views\Persona\Users\Index.cshtml" />
-    <Content Include="Views\Persona\Users\Create.cshtml" />
-    <Content Include="Views\Persona\Users\Update.cshtml" />
-    <Content Include="Views\Persona\Users\Detail.cshtml" />
+    <Content Include="Views\Persona\Account\Index.cshtml" />
+    <Content Include="Views\Persona\Account\Create.cshtml" />
+    <Content Include="Views\Persona\Account\Update.cshtml" />
+    <Content Include="Views\Persona\Account\Detail.cshtml" />
     <Content Include="Views\Mozaic\Editor\Index.cshtml" />
     <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Persona\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

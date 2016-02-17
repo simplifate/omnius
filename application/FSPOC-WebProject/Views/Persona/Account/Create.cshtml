@@ -21,27 +21,30 @@
             @TempData["error"]
         </div>
     }
-    @using (Html.BeginForm("Create", "Users", FormMethod.Post))
+    @using (Html.BeginForm("CreateLocalUser", "Account", FormMethod.Post))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x=>x.User.localExpiresAt)
+        @Html.HiddenFor(x => x.User.LastLogin)
+        @Html.HiddenFor(x => x.User.CurrentLogin)
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.DisplayName, "Jméno a příjmení")
+                    @Html.Label( "Jméno a příjmení")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.DisplayName)
-                    @Html.ValidationMessageFor(x => x.user.DisplayName)
+                    @Html.TextBoxFor(x => x.User.DisplayName, new {@class= "form-control"})
+                    @Html.ValidationMessageFor(x => x.User.DisplayName, null ,new {@class= "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.UserName, "Uživatelské jméno")
+                    @Html.Label("Uživatelské jméno")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.UserName)
-                    @Html.ValidationMessageFor(x => x.user.UserName)
+                    @Html.TextBoxFor(x => x.User.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.UserName, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -50,8 +53,8 @@
                     @Html.LabelFor(x => x.NewPassword, "Heslo")
                 </div>
                 <div class="col-sm-7">
-                    @Html.PasswordFor(x=>x.NewPassword)
-                    @Html.ValidationMessageFor(x => x.NewPassword)
+                    @Html.PasswordFor(x=>x.NewPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.NewPassword, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -60,94 +63,94 @@
                     @Html.LabelFor(x => x.ConfirmPassword, "Heslo znovu")
                 </div>
                 <div class="col-sm-7">
-                    @Html.PasswordFor(x=>x.ConfirmPassword)
-                    @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                    @Html.PasswordFor(x=>x.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfirmPassword, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Company, "Firma")
+                    @Html.LabelFor(x => x.User.Company, "Firma")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Company)
-                    @Html.ValidationMessageFor(x => x.user.Company)
+                    @Html.TextBoxFor(x => x.User.Company, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Company, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Department, "Oddělení")
+                    @Html.LabelFor(x => x.User.Department, "Oddělení")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Department)
-                    @Html.ValidationMessageFor(x => x.user.Department)
+                    @Html.TextBoxFor(x => x.User.Department, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Department, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group  col-sm-12 ">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Team, "Tým")
+                    @Html.LabelFor(x => x.User.Team, "Tým")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Team)
-                    @Html.ValidationMessageFor(x => x.user.Team)
+                    @Html.TextBoxFor(x => x.User.Team, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Team, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group  col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Job, "Práce")
+                    @Html.LabelFor(x => x.User.Job, "Práce")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Job)
-                    @Html.ValidationMessageFor(x => x.user.Job)
+                    @Html.TextBoxFor(x => x.User.Job, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Job, null, new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="form-group col-sm-6">
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Address, "Adresa")
+                    @Html.LabelFor(x => x.User.Address, "Adresa")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Address)
-                    @Html.ValidationMessageFor(x => x.user.Address)
+                    @Html.TextBoxFor(x => x.User.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Address, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.Email)
+                    @Html.LabelFor(x => x.User.Email)
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.Email)
-                    @Html.ValidationMessageFor(x => x.user.Email)
+                    @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Email, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.MobilPhone, "Telefon")
+                    @Html.LabelFor(x => x.User.MobilPhone, "Telefon")
                 </div>
-                <div class="col-sm-6">
-                    @Html.TextBoxFor(x => x.user.MobilPhone)
-                    @Html.ValidationMessageFor(x => x.user.MobilPhone)
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.MobilPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.MobilPhone, null, new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
                 <div class="col-sm-4">
-                    @Html.LabelFor(x => x.user.WorkPhone, "Pracovní telefon")
+                    @Html.LabelFor(x => x.User.WorkPhone, "Pracovní telefon")
                 </div>
                 <div class="col-sm-7">
-                    @Html.TextBoxFor(x => x.user.WorkPhone)
-                    @Html.ValidationMessageFor(x => x.user.WorkPhone)
+                    @Html.TextBoxFor(x => x.User.WorkPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.WorkPhone, null, new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="clearfix"></div>
         <button type="submit" class="btn btn-primary">Přidat</button>
-        @Html.ActionLink("Zpět", "Index", null, new {@class="btn btn-default"})
+        @Html.ActionLink("Zpět", "Index","Account", null, new {@class="btn btn-default"})
     }
 </div>

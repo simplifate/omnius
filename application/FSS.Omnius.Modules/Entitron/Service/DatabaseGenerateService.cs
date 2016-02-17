@@ -93,7 +93,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                             entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
 
-                        entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
                         entitronTable.columns.AddDefaultValue(efColumn.Name,efColumn.DefaultValue);
                     }
 

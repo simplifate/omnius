@@ -34,12 +34,13 @@ namespace FSPOC_WebProject.Models
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public User user { get; set; } 
+        public User User { get; set; } 
     }
 
     public class ChangePasswordViewModel

@@ -1,7 +1,7 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Persona.User
 <h2>@Html.DisplayFor(x => x.DisplayName)</h2>
-
 <div>
+    
     <div class="form-group col-md-6">
         <div class="form-group">
             <div>
@@ -81,7 +81,7 @@
                 <p>@Model.Address</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -92,7 +92,7 @@
                 <p>@Model.Email</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -103,7 +103,7 @@
                 <p>@Model.MobilPhone</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -114,7 +114,7 @@
                 <p>@Model.WorkPhone</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -122,10 +122,10 @@
                 </label>
             </div>
             <div>
-                <p>@string.Join(", ", Model.ADgroup_Users.Select(x=>x.ADgroup))</p>
+                <p>@string.Join(", ", Model.ADgroup_Users.Select(x => x.ADgroup))</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -136,7 +136,7 @@
                 <p>@Model.LastLogin</p>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div>
                 <label class="control-label">
@@ -154,6 +154,7 @@
                 }
             </div>
         </div>
-    
+
     </div>
+
 </div>

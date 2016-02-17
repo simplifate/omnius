@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -262,20 +263,6 @@ namespace FSPOC_WebProject.Controllers.Persona
             return code == null ? View("Error") : View();
         }
 
-        public async Task<ActionResult> SetPassword(string password, int userId)
-        {
-            SetPasswordViewModel model = new SetPasswordViewModel();
-            DBEntities e = new DBEntities();
-            model.NewPassword = password;
-            model.user = e.Users.SingleOrDefault(x => x.Id == userId);
-            IdentityResult result=  await UserManager.AddPasswordAsync(userId, password);
-            if (result.Succeeded)
-            return RedirectToRoute("Persona", new {@action = "Index", @controller = "Users"});
-
-            AddErrors(result);
-            return View("~/Views/Persona/Users/Create.cshtml",model);
-        }
-
         //
         // POST: /Account/ResetPassword
         [HttpPost]
@@ -518,5 +505,94 @@ namespace FSPOC_WebProject.Controllers.Persona
             }
         }
         #endregion
+
+        // GET: Users
+        public ActionResult Index()
+        {
+            DBEntities e = new DBEntities();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("AjaxIndex", e.Users);
+            }
+            else
+            {
+                return View(e.Users);
+            }
+        }
+
+        public ActionResult Detail(int id)
+        {
+            DBEntities e = new DBEntities();
+            return View(e.Users.SingleOrDefault(x => x.Id == id));
+        }
+
+        public ActionResult Create()
+        {
+            SetPasswordViewModel model = new SetPasswordViewModel();
+            FSS.Omnius.Modules.Entitron.Entity.Persona.User user = new User();
+            model.User = user;
+
+            //user je lokalní, není řešeno přes AD
+            model.User.isLocalUser = true;
+
+            //datumy se nastavují protože datetime v databázi a v c# mají rozdílné min.hodnoty
+            model.User.localExpiresAt = DateTime.Now;
+            model.User.LastLogin = DateTime.Now;
+            model.User.CurrentLogin = DateTime.Now;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateLocalUser(SetPasswordViewModel model)
+        {
+            IdentityResult result = null;
+
+            if (ModelState.IsValid)
+            {
+                result = await UserManager.CreateAsync(model.User, model.NewPassword);
+                if (result.Succeeded)
+                    return RedirectToAction("Index");
+            }
+
+            if (result != null)
+                AddErrors(result);
+
+            return View("Create", model);
+        }
+
+        public ActionResult Update(int id)
+        {
+            DBEntities e = new DBEntities();
+            User u = e.Users.SingleOrDefault(x => x.Id == id);
+            return View(u);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User model)
+        {
+            IdentityResult result = null;
+            if (ModelState.IsValid)
+            {
+                DBEntities e = new DBEntities();
+                FSS.Omnius.Modules.Entitron.Entity.Persona.User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
+                e.Users.AddOrUpdate(user, model);
+                e.SaveChanges();
+                ViewBag.ShowTable = false;
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ShowTable = true;
+            return PartialView("Update", model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            DBEntities e = new DBEntities();
+            e.Users.Remove(e.Users.SingleOrDefault(x => x.Id == id));
+            e.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }
