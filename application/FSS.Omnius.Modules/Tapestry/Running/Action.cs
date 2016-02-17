@@ -79,5 +79,17 @@ namespace FSS.Omnius.Modules.Tapestry
         }
         public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars);
 
+        public void LogError(string message, int userId, int appId)
+        {
+            Watchtower.WatchtowerLogger logger = Watchtower.WatchtowerLogger.Instance;
+            logger.LogEvent(
+                    message,
+                    userId,
+                    Watchtower.LogEventType.Tapestry,
+                    Watchtower.LogLevel.Error,
+                    false,
+                    appId
+                );
+        }
     }
 }

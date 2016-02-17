@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
+namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
-    [MozaicRepository]
-    public class ReadAction : Action
+    [EntitronRepository]
+    public class ReadDBItemAction : Action
     {
         public override int Id
         {
             get
             {
-                return 2001;
+                return 1022;
             }
         }
         public override int? ReverseActionId
