@@ -195,11 +195,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
     }
-    [Table("TapestryDesigner_WorkflowItems")]
-    public class TapestryDesignerWorkflowItem
+    public class WFitem
     {
         public int Id { get; set; }
-        public string Label { get; set; }
         public string TypeClass { get; set; }
         public string DialogType { get; set; }
         public int PositionX { get; set; }
@@ -207,16 +205,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
     }
-    [Table("TapestryDesigner_WorkflowSymbols")]
-    public class TapestryDesignerWorkflowSymbol
+    [Table("TapestryDesigner_WorkflowItems")]
+    public class TapestryDesignerWorkflowItem : WFitem
     {
-        public int Id { get; set; }
-        public string Type { get; set; }
-        public string DialogType { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
-
-        public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
+        public string Label { get; set; }
+    }
+    [Table("TapestryDesigner_WorkflowSymbols")]
+    public class TapestryDesignerWorkflowSymbol : WFitem
+    {
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
     public class BlockToolboxState
