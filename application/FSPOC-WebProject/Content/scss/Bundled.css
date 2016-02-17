@@ -688,7 +688,8 @@ body.adminAppModule #appBuildResults {
   cursor: default;
   font-family: MyriadPro;
   font-size: 14px;
-  color: #58585a; }
+  color: #58585a;
+  white-space: nowrap; }
 
 .mozaicForm .form-heading {
   -webkit-touch-callout: none;
@@ -699,7 +700,15 @@ body.adminAppModule #appBuildResults {
   cursor: default;
   font-family: RweHeadlineRegular;
   font-size: 28px;
-  color: #58585a; }
+  color: #58585a;
+  white-space: nowrap; }
+
+.mozaicForm .checkbox-control .checkbox-label {
+  margin-left: 6px;
+  font-family: MyriadPro;
+  font-size: 14px;
+  color: #58585a;
+  white-space: nowrap; }
 
 body.tapestryModule .toolboxItem {
   width: 218px;
@@ -2582,16 +2591,19 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .control-label {
     font-family: MyriadPro;
     font-size: 14px;
-    color: #58585a; }
+    color: #58585a;
+    white-space: nowrap; }
   body.mozaicEditorModule .form-heading {
     font-family: RweHeadlineRegular;
     font-size: 28px;
-    color: #58585a; }
+    color: #58585a;
+    white-space: nowrap; }
   body.mozaicEditorModule .checkbox-control .checkbox-label {
     margin-left: 6px;
     font-family: MyriadPro;
     font-size: 14px;
-    color: #58585a; }
+    color: #58585a;
+    white-space: nowrap; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {

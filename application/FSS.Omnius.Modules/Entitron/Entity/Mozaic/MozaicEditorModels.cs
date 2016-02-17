@@ -46,7 +46,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                 }
-                else if(c.Type == "breadcrumb")
+                else if (c.Type == "label")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
+                }
+                else if (c.Type == "breadcrumb")
                 {
                     stringBuilder.Append($"<div class=\"uic breadcrumb-navigation {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");

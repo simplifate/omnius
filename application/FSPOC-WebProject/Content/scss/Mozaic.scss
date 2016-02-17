@@ -276,11 +276,13 @@ body.mozaicEditorModule {
         font-family: MyriadPro;
         font-size: 14px;
         color: #58585a;
+        white-space: nowrap;
     }
     .form-heading {
         font-family: RweHeadlineRegular;
         font-size: 28px;
         color: #58585a;
+        white-space: nowrap;
     }
     .checkbox-control {
         .checkbox-label {
@@ -288,6 +290,7 @@ body.mozaicEditorModule {
             font-family: MyriadPro;
             font-size: 14px;
             color: #58585a;
+            white-space: nowrap;
         }
     }
     .uic.ui-draggable-dragging {

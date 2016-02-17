@@ -38,10 +38,8 @@ namespace FSPOC_WebProject.Views
             }
             else
             {
-                byte[] content = ASCIIEncoding.ASCII.
-                                 GetBytes(view.ViewContent);
-                return new MyVirtualFile
-                              (virtualPath, content);
+                byte[] content = Encoding.GetEncoding("Windows-1250").GetBytes(view.ViewContent);
+                return new MyVirtualFile (virtualPath, content);
             }
         }
 

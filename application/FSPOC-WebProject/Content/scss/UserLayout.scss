@@ -400,11 +400,22 @@
         font-family: MyriadPro;
         font-size: 14px;
         color: #58585a;
+        white-space: nowrap;
     }
     .form-heading {
         @include no-select();
         font-family: RweHeadlineRegular;
         font-size: 28px;
         color: #58585a;
+        white-space: nowrap;
+    }
+    .checkbox-control {
+        .checkbox-label {
+            margin-left: 6px;
+            font-family: MyriadPro;
+            font-size: 14px;
+            color: #58585a;
+            white-space: nowrap;
+        }
     }
 }

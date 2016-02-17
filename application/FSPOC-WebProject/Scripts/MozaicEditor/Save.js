@@ -11,10 +11,6 @@
             label = currentUic.find(".info-container-header").text();
             content = currentUic.find(".info-container-body").text();
         }
-        else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
-            label = currentUic.text();
-            type = "label";
-        }
         if(currentUic.hasClass("info-container"))
             type = "info-container";
         else if (currentUic.hasClass("breadcrumb-navigation"))
@@ -26,6 +22,10 @@
         else if (currentUic.hasClass("checkbox-control")) {
             type = "checkbox";
             label = currentUic.find(".checkbox-label").text();
+        }
+        else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
+            label = currentUic.text();
+            type = "label";
         }
         else
             type = "control";
