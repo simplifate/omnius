@@ -11,17 +11,17 @@ namespace FSS.Omnius.Controllers.Tapestry
     [PersonaAuthorize]
     public class RunController : Controller
     {
-        public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
-        {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
-            core._form = fc;
+        //public ActionResult Index(string AppName, int actionRuleId, FormCollection fc, int modelId = -1)
+        //{
+        //    Modules.CORE.CORE core = HttpContext.GetCORE();
+        //    core._form = fc;
 
-            User user = User.GetLogged(core);
+        //    User user = User.GetLogged(core);
 
-            Block targetBlock = core.Tapestry.run(user, AppName, actionRuleId, modelId, fc);
+        //    Block targetBlock = core.Tapestry.run(user, AppName, actionRuleId, modelId, fc);
 
-            return new RedirectToRouteResult("Mozaic", new RouteValueDictionary(new { Controller = "Show", Action = "Index", appName = AppName, blockId = targetBlock.Id, modelId = modelId }));
-        }
+        //    return new RedirectToRouteResult("Mozaic", new RouteValueDictionary(new { Controller = "Show", Action = "Index", appName = AppName, blockId = targetBlock.Id, modelId = modelId }));
+        //}
 
         public ActionResult Generate(string AppName)
         {

@@ -109,11 +109,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             joinItems = workflowRule.Connections.GroupBy(c => new { Type = c.TargetType, Id = c.Target }).Where(c => c.Count() > 1).Select(c => new ConnectionTargetSource { Id = c.Key.Id, Type = c.Key.Type }).ToList();
 
             // get begin
-            WFitem item = _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "circle-single");
+            WFitem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
             ActionRule actionRule = new ActionRule
             {
                 Actor = _context.Actors.Single(a => a.Name == "Manual"),
                 Name = workflowRule.Name,
+                ExecutedBy = (item as TapestryDesignerWorkflowItem).Label,
                 SourceBlock = block
             };
             TapestryDesignerConnection nextConnection = new TapestryDesignerConnection { Target = item.Id, TargetType = item.GetTypeId() };
