@@ -118,7 +118,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
             rule.PreRun(results);
-            if (!rule.CanRun(results.outputData))
+            if (false && !rule.CanRun(results.outputData))
                 throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", ActionRuleId));
 
             return rule;

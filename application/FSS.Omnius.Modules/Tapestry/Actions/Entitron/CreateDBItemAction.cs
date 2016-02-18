@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,11 +59,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             DBItem item = new DBItem();
             DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
 
-            var propertyNames = vars.Keys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
+            var propertyNames = core._form.AllKeys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
             foreach (string propertyName in propertyNames)
             {
                 string itemProperty = propertyName.Substring(5, propertyName.Length - 6);
-                item.createProperty(table.columns.Single(c => c.Name == itemProperty).ColumnId, itemProperty, vars[propertyName]);
+                object itemValue = core._form[propertyName];
+                DBColumn column = table.columns.Single(c => c.Name == itemProperty);
+
+
+
+                //item.createProperty(column.ColumnId, itemProperty, Convertor.convert(Modules.Entitron.Entity.CORE.DataType, itemValue));
             }
 
             table.Add(item);
