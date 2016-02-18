@@ -507,7 +507,7 @@
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\DeleteItem.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\DeleteDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />

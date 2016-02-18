@@ -1,4 +1,6 @@
-﻿using FSS.Omnius.Modules.Entitron;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Sql;
 using System;
 using System.Collections.Generic;
@@ -56,10 +58,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
+            DBEntities e = new DBEntities();
 
             string error;
             string tableName = (string)vars["TableName"];
-            int? itemId = (int?)vars["Id"];
+            var itemId = Convertor.convert('i', core._form["Id"]);
 
             if(string.IsNullOrEmpty(tableName)) {
                 error = string.Format("Nebyl předán název tabulky (Akce: {0} ({1}))", Name, Id);
@@ -87,21 +90,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             outCondition = condition.column("Id").Equal(itemId);
             condition = outCondition.and();
 
-            DBItem item = table.Select().where(i => outCondition).First();
-            if(item == null) {
+            DBItem row = select.where(i => outCondition).First();
+            DBItem data = new DBItem();
+            if(row == null) {
                 error = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", tableName, itemId, Name, Id);
                 LogError(error, core.User.Id, ent.AppId);
                 throw new Exception(error);
             }
 
-            var propertyNames = vars.Keys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
+            var propertyNames = core._form.AllKeys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
             foreach (string propertyName in propertyNames)
             {
                 string itemProperty = propertyName.Substring(5, propertyName.Length - 6);
-                item[itemProperty] = vars[propertyName];
+                object itemValue = core._form[propertyName];
+                DBColumn column = table.columns.Single(c => c.Name == itemProperty);
+                int typeId = e.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.type)).Id;
+
+                data.createProperty(column.ColumnId, itemProperty, Convertor.convert(typeId, itemValue));
             }
 
-            table.Update(item, item);
+            table.Update(data, row);
             ent.Application.SaveChanges();
         }
     }
