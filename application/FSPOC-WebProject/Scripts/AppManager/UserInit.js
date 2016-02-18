@@ -44,4 +44,13 @@
     else if (CurrentModuleIs("userDetailsModule")) {
         $("#appManagerIcon").removeClass("activeIcon");
     };
+    if ($("#userLeftBar").length > 0) {
+        $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        $(window).scroll(function () {
+            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        });
+        $(window).resize(function () {
+            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        });
+    }
 });

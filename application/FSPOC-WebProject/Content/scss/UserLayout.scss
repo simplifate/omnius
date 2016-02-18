@@ -4,7 +4,7 @@
 #userTopBar {
     @include no-select();
     @include linear-gradient(#edf8fe, #ceeaf8);
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 0px;
     right: 0px;
@@ -135,7 +135,7 @@
 #userLeftBar {
     @include no-select();
     background-color: #edf8fe;
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 50px;
     bottom: 0px;
@@ -262,7 +262,7 @@
 #userLeftBarMinimized {
     @include no-select();
     background-color: #edf8fe;
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 50px;
     bottom: 0px;
@@ -297,7 +297,7 @@
     }
 }
 #userContentArea {
-    position: fixed;
+    position: absolute;
     left: 310px;
     top: 50px;
     right: 0px;

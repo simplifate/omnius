@@ -316,7 +316,7 @@ body.adminAppModule #appBuildResults {
   background: -o-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: -moz-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: linear-gradient(to bottom, #edf8fe, #ceeaf8);
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
   right: 0px;
@@ -434,7 +434,7 @@ body.adminAppModule #appBuildResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -543,7 +543,7 @@ body.adminAppModule #appBuildResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -574,7 +574,7 @@ body.adminAppModule #appBuildResults {
       background-color: #ceeaf8; }
 
 #userContentArea {
-  position: fixed;
+  position: absolute;
   left: 310px;
   top: 50px;
   right: 0px;

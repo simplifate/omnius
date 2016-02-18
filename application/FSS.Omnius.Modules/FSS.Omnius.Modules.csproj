@@ -469,6 +469,10 @@
     <Compile Include="Migrations\201602181028549_DataTypeExtend.Designer.cs">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.cs" />
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.Designer.cs">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -714,6 +718,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181722051_page IDs for UI components.resx">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
