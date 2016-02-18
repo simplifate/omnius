@@ -101,7 +101,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 item[itemProperty] = vars[propertyName];
             }
 
-            table.Update(item, item);
+            table.Update(item, Convert.ToInt32(item["Id"]));
             ent.Application.SaveChanges();
         }
     }
