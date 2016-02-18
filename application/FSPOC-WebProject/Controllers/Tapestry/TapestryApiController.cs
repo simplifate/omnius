@@ -8,6 +8,7 @@ using System.Web.Http;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
@@ -22,7 +23,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    return context.TapestryDesignerApps
+                    return context.Applications
                         .Select(c => new AjaxTapestryDesignerAppHeader
                         {
                             Id = c.Id,
@@ -44,7 +45,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    TapestryDesignerApp app = context.TapestryDesignerApps.Where(a => a.Id == appId).First();
+                    Application app = context.Applications.First(a => a.Id == appId);
                     AjaxTapestryDesignerApp result = new AjaxTapestryDesignerApp
                     {
                         Id = app.Id,
@@ -338,7 +339,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             using (var context = new DBEntities())
             {
                 var result = new AjaxTapestryDesignerBlockList();
-                var rootMetablock = context.TapestryDesignerApps.Find(appId).RootMetablock;
+                var rootMetablock = context.Applications.Find(appId).TapestryDesignerRootMetablock;
                 CollectBlocksToList(rootMetablock, result, context);
                 return result;
             }
@@ -525,16 +526,16 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 ReasonPhrase = "Critical Exception"
             });
         }
-        private static void LoadApp(TapestryDesignerApp requestedApp, AjaxTapestryDesignerApp result)
+        private static void LoadApp(Application requestedApp, AjaxTapestryDesignerApp result)
         {
             var ajaxMetablock = new AjaxTapestryDesignerMetablock
             {
-                Id = requestedApp.RootMetablock.Id,
-                Name = requestedApp.RootMetablock.Name,
-                PositionX = requestedApp.RootMetablock.PositionX,
-                PositionY = requestedApp.RootMetablock.PositionY
+                Id = requestedApp.TapestryDesignerRootMetablock.Id,
+                Name = requestedApp.TapestryDesignerRootMetablock.Name,
+                PositionX = requestedApp.TapestryDesignerRootMetablock.PositionX,
+                PositionY = requestedApp.TapestryDesignerRootMetablock.PositionY
             };
-            LoadMetablocks(requestedApp.RootMetablock, ajaxMetablock);
+            LoadMetablocks(requestedApp.TapestryDesignerRootMetablock, ajaxMetablock);
             result.RootMetablock = ajaxMetablock;
         }
         private static void LoadMetablocks(TapestryDesignerMetablock requestedMetablock, AjaxTapestryDesignerMetablock result)

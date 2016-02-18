@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
-using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
@@ -16,14 +15,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         Role,
         State,
         Port
-    }
-    [Table("TapestryDesigner_Apps")]
-    public class TapestryDesignerApp
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public virtual TapestryDesignerMetablock RootMetablock { get; set; }
     }
     [Table("TapestryDesigner_Metablocks")]
     public class TapestryDesignerMetablock
@@ -148,7 +139,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_WorkflowRules")]
-    public class TapestryDesignerWorkflowRule
+    public partial class TapestryDesignerWorkflowRule
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -199,7 +190,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
     }
-    public class WFitem
+    public partial class WFitem
     {
         public int Id { get; set; }
         public string TypeClass { get; set; }
@@ -210,12 +201,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
     }
     [Table("TapestryDesigner_WorkflowItems")]
-    public class TapestryDesignerWorkflowItem : WFitem
+    public partial class TapestryDesignerWorkflowItem : WFitem
     {
         public string Label { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
-    public class TapestryDesignerWorkflowSymbol : WFitem
+    public partial class TapestryDesignerWorkflowSymbol : WFitem
     {
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
