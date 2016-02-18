@@ -156,6 +156,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.MozaicEditorPages)
                 .WithRequired(e => e.ParentApp);
 
+            /*modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany(e => e.Pages)
+                .WithOptional(e => e.AssociatedBlock);*/
+
             // Nexus
             modelBuilder.Entity<FileMetadata>()
                 .HasOptional<WebDavServer>(s => s.WebDavServer);

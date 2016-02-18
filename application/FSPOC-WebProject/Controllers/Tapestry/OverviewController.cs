@@ -30,6 +30,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             };
                             context.TapestryDesignerMetablocks.Add(newRootMetablock);
                             context.Applications.Find(appId).TapestryDesignerRootMetablock = newRootMetablock;
+                            newRootMetablock.ParentApp = context.Applications.Find(appId);
                             context.SaveChanges();
                             metablockId = newRootMetablock.Id;
                         }

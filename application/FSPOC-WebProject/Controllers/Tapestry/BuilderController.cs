@@ -21,10 +21,26 @@ namespace FSS.Omnius.Controllers.Tapestry
                         ViewData["parentMetablockId"] = 0;
                     else
                         ViewData["parentMetablockId"] = parentMetablock.Id;
+                    int appId = 0;
+                    parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock").Include("ParentApp")
+                            .Where(c => c.Id == parentMetablock.Id).First();
+                    while (parentMetablock != null)
+                    {
+                        if (parentMetablock.ParentApp != null)
+                        {
+                            appId = parentMetablock.ParentApp.Id;
+                            break;
+                        }
+                        parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock").Include("ParentApp")
+                            .Where(c => c.Id == parentMetablock.Id).First().ParentMetablock;
+                    }
+                    ViewData["appId"] = appId;
+                    //ViewData["screenCount"] = context.TapestryDesignerBlocks.Find(blockId).Pages.Count();
                 }
             }
             else // TODO: remove after switching to real IDs
             {
+                ViewData["appId"] = 1;
                 ViewData["blockId"] = 1;
                 ViewData["parentMetablockId"] = 1;
             }

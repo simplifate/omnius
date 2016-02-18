@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
@@ -68,12 +69,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInitial { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
+        // public virtual ICollection<MozaicEditorPage> Pages { get; set; }
 
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
 
         public TapestryDesignerBlock()
         {
             BlockCommits = new List<TapestryDesignerBlockCommit>();
+            // Pages = new List<MozaicEditorPage>();
         }
     }
     [Table("TapestryDesigner_BlocksCommits")]
@@ -192,6 +195,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TypeClass { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int? PageId { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
     }

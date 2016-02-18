@@ -39,59 +39,111 @@
         </div>
     </div>
     <div id="userLeftBar">
-        <div class="widgetLabel">Nejpoužívanější aplikace</div>
-        <div class="circles">
-            <div class="fa fa-circle"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-        </div>
+        <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         @if ((string)ViewData["Mode"] == "App")
         {
-            <div id="switchMenuIcon" class="fa fa-exchange"></div>
+            <div class="widgetLabel">Menu</div>
+            <ul id="appMenu">
+                <li>
+                    <h4>Administrace</h4>
+                    <ul>
+                        <li>Přehled dodavatelů</li>
+                        <li>Přehled Periodik</li>
+                        <li>Přehled objednávek</li>
+                        <li>Přehled hromadných objednávek</li>
+                        <li>Přehled příznaků objednávek</li>
+                        <li>Přehled forem periodik</li>
+                        <li>Přehled příznaků schvalování</li>
+                        <li>Přehled četností periodik</li>
+                        <li>Přehled typu periodik</li>
+                        <li>Hromadná změna</li>
+                        <li>Dynamický filtr</li>
+                        <li>Zástupci</li>
+                    </ul>
+                </li>
+                <li>
+                    <h4>Objenávka</h4>
+                    <ul>
+                        <li>Zadání objednávky periodika</li>
+                        <li>Hromadná objednávka pro asistentky</li>
+                        <li>Objednávka periodik knihovnou</li>
+                        <li>Zadání objednávky</li>
+                    </ul>
+                </li>
+                <li>
+                    <h4>Reporty</h4>
+                    <ul>
+                        <li>Kompletní přehled</li>
+                        <li>Zjednodušený přehled</li>
+                        <li>Podklad pro zůčtování</li>
+                        <li>Objednávky knihovny</li>
+                        <li>Základní report</li>
+                        <li>Report pro asistentky</li>
+                        <li>Report pro vedoucí pracovníky</li>
+                        <li>Report hromadných objednávek</li>
+                    </ul>
+                </li>
+            </ul>
         }
-        <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="appList">
-            @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
-                    a.IsPublished
-                    && a.IsEnabled
-                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
-                ))
-            {
-                <div class="appListItem">
-                    <div class="icon fa @(app.Icon)"></div>
-                    <div class="appName">@app.DisplayName</div>
-                </div>
-            }
-        </div>
-        <div class="infoBox">
-            <div class="icon fa fa-info-circle"></div>
-            <div class="infoText">
-                Kliknutím na navigační šipku v hlavičce
-                můžete měnit způsob zobrazených
-                aplikací v menu.
+        else
+        {
+            <div class="widgetLabel">Nejpoužívanější aplikace</div>
+            <div class="circles">
+                <div class="fa fa-circle"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
             </div>
-        </div>
+            <div class="appList">
+                @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
+                        a.IsPublished
+                        && a.IsEnabled
+                        && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
+                    ))
+                {
+                    <a href="@ViewData["FakeAppPath"]">
+                        <div class="appListItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                            <div class="appName">@app.DisplayName</div>
+                        </div>
+                    </a>
+                }
+            </div>
+            <div class="infoBox">
+                <div class="icon fa fa-info-circle"></div>
+                <div class="infoText">
+                    Kliknutím na navigační šipku v hlavičce
+                    můžete měnit způsob zobrazených
+                    aplikací v menu.
+                </div>
+            </div>
+        }
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
-        <div class="appIconToolbar">
-            @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
-                    a.IsPublished
-                    && a.IsEnabled
-                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
-                ))
-                {
-                <div class="appIconToolbarItem">
-                    <div class="icon fa @(app.Icon)"></div>
-                </div>
-                }
-        </div>
+        @if ((string)ViewData["Mode"] != "App")
+        {
+            <div class="appIconToolbar">
+                @foreach (Application app in Context.GetCORE().Entitron.GetStaticTables().Applications.Where(a =>
+                        a.IsPublished
+                        && a.IsEnabled
+                        && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
+                    ))
+                    {
+                        <a href="@ViewData["FakeAppPath"]">
+                            <div class="appIconToolbarItem">
+                                <div class="icon fa @(app.Icon)"></div>
+                            </div>
+                        </a>
+                    }
+            </div>
+        }
     </div>
     <div id="userContentArea">
         @RenderBody()
     </div>
+    <input id="fakeAppPath" type="hidden" value="@ViewData["FakeAppPath"]"/>
 
     @Scripts.Render("~/bundles/OmniusScripts")
     @RenderSection("scripts", required: false)

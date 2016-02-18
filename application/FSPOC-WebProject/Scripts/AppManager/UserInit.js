@@ -33,6 +33,9 @@
             ui.originalPosition.top = $(this).position().top;
             ui.originalPosition.left = $(this).position().left;
         });
+        $(".appPanel").on("dblclick", function () {
+            window.location.href = $("#fakeAppPath").val();
+        });
     }
     else if (CurrentModuleIs("helpModule")) {
         $("#appManagerIcon").removeClass("activeIcon");

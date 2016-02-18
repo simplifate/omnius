@@ -294,7 +294,7 @@ body.tapestryModule {
                 padding-left: 10px;
                 padding-top: 2px;
 
-                #blockHeaderBlockName {
+                #blockHeaderBlockName, #blockHeaderScreenCount {
                     cursor: pointer;
                 }
                 #blockHeaderBlockName, #blockHeaderDbResCount, #blockHeaderScreenCount{
@@ -514,6 +514,10 @@ body.tapestryModule {
     }
     .endpointSourceLabel {
         color: #467ea8;
+    }
+    .ui-dialog {
+        @include no-select();
+        z-index: 2000;
     }
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryArea {

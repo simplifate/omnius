@@ -41,6 +41,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var requestedPage = context.MozaicEditorPages.Find(pageId);
                 var result = new AjaxMozaicEditorPage
                 {
+                    Id = requestedPage.Id,
                     Name = requestedPage.Name
                 };
                 foreach (var component in requestedPage.Components)

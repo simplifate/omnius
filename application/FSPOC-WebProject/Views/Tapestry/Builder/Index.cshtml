@@ -29,33 +29,11 @@
             <div class="libraryItem">Placeholder</div>
             <div class="libraryItem">Placeholder</div>
         </div>
-        <div class="libraryCategory">
+        <div id="libraryCategory-Attributes" class="libraryCategory">
             <div class="libraryCategoryHeader">Atributy</div>
-            <div libId="9" libType="attribute" class="libraryItem highlighted">Name</div>
-            <div libId="10" libType="attribute" class="libraryItem highlighted">Title</div>
-            <div libId="11" libType="attribute" class="libraryItem highlighted">Description</div>
-            <div libId="12" libType="attribute" class="libraryItem">Priority</div>
-            <div libId="13" libType="attribute" class="libraryItem highlighted">Category</div>
-            <div libId="14" libType="attribute" class="libraryItem">Content</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
         </div>
-        <div class="libraryCategory">
+        <div id="libraryCategory-UI" class="libraryCategory">
             <div class="libraryCategoryHeader">UI kompnenty</div>
-            <div libId="15" libType="ui" class="libraryItem highlighted">Textbox175</div>
-            <div libId="16" libType="ui" class="libraryItem">Combobox</div>
-            <div libId="17" libType="ui" class="libraryItem">Picture</div>
-            <div libId="18" libType="ui" class="libraryItem">Carousel</div>
-            <div libId="19" libType="ui" class="libraryItem">Dropdown-toggle</div>
-            <div libId="20" libType="ui" class="libraryItem highlighted">Button125</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
         </div>
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Role</div>
@@ -141,13 +119,7 @@
             <li libId="4" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Validate</span></div></li>
             <li libId="6" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Create</span></div></li>
             <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
-            <li libId="9" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Name</span></div></li>
-            <li libId="10" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Title</span></div></li>
-            <li libId="11" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Description</span></div></li>
-            <li libId="13" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem"><span class="itemLabel">Category</span></div></li>
             <li class="toolboxCategoryHeader_UI"><span class="toolboxCategoryLabel">UI komponenty</span></li>
-            <li libId="15" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem"><span class="itemLabel">Textbox175</span></div></li>
-            <li libId="20" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem"><span class="itemLabel">Button125</span></div></li>
             <li class="toolboxCategoryHeader_Roles"><span class="toolboxCategoryLabel">Role</span></li>
             <li libId="21" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_admin</span></div></li>
             <li libId="23" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_key_user</span></div></li>
@@ -164,8 +136,8 @@
     </div>
     <div id="tapestryWorkspace">
         <div id="blockHeaderPanel">
-            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">2</span>
-            Obrazkovky <span id="blockHeaderScreenCount">2</span>
+            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">0</span>
+            Obrazkovky <span id="blockHeaderScreenCount">0</span>
             <div id="controlButtonArea">
                 <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
                 <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
@@ -244,7 +216,7 @@
         </div>
     </div>
 </div>
-<input type="hidden" id="currentAppId" value="1" />
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
 <input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
 <input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <input type="hidden" id="associatedTableId" value="1" />
@@ -287,4 +259,16 @@
             <input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
+</div>
+<div id="choose-screens-dialog" title="Choose screens">
+    <table id="screen-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Screen name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
 </div>

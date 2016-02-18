@@ -1,5 +1,6 @@
 ﻿var ZoomFactor = 1.0;
 var ChangedSinceLastSave = false;
+var lastLibId = 1000;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
@@ -63,6 +64,9 @@ $(function () {
         });
         $("#blockHeaderBlockName").on("click", function () {
             renameBlockDialog.dialog("open");
+        });
+        $("#blockHeaderScreenCount").on("click", function () {
+            chooseScreensDialog.dialog("open");
         });
         $(window).scroll(function () {
             leftBar = $("#tapestryLeftBar");
@@ -281,7 +285,7 @@ $(function () {
                 }
             });
         });
-        $("#tapestryLibraryArea .libraryItem").on("click", function () {
+        $(document).on("click", ".libraryItem", function () {
             currentLibraryItem = $(this);
             libId = currentLibraryItem.attr("libId");
             libType = currentLibraryItem.attr("libType");
@@ -302,7 +306,7 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "ui") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                     }

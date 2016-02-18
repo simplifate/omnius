@@ -33,6 +33,7 @@ namespace FSS.Omnius.Controllers.Master
         private void loadUserInterfaceData()
         {
             ViewData["Apps"] = getAppList();
+            ViewData["FakeAppPath"] = "/Mozaic/ViewPage/Index/9";
         }
 
         public ActionResult Index()

@@ -326,4 +326,8 @@ body.mozaicEditorModule {
         background-color: #49c3f1 !important;
         color: white !important;
     }
+    .ui-dialog {
+        @include no-select();
+        z-index: 2000;
+    }
 }
