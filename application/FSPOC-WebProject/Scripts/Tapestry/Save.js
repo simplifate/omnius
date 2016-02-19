@@ -17,7 +17,8 @@
                 TypeClass: GetItemTypeClass(currentItem),
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
-                PageId: currentItem.attr("pageId")
+                PageId: currentItem.attr("pageId"),
+                ComponentId: currentItem.attr("componentId")
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");

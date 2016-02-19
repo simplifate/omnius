@@ -187,6 +187,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int? PageId { get; set; }
+        public int? ComponentId { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
     }

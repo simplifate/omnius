@@ -481,6 +481,10 @@
     <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.Designer.cs">
       <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.cs" />
+    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.Designer.cs">
+      <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -736,6 +740,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602182208021_addExecuteByToActionRule.resx">
       <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602191012213_ComponentId in Tapestry.resx">
+      <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

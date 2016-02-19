@@ -90,6 +90,8 @@
                         + currentItemData.Label + '</div>');
                     if (currentItemData.PageId != null)
                         newItem.attr("pageId", currentItemData.PageId);
+                    if (currentItemData.ComponentId != null)
+                        newItem.attr("componentId", currentItemData.ComponentId);
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
                     AddToJsPlumb(newItem);

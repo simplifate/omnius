@@ -321,7 +321,7 @@ $(function () {
                             for (i = 0; i < data.Components.length; i++) {
                                 cData = data.Components[i];
                                 lastLibId++;
-                                newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">'
+                                newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
                                     + cData.Name + '</div>');
                                 $("#libraryCategory-UI").append(newLibItem);
                             }

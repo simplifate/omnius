@@ -151,7 +151,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 TypeClass = ajaxItem.TypeClass,
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
-                                PageId = ajaxItem.PageId
+                                PageId = ajaxItem.PageId,
+                                ComponentId = ajaxItem.ComponentId
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
@@ -592,7 +593,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TypeClass = item.TypeClass,
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
-                    PageId = item.PageId
+                    PageId = item.PageId,
+                    ComponentId = item.ComponentId
                 };
                 result.ResourceItems.Add(ajaxItem);
             }
