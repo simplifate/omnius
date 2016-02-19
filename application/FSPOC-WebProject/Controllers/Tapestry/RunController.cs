@@ -27,7 +27,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         }
 
         // Only show page
-        public string Index(string appName, int blockId = -1, int modelId = -1)
+        /*public string Index(string appName, int blockId = -1, int modelId = -1)
         {
             Modules.CORE.CORE core = HttpContext.GetCORE();
             DBEntities e = core.Entitron.GetStaticTables();
@@ -36,7 +36,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 : e.WorkFlows.SingleOrDefault(wf => wf.ApplicationId == core.Entitron.AppId && wf.Type.Name == "Init").InitBlock;
 
             return ShowPage(core, appName, block, modelId);
-        }
+        }*/
 
         private string ShowPage(Modules.CORE.CORE core, string appName, Block block, int modelId)
         {
