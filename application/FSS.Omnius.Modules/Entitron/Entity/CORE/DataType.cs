@@ -27,6 +27,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.CORE
         [StringLength(50)]
         public string SqlName { get; set; }
 
+        [StringLength(50)]
+        public string DBColumnTypeName { get; set; }   
+
         [Required]
         public bool limited { get; set; }
 

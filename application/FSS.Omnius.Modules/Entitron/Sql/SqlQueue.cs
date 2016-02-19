@@ -58,13 +58,20 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                             query.Execute(transaction);
                         }
                         transaction.Commit();
-                        _queries.Clear();
+                        _queries = new List<SqlQuery>();
                     }
                     catch (SqlException e)
                     {
                         Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
                         transaction.Rollback();
-                        _queries.Clear();
+                        _queries = new List<SqlQuery>();
+                        throw e;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
+                        transaction.Rollback();
+                        _queries = new List<SqlQuery>();
                         throw e;
                     }
                 }

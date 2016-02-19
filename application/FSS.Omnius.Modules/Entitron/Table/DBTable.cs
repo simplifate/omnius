@@ -235,7 +235,9 @@ namespace FSS.Omnius.Modules.Entitron
 
             foreach (DBColumn column in columns)
             {
-                data.Add(column, item[column.Name]);
+                if(item.HasProperty(column.ColumnId)) { 
+                    data.Add(column, item[column.Name]);
+                }
             }
 
             Application.queries.Add(new SqlQuery_Update()

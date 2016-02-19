@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "SET @sql= CONCAT('UPDATE ', @realTableName, ' SET {2} WHERE Id = {3};')" +
                 "exec sp_executesql @sql, N'{4}', {5};",
                 parAppName, parTableName,
-                string.Join(", ", parChanges.Select(pair => pair.Key.Name + "= @" + pair.Value)),
+                string.Join(", ", parChanges.Select(pair => "[" + pair.Key.Name + "]= @" + pair.Value)),
                 recordId,
                 string.Join(", ", _datatypes.Select(s=>"@" + s.Key +" " + s.Value )),
                 string.Join(", ", _datatypes.Select(s=>"@" + s.Key))

@@ -465,6 +465,10 @@
     <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.Designer.cs">
       <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602181028549_DataTypeExtend.cs" />
+    <Compile Include="Migrations\201602181028549_DataTypeExtend.Designer.cs">
+      <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -503,7 +507,7 @@
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\DeleteItem.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\DeleteDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
@@ -707,6 +711,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602170920573_renameType_WorkFlowItem.resx">
       <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
+      <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
