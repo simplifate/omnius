@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "exec sp_executesql @sql, N'{7}', {8};", 
                 parAppName,parTableName,
                 (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*",
-                _where.ToString(),
+                _where == null ? string.Empty : _where.ToString(),
                 string.Join(" ", _join),
                 _group,
                 _order,

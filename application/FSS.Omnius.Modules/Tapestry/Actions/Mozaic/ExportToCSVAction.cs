@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -60,7 +61,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // Připravíme CSV
             List<string> rows = new List<string>();
-            string[] columns = core._form["Columns"].Split(';');
+
+            List<string> columns = new List<string>();
+            if (string.IsNullOrEmpty(core._form["Columns"])) {
+                foreach(DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns) {
+                    columns.Add(col.Name);
+                }
+            }
+            else {
+                columns = core._form["Columns"].Split(';').ToList();
+            }
 
             List<string> header = new List<string>();
             foreach(string column in columns) {
@@ -78,13 +88,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
 
             string csv = string.Join("\r\n", rows);
-
+            
             HttpContext context = HttpContext.Current;
+            HttpResponse response = context.Response;
 
-            context.Response.ContentType = "application/csv";
-            context.Response.AddHeader("content-disposition", "attachment; filename=export.csv");
-            context.Response.Write(csv);
-            context.Response.Close();
+
+            response.ContentType = "application/csv";
+            response.AddHeader("content-disposition", "attachment; filename=export.csv");
+            response.Write(csv);
+            response.Flush();
+            response.Close();
         }
     }
 }
