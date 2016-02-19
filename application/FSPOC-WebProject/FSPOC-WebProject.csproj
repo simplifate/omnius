@@ -225,7 +225,6 @@
     <Compile Include="Controllers\Mozaic\EditorController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
-    <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
