@@ -31,6 +31,13 @@ namespace FSS.Omnius.Modules.Tapestry
                 return _actions;
             }
         }
+        public static int getByName(string name)
+        {
+            if (_actions == null)
+                INIT();
+
+            return _actions.SingleOrDefault(a => a.Value.Name == name).Key;
+        }
         public static ActionResultCollection RunAction(int id, Dictionary<string, object> vars)
         {
             Action action = All[id];

@@ -16,7 +16,8 @@
                 Label: currentItem.text(),
                 TypeClass: GetItemTypeClass(currentItem),
                 PositionX: parseInt(currentItem.css("left")),
-                PositionY: parseInt(currentItem.css("top"))
+                PositionY: parseInt(currentItem.css("top")),
+                PageId: currentItem.attr("pageId")
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");

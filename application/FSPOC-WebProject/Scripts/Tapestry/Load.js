@@ -88,6 +88,8 @@
                     newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                         + currentItemData.PositionY + 'px;">'
                         + currentItemData.Label + '</div>');
+                    if (currentItemData.PageId != null)
+                        newItem.attr("pageId", currentItemData.PageId);
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
                     AddToJsPlumb(newItem);
@@ -238,6 +240,20 @@
                     currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
                 }
             }
+            appId = $("#currentAppId").val();
+            url = "/api/database/apps/" + appId + "/commits/latest",
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.Tables.length; i++) {
+                        lastLibId++;
+                        newLibItem = $('<div libId="' + lastLibId + '" libType="attribute" class="libraryItem">Table: ' + data.Tables[i].Name + '</div>');
+                        $("#libraryCategory-Attributes").append(newLibItem);
+                    }
+                }
+            });
         }
     });
 };

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
@@ -13,6 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Name { get; set; }
         public string CompiledPartialView { get; set; }
         public virtual ICollection<MozaicEditorComponent> Components { get; set; }
+        // public virtual TapestryDesignerBlock AssociatedBlock { get; set; }
 
         public virtual Application ParentApp { get; set; }
 
@@ -63,6 +65,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<div class=\"uic checkbox-control {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<input type=\"checkbox\" /><span class=\"checkbox-label\">{c.Label}</span></div>");
+                }
+                else if (c.Type == "dropdown-select")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_uic{c.Id}\"] != null) ");
+                    stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_uic{c.Id}\"])");
+                    stringBuilder.Append($"{{ <option value=\"@(option.Key)\">@(option.Value)</option>}}; }} }}</{c.Tag}>");
                 }
                 else
                 {

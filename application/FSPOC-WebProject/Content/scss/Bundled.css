@@ -316,7 +316,7 @@ body.adminAppModule #appBuildResults {
   background: -o-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: -moz-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: linear-gradient(to bottom, #edf8fe, #ceeaf8);
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
   right: 0px;
@@ -434,7 +434,7 @@ body.adminAppModule #appBuildResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -507,6 +507,33 @@ body.adminAppModule #appBuildResults {
       left: 85px;
       top: 5px;
       font-size: 12px; }
+  #userLeftBar #appMenu {
+    position: absolute;
+    left: 0px;
+    top: 75px;
+    font-family: MyriadPro;
+    color: #58585a;
+    font-size: 18px;
+    padding-left: 0px; }
+    #userLeftBar #appMenu > li {
+      list-style: none; }
+      #userLeftBar #appMenu > li h4 {
+        padding-left: 40px; }
+      #userLeftBar #appMenu > li ul {
+        color: #0065a9;
+        font-size: 14px;
+        padding-left: 0px;
+        padding-bottom: 15px; }
+        #userLeftBar #appMenu > li ul li {
+          list-style: none;
+          width: 250px;
+          padding-left: 15px;
+          padding-top: 3px;
+          margin-left: 45px;
+          height: 24px;
+          cursor: pointer; }
+        #userLeftBar #appMenu > li ul li:hover {
+          background-color: #ceeaf8; }
 
 #userLeftBarMinimized {
   -webkit-touch-callout: none;
@@ -516,7 +543,7 @@ body.adminAppModule #appBuildResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -547,7 +574,7 @@ body.adminAppModule #appBuildResults {
       background-color: #ceeaf8; }
 
 #userContentArea {
-  position: fixed;
+  position: absolute;
   left: 310px;
   top: 50px;
   right: 0px;
@@ -957,7 +984,7 @@ body.tapestryModule #lowerPanel {
       vertical-align: middle;
       padding-left: 10px;
       padding-top: 2px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName {
+      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderScreenCount {
         cursor: pointer; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderDbResCount, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderScreenCount {
         color: #457fa9;
@@ -1134,6 +1161,15 @@ body.tapestryModule .sourceEndpoint.jsplumb-drag-active {
 
 body.tapestryModule .endpointSourceLabel {
   color: #467ea8; }
+
+body.tapestryModule .ui-dialog {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  z-index: 2000; }
 
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryArea {
@@ -2625,6 +2661,14 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .highlightedRow {
     background-color: #49c3f1 !important;
     color: white !important; }
+  body.mozaicEditorModule .ui-dialog {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    z-index: 2000; }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;

@@ -469,6 +469,18 @@
     <Compile Include="Migrations\201602181028549_DataTypeExtend.Designer.cs">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.cs" />
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.Designer.cs">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.cs" />
+    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.Designer.cs">
+      <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.cs" />
+    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.Designer.cs">
+      <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -520,6 +532,7 @@
     <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Running\PreBlockAction.cs" />
+    <Compile Include="Tapestry\Running\WFitem.cs" />
     <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Watchtower\WatchtowerLogger.cs" />
@@ -714,6 +727,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
       <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181722051_page IDs for UI components.resx">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182123313_removeOldTapestryDesignerApp.resx">
+      <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182208021_addExecuteByToActionRule.resx">
+      <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

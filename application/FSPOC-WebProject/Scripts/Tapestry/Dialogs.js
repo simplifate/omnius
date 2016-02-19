@@ -267,5 +267,70 @@ $(function () {
             saveDialog.dialog("close");
             SaveBlock(saveDialog.find("#message").val());
         }
+        chooseScreensDialog = $("#choose-screens-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 550,
+            buttons: {
+                "Select": function () {
+                    chooseScreensDialog_SubmitData();
+                },
+                Cancel: function () {
+                    chooseScreensDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(document).on("click", "tr.actionRow", function (event) {
+                    $(this).toggleClass("highlightedRow");
+                });
+            },
+            open: function (event, ui) {
+                appId = $("#currentAppId").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/mozaic-editor/apps/" + appId + "/pages",
+                    dataType: "json",
+                    error: function () { alert("Error loading page list") },
+                    success: function (data) {
+                        chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
+                        tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
+                        for (i = 0; i < data.length; i++) {
+                            tbody.append($('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>'));
+                        }
+                        $("#screen-table .screenRow").on("click", function () {
+                            $(this).toggleClass("highlightedRow");
+                        });
+                    }
+                });
+            }
+        });
+        function chooseScreensDialog_SubmitData() {
+            somethingWasAdded = false;
+            pageCount = 0;
+            appId = $("#currentAppId").val();
+            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
+                if ($(element).hasClass("highlightedRow")) {
+                    pageCount++;
+                    pageId = $(element).attr("pageId");
+                    url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        dataType: "json",
+                        success: function (data) {
+                            for (i = 0; i < data.Components.length; i++) {
+                                cData = data.Components[i];
+                                lastLibId++;
+                                newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">'
+                                    + cData.Name + '</div>');
+                                $("#libraryCategory-UI").append(newLibItem);
+                            }
+                        }
+                    });
+                }
+            });
+            $("#blockHeaderScreenCount").text(pageCount);
+            chooseScreensDialog.dialog("close");
+        }
     }
 });

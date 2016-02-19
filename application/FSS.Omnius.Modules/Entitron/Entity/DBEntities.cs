@@ -81,11 +81,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
-        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowSymbol> TapestryDesignerWorkflowSymbols { get; set; }
         //public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
 
         // Watchtower
@@ -155,6 +157,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.MozaicEditorPages)
                 .WithRequired(e => e.ParentApp);
+
+            /*modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany(e => e.Pages)
+                .WithOptional(e => e.AssociatedBlock);*/
 
             // Nexus
             modelBuilder.Entity<FileMetadata>()

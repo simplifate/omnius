@@ -16,14 +16,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         State,
         Port
     }
-    [Table("TapestryDesigner_Apps")]
-    public class TapestryDesignerApp
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public virtual TapestryDesignerMetablock RootMetablock { get; set; }
-    }
     [Table("TapestryDesigner_Metablocks")]
     public class TapestryDesignerMetablock
     {
@@ -68,12 +60,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInitial { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
+        // public virtual ICollection<MozaicEditorPage> Pages { get; set; }
 
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
 
         public TapestryDesignerBlock()
         {
             BlockCommits = new List<TapestryDesignerBlockCommit>();
+            // Pages = new List<MozaicEditorPage>();
         }
     }
     [Table("TapestryDesigner_BlocksCommits")]
@@ -145,7 +139,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_WorkflowRules")]
-    public class TapestryDesignerWorkflowRule
+    public partial class TapestryDesignerWorkflowRule
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -192,10 +186,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TypeClass { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int? PageId { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
     }
-    public class WFitem
+    public partial class WFitem
     {
         public int Id { get; set; }
         public string TypeClass { get; set; }
@@ -206,12 +201,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
     }
     [Table("TapestryDesigner_WorkflowItems")]
-    public class TapestryDesignerWorkflowItem : WFitem
+    public partial class TapestryDesignerWorkflowItem : WFitem
     {
         public string Label { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
-    public class TapestryDesignerWorkflowSymbol : WFitem
+    public partial class TapestryDesignerWorkflowSymbol : WFitem
     {
     }
     [Table("TapestryDesigner_BlockToolboxStates")]

@@ -4,7 +4,7 @@
 #userTopBar {
     @include no-select();
     @include linear-gradient(#edf8fe, #ceeaf8);
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 0px;
     right: 0px;
@@ -135,7 +135,7 @@
 #userLeftBar {
     @include no-select();
     background-color: #edf8fe;
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 50px;
     bottom: 0px;
@@ -224,11 +224,45 @@
 
         }
     }
+    #appMenu {
+        position: absolute;
+        left: 0px;
+        top: 75px;
+        font-family: MyriadPro;
+        color: #58585a;
+        font-size: 18px;
+        padding-left: 0px;
+
+        > li {
+            list-style: none;
+            h4 {
+                padding-left: 40px;
+            }
+            ul {
+                color: #0065a9;
+                font-size: 14px;
+                padding-left: 0px;
+                padding-bottom: 15px;
+                li {
+                    list-style: none;
+                    width: 250px;
+                    padding-left: 15px;
+                    padding-top: 3px;
+                    margin-left: 45px;
+                    height: 24px;
+                    cursor: pointer;
+                }
+                li:hover{
+                    background-color: #ceeaf8;
+                }
+            }
+        }
+    } 
 }
 #userLeftBarMinimized {
     @include no-select();
     background-color: #edf8fe;
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 50px;
     bottom: 0px;
@@ -263,7 +297,7 @@
     }
 }
 #userContentArea {
-    position: fixed;
+    position: absolute;
     left: 310px;
     top: 50px;
     right: 0px;

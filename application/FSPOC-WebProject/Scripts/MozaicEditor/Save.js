@@ -27,10 +27,15 @@
             label = currentUic.text();
             type = "label";
         }
+        else if (currentUic.hasClass("dropdown-select"))
+            type = "dropdown-select";
         else
             type = "control";
+        name = currentUic.attr("uicName");
+        if (!name || name == "")
+            name = type + uicIndex;
         componentArray.push({
-            Name: currentUic.attr("uicName"),
+            Name: name,
             Type: type,
             PositionX: currentUic.css("left"),
             PositionY: currentUic.css("top"),
