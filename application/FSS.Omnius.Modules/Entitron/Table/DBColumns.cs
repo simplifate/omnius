@@ -118,14 +118,10 @@ namespace FSS.Omnius.Modules.Entitron
         public DBTable ModifyInDB(
             string columnName,
             string type,
-            bool allowColumnLength,
-            bool allowPrecisionScale,
             int? maxLength = null,
             int? precision = null,
             int? scale = null,
-            bool canBeNull = true,
-            bool isUnique = false,
-            string additionalOptions = null)
+            bool canBeNull = true)
         {
             return ModifyInDB(new DBColumn()
             {
@@ -135,8 +131,6 @@ namespace FSS.Omnius.Modules.Entitron
                 precision = precision,
                 scale = scale,
                 canBeNull = canBeNull,
-                isUnique = isUnique,
-                additionalOptions = additionalOptions
             });
         }
 
@@ -166,14 +160,14 @@ namespace FSS.Omnius.Modules.Entitron
             return _table;
         }
 
-        public List<string> GetDefaults()
+        public Dictionary<string,string> GetDefaults()
         {
             SqlQuery_SelectDefaultVal query = new SqlQuery_SelectDefaultVal(){application = table.Application,table = table};
-            List<string> defaultVal= new List<string>();
+            Dictionary<string,string> defaultVal= new Dictionary<string, string>();
 
             foreach (DBItem i in query.ExecuteWithRead())
             {
-                defaultVal.Add(i["name"].ToString());
+                defaultVal.Add(i["name"].ToString(), i["def"].ToString());
             }
             return defaultVal;
         } 

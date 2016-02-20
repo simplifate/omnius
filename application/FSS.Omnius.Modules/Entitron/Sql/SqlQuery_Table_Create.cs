@@ -78,8 +78,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
             sqlString =
-                $"CREATE TABLE [{realTableName}]({columnDefinition});" +
-                $"INSERT INTO {DB_EntitronMeta}(Name,ApplicationId,tableId)VALUES(@{parTableName},(SELECT Id FROM {DB_MasterApplication} WHERE Name=@{parAppName}),(SELECT object_id FROM sys.tables WHERE name='{realTableName}'));";
+                $"CREATE TABLE [{realTableName}] ({columnDefinition});" +
+                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, ( SELECT Id FROM {DB_MasterApplication} WHERE Name= @{parAppName} ) , ( SELECT object_id FROM sys.tables WHERE name='{realTableName}') );";
             
             base.BaseExecution(transaction);
         }

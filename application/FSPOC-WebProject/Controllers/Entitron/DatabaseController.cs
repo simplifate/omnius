@@ -113,7 +113,7 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 using (var context = new DBEntities())
                 {
-                    Modules.CORE.CORE core = (Modules.CORE.CORE)Request.Properties["CORE"];
+                    Modules.CORE.CORE core = new Modules.CORE.CORE();
                     core.Entitron.AppId = appId;
                     var dbSchemeCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
                     DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
@@ -144,9 +144,6 @@ namespace FSS.Omnius.Controllers.Entitron
                     {
                         int ajaxTableId = ajaxTable.Id;
                         DbTable newTable = new DbTable { Name = ajaxTable.Name, PositionX = ajaxTable.PositionX, PositionY = ajaxTable.PositionY };
-                        commit.Tables.Add(newTable);
-                        context.SaveChanges();
-                        tableIdMapping.Add(ajaxTableId, newTable.Id);
                         foreach (var column in ajaxTable.Columns)
                         {
                             int ajaxColumnId = column.Id;
@@ -182,6 +179,9 @@ namespace FSS.Omnius.Controllers.Entitron
                             };
                             newTable.Indices.Add(newIndex);
                         }
+                        commit.Tables.Add(newTable);
+                        context.SaveChanges();
+                        tableIdMapping.Add(ajaxTableId, newTable.Id);
                     }
                     foreach (var ajaxRelation in postData.Relations)
                     {

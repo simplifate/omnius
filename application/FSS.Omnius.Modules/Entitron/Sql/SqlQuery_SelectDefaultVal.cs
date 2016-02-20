@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             sqlString = string.Format(
                 "DECLARE @sql NVARCHAR(MAX), @realTableName NVARCHAR(50);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
-                "SET @sql= 'SELECT d.name name FROM sys.default_constraints d " +
+                "SET @sql= 'SELECT d.name name, d.definition def FROM sys.default_constraints d " +
                 "INNER JOIN sys.tables t ON t.object_id=d.parent_object_id WHERE t.name= @realTableName;'" +
                 "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
                 parAppName, parTableName);

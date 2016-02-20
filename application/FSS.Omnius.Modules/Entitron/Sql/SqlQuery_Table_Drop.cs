@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "DECLARE @_tempTable table(tableId INT);DECLARE @_tableId INT,@_sql NVARCHAR(MAX);" +
                 "DELETE e OUTPUT DELETED.tableId INTO @_tempTable FROM {1} e INNER JOIN {0} a ON a.Id = e.ApplicationId WHERE e.Name = @{3} AND a.Name = @{2};" +
                 "SET @_tableId = (SELECT tableId FROM @_tempTable);SET @_sql = CONCAT('DROP TABLE ', object_name(@_tableId));" +
-                "exec(@_sql);",
+                "exec (@_sql);",
                 DB_MasterApplication,
                 DB_EntitronMeta,
                 parAppName,

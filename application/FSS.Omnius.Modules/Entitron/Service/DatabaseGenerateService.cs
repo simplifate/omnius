@@ -26,6 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 e.Application.GetTable(deleteTable).Drop();
             }
+            e.Application.SaveChanges();
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
@@ -33,96 +34,133 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 DBTable entitronTable =
                     e.Application.
                     GetTables().
-                    SingleOrDefault(x => x.tableId == efTable.Id);
+                    SingleOrDefault(x => x.tableName== efTable.Name);
 
                 if (entitronTable == null)                          //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
                 {
+                    entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
                     entitronTable.Application = e.Application;
+
+                    foreach (DbColumn column in efTable.Columns)
+                    {
+                        DBColumn col = new DBColumn()
+                        {
+                            Name = column.Name,
+                            isUnique = column.Unique,
+                            canBeNull = column.AllowNull,
+                            maxLength = column.ColumnLength,
+                            type = column.Type
+                        };
+                        entitronTable.columns.Add(col);
+                    }
                     entitronTable.Create();
-                    efTable.Id = entitronTable.tableId.Value;       //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
+                    e.Application.SaveChanges();
+
+                        //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
                 }
                 else                                                //pokud tabulka existuje v entitronu
                 {
-                    if (entitronTable.tableName != efTable.Name)    //přejmenování tabulky
-                        entitronTable.Rename(efTable.Name);
-                }
-
-
-                foreach (DbColumn efColumn in efTable.Columns)
-                {
-                    List<int> deletedColumns =
-                        entitronTable
-                        .columns
-                        .Select(x => x.ColumnId)
-                        .Except(efTable.Columns.Select(x => x.Id))
-                        .ToList();                                  //list všech id sloupců které se nenachází ve schématu, ale v entitronu ano(určené ke smazání)
-
-                    foreach (int columnID in deletedColumns)        //mazání sloupců, které nejsou ve schématu
-                    {
-                        DBColumn column =
+                    List<string> deletedColumns =
                             entitronTable
                             .columns
-                            .SingleOrDefault(x => x.ColumnId == columnID);
+                            .Select(x => x.Name)
+                            .Except(efTable.Columns.Select(x => x.Name))
+                            .ToList();                                  //list všech id sloupců které se nenachází ve schématu, ale v entitronu ano(určené ke smazání)
 
-                        entitronTable.columns.DropFromDB(column.Name);
+                        foreach (string columnName in deletedColumns)        //mazání sloupců, které nejsou ve schématu
+                        {
+                            DBColumn column =
+                                entitronTable
+                                .columns
+                                .SingleOrDefault(x => x.Name == columnName);
+
+                            entitronTable.columns.DropFromDB(column.Name);
+                        }
+                        e.Application.SaveChanges();
+
+                    foreach (DbColumn efColumn in efTable.Columns)
+                    {
+
+                        DBColumn entitronColumn = entitronTable
+                            .columns
+                            .SingleOrDefault(x => x.Name == efColumn.Name);
+
+                        if (entitronColumn == null)                     //přidání nových sloupců
+                        {
+                            entitronColumn = new DBColumn()
+                            {
+                                Name = efColumn.Name,
+                                isUnique = efColumn.Unique,
+                                canBeNull = efColumn.AllowNull,
+                                maxLength = efColumn.ColumnLength,
+                                type = efColumn.Type
+                            };
+                            entitronTable.columns.AddToDB(entitronColumn);
+                            e.Application.SaveChanges();
+                            efColumn.Id = entitronColumn.ColumnId;
+                        }
+                        else                                            //úprava sloupců který mají nějaký změněný atribut
+                        {
+                            if (entitronColumn.canBeNull != efColumn.AllowNull ||
+                                entitronColumn.maxLength != efColumn.ColumnLength ||
+                                entitronColumn.type != efColumn.Type)
+                                entitronTable.columns.ModifyInDB(entitronColumn.Name, efColumn.Type,efColumn.ColumnLength,entitronColumn.precision,entitronColumn.scale,efColumn.AllowNull);
+
+                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false)
+                            {
+                                entitronTable.columns.AddUniqueValue(efColumn.Name);
+                                entitronColumn.isUnique = true;
+                            }
+
+                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
+                            {
+                                entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
+                                entitronColumn.isUnique = false;
+                            }
+
+                            e.Application.SaveChanges();
+                        }
+
                     }
 
-                    DBColumn entitronColumn = entitronTable
-                        .columns
-                        .SingleOrDefault(x => x.ColumnId == efColumn.Id);
-
-                    if (entitronColumn == null)                     //přidání nových sloupců
+                }
+                foreach (DbColumn column in efTable.Columns)
+                {
+                    if (column.PrimaryKey)                        //zaznamenává všechny sloupce, ze kterých se skládá primární klíč tabulky
                     {
-                        entitronTable.columns.AddToDB(entitronColumn);
-                        efColumn.Id = entitronColumn.ColumnId;
+                        primaryColumnsForTable.Add(column.Name);
                     }
-                    else                                            //úprava sloupců který mají nějaký změněný atribut
+                    if (!string.IsNullOrEmpty(column.DefaultValue) && entitronTable.columns.GetDefaults()["DEF_Entitron_" + e.Application.Name + "_" + entitronTable.tableName + column.Name]=="("+column.DefaultValue+")")
                     {
-                        if (entitronColumn.Name != efColumn.Name)
-                            entitronTable.columns.RenameInDB(entitronColumn.Name, efTable.Name);
-
-                        if (entitronColumn.canBeNull != efColumn.AllowNull ||
-                            entitronColumn.maxLength != efColumn.ColumnLength ||
-                            entitronColumn.type != efColumn.Type)   
-                            entitronTable.columns.ModifyInDB(entitronColumn);
-
-                        if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false)
-                            entitronTable.columns.AddUniqueValue(efColumn.Name);
-
-                        if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
-                            entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
-
-                        entitronTable.columns.AddDefaultValue(efColumn.Name,efColumn.DefaultValue);
-                    }
-
-                    if (efColumn.PrimaryKey)                        //zaznamenává všechny sloupce, ze kterých se skládá primární klíč tabulky
-                    {
-                        primaryColumnsForTable.Add(efColumn.Name);
+                        entitronTable.columns.AddDefaultValue(column.Name, column.DefaultValue);
                     }
                 }
+                e.Application.SaveChanges();
+
                 if (entitronTable.primaryKeys != primaryColumnsForTable 
                     && entitronTable.primaryKeys.Count>0)           //pokud v entitronu se nachází klíč, a pokud seznam sloupců ze kterého klíč je tvořen je v entitronu jiný než ve schématu, tak se musí smazat starý klíč a až potom vytvořit nový
                 {
                     entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}", true);  
                     entitronTable.AddPrimaryKey(primaryColumnsForTable);
-                }else if (entitronTable.primaryKeys.Count == 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
+                }else if (entitronTable.primaryKeys.Count == 0 && primaryColumnsForTable.Count!= 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
                 {
                     entitronTable.AddPrimaryKey(primaryColumnsForTable);
                 }
+                e.Application.SaveChanges();
 
                 List<string> newIndeces =
                     efTable
                     .Indices
-                    .Select(x => x.Name)
-                    .Except(entitronTable.indices.Select(x => x.indexName))
+                    .Select(x =>"index_"+x.Name)
+                    .Except(entitronTable.indices.Select(x=>x.indexName))
                     .ToList();                                      //list názvů indexů které jsou ve schématu, ale ne v entitronu
 
                 List<string> deletedIndeces =
                     entitronTable
                     .indices
-                    .Select(x => x.indexName)
-                    .Except(efTable.Indices.Select(x => x.Name))
+                    .Select(x=>x.indexName)
+                    .Except(efTable.Indices.Select(x => "index_" + x.Name))
                     .ToList();                                      //list názvů indexů, které jsou v entitronu, ale už ne ve schématu
 
                 foreach (string indexName in newIndeces)            //přidá do entitronu pouze indexy které se nenacházejí v entitronu
@@ -130,15 +168,20 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     DbIndex index =
                         efTable
                         .Indices
-                        .SingleOrDefault(x => x.Name == indexName);
-
+                        .SingleOrDefault(x => "index_"+x.Name == indexName);
+                    //if (index.Unique) todo dodělat unique pro více sloupců zároveň
+                    //{
+                    //    List<DbColumn> indexcolumns = efTable.Columns.Where(x => x.Name == index.ColumnNames).ToList();
+                    //}
                     entitronTable.indices.AddToDB(index.Name, new List<string>(index.ColumnNames.Split(',')));
                 }
+                e.Application.SaveChanges();
 
                 foreach (string indexName in deletedIndeces)        //smaže z entitronu pouze indexy které se nenacházejí ve schématu
                 {
                     entitronTable.indices.DropFromDB(indexName);
                 }
+                e.Application.SaveChanges();
             } //end foreach efTable
 
             List<DBForeignKey> entitronsFKs = new List<DBForeignKey>();
@@ -174,6 +217,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
             }
+            e.Application.SaveChanges();
 
             foreach (string fkey in deletedFK)
             {
