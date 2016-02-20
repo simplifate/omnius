@@ -5,16 +5,17 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "personaRolesModule";
 }
+
 @helper CheckboxCell(bool allowed)
 {
-if (allowed)
-{
-        <td class="checkboxCell yesCell"><i class="fa fa-check"></i></td>
-}
-else
-{
-        <td class="checkboxCell noCell"><i class="fa fa-times"></i></td>
-}
+    if (allowed)
+    {
+            <td class="checkboxCell yesCell"><i class="fa fa-check"></i></td>
+    }
+    else
+    {
+            <td class="checkboxCell noCell"><i class="fa fa-times"></i></td>
+    }
 }
 
 <style>
@@ -42,13 +43,6 @@ else
 <div id="lowerPanel">
     <h4>Role uživatelů pro aplikaci <span class="appName">@Model.AppName</span></h4>
 
-    <div>
-        @using (Html.BeginForm("App", "Roles", "post"))
-        {
-            <input type="submit" value="Sign Up" />
-        }
-    </div>
-
     @if (Model.Users.Count == 0 || Model.Roles.Count == 0)
     {
         <div class="modelErrorMessage">Tato aplikace nemá žádné role (tabulka Persona_AppRoles)</div>
@@ -71,7 +65,7 @@ else
             <tbody>
                 @foreach (var user in Model.Users)
                 {
-                    <tr><text>ABBBA</text>
+                    <tr>
                         <td class="userNameCell">@user.Name</td>
                         @foreach (var role in Model.Roles)
                         {
@@ -81,5 +75,11 @@ else
                 }
             </tbody>
         </table>
+
+        <script>
+            var table = document.getElementById("groupRolesTable");
+            
+            var tableColumns =
+        </script>
     }
 </div>
