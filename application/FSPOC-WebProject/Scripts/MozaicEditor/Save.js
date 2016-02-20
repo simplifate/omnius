@@ -29,16 +29,28 @@
         }
         else if (currentUic.hasClass("dropdown-select"))
             type = "dropdown-select";
+        else if (currentUic.hasClass("data-table"))
+            type = "data-table";
         else
             type = "control";
+
+        if (currentUic.hasClass("data-table")) {
+            wrapper = currentUic.parents("");
+            positionX = wrapper.css("left");
+            positionY = wrapper.css("top");
+        }
+        else {
+            positionX = currentUic.css("left");
+            positionY = currentUic.css("top");
+        }
         name = currentUic.attr("uicName");
         if (!name || name == "")
             name = type + uicIndex;
         componentArray.push({
             Name: name,
             Type: type,
-            PositionX: currentUic.css("left"),
-            PositionY: currentUic.css("top"),
+            PositionX: positionX,
+            PositionY: positionY,
             Width: currentUic.css("width"),
             Height: currentUic.css("height"),
             Tag: currentUic.prop("tagName").toLowerCase(),

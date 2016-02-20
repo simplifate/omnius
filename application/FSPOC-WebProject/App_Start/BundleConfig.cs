@@ -12,7 +12,8 @@ namespace FSPOC_WebProject
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/jquery.contextMenu.js",
-                        "~/Scripts/jquery-collision.min.js"
+                        "~/Scripts/jquery-collision.min.js",
+                        "~/Scripts/jquery.dataTables.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -35,7 +36,8 @@ namespace FSPOC_WebProject
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/jquery-ui.css"
+                      "~/Content/jquery-ui.css",
+                      "~/Content/css/jquery.dataTables.min.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/CommonLibraries").IncludeDirectory(

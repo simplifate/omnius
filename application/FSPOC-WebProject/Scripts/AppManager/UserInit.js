@@ -52,5 +52,16 @@
         $(window).resize(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         });
+        $(".uic.data-table").each(function(index, element) {
+            table = $(element);
+            CreateCzechDataTable(table);
+            wrapper = table.parents(".dataTables_wrapper");
+            wrapper.css("position", "absolute");
+            wrapper.css("left", table.css("left"));
+            wrapper.css("top", table.css("top"));
+            table.css("position", "relative");
+            table.css("left", "0px");
+            table.css("top", "0px");
+        });
     }
 });

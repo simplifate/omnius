@@ -534,6 +534,14 @@ body.adminAppModule #appBuildResults {
           cursor: pointer; }
         #userLeftBar #appMenu > li ul li:hover {
           background-color: #ceeaf8; }
+    #userLeftBar #appMenu a {
+      color: #0065a9;
+      width: 100%;
+      height: 100%;
+      display: block; }
+    #userLeftBar #appMenu a:hover {
+      text-decoration: none;
+      color: #0065a9; }
 
 #userLeftBarMinimized {
   -webkit-touch-callout: none;
@@ -736,6 +744,11 @@ body.adminAppModule #appBuildResults {
   font-size: 14px;
   color: #58585a;
   white-space: nowrap; }
+
+.mozaicForm .data-table {
+  width: 250px;
+  border: 1px solid #4b8ad1;
+  height: auto !important; }
 
 body.tapestryModule .toolboxItem {
   width: 218px;
@@ -2640,6 +2653,9 @@ body.mozaicEditorModule {
     font-size: 14px;
     color: #58585a;
     white-space: nowrap; }
+  body.mozaicEditorModule .data-table {
+    width: 250px;
+    border: 1px solid #4b8ad1; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {

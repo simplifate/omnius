@@ -30,7 +30,7 @@
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
             <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
-            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit> | " : "")<a href="/Master/Home/Details">detail</a></div>
         </div>
         <div class="searchBox">
             <div class="searchArrow"><div class="fa fa-caret-down"></div></div>
@@ -47,40 +47,40 @@
                 <li>
                     <h4>Administrace</h4>
                     <ul>
-                        <li>Přehled dodavatelů</li>
-                        <li>Přehled Periodik</li>
-                        <li>Přehled objednávek</li>
-                        <li>Přehled hromadných objednávek</li>
-                        <li>Přehled příznaků objednávek</li>
-                        <li>Přehled forem periodik</li>
-                        <li>Přehled příznaků schvalování</li>
-                        <li>Přehled četností periodik</li>
-                        <li>Přehled typu periodik</li>
-                        <li>Hromadná změna</li>
-                        <li>Dynamický filtr</li>
-                        <li>Zástupci</li>
+                        <li><a href="#">Přehled dodavatelů</a></li>
+                        <li><a href="#">Přehled Periodik</a></li>
+                        <li><a href="#">Přehled objednávek</a></li>
+                        <li><a href="#">Přehled hromadných objednávek</a></li>
+                        <li><a href="#">Přehled příznaků objednávek</a></li>
+                        <li><a href="#">Přehled forem periodik</a></li>
+                        <li><a href="#">Přehled příznaků schvalování</a></li>
+                        <li><a href="#">Přehled četností periodik</a></li>
+                        <li><a href="#">Přehled typu periodik</a></li>
+                        <li><a href="#">Hromadná změna</a></li>
+                        <li><a href="#">Dynamický filtr</a></li>
+                        <li><a href="#">Zástupci</a></li>
                     </ul>
                 </li>
                 <li>
                     <h4>Objenávka</h4>
                     <ul>
-                        <li>Zadání objednávky periodika</li>
-                        <li>Hromadná objednávka pro asistentky</li>
-                        <li>Objednávka periodik knihovnou</li>
-                        <li>Zadání objednávky</li>
+                        <li><a href="#">Zadání objednávky periodika</a></li>
+                        <li><a href="#">Hromadná objednávka pro asistentky</a></li>
+                        <li><a href="#">Objednávka periodik knihovnou</a></li>
+                        <li><a href="#">Zadání objednávky</a></li>
                     </ul>
                 </li>
                 <li>
                     <h4>Reporty</h4>
                     <ul>
-                        <li>Kompletní přehled</li>
-                        <li>Zjednodušený přehled</li>
-                        <li>Podklad pro zůčtování</li>
-                        <li>Objednávky knihovny</li>
-                        <li>Základní report</li>
-                        <li>Report pro asistentky</li>
-                        <li>Report pro vedoucí pracovníky</li>
-                        <li>Report hromadných objednávek</li>
+                        <li><a href="#">Kompletní přehled</a></li>
+                        <li><a href="#">Zjednodušený přehled</a></li>
+                        <li><a href="#">Podklad pro zůčtování</a></li>
+                        <li><a href="#">Objednávky knihovny</a></li>
+                        <li><a href="#">Základní report</a></li>
+                        <li><a href="#">Report pro asistentky</a></li>
+                        <li><a href="#">Report pro vedoucí pracovníky</a></li>
+                        <li><a href="#">Report hromadných objednávek</a></li>
                     </ul>
                 </li>
             </ul>
@@ -130,13 +130,13 @@
                         && a.IsEnabled
                         && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == User.Identity.Name)
                     ))
-                    {
-                        <a href="@ViewData["FakeAppPath"]">
-                            <div class="appIconToolbarItem">
-                                <div class="icon fa @(app.Icon)"></div>
-                            </div>
-                        </a>
-                    }
+                {
+                    <a href="@ViewData["FakeAppPath"]">
+                        <div class="appIconToolbarItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                        </div>
+                    </a>
+                }
             </div>
         }
     </div>

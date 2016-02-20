@@ -16,6 +16,7 @@
                 newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + '" ' + cData.Attributes + ' class="uic ' + cData.Classes
                     + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
                     + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
+                $("#mozaicPageContainer").append(newComponent);
                 if (cData.Placeholder)
                     newComponent.attr("placeholder", cData.Placeholder);
                 if (newComponent.hasClass("button-simple"))
@@ -38,17 +39,42 @@
                 else if (newComponent.hasClass("breadcrumb-navigation")) {
                     newComponent.append($('<div class="app-icon fa fa-question"></div><div class="nav-text">APP NAME &gt; Nav</div>'));
                 }
-                $("#mozaicPageContainer").append(newComponent);
-                newComponent.draggable({
-                    cancel: false,
-                    containment: "parent",
-                    drag: function (event, ui) {
-                        if (GridResolution > 0) {
-                            ui.position.left -= (ui.position.left % GridResolution);
-                            ui.position.top -= (ui.position.top % GridResolution);
+                else if (newComponent.hasClass("data-table")) {
+                    newComponent.append($('<thead><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr></thead>'
+                        + '<tbody><tr><td>Value1</td><td>Value2</td><td>Value3</td></tr><tr><td>Value4</td><td>Value5</td><td>Value6</td></tr>'
+                        + '<tr><td>Value7</td><td>Value8</td><td>Value9</td></tr></tbody>'));
+                    CreateCzechDataTable(newComponent);
+                    newComponent.css("width", cData.Width);
+                    wrapper = newComponent.parents(".dataTables_wrapper");
+                    wrapper.css("position", "absolute");
+                    wrapper.css("left", cData.PositionX);
+                    wrapper.css("top", cData.PositionY);
+                    newComponent.css("position", "relative");
+                    newComponent.css("left", "0px");
+                    newComponent.css("top", "0px");
+                }
+                if (newComponent.hasClass("data-table"))
+                    wrapper.draggable({
+                        cancel: false,
+                        containment: "parent",
+                        drag: function (event, ui) {
+                            if (GridResolution > 0) {
+                                ui.position.left -= (ui.position.left % GridResolution);
+                                ui.position.top -= (ui.position.top % GridResolution);
+                            }
                         }
-                    }
-                });
+                    });
+                else
+                    newComponent.draggable({
+                        cancel: false,
+                        containment: "parent",
+                        drag: function (event, ui) {
+                            if (GridResolution > 0) {
+                                ui.position.left -= (ui.position.left % GridResolution);
+                                ui.position.top -= (ui.position.top % GridResolution);
+                            }
+                        }
+                    });
             }
             $("#headerPageName").text(data.Name);
             pageId = $("#currentPageId").val(pageId);

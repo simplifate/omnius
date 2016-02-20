@@ -26,13 +26,15 @@
                     addColumnDialog.data("currentTable", $(this).parents(".dbTable"));
                     addColumnDialog.dialog("open");
                 })
-                newTable.find(".deleteColumnIcon").on("click", function () {
+                newTable.find(".deleteColumnIcon").on("mousedown", function () {
                     $(this).parents(".dbColumn").remove();
                     instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
+                    return false;
                 });
-                newTable.find(".editColumnIcon").on("click", function () {
+                newTable.find(".editColumnIcon").on("mousedown", function () {
                     CurrentColumn = $(this).parents(".dbColumn");
                     editColumnDialog.dialog("open");
+                    return false;
                 });
                 newTable.css("left", data.Tables[i].PositionX);
                 newTable.css("top", data.Tables[i].PositionY);
@@ -52,15 +54,17 @@
                     newColumn.data("dbColumnLength", data.Tables[i].Columns[j].ColumnLength);
                     newColumn.data("dbColumnLengthMax", data.Tables[i].Columns[j].ColumnLengthIsMax);
 
-                    newColumn.children(".deleteColumnIcon").on("click", function () {
+                    newColumn.children(".deleteColumnIcon").on("mousedown", function () {
                         $(this).parents(".dbColumn").remove();
                         instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
                         instance.recalculateOffsets();
                         instance.repaintEverything();
+                        return false;
                     });
-                    newColumn.children(".editColumnIcon").on("click", function () {
+                    newColumn.children(".editColumnIcon").on("mousedown", function () {
                         CurrentColumn = $(this).parents(".dbColumn");
                         editColumnDialog.dialog("open");
+                        return false;
                     });
                     newTable.children(".dbTableBody").append(newColumn);
                     if (data.Tables[i].Columns[j].PrimaryKey) {
@@ -80,13 +84,15 @@
                     newIndex.data("indexName", data.Tables[i].Indices[j].Name);
                     newIndex.data("indexColumnArray", data.Tables[i].Indices[j].ColumnNames);
                     newIndex.data("unique", data.Tables[i].Indices[j].Unique);
-                    newIndex.children(".deleteIndexIcon").on("click", function () {
+                    newIndex.children(".deleteIndexIcon").on("mousedown", function () {
                         $(this).parents(".dbIndex").remove();
+                        return false;
                     });
-                    newIndex.children(".editIndexIcon").on("click", function () {
+                    newIndex.children(".editIndexIcon").on("mousedown", function () {
                         CurrentIndex = $(this).parents(".dbIndex");
                         CurrentTable = $(this).parents(".dbTable");
                         editIndexDialog.dialog("open");
+                        return false;
                     });
                     newTable.children(".dbTableIndexArea").append(newIndex);
                 }

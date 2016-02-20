@@ -296,6 +296,11 @@
     <Content Include="Content\images\page_white_edit.png" />
     <Content Include="Content\images\page_white_paste.png" />
     <Content Include="Content\images\SearchIcon.png" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_asc_disabled.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\images\TapestryIcons\circle-double-dashed.png" />
     <Content Include="Content\images\TapestryIcons\circle-double.png" />
     <Content Include="Content\images\TapestryIcons\circle-filled.png" />
@@ -328,6 +333,7 @@
     <Content Include="Content\images\watcheye_small.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.contextMenu.css" />
+    <Content Include="Content\css\jquery.dataTables.min.css" />
     <Content Include="Content\scss\Bundled.css">
       <DependentUpon>Bundled.scss</DependentUpon>
     </Content>
@@ -1319,6 +1325,7 @@
     <Content Include="Scripts\jquery-collision.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

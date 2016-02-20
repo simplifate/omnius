@@ -293,6 +293,10 @@ body.mozaicEditorModule {
             white-space: nowrap;
         }
     }
+    .data-table {
+        width: 250px;
+        border: 1px solid #4b8ad1;
+    } 
     .uic.ui-draggable-dragging {
         z-index: 500;
     }

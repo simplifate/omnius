@@ -11,6 +11,7 @@ $(function () {
         });
         $("#btnClear").on("click", function () {
             $("#mozaicPageContainer .uic").remove();
+            $("#mozaicPageContainer .dataTables_wrapper").remove();
         });
         $("#btnSave").on("click", function () {
             SaveMozaicPage();
@@ -84,25 +85,48 @@ $(function () {
                 droppedElement.attr("uicName", "");
                 droppedElement.attr("uicStyles", "");
                 droppedElement.attr("placeholder", "");
+                $(this).append(droppedElement);
                 if (droppedElement.hasClass("breadcrumb-navigation")) {
                     droppedElement.css("width", "600px");
                 }
-                $(this).append(droppedElement);
+                else if (droppedElement.hasClass("data-table")) {
+                    CreateCzechDataTable(droppedElement);
+                    droppedElement.css("width", "1000px");
+                    wrapper = droppedElement.parents(".dataTables_wrapper");
+                    wrapper.css("position", "absolute");
+                    wrapper.css("left", droppedElement.css("left"));
+                    wrapper.css("top", droppedElement.css("top"));
+                    droppedElement.css("position", "relative");
+                    droppedElement.css("left", "0px");
+                    droppedElement.css("top", "0px");
+                }
                 if (GridResolution > 0) {
                     droppedElement.css("left", droppedElement.position().left - (droppedElement.position().left % GridResolution));
                     droppedElement.css("top", droppedElement.position().top - (droppedElement.position().top % GridResolution));
                 }
                 ui.helper.remove();
-                droppedElement.draggable({
-                    cancel: false,
-                    containment: "parent",
-                    drag: function (event, ui) {
-                        if (GridResolution > 0) {
-                            ui.position.left -= (ui.position.left % GridResolution);
-                            ui.position.top -= (ui.position.top % GridResolution);
+                if (droppedElement.hasClass("data-table"))
+                    wrapper.draggable({
+                        cancel: false,
+                        containment: "parent",
+                        drag: function (event, ui) {
+                            if (GridResolution > 0) {
+                                ui.position.left -= (ui.position.left % GridResolution);
+                                ui.position.top -= (ui.position.top % GridResolution);
+                            }
                         }
-                    }
-                });
+                    });                
+                else
+                    droppedElement.draggable({
+                        cancel: false,
+                        containment: "parent",
+                        drag: function (event, ui) {
+                            if (GridResolution > 0) {
+                                ui.position.left -= (ui.position.left % GridResolution);
+                                ui.position.top -= (ui.position.top % GridResolution);
+                            }
+                        }
+                    });
             }
         });
         $("#mozaicPageContainer .uic").draggable({
@@ -122,7 +146,10 @@ $(function () {
             callback: function (key, options) {
                 item = options.$trigger;
                 if (key == "delete") {
-                    item.remove();
+                    if (item.hasClass("data-table"))
+                        item.parents(".dataTables_wrapper").remove();
+                    else
+                        item.remove();
                 }
                 else if (key == "properties") {
                     CurrentComponent = item;
