@@ -22,27 +22,28 @@ namespace FSS.Omnius.Modules.Entitron
 
                 foreach (DBItem i in query.ExecuteWithRead())
                 {
-                    DBForeignKey fk = new DBForeignKey();
-                    fk.name = (string)i["name"];
-
                     // is source table
                     if (table.tableName == (string)i["sourceTable"])
                     {
+                        DBForeignKey fk = new DBForeignKey();
+
+                        fk.name = (string)i["name"];
                         fk.sourceTable = table.Application.GetTable((string)i["sourceTable"]);
                         fk.targetTable = table.Application.GetTable((string)i["targetTable"]);
                         fk.sourceColumn = (string)i["sourceColumn"];
                         fk.targetColumn = (string)i["targetColumn"];
+                        Add(fk);
+
                     }
                     // is target table
                     else
                     {
-                        fk.sourceTable = table.Application.GetTable((string)i["targetTable"]);
-                        fk.targetTable = table.Application.GetTable((string)i["sourceTable"]);
-                        fk.sourceColumn = (string)i["targetColumn"];
-                        fk.targetColumn = (string)i["sourceColumn"];
+                        //fk.sourceTable = table.Application.GetTable((string)i["targetTable"]);
+                        //fk.targetTable = table.Application.GetTable((string)i["sourceTable"]);
+                        //fk.sourceColumn = (string)i["targetColumn"];
+                        //fk.targetColumn = (string)i["sourceColumn"];
                     }
 
-                    Add(fk);
                 }
             }
         }

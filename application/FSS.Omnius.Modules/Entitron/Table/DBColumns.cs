@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Sql;
+using Boolean = DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle.Boolean;
 
 namespace FSS.Omnius.Modules.Entitron
 {
@@ -31,8 +32,16 @@ namespace FSS.Omnius.Modules.Entitron
                         maxLength = Convert.ToInt32(i["max_length"]),
                         precision = Convert.ToInt32(i["precision"]),
                         scale = Convert.ToInt32(i["scale"]),
-                        canBeNull = (bool)i["is_nullable"]
+                        canBeNull = (bool)i["is_nullable"],
                     };
+                    if (i["is_unique"].ToString() == "" || i["is_unique"].ToString()=="False")
+                    {
+                        column.isUnique = false;
+                    }
+                    else
+                    {
+                        column.isUnique = true;
+                    }
                     Add(column);
                 }
             }
@@ -153,7 +162,7 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 application = table.Application,
                 table = table,
-                column = column,
+                column = column.ToLower(),
                 value = defValue
             });
 

@@ -139,6 +139,7 @@ namespace FSS.Omnius.Controllers.Entitron
                     context.Applications.Find(appId).DatabaseDesignerSchemeCommits.Add(commit);
                     Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
+                    Dictionary<int, DbColumn> columnMapping = new Dictionary<int, DbColumn>();
 
                     foreach (var ajaxTable in postData.Tables)
                     {
@@ -160,7 +161,7 @@ namespace FSS.Omnius.Controllers.Entitron
                             };
                             newTable.Columns.Add(newColumn);
                             context.SaveChanges();
-                            columnIdMapping.Add(ajaxColumnId, newColumn.Id);
+                            columnMapping.Add(ajaxColumnId, newColumn);
                         }
                         foreach (var index in ajaxTable.Indices)
                         {
@@ -182,20 +183,30 @@ namespace FSS.Omnius.Controllers.Entitron
                         commit.Tables.Add(newTable);
                         context.SaveChanges();
                         tableIdMapping.Add(ajaxTableId, newTable.Id);
+                            foreach (var column in ajaxTable.Columns)
+                            {
+                                DbColumn col =
+                                    newTable.Columns.SingleOrDefault(x => x.Name.ToLower() == columnMapping[column.Id].Name.ToLower());
+
+                                columnIdMapping.Add(column.Id, col.Id);
+                            }
                     }
                     foreach (var ajaxRelation in postData.Relations)
                     {
+
                         int leftTable = tableIdMapping[ajaxRelation.LeftTable];
                         int rightTable = tableIdMapping[ajaxRelation.RightTable];
                         int leftColumn = columnIdMapping[ajaxRelation.LeftColumn];
                         int rightColumn = columnIdMapping[ajaxRelation.RightColumn];
+                        string name = commit.Tables.SingleOrDefault(x=>x.Id==rightTable).Name + commit.Tables.SingleOrDefault(x => x.Id == rightTable).Columns.SingleOrDefault(x=>x.Id==rightColumn).Name + "_" + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Name + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Columns.SingleOrDefault(x => x.Id == leftColumn).Name;
                         commit.Relations.Add(new DbRelation
                         {
                             LeftTable = leftTable,
                             RightTable = rightTable,
                             LeftColumn = leftColumn,
                             RightColumn = rightColumn,
-                            Type = ajaxRelation.Type
+                            Type = ajaxRelation.Type,
+                            Name = name
                         });
                     }
                     foreach (var ajaxView in postData.Views)

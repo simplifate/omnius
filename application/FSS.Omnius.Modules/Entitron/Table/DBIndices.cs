@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Entitron
             }
         }
 
-        public DBIndices AddToDB(string indexName, List<string> columns)
+        public DBIndices AddToDB(string indexName, List<string> columns, bool isUnique)
         {
             table.Application.queries.Add(new SqlQuery_IndexCreate()
             {

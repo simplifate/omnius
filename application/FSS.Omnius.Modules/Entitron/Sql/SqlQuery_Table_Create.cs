@@ -38,11 +38,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string type,
             bool allowColumnLength,
             bool allowPrecisionScale,
+            bool canBeNull,
+            bool isUnique,
             int? maxLength = null,
             int? precision=null,
-            int? scale =null,
-            bool canBeNull = true,
-            bool isUnique = false,
+            int? scale =null, 
             string additionalOptions = null)
         {
             _columns.Add(new DBColumn()
