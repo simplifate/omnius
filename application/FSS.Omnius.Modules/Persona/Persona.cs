@@ -81,6 +81,10 @@ namespace FSS.Omnius.Modules.Persona
                     if (user.localExpiresAt < DateTime.UtcNow)
                     {
                         var userWithGroups = GetUserFromAD(username);
+                        // user not found - was deleted in AD
+                        if (userWithGroups == null)
+                            return null;
+                        // user found in AD
                         SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
                         user = userWithGroups.Item1;
                     }
@@ -94,15 +98,13 @@ namespace FSS.Omnius.Modules.Persona
             {
                 var userWithGroups = GetUserFromAD(username);
 
-                // user found in AD
-                if (userWithGroups != null)
-                {
-                    SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
-                    return userWithGroups.Item1;
-                }
                 // user doesn't exist
-                else
+                if (userWithGroups == null)
                     return null;
+
+                // user found in AD
+                SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+                return userWithGroups.Item1;
             }
         }
         
