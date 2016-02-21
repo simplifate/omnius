@@ -21,9 +21,19 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _core = core;
             _context = core.Entitron.GetStaticTables();
 
+            //var wfToRemove = _context.WorkFlows.Where(w => w.Parent == null && w.ApplicationId == core.Entitron.AppId);
+            //_context.WorkFlows.RemoveRange(wfToRemove);
+
             WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
 
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                var a = e;
+            }
         }
 
         private WorkFlow saveMetaBlock(TapestryDesignerMetablock block, bool init = false)
@@ -58,9 +68,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             Block resultBlock = new Block
             {
                 Name = block.Name,
-                ModelName = block.AssociatedTableName,
-                WorkFlow = wf
+                ModelName = block.AssociatedTableName
             };
+            wf.Blocks.Add(resultBlock);
             if (block.IsInitial)
                 resultBlock.InitForWorkFlow.Add(wf);
 
@@ -110,13 +120,15 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             // get begin
             WFitem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
+            if (item == null)
+                return;
             ActionRule actionRule = new ActionRule
             {
                 Actor = _context.Actors.Single(a => a.Name == "Manual"),
                 Name = workflowRule.Name,
-                ExecutedBy = (item as TapestryDesignerWorkflowItem).Label,
-                SourceBlock = block
+                ExecutedBy = (item as TapestryDesignerWorkflowItem).Label
             };
+            block.SourceTo_ActionRules.Add(actionRule);
             TapestryDesignerConnection nextConnection = new TapestryDesignerConnection { Target = item.Id, TargetType = item.GetTypeId() };
             
             while(nextConnection != null)
@@ -163,18 +175,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 actionRule = new ActionRule
                 {
                     Actor = _context.Actors.Single(a => a.Name == "Auto"),
-                    Name = workflowRule.Name,
-                    SourceBlock = BlockMapping[source]
+                    Name = workflowRule.Name
                 };
+                BlockMapping[source].SourceTo_ActionRules.Add(actionRule);
                 // actionRuleRights
-                foreach (string roleName in target.ParentSwimlane.Roles.Split(','))
-                {
-                    actionRule.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
-                    {
-                        AppRole = _context.Roles.Single(r => r.Name == roleName),
-                        Executable = true
-                    });
-                }
+                AddActionRuleRights(actionRule, target.ParentSwimlane);
             }
 
             //
@@ -194,9 +199,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 {
                     newBlock = new Block
                     {
-                        IsVirtual = true,
-                        WorkFlow = wf
+                        Name = $"Split ActionRule[]",
+                        IsVirtual = true
                     };
+                    wf.Blocks.Add(newBlock);
                     BlockMapping.Add(target, newBlock);
                 }
                 // action rules
@@ -205,18 +211,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 nextAR = new ActionRule
                 {
                     Actor = _context.Actors.Single(a => a.Name == "Auto"),
-                    Name = workflowRule.Name,
-                    SourceBlock = newBlock
+                    Name = workflowRule.Name
                 };
+                newBlock.SourceTo_ActionRules.Add(nextAR);
                 // actionRuleRights
-                foreach(string roleName in target.ParentSwimlane.Roles.Split(','))
-                {
-                    nextAR.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
-                    {
-                        AppRole = _context.Roles.Single(r => r.Name == roleName),
-                        Executable = true
-                    });
-                }
+                AddActionRuleRights(nextAR, target.ParentSwimlane);
 
                 // connections
                 var connections = workflowRule.Connections.Where(c => c.SourceType == target.GetTypeId() && c.Source == target.Id).ToList();
@@ -229,6 +228,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 }
             }
             // join
+            // TODO: 2nd time don't continue - duplicity actions
             else if (joinItems.Any(i => i.Id == target.Id && i.Type == target.GetTypeId()))
             {
                 // new block
@@ -241,9 +241,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 {
                     newBlock = new Block
                     {
-                        IsVirtual = true,
-                        WorkFlow = wf
+                        Name = $"Join ActionRule[]",
+                        IsVirtual = true
                     };
+                    wf.Blocks.Add(newBlock);
                     BlockMapping.Add(target, newBlock);
                 }
 
@@ -252,19 +253,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 actionRule = new ActionRule
                 {
                     Actor = _context.Actors.Single(a => a.Name == "Auto"),
-                    Name = actionRule.Name,
-                    SourceBlock = newBlock
+                    Name = actionRule.Name
                 };
+                newBlock.SourceTo_ActionRules.Add(actionRule);
                 nextAR = actionRule;
                 // actionRuleRights
-                foreach (string roleName in target.ParentSwimlane.Roles.Split(','))
-                {
-                    nextAR.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
-                    {
-                        AppRole = _context.Roles.Single(r => r.Name == roleName),
-                        Executable = true
-                    });
-                }
+                AddActionRuleRights(nextAR, target.ParentSwimlane);
 
                 // connection
                 nextConnection = workflowRule.Connections.Where(c => c.SourceType == target.GetTypeId() && c.Source == target.Id).SingleOrDefault();
@@ -294,6 +288,21 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             return new Tuple<TapestryDesignerConnection, ActionRule>(nextConnection, nextAR);
+        }
+
+        private void AddActionRuleRights(ActionRule rule, TapestryDesignerSwimlane swimlane)
+        {
+            if (string.IsNullOrWhiteSpace(swimlane.Roles))
+                return;
+            
+            foreach (string roleName in swimlane.Roles.Split(','))
+            {
+                rule.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
+                {
+                    AppRole = _context.Roles.Single(r => r.ADgroup.ApplicationId == _core.Entitron.AppId && r.Name == roleName),
+                    Executable = true
+                });
+            }
         }
 
         //private WFitem getItem(TapestryDesignerWorkflowRule workflowRule, int itemType, Func<WFitem, bool> select)
