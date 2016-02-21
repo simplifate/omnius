@@ -81,16 +81,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             
             using (MemoryStream stream = new MemoryStream()) 
             {
-                using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook)) 
+                using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) 
                 {
                     WorkbookPart bookPart = xls.AddWorkbookPart();
                     bookPart.Workbook = new Workbook();
+                    bookPart.Workbook.AppendChild<Sheets>(new Sheets());
 
                     SharedStringTablePart strings = xls.WorkbookPart.AddNewPart<SharedStringTablePart>();
                     WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
 
                     int c = 0;
-                    foreach(string column in columns) {
+                    foreach (string column in columns) {
                         int i = InsertSharedStringItem(column, strings);
                         Cell cell = InsertCellInWorksheet(abc[c].ToString(), 1, sheetPart);
                         cell.CellValue = new CellValue(i.ToString());
@@ -110,17 +111,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                             c++;
                         }
                     }
+                    //sheetPart.Worksheet.Save();
+                    //ystrings.SharedStringTable.Save();
+                    //xls.WorkbookPart.Workbook.Save();
+                    xls.Close();
 
-                    sheetPart.Worksheet.Save();
+                    stream.Seek(0, SeekOrigin.Begin);
+                    //new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                    //StreamReader reader = new StreamReader(stream, Encoding.UTF8);
 
                     HttpContext context = HttpContext.Current;
                     HttpResponse response = context.Response;
-
+                    
+                    response.Clear();
                     response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
-                    response.Output.Write(stream);
+                    response.BinaryWrite(stream.ToArray());
                     response.Flush();
                     response.Close();
+                    response.End();
                 }
             }
         }
@@ -145,7 +155,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // The text does not exist in the part. Create the SharedStringItem and return its index.
             shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
-            shareStringPart.SharedStringTable.Save();
+            //shareStringPart.SharedStringTable.Save();
 
             return i;
         }
@@ -155,7 +165,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             // Add a new worksheet part to the workbook.
             WorksheetPart newWorksheetPart = workbookPart.AddNewPart<WorksheetPart>();
             newWorksheetPart.Worksheet = new Worksheet(new SheetData());
-            newWorksheetPart.Worksheet.Save();
+            //newWorksheetPart.Worksheet.Save();
 
             Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
             string relationshipId = workbookPart.GetIdOfPart(newWorksheetPart);
@@ -169,7 +179,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             // Append the new worksheet and associate it with the workbook.
             Sheet sheet = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = name };
             sheets.Append(sheet);
-            workbookPart.Workbook.Save();
+            //workbookPart.Workbook.Save();
 
             return newWorksheetPart;
         }
@@ -207,7 +217,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 Cell newCell = new Cell() { CellReference = cellReference };
                 row.InsertBefore(newCell, refCell);
 
-                worksheet.Save();
+                //worksheet.Save();
                 return newCell;
             }
         }
