@@ -84,12 +84,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<AjaxTapestryDesignerResourceRule> ResourceRules { get; set; }
         public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public List<int> PortTargets { get; set; }
+        public List<int> AssociatedPageIds { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
             ResourceRules = new List<AjaxTapestryDesignerResourceRule>();
             WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>();
             PortTargets = new List<int>();
+            AssociatedPageIds = new List<int>();
         }
     }
     public class AjaxTapestryDesignerBlockCommitHeader

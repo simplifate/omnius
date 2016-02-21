@@ -256,6 +256,24 @@
                     }
                 }
             });
+            for (i = 0; i < data.AssociatedPageIds.length; i++) {
+                pageId = data.AssociatedPageIds[i];
+                url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                        for (i = 0; i < data.Components.length; i++) {
+                            cData = data.Components[i];
+                            lastLibId++;
+                            newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                + cData.Name + '</div>');
+                            $("#libraryCategory-UI").append(newLibItem);
+                        }
+                    }
+                });
+            }
         }
     });
 };

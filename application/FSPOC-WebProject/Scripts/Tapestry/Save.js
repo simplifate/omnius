@@ -1,4 +1,6 @@
-﻿function SaveBlock(commitMessage) {
+﻿var AssociatedPageIds = [];
+
+function SaveBlock(commitMessage) {
     resourceRulesArray = [];
     workflowRulesArray = [];
     portTargetsArray = [];
@@ -134,6 +136,7 @@
         ResourceRules: resourceRulesArray,
         WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
+        AssociatedPageIds: AssociatedPageIds,
         ParentMetablockId: $("#parentMetablockId").val()
     }    
     appId = $("#currentAppId").val();

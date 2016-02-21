@@ -83,7 +83,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             PositionX = blockCommit.PositionX,
                             PositionY = blockCommit.PositionY,
                             Timestamp = blockCommit.Timestamp,
-                            CommitMessage = blockCommit.CommitMessage
+                            CommitMessage = blockCommit.CommitMessage,
+                            AssociatedPageIds = blockCommit.AssociatedPageIds == null ? new List<int>()
+                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList()
                         };
                         LoadResourceRules(blockCommit, result);
                         LoadWorkflowRules(blockCommit, result);
@@ -128,7 +130,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Timestamp = DateTime.Now,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
-                        AssociatedTableName = postData.AssociatedTableName
+                        AssociatedTableName = postData.AssociatedTableName,
+                        AssociatedPageIds = string.Join<int>(",", postData.AssociatedPageIds)
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
 

@@ -308,10 +308,12 @@ $(function () {
             somethingWasAdded = false;
             pageCount = 0;
             appId = $("#currentAppId").val();
+            AssociatedPageIds = [];
             chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
                 if ($(element).hasClass("highlightedRow")) {
                     pageCount++;
                     pageId = $(element).attr("pageId");
+                    AssociatedPageIds.push(pageId);
                     url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
                     $.ajax({
                         type: "GET",
