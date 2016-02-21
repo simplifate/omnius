@@ -15,7 +15,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SELECT columns.*, types.name typeName FROM sys.columns columns JOIN sys.types types ON columns.user_type_id = types.user_type_id WHERE object_id = OBJECT_ID(@realTableName)", parAppName, parTableName);
+                "SELECT i.is_unique_constraint is_unique, columns.*, types.name typeName FROM sys.columns columns " +
+                "JOIN sys.types types ON columns.user_type_id = types.user_type_id " +
+                "left join sys.index_columns ic on columns.object_id = ic.object_id and columns.column_id = ic.column_id " +
+                "left join sys.indexes i on i.index_id = ic.index_id AND i.object_id = columns.object_id " +
+                "WHERE columns.object_id = OBJECT_ID(@realTableName)", parAppName, parTableName);
             return base.BaseExecutionWithRead(connection);
         }
 

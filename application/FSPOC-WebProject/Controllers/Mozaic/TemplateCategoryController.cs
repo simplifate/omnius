@@ -7,16 +7,17 @@ using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
-namespace FSPOC_WebProject.Controllers.Mozaic
+namespace FSS.Omnius.Controllers.Mozaic
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Mozaic")]
     public class TemplateCategoryController : Controller
     {
         // GET: TemplateCategory
         public ActionResult Index()
         {
+            
             DBEntities e = new DBEntities();
-
+            
             return View(e.TemplateCategories);
         }
 
@@ -65,6 +66,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             List<string> categories= new List<string>();
             categories = e.TemplateCategories.Select(x => x.Name).ToList();
             categories.Add("");
+
             List<string> children = new List<string>();
             children = tempCategory.Children.Select(x => x.Name).ToList();
             children.Add("");

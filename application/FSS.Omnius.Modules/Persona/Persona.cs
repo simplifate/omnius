@@ -28,86 +28,181 @@ namespace FSS.Omnius.Modules.Persona
             _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
         }
 
-        public User getUser(string username)
+        public int GetLoggedCount()
         {
-            JToken ldap;
-            User user = getUserWithAD(username, out ldap);
+            return _CORE.Entitron.GetStaticTables().Users.Where(u => u.LastLogout == null).Count();
+        }
 
-            if (ldap != null)
+        public User AuthenticateUser(string username)
+        {
+            User user = GetUser(username);
+
+            if (user != null && user.LastLogout != null)
             {
-                // groups
-                List<string> groupNames = new List<string>();
-                foreach (JToken group in ldap["memberof"])
-                {
-                    string groupName = (string)group;
-                    int startI = groupName.IndexOf("CN=") + 3;
-                    int EndI = groupName.IndexOf(',', startI);
-                    groupNames.Add(groupName.Substring(startI, EndI - startI));
-                }
-                user.UpdateAppRightFromAd(groupNames, _CORE.Entitron.GetStaticTables());
+                user.LastLogin = user.CurrentLogin;
+                user.CurrentLogin = DateTime.UtcNow;
+                user.LastLogout = null;
+                _CORE.Entitron.GetStaticTables().SaveChanges();
             }
 
             return user;
         }
-        public User getUserWithoutGroups(string username)
+        public void LogOff(string username)
         {
-            JToken ldap;
-            return getUserWithAD(username, out ldap);
+            User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
+            user.LastLogout = DateTime.UtcNow;
+            _CORE.Entitron.GetStaticTables().SaveChanges();
+        }
+        public void NotLogOff(string username)
+        {
+            User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
+            user.LastLogout = null;
+            _CORE.Entitron.GetStaticTables().SaveChanges();
         }
 
-        private User getUserWithAD(string username, out JToken ldapResult)
+        public User GetUser(string username)
         {
-            // init
-            DBEntities e = _CORE.Entitron.GetStaticTables();
-            User user = e.Users.SingleOrDefault(u => u.username == username);
-            ldapResult = null;
-            
+            if (string.IsNullOrWhiteSpace(username))
+                return null;
+
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+            User user = context.Users.SingleOrDefault(u => u.UserName == username);
+
+            // is in DB
+            if (user != null)
+            {
+                // is local-only
+                if (user.isLocalUser)
+                    return user;
+
+                // is from AD
+                else
+                {
+                    if (user.localExpiresAt < DateTime.UtcNow)
+                    {
+                        var userWithGroups = GetUserFromAD(username);
+                        // user not found - was deleted in AD
+                        if (userWithGroups == null)
+                            return null;
+                        // user found in AD
+                        SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+                        user = userWithGroups.Item1;
+                    }
+
+                    return user;
+                }
+            }
+
+            // not in db
+            else
+            {
+                var userWithGroups = GetUserFromAD(username);
+
+                // user doesn't exist
+                if (userWithGroups == null)
+                    return null;
+
+                // user found in AD
+                SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+                return userWithGroups.Item1;
+            }
+        }
+        
+        private Tuple<User, List<string>> GetUserFromAD(string username)
+        {
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+
+            // split username & domain
+            int domainIndex = username.IndexOf('\\');
+            string serverName = null;
+            string onlyName = username;
+            if (domainIndex != -1)
+            {
+                serverName = username.Substring(0, domainIndex);
+                onlyName = username.Substring(domainIndex + 1);
+            }
+
+            // search in AD
+            NexusLdapService search = new NexusLdapService();
+            if (serverName != null) search.UseServer(serverName);
+            JToken ldapResult = search.SearchByLogin(onlyName);
+
+            // no user found
+            if (ldapResult == null)
+                return null;
+
+            // user attributes
+            User user = new User
+            {
+                UserName = username,
+                DisplayName = (string)ldapResult["displayname"],
+                Email = (string)ldapResult["mail"],
+                Address = "",
+                Company = "",
+                Department = "",
+                Team = "",
+                Job = (string)ldapResult["title"],
+                WorkPhone = "",
+                MobilPhone = "",
+                LastLogin = DateTime.FromFileTime((long)ldapResult["lastlogon"]),
+
+                isLocalUser = false,
+                localExpiresAt = DateTime.UtcNow + _expirationTime
+            };
+
+            // groups
+            List<string> groupNames = new List<string>();
+            foreach (JToken group in ldapResult["memberof"])
+            {
+                string groupName = (string)group;
+                int startI = groupName.IndexOf("CN=") + 3;
+                int EndI = groupName.IndexOf(',', startI);
+                groupNames.Add(groupName.Substring(startI, EndI - startI));
+            }
+
+            return new Tuple<User, List<string>>(user, groupNames);
+        }
+
+        private void SaveToDB(User user, List<string> groups)
+        {
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+            User dbUser = context.Users.SingleOrDefault(u => u.UserName == user.UserName);
+
+            // update user
+            if (dbUser != null)
+            {
+                dbUser.Update(user);
+                context.ADgroup_Users.RemoveRange(context.ADgroup_Users.Where(adu => adu.UserId == dbUser.Id));
+            }
             // new user
-            if (user == null)
+            else
             {
-                user = new User();
-                user.username = username;
-                user.localExpiresAt = DateTime.MinValue;
-                e.Users.Add(user);
+                dbUser = user;
+                context.Users.Add(dbUser);
             }
-            // expiration || new user -> get from AD
-            if (user.localExpiresAt < DateTime.UtcNow)
+
+            // groups
+            foreach (string groupName in groups)
             {
-                // split username & domain
-                int domainIndex = username.IndexOf('\\');
-                string serverName = null;
-                if (domainIndex != -1)
+                ADgroup group = context.ADgroups.SingleOrDefault(g => g.Name == groupName);
+                if (group == null)
                 {
-                    serverName = username.Substring(0, domainIndex);
-                    username = username.Substring(domainIndex + 1);
+                    group = new ADgroup
+                    {
+                        Name = groupName,
+                        Application = context.Applications.SingleOrDefault(a => a.Name == groupName)
+                    };
                 }
 
-                // search in AD
-                NexusLdapService search = new NexusLdapService();
-                if (serverName != null) search.UseServer(serverName);
-                ldapResult = search.SearchByLogin(username);
-
-                if (ldapResult == null)
-                    throw new NotAuthorizedException("User not found");
-
-                // user attributes
-                user.DisplayName = (string)ldapResult["displayname"];
-                user.Email = (string)ldapResult["mail"];
-                user.Address = "";
-                user.Company = "";
-                user.Department = "";
-                user.Team = "";
-                user.Job = (string)ldapResult["title"];
-                user.WorkPhone = "";
-                user.MobilPhone = "";
-                user.LastLogin = DateTime.FromFileTime((long)ldapResult["lastlogon"]);
-
-                user.localExpiresAt = DateTime.UtcNow + _expirationTime;
-
-                e.SaveChanges();
+                context.ADgroup_Users.Add(new ADgroup_User
+                {
+                    User = dbUser,
+                    ADgroup = group
+                });
             }
 
-            return user;
+            // save
+            context.SaveChanges();
         }
     }
 }

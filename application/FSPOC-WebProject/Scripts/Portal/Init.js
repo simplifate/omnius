@@ -1,5 +1,4 @@
 ﻿var maintenanceModeActive = false;
-var LowerPanelTop = 432;
 
 $(function () {
     $("#identitySuperMenu").on("click", function () {
@@ -11,21 +10,18 @@ $(function () {
 
     if (CurrentModuleIs("portalModule")) {
         $("#adminMenuPortal").addClass("active");
-        LowerPanelTop = 432;
     }
     else if (CurrentModuleIs("adminAppModule")) {
         $("#adminMenuApps").addClass("active");
-        LowerPanelTop = 200;
     }
     else if (CurrentModuleIs("nexusModule")) {
         $("#adminMenuNexus").addClass("active");
-        LowerPanelTop = 370;
     }
     else if (CurrentModuleIs("tapestryModule") || CurrentModuleIs("overviewModule")) {
         $("#adminMenuTapestry").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
-    else if (CurrentModuleIs("mozaicModule")) {
+    else if (CurrentModuleIs("mozaicModule") || CurrentModuleIs("mozaicEditorModule")) {
         $("#adminMenuMozaic").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
@@ -33,27 +29,19 @@ $(function () {
         $("#adminMenuDbDesigner").addClass("active");
         $("#leftBar .leftMenu li.appSubMenu").show();
     }
-    else if (CurrentModuleIs("personaRolesModule")) {
-        $("#adminMenuRoles").addClass("active");
-        $("#leftBar .leftMenu li.appSubMenu").show();
-        LowerPanelTop = 200;
-    }
-    else if (CurrentModuleIs("personaModule")) {
+    else if (CurrentModuleIs("personaModule") || CurrentModuleIs("personaRolesModule")) {
         $("#adminMenuPersona").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
-        LowerPanelTop = 200;
     }
     else if (CurrentModuleIs("personaModulesModule")) {
         $("#adminMenuPersonaModules").addClass("active");
         $("#leftBar .leftMenu li.identitySubMenu").show();
-        LowerPanelTop = 200;
     }
     else if (CurrentModuleIs("watchtowerModule")) {
         $("#adminMenuWatchtower").addClass("active");
     }
     else if (CurrentModuleIs("hermesModule")) {
         $("#adminMenuHermes").addClass("active");
-        LowerPanelTop = 370;
     }
 
     $("#usersOnlineIndicator").on("click", function () {
@@ -96,15 +84,26 @@ $(function () {
     $("#hideUpperPanelIcon").on("click", function () {
         $("#upperPanel").hide();
         $("#minimizedUpperPanel").show();
-        $("#lowerPanel").css("top", 115);
+        $("#lowerPanel").addClass("minimizedPanelMode");
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
+        else if (CurrentModuleIs("mozaicEditorModule"))
+            RecalculateMozaicToolboxHeight();
     });
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
-        $("#lowerPanel").css("top", LowerPanelTop);
+        $("#lowerPanel").removeClass("minimizedPanelMode");
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
+        else if (CurrentModuleIs("mozaicEditorModule"))
+            RecalculateMozaicToolboxHeight();
+    });
+    $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    $(window).scroll(function () {
+        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    });
+    $(window).resize(function () {
+        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
     });
 });

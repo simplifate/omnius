@@ -8,7 +8,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using Logger;
 
-namespace FSPOC_WebProject.Controllers.Tapestry
+namespace FSS.Omnius.Controllers.Tapestry
 {
     public class AppManagerApiController : ApiController
     {
@@ -50,6 +50,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
                     app.Name = postData.Name;
+                    app.DisplayName = postData.Name;
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
@@ -60,6 +61,33 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             catch (Exception ex)
             {
                 string errorMessage = $"App manager: error changing app properties (POST api/master/apps/{appId}/properties). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+        [Route("api/master/apps")]
+        [HttpPost]
+        public void AddNewApp(AjaxAppProperties postData)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    var newApp = new Application
+                    {
+                        DisplayName = postData.Name,
+                        Name = postData.Name,
+                        TileWidth = postData.TileWidth,
+                        TileHeight = postData.TileHeight,
+                        Color = postData.Color,
+                        Icon = postData.Icon
+                    };
+                    context.Applications.Add(newApp);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"App manager: error creating new application (POST api/master/apps). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }

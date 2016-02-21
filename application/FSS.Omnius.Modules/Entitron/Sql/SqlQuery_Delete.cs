@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' WHERE {2} ;')"+
+                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' OUTPUT DELETED.* WHERE {2} ;')"+
                 "exec sp_executesql @sql, N'{3}', {4};" 
                 , parAppName,parTableName,
                 string.Join(" AND ", values.Select(s=>s.Key.Name + "= @" + s.Value)),

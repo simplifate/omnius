@@ -1,18 +1,18 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
     public class RightsController : Controller
     {
         public ActionResult Index()
         {
-            CORE core = new CORE();
+            CORE core = HttpContext.GetCORE();
             ADgroup.RefreshFromAD(core);
             DBEntities context = core.Entitron.GetStaticTables();
 

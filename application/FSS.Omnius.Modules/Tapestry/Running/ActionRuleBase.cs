@@ -34,6 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry
                     }
 
                     // do not continue
+                    results.Join = result;
                     return;
                 }
 

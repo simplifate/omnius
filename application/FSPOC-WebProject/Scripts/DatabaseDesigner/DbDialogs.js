@@ -263,9 +263,10 @@ $(function () {
             },
             open: function (event, ui) {
                 historyDialog.data("selectedCommitId", null);
+                appId = $("#currentAppId").val();
                 $.ajax({
                     type: "GET",
-                    url: "/api/database/commits",
+                    url: "/api/database/apps/" + appId + "/commits",
                     dataType: "json",
                     error: function () { alert("Error loading commit history") },
                     success: function (data) {

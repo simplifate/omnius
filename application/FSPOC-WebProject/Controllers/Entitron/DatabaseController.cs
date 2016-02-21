@@ -15,7 +15,7 @@ using static System.String;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
-    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin")]
+    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin", Module = "Entitron")]
     public class DatabaseController : ApiController
     {
         public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,
@@ -31,23 +31,31 @@ namespace FSS.Omnius.Controllers.Entitron
         private IDatabaseGenerateService DatabaseGenerateService { get; set; }
 
 
-        [Route("api/database/commits")]
+        [Route("api/database/apps/{appId}/commits")]
         [HttpGet]
-        public IEnumerable<AjaxTransferCommitHeader> GetCommitList()
+        public IEnumerable<AjaxTransferCommitHeader> GetCommitList(int appId)
         {
             try
             {
-                return RepositoryDbSchemeCommit.Get(orderBy: q => q.OrderByDescending(d => d.Timestamp))
-                        .Select(c => new AjaxTransferCommitHeader
+                using (var context = new DBEntities())
+                {
+                    var result = new List<AjaxTransferCommitHeader>();
+                    var requestedApp = context.Applications.Find(appId);
+                    foreach (var commit in requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp))
+                    {
+                        result.Add(new AjaxTransferCommitHeader
                         {
-                            CommitMessage = c.CommitMessage,
-                            Id = c.Id,
-                            TimeCommit = c.Timestamp
+                            Id = commit.Id,
+                            CommitMessage = commit.CommitMessage,
+                            TimeCommit = commit.Timestamp
                         });
+                    }
+                    return result;
+                }
             }
             catch (Exception ex)
             {
-                var errorMessage = $"DatabaseDesigner: error when loading the commit history (GET api/database/commits). Exception message: {ex.Message}";
+                var errorMessage = $"DatabaseDesigner: error when loading the commit history (GET api/database/apps/{appId}/commits). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
 
             }
@@ -55,13 +63,13 @@ namespace FSS.Omnius.Controllers.Entitron
 
 
 
-        [Route("api/database/commits/{commitId}")]
+        [Route("api/database/apps/{appId}/commits/{commitId}")]
         [HttpGet]
-        public AjaxTransferDbScheme GetCommitById(int commitId)
+        public AjaxTransferDbScheme GetCommitById(int appId, int commitId)
         {
             try
             {
-                return GetCommit(commitId);
+                return GetCommit(appId, commitId);
             }
             catch (InstanceNotFoundException ex)
             {
@@ -70,20 +78,20 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = Format("DatabaseDesigner: error when loading the commit with id={1} (GET api/database/commits/{1}). "
+                var errorMessage = Format("DatabaseDesigner: error when loading the commit with id={1} (GET api/database/apps/{appId}/commits/{commitId}). "
                     + "Exception message: {0}", ex.Message, commitId);
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
 
             }
         }
 
-        [Route("api/database/commits/latest")]
+        [Route("api/database/apps/{appId}/commits/latest")]
         [HttpGet]
-        public AjaxTransferDbScheme LoadLatest()
+        public AjaxTransferDbScheme LoadLatest(int appId)
         {
             try
             {
-                return GetCommit();
+                return GetCommit(appId);
             }
             catch (InstanceNotFoundException ex)
             {
@@ -91,23 +99,25 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = "DatabaseDesigner: error when loading the latest commit (GET api/database/commits/latest). " +
+                var errorMessage = "DatabaseDesigner: error when loading the latest commit (GET api/database/apps/{appId}/commits/latest). " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
 
-        [Route("api/database/generate")]
+        [Route("api/database/apps/{appId}/generate")]
         [HttpGet]
-        //not add reference Entitron
-        public void Generate(int AppId)
+        public void Generate(int appId)
         {
             try
             {
-                Modules.CORE.CORE core = new Modules.CORE.CORE();
-                core.Entitron.AppId = AppId;
-                var dbSchemeCommit = RepositoryDbSchemeCommit.Get(orderBy: q => q.OrderByDescending(d => d.Timestamp)).First();
-                DatabaseGenerateService.GenerateDatabase(core.Entitron.Application, dbSchemeCommit);
+                using (var context = new DBEntities())
+                {
+                    Modules.CORE.CORE core = new Modules.CORE.CORE();
+                    core.Entitron.AppId = appId;
+                    var dbSchemeCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
+                    DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
+                }
             }
             catch (Exception ex)
             {
@@ -115,9 +125,9 @@ namespace FSS.Omnius.Controllers.Entitron
             }
         }
 
-        [Route("api/database/commits")]
+        [Route("api/database/apps/{appId}/commits")]
         [HttpPost]
-        public void SaveScheme(AjaxTransferDbScheme postData)
+        public void SaveScheme(int appId, AjaxTransferDbScheme postData)
         {
             try
             {
@@ -126,17 +136,15 @@ namespace FSS.Omnius.Controllers.Entitron
                 {
                     commit.Timestamp = DateTime.Now;
                     commit.CommitMessage = postData.CommitMessage;
-                    context.DBSchemeCommits.Add(commit);
+                    context.Applications.Find(appId).DatabaseDesignerSchemeCommits.Add(commit);
                     Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
+                    Dictionary<int, DbColumn> columnMapping = new Dictionary<int, DbColumn>();
 
                     foreach (var ajaxTable in postData.Tables)
                     {
                         int ajaxTableId = ajaxTable.Id;
                         DbTable newTable = new DbTable { Name = ajaxTable.Name, PositionX = ajaxTable.PositionX, PositionY = ajaxTable.PositionY };
-                        commit.Tables.Add(newTable);
-                        context.SaveChanges();
-                        tableIdMapping.Add(ajaxTableId, newTable.Id);
                         foreach (var column in ajaxTable.Columns)
                         {
                             int ajaxColumnId = column.Id;
@@ -153,7 +161,7 @@ namespace FSS.Omnius.Controllers.Entitron
                             };
                             newTable.Columns.Add(newColumn);
                             context.SaveChanges();
-                            columnIdMapping.Add(ajaxColumnId, newColumn.Id);
+                            columnMapping.Add(ajaxColumnId, newColumn);
                         }
                         foreach (var index in ajaxTable.Indices)
                         {
@@ -172,20 +180,33 @@ namespace FSS.Omnius.Controllers.Entitron
                             };
                             newTable.Indices.Add(newIndex);
                         }
+                        commit.Tables.Add(newTable);
+                        context.SaveChanges();
+                        tableIdMapping.Add(ajaxTableId, newTable.Id);
+                            foreach (var column in ajaxTable.Columns)
+                            {
+                                DbColumn col =
+                                    newTable.Columns.SingleOrDefault(x => x.Name.ToLower() == columnMapping[column.Id].Name.ToLower());
+
+                                columnIdMapping.Add(column.Id, col.Id);
+                            }
                     }
                     foreach (var ajaxRelation in postData.Relations)
                     {
+
                         int leftTable = tableIdMapping[ajaxRelation.LeftTable];
                         int rightTable = tableIdMapping[ajaxRelation.RightTable];
                         int leftColumn = columnIdMapping[ajaxRelation.LeftColumn];
                         int rightColumn = columnIdMapping[ajaxRelation.RightColumn];
+                        string name = commit.Tables.SingleOrDefault(x=>x.Id==rightTable).Name + commit.Tables.SingleOrDefault(x => x.Id == rightTable).Columns.SingleOrDefault(x=>x.Id==rightColumn).Name + "_" + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Name + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Columns.SingleOrDefault(x => x.Id == leftColumn).Name;
                         commit.Relations.Add(new DbRelation
                         {
                             LeftTable = leftTable,
                             RightTable = rightTable,
                             LeftColumn = leftColumn,
                             RightColumn = rightColumn,
-                            Type = ajaxRelation.Type
+                            Type = ajaxRelation.Type,
+                            Name = name
                         });
                     }
                     foreach (var ajaxView in postData.Views)
@@ -203,7 +224,7 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = "DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/commits). " +
+                var errorMessage = "DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/apps/{appId}/commits). " +
                         $"Exception message: {ex.Message}";
                 Log.Error(errorMessage);
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
@@ -233,7 +254,7 @@ namespace FSS.Omnius.Controllers.Entitron
                         IEnumerable<DbColumn> removeColumns = schemeTable.Columns.Where(x1 => !DatabaseTable.Columns.Any(x2 => x2.Id == x1.Id));
                         DatabaseTable.Columns.Except<DbColumn>(removeColumns); //maže všechny sloupce tabulky, které se už nenachází na schématu uživatele
 
-                        if (DatabaseTable.Columns.SingleOrDefault(x=>x.Id==schemeColumn.Id) == null) //pokud je ve schématu uživatele vytvořen nový sloupec
+                        if (DatabaseTable.Columns.SingleOrDefault(x => x.Id == schemeColumn.Id) == null) //pokud je ve schématu uživatele vytvořen nový sloupec
                         {
                             DatabaseTable.Columns.Add(schemeColumn);
                         }
@@ -251,7 +272,7 @@ namespace FSS.Omnius.Controllers.Entitron
                             if (DatabaseColumn.DefaultValue != schemeColumn.DefaultValue) DatabaseColumn.DefaultValue = schemeColumn.DefaultValue;
                         }
                     }
-                    foreach(DbIndex schemeIndex in schemeTable.Indices)
+                    foreach (DbIndex schemeIndex in schemeTable.Indices)
                     {
                         IEnumerable<DbIndex> removeIndeces = schemeTable.Indices.Where(x1 => !DatabaseTable.Indices.Any(x2 => x2.Id == x1.Id));
                         DatabaseTable.Indices.Except<DbIndex>(removeIndeces); //maže všechny indexy tabulky, které se už nenachází na schématu uživatele
@@ -271,7 +292,7 @@ namespace FSS.Omnius.Controllers.Entitron
                     }
 
                 }
-                
+
             }
 
             foreach (DbRelation schemeRelation in SchemeCommit.Relations)
@@ -295,7 +316,7 @@ namespace FSS.Omnius.Controllers.Entitron
                 }
             }
 
-            foreach(DbView schemeView in SchemeCommit.Views)
+            foreach (DbView schemeView in SchemeCommit.Views)
             {
                 IEnumerable<DbView> removeRelations = SchemeCommit.Views.Where(x1 => !e.DbView.Any(x2 => x2.Id == x1.Id));
                 e.DbView.Except<DbView>(removeRelations); //maže všechny pohledy, které se už nenachází ve schématu uživatele
@@ -315,20 +336,23 @@ namespace FSS.Omnius.Controllers.Entitron
         }
 
         /// <exception cref="InstanceNotFoundException">Not found commit for commitId</exception>
-        private AjaxTransferDbScheme GetCommit(int commitId = -1)
+        private AjaxTransferDbScheme GetCommit(int appId, int commitId = -1)
         {
-            var result = new AjaxTransferDbScheme();
-            var requestedCommit = FetchDbSchemeCommit(commitId);
-            //Latest commit was requested, but there are no commits yet. Returning an empty commit.
-            if (requestedCommit == null)
+            using (var context = new DBEntities())
             {
-                return new AjaxTransferDbScheme();
-            }
-            SetAttributesRequestCommitTables(requestedCommit, result);
-            SetAttributesRequestCommitRelations(requestedCommit, result);
-            SetAttributesRequestCommitViews(requestedCommit, result);
+                var result = new AjaxTransferDbScheme();
+                var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
+                //Latest commit was requested, but there are no commits yet. Returning an empty commit.
+                if (requestedCommit == null)
+                {
+                    return new AjaxTransferDbScheme();
+                }
+                SetAttributesRequestCommitTables(requestedCommit, result);
+                SetAttributesRequestCommitRelations(requestedCommit, result);
+                SetAttributesRequestCommitViews(requestedCommit, result);
 
-            return result;
+                return result;
+            }
         }
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
@@ -411,14 +435,16 @@ namespace FSS.Omnius.Controllers.Entitron
             }
         }
         /// <exception cref="InstanceNotFoundException">Not found commit for commitId</exception>
-        private DbSchemeCommit FetchDbSchemeCommit(int commitId)
+        private DbSchemeCommit FetchDbSchemeCommit(int appId, int commitId, DBEntities context)
         {
             DbSchemeCommit requestedCommit;
             try
             {
-                requestedCommit = commitId == -1
-                    ? RepositoryDbSchemeCommit.Get(orderBy: q => q.OrderByDescending(d => d.Timestamp)).FirstOrDefault()
-                    : RepositoryDbSchemeCommit.FindObjectById(commitId);
+                if (commitId == -1)
+                    requestedCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits
+                        .OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                else
+                    requestedCommit = context.DBSchemeCommits.Find(commitId);
             }
             catch (InvalidOperationException ex)
             {

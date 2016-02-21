@@ -166,6 +166,10 @@
             font-size: 100px;
             top: 16px;
         }
+        .fa-paint-brush {
+            font-size: 110px;
+            top: 18px;
+        }
         .buttonLabel {
             position: absolute;
             top: 40px;
@@ -237,12 +241,16 @@
     top: 3px;
     right: 37px;
     font-size: 36px;
+    cursor: pointer;
 }
 #lowerPanel {
     position: absolute;
     left: 225px;
     right: 0px;
     height: auto;
+}
+#lowerPanel.minimizedPanelMode {
+    top: 115px !important;
 }
 #lowerPanelContainer {
     position: absolute;
@@ -276,7 +284,8 @@
         margin-left: 35px;
         width: auto;
         td:first-child {
-            width: 300px;
+            width: 3px;
+            height:300px;
         }
         td:nth-child(2) {
             width: 400px;

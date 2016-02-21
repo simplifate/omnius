@@ -20,12 +20,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             Color = 0;
             Icon = "fa-question";
             TitleFontSize = 20;
-
-            Pages = new HashSet<Page>();
+            
             WorkFlows = new HashSet<WorkFlow>();
             Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
-            Roles = new HashSet<PersonaAppRole>();
+
+            MozaicEditorPages = new List<MozaicEditorPage>();
+            DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
         }
 
         public int Id { get; set; }
@@ -50,15 +51,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public string DisplayName { get; set; } // Used by Entitron
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Page> Pages { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
 
         public virtual ICollection<ADgroup> ADgroups { get; set; }
 
         public virtual ICollection<Table> Tables { get; set; }
 
-        public virtual ICollection<PersonaAppRole> Roles { get; set; }
+        // Workflow, UI and DB designers' data
+        public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
+        public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
+        public virtual TapestryDesignerMetablock TapestryDesignerRootMetablock { get; set; }
     }
 }

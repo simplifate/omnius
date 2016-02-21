@@ -12,7 +12,8 @@ namespace FSPOC_WebProject
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/jquery.contextMenu.js",
-                        "~/Scripts/jquery-collision.min.js"
+                        "~/Scripts/jquery-collision.min.js",
+                        "~/Scripts/jquery.dataTables.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -43,6 +44,7 @@ namespace FSPOC_WebProject
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/OmniusScripts")
+                .IncludeDirectory("~/Scripts/CORE", "*.js")
                 .IncludeDirectory("~/Scripts/Tapestry", "*.js")
                 .IncludeDirectory("~/Scripts/Overview", "*.js")
                 .IncludeDirectory("~/Scripts/Portal", "*.js")
@@ -52,6 +54,7 @@ namespace FSPOC_WebProject
                 .IncludeDirectory("~/Scripts/Hermes", "*.js")
                 .IncludeDirectory("~/Scripts/Watchtower", "*.js")
                 .IncludeDirectory("~/Scripts/Persona", "*.js")
+                .IncludeDirectory("~/Scripts/MozaicEditor", "*.js")
                 .Include("~/Scripts/PlatformUtils.js")
             );
         }

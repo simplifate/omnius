@@ -1,0 +1,89 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css
+
+@using (Ajax.BeginForm("Update", "Css", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }))
+{
+    <div>
+        <div>
+            <div style="margin-bottom:0.1em">
+                <label class="control-label" style="width:auto">
+                    Název:
+                </label>
+
+            </div>
+
+            <div style="margin-bottom:1em">
+                @Html.TextBoxFor(x => x.Name, new { @style = "width:50%; background-color:white", @id = "EditCssName", @onkeyup = "ValidateName()", @maxlength = 50 })
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <label class="control-label">
+                Upravit soubor
+            </label>
+        </div>
+
+        <div onchange="">
+            @Html.TextAreaFor(x => x.Value, new { @rows = "15", @style = "width:100%; min-height:100px; margin-left:0px; margin-right:0px; resize:vertical", @name = "EditCssValue", @resize = "vertical" })
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" id="saveButton" class="btn btn-primary">Uložit</button>
+        <button id="removeChild" class="btn btn-danger">Odebrat</button>
+        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+    </div>
+    
+    <!-- Input validation -->
+    <script>
+        function ValidateName()
+        {
+            var name = document.getElementById("EditCssName").value;
+
+            if (name == "" || name == null)
+            {
+                SetNameBadStyle();
+                SetSaveBadStyle();
+            }
+            else
+            {
+                SetNameGoodStyle();
+                SetSaveGoodStyle();
+            }
+        }
+
+        function SetNameBadStyle() {
+            var element = document.getElementById("EditCssName");
+            element.style.backgroundColor = "Salmon";
+        }
+
+        function SetNameGoodStyle() {
+            var element = document.getElementById("EditCssName");
+            element.style.backgroundColor = "white";
+        }
+
+        function SetSaveBadStyle() {
+            var element = document.getElementById("saveButton");
+            element.disabled = true;
+        }
+
+        function SetSaveGoodStyle() {
+            var element = document.getElementById("saveButton");
+            element.disabled = false;
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

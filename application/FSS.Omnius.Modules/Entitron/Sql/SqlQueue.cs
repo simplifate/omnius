@@ -11,7 +11,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQueue
     {
-        public string connectionString;
         internal static List<SqlQuery> _queries = new List<SqlQuery>();
 
         public SqlQueue Add(SqlQuery query)
@@ -43,10 +42,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void ExecuteAll()
         {
-            if (connectionString == null && Entitron.connectionString == null)
+            if (Entitron.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(connectionString ?? Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
             {
                 connection.Open();
 
@@ -59,13 +58,20 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                             query.Execute(transaction);
                         }
                         transaction.Commit();
-                        _queries.Clear();
+                        _queries = new List<SqlQuery>();
                     }
                     catch (SqlException e)
                     {
                         Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
                         transaction.Rollback();
-                        _queries.Clear();
+                        _queries = new List<SqlQuery>();
+                        throw e;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
+                        transaction.Rollback();
+                        _queries = new List<SqlQuery>();
                         throw e;
                     }
                 }

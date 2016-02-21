@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_ModuleAccessPermissions")]
-    public class ModuleAccessPermission
+    public partial class ModuleAccessPermission
     {
-        public int Id { get; set; }
+        [Key]
+        public int UserId { get; set; }
 
         public virtual User User { get; set; }
 
@@ -26,7 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
     public class AjaxModuleAccessPermission
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         public string UserName { get; set; }
 

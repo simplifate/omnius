@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using DbExtensions;
 
-namespace FSPOC_WebProject.Controllers.Nexus
+namespace FSS.Omnius.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
     public class ExtDBController : Controller
     {
         // GET: ExtDB list

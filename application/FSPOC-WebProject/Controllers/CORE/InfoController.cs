@@ -21,5 +21,23 @@ namespace FSS.Omnius.Controllers.CORE
             Response.Write("User name: ");
             Response.Write(User.Identity.Name + "<br/>");
         }
+
+        public bool Leave()
+        {
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+
+            core.Persona.NotLogOff(User.Identity.Name);
+
+            return true;
+        }
+
+        public bool LogOut()
+        {
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+
+            core.Persona.LogOff(User.Identity.Name);
+
+            return true;
+        }
     }
 }

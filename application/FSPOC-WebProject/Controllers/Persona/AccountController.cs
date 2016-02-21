@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FSPOC_WebProject.Models;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -54,7 +58,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/Login
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -64,7 +67,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -75,7 +77,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -93,7 +95,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/VerifyCode
-        [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
@@ -107,7 +108,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/VerifyCode
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
@@ -136,7 +136,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -145,20 +144,35 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User
+                {
+                    UserName = model.UserName,
+                    DisplayName = model.UserName,
+                    Email = model.Email,
+                    isLocalUser = true,
+                    localExpiresAt = DateTime.UtcNow,
+                    LastLogin = DateTime.UtcNow,
+                    LastLogout = DateTime.UtcNow,
+                    CurrentLogin = DateTime.UtcNow
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // module Access permissions
+                    DBEntities context = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+                    context.ModuleAccessPermissions.Add(new ModuleAccessPermission { User = context.Users.Single(u => u.UserName == user.UserName) });
+                    context.SaveChanges();
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
+                    // TODO: Email
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -172,12 +186,27 @@ namespace FSPOC_WebProject.Controllers.Persona
             return View(model);
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            IdentityResult result = UserManager.ChangePassword(ControllerContext.HttpContext.GetLoggedUser().Id, model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+                return new RedirectToRouteResult("Master", new RouteValueDictionary(new { Controller = "Home", Action = "Details" }));
+
+            AddErrors(result);
+            return View(model);
+        }
+
         //
         // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(int userId, string code)
         {
-            if (userId == null || code == null)
+            if (userId == default(int) || code == null)
             {
                 return View("Error");
             }
@@ -187,7 +216,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ForgotPassword
-        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
@@ -196,13 +224,12 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var user = await UserManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -211,8 +238,9 @@ namespace FSPOC_WebProject.Controllers.Persona
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
+                // TODO: Email
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -223,7 +251,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ForgotPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -231,7 +258,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ResetPassword
-        [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
@@ -240,7 +266,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -265,7 +290,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -274,7 +298,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
@@ -284,11 +307,10 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/SendCode
-        [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            if (userId == default(int))
             {
                 return View("Error");
             }
@@ -300,7 +322,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/SendCode
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
@@ -319,7 +340,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         //
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -350,7 +370,6 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
@@ -367,7 +386,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User { Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -388,21 +407,26 @@ namespace FSPOC_WebProject.Controllers.Persona
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [PersonaAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            CORE core = HttpContext.GetCORE();
+            core.Persona.LogOff(User.Identity.Name);
+
             return RedirectToAction("Index", "Home");
         }
 
         //
         // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
         }
 
+        [PersonaAuthorize]
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -455,11 +479,11 @@ namespace FSPOC_WebProject.Controllers.Persona
         internal class ChallengeResult : HttpUnauthorizedResult
         {
             public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
+                : this(provider, redirectUri, default(int))
             {
             }
 
-            public ChallengeResult(string provider, string redirectUri, string userId)
+            public ChallengeResult(string provider, string redirectUri, int userId)
             {
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
@@ -468,18 +492,107 @@ namespace FSPOC_WebProject.Controllers.Persona
 
             public string LoginProvider { get; set; }
             public string RedirectUri { get; set; }
-            public string UserId { get; set; }
+            public int UserId { get; set; }
 
             public override void ExecuteResult(ControllerContext context)
             {
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
+                if (UserId != default(int))
                 {
-                    properties.Dictionary[XsrfKey] = UserId;
+                    properties.Dictionary[XsrfKey] = UserId.ToString();
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
         #endregion
+
+        // GET: Users
+        public ActionResult Index()
+        {
+            DBEntities e = new DBEntities();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("AjaxIndex", e.Users);
+            }
+            else
+            {
+                return View(e.Users);
+            }
+        }
+
+        public ActionResult Detail(int id)
+        {
+            DBEntities e = new DBEntities();
+            return View(e.Users.SingleOrDefault(x => x.Id == id));
+        }
+
+        public ActionResult Create()
+        {
+            SetPasswordViewModel model = new SetPasswordViewModel();
+            FSS.Omnius.Modules.Entitron.Entity.Persona.User user = new User();
+            model.User = user;
+
+            //user je lokalní, není řešeno přes AD
+            model.User.isLocalUser = true;
+
+            //datumy se nastavují protože datetime v databázi a v c# mají rozdílné min.hodnoty
+            model.User.localExpiresAt = DateTime.Now;
+            model.User.LastLogin = DateTime.Now;
+            model.User.CurrentLogin = DateTime.Now;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateLocalUser(SetPasswordViewModel model)
+        {
+            IdentityResult result = null;
+
+            if (ModelState.IsValid)
+            {
+                result = await UserManager.CreateAsync(model.User, model.NewPassword);
+                if (result.Succeeded)
+                    return RedirectToAction("Index");
+            }
+
+            if (result != null)
+                AddErrors(result);
+
+            return View("Create", model);
+        }
+
+        public ActionResult Update(int id)
+        {
+            DBEntities e = new DBEntities();
+            User u = e.Users.SingleOrDefault(x => x.Id == id);
+            return View(u);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User model)
+        {
+            IdentityResult result = null;
+            if (ModelState.IsValid)
+            {
+                DBEntities e = new DBEntities();
+                FSS.Omnius.Modules.Entitron.Entity.Persona.User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
+                e.Users.AddOrUpdate(user, model);
+                e.SaveChanges();
+                ViewBag.ShowTable = false;
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ShowTable = true;
+            return PartialView("Update", model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            DBEntities e = new DBEntities();
+            e.Users.Remove(e.Users.SingleOrDefault(x => x.Id == id));
+            e.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -12,64 +12,82 @@
     </svg>
     <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
-    <div id="upperPanelHistoryButton" class="tapestryUpperPanelButton">Historie</div>
+    <div id="upperPanelHistoryButton" class="tapestryUpperPanelButton">Výběr bloku</div>
     <div id="upperPanelLibrariesButton" class="tapestryUpperPanelButton highlighted">Knihovny</div>
     <div id="tapestryLibraryArea">
         <div class="libraryCategory">
-            <div class="libraryCategoryHeader">Akce</div>
-            <div class="libraryItem">Log In</div>
-            <div class="libraryItem">Log Out</div>
-            <div class="libraryItem highlighted">Validate</div>
-            <div class="libraryItem">Check config values</div>
-            <div class="libraryItem highlighted">Create</div>
-            <div class="libraryItem">Delete</div>
+            <div libId="1" libType="action" class="libraryCategoryHeader">Akce</div>
+            <div libId="2" libType="action" class="libraryItem">Show Modal</div>
+            <div libId="3" libType="action" class="libraryItem">Add Form</div>
+            <div libId="4" libType="action" class="libraryItem highlighted">Search w Attributes</div>
+            <div libId="5" libType="action" class="libraryItem">Fill Form</div>
+            <div libId="6" libType="action" class="libraryItem highlighted">Create</div>
+            <div libId="7" libType="action" class="libraryItem">Delete</div>
+            <div libId="48" libType="action" class="libraryItem">Update</div>
+            <div libId="49" libType="action" class="libraryItem">Get SAP data</div>
+            <div libId="50" libType="action" class="libraryItem">Get DB data</div>
+            <div libId="51" libType="action" class="libraryItem">Set state</div>
+            <div libId="52" libType="action" class="libraryItem">Validation</div>
         </div>
-        <div class="libraryCategory">
+        <div id="libraryCategory-Attributes" class="libraryCategory">
             <div class="libraryCategoryHeader">Atributy</div>
-            <div class="libraryItem highlighted">Name</div>
-            <div class="libraryItem highlighted">Title</div>
-            <div class="libraryItem highlighted">Description</div>
-            <div class="libraryItem">Priority</div>
-            <div class="libraryItem highlighted">Category</div>
-            <div class="libraryItem">Content</div>
         </div>
-        <div class="libraryCategory">
-            <div class="libraryCategoryHeader">UI kompnenty</div>
-            <div class="libraryItem highlighted">Textbox175</div>
-            <div class="libraryItem">Combobox</div>
-            <div class="libraryItem">Picture</div>
-            <div class="libraryItem">Carousel</div>
-            <div class="libraryItem">Dropdown-toggle</div>
-            <div class="libraryItem highlighted">Button125</div>
+        <div id="libraryCategory-UI" class="libraryCategory">
+            <div class="libraryCategoryHeader">UI komponenty</div>
         </div>
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Role</div>
-            <div class="libraryItem highlighted">RS_admin</div>
-            <div class="libraryItem">RS_approver</div>
-            <div class="libraryItem highlighted">RS_key_user</div>
-            <div class="libraryItem">RS_reader</div>
-            <div class="libraryItem">RS_observer</div>
-            <div class="libraryItem">RS_room_manager</div>
+            <div libId="21" libType="role" class="libraryItem">RS_admin</div>
+            <div libId="22" libType="role" class="libraryItem">RS_approver</div>
+            <div libId="23" libType="role" class="libraryItem">RS_key_user</div>
+            <div libId="24" libType="role" class="libraryItem">RS_reader</div>
+            <div libId="25" libType="role" class="libraryItem">RS_observer</div>
+            <div libId="26" libType="role" class="libraryItem">RS_room_manager</div>
+            <div libId="38" libType="role" class="libraryItem highlighted">EPK_admin</div>
+            <div libId="39" libType="role" class="libraryItem highlighted">EPK_user</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
         </div>
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Stavy</div>
-            <div class="libraryItem">New</div>
-            <div class="libraryItem">Canceled</div>
-            <div class="libraryItem">Rejected</div>
-            <div class="libraryItem">Awaiting</div>
-            <div class="libraryItem">Accepted</div>
-            <div class="libraryItem">Closed</div>
+            <div libId="27" libType="state" class="libraryItem">Nový</div>
+            <div libId="28" libType="state" class="libraryItem">Rozpracováno</div>
+            <div libId="29" libType="state" class="libraryItem">Vyřízeno</div>
+            <div libId="30" libType="state" class="libraryItem">Zrušeno</div>
+            <div libId="31" libType="state" class="libraryItem">Nevyfakturováno</div>
+            <div libId="32" libType="state" class="libraryItem">Změna</div>
+            <div libId="40" libType="state" class="libraryItem">Připraveno ke schválení</div>
+            <div libId="41" libType="state" class="libraryItem">Schváleno</div>
+            <div libId="43" libType="state" class="libraryItem">Zamítnuto</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
         </div>
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Cíle</div>
-            <div class="libraryItem highlighted">Detail rezervace</div>
-            <div class="libraryItem">Založení rezervace</div>
-            <div class="libraryItem">Zrušení rezervace</div>
-            <div class="libraryItem">Notifikace</div>
+            <div libId="33" libType="target" class="libraryItem highlighted">Zadání objednávky</div>
+            <div libId="34" libType="target" class="libraryItem">Detail objednávky</div>
+            <div libId="35" libType="target" class="libraryItem">Zrušení rezervace</div>
+            <div libId="36" libType="target" class="libraryItem">Přehled dodavatelů</div>
+            <div libId="44" libType="target" class="libraryItem">Detail dodavatele</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
         </div>
         <div class="libraryCategory">
             <div class="libraryCategoryHeader">Šablony</div>
-            <div class="libraryItem highlighted">Založení rezervace</div>
+            <div libId="37" libType="template" class="libraryItem highlighted">Založení objednávky v HD</div>
+            <div libId="45" libType="template" class="libraryItem">Schválení nadřízeným</div>
+            <div libId="46" libType="template" class="libraryItem">Zamítnutí</div>
+            <div libId="47" libType="template" class="libraryItem">Schválení</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
+            <div class="libraryItem">Placeholder</div>
         </div>
     </div>
 </div>
@@ -80,70 +98,84 @@
 <div id="lowerPanel">
     <div id="tapestryLeftBar">
         <div class="leftBarHeader">Paleta</div>
+        <div id="hideTapestryTooboxIcon" class="fa fa-caret-left"></div>
         <ul class="tapestryToolbox">
             <li class="toolboxCategoryHeader_Symbols"><span class="toolboxCategoryLabel">Symboly</span></li>
             <li class="symbolToolboxSpace">
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;"/>
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
-                <img class="toolboxSymbol" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
+                <img class="toolboxSymbol" symbolType="circle-single" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-double" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
+                <img class="toolboxSymbol" endpoints="final" symbolType="circle-thick" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-single-dashed" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
+                <img class="toolboxSymbol" symbolType="circle-souble-dashed" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-plus" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-x" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-circle" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-pentagon" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="page" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="database" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
+                <img class="toolboxSymbol" symbolType="comment" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
             </li>
             <li class="toolboxCategoryHeader_Actions"><span class="toolboxCategoryLabel">Akce</span></li>
-            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Validate</div></li>
-            <li class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem">Create</div></li>
+            <li libId="4" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Validate</span></div></li>
+            <li libId="6" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem"><span class="itemLabel">Create</span></div></li>
             <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Name</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Title</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Description</div></li>
-            <li class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem">Category</div></li>
             <li class="toolboxCategoryHeader_UI"><span class="toolboxCategoryLabel">UI komponenty</span></li>
-            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Textbox</div></li>
-            <li class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem">Button</div></li>
             <li class="toolboxCategoryHeader_Roles"><span class="toolboxCategoryLabel">Role</span></li>
-            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_admin</div></li>
-            <li class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem">RS_key_user</div></li>
+            <li libId="21" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_admin</span></div></li>
+            <li libId="23" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">RS_key_user</span></div></li>
             <li class="toolboxCategoryHeader_States"><span class="toolboxCategoryLabel">Stavy</span></li>
             <li class="toolboxCategoryHeader_Targets"><span class="toolboxCategoryLabel">Cíle</span></li>
-            <li class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem">Detail Rezervace</div></li>
+            <li libId="33" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem"><span class="itemLabel">Detail Rezervace</span></div></li>
             <li class="toolboxCategoryHeader_Templates"><span class="toolboxCategoryLabel">Šablony</span></li>
-            <li class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem">Založení Rezervace</div></li>
+            <li libId="37" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">Založení Rezervace</span></div></li>
         </ul>
     </div>
-    <div id="tapestryLeftBarBackground"></div>
+    <div id="tapestryLeftBarMinimized">
+        <div id="showTapestryTooboxIcon" class="fa fa-caret-right"></div>
+        <div class="leftBarHeader">Paleta</div>
+    </div>
     <div id="tapestryWorkspace">
         <div id="blockHeaderPanel">
-            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">2</span> 
-            Obrazkovky <span id="blockHeaderScreenCount">2</span>
+            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">0</span>
+            Obrazovky <span id="blockHeaderScreenCount">0</span>
+            <div id="controlButtonArea">
+                <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
+                <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
+                <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
+                <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+                <button id="btnHistory" class="btn-omnius-rectangular">Historie</button>
+            </div>
         </div>
-        <div id="assignResourcesPanel">
-            <div class="scrollArea">
-                <div class="panelHeader">Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div></div>
-                <div id="resRule1" class="ruleItem resourceRule" style="width: 250px; height: 60px; left: 10px; top: 36px;">
-                    <div id="resItem1" class="item attributeItem" style="left: 20px; top: 20px;">Name</div>
-                    <div id="resItem2" class="item uiItem" style="left: 146px; top: 20px;">Textbox</div>
-                </div>
-                <div id="resRule2" class="ruleItem resourceRule" style="width: 390px; height: 60px; left: 290px; top: 36px;">
-                    <div id="resItem3" class="item roleItem" style="left: 20px; top: 20px;">RS_admin</div>
-                    <div id="resItem4" class="item uiItem" style="left: 146px; top: 20px;">Button</div>
-                    <div id="resItem5" class="item actionItem" style="left: 270px; top: 20px;">Create</div>
+        <div id="resourceRulesPanel">
+            <div class="panelHeader">
+                Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div>
+            </div>
+            <div class="scrollContainer">
+                <div class="scrollArea">
+                    <!--
+                    <div id="resRule1" class="rule resourceRule" style="width: 250px; height: 60px; left: 10px; top: 10px;">
+                        <div id="resItem1" class="item attributeItem" style="left: 20px; top: 20px;">Name</div>
+                        <div id="resItem2" class="item uiItem" style="left: 146px; top: 20px;">Textbox</div>
+                    </div>
+                    <div id="resRule2" class="rule resourceRule" style="width: 390px; height: 60px; left: 290px; top: 10px;">
+                        <div id="resItem3" class="item roleItem" style="left: 20px; top: 20px;">RS_admin</div>
+                        <div id="resItem4" class="item uiItem" style="left: 146px; top: 20px;">Button</div>
+                        <div id="resItem5" class="item actionItem" style="left: 270px; top: 20px;">Create</div>
+                    </div>
+                    -->
                 </div>
             </div>
         </div>
         <div id="workflowRulesPanel">
-            <div class="scrollArea">
-                <div class="panelHeader">
-                    Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
-                    <div id="wfRule1" class="ruleItem workflowRule" style="width: 766px; height: 360px; left: 46px; top: 97px;">
+            <div class="panelHeader">
+                Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
+            </div>
+            <div class="scrollContainer">
+                <div class="scrollArea">
+                    <!--
+                    <div id="wfRule1" class="rule workflowRule" style="width: 766px; height: 360px; left: 40px; top: 20px;">
                         <div class="workflowRuleHeader">
-                            <div class="vericalLabel">Založení rezervace</div>
+                            <div class="verticalLabel">Založení rezervace</div>
                         </div>
                         <div class="swimlaneArea">
                             <div class="swimlane">
@@ -156,12 +188,12 @@
                                     </div>
                                 </div>
                                 <div class="swimlaneContentArea">
-                                    <img id="wfItem1" class="symbol" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
+                                    <img id="wfItem1" class="symbol" symbolType="circle-single" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 18px; top: 66px;" />
                                     <div id="wfItem2" class="item actionItem" style="left: 145px; top: 60px;">
-                                        Create
+                                        <span class="itemLabel">Create</span>
                                         <img id="wfItem6" class="subSymbol" src="~/Content/images/TapestryIcons/small-message-double-circle.png" style="left: 15px; top: 45px;" />
                                     </div>
-                                    <img id="wfItem5" class="symbol" src="~/Content/images/TapestryIcons/orange-port-arrow.png" style="left: 526px; top: 68px;" />
+                                    <img id="wfItem5" class="symbol" symbolType="port-arrow" src="~/Content/images/TapestryIcons/port-arrow.png" style="left: 526px; top: 68px;" />
                                 </div>
                             </div>
                             <div class="swimlane">
@@ -170,16 +202,73 @@
                                 </div>
                                 <div class="swimlaneContentArea">
                                     <div id="wfItem3" class="item templateItem" style="left: 145px; top: 60px;">
-                                        Založení rezervace
+                                        <span class="itemLabel">Založení rezervace</span>
                                         <div id="wfItem7" class="subSymbolCounterpart" style="left: 30px; top: -2px;"></div>
                                     </div>
-                                    <img id="wfItem4" class="symbol" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
+                                    <img id="wfItem4" class="symbol" symbolType="circle-filled" src="~/Content/images/TapestryIcons/circle-filled.png" style="left: 526px; top: 66px;" />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
     </div>
+</div>
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
+<input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
+<input type="hidden" id="associatedTableId" value="1" />
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
+<div id="history-dialog" title="Load from history">
+    <table id="commit-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="save-dialog" title="Save block">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-rule-dialog" title="Rename rule">
+    <form>
+        <fieldset>
+            <label for="rule-name">Choose a new name</label>
+            <input type="text" name="rule-name" id="rule-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-block-dialog" title="Rename block">
+    <form>
+        <fieldset>
+            <label for="block-name">Choose a new name</label>
+            <input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="choose-screens-dialog" title="Choose screens">
+    <table id="screen-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Screen name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
 </div>

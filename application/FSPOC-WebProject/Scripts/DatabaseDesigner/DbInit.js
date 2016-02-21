@@ -23,7 +23,7 @@ $(function () {
             ClearDbScheme();
         });
         $("#btnGenerate").on("click", function () {
-            jQuery.get("/api/database/generate?appId=21", function () {
+            jQuery.get("/api/database/apps/" + $("#currentAppId").val() + "/generate", function () {
                 alert("Success");
             }).fail(function () {
                 alert("Error: database generation failed");

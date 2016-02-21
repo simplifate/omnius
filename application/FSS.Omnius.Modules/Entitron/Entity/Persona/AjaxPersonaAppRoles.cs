@@ -14,11 +14,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             Roles = new List<AjaxPersonaAppRoles_Role>();
         }
     }
+
     public class AjaxPersonaAppRoles_User
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
     public class AjaxPersonaAppRoles_Role
     {
         public int Id { get; set; }

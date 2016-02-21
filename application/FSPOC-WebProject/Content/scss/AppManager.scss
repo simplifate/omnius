@@ -102,9 +102,8 @@ body.adminAppModule {
         z-index: -10
     }
     .adminAppTable {
-        position: absolute;
-        left: 85px;
-        top: 70px;
+        margin-left: 85px;
+        margin-top: 70px;
         width: 85%;
 
         td {
@@ -116,6 +115,10 @@ body.adminAppModule {
                 width: 100px;
             }
         }
+    }
+    #btnAddApp {
+        margin-left: 85px;
+        margin-top: 10px;
     }
     .formTable {
         label, select {
@@ -158,4 +161,19 @@ body.adminAppModule {
             }
         }
     }
+    #appBuildResults {
+        position: absolute;
+        left: 290px;
+        top: 125px;
+        width: 70%;
+        .buildSuccess {
+            margin-left: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #dff0d8;
+            border-radius: 10px;
+        }
+    }
+
 }

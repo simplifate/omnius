@@ -7,15 +7,15 @@
 <table>
     <tr>
         <th>Id</th>
-        <th>Master template</th>
-        <th>Application Id</th>
+        <th>Name</th>
+        <th>Path</th>
     </tr>
     @foreach(var page in Model)
     {
         <tr>
             <td>@page.Id</td>
-            <td>@page.MasterTemplateId</td>
-            <td>@page.ApplicationId</td>
+            <td>@page.ViewName</td>
+            <td>@page.ViewPath</td>
         </tr>
     }
 </table>

@@ -22,56 +22,13 @@ $(function () {
                 })
             },
             open: function () {
-                renameBlockDialog.find("#block-name").val($("#headerBlockName").text());
+                renameBlockDialog.find("#block-name").val($("#blockHeaderBlockName").text());
             }
         });
         function renameBlockDialog_SubmitData() {
             renameBlockDialog.dialog("close");
-            $("#headerBlockName").text(renameBlockDialog.find("#block-name").val());
-        }
-        addActionsDialog = $("#add-actions-dialog").dialog({
-            autoOpen: false,
-            width: 450,
-            height: 550,
-            buttons: {
-                "Add": function () {
-                    addActionsDialog_SubmitData();
-                },
-                Cancel: function () {
-                    addActionsDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(document).on("click", "tr.actionRow", function (event) {
-                    $(this).toggleClass("highlightedRow");
-                });
-            },
-            open: function (event, ui) {
-                $(this).find("#action-table:first tbody:nth-child(2) tr").remove();
-                tbody = $(this).find("#action-table tbody:nth-child(2)");
-                for (i = 1; i <= 10; i++)
-                    tbody.append($('<tr class="actionRow formRow"><td>' + 'Action' + i + '</td></tr>'));
-            }
-        });
-        function addActionsDialog_SubmitData() {
-            somethingWasAdded = false;
-            addActionsDialog.find("#action-table:first tbody:nth-child(2) tr").each(function (index, element) {
-                if ($(element).hasClass("highlightedRow")) {
-                    newActionLabel = $(element).find("td").text();
-                    newAction = $('<div class="menuItem action">' + newActionLabel + '</div>');
-                    $("#actionsPanel").append(newAction);
-                    newAction.draggable({
-                        helper: "clone",
-                        tolerance: "fit",
-                        revert: true
-                    });
-                    somethingWasAdded = true;
-                }
-            });
-            if (somethingWasAdded)
-                addActionsDialog.dialog("close");
-            else
-                alert("No actions selected");
+            $("#blockHeaderBlockName").text(renameBlockDialog.find("#block-name").val());
+            ChangedSinceLastSave = true;
         }
         chooseTableDialog = $("#choose-table-dialog").dialog({
             autoOpen: false,
@@ -102,6 +59,7 @@ $(function () {
             if (selectedRow.length) {
                 chooseTableDialog.dialog("close");
                 $("#headerTableName").text(selectedRow.find("td").text());
+                ChangedSinceLastSave = true;
             }
             else
                 alert("No table selected");
@@ -136,105 +94,11 @@ $(function () {
             if (selectedRow.length) {
                 CurrentItem.data("emailTemplate", selectedRow.attr("templateId"));
                 chooseEmailTemplateDialog.dialog("close");
+                ChangedSinceLastSave = true;
             }
             else
                 alert("No template selected");
         }
-
-        editConditionDialog = $("#edit-condition-dialog").dialog({
-            autoOpen: false,
-            width: 750,
-            height: 500,
-            buttons: {
-                "Save": function () {
-                    editConditionDialog_SubmitData();
-                },
-                Cancel: function () {
-                    editConditionDialog.dialog("close");
-                }
-            },
-            open: function (event, ui) {
-                $(this).find(".logicTable tr").remove();
-                firstRow = $('<tr><td width="71px">IF</td><td>'
-                    + '<select class="selectField"></select></td>'
-                    + '<td><select class="selectOperator"></select></td>'
-                    + '<td><input type="text" class="constantValue"/></td>'
-                    + '<td width="91px"></td></tr>');
-                $(this).find(".logicTable").append(firstRow);
-                FillConditionsForLogicTableRow(firstRow);
-                conditionArrayPair = ConditionData.filter(function (val) {
-                    return val[0] == CurrentItem.attr("id");
-                })[0];
-                if (conditionArrayPair) {
-                    conditionArray = conditionArrayPair[1];
-                    if (conditionArray.length > 0) {
-                        firstRow.find(".selectField").val(conditionArray[0].Field);
-                        firstRow.find(".selectOperator").val(conditionArray[0].Operator);
-                        firstRow.find(".constantValue").val(conditionArray[0].Constant);
-
-                        for (j = 1; j < conditionArray.length; j++) {
-                            newRow = $('<tr><td><select class="selectRelation"></select></td>'
-                                + '<td><select class="selectField"></select></td>'
-                                + '<td><select class="selectOperator"></select></td>'
-                                + '<td><input type="text" class="constantValue"/></td>'
-                                + '<td><button type="button" class="btnRemoveCondition">Remove</button></td></tr>');
-                            FillConditionsForLogicTableRow(newRow);
-                            newRow.find(".selectRelation").val(conditionArray[j].Relation);
-                            newRow.find(".selectField").val(conditionArray[j].Field);
-                            newRow.find(".selectOperator").val(conditionArray[j].Operator);
-                            newRow.find(".constantValue").val(conditionArray[j].Constant);
-
-                            newRow.find(".btnRemoveCondition").on("click", function () {
-                                $(this).parents("tr").remove();
-                            });
-                            $(this).find(".logicTable").append(newRow);
-                        }
-                    }
-                }
-            }
-        });
-        function editConditionDialog_SubmitData() {
-            conditionArray = [];
-            editConditionDialog.find(".logicTable tr").each(function (index, value) {
-                logicTableRow = $(value);
-                conditionArray.push({
-                    Relation: logicTableRow.find(".selectRelation").val(),
-                    Field: logicTableRow.find(".selectField").val(),
-                    Operator: logicTableRow.find(".selectOperator").val(),
-                    Constant: logicTableRow.find(".constantValue").val()
-                });
-            });
-            currentItemDataRecord = ConditionData.filter(function (val) {
-                return val[0] == CurrentItem.attr("id");
-            })[0];
-            dataRecordIndex = ConditionData.indexOf(currentItemDataRecord);
-            if (dataRecordIndex != -1)
-                ConditionData[dataRecordIndex] = [CurrentItem.attr("id"), conditionArray];
-            else
-                ConditionData.push([CurrentItem.attr("id"), conditionArray]);
-
-            editConditionDialog.dialog("close");
-        }
-        $("#btnAddCondition").on("click", function () {
-            newRow = $('<tr><td><select class="selectRelation"></select></td>'
-                + '<td><select class="selectField"></select></td>'
-                + '<td><select class="selectOperator"></select></td>'
-                + '<td><input type="text" class="constantValue"/></td>'
-                + '<td><button type="button" class="btnRemoveCondition">Remove</button></td></tr>');
-            FillConditionsForLogicTableRow(newRow);
-            newRow.find(".selectRelation option:first").attr('selected', 'selected');
-            newRow.find(".selectField option:first").attr('selected', 'selected');
-            newRow.find(".selectOperator option:first").attr('selected', 'selected');
-
-            newRow.find(".btnRemoveCondition").on("click", function () {
-                $(this).parents("tr").remove();
-            });
-            $("#edit-condition-dialog .logicTable").append(newRow);
-        });
-        $(".btnRemoveCondition").on("click", function () {
-            $(this).parents("tr").remove();
-        });
-
         choosePortDialog = $("#choose-port-dialog").dialog({
             autoOpen: false,
             width: 450,
@@ -279,6 +143,7 @@ $(function () {
                 CurrentItem.parents(".rule").data("jsPlumbInstance").recalculateOffsets();
                 CurrentItem.parents(".rule").data("jsPlumbInstance").repaintEverything();
                 choosePortDialog.dialog("close");
+                ChangedSinceLastSave = true;
             }
             else
                 alert("No port selected");
@@ -304,12 +169,13 @@ $(function () {
                 })
             },
             open: function () {
-                renameRuleDialog.find("#rule-name").val(currentRule.find(".ruleHeader").text());
+                renameRuleDialog.find("#rule-name").val(currentRule.find(".workflowRuleHeader .verticalLabel").text());
             }
         });
         function renameRuleDialog_SubmitData() {
             renameRuleDialog.dialog("close");
-            currentRule.find(".ruleHeader").text(renameRuleDialog.find("#rule-name").val());
+            currentRule.find(".workflowRuleHeader .verticalLabel").text(renameRuleDialog.find("#rule-name").val());
+            ChangedSinceLastSave = true;
         }
         historyDialog = $("#history-dialog").dialog({
             autoOpen: false,
@@ -361,8 +227,14 @@ $(function () {
         });
         function historyDialog_SubmitData() {
             if (historyDialog.data("selectedCommitId")) {
-                LoadBlock(historyDialog.data("selectedCommitId"));
                 historyDialog.dialog("close");
+                if (ChangedSinceLastSave)
+                    confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+                else
+                    confirmed = true;
+                if (confirmed) {
+                    LoadBlock(historyDialog.data("selectedCommitId"));
+                }
             }
             else
                 alert("Please select a commit");
@@ -394,6 +266,73 @@ $(function () {
         function saveDialog_SubmitData() {
             saveDialog.dialog("close");
             SaveBlock(saveDialog.find("#message").val());
+        }
+        chooseScreensDialog = $("#choose-screens-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 550,
+            buttons: {
+                "Select": function () {
+                    chooseScreensDialog_SubmitData();
+                },
+                Cancel: function () {
+                    chooseScreensDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(document).on("click", "tr.actionRow", function (event) {
+                    $(this).toggleClass("highlightedRow");
+                });
+            },
+            open: function (event, ui) {
+                appId = $("#currentAppId").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/mozaic-editor/apps/" + appId + "/pages",
+                    dataType: "json",
+                    error: function () { alert("Error loading page list") },
+                    success: function (data) {
+                        chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
+                        tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
+                        for (i = 0; i < data.length; i++) {
+                            tbody.append($('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>'));
+                        }
+                        $("#screen-table .screenRow").on("click", function () {
+                            $(this).toggleClass("highlightedRow");
+                        });
+                    }
+                });
+            }
+        });
+        function chooseScreensDialog_SubmitData() {
+            somethingWasAdded = false;
+            pageCount = 0;
+            appId = $("#currentAppId").val();
+            AssociatedPageIds = [];
+            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
+                if ($(element).hasClass("highlightedRow")) {
+                    pageCount++;
+                    pageId = $(element).attr("pageId");
+                    AssociatedPageIds.push(pageId);
+                    url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        dataType: "json",
+                        success: function (data) {
+                            for (i = 0; i < data.Components.length; i++) {
+                                cData = data.Components[i];
+                                lastLibId++;
+                                newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                    + cData.Name + '</div>');
+                                $("#libraryCategory-UI").append(newLibItem);
+                            }
+                        }
+                    });
+                }
+            });
+            $("#blockHeaderScreenCount").text(pageCount);
+            chooseScreensDialog.dialog("close");
         }
     }
 });

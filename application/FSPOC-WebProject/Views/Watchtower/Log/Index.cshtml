@@ -16,7 +16,6 @@
                 <path d="M700 74 L1140 74 L1200 134 L1200 240 L980 240 L900 320 L190 320" stroke="#49c4f1" stroke-width="1" fill="none" />
             </svg>
             <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
-            <div id="hideFilterIcon" class="fa fa-caret-up"></div>
             <div id="filterPanelLabel">Vyhledávání</div>
             <form id="filterLogForm" method="post" action="/Watchtower">
                 <table id="filterLogTable">
@@ -82,6 +81,7 @@
                 </div>
             </form>
         </div>
+        <div id="hideFilterIcon" class="fa fa-caret-up"></div>
         <input id="previousSearchType" type="hidden" value="@ViewData["type"]" />
         <input id="previousSearchSource" type="hidden" value="@ViewData["source"]" />
         <input id="previousSearchLevel" type="hidden" value="@ViewData["level"]" />

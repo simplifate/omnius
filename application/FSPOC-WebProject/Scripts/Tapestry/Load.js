@@ -11,83 +11,31 @@
         dataType: "json",
         error: function () { alert("ERROR") },
         success: function (data) {
-            $("#headerBlockName").text(data.Name);
-            $("#headerTableName").text(data.AssociatedTableName);
-            $("#associatedTableId").text(data.AssociatedTableId),
-            $("#rulesPanel .rule").remove();
-            for (i = 0; i < data.Rules.length; i++) {
-                currentRuleData = data.Rules[i];
-                newRule = $('<div class="rule" style="left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px; '
-                   + 'width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height + 'px;"><div class="ruleHeader">'
-                   + currentRuleData.Name + '</div><div class="editRuleIcon fa fa-edit"></div>'
-                   + '<div class="deleteRuleIcon fa fa-remove"></div><div class="ruleContent"></div></div>');
-                $("#rulesPanel .scrollArea").append(newRule);
-                currentInstance = CreateJsPlumbInstanceForRule(newRule);
-                for (j = 0; j < currentRuleData.Items.length; j++) {
-                    currentItemData = currentRuleData.Items[j];
-                    newItem = $('<div class="item" style="left: '
-                        + currentItemData.PositionX + 'px; top: ' + currentItemData.PositionY + 'px;">'
-                        + currentItemData.Label + '</div>');
-                    newItem.addClass(currentItemData.TypeClass);
-                    if (currentItemData.IsDataSource)
-                        newItem.addClass("dataSource");
-                    newItem.attr("saveId", currentItemData.Id);
-                    newItem.attr("dialogType", currentItemData.DialogType);
-                    newRule.find(".ruleContent").append(newItem);
-                    AddIconToItem(newItem);
-                    AddToJsPlumb(currentInstance, newItem);
-                    newItem.droppable({
-                        greedy: true,
-                        tolerance: "touch",
-                        accept: ".item, .operatorSymbol",
-                        drop: function (event, ui) {
-                            ui.draggable.draggable("option", "revert", true);
-                            revertActive = true;
-                        }
-                    });
-                    for (k = 0; k < currentItemData.Properties.length; k++) {
-                        currentPropertyData = currentItemData.Properties[k];
-                        if (currentPropertyData.Name == "PortId")
-                            newItem.data("portId", currentPropertyData.Value);
+            ChangedSinceLastSave = false;
+            $("#resourceRulesPanel .resourceRule").remove();
+            $("#workflowRulesPanel .workflowRule").remove();
+            $("#blockHeaderBlockName").text(data.Name);
+            for (i = 0; i < data.ResourceRules.length; i++) {
+                currentRuleData = data.ResourceRules[i];
+                newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
+                    + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
+                newRule.attr("id", AssingID());
+                $("#resourceRulesPanel .scrollArea").append(newRule);
+                newRule.draggable({
+                    containment: "parent",
+                    revert: function (event, ui) {
+                        return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
+                    },
+                    stop: function (event, ui) {
+                        ChangedSinceLastSave = true;
                     }
-                }
-                for (j = 0; j < currentRuleData.Operators.length; j++) {
-                    currentOperatorData = currentRuleData.Operators[j];
-                    if (currentOperatorData.Type == "decision")
-                        newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                          + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
-                    else if (currentOperatorData.Type == "condition")
-                        newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                          + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                    newRule.find(".ruleContent").append(newOperator);
-                    newOperator.css("left", currentOperatorData.PositionX);
-                    newOperator.css("top", currentOperatorData.PositionY);
-                    newOperator.attr("saveId", currentOperatorData.Id);
-                    newOperator.attr("dialogType", currentOperatorData.DialogType);
-                    AddToJsPlumb(currentInstance, newOperator);
-                }
-                for (j = 0; j < currentRuleData.Connections.length; j++) {
-                    currentConnectionData = currentRuleData.Connections[j];
-                    sourceDiv = newRule.find(".item[saveId='" + currentConnectionData.Source + "'], .operatorSymbol[saveId='" + currentConnectionData.Source + "']");
-                    targetDiv = newRule.find(".item[saveId='" + currentConnectionData.Target + "'], .operatorSymbol[saveId='" + currentConnectionData.Target + "']");
-                    if (currentConnectionData.SourceSlot == 1)
-                        sourceEndpointUuid = "BottomCenter";
-                    else
-                        sourceEndpointUuid = "RightMiddle";
-                    currentInstance.connect({ uuids: [sourceDiv.attr("id") + sourceEndpointUuid], target: targetDiv.attr("id"), editable: true });
-                }
-                newRule.find(".editRuleIcon").on("click", function () {
-                    currentRule = $(this).parents(".rule");
-                    renameRuleDialog.dialog("open");
-                });
-                newRule.find(".deleteRuleIcon").on("click", function () {
-                    $(this).parents(".rule").remove();
                 });
                 newRule.resizable({
                     start: function (event, ui) {
+                        rule = $(this);
                         contentsWidth = 120;
                         contentsHeight = 40;
-                        $(this).find(".item, .operatorSymbol").each(function (index, element) {
+                        rule.find(".item").each(function (index, element) {
                             rightEdge = $(element).position().left + $(element).width();
                             if (rightEdge > contentsWidth)
                                 contentsWidth = rightEdge;
@@ -95,93 +43,233 @@
                             if (bottomEdge > contentsHeight)
                                 contentsHeight = bottomEdge;
                         });
-                        $(this).css("min-width", contentsWidth - 10);
-                        $(this).css("min-height", contentsHeight + 20);
+                        rule.css("min-width", contentsWidth + 40);
+                        rule.css("min-height", contentsHeight + 20);
 
-                        limits = CheckRuleResizeLimits($(this));
-                        $(this).css("max-width", limits.horizontal - 50);
-                        $(this).css("max-height", limits.vertical - 50);
+                        limits = CheckRuleResizeLimits(rule, true);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
                     },
                     resize: function (event, ui) {
-                        limits = CheckRuleResizeLimits($(this));
-                        $(this).css("max-width", limits.horizontal - 50);
-                        $(this).css("max-height", limits.vertical - 50);
+                        rule = $(this);
+                        limits = CheckRuleResizeLimits(rule, true);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    stop: function (event, ui) {
+                        instance = $(this).data("jsPlumbInstance");
+                        instance.recalculateOffsets();
+                        instance.repaintEverything();
+                        ChangedSinceLastSave = true;
                     }
                 });
-                newRule.draggable({ handle: ".ruleHeader" });
-                newRule.attr("id", AssingID());
+                CreateJsPlumbInstanceForRule(newRule);
                 newRule.droppable({
-                    containment: ".rule",
-                    greedy: false,
+                    containment: ".resourceRule",
                     tolerance: "touch",
-                    accept: ".item, .operatorSymbol, .menuItem, .rule",
+                    accept: ".toolboxItem",
+                    greedy: true,
                     drop: function (e, ui) {
-                        if (ui.helper.hasClass("item") || ui.helper.hasClass("operatorSymbol")) {
-                            return false;
-                        }
-                        if (ui.helper.hasClass("rule")) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        }
-                        if (ui.helper.collision(".item, .operatorSymbol").length > 0) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        };
-                        ruleContent = $(this).find(".ruleContent");
-                        if (ui.offset.left < ruleContent.offset().left || ui.offset.top < ruleContent.offset().top
-                            || ui.offset.left + ui.helper.width() > ruleContent.offset().left + ruleContent.width() - 20
-                            || ui.offset.top + ui.helper.height() > ruleContent.offset().top + ruleContent.height() - 20) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
-                        }
                         droppedElement = ui.helper.clone();
+                        droppedElement.removeClass("toolboxItem");
+                        droppedElement.addClass("item");
+                        $(this).append(droppedElement);
+                        ruleContent = $(this);
+                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
                         ui.helper.remove();
-                        droppedElement.appendTo(ruleContent);
-                        leftOffset = ui.draggable.parent().offset().left - ruleContent.offset().left;
-                        topOffset = ui.draggable.parent().offset().top - ruleContent.offset().top;
-                        if (droppedElement.hasClass("operator")) {
-                            if (droppedElement.attr("operatorType") == "decision")
-                                newOperator = $('<div class="decisionRhombus operatorSymbol"><svg width="70" height="60">'
-                                  + '<polygon points="35,8 67,30 35,52 3,30" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /></svg></div>');
-                            else if (droppedElement.attr("operatorType") == "condition")
-                                newOperator = $('<div class="conditionEllipse operatorSymbol"><svg width="70" height="60">'
-                                  + '<ellipse cx="35" cy="30" rx="32" ry="20" style="fill:#467ea8; stroke:#467ea8; stroke-width:2;" /><text x="17" y="39" fill="#2ddef9" font-size="25">if...</text></svg></div>');
-                            newOperator.appendTo(ruleContent);
-                            newOperator.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                            newOperator.attr("dialogType", droppedElement.attr("dialogType"));
-                            droppedElement.remove();
-                            AddToJsPlumb($(this).data("jsPlumbInstance"), newOperator);
-                            newOperator.droppable({
-                                greedy: true,
-                                tolerance: "touch",
-                                accept: ".item, .operatorSymbol",
-                                drop: function (event, ui) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    revertActive = true;
-                                }
-                            });
+                        AddToJsPlumb(droppedElement);
+                        ChangedSinceLastSave = true;
+                    }
+                });
+                for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
+                    currentItemData = currentRuleData.ResourceItems[j];
+                    newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                        + currentItemData.PositionY + 'px;">'
+                        + currentItemData.Label + '</div>');
+                    if (currentItemData.PageId != null)
+                        newItem.attr("pageId", currentItemData.PageId);
+                    if (currentItemData.ComponentId != null)
+                        newItem.attr("componentId", currentItemData.ComponentId);
+                    newItem.addClass(currentItemData.TypeClass);
+                    newRule.append(newItem);
+                    AddToJsPlumb(newItem);
+                }
+                currentInstance = newRule.data("jsPlumbInstance");
+                for (j = 0; j < currentRuleData.Connections.length; j++) {
+                    currentConnectionData = currentRuleData.Connections[j];
+                    currentInstance.connect({
+                        uuids: ["resItem" + currentConnectionData.Source + "RightMiddle"], target: "resItem" + currentConnectionData.Target
+                    });
+                }
+            }
+            for (i = 0; i < data.WorkflowRules.length; i++) {
+                currentRuleData = data.WorkflowRules[i];
+                newRule = $('<div class="rule workflowRule" style="width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height
+                    + 'px; left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"><div class="workflowRuleHeader">'
+                    + '<div class="verticalLabel" style="margin-top: 0px;">' + currentRuleData.Name + '</div></div><div class="swimlaneArea"></div></div>');
+                newRule.attr("id", AssingID());
+                $("#workflowRulesPanel .scrollArea").append(newRule);
+                newRule.draggable({
+                    containment: "parent",
+                    handle: ".workflowRuleHeader",
+                    revert: function (event, ui) {
+                        return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
+                    },
+                    stop: function (event, ui) {
+                        ChangedSinceLastSave = true;
+                    }
+                });
+                newRule.resizable({
+                    start: function (event, ui) {
+                        rule = $(this);
+                        contentsWidth = 120;
+                        contentsHeight = 40;
+                        rule.find(".item").each(function (index, element) {
+                            rightEdge = $(element).position().left + $(element).width();
+                            if (rightEdge > contentsWidth)
+                                contentsWidth = rightEdge;
+                            bottomEdge = $(element).position().top + $(element).height();
+                            if (bottomEdge > contentsHeight)
+                                contentsHeight = bottomEdge;
+                        });
+                        rule.css("min-width", contentsWidth + 40);
+                        rule.css("min-height", contentsHeight + 20);
+
+                        limits = CheckRuleResizeLimits(rule, false);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    resize: function (event, ui) {
+                        rule = $(this);
+                        instance = rule.data("jsPlumbInstance");
+                        instance.recalculateOffsets();
+                        instance.repaintEverything();
+                        limits = CheckRuleResizeLimits(rule, false);
+                        rule.css("max-width", limits.horizontal - 10);
+                        rule.css("max-height", limits.vertical - 10);
+                    },
+                    stop: function (event, ui) {
+                        ChangedSinceLastSave = true;
+                    }
+                });
+                CreateJsPlumbInstanceForRule(newRule);
+                for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
+                    currentSwimlaneData = currentRuleData.Swimlanes[j];
+                    newSwimlane = $('<div class="swimlane" style="height: ' + (100/currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                        + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
+                    newRule.find(".swimlaneArea").append(newSwimlane);
+                    if (currentSwimlaneData.Roles.length > 0) {
+                        newSwimlane.find(".rolePlaceholder").remove();
+                        newSwimlane.find(".swimlaneRolesArea").append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
+                        currentItemData = currentSwimlaneData.WorkflowItems[k];
+                        newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                            + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
+                        newItem.addClass(currentItemData.TypeClass);
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newItem);
+                        AddToJsPlumb(newItem);
+                    }
+                    for (k = 0; k < currentSwimlaneData.WorkflowSymbols.length; k++) {
+                        currentSymbolData = currentSwimlaneData.WorkflowSymbols[k];
+                        newSymbol = $('<img id="wfSymbol' + currentSymbolData.Id + '" class="symbol" symbolType="' + currentSymbolData.Type +
+                            '" src="/Content/images/TapestryIcons/' + currentSymbolData.Type + '.png" style="left: ' + currentSymbolData.PositionX + 'px; top: '
+                            + currentSymbolData.PositionY + 'px;" />');
+                        if (currentSymbolData.Type == "circle-thick")
+                            newSymbol.attr("endpoints", "final");
+                        else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
+                            newSymbol.attr("endpoints", "gateway");
+                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
+                        targetSwimlane.append(newSymbol);
+                        AddToJsPlumb(newSymbol);
+                    }
+                }
+                newRule.find(".swimlaneRolesArea").droppable({
+                    tolerance: "touch",
+                    accept: ".toolboxItem.roleItem",
+                    greedy: true,
+                    drop: function (e, ui) {
+                        droppedElement = ui.helper.clone();
+                        $(this).find(".rolePlaceholder, .roleItem").remove();
+                        $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                        ui.helper.remove();
+                        ChangedSinceLastSave = true;
+                    }
+                });
+                newRule.find(".swimlaneContentArea").droppable({
+                    containment: ".swimlaneContentArea",
+                    tolerance: "touch",
+                    accept: ".toolboxSymbol, .toolboxItem",
+                    greedy: false,
+                    drop: function (e, ui) {
+                        droppedElement = ui.helper.clone();
+                        if (droppedElement.hasClass("roleItem")) {
+                            ui.draggable.draggable("option", "revert", true);
+                            return false;
+                        }
+                        $(this).append(droppedElement);
+                        ruleContent = $(this);
+                        if (droppedElement.hasClass("toolboxSymbol")) {
+                            droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
+                            droppedElement.addClass("symbol");
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                         }
                         else {
-                            droppedElement.removeClass("menuItem");
+                            droppedElement.removeClass("toolboxItem");
                             droppedElement.addClass("item");
-                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset + 8, top: droppedElement.offset().top + topOffset + 8 });
-                            AddIconToItem(droppedElement);
-                            if (droppedElement.position().left + droppedElement.width() > ruleContent.width() - 25)
-                                droppedElement.css("left", ruleContent.width() - droppedElement.width() - 25);
-                            AddToJsPlumb($(this).data("jsPlumbInstance"), droppedElement);
-                            droppedElement.droppable({
-                                greedy: true,
-                                tolerance: "touch",
-                                accept: ".item, .operatorSymbol",
-                                drop: function (event, ui) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    revertActive = true;
-                                }
-                            });
-                            if (droppedElement.hasClass("port")) {
-                                CurrentItem = droppedElement;
-                                choosePortDialog.dialog("open");
-                            }
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
+                        }
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                        ui.helper.remove();
+                        AddToJsPlumb(droppedElement);
+                        ChangedSinceLastSave = true;
+                    }
+                });
+                currentInstance = newRule.data("jsPlumbInstance");
+                for (j = 0; j < currentRuleData.Connections.length; j++) {
+                    currentConnectionData = currentRuleData.Connections[j];
+                    sourceId = (currentConnectionData.SourceType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Source;
+                    targetId = (currentConnectionData.TargetType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Target;
+                    if (currentConnectionData.SourceSlot == 1)
+                        sourceEndpointUuid = "BottomCenter";
+                    else
+                        sourceEndpointUuid = "RightMiddle";
+                    currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
+                }
+            }
+            appId = $("#currentAppId").val();
+            url = "/api/database/apps/" + appId + "/commits/latest",
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.Tables.length; i++) {
+                        lastLibId++;
+                        newLibItem = $('<div libId="' + lastLibId + '" libType="attribute" class="libraryItem">Table: ' + data.Tables[i].Name + '</div>');
+                        $("#libraryCategory-Attributes").append(newLibItem);
+                    }
+                }
+            });
+            for (i = 0; i < data.AssociatedPageIds.length; i++) {
+                pageId = data.AssociatedPageIds[i];
+                url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                        for (i = 0; i < data.Components.length; i++) {
+                            cData = data.Components[i];
+                            lastLibId++;
+                            newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                + cData.Name + '</div>');
+                            $("#libraryCategory-UI").append(newLibItem);
                         }
                     }
                 });

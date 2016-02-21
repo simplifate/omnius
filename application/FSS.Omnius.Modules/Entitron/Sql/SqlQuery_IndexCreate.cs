@@ -10,9 +10,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         public List<string> columnsName { get; set; }
         public string indexName { get; set; }
+        public bool isUniqueIndex { get; set; }
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
+            string unique = (isUniqueIndex) ? "UNIQUE" : "";
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);
@@ -20,9 +22,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('CREATE INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
+                "SET @sql= CONCAT('CREATE {4} INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
                 "exec (@sql);",
-                parAppName, parTableName,parIndexName, parColumnName);
+                parAppName, parTableName,parIndexName, parColumnName,unique);
 
             base.BaseExecution(transaction);
         }

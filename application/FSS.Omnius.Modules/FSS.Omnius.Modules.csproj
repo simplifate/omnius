@@ -34,12 +34,24 @@
       <HintPath>..\packages\DbExtensions.5.1.0\lib\net40\DbExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -94,6 +106,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CORE\Convertor.cs" />
@@ -118,6 +131,8 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
@@ -127,6 +142,9 @@
     <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
     <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
+    <Compile Include="Entitron\Entity\Persona\UserClaim.cs" />
+    <Compile Include="Entitron\Entity\Persona\UserLogin.cs" />
+    <Compile Include="Entitron\Entity\Persona\User_Role.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
@@ -400,6 +418,82 @@
     <Compile Include="Migrations\201601221627553_hermes-queue-status.Designer.cs">
       <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601271825013_dropPages.cs" />
+    <Compile Include="Migrations\201601271825013_dropPages.Designer.cs">
+      <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601291003556_logout.cs" />
+    <Compile Include="Migrations\201601291003556_logout.Designer.cs">
+      <DependentUpon>201601291003556_logout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601291108499_update tapestry designer models.cs" />
+    <Compile Include="Migrations\201601291108499_update tapestry designer models.Designer.cs">
+      <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601291246147_pageOldRelation.cs" />
+    <Compile Include="Migrations\201601291246147_pageOldRelation.Designer.cs">
+      <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602081506423_sharedTables.cs" />
+    <Compile Include="Migrations\201602081506423_sharedTables.Designer.cs">
+      <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602091209188_isLocalUser.cs" />
+    <Compile Include="Migrations\201602091209188_isLocalUser.Designer.cs">
+      <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602101151279_IdentityUser.cs" />
+    <Compile Include="Migrations\201602101151279_IdentityUser.Designer.cs">
+      <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602120828421_requiredModulePermissions.cs" />
+    <Compile Include="Migrations\201602120828421_requiredModulePermissions.Designer.cs">
+      <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.cs" />
+    <Compile Include="Migrations\201602131234533_Mozaic editor and app profiles.Designer.cs">
+      <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602151623596_Overview isInitial property.cs" />
+    <Compile Include="Migrations\201602151623596_Overview isInitial property.Designer.cs">
+      <DependentUpon>201602151623596_Overview isInitial property.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602160832402_removeOldWFDesignerModels.cs" />
+    <Compile Include="Migrations\201602160832402_removeOldWFDesignerModels.Designer.cs">
+      <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602161059316_Mozaic editor properties.cs" />
+    <Compile Include="Migrations\201602161059316_Mozaic editor properties.Designer.cs">
+      <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.cs" />
+    <Compile Include="Migrations\201602170920573_renameType_WorkFlowItem.Designer.cs">
+      <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181028549_DataTypeExtend.cs" />
+    <Compile Include="Migrations\201602181028549_DataTypeExtend.Designer.cs">
+      <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.cs" />
+    <Compile Include="Migrations\201602181722051_page IDs for UI components.Designer.cs">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.cs" />
+    <Compile Include="Migrations\201602182123313_removeOldTapestryDesignerApp.Designer.cs">
+      <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.cs" />
+    <Compile Include="Migrations\201602182208021_addExecuteByToActionRule.Designer.cs">
+      <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.cs" />
+    <Compile Include="Migrations\201602191012213_ComponentId in Tapestry.Designer.cs">
+      <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.cs" />
+    <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.Designer.cs">
+      <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -416,10 +510,17 @@
     <Compile Include="Nexus\Service\NexusWSService.cs" />
     <Compile Include="Nexus\Service\WebDavFileSyncService.cs" />
     <Compile Include="Persona\ADgroup.cs" />
+    <Compile Include="Persona\ModuleAccessPermission.cs" />
     <Compile Include="Persona\NotAuthorizedException.cs" />
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\MozaicRepository.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
@@ -433,7 +534,7 @@
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\DeleteItem.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\DeleteDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
@@ -446,6 +547,7 @@
     <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Running\PreBlockAction.cs" />
+    <Compile Include="Tapestry\Running\WFitem.cs" />
     <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Watchtower\WatchtowerLogger.cs" />
@@ -461,7 +563,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201511301834451_init.resx">
@@ -597,9 +701,86 @@
     <EmbeddedResource Include="Migrations\201601221627553_hermes-queue-status.resx">
       <DependentUpon>201601221627553_hermes-queue-status.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601271825013_dropPages.resx">
+      <DependentUpon>201601271825013_dropPages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291003556_logout.resx">
+      <DependentUpon>201601291003556_logout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291108499_update tapestry designer models.resx">
+      <DependentUpon>201601291108499_update tapestry designer models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291246147_pageOldRelation.resx">
+      <DependentUpon>201601291246147_pageOldRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602081506423_sharedTables.resx">
+      <DependentUpon>201602081506423_sharedTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602091209188_isLocalUser.resx">
+      <DependentUpon>201602091209188_isLocalUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602101151279_IdentityUser.resx">
+      <DependentUpon>201602101151279_IdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602120828421_requiredModulePermissions.resx">
+      <DependentUpon>201602120828421_requiredModulePermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602131234533_Mozaic editor and app profiles.resx">
+      <DependentUpon>201602131234533_Mozaic editor and app profiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602151623596_Overview isInitial property.resx">
+      <DependentUpon>201602151623596_Overview isInitial property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602160832402_removeOldWFDesignerModels.resx">
+      <DependentUpon>201602160832402_removeOldWFDesignerModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161059316_Mozaic editor properties.resx">
+      <DependentUpon>201602161059316_Mozaic editor properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602170920573_renameType_WorkFlowItem.resx">
+      <DependentUpon>201602170920573_renameType_WorkFlowItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181028549_DataTypeExtend.resx">
+      <DependentUpon>201602181028549_DataTypeExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602181722051_page IDs for UI components.resx">
+      <DependentUpon>201602181722051_page IDs for UI components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182123313_removeOldTapestryDesignerApp.resx">
+      <DependentUpon>201602182123313_removeOldTapestryDesignerApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602182208021_addExecuteByToActionRule.resx">
+      <DependentUpon>201602182208021_addExecuteByToActionRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602191012213_ComponentId in Tapestry.resx">
+      <DependentUpon>201602191012213_ComponentId in Tapestry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.resx">
+      <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Nexus\Proxy\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,6 +22,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int SourceBlockId { get; set; }
         public int TargetBlockId { get; set; }
+        public string ExecutedBy { get; set; }
         public int ActorId { get; set; }
         public virtual Actor Actor { get; set; }
         public virtual Block SourceBlock { get; set; }

@@ -71,15 +71,17 @@ function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValu
     newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><div class="dbColumnName">'
         + columnName + '</div><div class="editColumnIcon fa fa-pencil"></div></div>');
 
-    newColumn.children(".deleteColumnIcon").on("click", function () {
+    newColumn.children(".deleteColumnIcon").on("mousedown", function () {
         $(this).parents(".dbColumn").remove();
         instance.removeAllEndpoints($(this).parents(".dbColumn"), true);
         instance.recalculateOffsets();
         instance.repaintEverything();
+        return false;
     });
-    newColumn.children(".editColumnIcon").on("click", function () {
+    newColumn.children(".editColumnIcon").on("mousedown", function () {
         CurrentColumn = $(this).parents(".dbColumn");
         editColumnDialog.dialog("open");
+        return false;
     });
     table.children(".dbTableBody").append(newColumn);
     if (isPrimaryKey) {
@@ -112,13 +114,15 @@ function AddIndex(table, name, indexColumnArray, unique) {
     newIndex.data("indexColumnArray", filteredIndexColumnArray);
     newIndex.data("indexColumnArray", indexColumnArray);
     newIndex.data("unique", unique);
-    newIndex.children(".deleteIndexIcon").on("click", function () {
+    newIndex.children(".deleteIndexIcon").on("mousedown", function () {
         $(this).parents(".dbIndex").remove();
+        return false;
     });
-    newIndex.children(".editIndexIcon").on("click", function () {
+    newIndex.children(".editIndexIcon").on("mousedown", function () {
         CurrentIndex = $(this).parents(".dbIndex");
         CurrentTable = $(this).parents(".dbTable");
         editIndexDialog.dialog("open");
+        return false;
     });
     table.children(".dbTableIndexArea").append(newIndex);
 }

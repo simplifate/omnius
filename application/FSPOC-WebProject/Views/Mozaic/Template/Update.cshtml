@@ -79,16 +79,6 @@
             @Html.TextAreaFor(x => x.Html, new { @id= "selector" })
         </div>
     </div>
-    <div class="form-group col-sm-12">
-        <div>
-            <label class="control-label col-sm-2">
-                Stránky
-            </label>
-        </div>
-        <div class="col-sm-3">
-            @Html.DropDownList("pages", new SelectList(ViewBag.Pages, "Id", "Id"))
-        </div>
-    </div>
 
     <div class="col-sm-11">
         <button type="submit" class="btn btn-primary">Upravit šablonu</button>

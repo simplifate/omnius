@@ -108,9 +108,8 @@ body.adminAppModule .appManagerLowerDecoration {
   z-index: -10; }
 
 body.adminAppModule .adminAppTable {
-  position: absolute;
-  left: 85px;
-  top: 70px;
+  margin-left: 85px;
+  margin-top: 70px;
   width: 85%; }
   body.adminAppModule .adminAppTable td {
     min-width: 110px; }
@@ -118,6 +117,10 @@ body.adminAppModule .adminAppTable {
     width: 345px; }
     body.adminAppModule .adminAppTable td.actions .btn {
       width: 100px; }
+
+body.adminAppModule #btnAddApp {
+  margin-left: 85px;
+  margin-top: 10px; }
 
 body.adminAppModule .formTable label, body.adminAppModule .formTable select {
   margin-bottom: 0px;
@@ -153,6 +156,19 @@ body.adminAppModule #validationResults {
       font-size: 20px; }
     body.adminAppModule #validationResults #errorPanel #btnRetryValidation {
       margin-top: 30px; }
+
+body.adminAppModule #appBuildResults {
+  position: absolute;
+  left: 290px;
+  top: 125px;
+  width: 70%; }
+  body.adminAppModule #appBuildResults .buildSuccess {
+    margin-left: 15px;
+    margin-bottom: 30px;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #dff0d8;
+    border-radius: 10px; }
 
 #topBar {
   -webkit-touch-callout: none;
@@ -228,14 +244,6 @@ body.adminAppModule #validationResults {
     color: white;
     font-size: 36px; }
 
-#leftBarArea {
-  position: fixed;
-  top: 0px;
-  width: 225px;
-  bottom: 0px;
-  background-color: #455d73;
-  z-index: -10; }
-
 #leftBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -308,7 +316,7 @@ body.adminAppModule #validationResults {
   background: -o-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: -moz-linear-gradient(bottom, #edf8fe, #ceeaf8);
   background: linear-gradient(to bottom, #edf8fe, #ceeaf8);
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
   right: 0px;
@@ -334,9 +342,15 @@ body.adminAppModule #validationResults {
     color: #59575c;
     padding-top: 10px;
     top: 0px;
-    left: 320px;
-    right: 320px;
+    left: 0px;
+    right: 0px;
     text-align: center; }
+  #userTopBar .clientTitleArea {
+    position: absolute;
+    left: 310px;
+    top: 0px;
+    right: 540px;
+    height: 50px; }
   #userTopBar .userBox {
     position: absolute;
     top: 0px;
@@ -420,7 +434,7 @@ body.adminAppModule #validationResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -493,6 +507,41 @@ body.adminAppModule #validationResults {
       left: 85px;
       top: 5px;
       font-size: 12px; }
+  #userLeftBar #appMenu {
+    position: absolute;
+    left: 0px;
+    top: 75px;
+    font-family: MyriadPro;
+    color: #58585a;
+    font-size: 18px;
+    padding-left: 0px; }
+    #userLeftBar #appMenu > li {
+      list-style: none; }
+      #userLeftBar #appMenu > li h4 {
+        padding-left: 40px; }
+      #userLeftBar #appMenu > li ul {
+        color: #0065a9;
+        font-size: 14px;
+        padding-left: 0px;
+        padding-bottom: 15px; }
+        #userLeftBar #appMenu > li ul li {
+          list-style: none;
+          width: 250px;
+          padding-left: 15px;
+          padding-top: 3px;
+          margin-left: 45px;
+          height: 24px;
+          cursor: pointer; }
+        #userLeftBar #appMenu > li ul li:hover {
+          background-color: #ceeaf8; }
+    #userLeftBar #appMenu a {
+      color: #0065a9;
+      width: 100%;
+      height: 100%;
+      display: block; }
+    #userLeftBar #appMenu a:hover {
+      text-decoration: none;
+      color: #0065a9; }
 
 #userLeftBarMinimized {
   -webkit-touch-callout: none;
@@ -502,7 +551,7 @@ body.adminAppModule #validationResults {
   user-select: none;
   cursor: default;
   background-color: #edf8fe;
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
@@ -533,7 +582,7 @@ body.adminAppModule #validationResults {
       background-color: #ceeaf8; }
 
 #userContentArea {
-  position: fixed;
+  position: absolute;
   left: 310px;
   top: 50px;
   right: 0px;
@@ -560,39 +609,151 @@ body.adminAppModule #validationResults {
   font-weight: 100;
   color: #0065a9; }
 
-body.tapestryModule .actionItem {
-  background-color: #5bb3e4;
-  color: black; }
+.mozaicForm .uic {
+  position: absolute; }
 
-body.tapestryModule .attributeItem {
-  background-color: #8e67ad;
+.mozaicForm .button-simple {
+  background-color: #4b8ad1;
+  border: 1px solid #4b8ad1;
   color: white; }
 
-body.tapestryModule .uiItem {
-  background-color: #f4e80b;
-  color: black; }
+.mozaicForm .button-dropdown {
+  background-color: white;
+  border: 1px solid #4b8ad1;
+  color: #4b8ad1; }
 
-body.tapestryModule .roleItem {
-  background-color: #db4c91;
-  color: white; }
+.mozaicForm .button-large {
+  width: 198px;
+  height: 31px;
+  font-size: 18px; }
+  .mozaicForm .button-large .fa-caret-down {
+    padding-left: 7px; }
 
-body.tapestryModule .stateItem {
-  background-color: #4d77db;
-  color: #28334e; }
+.mozaicForm .button-small {
+  width: 112px;
+  height: 23px;
+  font-size: 14px; }
+  .mozaicForm .button-small .fa-caret-down {
+    padding-left: 5px; }
 
-body.tapestryModule .targetItem {
-  background-color: #f26822;
-  color: #6a3d26; }
+.mozaicForm .button-extra-small {
+  width: 78px;
+  height: 19px;
+  font-size: 11px; }
+  .mozaicForm .button-extra-small .fa-caret-down {
+    padding-left: 3px; }
 
-body.tapestryModule .templateItem {
-  background-color: #58bf8f;
-  color: #375949; }
+.mozaicForm .input-single-line {
+  width: 220px;
+  height: 25px;
+  border: 1px solid #b8b4ab;
+  padding-left: 6px; }
+
+.mozaicForm .input-multiline {
+  width: 260px;
+  height: 75px;
+  border: 1px solid #b8b4ab;
+  padding-left: 6px; }
+
+.mozaicForm .info-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  color: #58585a;
+  position: relative;
+  width: 260px; }
+  .mozaicForm .info-container .info-container-icon {
+    position: absolute;
+    left: 0px;
+    top: 4px;
+    font-size: 18px; }
+  .mozaicForm .info-container .info-container-header {
+    position: absolute;
+    left: 24px;
+    top: 0px;
+    font-size: 18px; }
+  .mozaicForm .info-container .info-container-body {
+    padding-top: 26px; }
+
+.mozaicForm .breadcrumb-navigation {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: -webkit-linear-gradient(top, #0086be, #0065a9);
+  background: -o-linear-gradient(bottom, #0086be, #0065a9);
+  background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+  background: linear-gradient(to bottom, #0086be, #0065a9);
+  color: white;
+  font-family: RweTextMedium;
+  padding: 12px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  width: 200px;
+  height: 55px; }
+  .mozaicForm .breadcrumb-navigation .app-icon {
+    position: absolute;
+    font-weight: 100;
+    width: 30px;
+    height: 30px;
+    padding-top: 3px;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 19px;
+    text-align: center;
+    vertical-align: middle; }
+  .mozaicForm .breadcrumb-navigation .nav-text {
+    position: absolute;
+    left: 54px;
+    font-family: RweHeadlineRegular;
+    font-size: 20px;
+    white-space: nowrap; }
+
+.mozaicForm .control-label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  font-family: MyriadPro;
+  font-size: 14px;
+  color: #58585a;
+  white-space: nowrap; }
+
+.mozaicForm .form-heading {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  font-family: RweHeadlineRegular;
+  font-size: 28px;
+  color: #58585a;
+  white-space: nowrap; }
+
+.mozaicForm .checkbox-control .checkbox-label {
+  margin-left: 6px;
+  font-family: MyriadPro;
+  font-size: 14px;
+  color: #58585a;
+  white-space: nowrap; }
+
+.mozaicForm .data-table {
+  width: 250px;
+  border: 1px solid #4b8ad1;
+  height: auto !important; }
 
 body.tapestryModule .toolboxItem {
   width: 218px;
   font-family: MyriadPro;
-  font-size: 18px;
-  color: white; }
+  font-size: 18px; }
 
 body.tapestryModule .toolboxItem.ui-draggable-dragging {
   z-index: 1000;
@@ -625,10 +786,12 @@ body.tapestryModule #upperPanel {
     transform-origin: left top; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategory {
       width: 220px;
+      height: 232px;
       display: inline-block;
-      vertical-align: top; }
+      vertical-align: top;
+      overflow-y: auto; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategoryHeader {
-      width: 218px;
+      width: 100%;
       height: 30px;
       background-color: #aaabab;
       font-family: MyriadPro;
@@ -636,9 +799,11 @@ body.tapestryModule #upperPanel {
       color: white;
       padding-left: 8px;
       padding-top: 3px;
-      margin-bottom: 6px; }
+      margin-bottom: 6px;
+      border-left: 3px solid #3a3a3a;
+      border-right: 5px solid #3a3a3a; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryItem {
-      width: 218px;
+      width: 100%;
       height: 30px;
       background-color: white;
       font-family: MyriadPro;
@@ -646,7 +811,9 @@ body.tapestryModule #upperPanel {
       color: black;
       padding-left: 8px;
       padding-top: 3px;
-      margin-bottom: 3px; }
+      margin-bottom: 3px;
+      border-left: 3px solid #3a3a3a;
+      border-right: 5px solid #3a3a3a; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryItem.highlighted {
       background-color: #84c441;
       color: #425b33; }
@@ -665,6 +832,13 @@ body.tapestryModule #lowerPanel {
     width: 236px;
     height: 600px;
     overflow-y: auto; }
+    body.tapestryModule #lowerPanel #tapestryLeftBar #hideTapestryTooboxIcon {
+      position: absolute;
+      font-size: 30px;
+      color: #3a3a3a;
+      right: 10px;
+      top: 2px;
+      cursor: pointer; }
     body.tapestryModule #lowerPanel #tapestryLeftBar .leftBarHeader {
       width: 100%;
       height: 32px;
@@ -745,14 +919,33 @@ body.tapestryModule #lowerPanel {
         background-color: #58bf8f;
         border-bottom: 2px solid #509c78;
         color: #375949; }
-  body.tapestryModule #lowerPanel #tapestryLeftBarBackground {
-    position: fixed;
-    width: 236px;
-    left: 225px;
-    top: 0px;
-    bottom: 0px;
-    background-color: #e0e2e2;
-    z-index: -20; }
+  body.tapestryModule #lowerPanel #tapestryLeftBarMinimized {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    width: 32px;
+    height: 600px;
+    background-color: #bdbbbc;
+    display: none; }
+    body.tapestryModule #lowerPanel #tapestryLeftBarMinimized #showTapestryTooboxIcon {
+      position: absolute;
+      font-size: 30px;
+      color: #3a3a3a;
+      right: 10px;
+      top: 2px;
+      cursor: pointer; }
+    body.tapestryModule #lowerPanel #tapestryLeftBarMinimized .leftBarHeader {
+      position: absolute;
+      left: 18px;
+      top: 95px;
+      background-color: #bdbbbc;
+      font-family: FatTec;
+      font-size: 16px;
+      transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
   body.tapestryModule #lowerPanel #tapestryWorkspace {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -769,41 +962,84 @@ body.tapestryModule #lowerPanel {
       display: inline-block;
       font-size: 20px;
       color: #457fa9;
-      margin-left: 8px; }
+      margin-left: 8px;
+      cursor: pointer; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .item, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol {
       z-index: 20; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace .ruleItem.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
+    body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
+      background-color: #5bb3e4;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .attributeItem {
+      background-color: #8e67ad;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .uiItem {
+      background-color: #f4e80b;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .roleItem {
+      background-color: #db4c91;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .stateItem {
+      background-color: #4d77db;
+      color: white; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .targetItem {
+      background-color: #f26822;
+      color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .templateItem {
+      background-color: #58bf8f;
+      color: black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel {
-      height: 34px;
+      height: 38px;
       border-bottom: 2px solid #455d73;
       font-family: MyriadPro;
       font-size: 14px;
       vertical-align: middle;
-      padding-left: 10px; }
+      padding-left: 10px;
+      padding-top: 2px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderScreenCount {
+        cursor: pointer; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderBlockName, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderDbResCount, body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #blockHeaderScreenCount {
         color: #457fa9;
         font-size: 20px;
         padding-left: 2px;
         padding-right: 10px; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
+      body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea {
+        position: absolute;
+        top: 3px;
+        left: 360px;
+        right: 14px;
+        text-align: right; }
+        body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea button {
+          max-width: 18%;
+          height: 30px; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       margin: 15px 13px;
       border: 1px solid #455d73;
-      padding: 7px 5px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .panelHeader, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
+      padding: 0px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .panelHeader, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
+        position: absolute;
         font-family: FatTec;
-        font-size: 16px; }
-    body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel {
+        font-size: 16px;
+        padding-left: 7px;
+        padding-top: 5px; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel {
       position: relative;
-      min-height: 350px;
-      padding-top: 27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .panelHeader {
-        position: relative;
-        top: -27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .resourceRule {
+      height: 350px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .scrollContainer {
+        position: absolute;
+        top: 34px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow-x: scroll; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .scrollArea {
+        width: 6000px;
+        height: 290px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule {
         position: absolute;
         background-color: #e0e2e2; }
-        body.tapestryModule #lowerPanel #tapestryWorkspace #assignResourcesPanel .resourceRule .item {
+        body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .item {
           position: absolute;
           min-width: 80px;
           height: 20px;
@@ -813,11 +1049,17 @@ body.tapestryModule #lowerPanel {
           padding-right: 10px; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
-      min-height: 900px;
-      padding-top: 27px; }
-      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .panelHeader {
-        position: relative;
-        top: -27px; }
+      height: 900px; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .scrollContainer {
+        position: absolute;
+        top: 34px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow: scroll; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .scrollArea {
+        width: 6000px;
+        height: 4000px; }
       body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule {
         position: absolute;
         border: 2px solid #bcbbbc;
@@ -828,16 +1070,17 @@ body.tapestryModule #lowerPanel {
           top: 0px;
           bottom: 0px;
           width: 56px;
+          height: 100%;
           border-right: 2px solid #bcbbbc; }
-          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .workflowRuleHeader .vericalLabel {
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .workflowRuleHeader .verticalLabel {
             position: absolute;
-            left: -50px;
-            top: 150px;
-            width: 150px;
+            top: 50%;
+            left: 50%;
             font-family: MyriadPro;
             font-size: 18px;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%; }
+            transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+            overflow: visible;
+            white-space: nowrap; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlaneArea {
           position: absolute;
           left: 56px;
@@ -855,38 +1098,44 @@ body.tapestryModule #lowerPanel {
             top: 0px;
             bottom: 0px;
             width: 56px;
-            border-right: 2px solid #bcbbbc; }
+            border-right: 2px solid #bcbbbc;
+            overflow: hidden; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .rolePlaceholder {
               position: absolute;
               left: 5px;
               top: 5px;
               right: 5px;
               bottom: 5px;
-              border: 2px dashed #bcbbbc; }
+              border: 2px dashed #bcbbbc;
+              overflow: hidden; }
               body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .rolePlaceholder .rolePlaceholderLabel {
-                position: absolute;
-                left: -55px;
-                top: 58px;
-                width: 150px;
+                position: relative;
+                width: 100%;
+                top: 50%;
+                margin-top: 30px;
                 color: #bcbbbc;
                 font-family: MyriadPro;
                 font-size: 11px;
                 transform: rotate(-90deg);
-                transform-origin: 50% 50%; }
+                transform-origin: 50% 50%;
+                white-space: nowrap; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .roleItem {
               position: absolute;
-              left: -12px;
-              top: 72px;
-              width: 77px;
+              left: 50%;
+              top: 50%;
+              width: auto;
               height: 22px;
               color: white;
               background-color: #db4c91;
               font-family: MyriadPro;
               font-size: 12px;
               text-align: center;
-              transform: rotate(-90deg);
-              transform-origin: 50% 50%;
-              border-radius: 4px; }
+              transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+              border-radius: 4px;
+              overflow: visible;
+              white-space: nowrap;
+              padding-left: 6px;
+              padding-right: 6px; }
           body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea {
             position: absolute;
             left: 56px;
@@ -913,21 +1162,65 @@ body.tapestryModule #lowerPanel {
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 
+body.tapestryModule .highlightedRow {
+  background-color: #49c3f1 !important;
+  color: white !important; }
+
+body.tapestryModule .sourceEndpoint._jsPlumb_dragging, body.tapestryModule .sourceEndpoint.jsplumb-drag {
+  visibility: hidden !important; }
+
+body.tapestryModule .sourceEndpoint.jsplumb-drag-active {
+  visibility: visible !important; }
+
+body.tapestryModule .endpointSourceLabel {
+  color: #467ea8; }
+
+body.tapestryModule .ui-dialog {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  z-index: 2000; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.9); } }
+    transform: scale(0.9); }
+  body.tapestryModule #upperPanel {
+    height: 333px; }
+  body.tapestryModule #lowerPanel {
+    top: 408px; } }
 
 @media only screen and (max-width: 1710px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.8); } }
+    transform: scale(0.8); }
+  body.tapestryModule #upperPanel {
+    height: 309px; }
+  body.tapestryModule #lowerPanel {
+    top: 384px; } }
 
 @media only screen and (max-width: 1555px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.7); } }
+    transform: scale(0.7); }
+  body.tapestryModule #upperPanel {
+    height: 286px; }
+  body.tapestryModule #lowerPanel {
+    top: 361px; } }
 
 @media only screen and (max-width: 1395px) {
   body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.6); } }
+    transform: scale(0.6); }
+  body.tapestryModule #upperPanel {
+    height: 286px; }
+  body.tapestryModule #lowerPanel {
+    top: 361px; } }
+
+@media only screen and (max-width: 1325px) {
+  body.tapestryModule #upperPanel {
+    height: 264px; }
+  body.tapestryModule #lowerPanel {
+    top: 339px; } }
 
 body.overviewModule {
   background-color: #3a3a3a; }
@@ -986,7 +1279,7 @@ body.overviewModule {
         text-align: center;
         width: 100%;
         font-weight: bold; }
-      body.overviewModule #overviewPanel .block .tableName {
+      body.overviewModule #overviewPanel .block .blockInfo {
         position: absolute;
         top: 50px;
         text-align: center;
@@ -1015,6 +1308,12 @@ body.overviewModule {
         text-align: center;
         font-size: 48px;
         color: #49c3f1; }
+      body.overviewModule #overviewPanel .metablock .metablockInfo {
+        position: absolute;
+        top: 11px;
+        right: 10px;
+        color: #f1a57a;
+        font-weight: bold; }
   body.overviewModule #overviewMenu {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1739,7 +2038,6 @@ body.watchtowerModule #logContainer {
   body.watchtowerModule #logContainer #filterFormPanel {
     position: relative;
     width: 100%;
-    height: 357px;
     background-color: #3a3a3a;
     color: white;
     margin-bottom: 30px; }
@@ -1782,7 +2080,8 @@ body.watchtowerModule #logContainer {
       position: absolute;
       top: 3px;
       right: 37px;
-      font-size: 36px; }
+      font-size: 36px;
+      cursor: pointer; }
     body.watchtowerModule #logContainer #filterFormPanel #filterPanelLabel {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -1850,7 +2149,8 @@ body.watchtowerModule #logContainer {
       color: white;
       top: 3px;
       right: 37px;
-      font-size: 36px; }
+      font-size: 36px;
+      cursor: pointer; }
   body.watchtowerModule #logContainer #watchtowerLogTableContainter {
     position: absolute;
     left: 20px;
@@ -1879,23 +2179,27 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   font-family: MyriadPro;
   font-size: 16px; }
 
+@media only screen and (min-width: 1500px) {
+  body.watchtowerModule #filterFormPanel {
+    height: 357px; } }
+
 @media only screen and (max-width: 1500px) {
   body.watchtowerModule #watchtowerFormResponiveArea {
     transform: scale(0.9); }
-  body.watchtowerModule .filterPanelDecoration {
-    transform: scale(0.9); } }
+  body.watchtowerModule #filterFormPanel {
+    height: 321px; } }
 
 @media only screen and (max-width: 1360px) {
   body.watchtowerModule #watchtowerFormResponiveArea {
     transform: scale(0.8); }
-  body.watchtowerModule .filterPanelDecoration {
-    transform: scale(0.8); } }
+  body.watchtowerModule #filterFormPanel {
+    height: 285px; } }
 
 @media only screen and (max-width: 1240px) {
   body.watchtowerModule #watchtowerFormResponiveArea {
     transform: scale(0.75); }
-  body.watchtowerModule .filterPanelDecoration {
-    transform: scale(0.75); } }
+  body.watchtowerModule #filterFormPanel {
+    height: 267px; } }
 
 .personaModule {
   background-color: #f2f2f3; }
@@ -1914,6 +2218,13 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       left: 0px;
       top: 0px;
       z-index: -10; }
+    .personaModule #lowerPanel .editAppRolesIcon {
+      font-size: 16px;
+      margin-left: 8px;
+      color: white; }
+    .personaModule #lowerPanel .editAppRolesIcon:hover {
+      text-decoration: none;
+      color: #f98e4b; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }
@@ -2108,6 +2419,273 @@ body.mozaicComponentManagerModule {
     top: 360px;
     padding: 50px; }
 
+body.mozaicEditorModule {
+  background-color: #f2f2f3; }
+  body.mozaicEditorModule #upperPanel {
+    height: 295px; }
+    body.mozaicEditorModule #upperPanel #controlButtonArea {
+      position: absolute;
+      left: 100px;
+      top: 100px; }
+    body.mozaicEditorModule #upperPanel #appInfoPanel {
+      position: absolute;
+      left: 440px;
+      top: 27px;
+      text-align: left;
+      font-size: 18px;
+      color: white;
+      font-family: MyriadPro; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerAppName, body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName {
+        font-weight: bold;
+        color: #f1a57a; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel {
+      position: absolute;
+      left: 100px;
+      top: 200px; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel label {
+        color: white; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {
+        margin-left: 8px;
+        margin-right: 14px; }
+      body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
+        margin-left: 6px; }
+  body.mozaicEditorModule #lowerPanel {
+    top: 370px;
+    padding: 0px; }
+  body.mozaicEditorModule #mozaicContainer {
+    height: 900px;
+    font-family: MyriadPro; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBar {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 300px;
+      height: 500px;
+      overflow-y: scroll;
+      background-color: #e0e2e2; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxItem {
+        position: relative;
+        margin: 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar div.toolboxItem {
+        margin-bottom: 20px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryLabel {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-family: FatTec;
+        font-size: 16px;
+        text-align: center; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryHr {
+        width: 80%;
+        border-color: #606060; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .leftBarHeader {
+        width: 100%;
+        height: 32px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        padding: 8px 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar #hideMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 32px;
+      height: 600px;
+      background-color: #bdbbbc;
+      display: none; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized #showMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized .leftBarHeader {
+        position: absolute;
+        left: 18px;
+        top: 95px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
+  body.mozaicEditorModule #mozaicPageContainer {
+    position: absolute;
+    left: 300px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: white; }
+  body.mozaicEditorModule #mozaicPageContainer.showGrid {
+    background-image: url(/Content/images/MozaicGrid.png);
+    background-repeat: repeat; }
+  body.mozaicEditorModule .toolboxItem, body.mozaicEditorModule .uic {
+    cursor: default; }
+  body.mozaicEditorModule .uic {
+    position: absolute; }
+  body.mozaicEditorModule .button-simple {
+    background-color: #4b8ad1;
+    border: 1px solid #4b8ad1;
+    color: white; }
+  body.mozaicEditorModule .button-dropdown {
+    background-color: white;
+    border: 1px solid #4b8ad1;
+    color: #4b8ad1; }
+  body.mozaicEditorModule .button-large {
+    width: 198px;
+    height: 31px;
+    font-size: 18px; }
+    body.mozaicEditorModule .button-large .fa-caret-down {
+      padding-left: 7px; }
+  body.mozaicEditorModule .button-small {
+    width: 112px;
+    height: 23px;
+    font-size: 14px; }
+    body.mozaicEditorModule .button-small .fa-caret-down {
+      padding-left: 5px; }
+  body.mozaicEditorModule .button-extra-small {
+    width: 78px;
+    height: 19px;
+    font-size: 11px; }
+    body.mozaicEditorModule .button-extra-small .fa-caret-down {
+      padding-left: 3px; }
+  body.mozaicEditorModule .input-single-line {
+    width: 220px;
+    height: 25px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .input-multiline {
+    width: 260px;
+    height: 75px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .info-container {
+    color: #58585a;
+    position: relative;
+    width: 260px; }
+    body.mozaicEditorModule .info-container .info-container-icon {
+      position: absolute;
+      left: 0px;
+      top: 4px;
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-header {
+      position: absolute;
+      left: 24px;
+      top: 0px;
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-body {
+      padding-top: 26px; }
+  body.mozaicEditorModule .info-container.ui-draggable-dragging, body.mozaicEditorModule .form-heading.ui-draggable-dragging, body.mozaicEditorModule .control-label.ui-draggable-dragging {
+    border: 1px solid #00d000; }
+  body.mozaicEditorModule .breadcrumb-navigation {
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 200px;
+    height: 55px; }
+    body.mozaicEditorModule .breadcrumb-navigation .app-icon {
+      position: absolute;
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 50%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+    body.mozaicEditorModule .breadcrumb-navigation .nav-text {
+      position: absolute;
+      left: 54px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      white-space: nowrap; }
+  body.mozaicEditorModule .tab-navigation .tab {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    border-bottom: 1px solid #0065a9;
+    text-align: center;
+    padding-top: 4px;
+    color: #0065a9;
+    font-family: RweHeadlineRegular;
+    font-size: 16px;
+    border-collapse: collapse;
+    margin-right: -4px; }
+  body.mozaicEditorModule .tab-navigation .tab.active-tab {
+    border-left: 1px solid #0065a9;
+    border-right: 1px solid #0065a9;
+    border-top: 1px solid #0065a9;
+    border-bottom: none; }
+  body.mozaicEditorModule .control-label {
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorModule .form-heading {
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorModule .checkbox-control .checkbox-label {
+    margin-left: 6px;
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorModule .data-table {
+    width: 250px;
+    border: 1px solid #4b8ad1; }
+  body.mozaicEditorModule .uic.ui-draggable-dragging {
+    z-index: 500; }
+  body.mozaicEditorModule .ui-dialog {
+    z-index: 600; }
+    body.mozaicEditorModule .ui-dialog .formTable {
+      width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable label {
+        margin-bottom: 0px; }
+      body.mozaicEditorModule .ui-dialog .formTable tr {
+        height: 32px; }
+      body.mozaicEditorModule .ui-dialog .formTable td {
+        vertical-align: middle; }
+      body.mozaicEditorModule .ui-dialog .formTable input {
+        width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable td:first-child {
+        width: 110px; }
+      body.mozaicEditorModule .ui-dialog .formTable #component-width, body.mozaicEditorModule .ui-dialog .formTable #component-height {
+        width: 100px; }
+  body.mozaicEditorModule .highlightedRow {
+    background-color: #49c3f1 !important;
+    color: white !important; }
+  body.mozaicEditorModule .ui-dialog {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    z-index: 2000; }
+
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
   border: 1px solid black;
@@ -2268,6 +2846,9 @@ body.mozaicComponentManagerModule {
     .tileMenuArea .tileMenuItem .fa-copy {
       font-size: 100px;
       top: 16px; }
+    .tileMenuArea .tileMenuItem .fa-paint-brush {
+      font-size: 110px;
+      top: 18px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -2339,13 +2920,17 @@ body.mozaicComponentManagerModule {
   color: white;
   top: 3px;
   right: 37px;
-  font-size: 36px; }
+  font-size: 36px;
+  cursor: pointer; }
 
 #lowerPanel {
   position: absolute;
   left: 225px;
   right: 0px;
   height: auto; }
+
+#lowerPanel.minimizedPanelMode {
+  top: 115px !important; }
 
 #lowerPanelContainer {
   position: absolute;
@@ -2374,7 +2959,8 @@ body.mozaicComponentManagerModule {
     margin-left: 35px;
     width: auto; }
     #ContentContainer .details-list td:first-child {
-      width: 300px; }
+      width: 3px;
+      height: 300px; }
     #ContentContainer .details-list td:nth-child(2) {
       width: 400px; }
   #ContentContainer .nexusDetailsButtons {

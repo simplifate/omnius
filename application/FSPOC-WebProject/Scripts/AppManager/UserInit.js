@@ -33,6 +33,9 @@
             ui.originalPosition.top = $(this).position().top;
             ui.originalPosition.left = $(this).position().left;
         });
+        $(".appPanel").on("dblclick", function () {
+            window.location.href = $(this).attr('data-target');
+        });
     }
     else if (CurrentModuleIs("helpModule")) {
         $("#appManagerIcon").removeClass("activeIcon");
@@ -41,4 +44,24 @@
     else if (CurrentModuleIs("userDetailsModule")) {
         $("#appManagerIcon").removeClass("activeIcon");
     };
+    if ($("#userLeftBar").length > 0) {
+        $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        $(window).scroll(function () {
+            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        });
+        $(window).resize(function () {
+            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
+        });
+        $(".uic.data-table").each(function(index, element) {
+            table = $(element);
+            CreateCzechDataTable(table);
+            wrapper = table.parents(".dataTables_wrapper");
+            wrapper.css("position", "absolute");
+            wrapper.css("left", table.css("left"));
+            wrapper.css("top", table.css("top"));
+            table.css("position", "relative");
+            table.css("left", "0px");
+            table.css("top", "0px");
+        });
+    }
 });

@@ -51,8 +51,27 @@ $(function () {
                     instance.removeAllEndpoints(options.$trigger, true);
                     options.$trigger.remove();
                 }
+                else if (key == "initial") {
+                    if (options.$trigger.hasClass("metablock")) {
+                        $("#overviewPanel .metablock").each(function (index, element) {
+                            $(element).attr("isInitial", false);
+                            $(element).find(".metablockInfo").text("");
+                        });
+                        options.$trigger.attr("isInitial", true);
+                        options.$trigger.find(".metablockInfo").text("Initial");
+                    }
+                    else {
+                        $("#overviewPanel .block").each(function (index, element) {
+                            $(element).attr("isInitial", false);
+                            $(element).find(".blockInfo").text("");
+                        });
+                        options.$trigger.attr("isInitial", true);
+                        options.$trigger.find(".blockInfo").text("Initial");
+                    }
+                }
             },
             items: {
+                "initial": { name: "Set as initial", icon: "edit" },
                 "delete": { name: "Delete", icon: "delete" }
             }
         });

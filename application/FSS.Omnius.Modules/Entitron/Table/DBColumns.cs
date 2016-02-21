@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Sql;
+using Boolean = DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle.Boolean;
 
 namespace FSS.Omnius.Modules.Entitron
 {
@@ -31,8 +32,16 @@ namespace FSS.Omnius.Modules.Entitron
                         maxLength = Convert.ToInt32(i["max_length"]),
                         precision = Convert.ToInt32(i["precision"]),
                         scale = Convert.ToInt32(i["scale"]),
-                        canBeNull = (bool)i["is_nullable"]
+                        canBeNull = (bool)i["is_nullable"],
                     };
+                    if (i["is_unique"].ToString() == "" || i["is_unique"].ToString()=="False")
+                    {
+                        column.isUnique = false;
+                    }
+                    else
+                    {
+                        column.isUnique = true;
+                    }
                     Add(column);
                 }
             }
@@ -118,14 +127,10 @@ namespace FSS.Omnius.Modules.Entitron
         public DBTable ModifyInDB(
             string columnName,
             string type,
-            bool allowColumnLength,
-            bool allowPrecisionScale,
             int? maxLength = null,
             int? precision = null,
             int? scale = null,
-            bool canBeNull = true,
-            bool isUnique = false,
-            string additionalOptions = null)
+            bool canBeNull = true)
         {
             return ModifyInDB(new DBColumn()
             {
@@ -135,8 +140,6 @@ namespace FSS.Omnius.Modules.Entitron
                 precision = precision,
                 scale = scale,
                 canBeNull = canBeNull,
-                isUnique = isUnique,
-                additionalOptions = additionalOptions
             });
         }
 
@@ -159,21 +162,21 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 application = table.Application,
                 table = table,
-                column = column,
+                column = column.ToLower(),
                 value = defValue
             });
 
             return _table;
         }
 
-        public List<string> GetDefaults()
+        public Dictionary<string,string> GetDefaults()
         {
             SqlQuery_SelectDefaultVal query = new SqlQuery_SelectDefaultVal(){application = table.Application,table = table};
-            List<string> defaultVal= new List<string>();
+            Dictionary<string,string> defaultVal= new Dictionary<string, string>();
 
             foreach (DBItem i in query.ExecuteWithRead())
             {
-                defaultVal.Add(i["name"].ToString());
+                defaultVal.Add(i["name"].ToString(), i["def"].ToString());
             }
             return defaultVal;
         } 

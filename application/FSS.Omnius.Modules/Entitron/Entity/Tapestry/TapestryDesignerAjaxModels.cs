@@ -28,6 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int? ParentMetablockId { get; set; }
         public bool IsNew { get; set; }
+        public bool IsInitial { get; set; }
 
         public List<AjaxTapestryDesignerMetablockConnection> Connections { get; set; }
         public List<AjaxTapestryDesignerMetablock> Metablocks { get; set; }
@@ -57,6 +58,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public bool IsNew { get; set; }
+        public bool IsInitial { get; set; }
 
         public List<AjaxTapestryDesignerBlockCommit> BlockCommits { get; set; }
 
@@ -79,13 +81,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
 
         public BlockToolboxState ToolboxState { get; set; }
-        public List<AjaxTapestryDesignerRule> Rules { get; set; }
+        public List<AjaxTapestryDesignerResourceRule> ResourceRules { get; set; }
+        public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public List<int> PortTargets { get; set; }
+        public List<int> AssociatedPageIds { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
-            Rules = new List<AjaxTapestryDesignerRule>();
+            ResourceRules = new List<AjaxTapestryDesignerResourceRule>();
+            WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>();
             PortTargets = new List<int>();
+            AssociatedPageIds = new List<int>();
         }
     }
     public class AjaxTapestryDesignerBlockCommitHeader
@@ -95,7 +101,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public DateTime Timestamp { get; set; }
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
     }
-    public class AjaxTapestryDesignerRule
+    public class AjaxTapestryDesignerResourceRule
+    {
+        public int Id { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public List<AjaxTapestryDesignerResourceItem> ResourceItems { get; set; }
+        public List<AjaxTapestryDesignerConnection> Connections { get; set; }
+
+        public AjaxTapestryDesignerResourceRule()
+        {
+            ResourceItems = new List<AjaxTapestryDesignerResourceItem>();
+            Connections = new List<AjaxTapestryDesignerConnection>();
+        }
+    }
+    public class AjaxTapestryDesignerWorkflowRule
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -103,48 +126,71 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public List<AjaxTapestryDesignerItem> Items { get; set; }
-        public List<AjaxTapestryDesignerOperator> Operators { get; set; }
+
+        public List<AjaxTapestryDesignerSwimlane> Swimlanes { get; set; }
         public List<AjaxTapestryDesignerConnection> Connections { get; set; }
 
-        public AjaxTapestryDesignerRule()
+        public AjaxTapestryDesignerWorkflowRule()
         {
-            Items = new List<AjaxTapestryDesignerItem>();
-            Operators = new List<AjaxTapestryDesignerOperator>();
+            Swimlanes = new List<AjaxTapestryDesignerSwimlane>();
             Connections = new List<AjaxTapestryDesignerConnection>();
         }
     }
-    public class AjaxTapestryDesignerItem
+    public class AjaxTapestryDesignerResourceItem
     {
         public int Id { get; set; }
         public string Label { get; set; }
         public string TypeClass { get; set; }
-        public bool IsDataSource { get; set; }
-        public string DialogType { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
-
-        public List<AjaxTapestryDesignerProperty> Properties { get; set; }
-
-        public AjaxTapestryDesignerItem()
-        {
-            Properties = new List<AjaxTapestryDesignerProperty>();
-        }
+        public int? PageId { get; set; }
+        public int? ComponentId { get; set; }
     }
-    public class AjaxTapestryDesignerOperator
+    public class AjaxTapestryDesignerWorkflowItem
+    {
+        public int Id { get; set; }
+        public string Label { get; set; }
+        public string TypeClass { get; set; }
+        public string DialogType { get; set; }
+        public int SwimlaneIndex { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+    }
+    public class AjaxTapestryDesignerWorkflowSymbol
     {
         public int Id { get; set; }
         public string Type { get; set; }
         public string DialogType { get; set; }
+        public int SwimlaneIndex { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+    }
+    public class AjaxTapestryDesignerSwimlane
+    {
+        public int Id { get; set; }
+        public int SwimlaneIndex { get; set; }
+        public int Height { get; set; }
+
+        public List<string> Roles { get; set; }
+        public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+        public List<AjaxTapestryDesignerWorkflowSymbol> WorkflowSymbols { get; set; }
+
+        public AjaxTapestryDesignerSwimlane()
+        {
+            Roles = new List<string>();
+            WorkflowItems = new List<AjaxTapestryDesignerWorkflowItem>();
+            WorkflowSymbols = new List<AjaxTapestryDesignerWorkflowSymbol>();
+        }
     }
     public class AjaxTapestryDesignerConnection
     {
         public int Id { get; set; }
         public int Source { get; set; }
+        public int SourceType { get; set; }
         public int SourceSlot { get; set; }
         public int Target { get; set; }
+        public int TargetType { get; set; }
+        public int TargetSlot { get; set; }
     }
     public class AjaxTapestryDesignerIdPair
     {

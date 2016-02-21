@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public ADgroup()
         {
             ADgroup_Users = new HashSet<ADgroup_User>();
+            AppRoles = new HashSet<PersonaAppRole>();
         }
 
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         public virtual Application Application { get; set; }
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
+        public virtual ICollection<PersonaAppRole> AppRoles { get; set; }
     }
 }

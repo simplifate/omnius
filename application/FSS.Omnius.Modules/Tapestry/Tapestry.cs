@@ -33,13 +33,13 @@ namespace FSS.Omnius.Modules.Tapestry
         public override void run(User user, string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
         {
             // init
-            string AppName;
-            int ActionRuleId, modelId;
-            splitUrl(url, out AppName, out ActionRuleId, out modelId);
+            //string AppName, buttonId;
+            //int blockId, modelId;
+            //splitUrl(url, out AppName, out blockId, out buttonId, out modelId);
 
-            run(user, AppName, ActionRuleId, modelId, fc);
+            //run(user, AppName, blockId, buttonId, modelId, fc);
         }
-        public Block run(User user, string AppName, int ActionRuleId, int modelId, NameValueCollection fc)
+        public Block run(User user, string AppName, int blockId, string buttonId, int modelId, NameValueCollection fc)
         {
             // init action
             _results.outputData.Add("__CORE__", _CORE);
@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Tapestry
             
             // get actionRule
             ActionRule actionRule = null;
-            ActionRule nextRule = GetActionRule(ActionRuleId, _results, modelId);
+            ActionRule nextRule = GetActionRule(blockId, buttonId, _results, modelId);
 
             // get inputs
             string[] keys = fc.AllKeys;
@@ -96,30 +96,32 @@ namespace FSS.Omnius.Modules.Tapestry
             throw new NotImplementedException();
         }
 
-        private void splitUrl(string url, out string ApplicationId, out int ActionRuleId, out int modelId)
-        {
-            string[] ids = url.Split('/');
-            if (ids.Count() != 3)
-                throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
+        //private void splitUrl(string url, out string ApplicationId, out int ActionRuleId, out int modelId)
+        //{
+        //    string[] ids = url.Split('/');
+        //    if (ids.Count() != 3)
+        //        throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
 
-            ApplicationId = ids[0];
-            ActionRuleId = Convert.ToInt32(ids[1]);
-            modelId = Convert.ToInt32(ids[2]);
-        }
+        //    ApplicationId = ids[0];
+        //    ActionRuleId = Convert.ToInt32(ids[1]);
+        //    modelId = Convert.ToInt32(ids[2]);
+        //}
         
-        private ActionRule GetActionRule(int ActionRuleId, ActionResultCollection results, int modelId)
+        private ActionRule GetActionRule(int blockId, string buttonId, ActionResultCollection results, int modelId)
         {
-            if (!_CORE.User.canUseAction(ActionRuleId, _CORE.Entitron.GetStaticTables()))
-                throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", ActionRuleId));
+            ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.SourceBlockId == blockId && ar.ExecutedBy == buttonId);
+            if (rule == null)
+                throw new MissingMethodException($"Block [{blockId}] with Executor[{buttonId}] cannot be found");
 
-            ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.Id == ActionRuleId);
+            if (false && !_CORE.User.canUseAction(rule.Id, _CORE.Entitron.GetStaticTables()))
+                throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", rule.Id));
 
             if (modelId > 0)
                 results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
             rule.PreRun(results);
-            if (!rule.CanRun(results.outputData))
-                throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", ActionRuleId));
+            if (false && !rule.CanRun(results.outputData))
+                throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", rule.Id));
 
             return rule;
         }

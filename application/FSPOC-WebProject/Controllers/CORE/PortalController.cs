@@ -8,12 +8,15 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.CORE
 {
-    [PersonaAuthorize(Roles = "Admin")]
+    [PersonaAuthorize(Roles = "Admin", Module = "CORE")]
     public class PortalController : Controller
     {
         // GET: Portal
         public ActionResult Index()
         {
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+            ViewBag.loggedUserCount = core.Persona.GetLoggedCount();
+
             return View();
         }
         public ActionResult ModuleAdmin()
@@ -27,20 +30,6 @@ namespace FSS.Omnius.Controllers.CORE
         public ActionResult ActiveProfile()
         {
             return View();
-        }
-        public ActionResult Applications()
-        {
-            using (var context = new DBEntities())
-            {
-                var appList = new List<Application>();
-
-                foreach (var app in context.Applications)
-                {
-                    appList.Add(app);
-                }
-                ViewData["Apps"] = appList;
-                return View();
-            }
         }
         public ActionResult AppValidation()
         {

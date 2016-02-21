@@ -28,25 +28,7 @@
             @Html.DropDownListFor(x => x.Parent, new SelectList(ViewBag.Categories))
         </div>
     </div>
-    <div class="form-group col-sm-12">
-        <div>
-            <label class="control-label col-sm-3">
-                Potomek(ci): Odebrat
-            </label>
-        </div>
-        <div class="col-sm-2">
-            @Html.DropDownList("Childrens", new SelectList(ViewBag.Children))
-        </div>
-        <div class="col-sm-1">
-            <button id="removeChild" class="btn btn-danger">Odebrat</button>
-        </div>
-        <div class="col-sm-1">
-            <label>Přidat</label>
-        </div>
-        <div id="children" class="col-sm-3">
-            @Html.DropDownListFor(x => x.Children, new SelectList(ViewBag.Categories))
-        </div>
-    </div>
+    
 
     <div class="col-sm-8">
         <button type="submit" class="btn btn-primary">Upravit kategorii</button>

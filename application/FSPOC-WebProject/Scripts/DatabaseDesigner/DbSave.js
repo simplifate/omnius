@@ -74,9 +74,10 @@
         Relations: relationArray,
         Views: viewArray
     }
+    appId = $("#currentAppId").val();
     $.ajax({
         type: "POST",
-        url: "/api/database/commits",
+        url: "/api/database/apps/" + appId + "/commits",
         data: postData,
         success: function () { alert("OK") },
         error: function () { alert("ERROR") }

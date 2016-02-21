@@ -1,0 +1,156 @@
+﻿@model FSPOC_WebProject.Models.SetPasswordViewModel
+@{
+    Page.Title = "Omnius Persona";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "personaModule";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Nový uživatel</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+</div>
+<div id="lowerPanel">
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @TempData["error"]
+        </div>
+    }
+    @using (Html.BeginForm("CreateLocalUser", "Account", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x=>x.User.localExpiresAt)
+        @Html.HiddenFor(x => x.User.LastLogin)
+        @Html.HiddenFor(x => x.User.CurrentLogin)
+        <div class="form-group col-sm-6">
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.Label( "Jméno a příjmení")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.DisplayName, new {@class= "form-control"})
+                    @Html.ValidationMessageFor(x => x.User.DisplayName, null ,new {@class= "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.Label("Uživatelské jméno")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.UserName, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.NewPassword, "Heslo")
+                </div>
+                <div class="col-sm-7">
+                    @Html.PasswordFor(x=>x.NewPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.NewPassword, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.ConfirmPassword, "Heslo znovu")
+                </div>
+                <div class="col-sm-7">
+                    @Html.PasswordFor(x=>x.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfirmPassword, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Company, "Firma")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Company, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Company, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Department, "Oddělení")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Department, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Department, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group  col-sm-12 ">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Team, "Tým")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Team, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Team, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group  col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Job, "Práce")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Job, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Job, null, new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Address, "Adresa")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Address, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.Email)
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.Email, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.MobilPhone, "Telefon")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.MobilPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.MobilPhone, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <div class="col-sm-4">
+                    @Html.LabelFor(x => x.User.WorkPhone, "Pracovní telefon")
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.User.WorkPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.User.WorkPhone, null, new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <button type="submit" class="btn btn-primary">Přidat</button>
+        @Html.ActionLink("Zpět", "Index","Account", null, new {@class="btn btn-default"})
+    }
+</div>

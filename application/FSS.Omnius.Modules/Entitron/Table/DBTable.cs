@@ -229,18 +229,15 @@ namespace FSS.Omnius.Modules.Entitron
             return operators;
         } 
 
-        public DBTable Update(DBItem item, DBItem selectRow)
+        public DBTable Update(DBItem item, int id)//změnit selectrow na id
         {
             Dictionary<DBColumn, object> data = new Dictionary<DBColumn, object>();
-            Dictionary<DBColumn, object> row = new Dictionary<DBColumn, object>();
 
             foreach (DBColumn column in columns)
             {
-                data.Add(column, item[column.Name]);
-            }
-            foreach (DBColumn pkColum in getPrimaryColumns())
-            {
-                row.Add(pkColum, selectRow[pkColum.Name]);
+                if(item.HasProperty(column.ColumnId)) { 
+                    data.Add(column, item[column.Name]);
+                }
             }
 
             Application.queries.Add(new SqlQuery_Update()
@@ -248,7 +245,7 @@ namespace FSS.Omnius.Modules.Entitron
                 application = Application,
                 table = this,
                 changes = data,
-                rowSelect = row
+                recordId = id
             });
 
             return this;
@@ -517,6 +514,11 @@ namespace FSS.Omnius.Modules.Entitron
                 constraints.Add(i["name"].ToString());
             }
             return constraints;
+        }
+
+        public DBItem GetById(int id)
+        {
+            return Select().where(c => c.column("Id").Equal(id)).ToList().First();
         }
 
     }

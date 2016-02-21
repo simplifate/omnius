@@ -14,17 +14,15 @@ namespace FSS.Omnius.Controllers.Master
     {
         private List<Application> getAppList()
         {
-            User currentUser = User.GetLogged();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+            User currentUser = User.GetLogged(core);
             try
             {
-                using (var context = new DBEntities())
-                {
-                    return context.Applications.Where(a =>
-                        a.IsPublished
-                        && a.IsEnabled
-                        && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id)
-                    ).ToList();
-                }
+                return core.Entitron.GetStaticTables().Applications.Where(a =>
+                    a.IsPublished
+                    && a.IsEnabled
+                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id)
+                ).ToList();
             }
             catch (Exception ex)
             {
@@ -35,6 +33,7 @@ namespace FSS.Omnius.Controllers.Master
         private void loadUserInterfaceData()
         {
             ViewData["Apps"] = getAppList();
+            ViewData["FakeAppPath"] = "/Mozaic/ViewPage/Index/9";
         }
 
         public ActionResult Index()

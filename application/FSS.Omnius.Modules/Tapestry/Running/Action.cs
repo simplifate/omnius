@@ -31,6 +31,13 @@ namespace FSS.Omnius.Modules.Tapestry
                 return _actions;
             }
         }
+        public static int getByName(string name)
+        {
+            if (_actions == null)
+                INIT();
+
+            return _actions.SingleOrDefault(a => a.Value.Name == name).Key;
+        }
         public static ActionResultCollection RunAction(int id, Dictionary<string, object> vars)
         {
             Action action = All[id];
@@ -79,5 +86,17 @@ namespace FSS.Omnius.Modules.Tapestry
         }
         public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars);
 
+        public void LogError(string message, int userId, int appId)
+        {
+            Watchtower.WatchtowerLogger logger = Watchtower.WatchtowerLogger.Instance;
+            logger.LogEvent(
+                    message,
+                    userId,
+                    Watchtower.LogEventType.Tapestry,
+                    Watchtower.LogLevel.Error,
+                    false,
+                    appId
+                );
+        }
     }
 }

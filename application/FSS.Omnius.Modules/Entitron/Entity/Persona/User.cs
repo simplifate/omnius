@@ -2,30 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_Users")]
-    public partial class User
+    public partial class User : IdentityUser<int, UserLogin, User_Role, UserClaim>
     {
         public User()
         {
             ADgroup_Users = new HashSet<ADgroup_User>();
         }
-
-        public int Id { get; set; }
-        [Required]
-        [Index(IsUnique = true)]
-        [StringLength(50)]
-        public string username { get; set; }
+        
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }
-        [StringLength(100)]
-        public string Email { get; set; }
         [StringLength(100)]
         public string Company { get; set; }
         [StringLength(100)]
@@ -40,11 +31,58 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public string Address { get; set; }
         [StringLength(100)]
         public string Job { get; set; }
+        public bool isLocalUser { get; set; }
+        
+        public DateTime CurrentLogin { get; set; }
         public DateTime LastLogin { get; set; }
+        public DateTime? LastLogout { get; set; }
+
         [Required]
-        public DateTime localExpiresAt { get; set; }
+        public DateTime? localExpiresAt { get; set; }
         
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
         public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
+        
+
+        public void Update(User updateFrom)
+        {
+            if (updateFrom.DisplayName != null)
+                DisplayName = updateFrom.DisplayName;
+
+            if (updateFrom.Company != null)
+                Company = updateFrom.Company;
+
+            if (updateFrom.Department != null)
+                Department = updateFrom.Department;
+
+            if (updateFrom.Team != null)
+                Team = updateFrom.Team;
+
+            if (updateFrom.WorkPhone != null)
+                WorkPhone = updateFrom.WorkPhone;
+
+            if (updateFrom.MobilPhone != null)
+                MobilPhone = updateFrom.MobilPhone;
+
+            if (updateFrom.Address != null)
+                Address = updateFrom.Address;
+
+            if (updateFrom.Job != null)
+                Job = updateFrom.Job;
+            
+            //isLocalUser = updateFrom.isLocalUser;
+
+            //if (updateFrom.CurrentLogin != null)
+            //    CurrentLogin = updateFrom.CurrentLogin;
+
+            //if (updateFrom.LastLogin != null)
+            //    LastLogin = updateFrom.LastLogin;
+
+            //if (updateFrom.LastLogout != null)
+            //    LastLogout = updateFrom.LastLogout;
+
+            if (updateFrom.localExpiresAt != null)
+                localExpiresAt = updateFrom.localExpiresAt;
+        }
     }
 }

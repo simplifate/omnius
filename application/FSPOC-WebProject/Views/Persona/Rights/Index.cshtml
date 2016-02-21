@@ -17,10 +17,12 @@
     <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
 </div>
+
 <div id="minimizedUpperPanel">
     <div class="panelLabel">Přístup k aplikacím</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
+
 <div id="lowerPanel">
     <svg class="rightsFormUpperDecoration" width="40px" height="240px">
         <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
@@ -28,10 +30,10 @@
     <table class="table table-bordered table-striped table-responsive table-omnius">
         <thead>
             <tr>
-                <th>Uživatel\Applikace</th>
+                <th>Uživatel / Aplikace</th>
                 @foreach (ADgroup group in ViewBag.ADgroups)
                 {
-                    <td>@group.ToString()</td>
+                    <td>@group.ToString() @Html.Raw(group.ApplicationId != null ? $"<a href=\"/Persona/Roles/App/{group.ApplicationId}\" class=\"fa fa-pencil editAppRolesIcon\"></a>" : "")</td>
                 }
             </tr>
         </thead>

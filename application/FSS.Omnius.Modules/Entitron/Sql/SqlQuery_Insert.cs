@@ -9,8 +9,20 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     class SqlQuery_Insert : SqlQuery_withApp
     {
         public Dictionary<DBColumn, object> data { get; set; }
-        
+
+        protected override void BaseExecution(MarshalByRefObject connection)
+        {
+            MakeSqlString(); 
+            base.BaseExecution(connection);
+        }
+
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        {
+            MakeSqlString();
+            return base.BaseExecutionWithRead(connection);
+        }
+
+        private void MakeSqlString()
         {
             if (data == null || data.Count < 1)
                 throw new ArgumentNullException("data");
@@ -30,8 +42,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 string.Join(", ", _datatypes.Select(s => "@" + s.Key + " " + s.Value)),
                 string.Join(", ", _datatypes.Select(s => "@" + s.Key))
                 );
-
-            return base.BaseExecutionWithRead(connection);
         }
 
         public int GetInsertedId()

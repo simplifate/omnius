@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Sql;
 using System;
 using System.Collections.Generic;
@@ -52,37 +53,46 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
-
+            DBEntities e = new DBEntities();
+            
             //
             var select = table.Select();
-            int CondCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
+            int CondCount = core._form.AllKeys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
             Conditions condition = new Conditions(select);
             Condition_concat outCondition = null;
 
             // setConditions
             for (int i = 0; i < CondCount; i++)
             {
-                switch ((string)vars[$"CondOperation[{i}]"])
+                string condOperator = core._form[$"CondOperator[{i}]"];
+                string condColumn = core._form[$"CondColumn[{i}]"];
+                object condValue = core._form[$"CondValue[{i}]"];
+
+                DBColumn column = table.columns.Single(c => c.Name == condColumn);
+                int typeId = e.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.type)).Id;
+                var value = CORE.Convertor.convert(typeId, condValue);
+
+                switch (condOperator)
                 {
                     case "Less":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Less(vars[$"CondValue[{i.ToString()}]"]);
+                        outCondition = condition.column(condColumn).Less(value);
                         break;
                     case "LessOrEqual":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).LessOrEqual(vars[$"CondValue[{i.ToString()}]"]);
+                        outCondition = condition.column(condColumn).LessOrEqual(value);
                         break;
                     case "Greater":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Greater(vars[$"CondValue[{i.ToString()}]"]);
+                        outCondition = condition.column(condColumn).Greater(value);
                         break;
                     case "GreaterOrEqual":
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).GreaterOrEqual(vars[$"CondValue[{i.ToString()}]"]);
+                        outCondition = condition.column(condColumn).GreaterOrEqual(value);
                         break;
                     default: // ==
-                        outCondition = condition.column((string)vars[$"CondColumn[{i.ToString()}]"]).Equal(vars[$"CondValue[{i.ToString()}]"]);
+                        outCondition = condition.column(condColumn).Equal(value);
                         break;
                 }
                 condition = outCondition.and();
             }
-
+            
             // return
             vars["Data"] = select.where(i => outCondition).ToList();
         }

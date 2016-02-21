@@ -20,16 +20,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
         public int Id { get; set; }
 
-        [Required]
-        public string Relations { get; set; }
+        public string ViewName { get; set; }
 
-        public int MasterTemplateId { get; set; }
+        public string ViewPath { get; set; }
 
-        public int ApplicationId { get; set; }
-
-        public virtual Application Application { get; set; }
-
-        public virtual Template MasterTemplate { get; set; }
+        public string ViewContent { get; set; }
 
         public virtual ICollection<Block> Blocks { get; set; }
 

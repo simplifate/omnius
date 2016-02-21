@@ -7,33 +7,8 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "mozaicComponentManagerModule";
 }
-<div id="upperPanel">
-    <div class="panelLabel">Mozaic</div>
-    <svg class="backgroundDecoration" width="540px" height="565px">
-        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
-        <path d="M31 295 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
-        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
-    </svg>
-    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
-    <div class="tileMenuArea">
-        <a href="/Mozaic/TemplateCategory">
-            <div id="mozaicMenuTemplates" class="tileMenuItem highlighted">
-                <div class="buttonLabel">Šablony</div>
-            </div>
-        </a>
-        <div id="mozaicMenuPages" class="tileMenuItem">
-            <div class="buttonLabel">Stránky</div>
-        </div>
-        <div id="mozaicMenuCss" class="tileMenuItem">
-            <div class="buttonLabel">CSS</div>
-        </div>
-    </div>
-    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
-</div>
-<div id="minimizedUpperPanel">
-    <div class="panelLabel">Mozaic</div>
-    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
-</div>
+@Html.Partial("~/Views/Mozaic/UpperPanel.cshtml");
+
 <div id="lowerPanel">
     <svg class="lowerLeftDecoration" width="540px" height="565px">
         <path d="M31 0 L31 28 L65 62 L376 62 L402 36" stroke="#457fa9" stroke-width="1" fill="none" />

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Page not found";
+    Layout = (Context.GetLoggedUser().isAdmin()) ? "~/Views/Shared/_OmniusAdminLayout.cshtml" : "~/Views/Shared/_OmniusUserLayout.cshtml";
+}
+<link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+
+<div id="upperPanel">
+    <div class="panelLabel">Page Not Found</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Page not found</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="rightsFormUpperDecoration" width="40px" height="240px">
+        <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <div>Page not found</div>
+</div>

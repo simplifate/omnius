@@ -1,0 +1,178 @@
+﻿@{
+    Page.Title = "Omnius Mozaic visual editor";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicEditorModule";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Mozaic visual editor</div>
+    <svg class="backgroundDecoration" width="540px" height="357px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 295 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+    <div id="controlButtonArea">
+        <button id="btnNewPage" class="btn-omnius-rectangular">Nová stránka</button>
+        <button id="btnChoosePage" class="btn-omnius-rectangular">Zvolit stránku</button>
+        <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
+        <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
+        <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+    </div>
+    <div id="appInfoPanel">
+        App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
+    </div>
+    <div id="gridControlPanel">
+        <label for="gridResolution">Mřížka:</label>
+        <select id="gridResolutionDropdown" name="gridResolution">
+            <option selected="selected" value="off">Žádná</option>
+            <option value="5">5px</option>
+            <option value="10">10px</option>
+            <option value="15">15px</option>
+            <option value="20">20px</option>
+            <option value="25">25px</option>
+            <option value="30">30px</option>
+            <option value="35">35px</option>
+            <option value="40">40px</option>
+            <option value="45">45px</option>
+            <option value="50">50px</option>
+        </select>
+        <label for="gridShow">Zobrazit:</label>
+        <input type="checkbox" id="gridShowCheckbox" name="gridShow" />
+    </div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Mozaic visual editor</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <div id="mozaicContainer">
+        <div id="mozaicLeftBar">
+            <div class="leftBarHeader">Paleta</div>
+            <div id="hideMozaicTooboxIcon" class="fa fa-caret-left"></div>
+                <hr class="toolboxCategoryHr" />
+                <div class="toolboxCategoryLabel">Buttons</div>
+                <button class="toolboxItem button-simple button-large" uicClasses="button-simple button-large">Large button</button>
+                <button class="toolboxItem button-dropdown button-large" uicClasses="button-dropdown button-large">Large button<i class="fa fa-caret-down"></i></button>
+                <button class="toolboxItem button-simple button-small" uicClasses="button-simple button-small">Small button</button>
+                <button class="toolboxItem button-dropdown button-small" uicClasses="button-dropdown button-small">Small button<i class="fa fa-caret-down"></i></button>
+                <button class="toolboxItem button-simple button-extra-small" uicClasses="button-simple button-extra-small">Extra small</button>
+                <button class="toolboxItem button-dropdown button-extra-small" uicClasses="button-dropdown button-extra-small">Extra small<i class="fa fa-caret-down"></i></button>
+                <hr class="toolboxCategoryHr" />
+                <div class="toolboxCategoryLabel">Inputs</div>
+                <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
+                <textarea placeholder="Multiline input" class="toolboxItem input-multiline" uicClasses="input-multiline"></textarea>
+                <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
+                <div class="toolboxItem checkbox-control" uicClasses="checkbox-control">
+                    <input type="checkbox" /><span class="checkbox-label">Checkbox</span>
+                </div>
+                <hr class="toolboxCategoryHr" />
+                <div class="toolboxCategoryLabel">Labels</div>
+            <div class="toolboxItem form-heading" uicClasses="form-heading">Form heading</div>
+                <div class="toolboxItem control-label" uicClasses="control-label">Control label</div>
+                <div class="toolboxItem info-container" uicClasses="info-container">
+                    <div class="fa fa-info-circle info-container-icon"></div>
+                    <div class="info-container-header">Info container</div>
+                    <div class="info-container-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                </div>
+                <hr class="toolboxCategoryHr" />
+                <div class="toolboxCategoryLabel">Navigation</div>
+                <div class="toolboxItem breadcrumb-navigation" uicClasses="breadcrumb-navigation">
+                    <div class="app-icon fa fa-question"></div>
+                    <div class="nav-text">APP NAME &gt; Nav</div>
+                </div>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Tables</div>
+            <table class="toolboxItem data-table display" uicClasses="data-table display">
+                <thead>
+                    <tr>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value1</td>
+                        <td>Value2</td>
+                        <td>Value3</td>
+                    </tr>
+                    <tr>
+                        <td>Value4</td>
+                        <td>Value5</td>
+                        <td>Value6</td>
+                    </tr>
+                    <tr>
+                        <td>Value7</td>
+                        <td>Value8</td>
+                        <td>Value9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="mozaicLeftBarMinimized">
+            <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
+            <div class="leftBarHeader">Paleta</div>
+        </div>
+        <div id="mozaicPageContainer">
+        </div>
+    </div>
+</div>
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
+<input type="hidden" id="currentPageId" value="@ViewData["pageId"]" />
+<div id="component-properties-dialog" title="Component properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="component-name">Name</label></td>
+                    <td><input type="text" name="component-name" id="component-name" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-width">Width</label></td>
+                    <td><input type="text" name="component-width" id="component-width" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-height">Height</label></td>
+                    <td><input type="text" name="component-height" id="component-height" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-label">Label</label></td>
+                    <td><input type="text" name="component-label" id="component-label" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-placeholder">Placeholder</label></td>
+                    <td><input type="text" name="component-placeholder" id="component-placeholder" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-content">Content</label></td>
+                    <td><input type="text" name="component-content" id="component-content" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-content">CSS Styles</label></td>
+                    <td><input type="text" name="component-styles" id="component-styles" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="choose-page-dialog" title="Choose page">
+    <table id="page-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="new-page-dialog" title="Create new page">
+    <form>
+        <fieldset>
+            <label for="new-page-name">Page name</label>
+            <input type="text" name="new-page-name" id="new-page-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>

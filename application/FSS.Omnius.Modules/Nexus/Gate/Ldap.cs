@@ -155,6 +155,9 @@ namespace FSS.Omnius.Nexus.Gate
             }
 
             SearchResult result = search.FindOne();
+            // not found
+            if (result == null)
+                return null;
 
             return ResultToJToken(result);
         }
@@ -178,14 +181,14 @@ namespace FSS.Omnius.Nexus.Gate
                 ResultPropertyValueCollection valueCollection = result.Properties[propName];
                 if (valueCollection.Count == 1)
                 {
-                    json[propName] = JValue.FromObject(valueCollection[0]);
+                    json[propName] = JToken.FromObject(valueCollection[0]);
                 }
                 else if (valueCollection.Count > 1)
                 {
                     json[propName] = new JArray();
-                    foreach (Object value in valueCollection)
+                    foreach (object value in valueCollection)
                     {
-                        ((JArray)json[propName]).Add(JValue.FromObject(value));
+                        ((JArray)json[propName]).Add(JToken.FromObject(value));
                     }
                 }
                 else

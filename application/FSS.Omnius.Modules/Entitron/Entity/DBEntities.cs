@@ -12,9 +12,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Watchtower;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
-    public partial class DBEntities : DbContext
+    public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
+        public static DBEntities Create()
+        {
+            return new DBEntities();
+        }
+
         public DBEntities()
             : base(Omnius.Modules.Entitron.Entitron.connectionString)
         {
@@ -49,6 +55,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
+        public virtual DbSet<MozaicEditorPage> MozaicEditorPages { get; set; }
 
         // Nexus
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
@@ -63,8 +70,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<PersonaAppRole> PersonaAppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -76,11 +81,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
-        public virtual DbSet<TapestryDesignerApp> TapestryDesignerApps { get; set; }
+        
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
-        public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
+        public virtual DbSet<TapestryDesignerWorkflowSymbol> TapestryDesignerWorkflowSymbols { get; set; }
+        //public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
@@ -94,7 +102,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // Entitron
             modelBuilder.Entity<Application>()
                 .HasMany<Table>(e => e.Tables)
-                .WithRequired(e => e.Application)
+                .WithOptional(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
             // Hermes
@@ -116,10 +124,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // Master
 
             // Mozaic
-            modelBuilder.Entity<Application>()
-                .HasMany<Page>(e => e.Pages)
-                .WithRequired(e => e.Application)
-                .HasForeignKey(e => e.ApplicationId);
+            //modelBuilder.Entity<Application>()
+            //    .HasMany<Page>(e => e.Pages);
+            //    .WithRequired(e => e.Application);
             
             modelBuilder.Entity<Page>()
                 .HasMany<Block>(e => e.Blocks)
@@ -131,10 +138,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.Css)
                 .Map(m => m.ToTable("Mozaic_CssPages").MapLeftKey("CssId").MapRightKey("PageId"));
 
-            modelBuilder.Entity<Template>()
-                .HasMany<Page>(e => e.Pages)
-                .WithRequired(e => e.MasterTemplate)
-                .HasForeignKey(e => e.MasterTemplateId);
+ //           modelBuilder.Entity<Template>()
+ //               .HasMany<Page>(e => e.Pages);
+ ////               .WithRequired(e => e.MasterTemplate);
 
             modelBuilder.Entity<TemplateCategory>()
                 .HasMany<Template>(e => e.Templates)
@@ -146,6 +152,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
+            modelBuilder.Entity<MozaicEditorPage>()
+                .HasMany(e => e.Components);
+            modelBuilder.Entity<Application>()
+                .HasMany(e => e.MozaicEditorPages)
+                .WithRequired(e => e.ParentApp);
+
+            /*modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany(e => e.Pages)
+                .WithOptional(e => e.AssociatedBlock);*/
+
             // Nexus
             modelBuilder.Entity<FileMetadata>()
                 .HasOptional<WebDavServer>(s => s.WebDavServer);
@@ -156,12 +172,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Persona
             modelBuilder.Entity<PersonaAppRole>()
-                .HasRequired<Application>(e => e.Application)
-                .WithMany(e => e.Roles);
+                .HasRequired<ADgroup>(e => e.ADgroup)
+                .WithMany(e => e.AppRoles)
+                .HasForeignKey(e => e.ADgroupId);
 
             modelBuilder.Entity<ModuleAccessPermission>()
-                .HasOptional<User>(e => e.User)
-                .WithOptionalDependent(e => e.ModuleAccessPermission);
+                .HasRequired(e => e.User)
+                .WithOptional(e => e.ModuleAccessPermission)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<ActionRule>()
                 .HasMany<ActionRuleRight>(e => e.ActionRuleRights)
@@ -182,6 +200,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<ADgroup_User>(e => e.ADgroup_Users)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany<User_Role>(e => e.Roles)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<PersonaAppRole>()
+                .HasMany<User_Role>(e => e.Users)
+                .WithRequired(e => e.AppRole)
+                .HasForeignKey(e => e.RoleId);
 
             // Tapestry
             modelBuilder.Entity<Application>()
@@ -245,7 +273,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasRequired<Block>(e => e.Block)
                 .WithMany(e => e.PreBlockActions);
 
-            // Tapestry - Database Designer
+            modelBuilder.Entity<TapestryDesignerResourceRule>()
+                .HasMany<TapestryDesignerConnection>(e => e.Connections)
+                .WithOptional(e => e.ResourceRule)
+                .HasForeignKey(e => e.ResourceRuleId);
+
+            modelBuilder.Entity<TapestryDesignerWorkflowRule>()
+                .HasMany<TapestryDesignerConnection>(e => e.Connections)
+                .WithOptional(e => e.WorkflowRule)
+                .HasForeignKey(e => e.WorkflowRuleId);
+
+            // Database Designer
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)
                         .WithRequired(s => s.DbTable);
@@ -261,10 +299,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<DbSchemeCommit>()
                         .HasMany(s => s.Views)
                         .WithRequired(s => s.DbSchemeCommit);
+            modelBuilder.Entity<Application>()
+                        .HasMany(e => e.DatabaseDesignerSchemeCommits);
 
-            modelBuilder.Entity<TapestryDesignerApp>()
-                .HasRequired(s => s.RootMetablock)
-                .WithOptional(s => s.ParentApp);
+            modelBuilder.Entity<Application>()
+                .HasOptional(s => s.TapestryDesignerRootMetablock)
+                .WithOptionalDependent(s => s.ParentApp);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock);
@@ -275,12 +315,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.BlockCommits)
                 .WithRequired(s => s.ParentBlock);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
-                .HasMany(s => s.Rules)
+                .HasMany(s => s.ResourceRules)
                 .WithRequired(s => s.ParentBlockCommit);
-            modelBuilder.Entity<TapestryDesignerRule>()
-                .HasMany(s => s.Items)
-                .WithRequired(s => s.ParentRule);
-            
+            modelBuilder.Entity<TapestryDesignerBlockCommit>()
+                .HasMany(s => s.WorkflowRules)
+                .WithRequired(s => s.ParentBlockCommit);
+            modelBuilder.Entity<TapestryDesignerWorkflowRule>()
+                .HasMany(s => s.Swimlanes)
+                .WithRequired(s => s.ParentWorkflowRule);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.WorkflowItems);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.WorkflowSymbols);
+
             // Watchtower
         }
     }

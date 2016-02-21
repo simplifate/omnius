@@ -12,11 +12,26 @@ namespace System
 {
     public static partial class ExtendMethods
     {
-        public static User GetLogged(this IPrincipal user, CORE core = null)
+        public static User GetLoggedUser(this HttpContextBase context)
         {
-            core = core ?? new CORE();
+            CORE core = context.GetCORE();
+            return context.User.GetLogged(core);
+        }
+
+        public static CORE GetCORE(this HttpContextBase context)
+        {
+            if (!context.Items.Contains("CORE"))
+                context.Items.Add("CORE", new CORE());
+            return (CORE)context.Items["CORE"];
+        }
+
+        public static User GetLogged(this IPrincipal user, CORE core)
+        {
             
-            return core.Persona.getUser(user.Identity.Name);
+            if (core.User != null && core.User.UserName == user.Identity.Name)
+                return core.User;
+
+            return core.Persona.AuthenticateUser(user.Identity.Name);
         }
     }
 }

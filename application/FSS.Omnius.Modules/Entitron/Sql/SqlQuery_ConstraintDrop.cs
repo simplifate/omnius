@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' DROP CONSTRAINT ', @{2} ,';');"+ 
-                "exec(@sql);",
+                "exec (@sql);",
                 parAppName, parTableName,parConstraintName);
 
             base.BaseExecution(transaction);

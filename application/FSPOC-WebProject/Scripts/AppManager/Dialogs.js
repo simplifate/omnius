@@ -60,4 +60,54 @@ $(function () {
             error: function () { alert("ERROR") }
         });
     }
+    addAppDialog = $("#new-app-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 600,
+        height: 320,
+        buttons: {
+            "Přidat": function () {
+                addAppDialog_SubmitData();
+            },
+            "Zrušit": function () {
+                addAppDialog.dialog("close");
+            }
+        },
+        create: function () {
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    addAppDialog_SubmitData();
+                    return false;
+                }
+            });
+        },
+        open: function () {
+            addAppDialog.find("#app-name").val("");
+            addAppDialog.find("#tile-width").val(2);
+            addAppDialog.find("#tile-height").val(1);
+            addAppDialog.find("#bg-color").val(0);
+            addAppDialog.find("#icon-class").val("fa-question");
+        }
+    });
+    function addAppDialog_SubmitData() {
+        addAppDialog.dialog("close");
+        postData = {
+            Name: addAppDialog.find("#app-name").val(),
+            TileWidth: addAppDialog.find("#tile-width").val(),
+            TileHeight: addAppDialog.find("#tile-height").val(),
+            Color: addAppDialog.find("#bg-color").val(),
+            Icon: addAppDialog.find("#icon-class").val()
+        }
+        $.ajax({
+            type: "POST",
+            url: "/api/master/apps",
+            data: postData,
+            error: function () {
+                alert("ERROR");
+            },
+            success: function () {
+                location.reload();
+            }
+        });
+    }
 });

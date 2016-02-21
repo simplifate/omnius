@@ -212,17 +212,22 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
+    <Compile Include="Controllers\CORE\ErrorController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
     <Compile Include="Controllers\Hermes\QueueController.cs" />
     <Compile Include="Controllers\Hermes\TemplateController.cs" />
     <Compile Include="Controllers\Hermes\SMTPController.cs" />
     <Compile Include="Controllers\LoggedUserHelper.cs" />
+    <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
+    <Compile Include="Controllers\Mozaic\CssController.cs" />
+    <Compile Include="Controllers\Mozaic\EditorController.cs" />
+    <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
-    <Compile Include="Controllers\Mozaic\ShowController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
+    <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
@@ -250,19 +255,19 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ActionModel.cs" />
-    <Compile Include="Models\AppTile.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />
+    <Compile Include="Views\MyVirtualFile.cs" />
+    <Compile Include="Views\MyVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\ErrorCss.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
     <Content Include="Content\images\animated-overlay.gif" />
@@ -283,6 +288,7 @@
     <Content Include="Content\images\ModuleIcons\sentry.png" />
     <Content Include="Content\images\ModuleIcons\tapestry.png" />
     <Content Include="Content\images\ModuleIcons\watchtower.png" />
+    <Content Include="Content\images\MozaicGrid.png" />
     <Content Include="Content\images\OmniusLogo.png" />
     <Content Include="Content\images\page_white_add.png" />
     <Content Include="Content\images\page_white_copy.png" />
@@ -290,6 +296,11 @@
     <Content Include="Content\images\page_white_edit.png" />
     <Content Include="Content\images\page_white_paste.png" />
     <Content Include="Content\images\SearchIcon.png" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_asc_disabled.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\images\TapestryIcons\circle-double-dashed.png" />
     <Content Include="Content\images\TapestryIcons\circle-double.png" />
     <Content Include="Content\images\TapestryIcons\circle-filled.png" />
@@ -302,8 +313,8 @@
     <Content Include="Content\images\TapestryIcons\gateway-pentagon.png" />
     <Content Include="Content\images\TapestryIcons\gateway-plus.png" />
     <Content Include="Content\images\TapestryIcons\gateway-x.png" />
-    <Content Include="Content\images\TapestryIcons\orange-port-arrow.png" />
     <Content Include="Content\images\TapestryIcons\page.png" />
+    <Content Include="Content\images\TapestryIcons\port-arrow.png" />
     <Content Include="Content\images\TapestryIcons\small-message-double-circle.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -322,6 +333,7 @@
     <Content Include="Content\images\watcheye_small.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.contextMenu.css" />
+    <Content Include="Content\css\jquery.dataTables.min.css" />
     <Content Include="Content\scss\Bundled.css">
       <DependentUpon>Bundled.scss</DependentUpon>
     </Content>
@@ -390,14 +402,12 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Content\WfDesigner.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\AppManager\UserInit.js" />
@@ -1297,6 +1307,7 @@
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
+    <Content Include="Scripts\CORE\logout.js" />
     <Content Include="Scripts\Hermes\Init.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
@@ -1314,6 +1325,7 @@
     <Content Include="Scripts\jquery-collision.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1324,6 +1336,11 @@
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\MozaicEditor\Dialogs.js" />
+    <Content Include="Scripts\MozaicEditor\Init.js" />
+    <Content Include="Scripts\MozaicEditor\Load.js" />
+    <Content Include="Scripts\MozaicEditor\Save.js" />
+    <Content Include="Scripts\MozaicEditor\Utils.js" />
     <Content Include="Scripts\Nexus\Dialogs.js" />
     <Content Include="Scripts\Nexus\Init.js" />
     <Content Include="Scripts\Overview\Dialogs.js" />
@@ -1349,7 +1366,6 @@
     <Content Include="Scripts\Tapestry\InitDemo.js" />
     <Content Include="Scripts\Tapestry\Load.js" />
     <Content Include="Scripts\Tapestry\Save.js" />
-    <Content Include="Scripts\Tapestry\NewDesignCommon.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
@@ -1428,7 +1444,7 @@
     <Content Include="Views\Mozaic\Page\Create.cshtml" />
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
-    <Content Include="Views\CORE\Portal\Applications.cshtml" />
+    <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
     <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
     <Content Include="Views\Master\Home\Help.cshtml" />
     <Content Include="Views\Nexus\WS\Form.cshtml" />
@@ -1466,11 +1482,27 @@
     <Content Include="Views\Hermes\Log\Detail.cshtml" />
     <Content Include="Views\Hermes\Queue\Index.cshtml" />
     <Content Include="Views\Hermes\Queue\Detail.cshtml" />
-    <Content Include="Views\Persona\Roles\Index.cshtml" />
+    <Content Include="Views\Persona\Roles\App.cshtml" />
+    <Content Include="Views\Mozaic\Css\Index.cshtml" />
+    <Content Include="Views\Mozaic\UpperPanel.cshtml" />
+    <Content Include="Views\Mozaic\Css\Detail.cshtml" />
+    <Content Include="Views\CORE\Error\UserNotAuthorized.cshtml" />
+    <Content Include="Views\CORE\Error\PageNotFound.cshtml" />
+    <Content Include="Views\CORE\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Mozaic\Css\Update.cshtml" />
+    <Content Include="Views\Mozaic\Css\BaseIndex.cshtml" />
+    <Content Include="Views\Persona\Account\Index.cshtml" />
+    <Content Include="Views\Persona\Account\Create.cshtml" />
+    <Content Include="Views\Persona\Account\Update.cshtml" />
+    <Content Include="Views\Persona\Account\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Editor\Index.cshtml" />
+    <Content Include="Views\Persona\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
+    <Content Include="Views\Master\AppAdminManager\BuildApp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Show\" />
+    <Folder Include="Views\Persona\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
