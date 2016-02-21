@@ -38,7 +38,7 @@ namespace FSPOC_WebProject.Views
             }
             else
             {
-                byte[] content = Encoding.UTF8.GetBytes(view.ViewContent);
+                byte[] content = Encoding.ASCII.GetBytes(view.ViewContent);
                 return new MyVirtualFile (virtualPath, content);
             }
         }
