@@ -4,6 +4,7 @@ using System.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Table;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -17,15 +18,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
             Entitron e = core.Entitron;
             DBEntities ent = new DBEntities();
 
-            //todo sqlquery na získání tabulek z datového slovníku
-            Nexus.Service.NexusExtDBService svc = new Nexus.Service.NexusExtDBService("vo8qh1qcem.database.windows.net", "Omnius");
-            svc.NewQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES");
-            List<object> data = svc.FetchArray("TABLE_NAME");
-            List<string> existingTables = new List<string>();
-            foreach (object table in data) {
-                existingTables.Add(table.ToString());
-            }
-
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
                 DBTable entitronTable =
@@ -33,7 +25,15 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     GetTables().
                     SingleOrDefault(x => x.tableName.ToLower() == efTable.Name.ToLower());
 
-                bool tableExists = existingTables.Contains("Entitron_" + e.AppName + "_" + efTable.Name);
+                bool tableExists;
+                if (entitronTable != null)
+                {
+                    tableExists = DBTable.isInDB(entitronTable.Application.Name, entitronTable.tableName); 
+                }
+                else
+                {
+                    tableExists = false;
+                }
 
                 if (entitronTable == null || !tableExists) //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
                 {
@@ -46,6 +46,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         DBColumn col = new DBColumn()
                         {
                             Name = column.Name,
+                            isIdentity = (column.Name.ToLower()=="id")?true:false,
                             isPrimary = column.PrimaryKey,
                             isUnique = column.Unique,
                             canBeNull = column.AllowNull,
@@ -266,6 +267,38 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 e.Application.SaveChanges();
             }
+
+            foreach (DbView efView in dbSchemeCommit.Views)
+            {
+                bool viewExists = DBView.isInDb(e.Application.Name, efView.Name);
+
+                DBView newView = new DBView()
+                {
+                    Application = e.Application,
+                    dbViewName = efView.Name,
+                    sql = efView.Query
+                };
+
+                if (!viewExists)
+                {
+                    newView.Create();
+                }
+                else
+                {
+                    newView.Alter();
+                }
+                e.Application.SaveChanges();
+            }
+            
+            List<string> deleteViews = e.Application.GetViewNames()
+                                .Except(dbSchemeCommit.Views.Select(x => "Entitron_"+e.Application.Name+"_"+x.Name))
+                                .ToList();                          //list pohledů které nejsou ve schématu, ale jsou ještě v entitronu
+
+            foreach (string viewName in deleteViews)
+            {
+                DBView.Drop(e.Application.Name,viewName);
+            }
+            e.Application.SaveChanges();
         }
 
         private static string GetConnectionString()

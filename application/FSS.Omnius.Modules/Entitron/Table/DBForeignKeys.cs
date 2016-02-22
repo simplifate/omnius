@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Entitron
         {
             _table = table;
 
-            if (_table.isInDB())
+            if (DBTable.isInDB(table.Application.Name, table.tableName))
             {
                 SqlQuery_SelectFogreignKeys query = new SqlQuery_SelectFogreignKeys() { application = table.Application, table = table,isForDrop = isForDrop};
 

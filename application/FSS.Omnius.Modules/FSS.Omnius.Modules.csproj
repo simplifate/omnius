@@ -183,8 +183,15 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
     <Compile Include="Entitron\Table\Application.cs" />
+    <Compile Include="Entitron\Table\DBView.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />

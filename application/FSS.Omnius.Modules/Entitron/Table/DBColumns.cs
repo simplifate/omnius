@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron
             _table = table;
 
             // if table exists - get columns
-            if (_table.isInDB())
+            if (DBTable.isInDB(table.Application.Name,table.tableName))
             {
                 SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { application = table.Application, table = table };
 
@@ -67,6 +67,8 @@ namespace FSS.Omnius.Modules.Entitron
         public DBTable AddToDB(
             string columnName,
             string type,
+            bool isIdentity,
+            bool isPrimary,
             bool allowColumnLength,
             bool allowPrecisionScale,
             int? maxLength = null,
@@ -80,6 +82,8 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 Name = columnName,
                 type = type,
+                isIdentity = isIdentity,
+                isPrimary = isPrimary,
                 maxLength = maxLength,
                 precision = precision,
                 scale = scale,

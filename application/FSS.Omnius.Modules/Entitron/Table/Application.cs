@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FSS.Omnius.Modules.Entitron.Table;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
@@ -52,6 +53,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
             return null;
         }
+
+        public List<string> GetViewNames()
+        {
+            SqlQuery_SelectViews query = new SqlQuery_SelectViews();
+            List<string> viewNames=new List<string>();
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                string name = Convert.ToString(i["name"]);
+                viewNames.Add(name);
+            }
+            return viewNames;
+        } 
 
         public void SaveChanges()
         {
