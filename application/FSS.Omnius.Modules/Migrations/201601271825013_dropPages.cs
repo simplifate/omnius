@@ -9,6 +9,8 @@ namespace FSS.Omnius.Modules.Migrations
         {
             DropForeignKey("dbo.Mozaic_Pages", "ApplicationId", "dbo.Master_Applications");
             DropForeignKey("dbo.Mozaic_Pages", "MasterTemplateId", "dbo.Mozaic_Template");
+            DropForeignKey("dbo.Tapestry_Blocks", "MozaicPageId", "dbo.Mozaic_Pages");
+            DropForeignKey("dbo.Mozaic_CssPages", "PageId", "dbo.Mozaic_Pages");
             DropIndex("dbo.Mozaic_Pages", new[] { "MasterTemplateId" });
             DropIndex("dbo.Mozaic_Pages", new[] { "ApplicationId" });
             DropTable("dbo.Mozaic_Pages");
@@ -23,6 +25,8 @@ namespace FSS.Omnius.Modules.Migrations
                     Template_Id = c.Int()
                 })
                 .PrimaryKey(i => i.Id);
+            AddForeignKey("dbo.Tapestry_Blocks", "MozaicPageId", "dbo.Mozaic_Pages", "Id");
+            AddForeignKey("dbo.Mozaic_CssPages", "PageId", "dbo.Mozaic_Pages", "Id");
         }
         
         public override void Down()
