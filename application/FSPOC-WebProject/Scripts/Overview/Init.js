@@ -1,4 +1,6 @@
 ﻿var ZoomFactor = 1.0;
+var currentBlock, currentMetablock;
+
 $(function () {
     if (CurrentModuleIs("overviewModule")) {
         LoadMetablock();
@@ -47,30 +49,47 @@ $(function () {
             trigger: 'right',
             zIndex: 300,
             callback: function (key, options) {
-                if (key == "delete") {
-                    instance.removeAllEndpoints(options.$trigger, true);
-                    options.$trigger.remove();
-                }
-                else if (key == "initial") {
-                    if (options.$trigger.hasClass("metablock")) {
-                        $("#overviewPanel .metablock").each(function (index, element) {
-                            $(element).attr("isInitial", false);
-                            $(element).find(".metablockInfo").text("");
-                        });
-                        options.$trigger.attr("isInitial", true);
-                        options.$trigger.find(".metablockInfo").text("Initial");
+                switch(key)
+                {
+                    case "delete": {
+                        instance.removeAllEndpoints(options.$trigger, true);
+                        options.$trigger.remove();
+                        break;
                     }
-                    else {
-                        $("#overviewPanel .block").each(function (index, element) {
-                            $(element).attr("isInitial", false);
-                            $(element).find(".blockInfo").text("");
-                        });
-                        options.$trigger.attr("isInitial", true);
-                        options.$trigger.find(".blockInfo").text("Initial");
+                    case "initial": {
+                        if (options.$trigger.hasClass("metablock")) {
+                            $("#overviewPanel .metablock").each(function (index, element) {
+                                $(element).attr("isInitial", false);
+                                $(element).find(".metablockInfo").text("");
+                            });
+                            options.$trigger.attr("isInitial", true);
+                            options.$trigger.find(".metablockInfo").text("Initial");
+                        }
+                        else {
+                            $("#overviewPanel .block").each(function (index, element) {
+                                $(element).attr("isInitial", false);
+                                $(element).find(".blockInfo").text("");
+                            });
+                            options.$trigger.attr("isInitial", true);
+                            options.$trigger.find(".blockInfo").text("Initial");
+                        }
+                        break;
+                    }
+                    case "properties": {
+                        if (options.$trigger.hasClass("metablock")) {
+                            currentMetablock = options.$trigger;
+                            metablockPropertiesDialog.dialog("open");
+                        }
+                        else {
+                            currentBlock = options.$trigger;
+                            blockPropertiesDialog.dialog("open");
+                        }
+                        break;
                     }
                 }
             },
             items: {
+                "properties": { name: "Properties", icon: "edit" },
                 "initial": { name: "Set as initial", icon: "edit" },
                 "delete": { name: "Delete", icon: "delete" }
             }

@@ -531,6 +531,10 @@
     <Compile Include="Migrations\201602221641534_Tapestry-block-isInMenu.Designer.cs">
       <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602221837391_Tapestry-block-isInMenu2.cs" />
+    <Compile Include="Migrations\201602221837391_Tapestry-block-isInMenu2.Designer.cs">
+      <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -818,6 +822,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221641534_Tapestry-block-isInMenu.resx">
       <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221837391_Tapestry-block-isInMenu2.resx">
+      <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

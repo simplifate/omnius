@@ -19,7 +19,8 @@
             PositionX: parseInt(currentBlock.css("left")),
             PositionY: parseInt(currentBlock.css("top")),
             IsNew: isNew,
-            IsInitial: (currentBlock.attr("isInitial") == "true")
+            IsInitial: (currentBlock.attr("isInitial") == "true"),
+            InInMenu: currentBlock.data("InInMenu")
         });
     });
     $("#overviewPanel .metablock").each(function (metablockIndex, metablockDiv) {
@@ -37,7 +38,8 @@
             PositionX: parseInt(currentMetablock.css("left")),
             PositionY: parseInt(currentMetablock.css("top")),
             IsNew: isNew,
-            IsInitial: (currentMetablock.attr("isInitial") == "true")
+            IsInitial: (currentMetablock.attr("isInitial") == "true"),
+            IsInMenu: currentMetablock.data("IsInMenu")
         });
     });
     postData = {

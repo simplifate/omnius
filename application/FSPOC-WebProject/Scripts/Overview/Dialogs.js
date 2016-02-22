@@ -119,5 +119,63 @@
             renameMetablockDialog.dialog("close");
             $("#headerMetablockName").text(renameMetablockDialog.find("#metablock-name").val());
         }
+
+        blockPropertiesDialog = $('#block-properties-dialog').dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    blockPropertiesDialog_SubmitData();
+                },
+                "Cancel": function () {
+                    blockPropertiesDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        blockPropertiesDialog_SubmitData();
+                        return false;
+                    }
+                });
+            },
+            open: function () {
+                blockPropertiesDialog.find("#block-is-in-menu").prop('checked', currentBlock.data('IsInMenu'));
+            }
+        });
+        function blockPropertiesDialog_SubmitData() {
+            blockPropertiesDialog.dialog("close");
+            currentBlock.data("IsInMenu", blockPropertiesDialog.find("#block-is-in-menu").is(':checked'));
+        }
+
+        metablockPropertiesDialog = $('#metablock-properties-dialog').dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    metablockPropertiesDialog_SubmitData();
+                },
+                "Cancel": function () {
+                    metablockPropertiesDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        metablockPropertiesDialog_SubmitData();
+                        return false;
+                    }
+                });
+            },
+            open: function () {
+                metablockPropertiesDialog.find("#metablock-is-in-menu").prop('checked', currentMetablock.data('IsInMenu'));
+            }
+        });
+        function metablockPropertiesDialog_SubmitData() {
+            metablockPropertiesDialog.dialog("close");
+            currentMetablock.data("IsInMenu", metablockPropertiesDialog.find("#metablock-is-in-menu").is(':checked'));
+        }
     }
 });
