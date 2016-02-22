@@ -53,6 +53,7 @@
                     newColumn.data("dbDefaultValue", defaultValue);
                     newColumn.data("dbColumnLength", data.Tables[i].Columns[j].ColumnLength);
                     newColumn.data("dbColumnLengthMax", data.Tables[i].Columns[j].ColumnLengthIsMax);
+                    newColumn.data("dbColumnDisplayName", data.Tables[i].Columns[j].DisplayName);
 
                     newColumn.children(".deleteColumnIcon").on("mousedown", function () {
                         $(this).parents(".dbColumn").remove();

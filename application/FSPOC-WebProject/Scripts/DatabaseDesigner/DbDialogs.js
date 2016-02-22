@@ -105,6 +105,7 @@ $(function () {
             },
             open: function () {
                 addColumnDialog.find("#column-name").val("");
+                addColumnDialog.find("#column-display-name").val("");
                 addColumnDialog.find("#primary-key-checkbox").prop("checked", false);
                 addColumnDialog.find("#unique-checkbox").prop("checked", false);
                 addColumnDialog.find("#allow-null-checkbox").prop("checked", false);
@@ -126,7 +127,8 @@ $(function () {
                 addColumnDialog.find("#default-value").val(),
                 addColumnDialog.find("#column-length").val(),
                 addColumnDialog.find("#column-length-max").prop("checked"),
-                addColumnDialog.find("#unique-checkbox").prop("checked"));
+                addColumnDialog.find("#unique-checkbox").prop("checked"),
+                AddColumnDialog.find("#column-display-name").val());
             addColumnDialog.dialog("close");
         }
 
@@ -170,6 +172,7 @@ $(function () {
             },
             open: function () {
                 editColumnDialog.find("#column-name").val(CurrentColumn.find(".dbColumnName").text());
+                editColumnDialog.find("#column-display-name").val(CurrentColumn.data("dbColumnDisplayName"));
                 editColumnDialog.find("#primary-key-checkbox").prop("checked", CurrentColumn.hasClass("dbPrimaryKey"));
                 editColumnDialog.find("#unique-checkbox").prop("checked", CurrentColumn.data("dbUnique"));
                 editColumnDialog.find("#allow-null-checkbox").prop("checked", CurrentColumn.data("dbAllowNull"));
@@ -190,6 +193,7 @@ $(function () {
             CurrentColumn.data("dbDefaultValue", editColumnDialog.find("#default-value").val());
             CurrentColumn.data("dbColumnLength", editColumnDialog.find("#column-length").val());
             CurrentColumn.data("dbColumnLengthMax", editColumnDialog.find("#column-length-max").prop("checked"));
+            CurrentColumn.data("dbColumnDisplayName", editColumnDialog.find("#column-display-name").val());
             if (CurrentColumn.hasClass("dbPrimaryKey") && !editColumnDialog.find("#primary-key-checkbox").prop("checked"))
                 CurrentColumn.removeClass("dbPrimaryKey");
             else if (!CurrentColumn.hasClass("dbPrimaryKey") && editColumnDialog.find("#primary-key-checkbox").prop("checked")) {

@@ -11,6 +11,7 @@
             columnArray.push({
                 Id: columnIdCounter,
                 Name: $(columnDiv).find(".dbColumnName").text(),
+                DisplayName: $(columnDiv).data("dbColumnDisplayName"),
                 Type: $(columnDiv).attr("dbColumnType"),
                 PrimaryKey: $(columnDiv).hasClass("dbPrimaryKey"),
                 Unique: $(columnDiv).data("dbUnique"),

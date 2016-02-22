@@ -67,7 +67,7 @@ function AddTable(tableName) {
     AddColumnToJsPlumb(newTable.find(".dbColumn"));
 }
 
-function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValue, length, lengthMax, unique) {
+function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValue, length, lengthMax, unique, displayName) {
     newColumn = $('<div class="dbColumn"><div class="deleteColumnIcon fa fa-remove"></div><div class="dbColumnName">'
         + columnName + '</div><div class="editColumnIcon fa fa-pencil"></div></div>');
 
@@ -94,6 +94,7 @@ function AddColumn(table, columnName, type, isPrimaryKey, allowNull, defaultValu
     newColumn.attr("dbColumnType", type);
     newColumn.data("dbColumnLength", length);
     newColumn.data("dbColumnLengthMax", lengthMax);
+    newColumn.data("dbColumnDisplayName", displayName);
     AddColumnToJsPlumb(newColumn);
 }
 
