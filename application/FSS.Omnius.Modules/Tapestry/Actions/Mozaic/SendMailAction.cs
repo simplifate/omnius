@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override int Id
         {
             get {
-                return 2004;
+                return 2005;
             }
         }
         public override int? ReverseActionId
