@@ -121,7 +121,16 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                throw GetHttpInternalServerErrorResponseException(ex.Message);
+                string error = "";
+                while(ex != null)
+                {
+                    error += ex.Message + Environment.NewLine;
+                    error += ex.StackTrace + Environment.NewLine + Environment.NewLine;
+
+                    ex = ex.InnerException;
+                }
+
+                throw GetHttpInternalServerErrorResponseException(error);
             }
         }
 
