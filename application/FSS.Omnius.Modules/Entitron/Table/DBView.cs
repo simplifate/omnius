@@ -25,12 +25,11 @@ namespace FSS.Omnius.Modules.Entitron.Table
             return this;
         }
 
-        public static void Drop(string appName, string viewName)
+        public static void Drop(string completeViewName)
         {
             SqlQuery_ViewDrop query = new SqlQuery_ViewDrop()
             {
-                appName = appName,
-                viewName = viewName
+                viewName = completeViewName
             };
             query.Execute();
         }

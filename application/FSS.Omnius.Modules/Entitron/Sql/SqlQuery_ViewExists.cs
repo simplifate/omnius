@@ -13,10 +13,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", appName);
-            string parViewName = safeAddParam("applicationName", viewName);
 
-            sqlString = $"SELECT name FROM sys.views WHERE Entitron_@{parAppName}_@{parViewName};";
+            sqlString = $"SELECT name FROM sys.views WHERE name = 'Entitron_{appName}_{viewName}' ;";
 
             return base.BaseExecutionWithRead(connection);
         }

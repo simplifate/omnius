@@ -296,7 +296,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             foreach (string viewName in deleteViews)
             {
-                DBView.Drop(e.Application.Name,viewName);
+                DBView.Drop(viewName);
             }
             e.Application.SaveChanges();
         }
