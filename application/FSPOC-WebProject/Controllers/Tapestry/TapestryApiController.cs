@@ -523,6 +523,26 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+
+        [Route("api/tapestry/actions")]
+        [HttpGet]
+        public AjaxTransferTapestryActionList GetActionList()
+        {
+            AjaxTransferTapestryActionList result = new AjaxTransferTapestryActionList();
+
+            foreach(KeyValuePair<int, FSS.Omnius.Modules.Tapestry.Action> action in FSS.Omnius.Modules.Tapestry.Action.All.OrderBy(a => a.Value.Name)) {
+                result.Items.Add(new AjaxTransferTapestryActionItem()
+                {
+                    Id = action.Value.Id,
+                    ReverseActionId = action.Value.ReverseActionId,
+                    InputVars = action.Value.InputVar,
+                    OutputVars = action.Value.OutputVar,
+                    Name = action.Value.Name
+                });
+            };
+            return result;
+        }
+
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);

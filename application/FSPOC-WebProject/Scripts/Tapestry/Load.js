@@ -264,6 +264,21 @@
                 }
             });
 
+            $('#libraryCategory-Actions .libraryItem').remove();
+            url = "/api/tapestry/actions";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for(i = 0; i < data.Items.length; i++)
+                    {
+                        var action = data.Items[i];
+                        newLibItem = $('<div libId="' + action.Id + '" libType="action" class="libraryItem">' + action.Name + '</div>');
+                        $('#libraryCategory-Actions').append(newLibItem);
+                    }
+                }
+            });
 
             $('#libraryCategory-Roles .libraryItem').remove();
             url = "/api/Persona/app-roles/" + appId;
@@ -276,6 +291,35 @@
                         role = data.Roles[i];
                         newLibItem = $('<div libId="' + role.Id + '" libType="role" class="libraryItem">' + role.Name + '</div>');
                         $('#libraryCategory-Roles').append(newLibItem);
+                    }
+                }
+            });
+
+            $('#libraryCategory-Targets .libraryItem').remove();
+            url = "/api/tapestry/apps/" + appId + "/blocks";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    for(i = 0; i < data.ListItems.length; i++) {
+                        var item = data.ListItems[i];
+                        newLibItem = $('<div libId="' + item.Id + '" libType="target" class="libraryItem">' + item.Name + '</div>');
+                        $('#libraryCategory-Targets').append(newLibItem);
+                    }
+                }
+            });
+
+            $('#libraryCategory-Templates .libraryItem').remove();
+            url = "/api/hermes/" + appId + "/templates";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        newLibItem = $('<div libId="' + data[i].Id + '" libType="template" class="libraryItem">' + data[i].Name + '</div>');
+                        $('#libraryCategory-Templates').append(newLibItem);
                     }
                 }
             });

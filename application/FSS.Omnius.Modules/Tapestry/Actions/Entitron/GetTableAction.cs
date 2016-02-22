@@ -35,7 +35,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "GetTable";
+                return "Get Table";
             }
         }
 

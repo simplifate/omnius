@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "CreateDBItem";
+                return "Create Item";
             }
         }
 

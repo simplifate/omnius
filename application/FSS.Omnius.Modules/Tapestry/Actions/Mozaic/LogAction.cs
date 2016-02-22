@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return "Log";
+                return "Log message";
             }
         }
 

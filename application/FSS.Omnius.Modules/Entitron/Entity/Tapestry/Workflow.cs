@@ -18,6 +18,7 @@
         public int? ParentId { get; set; }
         public int ApplicationId { get; set; }
         public int TypeId { get; set; }
+        public bool IsInMenu { get; set; }
         public virtual Application Application { get; set; }
         public virtual ICollection<Block> Blocks { get; set; }
         public virtual Block InitBlock { get; set; }

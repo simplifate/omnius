@@ -124,6 +124,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Hermes\HermesAjaxTransferEmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailQueue.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\AjaxTransferTapestryAction.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
@@ -525,6 +527,10 @@
     <Compile Include="Migrations\201602221447359_hermes-appid3.Designer.cs">
       <DependentUpon>201602221447359_hermes-appid3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602221641534_Tapestry-block-isInMenu.cs" />
+    <Compile Include="Migrations\201602221641534_Tapestry-block-isInMenu.Designer.cs">
+      <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -809,6 +815,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221447359_hermes-appid3.resx">
       <DependentUpon>201602221447359_hermes-appid3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221641534_Tapestry-block-isInMenu.resx">
+      <DependentUpon>201602221641534_Tapestry-block-isInMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

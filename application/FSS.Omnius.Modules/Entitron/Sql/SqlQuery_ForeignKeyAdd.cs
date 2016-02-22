@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "SET @sql= CONCAT('ALTER TABLE ', @realTable1Name, ' ADD CONSTRAINT FK_', @{3},' FOREIGN KEY (', @{4}, ') REFERENCES ', @realTable2Name, ' (', @{5}, ') " +
                 " {6} {7} ;');" +
                 "exec (@sql);",
-                parAppName, parTable1Name, parTable2Name, parForeignName, parForeignKey, parPrimaryKey, delete, update, application.Name, table.tableName);
+                parAppName, parTable1Name, parTable2Name, parForeignName, parForeignKey, parPrimaryKey, delete, update);
 
             base.BaseExecution(transaction);
         }

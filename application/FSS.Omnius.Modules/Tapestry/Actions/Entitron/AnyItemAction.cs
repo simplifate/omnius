@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Select";
+                return "Select (Any)";
             }
         }
 

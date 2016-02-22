@@ -27,6 +27,24 @@ namespace FSPOC_WebProject
             HostingEnvironment .RegisterVirtualPathProvider(new MyVirtualPathProvider());
         }
 
+        protected void Application_Error(object sender, EventArgs e)
+        {
+
+            string body = $"URL: {Request.Url.AbsoluteUri}<br /><br/>Errors:<br><br>";
+            foreach (var error in Context.AllErrors)
+            {
+                var curError = error;
+                while (curError != null)
+                {
+                    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+
+                    curError = curError.InnerException;
+                }
+            }
+
+            Logger.Log.Error(body);
+        }
+
         protected void Application_EndRequest()
         {
             // error
