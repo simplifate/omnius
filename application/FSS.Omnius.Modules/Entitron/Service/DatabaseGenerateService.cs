@@ -194,13 +194,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 List<string> newFK =
                     dbSchemeCommit
                         .Relations
-                        .Where(x1 => !entitronsFKsNames.Any(x2 => x2 == x1.Name.ToLower()))
+                        .Where(x1 => !entitronsFKsNames.Any(x2 => x2 =="fk_"+x1.Name.ToLower()))
                         .Select(x=>x.Name)
                         .ToList();                                           //list názvů indexů které jsou ve schématu, ale ne v entitronu
 
                 List<string> deletedFK =
                      entitronsFKsNames
-                    .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => x2.Name.ToLower() == x1)).Distinct()
+                    .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_"+x2.Name.ToLower() == x1)).Distinct()
                         .ToList();                                           //list názvů indexů které jsou v entitronu, ale ne ve schématu
 
                 foreach (string fkname in newFK)                         //přidá do entitronu všechny nové cizí klíče
@@ -261,7 +261,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     DBColumn column =
                         entitronTable
                             .columns
-                            .SingleOrDefault(x => x.Name == columnName);
+                            .SingleOrDefault(x => x.Name.ToLower() == columnName);
 
                     entitronTable.columns.DropFromDB(column.Name);
                 }

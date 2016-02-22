@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('DROP INDEX ', @{2}, ' ON ', @realTableName, ';')" +
+                "SET @sql= CONCAT('DROP INDEX IF EXISTS ', @{2}, ' ON ', @realTableName, ';')" +
                 "exec (@sql)",
                 parAppName, parTableName,parIndexName);
             base.BaseExecution(transaction);

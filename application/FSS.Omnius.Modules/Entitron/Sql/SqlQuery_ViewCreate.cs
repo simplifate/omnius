@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject connection)
         {
 
-            sqlString = $"CREATE VIEW Entitron_{Application.Name}_{viewName} AS {sql};";
+            sqlString = $"CREATE VIEW Entitron_{Application.Name}_{viewName} AS {sql} ;";
 
             base.BaseExecution(connection);
         }
