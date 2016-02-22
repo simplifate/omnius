@@ -39,10 +39,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX);" +
                 "exec getTableRealName @{0}, @{1}, @realTable1Name OUTPUT;" +
                 "exec getTableRealName @{0}, @{2}, @realTable2Name OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTable1Name, ' ADD CONSTRAINT FK_{8}_{9}_', @{3},' FOREIGN KEY (', @{4}, ') REFERENCES ', @realTable2Name, ' (', @{5}, ') " +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTable1Name, ' ADD CONSTRAINT FK_', @{3},' FOREIGN KEY (', @{4}, ') REFERENCES ', @realTable2Name, ' (', @{5}, ') " +
                 " {6} {7} ;');" +
                 "exec (@sql);",
-                parAppName, parTable1Name, parTable2Name, parForeignName, parForeignKey, parPrimaryKey, delete, update, application.Name, table.tableName);
+                parAppName, parTable1Name, parTable2Name, parForeignName, parForeignKey, parPrimaryKey, delete, update);
 
             base.BaseExecution(transaction);
         }

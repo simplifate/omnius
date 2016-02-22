@@ -43,7 +43,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return "ExportToExcel";
+                return "Export to Excel";
             }
         }
 

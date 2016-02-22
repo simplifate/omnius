@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString =string.Format(
                 "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' DROP COLUMN ', @{2}, ';')" +
+                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' DROP COLUMN IF EXISTS ', @{2}, ';')" +
                 "exec(@sql);", parAppName, parTableName, parColumn);
 
             base.BaseExecution(connection);

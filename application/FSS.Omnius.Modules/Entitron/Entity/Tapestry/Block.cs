@@ -30,6 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ModelName { get; set; }
 
         public bool IsVirtual { get; set; }
+        public bool IsInMenu { get; set; }
         
         public int WorkFlowId { get; set; }
 

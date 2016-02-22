@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "GetModelData";
+                return "Get Model Data";
             }
         }
 

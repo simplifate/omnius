@@ -14,11 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public Application Application { get; set; }
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", Application.Name);
-            string parViewName = safeAddParam("applicationName", viewName);
-            string parSql = safeAddParam("tableName", sql);
 
-            sqlString = $"CREATE VIEW Entitron_@{parAppName}_@{parViewName} AS @{parSql};";
+            sqlString = $"CREATE VIEW Entitron_{Application.Name}_{viewName} AS {sql} ;";
 
             base.BaseExecution(connection);
         }

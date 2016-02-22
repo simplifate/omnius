@@ -9,14 +9,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     public class SqlQuery_ViewDrop:SqlQuery
     {
         public string viewName { get; set; }
-        public string appName { get; set; }
 
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", appName);
-            string parViewName = safeAddParam("applicationName", viewName);
 
-            sqlString= $"DROP VIEW IF EXISTS Entitron_@{parAppName}_@{parViewName} ;";
+            sqlString= $"DROP VIEW IF EXISTS {viewName} ;";
 
             base.BaseExecution(connection);
         }

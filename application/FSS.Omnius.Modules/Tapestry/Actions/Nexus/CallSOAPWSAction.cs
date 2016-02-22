@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         public override string Name
         {
             get {
-                return "SOAP CALL";
+                return "Call SOAP";
             }
         }
 
