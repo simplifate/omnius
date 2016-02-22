@@ -49,6 +49,12 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 prehledPeriodik.Columns.Add("Typ periodika");
                 prehledPeriodik.Columns.Add("Dodavatel");
                 prehledPeriodik.Columns.Add("Cena bez DPH");
+                prehledPeriodik.Rows.Add("36", "21 století", "1x měsíčně", "tuzemské", "Monitor", "545.45");
+                prehledPeriodik.Rows.Add("597", "A-Radio praktická elektronika", "1x měsíčně", "tuzemské", "Monitor", "818.18");
+                prehledPeriodik.Rows.Add("281", "Autoexpert", "1x měsíčně", "tuzemské", "Monitor", "981.0");
+                prehledPeriodik.Rows.Add("563", "Bankovnictví", "1x měsíčně", "tuzemské", "Monitor", "1036.36");
+                prehledPeriodik.Rows.Add("311", "Beschafung Aktuell", "1x měsíčně", "zahraniční", "Suweco", "3706.0");
+
                 ViewData["tableData_tabulkaPrehledPeriodik"] = prehledPeriodik;
 
                 var prehledObjednavek = new DataTable();
@@ -80,30 +86,49 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 prehledPriznakuObjednavky.Columns.Add("Název");
                 prehledPriznakuObjednavky.Columns.Add("Popis");
                 prehledPriznakuObjednavky.Columns.Add("Aktivní");
+                prehledPriznakuObjednavky.Rows.Add("nový", "nový", "Ano");
+                prehledPriznakuObjednavky.Rows.Add("rozpracováno", "rozpracováno", "Ano");
+                prehledPriznakuObjednavky.Rows.Add("vyřízeno", "vyřízeno", "Ano");
+                prehledPriznakuObjednavky.Rows.Add("zrušeno", "zrušeno", "Ano");
+                prehledPriznakuObjednavky.Rows.Add("nevyfakturováno", "nevyfakturováno", "Ano");
+                prehledPriznakuObjednavky.Rows.Add("změna", "změna", "Ano");
+
                 ViewData["tableData_tabulkaPrehledPriznakuObjednavky"] = prehledPriznakuObjednavky;
 
                 var prehledForemPeriodik = new DataTable();
                 prehledForemPeriodik.Columns.Add("Název");
                 prehledForemPeriodik.Columns.Add("Popis");
                 prehledForemPeriodik.Columns.Add("Aktivní");
+                prehledForemPeriodik.Rows.Add("elektronické", "elektronické", "Ano");
+                prehledForemPeriodik.Rows.Add("papírové", "papírové", "Ano");
                 ViewData["tableData_tabulkaPrehledForemPeriodik"] = prehledForemPeriodik;
 
                 var prehledPriznakuSchvalovani = new DataTable();
                 prehledPriznakuSchvalovani.Columns.Add("Název");
                 prehledPriznakuSchvalovani.Columns.Add("Popis");
                 prehledPriznakuSchvalovani.Columns.Add("Aktivní");
+                prehledPriznakuSchvalovani.Rows.Add("připraveno ke schválení", "připraveno ke schválení", "Ano");
+                prehledPriznakuSchvalovani.Rows.Add("schváleno", "schváleno", "Ano");
+                prehledPriznakuSchvalovani.Rows.Add("zamítnuto", "zamítnuto", "Ano");
                 ViewData["tableData_tabulkaPrehledPriznakuSchvalovani"] = prehledPriznakuSchvalovani;
 
                 var prehledCetnostiPeriodik = new DataTable();
                 prehledCetnostiPeriodik.Columns.Add("Název");
                 prehledCetnostiPeriodik.Columns.Add("Popis");
                 prehledCetnostiPeriodik.Columns.Add("Aktivní");
+                prehledCetnostiPeriodik.Rows.Add("1x týdně", "1x týdně", "Ano");
+                prehledCetnostiPeriodik.Rows.Add("5x týdně", "5x týdně", "Ano");
+                prehledCetnostiPeriodik.Rows.Add("10x ročně", "10x ročně", "Ano");
+                prehledCetnostiPeriodik.Rows.Add("1x měsíčně", "1x měsíčně", "Ano");
+                prehledCetnostiPeriodik.Rows.Add("6x ročně", "6x ročně", "Ano");
                 ViewData["tableData_tabulkaPrehledCetnostiPeriodik"] = prehledCetnostiPeriodik;
 
                 var prehledTypuPeriodik = new DataTable();
                 prehledTypuPeriodik.Columns.Add("Název");
                 prehledTypuPeriodik.Columns.Add("Popis");
                 prehledTypuPeriodik.Columns.Add("Aktivní");
+                prehledTypuPeriodik.Rows.Add("tuzemské", "tuzemské", "Ano");
+                prehledTypuPeriodik.Rows.Add("zahraniční", "zahraniční", "Ano");
                 ViewData["tableData_tabulkaPrehledTypuPeriodik"] = prehledTypuPeriodik;
 
                 var hromadnaZmena = new DataTable();
@@ -190,7 +215,31 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 zjednodusenyPrehledProVedouciPracovniky.Columns.Add("Místo doručení");
                 ViewData["tableData_tabulkaZjednodusenyPrehledProVedouciPracovniky"] = zjednodusenyPrehledProVedouciPracovniky;
 
+                var types = new Dictionary<int, string>();
+                types.Add(1, "tuzemské");
+                types.Add(2, "zahraniční");
+                ViewData["dropdownData_dropdown-select29"] = types;
 
+                var forms = new Dictionary<int, string>();
+                forms.Add(1, "elektronické");
+                forms.Add(2, "papírové");
+                ViewData["dropdownData_dropdown-select28"] = forms;
+
+                var freq = new Dictionary<int, string>();
+                freq.Add(1, "1x týdně");
+                freq.Add(2, "5x týdně");
+                freq.Add(3, "10x ročně");
+                freq.Add(4, "1x měsíčně");
+                freq.Add(5, "6x ročně");
+                ViewData["dropdownData_dropdown-select27"] = freq;
+
+                var mag = new Dictionary<int, string>();
+                mag.Add(1, "21 století");
+                mag.Add(2, "A-Radio praktická elektronika");
+                mag.Add(3, "Autoexpert");
+                mag.Add(4, "Bankovnictví");
+                mag.Add(5, "Beschafung Aktuell");
+                ViewData["dropdownData_dropdown-select26"] = mag;
 
                 ViewData["Mode"] = "App";
 
