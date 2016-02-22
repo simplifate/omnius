@@ -36,6 +36,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public SqlQuery_Table_Create AddColumn(
             string columnName,
             string type,
+            bool isPrimary,
             bool allowColumnLength,
             bool allowPrecisionScale,
             bool canBeNull,
@@ -49,6 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             {
                 Name = columnName,
                 type = type,
+                isPrimary = isPrimary,
                 allowColumnLength = allowColumnLength,
                 allowPrecisionScale = allowPrecisionScale,
                 maxLength = maxLength,

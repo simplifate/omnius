@@ -16,8 +16,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             Entitron e = core.Entitron;
 
-            
-
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
                 List<string> primaryColumnsForTable = new List<string>(); //list do kterého se ukládají názvy sloupců které jsou primárním klíčem pro tabulku
@@ -37,6 +35,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         DBColumn col = new DBColumn()
                         {
                             Name = column.Name,
+                            isPrimary = column.PrimaryKey,
                             isUnique = column.Unique,
                             canBeNull = column.AllowNull,
                             maxLength = column.ColumnLength,
@@ -98,10 +97,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 foreach (DbColumn column in efTable.Columns)
                 {
-                    if (column.PrimaryKey) //zaznamenává všechny sloupce, ze kterých se skládá primární klíč tabulky
-                    {
-                        primaryColumnsForTable.Add(column.Name);
-                    }
                     string def = "DEF_Entitron_" + e.Application.Name + "_" + entitronTable.tableName + column.Name;
                     if (!string.IsNullOrEmpty(column.DefaultValue))
                     {
@@ -141,18 +136,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                 }
                 e.Application.SaveChanges();
-                List<string> primaryList1 = primaryColumnsForTable.Except(entitronTable.primaryKeys).ToList();
-                List<string> primaryList2 = entitronTable.primaryKeys.Except(primaryColumnsForTable).ToList();
-                if (primaryList1.Count>0 || primaryList2.Count>0)           //pokud v entitronu se nachází klíč, a pokud seznam sloupců ze kterého klíč je tvořen je v entitronu jiný než ve schématu, tak se musí smazat starý klíč a až potom vytvořit nový
-                {
-                    //todo ošetřit, že nebude moci být smazán primární klíč pokud je spojen v nějaké relaci, nebo smazat relaci jako první
-                    entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}", true);
-                    entitronTable.AddPrimaryKey(primaryColumnsForTable);
-                }
-                else if (entitronTable.primaryKeys.Count == 0 && primaryColumnsForTable.Count != 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
-                {
-                    entitronTable.AddPrimaryKey(primaryColumnsForTable);
-                }
                 e.Application.SaveChanges();
 
                 List<string> newIndeces =

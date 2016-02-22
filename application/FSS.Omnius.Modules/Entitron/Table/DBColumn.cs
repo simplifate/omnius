@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron
         public int ColumnId { get; set; }
         public string Name { get; set; }
         public string type { get; set; }
+        public bool isPrimary { get; set ; }
         public bool allowColumnLength { get; set; }
         public int? maxLength { get; set; }
         public bool allowPrecisionScale { get; set; }
@@ -38,9 +39,10 @@ namespace FSS.Omnius.Modules.Entitron
 
             return
                 string.Format(
-                    "[{0}] {1}{2} {3} {4}",
+                    "[{0}] {1}{2}{3} {4} {5}",
                     Name,
                     type,
+                    (isPrimary==true)?" IDENTITY(1,1) PRIMARY KEY ":"",
                     (allowColumnLength)
                         ? string.Format("({0})", (maxLength != null || maxLength > 8000) ? maxLength.ToString() : "MAX")
                         : "",
