@@ -13,7 +13,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             ActionRuleRights = new HashSet<ActionRuleRight>();
         }
-
+        
+        public new string Name { get; set; }
         public int ADgroupId { get; set; }
         public virtual ADgroup ADgroup { get; set; }
 

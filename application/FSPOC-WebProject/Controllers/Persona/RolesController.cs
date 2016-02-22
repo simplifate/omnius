@@ -109,26 +109,20 @@ namespace FSPOC_WebProject.Controllers.Persona
                 case "save": return saveModel(model);
 
                 default:
+                    #region Remove column
                     if (submitButton.StartsWith("removeColumn"))
                     {
                         int colIndex = Convert.ToInt32(submitButton.Substring("removeColumn".Length));
-                        
-                        /*int index = 0;
-                        for (; index < model.ColHeaders.Count; index++)
-                        {
-                            if (model.ColHeaders[index].Id == colIndex)
-                                break;
-                        }*/
 
                         model.ColHeaders[colIndex].IsDeleted = true;
 
-                        
-                            if (model.DeletedCols == null)
-                                model.DeletedCols = new List<int>();
 
-                            model.DeletedCols.Add(colIndex);
-                        
-                    }
+                        if (model.DeletedCols == null)
+                            model.DeletedCols = new List<int>();
+
+                        model.DeletedCols.Add(colIndex);
+                    } 
+                    #endregion
                     break;
             }
             return View("App", model);
@@ -236,7 +230,25 @@ namespace FSPOC_WebProject.Controllers.Persona
                             #endregion
 
                             realRole = context.Roles.Add(realRole);
-                            context.SaveChanges();
+
+                            try
+                            {
+                                context.SaveChanges();
+                            }
+                            catch (DbEntityValidationException e)
+                            {
+                                foreach (var eve in e.EntityValidationErrors)
+                                {
+                                    string text = "Entity of type \"" + eve.Entry.Entity.GetType().Name + "\" in state \"" + eve.Entry.State + "\" has the following validation errors:";
+                                    foreach (var ve in eve.ValidationErrors)
+                                    {
+                                        string message = "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
+                                    }
+                                }
+                                throw;
+                            }
+                            #endregion
+
                             colHeader.Id = realRole.Id;
                             #endregion
                         } 
@@ -279,7 +291,6 @@ namespace FSPOC_WebProject.Controllers.Persona
 
                 ViewBag.Saved = true;
             }
-            #endregion
 
             return RedirectToAction("App", "Roles", new { @Id = model.AppID });//App(model.AppID);
         }
