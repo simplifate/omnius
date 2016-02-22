@@ -279,6 +279,21 @@
                 }
             });
 
+            $('#libraryCategory-Targets .libraryItem').remove();
+            url = "/api/tapestry/apps/" + appId + "/blocks";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function(data) {
+                    for(i = 0; i < data.ListItems.length; i++) {
+                        var item = data.ListItems[i];
+                        newLibItem = $('<div libId="' + item.Id + '" libType="target" class="libraryItem">' + item.Name + '</div>');
+                        $('#libraryCategory-Targets').append(newLibItem);
+                    }
+                }
+            });
+
             $('#libraryCategory-Templates .libraryItem').remove();
             url = "/api/hermes/" + appId + "/templates";
             $.ajax({
