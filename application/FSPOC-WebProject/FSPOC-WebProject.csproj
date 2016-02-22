@@ -213,6 +213,7 @@
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
+    <Compile Include="Controllers\Hermes\HermesApiController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
     <Compile Include="Controllers\Hermes\QueueController.cs" />

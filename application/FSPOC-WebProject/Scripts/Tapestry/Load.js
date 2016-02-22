@@ -264,7 +264,6 @@
                 }
             });
 
-
             $('#libraryCategory-Roles .libraryItem').remove();
             url = "/api/Persona/app-roles/" + appId;
             $.ajax({
@@ -276,6 +275,20 @@
                         role = data.Roles[i];
                         newLibItem = $('<div libId="' + role.Id + '" libType="role" class="libraryItem">' + role.Name + '</div>');
                         $('#libraryCategory-Roles').append(newLibItem);
+                    }
+                }
+            });
+
+            $('#libraryCategory-Templates .libraryItem').remove();
+            url = "/api/hermes/" + appId + "/templates";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        newLibItem = $('<div libId="' + data[i].Id + '" libType="template" class="libraryItem">' + data[i].Name + '</div>');
+                        $('#libraryCategory-Templates').append(newLibItem);
                     }
                 }
             });
