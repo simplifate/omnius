@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "UpdateDBItem";
+                return "Update Item";
             }
         }
 

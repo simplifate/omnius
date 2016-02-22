@@ -39,7 +39,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "DeleteItem";
+                return "Delete Item";
             }
         }
 

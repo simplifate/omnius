@@ -264,6 +264,22 @@
                 }
             });
 
+            $('#libraryCategory-Actions .libraryItem').remove();
+            url = "/api/tapestry/actions";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for(i = 0; i < data.Items.length; i++)
+                    {
+                        var action = data.Items[i];
+                        newLibItem = $('<div libId="' + action.Id + '" libType="action" class="libraryItem">' + action.Name + '</div>');
+                        $('#libraryCategory-Actions').append(newLibItem);
+                    }
+                }
+            });
+
             $('#libraryCategory-Roles .libraryItem').remove();
             url = "/api/Persona/app-roles/" + appId;
             $.ajax({
