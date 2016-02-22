@@ -127,7 +127,7 @@ else
                             if (Model.DeletedCols == null || (!Model.DeletedCols.Contains(x)))
                             {
                                 <th >
-                                    @Html.TextBoxFor(a => a.ColHeaders[x].Name, new { @style = "background-color:transparent; border-style:none; display:block", @autocomplete = "off" })
+                                    @Html.TextBoxFor(a => a.ColHeaders[x].Name, new { @style = "background-color:transparent; border-style:none; display:block;  text-align:center", @autocomplete = "off" })
                                 </th>
                             }
                             else
@@ -144,10 +144,12 @@ else
                         </td>
                         @for (int x = 0; x < Model.ColHeaders.Count; x++)
                         {
-
-                            <td style="align-items:center">
+                            if (Model.DeletedCols == null || (!Model.DeletedCols.Contains(x)))
+                            {
+                            <td style="align-items:center;" align="center">
                                 <button type="submit" name="submitButton" value="removeColumn@(x)" class="btn btn-danger" style="display:block">Odstranit</button>
                             </td>
+                            }
                         }
                     </tr>
                 </thead>

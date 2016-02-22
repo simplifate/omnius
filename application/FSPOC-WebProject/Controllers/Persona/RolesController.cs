@@ -153,12 +153,13 @@ namespace FSPOC_WebProject.Controllers.Persona
                 ColumnHeaderAppRolesForTable currHeader = model.ColHeaders[i];
                 for (int j = i + 1; j < model.ColHeaders.Count; j++)
                 {
-                    if (currHeader.Name == model.ColHeaders[j].Name)
-                    {
-                        ViewBag.RolesAreEqual = true;
-                        ViewBag.Saved = false;
-                        return View("App", model);
-                    }
+                    if (model.DeletedCols == null || (!model.DeletedCols.Contains(i) && !model.DeletedCols.Contains(j)))
+                        if (currHeader.Name == model.ColHeaders[j].Name)
+                        {
+                            ViewBag.RolesAreEqual = true;
+                            ViewBag.Saved = false;
+                            return View("App", model);
+                        }
                 }
             }
             #endregion
