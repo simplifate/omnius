@@ -494,6 +494,10 @@
     <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.Designer.cs">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602220920500_dbColumn-displayName.cs" />
+    <Compile Include="Migrations\201602220920500_dbColumn-displayName.Designer.cs">
+      <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -760,6 +764,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.resx">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602220920500_dbColumn-displayName.resx">
+      <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
