@@ -1184,6 +1184,13 @@ body.tapestryModule .ui-dialog {
   cursor: default;
   z-index: 2000; }
 
+body.tapestryModule .columnFilterTable {
+  width: 100%; }
+  body.tapestryModule .columnFilterTable td:first-child {
+    width: 180px; }
+  body.tapestryModule .columnFilterTable input {
+    margin-right: 5px; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryArea {
     transform: scale(0.9); }

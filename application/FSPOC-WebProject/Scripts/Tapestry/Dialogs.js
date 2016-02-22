@@ -1,4 +1,4 @@
-﻿var currentRule;
+﻿var currentRule, CurrentItem;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         renameBlockDialog = $("#rename-block-dialog").dialog({
@@ -333,6 +333,56 @@ $(function () {
             });
             $("#blockHeaderScreenCount").text(pageCount);
             chooseScreensDialog.dialog("close");
+        }
+        tableAttributePropertiesDialog = $("#table-attribute-properties-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 500,
+            buttons: {
+                "Change": function () {
+                    tableAttributePropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    tableAttributePropertiesDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+                appId = $("#currentAppId").val();
+                url = "/api/database/apps/" + appId + "/commits/latest",
+                tableId = CurrentItem.attr("tableId");
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                        columnFilter = CurrentItem.data("columnFilter");
+                        if (columnFilter == undefined)
+                            columnFilter = [];
+                        formTable = tableAttributePropertiesDialog.find(".columnFilterTable tbody");
+                        formTable.find("tr").remove();
+                        targetTable = data.Tables.filter(function (value, index, ar) {
+                            return value.Id == tableId;
+                        })[0];
+                        data.Tables[tableId];
+                        for (i = 0; i < targetTable.Columns.length; i++) {
+                            newRow = $('<tr columnId="' + targetTable.Columns[i].Id + '"><td>' + targetTable.Columns[i].Name + '</td>'
+                                + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');
+                            formTable.append(newRow);
+                            newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Id) != -1);
+                        }
+                    }
+                });
+            }
+        });
+        function tableAttributePropertiesDialog_SubmitData() {
+            columnFilter = [];
+            formTable = tableAttributePropertiesDialog.find(".columnFilterTable .showColumnCheckbox").each(function (index, checkboxElement) {
+                columnId = $(checkboxElement).parents("tr").attr("columnId");
+                if($(checkboxElement).is(":checked"))
+                    columnFilter.push(parseInt(columnId));
+            });
+            CurrentItem.data("columnFilter", columnFilter);
+            tableAttributePropertiesDialog.dialog("close");
         }
     }
 });

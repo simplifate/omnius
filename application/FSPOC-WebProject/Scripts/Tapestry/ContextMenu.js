@@ -12,8 +12,18 @@
                     item.remove();
                     ChangedSinceLastSave = true;
                 }
+                else if (key == "properties") {
+                    if (item.hasClass("tableAttribute")) {
+                        CurrentItem = item;
+                        tableAttributePropertiesDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    }
+                }
             },
             items: {
+                "properties": { name: "Properties", icon: "edit" },
                 "delete": { name: "Delete", icon: "delete" }
             }
         });

@@ -20,7 +20,9 @@ function SaveBlock(commitMessage) {
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
                 PageId: currentItem.attr("pageId"),
-                ComponentId: currentItem.attr("componentId")
+                ComponentId: currentItem.attr("componentId"),
+                TableId: currentItem.attr("tableId"),
+                ColumnFilter: currentItem.data("columnFilter")
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");
