@@ -25,7 +25,6 @@
 
         public Application Application { get; set; }
 
-        public virtual ICollection<Application> ApplicationList { get; set; }
         public virtual ICollection<EmailPlaceholder> PlaceholderList { get; set; }
         public virtual ICollection<EmailTemplateContent> ContentList { get; set; }
     }

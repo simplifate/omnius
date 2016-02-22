@@ -30,6 +30,8 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Create()
         {
+            DBEntities e = new DBEntities();
+            ViewData["ApplicationList"] = e.Applications;
             return View("~/Views/Hermes/Template/Form.cshtml");
         }
 
@@ -44,6 +46,7 @@ namespace FSS.Omnius.Controllers.Hermes
                 {
                     EmailTemplate row = e.EmailTemplates.Single(m => m.Id == model.Id);
                     row.Name = model.Name;
+                    row.AppId = model.AppId;
                     row.Is_HTML = model.Is_HTML;
 
                     e.SaveChanges();
@@ -70,6 +73,8 @@ namespace FSS.Omnius.Controllers.Hermes
         public ActionResult Edit(int id)
         {
             DBEntities e = new DBEntities();
+            ViewData["ApplicationList"] = e.Applications;
+
             return View("~/Views/Hermes/Template/Form.cshtml", e.EmailTemplates.Single(m => m.Id == id));
         }
 
