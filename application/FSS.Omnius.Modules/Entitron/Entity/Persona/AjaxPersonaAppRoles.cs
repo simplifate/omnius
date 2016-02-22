@@ -2,7 +2,7 @@
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
-    /*public class AjaxPersonaAppRoles
+     public class AjaxPersonaAppRoles
      {
          public string AppName { get; set; }
          public List<AjaxPersonaAppRoles_User> Users { get; set; }
@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
          {
              MemberList = new List<int>();
          }
-     }*/
+     }
 
     public class ColumnHeaderAppRolesForTable
     {

@@ -256,6 +256,17 @@
                     }
                 }
             });
+
+            url = "api/Persona/app-roles/" + appId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    a = b;
+                }
+            })
+
             for (i = 0; i < data.AssociatedPageIds.length; i++) {
                 pageId = data.AssociatedPageIds[i];
                 url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
