@@ -15,18 +15,27 @@ namespace FSS.Omnius.Modules.Entitron.Service
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
         {
             Entitron e = core.Entitron;
+            DBEntities ent = new DBEntities();
 
-            
+            //todo sqlquery na získání tabulek z datového slovníku
+            Nexus.Service.NexusExtDBService svc = new Nexus.Service.NexusExtDBService("vo8qh1qcem.database.windows.net", "Omnius");
+            svc.NewQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES");
+            List<object> data = svc.FetchArray("TABLE_NAME");
+            List<string> existingTables = new List<string>();
+            foreach (object table in data) {
+                existingTables.Add(table.ToString());
+            }
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                List<string> primaryColumnsForTable = new List<string>(); //list do kterého se ukládají názvy sloupců které jsou primárním klíčem pro tabulku
                 DBTable entitronTable =
                     e.Application.
                     GetTables().
                     SingleOrDefault(x => x.tableName.ToLower() == efTable.Name.ToLower());
 
-                if (entitronTable == null)                          //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
+                bool tableExists = existingTables.Contains("Entitron_" + e.AppName + "_" + efTable.Name);
+
+                if (entitronTable == null || !tableExists) //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
                 {
                     entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
@@ -37,10 +46,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         DBColumn col = new DBColumn()
                         {
                             Name = column.Name,
+                            isPrimary = column.PrimaryKey,
                             isUnique = column.Unique,
                             canBeNull = column.AllowNull,
                             maxLength = column.ColumnLength,
-                            type = column.Type
+                            type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.Type)).SqlName
                         };
                         entitronTable.columns.Add(col);
                     }
@@ -66,7 +76,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                 isUnique = efColumn.Unique,
                                 canBeNull = efColumn.AllowNull,
                                 maxLength = efColumn.ColumnLength,
-                                type = efColumn.Type
+                                type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName
                             };
                             entitronTable.columns.AddToDB(entitronColumn);
                             e.Application.SaveChanges();
@@ -77,7 +87,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             if (entitronColumn.canBeNull != efColumn.AllowNull ||
                                 entitronColumn.maxLength != efColumn.ColumnLength ||
                                 entitronColumn.type != efColumn.Type)
-                                entitronTable.columns.ModifyInDB(entitronColumn.Name, efColumn.Type, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
+                                entitronTable.columns.ModifyInDB(entitronColumn.Name, ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
 
                             if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false)
                             {
@@ -98,10 +108,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 foreach (DbColumn column in efTable.Columns)
                 {
-                    if (column.PrimaryKey) //zaznamenává všechny sloupce, ze kterých se skládá primární klíč tabulky
-                    {
-                        primaryColumnsForTable.Add(column.Name);
-                    }
                     string def = "DEF_Entitron_" + e.Application.Name + "_" + entitronTable.tableName + column.Name;
                     if (!string.IsNullOrEmpty(column.DefaultValue))
                     {
@@ -139,19 +145,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             }
                         }
                     }
-                }
-                e.Application.SaveChanges();
-                List<string> primaryList1 = primaryColumnsForTable.Except(entitronTable.primaryKeys).ToList();
-                List<string> primaryList2 = entitronTable.primaryKeys.Except(primaryColumnsForTable).ToList();
-                if (primaryList1.Count>0 || primaryList2.Count>0)           //pokud v entitronu se nachází klíč, a pokud seznam sloupců ze kterého klíč je tvořen je v entitronu jiný než ve schématu, tak se musí smazat starý klíč a až potom vytvořit nový
-                {
-                    //todo ošetřit, že nebude moci být smazán primární klíč pokud je spojen v nějaké relaci, nebo smazat relaci jako první
-                    entitronTable.DropConstraint($"PK_Entitron_{e.Application.Name}_{entitronTable.tableName}", true);
-                    entitronTable.AddPrimaryKey(primaryColumnsForTable);
-                }
-                else if (entitronTable.primaryKeys.Count == 0 && primaryColumnsForTable.Count != 0)     //pokud v entitronu primární klíč není, přidá primární klíč, který se skládá z následujících sloupců
-                {
-                    entitronTable.AddPrimaryKey(primaryColumnsForTable);
                 }
                 e.Application.SaveChanges();
 

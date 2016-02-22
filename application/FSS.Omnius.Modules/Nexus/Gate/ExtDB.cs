@@ -28,9 +28,9 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             db = new Database(conn);
         }
 
-        public ExtDB NewQuery()
+        public ExtDB NewQuery(string sqlText = "")
         {
-            sql = new SqlBuilder();
+            sql = new SqlBuilder(sqlText);
             return this;
         }
         

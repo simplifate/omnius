@@ -293,7 +293,7 @@ namespace FSS.Omnius.Modules.Entitron
             };
         }
 
-        public void AddPrimaryKey(List<string> primaryKey)
+        public void AddPrimaryKey(string columnName)
         {
             bool isClusterAlreadyCreate = false;
 
@@ -314,7 +314,7 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 application = Application,
                 table = this,
-                keyColumns = primaryKey,
+                keyColumns = columnName,
                 isClusterCreated = isClusterAlreadyCreate
             });
         }

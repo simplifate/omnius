@@ -494,6 +494,18 @@
     <Compile Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.Designer.cs">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602220920500_dbColumn-displayName.cs" />
+    <Compile Include="Migrations\201602220920500_dbColumn-displayName.Designer.cs">
+      <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602221139352_Column filter in resource rules.cs" />
+    <Compile Include="Migrations\201602221139352_Column filter in resource rules.Designer.cs">
+      <DependentUpon>201602221139352_Column filter in resource rules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602221229387_Add TableId property.cs" />
+    <Compile Include="Migrations\201602221229387_Add TableId property.Designer.cs">
+      <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -521,6 +533,9 @@
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\MozaicRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
@@ -757,6 +772,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602211130175_Associated page IDs for Tapestry blocks.resx">
       <DependentUpon>201602211130175_Associated page IDs for Tapestry blocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602220920500_dbColumn-displayName.resx">
+      <DependentUpon>201602220920500_dbColumn-displayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221139352_Column filter in resource rules.resx">
+      <DependentUpon>201602221139352_Column filter in resource rules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221229387_Add TableId property.resx">
+      <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

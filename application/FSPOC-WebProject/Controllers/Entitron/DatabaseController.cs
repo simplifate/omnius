@@ -151,6 +151,7 @@ namespace FSS.Omnius.Controllers.Entitron
                             DbColumn newColumn = new DbColumn
                             {
                                 Name = column.Name,
+                                DisplayName = column.DisplayName,
                                 Type = column.Type,
                                 PrimaryKey = column.PrimaryKey,
                                 AllowNull = column.AllowNull,
@@ -263,6 +264,7 @@ namespace FSS.Omnius.Controllers.Entitron
                             DbColumn DatabaseColumn = DatabaseTable.Columns.SingleOrDefault(x => x.Id == schemeColumn.Id);
 
                             if (DatabaseColumn.Name != schemeColumn.Name) DatabaseColumn.Name = schemeColumn.Name;
+                            if (DatabaseColumn.DisplayName != schemeColumn.DisplayName) DatabaseColumn.DisplayName = schemeColumn.DisplayName;
                             if (DatabaseColumn.PrimaryKey != schemeColumn.PrimaryKey) DatabaseColumn.PrimaryKey = schemeColumn.PrimaryKey;
                             if (DatabaseColumn.Type != schemeColumn.Type) DatabaseColumn.Type = schemeColumn.Type;
                             if (DatabaseColumn.Unique != schemeColumn.Unique) DatabaseColumn.Unique = schemeColumn.Unique;
@@ -416,6 +418,7 @@ namespace FSS.Omnius.Controllers.Entitron
                         DefaultValue = column.DefaultValue,
                         Id = column.Id,
                         Name = column.Name,
+                        DisplayName = column.DisplayName,
                         PrimaryKey = column.PrimaryKey,
                         Type = column.Type,
                         Unique = column.Unique,

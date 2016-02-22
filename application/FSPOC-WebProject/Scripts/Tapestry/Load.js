@@ -92,6 +92,11 @@
                         newItem.attr("pageId", currentItemData.PageId);
                     if (currentItemData.ComponentId != null)
                         newItem.attr("componentId", currentItemData.ComponentId);
+                    if (currentItemData.TableId != null) {
+                        newItem.data("columnFilter", currentItemData.ColumnFilter);
+                        newItem.attr("tableId", currentItemData.TableId);
+                        newItem.addClass("tableAttribute");
+                    }
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
                     AddToJsPlumb(newItem);
@@ -251,11 +256,25 @@
                 success: function (data) {
                     for (i = 0; i < data.Tables.length; i++) {
                         lastLibId++;
-                        newLibItem = $('<div libId="' + lastLibId + '" libType="attribute" class="libraryItem">Table: ' + data.Tables[i].Name + '</div>');
+                        newLibItem = $('<div libId="' + lastLibId + '" libType="table-attribute" class="libraryItem" tableId="' + data.Tables[i].Id
+                            + '">Table: ' + data.Tables[i].Name + '</div>');
                         $("#libraryCategory-Attributes").append(newLibItem);
                     }
+                    $("#blockHeaderDbResCount").text(data.Tables.length);
                 }
             });
+
+            url = "api/Persona/app-roles/" + appId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    a = b;
+                }
+            });
+
+            $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
             for (i = 0; i < data.AssociatedPageIds.length; i++) {
                 pageId = data.AssociatedPageIds[i];
                 url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;

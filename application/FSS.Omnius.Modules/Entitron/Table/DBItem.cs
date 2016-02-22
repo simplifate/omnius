@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Sql;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Entitron
 {
@@ -102,6 +104,19 @@ namespace FSS.Omnius.Modules.Entitron
         public List<string> getColumnNames()
         {
             return _properties.Keys.ToList();
+        }
+
+        public List<string> getColumnDisplayNames()
+        {
+            DBEntities e = new DBEntities();
+            DbSchemeCommit commit = e.Applications.Find(table.Application.Id).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+
+            List<string> displayNames = new List<string>();
+            foreach (DbColumn column in commit.Tables.Where(t => t.Name == table.tableName).First().Columns) {
+                displayNames.Add(column.DisplayName ?? column.Name);
+            }
+
+            return displayNames;
         }
 
         public List<object> getAllProperties()

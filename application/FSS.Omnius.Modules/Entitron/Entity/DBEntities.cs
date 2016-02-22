@@ -70,6 +70,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
+        //public virtual DbSet<PersonaAppRole> AppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
