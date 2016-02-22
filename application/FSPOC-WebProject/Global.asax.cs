@@ -30,13 +30,13 @@ namespace FSPOC_WebProject
         protected void Application_Error(object sender, EventArgs e)
         {
 
-            string body = $"URL: {Request.Url.AbsoluteUri}<br /><br/>Errors:<br><br>";
+            string body = $"URL: {Request.Url.AbsoluteUri}{Environment.NewLine}Errors:{Environment.NewLine}";
             foreach (var error in Context.AllErrors)
             {
                 var curError = error;
                 while (curError != null)
                 {
-                    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+                    body += $"Message: {curError.Message}{Environment.NewLine}Trace: {curError.StackTrace}{Environment.NewLine}{Environment.NewLine}";
 
                     curError = curError.InnerException;
                 }
