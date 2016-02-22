@@ -183,8 +183,15 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
     <Compile Include="Entitron\Table\Application.cs" />
+    <Compile Include="Entitron\Table\DBView.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
@@ -506,6 +513,10 @@
     <Compile Include="Migrations\201602221229387_Add TableId property.Designer.cs">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602221348193_Hermes-template-appId.cs" />
+    <Compile Include="Migrations\201602221348193_Hermes-template-appId.Designer.cs">
+      <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -781,6 +792,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221229387_Add TableId property.resx">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221348193_Hermes-template-appId.resx">
+      <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

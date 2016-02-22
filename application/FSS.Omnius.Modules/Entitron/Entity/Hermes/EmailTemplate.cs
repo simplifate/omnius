@@ -9,6 +9,8 @@
     {
         public int? Id { get; set; }
 
+        public int? AppId { get; set; }
+
         [Required]
         [StringLength(255)]
         [Index(IsClustered = false, IsUnique = true)]

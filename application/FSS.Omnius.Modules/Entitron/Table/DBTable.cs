@@ -4,6 +4,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Wordprocessing;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 
@@ -94,7 +95,7 @@ namespace FSS.Omnius.Modules.Entitron
         {
             this.tableId = tableId;
         }
-
+        
         public DBTable Create()
         {
             SqlQuery_Table_Create query = new SqlQuery_Table_Create()
@@ -150,12 +151,20 @@ namespace FSS.Omnius.Modules.Entitron
 
             return this;
         }
-        public bool isInDB()
+        public static bool isInDB(string applicationName, string tableName)
         {
-            if (Application == null || string.IsNullOrWhiteSpace(tableName))
-                return false;
+            //if (Application == null || string.IsNullOrWhiteSpace(tableName))
+            //    return false;
 
-            return (tableId != null);
+            //return (tableId != null);
+            SqlQuery_isTableInEntitron query = new SqlQuery_isTableInEntitron() { };
+            foreach (DBItem i in query.ExecuteWithRead())
+            {
+                string name = Convert.ToString(i["name"]);
+                if(name =="Entitron_"+applicationName+"_"+tableName)
+                    return true;
+            }
+            return false;
         }
 
         public DBTable Add(DBItem item)

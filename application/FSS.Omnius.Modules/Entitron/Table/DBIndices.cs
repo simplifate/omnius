@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron
         {
             _table = table;
 
-            if (_table.isInDB())
+            if (DBTable.isInDB(table.Application.Name, table.tableName))
             {
                 SqlQuery_SelectIndexes query = new SqlQuery_SelectIndexes() { application = table.Application, table = table };
 
