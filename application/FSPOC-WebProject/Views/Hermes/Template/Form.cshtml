@@ -23,6 +23,13 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.AppId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.AppId, new SelectList(Model.ApplicationList, "Id", "Name", Model.AppId), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Is_HTML, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
