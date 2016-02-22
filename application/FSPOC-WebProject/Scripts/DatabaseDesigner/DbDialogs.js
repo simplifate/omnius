@@ -128,7 +128,7 @@ $(function () {
                 addColumnDialog.find("#column-length").val(),
                 addColumnDialog.find("#column-length-max").prop("checked"),
                 addColumnDialog.find("#unique-checkbox").prop("checked"),
-                AddColumnDialog.find("#column-display-name").val());
+                addColumnDialog.find("#column-display-name").val());
             addColumnDialog.dialog("close");
         }
 

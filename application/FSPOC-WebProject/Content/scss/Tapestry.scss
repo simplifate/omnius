@@ -519,6 +519,15 @@ body.tapestryModule {
         @include no-select();
         z-index: 2000;
     }
+    .columnFilterTable {
+        width: 100%;
+        td:first-child {
+            width: 180px;
+        }
+        input {
+            margin-right: 5px;
+        }
+    }
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryArea {
             transform: scale(0.9);

@@ -84,7 +84,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             PositionY = blockCommit.PositionY,
                             Timestamp = blockCommit.Timestamp,
                             CommitMessage = blockCommit.CommitMessage,
-                            AssociatedPageIds = blockCommit.AssociatedPageIds == null ? new List<int>()
+                            AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                 : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList()
                         };
                         LoadResourceRules(blockCommit, result);
@@ -155,7 +155,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
                                 PageId = ajaxItem.PageId,
-                                ComponentId = ajaxItem.ComponentId
+                                ComponentId = ajaxItem.ComponentId,
+                                TableId = ajaxItem.TableId,
+                                ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray())
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
@@ -597,7 +599,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
                     PageId = item.PageId,
-                    ComponentId = item.ComponentId
+                    ComponentId = item.ComponentId,
+                    TableId = item.TableId,
+                    ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
                 };
                 result.ResourceItems.Add(ajaxItem);
             }

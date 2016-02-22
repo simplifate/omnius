@@ -145,6 +145,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int? PageId { get; set; }
         public int? ComponentId { get; set; }
+        public int? TableId { get; set; }
+        public List<int> ColumnFilter { get; set; }
+
+        public AjaxTapestryDesignerResourceItem()
+        {
+            ColumnFilter = new List<int>();
+        }
     }
     public class AjaxTapestryDesignerWorkflowItem
     {
