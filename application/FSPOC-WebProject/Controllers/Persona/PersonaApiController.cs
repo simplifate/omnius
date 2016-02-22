@@ -85,20 +85,20 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         [Route("api/Persona/app-roles/{appId}")]
         [HttpGet]
-        public void LoadAppRoles(int appId)
+        public AjaxPersonaAppRoles LoadAppRoles(int appId)
         {
             try {
-                /*using (var context = new DBEntities()) {
+                using (var context = new DBEntities()) {
                     AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
                     int adGroupId = context.ADgroups.Where(g => g.ApplicationId == appId).First().Id;
 
-                    result.Roles = context.AppRoles.Where(r => r.ADgroupId == adGroupId).Select(r => new AjaxPersonaAppRoles_Role()
+                    result.Roles = context.Roles.Where(r => r.ADgroupId == adGroupId).Select(r => new AjaxPersonaAppRoles_Role()
                     {
                         Id = r.Id,
                         Name = r.Name
                     }).ToList();
                     return result;
-                }*/
+                }
             }
             catch (Exception ex) {
                 string errorMessage = $"Persona: error loading app roles (GET api/persona/app-roles). Exception message: {ex.Message}";

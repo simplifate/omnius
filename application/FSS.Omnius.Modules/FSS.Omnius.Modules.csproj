@@ -506,6 +506,10 @@
     <Compile Include="Migrations\201602221229387_Add TableId property.Designer.cs">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602221348193_Hermes-template-appId.cs" />
+    <Compile Include="Migrations\201602221348193_Hermes-template-appId.Designer.cs">
+      <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -781,6 +785,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221229387_Add TableId property.resx">
       <DependentUpon>201602221229387_Add TableId property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602221348193_Hermes-template-appId.resx">
+      <DependentUpon>201602221348193_Hermes-template-appId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

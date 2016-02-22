@@ -264,13 +264,19 @@
                 }
             });
 
-            url = "api/Persona/app-roles/" + appId;
+
+            $('#libraryCategory-Roles .libraryItem').remove();
+            url = "/api/Persona/app-roles/" + appId;
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: "json",
                 success: function (data) {
-                    a = b;
+                    for(i = 0; i < data.Roles.length; i++) {
+                        role = data.Roles[i];
+                        newLibItem = $('<div libId="' + role.Id + '" libType="role" class="libraryItem">' + role.Name + '</div>');
+                        $('#libraryCategory-Roles').append(newLibItem);
+                    }
                 }
             });
 
