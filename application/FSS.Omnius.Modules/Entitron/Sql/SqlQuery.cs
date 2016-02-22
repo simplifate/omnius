@@ -121,11 +121,15 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             else
                 return null;
 
+            string msg = cmd.CommandText + "\r\n";
             foreach (KeyValuePair<string, object> param in _params)
             {
                 cmd.Parameters.Add(new SqlParameter(param.Key, param.Value));
+                msg += param.Key + ": " + param.Value + "\r\n";
             }
-
+            msg += "\r\n";
+           
+            Log.SQL(msg);
             return cmd;
         }
         protected virtual List<DBItem> Read(SqlDataReader reader)

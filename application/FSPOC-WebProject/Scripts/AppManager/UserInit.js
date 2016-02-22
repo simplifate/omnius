@@ -34,7 +34,7 @@
             ui.originalPosition.left = $(this).position().left;
         });
         $(".appPanel").on("dblclick", function () {
-            window.location.href = $("#fakeAppPath").val();
+            window.location.href = $(this).attr('data-target');
         });
     }
     else if (CurrentModuleIs("helpModule")) {

@@ -32,9 +32,11 @@ namespace FSS.Omnius.Modules.Entitron
                     break;
                 }
             }
-            if (type == SqlDbType.Decimal.ToString() || type == SqlDbType.Float.ToString())
+            if (type == SqlDbType.Decimal.ToString())
             {
                 allowPrecisionScale = true;
+                if(precision == null) { precision = 38; }
+                if(scale == null) { scale = 0; }
             }
 
             return

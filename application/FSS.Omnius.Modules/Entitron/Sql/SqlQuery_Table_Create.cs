@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     break;
                 }
             }
-            if (column.type == SqlDbType.Decimal.ToString() || column.type == SqlDbType.Float.ToString())
+            if (column.type == SqlDbType.Decimal.ToString())
             {
                 column.allowPrecisionScale = true;
             }

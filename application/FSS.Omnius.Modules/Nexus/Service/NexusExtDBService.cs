@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
         /// <summary>
         /// Inicializuje novou SQL Query
         /// </summary>
-        public NexusExtDBService NewQuery() { db.NewQuery(); return this; }
+        public NexusExtDBService NewQuery(string sql = "") { db.NewQuery(sql); return this; }
 
         /// <summary>
         /// Inicializuje novou subquery. SqlBuilder očekává jako parametr SqlBuilder, proto je nutné sestavení dotazu ukončit .sql

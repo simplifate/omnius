@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 {
     public interface INexusExtDBService
     {
-        NexusExtDBService NewQuery();
+        NexusExtDBService NewQuery(string sql = "");
         ExtDBSubquery NewSubquery();
 
         JToken FetchAll();

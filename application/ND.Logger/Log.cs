@@ -13,7 +13,7 @@ namespace Logger
         // enum with only available log types
         public enum Type
         {
-            Fatal, Error, Info, Warn, Debug, All
+            Fatal, Error, Info, Warn, Debug, All, SQL
         }
 
         // for testing saved settings in ".config" file
@@ -125,6 +125,13 @@ namespace Logger
 
         // Method of "Debug" Logs
         public static void Debug(string msg, bool verbose = false)
+        {
+            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            ProcessLog(msg, methodName, verbose);
+        }
+
+        // Method of "SQL" logs
+        public static void SQL(string msg, bool verbose = false)
         {
             string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
             ProcessLog(msg, methodName, verbose);

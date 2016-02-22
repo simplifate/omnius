@@ -9,6 +9,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
     public partial class Application
     {
+        public static IEnumerable<Application> getAllowed(Modules.CORE.CORE core, string userName)
+        {
+            return
+                core.Entitron.GetStaticTables().Applications.Where(a =>
+                    a.IsPublished
+                    && a.IsEnabled
+                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
+        }
+
         internal SqlQueue queries = new SqlQueue();
 
         public IEnumerable<DBTable> GetTables()
