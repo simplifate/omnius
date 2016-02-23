@@ -89,7 +89,7 @@ $(function () {
                 }
             },
             items: {
-                "properties": { name: "Properties", icon: "edit" },
+                "properties": { name: "Properties", icon: "cog" },
                 "initial": { name: "Set as initial", icon: "edit" },
                 "delete": { name: "Delete", icon: "delete" }
             }
