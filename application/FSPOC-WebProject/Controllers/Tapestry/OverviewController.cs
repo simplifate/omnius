@@ -47,7 +47,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
                             .Where(c => c.Id == metablockId).First().ParentMetablock;
 
-                        Application app = GetApplication(parentMetablock, context); 
+                        Application app = GetApplication(parentMetablock, metablockId, context); 
 
                         ViewData["appName"] = app.Name;
                         ViewData["currentAppId"] = app.Id;
@@ -70,15 +70,19 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             return View();
         }
 
-        private Application GetApplication(TapestryDesignerMetablock parentMetablock, DBEntities context)
+        private Application GetApplication(TapestryDesignerMetablock parentMetablock, int metablockId, DBEntities context)
         {
-            while(parentMetablock.ParentMetablock != null) {
-                parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
-                                                                    .Where(b => b.Id == parentMetablock.ParentMetablock.Id).First();
+            int rootMetablockId = metablockId;
+            if (parentMetablock != null) {
+                while (parentMetablock.ParentMetablock != null) {
+                    parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
+                                                                        .Where(b => b.Id == parentMetablock.ParentMetablock.Id).First();
+                }
+                rootMetablockId = parentMetablock.Id;
             }
 
             return context.Applications.Include("TapestryDesignerRootMetablock")
-                                       .Where(a => a.TapestryDesignerRootMetablock.Id == parentMetablock.Id).First();
+                                       .Where(a => a.TapestryDesignerRootMetablock.Id == rootMetablockId).First();
         }
 
     }

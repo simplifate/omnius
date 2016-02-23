@@ -122,8 +122,8 @@
 
         blockPropertiesDialog = $('#block-properties-dialog').dialog({
             autoOpen: false,
-            width: 400,
-            height: 190,
+            width: 500,
+            height: 250,
             buttons: {
                 "Save": function () {
                     blockPropertiesDialog_SubmitData();
@@ -141,18 +141,22 @@
                 });
             },
             open: function () {
+                blockPropertiesDialog.find("#p-block-name").val(currentBlock.find('.blockName').text());
                 blockPropertiesDialog.find("#block-is-in-menu").prop('checked', currentBlock.data('IsInMenu'));
             }
         });
         function blockPropertiesDialog_SubmitData() {
             blockPropertiesDialog.dialog("close");
             currentBlock.data("IsInMenu", blockPropertiesDialog.find("#block-is-in-menu").is(':checked'));
+            if (blockPropertiesDialog.find("#p-block-name").val().length) {
+                currentBlock.find('.blockName').html(blockPropertiesDialog.find("#p-block-name").val());
+            }
         }
 
         metablockPropertiesDialog = $('#metablock-properties-dialog').dialog({
             autoOpen: false,
-            width: 400,
-            height: 190,
+            width: 500,
+            height: 250,
             buttons: {
                 "Save": function () {
                     metablockPropertiesDialog_SubmitData();
@@ -170,12 +174,16 @@
                 });
             },
             open: function () {
+                metablockPropertiesDialog.find("#p-metablock-name").val(currentMetablock.find('.metablockName').text());
                 metablockPropertiesDialog.find("#metablock-is-in-menu").prop('checked', currentMetablock.data('IsInMenu'));
             }
         });
         function metablockPropertiesDialog_SubmitData() {
             metablockPropertiesDialog.dialog("close");
             currentMetablock.data("IsInMenu", metablockPropertiesDialog.find("#metablock-is-in-menu").is(':checked'));
+            if (metablockPropertiesDialog.find("#p-metablock-name").val().length) {
+                currentMetablock.find('.metablockName').html(metablockPropertiesDialog.find("#p-metablock-name").val());
+            }
         }
     }
 });
