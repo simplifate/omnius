@@ -20,6 +20,7 @@
                     + currentBlockData.Id + '" tableId="' + currentBlockData.AssociatedTableId + '"><div class="blockName">'
                     + currentBlockData.Name + '</div><div class="blockInfo">'
                     + (currentBlockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                newBlock.data("IsInMenu", currentBlockData.IsInMenu);
                 $("#overviewPanel .scrollArea").append(newBlock);
                 instance.draggable(newBlock, { containment: "parent" });
                 newBlock.on("dblclick", function () {
@@ -38,6 +39,7 @@
                     currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
                     '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
                     + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
                 $("#overviewPanel .scrollArea").append(newMetablock);
                 instance.draggable(newMetablock, { containment: "parent" });
                 newMetablock.on("dblclick", function () {
