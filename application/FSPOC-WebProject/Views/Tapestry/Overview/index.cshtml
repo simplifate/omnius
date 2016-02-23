@@ -31,8 +31,8 @@
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
     <input type="hidden" name="metablockId" />
 </form>
-<input type="hidden" id="currentAppId" value="1" />
 <input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
+<input type="hidden" id="currentAppId" value="@ViewData["currentAppId"]" />
 <input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <div id="add-block-dialog" title="Add block">
     <form>
