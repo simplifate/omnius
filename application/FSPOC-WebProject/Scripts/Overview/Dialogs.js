@@ -143,11 +143,23 @@
             open: function () {
                 blockPropertiesDialog.find("#p-block-name").val(currentBlock.find('.blockName').text());
                 blockPropertiesDialog.find("#block-is-in-menu").prop('checked', currentBlock.data('IsInMenu'));
+                blockPropertiesDialog.find("#block-set-as-initial").prop('checked', currentBlock.attr('isinitial') == 'true');
             }
         });
         function blockPropertiesDialog_SubmitData() {
             blockPropertiesDialog.dialog("close");
             currentBlock.data("IsInMenu", blockPropertiesDialog.find("#block-is-in-menu").is(':checked'));
+            
+            var isInitial = blockPropertiesDialog.find("#block-set-as-initial").is(':checked') ? true : false;
+            if (isInitial) {
+                $("#overviewPanel .block").each(function (index, element) {
+                    $(element).attr("isInitial", false);
+                    $(element).find(".blockInfo").text("");
+                });
+            }
+            currentBlock.attr("isInitial", isInitial);
+            currentBlock.find(".blockInfo").text(isInitial ? "Initial" : "");
+
             if (blockPropertiesDialog.find("#p-block-name").val().length) {
                 currentBlock.find('.blockName').html(blockPropertiesDialog.find("#p-block-name").val());
             }
@@ -176,10 +188,23 @@
             open: function () {
                 metablockPropertiesDialog.find("#p-metablock-name").val(currentMetablock.find('.metablockName').text());
                 metablockPropertiesDialog.find("#metablock-is-in-menu").prop('checked', currentMetablock.data('IsInMenu'));
+                metablockPropertiesDialog.find("#metablock-set-as-initial").prop('checked', currentMetablock.attr('isinitial') == 'true');
             }
         });
         function metablockPropertiesDialog_SubmitData() {
             metablockPropertiesDialog.dialog("close");
+
+            var isInitial = metablockPropertiesDialog.find("#metablock-set-as-initial").is(':checked') ? true : false;
+            if(isInitial)
+            {
+                $("#overviewPanel .metablock").each(function (index, element) {
+                    $(element).attr("isInitial", false);
+                    $(element).find(".metablockInfo").text("");
+                });
+            }
+            currentMetablock.attr("isInitial", isInitial);
+            currentMetablock.find(".metablockInfo").text(isInitial ? "Initial" : "");
+
             currentMetablock.data("IsInMenu", metablockPropertiesDialog.find("#metablock-is-in-menu").is(':checked'));
             if (metablockPropertiesDialog.find("#p-metablock-name").val().length) {
                 currentMetablock.find('.metablockName').html(metablockPropertiesDialog.find("#p-metablock-name").val());
