@@ -1,0 +1,38 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+@model TapestryDesignerMetablock
+@{
+    Page.Title = "Omnius Menu Order";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "menuOrderModule";
+}
+<div id="overviewHeaderArea">
+    App: <span id="headerAppName">@ViewData["appName"]</span><br /> Metablock: <span id="headerMetablockName">@Model.Name</span>
+</div>
+<div id="overviewMenu">
+    <button id="btnSave" class="btn-omnius-rectangular">Save</button>
+    <hr />
+    <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
+</div>
+<div id="overviewPanel">
+    @using (Html.BeginRouteForm("Hermes", new { @action = "Save" }, FormMethod.Post)) 
+    {
+        @Html.AntiForgeryToken();
+        <ul class="sortable">
+        @foreach(TapestryDesignerMetablock mb in Model.Metablocks.OrderBy(m => m.MenuOrder)) {
+            <li class="@((mb.IsInMenu ? "" : "not-in-menu") + (mb.IsInitial ? " is-initial" : ""))">
+                @mb.Name;
+                @Html.Hidden("metablock[]", mb.Id);
+            </li>
+        }
+        @foreach (TapestryDesignerBlock b in Model.Blocks.OrderBy(b => b.MenuOrder)) {
+            <li class="@((b.IsInMenu ? "" : "not-in-menu") + (b.IsInitial ? " is-initial" : ""))">
+                @b.Name;
+                @Html.Hidden("metablock[]", b.Id);
+            </li>
+        }
+        </ul>
+    }
+</div>
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" value="@Model.Id" />
+</form>

@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Name { get; set; }
         public int PositionX { get; set; } // For visual representation in Overview
         public int PositionY { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
 
@@ -59,6 +60,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
 
