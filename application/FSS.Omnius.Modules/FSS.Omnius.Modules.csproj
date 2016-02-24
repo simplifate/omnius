@@ -540,6 +540,10 @@
     <Compile Include="Migrations\201602241608308_Tapestry-menu-order.Designer.cs">
       <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.cs" />
+    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.Designer.cs">
+      <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -833,6 +837,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602241608308_Tapestry-menu-order.resx">
       <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241930322_Tapestry designer attributes.resx">
+      <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

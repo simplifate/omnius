@@ -1,4 +1,5 @@
-﻿var currentRule, CurrentItem;
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableIds = [];
+
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         renameBlockDialog = $("#rename-block-dialog").dialog({
@@ -169,12 +170,12 @@ $(function () {
                 })
             },
             open: function () {
-                renameRuleDialog.find("#rule-name").val(currentRule.find(".workflowRuleHeader .verticalLabel").text());
+                renameRuleDialog.find("#rule-name").val(CurrentRule.find(".workflowRuleHeader .verticalLabel").text());
             }
         });
         function renameRuleDialog_SubmitData() {
             renameRuleDialog.dialog("close");
-            currentRule.find(".workflowRuleHeader .verticalLabel").text(renameRuleDialog.find("#rule-name").val());
+            CurrentRule.find(".workflowRuleHeader .verticalLabel").text(renameRuleDialog.find("#rule-name").val());
             ChangedSinceLastSave = true;
         }
         historyDialog = $("#history-dialog").dialog({
@@ -295,7 +296,10 @@ $(function () {
                         chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
                         tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
-                            tbody.append($('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>'));
+                            newScreenRow = $('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>');
+                            if (AssociatedPageIds.indexOf(data[i].Id) != -1)
+                                newScreenRow.addClass("highlightedRow");
+                            tbody.append(newScreenRow);
                         }
                         $("#screen-table .screenRow").on("click", function () {
                             $(this).toggleClass("highlightedRow");
@@ -309,11 +313,12 @@ $(function () {
             pageCount = 0;
             appId = $("#currentAppId").val();
             AssociatedPageIds = [];
+            $("#libraryCategory-UI .libraryItem").remove();
             chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
                 if ($(element).hasClass("highlightedRow")) {
                     pageCount++;
                     pageId = $(element).attr("pageId");
-                    AssociatedPageIds.push(pageId);
+                    AssociatedPageIds.push(parseInt(pageId));
                     url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
                     $.ajax({
                         type: "GET",
@@ -321,10 +326,21 @@ $(function () {
                         dataType: "json",
                         success: function (data) {
                             for (i = 0; i < data.Components.length; i++) {
+                                if (i == 0) {
+                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
+                                        + data.Name + '</div>'));
+                                }
                                 cData = data.Components[i];
-                                lastLibId++;
-                                newLibItem = $('<div libId="' + lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                    + cData.Name + '</div>');
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                + cData.Name + '</div>'));
+                                if (cData.Type == "data-table-with-actions") {
+                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_EditAction</div>'));
+                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DetailsAction</div>'));
+                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DeleteAction</div>'));
+                                }
                                 $("#libraryCategory-UI").append(newLibItem);
                             }
                         }
@@ -383,6 +399,92 @@ $(function () {
             });
             CurrentItem.data("columnFilter", columnFilter);
             tableAttributePropertiesDialog.dialog("close");
+        }
+        actionPropertiesDialog = $("#action-properties-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 500,
+            buttons: {
+                "Save": function () {
+                    actionPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    actionPropertiesDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+            }
+        });
+        function actionPropertiesDialog_SubmitData() {
+            actionPropertiesDialog.dialog("close");
+        }
+        chooseTablesDialog = $("#choose-tables-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 550,
+            buttons: {
+                "Select": function () {
+                    chooseTablesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    chooseTablesDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(document).on("click", "tr.tableRow", function (event) {
+                    $(this).toggleClass("highlightedRow");
+                });
+            },
+            open: function (event, ui) {
+                chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").remove();
+                appId = $("#currentAppId").val();
+                url = "/api/database/apps/" + appId + "/commits/latest";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                        tbody = chooseTablesDialog.find("#table-table tbody:nth-child(2)");
+                        for (i = 0; i < data.Tables.length; i++) {
+                            newTableRow = $('<tr class="tableRow" tableId="' + data.Tables[i].Id + '"><td>' + data.Tables[i].Name + '</td></tr>');
+                            if (AssociatedTableIds.indexOf(data.Tables[i].Id) != -1)
+                                newTableRow.addClass("highlightedRow");
+                            tbody.append(newTableRow);
+                        }
+                    }
+                });
+            }
+        });
+        function chooseTablesDialog_SubmitData() {
+            appId = $("#currentAppId").val();
+            url = "/api/database/apps/" + appId + "/commits/latest";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    $("#libraryCategory-Attributes .columnAttribute").remove();
+                    somethingWasAdded = false;
+                    tableCount = 0;
+                    AssociatedTableIds = [];
+                    chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").each(function (index, element) {
+                        if ($(element).hasClass("highlightedRow")) {
+                            tableCount++;
+                            tableId = $(element).attr("tableId");
+                            AssociatedTableIds.push(parseInt(tableId));
+                            currentTable = data.Tables.filter(function (value) {
+                                return value.Id == tableId;
+                            })[0];
+                            for (i = 0; i < currentTable.Columns.length; i++) {
+                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableId="'
+                                    + currentTable.Id +  '" columnId="' +currentTable.Columns[i].Id + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                            }
+                        }
+                    });
+                    $("#blockHeaderDbResCount").text(tableCount);
+                    chooseTablesDialog.dialog("close");
+                }
+            });
         }
     }
 });

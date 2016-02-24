@@ -22,6 +22,7 @@ function SaveBlock(commitMessage) {
                 PageId: currentItem.attr("pageId"),
                 ComponentId: currentItem.attr("componentId"),
                 TableId: currentItem.attr("tableId"),
+                ColumnId: currentItem.attr("columnId"),
                 ColumnFilter: currentItem.data("columnFilter")
             });
         });
@@ -133,12 +134,11 @@ function SaveBlock(commitMessage) {
     postData = {
         CommitMessage: commitMessage,
         Name: $("#blockHeaderBlockName").text(),
-        AssociatedTableName: "",
-        AssociatedTableId: 0,
         ResourceRules: resourceRulesArray,
         WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
         AssociatedPageIds: AssociatedPageIds,
+        AssociatedTableIds: AssociatedTableIds,
         ParentMetablockId: $("#parentMetablockId").val()
     }    
     appId = $("#currentAppId").val();

@@ -2,7 +2,7 @@
 
 body.tapestryModule {
     .toolboxItem {
-        width: 218px;
+        min-width: 218px;
         font-family: MyriadPro;
         font-size: 18px;
     }
@@ -40,12 +40,14 @@ body.tapestryModule {
             top: 96px;
             width: 1564px;
             transform-origin: left top;
+            white-space: nowrap;
 
             .libraryCategory {
-                width: 220px;
+                min-width: 220px;
                 height: 232px;
                 display: inline-block;
                 vertical-align: top;
+                overflow-x: hidden;
                 overflow-y: auto;
             }
             .libraryCategoryHeader {
@@ -69,10 +71,12 @@ body.tapestryModule {
                 font-size: 18px;
                 color: black;
                 padding-left: 8px;
+                padding-right: 8px;
                 padding-top: 3px;
                 margin-bottom: 3px;
                 border-left: 3px solid #3a3a3a;
                 border-right: 5px solid #3a3a3a;
+                white-space: nowrap;
             }
             .libraryItem.highlighted {
                 background-color: #84c441;
@@ -89,6 +93,7 @@ body.tapestryModule {
             position: absolute;
             width: 236px;
             height: 600px;
+            overflow-x: hidden;
             overflow-y: auto;
 
             #hideTapestryTooboxIcon {
@@ -121,6 +126,7 @@ body.tapestryModule {
 
                     .toolboxCategoryLabel, .toolboxItem {
                         padding-left: 8px;
+                        white-space: nowrap;
                     }
                 }
                 .toolboxLi, .symbolToolboxSpace {
@@ -293,15 +299,13 @@ body.tapestryModule {
                 vertical-align: middle;
                 padding-left: 10px;
                 padding-top: 2px;
-
-                #blockHeaderBlockName, #blockHeaderScreenCount {
-                    cursor: pointer;
-                }
                 #blockHeaderBlockName, #blockHeaderDbResCount, #blockHeaderScreenCount{
                     color: #457fa9;
                     font-size: 20px;
                     padding-left: 2px;
                     padding-right: 10px;
+                    z-index: 30;
+                    cursor: pointer;
                 }
                 #controlButtonArea {
                     position: absolute;
@@ -313,6 +317,7 @@ body.tapestryModule {
                     button {
                         max-width: 18%;
                         height: 30px;
+                        z-index: 20;
                     }
                 }
             }
@@ -477,10 +482,12 @@ body.tapestryModule {
                             }
                             .item {
                                 position: absolute;
-                                width: 110px;
+                                min-width: 110px;
                                 height: 60px;
                                 border-radius: 6px;
                                 padding-top: 20px;
+                                padding-left: 8px;
+                                padding-right: 8px;
                                 font-family: MyriadPro;
                                 font-size: 12px;
                                 text-align: center;
