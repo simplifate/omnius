@@ -1503,6 +1503,28 @@
     <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
     <Content Include="Views\Master\AppAdminManager\BuildApp.cshtml" />
     <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
+    <Content Include="Views\Mozaic\EPK\10.cshtml" />
+    <Content Include="Views\Mozaic\EPK\11.cshtml" />
+    <Content Include="Views\Mozaic\EPK\12.cshtml" />
+    <Content Include="Views\Mozaic\EPK\13.cshtml" />
+    <Content Include="Views\Mozaic\EPK\14.cshtml" />
+    <Content Include="Views\Mozaic\EPK\15.cshtml" />
+    <Content Include="Views\Mozaic\EPK\16.cshtml" />
+    <Content Include="Views\Mozaic\EPK\18.cshtml" />
+    <Content Include="Views\Mozaic\EPK\19.cshtml" />
+    <Content Include="Views\Mozaic\EPK\20.cshtml" />
+    <Content Include="Views\Mozaic\EPK\21.cshtml" />
+    <Content Include="Views\Mozaic\EPK\22.cshtml" />
+    <Content Include="Views\Mozaic\EPK\24.cshtml" />
+    <Content Include="Views\Mozaic\EPK\25.cshtml" />
+    <Content Include="Views\Mozaic\EPK\26.cshtml" />
+    <Content Include="Views\Mozaic\EPK\27.cshtml" />
+    <Content Include="Views\Mozaic\EPK\28.cshtml" />
+    <Content Include="Views\Mozaic\EPK\29.cshtml" />
+    <Content Include="Views\Mozaic\EPK\30.cshtml" />
+    <Content Include="Views\Mozaic\EPK\31.cshtml" />
+    <Content Include="Views\Mozaic\EPK\9.cshtml" />
+    <Content Include="Views\Mozaic\EPK\_layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
