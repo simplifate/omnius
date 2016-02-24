@@ -52,7 +52,7 @@
         <div class="appList">
             @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
             {
-                <a href="/Tapestry/Run?AppName=@app.Name">
+                <a href="/Mozaic/ViewPage/Index/15">
                     <div class="appListItem">
                         <div class="icon fa @(app.Icon)"></div>
                         <div class="appName">@app.DisplayName</div>
@@ -74,7 +74,7 @@
         <div class="appIconToolbar">
             @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
             {
-                <a href="/Tapestry/Run?AppName=@app.Name">
+                <a href="/Mozaic/ViewPage/Index/15">
                     <div class="appIconToolbarItem">
                         <div class="icon fa @(app.Icon)"></div>
                     </div>

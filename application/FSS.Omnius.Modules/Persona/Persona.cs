@@ -145,6 +145,7 @@ namespace FSS.Omnius.Modules.Persona
                 WorkPhone = "",
                 MobilPhone = "",
                 LastLogin = DateTime.FromFileTime((long)ldapResult["lastlogon"]),
+                CurrentLogin = DateTime.UtcNow,
 
                 isLocalUser = false,
                 localExpiresAt = DateTime.UtcNow + _expirationTime
