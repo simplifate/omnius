@@ -67,7 +67,6 @@ namespace FSS.Omnius.Modules.Entitron
         public DBTable AddToDB(
             string columnName,
             string type,
-            bool isIdentity,
             bool isPrimary,
             bool allowColumnLength,
             bool allowPrecisionScale,
@@ -82,7 +81,6 @@ namespace FSS.Omnius.Modules.Entitron
             {
                 Name = columnName,
                 type = type,
-                isIdentity = isIdentity,
                 isPrimary = isPrimary,
                 maxLength = maxLength,
                 precision = precision,
@@ -173,17 +171,39 @@ namespace FSS.Omnius.Modules.Entitron
             return _table;
         }
 
-        public Dictionary<string,string> GetDefaults()
+        public Dictionary<string, string> GetDefaults()
         {
-            SqlQuery_SelectDefaultVal query = new SqlQuery_SelectDefaultVal(){application = table.Application,table = table};
-            Dictionary<string,string> defaultVal= new Dictionary<string, string>();
+            SqlQuery_SelectDefaultVal query = new SqlQuery_SelectDefaultVal() { application = table.Application, table = table };
+            Dictionary<string, string> defaultVal = new Dictionary<string, string>();
 
+            if (query.ExecuteWithRead().Count != 0)
+            {
+                foreach (DBItem i in query.ExecuteWithRead())
+                {
+                    defaultVal.Add(i["name"].ToString(), i["def"].ToString());
+                }
+            }
+            else
+            {
+                defaultVal.Add(null, null);
+            }
+
+            return defaultVal;
+        }
+
+        public Dictionary<string, string> GetSpecificDefault(string columnName)
+        {
+            SqlQuery_SelectSpecificDefault query = new SqlQuery_SelectSpecificDefault() { application = table.Application, table = table,columnName = columnName};
+
+            Dictionary<string, string> defaultVal = new Dictionary<string, string>();
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 defaultVal.Add(i["name"].ToString(), i["def"].ToString());
             }
             return defaultVal;
-        } 
+
+        }
+
         public DBTable AddUniqueValue(string uniqueColumns)
         {
             table.Application.queries.Add(new SqlQuery_UniqueAdd()

@@ -16,26 +16,26 @@ namespace FSS.Omnius.Modules.Entitron.Service
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
         {
             Entitron e = core.Entitron;
+            GenerateTables(e,dbSchemeCommit);
+            GenerateRelation(e,dbSchemeCommit);
+            GenerateView(e,dbSchemeCommit);
+            DroppingOldTables(e,dbSchemeCommit);
+            //todo smazat přebytečné saveChanges až bude důkladně otestováno generování
+        }
+
+        private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
+        {
             DBEntities ent = new DBEntities();
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                DBTable entitronTable =
-                    e.Application.
-                    GetTables().
+                DBTable entitronTable = e.Application.GetTables().
                     SingleOrDefault(x => x.tableName.ToLower() == efTable.Name.ToLower());
 
-                bool tableExists;
-                if (entitronTable != null)
-                {
-                    tableExists = DBTable.isInDB(entitronTable.Application.Name, entitronTable.tableName); 
-                }
-                else
-                {
-                    tableExists = false;
-                }
+                bool tableExists = DBTable.isInDB(e.Application.Name, efTable.Name);
 
-                if (entitronTable == null || !tableExists) //pokud se nenachází id ze schématu v databázi, vytváří se nová tabulka
+                //if table doesnt exist, create new one
+                if (entitronTable == null || !tableExists)
                 {
                     entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
@@ -46,7 +46,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         DBColumn col = new DBColumn()
                         {
                             Name = column.Name,
-                            isIdentity = (column.Name.ToLower()=="id")?true:false,
                             isPrimary = column.PrimaryKey,
                             isUnique = column.Unique,
                             canBeNull = column.AllowNull,
@@ -57,19 +56,23 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     entitronTable.Create();
                     e.Application.SaveChanges();
-
-                    //každé nové tabulce je přiděleno id z databáze, která ho vygeneruje
-                }
-                else                                                //pokud tabulka existuje v entitronu
-                {
+                    //set default values for new tables
+                    foreach (DbColumn defColumn in efTable.Columns)
+                    {
+                        if (!string.IsNullOrEmpty(defColumn.DefaultValue))
+                        {
+                            entitronTable.columns.AddDefaultValue(defColumn.Name, defColumn.DefaultValue);
+                        }
+                    }
+                }//end of table==null
+                else
+                {//if table exists, update columns
                     foreach (DbColumn efColumn in efTable.Columns)
                     {
-
-                        DBColumn entitronColumn = entitronTable
-                            .columns
+                        DBColumn entitronColumn = entitronTable.columns
                             .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
 
-                        if (entitronColumn == null)                     //přidání nových sloupců
+                        if (entitronColumn == null)                     //adding new column
                         {
                             entitronColumn = new DBColumn()
                             {
@@ -81,193 +84,133 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             };
                             entitronTable.columns.AddToDB(entitronColumn);
                             e.Application.SaveChanges();
-                            efColumn.Id = entitronColumn.ColumnId;
-                        }
-                        else                                            //úprava sloupců který mají nějaký změněný atribut
-                        {
+                        }//end column==null
+                        else
+                        {//updating existing column
                             if (entitronColumn.canBeNull != efColumn.AllowNull ||
                                 entitronColumn.maxLength != efColumn.ColumnLength ||
                                 entitronColumn.type != efColumn.Type)
                                 entitronTable.columns.ModifyInDB(entitronColumn.Name, ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
 
-                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false)
+                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false && !efColumn.PrimaryKey)
                             {
-                                if(!efColumn.PrimaryKey)
                                 entitronTable.columns.AddUniqueValue(efColumn.Name);
                             }
-
-                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
+                            else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                             {
                                 entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
                             }
 
-                            e.Application.SaveChanges();
-                        }
+                        }//end updating column
 
-                    }
+                        //set column default value
+                        Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(entitronColumn.Name);
 
-                }
-                foreach (DbColumn column in efTable.Columns)
-                {
-                    string def = "DEF_Entitron_" + e.Application.Name + "_" + entitronTable.tableName + column.Name;
-                    if (!string.IsNullOrEmpty(column.DefaultValue))
-                    {
-                        bool isChange = false;
-                        foreach (string key in entitronTable.columns.GetDefaults().Keys)
+                        if (!string.IsNullOrEmpty(efColumn.DefaultValue))
                         {
-                            if ((key.ToLower() == def.ToLower()) &&
-                                entitronTable.columns.GetDefaults()[key] != "('" + column.DefaultValue + "')")
+                            if (defaultConstraint.Count!=0 && efColumn.DefaultValue != defaultConstraint.Values.First())
                             {
-                                isChange = true;
-                                entitronTable.DropConstraint(key);
-                                entitronTable.columns.AddDefaultValue(column.Name.ToLower(), column.DefaultValue);
-                                break;
-                            }
-                            else if((key.ToLower() == def.ToLower()) &&
-                                entitronTable.columns.GetDefaults()[key] == "('" + column.DefaultValue + "')")
+                                entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                                entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
+                            }else if (defaultConstraint.Count == 0)
                             {
-                                isChange = true;
-                                break;
+                                entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
                             }
                         }
-                        if (isChange == false)
+                        else if(defaultConstraint==null)
                         {
-                            entitronTable.columns.AddDefaultValue(column.Name, column.DefaultValue);
+                            entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                            break;
                         }
-                    }
-                    else
-                    {
-                        foreach (string key in entitronTable.columns.GetDefaults().Keys)
-                        {
-                            if (key == def)
-                            {
-                                entitronTable.DropConstraint(key);
-                                break;
-                            }
-                        }
-                    }
-                }
+                    }//end foreach efColumn
+
+                }//end updating table columns
                 e.Application.SaveChanges();
 
-                List<string> newIndeces =
-                    efTable
-                    .Indices
-                    .Select(x => "index_" + x.Name.ToLower())
-                    .Except(entitronTable.indices.Select(x => x.indexName.ToLower()))
-                    .ToList();                                      //list názvů indexů které jsou ve schématu, ale ne v entitronu
+                //set indeces
 
-                List<string> deletedIndeces =
-                    entitronTable
-                    .indices
-                    .Select(x => x.indexName.ToLower())
-                    .Except(efTable.Indices.Select(x => "index_" + x.Name.ToLower()))
-                    .ToList();                                      //list názvů indexů, které jsou v entitronu, ale už ne ve schématu
+                //list of index names, which are in scheme, but not in database
+                List<string> newIndeces = efTable.Indices.Select(x => "index_" + x.Name.ToLower())
+                    .Except(entitronTable.indices.Select(x => x.indexName.ToLower())).ToList();
 
-                foreach (string indexName in newIndeces)            //přidá do entitronu pouze indexy které se nenacházejí v entitronu
+                //list of index names, which are in database, but not in scheme
+                List<string> deletedIndeces = entitronTable.indices.Select(x => x.indexName.ToLower())
+                    .Except(efTable.Indices.Select(x => "index_" + x.Name.ToLower())).ToList();
+
+                //creating new indeces
+                foreach (string indexName in newIndeces)
                 {
-                    DbIndex index =
-                        efTable
-                        .Indices
-                        .SingleOrDefault(x => "index_" + x.Name.ToLower() == indexName.ToLower());
+                    DbIndex index = efTable.Indices.SingleOrDefault(x => "index_" + x.Name.ToLower() == indexName.ToLower());
 
                     entitronTable.indices.AddToDB(index.Name, new List<string>(index.ColumnNames.Split(',')), index.Unique);
                 }
                 e.Application.SaveChanges();
 
-                foreach (string indexName in deletedIndeces)        //smaže z entitronu pouze indexy které se nenacházejí ve schématu
+                //droping new indeces
+                foreach (string indexName in deletedIndeces)
                 {
                     entitronTable.indices.DropFromDB(indexName);
                 }
                 e.Application.SaveChanges();
             } //end foreach efTable
 
-                List<string> entitronsFKsNames = new List<string>();
-                List<DBForeignKey> entitronFKs = new List<DBForeignKey>();
-                foreach (DBTable table in e.Application.GetTables())
-                {
-                    foreach (DBForeignKey key in table.foreignKeys)
-                    {
-                        entitronFKs.Add(key);
-                        entitronsFKsNames.Add(key.name.ToLower());
-                    }
-                }
-                List<string> newFK =
-                    dbSchemeCommit
-                        .Relations
-                        .Where(x1 => !entitronsFKsNames.Any(x2 => x2 =="fk_"+x1.Name.ToLower()))
-                        .Select(x=>x.Name)
-                        .ToList();                                           //list názvů indexů které jsou ve schématu, ale ne v entitronu
+        }
 
-                List<string> deletedFK =
-                     entitronsFKsNames
-                    .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_"+x2.Name.ToLower() == x1)).Distinct()
-                        .ToList();                                           //list názvů indexů které jsou v entitronu, ale ne ve schématu
+        private void GenerateRelation(Entitron e, DbSchemeCommit dbSchemeCommit)
+        {
+            List<string> entitronsFKsNames = new List<string>();
+            List<DBForeignKey> entitronFKs = new List<DBForeignKey>();
 
-                foreach (string fkname in newFK)                         //přidá do entitronu všechny nové cizí klíče
-                {
-                    DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name.ToLower() == fkname.ToLower());
-                    DbTable rightTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.RightTable);
-                    DbTable leftTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.LeftTable);
-                    DbColumn rightColumn = rightTable.Columns.SingleOrDefault(x => x.Id == efRelation.RightColumn);
-                    DbColumn leftColumn = leftTable.Columns.SingleOrDefault(x => x.Id == efRelation.LeftColumn);
-                    DBForeignKey entitronFK = new DBForeignKey();
-                    entitronFK.sourceTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == rightTable.Name.ToLower());
-                    entitronFK.targetTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == leftTable.Name.ToLower());
-                    entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.Name.ToLower() == rightColumn.Name.ToLower()).Name;
-                    entitronFK.targetColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.Name.ToLower() == leftColumn.Name.ToLower()).Name;
-                    entitronFK.name = efRelation.Name;
-
-                    entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
-                }
-                e.Application.SaveChanges();
-
-                foreach (string fkey in deletedFK)
-                {
-                    DBForeignKey foreignKeyForDrop = entitronFKs.SingleOrDefault(x => x.name.ToLower() == fkey);
-                    foreignKeyForDrop.sourceTable.DropConstraint(foreignKeyForDrop.name);
-                }
-
-                e.Application.SaveChanges();
-            List<string> deletedTables =
-                            e.Application.GetTables()
-                                .Select(x => x.tableName.ToLower())
-                                .Except(dbSchemeCommit.Tables.Select(x => x.Name.ToLower()))
-                                .ToList();                          //list tabulek které nejsou ve schématu, ale jsou ještě v entitronu
-
-            foreach (string deleteTable in deletedTables)           //mazání všech tabulek z entitronu, které nejsou ve schématu
+            //getting FKs for dropping, FK names are for list of new FKs and oldFks
+            foreach (DBTable table in e.Application.GetTables())
             {
-                DBTable dropTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == deleteTable);
-                e.Application.GetTable(dropTable.tableName).Drop();
+                foreach (DBForeignKey key in table.foreignKeys)
+                {
+                    entitronFKs.Add(key);
+                    entitronsFKsNames.Add(key.name.ToLower());
+                }
+            }
+
+            //list of foreign key names, which are in scheme, but not in database
+            List<string> newFK = dbSchemeCommit.Relations
+                .Where(x1 => !entitronsFKsNames.Any(x2 => x2 == "fk_" + x1.Name.ToLower())).Select(x => x.Name).ToList();
+
+            //list of foreign key names, which are in database, but not in scheme
+            List<string> deletedFK = entitronsFKsNames
+                .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_" + x2.Name.ToLower() == x1)).Distinct().ToList();
+
+            //adding new FKs
+            foreach (string fkname in newFK)
+            {
+                DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name.ToLower() == fkname.ToLower());
+                DbTable rightTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.RightTable);
+                DbTable leftTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.LeftTable);
+                DbColumn rightColumn = rightTable.Columns.SingleOrDefault(x => x.Id == efRelation.RightColumn);
+                DbColumn leftColumn = leftTable.Columns.SingleOrDefault(x => x.Id == efRelation.LeftColumn);
+
+                DBForeignKey entitronFK = new DBForeignKey();
+                entitronFK.sourceTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == rightTable.Name.ToLower());
+                entitronFK.targetTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == leftTable.Name.ToLower());
+                entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.Name.ToLower() == rightColumn.Name.ToLower()).Name;
+                entitronFK.targetColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.Name.ToLower() == leftColumn.Name.ToLower()).Name;
+                entitronFK.name = efRelation.Name;
+
+                entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
             }
             e.Application.SaveChanges();
 
-            foreach (DbTable schemeTable in dbSchemeCommit.Tables)
+            //dropping old FKs
+            foreach (string fkey in deletedFK)
             {
-                DBTable entitronTable = e.Application.
-                    GetTables().
-                    SingleOrDefault(x => x.tableName.ToLower() == schemeTable.Name.ToLower());
-
-                List<string> deletedColumns =
-                    entitronTable
-                        .columns
-                        .Select(x => x.Name.ToLower())
-                        .Except(schemeTable.Columns.Select(x => x.Name.ToLower()))
-                        .ToList();
-                    //list všech id sloupců které se nenachází ve schématu, ale v entitronu ano(určené ke smazání)
-
-
-                foreach (string columnName in deletedColumns) //mazání sloupců, které nejsou ve schématu
-                {
-                    DBColumn column =
-                        entitronTable
-                            .columns
-                            .SingleOrDefault(x => x.Name.ToLower() == columnName);
-
-                    entitronTable.columns.DropFromDB(column.Name);
-                }
-                e.Application.SaveChanges();
+                DBForeignKey foreignKeyForDrop = entitronFKs.SingleOrDefault(x => x.name.ToLower() == fkey);
+                foreignKeyForDrop.sourceTable.DropConstraint(foreignKeyForDrop.name);
             }
+            e.Application.SaveChanges();
 
+        }
+
+        private void GenerateView(Entitron e, DbSchemeCommit dbSchemeCommit)
+        {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
                 bool viewExists = DBView.isInDb(e.Application.Name, efView.Name);
@@ -288,12 +231,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     newView.Alter();
                 }
                 e.Application.SaveChanges();
-            }
-            
-            List<string> deleteViews = e.Application.GetViewNames()
-                                .Except(dbSchemeCommit.Views.Select(x => "Entitron_"+e.Application.Name+"_"+x.Name))
-                                .ToList();                          //list pohledů které nejsou ve schématu, ale jsou ještě v entitronu
+            }//end of foreach efViews
 
+            //list of views, which are in database, but not in scheme
+            List<string> deleteViews = e.Application.GetViewNames()
+                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + e.Application.Name + "_" + x.Name)).ToList();
+
+            //dropping views
             foreach (string viewName in deleteViews)
             {
                 DBView.Drop(viewName);
@@ -301,6 +245,41 @@ namespace FSS.Omnius.Modules.Entitron.Service
             e.Application.SaveChanges();
         }
 
+        private void DroppingOldTables(Entitron e, DbSchemeCommit dbSchemeCommit)
+        {
+            //list of tables, which are in database, but not in scheme
+            List<string> deletedTables = e.Application.GetTables().Select(x => x.tableName.ToLower())
+                                .Except(dbSchemeCommit.Tables.Select(x => x.Name.ToLower())).ToList();
+
+            //dropping old tables(must be here, after dropping all constraints)
+            foreach (string deleteTable in deletedTables)
+            {
+                DBTable dropTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == deleteTable);
+                e.Application.GetTable(dropTable.tableName).Drop();
+            }
+            e.Application.SaveChanges();
+
+            //foreach for tables again, for getting all columns
+            foreach (DbTable schemeTable in dbSchemeCommit.Tables)
+            {
+                DBTable entitronTable = e.Application.GetTables()
+                    .SingleOrDefault(x => x.tableName.ToLower() == schemeTable.Name.ToLower());
+
+                //list of column names, which are in database,but not in scheme
+                List<string> deletedColumns = entitronTable.columns.Select(x => x.Name.ToLower())
+                        .Except(schemeTable.Columns.Select(x => x.Name.ToLower())).ToList();
+
+                //dropping columns, must be here for the same reason like tables, it is because FKs must be dropping first
+                foreach (string columnName in deletedColumns)
+                {
+                    DBColumn column = entitronTable.columns.SingleOrDefault(x => x.Name.ToLower() == columnName);
+
+                    entitronTable.columns.DropFromDB(column.Name);
+                }
+                e.Application.SaveChanges();
+            }//end of foreach schemeTable for dropping old columns
+
+        }
         private static string GetConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["EntitronTesting"].ConnectionString;
