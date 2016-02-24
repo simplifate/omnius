@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int? ParentMetablockId { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsNew { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
@@ -58,6 +59,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsNew { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
@@ -87,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public List<int> PortTargets { get; set; }
         public List<int> AssociatedPageIds { get; set; }
+        public List<int> AssociatedTableIds { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
@@ -148,6 +151,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? PageId { get; set; }
         public int? ComponentId { get; set; }
         public int? TableId { get; set; }
+        public int? ColumnId { get; set; }
         public List<int> ColumnFilter { get; set; }
 
         public AjaxTapestryDesignerResourceItem()

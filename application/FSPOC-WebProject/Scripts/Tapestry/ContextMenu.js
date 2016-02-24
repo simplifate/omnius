@@ -65,7 +65,7 @@
             zIndex: 300,
             callback: function (key, options) {
                 if (key == "rename") {
-                    currentRule = options.$trigger;
+                    CurrentRule = options.$trigger;
                     renameRuleDialog.dialog("open");
                 }
                 else if (key == "delete") {

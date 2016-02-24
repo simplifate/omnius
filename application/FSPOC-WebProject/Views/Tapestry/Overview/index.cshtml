@@ -31,8 +31,8 @@
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
     <input type="hidden" name="metablockId" />
 </form>
-<input type="hidden" id="currentAppId" value="1" />
 <input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
+<input type="hidden" id="currentAppId" value="@ViewData["currentAppId"]" />
 <input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <div id="add-block-dialog" title="Add block">
     <form>
@@ -77,9 +77,23 @@
                 <tbody>
                     <tr>
                         <td>
+                            <label for="p-metablock-name">Name:</label>
+                            <input type="text" name="p-metablock-name" id="p-metablock-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="metablock-is-in-menu">
                                 <input type="checkbox" name="metablock-is-in-menu" id="metablock-is-in-menu" value="1" />
                                 Show in menu
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="metablock-set-as-initial">
+                                <input type="checkbox" name="metablock-set-as-initial" id="metablock-set-as-initial" value="1" />
+                                Set as initial
                             </label>
                         </td>
                     </tr>
@@ -96,9 +110,23 @@
                 <tbody>
                     <tr>
                         <td>
+                            <label for="p-block-name">Name:</label>
+                            <input type="text" name="p-block-name" id="p-block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="block-is-in-menu">
                                 <input type="checkbox" name="block-is-in-menu" id="block-is-in-menu" value="1" />
                                 Show in menu
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="block-set-as-initial">
+                                <input type="checkbox" name="block-set-as-initial" id="block-set-as-initial" value="1" />
+                                Set as initial
                             </label>
                         </td>
                     </tr>

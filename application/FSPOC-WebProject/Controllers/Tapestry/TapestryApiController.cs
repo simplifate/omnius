@@ -79,13 +79,14 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         {
                             Id = blockCommit.Id,
                             Name = blockCommit.Name,
-                            AssociatedTableName = blockCommit.AssociatedTableName,
                             PositionX = blockCommit.PositionX,
                             PositionY = blockCommit.PositionY,
                             Timestamp = blockCommit.Timestamp,
                             CommitMessage = blockCommit.CommitMessage,
                             AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
-                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList()
+                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                            AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
+                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                         };
                         LoadResourceRules(blockCommit, result);
                         LoadWorkflowRules(blockCommit, result);
@@ -94,8 +95,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     {
                         result = new AjaxTapestryDesignerBlockCommit
                         {
-                            Name = requestedBlock.Name,
-                            AssociatedTableName = requestedBlock.AssociatedTableName
+                            Name = requestedBlock.Name
                         };
                     }
                     return result;
@@ -130,8 +130,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Timestamp = DateTime.Now,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
-                        AssociatedTableName = postData.AssociatedTableName,
-                        AssociatedPageIds = string.Join<int>(",", postData.AssociatedPageIds)
+                        AssociatedPageIds = string.Join(",", postData.AssociatedPageIds),
+                        AssociatedTableIds = string.Join(",", postData.AssociatedTableIds)
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
 
@@ -157,6 +157,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PageId = ajaxItem.PageId,
                                 ComponentId = ajaxItem.ComponentId,
                                 TableId = ajaxItem.TableId,
+                                ColumnId = ajaxItem.ColumnId,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray())
                             };
                             rule.ResourceItems.Add(item);
@@ -273,7 +274,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         }
                     }
                     targetBlock.Name = postData.Name;
-                    targetBlock.AssociatedTableName = postData.AssociatedTableName;
                     context.SaveChanges();
                 }
             }
@@ -321,11 +321,14 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     {
                         Id = blockCommit.Id,
                         Name = blockCommit.Name,
-                        AssociatedTableName = blockCommit.AssociatedTableName,
                         PositionX = blockCommit.PositionX,
                         PositionY = blockCommit.PositionY,
                         Timestamp = blockCommit.Timestamp,
-                        CommitMessage = blockCommit.CommitMessage
+                        CommitMessage = blockCommit.CommitMessage,
+                        AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
+                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                        AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
+                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                     };
                     LoadResourceRules(blockCommit, result);
                     LoadWorkflowRules(blockCommit, result);
@@ -381,7 +384,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         {
                             var newBlock = match.First();
                             oldBlock.Name = newBlock.Name;
-                            oldBlock.AssociatedTableName = newBlock.AssociatedTableName;
                             oldBlock.PositionX = newBlock.PositionX;
                             oldBlock.PositionY = newBlock.PositionY;
                             oldBlock.IsInitial = newBlock.IsInitial;
@@ -394,7 +396,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         var newBlock = new TapestryDesignerBlock
                         {
                             Name = ajaxBlock.Name,
-                            AssociatedTableName = ajaxBlock.AssociatedTableName,
                             PositionX = ajaxBlock.PositionX,
                             PositionY = ajaxBlock.PositionY,
                             IsInitial = ajaxBlock.IsInitial,
@@ -482,7 +483,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         {
                             Id = sourceBlock.Id,
                             Name = sourceBlock.Name,
-                            AssociatedTableName = sourceBlock.AssociatedTableName,
                             PositionX = sourceBlock.PositionX,
                             PositionY = sourceBlock.PositionY,
                             IsInitial = sourceBlock.IsInitial,
@@ -627,6 +627,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PageId = item.PageId,
                     ComponentId = item.ComponentId,
                     TableId = item.TableId,
+                    ColumnId = item.ColumnId,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
                 };
                 result.ResourceItems.Add(ajaxItem);

@@ -153,10 +153,8 @@ namespace FSS.Omnius.Modules.Entitron
         }
         public static bool isInDB(string applicationName, string tableName)
         {
-            //if (Application == null || string.IsNullOrWhiteSpace(tableName))
-            //    return false;
-
-            //return (tableId != null);
+            if(applicationName==null || tableName==null)
+                return false;
             SqlQuery_isTableInEntitron query = new SqlQuery_isTableInEntitron() { };
             foreach (DBItem i in query.ExecuteWithRead())
             {

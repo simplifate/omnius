@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Name { get; set; }
         public int PositionX { get; set; } // For visual representation in Overview
         public int PositionY { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
 
@@ -59,6 +60,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int AssociatedTableId { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
 
@@ -88,6 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerResourceRule> ResourceRules { get; set; }
         public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public string AssociatedPageIds { get; set; }
+        public string AssociatedTableIds { get; set; }
 
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
 
@@ -191,6 +194,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? PageId { get; set; }
         public int? ComponentId { get; set; }
         public int? TableId { get; set; }
+        public int? ColumnId { get; set; }
         public string ColumnFilter { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }

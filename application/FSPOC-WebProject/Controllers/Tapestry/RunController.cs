@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             Block block = blockId > 0
                 ? e.Blocks.SingleOrDefault(b => b.Id == blockId)
                 : e.WorkFlows.SingleOrDefault(wf => wf.ApplicationId == core.Entitron.AppId && wf.Type.Name == "Init").InitBlock;
-
+            
             return ShowPage(core, appName, block, modelId);
         }
 

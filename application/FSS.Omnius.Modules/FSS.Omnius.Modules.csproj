@@ -187,6 +187,7 @@
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificDefault.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
@@ -535,6 +536,14 @@
     <Compile Include="Migrations\201602221837391_Tapestry-block-isInMenu2.Designer.cs">
       <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602241608308_Tapestry-menu-order.cs" />
+    <Compile Include="Migrations\201602241608308_Tapestry-menu-order.Designer.cs">
+      <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.cs" />
+    <Compile Include="Migrations\201602241930322_Tapestry designer attributes.Designer.cs">
+      <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -825,6 +834,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602221837391_Tapestry-block-isInMenu2.resx">
       <DependentUpon>201602221837391_Tapestry-block-isInMenu2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241608308_Tapestry-menu-order.resx">
+      <DependentUpon>201602241608308_Tapestry-menu-order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241930322_Tapestry designer attributes.resx">
+      <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

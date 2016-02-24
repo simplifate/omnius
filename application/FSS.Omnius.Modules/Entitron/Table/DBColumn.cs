@@ -12,7 +12,6 @@ namespace FSS.Omnius.Modules.Entitron
         public int ColumnId { get; set; }
         public string Name { get; set; }
         public string type { get; set; }
-        public bool isIdentity { get; set; } 
         public bool isPrimary { get; set ; }
         public bool allowColumnLength { get; set; }
         public int? maxLength { get; set; }
@@ -45,16 +44,17 @@ namespace FSS.Omnius.Modules.Entitron
                     "[{0}] {1}{2}{3} {4} {5}{6}",
                     Name,
                     type,
-                    (isIdentity)? " IDENTITY(1,1) ":"",
-                    (isPrimary==true)?" PRIMARY KEY ":"",
+                    (isPrimary == true) ? " IDENTITY(1,1) PRIMARY KEY " : "",
                     (allowColumnLength)
                         ? string.Format("({0})", (maxLength != null || maxLength > 8000) ? maxLength.ToString() : "MAX")
                         : "",
                     (allowPrecisionScale)
                         ? string.Format("({0}, {1})",
                             (precision < 38) ? precision.ToString() : "38",
-                            (scale < precision) ? scale.ToString() : precision.ToString()) : "", //avoiding that the value of precision or scale was greater than the range
-                    (canBeNull) ? "NULL" : "NOT NULL"
+                            (scale < precision) ? scale.ToString() : precision.ToString())
+                        : "", //avoiding that the value of precision or scale was greater than the range
+                    (canBeNull) ? "NULL" : "NOT NULL",
+                    (isUnique) ? "UNIQUE" : ""
                     );
         }
         public virtual string getShortSqlDefinition()

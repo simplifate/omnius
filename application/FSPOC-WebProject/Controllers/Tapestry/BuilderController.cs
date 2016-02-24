@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -21,20 +22,22 @@ namespace FSS.Omnius.Controllers.Tapestry
                         ViewData["parentMetablockId"] = 0;
                     else
                         ViewData["parentMetablockId"] = parentMetablock.Id;
+
                     int appId = 0;
+                    int rootMetablockId = parentMetablock.Id;
                     parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock").Include("ParentApp")
-                            .Where(c => c.Id == parentMetablock.Id).First();
+                                                                        .Where(c => c.Id == parentMetablock.Id).First();
                     while (parentMetablock != null)
                     {
-                        if (parentMetablock.ParentApp != null)
-                        {
-                            appId = parentMetablock.ParentApp.Id;
-                            break;
-                        }
+                        rootMetablockId = parentMetablock.Id;
                         parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock").Include("ParentApp")
                             .Where(c => c.Id == parentMetablock.Id).First().ParentMetablock;
                     }
-                    ViewData["appId"] = appId;
+                    Application app = context.Applications.Include("TapestryDesignerRootMetablock")
+                                                          .Where(a => a.TapestryDesignerRootMetablock.Id == rootMetablockId)
+                                                          .First();
+
+                    ViewData["appId"] = app != null ? app.Id : appId;
                     //ViewData["screenCount"] = context.TapestryDesignerBlocks.Find(blockId).Pages.Count();
                 }
             }
