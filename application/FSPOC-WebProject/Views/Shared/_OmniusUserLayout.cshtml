@@ -1,4 +1,6 @@
-﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+﻿@using FSS.Omnius.Modules.Entitron.Entity
+@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,46 +43,68 @@
     </div>
     <div id="userLeftBar">
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="widgetLabel">Nejpoužívanější aplikace</div>
-        <div class="circles">
-            <div class="fa fa-circle"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-        </div>
-        <div class="appList">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
-            {
-                <a href="/Tapestry/Run?AppName=@app.Name">
-                    <div class="appListItem">
-                        <div class="icon fa @(app.Icon)"></div>
-                        <div class="appName">@app.DisplayName</div>
-                    </div>
-                </a>
-            }
-        </div>
-        <div class="infoBox">
-            <div class="icon fa fa-info-circle"></div>
-            <div class="infoText">
-                Kliknutím na navigační šipku v hlavičce
-                můžete měnit způsob zobrazených
-                aplikací v menu.
+        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
+            <div class="widgetLabel">Nejpoužívanější aplikace</div>
+            <div class="circles">
+                <div class="fa fa-circle"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
+                <div class="fa fa-circle-o"></div>
             </div>
-        </div>
+            <div class="appList">
+                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+                    <a href="/Tapestry/Run?AppName=@app.Name">
+                        <div class="appListItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                            <div class="appName">@app.DisplayName</div>
+                        </div>
+                    </a>
+                }
+            </div>
+            <div class="infoBox">
+                <div class="icon fa fa-info-circle"></div>
+                <div class="infoText">
+                    Kliknutím na navigační šipku v hlavičce
+                    můžete měnit způsob zobrazených
+                    aplikací v menu.
+                </div>
+            </div>
+        }
+        else {
+            <div class="widgetLabel">Menu</div>
+            <ul id="appMenu">
+            @using (DBEntities e = new DBEntities()) {
+                int rootMetablockId = Context.GetCORE().Entitron.Application.TapestryDesignerRootMetablock.Id;
+                foreach (TapestryDesignerMetablock metablock in e.TapestryDesignerMetablocks.Include("ParentMetablock").Where(m => m.ParentMetablock.Id == rootMetablockId && m.IsInMenu == true).ToList()) {
+                    <li>
+                        <h4>@metablock.Name</h4>
+                        <ul>
+                            @foreach (TapestryDesignerBlock block in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => b.ParentMetablock.Id == metablock.Id && b.IsInMenu == true).ToList()) {
+                                <li>
+                                    <a href="">@block.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+            </ul>
+        }
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
-        <div class="appIconToolbar">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
-            {
-                <a href="/Tapestry/Run?AppName=@app.Name">
-                    <div class="appIconToolbarItem">
-                        <div class="icon fa @(app.Icon)"></div>
-                    </div>
-                </a>
-            }
-        </div>
+        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
+            <div class="appIconToolbar">
+                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+                    <a href="/Tapestry/Run?AppName=@app.Name">
+                        <div class="appIconToolbarItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
     </div>
     <div id="userContentArea">
         @RenderBody()
