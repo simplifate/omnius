@@ -47,7 +47,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         {
                             Name = column.Name,
                             isPrimary = column.PrimaryKey,
-                            isUnique = column.Unique,
                             canBeNull = column.AllowNull,
                             maxLength = column.ColumnLength,
                             type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.Type)).SqlName
@@ -56,12 +55,16 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     entitronTable.Create();
                     e.Application.SaveChanges();
-                    //set default values for new tables
+                    //set default values and unique constraints for new tables
                     foreach (DbColumn defColumn in efTable.Columns)
                     {
                         if (!string.IsNullOrEmpty(defColumn.DefaultValue))
                         {
                             entitronTable.columns.AddDefaultValue(defColumn.Name, defColumn.DefaultValue);
+                        }
+                        if (defColumn.Unique)
+                        {
+                            entitronTable.columns.AddUniqueValue(defColumn.Name);
                         }
                     }
                 }//end of table==null
@@ -77,12 +80,15 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             entitronColumn = new DBColumn()
                             {
                                 Name = efColumn.Name,
-                                isUnique = efColumn.Unique,
                                 canBeNull = efColumn.AllowNull,
                                 maxLength = efColumn.ColumnLength,
                                 type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName
                             };
                             entitronTable.columns.AddToDB(entitronColumn);
+                            if (efColumn.Unique)
+                            {
+                                entitronTable.columns.AddUniqueValue(efColumn.Name);
+                            }
                             e.Application.SaveChanges();
                         }//end column==null
                         else
@@ -98,7 +104,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             }
                             else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                             {
-                                entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}{entitronColumn.Name}");
+                                entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{entitronColumn.Name}");
                             }
 
                         }//end updating column
@@ -117,7 +123,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                                 entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
                             }
                         }
-                        else if(defaultConstraint==null)
+                        else if(defaultConstraint.Count!=0)
                         {
                             entitronTable.DropConstraint(defaultConstraint.Keys.First());
                             break;
