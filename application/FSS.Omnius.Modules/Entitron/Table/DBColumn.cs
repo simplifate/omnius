@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Entitron
 
             return
                 string.Format(
-                    "[{0}] {1}{2}{3} {4} {5}{6}",
+                    "[{0}] {1}{2}{3} {4} {5}",
                     Name,
                     type,
                     (isPrimary == true) ? " IDENTITY(1,1) PRIMARY KEY " : "",
@@ -53,8 +53,7 @@ namespace FSS.Omnius.Modules.Entitron
                             (precision < 38) ? precision.ToString() : "38",
                             (scale < precision) ? scale.ToString() : precision.ToString())
                         : "", //avoiding that the value of precision or scale was greater than the range
-                    (canBeNull) ? "NULL" : "NOT NULL",
-                    (isUnique) ? "UNIQUE" : ""
+                    (canBeNull) ? "NULL" : "NOT NULL"
                     );
         }
         public virtual string getShortSqlDefinition()
