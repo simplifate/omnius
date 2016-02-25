@@ -289,7 +289,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    }
     //}
     [Table("TapestryDesigner_Connections")]
-    public class TapestryDesignerConnection
+    public partial class TapestryDesignerConnection
     {
         public int Id { get; set; }
         public int Source { get; set; }

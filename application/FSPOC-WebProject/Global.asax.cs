@@ -25,7 +25,7 @@ namespace FSPOC_WebProject
             RouteConfig        .RegisterRoutes(RouteTable.Routes);
             BundleConfig       .RegisterBundles(BundleTable.Bundles);
             App_Start.AppStart.AppInitialize();
-            Logger.Log.Info("Omnius start");
+            //Logger.Log.Info("Omnius start");
         }
 
         protected void Application_Error(object sender, EventArgs e)
