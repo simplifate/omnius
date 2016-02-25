@@ -70,25 +70,25 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             return View();
         }
 
-        public ActionResult MenuOrder(int parentMetablockId)
+        public ActionResult MenuOrder(int id)
         {
             TapestryDesignerMetablock parentMetablock;
             using (DBEntities context = new DBEntities()) 
             {
                 parentMetablock = context.TapestryDesignerMetablocks.Include("Metablocks")
                                                                     .Include("Blocks")
-                                                                    .Where(m => m.Id == parentMetablockId).First();
+                                                                    .Where(m => m.Id == id).First();
 
-                Application app = GetApplication(parentMetablock, parentMetablockId, context);
+                Application app = GetApplication(parentMetablock, id, context);
                 ViewData["appName"] = app.Name;
             }
 
-            return View(parentMetablock);
+            return View("~/Views/Tapestry/Overview/MenuOrder.cshtml", parentMetablock);
         }
-
+        
         private Application GetApplication(TapestryDesignerMetablock parentMetablock, int metablockId, DBEntities context)
         {
-            int rootMetablockId = metablockId;
+            int? rootMetablockId = metablockId;
             if (parentMetablock != null) {
                 while (parentMetablock.ParentMetablock != null) {
                     parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")

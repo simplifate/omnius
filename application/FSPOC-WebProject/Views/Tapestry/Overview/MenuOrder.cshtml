@@ -14,24 +14,26 @@
     <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
 </div>
 <div id="overviewPanel">
-    @using (Html.BeginRouteForm("Hermes", new { @action = "Save" }, FormMethod.Post)) 
-    {
-        @Html.AntiForgeryToken();
+    <p><br /></p>
+    <form method="post" action="/api/tapestry/saveMenuOrder" id="menuOrderForm">
+        @Html.Hidden("metablockId", Model.Id);
+
         <ul class="sortable">
-        @foreach(TapestryDesignerMetablock mb in Model.Metablocks.OrderBy(m => m.MenuOrder)) {
-            <li class="@((mb.IsInMenu ? "" : "not-in-menu") + (mb.IsInitial ? " is-initial" : ""))">
-                @mb.Name;
-                @Html.Hidden("metablock[]", mb.Id);
-            </li>
-        }
-        @foreach (TapestryDesignerBlock b in Model.Blocks.OrderBy(b => b.MenuOrder)) {
-            <li class="@((b.IsInMenu ? "" : "not-in-menu") + (b.IsInitial ? " is-initial" : ""))">
-                @b.Name;
-                @Html.Hidden("metablock[]", b.Id);
-            </li>
-        }
+            @foreach (TapestryDesignerMetablock mb in Model.Metablocks.OrderBy(m => m.MenuOrder)) {
+                <li class="btn btn-omnius-rectangular@((mb.IsInMenu ? "" : " not-in-menu") + (mb.IsInitial ? " is-initial" : ""))">
+                    <span class="fa fa-object-group"></span>
+                    @mb.Name
+                    @Html.Hidden("metablock[]", mb.Id)
+                </li>
+            }
+            @foreach (TapestryDesignerBlock b in Model.Blocks.OrderBy(b => b.MenuOrder)) {
+                <li class="btn btn-omnius-rectangular@((b.IsInMenu ? "" : " not-in-menu") + (b.IsInitial ? " is-initial" : ""))">
+                    @b.Name
+                    @Html.Hidden("block[]", b.Id)
+                </li>
+            }
         </ul>
-    }
+    </form>
 </div>
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
     <input type="hidden" name="metablockId" value="@Model.Id" />

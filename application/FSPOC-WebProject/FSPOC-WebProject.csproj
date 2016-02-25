@@ -342,6 +342,7 @@
     <Content Include="Content\scss\Bundled.min.css">
       <DependentUpon>Bundled.css</DependentUpon>
     </Content>
+    <Content Include="Content\scss\MenuOrder.scss" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1348,6 +1349,7 @@
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\Load.js" />
+    <Content Include="Scripts\Overview\MenuOrder.js" />
     <Content Include="Scripts\Overview\Save.js" />
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
     <Content Include="Scripts\Persona\Init.js" />

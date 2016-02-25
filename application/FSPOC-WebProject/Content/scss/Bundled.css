@@ -1396,6 +1396,129 @@ body.overviewModule {
     background-color: #2ddef9;
     color: black; }
 
+body.menuOrderModule {
+  background-color: #3a3a3a; }
+  body.menuOrderModule #overviewHeaderArea {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 235px;
+    top: 82px;
+    text-align: left;
+    font-size: 18px;
+    color: white; }
+    body.menuOrderModule #overviewHeaderArea #headerAppName, body.menuOrderModule #overviewHeaderArea #headerMetablockName {
+      font-weight: bold;
+      color: #f1a57a; }
+    body.menuOrderModule #overviewHeaderArea #headerMetablockName:hover {
+      color: #2ddef9;
+      cursor: pointer; }
+  body.menuOrderModule #overviewPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    background-color: #c0c0c0;
+    left: 229px;
+    top: 140px;
+    right: 150px;
+    bottom: 0px;
+    overflow: scroll; }
+    body.menuOrderModule #overviewPanel .scrollArea {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      transform-origin: 0px 0px;
+      min-width: 4500px;
+      min-height: 2500px; }
+    body.menuOrderModule #overviewPanel .sortable li.btn {
+      float: none;
+      display: block;
+      margin-bottom: 5px;
+      width: 300px;
+      text-align: left; }
+  body.menuOrderModule #overviewMenu {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    right: 0px;
+    top: 140px;
+    bottom: 0px;
+    width: 150px;
+    background-color: #3a3a3a;
+    padding-left: 15px;
+    padding-right: 15px; }
+    body.menuOrderModule #overviewMenu button {
+      display: block;
+      margin-bottom: 15px; }
+    body.menuOrderModule #overviewMenu hr {
+      border-color: #457fa9;
+      border-width: 2px; }
+  body.menuOrderModule #zoomPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: fixed;
+    right: 215px;
+    bottom: 55px;
+    text-align: center;
+    z-index: 2000; }
+    body.menuOrderModule #zoomPanel button {
+      font-size: 12px;
+      background-color: #49c3f1;
+      color: black;
+      border: none; }
+    body.menuOrderModule #zoomPanel button:hover {
+      background-color: #2ddef9; }
+    body.menuOrderModule #zoomPanel #zoomLabel {
+      font-size: 20px;
+      color: black;
+      margin-bottom: -2px; }
+  body.menuOrderModule .jsplumb-drag {
+    z-index: 200 !important;
+    border: 1px solid #49c3f1;
+    box-shadow: 0px 0px 22px #49c3f1; }
+  body.menuOrderModule .ui-dialog {
+    padding: 0px 0px;
+    border: 1px solid black;
+    border-radius: 4px; }
+  body.menuOrderModule .ui-widget-header {
+    background-image: none;
+    background-color: #2d74b2;
+    color: white; }
+  body.menuOrderModule .ui-dialog .ui-dialog-buttonpane {
+    padding: 3px; }
+  body.menuOrderModule .ui-dialog .ui-dialog-buttonset button {
+    margin: 3px; }
+  body.menuOrderModule .ui-dialog-content .formTable label {
+    margin-bottom: 0px; }
+  body.menuOrderModule .ui-dialog-content .formTable tr {
+    height: 32px; }
+  body.menuOrderModule .ui-dialog-content .formTable td {
+    vertical-align: middle; }
+  body.menuOrderModule .ui-dialog-content .formTable tr td:first-child {
+    width: 150px; }
+  body.menuOrderModule .btn-tapestry {
+    background-color: #49c3f1;
+    color: black; }
+  body.menuOrderModule .btn-tapestry:hover {
+    background-color: #2ddef9;
+    color: black; }
+
 body.dbDesignerModule {
   background-color: #e0e0e0;
   overflow: hidden; }
