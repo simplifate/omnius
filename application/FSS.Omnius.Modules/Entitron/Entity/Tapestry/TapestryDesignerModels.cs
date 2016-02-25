@@ -317,7 +317,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string SubMenu { get; set; }
         public int MenuOrder { get; set; }
+        public int Level { get; set; }
         public bool IsBlock { get; set; }
         public bool IsMetablock { get; set; }
         public bool IsInMenu { get; set; }

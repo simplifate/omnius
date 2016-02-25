@@ -74,23 +74,7 @@
         }
         else {
             <div class="widgetLabel">Menu</div>
-            <ul id="appMenu">
-            @using (DBEntities e = new DBEntities()) {
-                int rootMetablockId = Context.GetCORE().Entitron.Application.TapestryDesignerRootMetablock.Id;
-                foreach (TapestryDesignerMetablock metablock in e.TapestryDesignerMetablocks.Include("ParentMetablock").Where(m => m.ParentMetablock.Id == rootMetablockId && m.IsInMenu == true).ToList()) {
-                    <li>
-                        <h4>@metablock.Name</h4>
-                        <ul>
-                            @foreach (TapestryDesignerBlock block in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => b.ParentMetablock.Id == metablock.Id && b.IsInMenu == true).ToList()) {
-                                <li>
-                                    <a href="">@block.Name</a>
-                                </li>
-                            }
-                        </ul>
-                    </li>
-                }
-            }
-            </ul>
+            @Html.Raw(ViewData["appMenu"])
         }
     </div>
     <div id="userLeftBarMinimized">
