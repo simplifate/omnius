@@ -549,12 +549,25 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             return result;
         }
 
-        /*[Route("api/tapestry/saveMenuOrder")]
+        [Route("api/tapestry/saveMenuOrder")]
         [HttpPost]
-        public AjaxTransferWorkflowSate SaveMenuOrder(FormCollection formParams)
+        public HttpResponseMessage SaveMenuOrder(AjaxTransferMenuOrder data)
         {
+            using (DBEntities context = new DBEntities()) 
+            {
+                foreach (KeyValuePair<int, int> row in data.Metablocks) {
+                    TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
+                    metablock.MenuOrder = row.Value;
+                }
+                foreach (KeyValuePair<int, int> row in data.Blocks) {
+                    TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
+                    block.MenuOrder = row.Value;
+                }
+                context.SaveChanges();
+            }
 
-        }*/
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
 
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {

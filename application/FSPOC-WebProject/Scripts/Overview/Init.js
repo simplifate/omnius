@@ -17,6 +17,9 @@ $(function () {
         $("#btnLoad").on("click", function () {
             LoadMetablock();
         });
+        $("#btnMenuOrder").on("click", function () {
+            location.href = "/Tapestry/Overview/MenuOrder/" + $('#currentMetablockId').val();
+        });
         $("#btnSave").on("click", function () {
             SaveMetablock();
         });

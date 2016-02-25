@@ -312,4 +312,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    public string Name { get; set; }
     //    public string Value { get; set; }
     //}
+
+    public class TapestryDesignerMenuItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int MenuOrder { get; set; }
+        public bool IsBlock { get; set; }
+        public bool IsMetablock { get; set; }
+        public bool IsInMenu { get; set; }
+        public bool IsInitial { get; set; }
+    }
 }

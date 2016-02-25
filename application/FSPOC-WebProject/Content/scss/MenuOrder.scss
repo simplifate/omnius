@@ -16,10 +16,6 @@ body.menuOrderModule {
             font-weight: bold;
             color: #f1a57a;
         }
-        #headerMetablockName:hover {
-            color: #2ddef9;
-            cursor: pointer;
-        }
     }
 
     #overviewPanel {
@@ -48,6 +44,20 @@ body.menuOrderModule {
                 margin-bottom: 5px;
                 width: 300px;
                 text-align: left;
+                padding-top: 10px !important;
+
+                &:hover {
+                    cursor: ns-resize;
+                }
+
+                &.not-in-menu {
+                    font-style: italic;
+                    color: #666;
+                }
+
+                &.is-initial {
+                    font-weight: bold;
+                }
             }
         }
 
@@ -71,69 +81,5 @@ body.menuOrderModule {
             border-color: #457fa9;
             border-width: 2px;
         }
-    }
-    #zoomPanel {
-        @include no-select();
-        position: fixed;
-        right: 215px;
-        bottom: 55px;
-        text-align: center;
-        z-index: 2000;
-
-        button {
-            font-size: 12px;
-            background-color: #49c3f1;
-            color: black;
-            border: none;
-        }
-        button:hover {
-            background-color: #2ddef9;
-        }
-        #zoomLabel {
-            font-size: 20px;
-            color: black;
-            margin-bottom: -2px;
-        }
-    }
-    .jsplumb-drag {
-        z-index: 200 !important;
-        border: 1px solid #49c3f1;
-        box-shadow: 0px 0px 22px #49c3f1;
-    }
-    .ui-dialog {
-        padding: 0px 0px;
-        border: 1px solid black;
-        border-radius: 4px;
-    }
-    .ui-widget-header {
-        background-image: none;
-        background-color: #2d74b2;
-        color: white;
-    }
-    .ui-dialog .ui-dialog-buttonpane {
-        padding: 3px;
-    }
-    .ui-dialog .ui-dialog-buttonset button {
-        margin: 3px;
-    }
-    .ui-dialog-content .formTable label {
-        margin-bottom: 0px;
-    }
-    .ui-dialog-content .formTable tr {
-        height: 32px;
-    }
-    .ui-dialog-content .formTable td {
-        vertical-align: middle;
-    }
-    .ui-dialog-content .formTable tr td:first-child {
-        width: 150px;
-    }
-    .btn-tapestry {
-        background-color: #49c3f1;
-        color: black;
-    }
-    .btn-tapestry:hover {
-        background-color: #2ddef9;
-        color: black;
     }
 }

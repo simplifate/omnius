@@ -151,6 +151,7 @@
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferTapestryAction.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\AjaxTransferMenuOrder.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
