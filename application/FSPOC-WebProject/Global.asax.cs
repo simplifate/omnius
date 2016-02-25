@@ -24,7 +24,8 @@ namespace FSPOC_WebProject
             FilterConfig       .RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig        .RegisterRoutes(RouteTable.Routes);
             BundleConfig       .RegisterBundles(BundleTable.Bundles);
-            HostingEnvironment .RegisterVirtualPathProvider(new MyVirtualPathProvider());
+            App_Start.AppStart.AppInitialize();
+            Logger.Log.Info("Omnius start");
         }
 
         protected void Application_Error(object sender, EventArgs e)

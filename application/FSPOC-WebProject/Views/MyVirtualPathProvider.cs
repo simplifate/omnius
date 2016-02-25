@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
-using System.Web.UI.WebControls;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
@@ -45,7 +42,6 @@ namespace FSPOC_WebProject.Views
 
         public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
         {
-
             var view = GetViewFromDatabase(virtualPath);
 
             if (view != null)
@@ -56,7 +52,7 @@ namespace FSPOC_WebProject.Views
             return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
         }
 
-        public override String GetFileHash(String virtualPath, IEnumerable virtualPathDependencies)
+        public override string GetFileHash(string virtualPath, IEnumerable virtualPathDependencies)
         {
             var view = GetViewFromDatabase(virtualPath);
 

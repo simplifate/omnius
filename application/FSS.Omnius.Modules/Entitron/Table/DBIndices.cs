@@ -41,7 +41,8 @@ namespace FSS.Omnius.Modules.Entitron
                 application = table.Application,
                 columnsName = columns,
                 table = table,
-                indexName = indexName
+                indexName = indexName,
+                isUniqueIndex = isUnique
             });
 
             Add(new DBIndex() { table = _table, indexName = indexName });

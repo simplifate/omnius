@@ -43,7 +43,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Data" };
+                return new string[] { "Data", "columnNames" };
             }
         }
 
@@ -51,6 +51,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
+            outputVars["columnNames"] = table.columns.Select(c => c.Name);
             outputVars["Data"] = table.Select().ToList();
         }
     }
