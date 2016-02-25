@@ -1,6 +1,7 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity
 @using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity.Tapestry
+@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,7 +110,17 @@
     <div id="userContentArea">
         @RenderBody()
     </div>
-
+    @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
+    {
+        <div id="modalRepository">
+            @foreach (var modal in (List<MozaicModalMetadataItem>)ViewData["AssociatedModals"])
+            {
+                <div class="modalRepositoryItem" id="modalDialog@(modal.Id)" title="@(modal.Title)" modalWidth="@(modal.Width + 300)" modalHeight="@(modal.Height)">
+                    @Html.Partial(modal.PartialViewPath)
+                </div>
+            }
+        </div>
+    }
     @Scripts.Render("~/bundles/OmniusScripts")
     @RenderSection("scripts", required: false)
 </body>

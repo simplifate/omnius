@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var ModalDialogArray = [];
+$(function () {
     $("#hideMenuIcon").on("click", function () {
         $("#userLeftBar").hide();
         $("#userLeftBarMinimized").show();
@@ -62,6 +63,34 @@
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
+        });
+        $(".uic.data-table-with-actions .rowEditAction").on("click", function () {
+            ModalDialogArray[0].dialog("open");
+        });
+        $(".uic.data-table-with-actions .rowDetailsAction").on("click", function () {
+            alert("TODO: Open details modal");
+        });
+        $(".uic.data-table-with-actions .rowDeleteAction").on("click", function () {
+            currentRow = $(this).parents("tr").remove();
+        });
+        $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
+        $("#modalRepository .modalRepositoryItem").each(function (index, element) {
+            currentDialog = $(element);
+            currentDialog.dialog({
+                autoOpen: false,
+                width: 370,
+                height: 320,
+                buttons: {
+                    "OK": function () {
+                        alert("TODO: Save");
+                        $(this).dialog("close")
+                    },
+                    "Zrušit": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            ModalDialogArray.push(currentDialog);
         });
     }
 });

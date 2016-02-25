@@ -609,6 +609,9 @@ body.adminAppModule #appBuildResults {
   font-weight: 100;
   color: #0065a9; }
 
+#modalRepository {
+  display: none; }
+
 .mozaicForm .uic {
   position: absolute; }
 
@@ -749,6 +752,16 @@ body.adminAppModule #appBuildResults {
   width: 250px;
   border: 1px solid #4b8ad1;
   height: auto !important; }
+  .mozaicForm .data-table .actionIcons {
+    width: 60px; }
+    .mozaicForm .data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 5px;
+      cursor: pointer; }
+    .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    .mozaicForm .data-table .actionIcons .fa-remove {
+      color: #e3001b; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;
@@ -2540,6 +2553,21 @@ body.mozaicEditorModule {
         margin-right: 14px; }
       body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
         margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel {
+      position: absolute;
+      left: 440px;
+      top: 200px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel label {
+        color: white; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #currentPageIsModal {
+        margin-left: 6px;
+        margin-right: 18px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput, body.mozaicEditorModule #upperPanel #modalControlPanel #modalHeightInput {
+        width: 60px;
+        height: 18px;
+        margin-left: 6px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput {
+        margin-right: 18px; }
   body.mozaicEditorModule #lowerPanel {
     top: 370px;
     padding: 0px; }
@@ -2621,13 +2649,22 @@ body.mozaicEditorModule {
     top: 0px;
     bottom: 0px;
     background-color: white; }
+    body.mozaicEditorModule #mozaicPageContainer #modalSizeVisualization {
+      position: absolute;
+      width: 400px;
+      height: 300px;
+      display: none;
+      border-right: 2px solid red;
+      border-bottom: 2px solid red;
+      z-index: 10; }
   body.mozaicEditorModule #mozaicPageContainer.showGrid {
     background-image: url(/Content/images/MozaicGrid.png);
     background-repeat: repeat; }
   body.mozaicEditorModule .toolboxItem, body.mozaicEditorModule .uic {
     cursor: default; }
   body.mozaicEditorModule .uic {
-    position: absolute; }
+    position: absolute;
+    z-index: 20; }
   body.mozaicEditorModule .button-simple {
     background-color: #4b8ad1;
     border: 1px solid #4b8ad1;
@@ -2747,6 +2784,13 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .data-table {
     width: 250px;
     border: 1px solid #4b8ad1; }
+    body.mozaicEditorModule .data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 5px; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-edit, body.mozaicEditorModule .data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-remove {
+      color: #e3001b; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {

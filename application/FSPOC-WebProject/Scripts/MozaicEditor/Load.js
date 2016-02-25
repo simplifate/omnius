@@ -76,8 +76,16 @@
                         }
                     });
             }
+            $("#currentPageId").val(data.Id);
             $("#headerPageName").text(data.Name);
-            pageId = $("#currentPageId").val(pageId);
+            $("#currentPageIsModal").prop("checked", data.IsModal);
+            $("#modalWidthInput").val(data.ModalWidth);
+            $("#modalHeightInput").val(data.ModalHeight);
+            if ($("#currentPageIsModal").is(":checked")) {
+                $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
+                $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
+                $("#modalSizeVisualization").show();
+            }
         }
     });
 }

@@ -47,6 +47,27 @@ $(function () {
                 $("#mozaicPageContainer").removeClass("showGrid");
             }
         });
+        if ($("#currentPageIsModal").is(":checked")) {
+            $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
+            $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
+            $("#modalSizeVisualization").show();
+        }
+        $("#currentPageIsModal").on("change", function () {
+            if ($(this).is(":checked")) {
+                $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
+                $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
+                $("#modalSizeVisualization").show();
+            }
+            else {
+                $("#modalSizeVisualization").hide();
+            }
+        });
+        $("#modalWidthInput").on("change", function () {
+            $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
+        });
+        $("#modalHeightInput").on("change", function () {
+            $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
+        });
         $("#gridResolutionDropdown").on("change", function () {
             grid = $(this).val();
             if (grid == "off") {

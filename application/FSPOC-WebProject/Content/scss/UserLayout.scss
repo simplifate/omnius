@@ -336,6 +336,9 @@
         color: #0065a9;
     }
 }
+#modalRepository {
+    display: none;
+}
 .mozaicForm {
     .uic {
         position: absolute;
@@ -466,5 +469,21 @@
         width: 250px;
         border: 1px solid #4b8ad1;
         height: auto !important;
+
+        .actionIcons {
+            width: 60px;
+
+            .fa {
+                font-size: 16px;
+                margin-right: 5px;
+                cursor: pointer;
+            }
+            .fa-edit, .fa-search {
+                color: #0065a9;
+            }
+            .fa-remove {
+                color: #e3001b;
+            }
+        }
     } 
 }

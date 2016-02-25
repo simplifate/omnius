@@ -1,10 +1,11 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
@@ -20,6 +21,18 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 ViewData["appName"] = app.DisplayName;
                 ViewData["appIcon"] = app.Icon;
                 ViewData["pageName"] = page.Name;
+
+                var AssociatedModals = new List<MozaicModalMetadataItem>();
+                var testModal = context.MozaicEditorPages.Find(33);
+                AssociatedModals.Add(new MozaicModalMetadataItem
+                {
+                    Id = testModal.Id,
+                    Title = testModal.Name,
+                    Width = (int)testModal.ModalWidth,
+                    Height = (int)testModal.ModalHeight,
+                    PartialViewPath = $"/Views/App/{app.Id}/Page/{testModal.Id}.cshtml"
+                });
+                ViewData["AssociatedModals"] = AssociatedModals;
 
                 var zakladniReport = new DataTable();
                 zakladniReport.Columns.Add("Název periodika");
@@ -72,6 +85,8 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 prehledObjednavek.Rows.Add("1743", "", "17.12.2015", "RWE IT Czech s.r.o.", "Právní rádce", "1", "Březinová Dagmar, Mgr.", "Praha - Limuzská, Limuzská 3135/12, Praha 10 10098");
                 prehledObjednavek.Rows.Add("1742", "", "10.12.2015", "RWE IT Czech s.r.o.", "Hospodářské noviny - flash prohlížečka na webu", "1", "Dočekal Pavel, Ing.", "pavel.docekal@rwe.cz");
                 ViewData["tableData_tabulkaPrehledObjednavek"] = prehledObjednavek;
+                ViewData["tableData_testTableReadOnly"] = prehledObjednavek;
+                ViewData["tableData_testTableWithActions"] = prehledObjednavek;
 
                 var prehledHromadnychObjednavek = new DataTable();
                 prehledHromadnychObjednavek.Columns.Add("Id hromadné obj.");
