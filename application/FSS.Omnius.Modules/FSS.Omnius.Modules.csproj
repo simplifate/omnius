@@ -577,6 +577,10 @@
     <Compile Include="Migrations\201602261618180_app_metablock.Designer.cs">
       <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261918013_Action variables.cs" />
+    <Compile Include="Migrations\201602261918013_Action variables.Designer.cs">
+      <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -896,6 +900,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261618180_app_metablock.resx">
       <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261918013_Action variables.resx">
+      <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -214,6 +214,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public string Label { get; set; }
         public int? ActionId { get; set; }
+        public string InputVariables { get; set; }
+        public string OutputVariables { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
     public partial class TapestryDesignerWorkflowSymbol : WFitem

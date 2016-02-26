@@ -179,6 +179,10 @@
                         newItem.addClass(currentItemData.TypeClass);
                         if (currentItemData.ActionId != null)
                             newItem.attr('actionId', currentItemData.ActionId);
+                        if (currentItemData.InputVariables != null)
+                            newItem.data('inputVariables', currentItemData.InputVariables);
+                        if (currentItemData.OutputVariables != null)
+                            newItem.data('outputVariables', currentItemData.OutputVariables);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);

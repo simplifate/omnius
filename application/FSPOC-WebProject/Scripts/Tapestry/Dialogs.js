@@ -486,5 +486,35 @@ $(function () {
                 }
             });
         }
+        actionPropertiesDialog = $("#action-properties-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    actionPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    actionPropertiesDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        actionPropertiesDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                actionPropertiesDialog.find("#input-variables").val(CurrentItem.data("inputVariables"));
+                actionPropertiesDialog.find("#output-variables").val(CurrentItem.data("outputVariables"));
+            }
+        });
+        function actionPropertiesDialog_SubmitData() {
+            CurrentItem.data("inputVariables", actionPropertiesDialog.find("#input-variables").val());
+            CurrentItem.data("outputVariables", actionPropertiesDialog.find("#output-variables").val());
+            actionPropertiesDialog.dialog("close");
+        }
     }
 });

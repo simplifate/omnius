@@ -211,7 +211,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     DialogType = ajaxItem.DialogType,
                                     PositionX = ajaxItem.PositionX,
                                     PositionY = ajaxItem.PositionY,
-                                    ActionId = ajaxItem.ActionId
+                                    ActionId = ajaxItem.ActionId,
+                                    InputVariables = ajaxItem.InputVariables,
+                                    OutputVariables = ajaxItem.OutputVariables
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -700,7 +702,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     DialogType = item.DialogType,
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
-                    ActionId = item.ActionId
+                    ActionId = item.ActionId,
+                    InputVariables = item.InputVariables,
+                    OutputVariables = item.OutputVariables
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }

@@ -17,6 +17,10 @@
                         CurrentItem = item;
                         tableAttributePropertiesDialog.dialog("open");
                     }
+                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
+                    }
                     else {
                         alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
                     }

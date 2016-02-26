@@ -75,7 +75,9 @@ function SaveBlock(commitMessage) {
                     DialogType: currentItem.attr("dialogType"),
                     PositionX: parseInt(currentItem.css("left")),
                     PositionY: parseInt(currentItem.css("top")),
-                    ActionId: currentItem.attr("actionid")
+                    ActionId: currentItem.attr("actionid"),
+                    InputVariables: currentItem.data("inputVariables"),
+                    OutputVariables: currentItem.data("outputVariables")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {

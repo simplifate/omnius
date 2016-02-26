@@ -1208,6 +1208,18 @@ body.tapestryModule .ui-dialog {
   cursor: default;
   z-index: 2000; }
 
+body.tapestryModule .ui-dialog-content .formTable label {
+  margin-bottom: 0px; }
+
+body.tapestryModule .ui-dialog-content .formTable tr {
+  height: 32px; }
+
+body.tapestryModule .ui-dialog-content .formTable td {
+  vertical-align: middle; }
+
+body.tapestryModule .ui-dialog-content .formTable tr td:first-child {
+  width: 175px; }
+
 body.tapestryModule .columnFilterTable {
   width: 100%; }
   body.tapestryModule .columnFilterTable td:first-child {
