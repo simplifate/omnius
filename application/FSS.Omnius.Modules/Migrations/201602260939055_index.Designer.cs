@@ -7,13 +7,13 @@ namespace FSS.Omnius.Modules.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class gendatabase : IMigrationMetadata
+    public sealed partial class index : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(gendatabase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(index));
         
         string IMigrationMetadata.Id
         {
-            get { return "201602260902018_gendatabase"; }
+            get { return "201602260939055_index"; }
         }
         
         string IMigrationMetadata.Source

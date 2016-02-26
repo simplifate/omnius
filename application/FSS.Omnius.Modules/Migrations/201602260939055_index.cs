@@ -3,16 +3,16 @@ namespace FSS.Omnius.Modules.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class gendatabase : DbMigration
+    public partial class index : DbMigration
     {
         public override void Up()
         {
-            DropColumn("dbo.Entitron_DbIndex", "ColumnNames");
+            AddColumn("dbo.Entitron_DbIndex", "ColumnNames", c => c.String());
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Entitron_DbIndex", "ColumnNames", c => c.String());
+            DropColumn("dbo.Entitron_DbIndex", "ColumnNames");
         }
     }
 }

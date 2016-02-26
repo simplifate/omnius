@@ -551,9 +551,9 @@
     <Compile Include="Migrations\201602251931211_Mozaic - modal settings.Designer.cs">
       <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602260902018_gendatabase.cs" />
-    <Compile Include="Migrations\201602260902018_gendatabase.Designer.cs">
-      <DependentUpon>201602260902018_gendatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201602260939055_index.cs" />
+    <Compile Include="Migrations\201602260939055_index.Designer.cs">
+      <DependentUpon>201602260939055_index.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -855,8 +855,8 @@
     <EmbeddedResource Include="Migrations\201602251931211_Mozaic - modal settings.resx">
       <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602260902018_gendatabase.resx">
-      <DependentUpon>201602260902018_gendatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602260939055_index.resx">
+      <DependentUpon>201602260939055_index.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

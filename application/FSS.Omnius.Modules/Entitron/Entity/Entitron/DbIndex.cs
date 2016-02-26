@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Unique { get; set; }
-        public List<string> ColumnNames { get; set; }
+        public string ColumnNames { get; set; }
 
         public int DbTableId { get; set; }
         public virtual DbTable DbTable { get; set; }

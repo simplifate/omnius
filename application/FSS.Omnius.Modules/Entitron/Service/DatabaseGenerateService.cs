@@ -140,15 +140,15 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     foreach (DbIndex i in efTable.Indices)
                     {
-                        DBIndex index = entitronTable.indices.GetIndex(i.Name);
+                        DBIndex index = entitronTable.GetIndex(i.Name);
                         if (index==null)
                         {
-                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames, i.Unique);
+                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
                         }
-                        else if(index.isUnique!=i.Unique || index.columns.Select(x=>x.Name)!=i.ColumnNames)
+                        else if(index.isUnique!=i.Unique || index.columns.Select(x=>x.Name)!=i.ColumnNames.Split(',').ToList())
                         {
                             entitronTable.indices.DropFromDB(i.Name);
-                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames, i.Unique);
+                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
                         }
                     }
                 }
