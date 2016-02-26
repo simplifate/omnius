@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_SelectIndexes : SqlQuery_withApp
+    class SqlQuery_IndexColumns:SqlQuery_withApp
     {
+        public string indexName { get; set; }
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
@@ -17,16 +17,16 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             sqlString = string.Format(
                 "DECLARE @realTableName NVARCHAR(50);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
-                "SELECT i.name IndexName, i.is_unique isUnique FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND i.name like 'index%' AND t.name=@realTableName;",
-                parAppName, parTableName
+                "SELECT IndexName = i.Name, ColName = c.Name FROM sys.indexes i " +
+                "INNER JOIN sys.index_columns ic ON ic.object_id = i.object_id AND ic.index_id = i.index_id" +
+                "INNER JOIN sys.columns c ON c.object_id = ic.object_id AND c.column_id = ic.column_id" +
+                "INNER JOIN sys.tables t ON i.object_id = t.object_id " +
+                "WHERE i.is_primary_key = 0 AND i.name like 'index%' + @{2} AND t.name = 'Entitron_RS_Cars'; ",
+                parAppName, parTableName,indexName
                 );
-        
+
             return base.BaseExecutionWithRead(connection);
         }
 
-        public override string ToString()
-        {
-            return string.Format("Get index list in {0}[{1}]", table.tableName, application.Name);
-        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Sql;
 
@@ -26,8 +27,26 @@ namespace FSS.Omnius.Modules.Entitron
                         DBIndex index = new DBIndex()
                         {
                             table = _table,
-                            indexName = (string)i["IndexName"]
+                            indexName = (string)i["IndexName"],
                         };
+
+                        if (i["is_unique"].ToString() == "" || i["is_unique"].ToString() == "False")
+                        {
+                            index.isUnique = false;
+                        }
+                        else
+                        {
+                            index.isUnique = true;
+                        }
+
+                        SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = index.indexName };
+                        if (query2.ExecuteWithRead() == null)
+                        {
+                            foreach (DBItem item in query2.ExecuteWithRead())
+                            {
+                                index.columns.Add(table.columns.SingleOrDefault(x => x.Name == Convert.ToString(item["ColName"])));
+                            }
+                        }
                         Add(index);
                     }
                 }
@@ -59,6 +78,40 @@ namespace FSS.Omnius.Modules.Entitron
 
             Remove(this.SingleOrDefault(i => i.indexName == indexName));
             return this;
+        }
+
+        public DBIndex GetIndex(string indexName)
+        {
+            SqlQuery_SelectSpecificIndex query = new SqlQuery_SelectSpecificIndex() {indexName = indexName};
+            DBIndex index = new DBIndex();
+
+            if (query.ExecuteWithRead() != null)
+            {
+                foreach (DBItem i in query.ExecuteWithRead())
+                {
+                    index.indexName = Convert.ToString(i["indexName"]);
+                    index.table = _table;
+                    if (i["is_unique"].ToString() == "" || i["is_unique"].ToString() == "False")
+                    {
+                        index.isUnique = false;
+                    }
+                    else
+                    {
+                        index.isUnique = true;
+                    }
+
+                    SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = indexName };
+                    if (query2.ExecuteWithRead() == null)
+                    {
+                        foreach (DBItem item in query2.ExecuteWithRead())
+                        {
+                            index.columns.Add(
+                                table.columns.SingleOrDefault(x => x.Name == Convert.ToString(item["ColName"])));
+                        }
+                    }
+                }
+            }
+            return index;
         }
     }
 }

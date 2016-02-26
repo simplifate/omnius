@@ -175,12 +175,12 @@ namespace FSS.Omnius.Controllers.Entitron
                         }
                         foreach (var index in ajaxTable.Indices)
                         {
-                            string columnNamesString = "";
+                            List<string> columnNamesString = new List<string>();
                             if (index.ColumnNames.Count > 0)
                             {
                                 for (int i = 0; i < index.ColumnNames.Count - 1; i++)
-                                    columnNamesString += index.ColumnNames[i] + ",";
-                                columnNamesString += index.ColumnNames.Last();
+                                    columnNamesString.Add(index.ColumnNames[i]);
+                                columnNamesString.Add(index.ColumnNames.Last());
                             }
                             DbIndex newIndex = new DbIndex
                             {
@@ -437,7 +437,7 @@ namespace FSS.Omnius.Controllers.Entitron
                 {
                     ajaxTable.Indices.Add(new AjaxTransferDbIndex
                     {
-                        ColumnNames = index.ColumnNames.Split(',').ToList(),
+                        ColumnNames = index.ColumnNames,
                         Id = index.Id,
                         Name = index.Name,
                         Unique = index.Unique,
