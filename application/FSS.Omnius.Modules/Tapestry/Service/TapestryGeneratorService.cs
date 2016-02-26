@@ -154,10 +154,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             // begin
-            WFitem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
+            WFitem item = _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "circle-single");
             if (item == null)
                 return;
-            createActionRule(workflowRule, block, new TapestryDesignerConnection { Target = item.Id, TargetType = 0 }, BlockMapping, (item as TapestryDesignerWorkflowItem).Label);
+            createActionRule(workflowRule, block, new TapestryDesignerConnection { Target = item.Id, TargetType = 1 }, BlockMapping, "l");
             
             
             //// ACTIONS ////

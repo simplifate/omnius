@@ -130,8 +130,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Timestamp = DateTime.Now,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
-                        AssociatedPageIds = string.Join(",", postData.AssociatedPageIds),
-                        AssociatedTableIds = string.Join(",", postData.AssociatedTableIds)
+                        AssociatedPageIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
+                        AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
 
