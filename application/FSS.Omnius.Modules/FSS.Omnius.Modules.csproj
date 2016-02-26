@@ -556,6 +556,10 @@
     <Compile Include="Migrations\201602260939055_index.Designer.cs">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261107177_actionId.cs" />
+    <Compile Include="Migrations\201602261107177_actionId.Designer.cs">
+      <DependentUpon>201602261107177_actionId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -858,6 +862,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602260939055_index.resx">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
+      <DependentUpon>201602261107177_actionId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
