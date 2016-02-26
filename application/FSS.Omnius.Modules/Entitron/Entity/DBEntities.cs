@@ -306,9 +306,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Application>()
                         .HasMany(e => e.DatabaseDesignerSchemeCommits);
 
-            modelBuilder.Entity<Application>()
-                .HasOptional(s => s.TapestryDesignerRootMetablock)
-                .WithOptionalDependent(s => s.ParentApp);
+            modelBuilder.Entity<TapestryDesignerMetablock>()
+                .HasOptional(s => s.ParentApp)
+                .WithOptionalDependent(s => s.TapestryDesignerRootMetablock);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock);
