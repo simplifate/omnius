@@ -175,6 +175,7 @@
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferWorkflowHeader.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferWorkflowSate.cs" />
     <Compile Include="Entitron\Entity\Tapestry\PreBlockAction.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\ResourceMappingPair.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlow.cs" />
@@ -556,6 +557,10 @@
     <Compile Include="Migrations\201602260939055_index.Designer.cs">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.cs" />
+    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.Designer.cs">
+      <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201602261107177_actionId.cs" />
     <Compile Include="Migrations\201602261107177_actionId.Designer.cs">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>
@@ -862,6 +867,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602260939055_index.resx">
       <DependentUpon>201602260939055_index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.resx">
+      <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>

@@ -245,6 +245,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
+                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs);
+
+            modelBuilder.Entity<Block>()
                 .HasMany<ActionRule>(e => e.SourceTo_ActionRules)
                 .WithRequired(e => e.SourceBlock)
                 .HasForeignKey(e => e.SourceBlockId);
