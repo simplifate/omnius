@@ -147,7 +147,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         }
                         else if(index.isUnique!=i.Unique || index.columns.Select(x=>x.Name)!=i.ColumnNames.Split(',').ToList())
                         {
-                            entitronTable.indices.DropFromDB(i.Name);
+                            entitronTable.indices.DropFromDB(index.indexName);
                             entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
                         }
                     }

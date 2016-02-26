@@ -527,10 +527,10 @@ namespace FSS.Omnius.Modules.Entitron
                     SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = indexName, table = this, application = this.Application };
                     if (query2.ExecuteWithRead() != null)
                     {
+                        index.columns = new List<DBColumn>();
                         foreach (DBItem item in query2.ExecuteWithRead())
                         {
-                            index.columns.Add(
-                                this.columns.SingleOrDefault(x => x.Name == (string)(item["ColName"])));
+                            index.columns.Add(columns.SingleOrDefault(x => x.Name == (string)(item["ColName"])));
                         }
                     }
                 }
