@@ -177,6 +177,8 @@
                         newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                             + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
                         newItem.addClass(currentItemData.TypeClass);
+                        if (currentItemData.ActionId != null)
+                            newItem.attr('actionId', currentItemData.ActionId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
@@ -288,7 +290,7 @@
                     for(i = 0; i < data.Items.length; i++)
                     {
                         var action = data.Items[i];
-                        newLibItem = $('<div libId="' + action.Id + '" libType="action" class="libraryItem">' + action.Name + '</div>');
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="action" class="libraryItem" actionId="' + action.Id + '">' + action.Name + '</div>');
                         $('#libraryCategory-Actions').append(newLibItem);
                     }
                 }

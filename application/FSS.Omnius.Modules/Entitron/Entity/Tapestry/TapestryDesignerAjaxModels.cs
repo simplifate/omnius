@@ -168,6 +168,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SwimlaneIndex { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int? ActionId { get; set; }
     }
     public class AjaxTapestryDesignerWorkflowSymbol
     {

@@ -210,7 +210,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     TypeClass = ajaxItem.TypeClass,
                                     DialogType = ajaxItem.DialogType,
                                     PositionX = ajaxItem.PositionX,
-                                    PositionY = ajaxItem.PositionY
+                                    PositionY = ajaxItem.PositionY,
+                                    ActionId = ajaxItem.ActionId
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -698,7 +699,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TypeClass = item.TypeClass,
                     DialogType = item.DialogType,
                     PositionX = item.PositionX,
-                    PositionY = item.PositionY
+                    PositionY = item.PositionY,
+                    ActionId = item.ActionId
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
