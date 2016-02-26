@@ -599,6 +599,8 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\NoAction.cs" />
+    <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
