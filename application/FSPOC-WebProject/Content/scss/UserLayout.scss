@@ -470,6 +470,12 @@
         border: 1px solid #4b8ad1;
         height: auto !important;
 
+        tr {
+            th:first-child, td:first-child {
+                display: none;
+            }
+        }
+
         .actionIcons {
             width: 60px;
 

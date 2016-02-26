@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Tapestry.Service;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -31,7 +33,9 @@ namespace FSS.Omnius.Controllers.Master
             using (var context = new DBEntities())
             {
                 var app = context.Applications.Find(Id);
-                foreach(var editorPage in app.MozaicEditorPages)
+
+                // Mozaic pages
+                foreach (var editorPage in app.MozaicEditorPages)
                 {
                     editorPage.Recompile();
                     string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
@@ -45,15 +49,24 @@ namespace FSS.Omnius.Controllers.Master
                             ViewContent = editorPage.CompiledPartialView
                         };
                         context.Pages.Add(newPage);
+                        context.SaveChanges();
+                        editorPage.CompiledPageId = newPage.Id;
                     }
                     else
                     {
                         oldPage.ViewName = editorPage.Name;
                         oldPage.ViewContent = editorPage.CompiledPartialView;
+                        editorPage.CompiledPageId = oldPage.Id;
                     }
                 }
                 app.IsPublished = true;
                 context.SaveChanges();
+
+                var core = HttpContext.GetCORE();
+                core.Entitron.AppId = Id;
+                var service = new TapestryGeneratorService();
+                service.GenerateTapestry(core);
+
                 return View();
             }
         }

@@ -18,6 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             TargetTo_ActionRules = new HashSet<ActionRule>();
             AttributeRules = new HashSet<AttributeRule>();
             InitForWorkFlow = new HashSet<WorkFlow>();
+            ResourceMappingPairs = new HashSet<ResourceMappingPair>();
         }
 
         public int Id { get; set; }

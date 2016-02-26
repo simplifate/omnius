@@ -75,7 +75,7 @@ namespace FSPOC_WebProject.Views
             if (virtualPath.StartsWith("/Views/App/"))
             {
                 DBEntities db = new DBEntities();
-                return db.Pages.SingleOrDefault(x => x.ViewPath == virtualPath);
+                return db.Pages.FirstOrDefault(x => x.ViewPath == virtualPath);
             }
             else
             {

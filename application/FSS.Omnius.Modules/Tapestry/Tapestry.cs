@@ -12,6 +12,8 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.Entitron.Entity;
+using System.Data;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -45,18 +47,13 @@ namespace FSS.Omnius.Modules.Tapestry
             _results.outputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
-            
+
             // get actionRule
             ActionRule actionRule = null;
             ActionRule nextRule = GetActionRule(blockId, buttonId, _results, modelId);
 
             // get inputs
             string[] keys = fc.AllKeys;
-            foreach(AttributeRule ar in nextRule.SourceBlock.AttributeRules)
-            {
-                if(keys.Contains(ar.InputName))
-                    _results.outputData.Add(ar.AttributeName, Convertor.convert(ar.AttributeDataType, fc[ar.InputName]));
-            }
 
             List<ActionRule> prevActionRules= new List<ActionRule>();
             // run all auto Action
