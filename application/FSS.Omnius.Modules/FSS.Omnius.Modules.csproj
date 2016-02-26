@@ -569,6 +569,10 @@
     <Compile Include="Migrations\201602261157443_removingWorkFlow.Designer.cs">
       <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261557034_Column filter.cs" />
+    <Compile Include="Migrations\201602261557034_Column filter.Designer.cs">
+      <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -882,6 +886,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261157443_removingWorkFlow.resx">
       <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261557034_Column filter.resx">
+      <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
