@@ -338,6 +338,32 @@
                 }
             });
 
+            $('#libraryCategory-Integration .libraryItem').remove();
+            url = "/api/nexus/" + appId + "/gateways";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.Ldap.length; i++) {
+                        var item = $('<div libId="' + data.Ldap[i].Id + '" libType="ldap" class="libraryItem">LDAP: ' + data.Ldap[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.WS.length; i++) {
+                        var item = $('<div libId="' + data.WS[i].Id + '" libType="ws" libSubType="' + data.WS[i].Type + '" class="libraryItem">WS: ' + data.WS[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.SMTP.length; i++) {
+                        var item = $('<div libId="' + data.SMTP[i].Id + '" libType="smtp" class="libraryItem">SMTP: ' + data.SMTP[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.WebDAV.length; i++) {
+                        var item = $('<div libId="' + data.WebDAV[i].Id + '" libType="webdav" class="libraryItem">WebDAV: ' + data.WebDAV[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                }
+            });
+            
             AssociatedPageIds = data.AssociatedPageIds;
             $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
             $("#libraryCategory-UI .libraryItem").remove();

@@ -231,6 +231,7 @@
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
+    <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\PersonaAuthorize.cs" />
