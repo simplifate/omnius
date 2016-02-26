@@ -16,8 +16,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _core = core;
             _context = core.Entitron.GetStaticTables();
 
-            //var wfToRemove = _context.WorkFlows.Where(w => w.Parent == null && w.ApplicationId == core.Entitron.AppId);
-            //_context.WorkFlows.RemoveRange(wfToRemove);
+            var wfToRemove = _context.WorkFlows.Where(w => w.ApplicationId == core.Entitron.AppId);
+            _context.WorkFlows.RemoveRange(wfToRemove);
+            _context.SaveChanges();
 
             WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
             
@@ -204,7 +205,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 ExecutedBy = init
             };
             startBlock.SourceTo_ActionRules.Add(rule);
-            startBlock.TargetTo_ActionRules.Add(rule);
             AddActionRuleRights(rule, connection.GetTarget(workflowRule, _context).ParentSwimlane);
 
             WFitem item = connection.GetSource(workflowRule, _context);

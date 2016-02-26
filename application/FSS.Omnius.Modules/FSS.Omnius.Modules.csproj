@@ -565,6 +565,10 @@
     <Compile Include="Migrations\201602261107177_actionId.Designer.cs">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602261157443_removingWorkFlow.cs" />
+    <Compile Include="Migrations\201602261157443_removingWorkFlow.Designer.cs">
+      <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -873,6 +877,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
       <DependentUpon>201602261107177_actionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261157443_removingWorkFlow.resx">
+      <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
