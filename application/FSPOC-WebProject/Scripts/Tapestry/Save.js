@@ -58,7 +58,6 @@ function SaveBlock(commitMessage) {
             currentSwimlane = $(swimlaneDiv);
             currentSwimlane.attr("swimlaneIndex", swimlaneIndex);
             rolesArray = [];
-            statesArray = [];
             itemArray = [];
             symbolArray = [];
             connectionArray = [];
@@ -67,6 +66,11 @@ function SaveBlock(commitMessage) {
             });
             currentSwimlane.find(".item").each(function (itemIndex, itemDiv) {
                 currentItem = $(itemDiv);
+                statesArray = [];
+                currentSwimlane.find(".stateItem").each(function(roleIndex, roleDiv) {
+                    statesArray.push($(roleDiv).text());
+                });
+
                 currentItem.attr("saveId", saveId);
                 saveId++;
                 itemArray.push({
@@ -74,6 +78,7 @@ function SaveBlock(commitMessage) {
                     Label: currentItem.find(".itemLabel").text(),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
+                    States : statesArray,
                     PositionX: parseInt(currentItem.css("left")),
                     PositionY: parseInt(currentItem.css("top")),
                     ActionId: currentItem.attr("actionid"),

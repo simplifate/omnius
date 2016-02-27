@@ -581,6 +581,10 @@
     <Compile Include="Migrations\201602261918013_Action variables.Designer.cs">
       <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602271145300_states.cs" />
+    <Compile Include="Migrations\201602271145300_states.Designer.cs">
+      <DependentUpon>201602271145300_states.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -903,6 +907,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602261918013_Action variables.resx">
       <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602271145300_states.resx">
+      <DependentUpon>201602271145300_states.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

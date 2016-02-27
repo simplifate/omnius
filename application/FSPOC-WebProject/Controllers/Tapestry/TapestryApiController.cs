@@ -213,7 +213,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     PositionY = ajaxItem.PositionY,
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
-                                    States = string.Join(",", ajaxSwimlane.Roles.ToArray()),
+                                    States = string.Join(",", ajaxItem.States.ToArray()),
                                     OutputVariables = ajaxItem.OutputVariables
                                 };
                                 swimlane.WorkflowItems.Add(item);

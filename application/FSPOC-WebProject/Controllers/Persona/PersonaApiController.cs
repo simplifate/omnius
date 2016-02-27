@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Logger;
@@ -115,12 +117,21 @@ namespace FSPOC_WebProject.Controllers.Persona
                 using (var context = new DBEntities())
                 {
                     AjaxPersonaAppstates result = new AjaxPersonaAppstates();
-                    //int adGroupId = context.ADgroups.Where(g => g.ApplicationId == appId).First().Id;
+                    var entitron = new CORE().Entitron;
+                    entitron.AppId = appId;
+                    var statesList =
+                        entitron.GetDynamicTable("WF_states")
+                            .Select()
+                            .ToList();
 
-                    result.States.Add(new AjaxPersonaAppRoles_State() {Id = 27,Name = "Nový" });
-                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 28, Name = "Rozpracováno" });
-                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 29, Name = "Vyřízeno" });
-                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 30, Name = "Zrušeno" });
+                    foreach (var state in statesList)
+                    {
+                        result.States.Add(new AjaxPersonaAppRoles_State()
+                        {
+                            Id = Convert.ToInt32(state["id"]),
+                            Name = Convert.ToString(state["name"])
+                        });
+                    }
 
                     return result;
                 }
