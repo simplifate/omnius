@@ -15,7 +15,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
          }
      }
 
-     public class AjaxPersonaAppRoles_User
+    public class AjaxPersonaAppstates
+    {
+        public string StateName { get; set; }
+        public List<AjaxPersonaAppRoles_State> States { get; set; }
+
+        public AjaxPersonaAppstates()
+        {
+            States = new List<AjaxPersonaAppRoles_State>();
+        }
+    }
+
+
+    public class AjaxPersonaAppRoles_User
      {
          public int Id { get; set; }
          public string Name { get; set; }
@@ -32,6 +44,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
              MemberList = new List<int>();
          }
      }
+
+    public class AjaxPersonaAppRoles_State
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
 
     public class ColumnHeaderAppRolesForTable
     {

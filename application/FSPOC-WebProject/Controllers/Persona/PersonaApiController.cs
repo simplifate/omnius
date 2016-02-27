@@ -106,6 +106,34 @@ namespace FSPOC_WebProject.Controllers.Persona
             }
         }
 
+        [Route("api/Persona/app-states/{appId}")]
+        [HttpGet]
+        public AjaxPersonaAppstates LoadAppStates(int appId)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    AjaxPersonaAppstates result = new AjaxPersonaAppstates();
+                    //int adGroupId = context.ADgroups.Where(g => g.ApplicationId == appId).First().Id;
+
+                    result.States.Add(new AjaxPersonaAppRoles_State() {Id = 27,Name = "Nový" });
+                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 28, Name = "Rozpracováno" });
+                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 29, Name = "Vyřízeno" });
+                    result.States.Add(new AjaxPersonaAppRoles_State() { Id = 30, Name = "Zrušeno" });
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Persona: error loading app states (GET api/persona/app-states). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
+
+
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);

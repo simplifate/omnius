@@ -58,6 +58,7 @@ function SaveBlock(commitMessage) {
             currentSwimlane = $(swimlaneDiv);
             currentSwimlane.attr("swimlaneIndex", swimlaneIndex);
             rolesArray = [];
+            statesArray = [];
             itemArray = [];
             symbolArray = [];
             connectionArray = [];
@@ -97,6 +98,7 @@ function SaveBlock(commitMessage) {
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
+                States : statesArray,
                 WorkflowItems: itemArray,
                 WorkflowSymbols: symbolArray
             });

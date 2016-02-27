@@ -315,6 +315,22 @@
                 }
             });
 
+            $('#libraryCategory-States .libraryItem').remove();
+            url = "/api/Persona/app-states/" + appId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.States.length; i++) {
+                        state = data.States[i];
+                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem">' + state.Name + '</div>');
+                        $('#libraryCategory-States').append(newLibItem);
+                    }
+                }
+            });
+
+
             $('#libraryCategory-Targets .libraryItem').remove();
             url = "/api/tapestry/apps/" + appId + "/blocks";
             $.ajax({
