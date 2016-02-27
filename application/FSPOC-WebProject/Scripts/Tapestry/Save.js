@@ -73,7 +73,7 @@ function SaveBlock(commitMessage) {
                     Label: currentItem.find(".itemLabel").text(),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
-                    StateId: currentItem.attr("libId"),
+                    StateId: currentItem.attr("stateid"),
                     PositionX: parseInt(currentItem.css("left")),
                     PositionY: parseInt(currentItem.css("top")),
                     ActionId: currentItem.attr("actionid"),
@@ -98,7 +98,6 @@ function SaveBlock(commitMessage) {
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
-                States : statesArray,
                 WorkflowItems: itemArray,
                 WorkflowSymbols: symbolArray
             });

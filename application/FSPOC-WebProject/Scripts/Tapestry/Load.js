@@ -324,7 +324,7 @@
                 success: function (data) {
                     for (i = 0; i < data.States.length; i++) {
                         state = data.States[i];
-                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem">' + state.Name + '</div>');
+                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
                         $('#libraryCategory-States').append(newLibItem);
                     }
                 }
