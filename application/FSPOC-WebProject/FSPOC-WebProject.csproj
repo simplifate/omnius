@@ -1507,6 +1507,7 @@
     <Content Include="Views\Master\AppAdminManager\BuildApp.cshtml" />
     <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
     <Content Include="Views\Shared\_ApplicationMenu.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserAppLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

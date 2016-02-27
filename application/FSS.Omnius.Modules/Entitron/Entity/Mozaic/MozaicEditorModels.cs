@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             if (IsModal)
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_PartialViewAjaxLayout.cshtml\"; }");
             else
-                stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserLayout.cshtml\"; }");
+                stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
             foreach (MozaicEditorComponent c in this.Components)
             {
