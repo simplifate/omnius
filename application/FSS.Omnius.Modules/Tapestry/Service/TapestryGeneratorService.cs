@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _blockMapping = new Dictionary<int, Block>();
         }
 
-        public void GenerateTapestry(CORE.CORE core)
+        public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
         {
             _core = core;
             _context = core.Entitron.GetStaticTables();
@@ -31,6 +31,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
 
             _context.SaveChanges();
+
+            return _blockMapping;
         }
 
         private WorkFlow saveMetaBlock(TapestryDesignerMetablock block, bool init = false)
@@ -57,7 +59,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Block resultBlock = new Block
                 {
                     Name = childBlock.Name,
-                    ModelName = childBlock.AssociatedTableName
+                    ModelName = childBlock.AssociatedTableName,
+                    IsVirtual = false
                 };
                 resultWF.Blocks.Add(resultBlock);
                 if (childBlock.IsInitial)

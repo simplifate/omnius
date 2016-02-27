@@ -38,6 +38,10 @@ namespace FSS.Omnius.Controllers.Master
             {
                 var app = context.Applications.Find(Id);
 
+                // Tapestry
+                var service = new TapestryGeneratorService();
+                var blockMapping = service.GenerateTapestry(core);
+
                 // Mozaic pages
                 foreach (var editorPage in app.MozaicEditorPages)
                 {
@@ -63,6 +67,7 @@ namespace FSS.Omnius.Controllers.Master
                         editorPage.CompiledPageId = oldPage.Id;
                     }
                 }
+                // menu layout
                 string path = $"/Views/App/{Id}/menuLayout.cshtml";
                 var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
                 if (menuLayout == null)
@@ -74,20 +79,17 @@ namespace FSS.Omnius.Controllers.Master
                     context.Pages.Add(menuLayout);
                 }
                 menuLayout.ViewName = $"{app.Name} layout";
-                menuLayout.ViewContent = GetApplicationMenu(core);
+                menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
 
                 app.IsPublished = true;
                 context.SaveChanges();
 
-                // Tapestry
-                var service = new TapestryGeneratorService();
-                service.GenerateTapestry(core);
 
                 return View();
             }
         }
 
-        private string GetApplicationMenu(Modules.CORE.CORE core, int rootId = 0, int level = 0)
+        private string GetApplicationMenu(Modules.CORE.CORE core, Dictionary<int, Block> blockMapping, int rootId = 0, int level = 0)
         {
             DBEntities e = core.Entitron.GetStaticTables();
             rootId = rootId == 0 ? core.Entitron.Application.TapestryDesignerRootMetablock.Id : rootId;
@@ -99,7 +101,7 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     Id = m.Id,
                     Name = m.Name,
-                    SubMenu = GetApplicationMenu(core, m.Id, level + 1),
+                    SubMenu = GetApplicationMenu(core, blockMapping, m.Id, level + 1),
                     IsInitial = m.IsInitial,
                     IsInMenu = m.IsInMenu,
                     MenuOrder = m.MenuOrder,
@@ -117,6 +119,7 @@ namespace FSS.Omnius.Controllers.Master
                     IsInMenu = b.IsInMenu,
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
+                    BlockId = blockMapping[b.Id].Id
                 });
             }
 

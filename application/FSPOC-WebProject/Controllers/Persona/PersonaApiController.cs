@@ -119,18 +119,20 @@ namespace FSPOC_WebProject.Controllers.Persona
                     AjaxPersonaAppstates result = new AjaxPersonaAppstates();
                     var entitron = new CORE().Entitron;
                     entitron.AppId = appId;
-                    var statesList =
-                        entitron.GetDynamicTable("WF_states")
-                            .Select()
-                            .ToList();
-
-                    foreach (var state in statesList)
+                    var table = entitron.GetDynamicTable("WF_states");
+                    if (table != null)
                     {
-                        result.States.Add(new AjaxPersonaAppRoles_State()
+                        var statesList =
+                            table.Select().ToList();
+
+                        foreach (var state in statesList)
                         {
-                            Id = Convert.ToInt32(state["id"]),
-                            Name = Convert.ToString(state["name"])
-                        });
+                            result.States.Add(new AjaxPersonaAppRoles_State()
+                            {
+                                Id = Convert.ToInt32(state["id"]),
+                                Name = Convert.ToString(state["name"])
+                            });
+                        }
                     }
 
                     return result;
