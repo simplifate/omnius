@@ -212,30 +212,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Block thisBlock = BlockMapping[it];
                 createActionRule(workflowRule, thisBlock, conection, BlockMapping);
             }
-            //while(nextConnection != null)
-            //{
-            //    // create action
-            //    var result = createAction(nextConnection, actionRule, workflowRule, wf);
-
-            //    // action rule
-            //    actionRule = result.Item2;
-
-            //    // next connection || todo connection
-            //    if (result.Item1 == null)
-            //    {
-            //        // TODO: target block
-
-            //        // next connection
-            //        nextConnection = todoConnections.FirstOrDefault();
-            //        if (nextConnection != null)
-            //        {
-            //            todoConnections.RemoveAt(0);
-            //            actionRule = null;
-            //        }
-            //    }
-            //    else
-            //        nextConnection = result.Item1;
-            //}
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerConnection connection,
@@ -249,6 +225,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 ExecutedBy = init
             };
             startBlock.SourceTo_ActionRules.Add(rule);
+            startBlock.TargetTo_ActionRules.Add(rule);
             AddActionRuleRights(rule, connection.GetTarget(workflowRule, _context).ParentSwimlane);
 
             WFitem item = connection.GetSource(workflowRule, _context);
@@ -259,13 +236,19 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // create
                 if (connection.TargetType == 0)
                 {
-                    // TODO: action
-                    ActionRule_Action result = new ActionRule_Action
+                    TapestryDesignerWorkflowItem wfItem = (TapestryDesignerWorkflowItem)item;
+                    // action
+                    if (wfItem.ActionId != null)
                     {
-                        ActionId = 1, //Action.getByName((target as TapestryDesignerWorkflowItem).Label), TODO: 
-                        Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1
-                    };
-                    rule.ActionRule_Actions.Add(result);
+                        ActionRule_Action result = new ActionRule_Action
+                        {
+                            ActionId = wfItem.ActionId.Value,
+                            Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1
+                        };
+                        rule.ActionRule_Actions.Add(result);
+                    }
+                    // target
+                    // TODO
                 }
                 else
                 {
@@ -282,139 +265,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             return rule;
         }
-
-        //private Tuple<TapestryDesignerConnection, ActionRule> createAction(TapestryDesignerConnection connection, ActionRule actionRule, TapestryDesignerWorkflowRule workflowRule, WorkFlow wf)
-        //{
-        //    // INIT
-        //    WFitem target =
-        //        connection.TargetType == 0
-        //        ? (WFitem)_context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == connection.Target)
-        //        : _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == connection.Target);
-
-        //    // starting todo connection
-        //    if (actionRule == null)
-        //    {
-        //        WFitem source =
-        //            connection.TargetType == 0
-        //            ? (WFitem)_context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == connection.Source)
-        //            : _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == connection.Source);
-        //        actionRule = new ActionRule
-        //        {
-        //            Actor = _context.Actors.Single(a => a.Name == "Auto"),
-        //            Name = workflowRule.Name
-        //        };
-        //        BlockMapping[source].SourceTo_ActionRules.Add(actionRule);
-        //        // actionRuleRights
-        //        AddActionRuleRights(actionRule, target.ParentSwimlane);
-        //    }
-
-        //    //
-        //    TapestryDesignerConnection nextConnection = null;
-        //    ActionRule nextAR = actionRule;
-
-        //    // split
-        //    if (splitItems.Any(i => i.Id == target.Id && i.Type == target.GetTypeId()))
-        //    {
-        //        // new block
-        //        Block newBlock;
-        //        if (BlockMapping.ContainsKey(target))
-        //        {
-        //            newBlock = BlockMapping[target];
-        //        }
-        //        else
-        //        {
-        //            newBlock = new Block
-        //            {
-        //                Name = $"Split ActionRule[]",
-        //                IsVirtual = true
-        //            };
-        //            wf.Blocks.Add(newBlock);
-        //            BlockMapping.Add(target, newBlock);
-        //        }
-        //        // action rules
-        //        if (actionRule != null)
-        //            actionRule.TargetBlock = newBlock;
-        //        nextAR = new ActionRule
-        //        {
-        //            Actor = _context.Actors.Single(a => a.Name == "Auto"),
-        //            Name = workflowRule.Name
-        //        };
-        //        newBlock.SourceTo_ActionRules.Add(nextAR);
-        //        // actionRuleRights
-        //        AddActionRuleRights(nextAR, target.ParentSwimlane);
-
-        //        // connections
-        //        var connections = workflowRule.Connections.Where(c => c.SourceType == target.GetTypeId() && c.Source == target.Id).ToList();
-        //        for(int i = 0; i < connections.Count; i++)
-        //        {
-        //            if (i == 0)
-        //                nextConnection = connections[i];
-        //            else
-        //                todoConnections.Add(connections[i]);
-        //        }
-        //    }
-        //    // join
-        //    // TODO: 2nd time don't continue - duplicity actions
-        //    else if (joinItems.Any(i => i.Id == target.Id && i.Type == target.GetTypeId()))
-        //    {
-        //        // new block
-        //        Block newBlock;
-        //        if (BlockMapping.ContainsKey(target))
-        //        {
-        //            newBlock = BlockMapping[target];
-        //        }
-        //        else
-        //        {
-        //            newBlock = new Block
-        //            {
-        //                Name = $"Join ActionRule[]",
-        //                IsVirtual = true
-        //            };
-        //            wf.Blocks.Add(newBlock);
-        //            BlockMapping.Add(target, newBlock);
-        //        }
-
-        //        // action rules
-        //        actionRule.TargetBlock = newBlock;
-        //        actionRule = new ActionRule
-        //        {
-        //            Actor = _context.Actors.Single(a => a.Name == "Auto"),
-        //            Name = actionRule.Name
-        //        };
-        //        newBlock.SourceTo_ActionRules.Add(actionRule);
-        //        nextAR = actionRule;
-        //        // actionRuleRights
-        //        AddActionRuleRights(nextAR, target.ParentSwimlane);
-
-        //        // connection
-        //        nextConnection = workflowRule.Connections.Where(c => c.SourceType == target.GetTypeId() && c.Source == target.Id).SingleOrDefault();
-        //    }
-        //    // classic action
-        //    else
-        //    {
-        //        // connections
-        //        nextConnection = workflowRule.Connections.Where(c => c.SourceType == target.GetTypeId() && c.Source == target.Id).SingleOrDefault();
-        //    }
-
-
-        //    // create
-        //    if (target.GetTypeId() == 0)
-        //    {
-        //        // TODO: action
-        //        ActionRule_Action result = new ActionRule_Action
-        //        {
-        //            ActionId = 1, //Action.getByName((target as TapestryDesignerWorkflowItem).Label), TODO: 
-        //            Order = actionRule.ActionRule_Actions.Any() ? actionRule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1
-        //        };
-        //        actionRule.ActionRule_Actions.Add(result);
-        //    }
-        //    else
-        //    {
-        //        // TODO: symbols
-        //    }
-
-        //    return new Tuple<TapestryDesignerConnection, ActionRule>(nextConnection, nextAR);
-        //}
 
         private void AddActionRuleRights(ActionRule rule, TapestryDesignerSwimlane swimlane)
         {
