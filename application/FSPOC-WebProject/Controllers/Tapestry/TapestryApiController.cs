@@ -213,7 +213,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     PositionY = ajaxItem.PositionY,
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
-                                    States = string.Join(",", ajaxItem.States.ToArray()),
+                                    StateId = ajaxItem.StateId,
                                     OutputVariables = ajaxItem.OutputVariables
                                 };
                                 swimlane.WorkflowItems.Add(item);
@@ -706,7 +706,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     ActionId = item.ActionId,
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
-                    States = string.IsNullOrEmpty(item.States) ? new List<string>() : item.States.Split(',').ToList()
+                    StateId = item.StateId
 
                 };
                 result.WorkflowItems.Add(ajaxItem);
