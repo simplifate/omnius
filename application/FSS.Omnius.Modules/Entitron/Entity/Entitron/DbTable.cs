@@ -1,6 +1,6 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
     [Table("Entitron_DbTable")]
@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public virtual ICollection<DbIndex> Indices { get; set; }
 
         public int DbSchemeCommitId { get; set; }
+        [JsonIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 
         public DbTable()
