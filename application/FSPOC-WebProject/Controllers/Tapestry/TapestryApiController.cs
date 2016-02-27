@@ -73,26 +73,43 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
                     try
                     {
-                        TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).First();
+                        TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
 
-                        result = new AjaxTapestryDesignerBlockCommit
+                        if (blockCommit == null)
                         {
-                            Id = blockCommit.Id,
-                            Name = blockCommit.Name,
-                            PositionX = blockCommit.PositionX,
-                            PositionY = blockCommit.PositionY,
-                            Timestamp = blockCommit.Timestamp,
-                            CommitMessage = blockCommit.CommitMessage,
-                            AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
-                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
-                            AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
-                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
-                        };
-                        LoadResourceRules(blockCommit, result);
-                        LoadWorkflowRules(blockCommit, result);
+                            result = new AjaxTapestryDesignerBlockCommit
+                            {
+                                Name = requestedBlock.Name,
+                                PositionX = requestedBlock.PositionX,
+                                PositionY = requestedBlock.PositionY,
+                                AssociatedPageIds = new List<int>(),
+                                AssociatedTableIds = new List<int>(),
+                                ResourceRules = new List<AjaxTapestryDesignerResourceRule>(),
+                                WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>()
+                            };
+                        }
+                        else
+                        {
+                            result = new AjaxTapestryDesignerBlockCommit
+                            {
+                                Id = blockCommit.Id,
+                                Name = blockCommit.Name,
+                                PositionX = blockCommit.PositionX,
+                                PositionY = blockCommit.PositionY,
+                                Timestamp = blockCommit.Timestamp,
+                                CommitMessage = blockCommit.CommitMessage,
+                                AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
+                                    : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                                AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
+                                    : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
+                            };
+                            LoadResourceRules(blockCommit, result);
+                            LoadWorkflowRules(blockCommit, result);
+                        }
                     }
                     catch (InvalidOperationException)
                     {
+
                         result = new AjaxTapestryDesignerBlockCommit
                         {
                             Name = requestedBlock.Name
