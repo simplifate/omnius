@@ -198,7 +198,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             {
                                 SwimlaneIndex = ajaxSwimlane.SwimlaneIndex,
                                 Height = ajaxSwimlane.Height,
-                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray())
+                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray()),
                             };
                             rule.Swimlanes.Add(swimlane);
                             context.SaveChanges();
@@ -213,6 +213,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     PositionY = ajaxItem.PositionY,
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
+                                    States = string.Join(",", ajaxSwimlane.Roles.ToArray()),
                                     OutputVariables = ajaxItem.OutputVariables
                                 };
                                 swimlane.WorkflowItems.Add(item);
@@ -704,7 +705,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PositionY = item.PositionY,
                     ActionId = item.ActionId,
                     InputVariables = item.InputVariables,
-                    OutputVariables = item.OutputVariables
+                    OutputVariables = item.OutputVariables,
+                    States = string.IsNullOrEmpty(item.States) ? new List<string>() : item.States.Split(',').ToList()
+
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
