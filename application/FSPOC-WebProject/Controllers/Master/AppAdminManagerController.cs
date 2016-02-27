@@ -63,7 +63,8 @@ namespace FSS.Omnius.Controllers.Master
                         editorPage.CompiledPageId = oldPage.Id;
                     }
                 }
-                var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == $"/Views/App/{Id}/menuLayout.cshtml");
+                string path = $"/Views/App/{Id}/menuLayout.cshtml";
+                var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
                 if (menuLayout == null)
                 {
                     menuLayout = new Page
