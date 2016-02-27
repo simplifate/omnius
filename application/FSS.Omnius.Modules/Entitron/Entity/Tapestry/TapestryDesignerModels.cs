@@ -217,10 +217,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
         public string States { get; set; }
+        public string ComponentId { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
     public partial class TapestryDesignerWorkflowSymbol : WFitem
     {
+        public string Condition { get; set; }
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
     public class BlockToolboxState
