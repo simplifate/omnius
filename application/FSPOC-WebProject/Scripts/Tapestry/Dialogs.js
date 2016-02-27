@@ -543,7 +543,7 @@ $(function () {
                     gatewayXPropertiesDialog_SubmitData();
                 },
                 Cancel: function () {
-                    actionPropertiesDialog.dialog("close");
+                    gatewayXPropertiesDialog.dialog("close");
                 }
             },
             create: function () {
@@ -555,12 +555,12 @@ $(function () {
                 })
             },
             open: function () {
-                actionPropertiesDialog.find("#gateway-x-condition").val(CurrentItem.data("condition"));
+                gatewayXPropertiesDialog.find("#gateway-x-condition").val(CurrentItem.data("condition"));
             }
         });
         function gatewayXPropertiesDialog_SubmitData() {
-            CurrentItem.data("condition", actionPropertiesDialog.find("#gateway-x-condition").val());
-            actionPropertiesDialog.dialog("close");
+            CurrentItem.data("condition", gatewayXPropertiesDialog.find("#gateway-x-condition").val());
+            gatewayXPropertiesDialog.dialog("close");
         }
     }
 });
