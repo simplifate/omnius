@@ -78,7 +78,8 @@ function SaveBlock(commitMessage) {
                     PositionY: parseInt(currentItem.css("top")),
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
-                    OutputVariables: currentItem.data("outputVariables")
+                    OutputVariables: currentItem.data("outputVariables"),
+                    ComponentId: currentItem.attr("componentId")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
@@ -91,7 +92,8 @@ function SaveBlock(commitMessage) {
                     Type: currentSymbol.attr("symbolType"),
                     DialogType: currentSymbol.attr("dialogType"),
                     PositionX: parseInt(currentSymbol.css("left")),
-                    PositionY: parseInt(currentSymbol.css("top"))
+                    PositionY: parseInt(currentSymbol.css("top")),
+                    Condition: currentSymbol.data("condition")
                 });
             });
             swimlanesArray.push({

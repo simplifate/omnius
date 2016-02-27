@@ -7,13 +7,13 @@ namespace FSS.Omnius.Modules.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class componentId_Conditions : IMigrationMetadata
+    public sealed partial class stateId_condition : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(componentId_Conditions));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(stateId_condition));
         
         string IMigrationMetadata.Id
         {
-            get { return "201602271441280_componentId_Conditions"; }
+            get { return "201602271658212_stateId_condition"; }
         }
         
         string IMigrationMetadata.Source

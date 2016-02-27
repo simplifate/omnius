@@ -198,7 +198,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             {
                                 SwimlaneIndex = ajaxSwimlane.SwimlaneIndex,
                                 Height = ajaxSwimlane.Height,
-                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray()),
+                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray())
                             };
                             rule.Swimlanes.Add(swimlane);
                             context.SaveChanges();
@@ -214,7 +214,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
                                     StateId = ajaxItem.StateId,
-                                    OutputVariables = ajaxItem.OutputVariables
+                                    OutputVariables = ajaxItem.OutputVariables,
+                                    ComponentId = ajaxItem.ComponentId
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -227,7 +228,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     TypeClass = ajaxSymbol.Type,
                                     DialogType = ajaxSymbol.DialogType,
                                     PositionX = ajaxSymbol.PositionX,
-                                    PositionY = ajaxSymbol.PositionY
+                                    PositionY = ajaxSymbol.PositionY,
+                                    Condition = ajaxSymbol.Condition
                                 };
                                 swimlane.WorkflowSymbols.Add(symbol);
                                 context.SaveChanges();
@@ -706,8 +708,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     ActionId = item.ActionId,
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
-                    StateId = item.StateId
-
+                    StateId = item.StateId,
+                    ComponentId = item.ComponentId
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
@@ -722,7 +724,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     Type = symbol.TypeClass,
                     DialogType = symbol.DialogType,
                     PositionX = symbol.PositionX,
-                    PositionY = symbol.PositionY
+                    PositionY = symbol.PositionY,
+                    Condition = symbol.Condition
                 };
                 result.WorkflowSymbols.Add(ajaxSymbol);
             }
