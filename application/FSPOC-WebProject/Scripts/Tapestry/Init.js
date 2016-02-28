@@ -305,27 +305,27 @@ $(function () {
                     }
                     else if (libType == "column-attribute") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '" columnId="' + currentLibraryItem.attr("columnId") + '"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "table-attribute") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "ui") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentId="' + currentLibraryItem.attr("componentId") + '"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                     }
                     else if (libType == "page-ui") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem pageUi" pageId="' + currentLibraryItem.attr("pageId") + '"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                     }
                     else if (libType == "role") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_States").before(newToolboxLi);
                     }
                     else if (libType == "state") {
@@ -334,8 +334,9 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLi);
                     }
                     else if (libType == "target") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
+                            + currentLibraryItem.text() + '</span></div></li>');
+
                         $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLi);
                     }
                     else if (libType == "template") {

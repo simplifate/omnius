@@ -74,6 +74,7 @@ function SaveBlock(commitMessage) {
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),
+                    TargetId: currentItem.attr("targetid"), 
                     PositionX: parseInt(currentItem.css("left")),
                     PositionY: parseInt(currentItem.css("top")),
                     ActionId: currentItem.attr("actionid"),
