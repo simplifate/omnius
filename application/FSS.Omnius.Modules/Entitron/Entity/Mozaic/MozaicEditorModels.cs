@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Tag == "input" || c.Tag == "textarea")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"uic{c.Id}\" value=\"@ViewData[\"uic{c.Id}\"].ToString()\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"uic{c.Id}\" value=\"@(ViewData.ContainsKey(\"uic{c.Id}\") ? ViewData[\"uic{c.Id}\"].ToString() : \"\")\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                 }
                 else if (c.Type == "label")
@@ -69,7 +69,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     stringBuilder.Append($"<div id=\"uic{c.Id}\" name=\"uic{c.Id}\" class=\"uic checkbox-control {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"checkbox\"@((bool)ViewData[\"uic{c.Id}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
+                    stringBuilder.Append($"<input type=\"checkbox\" name=\"uic{c.Id}\"@(ViewData.ContainsKey(\"uic{c.Id}\") && (bool)ViewData[\"uic{c.Id}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {

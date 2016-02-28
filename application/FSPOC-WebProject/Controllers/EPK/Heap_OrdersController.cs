@@ -1,7 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,11 +7,12 @@ using System.Web.Mvc;
 namespace FSS.Omnius.Controllers.EPK
 {
     [PersonaAuthorize(AppId = 26)]
-    public class OrdersController : Controller
+    public class Heap_OrdersController : Controller
     {
+        // GET: Heap_Orders
         public ActionResult Index()
         {
-            return View("/Views/App/26/Page/15.cshtml");
+            return View();
         }
     }
 }
