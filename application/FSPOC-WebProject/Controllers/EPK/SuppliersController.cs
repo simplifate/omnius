@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.EPK
             {
                 return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Create" });
             }
-            return View("/Views/App/26/Page/13.cshtml");
+            return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Index" });
         }
         public ActionResult Create()
         {
