@@ -98,43 +98,43 @@ namespace Logger
         // Method of "Fatal error" Logs
         public static void Fatal(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
 
         // Method of "Error" Logs
         public static void Error(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
 
         // Method of "Info" Logs
         public static void Info(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
 
         // Method of "Warning" Logs
         public static void Warn(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
 
         // Method of "Debug" Logs
         public static void Debug(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
 
         // Method of "SQL" logs
         public static void SQL(string msg, bool verbose = false)
         {
-            string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
-            ProcessLog(msg, methodName, verbose);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //ProcessLog(msg, methodName, verbose);
         }
         #endregion
     }
