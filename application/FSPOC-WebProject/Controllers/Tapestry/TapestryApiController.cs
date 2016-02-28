@@ -126,7 +126,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}")]
         [HttpPost]
-        public void SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
+        public void 
+            SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
         {
             try
             {
@@ -231,6 +232,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
                                     StateId = ajaxItem.StateId,
+                                    TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
                                     ComponentId = ajaxItem.ComponentId
                                 };

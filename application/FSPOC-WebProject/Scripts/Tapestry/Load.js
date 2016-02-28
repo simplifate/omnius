@@ -328,7 +328,7 @@
                 success: function (data) {
                     for (i = 0; i < data.States.length; i++) {
                         state = data.States[i];
-                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
                         $('#libraryCategory-States').append(newLibItem);
                     }
                 }
@@ -344,7 +344,7 @@
                 success: function(data) {
                     for(i = 0; i < data.ListItems.length; i++) {
                         var item = data.ListItems[i];
-                        newLibItem = $('<div libId="' + item.Id + '" libType="target" class="libraryItem">' + item.Name + '</div>');
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="target" class="libraryItem" targetId="' + item.Id + '">' + item.Name + '</div>');
                         $('#libraryCategory-Targets').append(newLibItem);
                     }
                 }

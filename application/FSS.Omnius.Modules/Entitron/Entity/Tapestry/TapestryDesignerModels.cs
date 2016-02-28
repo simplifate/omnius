@@ -217,6 +217,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
         public int? StateId { get; set; }
+        public int? TargetId { get; set; }
         public string ComponentId { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
