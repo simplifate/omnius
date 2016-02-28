@@ -66,11 +66,6 @@ function SaveBlock(commitMessage) {
             });
             currentSwimlane.find(".item").each(function (itemIndex, itemDiv) {
                 currentItem = $(itemDiv);
-                statesArray = [];
-                currentSwimlane.find(".stateItem").each(function(roleIndex, roleDiv) {
-                    statesArray.push($(roleDiv).text());
-                });
-
                 currentItem.attr("saveId", saveId);
                 saveId++;
                 itemArray.push({
@@ -78,12 +73,13 @@ function SaveBlock(commitMessage) {
                     Label: currentItem.find(".itemLabel").text(),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
-                    States : statesArray,
+                    StateId: currentItem.attr("stateid"),
                     PositionX: parseInt(currentItem.css("left")),
                     PositionY: parseInt(currentItem.css("top")),
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
-                    OutputVariables: currentItem.data("outputVariables")
+                    OutputVariables: currentItem.data("outputVariables"),
+                    ComponentId: currentItem.attr("componentId")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
@@ -96,14 +92,14 @@ function SaveBlock(commitMessage) {
                     Type: currentSymbol.attr("symbolType"),
                     DialogType: currentSymbol.attr("dialogType"),
                     PositionX: parseInt(currentSymbol.css("left")),
-                    PositionY: parseInt(currentSymbol.css("top"))
+                    PositionY: parseInt(currentSymbol.css("top")),
+                    Condition: currentSymbol.data("condition")
                 });
             });
             swimlanesArray.push({
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
-                States : statesArray,
                 WorkflowItems: itemArray,
                 WorkflowSymbols: symbolArray
             });

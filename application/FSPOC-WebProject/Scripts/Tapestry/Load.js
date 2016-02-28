@@ -183,6 +183,8 @@
                             newItem.data('inputVariables', currentItemData.InputVariables);
                         if (currentItemData.OutputVariables != null)
                             newItem.data('outputVariables', currentItemData.OutputVariables);
+                        if (currentItemData.ComponentId != null)
+                            newItem.data('componentId', currentItemData.ComponentId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
@@ -196,6 +198,8 @@
                             newSymbol.attr("endpoints", "final");
                         else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
                             newSymbol.attr("endpoints", "gateway");
+                        if (currentSymbolData.Condition != null)
+                            newSymbol.attr("condition", currentSymbolData.Condition);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newSymbol);
                         AddToJsPlumb(newSymbol);
@@ -324,7 +328,7 @@
                 success: function (data) {
                     for (i = 0; i < data.States.length; i++) {
                         state = data.States[i];
-                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem">' + state.Name + '</div>');
+                        newLibItem = $('<div libId="' + state.Id + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
                         $('#libraryCategory-States').append(newLibItem);
                     }
                 }

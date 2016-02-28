@@ -12,7 +12,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private CORE.CORE _core;
         private DBEntities _context;
 
-        public void GenerateTapestry(CORE.CORE core)
+        private Dictionary<int, Block> _blockMapping;
+
+        public TapestryGeneratorService()
+        {
+            _blockMapping = new Dictionary<int, Block>();
+        }
+
+        public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
         {
             _core = core;
             _context = core.Entitron.GetStaticTables();
@@ -24,6 +31,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
 
             _context.SaveChanges();
+
+            return _blockMapping;
         }
 
         private WorkFlow saveMetaBlock(TapestryDesignerMetablock block, bool init = false)
@@ -47,7 +56,21 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // child block
             foreach (TapestryDesignerBlock childBlock in block.Blocks)
             {
-                saveBlock(childBlock, resultWF);
+                Block resultBlock = new Block
+                {
+                    Name = childBlock.Name,
+                    ModelName = childBlock.AssociatedTableName,
+                    IsVirtual = false
+                };
+                resultWF.Blocks.Add(resultBlock);
+                if (childBlock.IsInitial)
+                    resultBlock.InitForWorkFlow.Add(resultWF);
+
+                _blockMapping.Add(childBlock.Id, resultBlock);
+            }
+            foreach (TapestryDesignerBlock childBlock in block.Blocks)
+            {
+                saveBlockContent(childBlock, resultWF);
             }
             _context.SaveChanges();
 
@@ -55,51 +78,41 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return resultWF;
         }
 
-        private void saveBlock(TapestryDesignerBlock block, WorkFlow wf)
+        private void saveBlockContent(TapestryDesignerBlock block, WorkFlow wf)
         {
-            using (var context = new DBEntities())
+            // block
+            Block resultBlock = _blockMapping[block.Id];
+
+            TapestryDesignerBlockCommit commit = block.BlockCommits.OrderBy(bc => bc.Timestamp).LastOrDefault();
+            if (commit == null) // no commit
+                return;
+            // Resources
+            foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {
-                // block
-                Block resultBlock = new Block
-                {
-                    Name = block.Name,
-                    ModelName = block.AssociatedTableName
-                };
-                wf.Blocks.Add(resultBlock);
-                if (block.IsInitial)
-                    resultBlock.InitForWorkFlow.Add(wf);
+                var pair = saveResourceRule(resourceRule);
+                resultBlock.ResourceMappingPairs.Add(pair);
+            }
 
-                TapestryDesignerBlockCommit commit = block.BlockCommits.OrderBy(bc => bc.Timestamp).LastOrDefault();
-                if (commit == null) // no commit
-                    return;
-                // Resources
-                foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
-                {
-                    var pair = saveResourceRule(resourceRule);
-                    resultBlock.ResourceMappingPairs.Add(pair);
-                }
+            // ActionRule
+            foreach (TapestryDesignerWorkflowRule workflowRule in commit.WorkflowRules)
+            {
+                saveWFRule(workflowRule, resultBlock, wf);
+            }
 
-                // ActionRule
-                foreach (TapestryDesignerWorkflowRule workflowRule in commit.WorkflowRules)
+            if (commit.AssociatedPageIds != "")
+            {
+                var pageIdList = commit.AssociatedPageIds.Split(',').Select(int.Parse).ToList();
+                Page mainPage = null;
+                foreach (int pageId in pageIdList)
                 {
-                    saveWFRule(workflowRule, resultBlock, wf);
-                }
-
-                if (commit.AssociatedPageIds != "")
-                {
-                    var pageIdList = commit.AssociatedPageIds.Split(',').Select(int.Parse).ToList();
-                    Page mainPage = null;
-                    foreach (int pageId in pageIdList)
+                    var currentPage = _context.MozaicEditorPages.Find(pageId);
+                    if (!currentPage.IsModal)
                     {
-                        var currentPage = context.MozaicEditorPages.Find(pageId);
-                        if (!currentPage.IsModal)
-                        {
-                            mainPage = context.Pages.Find(currentPage.CompiledPageId);
-                            break;
-                        }
+                        mainPage = _context.Pages.Find(currentPage.CompiledPageId);
+                        break;
                     }
-                    resultBlock.MozaicPage = mainPage;
                 }
+                resultBlock.MozaicPage = mainPage;
             }
         }
 
@@ -149,6 +162,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf)
         {
             HashSet<TapestryDesignerConnection> todoConnections = new HashSet<TapestryDesignerConnection>();
+            Dictionary<Block, string> conditionMapping = new Dictionary<Block, string>();
             Dictionary<WFitem, Block> BlockMapping = new Dictionary<WFitem, Block>();
 
             var splitItems = workflowRule.Connections.GroupBy(c => new { Type = c.SourceType, Id = c.Source }).Where(c => c.Count() > 1);
@@ -199,10 +213,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             // begin
-            WFitem item = _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "circle-single");
+            WFitem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
             if (item == null)
                 return;
-            createActionRule(workflowRule, block, new TapestryDesignerConnection { Target = item.Id, TargetType = 1 }, BlockMapping, "l");
+            createActionRule(workflowRule, block, new TapestryDesignerConnection { Target = item.Id, TargetType = 0 }, BlockMapping, conditionMapping, (item as TapestryDesignerWorkflowItem).ComponentId);
 
 
             //// ACTIONS ////
@@ -210,12 +224,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 WFitem it = conection.GetSource(workflowRule, _context);
                 Block thisBlock = BlockMapping[it];
-                createActionRule(workflowRule, thisBlock, conection, BlockMapping);
+                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping);
             }
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerConnection connection,
-            Dictionary<WFitem, Block> blockMapping, string init = null)
+            Dictionary<WFitem, Block> blockMapping, Dictionary<Block, string> conditionMapping, string init = null)
         {
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
@@ -224,8 +238,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Name = (new Random()).Next().ToString(),
                 ExecutedBy = init
             };
+            // condition
+            if (conditionMapping.ContainsKey(startBlock))
+            {
+                rule.Condition = connection.SourceSlot == 0 ? conditionMapping[startBlock] : $"!{conditionMapping[startBlock]}";
+            }
             startBlock.SourceTo_ActionRules.Add(rule);
-            startBlock.TargetTo_ActionRules.Add(rule);
+            // rights
             AddActionRuleRights(rule, connection.GetTarget(workflowRule, _context).ParentSwimlane);
 
             WFitem item = connection.GetSource(workflowRule, _context);
@@ -248,10 +267,23 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         rule.ActionRule_Actions.Add(result);
                     }
                     // target
-                    // TODO
+                    //if (wfItem.TargetId != null)
+                    //{
+                    //    rule.TargetBlock = _blockMapping[wfItem.TargetId];
+                    //}
+
+                    // TODO: other items
                 }
                 else
                 {
+                    TapestryDesignerWorkflowSymbol wfSymbol = (TapestryDesignerWorkflowSymbol)item;
+                    // gateway-x
+                    if (wfSymbol.TypeClass == "gateway-x")
+                    {
+                        Block splitBlock = blockMapping[item];
+                        conditionMapping.Add(splitBlock, wfSymbol.Condition);
+                    }
+
                     // TODO: symbols
                 }
 
@@ -260,8 +292,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 connection = workflowRule.Connections.First(c => c.Source == connection.Target && c.SourceType == connection.TargetType);
             }
 
-            //if (item != null && blockMapping.ContainsKey(item))
-            //    blockMapping[item].TargetTo_ActionRules.Add(rule);
+            if (rule.TargetBlock == null)
+                rule.TargetBlock = startBlock;
 
             return rule;
         }

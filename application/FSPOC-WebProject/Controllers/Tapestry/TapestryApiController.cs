@@ -73,26 +73,43 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
                     try
                     {
-                        TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).First();
+                        TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
 
-                        result = new AjaxTapestryDesignerBlockCommit
+                        if (blockCommit == null)
                         {
-                            Id = blockCommit.Id,
-                            Name = blockCommit.Name,
-                            PositionX = blockCommit.PositionX,
-                            PositionY = blockCommit.PositionY,
-                            Timestamp = blockCommit.Timestamp,
-                            CommitMessage = blockCommit.CommitMessage,
-                            AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
-                                : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
-                            AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
-                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
-                        };
-                        LoadResourceRules(blockCommit, result);
-                        LoadWorkflowRules(blockCommit, result);
+                            result = new AjaxTapestryDesignerBlockCommit
+                            {
+                                Name = requestedBlock.Name,
+                                PositionX = requestedBlock.PositionX,
+                                PositionY = requestedBlock.PositionY,
+                                AssociatedPageIds = new List<int>(),
+                                AssociatedTableIds = new List<int>(),
+                                ResourceRules = new List<AjaxTapestryDesignerResourceRule>(),
+                                WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>()
+                            };
+                        }
+                        else
+                        {
+                            result = new AjaxTapestryDesignerBlockCommit
+                            {
+                                Id = blockCommit.Id,
+                                Name = blockCommit.Name,
+                                PositionX = blockCommit.PositionX,
+                                PositionY = blockCommit.PositionY,
+                                Timestamp = blockCommit.Timestamp,
+                                CommitMessage = blockCommit.CommitMessage,
+                                AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
+                                    : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                                AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
+                                    : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
+                            };
+                            LoadResourceRules(blockCommit, result);
+                            LoadWorkflowRules(blockCommit, result);
+                        }
                     }
                     catch (InvalidOperationException)
                     {
+
                         result = new AjaxTapestryDesignerBlockCommit
                         {
                             Name = requestedBlock.Name
@@ -198,7 +215,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             {
                                 SwimlaneIndex = ajaxSwimlane.SwimlaneIndex,
                                 Height = ajaxSwimlane.Height,
-                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray()),
+                                Roles = string.Join(",", ajaxSwimlane.Roles.ToArray())
                             };
                             rule.Swimlanes.Add(swimlane);
                             context.SaveChanges();
@@ -213,8 +230,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     PositionY = ajaxItem.PositionY,
                                     ActionId = ajaxItem.ActionId,
                                     InputVariables = ajaxItem.InputVariables,
-                                    States = string.Join(",", ajaxItem.States.ToArray()),
-                                    OutputVariables = ajaxItem.OutputVariables
+                                    StateId = ajaxItem.StateId,
+                                    OutputVariables = ajaxItem.OutputVariables,
+                                    ComponentId = ajaxItem.ComponentId
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -227,7 +245,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     TypeClass = ajaxSymbol.Type,
                                     DialogType = ajaxSymbol.DialogType,
                                     PositionX = ajaxSymbol.PositionX,
-                                    PositionY = ajaxSymbol.PositionY
+                                    PositionY = ajaxSymbol.PositionY,
+                                    Condition = ajaxSymbol.Condition
                                 };
                                 swimlane.WorkflowSymbols.Add(symbol);
                                 context.SaveChanges();
@@ -706,8 +725,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     ActionId = item.ActionId,
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
-                    States = string.IsNullOrEmpty(item.States) ? new List<string>() : item.States.Split(',').ToList()
-
+                    StateId = item.StateId,
+                    ComponentId = item.ComponentId
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
@@ -722,7 +741,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     Type = symbol.TypeClass,
                     DialogType = symbol.DialogType,
                     PositionX = symbol.PositionX,
-                    PositionY = symbol.PositionY
+                    PositionY = symbol.PositionY,
+                    Condition = symbol.Condition
                 };
                 result.WorkflowSymbols.Add(ajaxSymbol);
             }

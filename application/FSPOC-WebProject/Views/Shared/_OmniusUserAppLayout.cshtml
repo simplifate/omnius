@@ -44,32 +44,8 @@
     </div>
     <div id="userLeftBar">
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="widgetLabel">Nejpoužívanější aplikace</div>
-        <div class="circles">
-            <div class="fa fa-circle"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-        </div>
-        <div class="appList">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                <a href="/Tapestry/Run?AppName=@app.Name">
-                    <div class="appListItem">
-                        <div class="icon fa @(app.Icon)"></div>
-                        <div class="appName">@app.DisplayName</div>
-                    </div>
-                </a>
-            }
-        </div>
-        <div class="infoBox">
-            <div class="icon fa fa-info-circle"></div>
-            <div class="infoText">
-                Kliknutím na navigační šipku v hlavičce
-                můžete měnit způsob zobrazených
-                aplikací v menu.
-            </div>
-        </div>
+        <div class="widgetLabel">Menu</div>
+        @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/menuLayout.cshtml")
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>

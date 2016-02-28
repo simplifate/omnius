@@ -400,6 +400,24 @@ $(function () {
             CurrentItem.data("columnFilter", columnFilter);
             tableAttributePropertiesDialog.dialog("close");
         }
+        gatewayXPropertiesDialog = $("gateway-x-properties-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 450,
+            buttons: {
+                "Save": function () {
+                    gatewayXPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    gatewayXPropertiesDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+            }
+        });
+        function gatewayXPropertiesDialog_SubmitData() {
+            gatewayXPropertiesDialog.dialog("close");
+        }
         actionPropertiesDialog = $("#action-properties-dialog").dialog({
             autoOpen: false,
             width: 450,
@@ -515,6 +533,34 @@ $(function () {
             CurrentItem.data("inputVariables", actionPropertiesDialog.find("#input-variables").val());
             CurrentItem.data("outputVariables", actionPropertiesDialog.find("#output-variables").val());
             actionPropertiesDialog.dialog("close");
+        }
+        gatewayXPropertiesDialog = $("#gateway-x-properties-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    gatewayXPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    gatewayXPropertiesDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        gatewayXPropertiesDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                gatewayXPropertiesDialog.find("#gateway-x-condition").val(CurrentItem.data("condition"));
+            }
+        });
+        function gatewayXPropertiesDialog_SubmitData() {
+            CurrentItem.data("condition", gatewayXPropertiesDialog.find("#gateway-x-condition").val());
+            gatewayXPropertiesDialog.dialog("close");
         }
     }
 });

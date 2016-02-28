@@ -9,6 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
+    [PersonaAuthorize]
     public class ViewPageController : Controller
     {
         // GET: ViewPage
@@ -18,6 +19,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             {
                 var page = context.MozaicEditorPages.Find(Id);
                 var app = page.ParentApp;
+                HttpContext.GetCORE().Entitron.Application = app;
                 ViewData["appName"] = app.DisplayName;
                 ViewData["appIcon"] = app.Icon;
                 ViewData["pageName"] = page.Name;

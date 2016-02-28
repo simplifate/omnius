@@ -216,7 +216,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? ActionId { get; set; }
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
-        public string States { get; set; }
+        public int? StateId { get; set; }
         public string ComponentId { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
@@ -330,5 +330,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsMetablock { get; set; }
         public bool IsInMenu { get; set; }
         public bool IsInitial { get; set; }
+        public int? BlockId { get; set; }
     }
 }

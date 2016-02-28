@@ -587,9 +587,9 @@
     <Compile Include="Migrations\201602271145300_states.Designer.cs">
       <DependentUpon>201602271145300_states.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602271441280_componentId_Conditions.cs" />
-    <Compile Include="Migrations\201602271441280_componentId_Conditions.Designer.cs">
-      <DependentUpon>201602271441280_componentId_Conditions.cs</DependentUpon>
+    <Compile Include="Migrations\201602271658212_stateId_condition.cs" />
+    <Compile Include="Migrations\201602271658212_stateId_condition.Designer.cs">
+      <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -917,8 +917,8 @@
     <EmbeddedResource Include="Migrations\201602271145300_states.resx">
       <DependentUpon>201602271145300_states.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602271441280_componentId_Conditions.resx">
-      <DependentUpon>201602271441280_componentId_Conditions.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602271658212_stateId_condition.resx">
+      <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@
                  @Html.Raw(item.SubMenu)
              }
              else {
-                 <a href="">@item.Name</a>
+                 <a href="/Tapestry/Run?AppName=@Context.GetCORE().Entitron.AppName&blockId=@item.BlockId">@item.Name</a>
              }
             </li>
         }

@@ -329,8 +329,8 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_States").before(newToolboxLi);
                     }
                     else if (libType == "state") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem stateItem"><span class="itemLabel">'
-                            + currentLibraryItem.text() + '</span></div></li>')
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem stateItem" stateId="' + currentLibraryItem.attr("stateId") + '"><span class="itemLabel">'
+                            + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLi);
                     }
                     else if (libType == "target") {
