@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Security.Principal;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace System
 {
@@ -23,6 +24,18 @@ namespace System
             if (!context.Items.Contains("CORE"))
                 context.Items.Add("CORE", new CORE());
             return (CORE)context.Items["CORE"];
+        }
+        public static void SetApp(this HttpContextBase context, int appId)
+        {
+            context.GetCORE().Entitron.AppId = appId;
+        }
+        public static void SetApp(this HttpContextBase context, string appName)
+        {
+            context.GetCORE().Entitron.AppName = appName;
+        }
+        public static void SetApp(this HttpContextBase context, Application app)
+        {
+            context.GetCORE().Entitron.Application = app;
         }
 
         public static User GetLogged(this IPrincipal user, CORE core)

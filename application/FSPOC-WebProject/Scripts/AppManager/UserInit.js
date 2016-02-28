@@ -64,15 +64,6 @@ $(function () {
             table.css("left", "0px");
             table.css("top", "0px");
         });
-        $(".uic.data-table-with-actions .rowEditAction").on("click", function () {
-            ModalDialogArray[0].dialog("open");
-        });
-        $(".uic.data-table-with-actions .rowDetailsAction").on("click", function () {
-            alert("TODO: Open details modal");
-        });
-        $(".uic.data-table-with-actions .rowDeleteAction").on("click", function () {
-            currentRow = $(this).parents("tr").remove();
-        });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);

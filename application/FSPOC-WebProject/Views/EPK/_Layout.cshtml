@@ -44,39 +44,67 @@
     </div>
     <div id="userLeftBar">
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="widgetLabel">Nejpoužívanější aplikace</div>
-        <div class="circles">
-            <div class="fa fa-circle"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-        </div>
-        <div class="appList">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                <a href="/EPK">
-                    <div class="appListItem">
-                        <div class="icon fa @(app.Icon)"></div>
-                        <div class="appName">@app.DisplayName</div>
-                    </div>
-                </a>
-            }
-        </div>
-        <div class="infoBox">
-            <div class="icon fa fa-info-circle"></div>
-            <div class="infoText">
-                Kliknutím na navigační šipku v hlavičce
-                můžete měnit způsob zobrazených
-                aplikací v menu.
-            </div>
-        </div>
+        <div class="widgetLabel">Menu</div>
+        <ul id=appMenu>
+            <li>
+                <h4>Administrace</h4>
+                <ul>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=361">Přehled dodavatelů</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=360">Přehled periodik</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=363">Přehled př&#237;znaků objedn&#225;vek</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=365">Přehled př&#237;znaků schvalov&#225;n&#237;</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=366">Přehled četnost&#237; periodik</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=364">Přehled forem periodik</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=367">Přehled typů periodik</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=368">Hromadn&#225; změna</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=358">Přehled objedn&#225;vek</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=362">Přehled hromadn&#253;ch objedn&#225;vek</a>
+                    </li>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=370">Z&#225;stupci</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h4>Objedn&#225;vka</h4>
+            </li>
+            <li>
+                <h4>Reporty</h4>
+                <ul>
+                    <li>
+                        <a href="/Tapestry/Run?AppName=EvidencePeriodik&blockId=373">Kompletn&#237; přehled</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
-        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
+        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName))
+        {
             <div class="appIconToolbar">
-                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                    <a href="/EPK">
+                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
+                {
+                    <a href="/Tapestry/Run?AppName=@app.Name">
                         <div class="appIconToolbarItem">
                             <div class="icon fa @(app.Icon)"></div>
                         </div>
