@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
@@ -17,6 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public string DefaultValue { get; set; }
 
         public int DbTableId { get; set; }
+        [JsonIgnore]
         public virtual DbTable DbTable { get; set; }
     }
 }
