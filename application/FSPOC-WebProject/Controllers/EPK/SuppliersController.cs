@@ -70,6 +70,10 @@ namespace FSS.Omnius.Controllers.EPK
                     ViewData["uic959"] = fc["uic959"];
                     ViewData["uic960"] = fc["uic960"];
                     ViewData["uic957"] = fc["uic957"];
+
+                    ViewData["appIcon"] = "fa-book";
+                    ViewData["appName"] = "Evidence periodik";
+                    ViewData["pageName"] = "Vytvoření dodavatele";
                     return View("/Views/App/26/Page/41.cshtml");
                 }
             }
@@ -112,6 +116,10 @@ namespace FSS.Omnius.Controllers.EPK
                     ViewData["uic959"] = fc["uic959"];
                     ViewData["uic960"] = fc["uic960"];
                     ViewData["uic957"] = fc["uic957"];
+
+                    ViewData["appIcon"] = "fa-book";
+                    ViewData["appName"] = "Evidence periodik";
+                    ViewData["pageName"] = "Úprava dodavatele";
                     return View("/Views/App/26/Page/41.cshtml");
                 }
             }
