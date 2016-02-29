@@ -1119,7 +1119,7 @@ body.tapestryModule #lowerPanel {
             left: 0px;
             top: 0px;
             bottom: 0px;
-            width: 56px;
+            width: 64px;
             border-right: 2px solid #bcbbbc;
             overflow: hidden; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .rolePlaceholder {
@@ -1141,23 +1141,25 @@ body.tapestryModule #lowerPanel {
                 transform: rotate(-90deg);
                 transform-origin: 50% 50%;
                 white-space: nowrap; }
-            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .roleItem {
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .roleItemContainer {
               position: absolute;
               left: 50%;
               top: 50%;
               width: auto;
-              height: 22px;
+              height: auto;
+              transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea .roleItem {
               color: white;
               background-color: #db4c91;
               font-family: MyriadPro;
               font-size: 12px;
               text-align: center;
-              transform: translateX(-50%) translateY(-50%) rotate(-90deg);
               border-radius: 4px;
               overflow: visible;
               white-space: nowrap;
-              padding-left: 6px;
-              padding-right: 6px; }
+              padding-left: 8px;
+              padding-right: 8px;
+              margin: 2px; }
           body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea {
             position: absolute;
             left: 56px;

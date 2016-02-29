@@ -195,7 +195,7 @@ $(function () {
                 }
             });
             newRule = $('<div class="rule workflowRule" style="width: 766px; height: 180px; left: 40px; top: ' + (lowestRuleBottom + 20) + 'px;"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;">Pravidlo ' + (highestRuleNumber + 1) + '</div>'
-                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
                 + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
                 + '</div></div>');
             $("#workflowRulesPanel .scrollArea").append(newRule);
@@ -250,8 +250,8 @@ $(function () {
                 greedy: true,
                 drop: function (e, ui) {
                     droppedElement = ui.helper.clone();
-                    $(this).find(".rolePlaceholder, .roleItem").remove();
-                    $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                    $(this).find(".rolePlaceholder").remove();
+                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                     ui.helper.remove();
                     ChangedSinceLastSave = true;
                 }
