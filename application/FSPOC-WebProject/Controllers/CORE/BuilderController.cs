@@ -9,16 +9,7 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.CORE
 {
-    public class Product {
-        public string Name { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public List<People> Peoples { get; set; }
-     
-
-    }
-    public class People{
-        public string name{get;set;}
-    }
+   
     [PersonaAuthorize(Roles = "Admin", Module = "CORE")]
     public class BuilderController : Controller
     {
@@ -32,24 +23,7 @@ namespace FSS.Omnius.Controllers.CORE
             return View(e.Modules);
         }
 
-        public string JSONserializer()
-        {
-            DBEntities e = HttpContext.GetCORE().Entitron.GetStaticTables();
-
-            //get the application
-            var app = e.Applications.SingleOrDefault(x => x.Id == 12);
-            var commits = app.DatabaseDesignerSchemeCommits;
-           Product product = new Product();
- 
-             product.Name = "Apple";
-             product.ExpiryDate = new DateTime(2008, 12, 28);
-             product.Peoples = new List<People>();
-              product.Peoples.Add(new People(){name = "David"});
-
-              string output = JsonConvert.SerializeObject(commits);
-             return output;
-
-        }
+       
         public ActionResult Create()
         {
             return View();

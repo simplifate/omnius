@@ -13,7 +13,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public int PositionY { get; set; }
 
         public int DbSchemeCommitId { get; set; }
-        [JsonIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }
