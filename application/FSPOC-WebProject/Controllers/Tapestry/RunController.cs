@@ -47,8 +47,12 @@ namespace FSS.Omnius.Controllers.Tapestry
 
         private ActionResult ShowPage(Modules.CORE.CORE core, string appName, Block block, int modelId)
         {
+            if (string.IsNullOrEmpty(appName) && block == null) // Requested block Id not found
+                return new HttpStatusCodeResult(404);
+
             // init
             core.User = User.GetLogged(core);
+            core.Entitron.AppId = block.WorkFlow.ApplicationId;
             DBItem model = modelId > 0 ? core.Entitron.GetDynamicItem(block.ModelName, modelId) : null; // can be null
 
             // preRun
@@ -65,13 +69,16 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             using (var context = new DBEntities())
             {
+                ViewData["appName"] = core.Entitron.Application.DisplayName;
+                ViewData["appIcon"] = core.Entitron.Application.Icon;
+                ViewData["pageName"] = block.Name;
+
                 foreach (var resourceMappingPair in block.ResourceMappingPairs)
                 {
                     DataTable dataSource = new DataTable();
                     if (resourceMappingPair.Source.TableId != null)
                     {
                         string tableName = context.DbTables.Find(resourceMappingPair.Source.TableId).Name;
-                        core.Entitron.AppId = block.WorkFlow.ApplicationId;
                         var entitronTable = core.Entitron.GetDynamicTable(tableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;

@@ -38,10 +38,6 @@ namespace FSS.Omnius.Controllers.Master
             {
                 var app = context.Applications.Find(Id);
 
-                // Tapestry
-                var service = new TapestryGeneratorService();
-                var blockMapping = service.GenerateTapestry(core);
-
                 // Mozaic pages
                 foreach (var editorPage in app.MozaicEditorPages)
                 {
@@ -67,6 +63,11 @@ namespace FSS.Omnius.Controllers.Master
                         editorPage.CompiledPageId = oldPage.Id;
                     }
                 }
+
+                // Tapestry
+                var service = new TapestryGeneratorService();
+                var blockMapping = service.GenerateTapestry(core);
+
                 // menu layout
                 string path = $"/Views/App/{Id}/menuLayout.cshtml";
                 var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
