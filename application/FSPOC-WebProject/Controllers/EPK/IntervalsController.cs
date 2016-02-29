@@ -7,11 +7,11 @@ using E = FSS.Omnius.Modules.Entitron;
 namespace FSS.Omnius.Controllers.EPK
 {
     [PersonaAuthorize(AppId = 26)]
-    public class TypesController : Controller
+    public class IntervalsController : Controller
     {
         public ActionResult Index()
         {
-            var intervals = HttpContext.GetCORE().Entitron.GetDynamicTable("Periodical_types").Select().ToList();
+            var intervals = HttpContext.GetCORE().Entitron.GetDynamicTable("Periodical_interval").Select().ToList();
             DataTable data = new DataTable();
             data.Columns.Add("Id");
             data.Columns.Add("Jméno");
@@ -24,92 +24,92 @@ namespace FSS.Omnius.Controllers.EPK
 
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
-            ViewData["pageName"] = "Přehled typů";
-            return View("/Views/App/26/Page/21.cshtml");
+            ViewData["pageName"] = "Přehled četností periodik";
+            return View("/Views/App/26/Page/20.cshtml");
         }
         [HttpPost]
         public ActionResult Index(FormCollection fc)
         {
-            if (fc.AllKeys.Contains("uic1052"))
+            if (fc.AllKeys.Contains("uic1048"))
             {
-                return RedirectToRoute("EPK", new { controller = "Types", action = "Create" });
+                return RedirectToRoute("EPK", new { controller = "Intervals", action = "Create" });
             }
-            return RedirectToRoute("EPK", new { controller = "Types", action = "Index" });
+            return RedirectToRoute("EPK", new { controller = "Intervals", action = "Index" });
         }
         public ActionResult Create()
         {
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
-            ViewData["pageName"] = "Vytvoření typu";
-            return View("/Views/App/26/Page/52.cshtml");
+            ViewData["pageName"] = "Vytvoření četnosti periodika";
+            return View("/Views/App/26/Page/44.cshtml");
         }
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
-            if (fc.AllKeys.Contains("uic987"))
+            if (fc.AllKeys.Contains("uic683"))
             {
                 try
                 {
                     E.Entitron e = HttpContext.GetCORE().Entitron;
                     E.DBItem item = new E.DBItem();
-                    item.createProperty(-1, "name", fc["uic984"]);
-                    item.createProperty(-4, "active", fc.AllKeys.Contains("uic985"));
+                    item.createProperty(-1, "name", fc["uic681"]);
+                    item.createProperty(-4, "active", fc.AllKeys.Contains("uic682"));
 
-                    e.GetDynamicTable("Periodical_types").Add(item);
+                    e.GetDynamicTable("Periodical_interval").Add(item);
                     e.Application.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    ViewData["uic984"] = fc["uic984"];
-                    ViewData["uic985"] = fc.AllKeys.Contains("uic985");
+                    ViewData["uic681"] = fc["uic681"];
+                    ViewData["uic682"] = fc.AllKeys.Contains("uic682");
 
                     ViewData["appIcon"] = "fa-book";
                     ViewData["appName"] = "Evidence periodik";
-                    ViewData["pageName"] = "Vytvoření typu";
-                    return View("/Views/App/26/Page/52.cshtml");
+                    ViewData["pageName"] = "Vytvoření četnosti periodika";
+                    return View("/Views/App/26/Page/44.cshtml");
                 }
             }
-            return RedirectToRoute("EPK", new { controller = "Types", action = "Index" });
+            return RedirectToRoute("EPK", new { controller = "Intervals", action = "Index" });
         }
         public ActionResult Update(int id)
         {
-            E.DBItem item = HttpContext.GetCORE().Entitron.GetDynamicItem("Periodical_types", id);
+            E.DBItem item = HttpContext.GetCORE().Entitron.GetDynamicItem("Periodical_interval", id);
 
-            ViewData["uic1012"] = item["name"];
-            ViewData["uic1013"] = item["active"];
+            ViewData["uic681"] = item["name"];
+            ViewData["uic682"] = item["active"];
 
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
-            ViewData["pageName"] = "Úprava formy";
-            return View("/Views/App/26/Page/53.cshtml");
+            ViewData["pageName"] = "Úprava četnosti periodika";
+            return View("/Views/App/26/Page/44.cshtml");
         }
         [HttpPost]
         public ActionResult Update(int id, FormCollection fc)
         {
-            if (fc.AllKeys.Contains("uic1015"))
+            if (fc.AllKeys.Contains("uic683"))
             {
                 try
                 {
                     E.Entitron e = HttpContext.GetCORE().Entitron;
                     E.DBItem item = new E.DBItem();
-                    item.createProperty(-1, "name", fc["uic1012"]);
-                    item.createProperty(-4, "active", fc.AllKeys.Contains("uic1013"));
+                    item.createProperty(-1, "name", fc["uic681"]);
+                    item.createProperty(-4, "active", fc.AllKeys.Contains("uic682"));
 
-                    e.GetDynamicTable("Periodical_types").Update(item, id);
+                    e.GetDynamicTable("Periodical_interval").Update(item, id);
                     e.Application.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    ViewData["uic1012"] = fc["uic1012"];
-                    ViewData["uic1013"] = fc["uic1013"];
+                    ViewData["uic681"] = fc["uic681"];
+                    ViewData["uic682"] = fc["uic682"];
 
                     ViewData["appIcon"] = "fa-book";
                     ViewData["appName"] = "Evidence periodik";
-                    ViewData["pageName"] = "Úprava formy";
-                    return View("/Views/App/26/Page/53.cshtml");
+                    ViewData["pageName"] = "Úprava četnosti periodika";
+                    return View("/Views/App/26/Page/44.cshtml");
                 }
             }
-            return RedirectToRoute("EPK", new { controller = "Types", action = "Index" });
+            return RedirectToRoute("EPK", new { controller = "Intervals", action = "Index" });
         }
 
         public ActionResult Delete(int id)
@@ -117,13 +117,13 @@ namespace FSS.Omnius.Controllers.EPK
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
-                e.GetDynamicTable("Periodical_types").Remove(id);
+                e.GetDynamicTable("Periodical_interval").Remove(id);
                 e.Application.SaveChanges();
-                return RedirectToRoute("EPK", new { controller = "Types", action = "Index" });
+                return RedirectToRoute("EPK", new { controller = "Intervals", action = "Index" });
             }
             catch (Exception)
             {
-                return RedirectToRoute("EPK", new { controller = "Types", action = "Index" });
+                return RedirectToRoute("EPK", new { controller = "Intervals", action = "Index" });
             }
         }
     }

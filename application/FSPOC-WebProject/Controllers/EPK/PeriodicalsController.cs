@@ -1,6 +1,4 @@
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Table;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,43 +9,60 @@ using E = FSS.Omnius.Modules.Entitron;
 namespace FSS.Omnius.Controllers.EPK
 {
     [PersonaAuthorize(AppId = 26)]
-    public class OrdersController : Controller
+    public class PeriodicalsController : Controller
     {
         public ActionResult Index()
         {
             E.Entitron e = HttpContext.GetCORE().Entitron;
-            var orders = e.GetDynamicTable("Orders").Select().ToList();
-            var periodicals = e.GetDynamicTable("Periodicals").Select().where(c => c.column("id").In(new HashSet<object>(orders.Select(i => i["id_periodical"])))).ToList();
+            var periodicals = e.GetDynamicTable("Periodicals").Select().ToList();
+            var suppliers = e.GetDynamicTable("Suppliers").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_supplier"])))).ToList();
+            var types = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_types"])))).ToList();
+            var intervals = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_interval"])))).ToList();
+            var forms = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_form"])))).ToList();
 
             DataTable data = new DataTable();
             data.Columns.Add("Id");
-            data.Columns.Add("Id hromadné objednávky");
-            data.Columns.Add("Počátek");
-            data.Columns.Add("Společnost odběratele");
-            data.Columns.Add("Název periodika");
-            data.Columns.Add("Kusů");
-            data.Columns.Add("Odběratel");
-            data.Columns.Add("Dodací adresa");
-            foreach (E.DBItem order in orders)
+            data.Columns.Add("Dodavatel");
+            data.Columns.Add("Typ");
+            data.Columns.Add("Četnost");
+            data.Columns.Add("Jméno");
+            data.Columns.Add("Aktivní");
+            data.Columns.Add("Orientační cena s DPH");
+            data.Columns.Add("Orientační cena bez 20% DPH");
+            data.Columns.Add("Poštovné");
+            data.Columns.Add("Poznámka");
+            data.Columns.Add("Forma");
+            foreach (E.DBItem periodical in periodicals)
             {
                 data.Rows.Add(
-                    order["id"],
-                    order["id_heap_order"],
-                    order["begin_purchase"],
-                    order["client_comany_name"],
-                    periodicals.Single(p => (int)p["id"] == (int)order["id_periodical"])["name"],
-                    order["item_count"],
-                    order["client_name"],
-                    order["ship_to_address"]
+                    periodical["id"],
+                    suppliers.Single(s => (int)s["id"] == (int)periodical["id_supplier"])["name"],
+                    types.Single(s => (int)s["id"] == (int)periodical["id_periodical_types"])["name"],
+                    intervals.Single(s => (int)s["id"] == (int)periodical["id_periodical_interval"])["name"],
+                    periodical["name"],
+                    periodical["active"],
+                    periodical["tentatively_net_of_VAT10"],
+                    periodical["tentatively_net_of_VAT20"],
+                    periodical["post_net_of_VAT20"],
+                    periodical["note"],
+                    forms.Single(s => (int)s["id"] == (int)periodical["id_periodical_form"])["name"]
                 );
             }
-            ViewData["tableData_data-table-with-actions2"] = data;
+            ViewData["tableData_data-table-with-actions4"] = data;
 
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
-            ViewData["pageName"] = "Přehled objednávek";
-
-            return View("/Views/App/26/Page/15.cshtml");
+            ViewData["pageName"] = "Přehled periodik";
+            return View("/Views/App/26/Page/14.cshtml");
+        }
+        [HttpPost]
+        public ActionResult Index(FormCollection fc)
+        {
+            if (fc.AllKeys.Contains("uic991"))
+            {
+                return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Create" });
+            }
+            return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
         }
         public ActionResult Create()
         {
@@ -60,7 +75,7 @@ namespace FSS.Omnius.Controllers.EPK
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Vytvoření periodika";
-            return View("/Views/App/26/Page/9.cshtml");
+            return View("/Views/App/26/Page/40.cshtml");
         }
         [HttpPost]
         public ActionResult Create(FormCollection fc)
@@ -82,7 +97,7 @@ namespace FSS.Omnius.Controllers.EPK
                     item.createProperty(-9, "note", fc["597"]);
                     item.createProperty(-10, "id_periodical_form", fc["600"]);
 
-                    e.GetDynamicTable("Orders").Add(item);
+                    e.GetDynamicTable("Periodicals").Add(item);
                     e.Application.SaveChanges();
                 }
                 catch (Exception)
@@ -106,10 +121,10 @@ namespace FSS.Omnius.Controllers.EPK
                     ViewData["appIcon"] = "fa-book";
                     ViewData["appName"] = "Evidence periodik";
                     ViewData["pageName"] = "Vytvoření periodika";
-                    return View("/Views/App/26/Page/9.cshtml");
+                    return View("/Views/App/26/Page/40.cshtml");
                 }
             }
-            return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
+            return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
         }
         public ActionResult Update(int id)
         {
@@ -157,7 +172,7 @@ namespace FSS.Omnius.Controllers.EPK
                     item.createProperty(-9, "note", fc["597"]);
                     item.createProperty(-10, "id_periodical_form", fc["600"]);
 
-                    e.GetDynamicTable("Orders").Update(item, id);
+                    e.GetDynamicTable("Periodicals").Update(item, id);
                     e.Application.SaveChanges();
                 }
                 catch (Exception)
@@ -184,7 +199,7 @@ namespace FSS.Omnius.Controllers.EPK
                     return View("/Views/App/26/Page/40.cshtml");
                 }
             }
-            return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
+            return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
         }
 
         public ActionResult Delete(int id)
@@ -192,13 +207,13 @@ namespace FSS.Omnius.Controllers.EPK
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
-                e.GetDynamicTable("Orders").Remove(id);
+                e.GetDynamicTable("Periodicals").Remove(id);
                 e.Application.SaveChanges();
-                return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
+                return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
             }
             catch (Exception)
             {
-                return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
+                return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
             }
         }
     }

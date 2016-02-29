@@ -211,7 +211,11 @@
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
+    <Compile Include="Controllers\EPK\FormsController.cs" />
+    <Compile Include="Controllers\EPK\Heap_OrdersController.cs" />
+    <Compile Include="Controllers\EPK\IntervalsController.cs" />
     <Compile Include="Controllers\EPK\OrdersController.cs" />
+    <Compile Include="Controllers\EPK\PeriodicalsController.cs" />
     <Compile Include="Controllers\EPK\SuppliersController.cs" />
     <Compile Include="Controllers\EPK\TypesController.cs" />
     <Compile Include="Controllers\EPK\WF_StatesController.cs" />
@@ -1509,16 +1513,15 @@
     <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
     <Content Include="Views\Shared\_ApplicationMenu.cshtml" />
     <Content Include="Views\Shared\_OmniusUserAppLayout.cshtml" />
-    <Content Include="Views\EPK\_Layout.cshtml" />
-    <Content Include="Views\EPK\Orders\Index.cshtml" />
-    <Content Include="Views\EPK\Orders\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Companies\" />
+    <Folder Include="Views\Forms\" />
+    <Folder Include="Views\Heap_Orders\" />
+    <Folder Include="Views\Interval\" />
+    <Folder Include="Views\Periodicals\" />
     <Folder Include="Views\Persona\Users\" />
-    <Folder Include="Views\Suppliers\" />
-    <Folder Include="Views\Types\" />
-    <Folder Include="Views\WF_States\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
