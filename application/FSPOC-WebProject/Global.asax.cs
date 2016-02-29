@@ -25,7 +25,7 @@ namespace FSPOC_WebProject
             RouteConfig        .RegisterRoutes(RouteTable.Routes);
             BundleConfig       .RegisterBundles(BundleTable.Bundles);
             App_Start.AppStart.AppInitialize();
-            //Logger.Log.Info("Omnius start");
+            Logger.Log.Info("Omnius starts");
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace FSPOC_WebProject
         protected void Application_EndRequest()
         {
             // error
-            if (new int[] { 403, 404 }.Contains(Context.Response.StatusCode))
+            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode))
             {
                 Response.Clear();
 

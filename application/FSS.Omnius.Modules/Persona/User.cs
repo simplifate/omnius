@@ -32,8 +32,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
             // update
             ADgroup.RemoveDuplicated(oldADgroups, newADgroups, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            // uncoment on PRODUCTION !!!
-            //context.ADgroup_Users.RemoveRange(oldADgroups);
+            context.ADgroup_Users.RemoveRange(oldADgroups);
             context.ADgroup_Users.AddRange(newADgroups);
         }
 

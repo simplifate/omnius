@@ -7,7 +7,8 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.Tapestry_AttributeRules", "BlockId", "dbo.Tapestry_Blocks");
+            DropForeignKey("dbo.Tapestry_AttributeRules", "FK_dbo.Tapestry_AttributeRoles_dbo.Tapestry_Blocks_BlockId");
+            //DropForeignKey("dbo.Tapestry_AttributeRules", "BlockId", "dbo.Tapestry_Blocks");
             DropForeignKey("dbo.Tapestry_WorkFlow", "Id", "dbo.Tapestry_Blocks");
             DropForeignKey("dbo.Tapestry_ActionRule", "SourceBlockId", "dbo.Tapestry_Blocks");
             DropForeignKey("dbo.Tapestry_ActionRule", "TargetBlockId", "dbo.Tapestry_Blocks");
