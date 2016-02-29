@@ -16,9 +16,9 @@ namespace FSS.Omnius.Controllers.EPK
             E.Entitron e = HttpContext.GetCORE().Entitron;
             var periodicals = e.GetDynamicTable("Periodicals").Select().ToList();
             var suppliers = e.GetDynamicTable("Suppliers").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_supplier"])))).ToList();
-            var types = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_types"]).ToList())).ToList();
-            var intervals = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_interval"]).ToList())).ToList();
-            var forms = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_form"]).ToList())).ToList();
+            var types = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_types"])))).ToList();
+            var intervals = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_interval"])))).ToList();
+            var forms = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_periodical_form"])))).ToList();
 
             DataTable data = new DataTable();
             data.Columns.Add("Id");
