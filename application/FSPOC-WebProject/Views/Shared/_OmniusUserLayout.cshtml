@@ -1,4 +1,7 @@
-﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+﻿@using FSS.Omnius.Modules.Entitron.Entity
+@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
+@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,9 +53,8 @@
             <div class="fa fa-circle-o"></div>
         </div>
         <div class="appList">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
-            {
-                <a href="/Mozaic/ViewPage/Index/15">
+            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+                <a href="/EPK">
                     <div class="appListItem">
                         <div class="icon fa @(app.Icon)"></div>
                         <div class="appName">@app.DisplayName</div>
@@ -71,21 +73,32 @@
     </div>
     <div id="userLeftBarMinimized">
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
-        <div class="appIconToolbar">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
-            {
-                <a href="/Mozaic/ViewPage/Index/15">
-                    <div class="appIconToolbarItem">
-                        <div class="icon fa @(app.Icon)"></div>
-                    </div>
-                </a>
-            }
-        </div>
+        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
+            <div class="appIconToolbar">
+                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+                    <a href="/EPK">
+                        <div class="appIconToolbarItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
     </div>
     <div id="userContentArea">
         @RenderBody()
     </div>
-
+    @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
+    {
+        <div id="modalRepository">
+            @foreach (var modal in (List<MozaicModalMetadataItem>)ViewData["AssociatedModals"])
+            {
+                <div class="modalRepositoryItem" id="modalDialog@(modal.Id)" title="@(modal.Title)" modalWidth="@(modal.Width + 300)" modalHeight="@(modal.Height)">
+                    @Html.Partial(modal.PartialViewPath)
+                </div>
+            }
+        </div>
+    }
     @Scripts.Render("~/bundles/OmniusScripts")
     @RenderSection("scripts", required: false)
 </body>

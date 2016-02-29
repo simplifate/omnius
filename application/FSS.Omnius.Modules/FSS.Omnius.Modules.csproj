@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +12,7 @@
     <AssemblyName>FSS.Omnius.Modules</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>88c073b2</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,6 +77,7 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -101,7 +104,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
@@ -134,6 +136,7 @@
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
+    <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />
     <Compile Include="Entitron\Entity\Master\Application.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferTapestryAction.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\AjaxTransferMenuOrder.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AttributeRule.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Block.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Css.cs" />
@@ -173,6 +177,7 @@
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferWorkflowHeader.cs" />
     <Compile Include="Entitron\Entity\Tapestry\AjaxTransferWorkflowSate.cs" />
     <Compile Include="Entitron\Entity\Tapestry\PreBlockAction.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\ResourceMappingPair.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlow.cs" />
@@ -185,9 +190,11 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_IndexColumns.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificDefault.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificIndex.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
@@ -544,6 +551,50 @@
     <Compile Include="Migrations\201602241930322_Tapestry designer attributes.Designer.cs">
       <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602251931211_Mozaic - modal settings.cs" />
+    <Compile Include="Migrations\201602251931211_Mozaic - modal settings.Designer.cs">
+      <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602260939055_index.cs" />
+    <Compile Include="Migrations\201602260939055_index.Designer.cs">
+      <DependentUpon>201602260939055_index.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.cs" />
+    <Compile Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.Designer.cs">
+      <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261107177_actionId.cs" />
+    <Compile Include="Migrations\201602261107177_actionId.Designer.cs">
+      <DependentUpon>201602261107177_actionId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261157443_removingWorkFlow.cs" />
+    <Compile Include="Migrations\201602261157443_removingWorkFlow.Designer.cs">
+      <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261557034_Column filter.cs" />
+    <Compile Include="Migrations\201602261557034_Column filter.Designer.cs">
+      <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261618180_app_metablock.cs" />
+    <Compile Include="Migrations\201602261618180_app_metablock.Designer.cs">
+      <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602261918013_Action variables.cs" />
+    <Compile Include="Migrations\201602261918013_Action variables.Designer.cs">
+      <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602271145300_states.cs" />
+    <Compile Include="Migrations\201602271145300_states.Designer.cs">
+      <DependentUpon>201602271145300_states.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602271658212_stateId_condition.cs" />
+    <Compile Include="Migrations\201602271658212_stateId_condition.Designer.cs">
+      <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602280928491_TargetIdAdded.cs" />
+    <Compile Include="Migrations\201602280928491_TargetIdAdded.Designer.cs">
+      <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -574,6 +625,8 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\NoAction.cs" />
+    <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
@@ -841,6 +894,39 @@
     <EmbeddedResource Include="Migrations\201602241930322_Tapestry designer attributes.resx">
       <DependentUpon>201602241930322_Tapestry designer attributes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251931211_Mozaic - modal settings.resx">
+      <DependentUpon>201602251931211_Mozaic - modal settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602260939055_index.resx">
+      <DependentUpon>201602260939055_index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261106254_Tapestry - ResourceMappingPairs.resx">
+      <DependentUpon>201602261106254_Tapestry - ResourceMappingPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261107177_actionId.resx">
+      <DependentUpon>201602261107177_actionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261157443_removingWorkFlow.resx">
+      <DependentUpon>201602261157443_removingWorkFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261557034_Column filter.resx">
+      <DependentUpon>201602261557034_Column filter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261618180_app_metablock.resx">
+      <DependentUpon>201602261618180_app_metablock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602261918013_Action variables.resx">
+      <DependentUpon>201602261918013_Action variables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602271145300_states.resx">
+      <DependentUpon>201602271145300_states.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602271658212_stateId_condition.resx">
+      <DependentUpon>201602271658212_stateId_condition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602280928491_TargetIdAdded.resx">
+      <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Nexus\Proxy\" />
@@ -866,6 +952,12 @@
     </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

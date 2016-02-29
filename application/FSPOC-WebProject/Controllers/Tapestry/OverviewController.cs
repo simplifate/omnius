@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System.Collections.Generic;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
@@ -70,25 +71,55 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             return View();
         }
 
-        public ActionResult MenuOrder(int parentMetablockId)
+        public ActionResult MenuOrder(int id)
         {
             TapestryDesignerMetablock parentMetablock;
+            List<TapestryDesignerMenuItem> model = new List<TapestryDesignerMenuItem>();
+
             using (DBEntities context = new DBEntities()) 
             {
                 parentMetablock = context.TapestryDesignerMetablocks.Include("Metablocks")
                                                                     .Include("Blocks")
-                                                                    .Where(m => m.Id == parentMetablockId).First();
+                                                                    .Include("ParentMetablock")
+                                                                    .Where(m => m.Id == id).First();
 
-                Application app = GetApplication(parentMetablock, parentMetablockId, context);
+                foreach(TapestryDesignerMetablock mb in parentMetablock.Metablocks) {
+                    model.Add(new TapestryDesignerMenuItem()
+                    {
+                        Id = mb.Id,
+                        Name = mb.Name,
+                        IsInitial = mb.IsInitial,
+                        IsInMenu = mb.IsInMenu,
+                        MenuOrder = mb.MenuOrder,
+                        IsBlock = false,
+                        IsMetablock = true
+                    });
+                }
+                foreach(TapestryDesignerBlock b in parentMetablock.Blocks) {
+                    model.Add(new TapestryDesignerMenuItem()
+                    {
+                        Id = b.Id,
+                        Name = b.Name,
+                        IsInitial = b.IsInitial,
+                        IsInMenu = b.IsInMenu,
+                        MenuOrder = b.MenuOrder,
+                        IsBlock = true,
+                        IsMetablock = false
+                    });
+                }
+
+                Application app = GetApplication(parentMetablock, id, context);
                 ViewData["appName"] = app.Name;
+                ViewData["metablockName"] = parentMetablock.Name;
+                ViewData["metablockId"] = parentMetablock.Id;
             }
 
-            return View(parentMetablock);
+            return View("~/Views/Tapestry/Overview/MenuOrder.cshtml", model);
         }
-
+        
         private Application GetApplication(TapestryDesignerMetablock parentMetablock, int metablockId, DBEntities context)
         {
-            int rootMetablockId = metablockId;
+            int? rootMetablockId = metablockId;
             if (parentMetablock != null) {
                 while (parentMetablock.ParentMetablock != null) {
                     parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")

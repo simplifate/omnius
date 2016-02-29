@@ -27,25 +27,18 @@
         <div id="libraryCategory-Roles" class="libraryCategory">
             <div class="libraryCategoryHeader">Role</div>
         </div>
-        <div class="libraryCategory">
+
+        <div id="libraryCategory-States" class="libraryCategory">
             <div class="libraryCategoryHeader">Stavy</div>
-            <div libId="27" libType="state" class="libraryItem">Nový</div>
-            <div libId="28" libType="state" class="libraryItem">Rozpracováno</div>
-            <div libId="29" libType="state" class="libraryItem">Vyřízeno</div>
-            <div libId="30" libType="state" class="libraryItem">Zrušeno</div>
-            <div libId="31" libType="state" class="libraryItem">Nevyfakturováno</div>
-            <div libId="32" libType="state" class="libraryItem">Změna</div>
-            <div libId="40" libType="state" class="libraryItem">Připraveno ke schválení</div>
-            <div libId="41" libType="state" class="libraryItem">Schváleno</div>
-            <div libId="43" libType="state" class="libraryItem">Zamítnuto</div>
-            <div class="libraryItem">Placeholder</div>
-            <div class="libraryItem">Placeholder</div>
         </div>
         <div id="libraryCategory-Targets" class="libraryCategory">
             <div class="libraryCategoryHeader">Cíle</div>
         </div>
         <div id="libraryCategory-Templates" class="libraryCategory">
             <div class="libraryCategoryHeader">Šablony</div>
+        </div>
+        <div id="libraryCategory-Integration" class="libraryCategory">
+            <div class="libraryCategoryHeader">Integrace</div>
         </div>
     </div>
 </div>
@@ -256,4 +249,32 @@
             <tr></tr>
         </tbody>
     </table>
+</div>
+<div id="action-properties-dialog" title="Action properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="input-variables">Input variables</label></td>
+                    <td><input type="text" name="input-variables" id="input-variables" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="output-variables">Output variables</label></td>
+                    <td><input type="text" name="output-variables" id="output-variables" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="gateway-x-properties-dialog" title="Condition properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="gateway-x-condition">Condition</label></td>
+                    <td><input type="text" name="gateway-x-condition" id="gateway-x-condition" value="" class="text ui-widget-content ui-corner-all" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
 </div>

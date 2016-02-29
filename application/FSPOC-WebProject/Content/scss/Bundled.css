@@ -609,6 +609,9 @@ body.adminAppModule #appBuildResults {
   font-weight: 100;
   color: #0065a9; }
 
+#modalRepository {
+  display: none; }
+
 .mozaicForm .uic {
   position: absolute; }
 
@@ -749,6 +752,18 @@ body.adminAppModule #appBuildResults {
   width: 250px;
   border: 1px solid #4b8ad1;
   height: auto !important; }
+  .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
+    display: none; }
+  .mozaicForm .data-table .actionIcons {
+    width: 60px; }
+    .mozaicForm .data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 5px;
+      cursor: pointer; }
+    .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    .mozaicForm .data-table .actionIcons .fa-remove {
+      color: #e3001b; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;
@@ -1013,7 +1028,7 @@ body.tapestryModule #lowerPanel {
       body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea {
         position: absolute;
         top: 3px;
-        left: 360px;
+        left: 400px;
         right: 14px;
         text-align: right; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea button {
@@ -1192,6 +1207,18 @@ body.tapestryModule .ui-dialog {
   user-select: none;
   cursor: default;
   z-index: 2000; }
+
+body.tapestryModule .ui-dialog-content .formTable label {
+  margin-bottom: 0px; }
+
+body.tapestryModule .ui-dialog-content .formTable tr {
+  height: 32px; }
+
+body.tapestryModule .ui-dialog-content .formTable td {
+  vertical-align: middle; }
+
+body.tapestryModule .ui-dialog-content .formTable tr td:first-child {
+  width: 175px; }
 
 body.tapestryModule .columnFilterTable {
   width: 100%; }
@@ -1404,6 +1431,81 @@ body.overviewModule {
   body.overviewModule .btn-tapestry:hover {
     background-color: #2ddef9;
     color: black; }
+
+body.menuOrderModule {
+  background-color: #3a3a3a; }
+  body.menuOrderModule #overviewHeaderArea {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    left: 235px;
+    top: 82px;
+    text-align: left;
+    font-size: 18px;
+    color: white; }
+    body.menuOrderModule #overviewHeaderArea #headerAppName, body.menuOrderModule #overviewHeaderArea #headerMetablockName {
+      font-weight: bold;
+      color: #f1a57a; }
+  body.menuOrderModule #overviewPanel {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    background-color: #c0c0c0;
+    left: 229px;
+    top: 140px;
+    right: 150px;
+    bottom: 0px;
+    overflow: scroll; }
+    body.menuOrderModule #overviewPanel .scrollArea {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      transform-origin: 0px 0px;
+      min-width: 4500px;
+      min-height: 2500px; }
+    body.menuOrderModule #overviewPanel .sortable li.btn {
+      float: none;
+      display: block;
+      margin-bottom: 5px;
+      width: 300px;
+      text-align: left;
+      padding-top: 10px !important; }
+      body.menuOrderModule #overviewPanel .sortable li.btn:hover {
+        cursor: ns-resize; }
+      body.menuOrderModule #overviewPanel .sortable li.btn.not-in-menu {
+        font-style: italic;
+        color: #666; }
+      body.menuOrderModule #overviewPanel .sortable li.btn.is-initial {
+        font-weight: bold; }
+  body.menuOrderModule #overviewMenu {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    right: 0px;
+    top: 140px;
+    bottom: 0px;
+    width: 150px;
+    background-color: #3a3a3a;
+    padding-left: 15px;
+    padding-right: 15px; }
+    body.menuOrderModule #overviewMenu button {
+      display: block;
+      margin-bottom: 15px; }
+    body.menuOrderModule #overviewMenu hr {
+      border-color: #457fa9;
+      border-width: 2px; }
 
 body.dbDesignerModule {
   background-color: #e0e0e0;
@@ -2465,6 +2567,21 @@ body.mozaicEditorModule {
         margin-right: 14px; }
       body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
         margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel {
+      position: absolute;
+      left: 440px;
+      top: 200px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel label {
+        color: white; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #currentPageIsModal {
+        margin-left: 6px;
+        margin-right: 18px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput, body.mozaicEditorModule #upperPanel #modalControlPanel #modalHeightInput {
+        width: 60px;
+        height: 18px;
+        margin-left: 6px; }
+      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput {
+        margin-right: 18px; }
   body.mozaicEditorModule #lowerPanel {
     top: 370px;
     padding: 0px; }
@@ -2546,13 +2663,22 @@ body.mozaicEditorModule {
     top: 0px;
     bottom: 0px;
     background-color: white; }
+    body.mozaicEditorModule #mozaicPageContainer #modalSizeVisualization {
+      position: absolute;
+      width: 400px;
+      height: 300px;
+      display: none;
+      border-right: 2px solid red;
+      border-bottom: 2px solid red;
+      z-index: 10; }
   body.mozaicEditorModule #mozaicPageContainer.showGrid {
     background-image: url(/Content/images/MozaicGrid.png);
     background-repeat: repeat; }
   body.mozaicEditorModule .toolboxItem, body.mozaicEditorModule .uic {
     cursor: default; }
   body.mozaicEditorModule .uic {
-    position: absolute; }
+    position: absolute;
+    z-index: 20; }
   body.mozaicEditorModule .button-simple {
     background-color: #4b8ad1;
     border: 1px solid #4b8ad1;
@@ -2672,6 +2798,13 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .data-table {
     width: 250px;
     border: 1px solid #4b8ad1; }
+    body.mozaicEditorModule .data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 5px; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-edit, body.mozaicEditorModule .data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-remove {
+      color: #e3001b; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {

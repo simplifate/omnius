@@ -37,17 +37,17 @@ namespace FSS.Omnius.Modules.Entitron
                 if (_properties.ContainsKey(propertyName))
                     return _idProperties[_properties[propertyName]];
 
-                // foreign keys
-                DBForeignKey fk = null;
-                if (_foreignKeys.ContainsKey(propertyName) || (fk = table.foreignKeys.FirstOrDefault(fkey => fkey.name == propertyName)) != null)
-                {
-                    if (!_foreignKeys.ContainsKey(propertyName))
-                    {
-                        // read data
-                        _foreignKeys[propertyName] = fk.targetTable.Select().where(c => c.column(fk.targetColumn).Equal(this[fk.sourceColumn])).ToList();
-                    }
+                if (table != null) {
+                    // foreign keys
+                    DBForeignKey fk = null;
+                    if (_foreignKeys.ContainsKey(propertyName) || (fk = table.foreignKeys.FirstOrDefault(fkey => fkey.name == propertyName)) != null) {
+                        if (!_foreignKeys.ContainsKey(propertyName)) {
+                            // read data
+                            _foreignKeys[propertyName] = fk.targetTable.Select().where(c => c.column(fk.targetColumn).Equal(this[fk.sourceColumn])).ToList();
+                        }
 
-                    return _foreignKeys[propertyName];
+                        return _foreignKeys[propertyName];
+                    }
                 }
 
                 // nothing...

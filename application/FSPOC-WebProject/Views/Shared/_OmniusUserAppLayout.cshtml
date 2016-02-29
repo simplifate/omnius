@@ -1,0 +1,81 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity
+@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
+@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title RWE OSS</title>
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/css/jquery.dataTables.min.css")
+    @Styles.Render("~/Content/scss/Bundled.min.css")
+    @RenderSection("Styles", false)
+</head>
+<body class="@Page.ModuleClass userLayout">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/CommonLibraries")
+    <div id="userTopBar">
+        <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
+        @if (Context.GetLoggedUser().isAdmin())
+        {
+            <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
+        }
+        <a href="/Master/Home/Help"><div class="icon" id="helpIcon"><div class="fa fa-question-circle"></div></div></a>
+
+        <div class="clientTitleArea">
+            <div class="clientTitle">Oss Portál</div>
+        </div>
+
+        <div class="userBox">
+            <div class="notificationIcon fa fa-bell"></div>
+            <div class="avatar"></div>
+            <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
+            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+        </div>
+        <div class="searchBox">
+            <div class="searchArrow"><div class="fa fa-caret-down"></div></div>
+            <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField" />
+            <div class="searchIcon fa fa-search"></div>
+        </div>
+    </div>
+    <div id="userLeftBar">
+        <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
+        <div class="widgetLabel">Menu</div>
+        @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/menuLayout.cshtml")
+    </div>
+    <div id="userLeftBarMinimized">
+        <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
+        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
+            <div class="appIconToolbar">
+                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+                    <a href="/Tapestry/Run?AppName=@app.Name">
+                        <div class="appIconToolbarItem">
+                            <div class="icon fa @(app.Icon)"></div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+    <div id="userContentArea">
+        @RenderBody()
+    </div>
+    @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
+    {
+        <div id="modalRepository">
+            @foreach (var modal in (List<MozaicModalMetadataItem>)ViewData["AssociatedModals"])
+            {
+                <div class="modalRepositoryItem" id="modalDialog@(modal.Id)" title="@(modal.Title)" modalWidth="@(modal.Width + 300)" modalHeight="@(modal.Height)">
+                    @Html.Partial(modal.PartialViewPath)
+                </div>
+            }
+        </div>
+    }
+    @Scripts.Render("~/bundles/OmniusScripts")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

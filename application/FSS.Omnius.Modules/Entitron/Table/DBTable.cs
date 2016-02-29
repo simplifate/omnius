@@ -242,7 +242,7 @@ namespace FSS.Omnius.Modules.Entitron
 
             foreach (DBColumn column in columns)
             {
-                if(item.HasProperty(column.ColumnId)) { 
+                if(item.HasProperty(column.Name)) { 
                     data.Add(column, item[column.Name]);
                 }
             }
@@ -504,6 +504,38 @@ namespace FSS.Omnius.Modules.Entitron
                 where = whereClause
             });
             return this;
+        }
+        public DBIndex GetIndex(string indexName)
+        {
+            SqlQuery_SelectSpecificIndex query = new SqlQuery_SelectSpecificIndex() { indexName = indexName, table = this,application = Application};
+            DBIndex index = new DBIndex();
+            if (query.ExecuteWithRead() != null)
+            {
+                foreach (DBItem i in query.ExecuteWithRead())
+                {
+                    index.indexName = (string)(i["IndexName"]);
+                    index.table = this;
+                    if (i["isUnique"].ToString() == "" || i["isUnique"].ToString() == "False")
+                    {
+                        index.isUnique = false;
+                    }
+                    else
+                    {
+                        index.isUnique = true;
+                    }
+
+                    SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = indexName, table = this, application = this.Application };
+                    if (query2.ExecuteWithRead() != null)
+                    {
+                        index.columns = new List<DBColumn>();
+                        foreach (DBItem item in query2.ExecuteWithRead())
+                        {
+                            index.columns.Add(columns.SingleOrDefault(x => x.Name == (string)(item["ColName"])));
+                        }
+                    }
+                }
+            }
+            return index;
         }
 
         public List<string> getConstraints(bool isDisabled)

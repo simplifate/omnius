@@ -177,6 +177,14 @@
                         newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                             + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
                         newItem.addClass(currentItemData.TypeClass);
+                        if (currentItemData.ActionId != null)
+                            newItem.attr('actionId', currentItemData.ActionId);
+                        if (currentItemData.InputVariables != null)
+                            newItem.data('inputVariables', currentItemData.InputVariables);
+                        if (currentItemData.OutputVariables != null)
+                            newItem.data('outputVariables', currentItemData.OutputVariables);
+                        if (currentItemData.ComponentId != null)
+                            newItem.data('componentId', currentItemData.ComponentId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
@@ -190,6 +198,8 @@
                             newSymbol.attr("endpoints", "final");
                         else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
                             newSymbol.attr("endpoints", "gateway");
+                        if (currentSymbolData.Condition != null)
+                            newSymbol.attr("condition", currentSymbolData.Condition);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newSymbol);
                         AddToJsPlumb(newSymbol);
@@ -288,7 +298,7 @@
                     for(i = 0; i < data.Items.length; i++)
                     {
                         var action = data.Items[i];
-                        newLibItem = $('<div libId="' + action.Id + '" libType="action" class="libraryItem">' + action.Name + '</div>');
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="action" class="libraryItem" actionId="' + action.Id + '">' + action.Name + '</div>');
                         $('#libraryCategory-Actions').append(newLibItem);
                     }
                 }
@@ -309,6 +319,22 @@
                 }
             });
 
+            $('#libraryCategory-States .libraryItem').remove();
+            url = "/api/Persona/app-states/" + appId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.States.length; i++) {
+                        state = data.States[i];
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
+                        $('#libraryCategory-States').append(newLibItem);
+                    }
+                }
+            });
+
+
             $('#libraryCategory-Targets .libraryItem').remove();
             url = "/api/tapestry/apps/" + appId + "/blocks";
             $.ajax({
@@ -318,7 +344,7 @@
                 success: function(data) {
                     for(i = 0; i < data.ListItems.length; i++) {
                         var item = data.ListItems[i];
-                        newLibItem = $('<div libId="' + item.Id + '" libType="target" class="libraryItem">' + item.Name + '</div>');
+                        newLibItem = $('<div libId="' + ++lastLibId + '" libType="target" class="libraryItem" targetId="' + item.Id + '">' + item.Name + '</div>');
                         $('#libraryCategory-Targets').append(newLibItem);
                     }
                 }
@@ -338,6 +364,32 @@
                 }
             });
 
+            $('#libraryCategory-Integration .libraryItem').remove();
+            url = "/api/nexus/" + appId + "/gateways";
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.Ldap.length; i++) {
+                        var item = $('<div libId="' + data.Ldap[i].Id + '" libType="ldap" class="libraryItem">LDAP: ' + data.Ldap[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.WS.length; i++) {
+                        var item = $('<div libId="' + data.WS[i].Id + '" libType="ws" libSubType="' + data.WS[i].Type + '" class="libraryItem">WS: ' + data.WS[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.SMTP.length; i++) {
+                        var item = $('<div libId="' + data.SMTP[i].Id + '" libType="smtp" class="libraryItem">SMTP: ' + data.SMTP[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                    for (i = 0; i < data.WebDAV.length; i++) {
+                        var item = $('<div libId="' + data.WebDAV[i].Id + '" libType="webdav" class="libraryItem">WebDAV: ' + data.WebDAV[i].Name + '</div>');
+                        $('#libraryCategory-Integration').append(item);
+                    }
+                }
+            });
+            
             AssociatedPageIds = data.AssociatedPageIds;
             $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
             $("#libraryCategory-UI .libraryItem").remove();

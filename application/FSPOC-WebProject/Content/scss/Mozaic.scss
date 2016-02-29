@@ -52,6 +52,27 @@ body.mozaicEditorModule {
                 margin-left: 6px;
             }
         }
+        #modalControlPanel {
+            position: absolute;
+            left: 440px;
+            top: 200px;
+
+            label {
+                color: white;
+            }
+            #currentPageIsModal {
+                margin-left: 6px;
+                margin-right: 18px;
+            }
+            #modalWidthInput, #modalHeightInput {
+                width: 60px;
+                height: 18px;
+                margin-left: 6px;
+            }
+            #modalWidthInput {
+                margin-right: 18px;
+            }
+        }
     }
 
     #lowerPanel {
@@ -140,6 +161,16 @@ body.mozaicEditorModule {
         top: 0px;
         bottom: 0px;
         background-color: white;
+
+        #modalSizeVisualization {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            display: none;
+            border-right: 2px solid red;
+            border-bottom: 2px solid red;
+            z-index: 10;
+        }
     }
     #mozaicPageContainer.showGrid {
         background-image: url(/Content/images/MozaicGrid.png);
@@ -150,6 +181,7 @@ body.mozaicEditorModule {
     }
     .uic {
         position: absolute;
+        z-index: 20;
     }
     .button-simple {
         background-color: #4b8ad1;
@@ -296,6 +328,19 @@ body.mozaicEditorModule {
     .data-table {
         width: 250px;
         border: 1px solid #4b8ad1;
+
+        .actionIcons {
+            .fa {
+                font-size: 16px;
+                margin-right: 5px;
+            }
+            .fa-edit, .fa-search {
+                color: #0065a9;
+            }
+            .fa-remove {
+                color: #e3001b;
+            }
+        }
     } 
     .uic.ui-draggable-dragging {
         z-index: 500;

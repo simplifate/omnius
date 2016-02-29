@@ -7,6 +7,9 @@ using System.Linq;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity;
 using TapestryModule = FSS.Omnius.Modules.Tapestry;
+using System.Collections.Generic;
+using System.IO;
+using System.Data;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -58,6 +61,72 @@ namespace FSS.Omnius.Controllers.Tapestry
             foreach(var pair in results.outputData)
             {
                 ViewData.Add(pair);
+            }
+
+            using (var context = new DBEntities())
+            {
+                foreach (var resourceMappingPair in block.ResourceMappingPairs)
+                {
+                    DataTable dataSource = new DataTable();
+                    if (resourceMappingPair.Source.TableId != null)
+                    {
+                        string tableName = context.DbTables.Find(resourceMappingPair.Source.TableId).Name;
+                        core.Entitron.AppId = block.WorkFlow.ApplicationId;
+                        var entitronTable = core.Entitron.GetDynamicTable(tableName);
+                        List<string> columnFilter = null;
+                        bool getAllColumns = true;
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
+                        {
+                            columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
+                            getAllColumns = false;
+                        }
+
+                        var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
+                        dataSource.Columns.Add("hiddenId");
+                        foreach (var entitronColumn in entitronColumnList)
+                        {
+                            if(getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                dataSource.Columns.Add(entitronColumn.Name);
+                        }
+                        var entitronRowList = entitronTable.Select().ToList();
+                        foreach (var entitronRow in entitronRowList)
+                        {
+                            var newRow = dataSource.NewRow();
+                            newRow["hiddenId"] = entitronRow["id"];
+                            foreach (var entitronColumn in entitronColumnList)
+                            {
+                                if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                {
+                                    if(entitronColumn.type == "bit")
+                                    {
+                                        if ((bool)entitronRow[entitronColumn.Name] == true)
+                                            newRow[entitronColumn.Name] = "Ano";
+                                        else
+                                            newRow[entitronColumn.Name] = "Ne";
+                                    }
+                                    else
+                                        newRow[entitronColumn.Name] = entitronRow[entitronColumn.Name];
+                                }
+                            }
+                            if(!dataSource.Columns.Contains("IsActive") || (string)newRow["IsActive"] == "Ano")
+                                dataSource.Rows.Add(newRow);
+                        }
+
+                    }
+                    if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions")
+                    {
+                        ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
+                    }
+                    else if (resourceMappingPair.TargetType == "dropdown-select")
+                    {
+                        var dropdownDictionary = new Dictionary<int, string>();
+                        foreach(DataRow datarow in dataSource.Rows)
+                        {
+                            dropdownDictionary.Add(int.Parse((string)datarow["id"]), (string)datarow["Name"]);
+                        }
+                        ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
+                    }
+                }
             }
 
             // show

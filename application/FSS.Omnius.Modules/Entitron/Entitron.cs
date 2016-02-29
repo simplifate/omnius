@@ -10,7 +10,7 @@ namespace FSS.Omnius.Modules.Entitron
     using Entity;
     using Entity.CORE;
     using Entity.Master;
-
+    using Table;
     [NotMapped]
     public class Entitron : Module
     {
@@ -65,6 +65,14 @@ namespace FSS.Omnius.Modules.Entitron
                 throw new ArgumentNullException("Application");
 
             return Application.GetTable(tableName);
+        }
+
+        public DBView GetDynamicView(string viewName)
+        {
+            if (Application == null)
+                throw new ArgumentNullException("Application");
+
+            return Application.GetView(viewName);
         }
 
         public DBItem GetDynamicItem(string tableName, int modelId)

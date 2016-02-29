@@ -213,10 +213,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     public partial class TapestryDesignerWorkflowItem : WFitem
     {
         public string Label { get; set; }
+        public int? ActionId { get; set; }
+        public string InputVariables { get; set; }
+        public string OutputVariables { get; set; }
+        public int? StateId { get; set; }
+        public int? TargetId { get; set; }
+        public string ComponentId { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
     public partial class TapestryDesignerWorkflowSymbol : WFitem
     {
+        public string Condition { get; set; }
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
     public class BlockToolboxState
@@ -289,7 +296,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    }
     //}
     [Table("TapestryDesigner_Connections")]
-    public class TapestryDesignerConnection
+    public partial class TapestryDesignerConnection
     {
         public int Id { get; set; }
         public int Source { get; set; }
@@ -312,4 +319,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    public string Name { get; set; }
     //    public string Value { get; set; }
     //}
+
+    public class TapestryDesignerMenuItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string SubMenu { get; set; }
+        public int MenuOrder { get; set; }
+        public int Level { get; set; }
+        public bool IsBlock { get; set; }
+        public bool IsMetablock { get; set; }
+        public bool IsInMenu { get; set; }
+        public bool IsInitial { get; set; }
+        public int? BlockId { get; set; }
+    }
 }

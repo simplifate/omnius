@@ -56,6 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
         public virtual DbSet<MozaicEditorPage> MozaicEditorPages { get; set; }
+        public virtual DbSet<MozaicEditorComponent> MozaicEditorComponents { get; set; }
 
         // Nexus
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
@@ -245,6 +246,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
+                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs);
+
+            modelBuilder.Entity<Block>()
                 .HasMany<ActionRule>(e => e.SourceTo_ActionRules)
                 .WithRequired(e => e.SourceBlock)
                 .HasForeignKey(e => e.SourceBlockId);
@@ -303,9 +307,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<Application>()
                         .HasMany(e => e.DatabaseDesignerSchemeCommits);
 
-            modelBuilder.Entity<Application>()
-                .HasOptional(s => s.TapestryDesignerRootMetablock)
-                .WithOptionalDependent(s => s.ParentApp);
+            modelBuilder.Entity<TapestryDesignerMetablock>()
+                .HasOptional(s => s.ParentApp)
+                .WithOptionalDependent(s => s.TapestryDesignerRootMetablock);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock);

@@ -17,6 +17,15 @@
                         CurrentItem = item;
                         tableAttributePropertiesDialog.dialog("open");
                     }
+                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
+                    {
+                        CurrentItem = item;
+                        gatewayXPropertiesDialog.dialog("open");
+                    }
                     else {
                         alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
                     }

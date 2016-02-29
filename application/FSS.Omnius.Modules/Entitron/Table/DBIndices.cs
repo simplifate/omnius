@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron.Sql;
 
@@ -26,8 +27,26 @@ namespace FSS.Omnius.Modules.Entitron
                         DBIndex index = new DBIndex()
                         {
                             table = _table,
-                            indexName = (string)i["IndexName"]
+                            indexName = (string)i["IndexName"],
                         };
+
+                        if (i["isUnique"].ToString() == "" || i["isUnique"].ToString() == "False")
+                        {
+                            index.isUnique = false;
+                        }
+                        else
+                        {
+                            index.isUnique = true;
+                        }
+
+                        SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = index.indexName, table = table, application = table.Application};
+                        if (query2.ExecuteWithRead() == null)
+                        {
+                            foreach (DBItem item in query2.ExecuteWithRead())
+                            {
+                                index.columns.Add(table.columns.SingleOrDefault(x => x.Name == Convert.ToString(item["ColName"])));
+                            }
+                        }
                         Add(index);
                     }
                 }
@@ -60,5 +79,6 @@ namespace FSS.Omnius.Modules.Entitron
             Remove(this.SingleOrDefault(i => i.indexName == indexName));
             return this;
         }
+
     }
 }

@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Logger;
@@ -105,6 +107,45 @@ namespace FSPOC_WebProject.Controllers.Persona
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+
+        [Route("api/Persona/app-states/{appId}")]
+        [HttpGet]
+        public AjaxPersonaAppstates LoadAppStates(int appId)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    AjaxPersonaAppstates result = new AjaxPersonaAppstates();
+                    var entitron = new CORE().Entitron;
+                    entitron.AppId = appId;
+                    var table = entitron.GetDynamicTable("WF_states");
+                    if (table != null)
+                    {
+                        var statesList =
+                            table.Select().ToList();
+
+                        foreach (var state in statesList)
+                        {
+                            result.States.Add(new AjaxPersonaAppRoles_State()
+                            {
+                                Id = Convert.ToInt32(state["id"]),
+                                Name = Convert.ToString(state["name"])
+                            });
+                        }
+                    }
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Persona: error loading app states (GET api/persona/app-states). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
+
 
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -23,8 +23,7 @@
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>fc1943c4</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,10 +69,9 @@
       <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -87,7 +85,6 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -214,6 +211,14 @@
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
+    <Compile Include="Controllers\EPK\FormsController.cs" />
+    <Compile Include="Controllers\EPK\Heap_OrdersController.cs" />
+    <Compile Include="Controllers\EPK\IntervalsController.cs" />
+    <Compile Include="Controllers\EPK\OrdersController.cs" />
+    <Compile Include="Controllers\EPK\PeriodicalsController.cs" />
+    <Compile Include="Controllers\EPK\SuppliersController.cs" />
+    <Compile Include="Controllers\EPK\TypesController.cs" />
+    <Compile Include="Controllers\EPK\WF_StatesController.cs" />
     <Compile Include="Controllers\Hermes\HermesApiController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
@@ -231,6 +236,7 @@
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
+    <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\PersonaAuthorize.cs" />
@@ -343,6 +349,7 @@
     <Content Include="Content\scss\Bundled.min.css">
       <DependentUpon>Bundled.css</DependentUpon>
     </Content>
+    <Content Include="Content\scss\MenuOrder.scss" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1349,6 +1356,7 @@
     <Content Include="Scripts\Overview\Dialogs.js" />
     <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\Load.js" />
+    <Content Include="Scripts\Overview\MenuOrder.js" />
     <Content Include="Scripts\Overview\Save.js" />
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
     <Content Include="Scripts\Persona\Init.js" />
@@ -1503,6 +1511,8 @@
     <Content Include="Views\Persona\Account\AjaxIndex.cshtml" />
     <Content Include="Views\Master\AppAdminManager\BuildApp.cshtml" />
     <Content Include="Views\Tapestry\Overview\MenuOrder.cshtml" />
+    <Content Include="Views\Shared\_ApplicationMenu.cshtml" />
+    <Content Include="Views\Shared\_OmniusUserAppLayout.cshtml" />
     <Content Include="Views\Mozaic\EPK\10.cshtml" />
     <Content Include="Views\Mozaic\EPK\11.cshtml" />
     <Content Include="Views\Mozaic\EPK\12.cshtml" />
@@ -1528,6 +1538,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Companies\" />
+    <Folder Include="Views\Forms\" />
+    <Folder Include="Views\Heap_Orders\" />
+    <Folder Include="Views\Interval\" />
+    <Folder Include="Views\Periodicals\" />
     <Folder Include="Views\Persona\Users\" />
   </ItemGroup>
   <ItemGroup>
@@ -1578,8 +1593,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

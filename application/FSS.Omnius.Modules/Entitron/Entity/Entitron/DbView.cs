@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
@@ -12,6 +13,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public int PositionY { get; set; }
 
         public int DbSchemeCommitId { get; set; }
+        [JsonIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }

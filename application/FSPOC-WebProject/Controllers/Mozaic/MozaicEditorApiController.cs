@@ -15,7 +15,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
     {
         [Route("api/mozaic-editor/apps/{appId}/pages")]
         [HttpGet]
-        public IEnumerable<AjaxMozaicEditorPageHeader> GetPageList(int appId)
+        public IEnumerable<AjaxMozaicEditorPageHeader> GetAppPageList(int appId)
         {
             var result = new List<AjaxMozaicEditorPageHeader>();
             using (var context = new DBEntities())
@@ -25,13 +25,12 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     result.Add(new AjaxMozaicEditorPageHeader
                     {
                         Id = page.Id,
-                        Name = page.Name
+                        Name = page.Name ?? "Unnamed"
                     });
                 }
             }
             return result;
         }
-
         [Route("api/mozaic-editor/apps/{appId}/pages/{pageId}")]
         [HttpGet]
         public AjaxMozaicEditorPage GetPage(int appId, int pageId)
@@ -39,10 +38,18 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             using (var context = new DBEntities())
             {
                 var requestedPage = context.MozaicEditorPages.Find(pageId);
+
+                // TODO: replace with real error checking
+                if (requestedPage == null)
+                    return new AjaxMozaicEditorPage();
+
                 var result = new AjaxMozaicEditorPage
                 {
                     Id = requestedPage.Id,
-                    Name = requestedPage.Name
+                    Name = requestedPage.Name ?? "Nepojmenovaná stránka",
+                    IsModal = requestedPage.IsModal,
+                    ModalWidth = requestedPage.ModalWidth,
+                    ModalHeight = requestedPage.ModalHeight
                 };
                 foreach (var component in requestedPage.Components)
                 {
@@ -94,6 +101,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var requestedPage = context.MozaicEditorPages.Find(pageId);
                 deleteComponents(requestedPage, context);
                 requestedPage.Name = postData.Name;
+                requestedPage.IsModal = postData.IsModal;
+                requestedPage.ModalWidth = postData.ModalWidth;
+                requestedPage.ModalHeight = postData.ModalHeight;
                 foreach (var ajaxComponent in postData.Components)
                     requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent));
                 context.SaveChanges();

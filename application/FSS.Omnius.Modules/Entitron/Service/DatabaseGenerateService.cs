@@ -128,6 +128,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             entitronTable.DropConstraint(defaultConstraint.Keys.First());
                             break;
                         }
+
                     }//end foreach efColumn
 
                 }//end updating table columns
@@ -135,22 +136,28 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
                 //set indeces
 
-                //list of index names, which are in scheme, but not in database
-                List<string> newIndeces = efTable.Indices.Select(x => "index_" + x.Name.ToLower())
-                    .Except(entitronTable.indices.Select(x => x.indexName.ToLower())).ToList();
+                if (efTable.Indices.Count != 0)
+                {
+                    foreach (DbIndex i in efTable.Indices)
+                    {
+                        DBIndex index = entitronTable.GetIndex(i.Name);
+                        if (index==null)
+                        {
+                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
+                        }
+                        else if(index.isUnique!=i.Unique || index.columns.Select(x=>x.Name)!=i.ColumnNames.Split(',').ToList())
+                        {
+                            entitronTable.indices.DropFromDB(index.indexName);
+                            entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
+                        }
+                    }
+                }
+                e.Application.SaveChanges();
 
                 //list of index names, which are in database, but not in scheme
                 List<string> deletedIndeces = entitronTable.indices.Select(x => x.indexName.ToLower())
                     .Except(efTable.Indices.Select(x => "index_" + x.Name.ToLower())).ToList();
 
-                //creating new indeces
-                foreach (string indexName in newIndeces)
-                {
-                    DbIndex index = efTable.Indices.SingleOrDefault(x => "index_" + x.Name.ToLower() == indexName.ToLower());
-
-                    entitronTable.indices.AddToDB(index.Name, new List<string>(index.ColumnNames.Split(',')), index.Unique);
-                }
-                e.Application.SaveChanges();
 
                 //droping new indeces
                 foreach (string indexName in deletedIndeces)

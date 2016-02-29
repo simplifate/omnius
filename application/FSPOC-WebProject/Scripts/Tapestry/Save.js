@@ -73,8 +73,14 @@ function SaveBlock(commitMessage) {
                     Label: currentItem.find(".itemLabel").text(),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
+                    StateId: currentItem.attr("stateid"),
+                    TargetId: currentItem.attr("targetid"), 
                     PositionX: parseInt(currentItem.css("left")),
-                    PositionY: parseInt(currentItem.css("top"))
+                    PositionY: parseInt(currentItem.css("top")),
+                    ActionId: currentItem.attr("actionid"),
+                    InputVariables: currentItem.data("inputVariables"),
+                    OutputVariables: currentItem.data("outputVariables"),
+                    ComponentId: currentItem.attr("componentId")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
@@ -87,7 +93,8 @@ function SaveBlock(commitMessage) {
                     Type: currentSymbol.attr("symbolType"),
                     DialogType: currentSymbol.attr("dialogType"),
                     PositionX: parseInt(currentSymbol.css("left")),
-                    PositionY: parseInt(currentSymbol.css("top"))
+                    PositionY: parseInt(currentSymbol.css("top")),
+                    Condition: currentSymbol.data("condition")
                 });
             });
             swimlanesArray.push({

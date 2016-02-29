@@ -18,6 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             TargetTo_ActionRules = new HashSet<ActionRule>();
             AttributeRules = new HashSet<AttributeRule>();
             InitForWorkFlow = new HashSet<WorkFlow>();
+            ResourceMappingPairs = new HashSet<ResourceMappingPair>();
         }
 
         public int Id { get; set; }
@@ -47,7 +48,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttributeRule> AttributeRules { get; set; }
-        
+
+        public virtual ICollection<ResourceMappingPair> ResourceMappingPairs { get; set; }
+
         public virtual WorkFlow WorkFlow { get; set; }
         
         public virtual ICollection<WorkFlow> InitForWorkFlow { get; set; }

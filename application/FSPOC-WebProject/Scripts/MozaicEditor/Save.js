@@ -29,8 +29,10 @@
         }
         else if (currentUic.hasClass("dropdown-select"))
             type = "dropdown-select";
+        else if (currentUic.hasClass("data-table-with-actions"))
+            type = "data-table-with-actions";
         else if (currentUic.hasClass("data-table"))
-            type = "data-table";
+            type = "data-table-read-only";
         else
             type = "control";
 
@@ -65,6 +67,9 @@
     });
     postData = {
         Name: $("#headerPageName").text(),
+        IsModal: $("#currentPageIsModal").prop("checked"),
+        ModalWidth: $("#modalWidthInput").val(),
+        ModalHeight: $("#modalHeightInput").val(),
         Components: componentArray
     }
     appId = $("#currentAppId").val();

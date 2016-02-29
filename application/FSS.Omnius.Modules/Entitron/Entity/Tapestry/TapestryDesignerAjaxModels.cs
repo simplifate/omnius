@@ -168,6 +168,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SwimlaneIndex { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int? ActionId { get; set; }
+        public int? StateId { get; set; }
+        public int? TargetId { get; set; }
+        public string InputVariables { get; set; }
+        public string OutputVariables { get; set; }
+        public string ComponentId { get; set; }
     }
     public class AjaxTapestryDesignerWorkflowSymbol
     {
@@ -177,13 +183,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SwimlaneIndex { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public string Condition { get; set; }
     }
     public class AjaxTapestryDesignerSwimlane
     {
         public int Id { get; set; }
         public int SwimlaneIndex { get; set; }
         public int Height { get; set; }
-
         public List<string> Roles { get; set; }
         public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
         public List<AjaxTapestryDesignerWorkflowSymbol> WorkflowSymbols { get; set; }

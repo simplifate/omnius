@@ -40,6 +40,11 @@
         <label for="gridShow">Zobrazit:</label>
         <input type="checkbox" id="gridShowCheckbox" name="gridShow" />
     </div>
+    <div id="modalControlPanel">
+        <label>Uložit jako modal:</label><input type="checkbox" id="currentPageIsModal"/>
+        <label>Šířka:</label><input type="text" id="modalWidthInput" value="400"/>
+        <label>Výška:</label><input type="text" id="modalHeightInput" value="300"/>
+    </div>
 </div>
 <div id="minimizedUpperPanel">
     <div class="panelLabel">Mozaic visual editor</div>
@@ -50,37 +55,38 @@
         <div id="mozaicLeftBar">
             <div class="leftBarHeader">Paleta</div>
             <div id="hideMozaicTooboxIcon" class="fa fa-caret-left"></div>
-                <hr class="toolboxCategoryHr" />
-                <div class="toolboxCategoryLabel">Buttons</div>
-                <button class="toolboxItem button-simple button-large" uicClasses="button-simple button-large">Large button</button>
-                <button class="toolboxItem button-dropdown button-large" uicClasses="button-dropdown button-large">Large button<i class="fa fa-caret-down"></i></button>
-                <button class="toolboxItem button-simple button-small" uicClasses="button-simple button-small">Small button</button>
-                <button class="toolboxItem button-dropdown button-small" uicClasses="button-dropdown button-small">Small button<i class="fa fa-caret-down"></i></button>
-                <button class="toolboxItem button-simple button-extra-small" uicClasses="button-simple button-extra-small">Extra small</button>
-                <button class="toolboxItem button-dropdown button-extra-small" uicClasses="button-dropdown button-extra-small">Extra small<i class="fa fa-caret-down"></i></button>
-                <hr class="toolboxCategoryHr" />
-                <div class="toolboxCategoryLabel">Inputs</div>
-                <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
-                <textarea placeholder="Multiline input" class="toolboxItem input-multiline" uicClasses="input-multiline"></textarea>
-                <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
-                <div class="toolboxItem checkbox-control" uicClasses="checkbox-control">
-                    <input type="checkbox" /><span class="checkbox-label">Checkbox</span>
-                </div>
-                <hr class="toolboxCategoryHr" />
-                <div class="toolboxCategoryLabel">Labels</div>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Buttons</div>
+            <button class="toolboxItem button-simple button-large" uicClasses="button-simple button-large">Large button</button>
+            <button class="toolboxItem button-dropdown button-large" uicClasses="button-dropdown button-large">Large button<i class="fa fa-caret-down"></i></button>
+            <button class="toolboxItem button-simple button-small" uicClasses="button-simple button-small">Small button</button>
+            <button class="toolboxItem button-dropdown button-small" uicClasses="button-dropdown button-small">Small button<i class="fa fa-caret-down"></i></button>
+            <button class="toolboxItem button-simple button-extra-small" uicClasses="button-simple button-extra-small">Extra small</button>
+            <button class="toolboxItem button-dropdown button-extra-small" uicClasses="button-dropdown button-extra-small">Extra small<i class="fa fa-caret-down"></i></button>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Inputs</div>
+            <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
+            <input type="text" placeholder="Date input with datepicker" class="toolboxItem input-single-line" uicClasses="input-single-line input-with-datepicker" />
+            <textarea placeholder="Multiline input" class="toolboxItem input-multiline" uicClasses="input-multiline"></textarea>
+            <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
+            <div class="toolboxItem checkbox-control" uicClasses="checkbox-control">
+                <input type="checkbox" /><span class="checkbox-label">Checkbox</span>
+            </div>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Labels</div>
             <div class="toolboxItem form-heading" uicClasses="form-heading">Form heading</div>
-                <div class="toolboxItem control-label" uicClasses="control-label">Control label</div>
-                <div class="toolboxItem info-container" uicClasses="info-container">
-                    <div class="fa fa-info-circle info-container-icon"></div>
-                    <div class="info-container-header">Info container</div>
-                    <div class="info-container-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                </div>
-                <hr class="toolboxCategoryHr" />
-                <div class="toolboxCategoryLabel">Navigation</div>
-                <div class="toolboxItem breadcrumb-navigation" uicClasses="breadcrumb-navigation">
-                    <div class="app-icon fa fa-question"></div>
-                    <div class="nav-text">APP NAME &gt; Nav</div>
-                </div>
+            <div class="toolboxItem control-label" uicClasses="control-label">Control label</div>
+            <div class="toolboxItem info-container" uicClasses="info-container">
+                <div class="fa fa-info-circle info-container-icon"></div>
+                <div class="info-container-header">Info container</div>
+                <div class="info-container-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Navigation</div>
+            <div class="toolboxItem breadcrumb-navigation" uicClasses="breadcrumb-navigation">
+                <div class="app-icon fa fa-question"></div>
+                <div class="nav-text">APP NAME &gt; Nav</div>
+            </div>
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Tables</div>
             <table class="toolboxItem data-table display" uicClasses="data-table display">
@@ -109,12 +115,40 @@
                     </tr>
                 </tbody>
             </table>
+            <table class="toolboxItem data-table data-table-with-actions display" uicClasses="data-table data-table-with-actions display">
+                <thead>
+                    <tr>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Value1</td>
+                        <td>Value2</td>
+                        <td class="actionIcons"><i class="fa fa-edit rowEditAction"></i><i class="fa fa-search rowDetailsAction"></i><i class="fa fa-remove rowDeleteAction"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Value3</td>
+                        <td>Value4</td>
+                        <td class="actionIcons"><i class="fa fa-edit"></i><i class="fa fa-search"></i><i class="fa fa-remove"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Value5</td>
+                        <td>Value6</td>
+                        <td class="actionIcons"><i class="fa fa-edit"></i><i class="fa fa-search"></i><i class="fa fa-remove"></i></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
         <div id="mozaicLeftBarMinimized">
             <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
             <div class="leftBarHeader">Paleta</div>
         </div>
         <div id="mozaicPageContainer">
+            <div id="modalSizeVisualization"></div>
         </div>
     </div>
 </div>

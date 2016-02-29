@@ -310,7 +310,7 @@ body.tapestryModule {
                 #controlButtonArea {
                     position: absolute;
                     top: 3px;
-                    left: 360px;
+                    left: 400px;
                     right: 14px;
                     text-align: right;
 
@@ -525,6 +525,18 @@ body.tapestryModule {
     .ui-dialog {
         @include no-select();
         z-index: 2000;
+    }
+    .ui-dialog-content .formTable label {
+        margin-bottom: 0px;
+    }
+    .ui-dialog-content .formTable tr {
+        height: 32px;
+    }
+    .ui-dialog-content .formTable td {
+        vertical-align: middle;
+    }
+    .ui-dialog-content .formTable tr td:first-child {
+        width: 175px;
     }
     .columnFilterTable {
         width: 100%;
