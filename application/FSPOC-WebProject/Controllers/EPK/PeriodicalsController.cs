@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Tapestry.Actions.Mozaic;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -61,6 +62,9 @@ namespace FSS.Omnius.Controllers.EPK
             if (fc.AllKeys.Contains("uic991"))
             {
                 return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Create" });
+            }
+            if(fc.AllKeys.Contains("uic990")) {
+                return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Export" });
             }
             return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
         }
@@ -215,6 +219,30 @@ namespace FSS.Omnius.Controllers.EPK
             {
                 return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Index" });
             }
+        }
+
+        public void Export()
+        {
+            ExportToExcelAction export = new ExportToExcelAction();
+
+            Dictionary<string, object> vars = new Dictionary<string, object>();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+            core._form = new FormCollection();
+
+            vars.Add("__CORE__", core);
+            vars.Add("TableName", "Periodicals");
+
+            Dictionary<string, string> foreignKeys = new Dictionary<string, string>();
+            foreignKeys.Add("id_supplier", "Suppliers.name");
+            foreignKeys.Add("id_periodical_types", "Periodical_types.name");
+            foreignKeys.Add("id_periodical_interval", "Periodical_interval.name");
+            foreignKeys.Add("id_periodical_form", "Periodical_forms.name");
+
+            vars.Add("ForeignKeys", foreignKeys);
+
+            Dictionary<string, object> dummy = new Dictionary<string, object>();
+
+            export.InnerRun(vars, dummy, dummy);
         }
     }
 }
