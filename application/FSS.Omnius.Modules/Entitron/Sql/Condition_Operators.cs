@@ -135,12 +135,12 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return new Condition_concat(_conditions);
         }
-        public Condition_concat In(List<object> values)
+        public Condition_concat In(IEnumerable<object> values)
         {
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
             
-            _conditions._sql += string.Format(" [{0}] IN ({1})", _conditions._columnName, string.Join(", ", values));
+            _conditions._sql += string.Format(" WHERE [{0}] IN ({1})", _conditions._columnName, string.Join(", ", values.Select(v => v.ToString())));
 
             return new Condition_concat(_conditions);
         }

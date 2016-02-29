@@ -15,6 +15,11 @@ namespace FSS.Omnius.Controllers.EPK
         {
             E.Entitron e = HttpContext.GetCORE().Entitron;
             var periodicals = e.GetDynamicTable("Periodicals").Select().ToList();
+            var suppliers = e.GetDynamicTable("Suppliers").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_supplier"])))).ToList();
+            var types = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_types"]).ToList())).ToList();
+            var intervals = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_interval"]).ToList())).ToList();
+            var forms = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("id").In(periodicals.Select(i => i["id_periodical_form"]).ToList())).ToList();
+
             DataTable data = new DataTable();
             data.Columns.Add("Id");
             data.Columns.Add("Dodavatel");
@@ -29,23 +34,18 @@ namespace FSS.Omnius.Controllers.EPK
             data.Columns.Add("Forma");
             foreach (E.DBItem periodical in periodicals)
             {
-                var supplier = e.GetDynamicItem("Suppliers", (int)periodical["id_supplier"]);
-                var type = e.GetDynamicItem("Periodical_types", (int)periodical["id_periodical_types"]);
-                var interval = e.GetDynamicItem("Periodical_interval", (int)periodical["id_periodical_interval"]);
-                var form = e.GetDynamicItem("Periodical_forms", (int)periodical["id_periodical_form"]);
-
                 data.Rows.Add(
                     periodical["id"],
-                    supplier["name"],
-                    type["name"],
-                    interval["name"],
+                    suppliers.Single(s => (int)s["id"] == (int)periodical["id_supplier"])["name"],
+                    types.Single(s => (int)s["id"] == (int)periodical["id_periodical_types"])["name"],
+                    intervals.Single(s => (int)s["id"] == (int)periodical["id_periodical_interval"])["name"],
                     periodical["name"],
                     periodical["active"],
                     periodical["tentatively_net_of_VAT10"],
                     periodical["tentatively_net_of_VAT20"],
                     periodical["post_net_of_VAT20"],
                     periodical["note"],
-                    form["name"]
+                    forms.Single(s => (int)s["id"] == (int)periodical["id_periodical_form"])["name"]
                 );
             }
             ViewData["tableData_data-table-with-actions4"] = data;
