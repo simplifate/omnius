@@ -66,6 +66,76 @@ namespace FSPOC_WebProject.Controllers.EPK
         }
 
         [PersonaAuthorize(AppId = 26)]
+        public ActionResult Library()
+        {
+            DataTable data = new DataTable();
+            data.Columns.Add(new DataColumn("id") { Caption = "Id" });
+            data.Columns.Add(new DataColumn("date_purchase") { Caption = "Datum objednání" });
+            data.Columns.Add(new DataColumn("client_name") { Caption = "Objednávka pro" });
+            data.Columns.Add(new DataColumn("periodical_name") { Caption = "Název periodika" });
+            data.Columns.Add(new DataColumn("begin_purchase") { Caption = "Počátek objednávky" });
+            data.Columns.Add(new DataColumn("item_count") { Caption = "Počet kusů" });
+            data.Columns.Add(new DataColumn("ship_to_address") { Caption = "Místo doručení" });
+
+            Entitron e = HttpContext.GetCORE().Entitron;
+            DBView view = e.GetDynamicView("Orders_complete_overview");
+            foreach(DBItem row in view.Select().where(v => v.column("other_purchase").Equal("knihovna")).ToList()) {
+                data.Rows.Add(
+                    row["id"],
+                    row["date_purchase"],
+                    row["client_name"],
+                    row["periodical_name"],
+                    row["begin_purchase"],
+                    row["item_count"],
+                    row["ship_to_address"]
+                );
+            }
+
+            ViewData["tableData_data-table"] = data;
+
+            ViewData["appIcon"] = "fa-book";
+            ViewData["appName"] = "Evidence periodik";
+            ViewData["pageName"] = "Objednávky knihovny";
+            return View("/Views/App/26/Page/28.cshtml");
+        }
+
+        [PersonaAuthorize(AppId = 26)]
+        public ActionResult Assistant()
+        {
+            DataTable data = new DataTable();
+            data.Columns.Add(new DataColumn("id") { Caption = "Id" });
+            data.Columns.Add(new DataColumn("id_heap_order") { Caption = "Id hromadné obj." });
+            data.Columns.Add(new DataColumn("client_name") { Caption = "Objednávka pro" });
+            data.Columns.Add(new DataColumn("periodical_name") { Caption = "Název periodika" });
+            data.Columns.Add(new DataColumn("date_purchase") { Caption = "Datum objednání" });
+            data.Columns.Add(new DataColumn("begin_purchase") { Caption = "Počátek objednávky" });
+            data.Columns.Add(new DataColumn("item_count") { Caption = "Počet kusů" });
+            data.Columns.Add(new DataColumn("ship_to_address") { Caption = "Místo doručení" });
+
+            Entitron e = HttpContext.GetCORE().Entitron;
+            DBView view = e.GetDynamicView("Orders_complete_overview");
+            foreach (DBItem row in view.Select().where(v => v.column("other_purchase").Equal("sapid2")).ToList()) {
+                data.Rows.Add(
+                    row["id"],
+                    row["id_heap_order"],
+                    row["client_name"],
+                    row["periodical_name"],
+                    row["date_purchase"],
+                    row["begin_purchase"],
+                    row["item_count"],
+                    row["ship_to_address"]
+                );
+            }
+
+            ViewData["tableData_data-table"] = data;
+
+            ViewData["appIcon"] = "fa-book";
+            ViewData["appName"] = "Evidence periodik";
+            ViewData["pageName"] = "Report pro asistentky";
+            return View("/Views/App/26/Page/29.cshtml");
+        }
+
+        [PersonaAuthorize(AppId = 26)]
         public ActionResult Heap()
         {
             DataTable data = new DataTable();
