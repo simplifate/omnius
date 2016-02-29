@@ -14,21 +14,42 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
+            
+            if(table != null) 
+            {
+                string parTableName = safeAddParam("tableName", table.tableName);
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('SELECT {2} FROM ', @realTableName, ' {3} {4} {5} {6};');" +
-                "exec sp_executesql @sql, N'{7}', {8};", 
-                parAppName,parTableName,
-                (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*",
-                _where == null ? string.Empty : _where.ToString(),
-                string.Join(" ", _join),
-                _group,
-                _order,
-                string.Join(", ", _datatypes.Select(d => "@" + d.Key + " " + d.Value)),
-                string.Join(", ", _datatypes.Select(d => "@" + d.Key))
+                sqlString = string.Format(
+                    "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                    "SET @sql = CONCAT('SELECT {2} FROM ', @realTableName, ' {3} {4} {5} {6};');" +
+                    "exec sp_executesql @sql, N'{7}', {8};",
+                    parAppName, parTableName,
+                    (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*",
+                    _where == null ? string.Empty : _where.ToString(),
+                    string.Join(" ", _join),
+                    _group,
+                    _order,
+                    string.Join(", ", _datatypes.Select(d => "@" + d.Key + " " + d.Value)),
+                    string.Join(", ", _datatypes.Select(d => "@" + d.Key))
                 );
+            }
+            if (view != null) 
+            {
+                sqlString = string.Format(
+                    "DECLARE @sql NVARCHAR(MAX);" +
+                    "SET @sql = 'SELECT {1} FROM {0} {2} {3} {4} {5};';" +
+                    "exec sp_executesql @sql, N'{6}', {7};",
+                    view.dbViewName,
+                    (columns != null && columns.Count > 0) ? string.Join(",", columns) : "*",
+                    _where == null ? string.Empty : _where.ToString(),
+                    string.Join(" ", _join),
+                    _group,
+                    _order,
+                    string.Join(", ", _datatypes.Select(d => "@" + d.Key + " " + d.Value)),
+                    string.Join(", ", _datatypes.Select(d => "@" + d.Key))
+                );
+            }
+            
             
             return base.BaseExecutionWithRead(connection);
         }
@@ -44,7 +65,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     string columnName = reader.GetName(i);
-                    int columnId = table.columns.Single(x => x.Name == columnName).ColumnId;
+                    int columnId = table != null ? table.columns.Single(x => x.Name == columnName).ColumnId : i;
                     newItem.createProperty(columnId, columnName, reader[columnName]);
                 }
 

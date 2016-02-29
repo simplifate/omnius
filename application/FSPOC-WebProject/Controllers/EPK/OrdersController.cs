@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Table;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,14 @@ namespace FSPOC_WebProject.Controllers.EPK
     {
         public ActionResult Index()
         {
-            DBTable table = HttpContext.GetCORE().Entitron.GetDynamicTable("Orders");
+            DBView table = HttpContext.GetCORE().Entitron.GetDynamicView("Orders_complete_overview");
 
             var data = table.Select().ToList();
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Přehled objednávek";
 
-            return View("/Views/App/26/Page/15.cshtml");
+            return View("/Views/App/26/Page/24.cshtml", data);
         }
         public ActionResult Create()
         {

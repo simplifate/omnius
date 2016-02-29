@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Table;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,14 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         public Application application;
         public DBTable table;
+        public DBView view;
 
         protected override void BaseExecution(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");
-            if (table == null)
-                throw new ArgumentNullException("table");
+            if (table == null && view == null)
+                throw new ArgumentNullException("table or view");
 
             base.BaseExecution(connection);
         }
@@ -25,8 +27,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");
-            if (table == null)
-                throw new ArgumentNullException("table");
+            if (table == null && view == null)
+                throw new ArgumentNullException("table or view");
 
             return base.BaseExecutionWithRead(connection);
         }

@@ -66,6 +66,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             return viewNames;
         } 
 
+        public DBView GetView(string viewName)
+        {
+            if (string.IsNullOrWhiteSpace(viewName))
+                throw new ArgumentNullException("viewName");
+
+            SqlQuery_ViewExists query = new SqlQuery_ViewExists()
+            {
+                appName = Name,
+                viewName = viewName
+            };
+
+            // if table exists
+            List<DBItem> views = query.ExecuteWithRead();
+            if (views.Count > 0) {
+                DBItem view = views.First();
+                return new DBView() { Application = this, dbViewName = (string)view["name"] };
+            }
+
+            return null;
+        }
+
         public void SaveChanges()
         {
             queries.ExecuteAll();

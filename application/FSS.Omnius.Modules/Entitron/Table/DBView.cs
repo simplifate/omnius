@@ -14,6 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Table
         public string dbViewName { get; set; }
         public string sql { get; set; }
 
+        public int? viewId { get; set; }
+
         public DBView Create()
         {
             Application.queries.Add(new SqlQuery_ViewCreate()
@@ -61,6 +63,26 @@ namespace FSS.Omnius.Modules.Entitron.Table
                 }
             }
             return false;
+        }
+
+        public DBView()
+        {
+
+        }
+
+        public DBView(int viewId)
+        {
+            this.viewId = viewId;
+        }
+
+        public SqlQuery_Select Select(params string[] columns)
+        {
+            return new SqlQuery_Select()
+            {
+                application = Application,
+                columns = columns.ToList(),
+                view = this
+            };
         }
     }
 }
