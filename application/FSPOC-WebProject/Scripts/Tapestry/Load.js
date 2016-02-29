@@ -165,12 +165,13 @@
                 CreateJsPlumbInstanceForRule(newRule);
                 for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
                     currentSwimlaneData = currentRuleData.Swimlanes[j];
-                    newSwimlane = $('<div class="swimlane" style="height: ' + (100/currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                    newSwimlane = $('<div class="swimlane" style="height: ' + (100 / currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
                         + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
                     newRule.find(".swimlaneArea").append(newSwimlane);
-                    if (currentSwimlaneData.Roles.length > 0) {
-                        newSwimlane.find(".rolePlaceholder").remove();
-                        newSwimlane.find(".swimlaneRolesArea").append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
+                    if (currentSwimlaneData.Roles.length > 0)
+                        newSwimlane.find(".swimlaneRolesArea .rolePlaceholder").remove();
+                    for (k = 0; k < currentSwimlaneData.Roles.length; k++) {
+                        newSwimlane.find(".swimlaneRolesArea .roleItemContainer").append($('<div class="roleItem">' + currentSwimlaneData.Roles[k] + '</div>'));
                     }
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
@@ -211,8 +212,8 @@
                     greedy: true,
                     drop: function (e, ui) {
                         droppedElement = ui.helper.clone();
-                        $(this).find(".rolePlaceholder, .roleItem").remove();
-                        $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                        $(this).find(".rolePlaceholder").remove();
+                        $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                         ui.helper.remove();
                         ChangedSinceLastSave = true;
                     }

@@ -424,7 +424,7 @@ body.tapestryModule {
                             left: 0px;
                             top: 0px;
                             bottom: 0px;
-                            width: 56px;
+                            width: 64px;
                             border-right: 2px solid #bcbbbc;
                             overflow: hidden;
 
@@ -450,24 +450,26 @@ body.tapestryModule {
                                     white-space: nowrap;
                                  }
                             }
-
-                            .roleItem {
+                            .roleItemContainer {
                                 position: absolute;
                                 left: 50%;
                                 top: 50%;
                                 width: auto;
-                                height: 22px;
+                                height: auto;
+                                transform:  translateX(-50%) translateY(-50%) rotate(-90deg);
+                            }
+                            .roleItem {
                                 color: white;
                                 background-color: #db4c91;
                                 font-family: MyriadPro;
                                 font-size: 12px;
                                 text-align: center;
-	                            transform:  translateX(-50%) translateY(-50%) rotate(-90deg);
                                 border-radius: 4px;
                                 overflow: visible;
                                 white-space: nowrap;
-                                padding-left: 6px;
-                                padding-right: 6px;
+                                padding-left: 8px;
+                                padding-right: 8px;
+                                margin: 2px;
                             }
                         }
                         .swimlaneContentArea {
