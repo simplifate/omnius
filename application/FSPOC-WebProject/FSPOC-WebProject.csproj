@@ -216,6 +216,7 @@
     <Compile Include="Controllers\EPK\IntervalsController.cs" />
     <Compile Include="Controllers\EPK\OrdersController.cs" />
     <Compile Include="Controllers\EPK\PeriodicalsController.cs" />
+    <Compile Include="Controllers\EPK\ReportController.cs" />
     <Compile Include="Controllers\EPK\SuppliersController.cs" />
     <Compile Include="Controllers\EPK\TypesController.cs" />
     <Compile Include="Controllers\EPK\WF_StatesController.cs" />
@@ -1522,6 +1523,7 @@
     <Folder Include="Views\Interval\" />
     <Folder Include="Views\Periodicals\" />
     <Folder Include="Views\Persona\Users\" />
+    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
