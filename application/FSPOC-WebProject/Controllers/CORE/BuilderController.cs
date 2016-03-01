@@ -24,10 +24,7 @@ namespace FSS.Omnius.Controllers.CORE
         }
 
 
-        public void BackupApp() {
-            var backupService = new FSS.Omnius.Modules.Entitron.Service.BackupGeneratorService();
-            backupService.ExportApplication(12);
-        }
+      
        
         public ActionResult Create()
         {

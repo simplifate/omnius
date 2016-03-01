@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public int? ApplicationId { get; set; }
 
         public virtual Application Application { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
         public virtual ICollection<PersonaAppRole> AppRoles { get; set; }
     }
