@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
             MozaicEditorPages = new List<MozaicEditorPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
+            DbSchemeLocked = false;
         }
 
         public int Id { get; set; }
@@ -60,6 +61,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         // Workflow, UI and DB designers' data
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
+        public bool DbSchemeLocked { get; set; }
         public virtual TapestryDesignerMetablock TapestryDesignerRootMetablock { get; set; }
     }
 }
