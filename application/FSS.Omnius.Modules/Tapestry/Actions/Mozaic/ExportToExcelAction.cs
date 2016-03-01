@@ -10,6 +10,9 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.IO;
+using System.Data.Entity;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -55,6 +58,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
         }
 
+        public int DBSet { get; private set; }
+
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
         {
             // Init
@@ -63,6 +68,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             // Získáme data podle podmínek
             Entitron.SelectAction selectAction = new Entitron.SelectAction();
             selectAction.InnerRun(vars, outputVars, InvertedInputVars);
+
+            List<DBItem> data = (List<DBItem>)vars["Data"];
 
             // Připravíme CSV
             List<string> rows = new List<string>();
@@ -77,60 +84,116 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 columns = core._form["Columns"].Split(';').ToList();
             }
 
-            string abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            
-            using (MemoryStream stream = new MemoryStream()) 
-            {
-                using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) 
-                {
-                    WorkbookPart bookPart = xls.AddWorkbookPart();
-                    bookPart.Workbook = new Workbook();
-                    bookPart.Workbook.AppendChild<Sheets>(new Sheets());
+            Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
+            Dictionary<string, string> foreignColumnNames = new Dictionary<string, string>();
 
-                    SharedStringTablePart strings = xls.WorkbookPart.AddNewPart<SharedStringTablePart>();
-                    WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
+            using (DBEntities e = new DBEntities()) {
+                if (vars.ContainsKey("ForeignKeys")) {
+                    foreach(KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
+                        foreignData.Add(key.Key, new Dictionary<int, string>());
+                        string[] target = key.Value.Split('.');
+                        string foreignTable = target[0];
+                        string foreignColumn = target[1];
 
-                    int c = 0;
-                    foreach (string column in columns) {
-                        int i = InsertSharedStringItem(column, strings);
-                        Cell cell = InsertCellInWorksheet(abc[c].ToString(), 1, sheetPart);
-                        cell.CellValue = new CellValue(i.ToString());
-                        cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                        c++;
-                    }
-
-                    uint r = 1;
-                    foreach (DBItem item in (List<DBItem>)vars["Data"]) {
-                        c = 0;
-                        r++;
-                        foreach (string column in columns) {
-                            int i = InsertSharedStringItem(item[column].ToString(), strings);
-                            Cell cell = InsertCellInWorksheet(abc[c].ToString(), r, sheetPart);
-                            cell.CellValue = new CellValue(i.ToString());
-                            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                            c++;
+                        foreach(DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
+                            foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
                         }
+
+                        DbColumn foreignDbColumn = e.DbTables.Include("Columns").Where(t => t.Name == foreignTable).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.Where(c => c.Name == foreignColumn).First();
+                        foreignColumnNames[key.Key] = foreignDbColumn.DisplayName ?? foreignDbColumn.Name;
                     }
-                    //sheetPart.Worksheet.Save();
-                    //ystrings.SharedStringTable.Save();
-                    //xls.WorkbookPart.Workbook.Save();
-                    xls.Close();
+                }
+                
+                Dictionary<string, string> columnsDisplayName = new Dictionary<string, string>();
+            
+                string tableName = (string)vars["TableName"];
+                var DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns;
+                
+                string abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            
+                using (MemoryStream stream = new MemoryStream()) 
+                {
+                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) 
+                    {
+                        WorkbookPart bookPart = xls.AddWorkbookPart();
+                        bookPart.Workbook = new Workbook();
+                        bookPart.Workbook.AppendChild<Sheets>(new Sheets());
 
-                    stream.Seek(0, SeekOrigin.Begin);
-                    //new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                        SharedStringTablePart strings = xls.WorkbookPart.AddNewPart<SharedStringTablePart>();
+                        WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
 
-                    //StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                        int c = 0;
+                        foreach (DbColumn col in DBColumns) {
+                            if (columns.Contains(col.Name)) {
+                                string name;
+                                if(foreignColumnNames.ContainsKey(col.Name)) {
+                                    name = foreignColumnNames[col.Name];
+                                }
+                                else {
+                                    name = col.DisplayName ?? col.Name;
+                                }
 
-                    HttpContext context = HttpContext.Current;
-                    HttpResponse response = context.Response;
+                                int i = InsertSharedStringItem(name, strings);
+                                Cell cell = InsertCellInWorksheet(abc[c].ToString(), 1, sheetPart);
+                                cell.CellValue = new CellValue(i.ToString());
+                                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                c++;
+                            }
+                        }
+
+                        uint r = 1;
+                        foreach (DBItem item in (List<DBItem>)vars["Data"]) {
+                            c = 0;
+                            r++;
+
+                            foreach (DbColumn col in DBColumns) {
+                                if(columns.Contains(col.Name)) {
+                                    string value;
+                                    
+                                    if(foreignData.ContainsKey(col.Name)) {
+                                        if(foreignData[col.Name].ContainsKey((int)item[col.Name])) {
+                                            value = foreignData[col.Name][(int)item[col.Name]];
+                                        }
+                                        else {
+                                            value = item[col.Name].ToString();
+                                        }
+                                    }
+                                    else { 
+                                        value = item[col.Name].ToString();
+                                        if(col.Type == "boolean") {
+                                            value = value == "True" ? "Ano" : "Ne";
+                                        }
+                                    }
+
+                                    int i = InsertSharedStringItem(value, strings);
+                                    Cell cell = InsertCellInWorksheet(abc[c].ToString(), r, sheetPart);
+                                    cell.CellValue = new CellValue(i.ToString());
+                                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                    c++;
+                                }
+                            }
+                        }
+                        //sheetPart.Worksheet.Save();
+                        //ystrings.SharedStringTable.Save();
+                        //xls.WorkbookPart.Workbook.Save();
+                        xls.Close();
+
+                        stream.Seek(0, SeekOrigin.Begin);
+                        //new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                        //StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+
+                        HttpContext context = HttpContext.Current;
+                        HttpResponse response = context.Response;
                     
-                    response.Clear();
-                    response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
-                    response.BinaryWrite(stream.ToArray());
-                    response.Flush();
-                    response.Close();
-                    response.End();
+                        response.Clear();
+                        response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
+                        response.BinaryWrite(stream.ToArray());
+                        response.Flush();
+                        response.Close();
+                        response.End();
+                    }
                 }
             }
         }

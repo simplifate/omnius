@@ -118,7 +118,7 @@ namespace FSS.Omnius.Modules.Persona
             string onlyName = username;
             if (domainIndex != -1)
             {
-                serverName = username.Substring(0, domainIndex);
+                serverName = username.Substring(0, domainIndex).ToLower();
                 onlyName = username.Substring(domainIndex + 1);
             }
 

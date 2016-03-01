@@ -3,6 +3,8 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using FSS.Omnius.Modules.Tapestry.Actions.Mozaic;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.EPK
 {
@@ -35,6 +37,9 @@ namespace FSS.Omnius.Controllers.EPK
             if (fc.AllKeys.Contains("uic1020"))
             {
                 return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Create" });
+            }
+            if (fc.AllKeys.Contains("uic1019")) {
+                return RedirectToRoute("EPK", new { Controller = "Suppliers", action = "Export" });
             }
             return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Index" });
         }
@@ -137,6 +142,22 @@ namespace FSS.Omnius.Controllers.EPK
             {
                 return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Index" });
             }
+        }
+
+        public void Export()
+        {
+            ExportToExcelAction export = new ExportToExcelAction();
+
+            Dictionary<string, object> vars = new Dictionary<string, object>();
+            Modules.CORE.CORE core = HttpContext.GetCORE();
+            core._form = new FormCollection();
+
+            vars.Add("__CORE__", core);
+            vars.Add("TableName", "Suppliers");
+
+            Dictionary<string, object> dummy = new Dictionary<string, object>();
+
+            export.InnerRun(vars, dummy, dummy);
         }
     }
 }
