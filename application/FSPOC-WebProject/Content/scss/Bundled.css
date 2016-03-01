@@ -796,13 +796,16 @@ body.tapestryModule #upperPanel {
   body.tapestryModule #upperPanel #tapestryLibraryArea {
     position: absolute;
     left: 66px;
-    top: 96px;
-    width: 1564px;
-    transform-origin: left top;
-    white-space: nowrap; }
+    top: 94px;
+    right: 6px;
+    padding-bottom: 6px;
+    white-space: nowrap;
+    overflow-x: scroll; }
+    body.tapestryModule #upperPanel #tapestryLibraryArea #tapestryLibraryResponsiveArea {
+      transform-origin: left top; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategory {
       min-width: 220px;
-      height: 232px;
+      height: 234px;
       display: inline-block;
       vertical-align: top;
       overflow-x: hidden;
@@ -1028,7 +1031,7 @@ body.tapestryModule #lowerPanel {
       body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea {
         position: absolute;
         top: 3px;
-        left: 400px;
+        left: 45%;
         right: 14px;
         text-align: right; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel #controlButtonArea button {
@@ -1230,42 +1233,42 @@ body.tapestryModule .columnFilterTable {
     margin-right: 5px; }
 
 @media only screen and (max-width: 1855px) {
-  body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.9); }
+  body.tapestryModule #tapestryLibraryResponsiveArea {
+    transform: scale(0.9);
+    height: 210px; }
   body.tapestryModule #upperPanel {
     height: 333px; }
   body.tapestryModule #lowerPanel {
     top: 408px; } }
 
 @media only screen and (max-width: 1710px) {
-  body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.8); }
+  body.tapestryModule #tapestryLibraryResponsiveArea {
+    transform: scale(0.8);
+    height: 187px; }
   body.tapestryModule #upperPanel {
     height: 309px; }
   body.tapestryModule #lowerPanel {
     top: 384px; } }
 
 @media only screen and (max-width: 1555px) {
-  body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.7); }
+  body.tapestryModule #tapestryLibraryResponsiveArea {
+    transform: scale(0.7);
+    height: 163px; }
   body.tapestryModule #upperPanel {
     height: 286px; }
   body.tapestryModule #lowerPanel {
     top: 361px; } }
 
 @media only screen and (max-width: 1395px) {
-  body.tapestryModule #tapestryLibraryArea {
-    transform: scale(0.6); }
+  body.tapestryModule #tapestryLibraryResponsiveArea {
+    transform: scale(0.6);
+    height: 163px; }
+    body.tapestryModule #tapestryLibraryResponsiveArea .libraryCategory {
+      height: 267px !important; }
   body.tapestryModule #upperPanel {
     height: 286px; }
   body.tapestryModule #lowerPanel {
     top: 361px; } }
-
-@media only screen and (max-width: 1325px) {
-  body.tapestryModule #upperPanel {
-    height: 264px; }
-  body.tapestryModule #lowerPanel {
-    top: 339px; } }
 
 body.overviewModule {
   background-color: #3a3a3a; }

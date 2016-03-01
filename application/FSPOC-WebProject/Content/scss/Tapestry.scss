@@ -37,14 +37,18 @@ body.tapestryModule {
         #tapestryLibraryArea {
             position: absolute;
             left: 66px;
-            top: 96px;
-            width: 1564px;
-            transform-origin: left top;
+            top: 94px;
+            right: 6px;
+            padding-bottom: 6px;
             white-space: nowrap;
+            overflow-x: scroll;
 
+            #tapestryLibraryResponsiveArea {
+                transform-origin: left top;
+            }
             .libraryCategory {
                 min-width: 220px;
-                height: 232px;
+                height: 234px;
                 display: inline-block;
                 vertical-align: top;
                 overflow-x: hidden;
@@ -310,7 +314,7 @@ body.tapestryModule {
                 #controlButtonArea {
                     position: absolute;
                     top: 3px;
-                    left: 400px;
+                    left: 45%;
                     right: 14px;
                     text-align: right;
 
@@ -550,8 +554,9 @@ body.tapestryModule {
         }
     }
     @media only screen and (max-width: 1855px) {
-        #tapestryLibraryArea {
+        #tapestryLibraryResponsiveArea {
             transform: scale(0.9);
+            height: 210px;
         }
         #upperPanel {
             height: 333px;
@@ -561,8 +566,9 @@ body.tapestryModule {
         }
     }
     @media only screen and (max-width: 1710px) {
-        #tapestryLibraryArea {
+        #tapestryLibraryResponsiveArea {
             transform: scale(0.8);
+            height: 187px;
         }
         #upperPanel {
             height: 309px;
@@ -572,8 +578,9 @@ body.tapestryModule {
         }
     }
     @media only screen and (max-width: 1555px) {
-        #tapestryLibraryArea {
+        #tapestryLibraryResponsiveArea {
             transform: scale(0.7);
+            height: 163px;
         }
         #upperPanel {
             height: 286px;
@@ -583,22 +590,19 @@ body.tapestryModule {
         }
     }
     @media only screen and (max-width: 1395px) {
-        #tapestryLibraryArea {
+        #tapestryLibraryResponsiveArea {
             transform: scale(0.6);
+            height: 163px;
+
+            .libraryCategory {
+                height: 267px !important;
+            }
         }
         #upperPanel {
             height: 286px;
         }
         #lowerPanel {
             top: 361px;
-        }
-    }
-    @media only screen and (max-width: 1325px) {
-        #upperPanel {
-            height: 264px;
-        }
-        #lowerPanel {
-            top: 339px;
         }
     }
 }
