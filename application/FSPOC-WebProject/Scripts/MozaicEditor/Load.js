@@ -10,6 +10,7 @@
         error: function () { alert("ERROR") },
         success: function (data) {
             $("#mozaicPageContainer .uic").remove();
+            $("#mozaicPageContainer .dataTables_wrapper").remove();
 
             for (i = 0; i < data.Components.length; i++) {
                 cData = data.Components[i];
