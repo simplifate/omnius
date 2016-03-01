@@ -9,7 +9,9 @@
         type: "GET",
         url: url,
         dataType: "json",
-        error: function () { alert("ERROR") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             ChangedSinceLastSave = false;
             $("#resourceRulesPanel .resourceRule").remove();

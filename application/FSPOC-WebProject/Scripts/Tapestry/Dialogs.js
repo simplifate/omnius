@@ -118,7 +118,9 @@ $(function () {
                     type: "GET",
                     url: "/api/tapestry/apps/" + appId + "/blocks",
                     dataType: "json",
-                    error: function () { alert("Error loading block list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         tbody = $("#choose-port-dialog").find("#choice-port tbody:nth-child(2)");
                         for (i = 0; i < data.ListItems.length; i++) {
@@ -198,7 +200,9 @@ $(function () {
                     type: "GET",
                     url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits",
                     dataType: "json",
-                    error: function () { alert("Error loading commit history") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
@@ -291,7 +295,9 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function () { alert("Error loading page list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
                         tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");

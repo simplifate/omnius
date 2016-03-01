@@ -41,8 +41,8 @@
                 success: function () {
                     alert('ok');
                 },
-                error: function () {
-                    alert('error');
+                error: function (request, status, error) {
+                    alert(request.responseText);
                 }
             });
         });

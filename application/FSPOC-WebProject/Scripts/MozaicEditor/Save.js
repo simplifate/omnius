@@ -79,6 +79,8 @@
         url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
         data: postData,
         success: function () { alert("OK") },
-        error: function () { alert("ERROR") }
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
     });
 }

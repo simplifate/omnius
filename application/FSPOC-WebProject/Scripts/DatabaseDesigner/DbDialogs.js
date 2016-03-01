@@ -272,7 +272,9 @@ $(function () {
                     type: "GET",
                     url: "/api/database/apps/" + appId + "/commits",
                     dataType: "json",
-                    error: function () { alert("Error loading commit history") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");

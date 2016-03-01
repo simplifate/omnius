@@ -6,7 +6,9 @@
         type: "GET",
         url: url,
         dataType: "json",
-        error: function () { alert("ERROR") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             $("#headerMetablockName").text(data.Name);
             $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {

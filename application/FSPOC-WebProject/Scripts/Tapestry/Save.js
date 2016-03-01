@@ -158,6 +158,8 @@ function SaveBlock(commitMessage) {
             ChangedSinceLastSave = false;
             alert("OK");
         },
-        error: function () { alert("ERROR") }
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
     });
 }

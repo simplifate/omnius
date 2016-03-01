@@ -88,7 +88,9 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function () { alert("Error loading page list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
                         tbody = choosePageDialog.find("#page-table tbody:nth-child(2)");
@@ -147,7 +149,9 @@ $(function () {
                 type: "POST",
                 url: "/api/mozaic-editor/apps/" + appId + "/pages",
                 data: postData,
-                error: function () { alert("ERROR") },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                },
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());

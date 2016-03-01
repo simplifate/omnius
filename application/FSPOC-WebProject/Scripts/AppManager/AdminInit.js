@@ -38,7 +38,9 @@
                     type: "POST",
                     url: "/api/master/apps/" + appId + "/state",
                     data: postData,
-                    error: function () { alert("ERROR") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function () {
                         thisButton.removeClass("btnDisable");
                         thisButton.addClass("btnEnable");
@@ -57,7 +59,9 @@
                     type: "POST",
                     url: "/api/master/apps/" + appId + "/state",
                     data: postData,
-                    error: function () { alert("ERROR") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function () {
                         thisButton.removeClass("btnEnable");
                         thisButton.addClass("btnDisable");
