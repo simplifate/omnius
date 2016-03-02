@@ -187,7 +187,9 @@
                         if (currentItemData.OutputVariables != null)
                             newItem.data('outputVariables', currentItemData.OutputVariables);
                         if (currentItemData.ComponentId != null)
-                            newItem.data('componentId', currentItemData.ComponentId);
+                            newItem.attr('componentId', currentItemData.ComponentId);
+                        if (currentItemData.TargetId != null)
+                            newItem.attr('targetId', currentItemData.TargetId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);

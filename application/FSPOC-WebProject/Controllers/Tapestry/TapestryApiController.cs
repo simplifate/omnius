@@ -728,7 +728,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
-                    ComponentId = item.ComponentId
+                    ComponentId = item.ComponentId,
+                    TargetId = item.TargetId
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
