@@ -23,9 +23,9 @@ namespace FSS.Omnius.Controllers.CORE
             return Content(jsonText);
         }
 
-        public ActionResult RevoverApp() {
+        public ActionResult RecoverApp()
+        {
             return View();
         }
-        
     }
 }
