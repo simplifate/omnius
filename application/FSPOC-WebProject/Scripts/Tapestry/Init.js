@@ -334,7 +334,7 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLi);
                     }
                     else if (libType == "target") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
 
                         $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLi);
