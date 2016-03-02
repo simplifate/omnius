@@ -68,6 +68,7 @@
                 realId = data.MetablockIdPairs[i].RealId;
                 $("#overviewPanel .metablock[tempId='" + temporaryId + "']").attr("metablockId", realId);
             }
+            ChangedSinceLastSave = false;
             if (callback)
                 callback();
         }

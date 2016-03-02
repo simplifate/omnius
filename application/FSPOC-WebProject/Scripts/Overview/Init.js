@@ -1,5 +1,6 @@
 ﻿var ZoomFactor = 1.0;
 var currentBlock, currentMetablock;
+var ChangedSinceLastSave = false;
 
 $(function () {
     if (CurrentModuleIs("overviewModule")) {
@@ -15,7 +16,13 @@ $(function () {
             addMetablockDialog.dialog("open");
         });
         $("#btnLoad").on("click", function () {
-            LoadMetablock();
+            if (ChangedSinceLastSave)
+                confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+            else
+                confirmed = true;
+            if (confirmed) {
+                LoadMetablock();
+            }
         });
         $("#btnMenuOrder").on("click", function () {
             location.href = "/Tapestry/Overview/MenuOrder/" + $('#currentMetablockId').val();
@@ -36,6 +43,12 @@ $(function () {
                 openMetablockForm.submit();
             });
         });
+        window.onbeforeunload = function () {
+            if (ChangedSinceLastSave)
+                return "Máte neuložené změny, opravdu si přejete opustit metablok?";
+            else
+                return;
+        };
         $("#btnZoomIn").on("click", function () {
             ZoomFactor += 0.1;
             $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
@@ -57,6 +70,7 @@ $(function () {
                     case "delete": {
                         instance.removeAllEndpoints(options.$trigger, true);
                         options.$trigger.remove();
+                        ChangedSinceLastSave = true;
                         break;
                     }
                     case "initial": {
@@ -76,6 +90,7 @@ $(function () {
                             options.$trigger.attr("isInitial", true);
                             options.$trigger.find(".blockInfo").text("Initial");
                         }
+                        ChangedSinceLastSave = true;
                         break;
                     }
                     case "properties": {

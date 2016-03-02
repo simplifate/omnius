@@ -24,7 +24,12 @@
                     + (currentBlockData.IsInitial ? 'Initial' : '') + '</div></div>');
                 newBlock.data("IsInMenu", currentBlockData.IsInMenu);
                 $("#overviewPanel .scrollArea").append(newBlock);
-                instance.draggable(newBlock, { containment: "parent" });
+                instance.draggable(newBlock, {
+                    containment: "parent",
+                    stop: function () {
+                        ChangedSinceLastSave = true;
+                    }
+                });
                 newBlock.on("dblclick", function () {
                     blockToOpen = $(this);
                     SaveMetablock(function () {
@@ -43,7 +48,12 @@
                     + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
                 newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
                 $("#overviewPanel .scrollArea").append(newMetablock);
-                instance.draggable(newMetablock, { containment: "parent" });
+                instance.draggable(newMetablock, {
+                    containment: "parent",
+                    stop: function () {
+                        ChangedSinceLastSave = true;
+                    }
+                });
                 newMetablock.on("dblclick", function () {
                     metablockToOpen = $(this);
                     SaveMetablock(function () {

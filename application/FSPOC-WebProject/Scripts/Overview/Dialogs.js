@@ -46,6 +46,7 @@
                     openBlockForm.submit();
                 });
             });
+            ChangedSinceLastSave = true;
             addBlockDialog.dialog("close");
         }
         addMetablockDialog = $("#add-metablock-dialog").dialog({
@@ -89,6 +90,7 @@
                     openMetablockForm.submit();
                 });
             });
+            ChangedSinceLastSave = true;
             addMetablockDialog.dialog("close");
         }
         renameMetablockDialog = $("#rename-metablock-dialog").dialog({
@@ -118,6 +120,7 @@
         function renameMetablockDialog_SubmitData() {
             renameMetablockDialog.dialog("close");
             $("#headerMetablockName").text(renameMetablockDialog.find("#metablock-name").val());
+            ChangedSinceLastSave = true;
         }
 
         blockPropertiesDialog = $('#block-properties-dialog').dialog({
@@ -163,6 +166,7 @@
             if (blockPropertiesDialog.find("#p-block-name").val().length) {
                 currentBlock.find('.blockName').html(blockPropertiesDialog.find("#p-block-name").val());
             }
+            ChangedSinceLastSave = true;
         }
 
         metablockPropertiesDialog = $('#metablock-properties-dialog').dialog({
@@ -209,6 +213,7 @@
             if (metablockPropertiesDialog.find("#p-metablock-name").val().length) {
                 currentMetablock.find('.metablockName').html(metablockPropertiesDialog.find("#p-metablock-name").val());
             }
+            ChangedSinceLastSave = true;
         }
     }
 });

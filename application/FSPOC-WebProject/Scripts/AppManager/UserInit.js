@@ -63,6 +63,18 @@ $(function () {
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
+            table.on("click", ".rowEditAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                // TODO: call API with this rowId
+            });
+            table.on("click", ".rowDetailsAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                // TODO: call API with this rowId
+            });
+            table.on("click", ".rowDeleteAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                // TODO: call API with this rowId
+            });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {

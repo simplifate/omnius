@@ -16,7 +16,7 @@ $(function () {
             saveDialog.dialog("open");
         });
         $("#btnLoad").on("click", function () {
-            if(ChangedSinceLastSave)
+            if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
             else
                 confirmed = true;
@@ -28,16 +28,23 @@ $(function () {
             historyDialog.dialog("open");
         });
         $("#btnOverview").on("click", function () {
-            if(ChangedSinceLastSave)
+            if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete opustit blok?");
             else
                 confirmed = true;
-            if(confirmed) {
+            if (confirmed) {
+                ChangedSinceLastSave = false;
                 openMetablockForm = $("#openMetablockForm");
                 openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
                 openMetablockForm.submit();
             }
         });
+        window.onbeforeunload = function () {
+            if (ChangedSinceLastSave)
+                return "Máte neuložené změny, opravdu si přejete opustit blok?";
+            else
+                return;
+        };
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
         });
