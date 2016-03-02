@@ -213,6 +213,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithRequired(e => e.AppRole)
                 .HasForeignKey(e => e.RoleId);
 
+            modelBuilder.Entity<Application>()
+                .HasMany<User>(e => e.DesignedBy)
+                .WithOptional(e => e.DesignApp)
+                .HasForeignKey(e => e.DesignAppId);
+
             // Tapestry
             modelBuilder.Entity<Application>()
                 .HasMany<WorkFlow>(e => e.WorkFlows)

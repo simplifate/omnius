@@ -599,6 +599,10 @@
     <Compile Include="Migrations\201603011128489_DbScheme lock.Designer.cs">
       <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603021243591_rememberUserApp.cs" />
+    <Compile Include="Migrations\201603021243591_rememberUserApp.Designer.cs">
+      <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -933,6 +937,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603011128489_DbScheme lock.resx">
       <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021243591_rememberUserApp.resx">
+      <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

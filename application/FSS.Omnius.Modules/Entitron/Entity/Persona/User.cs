@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity.EntityFramework;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
@@ -39,9 +40,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         [Required]
         public DateTime? localExpiresAt { get; set; }
+
+        public int? DesignAppId { get; set; }
         
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
         public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
+        public virtual Application DesignApp { get; set; }
         
 
         public void Update(User updateFrom)
