@@ -224,6 +224,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithRequired(e => e.Application)
                 .HasForeignKey(e => e.ApplicationId);
 
+            modelBuilder.Entity<Application>()
+                .HasMany(e => e.ColumnMetadata)
+                .WithRequired(e => e.Application);
+
             modelBuilder.Entity<WorkFlowType>()
                 .HasMany<WorkFlow>(e => e.WorkFlows)
                 .WithRequired(e => e.Type)

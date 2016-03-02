@@ -64,6 +64,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
         public bool DbSchemeLocked { get; set; }
+        public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         public virtual TapestryDesignerMetablock TapestryDesignerRootMetablock { get; set; }
 
         [JsonIgnore]

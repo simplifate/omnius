@@ -126,6 +126,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Entitron\ColumnMetadata.cs" />
     <Compile Include="Entitron\Entity\Hermes\HermesAjaxTransferEmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />
@@ -605,6 +606,10 @@
     <Compile Include="Migrations\201603021243591_rememberUserApp.Designer.cs">
       <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603021938431_Column metadata.cs" />
+    <Compile Include="Migrations\201603021938431_Column metadata.Designer.cs">
+      <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -942,6 +947,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603021243591_rememberUserApp.resx">
       <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021938431_Column metadata.resx">
+      <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
