@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -14,12 +15,17 @@ namespace FSS.Omnius.Controllers.CORE
     public class ServiceController : Controller
     {
   
-        public void BackupApp()
+        public ActionResult BackupApp(int id)
         {
             var backupService = new FSS.Omnius.Modules.Entitron.Service.BackupGeneratorService();
-            backupService.ExportApplication(12);
+            string jsonText = backupService.ExportApplication(id);
+
+            return Content(jsonText);
         }
 
-      
+        public ActionResult RevoverApp() {
+            return View();
+        }
+        
     }
 }
