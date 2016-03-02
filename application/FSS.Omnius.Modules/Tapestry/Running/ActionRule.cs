@@ -16,8 +16,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// <returns>are conditions ok?</returns>
         public bool CanRun(Dictionary<string, object> tempVars)
         {
+            bool not = Condition[0] == '!';
             KeyValueString condition = new KeyValueString(Condition);
-            return condition.CompareResolved(tempVars);
+            bool result = condition.CompareResolved(tempVars);
+            return not ? !result : result;
         }
 
         /// <summary>
