@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FSS.Omnius.Modules.Entitron.Entity;
+using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
-using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -21,13 +18,17 @@ namespace FSS.Omnius.Controllers.Entitron
                 if (formParams["appId"] != null)
                 {
                     appId = int.Parse(formParams["appId"]);
+                    HttpContext.GetLoggedUser().DesignAppId = appId;
+                    HttpContext.GetCORE().Entitron.GetStaticTables().SaveChanges();
                     appName = context.Applications.Find(appId).DisplayName;
                 }
                 else
                 {
-                    var firstApp = context.Applications.First();
-                    appId = firstApp.Id;
-                    appName = firstApp.DisplayName;
+                    var userApp = HttpContext.GetLoggedUser().DesignApp;
+                    if (userApp == null)
+                        userApp = context.Applications.First();
+                    appId = userApp.Id;
+                    appName = userApp.DisplayName;
                 }
                 ViewData["appId"] = appId;
                 ViewData["appName"] = appName;
