@@ -190,6 +190,8 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Service\IRecoveryService.cs" />
+    <Compile Include="Entitron\Service\RecoveryService.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_IndexColumns.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />

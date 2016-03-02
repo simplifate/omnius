@@ -18,17 +18,22 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
         }
 
-        public void ExportApplication(int id) 
+        public string ExportApplication(int id) 
         {
             using (var context = new DBEntities())
             {
                 var application = context.Applications.SingleOrDefault(a => a.Id == id);
-                if(application != null)
-                { 
-                string jsonOutput = JsonConvert.SerializeObject(application, Formatting.Indented,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                if (application != null)
+                {
+                    string jsonOutput = JsonConvert.SerializeObject(application, Formatting.Indented,
+                    new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                    return jsonOutput;
+                }
+                else {
+                    return "";
                 }
             }
+            
         }
     }
 }
