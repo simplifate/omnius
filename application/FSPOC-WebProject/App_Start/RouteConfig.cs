@@ -96,10 +96,18 @@ namespace FSPOC_WebProject
                 namespaces: new string[] { "FSS.Omnius.Controllers.EPK" }
             );
 
+            // RUN
+            routes.MapRoute(
+                name: "Run",
+                url: "{appName}/{blockId}",
+                defaults: new { controller = "Run", action = "Index", blockId = UrlParameter.Optional, executedBy = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+            );
+
             // Start
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
+                url: "",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Master" }
             );

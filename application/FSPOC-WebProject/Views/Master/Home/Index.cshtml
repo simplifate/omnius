@@ -9,7 +9,7 @@
     @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
     {
         <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
-         left: @(app.PositionX+10)px; top: @(app.PositionY+10)px;" data-target="/EPK">
+         left: @(app.PositionX+10)px; top: @(app.PositionY+10)px;" data-target="/@app.Name">
             <div class="appPanelHeader">
                 <div class="appIcon">
                     <i class="fa @(app.Icon)"></i>

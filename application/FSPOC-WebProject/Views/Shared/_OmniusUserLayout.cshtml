@@ -54,7 +54,7 @@
         </div>
         <div class="appList">
             @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                <a href="/EPK">
+                <a href="/@app.Name">
                     <div class="appListItem">
                         <div class="icon fa @(app.Icon)"></div>
                         <div class="appName">@app.DisplayName</div>
@@ -76,7 +76,7 @@
         @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
             <div class="appIconToolbar">
                 @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                    <a href="/EPK">
+                    <a href="/@app.Name">
                         <div class="appIconToolbarItem">
                             <div class="icon fa @(app.Icon)"></div>
                         </div>

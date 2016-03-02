@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             //run(user, AppName, blockId, buttonId, modelId, fc);
         }
-        public Block run(User user, string AppName, int blockId, string buttonId, int modelId, NameValueCollection fc)
+        public Block run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // init action
             _results.outputData.Add("__CORE__", _CORE);
@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // get actionRule
             ActionRule actionRule = null;
-            ActionRule nextRule = GetActionRule(blockId, buttonId, _results, modelId);
+            ActionRule nextRule = GetActionRule(block, buttonId, _results, modelId);
 
             // get inputs
             string[] keys = fc.AllKeys;
@@ -104,11 +104,11 @@ namespace FSS.Omnius.Modules.Tapestry
         //    modelId = Convert.ToInt32(ids[2]);
         //}
         
-        private ActionRule GetActionRule(int blockId, string buttonId, ActionResultCollection results, int modelId)
+        private ActionRule GetActionRule(Block block, string buttonId, ActionResultCollection results, int modelId)
         {
-            ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.SourceBlockId == blockId && ar.ExecutedBy == buttonId);
+            ActionRule rule = block.SourceTo_ActionRules.SingleOrDefault(ar => ar.ExecutedBy == buttonId);
             if (rule == null)
-                throw new MissingMethodException($"Block [{blockId}] with Executor[{buttonId}] cannot be found");
+                throw new MissingMethodException($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
 
             if (false && !_CORE.User.canUseAction(rule.Id, _CORE.Entitron.GetStaticTables()))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", rule.Id));

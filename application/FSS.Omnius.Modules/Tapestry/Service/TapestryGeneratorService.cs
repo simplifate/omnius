@@ -247,11 +247,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // rights
             AddActionRuleRights(rule, connection.GetTarget(workflowRule, _context).ParentSwimlane);
 
-            WFitem item = connection.GetSource(workflowRule, _context);
+            WFitem item = connection.GetTarget(workflowRule, _context);
             while (item != null && !blockMapping.ContainsKey(item))
             {
-                item = connection.GetTarget(workflowRule, _context);
-
                 // create
                 if (connection.TargetType == 0)
                 {
@@ -267,10 +265,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         rule.ActionRule_Actions.Add(result);
                     }
                     // target
-                    //if (wfItem.TargetId != null)
-                    //{
-                    //    rule.TargetBlock = _blockMapping[wfItem.TargetId];
-                    //}
+                    if (wfItem.TargetId != null)
+                    {
+                        rule.TargetBlock = _blockMapping[wfItem.TargetId.Value];
+                    }
 
                     // TODO: other items
                 }
@@ -289,7 +287,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
 
                 // next connection
-                connection = workflowRule.Connections.First(c => c.Source == connection.Target && c.SourceType == connection.TargetType);
+                connection = workflowRule.Connections.FirstOrDefault(c => c.Source == connection.Target && c.SourceType == connection.TargetType);
+                item = connection != null ? connection.GetTarget(workflowRule, _context) : null;
             }
 
             if (rule.TargetBlock == null)
