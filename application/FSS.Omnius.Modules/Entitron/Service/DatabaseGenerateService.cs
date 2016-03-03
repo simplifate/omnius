@@ -61,7 +61,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         {
                             TableName = efTable.Name,
                             ColumnName = column.Name,
-                            ColumnDisplayName = column.DisplayName
+                            ColumnDisplayName = column.DisplayName ?? column.Name
                         });
                     }
                     entitronTable.Create();
@@ -90,7 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         {
                             TableName = efTable.Name,
                             ColumnName = efColumn.Name,
-                            ColumnDisplayName = efColumn.DisplayName
+                            ColumnDisplayName = efColumn.DisplayName ?? efColumn.Name
                         });
 
                         if (entitronColumn == null)                     //adding new column

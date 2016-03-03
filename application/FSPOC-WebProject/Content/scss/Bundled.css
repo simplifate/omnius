@@ -123,7 +123,8 @@ body.adminAppModule .adminAppTable {
 
 body.adminAppModule #btnAddApp {
   margin-left: 85px;
-  margin-top: 10px; }
+  margin-top: 10px;
+  margin-bottom: 30px; }
 
 body.adminAppModule .formTable label, body.adminAppModule .formTable select {
   margin-bottom: 0px;
