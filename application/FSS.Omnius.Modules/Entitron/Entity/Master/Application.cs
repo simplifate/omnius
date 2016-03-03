@@ -29,6 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             MozaicEditorPages = new List<MozaicEditorPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             DbSchemeLocked = false;
+            ColumnMetadata = new List<ColumnMetadata>();
         }
 
         public int Id { get; set; }

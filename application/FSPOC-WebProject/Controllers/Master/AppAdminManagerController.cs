@@ -63,6 +63,7 @@ namespace FSS.Omnius.Controllers.Master
                         editorPage.CompiledPageId = oldPage.Id;
                     }
                 }
+                context.SaveChanges();
 
                 // Tapestry
                 var service = new TapestryGeneratorService();

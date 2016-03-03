@@ -25,11 +25,17 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 // init
                 C.CORE core = HttpContext.GetCORE();
-                core.Entitron.AppName = appName;
+                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+
+                if (string.IsNullOrEmpty(appName) && block == null) // Requested block Id not found
+                    return new HttpStatusCodeResult(404);
+
+                if (blockId == -1)
+                    core.Entitron.AppName = appName;
+                else
+                    core.Entitron.AppId = block.WorkFlow.ApplicationId;
                 core.User = User.GetLogged(core);
 
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
-            
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
                 ViewData["pageName"] = block.Name;
@@ -37,6 +43,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 foreach (var resourceMappingPair in block.ResourceMappingPairs)
                 {
                     DataTable dataSource = new DataTable();
+                    var columnDisplayNameDictionary = new Dictionary<string, string>();
                     if (resourceMappingPair.Source.TableId != null)
                     {
                         string tableName = context.DbTables.Find(resourceMappingPair.Source.TableId).Name;
@@ -48,19 +55,31 @@ namespace FSS.Omnius.Controllers.Tapestry
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
                             getAllColumns = false;
                         }
-
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
-                        dataSource.Columns.Add("hiddenId");
+                        dataSource.Columns.Add("hiddenId", typeof(int));
                         foreach (var entitronColumn in entitronColumnList)
                         {
                             if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
-                                dataSource.Columns.Add(entitronColumn.Name);
+                            {
+                                var columnMetadata = core.Entitron.Application.ColumnMetadata.FirstOrDefault(c => c.TableName == entitronTable.tableName
+                                    && c.ColumnName == entitronColumn.Name);
+                                if (columnMetadata != null && columnMetadata.ColumnDisplayName != null)
+                                {
+                                    dataSource.Columns.Add(columnMetadata.ColumnDisplayName);
+                                    columnDisplayNameDictionary.Add(entitronColumn.Name, columnMetadata.ColumnDisplayName);
+                                }
+                                else
+                                {
+                                    dataSource.Columns.Add(entitronColumn.Name);
+                                    columnDisplayNameDictionary.Add(entitronColumn.Name, entitronColumn.Name);
+                                }
+                            }
                         }
                         var entitronRowList = entitronTable.Select().ToList();
                         foreach (var entitronRow in entitronRowList)
                         {
                             var newRow = dataSource.NewRow();
-                            newRow["hiddenId"] = entitronRow["id"];
+                            newRow["hiddenId"] = (int)entitronRow["id"];
                             foreach (var entitronColumn in entitronColumnList)
                             {
                                 if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
@@ -68,12 +87,12 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     if (entitronColumn.type == "bit")
                                     {
                                         if ((bool)entitronRow[entitronColumn.Name] == true)
-                                            newRow[entitronColumn.Name] = "Ano";
+                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
                                         else
-                                            newRow[entitronColumn.Name] = "Ne";
+                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
                                     }
                                     else
-                                        newRow[entitronColumn.Name] = entitronRow[entitronColumn.Name];
+                                        newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
                                 }
                             }
                             if (!dataSource.Columns.Contains("IsActive") || (string)newRow["IsActive"] == "Ano")
@@ -90,7 +109,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
                         {
-                            dropdownDictionary.Add(int.Parse((string)datarow["id"]), (string)datarow["Name"]);
+                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["Name"]]);
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }

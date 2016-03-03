@@ -114,9 +114,12 @@ body.adminAppModule .adminAppTable {
   body.adminAppModule .adminAppTable td {
     min-width: 110px; }
   body.adminAppModule .adminAppTable td.actions {
-    width: 345px; }
+    width: 430px;
+    white-space: nowrap; }
     body.adminAppModule .adminAppTable td.actions .btn {
       width: 100px; }
+    body.adminAppModule .adminAppTable td.actions form {
+      display: inline-block; }
 
 body.adminAppModule #btnAddApp {
   margin-left: 85px;

@@ -45,27 +45,27 @@
                     <td>@(app.IsPublished ? "Ano" : "Ne")</td>
                     <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
                     <td class="actions">
-                        @using (Html.BeginForm("BackupApp", "Service", new { @id = app.Id}))
-                        {
-                        <button class="btn btn-default">Exportovat</button>
-                        }
                         @if (app.IsPublished)
                         {
-                            <button class="btn btn-default btnValidate">Aktualizovat</button>
-                            <button class="btn btn-default btnProperties">Vlastnosti</button>
+                            <button class="btn btn-primary btnValidate">Aktualizovat</button>
                             if (app.IsEnabled)
                             {
                                 <button class="btn btn-danger btnToggleEnabled btnDisable">Zakázat</button>
                             }
                             else
                             {
-                                <button class="btn btn-primary btnToggleEnabled btnEnable">Povolit</button>
+                                <button class="btn btn-success btnToggleEnabled btnEnable">Povolit</button>
                             }
+                            <button class="btn btn-default btnProperties">Vlastnosti</button>
                         }
                         else
                         {
                             <button class="btn btn-primary btnValidate">Vytvořit</button>
-                            }
+                        }
+                        @using (Html.BeginForm("BackupApp", "Service", new { @id = app.Id}))
+                        {
+                            <button class="btn btn-default">Exportovat</button>
+                        }
                     </td>
                 </tr>
             }

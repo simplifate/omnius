@@ -26,6 +26,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
         {
             DBEntities ent = new DBEntities();
+            var app = ent.Applications.Find(e.AppId);
+            var oldMetadataRecords = app.ColumnMetadata.ToList();
+            foreach (var record in oldMetadataRecords)
+                app.ColumnMetadata.Remove(record);
+            ent.SaveChanges();
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
@@ -52,6 +57,12 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.Type)).SqlName
                         };
                         entitronTable.columns.Add(col);
+                        app.ColumnMetadata.Add(new ColumnMetadata
+                        {
+                            TableName = efTable.Name,
+                            ColumnName = column.Name,
+                            ColumnDisplayName = column.DisplayName
+                        });
                     }
                     entitronTable.Create();
                     e.Application.SaveChanges();
@@ -74,6 +85,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     {
                         DBColumn entitronColumn = entitronTable.columns
                             .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
+
+                        app.ColumnMetadata.Add(new ColumnMetadata
+                        {
+                            TableName = efTable.Name,
+                            ColumnName = efColumn.Name,
+                            ColumnDisplayName = efColumn.DisplayName
+                        });
 
                         if (entitronColumn == null)                     //adding new column
                         {
@@ -166,7 +184,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 e.Application.SaveChanges();
             } //end foreach efTable
-
+            ent.SaveChanges();
         }
 
         private void GenerateRelation(Entitron e, DbSchemeCommit dbSchemeCommit)
