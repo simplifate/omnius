@@ -421,6 +421,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
+    <Content Include="Scripts\AppManager\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\AppManager\UserInit.js" />
     <Content Include="Scripts\BlockViewModel.js" />

@@ -340,6 +340,8 @@
     display: none;
 }
 .mozaicForm {
+    position: relative;
+
     .uic {
         position: absolute;
     }
@@ -492,4 +494,42 @@
             }
         }
     } 
+}
+.app-alert {
+    width: 100%;
+    font-family: MyriadPro;
+    font-size: 18px;
+    padding: 6px 20px;
+    border-width: 1px;
+    border-style: solid;
+
+    .alertSymbol {
+        padding-right: 10px;
+    }
+    .closeAlertIcon {
+        color: #e3001b;
+        float: right;
+        margin-top: 4px;
+        cursor: pointer;
+    }
+}
+.app-alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.app-alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.app-alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.app-alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
 }

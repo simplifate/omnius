@@ -616,158 +616,182 @@ body.adminAppModule #appBuildResults {
 #modalRepository {
   display: none; }
 
-.mozaicForm .uic {
-  position: absolute; }
-
-.mozaicForm .button-simple {
-  background-color: #4b8ad1;
-  border: 1px solid #4b8ad1;
-  color: white; }
-
-.mozaicForm .button-dropdown {
-  background-color: white;
-  border: 1px solid #4b8ad1;
-  color: #4b8ad1; }
-
-.mozaicForm .button-large {
-  width: 198px;
-  height: 31px;
-  font-size: 18px; }
-  .mozaicForm .button-large .fa-caret-down {
-    padding-left: 7px; }
-
-.mozaicForm .button-small {
-  width: 112px;
-  height: 23px;
-  font-size: 14px; }
-  .mozaicForm .button-small .fa-caret-down {
-    padding-left: 5px; }
-
-.mozaicForm .button-extra-small {
-  width: 78px;
-  height: 19px;
-  font-size: 11px; }
-  .mozaicForm .button-extra-small .fa-caret-down {
-    padding-left: 3px; }
-
-.mozaicForm .input-single-line {
-  width: 220px;
-  height: 25px;
-  border: 1px solid #b8b4ab;
-  padding-left: 6px; }
-
-.mozaicForm .input-multiline {
-  width: 260px;
-  height: 75px;
-  border: 1px solid #b8b4ab;
-  padding-left: 6px; }
-
-.mozaicForm .info-container {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: default;
-  color: #58585a;
-  position: relative;
-  width: 260px; }
-  .mozaicForm .info-container .info-container-icon {
-    position: absolute;
-    left: 0px;
-    top: 4px;
+.mozaicForm {
+  position: relative; }
+  .mozaicForm .uic {
+    position: absolute; }
+  .mozaicForm .button-simple {
+    background-color: #4b8ad1;
+    border: 1px solid #4b8ad1;
+    color: white; }
+  .mozaicForm .button-dropdown {
+    background-color: white;
+    border: 1px solid #4b8ad1;
+    color: #4b8ad1; }
+  .mozaicForm .button-large {
+    width: 198px;
+    height: 31px;
     font-size: 18px; }
-  .mozaicForm .info-container .info-container-header {
-    position: absolute;
-    left: 24px;
-    top: 0px;
-    font-size: 18px; }
-  .mozaicForm .info-container .info-container-body {
-    padding-top: 26px; }
-
-.mozaicForm .breadcrumb-navigation {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: default;
-  background: -webkit-linear-gradient(top, #0086be, #0065a9);
-  background: -o-linear-gradient(bottom, #0086be, #0065a9);
-  background: -moz-linear-gradient(bottom, #0086be, #0065a9);
-  background: linear-gradient(to bottom, #0086be, #0065a9);
-  color: white;
-  font-family: RweTextMedium;
-  padding: 12px 12px;
-  border-radius: 4px;
-  font-size: 11px;
-  width: 200px;
-  height: 55px; }
-  .mozaicForm .breadcrumb-navigation .app-icon {
-    position: absolute;
-    font-weight: 100;
-    width: 30px;
-    height: 30px;
-    padding-top: 3px;
-    border: 2px solid white;
-    border-radius: 50%;
-    font-size: 19px;
-    text-align: center;
-    vertical-align: middle; }
-  .mozaicForm .breadcrumb-navigation .nav-text {
-    position: absolute;
-    left: 54px;
-    font-family: RweHeadlineRegular;
-    font-size: 20px;
+    .mozaicForm .button-large .fa-caret-down {
+      padding-left: 7px; }
+  .mozaicForm .button-small {
+    width: 112px;
+    height: 23px;
+    font-size: 14px; }
+    .mozaicForm .button-small .fa-caret-down {
+      padding-left: 5px; }
+  .mozaicForm .button-extra-small {
+    width: 78px;
+    height: 19px;
+    font-size: 11px; }
+    .mozaicForm .button-extra-small .fa-caret-down {
+      padding-left: 3px; }
+  .mozaicForm .input-single-line {
+    width: 220px;
+    height: 25px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  .mozaicForm .input-multiline {
+    width: 260px;
+    height: 75px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  .mozaicForm .info-container {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    color: #58585a;
+    position: relative;
+    width: 260px; }
+    .mozaicForm .info-container .info-container-icon {
+      position: absolute;
+      left: 0px;
+      top: 4px;
+      font-size: 18px; }
+    .mozaicForm .info-container .info-container-header {
+      position: absolute;
+      left: 24px;
+      top: 0px;
+      font-size: 18px; }
+    .mozaicForm .info-container .info-container-body {
+      padding-top: 26px; }
+  .mozaicForm .breadcrumb-navigation {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 200px;
+    height: 55px; }
+    .mozaicForm .breadcrumb-navigation .app-icon {
+      position: absolute;
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 50%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+    .mozaicForm .breadcrumb-navigation .nav-text {
+      position: absolute;
+      left: 54px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      white-space: nowrap; }
+  .mozaicForm .control-label {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a;
     white-space: nowrap; }
+  .mozaicForm .form-heading {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a;
+    white-space: nowrap; }
+  .mozaicForm .checkbox-control .checkbox-label {
+    margin-left: 6px;
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a;
+    white-space: nowrap; }
+  .mozaicForm .data-table {
+    width: 250px;
+    border: 1px solid #4b8ad1;
+    height: auto !important; }
+    .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
+      display: none; }
+    .mozaicForm .data-table .actionIcons {
+      width: 60px; }
+      .mozaicForm .data-table .actionIcons .fa {
+        font-size: 16px;
+        margin-right: 5px;
+        cursor: pointer; }
+      .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search {
+        color: #0065a9; }
+      .mozaicForm .data-table .actionIcons .fa-remove {
+        color: #e3001b; }
 
-.mozaicForm .control-label {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: default;
+.app-alert {
+  width: 100%;
   font-family: MyriadPro;
-  font-size: 14px;
-  color: #58585a;
-  white-space: nowrap; }
+  font-size: 18px;
+  padding: 6px 20px;
+  border-width: 1px;
+  border-style: solid; }
+  .app-alert .alertSymbol {
+    padding-right: 10px; }
+  .app-alert .closeAlertIcon {
+    color: #e3001b;
+    float: right;
+    margin-top: 4px;
+    cursor: pointer; }
 
-.mozaicForm .form-heading {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: default;
-  font-family: RweHeadlineRegular;
-  font-size: 28px;
-  color: #58585a;
-  white-space: nowrap; }
+.app-alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6; }
 
-.mozaicForm .checkbox-control .checkbox-label {
-  margin-left: 6px;
-  font-family: MyriadPro;
-  font-size: 14px;
-  color: #58585a;
-  white-space: nowrap; }
+.app-alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1; }
 
-.mozaicForm .data-table {
-  width: 250px;
-  border: 1px solid #4b8ad1;
-  height: auto !important; }
-  .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
-    display: none; }
-  .mozaicForm .data-table .actionIcons {
-    width: 60px; }
-    .mozaicForm .data-table .actionIcons .fa {
-      font-size: 16px;
-      margin-right: 5px;
-      cursor: pointer; }
-    .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search {
-      color: #0065a9; }
-    .mozaicForm .data-table .actionIcons .fa-remove {
-      color: #e3001b; }
+.app-alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc; }
+
+.app-alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;

@@ -181,6 +181,7 @@
     <Compile Include="Entitron\Entity\Tapestry\ResourceMappingPair.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerModels.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\TapestryNotification.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlow.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Template.cs" />
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
