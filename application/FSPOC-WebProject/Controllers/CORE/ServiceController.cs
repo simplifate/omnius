@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Text;
+using System.Web;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -30,6 +31,24 @@ namespace FSS.Omnius.Controllers.CORE
         }
         public ActionResult RecoverApp()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RecoverApp(HttpPostedFileBase file)
+        {
+            //if everything is ok
+            if (file != null && file.ContentLength > 0 && file.ContentType == "text/plain") {
+                BinaryReader b = new BinaryReader(file.InputStream);
+                byte[] binData = b.ReadBytes((int)file.InputStream.Length);
+
+                string result = System.Text.Encoding.UTF8.GetString(binData);
+
+                //Now we use recover service
+                var service = new FSS.Omnius.Modules.Entitron.Service.RecoveryService();
+                Application app = service.RecoverApplication(result);
+                  
+            }
             return View();
         }
     }
