@@ -8,11 +8,12 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class SuppliersController : Controller
     {
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             var suppliers = HttpContext.GetCORE().Entitron.GetDynamicTable("Suppliers").Select().ToList();
             DataTable data = new DataTable();
             data.Columns.Add("Id");
@@ -34,6 +35,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Index(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic1020"))
             {
                 return RedirectToRoute("EPK", new { controller = "Suppliers", action = "Create" });
@@ -45,6 +47,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Create()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Vytvoření dodavatele";
@@ -53,6 +56,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic961"))
             {
                 try
@@ -84,6 +88,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Update(int id)
         {
+            HttpContext.SetApp(26);
             E.DBItem item = HttpContext.GetCORE().Entitron.GetDynamicItem("Suppliers", id);
 
             ViewData["uic958"] = item["name"];
@@ -99,6 +104,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Update(int id, FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic961"))
             {
                 try
@@ -131,6 +137,7 @@ namespace FSS.Omnius.Controllers.EPK
 
         public ActionResult Delete(int id)
         {
+            HttpContext.SetApp(26);
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
@@ -146,6 +153,7 @@ namespace FSS.Omnius.Controllers.EPK
 
         public void Export()
         {
+            HttpContext.SetApp(26);
             ExportToExcelAction export = new ExportToExcelAction();
 
             Dictionary<string, object> vars = new Dictionary<string, object>();

@@ -9,11 +9,12 @@ using E = FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class PeriodicalsController : Controller
     {
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             E.Entitron e = HttpContext.GetCORE().Entitron;
             var periodicals = e.GetDynamicTable("Periodicals").Select().ToList();
             var suppliers = e.GetDynamicTable("Suppliers").Select().where(c => c.column("id").In(new HashSet<object>(periodicals.Select(i => i["id_supplier"])))).ToList();
@@ -59,6 +60,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Index(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic991"))
             {
                 return RedirectToRoute("EPK", new { controller = "Periodicals", action = "Create" });
@@ -70,6 +72,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Create()
         {
+            HttpContext.SetApp(26);
             E.Entitron e = HttpContext.GetCORE().Entitron;
             ViewData["dropdownData_supplier_dropdown"] = e.GetDynamicTable("Suppliers").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
             ViewData["dropdownData_count_dropdown"] = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
@@ -84,6 +87,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic605"))
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
@@ -132,6 +136,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Update(int id)
         {
+            HttpContext.SetApp(26);
             E.Entitron e = HttpContext.GetCORE().Entitron;
             ViewData["dropdownData_supplier_dropdown"] = e.GetDynamicTable("Suppliers").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
             ViewData["dropdownData_count_dropdown"] = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
@@ -159,6 +164,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Update(int id, FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic605"))
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
@@ -208,6 +214,7 @@ namespace FSS.Omnius.Controllers.EPK
 
         public ActionResult Delete(int id)
         {
+            HttpContext.SetApp(26);
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
@@ -223,6 +230,7 @@ namespace FSS.Omnius.Controllers.EPK
 
         public void Export()
         {
+            HttpContext.SetApp(26);
             ExportToExcelAction export = new ExportToExcelAction();
 
             Dictionary<string, object> vars = new Dictionary<string, object>();

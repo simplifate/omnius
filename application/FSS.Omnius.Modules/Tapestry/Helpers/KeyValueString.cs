@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +12,15 @@ namespace FSS.Omnius.Modules.Tapestry
     {
         private Dictionary<string, string> _value;
         private Dictionary<string, object> _result;
+        private bool _not;
 
         public Dictionary<string, string> value { get { return _value; } }
         public Dictionary<string, object> result { get { return _result; } }
 
         public KeyValueString(string value)
         {
-            _value = SplitKeyValue(value);
+            _not = value[0] == '!';
+            _value = SplitKeyValue(_not ? value.Substring(1) : value);
             _result = null;
         }
         
@@ -46,10 +49,10 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 object key = parseValue(pair.Key, vars);
                 if (!Equals(key, _result[pair.Key]))
-                    return false;
+                    return _not;
             }
 
-            return true;
+            return !_not;
         }
 
         /// <summary>
@@ -132,9 +135,10 @@ namespace FSS.Omnius.Modules.Tapestry
             }
         }
 
+        #region chained
         private static object GetChainedProperty(string chainedKey, Dictionary<string, object> vars)
         {
-            int index = chainedKey.IndexOf('.');
+            int index = chainedKey.IndexOfAny(new char[] { '.', '[' });
             if (index == -1)
             {
                 if (vars.ContainsKey(chainedKey))
@@ -144,33 +148,68 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             string key = chainedKey.Substring(0, index);
-            return GetChainedProperty(vars[key], chainedKey.Substring(index + 1));
+            return GetChained(vars[key], chainedKey.Substring(index));
         }
-
-        private static object GetChainedProperty(object item, string propertyName)
+        
+        private static object GetChained(object o, string calling)
         {
-            foreach (string singleProperty in propertyName.Split('.'))
+            string[] propertyCallings = calling.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string propertyCalling in propertyCallings)
             {
-                if (HasProperty(item, singleProperty))
-                    item = item.GetType().GetProperty(singleProperty).GetValue(item);
-                else
-                    throw new MissingFieldException($"Missing field '{singleProperty}' on item [{item.ToString()}]. ('{propertyName}' on [{item.ToString()}])");
+                o = resolveProperty(o, propertyCalling);
             }
-            return item;
+
+            return o;
         }
 
-        /// <summary>
-        /// Has the item property of given name
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        private static bool HasProperty(object item, string propertyName)
+        private static object resolveProperty(object o, string calling)
         {
-            if (item == null)
-                return false;
+            int iStart = calling.IndexOf('[');
 
-            return item.GetType().GetProperty(propertyName) != null;
+            // no array
+            if (iStart < 0)
+                return resolveSingleProperty(o, calling);
+
+            // array with property
+            if (iStart > 0)
+            {
+                o = resolveSingleProperty(o, calling.Substring(0, iStart));
+                calling = calling.Substring(iStart);
+                iStart = 0;
+            }
+
+            int iEnd = calling.IndexOf(']', iStart);
+            // single array
+            if (iEnd == calling.Length - 1)
+                return resolveSingleArray(o, calling.Substring(1, calling.Length - 2));
+
+            // multiple arrays
+            while (iStart >= 0)
+            {
+                o = resolveSingleArray(o, calling.Substring(iStart + 1, iEnd - iStart - 1));
+                iStart = calling.IndexOf('[', iEnd);
+                iEnd = iStart >= 0 ? calling.IndexOf(']', iStart) : -1;
+            }
+
+            return o;
         }
+
+        private static object resolveSingleArray(object o, string calling)
+        {
+            var prop = o.GetType().GetMethod("get_Item", new Type[] { typeof(string) });
+            return prop.Invoke(o, new object[] { calling });
+        }
+
+        private static object resolveSingleProperty(object o, string calling)
+        {
+            PropertyInfo property = o.GetType().GetProperty(calling);
+
+            if (property == null)
+                throw new MissingFieldException($"Missing field '{calling}' on item [{o.ToString()}].");
+
+            return property.GetValue(o);
+        }
+        #endregion
     }
 }

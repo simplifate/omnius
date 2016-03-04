@@ -19,14 +19,9 @@ namespace System.Web.Mvc
     {
         public string Module { get; set; }
 
-        public int AppId { get; set; }
-
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             CORE core = filterContext.HttpContext.GetCORE();
-
-            if (AppId > 0)
-                core.Entitron.AppId = AppId;
 
             User user = filterContext.HttpContext.User.GetLogged(core);
             // not logged -> redirect

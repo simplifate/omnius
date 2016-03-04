@@ -9,45 +9,46 @@ using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.EPK
 {
+    [PersonaAuthorize]
     public class ReportController : Controller
     {
         // GET: Report
-        [PersonaAuthorize(AppId = 26)]
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             return RedirectToRoute("EPK", new { controller = "Report", action = "Full" });
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Full()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Kompletní přehled";
             return View("/Views/App/26/Page/24.cshtml", GetData());
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Simple()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Zjednodušený přehled";
             return View("/Views/App/26/Page/26.cshtml", GetData());
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Accounting()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Podklad pro zúčtování";
             return View("/Views/App/26/Page/27.cshtml", GetData());
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Basic()
         {
+            HttpContext.SetApp(26);
             DataTable data = new DataTable();
             data.Columns.Add(new DataColumn("id") { Caption = "Id obj." });
             data.Columns.Add(new DataColumn("id_heat_order") { Caption = "Id hromadné obj." });
@@ -64,10 +65,10 @@ namespace FSPOC_WebProject.Controllers.EPK
             ViewData["pageName"] = "Základní report";
             return View("/Views/App/26/Page/11.cshtml");
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Library()
         {
+            HttpContext.SetApp(26);
             DataTable data = new DataTable();
             data.Columns.Add(new DataColumn("id") { Caption = "Id" });
             data.Columns.Add(new DataColumn("date_purchase") { Caption = "Datum objednání" });
@@ -98,10 +99,10 @@ namespace FSPOC_WebProject.Controllers.EPK
             ViewData["pageName"] = "Objednávky knihovny";
             return View("/Views/App/26/Page/28.cshtml");
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Assistant()
         {
+            HttpContext.SetApp(26);
             DataTable data = new DataTable();
             data.Columns.Add(new DataColumn("id") { Caption = "Id" });
             data.Columns.Add(new DataColumn("id_heap_order") { Caption = "Id hromadné obj." });
@@ -134,10 +135,10 @@ namespace FSPOC_WebProject.Controllers.EPK
             ViewData["pageName"] = "Report pro asistentky";
             return View("/Views/App/26/Page/29.cshtml");
         }
-
-        [PersonaAuthorize(AppId = 26)]
+        
         public ActionResult Heap()
         {
+            HttpContext.SetApp(26);
             DataTable data = new DataTable();
             data.Columns.Add(new DataColumn("id") { Caption = "Id hromadné obj." });
             data.Columns.Add(new DataColumn("approver_name") { Caption = "Schvalovatel" });
@@ -164,8 +165,7 @@ namespace FSPOC_WebProject.Controllers.EPK
             ViewData["pageName"] = "Report hromadných objednávek";
             return View("/Views/App/26/Page/16.cshtml");
         }
-
-
+        
         private List<DBItem> GetData(string viewName = "Orders_complete_overview")
         {
             Entitron e = HttpContext.GetCORE().Entitron;

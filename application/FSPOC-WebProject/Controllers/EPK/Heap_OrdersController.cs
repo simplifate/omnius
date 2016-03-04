@@ -6,12 +6,13 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class Heap_OrdersController : Controller
     {
         // GET: Heap_Orders
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             return View();
         }
     }

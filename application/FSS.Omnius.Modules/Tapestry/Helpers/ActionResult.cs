@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Tapestry
         public ActionResultType type { get; set; }
         public string Message { get; set; }
         public Dictionary<string, object> ReverseInputData { get; set; }
-        public Dictionary<string, object> outputData;
+        public Dictionary<string, object> outputData { get; set; }
     }
 
     public enum ActionResultType

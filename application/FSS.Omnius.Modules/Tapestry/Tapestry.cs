@@ -21,7 +21,6 @@ namespace FSS.Omnius.Modules.Tapestry
     {
         private CORE.CORE _CORE;
         private ActionResultCollection _results;
-        private Page _page;
 
         public Tapestry(CORE.CORE core)
         {
@@ -29,19 +28,9 @@ namespace FSS.Omnius.Modules.Tapestry
 
             _CORE = core;
             _results = new ActionResultCollection();
-            _page = null;
         }
-
-        public override void run(User user, string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
-        {
-            // init
-            //string AppName, buttonId;
-            //int blockId, modelId;
-            //splitUrl(url, out AppName, out blockId, out buttonId, out modelId);
-
-            //run(user, AppName, blockId, buttonId, modelId, fc);
-        }
-        public Block run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        
+        public Tuple<ActionResultCollection, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // init action
             _results.outputData.Add("__CORE__", _CORE);
@@ -55,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry
             // get inputs
             string[] keys = fc.AllKeys;
 
-            List<ActionRule> prevActionRules= new List<ActionRule>();
+            List<ActionRule> prevActionRules = new List<ActionRule>();
             // run all auto Action
             while (nextRule != null)
             {
@@ -64,46 +53,33 @@ namespace FSS.Omnius.Modules.Tapestry
 
                 if (_results.types.Any(x => x == ActionResultType.Error))
                 {
-                    prevActionRules.Reverse();
-                    foreach (ActionRule actRule  in prevActionRules)
-                    {
-                        actRule.ReverseRun(_results);
-                    }
-                    break;
+                    return new Tuple<ActionResultCollection, Block>(_results, Rollback(prevActionRules, nextRule).TargetBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
                 prevActionRules.Add(nextRule);
             }
 
+            // if stops on virtual block
+            if (actionRule.TargetBlock.IsVirtual)
+            {
+                actionRule = Rollback(prevActionRules, actionRule);
+            }
+
             // target Block
-            return actionRule.TargetBlock;
+            return new Tuple<ActionResultCollection, Block>(_results, actionRule.TargetBlock);
         }
 
-        public override string GetHtmlOutput()
+        public ActionRule Rollback(List<ActionRule> prevActionRules, ActionRule thisRule)
         {
-            throw new NotImplementedException();
-        }
-        public override string GetJsonOutput()
-        {
-            throw new NotImplementedException();
-        }
-        public override string GetMailOutput()
-        {
-            throw new NotImplementedException();
+            prevActionRules.Reverse();
+            foreach (ActionRule actRule in prevActionRules)
+            {
+                actRule.ReverseRun(_results);
+            }
+            return prevActionRules.Count > 0 ? prevActionRules.Last() : thisRule;
         }
 
-        //private void splitUrl(string url, out string ApplicationId, out int ActionRuleId, out int modelId)
-        //{
-        //    string[] ids = url.Split('/');
-        //    if (ids.Count() != 3)
-        //        throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
-
-        //    ApplicationId = ids[0];
-        //    ActionRuleId = Convert.ToInt32(ids[1]);
-        //    modelId = Convert.ToInt32(ids[2]);
-        //}
-        
         private ActionRule GetActionRule(Block block, string buttonId, ActionResultCollection results, int modelId)
         {
             ActionRule rule = block.SourceTo_ActionRules.SingleOrDefault(ar => ar.ExecutedBy == buttonId);

@@ -6,11 +6,12 @@ using E = FSS.Omnius.Modules.Entitron;
 
 namespace FSPOC_WebProject.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class FormsController : Controller
     {
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             var intervals = HttpContext.GetCORE().Entitron.GetDynamicTable("Periodical_forms").Select().ToList();
             DataTable data = new DataTable();
             data.Columns.Add("Id");
@@ -30,6 +31,7 @@ namespace FSPOC_WebProject.Controllers.EPK
         [HttpPost]
         public ActionResult Index(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic1057"))
             {
                 return RedirectToRoute("EPK", new { controller = "Forms", action = "Create" });
@@ -38,6 +40,7 @@ namespace FSPOC_WebProject.Controllers.EPK
         }
         public ActionResult Create()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Vytvoření formy";
@@ -46,6 +49,7 @@ namespace FSPOC_WebProject.Controllers.EPK
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic951"))
             {
                 try
@@ -74,6 +78,7 @@ namespace FSPOC_WebProject.Controllers.EPK
         }
         public ActionResult Update(int id)
         {
+            HttpContext.SetApp(26);
             E.DBItem item = HttpContext.GetCORE().Entitron.GetDynamicItem("Periodical_forms", id);
 
             ViewData["uic977"] = item["name"];
@@ -87,6 +92,7 @@ namespace FSPOC_WebProject.Controllers.EPK
         [HttpPost]
         public ActionResult Update(int id, FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic980"))
             {
                 try
@@ -116,6 +122,7 @@ namespace FSPOC_WebProject.Controllers.EPK
 
         public ActionResult Delete(int id)
         {
+            HttpContext.SetApp(26);
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;

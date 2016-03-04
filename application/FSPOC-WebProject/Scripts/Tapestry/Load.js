@@ -204,7 +204,7 @@
                         else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
                             newSymbol.attr("endpoints", "gateway");
                         if (currentSymbolData.Condition != null)
-                            newSymbol.attr("condition", currentSymbolData.Condition);
+                            newSymbol.data("condition", currentSymbolData.Condition);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newSymbol);
                         AddToJsPlumb(newSymbol);

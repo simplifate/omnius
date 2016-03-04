@@ -54,18 +54,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
-            var select = table.Select();
-            Conditions condition = new Conditions(select);
-            Condition_concat outCondition = null;
-
-            outCondition = condition.column("Id").Equal(vars["Id"]);
-            condition = outCondition.and();
-
-            vars["Data"] = select.where(i => outCondition).ToList();
-            if(((List<DBItem>)vars["Data"]).Count() == 0)
+            outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], (int)vars["Id"]);
+            if(outputVars["Data"] == null)
             {
-                string message = String.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
+                string message = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
 
                 WatchtowerLogger logger = WatchtowerLogger.Instance;
                 logger.LogEvent(
