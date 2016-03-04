@@ -9,20 +9,20 @@ namespace FSS.Omnius.Modules.Tapestry
 {
     public abstract class ActionRuleBase
     {
-        public abstract void Run(ActionResultCollection results);
+        public abstract void Run(ActionResult results);
 
-        protected void InnerRun(ActionResultCollection results, IEnumerable<ActionRule_ActionBase> actions)
+        protected void InnerRun(ActionResult results, IEnumerable<ActionRule_ActionBase> actions)
         {
             foreach (ActionRule_ActionBase actionMap in actions.OrderBy(a => a.Order))
             {
                 // namapovaní InputVars
-                var remapedParams = actionMap.getInputVariables(results.outputData);
+                var remapedParams = actionMap.getInputVariables(results.OutputData);
 
                 // Action
                 var result = Action.RunAction(actionMap.ActionId, remapedParams);
 
                 // errory
-                if (result.types.Any(r => r == ActionResultType.Error))
+                if (result.Type == ActionResultType.Error)
                 {
                     foreach (
                         ActionRule_ActionBase reverseActionMap in
@@ -34,19 +34,19 @@ namespace FSS.Omnius.Modules.Tapestry
                     }
 
                     // do not continue
-                    results.Join = result;
+                    results.Join(result);
                     return;
                 }
 
                 // namapování OutputVars
                 //!! pozor na přepisování promněných !!
-                actionMap.RemapOutputVariables(result.outputData);
+                actionMap.RemapOutputVariables(result.OutputData);
                 // zpracování výstupů
-                results.Join = result;
+                results.Join(result);
             }
         }
 
-        protected void ReverseInnerRun(ActionResultCollection results, IEnumerable<ActionRule_ActionBase> actions)
+        protected void ReverseInnerRun(ActionResult results, IEnumerable<ActionRule_ActionBase> actions)
         {
             foreach (ActionRule_ActionBase reverseActionMap in actions.OrderByDescending(a => a.Order))
             {

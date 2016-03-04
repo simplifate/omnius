@@ -20,20 +20,21 @@ namespace FSS.Omnius.Modules.Tapestry
     public class Tapestry : RunableModule
     {
         private CORE.CORE _CORE;
-        private ActionResultCollection _results;
+        private ActionResult _results;
 
         public Tapestry(CORE.CORE core)
         {
             Name = "Tapestry";
 
             _CORE = core;
-            _results = new ActionResultCollection();
+            _results = new ActionResult();
         }
         
-        public Tuple<ActionResultCollection, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<ActionResult, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // init action
-            _results.outputData.Add("__CORE__", _CORE);
+            _results.OutputData.Add("__CORE__", _CORE);
+            _results.OutputData.Add("__ErrorMessages__", new List<string>());
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
 
@@ -51,9 +52,9 @@ namespace FSS.Omnius.Modules.Tapestry
                 actionRule = nextRule;
                 actionRule.Run(_results);
 
-                if (_results.types.Any(x => x == ActionResultType.Error))
+                if (_results.Type == ActionResultType.Error)
                 {
-                    return new Tuple<ActionResultCollection, Block>(_results, Rollback(prevActionRules, nextRule).TargetBlock);
+                    return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules, nextRule).TargetBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
@@ -67,7 +68,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // target Block
-            return new Tuple<ActionResultCollection, Block>(_results, actionRule.TargetBlock);
+            return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
         }
 
         public ActionRule Rollback(List<ActionRule> prevActionRules, ActionRule thisRule)
@@ -80,7 +81,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return prevActionRules.Count > 0 ? prevActionRules.Last() : thisRule;
         }
 
-        private ActionRule GetActionRule(Block block, string buttonId, ActionResultCollection results, int modelId)
+        private ActionRule GetActionRule(Block block, string buttonId, ActionResult results, int modelId)
         {
             ActionRule rule = block.SourceTo_ActionRules.SingleOrDefault(ar => ar.ExecutedBy == buttonId);
             if (rule == null)
@@ -88,25 +89,24 @@ namespace FSS.Omnius.Modules.Tapestry
 
             if (false && !_CORE.User.canUseAction(rule.Id, _CORE.Entitron.GetStaticTables()))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", rule.Id));
-
-            if (modelId > 0)
-                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
+            
+            results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
             rule.PreRun(results);
-            if (false && !rule.CanRun(results.outputData))
+            if (false && !rule.CanRun(results.OutputData))
                 throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", rule.Id));
 
             return rule;
         }
-        private ActionRule GetAutoActionRule(Block block, ActionResultCollection results, int? modelId = null)
+        private ActionRule GetAutoActionRule(Block block, ActionResult results, int? modelId = null)
         {
             foreach (ActionRule ar in block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto" && _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())))
             {
                 if (modelId != null)
-                    results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
+                    results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
 
                 ar.PreRun(results);
-                if (ar.CanRun(results.outputData))
+                if (ar.CanRun(results.OutputData))
                     return ar;
             }
 

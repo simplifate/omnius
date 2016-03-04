@@ -180,6 +180,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Block newBlock = new Block
                 {
                     Name = "split block",
+                    ModelName = block.ModelName,
                     IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);
@@ -198,6 +199,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Block newBlock = new Block
                 {
                     Name = "join block",
+                    ModelName = block.ModelName,
                     IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);

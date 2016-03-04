@@ -13,10 +13,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         private string endingKey = " %%>";
         private string cssKey = "<%%css%%>";
         
-        public string Render(Page master, Dictionary<string, string> Relations, ActionResultCollection results, DBEntities entity, string address = null)
+        public string Render(Page master, Dictionary<string, string> Relations, ActionResult results, DBEntities entity, string address = null)
         {
             string output = string.Copy(Html);
-            DBItem Model = (DBItem)results.outputData["__MODEL__"];
+            DBItem Model = (DBItem)results.OutputData["__MODEL__"];
 
             // replace css
             int indexOfCss = output.IndexOf(cssKey);
@@ -66,12 +66,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             string templateName = a[2];
                             foreach (DBItem listItem in (List<DBItem>)Model[name] ?? new List<DBItem>())
                             {
-                                results.outputData["__PARENT__"] = Model;
-                                results.outputData["__MODEL__"] = listItem;
+                                results.OutputData["__PARENT__"] = Model;
+                                results.OutputData["__MODEL__"] = listItem;
                                 replacement += entity.Templates.FirstOrDefault(t => t.Name == templateName)
                                     .Render(master, Relations, results, entity, currentAddress);
                             }
-                            results.outputData["__MODEL__"] = Model;
+                            results.OutputData["__MODEL__"] = Model;
                             break;
                         default:
                             throw new FormatException("Template relations in wrong format");

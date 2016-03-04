@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             return _actions.SingleOrDefault(a => a.Value.Name == name).Key;
         }
-        public static ActionResultCollection RunAction(int id, Dictionary<string, object> vars)
+        public static ActionResult RunAction(int id, Dictionary<string, object> vars)
         {
             Action action = All[id];
 
@@ -59,13 +59,12 @@ namespace FSS.Omnius.Modules.Tapestry
         public abstract int? ReverseActionId { get; }
         public abstract string Name { get; }
         
-        public override ActionResultCollection run(Dictionary<string, object> vars)
+        public override ActionResult run(Dictionary<string, object> vars)
         {
-            var outputVars = new Dictionary<string, object>();
-            var outputStatus = ActionResultType.Success;
-            var outputMessage = "OK";
+            Dictionary<string, object> outputVars = new Dictionary<string, object>();
+            ActionResultType outputStatus = ActionResultType.Success;
             var invertedVar = new Dictionary<string, object>();
-
+            
             try
             {
                 InnerRun(vars, outputVars, invertedVar);
@@ -73,10 +72,10 @@ namespace FSS.Omnius.Modules.Tapestry
             catch (Exception ex)
             {
                 outputStatus = ActionResultType.Error;
-                outputMessage = ex.Message;
+                (outputVars["__ErrorMessages__"] as List<string>).Add(ex.Message);
             }
 
-            return new ActionResultCollection(outputStatus, outputMessage, invertedVar, outputVars);
+            return new ActionResult(outputStatus, outputVars, invertedVar);
         }
 
         public override void ReverseRun(Dictionary<string, object> vars)
