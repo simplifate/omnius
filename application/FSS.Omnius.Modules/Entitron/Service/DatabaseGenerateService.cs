@@ -20,7 +20,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
             GenerateRelation(e,dbSchemeCommit);
             GenerateView(e,dbSchemeCommit);
             DroppingOldTables(e,dbSchemeCommit);
-            //todo smazat přebytečné saveChanges až bude důkladně otestováno generování
         }
 
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
@@ -81,74 +80,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }//end of table==null
                 else
                 {//if table exists, update columns
-                    foreach (DbColumn efColumn in efTable.Columns)
-                    {
-                        DBColumn entitronColumn = entitronTable.columns
-                            .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
-
-                        app.ColumnMetadata.Add(new ColumnMetadata
-                        {
-                            TableName = efTable.Name,
-                            ColumnName = efColumn.Name,
-                            ColumnDisplayName = efColumn.DisplayName ?? efColumn.Name
-                        });
-
-                        if (entitronColumn == null)                     //adding new column
-                        {
-                            entitronColumn = new DBColumn()
-                            {
-                                Name = efColumn.Name,
-                                canBeNull = efColumn.AllowNull,
-                                maxLength = efColumn.ColumnLength,
-                                type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName
-                            };
-                            entitronTable.columns.AddToDB(entitronColumn);
-                            if (efColumn.Unique)
-                            {
-                                entitronTable.columns.AddUniqueValue(efColumn.Name);
-                            }
-                            e.Application.SaveChanges();
-                        }//end column==null
-                        else
-                        {//updating existing column
-                            if (entitronColumn.canBeNull != efColumn.AllowNull ||
-                                entitronColumn.maxLength != efColumn.ColumnLength ||
-                                entitronColumn.type != efColumn.Type)
-                                entitronTable.columns.ModifyInDB(entitronColumn.Name, ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
-
-                            if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false && !efColumn.PrimaryKey)
-                            {
-                                entitronTable.columns.AddUniqueValue(efColumn.Name);
-                            }
-                            else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
-                            {
-                                entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{entitronColumn.Name}");
-                            }
-
-                        }//end updating column
-
-                        //set column default value
-                        Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(entitronColumn.Name);
-
-                        if (!string.IsNullOrEmpty(efColumn.DefaultValue))
-                        {
-                            if (defaultConstraint.Count!=0 && efColumn.DefaultValue != defaultConstraint.Values.First())
-                            {
-                                entitronTable.DropConstraint(defaultConstraint.Keys.First());
-                                entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
-                            }else if (defaultConstraint.Count == 0)
-                            {
-                                entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
-                            }
-                        }
-                        else if(defaultConstraint.Count!=0)
-                        {
-                            entitronTable.DropConstraint(defaultConstraint.Keys.First());
-                            break;
-                        }
-
-                    }//end foreach efColumn
-
+                    UpdateColumns(entitronTable,efTable,e);
                 }//end updating table columns
                 e.Application.SaveChanges();
 
@@ -309,6 +241,86 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 e.Application.SaveChanges();
             }//end of foreach schemeTable for dropping old columns
+
+        }
+
+        private void UpdateColumns(DBTable entitronTable, DbTable schemeTable, Entitron e)
+        {
+            DBEntities ent = new DBEntities();
+            var app = ent.Applications.Find(e.AppId);
+            var oldMetadataRecords = app.ColumnMetadata.ToList();
+            foreach (var record in oldMetadataRecords)
+                app.ColumnMetadata.Remove(record);
+            ent.SaveChanges();
+
+            foreach (DbColumn efColumn in schemeTable.Columns)
+            {
+                DBColumn entitronColumn = entitronTable.columns
+                    .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
+
+                app.ColumnMetadata.Add(new ColumnMetadata
+                {
+                    TableName = schemeTable.Name,
+                    ColumnName = efColumn.Name,
+                    ColumnDisplayName = efColumn.DisplayName ?? efColumn.Name
+                });
+
+                if (entitronColumn == null)                     //adding new column
+                {
+                    entitronColumn = new DBColumn()
+                    {
+                        Name = efColumn.Name,
+                        canBeNull = efColumn.AllowNull,
+                        maxLength = efColumn.ColumnLength,
+                        type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName
+                    };
+                    entitronTable.columns.AddToDB(entitronColumn);
+                    if (efColumn.Unique)
+                    {
+                        entitronTable.columns.AddUniqueValue(efColumn.Name);
+                    }
+                    e.Application.SaveChanges();
+                }//end column==null
+                else
+                {//updating existing column
+                    if (entitronColumn.canBeNull != efColumn.AllowNull ||
+                        entitronColumn.maxLength != efColumn.ColumnLength ||
+                        entitronColumn.type != efColumn.Type)
+                        entitronTable.columns.ModifyInDB(entitronColumn.Name, ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
+
+                    if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false && !efColumn.PrimaryKey)
+                    {
+                        entitronTable.columns.AddUniqueValue(efColumn.Name);
+                    }
+                    else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
+                    {
+                        entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{entitronColumn.Name}");
+                    }
+
+                }//end updating column
+
+                //set column default value
+                Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(entitronColumn.Name);
+
+                if (!string.IsNullOrEmpty(efColumn.DefaultValue))
+                {
+                    if (defaultConstraint.Count != 0 && efColumn.DefaultValue != defaultConstraint.Values.First())
+                    {
+                        entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                        entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
+                    }
+                    else if (defaultConstraint.Count == 0)
+                    {
+                        entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
+                    }
+                }
+                else if (defaultConstraint.Count != 0)
+                {
+                    entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                    break;
+                }
+
+            }//end foreach efColumn
 
         }
         private static string GetConnectionString()
