@@ -65,18 +65,19 @@ namespace FSS.Omnius.Modules.Tapestry
             Dictionary<string, object> outputVars = new Dictionary<string, object>();
             ActionResultType outputStatus = ActionResultType.Success;
             var invertedVar = new Dictionary<string, object>();
+            Message message = new Message();
             
             try
             {
-                InnerRun(vars, outputVars, invertedVar);
+                InnerRun(vars, outputVars, invertedVar, message);
             }
             catch (Exception ex)
             {
                 outputStatus = ActionResultType.Error;
-                (outputVars["__Messages__"] as Message).Errors.Add(ex.Message);
+                message.Errors.Add(ex.Message);
             }
 
-            return new ActionResult(outputStatus, outputVars, invertedVar);
+            return new ActionResult(outputStatus, outputVars, invertedVar, message);
         }
 
         public override void ReverseRun(Dictionary<string, object> vars)
@@ -84,7 +85,7 @@ namespace FSS.Omnius.Modules.Tapestry
             if (ReverseActionId != null)
                 RunAction(ReverseActionId.Value, vars);
         }
-        public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars);
+        public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars, Message message);
 
         public void LogError(string message, int userId, int appId)
         {

@@ -165,7 +165,7 @@ namespace FSS.Omnius.Controllers.EPK
 
             Dictionary<string, object> dummy = new Dictionary<string, object>();
 
-            export.InnerRun(vars, dummy, dummy);
+            export.InnerRun(vars, dummy, dummy, new Modules.CORE.Message());
         }
     }
 }

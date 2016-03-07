@@ -49,7 +49,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 using (var context = new DBEntities())
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
-                    app.Name = postData.Name;
+                    app.Name = postData.Name.RemoveDiacritics();
                     app.DisplayName = postData.Name;
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
@@ -75,7 +75,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     var newApp = new Application
                     {
                         DisplayName = postData.Name,
-                        Name = postData.Name,
+                        Name = postData.Name.RemoveDiacritics(),
                         TileWidth = postData.TileWidth,
                         TileHeight = postData.TileHeight,
                         Color = postData.Color,

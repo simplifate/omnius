@@ -30,11 +30,10 @@ namespace FSS.Omnius.Modules.Tapestry
             _results = new ActionResult();
         }
         
-        public Tuple<ActionResult, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<Message, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // init action
             _results.OutputData.Add("__CORE__", _CORE);
-            _results.OutputData.Add("__Messages__", new Message());
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
 
@@ -58,7 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
                 if (_results.Type == ActionResultType.Error)
                 {
-                    return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules, nextRule).TargetBlock);
+                    return new Tuple<Message, Block>(_results.Message, Rollback(prevActionRules, nextRule).TargetBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
@@ -72,7 +71,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // target Block
-            return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
+            return new Tuple<Message, Block>(_results.Message, actionRule.TargetBlock);
         }
 
         public ActionRule Rollback(List<ActionRule> prevActionRules, ActionRule thisRule)

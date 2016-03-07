@@ -21,14 +21,7 @@ namespace FSS.Omnius.Modules.CORE
             {
                 if (_type == null)
                 {
-                    if (Errors.Count > 0)
-                        _type = ActionResultType.Error;
-                    else if (Success.Count > 0)
-                        _type = ActionResultType.Success;
-                    else if (Warnings.Count > 0)
-                        _type = ActionResultType.Warning;
-                    else
-                        _type = ActionResultType.Info;
+                    refreshType();
                 }
 
                 return _type.Value;
@@ -43,6 +36,16 @@ namespace FSS.Omnius.Modules.CORE
             Success = new List<string>();
 
             _type = null;
+        }
+
+        public void Join(Message message)
+        {
+            Errors.AddRange(message.Errors);
+            Success.AddRange(message.Success);
+            Warnings.AddRange(message.Warnings);
+            Info.AddRange(message.Info);
+
+            refreshType();
         }
 
         public string ToUser()
@@ -68,10 +71,21 @@ namespace FSS.Omnius.Modules.CORE
             _type = ActionResultType.Info;
             return string.Join("<br/>", Info);
         }
-
         public Tuple<ActionResultType, string> All()
         {
             throw new NotImplementedException();
+        }
+
+        private void refreshType()
+        {
+            if (Errors.Count > 0)
+                _type = ActionResultType.Error;
+            else if (Success.Count > 0)
+                _type = ActionResultType.Success;
+            else if (Warnings.Count > 0)
+                _type = ActionResultType.Warning;
+            else
+                _type = ActionResultType.Info;
         }
     }
 }

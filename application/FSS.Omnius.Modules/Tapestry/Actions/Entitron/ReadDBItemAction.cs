@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Watchtower;
 using System;
@@ -50,18 +51,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], (int)vars["Id"]);
             if(outputVars["Data"] == null)
             {
-                string message = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
+                string msg = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
 
                 WatchtowerLogger logger = WatchtowerLogger.Instance;
                 logger.LogEvent(
-                    message,
+                    msg,
                     core.User.Id,
                     LogEventType.Tapestry,
                     LogLevel.Error,
@@ -69,7 +70,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     core.Entitron.AppId
                 );
 
-                throw new Exception(message);
+                throw new Exception(msg);
             }
         }
     }

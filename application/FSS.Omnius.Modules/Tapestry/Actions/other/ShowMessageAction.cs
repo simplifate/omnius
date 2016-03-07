@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "Message" };
+                return new string[] { "Message", "Type" };
             }
         }
 
@@ -50,9 +50,23 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            (outputVars["__Messages__"] as Message).Info.Add((string)vars["Message"]);
+            switch ((string)vars["Type"])
+            {
+                case "Success":
+                    message.Success.Add((string)vars["Message"]);
+                    break;
+                case "Warning":
+                    message.Warnings.Add((string)vars["Message"]);
+                    break;
+                case "Error":
+                    message.Errors.Add((string)vars["Message"]);
+                    break;
+                default:
+                    message.Info.Add((string)vars["Message"]);
+                    break;
+            }
         }
     }
 }

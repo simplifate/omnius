@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Nexus.Service;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Nexus.Service;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];

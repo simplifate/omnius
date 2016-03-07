@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var table = core.Entitron.GetDynamicTable((string)vars["TableName"]);

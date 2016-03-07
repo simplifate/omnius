@@ -128,9 +128,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
                 var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
 
-                C.Message messages = (C.Message)result.Item1.OutputData["__Messages__"];
-
-                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = messages.ToUser(), messageType = messages.Type.ToString() });
+                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
             }
         }
     }
