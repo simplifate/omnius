@@ -39,6 +39,7 @@ namespace FSS.Omnius.Modules.Tapestry
     public enum ActionResultType
     {
         Success,
+        Info,
         Warning,
         Error
     }

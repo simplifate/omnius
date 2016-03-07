@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry
         {
             // init action
             _results.OutputData.Add("__CORE__", _CORE);
-            _results.OutputData.Add("__ErrorMessages__", new List<string>());
+            _results.OutputData.Add("__Messages__", new Message());
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
 

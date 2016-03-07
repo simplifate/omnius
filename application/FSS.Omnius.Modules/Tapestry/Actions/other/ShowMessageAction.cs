@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
         {
-            outputVars["__Message__"] = vars["Message"];
+            (outputVars["__Messages__"] as Message).Info.Add((string)vars["Message"]);
         }
     }
 }

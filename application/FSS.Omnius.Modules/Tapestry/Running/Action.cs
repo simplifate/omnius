@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Tapestry.Actions;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Tapestry.Actions;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -72,7 +73,7 @@ namespace FSS.Omnius.Modules.Tapestry
             catch (Exception ex)
             {
                 outputStatus = ActionResultType.Error;
-                (outputVars["__ErrorMessages__"] as List<string>).Add(ex.Message);
+                (outputVars["__Messages__"] as Message).Errors.Add(ex.Message);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar);

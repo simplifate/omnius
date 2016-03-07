@@ -19,7 +19,7 @@ namespace FSS.Omnius.Controllers.Tapestry
     public class RunController : Controller
     {
         [HttpGet]
-        public ActionResult Index(string appName, int blockId = -1, int modelId = -1, string message = null)
+        public ActionResult Index(string appName, int blockId = -1, int modelId = -1, string message = null, string messageType = null)
         {
             using (var context = new DBEntities())
             {
@@ -128,13 +128,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                 Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
                 var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
 
-                List<string> errorMessages = (List<string>)result.Item1.OutputData["__ErrorMessages__"];
-                string message = 
-                    errorMessages.Count > 0 
-                        ? string.Join("<br>", errorMessages) 
-                        : (string)result.Item1.OutputData["__Message__"];
-                
-                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = message });
+                C.Message messages = (C.Message)result.Item1.OutputData["__Messages__"];
+
+                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = messages.ToUser(), messageType = messages.Type.ToString() });
             }
         }
     }
