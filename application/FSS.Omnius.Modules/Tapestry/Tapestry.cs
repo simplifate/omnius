@@ -44,6 +44,10 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // get inputs
             string[] keys = fc.AllKeys;
+            foreach(string key in keys)
+            {
+                _results.OutputData.Add(key, fc[key]);
+            }
 
             List<ActionRule> prevActionRules = new List<ActionRule>();
             // run all auto Action
