@@ -76,6 +76,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -103,6 +104,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -136,6 +138,7 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Master\UsersApplications.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
@@ -616,6 +619,10 @@
     <Compile Include="Migrations\201603080945413_adGroup_isAdmin.Designer.cs">
       <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603081428441_UsersApplications.cs" />
+    <Compile Include="Migrations\201603081428441_UsersApplications.Designer.cs">
+      <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -959,6 +966,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603080945413_adGroup_isAdmin.resx">
       <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081428441_UsersApplications.resx">
+      <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
