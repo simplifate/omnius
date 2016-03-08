@@ -56,12 +56,12 @@
                             {
                                 <button class="btn btn-success btnToggleEnabled btnEnable">Povolit</button>
                             }
-                            <button class="btn btn-default btnProperties">Vlastnosti</button>
                         }
                         else
                         {
                             <button class="btn btn-primary btnValidate">Vytvořit</button>
                         }
+                        <button class="btn btn-default btnProperties">Vlastnosti</button>
                         @using (Html.BeginForm("BackupApp", "Service", new { @id = app.Id}))
                         {
                             <button class="btn btn-default">Exportovat</button>
