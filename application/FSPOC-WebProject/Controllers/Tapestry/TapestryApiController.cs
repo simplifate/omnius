@@ -173,9 +173,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
                                 PageId = ajaxItem.PageId,
-                                ComponentId = ajaxItem.ComponentId,
-                                TableId = ajaxItem.TableId,
-                                ColumnId = ajaxItem.ColumnId,
+                                ComponentName = ajaxItem.ComponentName,
+                                TableName = ajaxItem.TableName,
+                                ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray())
                             };
                             rule.ResourceItems.Add(item);
@@ -670,9 +670,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
                     PageId = item.PageId,
-                    ComponentId = item.ComponentId,
-                    TableId = item.TableId,
-                    ColumnId = item.ColumnId,
+                    ComponentName = item.ComponentName,
+                    TableName = item.TableName,
+                    ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
                 };
                 result.ResourceItems.Add(ajaxItem);

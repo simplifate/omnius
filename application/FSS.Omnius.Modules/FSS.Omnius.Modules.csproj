@@ -623,6 +623,10 @@
     <Compile Include="Migrations\201603081428441_UsersApplications.Designer.cs">
       <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.cs" />
+    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.Designer.cs">
+      <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -969,6 +973,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603081428441_UsersApplications.resx">
       <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081701163_Tapestry - attribute names.resx">
+      <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

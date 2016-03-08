@@ -18,6 +18,10 @@ namespace FSS.Omnius.Controllers.Master
     {
         private IDatabaseGenerateService DatabaseGenerateService { get; set; }
 
+        public AppAdminManagerController(IDatabaseGenerateService databaseGenerateService)
+        {
+            DatabaseGenerateService = databaseGenerateService; // Unity dependency injection
+        }
         public ActionResult Index()
         {
             using (var context = new DBEntities())

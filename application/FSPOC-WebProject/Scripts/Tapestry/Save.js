@@ -20,9 +20,9 @@ function SaveBlock(commitMessage) {
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
                 PageId: currentItem.attr("pageId"),
-                ComponentId: currentItem.attr("componentId"),
-                TableId: currentItem.attr("tableId"),
-                ColumnId: currentItem.attr("columnId"),
+                ComponentName: currentItem.attr("componentName"),
+                TableName: currentItem.attr("tableName"),
+                ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter")
             });
         });

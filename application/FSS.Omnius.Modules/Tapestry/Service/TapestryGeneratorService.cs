@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using System;
@@ -89,7 +90,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // Resources
             foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {
-                var pair = saveResourceRule(resourceRule);
+                var pair = saveResourceRule(resourceRule, wf.Application);
                 resultBlock.ResourceMappingPairs.Add(pair);
             }
 
@@ -116,7 +117,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
         }
 
-        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule)
+        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app)
         {
             AttributeRule result = new AttributeRule();
             using (var context = new DBEntities())
@@ -128,9 +129,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     string targetName = "", targetType = "", sourceColumnFilter = "";
 
-                    if (target.ComponentId != null)
+                    if (!string.IsNullOrEmpty(target.ComponentName))
                     {
-                        var component = context.MozaicEditorComponents.Find(target.ComponentId);
+                        var component = context.MozaicEditorPages.Find(target.PageId).Components.Single(c => c.Name == target.ComponentName);
                         targetName = component.Name;
                         targetType = component.Type;
                     };
@@ -138,8 +139,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     {
                         var sourceColumnFilterArray = new List<string>();
                         var idList = source.ColumnFilter.Split(',').Select(int.Parse).ToList();
-                        int tableId = (int)source.TableId;
-                        var sourceTable = context.DbTables.Find(tableId);
+                        var sourceTable = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First().Tables.Single(c => c.Name == source.TableName);
                         foreach(int columnId in idList)
                         {
                             sourceColumnFilterArray.Add(sourceTable.Columns.Where(c => c.Id == columnId).First().Name);

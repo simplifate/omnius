@@ -25,10 +25,15 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 // init
                 C.CORE core = HttpContext.GetCORE();
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
-
-                if (string.IsNullOrEmpty(appName) && block == null) // Requested block Id not found
+                Block block = null;
+                try
+                {
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+                }
+                catch (NullReferenceException)
+                {
                     return new HttpStatusCodeResult(404);
+                }
 
                 if (blockId == -1)
                     core.Entitron.AppName = appName;
@@ -44,9 +49,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     DataTable dataSource = new DataTable();
                     var columnDisplayNameDictionary = new Dictionary<string, string>();
-                    if (resourceMappingPair.Source.TableId != null)
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName))
                     {
-                        string tableName = context.DbTables.Find(resourceMappingPair.Source.TableId).Name;
+                        string tableName = resourceMappingPair.Source.TableName;
                         var entitronTable = core.Entitron.GetDynamicTable(tableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;

@@ -372,7 +372,7 @@ $(function () {
                 $("#btnOpenTableConditions").hide();
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
-                tableId = CurrentItem.attr("tableId");
+                tableName = CurrentItem.attr("tableName");
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -385,9 +385,8 @@ $(function () {
                         formTable = tableAttributePropertiesDialog.find(".columnFilterTable tbody");
                         formTable.find("tr").remove();
                         targetTable = data.Tables.filter(function (value, index, ar) {
-                            return value.Id == tableId;
+                            return value.Name == tableName;
                         })[0];
-                        data.Tables[tableId];
                         if (targetTable == undefined)
                             alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
                         for (i = 0; i < targetTable.Columns.length; i++) {

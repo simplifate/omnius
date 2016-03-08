@@ -314,17 +314,17 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_Attributes").before(newToolboxLi);
                     }
                     else if (libType == "column-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '" columnId="' + currentLibraryItem.attr("columnId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "table-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "ui") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentId="' + currentLibraryItem.attr("componentId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                     }
