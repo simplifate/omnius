@@ -237,6 +237,7 @@
                 <tbody></tbody>
             </table>
         </fieldset>
+        <button id="btnOpenTableConditions" type="button" class="btn-omnius-rectangular">Filter by conditions</button>
     </form>
 </div>
 <div id="choose-tables-dialog" title="Choose tables">
@@ -276,6 +277,39 @@
                     <td><input type="text" name="gateway-x-condition" id="gateway-x-condition" value="" class="text ui-widget-content ui-corner-all" /></td>
                 </tr>
             </table>
+        </fieldset>
+    </form>
+</div>
+<div id="conditions-dialog" title="Conditions">
+    <form>
+        <fieldset>
+            <div class="conditionSetToolbar">
+                <div class="conditionSetIcon addAndConditionSetIcon">Add AND group</div>
+                <div class="conditionSetIcon addOrConditionSetIcon">Add OR group</div>
+            </div>
+            <div class="conditionSetArea">
+                <div class="conditionSet">
+                    <div class="conditionSetHeading"><div class="conditionSetHeading"><span class="conditionSetPrefix">A</span>ll of these conditions must be met</div>
+                    <div class="removeConditionSetIcon">X</div>
+                    <table class="conditionTable">
+                        <tr>
+                            <td class="conditionOperator"></td>
+                            <td class="conditionVariableCell">
+                                <select></select>
+                            </td>
+                            <td class="conditionOperatorCell">
+                                <select><option selected="selected">==</option><option>!=</option></select>
+                            </td>
+                            <td class="conditionValueCell">
+                                <select><option selected="selected">True</option><<option>False</option></select>
+                            </td>
+                            <td class="conditionActions">
+                                <div class="conditionActionIcon addAndConditionIcon">&</div><div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </fieldset>
     </form>
 </div>

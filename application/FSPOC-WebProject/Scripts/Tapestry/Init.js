@@ -45,6 +45,9 @@ $(function () {
             else
                 return;
         };
+        $("#btnOpenTableConditions").on("click", function () {
+            $("#conditions-dialog").dialog("open");
+        });
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
         });
