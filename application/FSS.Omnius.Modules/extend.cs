@@ -31,7 +31,6 @@ namespace System
             newString = rgx.Replace(newString, "");
 
             return newString;
-
         }
 
         public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)

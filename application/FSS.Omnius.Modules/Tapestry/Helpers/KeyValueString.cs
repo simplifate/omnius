@@ -19,7 +19,9 @@ namespace FSS.Omnius.Modules.Tapestry
 
         public KeyValueString(string value)
         {
-            _not = value[0] == '!';
+            _not = (value != null && value.Length > 0)
+                ? value[0] == '!'
+                : _not = false;
             _value = SplitKeyValue(_not ? value.Substring(1) : value);
             _result = null;
         }
