@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        public bool isAdmin { get; set; }
 
         public int? ApplicationId { get; set; }
 
