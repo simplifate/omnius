@@ -39,6 +39,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<DbIndex> DbIndex { get; set; }
         public virtual DbSet<DbRelation> DbRelation { get; set; }
         public virtual DbSet<DbView> DbView { get; set; }
+        public virtual DbSet<ColumnMetadata> ColumnMetadata { get; set; }
 
         // Hermes
         public virtual DbSet<EmailLog> EmailLogItems { get; set; }

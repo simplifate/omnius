@@ -11,6 +11,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public string indexName { get; set; }
         protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
+            if (indexName.StartsWith("index_"))
+                indexName=indexName.Replace("index_", "");
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);

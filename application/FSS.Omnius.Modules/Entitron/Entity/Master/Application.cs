@@ -1,3 +1,5 @@
+using System.Data.Entity;
+
 namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
     using System;
@@ -29,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             MozaicEditorPages = new List<MozaicEditorPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             DbSchemeLocked = false;
-            ColumnMetadata = new List<ColumnMetadata>();
+            ColumnMetadata = new HashSet<ColumnMetadata>();
         }
 
         public int Id { get; set; }

@@ -525,7 +525,7 @@ namespace FSS.Omnius.Modules.Entitron
                     }
 
                     SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = indexName, table = this, application = this.Application };
-                    if (query2.ExecuteWithRead() != null)
+                    if (query2.ExecuteWithRead().Count > 0)
                     {
                         index.columns = new List<DBColumn>();
                         foreach (DBItem item in query2.ExecuteWithRead())

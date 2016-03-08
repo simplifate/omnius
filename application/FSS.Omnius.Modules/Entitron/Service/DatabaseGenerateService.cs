@@ -26,15 +26,12 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             DBEntities ent = new DBEntities();
             var app = ent.Applications.Find(e.AppId);
-            var oldMetadataRecords = app.ColumnMetadata.ToList();
-            foreach (var record in oldMetadataRecords)
-                app.ColumnMetadata.Remove(record);
+            ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
 
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
-                DBTable entitronTable = e.Application.GetTables().
-                    SingleOrDefault(x => x.tableName.ToLower() == efTable.Name.ToLower());
+                DBTable entitronTable = e.Application.GetTable(efTable.Name);
 
                 bool tableExists = DBTable.isInDB(e.Application.Name, efTable.Name);
 
@@ -91,7 +88,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     foreach (DbIndex i in efTable.Indices)
                     {
                         DBIndex index = entitronTable.GetIndex(i.Name);
-                        if (index==null)
+                        if (index.indexName==null)
                         {
                             entitronTable.indices.AddToDB(i.Name, i.ColumnNames.Split(',').ToList(), i.Unique);
                         }
@@ -236,6 +233,22 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 foreach (string columnName in deletedColumns)
                 {
                     DBColumn column = entitronTable.columns.SingleOrDefault(x => x.Name.ToLower() == columnName);
+                    if(column.isUnique)
+                        entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{column.Name}");
+
+                    Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(column.Name);
+                    if (defaultConstraint.Count!=0)
+                    {
+                        entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                    }
+                    if (entitronTable.indices.Count != 0)
+                    {
+                        List<DBIndex> columnIndeces = entitronTable.indices.Where(c => c.columns.Contains(column)).ToList();
+                        foreach (DBIndex columnIndex in columnIndeces)
+                        {
+                                entitronTable.indices.DropFromDB(columnIndex.indexName);
+                        }
+                    }
 
                     entitronTable.columns.DropFromDB(column.Name);
                 }
@@ -248,9 +261,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             DBEntities ent = new DBEntities();
             var app = ent.Applications.Find(e.AppId);
-            var oldMetadataRecords = app.ColumnMetadata.ToList();
-            foreach (var record in oldMetadataRecords)
-                app.ColumnMetadata.Remove(record);
+            ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
 
             foreach (DbColumn efColumn in schemeTable.Columns)
@@ -272,7 +283,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         Name = efColumn.Name,
                         canBeNull = efColumn.AllowNull,
                         maxLength = efColumn.ColumnLength,
-                        type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName
+                        type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName,
+                        DefaultValue = efColumn.DefaultValue
                     };
                     entitronTable.columns.AddToDB(entitronColumn);
                     if (efColumn.Unique)
@@ -297,28 +309,28 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{entitronColumn.Name}");
                     }
 
-                }//end updating column
+                    //set column default value
+                    Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(entitronColumn.Name);
 
-                //set column default value
-                Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(entitronColumn.Name);
-
-                if (!string.IsNullOrEmpty(efColumn.DefaultValue))
-                {
-                    if (defaultConstraint.Count != 0 && efColumn.DefaultValue != defaultConstraint.Values.First())
+                    if (!string.IsNullOrEmpty(efColumn.DefaultValue))
+                    {
+                        if (defaultConstraint.Count != 0 && efColumn.DefaultValue != defaultConstraint.Values.First())
+                        {
+                            entitronTable.DropConstraint(defaultConstraint.Keys.First());
+                            entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
+                        }
+                        else if (defaultConstraint.Count == 0)
+                        {
+                            entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
+                        }
+                    }
+                    else if (defaultConstraint.Count != 0)
                     {
                         entitronTable.DropConstraint(defaultConstraint.Keys.First());
-                        entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
                     }
-                    else if (defaultConstraint.Count == 0)
-                    {
-                        entitronTable.columns.AddDefaultValue(efColumn.Name, efColumn.DefaultValue);
-                    }
-                }
-                else if (defaultConstraint.Count != 0)
-                {
-                    entitronTable.DropConstraint(defaultConstraint.Keys.First());
-                    break;
-                }
+
+                }//end updating column
+
 
             }//end foreach efColumn
 
