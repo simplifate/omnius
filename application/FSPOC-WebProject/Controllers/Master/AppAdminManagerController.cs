@@ -9,12 +9,15 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry.Service;
 using System.IO;
+using FSS.Omnius.Modules.Entitron.Service;
 
 namespace FSS.Omnius.Controllers.Master
 {
     [PersonaAuthorize(Roles = "Admin", Module = "Master")]
     public class AppAdminManagerController : Controller
     {
+        private IDatabaseGenerateService DatabaseGenerateService { get; set; }
+
         public ActionResult Index()
         {
             using (var context = new DBEntities())
@@ -33,10 +36,23 @@ namespace FSS.Omnius.Controllers.Master
         {
             var core = HttpContext.GetCORE();
             core.Entitron.AppId = Id;
+            bool dbSchemeLocked = false;
 
             using (var context = new DBEntities())
             {
                 var app = context.Applications.Find(Id);
+                
+                // Entitron Generate Database
+                if (app.DbSchemeLocked)
+                    throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+                app.DbSchemeLocked = dbSchemeLocked = true;
+                context.SaveChanges();
+                core.Entitron.AppId = app.Id;
+                var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
+                DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
+                app.DbSchemeLocked = false;
+                context.SaveChanges();
+
 
                 // Mozaic pages
                 foreach (var editorPage in app.MozaicEditorPages)
