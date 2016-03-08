@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             for (int iOld = 0; iOld < oldData.Count; iOld++)
             {
                 T oldItem = oldData[iOld];
-                int iNew = newData.IndexOf(item => compare(item, oldItem));
+                int iNew = newData.IndexOf(item => compare(oldItem, item));
                 if (iNew >= 0)
                 {
                     oldData.RemoveAt(iOld);
@@ -57,8 +57,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             // update
             List<ADgroup_User> rightsDB = context.ADgroup_Users.ToList();
             RemoveDuplicated(rightsDB, rightsLdap, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            // REMOVE ON PRODUCTION
-            //context.ADgroup_Users.RemoveRange(rightsDB);
+            // don't remove local users rights
+            rightsDB.RemoveAll(r => r.User.isLocalUser);
+            context.ADgroup_Users.RemoveRange(rightsDB);
+
             context.ADgroup_Users.AddRange(rightsLdap);
             context.SaveChanges();
         }
