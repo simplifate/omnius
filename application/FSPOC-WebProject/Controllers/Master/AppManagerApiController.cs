@@ -25,7 +25,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     AjaxAppProperties result = new AjaxAppProperties
                     {
                         Id = app.Id,
-                        Name = app.Name,
+                        DisplayName = app.DisplayName,
                         TileWidth = app.TileWidth,
                         TileHeight = app.TileHeight,
                         Color = app.Color,
@@ -49,8 +49,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 using (var context = new DBEntities())
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
-                    app.Name = postData.Name.RemoveDiacritics();
-                    app.DisplayName = postData.Name;
+                    app.DisplayName = postData.DisplayName;
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
@@ -74,8 +73,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     var newApp = new Application
                     {
-                        DisplayName = postData.Name,
-                        Name = postData.Name.RemoveDiacritics(),
+                        Name = postData.DisplayName.RemoveDiacritics(),
+                        DisplayName = postData.DisplayName,
                         TileWidth = postData.TileWidth,
                         TileHeight = postData.TileHeight,
                         Color = postData.Color,

@@ -36,7 +36,7 @@ $(function () {
                     alert(request.responseText);
                 },
                 success: function (data) {
-                    appPropertiesDialog.find("#app-name").val(data.Name);
+                    appPropertiesDialog.find("#app-name").val(data.DisplayName);
                     appPropertiesDialog.find("#tile-width").val(data.TileWidth);
                     appPropertiesDialog.find("#tile-height").val(data.TileHeight);
                     appPropertiesDialog.find("#bg-color").val(data.Color);
@@ -48,7 +48,7 @@ $(function () {
     function appPropertiesDialog_SubmitData() {
         appPropertiesDialog.dialog("close");
         postData = {
-            Name: appPropertiesDialog.find("#app-name").val(),
+            DisplayName: appPropertiesDialog.find("#app-name").val(),
             TileWidth: appPropertiesDialog.find("#tile-width").val(),
             TileHeight: appPropertiesDialog.find("#tile-height").val(),
             Color: appPropertiesDialog.find("#bg-color").val(),
@@ -96,7 +96,7 @@ $(function () {
     function addAppDialog_SubmitData() {
         addAppDialog.dialog("close");
         postData = {
-            Name: addAppDialog.find("#app-name").val(),
+            DisplayName: addAppDialog.find("#app-name").val(),
             TileWidth: addAppDialog.find("#tile-width").val(),
             TileHeight: addAppDialog.find("#tile-height").val(),
             Color: addAppDialog.find("#bg-color").val(),
