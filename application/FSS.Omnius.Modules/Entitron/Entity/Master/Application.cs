@@ -50,6 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public bool IsPublished { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsSystem { get; set; }
 
         [StringLength(100)]
         public string DisplayName { get; set; } // Used by Entitron
