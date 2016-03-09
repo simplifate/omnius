@@ -53,35 +53,37 @@ namespace FSS.Omnius.Modules.Tapestry
             while (nextRule != null)
             {
                 actionRule = nextRule;
+                prevActionRules.Add(nextRule);
                 actionRule.Run(_results);
 
                 if (_results.Type == ActionResultType.Error)
                 {
-                    return new Tuple<Message, Block>(_results.Message, Rollback(prevActionRules, nextRule).TargetBlock);
+                    return new Tuple<Message, Block>(_results.Message, Rollback(prevActionRules).SourceBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
-                prevActionRules.Add(nextRule);
             }
 
+            Block resultBlock = actionRule.TargetBlock;
             // if stops on virtual block
             if (actionRule.TargetBlock.IsVirtual)
             {
-                actionRule = Rollback(prevActionRules, actionRule);
+                actionRule = Rollback(prevActionRules);
+                resultBlock = actionRule.SourceBlock;
             }
 
             // target Block
-            return new Tuple<Message, Block>(_results.Message, actionRule.TargetBlock);
+            return new Tuple<Message, Block>(_results.Message, resultBlock);
         }
 
-        public ActionRule Rollback(List<ActionRule> prevActionRules, ActionRule thisRule)
+        public ActionRule Rollback(List<ActionRule> prevActionRules)
         {
             prevActionRules.Reverse();
             foreach (ActionRule actRule in prevActionRules)
             {
                 actRule.ReverseRun(_results);
             }
-            return prevActionRules.Count > 0 ? prevActionRules.Last() : thisRule;
+            return prevActionRules.Last();
         }
 
         private ActionRule GetActionRule(Block block, string buttonId, ActionResult results, int modelId)
@@ -103,7 +105,17 @@ namespace FSS.Omnius.Modules.Tapestry
         }
         private ActionRule GetAutoActionRule(Block block, ActionResult results, int? modelId = null)
         {
-            foreach (ActionRule ar in block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto" && _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())))
+            var actionRules = block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto").ToList();
+            var authorizedActionRules = actionRules.Where(ar => _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())).ToList();
+
+            // not authorized
+            if (actionRules.Count > 0 && authorizedActionRules.Count == 0)
+            {
+                results.Message.Errors.Add("You are not authorized");
+                return null;
+            }
+
+            foreach (ActionRule ar in authorizedActionRules)
             {
                 if (modelId != null)
                     results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
@@ -113,6 +125,7 @@ namespace FSS.Omnius.Modules.Tapestry
                     return ar;
             }
 
+            // nothing that meets the conditions
             return null;
         }
     }

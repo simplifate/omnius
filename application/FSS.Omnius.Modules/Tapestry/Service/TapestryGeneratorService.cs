@@ -140,7 +140,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         var sourceColumnFilterArray = new List<string>();
                         var idList = source.ColumnFilter.Split(',').Select(int.Parse).ToList();
                         var sourceTable = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First().Tables.Single(c => c.Name == source.TableName);
-                        foreach(int columnId in idList)
+                        foreach (int columnId in idList)
                         {
                             sourceColumnFilterArray.Add(sourceTable.Columns.Where(c => c.Id == columnId).First().Name);
                         }
@@ -189,6 +189,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         ? (WFitem)_context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == splitItem.Key.Id)
                         : _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == splitItem.Key.Id);
                 BlockMapping.Add(it, newBlock);
+
+                // conditions
+                if (it.TypeClass == "gateway-x")
+                {
+                    conditionMapping.Add(newBlock, (it as TapestryDesignerWorkflowSymbol).Condition);
+                }
             }
             foreach (var joinItem in joinItems)
             {
@@ -284,7 +290,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     if (wfSymbol.TypeClass == "gateway-x")
                     {
                         Block splitBlock = blockMapping[item];
-                        conditionMapping.Add(splitBlock, wfSymbol.Condition);
+                        // if not already in conditionMapping
+                        if (!conditionMapping.ContainsKey(splitBlock))
+                            conditionMapping.Add(splitBlock, wfSymbol.Condition);
                     }
 
                     // TODO: symbols
@@ -310,7 +318,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void AddActionRuleRights(ActionRule rule, TapestryDesignerSwimlane swimlane)
         {
-            if (true || string.IsNullOrWhiteSpace(swimlane.Roles))
+            if (string.IsNullOrWhiteSpace(swimlane.Roles))
                 return;
 
             foreach (string roleName in swimlane.Roles.Split(','))
