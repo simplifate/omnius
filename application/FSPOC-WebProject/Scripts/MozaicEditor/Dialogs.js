@@ -1,4 +1,4 @@
-﻿var CurrentComponent;
+﻿var CurrentComponent, SaveRequested = false;
 $(function () {
     if (CurrentModuleIs("mozaicEditorModule")) {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
@@ -184,7 +184,10 @@ $(function () {
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
-                    alert("OK");
+                    if (SaveRequested)
+                        SaveMozaicPage();
+                    else
+                        alert("OK");
                 }
             });
         }

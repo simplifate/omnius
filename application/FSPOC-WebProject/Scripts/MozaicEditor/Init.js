@@ -2,6 +2,9 @@
 $(function () {
     if (CurrentModuleIs("mozaicEditorModule")) {
         RecalculateMozaicToolboxHeight();
+        pageId = $("#currentPageId").val();
+        if (pageId)
+            LoadMozaicPage(pageId);
 
         $("#btnNewPage").on("click", function () {
             newPageDialog.dialog("open");
@@ -15,7 +18,13 @@ $(function () {
             $("#mozaicPageContainer .color-picker").remove();
         });
         $("#btnSave").on("click", function () {
-            SaveMozaicPage();
+            pageId = $("#currentPageId").val();
+            if (!pageId) {
+                SaveRequested = true;
+                newPageDialog.dialog("open");
+            }
+            else
+                SaveMozaicPage();
         });
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");

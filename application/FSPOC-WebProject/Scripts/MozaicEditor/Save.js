@@ -1,4 +1,5 @@
 ﻿function SaveMozaicPage() {
+    SaveRequested = false;
     componentArray = [];
     $("#mozaicPageContainer .uic").each(function (uicIndex, uicElement) {
         currentUic = $(uicElement);
