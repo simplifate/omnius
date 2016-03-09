@@ -8,7 +8,7 @@
 }
 
 <div class="appWorkspace">
-    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name))
+    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).Where(c=>c.IsSystem==false))
     {
         var positionX = 0;
         var positionY = 0;
@@ -26,16 +26,16 @@
                 db.SaveChanges();
             }
         }
-
-        <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
+            <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
          left: @(positionX + 10)px; top: @(positionY + 10)px;" data-target="/@app.Name">
-            <div class="appPanelHeader">
-                <div class="appIcon">
-                    <i class="fa @(app.Icon)"></i>
+                <div class="appPanelHeader">
+                    <div class="appIcon">
+                        <i class="fa @(app.Icon)"></i>
+                    </div>
+                    <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@(app.DisplayName ?? app.Name)</div>
                 </div>
-                <div class="appTitle" style="font-size: @(app.TitleFontSize)px">@(app.DisplayName ?? app.Name)</div>
+                @Html.Raw(app.InnerHTML)
             </div>
-            @Html.Raw(app.InnerHTML)
-        </div>
+
     }
 </div>

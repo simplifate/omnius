@@ -627,6 +627,10 @@
     <Compile Include="Migrations\201603081701163_Tapestry - attribute names.Designer.cs">
       <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.cs" />
+    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.Designer.cs">
+      <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -976,6 +980,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603081701163_Tapestry - attribute names.resx">
       <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.resx">
+      <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
