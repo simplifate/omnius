@@ -2,6 +2,7 @@
     componentArray = [];
     $("#mozaicPageContainer .uic").each(function (uicIndex, uicElement) {
         currentUic = $(uicElement);
+        tag = null;
         label = null;
         content = null;
         if (currentUic.hasClass("button-simple") || currentUic.hasClass("button-dropdown")) {
@@ -23,6 +24,10 @@
             type = "checkbox";
             label = currentUic.find(".checkbox-label").text();
         }
+        else if (currentUic.hasClass("radio-control")) {
+            type = "radio";
+            label = currentUic.find(".radio-label").text();
+        }
         else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
             label = currentUic.text();
             type = "label";
@@ -33,9 +38,19 @@
             type = "data-table-with-actions";
         else if (currentUic.hasClass("data-table"))
             type = "data-table-read-only";
+        else if (currentUic.hasClass("tab-navigation")) {
+            type = "tab-navigation";
+            tabString = "";
+            currentUic.find("li").each(function (index, element) {
+                if (index > 0)
+                    tabString += $(element).find("a").text() + ";";
+            });
+            content = tabString;
+        }
+        else if (currentUic.hasClass("color-picker"))
+            type = "color-picker";
         else
             type = "control";
-
         if (currentUic.hasClass("data-table")) {
             wrapper = currentUic.parents("");
             positionX = wrapper.css("left");
@@ -45,6 +60,10 @@
             positionX = currentUic.css("left");
             positionY = currentUic.css("top");
         }
+        if (currentUic.hasClass("color-picker"))
+            tag = "input";
+        else
+            tag = currentUic.prop("tagName").toLowerCase();
         name = currentUic.attr("uicName");
         if (!name || name == "")
             name = type + uicIndex;
@@ -55,7 +74,7 @@
             PositionY: positionY,
             Width: currentUic.css("width"),
             Height: currentUic.css("height"),
-            Tag: currentUic.prop("tagName").toLowerCase(),
+            Tag: tag,
             Attributes: "",
             Classes: currentUic.attr("uicClasses"),
             Styles: currentUic.attr("uicStyles"),

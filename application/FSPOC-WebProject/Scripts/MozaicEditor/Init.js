@@ -12,6 +12,7 @@ $(function () {
         $("#btnClear").on("click", function () {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();
+            $("#mozaicPageContainer .color-picker").remove();
         });
         $("#btnSave").on("click", function () {
             SaveMozaicPage();
@@ -103,7 +104,8 @@ $(function () {
                 droppedElement.removeClass("toolboxItem");
                 droppedElement.removeClass("ui-draggable-dragging");
                 droppedElement.addClass("uic");
-                droppedElement.attr("uicName", "");
+                if (!droppedElement.hasClass("radio-control"))
+                    droppedElement.attr("uicName", "");
                 droppedElement.attr("uicStyles", "");
                 droppedElement.attr("placeholder", "");
                 $(this).append(droppedElement);
@@ -121,6 +123,17 @@ $(function () {
                     droppedElement.css("left", "0px");
                     droppedElement.css("top", "0px");
                 }
+                else if (droppedElement.hasClass("color-picker")) {
+                    droppedElement.val("#f00");
+                    CreateColorPicker(droppedElement);
+                    newReplacer = $("#mozaicPageContainer .sp-replacer:last");
+                    newReplacer.css("position", "absolute");
+                    newReplacer.css("left", droppedElement.css("left"));
+                    newReplacer.css("top", droppedElement.css("top"));
+                    droppedElement.removeClass("uic");
+                    newReplacer.addClass("uic color-picker");
+                    newReplacer.attr("uicClasses", "color-picker");
+                }
                 if (GridResolution > 0) {
                     droppedElement.css("left", droppedElement.position().left - (droppedElement.position().left % GridResolution));
                     droppedElement.css("top", droppedElement.position().top - (droppedElement.position().top % GridResolution));
@@ -136,7 +149,18 @@ $(function () {
                                 ui.position.top -= (ui.position.top % GridResolution);
                             }
                         }
-                    });                
+                    });
+                else if (droppedElement.hasClass("color-picker"))
+                    newReplacer.draggable({
+                        cancel: false,
+                        containment: "parent",
+                        drag: function (event, ui) {
+                            if (GridResolution > 0) {
+                                ui.position.left -= (ui.position.left % GridResolution);
+                                ui.position.top -= (ui.position.top % GridResolution);
+                            }
+                        }
+                    });
                 else
                     droppedElement.draggable({
                         cancel: false,

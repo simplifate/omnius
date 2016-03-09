@@ -13,6 +13,7 @@
         success: function (data) {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();
+            $("#mozaicPageContainer .color-picker").remove();
 
             for (i = 0; i < data.Components.length; i++) {
                 cData = data.Components[i];
@@ -39,6 +40,9 @@
                 else if (newComponent.hasClass("checkbox-control")) {
                     newComponent.append($('<input type="checkbox" /><span class="checkbox-label">' + cData.Label + '</span>'));
                 }
+                else if (newComponent.hasClass("radio-control")) {
+                    newComponent.append($('<input type="radio" name="' + cData.Name + '" /><span class="radio-label">' + cData.Label + '</span>'));
+                }
                 else if (newComponent.hasClass("breadcrumb-navigation")) {
                     newComponent.append($('<div class="app-icon fa fa-question"></div><div class="nav-text">APP NAME &gt; Nav</div>'));
                 }
@@ -55,6 +59,26 @@
                     newComponent.css("position", "relative");
                     newComponent.css("left", "0px");
                     newComponent.css("top", "0px");
+                }
+                else if (newComponent.hasClass("tab-navigation")) {
+                    tabLabelArray = cData.Content.split(";");
+                    newComponent.append($('<li class="active"><a class="fa fa-home"></a></li>'));
+                    for (i = 0; i < tabLabelArray.length; i++) {
+                        if (tabLabelArray[i].length > 0)
+                            newComponent.append($("<li><a>" + tabLabelArray[i] + "</a></li>"));
+                    }
+                    newComponent.css("width", "auto");
+                }
+                else if (newComponent.hasClass("color-picker")) {
+                    CreateColorPicker(newComponent);
+                    newReplacer = $("#mozaicPageContainer .sp-replacer:last");
+                    newReplacer.css("position", "absolute");
+                    newReplacer.css("left", newComponent.css("left"));
+                    newReplacer.css("top", newComponent.css("top"));
+                    newComponent.removeClass("uic color-picker");
+                    newReplacer.addClass("uic color-picker");
+                    newReplacer.attr("uicClasses", "color-picker");
+                    newReplacer.attr("uicName", newComponent.attr("uicName"));
                 }
                 if (newComponent.hasClass("data-table"))
                     wrapper.draggable({

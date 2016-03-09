@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System.Linq;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
@@ -67,9 +68,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "checkbox")
                 {
-                    stringBuilder.Append($"<div id=\"uic{c.Id}\" name=\"{c.Name}\" class=\"uic checkbox-control {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<div id=\"uic{c.Id}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"uic{c.Id}\") && (bool)ViewData[\"uic{c.Id}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
+                }
+                else if (c.Type == "radio")
+                {
+                    stringBuilder.Append($"<div id=\"uic{c.Id}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" /><span class=\"radio-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {
@@ -97,6 +104,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></thead><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\"><a href=\"/EPK/@ViewContext.RouteData.Values[\"controller\"].ToString()/Update/@row.ItemArray.First().ToString()\" ><i class=\"fa fa-edit rowEditAction\"></i></a>");
                     stringBuilder.Append($"<a href=\"/EPK/@ViewContext.RouteData.Values[\"controller\"].ToString()/Delete/@row.ItemArray.First().ToString()\"><i class=\"fa fa-remove rowDeleteAction\"></i></a></td></tr>}}</tbody>}} }}</{c.Tag}>");
+                }
+                else if (c.Type == "tab-navigation")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"><li class=\"active\"><a class=\"fa fa-home\"></a></li>");
+                    var tabLabelArray = c.Content.Split(';').ToList();
+                    foreach(string tabLabel in tabLabelArray)
+                    {
+                        if(tabLabel.Length > 0)
+                            stringBuilder.Append($"<li><a>{tabLabel}</a></li>");
+                    }
+                    stringBuilder.Append($"</{c.Tag}>");
                 }
                 else
                 {

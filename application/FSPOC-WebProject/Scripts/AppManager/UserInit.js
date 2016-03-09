@@ -85,6 +85,13 @@ $(function () {
             });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
+        $(".uic.color-picker").each(function (index, element) {
+            CreateColorPicker($(element));
+            newReplacer = $("#userContentArea .sp-replacer:last");
+            newReplacer.css("position", "absolute");
+            newReplacer.css("left", droppedElement.css("left"));
+            newReplacer.css("top", droppedElement.css("top"));
+        });
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);
             currentDialog.dialog({
