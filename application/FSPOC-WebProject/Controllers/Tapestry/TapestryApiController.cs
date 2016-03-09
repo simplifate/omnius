@@ -811,15 +811,15 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     foreach (var item in rule.ResourceItems)
                         itemList.Add(item);
                     foreach (var item in itemList)
-                        context.Entry(item).State = EntityState.Deleted;
+                        rule.ResourceItems.Remove(item);
                     foreach (var connection in rule.Connections)
                         connectionList.Add(connection);
                     foreach (var connection in connectionList)
-                        context.Entry(connection).State = EntityState.Deleted;
+                        rule.Connections.Remove(connection);
                     resRuleList.Add(rule);
                 }
                 foreach (var rule in resRuleList)
-                    context.Entry(rule).State = EntityState.Deleted;
+                    blockCommit.ResourceRules.Remove(rule);
                 var wfRuleList = new List<TapestryDesignerWorkflowRule>();
                 foreach (var rule in blockCommit.WorkflowRules)
                 {
@@ -834,25 +834,25 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         foreach (var item in swimlane.WorkflowItems)
                             itemList.Add(item);
                         foreach (var item in itemList)
-                            context.Entry(item).State = EntityState.Deleted;
+                            swimlane.WorkflowItems.Remove(item);
                         foreach (var symbol in swimlane.WorkflowSymbols)
                             symbolList.Add(symbol);
                         foreach (var symbol in symbolList)
-                            context.Entry(symbol).State = EntityState.Deleted;
-                        context.Entry(swimlane).State = EntityState.Deleted;
+                            swimlane.WorkflowSymbols.Remove(symbol);
+                        rule.Swimlanes.Remove(swimlane);
                     }
                     foreach (var connection in rule.Connections)
                         connectionList.Add(connection);
                     foreach (var connection in connectionList)
-                        context.Entry(connection).State = EntityState.Deleted;
+                        rule.Connections.Remove(connection);
                     wfRuleList.Add(rule);
                 }
-                foreach (var rule in resRuleList)
-                    context.Entry(rule).State = EntityState.Deleted;
+                foreach (var rule in wfRuleList)
+                    blockCommit.WorkflowRules.Remove(rule);
                 blockCommitList.Add(blockCommit);
             }
             foreach (var blockCommit in blockCommitList)
-                context.Entry(blockCommit).State = EntityState.Deleted;
+                blockToDelete.BlockCommits.Remove(blockCommit);
             context.Entry(blockToDelete).State = EntityState.Deleted;
         }
         private void CollectBlocksToList(TapestryDesignerMetablock rootMetablock,

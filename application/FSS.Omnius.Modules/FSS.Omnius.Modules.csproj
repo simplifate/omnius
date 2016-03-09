@@ -631,6 +631,10 @@
     <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.Designer.cs">
       <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.cs" />
+    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.Designer.cs">
+      <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -983,6 +987,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.resx">
       <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091902486_Tapestry designer foreign keys.resx">
+      <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

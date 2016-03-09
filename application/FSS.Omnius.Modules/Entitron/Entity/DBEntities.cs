@@ -322,22 +322,33 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithOptionalDependent(s => s.TapestryDesignerRootMetablock);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
-                .WithOptional(s => s.ParentMetablock);
+                .WithOptional(s => s.ParentMetablock)
+                .HasForeignKey(x => x.ParentMetablock_Id);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
-                .WithRequired(s => s.ParentMetablock);
+                .WithOptional(s => s.ParentMetablock)
+                .HasForeignKey(x => x.ParentMetablock_Id)
+                .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)
-                .WithRequired(s => s.ParentBlock);
+                .WithOptional(s => s.ParentBlock)
+                .HasForeignKey(x => x.ParentBlock_Id)
+                .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.ResourceRules)
-                .WithRequired(s => s.ParentBlockCommit);
+                .WithOptional(s => s.ParentBlockCommit)
+                .HasForeignKey(x => x.ParentBlockCommit_Id)
+                .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.WorkflowRules)
-                .WithRequired(s => s.ParentBlockCommit);
+                .WithOptional(s => s.ParentBlockCommit)
+                .HasForeignKey(x => x.ParentBlockCommit_Id)
+                .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
                 .HasMany(s => s.Swimlanes)
-                .WithRequired(s => s.ParentWorkflowRule);
+                .WithOptional(s => s.ParentWorkflowRule)
+                .HasForeignKey(x => x.ParentWorkflowRule_Id)
+                .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.WorkflowItems);
             modelBuilder.Entity<TapestryDesignerSwimlane>()

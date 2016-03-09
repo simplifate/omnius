@@ -126,9 +126,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             int? rootMetablockId = metablockId;
             if (parentMetablock != null) {
-                while (parentMetablock.ParentMetablock != null) {
+                while (parentMetablock.ParentMetablock_Id != null) {
                     parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
-                                                                        .Where(b => b.Id == parentMetablock.ParentMetablock.Id).First();
+                                                                        .Where(b => b.Id == parentMetablock.ParentMetablock_Id).First();
                 }
                 rootMetablockId = parentMetablock.Id;
             }
