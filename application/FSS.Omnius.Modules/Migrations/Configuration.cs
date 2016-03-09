@@ -5,14 +5,14 @@ namespace FSS.Omnius.Modules.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FSS.Omnius.Modules.Entitron.Entity.DBEntities>
+    internal sealed class Configuration : DbMigrationsConfiguration<Entitron.Entity.DBEntities>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(FSS.Omnius.Modules.Entitron.Entity.DBEntities context)
+        protected override void Seed(Entitron.Entity.DBEntities context)
         {
             //  This method will be called after migrating to the latest version.
             if (!context.Modules.Any())
