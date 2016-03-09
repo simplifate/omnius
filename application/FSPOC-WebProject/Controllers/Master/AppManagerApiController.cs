@@ -7,6 +7,8 @@ using System.Web.Http;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using Logger;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using System.Web;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -117,6 +119,20 @@ namespace FSS.Omnius.Controllers.Tapestry
                 Content = new StringContent(errorMessage),
                 ReasonPhrase = "Critical Exception"
             });
+        }
+        [Route("api/master/apps/{appId}/saveAppPosition")]
+        [HttpPost]
+        public void SaveAppPosition(int appId)
+        {
+            DBEntities db = new DBEntities();
+            Modules.CORE.CORE core = new Modules.CORE.CORE();
+            User currentUser = User.GetLogged(core);
+            var app = db.Applications.SingleOrDefault(a => a.Id == appId);
+            if (app != null) {
+                db.UsersApplications.Add(new UsersApplications() { ApplicationId = appId, UserId = currentUser.Id });
+                db.SaveChanges();
+            }
+
         }
     }
 }
