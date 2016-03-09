@@ -18,6 +18,14 @@ $(function () {
             revert: "invalid",
             stop: function () {
                 $(this).draggable("option", "revert", "invalid");
+                $.ajax({
+                    type: "POST",
+                    url: 'api/master/apps' + $(this).attr('data-target') + '/saveAppPosition',
+                    data: {
+                        'positionX': $(this).css('left'),
+                        'positionY': $(this).css('top')
+                    }
+                });
             }
         });
         $(".appWorkspace").droppable({
