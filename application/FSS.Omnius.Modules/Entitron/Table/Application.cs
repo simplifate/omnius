@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
                 core.Entitron.GetStaticTables().Applications.Where(a =>
                     a.IsPublished
                     && a.IsEnabled
-                    && true); //a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
+                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
         }
 
         internal SqlQueue queries = new SqlQueue();
