@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         // Master
         public virtual DbSet<Application> Applications { get; set; }
-
+        public virtual DbSet<UsersApplications> UsersApplications { get; set; }
         // Mozaic
         public virtual DbSet<Css> Css { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
