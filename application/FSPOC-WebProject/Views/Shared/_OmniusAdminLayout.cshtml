@@ -55,7 +55,7 @@
             @if (map.Tapestry || map.Entitron || map.Mozaic)
             {
                 <li id="appSuperMenu" class="expandable">Vytvoření aplikace</li>
-                if (map.Tapestry)
+                if (map.Tapestry && Convert.ToInt32(TempData["appId"])!=30)
                 {
                     <li id="adminMenuTapestry" class="subMenu appSubMenu"><a href="/Tapestry/Overview">Návrh workflow</a></li>
                 }
@@ -63,7 +63,7 @@
                 {
                     <li id="adminMenuDbDesigner" class="subMenu appSubMenu"><a href="/Entitron/DbDesigner">Datové struktury</a></li>
                 }
-                if (map.Mozaic)
+                if (map.Mozaic && Convert.ToInt32(TempData["appId"]) != 30)
                 {
                     <li id="adminMenuMozaic" class="subMenu appSubMenu"><a href="/Mozaic/TemplateCategory">Návrh UI</a></li>
                 }
