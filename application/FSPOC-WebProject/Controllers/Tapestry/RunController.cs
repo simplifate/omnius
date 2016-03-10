@@ -25,21 +25,19 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 // init
                 C.CORE core = HttpContext.GetCORE();
+                core.Entitron.AppName = appName;
+                core.User = User.GetLogged(core);
+
                 Block block = null;
                 try
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
                 }
                 catch (NullReferenceException)
                 {
                     return new HttpStatusCodeResult(404);
                 }
-
-                if (blockId == -1)
-                    core.Entitron.AppName = appName;
-                else
-                    core.Entitron.AppId = block.WorkFlow.ApplicationId;
-                core.User = User.GetLogged(core);
+                
 
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
