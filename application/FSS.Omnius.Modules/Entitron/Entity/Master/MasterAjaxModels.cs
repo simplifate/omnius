@@ -14,4 +14,9 @@
         public int Id { get; set; }
         public bool IsEnabled { get; set; }
     }
+    public class AjaxAppCoordinates
+    {
+        public string positionX { get; set; }
+        public string positionY { get; set; }
+    }
 }

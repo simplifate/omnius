@@ -120,19 +120,34 @@ namespace FSS.Omnius.Controllers.Tapestry
                 ReasonPhrase = "Critical Exception"
             });
         }
-        [Route("api/master/apps/{appId}/saveAppPosition")]
+        [Route("api/master/apps/{appName}/saveAppPosition")]
         [HttpPost]
-        public void SaveAppPosition(int appId)
+        public void SaveAppPosition(string appName, AjaxAppCoordinates coords)
         {
             DBEntities db = new DBEntities();
             Modules.CORE.CORE core = new Modules.CORE.CORE();
             User currentUser = User.GetLogged(core);
-            var app = db.Applications.SingleOrDefault(a => a.Id == appId);
+            var app = db.Applications.SingleOrDefault(a => a.Name == appName);
             if (app != null) {
-                db.UsersApplications.Add(new UsersApplications() { ApplicationId = appId, UserId = currentUser.Id });
+                UsersApplications uapp = app.UsersApplications.SingleOrDefault(ua => ua.UserId == currentUser.Id);
+                if (uapp != null)
+                {
+                    uapp.PositionX = Convert.ToInt32(coords.positionX.Substring(0, coords.positionX.Length - 2));
+                    uapp.PositionY = Convert.ToInt32(coords.positionY.Substring(0, coords.positionY.Length - 2));
+                }
+                else
+                {
+                    uapp = new UsersApplications
+                    {
+                        UserId = currentUser.Id,
+                        ApplicationId = app.Id,
+                        PositionX = Convert.ToInt32(coords.positionX),
+                        PositionY = Convert.ToInt32(coords.positionY)
+                    };
+                    db.UsersApplications.Add(uapp);
+                }
                 db.SaveChanges();
             }
-
         }
     }
 }
