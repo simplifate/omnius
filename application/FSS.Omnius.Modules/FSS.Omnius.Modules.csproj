@@ -635,6 +635,10 @@
     <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.Designer.cs">
       <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603101916094_Mozaic nested components.cs" />
+    <Compile Include="Migrations\201603101916094_Mozaic nested components.Designer.cs">
+      <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -990,6 +994,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603091902486_Tapestry designer foreign keys.resx">
       <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101916094_Mozaic nested components.resx">
+      <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

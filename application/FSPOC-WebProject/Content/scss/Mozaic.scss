@@ -338,6 +338,11 @@ body.mozaicEditorModule {
         color: red;
         width: 90px;
     }
+    .panel-component {
+        min-width: 260px;
+        min-height: 60px;
+        border: 1px dashed #0080ff;
+    }
     .data-table {
         width: 250px;
         border: 1px solid #4b8ad1;
@@ -354,7 +359,7 @@ body.mozaicEditorModule {
                 color: #e3001b;
             }
         }
-    } 
+    }
     .uic.ui-draggable-dragging {
         z-index: 500;
     }

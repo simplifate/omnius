@@ -43,10 +43,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Properties { get; set; }
 
         public List<AjaxMozaicEditorComponent> ChildComponents { get; set; }
-
-        public AjaxMozaicEditorComponent()
-        {
-            ChildComponents = new List<AjaxMozaicEditorComponent>();
-        }
     }
 }

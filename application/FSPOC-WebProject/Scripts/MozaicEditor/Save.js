@@ -1,8 +1,34 @@
 ﻿function SaveMozaicPage() {
     SaveRequested = false;
-    componentArray = [];
-    $("#mozaicPageContainer .uic").each(function (uicIndex, uicElement) {
+    componentArray = GetMozaicContainerComponentArray($("#mozaicPageContainer"), false);
+    postData = {
+        Name: $("#headerPageName").text(),
+        IsModal: $("#currentPageIsModal").prop("checked"),
+        ModalWidth: $("#modalWidthInput").val(),
+        ModalHeight: $("#modalHeightInput").val(),
+        Components: componentArray
+    }
+    appId = $("#currentAppId").val();
+    pageId = $("#currentPageId").val();
+    $.ajax({
+        type: "POST",
+        url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
+        data: postData,
+        success: function () { alert("OK") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
+    });
+}
+function GetMozaicContainerComponentArray(container, nested) {
+    if (nested)
+        componentArrayLevel2 = [];
+    else
+        componentArrayLevel1 = [];
+    container.find(".uic").each(function (uicIndex, uicElement) {
         currentUic = $(uicElement);
+        if (!nested && currentUic.parents(".panel-component").length > 0)
+            return true;
         tag = null;
         label = null;
         content = null;
@@ -13,7 +39,7 @@
             label = currentUic.find(".info-container-header").text();
             content = currentUic.find(".info-container-body").text();
         }
-        if(currentUic.hasClass("info-container"))
+        if (currentUic.hasClass("info-container"))
             type = "info-container";
         else if (currentUic.hasClass("breadcrumb-navigation"))
             type = "breadcrumb";
@@ -68,7 +94,7 @@
         name = currentUic.attr("uicName");
         if (!name || name == "")
             name = type + uicIndex;
-        componentArray.push({
+        componentData = {
             Name: name,
             Type: type,
             PositionX: positionX,
@@ -81,26 +107,16 @@
             Styles: currentUic.attr("uicStyles"),
             Content: content,
             Label: label,
-            Placeholder: currentUic.attr("placeholder")
-        });
-
+            Placeholder: currentUic.attr("placeholder"),
+            ChildComponents: currentUic.hasClass("panel-component") ? GetMozaicContainerComponentArray(currentUic, true) : []
+        };
+        if (nested)
+            componentArrayLevel2.push(componentData);
+        else
+            componentArrayLevel1.push(componentData);
     });
-    postData = {
-        Name: $("#headerPageName").text(),
-        IsModal: $("#currentPageIsModal").prop("checked"),
-        ModalWidth: $("#modalWidthInput").val(),
-        ModalHeight: $("#modalHeightInput").val(),
-        Components: componentArray
-    }
-    appId = $("#currentAppId").val();
-    pageId = $("#currentPageId").val();
-    $.ajax({
-        type: "POST",
-        url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
-        data: postData,
-        success: function () { alert("OK") },
-        error: function (request, status, error) {
-            alert(request.responseText);
-        }
-    });
+    if (nested)
+        return componentArrayLevel2;
+    else
+        return componentArrayLevel1;
 }

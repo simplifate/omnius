@@ -53,7 +53,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 };
                 foreach (var component in requestedPage.Components)
                 {
-                    result.Components.Add(new AjaxMozaicEditorComponent
+                    var ajaxComponent = new AjaxMozaicEditorComponent
                     {
                         Id = component.Id,
                         Name = component.Name ?? "",
@@ -70,7 +70,33 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         Label = component.Label,
                         Placeholder = component.Placeholder,
                         Properties = component.Properties
-                    });
+                    };
+                    if (component.ChildComponents.Count > 0)
+                    {
+                        ajaxComponent.ChildComponents = new List<AjaxMozaicEditorComponent>();
+                        foreach (var childComponent in component.ChildComponents)
+                        {
+                            ajaxComponent.ChildComponents.Add(new AjaxMozaicEditorComponent
+                            {
+                                Id = childComponent.Id,
+                                Name = childComponent.Name ?? "",
+                                Type = childComponent.Type,
+                                PositionX = childComponent.PositionX,
+                                PositionY = childComponent.PositionY,
+                                Width = childComponent.Width,
+                                Height = childComponent.Height,
+                                Tag = childComponent.Tag,
+                                Attributes = childComponent.Attributes,
+                                Classes = childComponent.Classes ?? "",
+                                Styles = childComponent.Styles ?? "",
+                                Content = childComponent.Content,
+                                Label = childComponent.Label,
+                                Placeholder = childComponent.Placeholder,
+                                Properties = childComponent.Properties
+                            });
+                        }
+                    }
+                    result.Components.Add(ajaxComponent);
                 }
                 return result;
             }
@@ -112,7 +138,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
 
         private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent)
         {
-            return new MozaicEditorComponent
+            var newcomponent = new MozaicEditorComponent
             {
                 Name = ajaxComponent.Name,
                 Type = ajaxComponent.Type,
@@ -129,6 +155,13 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 Placeholder = ajaxComponent.Placeholder,
                 Properties = ajaxComponent.Properties
             };
+            if (ajaxComponent.ChildComponents != null && ajaxComponent.ChildComponents.Count > 0)
+            {
+                newcomponent.ChildComponents = new List<MozaicEditorComponent>();
+                foreach (var ajaxChildComponent in ajaxComponent.ChildComponents)
+                    newcomponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent));
+            }
+            return newcomponent;
         }
         private void deleteComponents(MozaicEditorPage page, DBEntities context)
         {
