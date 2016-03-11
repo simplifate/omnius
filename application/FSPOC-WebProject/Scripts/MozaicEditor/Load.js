@@ -86,7 +86,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
     }
     else if (newComponent.hasClass("color-picker")) {
         CreateColorPicker(newComponent);
-        newReplacer = $("#mozaicPageContainer .sp-replacer:last");
+        newReplacer = targetContainer.find(".sp-replacer:last");
         newReplacer.css("position", "absolute");
         newReplacer.css("left", newComponent.css("left"));
         newReplacer.css("top", newComponent.css("top"));

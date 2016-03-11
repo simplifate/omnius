@@ -78,8 +78,8 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = Format("DatabaseDesigner: error when loading the commit with id={1} (GET api/database/apps/{appId}/commits/{commitId}). "
-                    + "Exception message: {0}", ex.Message, commitId);
+                var errorMessage = Format($"DatabaseDesigner: error when loading the commit with id={commitId} (GET api/database/apps/{appId}/commits/{commitId}). "
+                    + $"Exception message: {ex.Message}");
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
 
             }
@@ -99,7 +99,7 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = "DatabaseDesigner: error when loading the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                var errorMessage = $"DatabaseDesigner: error when loading the latest commit (GET api/database/apps/{appId}/commits/latest). " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }

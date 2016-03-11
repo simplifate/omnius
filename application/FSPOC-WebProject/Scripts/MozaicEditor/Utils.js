@@ -49,7 +49,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
             else if (droppedElement.hasClass("color-picker")) {
                 droppedElement.val("#f00");
                 CreateColorPicker(droppedElement);
-                newReplacer = $("#mozaicPageContainer .sp-replacer:last");
+                newReplacer = target.find(".sp-replacer:last");
                 newReplacer.css("position", "absolute");
                 newReplacer.css("left", droppedElement.css("left"));
                 newReplacer.css("top", droppedElement.css("top"));

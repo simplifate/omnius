@@ -18,7 +18,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
     {
         [Route("api/nexus/{appId}/gateways")]
         [HttpGet]
-        public AjaxTransferNexusModel GetApp(int appId)
+        public AjaxTransferNexusModel GetIntegrations(int appId)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
             }
             catch (Exception ex)
             {
-                string errorMessage = $"Tapestry Designer: error when loading app data (GET api/nexus/{appId}/gateways). Exception message: {ex.Message}";
+                string errorMessage = $"Nexus: error when loading integrations (GET api/nexus/{appId}/gateways). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }

@@ -126,8 +126,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}")]
         [HttpPost]
-        public void 
-            SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
+        public void SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
         {
             try
             {
@@ -578,20 +577,27 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         [HttpPost]
         public HttpResponseMessage SaveMenuOrder(AjaxTransferMenuOrder data)
         {
-            using (DBEntities context = new DBEntities()) 
+            try
             {
-                foreach (KeyValuePair<int, int> row in data.Metablocks) {
-                    TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
-                    metablock.MenuOrder = row.Value;
+                using (DBEntities context = new DBEntities())
+                {
+                    foreach (KeyValuePair<int, int> row in data.Metablocks) {
+                        TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
+                        metablock.MenuOrder = row.Value;
+                    }
+                    foreach (KeyValuePair<int, int> row in data.Blocks) {
+                        TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
+                        block.MenuOrder = row.Value;
+                    }
+                    context.SaveChanges();
                 }
-                foreach (KeyValuePair<int, int> row in data.Blocks) {
-                    TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
-                    block.MenuOrder = row.Value;
-                }
-                context.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Overview: error when saving menu order (POST api/tapestry/saveMenuOrder). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
         }
 
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
