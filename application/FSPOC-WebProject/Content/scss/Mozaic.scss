@@ -360,6 +360,44 @@ body.mozaicEditorModule {
             }
         }
     }
+    .name-value-list {
+        font-family: MyriadPro;
+        font-size: 14px;
+
+        tr {
+            border-top: 1px solid #01a1f7;
+        }
+        tr:first-child {
+            border-top: 2px solid #01a1f7;
+        }
+        tr:last-child {
+            border-bottom: 2px solid #01a1f7;
+        }
+        td {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        .name-cell {
+            min-width: 140px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-weight: bold;
+            background-color: #d4f0fe;
+        }
+        .value-cell {
+            min-width: 140px;
+            padding-left: 25px;
+            padding-right: 10px;
+        }
+    }
+    .name-value-list.toolboxItem {
+        .name-cell {
+            min-width: 110px;
+        }
+        .value-cell {
+            min-width: 60px;
+        }
+    }
     .uic.ui-draggable-dragging {
         z-index: 500;
     }

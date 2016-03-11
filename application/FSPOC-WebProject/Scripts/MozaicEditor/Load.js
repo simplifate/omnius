@@ -75,12 +75,16 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.css("left", "0px");
         newComponent.css("top", "0px");
     }
+    else if (newComponent.hasClass("name-value-list")) {
+        newComponent.append($('<tr><td class="name-cell">Platform</td><td class="value-cell">Omnius</td></tr><tr><td class="name-cell">Country</td>'
+            + '<td class="value-cell">Czech Republic</td></tr><tr><td class="name-cell">Year</td><td class="value-cell">2016</td></tr>'));
+    }
     else if (newComponent.hasClass("tab-navigation")) {
         tabLabelArray = cData.Content.split(";");
         newComponent.append($('<li class="active"><a class="fa fa-home"></a></li>'));
-        for (i = 0; i < tabLabelArray.length; i++) {
-            if (tabLabelArray[i].length > 0)
-                newComponent.append($("<li><a>" + tabLabelArray[i] + "</a></li>"));
+        for (k = 0; k < tabLabelArray.length; k++) {
+            if (tabLabelArray[k].length > 0)
+                newComponent.append($("<li><a>" + tabLabelArray[k] + "</a></li>"));
         }
         newComponent.css("width", "auto");
     }
@@ -90,7 +94,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newReplacer.css("position", "absolute");
         newReplacer.css("left", newComponent.css("left"));
         newReplacer.css("top", newComponent.css("top"));
-        newComponent.removeClass("uic color-picker");
+        newComponent.removeClass("uic");
         newReplacer.addClass("uic color-picker");
         newReplacer.attr("uicClasses", "color-picker");
         newReplacer.attr("uicName", newComponent.attr("uicName"));
@@ -99,30 +103,25 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         CreateDroppableMozaicContainer(newComponent, false);
     }
     if (newComponent.hasClass("data-table"))
-        wrapper.draggable({
-            cancel: false,
-            containment: "parent",
-            drag: function (event, ui) {
-                if (GridResolution > 0) {
-                    ui.position.left -= (ui.position.left % GridResolution);
-                    ui.position.top -= (ui.position.top % GridResolution);
-                }
-            }
-        });
+        draggableElement = wrapper;
+    else if (newComponent.hasClass("color-picker"))
+        draggableElement = newReplacer;
     else
-        newComponent.draggable({
-            cancel: false,
-            containment: "parent",
-            drag: function (event, ui) {
-                if (GridResolution > 0) {
-                    ui.position.left -= (ui.position.left % GridResolution);
-                    ui.position.top -= (ui.position.top % GridResolution);
-                }
+        draggableElement = newComponent;
+    draggableElement.draggable({
+        cancel: false,
+        containment: "parent",
+        drag: function (event, ui) {
+            if (GridResolution > 0) {
+                ui.position.left -= (ui.position.left % GridResolution);
+                ui.position.top -= (ui.position.top % GridResolution);
             }
-        });
+        }
+    });
     if (cData.ChildComponents) {
+        currentPanel = newComponent;
         for (j = 0; j < cData.ChildComponents.length; j++) {
-            LoadMozaicEditorComponents(newComponent, cData.ChildComponents[j]);
+            LoadMozaicEditorComponents(currentPanel, cData.ChildComponents[j]);
         }
     }
 }

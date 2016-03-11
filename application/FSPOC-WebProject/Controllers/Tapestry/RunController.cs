@@ -25,19 +25,20 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 // init
                 C.CORE core = HttpContext.GetCORE();
-                core.Entitron.AppName = appName;
+                if(!string.IsNullOrEmpty(appName))
+                    core.Entitron.AppName = appName;
                 core.User = User.GetLogged(core);
 
                 Block block = null;
                 try
                 {
                     block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
+                    core.Entitron.AppId = block.WorkFlow.ApplicationId;
                 }
                 catch (NullReferenceException)
                 {
                     return new HttpStatusCodeResult(404);
                 }
-                
 
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
@@ -103,7 +104,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
 
                     }
-                    if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions")
+                    if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
+                        || resourceMappingPair.TargetType == "name-value-list")
                     {
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                     }

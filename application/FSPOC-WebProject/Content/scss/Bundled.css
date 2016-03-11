@@ -713,6 +713,18 @@ body.adminAppModule #appBuildResults {
       font-family: RweHeadlineRegular;
       font-size: 20px;
       white-space: nowrap; }
+  .mozaicForm .tab-navigation {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    white-space: nowrap; }
+    .mozaicForm .tab-navigation li a.fa {
+      font-size: 20px;
+      height: 42px;
+      padding-top: 6px; }
   .mozaicForm .control-label {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -741,6 +753,15 @@ body.adminAppModule #appBuildResults {
     font-size: 14px;
     color: #58585a;
     white-space: nowrap; }
+  .mozaicForm .radio-control {
+    display: inline-block;
+    white-space: nowrap; }
+    .mozaicForm .radio-control .radio-label {
+      margin-left: 6px;
+      font-family: MyriadPro;
+      font-size: 14px;
+      color: #58585a;
+      white-space: nowrap; }
   .mozaicForm .data-table {
     width: 250px;
     border: 1px solid #4b8ad1;
@@ -757,6 +778,34 @@ body.adminAppModule #appBuildResults {
         color: #0065a9; }
       .mozaicForm .data-table .actionIcons .fa-remove {
         color: #e3001b; }
+  .mozaicForm .name-value-list {
+    font-family: MyriadPro;
+    font-size: 14px; }
+    .mozaicForm .name-value-list tr {
+      border-top: 1px solid #01a1f7; }
+    .mozaicForm .name-value-list tr:first-child {
+      display: none; }
+    .mozaicForm .name-value-list tr:nth-child(2) {
+      border-top: 2px solid #01a1f7; }
+    .mozaicForm .name-value-list tr:last-child {
+      border-bottom: 2px solid #01a1f7; }
+    .mozaicForm .name-value-list td {
+      padding-top: 3px;
+      padding-bottom: 3px; }
+    .mozaicForm .name-value-list .name-cell {
+      min-width: 140px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-weight: bold;
+      background-color: #d4f0fe; }
+    .mozaicForm .name-value-list .value-cell {
+      min-width: 140px;
+      padding-left: 25px;
+      padding-right: 10px; }
+  .mozaicForm .name-value-list.toolboxItem .name-cell {
+    min-width: 110px; }
+  .mozaicForm .name-value-list.toolboxItem .value-cell {
+    min-width: 60px; }
 
 .app-alert {
   width: 100%;
@@ -2914,6 +2963,32 @@ body.mozaicEditorModule {
       color: #0065a9; }
     body.mozaicEditorModule .data-table .actionIcons .fa-remove {
       color: #e3001b; }
+  body.mozaicEditorModule .name-value-list {
+    font-family: MyriadPro;
+    font-size: 14px; }
+    body.mozaicEditorModule .name-value-list tr {
+      border-top: 1px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list tr:first-child {
+      border-top: 2px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list tr:last-child {
+      border-bottom: 2px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list td {
+      padding-top: 3px;
+      padding-bottom: 3px; }
+    body.mozaicEditorModule .name-value-list .name-cell {
+      min-width: 140px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-weight: bold;
+      background-color: #d4f0fe; }
+    body.mozaicEditorModule .name-value-list .value-cell {
+      min-width: 140px;
+      padding-left: 25px;
+      padding-right: 10px; }
+  body.mozaicEditorModule .name-value-list.toolboxItem .name-cell {
+    min-width: 110px; }
+  body.mozaicEditorModule .name-value-list.toolboxItem .value-cell {
+    min-width: 60px; }
   body.mozaicEditorModule .uic.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {

@@ -65,6 +65,8 @@ function GetMozaicContainerComponentArray(container, nested) {
             type = "data-table-with-actions";
         else if (currentUic.hasClass("data-table"))
             type = "data-table-read-only";
+        else if (currentUic.hasClass("name-value-list"))
+            type = "name-value-list";
         else if (currentUic.hasClass("tab-navigation")) {
             type = "tab-navigation";
             tabString = "";
@@ -76,6 +78,8 @@ function GetMozaicContainerComponentArray(container, nested) {
         }
         else if (currentUic.hasClass("color-picker"))
             type = "color-picker";
+        else if (currentUic.hasClass("panel-component"))
+            type = "panel";
         else
             type = "control";
         if (currentUic.hasClass("data-table")) {

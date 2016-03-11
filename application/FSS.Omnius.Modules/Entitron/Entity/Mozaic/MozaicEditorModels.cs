@@ -29,7 +29,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             else
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
-            foreach (MozaicEditorComponent c in this.Components)
+
+            RenderComponentList(this.Components, stringBuilder, true);
+
+            stringBuilder.Append("</form>");
+            CompiledPartialView = stringBuilder.ToString();
+        }
+        private void RenderComponentList(ICollection<MozaicEditorComponent> ComponentList, StringBuilder stringBuilder, bool allowNesting)
+        {
+            foreach (MozaicEditorComponent c in ComponentList)
             {
                 if (c.Type == "info-container")
                 {
@@ -95,6 +103,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}</tr>}}</tbody>}} }}</{c.Tag}>");
                 }
+                else if (c.Type == "name-value-list")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{ var tableData = (System.Data.DataTable)ViewData[\"tableData_{c.Name}\"];");
+                    stringBuilder.Append($"foreach (System.Data.DataColumn col in tableData.Columns) {{<tr><td class=\"name-cell\">@col.Caption</td>");
+                    stringBuilder.Append($"<td class=\"value-cell\">@(tableData.Rows.Count>0?tableData.Rows[0][col.ColumnName]:\"no data\")</td></tr>");
+                    stringBuilder.Append($"}} }} }}</{c.Tag}>");
+                }
                 else if (c.Type == "data-table-with-actions")
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
@@ -110,11 +127,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"><li class=\"active\"><a class=\"fa fa-home\"></a></li>");
                     var tabLabelArray = c.Content.Split(';').ToList();
-                    foreach(string tabLabel in tabLabelArray)
+                    foreach (string tabLabel in tabLabelArray)
                     {
-                        if(tabLabel.Length > 0)
+                        if (tabLabel.Length > 0)
                             stringBuilder.Append($"<li><a>{tabLabel}</a></li>");
                     }
+                    stringBuilder.Append($"</{c.Tag}>");
+                }
+                else if (c.Type == "panel" && allowNesting)
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");
                 }
                 else
@@ -123,8 +147,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Content}</{c.Tag}>");
                 }
             }
-            stringBuilder.Append("</form>");
-            CompiledPartialView = stringBuilder.ToString();
         }
 
         public MozaicEditorPage()

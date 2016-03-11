@@ -86,11 +86,16 @@ $(function () {
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {
-            CreateColorPicker($(element));
+            newComponent = $(element);
+            CreateColorPicker(newComponent);
             newReplacer = $("#userContentArea .sp-replacer:last");
             newReplacer.css("position", "absolute");
-            newReplacer.css("left", droppedElement.css("left"));
-            newReplacer.css("top", droppedElement.css("top"));
+            newReplacer.css("left", newComponent.css("left"));
+            newReplacer.css("top", newComponent.css("top"));
+            newComponent.removeClass("uic");
+            newReplacer.addClass("uic color-picker");
+            newReplacer.attr("uicClasses", "color-picker");
+            newReplacer.attr("uicName", newComponent.attr("uicName"));
         });
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);
