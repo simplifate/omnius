@@ -39,7 +39,15 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // get actionRule
             ActionRule actionRule = null;
-            ActionRule nextRule = GetActionRule(block, buttonId, _results, modelId);
+            ActionRule nextRule;
+            try
+            { nextRule = GetActionRule(block, buttonId, _results, modelId); }
+            catch (MissingMethodException)
+            {
+                Message msg = new Message();
+                msg.Warnings.Add("Zadaný příkaz nenalezen");
+                return new Tuple<Message, Block>(msg, block);
+            }
 
             // get inputs
             string[] keys = fc.AllKeys;
