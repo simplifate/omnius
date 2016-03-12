@@ -80,7 +80,7 @@ function SaveBlock(commitMessage) {
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
                     OutputVariables: currentItem.data("outputVariables"),
-                    ComponentId: currentItem.attr("componentId")
+                    ComponentName: currentItem.attr("componentName")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {

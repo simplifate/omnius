@@ -233,7 +233,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     StateId = ajaxItem.StateId,
                                     TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
-                                    ComponentId = ajaxItem.ComponentId
+                                    ComponentId = ajaxItem.ComponentName
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -581,11 +581,13 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (DBEntities context = new DBEntities())
                 {
-                    foreach (KeyValuePair<int, int> row in data.Metablocks) {
+                    foreach (KeyValuePair<int, int> row in data.Metablocks)
+                    {
                         TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
                         metablock.MenuOrder = row.Value;
                     }
-                    foreach (KeyValuePair<int, int> row in data.Blocks) {
+                    foreach (KeyValuePair<int, int> row in data.Blocks)
+                    {
                         TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
                         block.MenuOrder = row.Value;
                     }
@@ -734,7 +736,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
-                    ComponentId = item.ComponentId,
+                    ComponentName = item.ComponentId,
                     TargetId = item.TargetId
                 };
                 result.WorkflowItems.Add(ajaxItem);

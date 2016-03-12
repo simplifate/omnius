@@ -186,8 +186,8 @@
                             newItem.data('inputVariables', currentItemData.InputVariables);
                         if (currentItemData.OutputVariables != null)
                             newItem.data('outputVariables', currentItemData.OutputVariables);
-                        if (currentItemData.ComponentId != null)
-                            newItem.attr('componentId', currentItemData.ComponentId);
+                        if (currentItemData.ComponentName != null)
+                            newItem.attr('componentName', currentItemData.ComponentName);
                         if (currentItemData.TargetId != null)
                             newItem.attr('targetId', currentItemData.TargetId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");

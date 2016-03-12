@@ -173,7 +173,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? TargetId { get; set; }
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
-        public string ComponentId { get; set; }
+        public string ComponentName { get; set; }
     }
     public class AjaxTapestryDesignerWorkflowSymbol
     {
