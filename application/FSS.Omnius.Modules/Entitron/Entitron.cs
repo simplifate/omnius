@@ -14,7 +14,7 @@ namespace FSS.Omnius.Modules.Entitron
     [NotMapped]
     public class Entitron : Module
     {
-        public const string connectionString = "data source=wv420273.rwegroup.cz;initial catalog=omnius;user id=Omnius;password=h.b3#:tTqKf8;MultipleActiveResultSets=True;App=EntityFramework";
+        public const string connectionString = "data source=wv420273.rwegroup.cz;initial catalog=Omnius_System;user id=Omnius;password=h.b3#:tTqKf8;MultipleActiveResultSets=True;App=EntityFramework";
         private CORE.CORE _CORE;
         private DBEntities entities = null;
 
