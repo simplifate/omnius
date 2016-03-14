@@ -137,7 +137,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else if (c.Type == "panel" && allowNesting)
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
+                    if (!string.IsNullOrEmpty(c.Properties))
+                        stringBuilder.Append($" panelHiddenBy=\"{c.Properties}\"");
+                    stringBuilder.Append($">");
                     RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");
                 }

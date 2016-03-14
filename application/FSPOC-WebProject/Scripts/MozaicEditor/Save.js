@@ -109,6 +109,7 @@ function GetMozaicContainerComponentArray(container, nested) {
             Attributes: "",
             Classes: currentUic.attr("uicClasses"),
             Styles: currentUic.attr("uicStyles"),
+            Properties: currentUic.attr("uicSpecialProps") ? currentUic.attr("uicSpecialProps") : "",
             Content: content,
             Label: label,
             Placeholder: currentUic.attr("placeholder"),

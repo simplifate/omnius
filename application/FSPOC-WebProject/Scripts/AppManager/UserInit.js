@@ -97,6 +97,25 @@ $(function () {
             newReplacer.attr("uicClasses", "color-picker");
             newReplacer.attr("uicName", newComponent.attr("uicName"));
         });
+        $(".uic.panel-component").each(function (index, element) {
+            panel = $(element);
+            hidingCheckboxName = panel.attr("panelHiddenBy");
+            if (hidingCheckboxName) {
+                hidingCheckbox = $('input[name="' + hidingCheckboxName + '"]');
+                if (hidingCheckbox) {
+                    hidingCheckbox.attr("panelToHide", panel.attr("name"));
+                    hidingCheckbox.on("change", function () {
+                        panelToHide = $(this).attr("panelToHide");
+                        if ($(this).is(":checked")) {
+                            ShowPanel(panelToHide);
+                        }
+                        else {
+                            HidePanel(panelToHide);
+                        }
+                    });
+                }
+            }
+        });
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);
             currentDialog.dialog({

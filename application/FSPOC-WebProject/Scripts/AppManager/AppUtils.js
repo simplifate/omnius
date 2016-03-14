@@ -22,3 +22,25 @@
         $(this).parents(".app-alert").remove();
     });
 };
+function HidePanel(paneName) {
+    panel = $("#userContentArea").find('div[name="' + paneName + '"]');
+    panelBottom = parseInt(panel.css("top")) + panel.height();
+    $(".mozaicForm > .uic").each(function (index, element) {
+        currentComponent = $(element);
+        if (parseInt(currentComponent.css("top")) > panelBottom) {
+            currentComponent.css("top", parseInt(currentComponent.css("top")) - panel.height());
+        }
+    });
+    panel.hide();
+}
+function ShowPanel(paneName) {
+    panel = $("#userContentArea").find('div[name="' + paneName + '"]');
+    panel.show();
+    panelTop = parseInt(panel.css("top"));
+    $(".mozaicForm > .uic").each(function (index, element) {
+        currentComponent = $(element);
+        if (parseInt(currentComponent.css("top")) > panelTop) {
+            currentComponent.css("top", parseInt(currentComponent.css("top")) + panel.height());
+        }
+    });
+}

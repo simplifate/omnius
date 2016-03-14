@@ -471,6 +471,9 @@
         white-space: nowrap;
     }
     .checkbox-control {
+        width: auto;
+        white-space: nowrap;
+
         .checkbox-label {
             margin-left: 6px;
             font-family: MyriadPro;
@@ -558,7 +561,10 @@
         .value-cell {
             min-width: 60px;
         }
-    } 
+    }
+    .visible-panel-pale-background {
+        background-color: #d4f0fe;
+    }
 }
 .app-alert {
     width: 100%;

@@ -167,6 +167,7 @@
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Panels</div>
             <div class="toolboxItem panel-component" uicClasses="panel-component"></div>
+            <div class="toolboxItem panel-component visible-panel-pale-background" uicClasses="panel-component visible-panel-pale-background"></div>
         </div>
         <div id="mozaicLeftBarMinimized">
             <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
@@ -208,8 +209,12 @@
                     <td><input type="text" name="component-content" id="component-content" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
-                    <td><label for="component-content">CSS Styles</label></td>
+                    <td><label for="component-styles">CSS Styles</label></td>
                     <td><input type="text" name="component-styles" id="component-styles" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-props">Special properties</label></td>
+                    <td><input type="text" name="component-props" id="component-props" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
         </fieldset>
