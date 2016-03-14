@@ -46,7 +46,8 @@ namespace FSS.Omnius.Modules.Tapestry
             // __CORE__
             // __Result__
             // __Model__
-            // __Model.columnName
+            // __ModelId__
+            // __Model.{columnName}
             // __TableName__
 
             // init action
@@ -55,6 +56,8 @@ namespace FSS.Omnius.Modules.Tapestry
             _CORE.User = user;
             if (!string.IsNullOrWhiteSpace(block.ModelName))
                 _results.OutputData.Add("__TableName__", block.ModelName);
+            if (modelId >= 0)
+                _results.OutputData.Add("__ModelId__", modelId);
 
             // get actionRule
             ActionRule actionRule = null;

@@ -73,15 +73,15 @@ $(function () {
             table.css("top", "0px");
             table.on("click", ".rowEditAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                // TODO: call API with this rowId
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                // TODO: call API with this rowId
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                // TODO: call API with this rowId
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').submit();
             });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
