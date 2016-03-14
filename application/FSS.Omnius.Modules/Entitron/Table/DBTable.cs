@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Entitron
 {
-    public class DBTable
+    public class DBTable : IToJson
     {
         #region static
         public static DBTable Create(string name)
@@ -560,5 +561,9 @@ namespace FSS.Omnius.Modules.Entitron
             return Select().where(c => c.column("Id").Equal(id)).ToList().First();
         }
 
+        public JToken ToJson()
+        {
+            return Select().ToList().ToJson();
+        }
     }
 }

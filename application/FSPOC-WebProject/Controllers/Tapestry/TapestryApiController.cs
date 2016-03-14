@@ -9,6 +9,10 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using M = System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using Newtonsoft.Json.Linq;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
@@ -599,6 +603,21 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 var errorMessage = $"Tapestry Overview: error when saving menu order (POST api/tapestry/saveMenuOrder). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
+        [Route("api/run/{appName}/{blockId}")]
+        public JToken Run(string appName, string button, M.FormCollection fc, int blockId = -1, int modelId = -1)
+        {
+            CORE core = new CORE();
+            User currentUser = User.GetLogged(core);
+
+            using (DBEntities context = new DBEntities())
+            {
+                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+                var result = core.Tapestry.jsonRun(currentUser, appName, block, button, modelId, fc);
+
+                return result;
             }
         }
 

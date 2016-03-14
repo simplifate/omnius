@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQuery_Select_ColumnList : SqlQuery_withApp
     {
-        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);

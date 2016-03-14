@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Entitron
 {
-    public class DBItem
+    public class DBItem : IToJson
     {
         public DBItem()
         {
@@ -122,6 +123,18 @@ namespace FSS.Omnius.Modules.Entitron
         public List<object> getAllProperties()
         {
             return _idProperties.Values.ToList();
-        } 
+        }
+
+        public JToken ToJson()
+        {
+            JObject result = new JObject();
+
+            foreach(var pair in _properties)
+            {
+                result.Add(pair.Key, new JValue(_idProperties[pair.Value]));
+            }
+
+            return result;
+        }
     }
 }

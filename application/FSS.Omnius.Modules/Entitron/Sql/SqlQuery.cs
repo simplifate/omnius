@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using Logger;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
@@ -54,12 +55,12 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         {
             BaseExecution(connection);
         }
-        public virtual List<DBItem> ExecuteWithRead()
+        public virtual ListJson<DBItem> ExecuteWithRead()
         {
             if (Entitron.connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            List<DBItem> items = null;
+            ListJson<DBItem> items = null;
             using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
             {
                 connection.Open();
@@ -87,7 +88,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     throw e;
             }
         }
-        protected virtual List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        protected virtual ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             SqlCommand cmd = Prepare(connection);
             SqlDataReader reader = null;
@@ -132,9 +133,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             Log.SQL(msg);
             return cmd;
         }
-        protected virtual List<DBItem> Read(SqlDataReader reader)
+        protected virtual ListJson<DBItem> Read(SqlDataReader reader)
         {
-            List<DBItem> items = new List<DBItem>();
+            ListJson<DBItem> items = new ListJson<DBItem>();
 
             while(reader.Read())
             {

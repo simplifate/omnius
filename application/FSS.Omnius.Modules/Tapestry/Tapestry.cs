@@ -14,6 +14,7 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
 using System.Data;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -32,6 +33,16 @@ namespace FSS.Omnius.Modules.Tapestry
         
         public Tuple<Message, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
+            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            return new Tuple<Message, Block>(result.Item1.Message, result.Item2);
+        }
+        public JToken jsonRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        {
+            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            return (result.Item1.OutputData["__Result__"] as IToJson).ToJson();
+        }
+        private Tuple<ActionResult, Block> innerRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        {
             // init action
             _results.OutputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppName = AppName;
@@ -44,14 +55,13 @@ namespace FSS.Omnius.Modules.Tapestry
             { nextRule = GetActionRule(block, buttonId, _results, modelId); }
             catch (MissingMethodException)
             {
-                Message msg = new Message();
-                msg.Warnings.Add("Zadaný příkaz nenalezen");
-                return new Tuple<Message, Block>(msg, block);
+                _results.Message.Warnings.Add("Zadaný příkaz nenalezen");
+                return new Tuple<ActionResult, Block>(_results, block);
             }
 
             // get inputs
             string[] keys = fc.AllKeys;
-            foreach(string key in keys)
+            foreach (string key in keys)
             {
                 _results.OutputData.Add(key, fc[key]);
             }
@@ -66,7 +76,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
                 if (_results.Type == ActionResultType.Error)
                 {
-                    return new Tuple<Message, Block>(_results.Message, Rollback(prevActionRules).SourceBlock);
+                    return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
@@ -81,7 +91,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // target Block
-            return new Tuple<Message, Block>(_results.Message, resultBlock);
+            return new Tuple<ActionResult, Block>(_results, resultBlock);
         }
 
         public ActionRule Rollback(List<ActionRule> prevActionRules)

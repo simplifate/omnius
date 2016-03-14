@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
+    <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
     <Compile Include="Entitron\Table\Application.cs" />
     <Compile Include="Entitron\Table\DBView.cs" />
+    <Compile Include="Entitron\Table\IToJson.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
