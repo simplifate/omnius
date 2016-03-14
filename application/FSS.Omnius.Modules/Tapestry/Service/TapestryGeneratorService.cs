@@ -60,7 +60,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Block resultBlock = new Block
                 {
                     Name = childBlock.Name,
-                    ModelName = childBlock.AssociatedTableName,
+                    ModelName = childBlock.AssociatedTableName.Split(',').First(),
                     IsVirtual = false
                 };
                 resultWF.Blocks.Add(resultBlock);
