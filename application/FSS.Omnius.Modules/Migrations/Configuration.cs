@@ -48,6 +48,11 @@ namespace FSS.Omnius.Modules.Migrations
                     new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "XML", shortcut = "x", limited = true },
                     new Entitron.Entity.CORE.DataType { CSharpName = "blob", SqlName = "Blob", shortcut = "l", limited = true }
                 );
+
+            if (!context.Applications.Any())
+                context.Applications.AddOrUpdate(
+                    new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsEnabled = true, IsPublished = false, IsSystem = true }
+                );
         }
     }
 }
