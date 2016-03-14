@@ -14,8 +14,10 @@
     public partial class UsersApplications
     {
         public int Id { get; set; }
+        [Index("IX_userApp", 1, IsUnique = true)]
         public int UserId { get; set; }
         public User User { get; set; }
+        [Index("IX_userApp", 2, IsUnique = true)]
         public int ApplicationId { get; set; }
         public Application Application { get; set; }
 
