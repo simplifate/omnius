@@ -70,6 +70,10 @@ namespace FSS.Omnius.Modules.Persona
             DBEntities context = _CORE.Entitron.GetStaticTables();
             User user = context.Users.SingleOrDefault(u => u.UserName == username);
 
+            return GetUser(user);
+        }
+        public User GetUser(User user)
+        {
             // is in DB
             if (user != null)
             {
@@ -82,7 +86,7 @@ namespace FSS.Omnius.Modules.Persona
                 {
                     if (user.localExpiresAt < DateTime.UtcNow)
                     {
-                        var userWithGroups = GetUserFromAD(username);
+                        var userWithGroups = GetUserFromAD(user.UserName);
                         // user not found - was deleted in AD
                         if (userWithGroups == null)
                             return null;
@@ -98,7 +102,7 @@ namespace FSS.Omnius.Modules.Persona
             // not in db
             else
             {
-                var userWithGroups = GetUserFromAD(username);
+                var userWithGroups = GetUserFromAD(user.UserName);
 
                 // user doesn't exist
                 if (userWithGroups == null)
