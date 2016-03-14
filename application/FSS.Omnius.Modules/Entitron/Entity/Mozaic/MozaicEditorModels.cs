@@ -49,12 +49,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "button-simple")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                 }
                 else if (c.Type == "button-dropdown")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
                 }
                 else if (c.Tag == "input" || c.Tag == "textarea")
@@ -139,7 +139,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
-                        stringBuilder.Append($" panelHiddenBy=\"{c.Properties}\"");
+                    {
+                        string[] nameValuePair = c.Properties.Split('=');
+                        if (nameValuePair.Length == 2)
+                        {
+                            if (nameValuePair[0].ToLower() == "hide")
+                                stringBuilder.Append($" panelHiddenBy=\"{nameValuePair[1]}\"");
+                            else if (nameValuePair[0].ToLower() == "clone")
+                                stringBuilder.Append($" panelClonedBy=\"{nameValuePair[1]}\"");
+                        }
+                    }
                     stringBuilder.Append($">");
                     RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");

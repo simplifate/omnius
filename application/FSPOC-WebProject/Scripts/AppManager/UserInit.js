@@ -54,6 +54,12 @@ $(function () {
         $("#appManagerIcon").removeClass("activeIcon");
     };
     if ($("#userLeftBar").length > 0) {
+        $(".uic > checkbox").each(function (index, element) {
+            $(element).prop("checked", false);
+        });
+        $(".input-single-line, .input-multiline").each(function (index, element) {
+            $(element).val("");
+        });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
@@ -104,6 +110,7 @@ $(function () {
                 hidingCheckbox = $('input[name="' + hidingCheckboxName + '"]');
                 if (hidingCheckbox) {
                     hidingCheckbox.attr("panelToHide", panel.attr("name"));
+                    hidingCheckbox.prop("checked", true);
                     hidingCheckbox.on("change", function () {
                         panelToHide = $(this).attr("panelToHide");
                         if ($(this).is(":checked")) {
@@ -112,6 +119,18 @@ $(function () {
                         else {
                             HidePanel(panelToHide);
                         }
+                    });
+                }
+            }
+            cloningButtonName = panel.attr("panelClonedBy");
+            if (cloningButtonName) {
+                cloningButton = $('button[buttonName="' + cloningButtonName + '"]');
+                if (cloningButton) {
+                    cloningButton.attr("type", "button");
+                    cloningButton.attr("panelToClone", panel.attr("name"));
+                    cloningButton.on("click", function () {
+                        panelToClone = $(this).attr("panelToClone");
+                        ClonePanel(panelToClone);
                     });
                 }
             }

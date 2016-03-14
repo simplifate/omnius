@@ -565,6 +565,17 @@
     .visible-panel-pale-background {
         background-color: #d4f0fe;
     }
+    .removePanelIcon {
+        @include no-select();
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        font-size: 19px;
+        color: #58585a;
+    }
+    .removePanelIcon:hover {
+        color: #e3001b;
+    }
 }
 .app-alert {
     width: 100%;

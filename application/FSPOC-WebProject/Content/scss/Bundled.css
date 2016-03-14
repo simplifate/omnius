@@ -811,6 +811,20 @@ body.adminAppModule #appBuildResults {
     min-width: 60px; }
   .mozaicForm .visible-panel-pale-background {
     background-color: #d4f0fe; }
+  .mozaicForm .removePanelIcon {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    font-size: 19px;
+    color: #58585a; }
+  .mozaicForm .removePanelIcon:hover {
+    color: #e3001b; }
 
 .app-alert {
   width: 100%;
