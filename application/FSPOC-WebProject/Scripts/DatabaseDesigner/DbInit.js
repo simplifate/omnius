@@ -23,10 +23,13 @@ $(function () {
             ClearDbScheme();
         });
         $("#btnGenerate").on("click", function () {
-            jQuery.get("/api/database/apps/" + $("#currentAppId").val() + "/generate", function () {
-                alert("Success");
-            }).fail(function () {
-                alert("Error: database generation failed");
+            $.ajax({
+                type: "GET",
+                url: "/api/database/apps/" + $("#currentAppId").val() + "/generate",
+                success: function () { alert("Success") },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
             });
         });
         $("#btnZoomIn").on("click", function () {

@@ -2,6 +2,9 @@
 $(function () {
     if (CurrentModuleIs("mozaicEditorModule")) {
         RecalculateMozaicToolboxHeight();
+        pageId = $("#currentPageId").val();
+        if (pageId)
+            LoadMozaicPage(pageId);
 
         $("#btnNewPage").on("click", function () {
             newPageDialog.dialog("open");
@@ -12,9 +15,16 @@ $(function () {
         $("#btnClear").on("click", function () {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();
+            $("#mozaicPageContainer .color-picker").remove();
         });
         $("#btnSave").on("click", function () {
-            SaveMozaicPage();
+            pageId = $("#currentPageId").val();
+            if (!pageId) {
+                SaveRequested = true;
+                newPageDialog.dialog("open");
+            }
+            else
+                SaveMozaicPage();
         });
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");
@@ -93,63 +103,7 @@ $(function () {
             scroll: true,
             cancel: false
         });
-        $("#mozaicPageContainer").droppable({
-            containment: "parent",
-            tolerance: "fit",
-            accept: ".toolboxItem",
-            greedy: true,
-            drop: function (e, ui) {
-                droppedElement = ui.helper.clone();
-                droppedElement.removeClass("toolboxItem");
-                droppedElement.removeClass("ui-draggable-dragging");
-                droppedElement.addClass("uic");
-                droppedElement.attr("uicName", "");
-                droppedElement.attr("uicStyles", "");
-                droppedElement.attr("placeholder", "");
-                $(this).append(droppedElement);
-                if (droppedElement.hasClass("breadcrumb-navigation")) {
-                    droppedElement.css("width", "600px");
-                }
-                else if (droppedElement.hasClass("data-table")) {
-                    CreateCzechDataTable(droppedElement);
-                    droppedElement.css("width", "1000px");
-                    wrapper = droppedElement.parents(".dataTables_wrapper");
-                    wrapper.css("position", "absolute");
-                    wrapper.css("left", droppedElement.css("left"));
-                    wrapper.css("top", droppedElement.css("top"));
-                    droppedElement.css("position", "relative");
-                    droppedElement.css("left", "0px");
-                    droppedElement.css("top", "0px");
-                }
-                if (GridResolution > 0) {
-                    droppedElement.css("left", droppedElement.position().left - (droppedElement.position().left % GridResolution));
-                    droppedElement.css("top", droppedElement.position().top - (droppedElement.position().top % GridResolution));
-                }
-                ui.helper.remove();
-                if (droppedElement.hasClass("data-table"))
-                    wrapper.draggable({
-                        cancel: false,
-                        containment: "parent",
-                        drag: function (event, ui) {
-                            if (GridResolution > 0) {
-                                ui.position.left -= (ui.position.left % GridResolution);
-                                ui.position.top -= (ui.position.top % GridResolution);
-                            }
-                        }
-                    });                
-                else
-                    droppedElement.draggable({
-                        cancel: false,
-                        containment: "parent",
-                        drag: function (event, ui) {
-                            if (GridResolution > 0) {
-                                ui.position.left -= (ui.position.left % GridResolution);
-                                ui.position.top -= (ui.position.top % GridResolution);
-                            }
-                        }
-                    });
-            }
-        });
+        CreateDroppableMozaicContainer($("#mozaicPageContainer"), true);
         $("#mozaicPageContainer .uic").draggable({
             cancel: false,
             containment: "parent",

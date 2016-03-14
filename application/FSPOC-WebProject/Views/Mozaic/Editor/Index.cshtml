@@ -68,10 +68,14 @@
             <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
             <input type="text" placeholder="Date input with datepicker" class="toolboxItem input-single-line" uicClasses="input-single-line input-with-datepicker" />
             <textarea placeholder="Multiline input" class="toolboxItem input-multiline" uicClasses="input-multiline"></textarea>
-            <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
             <div class="toolboxItem checkbox-control" uicClasses="checkbox-control">
                 <input type="checkbox" /><span class="checkbox-label">Checkbox</span>
             </div>
+            <div class="toolboxItem radio-control" uicClasses="radio-control" uicName="radioGroup1">
+                <input type="radio" name="radioGroup1" /><span class="radio-label">Radio button</span>
+            </div>
+            <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
+            <input type="text" class="toolboxItem color-picker basic" uicClasses="color-picker basic" value="Color picker" />
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Labels</div>
             <div class="toolboxItem form-heading" uicClasses="form-heading">Form heading</div>
@@ -87,6 +91,11 @@
                 <div class="app-icon fa fa-question"></div>
                 <div class="nav-text">APP NAME &gt; Nav</div>
             </div>
+            <ul class="nav nav-tabs toolboxItem tab-navigation" uicClasses="nav nav-tabs tab-navigation">
+                <li class="active"><a class="fa fa-home"></a></li>
+                <li><a>Tab 2</a></li>
+                <li><a>Tab 3</a></li>
+            </ul>
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Tables</div>
             <table class="toolboxItem data-table display" uicClasses="data-table display">
@@ -141,15 +150,32 @@
                     </tr>
                 </tbody>
             </table>
+            <table class="toolboxItem name-value-list" uicClasses="name-value-list">
+                <tr>
+                    <td class="name-cell">Platform</td>
+                    <td class="value-cell">Omnius</td>
+                </tr>
+                <tr>
+                    <td class="name-cell">Country</td>
+                    <td class="value-cell">Czech Republic</td>
+                </tr>
+                <tr>
+                    <td class="name-cell">Year</td>
+                    <td class="value-cell">2016</td>
+                </tr>
+            </table>
+            <hr class="toolboxCategoryHr" />
+            <div class="toolboxCategoryLabel">Panels</div>
+            <div class="toolboxItem panel-component" uicClasses="panel-component"></div>
+            <div class="toolboxItem panel-component visible-panel-pale-background" uicClasses="panel-component visible-panel-pale-background"></div>
         </div>
-    </div>
         <div id="mozaicLeftBarMinimized">
             <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
             <div class="leftBarHeader">Paleta</div>
         </div>
-        <div id="mozaicPageContainer">
-            <div id="modalSizeVisualization"></div>
-        </div>
+    </div>
+    <div id="mozaicPageContainer">
+        <div id="modalSizeVisualization"></div>
     </div>
 </div>
 <input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
@@ -183,8 +209,12 @@
                     <td><input type="text" name="component-content" id="component-content" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
-                    <td><label for="component-content">CSS Styles</label></td>
+                    <td><label for="component-styles">CSS Styles</label></td>
                     <td><input type="text" name="component-styles" id="component-styles" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="component-props">Special properties</label></td>
+                    <td><input type="text" name="component-props" id="component-props" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
             </table>
         </fieldset>

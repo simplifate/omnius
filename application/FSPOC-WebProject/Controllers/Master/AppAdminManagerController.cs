@@ -1,20 +1,28 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Tapestry.Service;
-using System.IO;
 
 namespace FSS.Omnius.Controllers.Master
 {
     [PersonaAuthorize(Roles = "Admin", Module = "Master")]
     public class AppAdminManagerController : Controller
     {
+        private IDatabaseGenerateService DatabaseGenerateService { get; set; }
+
+        public AppAdminManagerController(IDatabaseGenerateService databaseGenerateService)
+        {
+            DatabaseGenerateService = databaseGenerateService; // Unity dependency injection
+        }
         public ActionResult Index()
         {
             using (var context = new DBEntities())
@@ -33,59 +41,83 @@ namespace FSS.Omnius.Controllers.Master
         {
             var core = HttpContext.GetCORE();
             core.Entitron.AppId = Id;
+            bool dbSchemeLocked = false;
 
             using (var context = new DBEntities())
             {
                 var app = context.Applications.Find(Id);
-
-                // Tapestry
-                var service = new TapestryGeneratorService();
-                var blockMapping = service.GenerateTapestry(core);
-
-                // Mozaic pages
-                foreach (var editorPage in app.MozaicEditorPages)
+                // Entitron Generate Database
+                if (app.DbSchemeLocked)
+                    throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+                try
                 {
-                    editorPage.Recompile();
-                    string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
-                    var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
-                    if (oldPage == null)
+                    app.DbSchemeLocked = dbSchemeLocked = true;
+                    context.SaveChanges();
+                    core.Entitron.AppId = app.Id;
+                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                    if (dbSchemeCommit == null)
+                        dbSchemeCommit = new DbSchemeCommit();
+                    DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
+                    app.DbSchemeLocked = false;
+                    context.SaveChanges();
+
+
+                    // Mozaic pages
+                    foreach (var editorPage in app.MozaicEditorPages)
                     {
-                        var newPage = new Page
+                        editorPage.Recompile();
+                        string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
+                        var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
+                        if (oldPage == null)
                         {
-                            ViewName = editorPage.Name,
-                            ViewPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml",
-                            ViewContent = editorPage.CompiledPartialView
+                            var newPage = new Page
+                            {
+                                ViewName = editorPage.Name,
+                                ViewPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml",
+                                ViewContent = editorPage.CompiledPartialView
+                            };
+                            context.Pages.Add(newPage);
+                            context.SaveChanges();
+                            editorPage.CompiledPageId = newPage.Id;
+                        }
+                        else
+                        {
+                            oldPage.ViewName = editorPage.Name;
+                            oldPage.ViewContent = editorPage.CompiledPartialView;
+                            editorPage.CompiledPageId = oldPage.Id;
+                        }
+                    }
+                    context.SaveChanges();
+
+                    // Tapestry
+                    var service = new TapestryGeneratorService();
+                    var blockMapping = service.GenerateTapestry(core);
+
+                    // menu layout
+                    string path = $"/Views/App/{Id}/menuLayout.cshtml";
+                    var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
+                    if (menuLayout == null)
+                    {
+                        menuLayout = new Page
+                        {
+                            ViewPath = $"/Views/App/{Id}/menuLayout.cshtml"
                         };
-                        context.Pages.Add(newPage);
-                        context.SaveChanges();
-                        editorPage.CompiledPageId = newPage.Id;
+                        context.Pages.Add(menuLayout);
                     }
-                    else
-                    {
-                        oldPage.ViewName = editorPage.Name;
-                        oldPage.ViewContent = editorPage.CompiledPartialView;
-                        editorPage.CompiledPageId = oldPage.Id;
-                    }
+                    menuLayout.ViewName = $"{app.Name} layout";
+                    menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
+
+                    app.IsPublished = true;
+                    context.SaveChanges();
+
+
+                    return View();
                 }
-                // menu layout
-                string path = $"/Views/App/{Id}/menuLayout.cshtml";
-                var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
-                if (menuLayout == null)
+                finally
                 {
-                    menuLayout = new Page
-                    {
-                        ViewPath = $"/Views/App/{Id}/menuLayout.cshtml"
-                    };
-                    context.Pages.Add(menuLayout);
+                    app.DbSchemeLocked = dbSchemeLocked = false;
+                    context.SaveChanges();
                 }
-                menuLayout.ViewName = $"{app.Name} layout";
-                menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
-
-                app.IsPublished = true;
-                context.SaveChanges();
-
-
-                return View();
             }
         }
 

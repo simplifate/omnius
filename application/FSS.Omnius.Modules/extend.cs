@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -19,6 +18,18 @@ namespace System
 
             return str;
         }
+        public static string RemoveDiacritics(this string input)
+        {
+            string decomposed = input.Normalize(NormalizationForm.FormD);
+            char[] filtered = decomposed
+                .Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark).ToArray();
+            string newString = new string(filtered);
+            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            newString = rgx.Replace(newString, "");
+
+            return newString;
+        }
+
         public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)
         {
             foreach (var pair in range)

@@ -4,7 +4,9 @@
         type: "GET",
         url: "/api/database/apps/" + appId + "/commits/" + commitId,
         dataType: "json",
-        error: function () { alert("ERROR") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             ClearDbScheme();
             for (i = 0; i < data.Tables.length; i++) {

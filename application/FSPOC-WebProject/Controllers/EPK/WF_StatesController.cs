@@ -6,11 +6,12 @@ using E = FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class WF_StatesController : Controller
     {
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             var intervals = HttpContext.GetCORE().Entitron.GetDynamicTable("WF_states").Select().ToList();
             DataTable data = new DataTable();
             data.Columns.Add("Id");
@@ -30,6 +31,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Index(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic1061"))
             {
                 return RedirectToRoute("EPK", new { controller = "WF_States", action = "Create" });
@@ -38,6 +40,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Create()
         {
+            HttpContext.SetApp(26);
             ViewData["appIcon"] = "fa-book";
             ViewData["appName"] = "Evidence periodik";
             ViewData["pageName"] = "Vytvoření stavu";
@@ -46,6 +49,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic1034"))
             {
                 try
@@ -73,6 +77,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Update(int id)
         {
+            HttpContext.SetApp(26);
             E.DBItem item = HttpContext.GetCORE().Entitron.GetDynamicItem("WF_states", id);
 
             ViewData["uic1038"] = item["name"];
@@ -86,6 +91,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Update(int id, FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic1041"))
             {
                 try
@@ -114,6 +120,7 @@ namespace FSS.Omnius.Controllers.EPK
 
         public ActionResult Delete(int id)
         {
+            HttpContext.SetApp(26);
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;

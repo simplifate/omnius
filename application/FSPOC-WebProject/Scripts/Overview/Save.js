@@ -54,7 +54,9 @@
         url: "/api/tapestry/apps/" + appId + "/metablocks/" + metablockId,
         dataType: "json",
         data: postData,
-        error: function () { alert("ERROR") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             for (i = 0; i < data.BlockIdPairs.length; i++) {
                 temporaryId = data.BlockIdPairs[i].TemporaryId;
@@ -66,6 +68,7 @@
                 realId = data.MetablockIdPairs[i].RealId;
                 $("#overviewPanel .metablock[tempId='" + temporaryId + "']").attr("metablockId", realId);
             }
+            ChangedSinceLastSave = false;
             if (callback)
                 callback();
         }

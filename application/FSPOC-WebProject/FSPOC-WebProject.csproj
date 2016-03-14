@@ -208,14 +208,17 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CORE\ServiceController.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
+    <Compile Include="Controllers\Cortex\CortexController.cs" />
     <Compile Include="Controllers\EPK\FormsController.cs" />
     <Compile Include="Controllers\EPK\Heap_OrdersController.cs" />
     <Compile Include="Controllers\EPK\IntervalsController.cs" />
     <Compile Include="Controllers\EPK\OrdersController.cs" />
     <Compile Include="Controllers\EPK\PeriodicalsController.cs" />
+    <Compile Include="Controllers\EPK\ReportController.cs" />
     <Compile Include="Controllers\EPK\SuppliersController.cs" />
     <Compile Include="Controllers\EPK\TypesController.cs" />
     <Compile Include="Controllers\EPK\WF_StatesController.cs" />
@@ -276,6 +279,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\ErrorCss.css" />
+    <Content Include="Content\spectrum.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
     <Content Include="Content\images\animated-overlay.gif" />
@@ -419,6 +423,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
+    <Content Include="Scripts\AppManager\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\AppManager\UserInit.js" />
     <Content Include="Scripts\BlockViewModel.js" />
@@ -1370,6 +1375,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
+    <Content Include="Scripts\spectrum.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
@@ -1535,15 +1541,19 @@
     <Content Include="Views\Mozaic\EPK\31.cshtml" />
     <Content Include="Views\Mozaic\EPK\9.cshtml" />
     <Content Include="Views\Mozaic\EPK\_layout.cshtml" />
+    <Content Include="Views\CORE\Service\RecoverApp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Backup\" />
     <Folder Include="Views\Companies\" />
+    <Folder Include="Views\Cortex\" />
     <Folder Include="Views\Forms\" />
     <Folder Include="Views\Heap_Orders\" />
     <Folder Include="Views\Interval\" />
     <Folder Include="Views\Periodicals\" />
     <Folder Include="Views\Persona\Users\" />
+    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

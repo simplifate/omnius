@@ -3,5 +3,6 @@
     public interface IBackupGeneratorService
     {
         void ExportAllDatabaseDesignerData(string filename);
+        string ExportApplication(int id);
     }
 }

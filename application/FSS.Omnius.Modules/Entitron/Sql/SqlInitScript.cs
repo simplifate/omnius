@@ -11,12 +11,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            sqlString = string.Format(
+            sqlString = 
                 "CREATE PROCEDURE getTableRealName @applicationName NVARCHAR(50), @tableName NVARCHAR(50), @realTableName NVARCHAR(50) OUTPUT AS " +
-                "SET @realTableName = (SELECT object_name( (SELECT tableId FROM {1} e INNER JOIN {0} a ON e.ApplicationId = a.Id WHERE e.Name = @tableName AND (a.Name IS NULL OR a.Name = @applicationName)) ))",
-                DB_MasterApplication,
-                DB_EntitronMeta
-                );
+                "SET @realTableName = CONCAT('Entitron_', @applicationName, '_', @tableName);";
+
             base.BaseExecution(transaction);
         }
 

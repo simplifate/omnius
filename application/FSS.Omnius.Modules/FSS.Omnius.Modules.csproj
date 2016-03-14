@@ -76,6 +76,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -103,6 +104,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -113,6 +115,8 @@
   <ItemGroup>
     <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
+    <Compile Include="CORE\ListJson.cs" />
+    <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
@@ -120,12 +124,14 @@
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
     <Compile Include="Entitron\Entity\CORE\DataType.cs" />
+    <Compile Include="Entitron\Entity\Cortex\Task.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbRelation.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbScheme.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
+    <Compile Include="Entitron\Entity\Entitron\ColumnMetadata.cs" />
     <Compile Include="Entitron\Entity\Hermes\HermesAjaxTransferEmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />
@@ -134,6 +140,7 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
+    <Compile Include="Entitron\Entity\Master\UsersApplications.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
@@ -180,6 +187,7 @@
     <Compile Include="Entitron\Entity\Tapestry\ResourceMappingPair.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Tapestry\TapestryDesignerModels.cs" />
+    <Compile Include="Entitron\Entity\Tapestry\TapestryNotification.cs" />
     <Compile Include="Entitron\Entity\Tapestry\WorkFlow.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Template.cs" />
     <Compile Include="Entitron\Entity\Mozaic\TemplateCategory.cs" />
@@ -190,6 +198,8 @@
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
+    <Compile Include="Entitron\Service\IRecoveryService.cs" />
+    <Compile Include="Entitron\Service\RecoveryService.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_IndexColumns.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectCount.cs" />
@@ -202,6 +212,7 @@
     <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
     <Compile Include="Entitron\Table\Application.cs" />
     <Compile Include="Entitron\Table\DBView.cs" />
+    <Compile Include="Entitron\Table\IToJson.cs" />
     <Compile Include="extend.cs" />
     <Compile Include="Entitron\Sql\Conditions.cs" />
     <Compile Include="Entitron\Sql\Condition_concat.cs" />
@@ -595,6 +606,54 @@
     <Compile Include="Migrations\201602280928491_TargetIdAdded.Designer.cs">
       <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603011128489_DbScheme lock.cs" />
+    <Compile Include="Migrations\201603011128489_DbScheme lock.Designer.cs">
+      <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603021243591_rememberUserApp.cs" />
+    <Compile Include="Migrations\201603021243591_rememberUserApp.Designer.cs">
+      <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603021938431_Column metadata.cs" />
+    <Compile Include="Migrations\201603021938431_Column metadata.Designer.cs">
+      <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603080945413_adGroup_isAdmin.cs" />
+    <Compile Include="Migrations\201603080945413_adGroup_isAdmin.Designer.cs">
+      <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603081428441_UsersApplications.cs" />
+    <Compile Include="Migrations\201603081428441_UsersApplications.Designer.cs">
+      <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.cs" />
+    <Compile Include="Migrations\201603081701163_Tapestry - attribute names.Designer.cs">
+      <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.cs" />
+    <Compile Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.Designer.cs">
+      <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.cs" />
+    <Compile Include="Migrations\201603091902486_Tapestry designer foreign keys.Designer.cs">
+      <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603101916094_Mozaic nested components.cs" />
+    <Compile Include="Migrations\201603101916094_Mozaic nested components.Designer.cs">
+      <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
+    <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.cs" />
+    <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.Designer.cs">
+      <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603141129547_Fix cortex conflict.cs" />
+    <Compile Include="Migrations\201603141129547_Fix cortex conflict.Designer.cs">
+      <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -616,6 +675,7 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\AddModelAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
@@ -627,8 +687,8 @@
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
-    <Compile Include="Tapestry\Helpers\ActionResultCollection.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
     <Compile Include="Tapestry\Running\ActionRuleBase.cs" />
     <Compile Include="Tapestry\Running\ActionRule_Action.cs" />
@@ -927,29 +987,45 @@
     <EmbeddedResource Include="Migrations\201602280928491_TargetIdAdded.resx">
       <DependentUpon>201602280928491_TargetIdAdded.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603011128489_DbScheme lock.resx">
+      <DependentUpon>201603011128489_DbScheme lock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021243591_rememberUserApp.resx">
+      <DependentUpon>201603021243591_rememberUserApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603021938431_Column metadata.resx">
+      <DependentUpon>201603021938431_Column metadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603080945413_adGroup_isAdmin.resx">
+      <DependentUpon>201603080945413_adGroup_isAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081428441_UsersApplications.resx">
+      <DependentUpon>201603081428441_UsersApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081701163_Tapestry - attribute names.resx">
+      <DependentUpon>201603081701163_Tapestry - attribute names.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091107525_isSystemCOlumnMasterApplication.resx">
+      <DependentUpon>201603091107525_isSystemCOlumnMasterApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091902486_Tapestry designer foreign keys.resx">
+      <DependentUpon>201603091902486_Tapestry designer foreign keys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603101916094_Mozaic nested components.resx">
+      <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141104422_Cortex-Task.resx">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.resx">
+      <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141129547_Fix cortex conflict.resx">
+      <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Nexus\Proxy\" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -24,21 +24,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// Run function to prepare conditions
         /// </summary>
         /// <param name="tempVars"></param>
-        public void PreRun(ActionResultCollection results)
+        public void PreRun(ActionResult results)
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order < PreFunctionCount).OrderBy(aar => aar.Order);
 
             InnerRun(results, aars);
         }
 
-        public override void Run(ActionResultCollection results)
+        public override void Run(ActionResult results)
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
 
             InnerRun(results, aars);
         }
 
-        public void ReverseRun(ActionResultCollection results)
+        public void ReverseRun(ActionResult results)
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
 

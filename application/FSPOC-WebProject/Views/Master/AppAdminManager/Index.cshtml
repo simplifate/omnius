@@ -39,28 +39,45 @@
             {
                 <tr appId="@app.Id">
                     <td>@app.DisplayName</td>
-                    <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
-                    <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
-                    <td><button class="btn btn-info btnOpenMozaic">Mozaic</button></td>
+                    @if (@app.Id!=30)
+                    {
+                        <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
+                        <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
+                        <td><button class="btn btn-info btnOpenMozaic">Mozaic</button></td>
+                    }
+                    else
+                    {//sdílené tabulky
+                        <td></td>
+                        <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
+                        <td></td>
+                    }
                     <td>@(app.IsPublished ? "Ano" : "Ne")</td>
                     <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
                     <td class="actions">
-                        @if (app.IsPublished)
+                        @if (app.Id != 30)//id 30 mají sdílené tabulky
                         {
-                            <button class="btn btn-default btnValidate">Aktualizovat</button>
-                            <button class="btn btn-default btnProperties">Vlastnosti</button>
-                            if (app.IsEnabled)
+                            if (app.IsPublished)
                             {
-                                <button class="btn btn-danger btnToggleEnabled btnDisable">Zakázat</button>
+                                <button class="btn btn-primary btnValidate">Aktualizovat</button>
+                                if (app.IsEnabled)
+                                {
+                                    <button class="btn btn-danger btnToggleEnabled btnDisable">Zakázat</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success btnToggleEnabled btnEnable">Povolit</button>
+                                }
                             }
                             else
                             {
-                                <button class="btn btn-primary btnToggleEnabled btnEnable">Povolit</button>
+                                <button class="btn btn-primary btnValidate">Vytvořit</button>
                             }
+                            <button class="btn btn-default btnProperties">Vlastnosti</button>
+
                         }
-                        else
+                        @using (Html.BeginForm("BackupApp", "Service", new {@id = app.Id}))
                         {
-                            <button class="btn btn-primary btnValidate">Vytvořit</button>
+                            <button class="btn btn-default">Exportovat</button>
                         }
                     </td>
                 </tr>

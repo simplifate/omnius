@@ -9,6 +9,10 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using M = System.Web.Mvc;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using Newtonsoft.Json.Linq;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
@@ -83,6 +87,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = requestedBlock.PositionX,
                                 PositionY = requestedBlock.PositionY,
                                 AssociatedPageIds = new List<int>(),
+                                AssociatedTableName = new List<string>(),
                                 AssociatedTableIds = new List<int>(),
                                 ResourceRules = new List<AjaxTapestryDesignerResourceRule>(),
                                 WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>()
@@ -100,6 +105,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 CommitMessage = blockCommit.CommitMessage,
                                 AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                     : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                                AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
+                                    : blockCommit.AssociatedTableName.Split(',').ToList(),
                                 AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
                                     : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                             };
@@ -126,8 +133,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}")]
         [HttpPost]
-        public void 
-            SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
+        public void SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
         {
             try
             {
@@ -145,10 +151,11 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     }
                     TapestryDesignerBlockCommit blockCommit = new TapestryDesignerBlockCommit
                     {
-                        Timestamp = DateTime.Now,
+                        Timestamp = DateTime.UtcNow,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
+                        AssociatedTableName = postData.AssociatedTableName != null ? string.Join(",", postData.AssociatedTableName) : "",
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
@@ -173,9 +180,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
                                 PageId = ajaxItem.PageId,
-                                ComponentId = ajaxItem.ComponentId,
-                                TableId = ajaxItem.TableId,
-                                ColumnId = ajaxItem.ColumnId,
+                                ComponentName = ajaxItem.ComponentName,
+                                TableName = ajaxItem.TableName,
+                                ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray())
                             };
                             rule.ResourceItems.Add(item);
@@ -234,7 +241,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     StateId = ajaxItem.StateId,
                                     TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
-                                    ComponentId = ajaxItem.ComponentId
+                                    ComponentId = ajaxItem.ComponentName
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -352,6 +359,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         CommitMessage = blockCommit.CommitMessage,
                         AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                 : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                        AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
+                                : blockCommit.AssociatedTableName.Split(',').ToList(),
                         AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
                                 : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                     };
@@ -578,20 +587,44 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         [HttpPost]
         public HttpResponseMessage SaveMenuOrder(AjaxTransferMenuOrder data)
         {
-            using (DBEntities context = new DBEntities()) 
+            try
             {
-                foreach (KeyValuePair<int, int> row in data.Metablocks) {
-                    TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
-                    metablock.MenuOrder = row.Value;
+                using (DBEntities context = new DBEntities())
+                {
+                    foreach (KeyValuePair<int, int> row in data.Metablocks)
+                    {
+                        TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
+                        metablock.MenuOrder = row.Value;
+                    }
+                    foreach (KeyValuePair<int, int> row in data.Blocks)
+                    {
+                        TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
+                        block.MenuOrder = row.Value;
+                    }
+                    context.SaveChanges();
                 }
-                foreach (KeyValuePair<int, int> row in data.Blocks) {
-                    TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
-                    block.MenuOrder = row.Value;
-                }
-                context.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Overview: error when saving menu order (POST api/tapestry/saveMenuOrder). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+        [Route("api/run/{appName}/{blockId}")]
+        public JToken Run(string appName, string button, M.FormCollection fc, int blockId = -1, int modelId = -1)
+        {
+            CORE core = new CORE();
+            User currentUser = User.GetLogged(core);
+
+            using (DBEntities context = new DBEntities())
+            {
+                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+                var result = core.Tapestry.jsonRun(currentUser, appName, block, button, modelId, fc);
+
+                return result;
+            }
         }
 
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
@@ -670,9 +703,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
                     PageId = item.PageId,
-                    ComponentId = item.ComponentId,
-                    TableId = item.TableId,
-                    ColumnId = item.ColumnId,
+                    ComponentName = item.ComponentName,
+                    TableName = item.TableName,
+                    ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
                 };
                 result.ResourceItems.Add(ajaxItem);
@@ -728,7 +761,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
-                    ComponentId = item.ComponentId
+                    ComponentName = item.ComponentId,
+                    TargetId = item.TargetId
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
@@ -810,15 +844,15 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     foreach (var item in rule.ResourceItems)
                         itemList.Add(item);
                     foreach (var item in itemList)
-                        context.Entry(item).State = EntityState.Deleted;
+                        rule.ResourceItems.Remove(item);
                     foreach (var connection in rule.Connections)
                         connectionList.Add(connection);
                     foreach (var connection in connectionList)
-                        context.Entry(connection).State = EntityState.Deleted;
+                        rule.Connections.Remove(connection);
                     resRuleList.Add(rule);
                 }
                 foreach (var rule in resRuleList)
-                    context.Entry(rule).State = EntityState.Deleted;
+                    blockCommit.ResourceRules.Remove(rule);
                 var wfRuleList = new List<TapestryDesignerWorkflowRule>();
                 foreach (var rule in blockCommit.WorkflowRules)
                 {
@@ -833,25 +867,25 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         foreach (var item in swimlane.WorkflowItems)
                             itemList.Add(item);
                         foreach (var item in itemList)
-                            context.Entry(item).State = EntityState.Deleted;
+                            swimlane.WorkflowItems.Remove(item);
                         foreach (var symbol in swimlane.WorkflowSymbols)
                             symbolList.Add(symbol);
                         foreach (var symbol in symbolList)
-                            context.Entry(symbol).State = EntityState.Deleted;
-                        context.Entry(swimlane).State = EntityState.Deleted;
+                            swimlane.WorkflowSymbols.Remove(symbol);
+                        rule.Swimlanes.Remove(swimlane);
                     }
                     foreach (var connection in rule.Connections)
                         connectionList.Add(connection);
                     foreach (var connection in connectionList)
-                        context.Entry(connection).State = EntityState.Deleted;
+                        rule.Connections.Remove(connection);
                     wfRuleList.Add(rule);
                 }
-                foreach (var rule in resRuleList)
-                    context.Entry(rule).State = EntityState.Deleted;
+                foreach (var rule in wfRuleList)
+                    blockCommit.WorkflowRules.Remove(rule);
                 blockCommitList.Add(blockCommit);
             }
             foreach (var blockCommit in blockCommitList)
-                context.Entry(blockCommit).State = EntityState.Deleted;
+                blockToDelete.BlockCommits.Remove(blockCommit);
             context.Entry(blockToDelete).State = EntityState.Deleted;
         }
         private void CollectBlocksToList(TapestryDesignerMetablock rootMetablock,

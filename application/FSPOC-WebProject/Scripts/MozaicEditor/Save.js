@@ -1,70 +1,6 @@
 ﻿function SaveMozaicPage() {
-    componentArray = [];
-    $("#mozaicPageContainer .uic").each(function (uicIndex, uicElement) {
-        currentUic = $(uicElement);
-        label = null;
-        content = null;
-        if (currentUic.hasClass("button-simple") || currentUic.hasClass("button-dropdown")) {
-            label = currentUic.text();
-        }
-        else if (currentUic.hasClass("info-container")) {
-            label = currentUic.find(".info-container-header").text();
-            content = currentUic.find(".info-container-body").text();
-        }
-        if(currentUic.hasClass("info-container"))
-            type = "info-container";
-        else if (currentUic.hasClass("breadcrumb-navigation"))
-            type = "breadcrumb";
-        else if (currentUic.hasClass("button-simple"))
-            type = "button-simple";
-        else if (currentUic.hasClass("button-dropdown"))
-            type = "button-dropdown";
-        else if (currentUic.hasClass("checkbox-control")) {
-            type = "checkbox";
-            label = currentUic.find(".checkbox-label").text();
-        }
-        else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
-            label = currentUic.text();
-            type = "label";
-        }
-        else if (currentUic.hasClass("dropdown-select"))
-            type = "dropdown-select";
-        else if (currentUic.hasClass("data-table-with-actions"))
-            type = "data-table-with-actions";
-        else if (currentUic.hasClass("data-table"))
-            type = "data-table-read-only";
-        else
-            type = "control";
-
-        if (currentUic.hasClass("data-table")) {
-            wrapper = currentUic.parents("");
-            positionX = wrapper.css("left");
-            positionY = wrapper.css("top");
-        }
-        else {
-            positionX = currentUic.css("left");
-            positionY = currentUic.css("top");
-        }
-        name = currentUic.attr("uicName");
-        if (!name || name == "")
-            name = type + uicIndex;
-        componentArray.push({
-            Name: name,
-            Type: type,
-            PositionX: positionX,
-            PositionY: positionY,
-            Width: currentUic.css("width"),
-            Height: currentUic.css("height"),
-            Tag: currentUic.prop("tagName").toLowerCase(),
-            Attributes: "",
-            Classes: currentUic.attr("uicClasses"),
-            Styles: currentUic.attr("uicStyles"),
-            Content: content,
-            Label: label,
-            Placeholder: currentUic.attr("placeholder")
-        });
-
-    });
+    SaveRequested = false;
+    componentArray = GetMozaicContainerComponentArray($("#mozaicPageContainer"), false);
     postData = {
         Name: $("#headerPageName").text(),
         IsModal: $("#currentPageIsModal").prop("checked"),
@@ -79,6 +15,113 @@
         url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
         data: postData,
         success: function () { alert("OK") },
-        error: function () { alert("ERROR") }
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
     });
+}
+function GetMozaicContainerComponentArray(container, nested) {
+    if (nested)
+        componentArrayLevel2 = [];
+    else
+        componentArrayLevel1 = [];
+    container.find(".uic").each(function (uicIndex, uicElement) {
+        currentUic = $(uicElement);
+        if (!nested && currentUic.parents(".panel-component").length > 0)
+            return true;
+        tag = null;
+        label = null;
+        content = null;
+        if (currentUic.hasClass("button-simple") || currentUic.hasClass("button-dropdown")) {
+            label = currentUic.text();
+        }
+        else if (currentUic.hasClass("info-container")) {
+            label = currentUic.find(".info-container-header").text();
+            content = currentUic.find(".info-container-body").text();
+        }
+        if (currentUic.hasClass("info-container"))
+            type = "info-container";
+        else if (currentUic.hasClass("breadcrumb-navigation"))
+            type = "breadcrumb";
+        else if (currentUic.hasClass("button-simple"))
+            type = "button-simple";
+        else if (currentUic.hasClass("button-dropdown"))
+            type = "button-dropdown";
+        else if (currentUic.hasClass("checkbox-control")) {
+            type = "checkbox";
+            label = currentUic.find(".checkbox-label").text();
+        }
+        else if (currentUic.hasClass("radio-control")) {
+            type = "radio";
+            label = currentUic.find(".radio-label").text();
+        }
+        else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
+            label = currentUic.text();
+            type = "label";
+        }
+        else if (currentUic.hasClass("dropdown-select"))
+            type = "dropdown-select";
+        else if (currentUic.hasClass("data-table-with-actions"))
+            type = "data-table-with-actions";
+        else if (currentUic.hasClass("data-table"))
+            type = "data-table-read-only";
+        else if (currentUic.hasClass("name-value-list"))
+            type = "name-value-list";
+        else if (currentUic.hasClass("tab-navigation")) {
+            type = "tab-navigation";
+            tabString = "";
+            currentUic.find("li").each(function (index, element) {
+                if (index > 0)
+                    tabString += $(element).find("a").text() + ";";
+            });
+            content = tabString;
+        }
+        else if (currentUic.hasClass("color-picker"))
+            type = "color-picker";
+        else if (currentUic.hasClass("panel-component"))
+            type = "panel";
+        else
+            type = "control";
+        if (currentUic.hasClass("data-table")) {
+            wrapper = currentUic.parents("");
+            positionX = wrapper.css("left");
+            positionY = wrapper.css("top");
+        }
+        else {
+            positionX = currentUic.css("left");
+            positionY = currentUic.css("top");
+        }
+        if (currentUic.hasClass("color-picker"))
+            tag = "input";
+        else
+            tag = currentUic.prop("tagName").toLowerCase();
+        name = currentUic.attr("uicName");
+        if (!name || name == "")
+            name = type + uicIndex;
+        componentData = {
+            Name: name,
+            Type: type,
+            PositionX: positionX,
+            PositionY: positionY,
+            Width: currentUic.css("width"),
+            Height: currentUic.css("height"),
+            Tag: tag,
+            Attributes: "",
+            Classes: currentUic.attr("uicClasses"),
+            Styles: currentUic.attr("uicStyles"),
+            Properties: currentUic.attr("uicSpecialProps") ? currentUic.attr("uicSpecialProps") : "",
+            Content: content,
+            Label: label,
+            Placeholder: currentUic.attr("placeholder"),
+            ChildComponents: currentUic.hasClass("panel-component") ? GetMozaicContainerComponentArray(currentUic, true) : []
+        };
+        if (nested)
+            componentArrayLevel2.push(componentData);
+        else
+            componentArrayLevel1.push(componentData);
+    });
+    if (nested)
+        return componentArrayLevel2;
+    else
+        return componentArrayLevel1;
 }

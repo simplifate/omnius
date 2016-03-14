@@ -18,6 +18,14 @@ $(function () {
             revert: "invalid",
             stop: function () {
                 $(this).draggable("option", "revert", "invalid");
+                $.ajax({
+                    type: "POST",
+                    url: 'api/master/apps' + $(this).attr('data-target') + '/saveAppPosition',
+                    data: {
+                        'positionX': $(this).css('left'),
+                        'positionY': $(this).css('top')
+                    }
+                });
             }
         });
         $(".appWorkspace").droppable({
@@ -46,6 +54,12 @@ $(function () {
         $("#appManagerIcon").removeClass("activeIcon");
     };
     if ($("#userLeftBar").length > 0) {
+        $(".uic > checkbox").each(function (index, element) {
+            $(element).prop("checked", false);
+        });
+        $(".input-single-line, .input-multiline").each(function (index, element) {
+            $(element).val("");
+        });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
@@ -63,8 +77,64 @@ $(function () {
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
+            table.on("click", ".rowEditAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').submit();
+            });
+            table.on("click", ".rowDetailsAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').submit();
+            });
+            table.on("click", ".rowDeleteAction", function () {
+                rowId = parseInt($(this).parents("tr").find("td:first").text());
+                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').submit();
+            });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
+        $(".uic.color-picker").each(function (index, element) {
+            newComponent = $(element);
+            CreateColorPicker(newComponent);
+            newReplacer = $("#userContentArea .sp-replacer:last");
+            newReplacer.css("position", "absolute");
+            newReplacer.css("left", newComponent.css("left"));
+            newReplacer.css("top", newComponent.css("top"));
+            newComponent.removeClass("uic");
+            newReplacer.addClass("uic color-picker");
+            newReplacer.attr("uicClasses", "color-picker");
+            newReplacer.attr("uicName", newComponent.attr("uicName"));
+        });
+        $(".uic.panel-component").each(function (index, element) {
+            panel = $(element);
+            hidingCheckboxName = panel.attr("panelHiddenBy");
+            if (hidingCheckboxName) {
+                hidingCheckbox = $('input[name="' + hidingCheckboxName + '"]');
+                if (hidingCheckbox) {
+                    hidingCheckbox.attr("panelToHide", panel.attr("name"));
+                    hidingCheckbox.prop("checked", true);
+                    hidingCheckbox.on("change", function () {
+                        panelToHide = $(this).attr("panelToHide");
+                        if ($(this).is(":checked")) {
+                            ShowPanel(panelToHide);
+                        }
+                        else {
+                            HidePanel(panelToHide);
+                        }
+                    });
+                }
+            }
+            cloningButtonName = panel.attr("panelClonedBy");
+            if (cloningButtonName) {
+                cloningButton = $('button[buttonName="' + cloningButtonName + '"]');
+                if (cloningButton) {
+                    cloningButton.attr("type", "button");
+                    cloningButton.attr("panelToClone", panel.attr("name"));
+                    cloningButton.on("click", function () {
+                        panelToClone = $(this).attr("panelToClone");
+                        ClonePanel(panelToClone);
+                    });
+                }
+            }
+        });
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);
             currentDialog.dialog({

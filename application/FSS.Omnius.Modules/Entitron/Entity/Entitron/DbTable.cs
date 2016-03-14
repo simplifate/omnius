@@ -15,7 +15,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public virtual ICollection<DbIndex> Indices { get; set; }
 
         public int DbSchemeCommitId { get; set; }
-        [JsonIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 
         public DbTable()

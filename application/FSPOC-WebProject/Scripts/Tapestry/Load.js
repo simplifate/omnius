@@ -9,7 +9,9 @@
         type: "GET",
         url: url,
         dataType: "json",
-        error: function () { alert("ERROR") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             ChangedSinceLastSave = false;
             $("#resourceRulesPanel .resourceRule").remove();
@@ -90,15 +92,15 @@
                         + currentItemData.Label + '</div>');
                     if (currentItemData.PageId != null)
                         newItem.attr("pageId", currentItemData.PageId);
-                    if (currentItemData.ComponentId != null)
-                        newItem.attr("componentId", currentItemData.ComponentId);
-                    if (currentItemData.TableId != null) {
+                    if (currentItemData.ComponentName != null)
+                        newItem.attr("componentName", currentItemData.ComponentName);
+                    if (currentItemData.TableName != null) {
                         newItem.data("columnFilter", currentItemData.ColumnFilter);
-                        newItem.attr("tableId", currentItemData.TableId);
+                        newItem.attr("tableName", currentItemData.TableName);
                         newItem.addClass("tableAttribute");
                     }
-                    if (currentItemData.ColumnId != null) {
-                        newItem.attr("columnId", currentItemData.ColumnId);
+                    if (currentItemData.ColumnName != null) {
+                        newItem.attr("columnName", currentItemData.ColumnName);
                     }
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
@@ -165,12 +167,13 @@
                 CreateJsPlumbInstanceForRule(newRule);
                 for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
                     currentSwimlaneData = currentRuleData.Swimlanes[j];
-                    newSwimlane = $('<div class="swimlane" style="height: ' + (100/currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                    newSwimlane = $('<div class="swimlane" style="height: ' + (100 / currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
                         + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
                     newRule.find(".swimlaneArea").append(newSwimlane);
-                    if (currentSwimlaneData.Roles.length > 0) {
-                        newSwimlane.find(".rolePlaceholder").remove();
-                        newSwimlane.find(".swimlaneRolesArea").append($('<div class="roleItem">' + currentSwimlaneData.Roles[0] + '</div>'));
+                    if (currentSwimlaneData.Roles.length > 0)
+                        newSwimlane.find(".swimlaneRolesArea .rolePlaceholder").remove();
+                    for (k = 0; k < currentSwimlaneData.Roles.length; k++) {
+                        newSwimlane.find(".swimlaneRolesArea .roleItemContainer").append($('<div class="roleItem">' + currentSwimlaneData.Roles[k] + '</div>'));
                     }
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
@@ -183,8 +186,10 @@
                             newItem.data('inputVariables', currentItemData.InputVariables);
                         if (currentItemData.OutputVariables != null)
                             newItem.data('outputVariables', currentItemData.OutputVariables);
-                        if (currentItemData.ComponentId != null)
-                            newItem.data('componentId', currentItemData.ComponentId);
+                        if (currentItemData.ComponentName != null)
+                            newItem.attr('componentName', currentItemData.ComponentName);
+                        if (currentItemData.TargetId != null)
+                            newItem.attr('targetId', currentItemData.TargetId);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
@@ -199,7 +204,7 @@
                         else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
                             newSymbol.attr("endpoints", "gateway");
                         if (currentSymbolData.Condition != null)
-                            newSymbol.attr("condition", currentSymbolData.Condition);
+                            newSymbol.data("condition", currentSymbolData.Condition);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newSymbol);
                         AddToJsPlumb(newSymbol);
@@ -211,8 +216,8 @@
                     greedy: true,
                     drop: function (e, ui) {
                         droppedElement = ui.helper.clone();
-                        $(this).find(".rolePlaceholder, .roleItem").remove();
-                        $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                        $(this).find(".rolePlaceholder").remove();
+                        $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                         ui.helper.remove();
                         ChangedSinceLastSave = true;
                     }
@@ -269,10 +274,11 @@
                 success: function (tableData) {
                     $("#libraryCategory-Attributes .libraryItem").remove();
                     for (i = 0; i < tableData.Tables.length; i++) {
-                        $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="table-attribute" class="libraryItem tableAttribute" tableId="'
-                            + tableData.Tables[i].Id + '">Table: ' + tableData.Tables[i].Name + '</div>'));
+                        $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="table-attribute" class="libraryItem tableAttribute" tableName="'
+                            + tableData.Tables[i].Name + '">Table: ' + tableData.Tables[i].Name + '</div>'));
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
+                    AssociatedTableName = data.AssociatedTableName;
                     $("#blockHeaderDbResCount").text(data.AssociatedTableIds.length);
                     somethingWasAdded = false;
                     for (i = 0; i < data.AssociatedTableIds.length; i++) {
@@ -281,8 +287,8 @@
                         })[0];
                         if (currentTable != undefined) {
                             for (j = 0; j < currentTable.Columns.length; j++) {
-                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableId="'
-                                    + currentTable.Id + '" columnId="' + currentTable.Columns[j].Id + '">' + currentTable.Name + '.' + currentTable.Columns[j].Name + '</div>'));
+                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                    + currentTable.Name + '" columnName="' + currentTable.Columns[j].Name + '">' + currentTable.Name + '.' + currentTable.Columns[j].Name + '</div>'));
                             }
                         }
                     };
@@ -407,14 +413,14 @@
                                     + data.Name + '</div>'));
                             }
                             cData = data.Components[i];
-                            $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                            $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
                                 + cData.Name + '</div>'));
                             if (cData.Type == "data-table-with-actions") {
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_edit" libType="ui" class="libraryItem">'
                                     + cData.Name + '_EditAction</div>'));
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
                                     + cData.Name + '_DetailsAction</div>'));
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
                                     + cData.Name + '_DeleteAction</div>'));
                             }
                         }

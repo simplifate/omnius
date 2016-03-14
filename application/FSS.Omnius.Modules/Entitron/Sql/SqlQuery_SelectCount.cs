@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             _where = selectQuery._where;
         }
 
-        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
@@ -44,9 +45,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             return base.BaseExecutionWithRead(connection);
         }
 
-        protected override List<DBItem> Read(SqlDataReader reader)
+        protected override ListJson<DBItem> Read(SqlDataReader reader)
         {
-            List<DBItem> items = new List<DBItem>();
+            ListJson<DBItem> items = new ListJson<DBItem>();
 
             while (reader.Read())
             {

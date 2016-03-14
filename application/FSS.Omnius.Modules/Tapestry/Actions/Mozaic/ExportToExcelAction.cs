@@ -13,6 +13,7 @@ using System.IO;
 using System.Data.Entity;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -60,14 +61,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public int DBSet { get; private set; }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             
             // Získáme data podle podmínek
             Entitron.SelectAction selectAction = new Entitron.SelectAction();
-            selectAction.InnerRun(vars, outputVars, InvertedInputVars);
+            selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
 
             List<DBItem> data = (List<DBItem>)vars["Data"];
 

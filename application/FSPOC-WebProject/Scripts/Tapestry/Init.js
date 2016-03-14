@@ -16,7 +16,7 @@ $(function () {
             saveDialog.dialog("open");
         });
         $("#btnLoad").on("click", function () {
-            if(ChangedSinceLastSave)
+            if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
             else
                 confirmed = true;
@@ -28,15 +28,25 @@ $(function () {
             historyDialog.dialog("open");
         });
         $("#btnOverview").on("click", function () {
-            if(ChangedSinceLastSave)
+            if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete opustit blok?");
             else
                 confirmed = true;
-            if(confirmed) {
+            if (confirmed) {
+                ChangedSinceLastSave = false;
                 openMetablockForm = $("#openMetablockForm");
                 openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
                 openMetablockForm.submit();
             }
+        });
+        window.onbeforeunload = function () {
+            if (ChangedSinceLastSave)
+                return "Máte neuložené změny, opravdu si přejete opustit blok?";
+            else
+                return;
+        };
+        $("#btnOpenTableConditions").on("click", function () {
+            $("#conditions-dialog").dialog("open");
         });
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
             $(".symbolToolboxSpace").slideToggle();
@@ -195,7 +205,7 @@ $(function () {
                 }
             });
             newRule = $('<div class="rule workflowRule" style="width: 766px; height: 180px; left: 40px; top: ' + (lowestRuleBottom + 20) + 'px;"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;">Pravidlo ' + (highestRuleNumber + 1) + '</div>'
-                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
+                + '</div><div class="swimlaneArea"><div class="swimlane" style="height: 100%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
                 + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>'
                 + '</div></div>');
             $("#workflowRulesPanel .scrollArea").append(newRule);
@@ -250,8 +260,8 @@ $(function () {
                 greedy: true,
                 drop: function (e, ui) {
                     droppedElement = ui.helper.clone();
-                    $(this).find(".rolePlaceholder, .roleItem").remove();
-                    $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                    $(this).find(".rolePlaceholder").remove();
+                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
                     ui.helper.remove();
                     ChangedSinceLastSave = true;
                 }
@@ -304,17 +314,17 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_Attributes").before(newToolboxLi);
                     }
                     else if (libType == "column-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '" columnId="' + currentLibraryItem.attr("columnId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "table-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableId="' + currentLibraryItem.attr("tableId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                     }
                     else if (libType == "ui") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentId="' + currentLibraryItem.attr("componentId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                     }
@@ -334,7 +344,7 @@ $(function () {
                         $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLi);
                     }
                     else if (libType == "target") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
 
                         $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLi);

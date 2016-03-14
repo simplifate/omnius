@@ -19,6 +19,8 @@ namespace FSS.Omnius.Modules.Persona
         private TimeSpan _expirationTime;
         private CORE.CORE _CORE;
 
+        private const string _AdGroupContainer = "OU=OSS";
+
         public Persona(CORE.CORE core)
         {
             Name = "Persona";
@@ -155,10 +157,14 @@ namespace FSS.Omnius.Modules.Persona
             List<string> groupNames = new List<string>();
             foreach (JToken group in ldapResult["memberof"])
             {
-                string groupName = (string)group;
-                int startI = groupName.IndexOf("CN=") + 3;
-                int EndI = groupName.IndexOf(',', startI);
-                groupNames.Add(groupName.Substring(startI, EndI - startI));
+                string groupIdentify = (string)group;
+                // get only OSS groups
+                if (groupIdentify.Split(',').Contains(_AdGroupContainer))
+                {
+                    int startI = groupIdentify.IndexOf("CN=") + 3;
+                    int EndI = groupIdentify.IndexOf(',', startI);
+                    groupNames.Add(groupIdentify.Substring(startI, EndI - startI));
+                }
             }
 
             return new Tuple<User, List<string>>(user, groupNames);

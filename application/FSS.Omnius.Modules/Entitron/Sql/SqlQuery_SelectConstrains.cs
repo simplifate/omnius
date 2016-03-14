@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     class SqlQuery_SelectConstrains : SqlQuery_withApp
     {
         public bool isDisable { get; set; }
-        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connectioon)
+        protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connectioon)
         {
             string parAppName = safeAddParam("AppName", application.Name);
             string parTableName = safeAddParam("TableName", table.tableName);

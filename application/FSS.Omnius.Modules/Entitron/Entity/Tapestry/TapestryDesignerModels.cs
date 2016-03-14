@@ -35,6 +35,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public TapestryDesignerMetablock ParentMetablock { get; set; }
         public Application ParentApp { get; set; }
 
+        public int? ParentMetablock_Id { get; set; }
+
         public TapestryDesignerMetablock()
         {
             Metablocks = new List<TapestryDesignerMetablock>();
@@ -67,6 +69,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
 
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
+        public int? ParentMetablock_Id { get; set; }
 
         public TapestryDesignerBlock()
         {
@@ -93,6 +96,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string AssociatedTableIds { get; set; }
 
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
+        public int? ParentBlock_Id { get; set; }
 
         public TapestryDesignerBlockCommit()
         {
@@ -136,6 +140,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
 
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
+        public int? ParentBlockCommit_Id { get; set; }
 
         public TapestryDesignerResourceRule()
         {
@@ -157,6 +162,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerConnection> Connections { get; set; }
 
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
+        public int? ParentBlockCommit_Id { get; set; }
 
         public TapestryDesignerWorkflowRule()
         {
@@ -176,6 +182,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerWorkflowSymbol> WorkflowSymbols { get; set; }
 
         public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
+        public int? ParentWorkflowRule_Id { get; set; }
 
         public TapestryDesignerSwimlane()
         {
@@ -192,9 +199,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int? PageId { get; set; }
-        public int? ComponentId { get; set; }
-        public int? TableId { get; set; }
-        public int? ColumnId { get; set; }
+        public string ComponentName { get; set; }
+        public string TableName { get; set; }
+        public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }

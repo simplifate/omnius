@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
@@ -22,6 +23,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     if (formParams["appId"] != null)
                     {
                         int appId = int.Parse(formParams["appId"]);
+                        HttpContext.GetLoggedUser().DesignAppId = appId;
+                        HttpContext.GetCORE().Entitron.GetStaticTables().SaveChanges();
                         var rootMetablock = context.Applications.Include("TapestryDesignerRootMetablock")
                             .Where(c => c.Id == appId).First().TapestryDesignerRootMetablock;
                         if(rootMetablock == null)
@@ -61,11 +64,13 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 }
                 else
                 {
-                    var firstApp = context.Applications.Include("TapestryDesignerRootMetablock").First();
-                    ViewData["metablockId"] = firstApp.TapestryDesignerRootMetablock.Id;
+                    var userApp = HttpContext.GetLoggedUser().DesignApp;
+                    if (userApp == null)
+                        userApp = context.Applications.Include("TapestryDesignerRootMetablock").First();
+                    ViewData["metablockId"] = userApp.TapestryDesignerRootMetablock.Id;
                     ViewData["parentMetablockId"] = 0;
-                    ViewData["appName"] = firstApp.DisplayName;
-                    ViewData["currentAppId"] = firstApp.Id;
+                    ViewData["appName"] = userApp.DisplayName;
+                    ViewData["currentAppId"] = userApp.Id;
                 }
             }
             return View();
@@ -121,9 +126,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             int? rootMetablockId = metablockId;
             if (parentMetablock != null) {
-                while (parentMetablock.ParentMetablock != null) {
+                while (parentMetablock.ParentMetablock_Id != null) {
                     parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock")
-                                                                        .Where(b => b.Id == parentMetablock.ParentMetablock.Id).First();
+                                                                        .Where(b => b.Id == parentMetablock.ParentMetablock_Id).First();
                 }
                 rootMetablockId = parentMetablock.Id;
             }

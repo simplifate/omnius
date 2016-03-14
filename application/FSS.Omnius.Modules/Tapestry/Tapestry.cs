@@ -14,126 +14,160 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
 using System.Data;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
     public class Tapestry : RunableModule
     {
         private CORE.CORE _CORE;
-        private ActionResultCollection _results;
-        private Page _page;
+        private ActionResult _results;
 
         public Tapestry(CORE.CORE core)
         {
             Name = "Tapestry";
 
             _CORE = core;
-            _results = new ActionResultCollection();
-            _page = null;
+            _results = new ActionResult();
         }
-
-        public override void run(User user, string url, NameValueCollection fc) // url = ApplicationId/ActionRuleId/ModelId
+        
+        public Tuple<Message, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
-            // init
-            //string AppName, buttonId;
-            //int blockId, modelId;
-            //splitUrl(url, out AppName, out blockId, out buttonId, out modelId);
-
-            //run(user, AppName, blockId, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            return new Tuple<Message, Block>(result.Item1.Message, result.Item2);
         }
-        public Block run(User user, string AppName, int blockId, string buttonId, int modelId, NameValueCollection fc)
+        public JToken jsonRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
+            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            return (result.Item1.OutputData["__Result__"] as IToJson).ToJson();
+        }
+        private Tuple<ActionResult, Block> innerRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        {
+            // __CORE__
+            // __Result__
+            // __Model__
+            // __ModelId__
+            // __Model.{columnName}
+            // __TableName__
+
             // init action
-            _results.outputData.Add("__CORE__", _CORE);
+            _results.OutputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
+            if (!string.IsNullOrWhiteSpace(block.ModelName))
+                _results.OutputData.Add("__TableName__", block.ModelName);
+            if (modelId >= 0)
+                _results.OutputData.Add("__ModelId__", modelId);
 
             // get actionRule
             ActionRule actionRule = null;
-            ActionRule nextRule = GetActionRule(blockId, buttonId, _results, modelId);
+            ActionRule nextRule;
+            try
+            { nextRule = GetActionRule(block, buttonId, _results, modelId); }
+            catch (MissingMethodException)
+            {
+                _results.Message.Warnings.Add("Zadaný příkaz nenalezen");
+                return new Tuple<ActionResult, Block>(_results, block);
+            }
 
             // get inputs
             string[] keys = fc.AllKeys;
+            foreach (string key in keys)
+            {
+                _results.OutputData.Add(key, fc[key]);
+            }
 
-            List<ActionRule> prevActionRules= new List<ActionRule>();
+            // map inputs
+            foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
+            {
+                TapestryDesignerResourceItem source = pair.Source;
+                TapestryDesignerResourceItem target = pair.Target;
+
+                if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
+                {
+                    if (fc.AllKeys.Contains(source.ComponentName))
+                        _results.OutputData.Add($"__Model.{target.ColumnName}", fc[source.ComponentName]);
+                }
+            }
+
+            List<ActionRule> prevActionRules = new List<ActionRule>();
             // run all auto Action
             while (nextRule != null)
             {
                 actionRule = nextRule;
+                prevActionRules.Add(nextRule);
                 actionRule.Run(_results);
 
-                if (_results.types.Any(x => x == ActionResultType.Error))
+                if (_results.Type == ActionResultType.Error)
                 {
-                    prevActionRules.Reverse();
-                    foreach (ActionRule actRule  in prevActionRules)
-                    {
-                        actRule.ReverseRun(_results);
-                    }
-                    break;
+                    return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
 
                 nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
-                prevActionRules.Add(nextRule);
+            }
+
+            Block resultBlock = actionRule.TargetBlock;
+            // if stops on virtual block
+            if (actionRule.TargetBlock.IsVirtual)
+            {
+                actionRule = Rollback(prevActionRules);
+                resultBlock = actionRule.SourceBlock;
             }
 
             // target Block
-            return actionRule.TargetBlock;
+            return new Tuple<ActionResult, Block>(_results, resultBlock);
         }
 
-        public override string GetHtmlOutput()
+        public ActionRule Rollback(List<ActionRule> prevActionRules)
         {
-            throw new NotImplementedException();
-        }
-        public override string GetJsonOutput()
-        {
-            throw new NotImplementedException();
-        }
-        public override string GetMailOutput()
-        {
-            throw new NotImplementedException();
+            prevActionRules.Reverse();
+            foreach (ActionRule actRule in prevActionRules)
+            {
+                actRule.ReverseRun(_results);
+            }
+            return prevActionRules.Last();
         }
 
-        //private void splitUrl(string url, out string ApplicationId, out int ActionRuleId, out int modelId)
-        //{
-        //    string[] ids = url.Split('/');
-        //    if (ids.Count() != 3)
-        //        throw new ArgumentException("Tapestry needs ActionRuleId and modelId");
-
-        //    ApplicationId = ids[0];
-        //    ActionRuleId = Convert.ToInt32(ids[1]);
-        //    modelId = Convert.ToInt32(ids[2]);
-        //}
-        
-        private ActionRule GetActionRule(int blockId, string buttonId, ActionResultCollection results, int modelId)
+        private ActionRule GetActionRule(Block block, string buttonId, ActionResult results, int modelId)
         {
-            ActionRule rule = _CORE.Entitron.GetStaticTables().ActionRules.SingleOrDefault(ar => ar.SourceBlockId == blockId && ar.ExecutedBy == buttonId);
+            ActionRule rule = block.SourceTo_ActionRules.SingleOrDefault(ar => ar.ExecutedBy == buttonId);
             if (rule == null)
-                throw new MissingMethodException($"Block [{blockId}] with Executor[{buttonId}] cannot be found");
+                throw new MissingMethodException($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
 
             if (false && !_CORE.User.canUseAction(rule.Id, _CORE.Entitron.GetStaticTables()))
                 throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", rule.Id));
-
-            if (modelId > 0)
-                results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
+            
+            results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
 
             rule.PreRun(results);
-            if (false && !rule.CanRun(results.outputData))
+            if (false && !rule.CanRun(results.OutputData))
                 throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", rule.Id));
 
             return rule;
         }
-        private ActionRule GetAutoActionRule(Block block, ActionResultCollection results, int? modelId = null)
+        private ActionRule GetAutoActionRule(Block block, ActionResult results, int? modelId = null)
         {
-            foreach (ActionRule ar in block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto" && _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())))
+            var actionRules = block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto").ToList();
+            var authorizedActionRules = actionRules.Where(ar => _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())).ToList();
+
+            // not authorized
+            if (actionRules.Count > 0 && authorizedActionRules.Count == 0)
+            {
+                results.Message.Errors.Add("You are not authorized");
+                return null;
+            }
+
+            foreach (ActionRule ar in authorizedActionRules)
             {
                 if (modelId != null)
-                    results.outputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
+                    results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
 
                 ar.PreRun(results);
-                if (ar.CanRun(results.outputData))
+                if (ar.CanRun(results.OutputData))
                     return ar;
             }
 
+            // nothing that meets the conditions
             return null;
         }
     }

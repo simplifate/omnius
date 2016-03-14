@@ -77,7 +77,7 @@ namespace FSS.Omnius.Modules.Watchtower
             {
                 var logItem = new LogItem
                 {
-                    Timestamp = DateTime.Now,
+                    Timestamp = DateTime.UtcNow,
                     LogEventType = (int)eventType,
                     LogLevel = (int)level,
                     UserId = userId,

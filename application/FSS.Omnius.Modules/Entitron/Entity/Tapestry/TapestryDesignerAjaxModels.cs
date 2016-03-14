@@ -75,7 +75,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string AssociatedTableName { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
@@ -90,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<int> PortTargets { get; set; }
         public List<int> AssociatedPageIds { get; set; }
         public List<int> AssociatedTableIds { get; set; }
+        public List<string> AssociatedTableName { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
@@ -149,9 +149,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public int? PageId { get; set; }
-        public int? ComponentId { get; set; }
-        public int? TableId { get; set; }
-        public int? ColumnId { get; set; }
+        public string ComponentName { get; set; }
+        public string TableName { get; set; }
+        public string ColumnName { get; set; }
         public List<int> ColumnFilter { get; set; }
 
         public AjaxTapestryDesignerResourceItem()
@@ -173,7 +173,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? TargetId { get; set; }
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
-        public string ComponentId { get; set; }
+        public string ComponentName { get; set; }
     }
     public class AjaxTapestryDesignerWorkflowSymbol
     {

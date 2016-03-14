@@ -15,8 +15,7 @@ namespace FSS.Omnius.Modules.CORE
         private IQueryable<Module> _enabledModules = null;
 
         private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
-
-        private RunableModule _activeModule;
+        
         public User User { get; set; }
         public FormCollection _form { get; set; }
 
@@ -27,52 +26,7 @@ namespace FSS.Omnius.Modules.CORE
             _modules["CORE"] = this;
             _modules["Entitron"] = new Entitron.Entitron(this);
         }
-
-        public string html
-        {
-            get { return _activeModule.GetHtmlOutput(); }
-        }
-        public string json
-        {
-            get { return _activeModule.GetJsonOutput(); }
-        }
-        public string mail
-        {
-            get { return _activeModule.GetMailOutput(); }
-        }
-        public void masterRun(User user, string moduleName, string url, NameValueCollection fc)
-        {
-            User = user;
-
-            _activeModule = GetRunableModule(moduleName);
-            if (_activeModule == null)
-                throw new ModuleNotFoundOrEnabledException(moduleName);
-
-            _activeModule.run(user, url, fc);
-        }
         
-        public RunableModule GetRunableModule(string moduleName)
-        {
-            // not enabled
-            if (!isModuleEnabled(moduleName))
-                throw new ModuleNotFoundOrEnabledException(moduleName);
-
-            // create new instance
-            if (!_modules.ContainsKey(moduleName))
-            {
-                switch (moduleName)
-                {
-                    case "Tapestry":
-                        _modules["Tapestry"] = new Tapestry.Tapestry(this);
-                        break;
-                    default:
-                        throw new ModuleNotFoundOrEnabledException(moduleName);
-                }
-            }
-
-            // return
-            return (RunableModule)_modules[moduleName];
-        }
         public Entitron.Entitron Entitron
         {
             get

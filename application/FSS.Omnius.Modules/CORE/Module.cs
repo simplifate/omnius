@@ -12,9 +12,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.CORE
     [NotMapped]
     public abstract class RunableModule : Module
     {
-        public abstract void run(User user, string url, NameValueCollection post);
-        public abstract string GetHtmlOutput();
-        public abstract string GetJsonOutput();
-        public abstract string GetMailOutput();
     }
 }

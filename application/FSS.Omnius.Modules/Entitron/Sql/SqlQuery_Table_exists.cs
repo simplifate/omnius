@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public string applicationName;
         public string tableName;
 
-        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(applicationName))
                 throw new ArgumentNullException("applicationName");

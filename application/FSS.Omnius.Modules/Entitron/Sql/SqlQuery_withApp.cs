@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Table;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             base.BaseExecution(connection);
         }
-        protected override List<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
+        protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");

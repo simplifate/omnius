@@ -110,15 +110,21 @@ body.adminAppModule {
             min-width: 110px;
         }
         td.actions {
-            width: 345px;
+            width: 430px;
+            white-space: nowrap;
+
             .btn {
                 width: 100px;
+            }
+            form {
+                display: inline-block;
             }
         }
     }
     #btnAddApp {
         margin-left: 85px;
         margin-top: 10px;
+        margin-bottom: 30px;
     }
     .formTable {
         label, select {

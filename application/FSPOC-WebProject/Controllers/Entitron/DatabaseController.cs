@@ -78,8 +78,8 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = Format("DatabaseDesigner: error when loading the commit with id={1} (GET api/database/apps/{appId}/commits/{commitId}). "
-                    + "Exception message: {0}", ex.Message, commitId);
+                var errorMessage = Format($"DatabaseDesigner: error when loading the commit with id={commitId} (GET api/database/apps/{appId}/commits/{commitId}). "
+                    + $"Exception message: {ex.Message}");
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
 
             }
@@ -99,7 +99,7 @@ namespace FSS.Omnius.Controllers.Entitron
             }
             catch (Exception ex)
             {
-                var errorMessage = "DatabaseDesigner: error when loading the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                var errorMessage = $"DatabaseDesigner: error when loading the latest commit (GET api/database/apps/{appId}/commits/latest). " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
@@ -109,27 +109,48 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpGet]
         public void Generate(int appId)
         {
+            bool dbSchemeLocked = false;
             try
             {
                 using (var context = new DBEntities())
                 {
+                    var requestedApp = context.Applications.Find(appId);
+                    if (requestedApp.DbSchemeLocked)
+                        throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+                    requestedApp.DbSchemeLocked = dbSchemeLocked = true;
+                    context.SaveChanges();
                     Modules.CORE.CORE core = new Modules.CORE.CORE();
                     core.Entitron.AppId = appId;
-                    var dbSchemeCommit = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
+                    var dbSchemeCommit = requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
                     DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
+                    requestedApp.DbSchemeLocked = false;
+                    context.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-                string error = "";
-                while(ex != null)
+                if (dbSchemeLocked)
                 {
-                    error += ex.Message + Environment.NewLine;
-                    error += ex.StackTrace + Environment.NewLine + Environment.NewLine;
-
-                    ex = ex.InnerException;
+                    using (var context = new DBEntities())
+                    {
+                        var requestedApp = context.Applications.Find(appId);
+                        requestedApp.DbSchemeLocked = false;
+                        context.SaveChanges();
+                    }
                 }
+                string error = "";
+                if (ex is InvalidOperationException)
+                    error = ex.Message;
+                else
+                {
+                    while (ex != null)
+                    {
+                        error += ex.Message + Environment.NewLine;
+                        error += ex.StackTrace + Environment.NewLine + Environment.NewLine;
 
+                        ex = ex.InnerException;
+                    }
+                }
                 throw GetHttpInternalServerErrorResponseException(error);
             }
         }
@@ -138,14 +159,20 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpPost]
         public void SaveScheme(int appId, AjaxTransferDbScheme postData)
         {
+            bool dbSchemeLocked = false;
             try
             {
                 DbSchemeCommit commit = new DbSchemeCommit();
                 using (var context = new DBEntities())
                 {
-                    commit.Timestamp = DateTime.Now;
+                    var requestedApp = context.Applications.Find(appId);
+                    if (requestedApp.DbSchemeLocked)
+                        throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+                    requestedApp.DbSchemeLocked = dbSchemeLocked = true;
+                    context.SaveChanges();
+                    commit.Timestamp = DateTime.UtcNow;
                     commit.CommitMessage = postData.CommitMessage;
-                    context.Applications.Find(appId).DatabaseDesignerSchemeCommits.Add(commit);
+                    requestedApp.DatabaseDesignerSchemeCommits.Add(commit);
                     Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> columnIdMapping = new Dictionary<int, int>();
                     Dictionary<int, DbColumn> columnMapping = new Dictionary<int, DbColumn>();
@@ -229,17 +256,26 @@ namespace FSS.Omnius.Controllers.Entitron
                             PositionY = ajaxView.PositionY
                         });
                     }
+                    requestedApp.DbSchemeLocked = dbSchemeLocked = false;
                     context.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
+                if (dbSchemeLocked)
+                {
+                    using (var context = new DBEntities())
+                    {
+                        var requestedApp = context.Applications.Find(appId);
+                        requestedApp.DbSchemeLocked = false;
+                        context.SaveChanges();
+                    }
+                }
                 var errorMessage = "DatabaseDesigner: an error occurred when saving the database scheme (POST api/database/apps/{appId}/commits). " +
                         $"Exception message: {ex.Message}";
                 Log.Error(errorMessage);
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
-
         }
 
         public void SaveChanges(DbSchemeCommit SchemeCommit)

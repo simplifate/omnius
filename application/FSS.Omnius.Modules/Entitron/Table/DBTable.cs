@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Entitron
 {
-    public class DBTable
+    public class DBTable : IToJson
     {
         #region static
         public static DBTable Create(string name)
@@ -525,7 +526,7 @@ namespace FSS.Omnius.Modules.Entitron
                     }
 
                     SqlQuery_IndexColumns query2 = new SqlQuery_IndexColumns() { indexName = indexName, table = this, application = this.Application };
-                    if (query2.ExecuteWithRead() != null)
+                    if (query2.ExecuteWithRead().Count > 0)
                     {
                         index.columns = new List<DBColumn>();
                         foreach (DBItem item in query2.ExecuteWithRead())
@@ -560,5 +561,9 @@ namespace FSS.Omnius.Modules.Entitron
             return Select().where(c => c.column("Id").Equal(id)).ToList().First();
         }
 
+        public JToken ToJson()
+        {
+            return Select().ToList().ToJson();
+        }
     }
 }

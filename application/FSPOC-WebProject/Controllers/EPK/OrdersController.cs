@@ -10,11 +10,12 @@ using E = FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Controllers.EPK
 {
-    [PersonaAuthorize(AppId = 26)]
+    [PersonaAuthorize]
     public class OrdersController : Controller
     {
         public ActionResult Index()
         {
+            HttpContext.SetApp(26);
             E.Entitron e = HttpContext.GetCORE().Entitron;
             var orders = e.GetDynamicTable("Orders").Select().ToList();
             var periodicals = e.GetDynamicTable("Periodicals").Select().where(c => c.column("id").In(new HashSet<object>(orders.Select(i => i["id_periodical"])))).ToList();
@@ -51,6 +52,7 @@ namespace FSS.Omnius.Controllers.EPK
         }
         public ActionResult Create()
         {
+            HttpContext.SetApp(26);
             string username = HttpContext.GetLoggedUser().UserName.ToUpper();
             E.Entitron e = HttpContext.GetCORE().Entitron;
             ViewData["dropdownData_dropdown-select26"] = e.GetDynamicTable("Periodicals").Select().ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
@@ -82,6 +84,7 @@ namespace FSS.Omnius.Controllers.EPK
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
+            HttpContext.SetApp(26);
             if (fc.AllKeys.Contains("uic470"))
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;
@@ -119,7 +122,7 @@ namespace FSS.Omnius.Controllers.EPK
                     item.createProperty(-21, "post_net_of_VAT20", Convert.ToInt32(periodical["post_net_of_VAT20"]) * Convert.ToInt32(fc["uic467"]));
                     item.createProperty(-22, "note", fc["uic468"]);
                     item.createProperty(-23, "active", true);
-                    item.createProperty(-24, "date_purchase", DateTime.Now);
+                    item.createProperty(-24, "date_purchase", DateTime.UtcNow);
                     item.createProperty(-25, "other_purchase", "");
 
                     e.GetDynamicTable("Orders").Add(item);
@@ -147,84 +150,10 @@ namespace FSS.Omnius.Controllers.EPK
             }
             return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
         }
-        //public ActionResult Update(int id)
-        //{
-        //    E.Entitron e = HttpContext.GetCORE().Entitron;
-        //    ViewData["dropdownData_supplier_dropdown"] = e.GetDynamicTable("Suppliers").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //    ViewData["dropdownData_count_dropdown"] = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //    ViewData["dropdownData_form_dropdown"] = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //    ViewData["dropdownData_type_dropdown"] = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-
-        //    E.DBItem item = e.GetDynamicItem("Suppliers", id);
-
-        //    ViewData["uic598"] = item["id_supplier"];
-        //    ViewData["uic601"] = item["id_periodical_types"];
-        //    ViewData["uic599"] = item["id_periodical_interval"];
-        //    ViewData["uic596"] = item["name"];
-        //    ViewData["uic595"] = item["active"];
-        //    ViewData["uic602"] = item["tentatively_net_of_VAT10"];
-        //    ViewData["uic603"] = item["tentatively_net_of_VAT20"];
-        //    ViewData["uic604"] = item["post_net_of_VAT20"];
-        //    ViewData["uic597"] = item["note"];
-        //    ViewData["uic600"] = item["id_periodical_form"];
-
-        //    ViewData["appIcon"] = "fa-book";
-        //    ViewData["appName"] = "Evidence periodik";
-        //    ViewData["pageName"] = "Úprava periodika";
-        //    return View("/Views/App/26/Page/40.cshtml");
-        //}
-        //[HttpPost]
-        //public ActionResult Update(int id, FormCollection fc)
-        //{
-        //    if (fc.AllKeys.Contains("uic605"))
-        //    {
-        //        E.Entitron e = HttpContext.GetCORE().Entitron;
-        //        try
-        //        {
-        //            E.DBItem item = new E.DBItem();
-        //            item.createProperty(-1, "id_supplier", fc["uic598"]);
-        //            item.createProperty(-2, "id_periodical_types", fc["uic601"]);
-        //            item.createProperty(-3, "id_periodical_interval", fc["uic599"]);
-        //            item.createProperty(-4, "name", fc["uic596"]);
-        //            item.createProperty(-5, "active", fc.AllKeys.Contains("uic595"));
-        //            item.createProperty(-6, "tentatively_net_of_VAT10", fc["602"]);
-        //            item.createProperty(-7, "tentatively_net_of_VAT20", fc["603"]);
-        //            item.createProperty(-8, "post_net_of_VAT20", fc["604"]);
-        //            item.createProperty(-9, "note", fc["597"]);
-        //            item.createProperty(-10, "id_periodical_form", fc["600"]);
-
-        //            e.GetDynamicTable("Orders").Update(item, id);
-        //            e.Application.SaveChanges();
-        //        }
-        //        catch (Exception)
-        //        {
-        //            ViewData["uic598"] = fc["uic598"];
-        //            ViewData["uic601"] = fc["uic601"];
-        //            ViewData["uic599"] = fc["uic599"];
-        //            ViewData["uic596"] = fc["uic596"];
-        //            ViewData["uic595"] = fc["uic595"];
-        //            ViewData["uic602"] = fc["uic602"];
-        //            ViewData["uic603"] = fc["uic603"];
-        //            ViewData["uic604"] = fc["uic604"];
-        //            ViewData["uic597"] = fc["uic597"];
-        //            ViewData["uic600"] = fc["uic600"];
-
-        //            ViewData["dropdownData_supplier_dropdown"] = e.GetDynamicTable("Suppliers").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //            ViewData["dropdownData_count_dropdown"] = e.GetDynamicTable("Periodical_interval").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //            ViewData["dropdownData_form_dropdown"] = e.GetDynamicTable("Periodical_forms").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-        //            ViewData["dropdownData_type_dropdown"] = e.GetDynamicTable("Periodical_types").Select().where(c => c.column("active").Equal(true)).ToList().ToDictionary(s => (int)s["id"], s => (string)s["name"]);
-
-        //            ViewData["appIcon"] = "fa-book";
-        //            ViewData["appName"] = "Evidence periodik";
-        //            ViewData["pageName"] = "Úprava periodika";
-        //            return View("/Views/App/26/Page/40.cshtml");
-        //        }
-        //    }
-        //    return RedirectToRoute("EPK", new { controller = "Orders", action = "Index" });
-        //}
 
         public ActionResult Delete(int id)
         {
+            HttpContext.SetApp(26);
             try
             {
                 E.Entitron e = HttpContext.GetCORE().Entitron;

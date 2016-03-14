@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Application Recover";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+<link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+
+<div id="upperPanel">
+    <div class="panelLabel">Application Recover</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Application Recover</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="rightsFormUpperDecoration" width="40px" height="240px">
+        <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <div>
+        @using (Html.BeginForm("RecoverApp", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-horizontal">
+                <h4>Choose json file:</h4>
+                <hr />
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <p><input type="file" id="file" name="file" /></p>
+                        <p><input type="submit" value="Upload file" class="btn btn-default" /></p>
+                    </div>
+                </div>
+                }
+            </div>
+</div>

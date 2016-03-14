@@ -77,6 +77,9 @@ namespace FSS.Omnius.Modules.Entitron
 
         public DBItem GetDynamicItem(string tableName, int modelId)
         {
+            if (string.IsNullOrWhiteSpace(tableName) || modelId < 0)
+                return null;
+
             return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
         }
     }

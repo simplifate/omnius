@@ -39,7 +39,7 @@ namespace Logger
 
             // Creates log folder if it does not exist
             Folder logFolder = new Folder(logConfig.Dir);
-            string time = DateTime.Now.ToLocalTime().ToString("u");
+            string time = DateTime.UtcNow.ToLocalTime().ToString("u");
             string record = string.Format("[{0}]\t{1} ", time, msg);
             string logPath = Path.Combine(logFolder.LogPath, logConfig.File);
             LogFile logFile = new LogFile(logPath, logConfig);

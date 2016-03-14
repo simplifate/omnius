@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 
 namespace FSS.Omnius.Controllers.Tapestry
@@ -25,7 +27,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     AjaxAppProperties result = new AjaxAppProperties
                     {
                         Id = app.Id,
-                        Name = app.Name,
+                        DisplayName = app.DisplayName,
                         TileWidth = app.TileWidth,
                         TileHeight = app.TileHeight,
                         Color = app.Color,
@@ -49,8 +51,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 using (var context = new DBEntities())
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
-                    app.Name = postData.Name;
-                    app.DisplayName = postData.Name;
+                    app.DisplayName = postData.DisplayName;
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
@@ -60,7 +61,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
             catch (Exception ex)
             {
-                string errorMessage = $"App manager: error changing app properties (POST api/master/apps/{appId}/properties). Exception message: {ex.Message}";
+                string errorMessage = $"App manager: error changing app properties (POST api/master/apps/{appId}/properties) Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
@@ -74,14 +75,21 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     var newApp = new Application
                     {
-                        DisplayName = postData.Name,
-                        Name = postData.Name,
+                        Name = postData.DisplayName.RemoveDiacritics(),
+                        DisplayName = postData.DisplayName,
                         TileWidth = postData.TileWidth,
                         TileHeight = postData.TileHeight,
                         Color = postData.Color,
                         Icon = postData.Icon
                     };
                     context.Applications.Add(newApp);
+                    context.SaveChanges();
+                    var newRootMetablock = new TapestryDesignerMetablock
+                    {
+                        Name = "Root metablock"
+                    };
+                    context.TapestryDesignerMetablocks.Add(newRootMetablock);
+                    newRootMetablock.ParentApp = newApp;
                     context.SaveChanges();
                 }
             }
@@ -118,6 +126,43 @@ namespace FSS.Omnius.Controllers.Tapestry
                 Content = new StringContent(errorMessage),
                 ReasonPhrase = "Critical Exception"
             });
+        }
+        [Route("api/master/apps/{appName}/saveAppPosition")]
+        [HttpPost]
+        public void SaveAppPosition(string appName, AjaxAppCoordinates coords)
+        {
+            try
+            {
+                DBEntities db = new DBEntities();
+                Modules.CORE.CORE core = new Modules.CORE.CORE();
+                User currentUser = User.GetLogged(core);
+                var app = db.Applications.SingleOrDefault(a => a.Name == appName);
+                if (app != null) {
+                    UsersApplications uapp = app.UsersApplications.SingleOrDefault(ua => ua.UserId == currentUser.Id);
+                    if (uapp != null)
+                    {
+                        uapp.PositionX = Convert.ToInt32(coords.positionX.Substring(0, coords.positionX.Length - 2));
+                        uapp.PositionY = Convert.ToInt32(coords.positionY.Substring(0, coords.positionY.Length - 2));
+                    }
+                    else
+                    {
+                        uapp = new UsersApplications
+                        {
+                            UserId = currentUser.Id,
+                            ApplicationId = app.Id,
+                            PositionX = Convert.ToInt32(coords.positionX),
+                            PositionY = Convert.ToInt32(coords.positionY)
+                        };
+                        db.UsersApplications.Add(uapp);
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"App manager: error saving app position (POST api/master/apps/{appName}/saveAppPosition). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
         }
     }
 }

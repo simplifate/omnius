@@ -30,7 +30,6 @@ namespace FSPOC_WebProject
 
         protected void Application_Error(object sender, EventArgs e)
         {
-
             string body = $"URL: {Request.Url.AbsoluteUri}{Environment.NewLine}Errors:{Environment.NewLine}";
             foreach (var error in Context.AllErrors)
             {

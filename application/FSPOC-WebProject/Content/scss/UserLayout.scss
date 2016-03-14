@@ -340,6 +340,8 @@
     display: none;
 }
 .mozaicForm {
+    position: relative;
+
     .uic {
         position: absolute;
     }
@@ -442,6 +444,18 @@
             white-space: nowrap;
         }
     }
+    .tab-navigation {
+        @include no-select();
+        white-space: nowrap;
+
+        li {
+            a.fa {
+                font-size: 20px;
+                height: 42px;
+                padding-top: 6px;
+            }
+        }
+    }
     .control-label {
         @include no-select();
         font-family: MyriadPro;
@@ -457,7 +471,22 @@
         white-space: nowrap;
     }
     .checkbox-control {
+        width: auto;
+        white-space: nowrap;
+
         .checkbox-label {
+            margin-left: 6px;
+            font-family: MyriadPro;
+            font-size: 14px;
+            color: #58585a;
+            white-space: nowrap;
+        }
+    }
+    .radio-control {
+        display: inline-block;
+        white-space: nowrap;
+
+        .radio-label {
             margin-left: 6px;
             font-family: MyriadPro;
             font-size: 14px;
@@ -491,5 +520,98 @@
                 color: #e3001b;
             }
         }
-    } 
+    }
+    .name-value-list {
+        font-family: MyriadPro;
+        font-size: 14px;
+
+        tr {
+            border-top: 1px solid #01a1f7;
+        }
+        tr:first-child {
+            display: none;
+        }
+        tr:nth-child(2) {
+            border-top: 2px solid #01a1f7;
+        }
+        tr:last-child {
+            border-bottom: 2px solid #01a1f7;
+        }
+        td {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        .name-cell {
+            min-width: 140px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-weight: bold;
+            background-color: #d4f0fe;
+        }
+        .value-cell {
+            min-width: 140px;
+            padding-left: 25px;
+            padding-right: 10px;
+        }
+    }
+    .name-value-list.toolboxItem {
+        .name-cell {
+            min-width: 110px;
+        }
+        .value-cell {
+            min-width: 60px;
+        }
+    }
+    .visible-panel-pale-background {
+        background-color: #d4f0fe;
+    }
+    .removePanelIcon {
+        @include no-select();
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        font-size: 19px;
+        color: #58585a;
+    }
+    .removePanelIcon:hover {
+        color: #e3001b;
+    }
+}
+.app-alert {
+    width: 100%;
+    font-family: MyriadPro;
+    font-size: 18px;
+    padding: 6px 20px;
+    border-width: 1px;
+    border-style: solid;
+
+    .alertSymbol {
+        padding-right: 10px;
+    }
+    .closeAlertIcon {
+        color: #e3001b;
+        float: right;
+        margin-top: 4px;
+        cursor: pointer;
+    }
+}
+.app-alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.app-alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.app-alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.app-alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
 }

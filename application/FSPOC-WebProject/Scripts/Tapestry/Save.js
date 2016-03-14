@@ -20,9 +20,9 @@ function SaveBlock(commitMessage) {
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
                 PageId: currentItem.attr("pageId"),
-                ComponentId: currentItem.attr("componentId"),
-                TableId: currentItem.attr("tableId"),
-                ColumnId: currentItem.attr("columnId"),
+                ComponentName: currentItem.attr("componentName"),
+                TableName: currentItem.attr("tableName"),
+                ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter")
             });
         });
@@ -80,7 +80,7 @@ function SaveBlock(commitMessage) {
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
                     OutputVariables: currentItem.data("outputVariables"),
-                    ComponentId: currentItem.attr("componentId")
+                    ComponentName: currentItem.attr("componentName")
                 });
             });
             currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
@@ -144,6 +144,7 @@ function SaveBlock(commitMessage) {
         ResourceRules: resourceRulesArray,
         WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
+        AssociatedTableName: AssociatedTableName,
         AssociatedPageIds: AssociatedPageIds,
         AssociatedTableIds: AssociatedTableIds,
         ParentMetablockId: $("#parentMetablockId").val()
@@ -158,6 +159,8 @@ function SaveBlock(commitMessage) {
             ChangedSinceLastSave = false;
             alert("OK");
         },
-        error: function () { alert("ERROR") }
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
     });
 }

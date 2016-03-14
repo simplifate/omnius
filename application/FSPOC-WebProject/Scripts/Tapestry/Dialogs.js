@@ -1,4 +1,4 @@
-﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableIds = [];
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [];
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -118,7 +118,9 @@ $(function () {
                     type: "GET",
                     url: "/api/tapestry/apps/" + appId + "/blocks",
                     dataType: "json",
-                    error: function () { alert("Error loading block list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         tbody = $("#choose-port-dialog").find("#choice-port tbody:nth-child(2)");
                         for (i = 0; i < data.ListItems.length; i++) {
@@ -198,7 +200,9 @@ $(function () {
                     type: "GET",
                     url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits",
                     dataType: "json",
-                    error: function () { alert("Error loading commit history") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
@@ -291,7 +295,9 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function () { alert("Error loading page list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
                         tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
@@ -313,12 +319,14 @@ $(function () {
             pageCount = 0;
             appId = $("#currentAppId").val();
             AssociatedPageIds = [];
+            AssociatedTableName = [];
             $("#libraryCategory-UI .libraryItem").remove();
             chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
                 if ($(element).hasClass("highlightedRow")) {
                     pageCount++;
                     pageId = $(element).attr("pageId");
                     AssociatedPageIds.push(parseInt(pageId));
+                    AssociatedTableName.push($(element).find('td').text())
                     url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
                     $.ajax({
                         type: "GET",
@@ -363,29 +371,34 @@ $(function () {
                 }
             },
             open: function (event, ui) {
+                $("#btnOpenTableConditions").hide();
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
-                tableId = CurrentItem.attr("tableId");
+                tableName = CurrentItem.attr("tableName");
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: "json",
                     success: function (data) {
+                        CurrentTableColumnArray = [];
                         columnFilter = CurrentItem.data("columnFilter");
                         if (columnFilter == undefined)
                             columnFilter = [];
                         formTable = tableAttributePropertiesDialog.find(".columnFilterTable tbody");
                         formTable.find("tr").remove();
                         targetTable = data.Tables.filter(function (value, index, ar) {
-                            return value.Id == tableId;
+                            return value.Name == tableName;
                         })[0];
-                        data.Tables[tableId];
+                        if (targetTable == undefined)
+                            alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
                         for (i = 0; i < targetTable.Columns.length; i++) {
                             newRow = $('<tr columnId="' + targetTable.Columns[i].Id + '"><td>' + targetTable.Columns[i].Name + '</td>'
                                 + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');
                             formTable.append(newRow);
                             newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Id) != -1);
+                            CurrentTableColumnArray.push({ Id: targetTable.Columns[i].Id, Name: targetTable.Columns[i].Name, Type: targetTable.Columns[i].Type });
                         }
+                        $("#btnOpenTableConditions").show();
                     }
                 });
             }
@@ -485,11 +498,13 @@ $(function () {
                     somethingWasAdded = false;
                     tableCount = 0;
                     AssociatedTableIds = [];
+                    AssociatedTableName = [];
                     chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").each(function (index, element) {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
                             AssociatedTableIds.push(parseInt(tableId));
+                            AssociatedTableName.push($(element).find('td').text())
                             currentTable = data.Tables.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];
@@ -561,6 +576,125 @@ $(function () {
         function gatewayXPropertiesDialog_SubmitData() {
             CurrentItem.data("condition", gatewayXPropertiesDialog.find("#gateway-x-condition").val());
             gatewayXPropertiesDialog.dialog("close");
+        }
+        conditionsDialog = $("#conditions-dialog").dialog({
+            autoOpen: false,
+            width: 740,
+            height: 560,
+            buttons: {
+                "Save": function () {
+                    conditionsDialog_SubmitData();
+                },
+                Cancel: function () {
+                    conditionsDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        conditionsDialog_SubmitData();
+                        return false;
+                    }
+                });
+                var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
+                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
+                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+                    + '</tr>';
+                var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
+                    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"><td class="conditionOperator"></td></td><td class="conditionVariableCell"><select></select>'
+                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
+                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+                    + '</tr></table></div>';
+                $(this).find(".addAndConditionSetIcon").on("click", function () {
+                    newConditionSet = $(ConditionSetTemplate);
+                    newConditionSet.find(".conditionSetPrefix").text("AND a");
+                    LoadConditionColumns(newConditionSet);
+                    conditionsDialog.find(".conditionSetArea").append(newConditionSet);
+                    if (newConditionSet.index() == 0)
+                        newConditionSet.find(".conditionSetPrefix").text("A");
+                });
+                $(this).find(".addOrConditionSetIcon").on("click", function () {
+                    newConditionSet = $(ConditionSetTemplate);
+                    newConditionSet.find(".conditionSetPrefix").text("OR a");
+                    LoadConditionColumns(newConditionSet);
+                    conditionsDialog.find(".conditionSetArea").append(newConditionSet);
+                    if (newConditionSet.index() == 0)
+                        newConditionSet.find(".conditionSetPrefix").text("A");
+                });
+                $(this).on("click", ".addAndConditionIcon", function () {
+                    newCondition = $(ConditionTemplate);
+                    newCondition.find(".conditionOperator").text("and");
+                    LoadConditionColumns(newCondition);
+                    $(this).parents("tr").after(newCondition);
+                });
+                $(this).on("click", ".addOrConditionIcon", function () {
+                    newCondition = $(ConditionTemplate);
+                    newCondition.find(".conditionOperator").text("or");
+                    LoadConditionColumns(newCondition);
+                    $(this).parents("tr").after(newCondition);
+                });
+                $(this).on("click", ".removeConditionIcon", function () {
+                    currentCondition = $(this).parents("tr");
+                    if (currentCondition.index() == 0)
+                        currentCondition.parents("table").find("tr:eq(1)").find(".conditionOperator").text("");
+                    if (currentCondition.parents("table").find("tr").length == 1) {
+                        if (currentCondition.parents(".conditionSet").index() == 0)
+                            currentCondition.parents(".conditionSetArea").find(".conditionSet:eq(1)").find(".conditionSetPrefix").text("A");
+                        currentCondition.parents(".conditionSet").remove();
+                    }
+                    else
+                        currentCondition.remove();
+                });
+                $(this).on("click", ".removeConditionSetIcon", function () {
+                    currentConditionSet = $(this).parents(".conditionSet");
+                    if (currentConditionSet.index() == 0)
+                        currentConditionSet.parents(".conditionSetArea").find(".conditionSet:eq(1)").find(".conditionSetPrefix").text("A");
+                    currentConditionSet.remove();
+                });
+                $(this).on("change", ".conditionVariableCell select", function () {
+                    currentCondition = $(this).parents("tr");
+                    var optionSelected = $("option:selected", this);
+                    varType = optionSelected.attr("varType");
+                    currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
+                    switch(varType) {
+                        case "bool":
+                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">True</option><<option>False</option></select>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
+                            break;
+                        case "int":
+                            currentCondition.find(".conditionValueCell").append($('<input type="number"></input>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option>'));
+                            break;
+                        case "string":
+                            currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                            break;
+                        case "unknown":
+                        default:
+                            currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
+                            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                    }
+                });
+                $(this).on("change", ".conditionOperatorCell select", function () {
+                    currentCondition = $(this).parents("tr");
+                    var optionSelected = $("option:selected", this);
+                    inputType = optionSelected.attr("inputType");
+                    if (inputType === "none")
+                        currentCondition.find(".conditionValueCell input, .conditionValueCell select").hide();
+                    else
+                        currentCondition.find(".conditionValueCell input, .conditionValueCell select").show();
+                });
+            },
+            open: function () {
+                columnSelect = conditionsDialog.find(".conditionVariableCell select");
+                columnSelect.find("option").remove();
+                LoadConditionColumns(conditionsDialog);
+            }
+        });
+        function conditionsDialog_SubmitData() {
+            conditionsDialog.dialog("close");
         }
     }
 });

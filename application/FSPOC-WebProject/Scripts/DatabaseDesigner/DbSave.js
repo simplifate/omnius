@@ -81,6 +81,8 @@
         url: "/api/database/apps/" + appId + "/commits",
         data: postData,
         success: function () { alert("OK") },
-        error: function () { alert("ERROR") }
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
     });
 }

@@ -1,4 +1,5 @@
-﻿using FSS.Omnius.Modules.Entitron;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,14 +51,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             
             // Získáme data podle podmínek
             Entitron.SelectAction selectAction = new Entitron.SelectAction();
-            selectAction.InnerRun(vars, outputVars, InvertedInputVars);
+            selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
 
             // Připravíme CSV
             List<string> rows = new List<string>();

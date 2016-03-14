@@ -1,4 +1,4 @@
-﻿var CurrentComponent;
+﻿var CurrentComponent, SaveRequested = false;
 $(function () {
     if (CurrentModuleIs("mozaicEditorModule")) {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
@@ -26,6 +26,7 @@ $(function () {
                 componentPropertiesDialog.find("#component-width").val(CurrentComponent.css("width"));
                 componentPropertiesDialog.find("#component-height").val(CurrentComponent.css("height"));
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
+                componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicSpecialProps"));
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
@@ -40,6 +41,22 @@ $(function () {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".checkbox-label").text());
                     componentPropertiesDialog.find("#component-content").val("");
                 }
+                else if (CurrentComponent.hasClass("radio-control")) {
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".radio-label").text());
+                    componentPropertiesDialog.find("#component-content").val("");
+                }
+                else if (CurrentComponent.hasClass("tab-navigation")) {
+                    componentPropertiesDialog.find("#component-label").val("");
+                    tabString = "";
+                    CurrentComponent.find("li").each(function (index, element) {
+                        if (index > 0)
+                            tabString += $(element).find("a").text() + ";";
+                    });
+                    componentPropertiesDialog.find("#component-content").val(tabString);
+                }
+                else if (CurrentComponent.hasClass("button-simple") || CurrentComponent.hasClass("button-dropdown")) {
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
+                }
                 else {
                     componentPropertiesDialog.find("#component-label").val("");
                     componentPropertiesDialog.find("#component-content").val("");
@@ -47,10 +64,11 @@ $(function () {
             }
         });
         function componentPropertiesDialog_SubmitData() {
-            CurrentComponent.attr(("uicName"), componentPropertiesDialog.find("#component-name").val());
+            CurrentComponent.attr("uicName", componentPropertiesDialog.find("#component-name").val());
             CurrentComponent.css("width", componentPropertiesDialog.find("#component-width").val());
             CurrentComponent.css("height", componentPropertiesDialog.find("#component-height").val());
-            CurrentComponent.attr(("uicStyles"), componentPropertiesDialog.find("#component-styles").val());
+            CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
+            CurrentComponent.attr("uicSpecialProps", componentPropertiesDialog.find("#component-props").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
@@ -64,8 +82,24 @@ $(function () {
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             }
             else if (CurrentComponent.hasClass("checkbox-control")) {
-                CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
                 CurrentComponent.find(".checkbox-label").text(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.css("width", "auto");
+            }
+            else if (CurrentComponent.hasClass("radio-control")) {
+                CurrentComponent.find(".radio-label").text(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.find("input").attr("name", componentPropertiesDialog.find("#component-name").val());
+                CurrentComponent.css("width", "auto");
+            }
+            else if (CurrentComponent.hasClass("tab-navigation")) {
+                tabString = componentPropertiesDialog.find("#component-content").val();
+                tabLabelArray = tabString.split(";");
+                CurrentComponent.find("li").remove();
+                CurrentComponent.append($('<li class="active"><a class="fa fa-home"></a></li>'));
+                for (i = 0; i < tabLabelArray.length; i++) {
+                    if (tabLabelArray[i].length > 0)
+                        CurrentComponent.append($("<li><a>" + tabLabelArray[i] + "</a></li>"));
+                }
+                CurrentComponent.css("width", "auto");
             }
             componentPropertiesDialog.dialog("close");
         }
@@ -88,7 +122,9 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function () { alert("Error loading page list") },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
                         tbody = choosePageDialog.find("#page-table tbody:nth-child(2)");
@@ -147,11 +183,16 @@ $(function () {
                 type: "POST",
                 url: "/api/mozaic-editor/apps/" + appId + "/pages",
                 data: postData,
-                error: function () { alert("ERROR") },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                },
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
-                    alert("OK");
+                    if (SaveRequested)
+                        SaveMozaicPage();
+                    else
+                        alert("OK");
                 }
             });
         }

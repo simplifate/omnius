@@ -19,6 +19,7 @@ namespace FSS.Omnius.Modules.Entitron
         public int? precision { get; set; }
         public int? scale { get; set; }
         public bool canBeNull { get; set; }
+        public string DefaultValue { get; set; }
         public bool isUnique { get; set; }
         public string additionalOptions = "";
 
@@ -41,7 +42,7 @@ namespace FSS.Omnius.Modules.Entitron
 
             return
                 string.Format(
-                    "[{0}] {1}{2}{3} {4} {5}",
+                    "[{0}] {1}{2}{3} {4} {5} {6}",
                     Name,
                     type,
                     (isPrimary == true) ? " IDENTITY(1,1) PRIMARY KEY " : "",
@@ -53,7 +54,9 @@ namespace FSS.Omnius.Modules.Entitron
                             (precision < 38) ? precision.ToString() : "38",
                             (scale < precision) ? scale.ToString() : precision.ToString())
                         : "", //avoiding that the value of precision or scale was greater than the range
-                    (canBeNull) ? "NULL" : "NOT NULL"
+                    (canBeNull) ? "NULL" : "NOT NULL",
+                    (!string.IsNullOrEmpty(DefaultValue)) ? "CONSTRAINT DEF_Entitron_NewColumn_" +
+                    ColumnId + "_" + DefaultValue + "_" + Name + " DEFAULT '" + DefaultValue + "'" : ""
                     );
         }
         public virtual string getShortSqlDefinition()
