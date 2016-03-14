@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace FSS.Omnius.Controllers.CORE
 {
    
-    [PersonaAuthorize(Roles = "Admin", Module = "CORE")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "CORE")]
     public class BuilderController : Controller
     {
         public ActionResult Index()

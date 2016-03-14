@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Persona")]
     public class RightsController : Controller
     {
         public ActionResult Index()

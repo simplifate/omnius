@@ -9,7 +9,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSS.Omnius.Controllers.Mozaic
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Mozaic")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class TemplateController : Controller
     {
         // GET: Template

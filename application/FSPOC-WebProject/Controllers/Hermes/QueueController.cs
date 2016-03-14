@@ -7,7 +7,7 @@ using FSS.Omnius.Modules.Hermes;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Hermes")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
     public class QueueController : Controller
     {
         // GET: Queue
