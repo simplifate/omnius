@@ -7,7 +7,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
 
 namespace FSS.Omnius.Controllers.Watchtower
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Watchtower")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Watchtower")]
     public class LogController : Controller
     {
         public ActionResult Index(FormCollection formParams)

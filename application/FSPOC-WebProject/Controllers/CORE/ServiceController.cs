@@ -13,7 +13,7 @@ using System.Web;
 namespace FSS.Omnius.Controllers.CORE
 {
 
-    [PersonaAuthorize(Roles = "Admin", Module = "CORE")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "CORE")]
     public class ServiceController : Controller
     {
 

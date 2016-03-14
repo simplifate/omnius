@@ -13,7 +13,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSPOC_WebProject.Controllers.Nexus
 {
-    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
+    [System.Web.Mvc.PersonaAuthorize(NeedsAdmin = true, Module = "Nexus")]
     public class NexusApiController : ApiController
     {
         [Route("api/nexus/{appId}/gateways")]

@@ -14,7 +14,7 @@ using FSS.Omnius.Modules.Tapestry.Service;
 
 namespace FSS.Omnius.Controllers.Master
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Master")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Master")]
     public class AppAdminManagerController : Controller
     {
         private IDatabaseGenerateService DatabaseGenerateService { get; set; }

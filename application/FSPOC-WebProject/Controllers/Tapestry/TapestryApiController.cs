@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
-    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin", Module = "Tapestry")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Tapestry")]
     public class TapestryApiController : ApiController
     {
         [Route("api/tapestry/apps")]
