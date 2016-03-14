@@ -87,6 +87,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = requestedBlock.PositionX,
                                 PositionY = requestedBlock.PositionY,
                                 AssociatedPageIds = new List<int>(),
+                                AssociatedTableName = new List<string>(),
                                 AssociatedTableIds = new List<int>(),
                                 ResourceRules = new List<AjaxTapestryDesignerResourceRule>(),
                                 WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>()
@@ -104,6 +105,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 CommitMessage = blockCommit.CommitMessage,
                                 AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                     : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                                AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
+                                    : blockCommit.AssociatedTableName.Split(',').ToList(),
                                 AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
                                     : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                             };
@@ -152,6 +155,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
+                        AssociatedTableName = postData.AssociatedTableName != null ? string.Join(",", postData.AssociatedTableName) : "",
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
@@ -355,6 +359,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         CommitMessage = blockCommit.CommitMessage,
                         AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                 : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                        AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
+                                : blockCommit.AssociatedTableName.Split(',').ToList(),
                         AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
                                 : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
                     };

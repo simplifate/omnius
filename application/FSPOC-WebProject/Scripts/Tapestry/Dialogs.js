@@ -1,4 +1,4 @@
-﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableIds = [], CurrentTableColumnArray = [];
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [];
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -319,12 +319,14 @@ $(function () {
             pageCount = 0;
             appId = $("#currentAppId").val();
             AssociatedPageIds = [];
+            AssociatedTableName = [];
             $("#libraryCategory-UI .libraryItem").remove();
             chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
                 if ($(element).hasClass("highlightedRow")) {
                     pageCount++;
                     pageId = $(element).attr("pageId");
                     AssociatedPageIds.push(parseInt(pageId));
+                    AssociatedTableName.push($(element).find('td').text())
                     url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
                     $.ajax({
                         type: "GET",
@@ -496,11 +498,13 @@ $(function () {
                     somethingWasAdded = false;
                     tableCount = 0;
                     AssociatedTableIds = [];
+                    AssociatedTableName = [];
                     chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").each(function (index, element) {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
                             AssociatedTableIds.push(parseInt(tableId));
+                            AssociatedTableName.push($(element).find('td').text())
                             currentTable = data.Tables.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];

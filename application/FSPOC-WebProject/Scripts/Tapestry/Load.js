@@ -278,6 +278,7 @@
                             + tableData.Tables[i].Name + '">Table: ' + tableData.Tables[i].Name + '</div>'));
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
+                    AssociatedTableName = data.AssociatedTableName;
                     $("#blockHeaderDbResCount").text(data.AssociatedTableIds.length);
                     somethingWasAdded = false;
                     for (i = 0; i < data.AssociatedTableIds.length; i++) {
