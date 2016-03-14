@@ -212,6 +212,7 @@
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
+    <Compile Include="Controllers\Cortex\CortexController.cs" />
     <Compile Include="Controllers\EPK\FormsController.cs" />
     <Compile Include="Controllers\EPK\Heap_OrdersController.cs" />
     <Compile Include="Controllers\EPK\IntervalsController.cs" />
@@ -1546,6 +1547,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Backup\" />
     <Folder Include="Views\Companies\" />
+    <Folder Include="Views\Cortex\" />
     <Folder Include="Views\Forms\" />
     <Folder Include="Views\Heap_Orders\" />
     <Folder Include="Views\Interval\" />

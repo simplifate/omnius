@@ -124,6 +124,7 @@
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
     <Compile Include="Entitron\Entity\CORE\DataType.cs" />
+    <Compile Include="Entitron\Entity\Cortex\Task.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbRelation.cs" />
@@ -641,6 +642,10 @@
     <Compile Include="Migrations\201603101916094_Mozaic nested components.Designer.cs">
       <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
+    <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -999,6 +1004,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603101916094_Mozaic nested components.resx">
       <DependentUpon>201603101916094_Mozaic nested components.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603141104422_Cortex-Task.resx">
+      <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

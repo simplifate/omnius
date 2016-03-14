@@ -10,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Persona;
     using Hermes;
     using Watchtower;
+    using Cortex;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -48,9 +49,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
         public virtual DbSet<Smtp> SMTPs { get; set; }
 
+        // Cortex
+        public virtual DbSet<Task> Tasks { get; set; }
+
         // Master
         public virtual DbSet<Application> Applications { get; set; }
         public virtual DbSet<UsersApplications> UsersApplications { get; set; }
+
         // Mozaic
         public virtual DbSet<Css> Css { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
@@ -123,6 +128,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.AttributeRules)
                 .WithRequired(e => e.AttributeDataType)
                 .HasForeignKey(e => e.AttributeDataTypeId);
+
+            // Cortex
+            modelBuilder.Entity<Task>()
+                .HasOptional(t => t.Application);
 
             // Master
 
