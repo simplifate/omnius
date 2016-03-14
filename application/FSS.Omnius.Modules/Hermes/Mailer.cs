@@ -131,8 +131,8 @@ namespace FSS.Omnius.Modules.Hermes
             EmailQueue item = new EmailQueue();
             item.Application_Id = applicationId;
             item.Message = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
-            item.Date_Send_After = sendAfter == null ? DateTime.Now : (DateTime)sendAfter;
-            item.Date_Inserted = DateTime.Now;
+            item.Date_Send_After = sendAfter == null ? DateTime.UtcNow : (DateTime)sendAfter;
+            item.Date_Inserted = DateTime.UtcNow;
             item.AttachmentList = attachmentList.ToString();
             item.Status = EmailQueueStatus.waiting;
             
@@ -197,7 +197,7 @@ namespace FSS.Omnius.Modules.Hermes
             // Uložíme do logu
             EmailLog log = new EmailLog();
             log.Content = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
-            log.DateSend = DateTime.Now;
+            log.DateSend = DateTime.UtcNow;
             log.Status = result ? EmailSendStatus.success : EmailSendStatus.failed;
             log.SMTP_Error = smtpError;
 
@@ -223,7 +223,7 @@ namespace FSS.Omnius.Modules.Hermes
 
         public void RunSender()
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
             List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now && m.Status != EmailQueueStatus.error).ToList();
 
             foreach(EmailQueue row in rows)

@@ -151,7 +151,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     }
                     TapestryDesignerBlockCommit blockCommit = new TapestryDesignerBlockCommit
                     {
-                        Timestamp = DateTime.Now,
+                        Timestamp = DateTime.UtcNow,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
