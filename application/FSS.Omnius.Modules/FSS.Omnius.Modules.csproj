@@ -645,6 +645,7 @@
     <Compile Include="Migrations\201603141104422_Cortex-Task.cs" />
     <Compile Include="Migrations\201603141104422_Cortex-Task.Designer.cs">
       <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.cs" />
     <Compile Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.Designer.cs">
       <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
@@ -1010,6 +1011,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603141104422_Cortex-Task.resx">
       <DependentUpon>201603141104422_Cortex-Task.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603140933283_UniqueAndIndexForUsersApplications.resx">
       <DependentUpon>201603140933283_UniqueAndIndexForUsersApplications.cs</DependentUpon>
     </EmbeddedResource>
