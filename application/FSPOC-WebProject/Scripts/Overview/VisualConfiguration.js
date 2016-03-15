@@ -15,8 +15,6 @@ jsPlumb.ready(function () {
             lineWidth: 3,
             strokeStyle: "#455d73"
         };
-        $(".block, .metablock").each(function (itemIndex, item) {
-            instance.draggable(item, { containment: "parent" });
-        });
+        LoadMetablock();
     }
 });

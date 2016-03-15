@@ -60,14 +60,14 @@ function ClonePanel(paneName) {
         }
     });
     newPanel = firstPanel.clone(true);
-    firstPanel.parents(".mozaicForm").append(newPanel);
-    newPanel.css("top", panelBottom + 10);
     newPanel.find('.uic, .uic checkbox, .uic input[type="radio"]').each(function (item, element) {
         currentComponent = $(element);
         componentName = currentComponent.attr("name");
         if (componentName)
             currentComponent.attr("name", "panelCopy" + panelCount + "_" + componentName);
     });
+    firstPanel.parents(".mozaicForm").append(newPanel);
+    newPanel.css("top", panelBottom + 10);
     newPanel.find('input.input-single-line, textarea').each(function (item, element) {
         $(element).val("");
     });
