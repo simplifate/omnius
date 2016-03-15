@@ -60,11 +60,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else if (c.Tag == "input" || c.Tag == "textarea")
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" value=\"@(ViewData.ContainsKey(\"uic{c.Id}\") ? ViewData[\"uic{c.Id}\"].ToString() : \"\")\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] nameValuePair = c.Properties.Split('=');
+                        if (nameValuePair.Length == 2)
+                        {
+                            if (nameValuePair[0].ToLower() == "autosum")
+                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                        }
+                    }
+                    stringBuilder.Append($"></{c.Tag}>");
                 }
                 else if (c.Type == "label")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"{c.Content}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                 }
                 else if (c.Type == "breadcrumb")

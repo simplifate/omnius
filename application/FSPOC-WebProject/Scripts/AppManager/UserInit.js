@@ -103,6 +103,38 @@ $(function () {
             newReplacer.attr("uicClasses", "color-picker");
             newReplacer.attr("uicName", newComponent.attr("uicName"));
         });
+        $(".uic.input-single-line").each(function (index, element) {
+            newComponent = $(element);
+            autosumTargetName = newComponent.attr("writeSumInto");
+            if (autosumTargetName) {
+                autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+                newComponent.attr("autosumTarget", autosumTargetName);
+                newComponent.on("change", function () {
+                    sourceInputName = $(this).attr("name");
+                    if (sourceInputName.indexOf("_") == -1)
+                        sourceInputNameWithoutPrefix = sourceInputName;
+                    else
+                        sourceInputNameWithoutPrefix = sourceInputName.substring(sourceInputName.indexOf("_") + 1, sourceInputName.length);
+                    sum = 0;
+                    $(".uic.input-single-line").each(function (index, element) {
+                        inputName = $(element).attr("name");
+                        if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
+                            numericValue = parseInt($(element).val());
+                            if (!isNaN(numericValue)) {
+                                sum += numericValue;
+                            }
+                        }
+                    });
+                    autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+                    targetTemplate = autosumTarget.attr("contentTemplate");
+                    if (targetTemplate) {
+                        autosumTarget.text(targetTemplate.replace("{{var1}}", sum));
+                    }
+                    else
+                        autosumTarget.text(sum);
+                });
+            }
+        });
         $(".uic.panel-component").each(function (index, element) {
             panel = $(element);
             hidingCheckboxName = panel.attr("panelHiddenBy");

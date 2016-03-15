@@ -26,7 +26,7 @@ $(function () {
                 componentPropertiesDialog.find("#component-width").val(CurrentComponent.css("width"));
                 componentPropertiesDialog.find("#component-height").val(CurrentComponent.css("height"));
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
-                componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicSpecialProps"));
+                componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
@@ -35,7 +35,7 @@ $(function () {
                 }
                 else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
-                    componentPropertiesDialog.find("#component-content").val("");
+                    componentPropertiesDialog.find("#component-content").val(CurrentComponent.attr("contentTemplate"));
                 }
                 else if (CurrentComponent.hasClass("checkbox-control")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".checkbox-label").text());
@@ -68,7 +68,7 @@ $(function () {
             CurrentComponent.css("width", componentPropertiesDialog.find("#component-width").val());
             CurrentComponent.css("height", componentPropertiesDialog.find("#component-height").val());
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
-            CurrentComponent.attr("uicSpecialProps", componentPropertiesDialog.find("#component-props").val());
+            CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
@@ -80,6 +80,7 @@ $(function () {
             }
             else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.attr("contentTemplate", componentPropertiesDialog.find("#component-content").val());
             }
             else if (CurrentComponent.hasClass("checkbox-control")) {
                 CurrentComponent.find(".checkbox-label").text(componentPropertiesDialog.find("#component-label").val());

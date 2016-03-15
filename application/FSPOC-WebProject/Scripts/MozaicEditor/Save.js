@@ -57,6 +57,7 @@ function GetMozaicContainerComponentArray(container, nested) {
         }
         else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
             label = currentUic.text();
+            content = currentUic.attr("contentTemplate");
             type = "label";
         }
         else if (currentUic.hasClass("dropdown-select"))
@@ -109,7 +110,7 @@ function GetMozaicContainerComponentArray(container, nested) {
             Attributes: "",
             Classes: currentUic.attr("uicClasses"),
             Styles: currentUic.attr("uicStyles"),
-            Properties: currentUic.attr("uicSpecialProps") ? currentUic.attr("uicSpecialProps") : "",
+            Properties: currentUic.attr("uicProperties") ? currentUic.attr("uicProperties") : "",
             Content: content,
             Label: label,
             Placeholder: currentUic.attr("placeholder"),
