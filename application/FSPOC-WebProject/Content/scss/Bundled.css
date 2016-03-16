@@ -166,13 +166,16 @@ body.adminAppModule #appBuildResults {
   left: 290px;
   top: 125px;
   width: 70%; }
-  body.adminAppModule #appBuildResults .buildSuccess {
+  body.adminAppModule #appBuildResults .build {
     margin-left: 15px;
     margin-bottom: 30px;
     padding: 15px;
     font-size: 16px;
-    background-color: #dff0d8;
     border-radius: 10px; }
+  body.adminAppModule #appBuildResults .Success {
+    background-color: #dff0d8; }
+  body.adminAppModule #appBuildResults .Error {
+    background-color: red; }
 
 #topBar {
   -webkit-touch-callout: none;
