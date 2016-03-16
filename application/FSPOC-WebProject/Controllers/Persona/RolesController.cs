@@ -12,7 +12,7 @@ using System.Data.Entity.Validation;
 
 namespace FSPOC_WebProject.Controllers.Persona
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Persona")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Persona")]
     public class RolesController : Controller
     {
 

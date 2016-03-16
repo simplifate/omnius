@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Cortex
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Cortex")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Cortex")]
     public class CortexController : Controller
     {
         public ActionResult Index()

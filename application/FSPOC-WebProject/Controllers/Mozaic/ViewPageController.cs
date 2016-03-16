@@ -59,8 +59,8 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         newRow.createProperty(-6, "end_purchase", fc["uic463"]);
                         newRow.createProperty(-7, "item_count", count);
                         newRow.createProperty(-8, "ship_to_address", fc["uic465"]);
-                        newRow.createProperty(-9, "date_purchase", DateTime.Now);
-                        newRow.createProperty(-11, "purchase_year", DateTime.Now.Year);
+                        newRow.createProperty(-9, "date_purchase", DateTime.UtcNow);
+                        newRow.createProperty(-11, "purchase_year", DateTime.UtcNow.Year);
                         newRow.createProperty(-12, "other_purchase", "");
                         newRow.createProperty(-10, "id_wf_state", 1);
                         newRow.createProperty(-13, "active", true);
@@ -73,7 +73,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         newRow.createProperty(-20, "approver_name", "");
                         newRow.createProperty(-21, "approver_sapid2", "");
                         newRow.createProperty(-22, "approver_ouid", "");
-                        newRow.createProperty(-23, "approver_date", DateTime.Now);
+                        newRow.createProperty(-23, "approver_date", DateTime.UtcNow);
 
                         orders.Add(newRow);
                         core.Entitron.Application.SaveChanges();

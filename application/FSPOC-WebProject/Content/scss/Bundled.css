@@ -166,13 +166,16 @@ body.adminAppModule #appBuildResults {
   left: 290px;
   top: 125px;
   width: 70%; }
-  body.adminAppModule #appBuildResults .buildSuccess {
+  body.adminAppModule #appBuildResults .build {
     margin-left: 15px;
     margin-bottom: 30px;
     padding: 15px;
     font-size: 16px;
-    background-color: #dff0d8;
     border-radius: 10px; }
+  body.adminAppModule #appBuildResults .Success {
+    background-color: #dff0d8; }
+  body.adminAppModule #appBuildResults .Error {
+    background-color: red; }
 
 #topBar {
   -webkit-touch-callout: none;
@@ -747,12 +750,15 @@ body.adminAppModule #appBuildResults {
     font-size: 28px;
     color: #58585a;
     white-space: nowrap; }
-  .mozaicForm .checkbox-control .checkbox-label {
-    margin-left: 6px;
-    font-family: MyriadPro;
-    font-size: 14px;
-    color: #58585a;
+  .mozaicForm .checkbox-control {
+    width: auto;
     white-space: nowrap; }
+    .mozaicForm .checkbox-control .checkbox-label {
+      margin-left: 6px;
+      font-family: MyriadPro;
+      font-size: 14px;
+      color: #58585a;
+      white-space: nowrap; }
   .mozaicForm .radio-control {
     display: inline-block;
     white-space: nowrap; }
@@ -806,6 +812,22 @@ body.adminAppModule #appBuildResults {
     min-width: 110px; }
   .mozaicForm .name-value-list.toolboxItem .value-cell {
     min-width: 60px; }
+  .mozaicForm .visible-panel-pale-background {
+    background-color: #d4f0fe; }
+  .mozaicForm .removePanelIcon {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    font-size: 19px;
+    color: #58585a; }
+  .mozaicForm .removePanelIcon:hover {
+    color: #e3001b; }
 
 .app-alert {
   width: 100%;
@@ -1148,7 +1170,8 @@ body.tapestryModule #lowerPanel {
           font-family: MyriadPro;
           font-size: 14px;
           padding-left: 10px;
-          padding-right: 10px; }
+          padding-right: 10px;
+          white-space: nowrap; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
       height: 900px; }
@@ -2953,6 +2976,8 @@ body.mozaicEditorModule {
     min-width: 260px;
     min-height: 60px;
     border: 1px dashed #0080ff; }
+  body.mozaicEditorModule .visible-panel-pale-background {
+    background-color: #d4f0fe; }
   body.mozaicEditorModule .data-table {
     width: 250px;
     border: 1px solid #4b8ad1; }
@@ -2989,7 +3014,7 @@ body.mozaicEditorModule {
     min-width: 110px; }
   body.mozaicEditorModule .name-value-list.toolboxItem .value-cell {
     min-width: 60px; }
-  body.mozaicEditorModule .uic.ui-draggable-dragging {
+  body.mozaicEditorModule .uic.ui-draggable-dragging, body.mozaicEditorModule .toolboxItem.ui-draggable-dragging {
     z-index: 500; }
   body.mozaicEditorModule .ui-dialog {
     z-index: 600; }

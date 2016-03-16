@@ -38,6 +38,8 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
     targetContainer.append(newComponent);
     if (cData.Placeholder)
         newComponent.attr("placeholder", cData.Placeholder);
+    if (cData.Properties)
+        newComponent.attr("uicProperties", cData.Properties);
     if (newComponent.hasClass("button-simple"))
         newComponent.text(cData.Label);
     else if (newComponent.hasClass("button-dropdown"))
@@ -51,6 +53,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
     }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
         newComponent.text(cData.Label);
+        newComponent.attr("contentTemplate", cData.Content);
     }
     else if (newComponent.hasClass("checkbox-control")) {
         newComponent.append($('<input type="checkbox" /><span class="checkbox-label">' + cData.Label + '</span>'));

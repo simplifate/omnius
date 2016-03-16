@@ -15,7 +15,7 @@ using static System.String;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
-    [System.Web.Mvc.PersonaAuthorize(Roles = "Admin", Module = "Entitron")]
+    [System.Web.Mvc.PersonaAuthorize(NeedsAdmin = true, Module = "Entitron")]
     public class DatabaseController : ApiController
     {
         public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,
@@ -170,7 +170,7 @@ namespace FSS.Omnius.Controllers.Entitron
                         throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                     requestedApp.DbSchemeLocked = dbSchemeLocked = true;
                     context.SaveChanges();
-                    commit.Timestamp = DateTime.Now;
+                    commit.Timestamp = DateTime.UtcNow;
                     commit.CommitMessage = postData.CommitMessage;
                     requestedApp.DatabaseDesignerSchemeCommits.Add(commit);
                     Dictionary<int, int> tableIdMapping = new Dictionary<int, int>();

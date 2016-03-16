@@ -144,6 +144,7 @@ function SaveBlock(commitMessage) {
         ResourceRules: resourceRulesArray,
         WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
+        AssociatedTableName: AssociatedTableName,
         AssociatedPageIds: AssociatedPageIds,
         AssociatedTableIds: AssociatedTableIds,
         ParentMetablockId: $("#parentMetablockId").val()

@@ -14,7 +14,7 @@ using System.Collections.Specialized;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Nexus")]
     public class WSController : Controller
     {
         // GET: WS

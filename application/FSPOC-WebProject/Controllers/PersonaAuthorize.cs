@@ -18,12 +18,13 @@ namespace System.Web.Mvc
     public class PersonaAuthorizeAttribute : AuthorizeAttribute
     {
         public string Module { get; set; }
+        public bool NeedsAdmin { get; set; }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             CORE core = filterContext.HttpContext.GetCORE();
-
             User user = filterContext.HttpContext.User.GetLogged(core);
+
             // not logged -> redirect
             if (user == null)
             {
@@ -38,25 +39,43 @@ namespace System.Web.Mvc
                 return;
             }
 
+            // Module
             if (!string.IsNullOrWhiteSpace(Module) && !user.canUseModule(Module))
             {
                 filterContext.Result = new Http403Result();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(Users) && string.IsNullOrWhiteSpace(Roles))
-                return;
-
-            if (Users.Split(' ').Contains(user.UserName))
-                return;
-            
-            foreach(string role in Roles.Split(' '))
+            // User
+            if (!string.IsNullOrWhiteSpace(Users) && !Users.Split(' ').Contains(user.UserName))
             {
-                if (user.IsInGroup(role))
-                    return;
+                filterContext.Result = new Http403Result();
+                return;
             }
 
-            filterContext.Result = new Http403Result();
+            // Role
+            //if (!string.IsNullOrWhiteSpace(Roles))
+            //{
+            //    bool containsGroup = false;
+            //    foreach (string role in Roles.Split(' '))
+            //    {
+            //        if (user.IsInGroup(role))
+            //            containsGroup = true;
+            //    }
+
+            //    if (!containsGroup)
+            //    {
+            //        filterContext.Result = new Http403Result();
+            //        return;
+            //    }
+            //}
+
+            // Admin
+            if (NeedsAdmin && !user.isAdmin())
+            {
+                filterContext.Result = new Http403Result();
+                return;
+            }
         }
     }
 }

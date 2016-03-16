@@ -93,11 +93,21 @@
                         accept: ".toolboxItem.roleItem",
                         greedy: true,
                         drop: function (e, ui) {
-                            droppedElement = ui.helper.clone();
-                            $(this).find(".rolePlaceholder").remove();
-                            $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                            ui.helper.remove();
-                            ChangedSinceLastSave = true;
+                            if (dragModeActive) {
+                                dragModeActive = false;
+                                roleExists = false;
+                                $(this).find(".roleItem").each(function (index, element) {
+                                    if ($(element).text() == ui.helper.text())
+                                        roleExists = true;
+                                });
+                                if (!roleExists) {
+                                    droppedElement = ui.helper.clone();
+                                    $(this).find(".rolePlaceholder").remove();
+                                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                                    ui.helper.remove();
+                                    ChangedSinceLastSave = true;
+                                }
+                            }
                         }
                     });
                     newSwimlane.find(".swimlaneContentArea").droppable({
@@ -106,29 +116,32 @@
                         accept: ".toolboxSymbol, .toolboxItem",
                         greedy: false,
                         drop: function (e, ui) {
-                            droppedElement = ui.helper.clone();
-                            if (droppedElement.hasClass("roleItem")) {
-                                ui.draggable.draggable("option", "revert", true);
-                                return false;
+                            if (dragModeActive) {
+                                dragModeActive = false;
+                                droppedElement = ui.helper.clone();
+                                if (droppedElement.hasClass("roleItem")) {
+                                    ui.draggable.draggable("option", "revert", true);
+                                    return false;
+                                }
+                                $(this).append(droppedElement);
+                                ruleContent = $(this);
+                                if (droppedElement.hasClass("toolboxSymbol")) {
+                                    droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
+                                    droppedElement.addClass("symbol");
+                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                                }
+                                else {
+                                    droppedElement.removeClass("toolboxItem");
+                                    droppedElement.addClass("item");
+                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
+                                }
+                                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                                ui.helper.remove();
+                                AddToJsPlumb(droppedElement);
+                                ChangedSinceLastSave = true;
                             }
-                            $(this).append(droppedElement);
-                            ruleContent = $(this);
-                            if (droppedElement.hasClass("toolboxSymbol")) {
-                                droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                                droppedElement.addClass("symbol");
-                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                            }
-                            else {
-                                droppedElement.removeClass("toolboxItem");
-                                droppedElement.addClass("item");
-                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                            }
-                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                            ui.helper.remove();
-                            AddToJsPlumb(droppedElement);
-                            ChangedSinceLastSave = true;
                         }
                     });
                     rule.find(".swimlaneArea").append(newSwimlane);

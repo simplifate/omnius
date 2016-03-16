@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
-using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System.Web;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using Logger;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -83,6 +83,13 @@ namespace FSS.Omnius.Controllers.Tapestry
                         Icon = postData.Icon
                     };
                     context.Applications.Add(newApp);
+                    context.SaveChanges();
+                    var newRootMetablock = new TapestryDesignerMetablock
+                    {
+                        Name = "Root metablock"
+                    };
+                    context.TapestryDesignerMetablocks.Add(newRootMetablock);
+                    newRootMetablock.ParentApp = newApp;
                     context.SaveChanges();
                 }
             }

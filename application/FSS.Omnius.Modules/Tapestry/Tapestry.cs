@@ -43,10 +43,21 @@ namespace FSS.Omnius.Modules.Tapestry
         }
         private Tuple<ActionResult, Block> innerRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
+            // __CORE__
+            // __Result__
+            // __Model__
+            // __ModelId__
+            // __Model.{columnName}
+            // __TableName__
+
             // init action
             _results.OutputData.Add("__CORE__", _CORE);
             _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
+            if (!string.IsNullOrWhiteSpace(block.ModelName))
+                _results.OutputData.Add("__TableName__", block.ModelName);
+            if (modelId >= 0)
+                _results.OutputData.Add("__ModelId__", modelId);
 
             // get actionRule
             ActionRule actionRule = null;
@@ -64,6 +75,19 @@ namespace FSS.Omnius.Modules.Tapestry
             foreach (string key in keys)
             {
                 _results.OutputData.Add(key, fc[key]);
+            }
+
+            // map inputs
+            foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
+            {
+                TapestryDesignerResourceItem source = pair.Source;
+                TapestryDesignerResourceItem target = pair.Target;
+
+                if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
+                {
+                    if (fc.AllKeys.Contains(source.ComponentName))
+                        _results.OutputData.Add($"__Model.{target.ColumnName}", fc[source.ComponentName]);
+                }
             }
 
             List<ActionRule> prevActionRules = new List<ActionRule>();

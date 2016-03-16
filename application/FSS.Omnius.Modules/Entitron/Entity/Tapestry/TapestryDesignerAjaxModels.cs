@@ -75,7 +75,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string AssociatedTableName { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
@@ -90,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<int> PortTargets { get; set; }
         public List<int> AssociatedPageIds { get; set; }
         public List<int> AssociatedTableIds { get; set; }
+        public List<string> AssociatedTableName { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {

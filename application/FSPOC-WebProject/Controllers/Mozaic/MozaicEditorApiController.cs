@@ -81,7 +81,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                             Content = component.Content,
                             Label = component.Label,
                             Placeholder = component.Placeholder,
-                            Properties = component.Properties
+                            Properties = component.Properties ?? ""
                         };
                         if (component.ChildComponents.Count > 0)
                         {

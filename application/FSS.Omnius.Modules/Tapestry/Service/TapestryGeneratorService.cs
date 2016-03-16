@@ -57,10 +57,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // child block
             foreach (TapestryDesignerBlock childBlock in block.Blocks)
             {
+                TapestryDesignerBlockCommit commit = childBlock.BlockCommits.OrderByDescending(c => c.Timestamp).FirstOrDefault();
+                string modelName = commit != null ? commit.AssociatedTableName : null;
+
                 Block resultBlock = new Block
                 {
                     Name = childBlock.Name,
-                    ModelName = childBlock.AssociatedTableName,
+                    ModelName = modelName != null ? modelName.Split(',').First() : null,
                     IsVirtual = false
                 };
                 resultWF.Blocks.Add(resultBlock);

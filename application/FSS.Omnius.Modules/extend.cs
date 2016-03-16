@@ -23,7 +23,7 @@ namespace System
             string decomposed = input.Normalize(NormalizationForm.FormD);
             char[] filtered = decomposed
                 .Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark).ToArray();
-            string newString = new String(filtered);
+            string newString = new string(filtered);
             Regex rgx = new Regex("[^a-zA-Z0-9]");
             newString = rgx.Replace(newString, "");
 

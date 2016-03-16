@@ -1,19 +1,21 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
-using FSS.Omnius.Modules.Tapestry.Service;
-using System.IO;
+using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Service;
+using FSS.Omnius.Modules.Tapestry.Service;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Master
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Master")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Master")]
     public class AppAdminManagerController : Controller
     {
         private IDatabaseGenerateService DatabaseGenerateService { get; set; }
@@ -53,7 +55,9 @@ namespace FSS.Omnius.Controllers.Master
                     app.DbSchemeLocked = dbSchemeLocked = true;
                     context.SaveChanges();
                     core.Entitron.AppId = app.Id;
-                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
+                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                    if (dbSchemeCommit == null)
+                        dbSchemeCommit = new DbSchemeCommit();
                     DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
                     app.DbSchemeLocked = false;
                     context.SaveChanges();
@@ -106,7 +110,19 @@ namespace FSS.Omnius.Controllers.Master
 
                     app.IsPublished = true;
                     context.SaveChanges();
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Success.Add("Stránky byly úpěšně zkompilovány.");
+                    ViewBag.Message = message;
 
+                    return View();
+                }
+                catch(Exception ex)
+                {
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Success.Add(ex.Message);
+                    ViewBag.Message = message;
 
                     return View();
                 }
