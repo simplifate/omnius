@@ -15,11 +15,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
         /// <param name="dbSchemeCommit"></param>
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
         {
-            Entitron e = core.Entitron;
-            GenerateTables(e,dbSchemeCommit);
-            GenerateRelation(e,dbSchemeCommit);
-            GenerateView(e,dbSchemeCommit);
-            DroppingOldTables(e,dbSchemeCommit);
+            if (dbSchemeCommit != null)
+            {
+                Entitron e = core.Entitron;
+                GenerateTables(e, dbSchemeCommit);
+                GenerateRelation(e, dbSchemeCommit);
+                GenerateView(e, dbSchemeCommit);
+                DroppingOldTables(e, dbSchemeCommit);
+            }
         }
 
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)

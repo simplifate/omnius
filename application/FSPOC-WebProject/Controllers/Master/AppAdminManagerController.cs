@@ -53,7 +53,7 @@ namespace FSS.Omnius.Controllers.Master
                     app.DbSchemeLocked = dbSchemeLocked = true;
                     context.SaveChanges();
                     core.Entitron.AppId = app.Id;
-                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
+                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
                     DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
                     app.DbSchemeLocked = false;
                     context.SaveChanges();
