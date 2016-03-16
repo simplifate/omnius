@@ -3019,6 +3019,50 @@ body.mozaicEditorModule {
     cursor: default;
     z-index: 2000; }
 
+body.cortexModule #upperPanel {
+  height: 295px; }
+
+body.cortexModule #lowerPanel {
+  top: 370px; }
+
+@media only screen and (max-width: 1630px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1490px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1360px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.7); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1230px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1130px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; }
+  body.cortexModule .moduleSubMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1090px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.55); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; }
+  body.cortexModule .moduleSubMenuArea {
+    transform: scale(0.75); } }
+
 .ui-dialog .ui-dialog {
   padding: 0px 0px;
   border: 1px solid black;

@@ -1,15 +1,22 @@
-﻿using System.Web.Mvc;
-using FSS.Omnius.Modules.Nexus.Service;
+﻿using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Cortex;
+using System.Data.Entity;
+using System.Web.Mvc;
 
-namespace FSS.Omnius.Controllers.Nexus
+namespace FSS.Omnius.Controllers.Cortex
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
+    [PersonaAuthorize(Roles = "Admin", Module = "Cortex")]
     public class CortexController : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            DBEntities context = new DBEntities();
+            return View("~/Views/Cortex/Index.cshtml", context.Tasks);
         }
 
+        public ActionResult Create()
+        {
+            return View("~/Views/Cortex/Form.cshtml");
+        }
     }
 }

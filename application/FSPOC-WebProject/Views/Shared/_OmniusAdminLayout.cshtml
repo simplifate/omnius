@@ -72,7 +72,9 @@
             {
                 <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
             }
-            <li>Asynchronní úlohy</li>
+            @if (map.Cortex) {
+                <li id="adminMenuCortex"><a href="/Cortex/Index">Asynchronní úlohy</a></li>
+            }
             @if (map.Watchtower)
             {
                 <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>
