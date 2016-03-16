@@ -61,8 +61,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             {
                 if (column.type == "bit")
                     item.createProperty(column.ColumnId, column.Name, vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"));
-                else if (vars.ContainsKey($"__Model.{column.Name}"))
-                    item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{column.Name}"]);
+                else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
+                    item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
             }
             
             table.Add(item);
