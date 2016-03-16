@@ -335,21 +335,26 @@ $(function () {
                         success: function (data) {
                             for (i = 0; i < data.Components.length; i++) {
                                 if (i == 0) {
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                        + data.Name + '</div>'));
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
+                                        + data.Name + '</div>');
                                 }
                                 cData = data.Components[i];
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                + cData.Name + '</div>'));
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                + cData.Name + '</div>');
                                 if (cData.Type == "data-table-with-actions") {
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_EditAction</div>'));
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DetailsAction</div>'));
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DeleteAction</div>'));
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_EditAction</div>');
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DetailsAction</div>');
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DeleteAction</div>');
                                 }
-                                $("#libraryCategory-UI").append(newLibItem);
+                                if (cData.ChildComponents) {
+                                    for (j = 0; j < cData.ChildComponents.length; j++) {
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + cData.ChildComponents[j].Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
+                                        + cData.ChildComponents[j].Name + '</div>');
+                                    }
+                                }
                             }
                         }
                     });

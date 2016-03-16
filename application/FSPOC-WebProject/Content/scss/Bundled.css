@@ -1042,6 +1042,13 @@ body.tapestryModule #lowerPanel {
         background-color: #58bf8f;
         border-bottom: 2px solid #509c78;
         color: #375949; }
+      body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .toolboxCategoryHeader_Integrations {
+        background-color: #36a8e3;
+        border-bottom: 2px solid #36a8e3; }
+      body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .toolboxLi_Integrations {
+        background-color: #e1f5ff;
+        border-bottom: 2px solid #91d9ff;
+        color: #316177; }
   body.tapestryModule #lowerPanel #tapestryLeftBarMinimized {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1112,6 +1119,10 @@ body.tapestryModule #lowerPanel {
     body.tapestryModule #lowerPanel #tapestryWorkspace .templateItem {
       background-color: #58bf8f;
       color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .integrationItem {
+      background-color: #e1f5ff;
+      color: #316177;
+      border: 1px solid #91d9ff; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel {
       height: 38px;
       border-bottom: 2px solid #455d73;
@@ -1288,6 +1299,10 @@ body.tapestryModule #lowerPanel {
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .templateItem {
               background-color: #58bf8f;
               color: black; }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .integrationItem {
+              background-color: #e1f5ff;
+              border: 2px solid #91d9ff;
+              color: #316177; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 

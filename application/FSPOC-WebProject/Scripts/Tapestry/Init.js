@@ -72,6 +72,9 @@ $(function () {
         $(".toolboxCategoryHeader_Templates").on("click", function () {
             $(".toolboxLi_Templates").slideToggle();
         });
+        $(".toolboxCategoryHeader_Integrations").on("click", function () {
+            $(".toolboxLi_Integrations").slideToggle();
+        });
         $("#blockHeaderBlockName").on("click", function () {
             renameBlockDialog.dialog("open");
         });
@@ -387,6 +390,11 @@ $(function () {
                     }
                     else if (libType == "template") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
+                            + currentLibraryItem.text() + '</span></div></li>')
+                        $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before(newToolboxLi);
+                    }
+                    else if (["ldap", "ws", "smtp", "webdav"].indexOf(libType) != -1) {
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);
                     }
