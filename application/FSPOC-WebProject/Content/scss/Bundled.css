@@ -175,7 +175,7 @@ body.adminAppModule #appBuildResults {
   body.adminAppModule #appBuildResults .Success {
     background-color: #dff0d8; }
   body.adminAppModule #appBuildResults .Error {
-    background-color: red; }
+    background-color: #d9534f; }
 
 #topBar {
   -webkit-touch-callout: none;
