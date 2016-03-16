@@ -11,6 +11,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Tapestry.Service;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -109,7 +110,19 @@ namespace FSS.Omnius.Controllers.Master
 
                     app.IsPublished = true;
                     context.SaveChanges();
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Success.Add("Stránky byly úpěšně zkompilovány.");
+                    ViewBag.Message = message;
 
+                    return View();
+                }
+                catch(Exception ex)
+                {
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Success.Add(ex.Message);
+                    ViewBag.Message = message;
 
                     return View();
                 }
