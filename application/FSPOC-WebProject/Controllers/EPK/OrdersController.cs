@@ -120,7 +120,7 @@ namespace FSS.Omnius.Controllers.EPK
                     item.createProperty(-21, "post_net_of_VAT20", Convert.ToInt32(periodical["post_net_of_VAT20"]) * Convert.ToInt32(fc["uic467"]));
                     item.createProperty(-22, "note", fc["uic468"]);
                     item.createProperty(-23, "active", true);
-                    item.createProperty(-24, "date_purchase", DateTime.Now);
+                    item.createProperty(-24, "date_purchase", DateTime.UtcNow);
                     item.createProperty(-25, "other_purchase", "");
 
                     e.GetDynamicTable("Orders").Add(item);

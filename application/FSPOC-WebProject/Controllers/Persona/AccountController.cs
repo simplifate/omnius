@@ -529,16 +529,16 @@ namespace FSPOC_WebProject.Controllers.Persona
         public ActionResult Create()
         {
             SetPasswordViewModel model = new SetPasswordViewModel();
-            FSS.Omnius.Modules.Entitron.Entity.Persona.User user = new User();
+            User user = new User();
             model.User = user;
 
             //user je lokalní, není řešeno přes AD
             model.User.isLocalUser = true;
 
             //datumy se nastavují protože datetime v databázi a v c# mají rozdílné min.hodnoty
-            model.User.localExpiresAt = DateTime.Now;
-            model.User.LastLogin = DateTime.Now;
-            model.User.CurrentLogin = DateTime.Now;
+            model.User.localExpiresAt = DateTime.UtcNow;
+            model.User.LastLogin = DateTime.UtcNow;
+            model.User.CurrentLogin = DateTime.UtcNow;
 
             return View(model);
         }

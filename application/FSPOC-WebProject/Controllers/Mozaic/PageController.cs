@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Mozaic
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Mozaic")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class PageController : Controller
     {
         public ActionResult Index(int id)

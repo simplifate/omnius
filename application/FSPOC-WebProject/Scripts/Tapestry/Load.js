@@ -72,17 +72,31 @@
                     accept: ".toolboxItem",
                     greedy: true,
                     drop: function (e, ui) {
-                        droppedElement = ui.helper.clone();
-                        droppedElement.removeClass("toolboxItem");
-                        droppedElement.addClass("item");
-                        $(this).append(droppedElement);
-                        ruleContent = $(this);
-                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
-                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        ui.helper.remove();
-                        AddToJsPlumb(droppedElement);
-                        ChangedSinceLastSave = true;
+                        if (dragModeActive) {
+                            dragModeActive = false;
+                            droppedElement = ui.helper.clone();
+                            droppedElement.removeClass("toolboxItem");
+                            droppedElement.addClass("item");
+                            $(this).append(droppedElement);
+                            ruleContent = $(this);
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                            ui.helper.remove();
+                            AddToJsPlumb(droppedElement);
+                            if (droppedElement.position().left + droppedElement.width() + 35 > ruleContent.width()) {
+                                droppedElement.css("left", ruleContent.width() - droppedElement.width() - 40);
+                                instance = ruleContent.data("jsPlumbInstance");
+                                instance.repaintEverything();
+                            }
+                            if (droppedElement.position().top + droppedElement.height() + 5 > ruleContent.height()) {
+                                console.log("matched");
+                                droppedElement.css("top", ruleContent.height() - droppedElement.height() - 15);
+                                instance = ruleContent.data("jsPlumbInstance");
+                                instance.repaintEverything();
+                            }
+                            ChangedSinceLastSave = true;
+                        }
                     }
                 });
                 for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
@@ -215,11 +229,21 @@
                     accept: ".toolboxItem.roleItem",
                     greedy: true,
                     drop: function (e, ui) {
-                        droppedElement = ui.helper.clone();
-                        $(this).find(".rolePlaceholder").remove();
-                        $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                        ui.helper.remove();
-                        ChangedSinceLastSave = true;
+                        if (dragModeActive) {
+                            dragModeActive = false;
+                            roleExists = false;
+                            $(this).find(".roleItem").each(function (index, element) {
+                                if ($(element).text() == ui.helper.text())
+                                    roleExists = true;
+                            });
+                            if (!roleExists) {
+                                droppedElement = ui.helper.clone();
+                                $(this).find(".rolePlaceholder").remove();
+                                $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                                ui.helper.remove();
+                                ChangedSinceLastSave = true;
+                            }
+                        }
                     }
                 });
                 newRule.find(".swimlaneContentArea").droppable({
@@ -228,29 +252,38 @@
                     accept: ".toolboxSymbol, .toolboxItem",
                     greedy: false,
                     drop: function (e, ui) {
-                        droppedElement = ui.helper.clone();
-                        if (droppedElement.hasClass("roleItem")) {
-                            ui.draggable.draggable("option", "revert", true);
-                            return false;
+                        if (dragModeActive) {
+                            dragModeActive = false;
+                            droppedElement = ui.helper.clone();
+                            if (droppedElement.hasClass("roleItem")) {
+                                ui.draggable.draggable("option", "revert", true);
+                                return false;
+                            }
+                            ruleContent = $(this);
+                            ruleContent.append(droppedElement);
+                            if (droppedElement.hasClass("toolboxSymbol")) {
+                                droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
+                                droppedElement.addClass("symbol");
+                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                            }
+                            else {
+                                droppedElement.removeClass("toolboxItem");
+                                droppedElement.addClass("item");
+                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
+                            }
+                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                            ui.helper.remove();
+                            AddToJsPlumb(droppedElement);
+                            if (droppedElement.position().top + droppedElement.height() + 10 > ruleContent.height()) {
+                                console.log("matched");
+                                droppedElement.css("top", ruleContent.height() - droppedElement.height() - 20);
+                                instance = ruleContent.parents(".workflowRule").data("jsPlumbInstance");
+                                instance.repaintEverything();
+                            }
+                            ChangedSinceLastSave = true;
                         }
-                        $(this).append(droppedElement);
-                        ruleContent = $(this);
-                        if (droppedElement.hasClass("toolboxSymbol")) {
-                            droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                            droppedElement.addClass("symbol");
-                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                        }
-                        else {
-                            droppedElement.removeClass("toolboxItem");
-                            droppedElement.addClass("item");
-                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                        }
-                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                        ui.helper.remove();
-                        AddToJsPlumb(droppedElement);
-                        ChangedSinceLastSave = true;
                     }
                 });
                 currentInstance = newRule.data("jsPlumbInstance");
@@ -278,6 +311,7 @@
                             + tableData.Tables[i].Name + '">Table: ' + tableData.Tables[i].Name + '</div>'));
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
+                    AssociatedTableName = data.AssociatedTableName;
                     $("#blockHeaderDbResCount").text(data.AssociatedTableIds.length);
                     somethingWasAdded = false;
                     for (i = 0; i < data.AssociatedTableIds.length; i++) {
@@ -415,11 +449,11 @@
                             $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
                                 + cData.Name + '</div>'));
                             if (cData.Type == "data-table-with-actions") {
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_edit" libType="ui" class="libraryItem">'
                                     + cData.Name + '_EditAction</div>'));
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
                                     + cData.Name + '_DetailsAction</div>'));
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
+                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
                                     + cData.Name + '_DeleteAction</div>'));
                             }
                         }

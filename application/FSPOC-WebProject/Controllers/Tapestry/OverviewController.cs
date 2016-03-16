@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Tapestry")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Tapestry")]
     public class OverviewController : Controller
     {
         public ActionResult Index(FormCollection formParams)

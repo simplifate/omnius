@@ -343,6 +343,9 @@ body.mozaicEditorModule {
         min-height: 60px;
         border: 1px dashed #0080ff;
     }
+    .visible-panel-pale-background {
+        background-color: #d4f0fe;
+    }
     .data-table {
         width: 250px;
         border: 1px solid #4b8ad1;
@@ -398,7 +401,7 @@ body.mozaicEditorModule {
             min-width: 60px;
         }
     }
-    .uic.ui-draggable-dragging {
+    .uic.ui-draggable-dragging, .toolboxItem.ui-draggable-dragging {
         z-index: 500;
     }
     .ui-dialog {

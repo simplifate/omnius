@@ -12,7 +12,7 @@ using DbExtensions;
 
 namespace FSS.Omnius.Controllers.Nexus
 {
-    [PersonaAuthorize(Roles = "Admin", Module = "Nexus")]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Nexus")]
     public class ExtDBController : Controller
     {
         // GET: ExtDB list

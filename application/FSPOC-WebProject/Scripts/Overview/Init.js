@@ -4,8 +4,6 @@ var ChangedSinceLastSave = false;
 
 $(function () {
     if (CurrentModuleIs("overviewModule")) {
-        LoadMetablock();
-
         $("#headerMetablockName").on("click", function () {
             renameMetablockDialog.dialog("open");
         });
