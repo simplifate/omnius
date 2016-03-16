@@ -7,16 +7,9 @@
     var message = ViewBag.Message;
 }
 <div id="appBuildResults">
-  @if (message.Type == ActionResultType.Success)
-  {
-    <div class="buildSuccess">@message.ToUser()</div>
+ 
+    <div class="build @message.Type.ToString()">@message.ToUser()</div>
 
-  }
-    @if (message.Type == ActionResultType.Error)
-    {
-        <div class="error">@message.ToUser()</div>
-
-    }
   
        <a href="/Master/AppAdminManager">Zpět na aplikační profily</a>
 </div>
