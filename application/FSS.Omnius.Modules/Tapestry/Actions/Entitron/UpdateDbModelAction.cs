@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    public class UpdateDBItemAction : Action
+    public class UpdateDBModelAction : Action
     {
         public override int Id
         {
             get
             {
-                return 1007;
+                return 1002;
             }
         }
 
@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "Id" };
+                return new string[] { "Id" };
             }
         }
 
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Update Item";
+                return "Update Model";
             }
         }
 
@@ -60,12 +60,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             Modules.Entitron.Entitron ent = core.Entitron;
             DBEntities e = new DBEntities();
 
-            if (!vars.ContainsKey("TableName")) {
-                string error = string.Format("Nebyl předán název tabulky (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
             if (!vars.ContainsKey("Id"))
             {
                 string error = string.Format("Nebylo předáno Id záznamu (Akce: {0} ({1}))", Name, Id);
@@ -73,7 +67,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 throw new Exception(error);
             }
 
-            string tableName = (string)vars["TableName"];
+            string tableName = (string)vars["__TableName__"];
             int itemId = (int)vars["Id"];
             DBTable table = ent.GetDynamicTable(tableName);
             if(table == null) {

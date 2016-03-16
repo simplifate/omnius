@@ -42,7 +42,6 @@ namespace FSS.Omnius.Controllers.Master
         {
             var core = HttpContext.GetCORE();
             core.Entitron.AppId = Id;
-            bool dbSchemeLocked = false;
 
             using (var context = new DBEntities())
             {
@@ -52,7 +51,7 @@ namespace FSS.Omnius.Controllers.Master
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                 try
                 {
-                    app.DbSchemeLocked = dbSchemeLocked = true;
+                    app.DbSchemeLocked = true;
                     context.SaveChanges();
                     core.Entitron.AppId = app.Id;
                     var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
@@ -121,14 +120,14 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     //pass the message object to view
                     var message = new Message();
-                    message.Success.Add(ex.Message);
+                    message.Errors.Add(ex.Message);
                     ViewBag.Message = message;
 
                     return View();
                 }
                 finally
                 {
-                    app.DbSchemeLocked = dbSchemeLocked = false;
+                    app.DbSchemeLocked = false;
                     context.SaveChanges();
                 }
             }

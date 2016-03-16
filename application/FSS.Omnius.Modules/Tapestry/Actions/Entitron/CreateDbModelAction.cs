@@ -8,7 +8,8 @@ using FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
-    public class AddModelAction : Action
+    [EntitronRepository]
+    public class CreateDbModelAction : Action
     {
         public override int Id
         {
@@ -30,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Add model";
+                return "Create DB Model";
             }
         }
 
@@ -59,9 +60,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             foreach(DBColumn column in table.columns)
             {
                 if (column.type == "bit")
-                    item.createProperty(column.ColumnId, column.Name, vars.ContainsKey($"__Model.{column.Name}"));
-                else if (vars.ContainsKey($"__Model.{column.Name}"))
-                    item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{column.Name}"]);
+                    item.createProperty(column.ColumnId, column.Name, vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"));
+                else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
+                    item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
             }
             
             table.Add(item);
