@@ -47,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry
             // __Result__
             // __Model__
             // __ModelId__
-            // __Model.{columnName}
+            // __Model.{TableName}.{columnName}
             // __TableName__
 
             // init action
@@ -86,7 +86,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
                 {
                     if (fc.AllKeys.Contains(source.ComponentName))
-                        _results.OutputData.Add($"__Model.{target.ColumnName}", fc[source.ComponentName]);
+                        _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
                 }
             }
 

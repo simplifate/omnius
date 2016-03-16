@@ -675,7 +675,7 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\AddModelAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\CreateDbModelAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
@@ -697,8 +697,6 @@
     <Compile Include="Tapestry\Running\ActionRule.cs" />
     <Compile Include="Tapestry\Actions\ActionSequence.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\DeleteDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
