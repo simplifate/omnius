@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "Id" };
+                return new string[] { "?TableName", "?Id" };
             }
         }
 
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Update Item";
+                return "Update DB Item";
             }
         }
 
@@ -60,34 +60,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             Modules.Entitron.Entitron ent = core.Entitron;
             DBEntities e = new DBEntities();
 
-            if (!vars.ContainsKey("TableName")) {
-                string error = string.Format("Nebyl předán název tabulky (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
-            if (!vars.ContainsKey("Id"))
-            {
-                string error = string.Format("Nebylo předáno Id záznamu (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
-            string tableName = (string)vars["TableName"];
-            int itemId = (int)vars["Id"];
+            string tableName = vars.ContainsKey("TableName")
+                ? (string)vars["TableName"]
+                : (string)vars["__TableName__"];
+            int itemId = vars.ContainsKey("Id")
+                ? (int)vars["Id"]
+                : (int)vars["__ModelId__"];
             DBTable table = ent.GetDynamicTable(tableName);
-            if(table == null) {
-                string error = string.Format("Požadovaná tabulka nebyla nalezena (Tabulka: {0}, Akce: {1} ({2}))", tableName, Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
+            if(table == null)
+                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
             DBItem row = table.Select().where(c => c.column("Id").Equal(itemId)).First();
-            if (row == null) {
-                string error = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", tableName, itemId, Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
+            if (row == null)
+                throw new Exception($"Položka nebyla nalezena (Tabulka: {tableName}, Id: {itemId}, Akce: {Name} ({Id}))");
 
             foreach (DBColumn column in table.columns)
             {

@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ItemId", "TableName" };
+                return new string[] { "?ItemId", "?TableName" };
             }
         }
 
@@ -55,31 +55,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
-            var itemId = (int)vars["ItemId"];
-            string tableName = (string)vars["TableName"];
-            string error;
 
-            if (string.IsNullOrEmpty(tableName))
-            {
-                error = string.Format("Nebyl předán název tabulky (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
-            if (itemId == null)
-            {
-                error = string.Format("Nebylo předáno Id záznamu (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
+            var itemId = vars.ContainsKey("ItemId")
+                ? (int)vars["ItemId"]
+                : (int)vars["__ModelId__"];
+            string tableName = vars.ContainsKey("TableName")
+                ? (string)vars["TableName"]
+                : (string)vars["__TableName__"];
             DBTable table = ent.GetDynamicTable(tableName);
+
             if (table == null)
-            {
-                error = string.Format("Požadovaná tabulka nebyla nalezena (Tabulka: {0}, Akce: {1} ({2}))", tableName, Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
+                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
             
             table.Remove(itemId);
             ent.Application.SaveChanges();

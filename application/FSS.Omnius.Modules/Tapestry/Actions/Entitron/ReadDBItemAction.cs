@@ -57,21 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], (int)vars["Id"]);
             if(outputVars["Data"] == null)
-            {
-                string msg = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", vars["TableName"], vars["Id"], Name, Id);
-
-                WatchtowerLogger logger = WatchtowerLogger.Instance;
-                logger.LogEvent(
-                    msg,
-                    core.User.Id,
-                    LogEventType.Tapestry,
-                    LogLevel.Error,
-                    false,
-                    core.Entitron.AppId
-                );
-
-                throw new Exception(msg);
-            }
+                throw new Exception($"Položka nebyla nalezena (Tabulka: {vars["TableName"]}, Id: {vars["Id"]}, Akce: {Name} ({Id}))");
         }
     }
 }

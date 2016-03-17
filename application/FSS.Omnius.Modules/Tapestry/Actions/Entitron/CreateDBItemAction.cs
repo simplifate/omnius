@@ -1,5 +1,6 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
+using System;
 using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
@@ -19,7 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "?TableName" };
             }
         }
 
@@ -50,7 +51,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
+            string tableName = vars.ContainsKey("TableName")
+                ? (string)vars["TableName"]
+                : (string)vars["__TableName__"];
+            DBTable table = core.Entitron.GetDynamicTable(tableName);
+
+            if (table == null)
+                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
             DBItem item = new DBItem();
             foreach (DBColumn column in table.columns)
