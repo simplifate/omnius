@@ -338,6 +338,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsMetablock { get; set; }
         public bool IsInMenu { get; set; }
         public bool IsInitial { get; set; }
-        public int? BlockId { get; set; }
+        public string BlockName { get; set; }
     }
 }

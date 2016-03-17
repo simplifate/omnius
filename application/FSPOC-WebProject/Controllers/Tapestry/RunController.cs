@@ -19,7 +19,7 @@ namespace FSS.Omnius.Controllers.Tapestry
     public class RunController : Controller
     {
         [HttpGet]
-        public ActionResult Index(string appName, int blockId = -1, int modelId = -1, string message = null, string messageType = null)
+        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
         {
             using (var context = new DBEntities())
             {
@@ -29,17 +29,28 @@ namespace FSS.Omnius.Controllers.Tapestry
                     core.Entitron.AppName = appName;
                 core.User = User.GetLogged(core);
 
+                // get block
                 Block block = null;
                 try
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
-                    core.Entitron.AppId = block.WorkFlow.ApplicationId;
+                    int blockId = Convert.ToInt32(blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                }
+                catch(FormatException)
+                {
+                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                }
+
+                try
+                {
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
                 }
                 catch (NullReferenceException)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
+                // fill data
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
                 ViewData["pageName"] = block.DisplayName;
@@ -125,14 +136,36 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
         }
         [HttpPost]
-        public ActionResult Index(string appName, string button, FormCollection fc, int blockId = -1, int modelId = -1)
+        public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
             using (DBEntities context = new DBEntities())
             {
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
+                // get block
+                Block block = null;
+                try
+                {
+                    int blockId = Convert.ToInt32(blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                }
+                catch (FormatException)
+                {
+                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                }
+
+                try
+                {
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
+                }
+                catch (NullReferenceException)
+                {
+                    return new HttpStatusCodeResult(404);
+                }
+
+                // run
                 var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
 
+                // redirect
                 return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
             }
         }

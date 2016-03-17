@@ -107,7 +107,7 @@ namespace FSPOC_WebProject
             // RUN
             routes.MapRoute(
                 name: "Run",
-                url: "{appName}/{blockId}",
+                url: "{appName}/{blockIdentify}",
                 defaults: new { controller = "Run", action = "Index", blockId = UrlParameter.Optional, executedBy = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );

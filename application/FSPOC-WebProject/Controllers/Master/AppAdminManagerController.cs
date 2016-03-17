@@ -163,7 +163,7 @@ namespace FSS.Omnius.Controllers.Master
                     IsInMenu = b.IsInMenu,
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
-                    BlockId = blockMapping[b.Id].Id
+                    BlockName = blockMapping[b.Id].Name
                 });
             }
 
