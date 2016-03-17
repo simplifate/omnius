@@ -166,7 +166,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
 
                 // redirect
-                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
             }
         }
     }
