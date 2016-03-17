@@ -62,7 +62,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                 Block resultBlock = new Block
                 {
-                    Name = childBlock.Name,
+                    Name = childBlock.Name.RemoveDiacritics(),
+                    DisplayName = childBlock.Name,
                     ModelName = modelName != null ? modelName.Split(',').First() : null,
                     IsVirtual = false
                 };
@@ -182,7 +183,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // block mapping
                 Block newBlock = new Block
                 {
-                    Name = "split block",
+                    Name = $"splitBlock_{block.Name}",
+                    DisplayName = $"split block [{block.Name}]",
                     ModelName = block.ModelName,
                     IsVirtual = true
                 };
@@ -207,7 +209,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // block mapping
                 Block newBlock = new Block
                 {
-                    Name = "join block",
+                    Name = $"joinBlock_{block.Name}",
+                    DisplayName = $"join block [{block.Name}]",
                     ModelName = block.ModelName,
                     IsVirtual = true
                 };

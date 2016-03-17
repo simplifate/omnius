@@ -25,10 +25,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [Required]
         [StringLength(50)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         [StringLength(50)]
         public string ModelName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string DisplayName { get; set; }
 
         public bool IsVirtual { get; set; }
         public bool IsInMenu { get; set; }

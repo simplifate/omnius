@@ -42,7 +42,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
-                ViewData["pageName"] = block.Name;
+                ViewData["pageName"] = block.DisplayName;
 
                 foreach (var resourceMappingPair in block.ResourceMappingPairs)
                 {

@@ -654,6 +654,10 @@
     <Compile Include="Migrations\201603141129547_Fix cortex conflict.Designer.cs">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603171030577_BlockDisplayName.cs" />
+    <Compile Include="Migrations\201603171030577_BlockDisplayName.Designer.cs">
+      <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1021,6 +1025,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603141129547_Fix cortex conflict.resx">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603171030577_BlockDisplayName.resx">
+      <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
