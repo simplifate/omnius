@@ -39,6 +39,7 @@
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(postData),
                 success: function () {
+                    ChangedSinceLastSave = true;
                     alert('ok');
                 },
                 error: function (request, status, error) {
