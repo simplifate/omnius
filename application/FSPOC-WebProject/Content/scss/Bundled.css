@@ -774,6 +774,8 @@ body.adminAppModule #appBuildResults {
     height: auto !important; }
     .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
       display: none; }
+    .mozaicForm .data-table tfoot th {
+      padding: 10px 18px 6px 10px; }
     .mozaicForm .data-table .actionIcons {
       width: 60px; }
       .mozaicForm .data-table .actionIcons .fa {

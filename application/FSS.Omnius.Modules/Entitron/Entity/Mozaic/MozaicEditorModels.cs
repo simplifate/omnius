@@ -110,7 +110,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
+                    stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
+                    stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}</tr>}}</tbody>}} }}</{c.Tag}>");
                 }
                 else if (c.Type == "name-value-list")
@@ -128,7 +129,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></thead><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
+                    stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
+                    stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\"><i class=\"fa fa-edit rowEditAction\"></i>");
                     stringBuilder.Append($"<i class=\"fa fa-remove rowDeleteAction\"></i></td></tr>}}</tbody>}} }}</{c.Tag}>");
                 }
