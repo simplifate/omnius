@@ -347,7 +347,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int ResourceRuleId { get; set; }
 
-        public virtual TapestryDesignerWorkflowRule ResourceRule { get; set; }
+        public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
     //[Table("TapestryDesigner_Properties")]
     //public class TapestryDesignerProperty
