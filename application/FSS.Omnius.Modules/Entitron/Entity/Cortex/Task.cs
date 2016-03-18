@@ -17,6 +17,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
     }
 
     [Flags]
+    public enum DaysInMonth
+    {
+        D1 = 1, D2, D3, D4, D5, D6, D7, D8, D9, D10,
+        D11, D12, D13, D14, D15, D16, D17, D18, D19, D20,
+        D21, D22, D23, D24, D25, D26, D27, D28, D29, D30,
+        D31, LAST
+    }
+
+    [Flags]
     public enum Months
     {
         JAN = 1, FEB, MAR, APR, MAY, JUNE, JULY, AUG, SEPT, OCT, NOV, DEC
@@ -35,6 +44,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
 
         [Index(IsClustered = false, IsUnique = false)]
         [ForeignKey("Application")]
+        [Display(Name = "Aplikace")]
         public int? AppId { get; set; }
 
         [Display(Name = "Aktivní")]
@@ -76,7 +86,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         public Months? Monthly_Months { get; set; }
 
         [Display(Name = "Dny")]
-        public Days? Monthly_Days { get; set; }
+        public DaysInMonth? Monthly_Days { get; set; }
 
         public InModifiers? Monthly_In_Modifiers { get; set; }
         public Days? Monthly_In_Days { get; set; }

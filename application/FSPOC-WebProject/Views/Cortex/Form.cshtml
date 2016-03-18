@@ -1,4 +1,7 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Cortex.Task
+@using System.Data.Entity;
+@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Cortex
 @{
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
 }
@@ -11,14 +14,7 @@
         <h4>@(Model != null ? "Úprava úlohy" : "Vytvoření úlohy")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.AppId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AppId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AppId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -26,6 +22,14 @@
                     @Html.EditorFor(model => model.Active)
                     @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
                 </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.AppId, new SelectList((DbSet<Application>)ViewData["ApplicationList"], "Id", "Name", Model != null ? Model.AppId : null), "-- žádná --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AppId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -46,44 +50,128 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Minute_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Minute_Repeat, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Minute_Repeat, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Type, new SelectList((Dictionary<ScheduleType, string>)ViewData["ScheduleTypeNames"], "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- žádná --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Hourly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Hourly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Hourly_Repeat, "", new { @class = "text-danger" })
+        <section id="ScheduleType@(ScheduleType.MINUTE.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Minute_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Minute_Repeat, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Minute_Repeat, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Daily_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Daily_Repeat, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Daily_Repeat, "", new { @class = "text-danger" })
+        <section id="ScheduleType@(ScheduleType.HOURLY.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Hourly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.Hourly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Hourly_Repeat, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Weekly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Weekly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Weekly_Repeat, "", new { @class = "text-danger" })
+        <section id="ScheduleType@(ScheduleType.DAILY.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Daily_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Daily_Repeat, new { htmlAttributes = new { @class = "form-control col-md-3 col-sm-2" } })
+                        <div class="input-group-addon">(dny)</div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Daily_Repeat, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Idle_Time, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Idle_Time, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Idle_Time, "", new { @class = "text-danger" })
+        <section id="ScheduleType@(ScheduleType.WEEKLY.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Weekly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Weekly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="input-group-addon">týdnů vždy v:</div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Weekly_Repeat, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">&nbsp;</label>
+                <div class="col-md-6">
+                    @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="Weekly_Days[]" value="@day.Key" />
+                            @day.Value
+                        </label>
+                    }
+                </div>
+            </div>
+        </section>
+        
+        <section id="ScheduleType@(ScheduleType.MONTHLY.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Monthly_Months, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-6">
+                    @foreach(KeyValuePair<Months, string> month in (Dictionary<Months, string>)ViewData["MonthsNames"]) {
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="Monthly_Months[]" value="@month.Key" />
+                            @month.Value
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <input type="radio" name="Month_Type" id="Month_Type_Day" value="1" />
+                    Dny
+                </label>
+                <div class="col-md-6">
+                    @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonth"]) {
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="Monthly_Days[]" value="@day.Key" />
+                            @day.Value; 
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <input type="radio" name="Month_Type" id="Month_Type_In" value="1" />
+                    V
+                </label>
+                <div class="col-md-6">
+                    @foreach(KeyValuePair<InModifiers, string> mod in (Dictionary<InModifiers, string>)ViewData["ModifierNames"]) {
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="Monthly_In_Modifiers[]" value="@mod.Key" />
+                            @mod.Value
+                        </label>
+                    }
+                    <br />
+                    @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="Monthly_In_Days[]" value="@day.Key" />
+                            @day.Value
+                        </label>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section id="ScheduleType@(ScheduleType.ONIDLE.ToString())Options" class="st-options hide">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Idle_Time, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Idle_Time, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Idle_Time, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </section>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Time, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -131,4 +219,13 @@
             </div>
         </div>
     </div>
+    <script>
+        /* <![CDATA[ */
+        
+        $('#Type').change(function () {
+            $('.st-options').addClass('hide');
+            $('#ScheduleType' + this.value + 'Options').removeClass('hide');
+        });
+        /* ]]> */
+    </script>
 }
