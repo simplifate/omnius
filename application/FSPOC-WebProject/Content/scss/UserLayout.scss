@@ -504,8 +504,12 @@
                 display: none;
             }
         }
-        tfoot th {
-            padding: 10px 18px 6px 10px;
+        tfoot {
+            display: table-header-group;
+
+            th {
+                padding: 10px 18px 6px 10px;
+            }
         }
         .actionIcons {
             width: 60px;
