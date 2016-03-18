@@ -658,6 +658,10 @@
     <Compile Include="Migrations\201603171030577_BlockDisplayName.Designer.cs">
       <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603181026526_cascadeDelete.cs" />
+    <Compile Include="Migrations\201603181026526_cascadeDelete.Designer.cs">
+      <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1026,6 +1030,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603171030577_BlockDisplayName.resx">
       <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181026526_cascadeDelete.resx">
+      <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
