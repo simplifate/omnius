@@ -153,10 +153,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public List<int> ColumnFilter { get; set; }
+        public List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public AjaxTapestryDesignerResourceItem()
         {
             ColumnFilter = new List<int>();
+            ConditionSets = new List<AjaxTapestryDesignerConditionSet>();
         }
     }
     public class AjaxTapestryDesignerWorkflowItem
@@ -246,5 +248,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+    }
+    public class AjaxTapestryDesignerCondition
+    {
+        public int Id { get; set; }
+        public int Index { get; set; }
+        public string Relation { get; set; }
+        public string Variable { get; set; }
+        public string Operator { get; set; }
+        public string Value { get; set; }
+    }
+    public class AjaxTapestryDesignerConditionSet
+    {
+        public int Id { get; set; }
+        public int SetIndex { get; set; }
+        public string SetRelation { get; set; }
+        public List<AjaxTapestryDesignerCondition> Conditions { get; set; }
+
+        public AjaxTapestryDesignerConditionSet()
+        {
+            Conditions = new List<AjaxTapestryDesignerCondition>();
+        }
     }
 }

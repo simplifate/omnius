@@ -23,7 +23,8 @@ function SaveBlock(commitMessage) {
                 ComponentName: currentItem.attr("componentName"),
                 TableName: currentItem.attr("tableName"),
                 ColumnName: currentItem.attr("columnName"),
-                ColumnFilter: currentItem.data("columnFilter")
+                ColumnFilter: currentItem.data("columnFilter"),
+                ConditionSets: currentItem.data("conditionSets")
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");

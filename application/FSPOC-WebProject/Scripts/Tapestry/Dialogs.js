@@ -699,6 +699,41 @@ $(function () {
             }
         });
         function conditionsDialog_SubmitData() {
+            setArray = [];
+            conditionsDialog.find(".conditionSet").each(function (setIndex, setElement) {
+                currentSet = $(setElement);
+                conditionArray = [];
+                currentSet.find(".conditionTable tr").each(function (index, element) {
+                    currentCondition = $(element);
+                    relationCellValue = currentCondition.find(".conditionOperator").text();
+                    if (relationCellValue == "")
+                        relation = "AND";
+                    else
+                        relation = relationCellValue.toUpperCase();
+                    if (currentCondition.find(".conditionValueCell select").lenght > 0)
+                        value = currentCondition.find(".conditionValueCell select option:selected").text();
+                    else
+                        value = currentCondition.find(".conditionValueCell input").val();
+                    conditionArray.push({
+                        Index: index,
+                        Relation: relation,
+                        Variable: currentCondition.find(".conditionVariableCell select option:selected").text(),
+                        Operator: currentCondition.find(".conditionOperatorCell select option:selected").text(),
+                        Value: value
+                    });
+                });
+                setPrefix = currentSet.find(".conditionSetPrefix").text();
+                if (setPrefix == "OR a")
+                    setRelation = "OR";
+                else
+                    setRelation = "AND";
+                setArray.push({
+                    SetIndex: setIndex,
+                    SetRelation: setRelation,
+                    Conditions: conditionArray
+                });
+            });
+            CurrentItem.data("conditionSets", setArray);
             conditionsDialog.dialog("close");
         }
     }
