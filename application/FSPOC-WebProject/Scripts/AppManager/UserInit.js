@@ -89,6 +89,22 @@ $(function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
                 $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').submit();
             });
+            table.find("tfoot th").each(function () {
+                var title = $(this).text();
+                if (title != "Akce")
+                    $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                else
+                    $(this).html("");
+            });
+            dataTable = table.DataTable();
+            dataTable.columns().eq(0).each(function (colIdx) {
+                $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
+                    dataTable
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {
