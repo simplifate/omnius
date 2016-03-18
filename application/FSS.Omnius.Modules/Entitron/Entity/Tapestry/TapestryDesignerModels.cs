@@ -319,6 +319,32 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
+    [Table("TapestryDesigner_WorkflowConnections")]
+    public partial class TapestryDesignerWorkflowConnection// : TapestryDesignerConnection
+    {
+        public int Id { get; set; }
+        public int SourceId { get; set; }
+        public int SourceSlot { get; set; }
+        public int TargetId { get; set; }
+        public int TargetSlot { get; set; }
+
+        public int WorkflowRuleId { get; set; }
+
+        public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
+    }
+    [Table("TapestryDesigner_ResourceConnections")]
+    public partial class TapestryDesignerResourceConnection// : TapestryDesignerConnection
+    {
+        public int Id { get; set; }
+        public int SourceId { get; set; }
+        public int SourceSlot { get; set; }
+        public int TargetId { get; set; }
+        public int TargetSlot { get; set; }
+
+        public int ResourceRuleId { get; set; }
+
+        public virtual TapestryDesignerWorkflowRule ResourceRule { get; set; }
+    }
     //[Table("TapestryDesigner_Properties")]
     //public class TapestryDesignerProperty
     //{
