@@ -188,6 +188,27 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
                             resourceIdMapping.Add(ajaxItem.Id, item.Id);
+                            foreach(AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
+                            {
+                                TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
+                                {
+                                    SetIndex = ajaxConditionSet.SetIndex,
+                                    SetRelation = ajaxConditionSet.SetRelation
+                                };
+                                item.ConditionSets.Add(conditionSet);
+                                foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
+                                {
+                                    TapestryDesignerCondition condition = new TapestryDesignerCondition
+                                    {
+                                        Index = ajaxCondition.Index,
+                                        Relation = ajaxCondition.Relation,
+                                        Variable = ajaxCondition.Variable,
+                                        Operator = ajaxCondition.Operator,
+                                        Value = ajaxCondition.Value
+                                    };
+                                    conditionSet.Conditions.Add(condition);
+                                }
+                            }
                         }
                         foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
                         {
@@ -708,7 +729,38 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
                 };
+                LoadConditionSets(item, ajaxItem);
                 result.ResourceItems.Add(ajaxItem);
+            }
+        }
+        private static void LoadConditionSets(TapestryDesignerResourceItem requestedItem, AjaxTapestryDesignerResourceItem result)
+        {
+            foreach (TapestryDesignerConditionSet conditionSet in requestedItem.ConditionSets)
+            {
+                var ajaxConditionSet = new AjaxTapestryDesignerConditionSet
+                {
+                    Id = conditionSet.Id,
+                    SetIndex = conditionSet.SetIndex,
+                    SetRelation = conditionSet.SetRelation
+                };
+                LoadConditions(conditionSet, ajaxConditionSet);
+                result.ConditionSets.Add(ajaxConditionSet);
+            }
+        }
+        private static void LoadConditions(TapestryDesignerConditionSet requestedConditionSet, AjaxTapestryDesignerConditionSet result)
+        {
+            foreach (TapestryDesignerCondition condition in requestedConditionSet.Conditions)
+            {
+                var ajaxCondition = new AjaxTapestryDesignerCondition
+                {
+                    Id = condition.Id,
+                    Index = condition.Index,
+                    Relation = condition.Relation,
+                    Variable = condition.Variable,
+                    Operator = condition.Operator,
+                    Value = condition.Value
+                };
+                result.Conditions.Add(ajaxCondition);
             }
         }
         private static void LoadWorkflowRules(TapestryDesignerBlockCommit requestedBlockCommit, AjaxTapestryDesignerBlockCommit result)
