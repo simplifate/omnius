@@ -207,8 +207,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
+        public virtual IEnumerable<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
+
+        public TapestryDesignerResourceItem()
+        {
+            ConditionSets = new List<TapestryDesignerConditionSet>();
+        }
     }
     public partial class WFitem
     {
@@ -348,6 +354,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int ResourceRuleId { get; set; }
 
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
+    }
+    [Table("TapestryDesigner_Conditions")]
+    public class TapestryDesignerCondition
+    {
+        public int Id { get; set; }
+        public int Index { get; set; }
+        public string Relation { get; set; }
+        public string Variable { get; set; }
+        public string Operator { get; set; }
+        public string Value { get; set; }
+    }
+    [Table("TapestryDesigner_ConditionSets")]
+    public class TapestryDesignerConditionSet
+    {
+        public int Id { get; set; }
+        public int SetIndex { get; set; }
+        public string SetRelation { get; set; }
+        public virtual IEnumerable<AjaxTapestryDesignerCondition> Conditions { get; set; }
+
+        public TapestryDesignerConditionSet()
+        {
+            Conditions = new List<AjaxTapestryDesignerCondition>();
+        }
     }
     //[Table("TapestryDesigner_Properties")]
     //public class TapestryDesignerProperty

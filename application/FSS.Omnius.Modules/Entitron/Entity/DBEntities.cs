@@ -96,7 +96,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowSymbol> TapestryDesignerWorkflowSymbols { get; set; }
-        //public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
+        public virtual DbSet<TapestryDesignerResourceRule> TapestryDesignerResourceRules { get; set; }
+        public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
+        public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
+        public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
