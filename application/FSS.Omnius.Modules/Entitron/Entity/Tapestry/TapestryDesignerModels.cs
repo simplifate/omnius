@@ -207,7 +207,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
-        public virtual IEnumerable<TapestryDesignerConditionSet> ConditionSets { get; set; }
+        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
 
@@ -371,11 +371,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
-        public virtual IEnumerable<AjaxTapestryDesignerCondition> Conditions { get; set; }
+        public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
 
         public TapestryDesignerConditionSet()
         {
-            Conditions = new List<AjaxTapestryDesignerCondition>();
+            Conditions = new List<TapestryDesignerCondition>();
         }
     }
     //[Table("TapestryDesigner_Properties")]

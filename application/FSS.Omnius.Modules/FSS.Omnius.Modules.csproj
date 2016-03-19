@@ -674,6 +674,10 @@
     <Compile Include="Migrations\201603191225115_Conditions and condition sets.Designer.cs">
       <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603191237383_Conditions 2.cs" />
+    <Compile Include="Migrations\201603191237383_Conditions 2.Designer.cs">
+      <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1054,6 +1058,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603191225115_Conditions and condition sets.resx">
       <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191237383_Conditions 2.resx">
+      <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
