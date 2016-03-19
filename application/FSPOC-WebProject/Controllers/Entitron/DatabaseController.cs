@@ -238,10 +238,10 @@ namespace FSS.Omnius.Controllers.Entitron
                         string name = commit.Tables.SingleOrDefault(x=>x.Id==rightTable).Name + commit.Tables.SingleOrDefault(x => x.Id == rightTable).Columns.SingleOrDefault(x=>x.Id==rightColumn).Name + "_" + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Name + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Columns.SingleOrDefault(x => x.Id == leftColumn).Name;
                         commit.Relations.Add(new DbRelation
                         {
-                            LeftTableId = leftTable,
-                            RightTableId = rightTable,
-                            LeftColumnId = leftColumn,
-                            RightColumnId = rightColumn,
+                            LeftTable = leftTable,
+                            RightTable = rightTable,
+                            LeftColumn = leftColumn,
+                            RightColumn = rightColumn,
                             Type = ajaxRelation.Type,
                             Name = name
                         });
@@ -433,10 +433,10 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 result.Relations.Add(new AjaxTransferDbRelation
                 {
-                    LeftColumn = relation.LeftColumnId,
-                    LeftTable = relation.LeftTableId,
-                    RightColumn = relation.RightColumnId,
-                    RightTable = relation.RightTableId,
+                    LeftColumn = relation.LeftColumn,
+                    LeftTable = relation.LeftTable,
+                    RightColumn = relation.RightColumn,
+                    RightTable = relation.RightTable,
                     Type = relation.Type
                 });
             }

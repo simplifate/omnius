@@ -9,15 +9,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public int Id { get; set; }
         public string Name { get; set; }
         public int Type { get; set; }
-        public int LeftTableId { get; set; }
-        public int LeftColumnId { get; set; }
-        public int RightTableId { get; set; }
-        public int RightColumnId { get; set; }
+        public int LeftTable { get; set; }
+        public int LeftColumn { get; set; }
+        public int RightTable { get; set; }
+        public int RightColumn { get; set; }
 
-        public virtual DbTable LeftTable { get; set; }
+        /*public virtual DbTable LeftTable { get; set; }
         public virtual DbColumn LeftColumn { get; set; }
         public virtual DbTable RightTable { get; set; }
-        public virtual DbColumn RightColumn { get; set; }
+        public virtual DbColumn RightColumn { get; set; }*/
 
 
         public int DbSchemeCommitId { get; set; }
