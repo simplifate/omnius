@@ -75,7 +75,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             foreach (TapestryDesignerBlock childBlock in block.Blocks)
             {
-                saveBlockContent(childBlock, resultWF);
+                try
+                {
+                    saveBlockContent(childBlock, resultWF);
+                }
+                catch(Exception e)
+                {
+                    throw new Exception($"block [{childBlock.Name}] - {e.Message}", e);
+                }
             }
             _context.SaveChanges();
 
