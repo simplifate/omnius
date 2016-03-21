@@ -686,6 +686,10 @@
     <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.Designer.cs">
       <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603211040585_blockTemp.cs" />
+    <Compile Include="Migrations\201603211040585_blockTemp.Designer.cs">
+      <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1075,6 +1079,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.resx">
       <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603211040585_blockTemp.resx">
+      <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
