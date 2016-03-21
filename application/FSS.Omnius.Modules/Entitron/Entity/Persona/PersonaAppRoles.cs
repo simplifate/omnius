@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
@@ -18,7 +19,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public new string Name { get; set; }
         public int ADgroupId { get; set; }
         public virtual ADgroup ADgroup { get; set; }
-
+        [Required]
+        public int Priority { get; set; }
         [JsonIgnore]
         public new virtual ICollection<User_Role> Users { get; set; }
 

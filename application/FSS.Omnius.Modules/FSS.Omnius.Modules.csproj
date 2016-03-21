@@ -682,6 +682,10 @@
     <Compile Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.Designer.cs">
       <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.cs" />
+    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.Designer.cs">
+      <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1068,6 +1072,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.resx">
       <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.resx">
+      <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
