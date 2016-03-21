@@ -58,13 +58,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
-
+        public int Priority { get; set; }
         public ColumnHeaderAppRolesForTable() { }
 
-        public ColumnHeaderAppRolesForTable(int id, string name)
+        public ColumnHeaderAppRolesForTable(int id, string name,int priority)
         {
             this.Id = id;
             this.Name = name;
+            this.Priority = priority;
         }
     }
 
