@@ -14,10 +14,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private DBEntities _context;
 
         private Dictionary<int, Block> _blockMapping;
+        private List<WorkFlow> _addedWF;
 
         public TapestryGeneratorService()
         {
             _blockMapping = new Dictionary<int, Block>();
+            _addedWF = new List<WorkFlow>();
         }
 
         public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
@@ -25,13 +27,29 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _core = core;
             _context = core.Entitron.GetStaticTables();
 
-            var wfToRemove = _context.WorkFlows.Where(w => w.ApplicationId == core.Entitron.AppId);
-            _context.WorkFlows.RemoveRange(wfToRemove);
-            _context.SaveChanges();
+            var oldWF = _context.WorkFlows.Where(w => w.ApplicationId == core.Entitron.AppId).ToList();
 
-            WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
+            try
+            {
+                // generate new
+                WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
+                _context.SaveChanges();
+                
+                // remove old
+                _context.WorkFlows.RemoveRange(oldWF);
+                _context.SaveChanges();
 
-            _context.SaveChanges();
+                foreach (Block block in _context.Blocks.Where(b => b.IsTemp && b.WorkFlow.ApplicationId == core.Entitron.AppId))
+                    block.IsTemp = false;
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                _context.WorkFlows.RemoveRange(_addedWF);
+                _context.SaveChanges();
+
+                throw ex;
+            }
 
             return _blockMapping;
         }
@@ -44,6 +62,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial"),
             };
             _context.WorkFlows.Add(resultWF);
+            _addedWF.Add(resultWF);
             _context.SaveChanges();
 
             // child meta block
@@ -65,7 +84,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = childBlock.Name.RemoveDiacritics(),
                     DisplayName = childBlock.Name,
                     ModelName = modelName != null ? modelName.Split(',').First() : null,
-                    IsVirtual = false
+                    IsVirtual = false,
+                    IsTemp = true
                 };
                 resultWF.Blocks.Add(resultBlock);
                 if (childBlock.IsInitial)
@@ -193,7 +213,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"splitBlock_{block.Name}",
                     DisplayName = $"split block [{block.Name}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true
+                    IsVirtual = true,
+                    IsTemp = true
                 };
                 wf.Blocks.Add(newBlock);
                 WFitem it =
@@ -219,7 +240,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"joinBlock_{block.Name}",
                     DisplayName = $"join block [{block.Name}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true
+                    IsVirtual = true,
+                    IsTemp = true
                 };
                 wf.Blocks.Add(newBlock);
 
