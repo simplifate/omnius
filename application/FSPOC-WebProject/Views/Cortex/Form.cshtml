@@ -51,7 +51,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-3">
                 @Html.DropDownListFor(model => model.Type, new SelectList((Dictionary<ScheduleType, string>)ViewData["ScheduleTypeNames"], "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- žádná --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
@@ -60,8 +60,11 @@
         <section id="ScheduleType@(ScheduleType.MINUTE.ToString())Options" class="st-options hide">
             <div class="form-group">
                 @Html.LabelFor(model => model.Minute_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Minute_Repeat, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Minute_Repeat, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 1439 } })
+                        <div class="input-group-addon">minut</div>
+                    </div>
                     @Html.ValidationMessageFor(model => model.Minute_Repeat, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -70,8 +73,11 @@
         <section id="ScheduleType@(ScheduleType.HOURLY.ToString())Options" class="st-options hide">
             <div class="form-group">
                 @Html.LabelFor(model => model.Hourly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-3">
-                    @Html.EditorFor(model => model.Hourly_Repeat, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Hourly_Repeat, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 23 } })
+                        <div class="input-group-addon">hodin</div>
+                    </div>
                     @Html.ValidationMessageFor(model => model.Hourly_Repeat, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -132,7 +138,7 @@
                     Dny
                 </label>
                 <div class="col-md-6">
-                    @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonth"]) {
+                    @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonthNames"]) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_Days[]" value="@day.Key" />
                             @day.Value; 
@@ -166,8 +172,11 @@
         <section id="ScheduleType@(ScheduleType.ONIDLE.ToString())Options" class="st-options hide">
             <div class="form-group">
                 @Html.LabelFor(model => model.Idle_Time, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Idle_Time, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Idle_Time, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="input-group-addon">min</div>
+                    </div>
                     @Html.ValidationMessageFor(model => model.Idle_Time, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -175,7 +184,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Time, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-1">
                 @Html.EditorFor(model => model.Start_Time, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Start_Time, "", new { @class = "text-danger" })
             </div>
@@ -183,7 +192,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.End_Time, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-1">
                 @Html.EditorFor(model => model.End_Time, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.End_Time, "", new { @class = "text-danger" })
             </div>
@@ -199,7 +208,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-2">
                 @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
             </div>
@@ -207,7 +216,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-2">
                 @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
             </div>
@@ -226,6 +235,25 @@
             $('.st-options').addClass('hide');
             $('#ScheduleType' + this.value + 'Options').removeClass('hide');
         });
+
+        $.datetimepicker.setLocale('cs');
+
+        var dpConfig = {
+            dayOfWeekStart: 1,
+            timepicker: false,
+            format: 'd.m.Y'
+        };
+        var tpConfig = {
+            datepicker: false,
+            format: 'H:i',
+            step: 5
+        };
+
+        $('#Start_Date').datetimepicker(dpConfig);
+        $('#End_Date').datetimepicker(dpConfig);
+
+        $('#Start_Time').datetimepicker(tpConfig);
+        $('#End_Time').datetimepicker(tpConfig);
         /* ]]> */
     </script>
 }

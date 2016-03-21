@@ -65,11 +65,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         public string Url { get; set; }
 
         [Range(1, 1439)]
-        [Display(Name = "Opakování")]
+        [Display(Name = "Opakovat každých")]
         public int? Minute_Repeat { get; set; }
 
         [Range(1, 23)]
-        [Display(Name = "Opakování")]
+        [Display(Name = "Opakovat každých")]
         public int? Hourly_Repeat { get; set; }
 
         [Range(1,365)]
