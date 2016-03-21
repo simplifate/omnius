@@ -429,7 +429,7 @@
                             }
                             if (uiPageData.Components[componentIndex].ChildComponents) {
                                 for (childComponentIndex = 0; childComponentIndex < uiPageData.Components[componentIndex].ChildComponents.length; childComponentIndex++) {
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '" libType="ui" class="libraryItem">'
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '" libType="ui" class="libraryItem">'
                                     + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '</div>');
                                 }
                             }
