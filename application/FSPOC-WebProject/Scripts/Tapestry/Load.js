@@ -299,158 +299,138 @@
                 }
             }
             appId = $("#currentAppId").val();
-            url = "/api/database/apps/" + appId + "/commits/latest",
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/database/apps/" + appId + "/commits/latest",
                 dataType: "json",
                 success: function (tableData) {
                     $("#libraryCategory-Attributes .libraryItem").remove();
-                    for (i = 0; i < tableData.Tables.length; i++) {
+                    for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {
                         $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="table-attribute" class="libraryItem tableAttribute" tableName="'
-                            + tableData.Tables[i].Name + '">Table: ' + tableData.Tables[i].Name + '</div>'));
+                            + tableData.Tables[tableIndex].Name + '">Table: ' + tableData.Tables[tableIndex].Name + '</div>'));
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
                     AssociatedTableName = data.AssociatedTableName;
                     $("#blockHeaderDbResCount").text(data.AssociatedTableIds.length);
                     somethingWasAdded = false;
-                    for (i = 0; i < data.AssociatedTableIds.length; i++) {
+                    for (tableIndex = 0; tableIndex < data.AssociatedTableIds.length; tableIndex++) {
                         currentTable = tableData.Tables.filter(function (value) {
-                            return value.Id == data.AssociatedTableIds[i];
+                            return value.Id == data.AssociatedTableIds[tableIndex];
                         })[0];
                         if (currentTable != undefined) {
-                            for (j = 0; j < currentTable.Columns.length; j++) {
+                            for (columnIndex = 0; columnIndex < currentTable.Columns.length; columnIndex++) {
                                 $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                    + currentTable.Name + '" columnName="' + currentTable.Columns[j].Name + '">' + currentTable.Name + '.' + currentTable.Columns[j].Name + '</div>'));
+                                    + currentTable.Name + '" columnName="' + currentTable.Columns[columnIndex].Name + '">' + currentTable.Name + '.' + currentTable.Columns[columnIndex].Name + '</div>'));
                             }
                         }
                     };
                 }
             });
             $('#libraryCategory-Actions .libraryItem').remove();
-            url = "/api/tapestry/actions";
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/tapestry/actions",
                 dataType: "json",
-                success: function (data) {
-                    for(i = 0; i < data.Items.length; i++)
+                success: function (actionData) {
+                    for (actionIndex = 0; actionIndex < actionData.Items.length; actionIndex++)
                     {
-                        var action = data.Items[i];
-                        $('#libraryCategory-Actions').append('<div libId="' + ++lastLibId + '" libType="action" class="libraryItem" actionId="' + action.Id + '">' + action.Name + '</div>');
+                        $('#libraryCategory-Actions').append('<div libId="' + ++lastLibId + '" libType="action" class="libraryItem" actionId="' + actionData.Items[actionIndex].Id + '">' + actionData.Items[actionIndex].Name + '</div>');
                     }
                 }
             });
-
             $('#libraryCategory-Roles .libraryItem').remove();
-            url = "/api/Persona/app-roles/" + appId;
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/Persona/app-roles/" + appId,
                 dataType: "json",
-                success: function (data) {
-                    for(i = 0; i < data.Roles.length; i++) {
-                        role = data.Roles[i];
-                        $('#libraryCategory-Roles').append('<div libId="' + role.Id + '" libType="role" class="libraryItem">' + role.Name + '</div>');
+                success: function (roleData) {
+                    for (roleIndex = 0; roleIndex < roleData.Roles.length; roleIndex++) {
+                        $('#libraryCategory-Roles').append('<div libId="' + roleData.Roles[roleIndex].Id + '" libType="role" class="libraryItem">' + roleData.Roles[roleIndex].Name + '</div>');
                     }
                 }
             });
-
             $('#libraryCategory-States .libraryItem').remove();
-            url = "/api/Persona/app-states/" + appId;
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/Persona/app-states/" + appId,
                 dataType: "json",
-                success: function (data) {
-                    for (i = 0; i < data.States.length; i++) {
-                        state = data.States[i];
-                        $('#libraryCategory-States').append('<div libId="' + ++lastLibId + '" libType="state" class="libraryItem" stateId="' + state.Id + '">' + state.Name + '</div>');
+                success: function (stateData) {
+                    for (stateIndex = 0; stateIndex < stateData.States.length; stateIndex++) {
+                        $('#libraryCategory-States').append('<div libId="' + ++lastLibId + '" libType="state" class="libraryItem" stateId="' + stateData.States[stateIndex].Id + '">' + stateData.States[stateIndex].Name + '</div>');
                     }
                 }
             });
-
-
             $('#libraryCategory-Targets .libraryItem').remove();
-            url = "/api/tapestry/apps/" + appId + "/blocks";
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/tapestry/apps/" + appId + "/blocks",
                 dataType: "json",
-                success: function(data) {
-                    for(i = 0; i < data.ListItems.length; i++) {
-                        var item = data.ListItems[i];
-                        $('#libraryCategory-Targets').append('<div libId="' + ++lastLibId + '" libType="target" class="libraryItem" targetId="' + item.Id + '">' + item.Name + '</div>');
+                success: function(targetData) {
+                    for (targetIndex = 0; targetIndex < targetData.ListItems.length; targetIndex++) {
+                        $('#libraryCategory-Targets').append('<div libId="' + ++lastLibId + '" libType="target" class="libraryItem" targetId="' + targetData.ListItems[targetIndex].Id + '">' + targetData.ListItems[targetIndex].Name + '</div>');
                     }
                 }
             });
-
             $('#libraryCategory-Templates .libraryItem').remove();
-            url = "/api/hermes/" + appId + "/templates";
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/hermes/" + appId + "/templates",
                 dataType: "json",
-                success: function (data) {
-                    for (i = 0; i < data.length; i++) {
-                        $('#libraryCategory-Templates').append('<div libId="' + data[i].Id + '" libType="template" class="libraryItem">' + data[i].Name + '</div>');
+                success: function (templateData) {
+                    for (templateIndex = 0; templateIndex < templateData.length; templateIndex++) {
+                        $('#libraryCategory-Templates').append('<div libId="' + templateData[templateIndex].Id + '" libType="template" class="libraryItem">' + templateData[templateIndex].Name + '</div>');
                     }
                 }
             });
-
             $('#libraryCategory-Integration .libraryItem').remove();
-            url = "/api/nexus/" + appId + "/gateways";
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "/api/nexus/" + appId + "/gateways",
                 dataType: "json",
-                success: function (data) {
-                    for (i = 0; i < data.Ldap.length; i++) {
-                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="ldap" class="libraryItem">LDAP: ' + data.Ldap[i].Name + '</div>');
+                success: function (integrationData) {
+                    for (integrationIndex = 0; integrationIndex < integrationData.Ldap.length; integrationIndex++) {
+                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="ldap" class="libraryItem">LDAP: ' + integrationData.Ldap[integrationIndex].Name + '</div>');
                     }
-                    for (i = 0; i < data.WS.length; i++) {
-                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="ws" libSubType="' + data.WS[i].Type + '" class="libraryItem">WS: ' + data.WS[i].Name + '</div>');
+                    for (integrationIndex = 0; integrationIndex < integrationData.WS.length; integrationIndex++) {
+                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="ws" libSubType="' + integrationData.WS[integrationIndex].Type + '" class="libraryItem">WS: ' + integrationData.WS[integrationIndex].Name + '</div>');
                     }
-                    for (i = 0; i < data.SMTP.length; i++) {
-                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="smtp" class="libraryItem">SMTP: ' + data.SMTP[i].Name + '</div>');
+                    for (integrationIndex = 0; integrationIndex < integrationData.SMTP.length; integrationIndex++) {
+                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="smtp" class="libraryItem">SMTP: ' + integrationData.SMTP[integrationIndex].Name + '</div>');
                     }
-                    for (i = 0; i < data.WebDAV.length; i++) {
-                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="webdav" class="libraryItem">WebDAV: ' + data.WebDAV[i].Name + '</div>');
+                    for (integrationIndex = 0; integrationIndex < integrationData.WebDAV.length; integrationIndex++) {
+                        $('#libraryCategory-Integration').append('<div libId="' + ++lastLibId + '" libType="webdav" class="libraryItem">WebDAV: ' + integrationData.WebDAV[integrationIndex].Name + '</div>');
                     }
                 }
             });
-            
             AssociatedPageIds = data.AssociatedPageIds;
             $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
             $("#libraryCategory-UI .libraryItem").remove();
-            for (i = 0; i < data.AssociatedPageIds.length; i++) {
-                pageId = data.AssociatedPageIds[i];
-                url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+            for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
+                pageId = data.AssociatedPageIds[pageIndex];
                 $.ajax({
                     type: "GET",
-                    url: url,
+                    url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
                     dataType: "json",
-                    success: function (data) {
-                        for (i = 0; i < data.Components.length; i++) {
-                            if (i == 0) {
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                    + data.Name + '</div>');
+                    success: function (uiPageData) {
+                        for (componentIndex = 0; componentIndex < uiPageData.Components.length; componentIndex++) {
+                            if (componentIndex == 0) {
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" libType="ui" class="libraryItem">Screen: '
+                                    + uiPageData.Name + '</div>');
                             }
-                            cData = data.Components[i];
-                            $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '" libType="ui" class="libraryItem">'
-                            + cData.Name + '</div>');
-                            if (cData.Type == "data-table-with-actions") {
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_edit" libType="ui" class="libraryItem">'
-                                    + cData.Name + '_EditAction</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
-                                    + cData.Name + '_DetailsAction</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
-                                    + cData.Name + '_DeleteAction</div>');
+                            $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '" libType="ui" class="libraryItem">'
+                            + uiPageData.Components[componentIndex].Name + '</div>');
+                            if (uiPageData.Components[componentIndex].Type == "data-table-with-actions") {
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_edit" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].Name + '_EditAction</div>');
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].Name + '_DetailsAction</div>');
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].Name + '_DeleteAction</div>');
                             }
-                            if (cData.ChildComponents) {
-                                for (j = 0; j < cData.ChildComponents.length; j++) {
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + cData.ChildComponents[j].Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
-                                    + cData.ChildComponents[j].Name + '</div>');
+                            if (uiPageData.Components[componentIndex].ChildComponents) {
+                                for (childComponentIndex = 0; childComponentIndex < uiPageData.Components[componentIndex].ChildComponents.length; childComponentIndex++) {
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '</div>');
                                 }
                             }
                         }

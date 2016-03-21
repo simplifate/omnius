@@ -332,6 +332,7 @@ $(function () {
                         type: "GET",
                         url: url,
                         dataType: "json",
+                        async: false,
                         success: function (data) {
                             for (i = 0; i < data.Components.length; i++) {
                                 if (i == 0) {
