@@ -57,9 +57,6 @@ $(function () {
         $(".uic > checkbox").each(function (index, element) {
             $(element).prop("checked", false);
         });
-        $(".input-single-line, .input-multiline").each(function (index, element) {
-            $(element).val("");
-        });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
@@ -79,15 +76,15 @@ $(function () {
             table.css("top", "0px");
             table.on("click", ".rowEditAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').submit();
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').submit();
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').submit();
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
             });
             table.find("tfoot th").each(function () {
                 var title = $(this).text();

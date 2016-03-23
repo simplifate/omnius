@@ -57,9 +57,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
                 }
-                else if (c.Tag == "input" || c.Tag == "textarea")
+                else if (c.Type == "input-single-line")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" value=\"@(ViewData.ContainsKey(\"uic{c.Id}\") ? ViewData[\"uic{c.Id}\"].ToString() : \"\")\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id =\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" value=\"@ViewData[\"inputData_{c.Name}\"]\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -70,7 +70,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                 stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
                         }
                     }
-                    stringBuilder.Append($"></{c.Tag}>");
+                    stringBuilder.Append($"/>");
+                }
+                else if (c.Type == "input-multiline")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] nameValuePair = c.Properties.Split('=');
+                        if (nameValuePair.Length == 2)
+                        {
+                            if (nameValuePair[0].ToLower() == "autosum")
+                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                        }
+                    }
+                    stringBuilder.Append($">@ViewData[\"inputData_{c.Name}\"]</{c.Tag}>");
                 }
                 else if (c.Type == "label")
                 {
@@ -88,7 +103,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     stringBuilder.Append($"<div id=\"uic{c.Id}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"uic{c.Id}\") && (bool)ViewData[\"uic{c.Id}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
+                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "radio")
                 {

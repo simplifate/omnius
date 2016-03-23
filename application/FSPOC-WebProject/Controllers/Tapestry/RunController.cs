@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
                 catch(FormatException)
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
                 }
 
                 try
@@ -55,6 +55,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
                 ViewData["pageName"] = block.DisplayName;
 
+                DBItem modelRow = null;
+                if(modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
+                {
+                    modelRow = core.Entitron.GetDynamicTable(block.ModelName).GetById(modelId);
+                }
                 foreach (var resourceMappingPair in block.ResourceMappingPairs)
                 {
                     DataTable dataSource = new DataTable();
@@ -129,6 +134,16 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
+                    if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && resourceMappingPair.TargetType == "checkbox")
+                    {
+                        ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
                 }
 
                 // show
@@ -152,7 +167,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
                 catch (FormatException)
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
                 }
 
                 try
@@ -168,7 +183,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc);
 
                 // redirect
-                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
             }
         }
     }
