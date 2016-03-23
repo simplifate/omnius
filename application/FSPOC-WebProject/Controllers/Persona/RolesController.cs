@@ -42,10 +42,13 @@ namespace FSPOC_WebProject.Controllers.Persona
                 #endregion
 
                 #region Rows headers
-                foreach (var user in context.Users)
-                {
-                    rowHeaders.Add(new RowHeaderAppRolesForTable(user.Id, user.DisplayName));
-                }
+               
+                   //find ad_group =>
+                   ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
+                    foreach (ADgroup_User adgu in adg.ADgroup_Users) {
+                        rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
+
+                   }
                 #endregion
 
                 #region Column headers + data
