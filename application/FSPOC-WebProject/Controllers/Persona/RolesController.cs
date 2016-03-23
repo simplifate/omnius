@@ -84,8 +84,10 @@ namespace FSPOC_WebProject.Controllers.Persona
                                 throw new IndexOutOfRangeException("There is no user with this ID");
                             }
                         }
-
-                        data[x][index] = true;
+                        if(index == rowHeaders.Count)
+                            data[x][index-1] = true;
+                        else
+                            data[x][index] = true;
                     }
                     #endregion
 
