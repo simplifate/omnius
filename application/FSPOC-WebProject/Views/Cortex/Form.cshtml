@@ -9,7 +9,8 @@
 @using (Html.BeginRouteForm("Cortex", new { @action = "Save" }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(m => m.Id)
+
     <div class="form-horizontal">
         <h4>@(Model != null ? "Úprava úlohy" : "Vytvoření úlohy")</h4>
         <hr />
@@ -182,6 +183,14 @@
             </div>
         </section>
 
+        <div class="form-group" id="FormGroupDuration">
+            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-1">
+                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-1">
@@ -195,14 +204,6 @@
             <div class="col-md-1">
                 @Html.EditorFor(model => model.End_Time, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.End_Time, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -232,9 +233,14 @@
         /* <![CDATA[ */
         
         $('#Type').change(function () {
-            $('.st-options').addClass('hide');
+            $('.st-options, #FormGroupDuration').addClass('hide');
             $('#ScheduleType' + this.value + 'Options').removeClass('hide');
-        });
+
+            if (this.value == 'MINUTE' || this.value == 'HOURLY') {
+                $('#FormGroupDuration').removeClass('hide');
+            }
+
+        }).change();
 
         $.datetimepicker.setLocale('cs');
 
@@ -254,6 +260,7 @@
 
         $('#Start_Time').datetimepicker(tpConfig);
         $('#End_Time').datetimepicker(tpConfig);
+        $('#Duration').datetimepicker(tpConfig);
         /* ]]> */
     </script>
 }
