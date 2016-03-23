@@ -27,6 +27,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _core = core;
             _context = core.Entitron.GetStaticTables();
 
+            // remove old temp blocks - should do nothing
+            _context.WorkFlows.RemoveRange(_context.Blocks.Where(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.IsTemp).GroupBy(b => b.WorkFlow).Select(g => g.Key));
+            _context.SaveChanges();
+
             var oldWF = _context.WorkFlows.Where(w => w.ApplicationId == core.Entitron.AppId).ToList();
 
             try
