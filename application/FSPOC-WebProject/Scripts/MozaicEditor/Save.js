@@ -60,6 +60,10 @@ function GetMozaicContainerComponentArray(container, nested) {
             content = currentUic.attr("contentTemplate");
             type = "label";
         }
+        else if (currentUic.hasClass("input-single-line"))
+            type = "input-single-line";
+        else if (currentUic.hasClass("input-multiline"))
+            type = "input-multiline";
         else if (currentUic.hasClass("dropdown-select"))
             type = "dropdown-select";
         else if (currentUic.hasClass("data-table-with-actions"))
