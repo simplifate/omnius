@@ -633,16 +633,38 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             }
         }
 
-        [Route("api/run/{appName}/{blockId}")]
-        public JToken Run(string appName, string button, M.FormCollection fc, int blockId = -1, int modelId = -1)
+        [Route("api/run/{appName}/{blockIdentify}")]
+        public JToken Run(string appName, string button, M.FormCollection fc, string blockIdentify = null, int modelId = -1)
         {
             CORE core = new CORE();
+            core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
             User currentUser = User.GetLogged(core);
 
             using (DBEntities context = new DBEntities())
             {
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
-                var result = core.Tapestry.jsonRun(currentUser, appName, block, button, modelId, fc);
+                // get block
+                Block block = null;
+                try
+                {
+                    int blockId = Convert.ToInt32(blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                }
+                catch (FormatException)
+                {
+                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                }
+
+                try
+                {
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
+                }
+                catch (NullReferenceException)
+                {
+                    return null;
+                }
+
+                // RUN
+                var result = core.Tapestry.jsonRun(currentUser, block, button, modelId, fc);
 
                 return result;
             }

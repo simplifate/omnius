@@ -125,7 +125,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
                         {
-                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["Name"]]);
+                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["name"]]);
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
@@ -139,6 +139,8 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
+            core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+
             using (DBEntities context = new DBEntities())
             {
                 // get block
@@ -163,7 +165,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
 
                 // run
-                var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
+                var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc);
 
                 // redirect
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });

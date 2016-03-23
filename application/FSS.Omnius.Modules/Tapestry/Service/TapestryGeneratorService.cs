@@ -212,10 +212,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 }
 
                 // block mapping
+                int random = new Random().Next();
                 Block newBlock = new Block
                 {
-                    Name = $"splitBlock_{block.Name}",
-                    DisplayName = $"split block [{block.Name}]",
+                    Name = $"splitBlock_{block.Name}_{random}",
+                    DisplayName = $"split block [{block.Name}_{random}] ",
                     ModelName = block.ModelName,
                     IsVirtual = true,
                     IsTemp = true
@@ -239,10 +240,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 todoConnections.Add(joinItem.FirstOrDefault());
 
                 // block mapping
+                int random = new Random().Next();
                 Block newBlock = new Block
                 {
-                    Name = $"joinBlock_{block.Name}",
-                    DisplayName = $"join block [{block.Name}]",
+                    Name = $"joinBlock_{block.Name}_{random}",
+                    DisplayName = $"join block [{block.Name}_{random}]",
                     ModelName = block.ModelName,
                     IsVirtual = true,
                     IsTemp = true

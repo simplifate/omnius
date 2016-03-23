@@ -31,17 +31,17 @@ namespace FSS.Omnius.Modules.Tapestry
             _results = new ActionResult();
         }
         
-        public Tuple<Message, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<Message, Block> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
             return new Tuple<Message, Block>(result.Item1.Message, result.Item2);
         }
-        public JToken jsonRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
             return (result.Item1.OutputData["__Result__"] as IToJson).ToJson();
         }
-        private Tuple<ActionResult, Block> innerRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        private Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // __CORE__
             // __Result__
@@ -52,7 +52,6 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // init action
             _results.OutputData.Add("__CORE__", _CORE);
-            _CORE.Entitron.AppName = AppName;
             _CORE.User = user;
             if (!string.IsNullOrWhiteSpace(block.ModelName))
                 _results.OutputData.Add("__TableName__", block.ModelName);
