@@ -417,7 +417,7 @@ $(function () {
             CurrentItem.data("columnFilter", columnFilter);
             tableAttributePropertiesDialog.dialog("close");
         }
-        gatewayXPropertiesDialog = $("gateway-x-properties-dialog").dialog({
+        gatewayXPropertiesDialog = $("#gateway-x-properties-dialog").dialog({
             autoOpen: false,
             width: 450,
             height: 450,
@@ -434,6 +434,26 @@ $(function () {
         });
         function gatewayXPropertiesDialog_SubmitData() {
             gatewayXPropertiesDialog.dialog("close");
+        }
+        uiitemPropertiesDialog = $("#uiItem-properties-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 180,
+            buttons: {
+                "Save": function () {
+                    uiitemPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    uiitemPropertiesDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+                uiitemPropertiesDialog.find("#ajax-action").val(CurrentItem.data("isAjaxAction"));
+            }
+        });
+        function uiitemPropertiesDialog_SubmitData() {
+            CurrentItem.data("outputVariables", uiitemPropertiesDialog.find("#ajax-action").val());
+            uiitemPropertiesDialog.dialog("close");
         }
         actionPropertiesDialog = $("#action-properties-dialog").dialog({
             autoOpen: false,

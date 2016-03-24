@@ -259,7 +259,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     StateId = ajaxItem.StateId,
                                     TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
-                                    ComponentId = ajaxItem.ComponentName
+                                    ComponentId = ajaxItem.ComponentName,
+                                    isAjaxAction = ajaxItem.isAjaxAction
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -796,7 +797,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
                     ComponentName = item.ComponentId,
-                    TargetId = item.TargetId
+                    TargetId = item.TargetId,
+                    isAjaxAction = item.isAjaxAction
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }

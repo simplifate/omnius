@@ -204,6 +204,8 @@
                             newItem.attr('componentName', currentItemData.ComponentName);
                         if (currentItemData.TargetId != null)
                             newItem.attr('targetId', currentItemData.TargetId);
+                        if (CurrentItemData.isAjaxAction != null)
+                            newItem.data('isAjaxAction', currentItemData.isAjaxAction);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
