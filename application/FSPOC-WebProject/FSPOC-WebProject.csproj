@@ -251,6 +251,7 @@
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
+    <Compile Include="Controllers\Tapestry\RunApiController.cs" />
     <Compile Include="Controllers\Tapestry\TapestryApiController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />

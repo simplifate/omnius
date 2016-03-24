@@ -39,12 +39,19 @@ namespace FSS.Omnius.Modules.Tapestry
         public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
-            return (result.Item1.OutputData["__Result__"] as IToJson).ToJson();
+            JObject output = new JObject();
+            foreach(KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
+            {
+                int startIndex = pair.Key.IndexOf('[') + 1;
+                string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
+                output.Add(key, (pair.Value as IToJson).ToJson());
+            }
+            return output;
         }
         private Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // __CORE__
-            // __Result__
+            // __Result[uicName]__
             // __Model__
             // __ModelId__
             // __Model.{TableName}.{columnName}

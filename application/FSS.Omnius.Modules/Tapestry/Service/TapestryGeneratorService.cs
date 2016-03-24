@@ -212,7 +212,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 }
 
                 // block mapping
-                int random = new Random().Next();
+                int random = new Random().Next() % 1048576;
                 Block newBlock = new Block
                 {
                     Name = $"splitBlock_{block.Name}_{random}",
@@ -240,7 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 todoConnections.Add(joinItem.FirstOrDefault());
 
                 // block mapping
-                int random = new Random().Next();
+                int random = new Random().Next() % 1048576;
                 Block newBlock = new Block
                 {
                     Name = $"joinBlock_{block.Name}_{random}",
@@ -284,7 +284,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             ActionRule rule = new ActionRule
             {
                 Actor = _context.Actors.Single(a => a.Name == ActorName),
-                Name = (new Random()).Next().ToString(),
+                Name = (new Random().Next() % 1048576).ToString(),
                 ExecutedBy = init
             };
             // condition
