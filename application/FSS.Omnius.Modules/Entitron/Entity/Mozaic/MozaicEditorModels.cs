@@ -59,7 +59,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "input-single-line")
                 {
-                    stringBuilder.Append($"<{c.Tag} id =\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" value=\"@ViewData[\"inputData_{c.Name}\"]\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id =\"uic{c.Id}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" ");
+                    stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -117,7 +118,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                     stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
-                    stringBuilder.Append($"{{ <option value=\"@(option.Key)\">@(option.Value)</option>}}; }} }}</{c.Tag}>");
+                    stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
+                    stringBuilder.Append($"@(option.Value)</option>}}; }} }}</{c.Tag}>");
                 }
                 else if (c.Type == "data-table-read-only")
                 {

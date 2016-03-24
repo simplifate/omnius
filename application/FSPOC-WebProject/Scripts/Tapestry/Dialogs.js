@@ -513,8 +513,8 @@ $(function () {
                                 return value.Id == tableId;
                             })[0];
                             for (i = 0; i < currentTable.Columns.length; i++) {
-                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableId="'
-                                    + currentTable.Id +  '" columnId="' +currentTable.Columns[i].Id + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                    + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
                             }
                         }
                     });

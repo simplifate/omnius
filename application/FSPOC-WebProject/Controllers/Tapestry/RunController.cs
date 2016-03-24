@@ -64,7 +64,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     DataTable dataSource = new DataTable();
                     var columnDisplayNameDictionary = new Dictionary<string, string>();
-                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName))
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName)
+                        && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
                     {
                         string tableName = resourceMappingPair.Source.TableName;
                         var entitronTable = core.Entitron.GetDynamicTable(tableName);
@@ -125,7 +126,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                     }
-                    else if (resourceMappingPair.TargetType == "dropdown-select")
+                    else if (resourceMappingPair.TargetType == "dropdown-select" && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
                     {
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
@@ -143,6 +144,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                         && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
                         ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && resourceMappingPair.TargetType == "dropdown-select")
+                    {
+                        ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
                     }
                 }
 
