@@ -264,7 +264,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             DBEntities ent = new DBEntities();
             var app = ent.Applications.Find(e.AppId);
-            ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
 
             foreach (DbColumn efColumn in schemeTable.Columns)
@@ -336,7 +335,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
 
             }//end foreach efColumn
-
+            ent.SaveChanges();
         }
         private static string GetConnectionString()
         {
