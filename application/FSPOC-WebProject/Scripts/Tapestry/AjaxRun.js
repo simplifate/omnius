@@ -6,20 +6,24 @@
         data: { 'modelId': modelId },
         success: function (data) {
             $.each(data, function (name, value) {
-                if ($('select#' + name).size() > 0)
+                if ($('select#uic_' + name).size() > 0)
                 {
                     var html = '';
                     $.each(value, function (i, item) {
                         html += '<option value="' + item['id'] + '">' + item['Name'] + '</option>';
                     });
 
-                    $('select#' + name).html(html);
+                    $('select#uic_' + name).html(html);
                 }
-                else if ($('input#' + name).size() > 0)
+                else if ($('input#uic_' + name).size() > 0)
                 {
-                    $('input#' + name).val(value);
+                    $('input#uic_' + name).val(value);
                 }
             });
         }
     });
 }
+$('body').on('click', '.runAjax', function (e) {
+    e.preventDefault();
+    AjaxRunAndReplace(window.location.pathname, $(this).val());
+});
