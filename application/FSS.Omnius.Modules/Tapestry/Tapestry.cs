@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
-                output.Add(key, (pair.Value as IToJson).ToJson());
+                output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
             }
             return output;
         }
@@ -58,8 +58,9 @@ namespace FSS.Omnius.Modules.Tapestry
             // __TableName__
 
             // init action
-            _results.OutputData.Add("__CORE__", _CORE);
+            fc = fc ?? new NameValueCollection();
             _CORE.User = user;
+            _results.OutputData.Add("__CORE__", _CORE);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
                 _results.OutputData.Add("__TableName__", block.ModelName);
             if (modelId >= 0)

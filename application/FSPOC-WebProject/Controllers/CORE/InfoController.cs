@@ -10,16 +10,15 @@ namespace FSS.Omnius.Controllers.CORE
     {
         [PersonaAuthorize]
         // GET: Info
-        public void Index()
+        public string Index()
         {
-            Response.Write("App code using: ");
-            Response.Write(System.Security.Principal.WindowsIdentity.GetCurrent().Name + "<br/>");
-            Response.Write("Is user auth: ");
-            Response.Write(User.Identity.IsAuthenticated.ToString() + "<br/>");
-            Response.Write("Auth type: ");
-            Response.Write(User.Identity.AuthenticationType + "<br/>");
-            Response.Write("User name: ");
-            Response.Write(User.Identity.Name + "<br/>");
+            string result = "";
+            result += $"App code using: {System.Security.Principal.WindowsIdentity.GetCurrent().Name}<br/>";
+            result += $"Is user auth: {User.Identity.IsAuthenticated.ToString()}<br/>";
+            result += $"Auth type: {User.Identity.AuthenticationType}<br/>";
+            result += $"User name: {User.Identity.Name}<br/>";
+
+            return result;
         }
 
         public bool Leave()

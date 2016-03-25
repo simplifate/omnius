@@ -176,6 +176,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
         public string ComponentName { get; set; }
+        public bool? isAjaxAction { get; set; }
     }
     public class AjaxTapestryDesignerWorkflowSymbol
     {

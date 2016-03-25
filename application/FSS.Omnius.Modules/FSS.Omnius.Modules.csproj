@@ -698,6 +698,10 @@
     <Compile Include="Migrations\201603231121543_ActionRuleCascade.Designer.cs">
       <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.cs" />
+    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.Designer.cs">
+      <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1096,6 +1100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603231121543_ActionRuleCascade.resx">
       <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603241521464_addAjaxToWFItem.resx">
+      <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

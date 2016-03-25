@@ -1379,6 +1379,7 @@
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
     <Content Include="Scripts\spectrum.js" />
+    <Content Include="Scripts\Tapestry\AjaxRun.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />

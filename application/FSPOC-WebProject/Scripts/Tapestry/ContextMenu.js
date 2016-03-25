@@ -26,6 +26,11 @@
                         CurrentItem = item;
                         gatewayXPropertiesDialog.dialog("open");
                     }
+                    else if (item.hasClass("uiItem"))
+                    {
+                        CurrentItem = item;
+                        uiitemPropertiesDialog.dialog("open");
+                    }
                     else {
                         alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
                     }
