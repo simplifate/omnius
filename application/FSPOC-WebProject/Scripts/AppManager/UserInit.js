@@ -83,8 +83,10 @@ $(function () {
                 $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
+                if (confirm('Jste si jistí?')) {
+                    rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
+                }
             });
             table.find("tfoot th").each(function () {
                 var title = $(this).text();
