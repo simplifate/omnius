@@ -448,11 +448,11 @@ $(function () {
                 }
             },
             open: function (event, ui) {
-                uiitemPropertiesDialog.find("#ajax-action").val(CurrentItem.data("isAjaxAction"));
+                uiitemPropertiesDialog.find("#ajax-action").prop('checked', CurrentItem.data("isAjaxAction"));
             }
         });
         function uiitemPropertiesDialog_SubmitData() {
-            CurrentItem.data("outputVariables", uiitemPropertiesDialog.find("#ajax-action").val());
+            CurrentItem.data("isAjaxAction", uiitemPropertiesDialog.find("#ajax-action").is(':checked'));
             uiitemPropertiesDialog.dialog("close");
         }
         actionPropertiesDialog = $("#action-properties-dialog").dialog({
