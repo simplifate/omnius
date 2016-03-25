@@ -15,9 +15,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
 {
     public class RunApiController : ApiController
     {
-        [Route("api/run/{appName}/{blockIdentify}")]
+        [Route("api/run/{appName}/{blockIdentify=}")]
         [HttpPost]
-        public JToken Run(string appName, string button, M.FormCollection fc, string blockIdentify = null, int modelId = -1)
+        public JToken Run(string appName, string button, M.FormCollection fc, string blockIdentify, int modelId = -1)
         {
             CORE core = new CORE();
             core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
