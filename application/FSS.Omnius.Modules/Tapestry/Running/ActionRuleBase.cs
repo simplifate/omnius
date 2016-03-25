@@ -51,8 +51,7 @@ namespace FSS.Omnius.Modules.Tapestry
             foreach (ActionRule_ActionBase reverseActionMap in actions.OrderByDescending(a => a.Order))
             {
                 var action = Action.All[reverseActionMap.ActionId];
-                action.ReverseRun(results.ReverseInputData.Last());
-                results.ReverseInputData.Remove(results.ReverseInputData.Last());
+                action.ReverseRun(results.GetLastReverseData());
             }
         }
     }

@@ -40,6 +40,16 @@ namespace FSS.Omnius.Modules.Tapestry
             OutputData.AddRange(actionResult.OutputData);
             ReverseInputData.AddRange(actionResult.ReverseInputData);
         }
+
+        public Dictionary<string, object> GetLastReverseData()
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            result.AddOrUpdateRange(OutputData);
+            result.AddOrUpdateRange(ReverseInputData.Last());
+            ReverseInputData.RemoveAt(ReverseInputData.Count - 1);
+
+            return result;
+        }
     }
 
     public enum ActionResultType
