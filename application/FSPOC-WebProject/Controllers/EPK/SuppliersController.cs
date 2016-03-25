@@ -158,7 +158,6 @@ namespace FSS.Omnius.Controllers.EPK
 
             Dictionary<string, object> vars = new Dictionary<string, object>();
             Modules.CORE.CORE core = HttpContext.GetCORE();
-            core._form = new FormCollection();
 
             vars.Add("__CORE__", core);
             vars.Add("TableName", "Suppliers");

@@ -17,7 +17,6 @@ namespace FSS.Omnius.Modules.CORE
         private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
         
         public User User { get; set; }
-        public FormCollection _form { get; set; }
 
         public CORE()
         {

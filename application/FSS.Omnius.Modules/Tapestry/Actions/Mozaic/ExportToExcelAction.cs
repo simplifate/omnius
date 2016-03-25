@@ -65,24 +65,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            
-            // Získáme data podle podmínek
-            Entitron.SelectAction selectAction = new Entitron.SelectAction();
-            selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
+            string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"];
 
-            List<DBItem> data = (List<DBItem>)vars["Data"];
+            // Získáme data podle podmínek
+            Dictionary<string, object> selectOutput = new Dictionary<string, object>();
+            Entitron.SelectAction selectAction = new Entitron.SelectAction();
+            selectAction.InnerRun(vars, selectOutput, InvertedInputVars, message);
+
+            List<DBItem> data = (List<DBItem>)selectOutput["Data"];
 
             // Připravíme CSV
             List<string> rows = new List<string>();
 
             List<string> columns = new List<string>();
-            if (string.IsNullOrEmpty(core._form["Columns"])) {
-                foreach(DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns) {
+            if (!vars.ContainsKey("Columns")) {
+                foreach(DBColumn col in core.Entitron.GetDynamicTable(tableName).columns) {
                     columns.Add(col.Name);
                 }
             }
             else {
-                columns = core._form["Columns"].Split(';').ToList();
+                columns = (vars["Columns"] as string).Split(';').ToList();
             }
 
             Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
@@ -107,7 +109,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 
                 Dictionary<string, string> columnsDisplayName = new Dictionary<string, string>();
             
-                string tableName = (string)vars["TableName"];
                 var DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns;
                 
                 string abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -143,7 +144,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         }
 
                         uint r = 1;
-                        foreach (DBItem item in (List<DBItem>)vars["Data"]) {
+                        foreach (DBItem item in data) {
                             c = 0;
                             r++;
 
