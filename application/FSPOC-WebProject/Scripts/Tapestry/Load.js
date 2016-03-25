@@ -116,6 +116,9 @@
                     if (currentItemData.ColumnName != null) {
                         newItem.attr("columnName", currentItemData.ColumnName);
                     }
+                    if (currentItemData.ConditionSets != null) {
+                        newItem.data("conditionSets", currentItemData.ConditionSets);
+                    }
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
                     AddToJsPlumb(newItem);

@@ -10,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron
     using Entity;
     using Entity.CORE;
     using Entity.Master;
+    using Service;
     using Table;
     [NotMapped]
     public class Entitron : Module
@@ -35,12 +36,14 @@ namespace FSS.Omnius.Modules.Entitron
                 Application = GetStaticTables().Applications.SingleOrDefault(a => a.Id == value);
             }
         }
+        public IConditionalFilteringService filteringService { get; set; }
 
         public Entitron(CORE.CORE core, string ApplicationName = null)
         {
             Name = "Entitron";
             _CORE = core;
             AppName = ApplicationName;
+            filteringService = new ConditionalFilteringService();
         }
 
         public DBEntities GetStaticTables()

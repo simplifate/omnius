@@ -878,7 +878,21 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     var itemList = new List<TapestryDesignerResourceItem>();
                     var connectionList = new List<TapestryDesignerConnection>();
                     foreach (var item in rule.ResourceItems)
+                    {
+                        var conditionSetList = new List<TapestryDesignerConditionSet>();
+                        foreach (var conditionSet in item.ConditionSets)
+                        {
+                            var conditionList = new List<TapestryDesignerCondition>();
+                            foreach (var condition in conditionSet.Conditions)
+                                conditionList.Add(condition);
+                            foreach (var condition in conditionList)
+                                conditionSet.Conditions.Remove(condition);
+                            conditionSetList.Add(conditionSet);
+                        }
+                        foreach (var conditionSet in conditionSetList)
+                            item.ConditionSets.Remove(conditionSet);
                         itemList.Add(item);
+                    }
                     foreach (var item in itemList)
                         rule.ResourceItems.Remove(item);
                     foreach (var connection in rule.Connections)

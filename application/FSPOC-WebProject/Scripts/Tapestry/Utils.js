@@ -238,7 +238,7 @@ function LoadConditionColumns(parent) {
                 columnType = "string";
                 break;
             case "boolean":
-                columnType = "boot";
+                columnType = "bool";
                 break;
             case "integer":
                 columnType = "int";
@@ -247,27 +247,34 @@ function LoadConditionColumns(parent) {
                 columnType = "unknown";
         }
         columnSelect.append($('<option varType="' + columnType + '">' + cData.Name + '</option>'));
-        var optionSelected = $("option:selected", columnSelect);
-        varType = optionSelected.attr("varType");
-        currentCondition = columnSelect.parents("tr");
-        currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
-        switch (varType) {
-            case "bool":
-                currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">True</option><<option>False</option></select>'));
-                currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
-                break;
-            case "int":
-                currentCondition.find(".conditionValueCell").append($('<input type="number"></input>'));
-                currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option>'));
-                break;
-            case "string":
-                currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
-                break;
-            case "unknown":
-            default:
-                currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
-                currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
-        }
+    }
+    var optionSelected = $("option:selected", columnSelect);
+    varType = optionSelected.attr("varType");
+    currentCondition = columnSelect.parents("tr");
+    currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
+    switch (varType) {
+        case "bool":
+            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
+            break;
+        case "int":
+            currentCondition.find(".conditionValueCell").append($('<input type="number"></input>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option>'));
+            break;
+        case "string":
+            currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+            break;
+        case "unknown":
+        default:
+            currentCondition.find(".conditionValueCell").append($('<input type="text"></input>'));
+            currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
     }
 }
+var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
+    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
+var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
+    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+    + '</tr>';

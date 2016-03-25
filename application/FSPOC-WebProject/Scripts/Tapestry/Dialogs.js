@@ -620,20 +620,10 @@ $(function () {
                         return false;
                     }
                 });
-                var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
-                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
-                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
-                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
-                    + '</tr>';
-                var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
-                    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"><td class="conditionOperator"></td></td><td class="conditionVariableCell"><select></select>'
-                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
-                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
-                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
-                    + '</tr></table></div>';
                 $(this).find(".addAndConditionSetIcon").on("click", function () {
                     newConditionSet = $(ConditionSetTemplate);
                     newConditionSet.find(".conditionSetPrefix").text("AND a");
+                    newConditionSet.find(".conditionTable").append($(ConditionTemplate))
                     LoadConditionColumns(newConditionSet);
                     conditionsDialog.find(".conditionSetArea").append(newConditionSet);
                     if (newConditionSet.index() == 0)
@@ -642,6 +632,7 @@ $(function () {
                 $(this).find(".addOrConditionSetIcon").on("click", function () {
                     newConditionSet = $(ConditionSetTemplate);
                     newConditionSet.find(".conditionSetPrefix").text("OR a");
+                    newConditionSet.find(".conditionTable").append($(ConditionTemplate))
                     LoadConditionColumns(newConditionSet);
                     conditionsDialog.find(".conditionSetArea").append(newConditionSet);
                     if (newConditionSet.index() == 0)
@@ -684,7 +675,7 @@ $(function () {
                     currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
                     switch(varType) {
                         case "bool":
-                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">True</option><<option>False</option></select>'));
+                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">true</option><<option>false</option></select>'));
                             currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
                             break;
                         case "int":
@@ -712,9 +703,90 @@ $(function () {
                 });
             },
             open: function () {
-                columnSelect = conditionsDialog.find(".conditionVariableCell select");
-                columnSelect.find("option").remove();
-                LoadConditionColumns(conditionsDialog);
+                conditionSetArea = conditionsDialog.find(".conditionSetArea");
+                conditionSetArea.find(".conditionSet").remove();
+                conditionSetData = CurrentItem.data("conditionSets");
+                for (conditionSetIndex = 0; conditionSetIndex < conditionSetData.length; conditionSetIndex++) {
+                    currentConditionSetData = conditionSetData[conditionSetIndex];
+                    if (currentConditionSetData.SetRelation == "OR")
+                        prefix = "OR a";
+                    else
+                        prefix = "AND a";
+                    newConditionSet = $(ConditionSetTemplate);
+                    newConditionSet.find(".conditionSetPrefix").text(prefix);
+                    conditionSetArea.append(newConditionSet);
+                    if (conditionSetIndex == 0)
+                        newConditionSet.find(".conditionSetPrefix").text("A");
+                    conditionTable = newConditionSet.find(".conditionTable");
+                    for (conditionIndex = 0; conditionIndex < currentConditionSetData.Conditions.length; conditionIndex++)
+                    {
+                        currentConditionData = currentConditionSetData.Conditions[conditionIndex];
+                        newCondition = $(ConditionTemplate);
+                        if (conditionIndex > 0)
+                            newCondition.find(".conditionOperator").text(currentConditionData.Relation.toLowerCase());
+                        conditionTable.append(newCondition);
+                        columnSelect = newCondition.find(".conditionVariableCell select");
+                        for (i = 0; i < CurrentTableColumnArray.length; i++) {
+                            cData = CurrentTableColumnArray[i];
+                            switch (cData.Type) {
+                                case "varchar":
+                                    columnType = "string";
+                                    break;
+                                case "boolean":
+                                    columnType = "bool";
+                                    break;
+                                case "integer":
+                                    columnType = "int";
+                                    break;
+                                default:
+                                    columnType = "unknown";
+                            }
+                            columnSelect.append($('<option varType="' + columnType + '">' + cData.Name + '</option>'));
+                        }
+                        columnSelect.val(currentConditionData.Variable);
+                        var optionSelected = $("option:selected", columnSelect);
+                        varType = optionSelected.attr("varType");
+                        newCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
+                        conditionValueCell = newCondition.find(".conditionValueCell");
+                        conditionOperatorCell = newCondition.find(".conditionOperatorCell");
+                        switch (varType) {
+                            case "bool":
+                                conditionValueCell.append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "int":
+                                conditionValueCell.append($('<input type="number"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "string":
+                                conditionValueCell.append($('<input type="text"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "unknown":
+                            default:
+                                conditionValueCell.append($('<input type="text"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                        }
+                        var optionSelected = $("option:selected", conditionOperatorCell);
+                        inputType = optionSelected.attr("inputType");
+                        if (inputType === "none")
+                            conditionValueCell.find("input, select").hide();
+                        else {
+                            if (conditionValueCell.find("input").length > 0) {
+                                conditionValueCell.find("input").show();
+                                conditionValueCell.find("input").val(currentConditionData.Value);
+                            }
+                            else if (conditionValueCell.find("select").length > 0) {
+                                conditionValueCell.find("select").show();
+                                conditionValueCell.find("select").val(currentConditionData.Value);
+                            }
+                        }
+                    }
+                }
             }
         });
         function conditionsDialog_SubmitData() {
@@ -729,7 +801,7 @@ $(function () {
                         relation = "AND";
                     else
                         relation = relationCellValue.toUpperCase();
-                    if (currentCondition.find(".conditionValueCell select").lenght > 0)
+                    if (currentCondition.find(".conditionValueCell select").length > 0)
                         value = currentCondition.find(".conditionValueCell select option:selected").text();
                     else
                         value = currentCondition.find(".conditionValueCell input").val();

@@ -195,8 +195,10 @@
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
     <Compile Include="Entitron\Entity\Watchtower\LogModels.cs" />
     <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\ConditionalFilteringService.cs" />
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\IConditionalFilteringService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IRecoveryService.cs" />
     <Compile Include="Entitron\Service\RecoveryService.cs" />

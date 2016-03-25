@@ -99,27 +99,29 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var entitronRowList = entitronTable.Select().ToList();
                         foreach (var entitronRow in entitronRowList)
                         {
-                            var newRow = dataSource.NewRow();
-                            newRow["hiddenId"] = (int)entitronRow["id"];
-                            foreach (var entitronColumn in entitronColumnList)
+                            if (resourceMappingPair.Source.ConditionSets.Count == 0
+                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.Source.ConditionSets, entitronRow))
                             {
-                                if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                var newRow = dataSource.NewRow();
+                                newRow["hiddenId"] = (int)entitronRow["id"];
+                                foreach (var entitronColumn in entitronColumnList)
                                 {
-                                    if (entitronColumn.type == "bit")
+                                    if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
                                     {
-                                        if ((bool)entitronRow[entitronColumn.Name] == true)
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
+                                        if (entitronColumn.type == "bit")
+                                        {
+                                            if ((bool)entitronRow[entitronColumn.Name] == true)
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
+                                            else
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                        }
                                         else
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
                                     }
-                                    else
-                                        newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
                                 }
-                            }
-                            if (!dataSource.Columns.Contains("IsActive") || (string)newRow["IsActive"] == "Ano")
                                 dataSource.Rows.Add(newRow);
+                            }
                         }
-
                     }
                     if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
                         || resourceMappingPair.TargetType == "name-value-list")
