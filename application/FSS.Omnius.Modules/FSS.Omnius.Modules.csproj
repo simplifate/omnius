@@ -704,6 +704,10 @@
     <Compile Include="Migrations\201603241521464_addAjaxToWFItem.Designer.cs">
       <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.cs" />
+    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.Designer.cs">
+      <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1105,6 +1109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603241521464_addAjaxToWFItem.resx">
       <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261504456_Add ActionId to resource rules.resx">
+      <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

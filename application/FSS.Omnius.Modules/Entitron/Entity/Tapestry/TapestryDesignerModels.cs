@@ -202,6 +202,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TypeClass { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+        public int? ActionId { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public string TableName { get; set; }
