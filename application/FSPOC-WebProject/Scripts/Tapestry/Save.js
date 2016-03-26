@@ -19,6 +19,7 @@ function SaveBlock(commitMessage) {
                 TypeClass: GetItemTypeClass(currentItem),
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
+                ActionId: currentItem.attr("actionid"),
                 PageId: currentItem.attr("pageId"),
                 ComponentName: currentItem.attr("componentName"),
                 TableName: currentItem.attr("tableName"),

@@ -396,10 +396,10 @@ $(function () {
                         if (targetTable == undefined)
                             alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
                         for (i = 0; i < targetTable.Columns.length; i++) {
-                            newRow = $('<tr columnId="' + targetTable.Columns[i].Id + '"><td>' + targetTable.Columns[i].Name + '</td>'
+                            newRow = $('<tr><td class="nameCell">' + targetTable.Columns[i].Name + '</td>'
                                 + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');
                             formTable.append(newRow);
-                            newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Id) != -1);
+                            newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Name) != -1);
                             CurrentTableColumnArray.push({ Id: targetTable.Columns[i].Id, Name: targetTable.Columns[i].Name, Type: targetTable.Columns[i].Type });
                         }
                         $("#btnOpenTableConditions").show();
@@ -410,9 +410,9 @@ $(function () {
         function tableAttributePropertiesDialog_SubmitData() {
             columnFilter = [];
             formTable = tableAttributePropertiesDialog.find(".columnFilterTable .showColumnCheckbox").each(function (index, checkboxElement) {
-                columnId = $(checkboxElement).parents("tr").attr("columnId");
+                columnName = $(checkboxElement).parents("tr").find(".nameCell").text();
                 if($(checkboxElement).is(":checked"))
-                    columnFilter.push(parseInt(columnId));
+                    columnFilter.push(columnName);
             });
             CurrentItem.data("columnFilter", columnFilter);
             tableAttributePropertiesDialog.dialog("close");

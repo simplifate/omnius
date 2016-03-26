@@ -152,6 +152,31 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
                     }
+                    if(resourceMappingPair.Source.TypeClass == "actionItem" && (resourceMappingPair.TargetType == "input-single-line"
+                        || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        switch(resourceMappingPair.Source.ActionId)
+                        {
+                            case 501:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+                                break;
+                            case 502:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+                                break;
+                            case 503:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+                                break;
+                            case 504:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+                                break;
+                            case 505:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Department;
+                                break;
+                            case 506:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+                                break;
+                        }
+                    }
                 }
 
                 // show

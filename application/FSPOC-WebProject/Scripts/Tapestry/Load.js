@@ -104,6 +104,8 @@
                     newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                         + currentItemData.PositionY + 'px;">'
                         + currentItemData.Label + '</div>');
+                    if (currentItemData.ActionId != null)
+                        newItem.attr("actionId", currentItemData.ActionId);
                     if (currentItemData.PageId != null)
                         newItem.attr("pageId", currentItemData.PageId);
                     if (currentItemData.ComponentName != null)

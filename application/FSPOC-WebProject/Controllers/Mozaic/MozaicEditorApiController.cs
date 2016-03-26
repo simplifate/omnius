@@ -23,12 +23,12 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var result = new List<AjaxMozaicEditorPageHeader>();
                 using (var context = new DBEntities())
                 {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages)
+                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.OrderBy(o => o.Name))
                     {
                         result.Add(new AjaxMozaicEditorPageHeader
                         {
                             Id = page.Id,
-                            Name = page.Name ?? "Unnamed"
+                            Name = page.Name ?? "(nepojmenovaná stránka)"
                         });
                     }
                 }

@@ -162,7 +162,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     TapestryDesignerResourceItem source = resourceRule.ResourceItems.Single(i => i.Id == connection.Source);
                     TapestryDesignerResourceItem target = resourceRule.ResourceItems.Single(i => i.Id == connection.Target);
 
-                    string targetName = "", targetType = "", sourceColumnFilter = "";
+                    string targetName = "", targetType = "";
 
                     if (!string.IsNullOrEmpty(target.ComponentName))
                     {
@@ -170,24 +170,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         targetName = component.Name;
                         targetType = component.Type;
                     };
-                    if(!string.IsNullOrEmpty(source.ColumnFilter))
-                    {
-                        var sourceColumnFilterArray = new List<string>();
-                        var idList = source.ColumnFilter.Split(',').Select(int.Parse).ToList();
-                        var sourceTable = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First().Tables.Single(c => c.Name == source.TableName);
-                        foreach (int columnId in idList)
-                        {
-                            sourceColumnFilterArray.Add(sourceTable.Columns.Where(c => c.Id == columnId).First().Name);
-                        }
-                        sourceColumnFilter = string.Join(",", sourceColumnFilterArray);
-                    }
                     return new ResourceMappingPair
                     {
                         Source = source,
                         Target = target,
                         TargetName = targetName,
                         TargetType = targetType,
-                        SourceColumnFilter = sourceColumnFilter
+                        SourceColumnFilter = source.ColumnFilter
                     };
                 }
             }

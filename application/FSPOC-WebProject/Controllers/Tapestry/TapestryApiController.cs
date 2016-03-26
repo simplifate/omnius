@@ -176,6 +176,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 TypeClass = ajaxItem.TypeClass,
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
+                                ActionId = ajaxItem.ActionId,
                                 PageId = ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
@@ -706,11 +707,12 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TypeClass = item.TypeClass,
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
+                    ActionId = item.ActionId,
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
                     TableName = item.TableName,
                     ColumnName = item.ColumnName,
-                    ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
+                    ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()
                 };
                 LoadConditionSets(item, ajaxItem);
                 result.ResourceItems.Add(ajaxItem);
