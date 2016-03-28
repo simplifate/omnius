@@ -74,7 +74,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
                         {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
-                            getAllColumns = false;
+                            if(columnFilter.Count > 0)
+                                getAllColumns = false;
                         }
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
                         dataSource.Columns.Add("hiddenId", typeof(int));
