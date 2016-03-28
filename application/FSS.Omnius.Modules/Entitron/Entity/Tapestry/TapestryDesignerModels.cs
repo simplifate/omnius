@@ -245,6 +245,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? TargetId { get; set; }
         public string ComponentId { get; set; }
         public bool? isAjaxAction { get; set; }
+        public string Condition { get; set; }
     }
     [Table("TapestryDesigner_WorkflowSymbols")]
     public partial class TapestryDesignerWorkflowSymbol : WFitem
