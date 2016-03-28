@@ -8,6 +8,7 @@ namespace FSS.Omnius.Modules.Migrations
         public override void Up()
         {
             // cascade with triggers
+            Sql("ALTER TABLE dbo.TapestryDesigner_MetaBlocks DROP CONSTRAINT[FK_dbo.TapestryDesigner_Metablocks_Master_Applications_ParentApp_Id]");
             DropForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications");
             AddForeignKey("dbo.TapestryDesigner_MetaBlocks", "ParentApp_Id", "dbo.Master_Applications", "Id", cascadeDelete: false);
             Sql("DROP TRIGGER [dbo].[Trigger_Application_WorkFlow_Cascade];");
