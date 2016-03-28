@@ -716,6 +716,10 @@
     <Compile Include="Migrations\201603281407051_WFitemMergeStep1.Designer.cs">
       <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.cs" />
+    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.Designer.cs">
+      <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1132,6 +1136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603281407051_WFitemMergeStep1.resx">
       <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281452451_WFitemMergeStep2.resx">
+      <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

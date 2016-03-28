@@ -189,7 +189,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Roles { get; set; }
 
         public virtual ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
-        public virtual ICollection<TapestryDesignerWorkflowSymbol> WorkflowSymbols { get; set; }
 
         public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
         [JsonIgnore]
@@ -198,7 +197,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public TapestryDesignerSwimlane()
         {
             WorkflowItems = new List<TapestryDesignerWorkflowItem>();
-            WorkflowSymbols = new List<TapestryDesignerWorkflowSymbol>();
         }
     }
     [Table("TapestryDesigner_ResourceItems")]
@@ -224,7 +222,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             ConditionSets = new List<TapestryDesignerConditionSet>();
         }
     }
-    public partial class WFitem
+    [Table("TapestryDesigner_WorkflowItems")]
+    public partial class TapestryDesignerWorkflowItem
     {
         public int Id { get; set; }
         public string TypeClass { get; set; }
@@ -233,10 +232,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
 
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
-    }
-    [Table("TapestryDesigner_WorkflowItems")]
-    public partial class TapestryDesignerWorkflowItem : WFitem
-    {
+
         public string Label { get; set; }
         public int? ActionId { get; set; }
         public string InputVariables { get; set; }
@@ -245,11 +241,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? TargetId { get; set; }
         public string ComponentId { get; set; }
         public bool? isAjaxAction { get; set; }
-        public string Condition { get; set; }
-    }
-    [Table("TapestryDesigner_WorkflowSymbols")]
-    public partial class TapestryDesignerWorkflowSymbol : WFitem
-    {
         public string Condition { get; set; }
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
@@ -326,13 +317,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     public partial class TapestryDesignerConnection
     {
         public int Id { get; set; }
-        public int Source { get; set; }
-        public int SourceType { get; set; }
+        public int SourceId { get; set; }
         public int SourceSlot { get; set; }
-        public int Target { get; set; }
-        public int TargetType { get; set; }
+        public int TargetId { get; set; }
         public int TargetSlot { get; set; }
-        
+
         [JsonIgnore]
         public int? WorkflowRuleId { get; set; }
         [JsonIgnore]
