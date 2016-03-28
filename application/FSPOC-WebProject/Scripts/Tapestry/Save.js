@@ -82,7 +82,7 @@ function SaveBlock(commitMessage) {
                     OutputVariables: currentItem.data("outputVariables"),
                     ComponentName: currentItem.attr("componentName"),
                     isAjaxAction: currentItem.data("isAjaxAction"),
-                    Condition: currentSymbol.data("condition")
+                    Condition: currentItem.data("condition")
                 });
             });
             swimlanesArray.push({
