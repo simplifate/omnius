@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public virtual DbTable RightTable { get; set; }
         public virtual DbColumn RightColumn { get; set; }*/
 
-
+        [JsonIgnore]
         public int DbSchemeCommitId { get; set; }
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }

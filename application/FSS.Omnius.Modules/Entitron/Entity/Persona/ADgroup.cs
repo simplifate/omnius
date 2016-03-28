@@ -26,8 +26,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public string Name { get; set; }
         public bool isAdmin { get; set; }
 
+        [JsonIgnore]
         public int? ApplicationId { get; set; }
-
         public virtual Application Application { get; set; }
         [JsonIgnore]
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
