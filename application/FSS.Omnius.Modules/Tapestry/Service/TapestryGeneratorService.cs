@@ -260,7 +260,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
             if (item == null)
                 return;
-            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { TargetId = item.Id }, BlockMapping, conditionMapping, item.ComponentId);
+            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { Target = item }, BlockMapping, conditionMapping, item.ComponentId);
 
 
             //// ACTIONS ////

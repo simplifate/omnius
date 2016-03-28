@@ -99,7 +99,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
         public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
-        public virtual DbSet<TapestryDesignerConnection> TapestryDesignerConnections { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
@@ -308,11 +307,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<TapestryDesignerResourceConnection>(e => e.Connections)
                 .WithRequired(e => e.ResourceRule)
                 .HasForeignKey(e => e.ResourceRuleId);
+            modelBuilder.Entity<TapestryDesignerResourceConnection>()
+                .HasRequired<TapestryDesignerResourceItem>(e => e.Source)
+                .WithMany(e => e.SourceToConnection)
+                .HasForeignKey(e => e.SourceId);
+            modelBuilder.Entity<TapestryDesignerResourceConnection>()
+                .HasRequired<TapestryDesignerResourceItem>(e => e.Target)
+                .WithMany(e => e.TargetToConnection)
+                .HasForeignKey(e => e.TargetId);
 
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
                 .HasMany<TapestryDesignerWorkflowConnection>(e => e.Connections)
                 .WithRequired(e => e.WorkflowRule)
                 .HasForeignKey(e => e.WorkflowRuleId);
+            modelBuilder.Entity<TapestryDesignerWorkflowConnection>()
+                .HasRequired<TapestryDesignerWorkflowItem>(e => e.Source)
+                .WithMany(e => e.SourceToConnection)
+                .HasForeignKey(e => e.SourceId);
+            modelBuilder.Entity<TapestryDesignerWorkflowConnection>()
+                .HasRequired<TapestryDesignerWorkflowItem>(e => e.Target)
+                .WithMany(e => e.TargetToConnection)
+                .HasForeignKey(e => e.TargetId);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()

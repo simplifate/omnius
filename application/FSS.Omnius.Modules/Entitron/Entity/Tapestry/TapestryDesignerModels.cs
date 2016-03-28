@@ -213,9 +213,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
 
+        public virtual ICollection<TapestryDesignerResourceConnection> SourceToConnection { get; set; }
+        public virtual ICollection<TapestryDesignerResourceConnection> TargetToConnection { get; set; }
+
         public TapestryDesignerResourceItem()
         {
             ConditionSets = new List<TapestryDesignerConditionSet>();
+            SourceToConnection = new HashSet<TapestryDesignerResourceConnection>();
+            TargetToConnection = new HashSet<TapestryDesignerResourceConnection>();
         }
     }
     [Table("TapestryDesigner_WorkflowItems")]
@@ -238,6 +243,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ComponentId { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
+
+        public virtual ICollection<TapestryDesignerWorkflowConnection> SourceToConnection { get; set; }
+        public virtual ICollection<TapestryDesignerWorkflowConnection> TargetToConnection { get; set; }
+
+        public TapestryDesignerWorkflowItem()
+        {
+            SourceToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
+            TargetToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
+        }
     }
     [Table("TapestryDesigner_BlockToolboxStates")]
     public class BlockToolboxState
@@ -309,45 +323,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    {
     //    }
     //}
-    [Table("TapestryDesigner_Connections")]
-    public partial class TapestryDesignerConnection
+    public abstract class TapestryDesignerConnection
     {
         public int Id { get; set; }
         public int SourceId { get; set; }
         public int SourceSlot { get; set; }
         public int TargetId { get; set; }
         public int TargetSlot { get; set; }
-
-        public int? WorkflowRuleId { get; set; }
-        public int? ResourceRuleId { get; set; }
     }
     [Table("TapestryDesigner_WorkflowConnections")]
-    public partial class TapestryDesignerWorkflowConnection// : TapestryDesignerConnection
+    public partial class TapestryDesignerWorkflowConnection : TapestryDesignerConnection
     {
-        public int Id { get; set; }
-        public int SourceId { get; set; }
-        public int SourceSlot { get; set; }
-        public int TargetId { get; set; }
-        public int TargetSlot { get; set; }
-
-        public TapestryDesignerWorkflowItem Source { get; set; }
-        public TapestryDesignerWorkflowItem Target { get; set; }
+        public virtual TapestryDesignerWorkflowItem Source { get; set; }
+        public virtual TapestryDesignerWorkflowItem Target { get; set; }
 
         [JsonIgnore]
         public int WorkflowRuleId { get; set; }
         public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
     }
     [Table("TapestryDesigner_ResourceConnections")]
-    public partial class TapestryDesignerResourceConnection// : TapestryDesignerConnection
-    {
-        public int Id { get; set; }
-        public int SourceId { get; set; }
-        public int SourceSlot { get; set; }
-        public int TargetId { get; set; }
-        public int TargetSlot { get; set; }
-
-        public TapestryDesignerResourceItem Source { get; set; }
-        public TapestryDesignerResourceItem Target { get; set; }
+    public partial class TapestryDesignerResourceConnection : TapestryDesignerConnection
+    {        
+        public virtual TapestryDesignerResourceItem Source { get; set; }
+        public virtual TapestryDesignerResourceItem Target { get; set; }
 
         [JsonIgnore]
         public int ResourceRuleId { get; set; }
