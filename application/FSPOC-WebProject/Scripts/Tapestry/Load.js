@@ -129,7 +129,7 @@
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
                     currentInstance.connect({
-                        uuids: ["resItem" + currentConnectionData.Source + "RightMiddle"], target: "resItem" + currentConnectionData.Target
+                        uuids: ["resItem" + currentConnectionData.SourceId + "RightMiddle"], target: "resItem" + currentConnectionData.TargetId
                     });
                 }
             }
@@ -292,8 +292,8 @@
                 currentInstance = newRule.data("jsPlumbInstance");
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
-                    sourceId = "wfItem" + currentConnectionData.Source;
-                    targetId = "wfItem" + currentConnectionData.Target;
+                    sourceId = "wfItem" + currentConnectionData.SourceId;
+                    targetId = "wfItem" + currentConnectionData.TargetId;
                     if (currentConnectionData.SourceSlot == 1)
                         sourceEndpointUuid = "BottomCenter";
                     else

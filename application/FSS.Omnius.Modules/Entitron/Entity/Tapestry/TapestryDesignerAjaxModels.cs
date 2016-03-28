@@ -115,12 +115,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Height { get; set; }
 
         public List<AjaxTapestryDesignerResourceItem> ResourceItems { get; set; }
-        public List<AjaxTapestryDesignerConnection> Connections { get; set; }
+        public List<AjaxTapestryDesignerResourceConnection> Connections { get; set; }
 
         public AjaxTapestryDesignerResourceRule()
         {
             ResourceItems = new List<AjaxTapestryDesignerResourceItem>();
-            Connections = new List<AjaxTapestryDesignerConnection>();
+            Connections = new List<AjaxTapestryDesignerResourceConnection>();
         }
     }
     public class AjaxTapestryDesignerWorkflowRule
@@ -133,12 +133,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Height { get; set; }
 
         public List<AjaxTapestryDesignerSwimlane> Swimlanes { get; set; }
-        public List<AjaxTapestryDesignerConnection> Connections { get; set; }
+        public List<AjaxTapestryDesignerWorkflowConnection> Connections { get; set; }
 
         public AjaxTapestryDesignerWorkflowRule()
         {
             Swimlanes = new List<AjaxTapestryDesignerSwimlane>();
-            Connections = new List<AjaxTapestryDesignerConnection>();
+            Connections = new List<AjaxTapestryDesignerWorkflowConnection>();
         }
     }
     public class AjaxTapestryDesignerResourceItem
@@ -194,13 +194,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             WorkflowItems = new List<AjaxTapestryDesignerWorkflowItem>();
         }
     }
-    public class AjaxTapestryDesignerConnection
+    public abstract class AjaxTapestryDesignerConnection
     {
         public int Id { get; set; }
-        public int Source { get; set; }
+        public int SourceId { get; set; }
         public int SourceSlot { get; set; }
-        public int Target { get; set; }
+        public int TargetId { get; set; }
         public int TargetSlot { get; set; }
+    }
+    public class AjaxTapestryDesignerResourceConnection : AjaxTapestryDesignerConnection
+    {
+    }
+    public class AjaxTapestryDesignerWorkflowConnection : AjaxTapestryDesignerConnection
+    {
     }
     public class AjaxTapestryDesignerIdPair
     {

@@ -35,9 +35,9 @@ function SaveBlock(commitMessage) {
             sourceDiv = $(currentConnection.source);
             targetDiv = $(currentConnection.target);
             connectionArray.push({
-                Source: sourceDiv.attr("saveId"),
+                SourceId: sourceDiv.attr("saveId"),
                 SourceSlot: 0,
-                Target: targetDiv.attr("saveId"),
+                TargetId: targetDiv.attr("saveId"),
                 TargetSlot: 0
             });
         }
@@ -106,9 +106,9 @@ function SaveBlock(commitMessage) {
                 sourceSlot = 0;
             if (!sourceDiv.hasClass("subSymbol")) {
                 connectionArray.push({
-                    Source: sourceDiv.attr("saveId"),
+                    SourceId: sourceDiv.attr("saveId"),
                     SourceSlot: sourceSlot,
-                    Target: targetDiv.attr("saveId"),
+                    TargetId: targetDiv.attr("saveId"),
                     TargetSlot: 0
                 });
             }

@@ -210,8 +210,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         }
                         foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
                         {
-                            int source = resourceIdMapping[ajaxConnection.Source];
-                            int target = resourceIdMapping[ajaxConnection.Target];
+                            int source = resourceIdMapping[ajaxConnection.SourceId];
+                            int target = resourceIdMapping[ajaxConnection.TargetId];
                             TapestryDesignerConnection connection = new TapestryDesignerConnection
                             {
                                 SourceId = source,
@@ -268,8 +268,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         }
                         foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
                         {
-                            int source = workflowItemIdMapping[ajaxConnection.Source];
-                            int target = workflowItemIdMapping[ajaxConnection.Target];
+                            int source = workflowItemIdMapping[ajaxConnection.SourceId];
+                            int target = workflowItemIdMapping[ajaxConnection.TargetId];
                             TapestryDesignerConnection connection = new TapestryDesignerConnection
                             {
                                 SourceId = source,
@@ -790,12 +790,12 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             foreach (TapestryDesignerConnection connection in requestedRule.Connections)
             {
-                var ajaxConnection = new AjaxTapestryDesignerConnection
+                var ajaxConnection = new AjaxTapestryDesignerResourceConnection
                 {
                     Id = connection.Id,
-                    Source = connection.SourceId,
+                    SourceId = connection.SourceId,
                     SourceSlot = connection.SourceSlot,
-                    Target = connection.TargetId,
+                    TargetId = connection.TargetId,
                     TargetSlot = connection.TargetSlot
                 };
                 result.Connections.Add(ajaxConnection);
@@ -805,12 +805,12 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             foreach (TapestryDesignerConnection connection in requestedRule.Connections)
             {
-                var ajaxConnection = new AjaxTapestryDesignerConnection
+                var ajaxConnection = new AjaxTapestryDesignerWorkflowConnection
                 {
                     Id = connection.Id,
-                    Source = connection.SourceId,
+                    SourceId = connection.SourceId,
                     SourceSlot = connection.SourceSlot,
-                    Target = connection.TargetId,
+                    TargetId = connection.TargetId,
                     TargetSlot = connection.TargetSlot
                 };
                 result.Connections.Add(ajaxConnection);
