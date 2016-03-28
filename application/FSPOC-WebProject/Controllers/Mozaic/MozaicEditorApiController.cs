@@ -133,7 +133,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         Name = postData.Name
                     };
                     foreach (var ajaxComponent in postData.Components)
-                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage));
+                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));
                     context.Applications.Find(appId).MozaicEditorPages.Add(newPage);
                     context.SaveChanges();
                     return newPage.Id;
@@ -161,7 +161,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 requestedPage.ModalWidth = postData.ModalWidth;
                 requestedPage.ModalHeight = postData.ModalHeight;
                 foreach (var ajaxComponent in postData.Components)
-                    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage));
+                    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
                 context.SaveChanges();
             }
             }
@@ -173,9 +173,10 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
         }
 
-        private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent, MozaicEditorPage page)
+        private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent,
+            MozaicEditorPage page, MozaicEditorComponent parentComponent)
         {
-            var newcomponent = new MozaicEditorComponent
+            var newComponent = new MozaicEditorComponent
             {
                 Name = ajaxComponent.Name,
                 Type = ajaxComponent.Type,
@@ -195,11 +196,11 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             };
             if (ajaxComponent.ChildComponents != null && ajaxComponent.ChildComponents.Count > 0)
             {
-                newcomponent.ChildComponents = new List<MozaicEditorComponent>();
+                newComponent.ChildComponents = new List<MozaicEditorComponent>();
                 foreach (var ajaxChildComponent in ajaxComponent.ChildComponents)
-                    newcomponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, null));
+                    newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, null, newComponent));
             }
-            return newcomponent;
+            return newComponent;
         }
         private void deleteComponents(MozaicEditorPage page, DBEntities context)
         {

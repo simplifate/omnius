@@ -166,7 +166,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     if (!string.IsNullOrEmpty(target.ComponentName))
                     {
-                        var component = context.MozaicEditorPages.Find(target.PageId).Components.Single(c => c.Name == target.ComponentName);
+                        var targetPage = context.MozaicEditorPages.Find(target.PageId);
+                        var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
+                        if (component == null)
+                        {
+                            foreach (var parentComponent in targetPage.Components)
+                            {
+                                if (parentComponent.ChildComponents.Count > 0)
+                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
+                                if (component != null)
+                                    break;
+                            }
+                        }
                         targetName = component.Name;
                         targetType = component.Type;
                     };

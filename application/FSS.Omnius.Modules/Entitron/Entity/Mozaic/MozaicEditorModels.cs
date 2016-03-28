@@ -221,6 +221,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Properties { get; set; }
 
         public virtual ICollection<MozaicEditorComponent> ChildComponents { get; set; }
+        public virtual MozaicEditorComponent ParentComponent { get; set; }
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
 
