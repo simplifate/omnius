@@ -140,6 +140,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Width { get; set; }
         public int Height { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
         public virtual ICollection<TapestryDesignerResourceConnection> Connections { get; set; }
 
@@ -184,6 +185,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Height { get; set; }
         public string Roles { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
 
         public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
@@ -211,9 +213,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ColumnFilter { get; set; }
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
+        public int? ParentRuleId { get; set; }
+        [JsonIgnore]
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerResourceConnection> SourceToConnection { get; set; }
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerResourceConnection> TargetToConnection { get; set; }
 
         public TapestryDesignerResourceItem()
@@ -232,6 +238,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
+        public int? ParentSwimlaneId { get; set; }
+        [JsonIgnore]
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
         public string Label { get; set; }
@@ -244,7 +252,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerWorkflowConnection> SourceToConnection { get; set; }
+        [JsonIgnore]
         public virtual ICollection<TapestryDesignerWorkflowConnection> TargetToConnection { get; set; }
 
         public TapestryDesignerWorkflowItem()
@@ -326,8 +336,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     public abstract class TapestryDesignerConnection
     {
         public int Id { get; set; }
+        [JsonIgnore]
         public int SourceId { get; set; }
         public int SourceSlot { get; set; }
+        [JsonIgnore]
         public int TargetId { get; set; }
         public int TargetSlot { get; set; }
     }
@@ -343,7 +355,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     }
     [Table("TapestryDesigner_ResourceConnections")]
     public partial class TapestryDesignerResourceConnection : TapestryDesignerConnection
-    {        
+    {
         public virtual TapestryDesignerResourceItem Source { get; set; }
         public virtual TapestryDesignerResourceItem Target { get; set; }
 
