@@ -720,6 +720,10 @@
     <Compile Include="Migrations\201603281452451_WFitemMergeStep2.Designer.cs">
       <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.cs" />
+    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.Designer.cs">
+      <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1140,6 +1144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603281452451_WFitemMergeStep2.resx">
       <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281818163_ConnectionSplitStep1.resx">
+      <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

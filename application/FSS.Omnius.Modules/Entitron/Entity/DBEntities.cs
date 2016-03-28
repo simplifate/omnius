@@ -305,13 +305,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.PreBlockActions);
 
             modelBuilder.Entity<TapestryDesignerResourceRule>()
-                .HasMany<TapestryDesignerConnection>(e => e.Connections)
-                .WithOptional(e => e.ResourceRule)
+                .HasMany<TapestryDesignerResourceConnection>(e => e.Connections)
+                .WithRequired(e => e.ResourceRule)
                 .HasForeignKey(e => e.ResourceRuleId);
 
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
-                .HasMany<TapestryDesignerConnection>(e => e.Connections)
-                .WithOptional(e => e.WorkflowRule)
+                .HasMany<TapestryDesignerWorkflowConnection>(e => e.Connections)
+                .WithRequired(e => e.WorkflowRule)
                 .HasForeignKey(e => e.WorkflowRuleId);
 
             // Database Designer

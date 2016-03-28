@@ -157,10 +157,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             AttributeRule result = new AttributeRule();
             using (var context = new DBEntities())
             {
-                foreach (TapestryDesignerConnection connection in resourceRule.Connections)
+                foreach (TapestryDesignerResourceConnection connection in resourceRule.Connections)
                 {
-                    TapestryDesignerResourceItem source = resourceRule.ResourceItems.Single(i => i.Id == connection.SourceId);
-                    TapestryDesignerResourceItem target = resourceRule.ResourceItems.Single(i => i.Id == connection.TargetId);
+                    TapestryDesignerResourceItem source = connection.Source;
+                    TapestryDesignerResourceItem target = connection.Target;
 
                     string targetName = "", targetType = "";
 
@@ -196,7 +196,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf)
         {
-            HashSet<TapestryDesignerConnection> todoConnections = new HashSet<TapestryDesignerConnection>();
+            HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
             Dictionary<Block, string> conditionMapping = new Dictionary<Block, string>();
             Dictionary<TapestryDesignerWorkflowItem, Block> BlockMapping = new Dictionary<TapestryDesignerWorkflowItem, Block>();
 
@@ -206,7 +206,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             foreach (var splitItem in splitItems)
             {
                 // todo connection
-                foreach (TapestryDesignerConnection connection in splitItem)
+                foreach (TapestryDesignerWorkflowConnection connection in splitItem)
                 {
                     todoConnections.Add(connection);
                 }
@@ -260,19 +260,19 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
             if (item == null)
                 return;
-            createActionRule(workflowRule, block, new TapestryDesignerConnection { TargetId = item.Id }, BlockMapping, conditionMapping, item.ComponentId);
+            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { TargetId = item.Id }, BlockMapping, conditionMapping, item.ComponentId);
 
 
             //// ACTIONS ////
-            foreach (TapestryDesignerConnection conection in todoConnections)
+            foreach (TapestryDesignerWorkflowConnection conection in todoConnections)
             {
-                TapestryDesignerWorkflowItem it = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.Id == conection.SourceId);
+                TapestryDesignerWorkflowItem it = conection.Source;
                 Block thisBlock = BlockMapping[it];
                 createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping);
             }
         }
 
-        private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerConnection connection,
+        private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerWorkflowConnection connection,
             Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, string init = null)
         {
             string ActorName = (init != null ? "Manual" : "Auto");
@@ -289,9 +289,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             startBlock.SourceTo_ActionRules.Add(rule);
             // rights
-            AddActionRuleRights(rule, _context.TapestryDesignerWorkflowItems.Single(i => i.Id == connection.TargetId).ParentSwimlane);
+            AddActionRuleRights(rule, connection.Target.ParentSwimlane);
 
-            TapestryDesignerWorkflowItem item = _context.TapestryDesignerWorkflowItems.Single(i => i.Id == connection.TargetId);
+            TapestryDesignerWorkflowItem item = connection.Target;
             TapestryDesignerWorkflowItem prevItem = null;
             while (item != null && (prevItem == null || !blockMapping.ContainsKey(prevItem)))
             {
@@ -329,7 +329,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // next connection
                 connection = workflowRule.Connections.FirstOrDefault(c => c.SourceId == connection.TargetId);
                 prevItem = item;
-                item = connection != null ? _context.TapestryDesignerWorkflowItems.Single(i => i.Id == connection.TargetId) : null;
+                item = connection != null ? connection.Target : null;
             }
 
             if (rule.TargetBlock == null)

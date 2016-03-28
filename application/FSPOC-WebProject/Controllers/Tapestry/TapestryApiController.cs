@@ -208,11 +208,11 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 }
                             }
                         }
-                        foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
+                        foreach (AjaxTapestryDesignerResourceConnection ajaxConnection in ajaxRule.Connections)
                         {
                             int source = resourceIdMapping[ajaxConnection.SourceId];
                             int target = resourceIdMapping[ajaxConnection.TargetId];
-                            TapestryDesignerConnection connection = new TapestryDesignerConnection
+                            TapestryDesignerResourceConnection connection = new TapestryDesignerResourceConnection
                             {
                                 SourceId = source,
                                 SourceSlot = 0,
@@ -266,11 +266,11 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
                             }
                         }
-                        foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
+                        foreach (AjaxTapestryDesignerWorkflowConnection ajaxConnection in ajaxRule.Connections)
                         {
                             int source = workflowItemIdMapping[ajaxConnection.SourceId];
                             int target = workflowItemIdMapping[ajaxConnection.TargetId];
-                            TapestryDesignerConnection connection = new TapestryDesignerConnection
+                            TapestryDesignerWorkflowConnection connection = new TapestryDesignerWorkflowConnection
                             {
                                 SourceId = source,
                                 SourceSlot = ajaxConnection.SourceSlot,
@@ -788,7 +788,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadConnections(TapestryDesignerResourceRule requestedRule, AjaxTapestryDesignerResourceRule result)
         {
-            foreach (TapestryDesignerConnection connection in requestedRule.Connections)
+            foreach (TapestryDesignerResourceConnection connection in requestedRule.Connections)
             {
                 var ajaxConnection = new AjaxTapestryDesignerResourceConnection
                 {
@@ -803,7 +803,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadConnections(TapestryDesignerWorkflowRule requestedRule, AjaxTapestryDesignerWorkflowRule result)
         {
-            foreach (TapestryDesignerConnection connection in requestedRule.Connections)
+            foreach (TapestryDesignerWorkflowConnection connection in requestedRule.Connections)
             {
                 var ajaxConnection = new AjaxTapestryDesignerWorkflowConnection
                 {
@@ -839,7 +839,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 foreach (var rule in blockCommit.ResourceRules)
                 {
                     var itemList = new List<TapestryDesignerResourceItem>();
-                    var connectionList = new List<TapestryDesignerConnection>();
+                    var connectionList = new List<TapestryDesignerResourceConnection>();
                     foreach (var item in rule.ResourceItems)
                     {
                         var conditionSetList = new List<TapestryDesignerConditionSet>();
@@ -870,7 +870,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 foreach (var rule in blockCommit.WorkflowRules)
                 {
                     var swimlaneList = new List<TapestryDesignerSwimlane>();
-                    var connectionList = new List<TapestryDesignerConnection>();
+                    var connectionList = new List<TapestryDesignerWorkflowConnection>();
                     foreach (var swimlane in rule.Swimlanes)
                         swimlaneList.Add(swimlane);
                     foreach (var swimlane in swimlaneList)
