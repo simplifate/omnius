@@ -4,8 +4,6 @@ var ChangedSinceLastSave = false;
 
 $(function () {
     if (CurrentModuleIs("overviewModule")) {
-        LoadMetablock();
-
         $("#headerMetablockName").on("click", function () {
             renameMetablockDialog.dialog("open");
         });
@@ -45,9 +43,8 @@ $(function () {
         });
         window.onbeforeunload = function () {
             if (ChangedSinceLastSave)
-                return "Máte neuložené změny, opravdu si přejete opustit metablok?";
-            else
-                return;
+                SaveMetablock();
+            return null;
         };
         $("#btnZoomIn").on("click", function () {
             ZoomFactor += 0.1;

@@ -23,6 +23,7 @@
         <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
     </svg>
     <div>
+        <div>@ViewData["Message"]</div>
         @using (Html.BeginForm("RecoverApp", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="form-horizontal">

@@ -1,0 +1,60 @@
+﻿body.cortexModule {
+    #upperPanel {
+        height: 295px;
+    }
+    #lowerPanel {
+        top: 370px;
+    }
+
+    @media only screen and (max-width: 1630px) {
+        .tileMenuArea {
+            transform: scale(0.9);
+        }
+    }
+    @media only screen and (max-width: 1490px) {
+        .tileMenuArea {
+            transform: scale(0.8);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1360px) {
+        .tileMenuArea {
+            transform: scale(0.7);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1230px) {
+        .tileMenuArea {
+            transform: scale(0.6);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+    @media only screen and (max-width: 1130px) {
+        .tileMenuArea {
+            transform: scale(0.6);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+        .moduleSubMenuArea {
+            transform: scale(0.9);
+        }
+    }
+    @media only screen and (max-width: 1090px) {
+        .tileMenuArea {
+            transform: scale(0.55);
+        }
+        .lowerRightDecoration {
+            display: none;
+        }
+        .moduleSubMenuArea {
+            transform: scale(0.75);
+        }
+    }
+}

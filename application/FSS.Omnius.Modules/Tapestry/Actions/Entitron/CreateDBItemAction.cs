@@ -1,22 +1,42 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    public class CreateDBItemAction : Action
+    public class CreateDbItemAction : Action
     {
         public override int Id
         {
             get
             {
-                return 1006;
+                return 1004;
+            }
+        }
+
+        public override string[] InputVar
+        {
+            get
+            {
+                return new string[] { "?TableName" };
+            }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return "Create DB Item";
+            }
+        }
+
+        public override string[] OutputVar
+        {
+            get
+            {
+                return new string[] { };
             }
         }
 
@@ -25,55 +45,36 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             get
             {
                 return 1010;
-                
             }
         }
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableName", "Item[PropertyName]" };
-            }
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return "Create Item";
-            }
-        }
-
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[0];
-            }
-        }
-        
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            Modules.Entitron.Entitron ent = core.Entitron;
-            DBEntities e = new DBEntities();
+            string tableName = vars.ContainsKey("TableName")
+                ? (string)vars["TableName"]
+                : (string)vars["__TableName__"];
+            DBTable table = core.Entitron.GetDynamicTable(tableName);
+
+            if (table == null)
+                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
+
             DBItem item = new DBItem();
-            DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
-
-            var propertyNames = core._form.AllKeys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
-            foreach (string propertyName in propertyNames)
+            foreach (DBColumn column in table.columns)
             {
-                string itemProperty = propertyName.Substring(5, propertyName.Length - 6);
-                object itemValue = core._form[propertyName];
-                DBColumn column = table.columns.Single(c => c.Name == itemProperty);
-                int typeId = e.DataTypes.Single(m => m.DBColumnTypeName.Contains(column.type)).Id;
-
-                item.createProperty(column.ColumnId, itemProperty, Convertor.convert(typeId, itemValue));
+                if (column.type == "bit")
+                    item.createProperty(column.ColumnId, column.Name, vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"));
+                else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
+                {
+                    if (column.type == "datetime")
+                        item.createProperty(column.ColumnId, column.Name, DateTime.Parse((string)vars[$"__Model.{table.tableName}.{column.Name}"]));
+                    else
+                        item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
+                }
             }
 
             table.Add(item);
-            ent.Application.SaveChanges();
+            core.Entitron.Application.SaveChanges();
         }
     }
 }

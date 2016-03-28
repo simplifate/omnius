@@ -49,6 +49,14 @@ namespace FSPOC_WebProject
                 namespaces: new string[] { "FSS.Omnius.Controllers.Nexus" }
             );
 
+            // Cortex
+            routes.MapRoute(
+                name: "Cortex",
+                url: "Cortex/{action}/{id}",
+                defaults: new { controller = "Cortex", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Cortex" }
+            );
+
             // Persona
             routes.MapRoute(
                 name: "Persona",
@@ -99,8 +107,8 @@ namespace FSPOC_WebProject
             // RUN
             routes.MapRoute(
                 name: "Run",
-                url: "{appName}/{blockId}",
-                defaults: new { controller = "Run", action = "Index", blockId = UrlParameter.Optional, executedBy = UrlParameter.Optional },
+                url: "{appName}/{blockIdentify}",
+                defaults: new { controller = "Run", action = "Index", blockIdentify = UrlParameter.Optional},
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );
 

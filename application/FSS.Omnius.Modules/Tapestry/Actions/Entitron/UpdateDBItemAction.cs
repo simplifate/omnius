@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "Id", "Item[PropertyName]" };
+                return new string[] { "?TableName", "?Id" };
             }
         }
 
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Update Item";
+                return "Update DB Item";
             }
         }
 
@@ -60,56 +60,29 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             Modules.Entitron.Entitron ent = core.Entitron;
             DBEntities e = new DBEntities();
 
-            string error;
-            string tableName = (string)vars["TableName"];
-            var itemId = Convertor.convert('i', core._form["Id"]);
-
-            if(string.IsNullOrEmpty(tableName)) {
-                error = string.Format("Nebyl předán název tabulky (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
-            if(itemId == null) {
-                error = string.Format("Nebylo předáno Id záznamu (Akce: {0} ({1}))", Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
+            string tableName = vars.ContainsKey("TableName")
+                ? (string)vars["TableName"]
+                : (string)vars["__TableName__"];
+            int itemId = vars.ContainsKey("Id")
+                ? (int)vars["Id"]
+                : (int)vars["__ModelId__"];
             DBTable table = ent.GetDynamicTable(tableName);
-            if(table == null) {
-                error = string.Format("Požadovaná tabulka nebyla nalezena (Tabulka: {0}, Akce: {1} ({2}))", tableName, Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
+            if(table == null)
+                throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
-            var select = table.Select();
-            Conditions condition = new Conditions(select);
-            Condition_concat outCondition = null;
+            DBItem row = table.Select().where(c => c.column("Id").Equal(itemId)).First();
+            if (row == null)
+                throw new Exception($"Položka nebyla nalezena (Tabulka: {tableName}, Id: {itemId}, Akce: {Name} ({Id}))");
 
-            outCondition = condition.column("Id").Equal(itemId);
-            condition = outCondition.and();
-
-            DBItem row = select.where(i => outCondition).First();
-            DBItem data = new DBItem();
-            if(row == null) {
-                error = string.Format("Položka nebyla nalezena (Tabulka: {0}, Id: {1}, Akce: {2} ({3}))", tableName, itemId, Name, Id);
-                LogError(error, core.User.Id, ent.AppId);
-                throw new Exception(error);
-            }
-
-            var propertyNames = core._form.AllKeys.Where(k => k.StartsWith("Item[") && k.EndsWith("]"));
-            foreach (string propertyName in propertyNames)
+            foreach (DBColumn column in table.columns)
             {
-                string itemProperty = propertyName.Substring(5, propertyName.Length - 6);
-                object itemValue = core._form[propertyName];
-                DBColumn column = table.columns.Single(c => c.Name == itemProperty);
-                int typeId = e.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.type)).Id;
-
-                data.createProperty(column.ColumnId, itemProperty, Convertor.convert(typeId, itemValue));
+                if (column.type == "bit")
+                    row[column.Name] = vars.ContainsKey($"__Model.{tableName}.{column.Name}");
+                else if (vars.ContainsKey($"__Model.{tableName}.{column.Name}"))
+                    row[column.Name] = vars[$"__Model.{tableName}.{column.Name}"];
             }
 
-            table.Update(data, Convert.ToInt32(row["Id"]));
+            table.Update(row, itemId);
             ent.Application.SaveChanges();
         }
     }

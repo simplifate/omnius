@@ -14,6 +14,7 @@ namespace FSPOC_WebProject
                         "~/Scripts/jquery.contextMenu.js",
                         "~/Scripts/jquery-collision.min.js",
                         "~/Scripts/jquery.dataTables.min.js",
+                        "~/Scripts/jquery.datetimepicker.min.js",
                         "~/Scripts/spectrum.js"
                         ));
 

@@ -1,0 +1,61 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Cortex
+@model System.Data.Entity.DbSet<Task>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+@{
+    Page.Title = "Omnius Cortex";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "cortexModule";
+}
+@Html.Partial("~/Views/Cortex/Cortex/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Cortex/Cortex/Decoration.cshtml")
+    <div id="taskMenuArea" class="moduleSubMenuArea">
+        @Ajax.RouteLink("Přidat úlohu", "Cortex", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <div id="lowerPanelContainer">
+        <table id="cortexTable" class="table table-bordered table-striped table-responsive table-omnius">
+            <colgroup>
+                <col width="50">
+                <col>
+                <col>
+                <col width="60">
+                <col width="60">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Aplikace</th>
+                    <th>Název</th>
+                    <th>Aktivní</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (Task t in Model)
+                    {
+                        <tr>
+                            <td>@t.Id</td>
+                            <td>@(t.AppId == null ? "" : t.Application.Name)</td>
+                            <td>@t.Name</td>
+                            <td class="text-center">@(t.Active == true ? "ano" : "ne")</td>
+                            <td class="table-row-action">
+                                @Ajax.RouteLink(" ", "Cortex", new { @action = "Detail", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Ajax.RouteLink(" ", "Cortex", new { @action = "Edit", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Cortex", new { @action = "Delete", @id = t.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Nemáte nakonfigurovaný žádnou automatickou úlohu</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

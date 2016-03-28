@@ -1,5 +1,5 @@
 ﻿var ZoomFactor = 1.0;
-var ChangedSinceLastSave = false;
+var ChangedSinceLastSave = false, dragModeActive = false;
 var lastLibId = 1000;
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -72,6 +72,9 @@ $(function () {
         $(".toolboxCategoryHeader_Templates").on("click", function () {
             $(".toolboxLi_Templates").slideToggle();
         });
+        $(".toolboxCategoryHeader_Integrations").on("click", function () {
+            $(".toolboxLi_Integrations").slideToggle();
+        });
         $("#blockHeaderBlockName").on("click", function () {
             renameBlockDialog.dialog("open");
         });
@@ -100,7 +103,10 @@ $(function () {
             containment: 'window',
             tolerance: "fit",
             revert: true,
-            scroll: true
+            scroll: true,
+            start: function () {
+                dragModeActive = true;
+            }
         });
         $("#hideTapestryTooboxIcon").on("click", function () {
             $("#tapestryLeftBar").hide();
@@ -175,17 +181,31 @@ $(function () {
                 accept: ".toolboxItem",
                 greedy: true,
                 drop: function (e, ui) {
-                    droppedElement = ui.helper.clone();
-                    droppedElement.removeClass("toolboxItem");
-                    droppedElement.addClass("item");
-                    $(this).append(droppedElement);
-                    ruleContent = $(this);
-                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
-                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                    ui.helper.remove();
-                    AddToJsPlumb(droppedElement);
-                    ChangedSinceLastSave = true;
+                    if (dragModeActive) {
+                        dragModeActive = false;
+                        droppedElement = ui.helper.clone();
+                        droppedElement.removeClass("toolboxItem");
+                        droppedElement.addClass("item");
+                        $(this).append(droppedElement);
+                        ruleContent = $(this);
+                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
+                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                        ui.helper.remove();
+                        AddToJsPlumb(droppedElement);
+                        if (droppedElement.position().left + droppedElement.width() + 35 > ruleContent.width()) {
+                            droppedElement.css("left", ruleContent.width() - droppedElement.width() - 40);
+                            instance = ruleContent.data("jsPlumbInstance");
+                            instance.repaintEverything();
+                        }
+                        if (droppedElement.position().top + droppedElement.height() + 5 > ruleContent.height()) {
+                            console.log("matched");
+                            droppedElement.css("top", ruleContent.height() - droppedElement.height() - 15);
+                            instance = ruleContent.data("jsPlumbInstance");
+                            instance.repaintEverything();
+                        }
+                        ChangedSinceLastSave = true;
+                    }
                 }
             });
         });
@@ -259,11 +279,21 @@ $(function () {
                 accept: ".toolboxItem.roleItem",
                 greedy: true,
                 drop: function (e, ui) {
-                    droppedElement = ui.helper.clone();
-                    $(this).find(".rolePlaceholder").remove();
-                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                    ui.helper.remove();
-                    ChangedSinceLastSave = true;
+                    if (dragModeActive) {
+                        dragModeActive = false;
+                        roleExists = false;
+                        $(this).find(".roleItem").each(function (index, element) {
+                            if ($(element).text() == ui.helper.text())
+                                roleExists = true;
+                        });
+                        if (!roleExists) {
+                            droppedElement = ui.helper.clone();
+                            $(this).find(".rolePlaceholder").remove();
+                            $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
+                            ui.helper.remove();
+                            ChangedSinceLastSave = true;
+                        }
+                    }
                 }
             });
             newRule.find(".swimlaneContentArea").droppable({
@@ -272,29 +302,38 @@ $(function () {
                 accept: ".toolboxSymbol, .toolboxItem",
                 greedy: false,
                 drop: function (e, ui) {
-                    droppedElement = ui.helper.clone();
-                    if (droppedElement.hasClass("roleItem")) {
-                        ui.draggable.draggable("option", "revert", true);
-                        return false;
+                    if (dragModeActive) {
+                        dragModeActive = false;
+                        droppedElement = ui.helper.clone();
+                        if (droppedElement.hasClass("roleItem")) {
+                            ui.draggable.draggable("option", "revert", true);
+                            return false;
+                        }
+                        ruleContent = $(this);
+                        ruleContent.append(droppedElement);
+                        if (droppedElement.hasClass("toolboxSymbol")) {
+                            droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
+                            droppedElement.addClass("symbol");
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
+                        }
+                        else {
+                            droppedElement.removeClass("toolboxItem");
+                            droppedElement.addClass("item");
+                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
+                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
+                        }
+                        droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
+                        ui.helper.remove();
+                        AddToJsPlumb(droppedElement);
+                        if (droppedElement.position().top + droppedElement.height() + 10 > ruleContent.height()) {
+                            console.log("matched");
+                            droppedElement.css("top", ruleContent.height() - droppedElement.height() - 20);
+                            instance = ruleContent.parents(".workflowRule").data("jsPlumbInstance");
+                            instance.repaintEverything();
+                        }
+                        ChangedSinceLastSave = true;
                     }
-                    $(this).append(droppedElement);
-                    ruleContent = $(this);
-                    if (droppedElement.hasClass("toolboxSymbol")) {
-                        droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                        droppedElement.addClass("symbol");
-                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                    }
-                    else {
-                        droppedElement.removeClass("toolboxItem");
-                        droppedElement.addClass("item");
-                        leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                        topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                    }
-                    droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                    ui.helper.remove();
-                    AddToJsPlumb(droppedElement);
-                    ChangedSinceLastSave = true;
                 }
             });
         });
@@ -352,6 +391,11 @@ $(function () {
                     else if (libType == "template") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
+                        $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before(newToolboxLi);
+                    }
+                    else if (["ldap", "ws", "smtp", "webdav"].indexOf(libType) != -1) {
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
+                            + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);
                     }
                     if (newToolboxLi)
@@ -361,7 +405,10 @@ $(function () {
                             containment: 'window',
                             tolerance: "fit",
                             revert: true,
-                            scroll: true
+                            scroll: true,
+                            start: function () {
+                                dragModeActive = true;
+                            }
                         });
                 }
             }

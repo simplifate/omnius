@@ -25,13 +25,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [Required]
         [StringLength(50)]
+        [Index("blockUniqueness", Order = 1, IsUnique = true)]
         public string Name { get; set; }
 
         [StringLength(50)]
         public string ModelName { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string DisplayName { get; set; }
+
         public bool IsVirtual { get; set; }
         public bool IsInMenu { get; set; }
+        [Index("blockUniqueness", Order = 2, IsUnique = true)]
+        public bool IsTemp { get; set; }
         
         public int WorkFlowId { get; set; }
 

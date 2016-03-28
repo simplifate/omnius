@@ -319,37 +319,41 @@ $(function () {
             pageCount = 0;
             appId = $("#currentAppId").val();
             AssociatedPageIds = [];
-            AssociatedTableName = [];
             $("#libraryCategory-UI .libraryItem").remove();
             chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
                 if ($(element).hasClass("highlightedRow")) {
                     pageCount++;
                     pageId = $(element).attr("pageId");
                     AssociatedPageIds.push(parseInt(pageId));
-                    AssociatedTableName.push($(element).find('td').text())
                     url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
                     $.ajax({
                         type: "GET",
                         url: url,
                         dataType: "json",
+                        async: false,
                         success: function (data) {
                             for (i = 0; i < data.Components.length; i++) {
                                 if (i == 0) {
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                        + data.Name + '</div>'));
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
+                                        + data.Name + '</div>');
                                 }
                                 cData = data.Components[i];
-                                $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                + cData.Name + '</div>'));
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                + cData.Name + '</div>');
                                 if (cData.Type == "data-table-with-actions") {
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_EditAction</div>'));
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DetailsAction</div>'));
-                                    $("#libraryCategory-UI").append($('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DeleteAction</div>'));
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_EditAction</div>');
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DetailsAction</div>');
+                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                        + cData.Name + '_DeleteAction</div>');
                                 }
-                                $("#libraryCategory-UI").append(newLibItem);
+                                if (cData.ChildComponents) {
+                                    for (j = 0; j < cData.ChildComponents.length; j++) {
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + cData.ChildComponents[j].Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
+                                        + cData.ChildComponents[j].Name + '</div>');
+                                    }
+                                }
                             }
                         }
                     });
@@ -392,10 +396,10 @@ $(function () {
                         if (targetTable == undefined)
                             alert("Požadovaná tabulka již není součástí schématu v Entitronu, nebo má nyní jiné Id.");
                         for (i = 0; i < targetTable.Columns.length; i++) {
-                            newRow = $('<tr columnId="' + targetTable.Columns[i].Id + '"><td>' + targetTable.Columns[i].Name + '</td>'
+                            newRow = $('<tr><td class="nameCell">' + targetTable.Columns[i].Name + '</td>'
                                 + '<td><input type="checkbox" class="showColumnCheckbox"></input>Show</td></tr>');
                             formTable.append(newRow);
-                            newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Id) != -1);
+                            newRow.find(".showColumnCheckbox").prop("checked", columnFilter.indexOf(targetTable.Columns[i].Name) != -1);
                             CurrentTableColumnArray.push({ Id: targetTable.Columns[i].Id, Name: targetTable.Columns[i].Name, Type: targetTable.Columns[i].Type });
                         }
                         $("#btnOpenTableConditions").show();
@@ -406,14 +410,14 @@ $(function () {
         function tableAttributePropertiesDialog_SubmitData() {
             columnFilter = [];
             formTable = tableAttributePropertiesDialog.find(".columnFilterTable .showColumnCheckbox").each(function (index, checkboxElement) {
-                columnId = $(checkboxElement).parents("tr").attr("columnId");
+                columnName = $(checkboxElement).parents("tr").find(".nameCell").text();
                 if($(checkboxElement).is(":checked"))
-                    columnFilter.push(parseInt(columnId));
+                    columnFilter.push(columnName);
             });
             CurrentItem.data("columnFilter", columnFilter);
             tableAttributePropertiesDialog.dialog("close");
         }
-        gatewayXPropertiesDialog = $("gateway-x-properties-dialog").dialog({
+        gatewayXPropertiesDialog = $("#gateway-x-properties-dialog").dialog({
             autoOpen: false,
             width: 450,
             height: 450,
@@ -430,6 +434,26 @@ $(function () {
         });
         function gatewayXPropertiesDialog_SubmitData() {
             gatewayXPropertiesDialog.dialog("close");
+        }
+        uiitemPropertiesDialog = $("#uiItem-properties-dialog").dialog({
+            autoOpen: false,
+            width: 450,
+            height: 180,
+            buttons: {
+                "Save": function () {
+                    uiitemPropertiesDialog_SubmitData();
+                },
+                Cancel: function () {
+                    uiitemPropertiesDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+                uiitemPropertiesDialog.find("#ajax-action").prop('checked', CurrentItem.data("isAjaxAction"));
+            }
+        });
+        function uiitemPropertiesDialog_SubmitData() {
+            CurrentItem.data("isAjaxAction", uiitemPropertiesDialog.find("#ajax-action").is(':checked'));
+            uiitemPropertiesDialog.dialog("close");
         }
         actionPropertiesDialog = $("#action-properties-dialog").dialog({
             autoOpen: false,
@@ -509,8 +533,8 @@ $(function () {
                                 return value.Id == tableId;
                             })[0];
                             for (i = 0; i < currentTable.Columns.length; i++) {
-                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableId="'
-                                    + currentTable.Id +  '" columnId="' +currentTable.Columns[i].Id + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                    + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
                             }
                         }
                     });
@@ -596,20 +620,10 @@ $(function () {
                         return false;
                     }
                 });
-                var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
-                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
-                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
-                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
-                    + '</tr>';
-                var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
-                    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"><td class="conditionOperator"></td></td><td class="conditionVariableCell"><select></select>'
-                    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
-                    + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
-                    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
-                    + '</tr></table></div>';
                 $(this).find(".addAndConditionSetIcon").on("click", function () {
                     newConditionSet = $(ConditionSetTemplate);
                     newConditionSet.find(".conditionSetPrefix").text("AND a");
+                    newConditionSet.find(".conditionTable").append($(ConditionTemplate))
                     LoadConditionColumns(newConditionSet);
                     conditionsDialog.find(".conditionSetArea").append(newConditionSet);
                     if (newConditionSet.index() == 0)
@@ -618,6 +632,7 @@ $(function () {
                 $(this).find(".addOrConditionSetIcon").on("click", function () {
                     newConditionSet = $(ConditionSetTemplate);
                     newConditionSet.find(".conditionSetPrefix").text("OR a");
+                    newConditionSet.find(".conditionTable").append($(ConditionTemplate))
                     LoadConditionColumns(newConditionSet);
                     conditionsDialog.find(".conditionSetArea").append(newConditionSet);
                     if (newConditionSet.index() == 0)
@@ -660,7 +675,7 @@ $(function () {
                     currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
                     switch(varType) {
                         case "bool":
-                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">True</option><<option>False</option></select>'));
+                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">true</option><<option>false</option></select>'));
                             currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
                             break;
                         case "int":
@@ -688,12 +703,128 @@ $(function () {
                 });
             },
             open: function () {
-                columnSelect = conditionsDialog.find(".conditionVariableCell select");
-                columnSelect.find("option").remove();
-                LoadConditionColumns(conditionsDialog);
+                conditionSetArea = conditionsDialog.find(".conditionSetArea");
+                conditionSetArea.find(".conditionSet").remove();
+                conditionSetData = CurrentItem.data("conditionSets");
+                for (conditionSetIndex = 0; conditionSetIndex < conditionSetData.length; conditionSetIndex++) {
+                    currentConditionSetData = conditionSetData[conditionSetIndex];
+                    if (currentConditionSetData.SetRelation == "OR")
+                        prefix = "OR a";
+                    else
+                        prefix = "AND a";
+                    newConditionSet = $(ConditionSetTemplate);
+                    newConditionSet.find(".conditionSetPrefix").text(prefix);
+                    conditionSetArea.append(newConditionSet);
+                    if (conditionSetIndex == 0)
+                        newConditionSet.find(".conditionSetPrefix").text("A");
+                    conditionTable = newConditionSet.find(".conditionTable");
+                    for (conditionIndex = 0; conditionIndex < currentConditionSetData.Conditions.length; conditionIndex++)
+                    {
+                        currentConditionData = currentConditionSetData.Conditions[conditionIndex];
+                        newCondition = $(ConditionTemplate);
+                        if (conditionIndex > 0)
+                            newCondition.find(".conditionOperator").text(currentConditionData.Relation.toLowerCase());
+                        conditionTable.append(newCondition);
+                        columnSelect = newCondition.find(".conditionVariableCell select");
+                        for (i = 0; i < CurrentTableColumnArray.length; i++) {
+                            cData = CurrentTableColumnArray[i];
+                            switch (cData.Type) {
+                                case "varchar":
+                                    columnType = "string";
+                                    break;
+                                case "boolean":
+                                    columnType = "bool";
+                                    break;
+                                case "integer":
+                                    columnType = "int";
+                                    break;
+                                default:
+                                    columnType = "unknown";
+                            }
+                            columnSelect.append($('<option varType="' + columnType + '">' + cData.Name + '</option>'));
+                        }
+                        columnSelect.val(currentConditionData.Variable);
+                        var optionSelected = $("option:selected", columnSelect);
+                        varType = optionSelected.attr("varType");
+                        newCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
+                        conditionValueCell = newCondition.find(".conditionValueCell");
+                        conditionOperatorCell = newCondition.find(".conditionOperatorCell");
+                        switch (varType) {
+                            case "bool":
+                                conditionValueCell.append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "int":
+                                conditionValueCell.append($('<input type="number"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "string":
+                                conditionValueCell.append($('<input type="text"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                                break;
+                            case "unknown":
+                            default:
+                                conditionValueCell.append($('<input type="text"></input>'));
+                                conditionOperatorCell.append($('<select><option>==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>contains</option><option inputType="none">is empty</option><option inputType="none">is not empty</option></select>'));
+                                conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                        }
+                        var optionSelected = $("option:selected", conditionOperatorCell);
+                        inputType = optionSelected.attr("inputType");
+                        if (inputType === "none")
+                            conditionValueCell.find("input, select").hide();
+                        else {
+                            if (conditionValueCell.find("input").length > 0) {
+                                conditionValueCell.find("input").show();
+                                conditionValueCell.find("input").val(currentConditionData.Value);
+                            }
+                            else if (conditionValueCell.find("select").length > 0) {
+                                conditionValueCell.find("select").show();
+                                conditionValueCell.find("select").val(currentConditionData.Value);
+                            }
+                        }
+                    }
+                }
             }
         });
         function conditionsDialog_SubmitData() {
+            setArray = [];
+            conditionsDialog.find(".conditionSet").each(function (setIndex, setElement) {
+                currentSet = $(setElement);
+                conditionArray = [];
+                currentSet.find(".conditionTable tr").each(function (index, element) {
+                    currentCondition = $(element);
+                    relationCellValue = currentCondition.find(".conditionOperator").text();
+                    if (relationCellValue == "")
+                        relation = "AND";
+                    else
+                        relation = relationCellValue.toUpperCase();
+                    if (currentCondition.find(".conditionValueCell select").length > 0)
+                        value = currentCondition.find(".conditionValueCell select option:selected").text();
+                    else
+                        value = currentCondition.find(".conditionValueCell input").val();
+                    conditionArray.push({
+                        Index: index,
+                        Relation: relation,
+                        Variable: currentCondition.find(".conditionVariableCell select option:selected").text(),
+                        Operator: currentCondition.find(".conditionOperatorCell select option:selected").text(),
+                        Value: value
+                    });
+                });
+                setPrefix = currentSet.find(".conditionSetPrefix").text();
+                if (setPrefix == "OR a")
+                    setRelation = "OR";
+                else
+                    setRelation = "AND";
+                setArray.push({
+                    SetIndex: setIndex,
+                    SetRelation: setRelation,
+                    Conditions: conditionArray
+                });
+            });
+            CurrentItem.data("conditionSets", setArray);
             conditionsDialog.dialog("close");
         }
     }

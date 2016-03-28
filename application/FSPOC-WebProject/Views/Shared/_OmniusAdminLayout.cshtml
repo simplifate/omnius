@@ -7,6 +7,7 @@
     @Styles.Render("~/bundles/css")
     @Styles.Render("~/Content/css/font-awesome.min.css")
     @Styles.Render("~/Content/css/jquery.dataTables.min.css")
+    @Styles.Render("~/Content/css/jquery.datetimepicker.css")    
     @Styles.Render("~/Content/jquery.contextMenu.css")
     @Styles.Render("~/Content/scss/Bundled.min.css")
     @Scripts.Render("~/bundles/modernizr")
@@ -72,7 +73,9 @@
             {
                 <li id="adminMenuHermes"><a href="/Hermes/SMTP">E-maily</a></li>
             }
-            <li>Asynchronní úlohy</li>
+            @if (map.Cortex) {
+                <li id="adminMenuCortex"><a href="/Cortex/Index">Asynchronní úlohy</a></li>
+            }
             @if (map.Watchtower)
             {
                 <li id="adminMenuWatchtower"><a href="/Watchtower">Audity a logování­</a></li>

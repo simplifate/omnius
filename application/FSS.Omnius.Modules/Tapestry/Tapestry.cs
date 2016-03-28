@@ -31,29 +31,36 @@ namespace FSS.Omnius.Modules.Tapestry
             _results = new ActionResult();
         }
         
-        public Tuple<Message, Block> run(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<Message, Block> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
             return new Tuple<Message, Block>(result.Item1.Message, result.Item2);
         }
-        public JToken jsonRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, AppName, block, buttonId, modelId, fc);
-            return (result.Item1.OutputData["__Result__"] as IToJson).ToJson();
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
+            JObject output = new JObject();
+            foreach(KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
+            {
+                int startIndex = pair.Key.IndexOf('[') + 1;
+                string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
+                output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
+            }
+            return output;
         }
-        private Tuple<ActionResult, Block> innerRun(User user, string AppName, Block block, string buttonId, int modelId, NameValueCollection fc)
+        private Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // __CORE__
-            // __Result__
+            // __Result[uicName]__
             // __Model__
             // __ModelId__
-            // __Model.{columnName}
+            // __Model.{TableName}.{columnName}
             // __TableName__
 
             // init action
-            _results.OutputData.Add("__CORE__", _CORE);
-            _CORE.Entitron.AppName = AppName;
+            fc = fc ?? new NameValueCollection();
             _CORE.User = user;
+            _results.OutputData.Add("__CORE__", _CORE);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
                 _results.OutputData.Add("__TableName__", block.ModelName);
             if (modelId >= 0)
@@ -86,7 +93,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
                 {
                     if (fc.AllKeys.Contains(source.ComponentName))
-                        _results.OutputData.Add($"__Model.{target.ColumnName}", fc[source.ComponentName]);
+                        _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
                 }
             }
 

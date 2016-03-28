@@ -243,9 +243,8 @@ namespace FSS.Omnius.Modules.Entitron
 
             foreach (DBColumn column in columns)
             {
-                if(item.HasProperty(column.Name)) { 
+                if(column.Name.ToLower() != "id" && item.HasProperty(column.Name))
                     data.Add(column, item[column.Name]);
-                }
             }
 
             Application.queries.Add(new SqlQuery_Update()
@@ -558,7 +557,7 @@ namespace FSS.Omnius.Modules.Entitron
 
         public DBItem GetById(int id)
         {
-            return Select().where(c => c.column("Id").Equal(id)).ToList().First();
+            return Select().where(c => c.column("Id").Equal(id)).ToList().FirstOrDefault();
         }
 
         public JToken ToJson()

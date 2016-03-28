@@ -10,9 +10,6 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using M = System.Web.Mvc;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using Newtonsoft.Json.Linq;
 
 namespace FSPOC_WebProject.Controllers.Tapestry
 {
@@ -179,6 +176,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 TypeClass = ajaxItem.TypeClass,
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
+                                ActionId = ajaxItem.ActionId,
                                 PageId = ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
@@ -188,18 +186,37 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
                             resourceIdMapping.Add(ajaxItem.Id, item.Id);
-                        }
-                        foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
-                        {
-                            int source = resourceIdMapping[ajaxConnection.Source];
-                            int target = resourceIdMapping[ajaxConnection.Target];
-                            TapestryDesignerConnection connection = new TapestryDesignerConnection
+                            foreach(AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
                             {
-                                Source = source,
-                                SourceType = 0,
+                                TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
+                                {
+                                    SetIndex = ajaxConditionSet.SetIndex,
+                                    SetRelation = ajaxConditionSet.SetRelation
+                                };
+                                item.ConditionSets.Add(conditionSet);
+                                foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
+                                {
+                                    TapestryDesignerCondition condition = new TapestryDesignerCondition
+                                    {
+                                        Index = ajaxCondition.Index,
+                                        Relation = ajaxCondition.Relation,
+                                        Variable = ajaxCondition.Variable,
+                                        Operator = ajaxCondition.Operator,
+                                        Value = ajaxCondition.Value
+                                    };
+                                    conditionSet.Conditions.Add(condition);
+                                }
+                            }
+                        }
+                        foreach (AjaxTapestryDesignerResourceConnection ajaxConnection in ajaxRule.Connections)
+                        {
+                            int source = resourceIdMapping[ajaxConnection.SourceId];
+                            int target = resourceIdMapping[ajaxConnection.TargetId];
+                            TapestryDesignerResourceConnection connection = new TapestryDesignerResourceConnection
+                            {
+                                SourceId = source,
                                 SourceSlot = 0,
-                                Target = target,
-                                TargetType = 0,
+                                TargetId = target,
                                 TargetSlot = 0
                             };
                             rule.Connections.Add(connection);
@@ -241,38 +258,23 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     StateId = ajaxItem.StateId,
                                     TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
-                                    ComponentId = ajaxItem.ComponentName
+                                    ComponentId = ajaxItem.ComponentName,
+                                    isAjaxAction = ajaxItem.isAjaxAction
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
                             }
-                            foreach (AjaxTapestryDesignerWorkflowSymbol ajaxSymbol in ajaxSwimlane.WorkflowSymbols)
-                            {
-                                TapestryDesignerWorkflowSymbol symbol = new TapestryDesignerWorkflowSymbol
-                                {
-                                    TypeClass = ajaxSymbol.Type,
-                                    DialogType = ajaxSymbol.DialogType,
-                                    PositionX = ajaxSymbol.PositionX,
-                                    PositionY = ajaxSymbol.PositionY,
-                                    Condition = ajaxSymbol.Condition
-                                };
-                                swimlane.WorkflowSymbols.Add(symbol);
-                                context.SaveChanges();
-                                workflowSymbolIdMapping.Add(ajaxSymbol.Id, symbol.Id);
-                            }
                         }
-                        foreach (AjaxTapestryDesignerConnection ajaxConnection in ajaxRule.Connections)
+                        foreach (AjaxTapestryDesignerWorkflowConnection ajaxConnection in ajaxRule.Connections)
                         {
-                            int source = ajaxConnection.SourceType == 1 ? workflowSymbolIdMapping[ajaxConnection.Source] : workflowItemIdMapping[ajaxConnection.Source];
-                            int target = ajaxConnection.TargetType == 1 ? workflowSymbolIdMapping[ajaxConnection.Target] : workflowItemIdMapping[ajaxConnection.Target];
-                            TapestryDesignerConnection connection = new TapestryDesignerConnection
+                            int source = workflowItemIdMapping[ajaxConnection.SourceId];
+                            int target = workflowItemIdMapping[ajaxConnection.TargetId];
+                            TapestryDesignerWorkflowConnection connection = new TapestryDesignerWorkflowConnection
                             {
-                                Source = source,
-                                SourceType = ajaxConnection.SourceType,
+                                SourceId = source,
                                 SourceSlot = ajaxConnection.SourceSlot,
-                                Target = target,
-                                TargetType = ajaxConnection.TargetType,
+                                TargetId = target,
                                 TargetSlot = ajaxConnection.TargetSlot
                             };
                             rule.Connections.Add(connection);
@@ -612,21 +614,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             }
         }
 
-        [Route("api/run/{appName}/{blockId}")]
-        public JToken Run(string appName, string button, M.FormCollection fc, int blockId = -1, int modelId = -1)
-        {
-            CORE core = new CORE();
-            User currentUser = User.GetLogged(core);
-
-            using (DBEntities context = new DBEntities())
-            {
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
-                var result = core.Tapestry.jsonRun(currentUser, appName, block, button, modelId, fc);
-
-                return result;
-            }
-        }
-
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);
@@ -702,13 +689,45 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     TypeClass = item.TypeClass,
                     PositionX = item.PositionX,
                     PositionY = item.PositionY,
+                    ActionId = item.ActionId,
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
                     TableName = item.TableName,
                     ColumnName = item.ColumnName,
-                    ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<int>() : item.ColumnFilter.Split(',').Select(int.Parse).ToList()
+                    ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()
                 };
+                LoadConditionSets(item, ajaxItem);
                 result.ResourceItems.Add(ajaxItem);
+            }
+        }
+        private static void LoadConditionSets(TapestryDesignerResourceItem requestedItem, AjaxTapestryDesignerResourceItem result)
+        {
+            foreach (TapestryDesignerConditionSet conditionSet in requestedItem.ConditionSets)
+            {
+                var ajaxConditionSet = new AjaxTapestryDesignerConditionSet
+                {
+                    Id = conditionSet.Id,
+                    SetIndex = conditionSet.SetIndex,
+                    SetRelation = conditionSet.SetRelation
+                };
+                LoadConditions(conditionSet, ajaxConditionSet);
+                result.ConditionSets.Add(ajaxConditionSet);
+            }
+        }
+        private static void LoadConditions(TapestryDesignerConditionSet requestedConditionSet, AjaxTapestryDesignerConditionSet result)
+        {
+            foreach (TapestryDesignerCondition condition in requestedConditionSet.Conditions)
+            {
+                var ajaxCondition = new AjaxTapestryDesignerCondition
+                {
+                    Id = condition.Id,
+                    Index = condition.Index,
+                    Relation = condition.Relation,
+                    Variable = condition.Variable,
+                    Operator = condition.Operator,
+                    Value = condition.Value
+                };
+                result.Conditions.Add(ajaxCondition);
             }
         }
         private static void LoadWorkflowRules(TapestryDesignerBlockCommit requestedBlockCommit, AjaxTapestryDesignerBlockCommit result)
@@ -741,7 +760,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     Roles = string.IsNullOrEmpty(swimlane.Roles) ? new List<string>() : swimlane.Roles.Split(',').ToList()
                 };
                 LoadWorkflowItems(swimlane, ajaxSwimlane);
-                LoadWorkflowSymbols(swimlane, ajaxSwimlane);
                 result.Swimlanes.Add(ajaxSwimlane);
             }
         }
@@ -762,39 +780,22 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
                     ComponentName = item.ComponentId,
-                    TargetId = item.TargetId
+                    TargetId = item.TargetId,
+                    isAjaxAction = item.isAjaxAction
                 };
                 result.WorkflowItems.Add(ajaxItem);
             }
         }
-        private static void LoadWorkflowSymbols(TapestryDesignerSwimlane requestedSwimlane, AjaxTapestryDesignerSwimlane result)
-        {
-            foreach (TapestryDesignerWorkflowSymbol symbol in requestedSwimlane.WorkflowSymbols)
-            {
-                var ajaxSymbol = new AjaxTapestryDesignerWorkflowSymbol
-                {
-                    Id = symbol.Id,
-                    Type = symbol.TypeClass,
-                    DialogType = symbol.DialogType,
-                    PositionX = symbol.PositionX,
-                    PositionY = symbol.PositionY,
-                    Condition = symbol.Condition
-                };
-                result.WorkflowSymbols.Add(ajaxSymbol);
-            }
-        }
         private static void LoadConnections(TapestryDesignerResourceRule requestedRule, AjaxTapestryDesignerResourceRule result)
         {
-            foreach (TapestryDesignerConnection connection in requestedRule.Connections)
+            foreach (TapestryDesignerResourceConnection connection in requestedRule.Connections)
             {
-                var ajaxConnection = new AjaxTapestryDesignerConnection
+                var ajaxConnection = new AjaxTapestryDesignerResourceConnection
                 {
                     Id = connection.Id,
-                    Source = connection.Source,
-                    SourceType = connection.SourceType,
+                    SourceId = connection.SourceId,
                     SourceSlot = connection.SourceSlot,
-                    Target = connection.Target,
-                    TargetType = connection.TargetType,
+                    TargetId = connection.TargetId,
                     TargetSlot = connection.TargetSlot
                 };
                 result.Connections.Add(ajaxConnection);
@@ -802,16 +803,14 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadConnections(TapestryDesignerWorkflowRule requestedRule, AjaxTapestryDesignerWorkflowRule result)
         {
-            foreach (TapestryDesignerConnection connection in requestedRule.Connections)
+            foreach (TapestryDesignerWorkflowConnection connection in requestedRule.Connections)
             {
-                var ajaxConnection = new AjaxTapestryDesignerConnection
+                var ajaxConnection = new AjaxTapestryDesignerWorkflowConnection
                 {
                     Id = connection.Id,
-                    Source = connection.Source,
-                    SourceType = connection.SourceType,
+                    SourceId = connection.SourceId,
                     SourceSlot = connection.SourceSlot,
-                    Target = connection.Target,
-                    TargetType = connection.TargetType,
+                    TargetId = connection.TargetId,
                     TargetSlot = connection.TargetSlot
                 };
                 result.Connections.Add(ajaxConnection);
@@ -840,9 +839,23 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 foreach (var rule in blockCommit.ResourceRules)
                 {
                     var itemList = new List<TapestryDesignerResourceItem>();
-                    var connectionList = new List<TapestryDesignerConnection>();
+                    var connectionList = new List<TapestryDesignerResourceConnection>();
                     foreach (var item in rule.ResourceItems)
+                    {
+                        var conditionSetList = new List<TapestryDesignerConditionSet>();
+                        foreach (var conditionSet in item.ConditionSets)
+                        {
+                            var conditionList = new List<TapestryDesignerCondition>();
+                            foreach (var condition in conditionSet.Conditions)
+                                conditionList.Add(condition);
+                            foreach (var condition in conditionList)
+                                conditionSet.Conditions.Remove(condition);
+                            conditionSetList.Add(conditionSet);
+                        }
+                        foreach (var conditionSet in conditionSetList)
+                            item.ConditionSets.Remove(conditionSet);
                         itemList.Add(item);
+                    }
                     foreach (var item in itemList)
                         rule.ResourceItems.Remove(item);
                     foreach (var connection in rule.Connections)
@@ -857,21 +870,16 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 foreach (var rule in blockCommit.WorkflowRules)
                 {
                     var swimlaneList = new List<TapestryDesignerSwimlane>();
-                    var connectionList = new List<TapestryDesignerConnection>();
+                    var connectionList = new List<TapestryDesignerWorkflowConnection>();
                     foreach (var swimlane in rule.Swimlanes)
                         swimlaneList.Add(swimlane);
                     foreach (var swimlane in swimlaneList)
                     {
                         var itemList = new List<TapestryDesignerWorkflowItem>();
-                        var symbolList = new List<TapestryDesignerWorkflowSymbol>();
                         foreach (var item in swimlane.WorkflowItems)
                             itemList.Add(item);
                         foreach (var item in itemList)
                             swimlane.WorkflowItems.Remove(item);
-                        foreach (var symbol in swimlane.WorkflowSymbols)
-                            symbolList.Add(symbol);
-                        foreach (var symbol in symbolList)
-                            swimlane.WorkflowSymbols.Remove(symbol);
                         rule.Swimlanes.Remove(swimlane);
                     }
                     foreach (var connection in rule.Connections)

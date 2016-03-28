@@ -217,6 +217,15 @@ body.tapestryModule {
                     border-bottom: 2px solid #509c78;
                     color: #375949;
                 }
+                .toolboxCategoryHeader_Integrations {
+                    background-color: #36a8e3;
+                    border-bottom: 2px solid #36a8e3;
+                }
+                .toolboxLi_Integrations {
+                    background-color: #e1f5ff;
+                    border-bottom: 2px solid #91d9ff;
+                    color: #316177;
+                }
             }
         }
         #tapestryLeftBarMinimized {
@@ -294,6 +303,11 @@ body.tapestryModule {
                 background-color: #58bf8f;
                 color: black;
             }
+            .integrationItem {
+                background-color: #e1f5ff;
+                color: #316177;
+                border: 1px solid #91d9ff;
+            }
 
             #blockHeaderPanel {
                 height: 38px;
@@ -366,6 +380,7 @@ body.tapestryModule {
                         font-size: 14px;
                         padding-left: 10px;
                         padding-right: 10px;
+                        white-space: nowrap;
                     }
                 }
             }
@@ -505,6 +520,11 @@ body.tapestryModule {
                             .templateItem {
                                 background-color: #58bf8f;
                                 color: black;
+                            }
+                            .integrationItem {
+                                background-color: #e1f5ff;
+                                border: 2px solid #91d9ff;
+                                color: #316177;
                             }
                         }
                     }

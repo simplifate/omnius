@@ -15,11 +15,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
         /// <param name="dbSchemeCommit"></param>
         public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
         {
-            Entitron e = core.Entitron;
-            GenerateTables(e,dbSchemeCommit);
-            GenerateRelation(e,dbSchemeCommit);
-            GenerateView(e,dbSchemeCommit);
-            DroppingOldTables(e,dbSchemeCommit);
+            if (dbSchemeCommit != null)
+            {
+                Entitron e = core.Entitron;
+                GenerateTables(e, dbSchemeCommit);
+                GenerateRelation(e, dbSchemeCommit);
+                GenerateView(e, dbSchemeCommit);
+                DroppingOldTables(e, dbSchemeCommit);
+            }
         }
 
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
@@ -140,13 +143,13 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_" + x2.Name.ToLower() == x1)).Distinct().ToList();
 
             //adding new FKs
-            foreach (string fkname in newFK)
+            /*foreach (string fkname in newFK)
             {
                 DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name.ToLower() == fkname.ToLower());
-                DbTable rightTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.RightTable);
-                DbTable leftTable = dbSchemeCommit.Tables.SingleOrDefault(x1 => x1.Id == efRelation.LeftTable);
-                DbColumn rightColumn = rightTable.Columns.SingleOrDefault(x => x.Id == efRelation.RightColumn);
-                DbColumn leftColumn = leftTable.Columns.SingleOrDefault(x => x.Id == efRelation.LeftColumn);
+                DbTable rightTable = efRelation.RightTable;
+                DbTable leftTable = efRelation.LeftTable;
+                DbColumn rightColumn = efRelation.RightColumn;
+                DbColumn leftColumn = efRelation.LeftColumn;
 
                 DBForeignKey entitronFK = new DBForeignKey();
                 entitronFK.sourceTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == rightTable.Name.ToLower());
@@ -156,7 +159,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 entitronFK.name = efRelation.Name;
 
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
-            }
+            }*/
             e.Application.SaveChanges();
 
             //dropping old FKs
@@ -261,7 +264,6 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             DBEntities ent = new DBEntities();
             var app = ent.Applications.Find(e.AppId);
-            ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
 
             foreach (DbColumn efColumn in schemeTable.Columns)
@@ -333,7 +335,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
 
             }//end foreach efColumn
-
+            ent.SaveChanges();
         }
         private static string GetConnectionString()
         {

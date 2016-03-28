@@ -251,6 +251,7 @@
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\CORE\BuilderController.cs" />
+    <Compile Include="Controllers\Tapestry\RunApiController.cs" />
     <Compile Include="Controllers\Tapestry\TapestryApiController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
@@ -279,6 +280,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\ErrorCss.css" />
+    <Content Include="Content\scss\Cortex.scss" />
     <Content Include="Content\spectrum.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
@@ -1341,6 +1343,7 @@
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.datetimepicker.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1376,6 +1379,7 @@
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
     <Content Include="Scripts\spectrum.js" />
+    <Content Include="Scripts\Tapestry\AjaxRun.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
@@ -1542,12 +1546,15 @@
     <Content Include="Views\Mozaic\EPK\9.cshtml" />
     <Content Include="Views\Mozaic\EPK\_layout.cshtml" />
     <Content Include="Views\CORE\Service\RecoverApp.cshtml" />
+    <Content Include="Views\Cortex\Form.cshtml" />
+    <Content Include="Views\Cortex\Index.cshtml" />
+    <Content Include="Views\Cortex\Cortex\Header.cshtml" />
+    <Content Include="Views\Cortex\Cortex\Decoration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Backup\" />
     <Folder Include="Views\Companies\" />
-    <Folder Include="Views\Cortex\" />
     <Folder Include="Views\Forms\" />
     <Folder Include="Views\Heap_Orders\" />
     <Folder Include="Views\Interval\" />

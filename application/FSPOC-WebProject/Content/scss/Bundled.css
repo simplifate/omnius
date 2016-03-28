@@ -166,13 +166,16 @@ body.adminAppModule #appBuildResults {
   left: 290px;
   top: 125px;
   width: 70%; }
-  body.adminAppModule #appBuildResults .buildSuccess {
+  body.adminAppModule #appBuildResults .build {
     margin-left: 15px;
     margin-bottom: 30px;
     padding: 15px;
     font-size: 16px;
-    background-color: #dff0d8;
     border-radius: 10px; }
+  body.adminAppModule #appBuildResults .Success {
+    background-color: #dff0d8; }
+  body.adminAppModule #appBuildResults .Error {
+    background-color: #d9534f; }
 
 #topBar {
   -webkit-touch-callout: none;
@@ -771,6 +774,10 @@ body.adminAppModule #appBuildResults {
     height: auto !important; }
     .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
       display: none; }
+    .mozaicForm .data-table tfoot {
+      display: table-header-group; }
+      .mozaicForm .data-table tfoot th {
+        padding: 10px 18px 6px 10px; }
     .mozaicForm .data-table .actionIcons {
       width: 60px; }
       .mozaicForm .data-table .actionIcons .fa {
@@ -860,6 +867,9 @@ body.adminAppModule #appBuildResults {
   color: #31708f;
   background-color: #d9edf7;
   border-color: #bce8f1; }
+
+.hiddenForm {
+  display: none; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;
@@ -1039,6 +1049,13 @@ body.tapestryModule #lowerPanel {
         background-color: #58bf8f;
         border-bottom: 2px solid #509c78;
         color: #375949; }
+      body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .toolboxCategoryHeader_Integrations {
+        background-color: #36a8e3;
+        border-bottom: 2px solid #36a8e3; }
+      body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .toolboxLi_Integrations {
+        background-color: #e1f5ff;
+        border-bottom: 2px solid #91d9ff;
+        color: #316177; }
   body.tapestryModule #lowerPanel #tapestryLeftBarMinimized {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1109,6 +1126,10 @@ body.tapestryModule #lowerPanel {
     body.tapestryModule #lowerPanel #tapestryWorkspace .templateItem {
       background-color: #58bf8f;
       color: black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .integrationItem {
+      background-color: #e1f5ff;
+      color: #316177;
+      border: 1px solid #91d9ff; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #blockHeaderPanel {
       height: 38px;
       border-bottom: 2px solid #455d73;
@@ -1167,7 +1188,8 @@ body.tapestryModule #lowerPanel {
           font-family: MyriadPro;
           font-size: 14px;
           padding-left: 10px;
-          padding-right: 10px; }
+          padding-right: 10px;
+          white-space: nowrap; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
       height: 900px; }
@@ -1284,6 +1306,10 @@ body.tapestryModule #lowerPanel {
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .templateItem {
               background-color: #58bf8f;
               color: black; }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .integrationItem {
+              background-color: #e1f5ff;
+              border: 2px solid #91d9ff;
+              color: #316177; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 
@@ -3039,6 +3065,50 @@ body.mozaicEditorModule {
     user-select: none;
     cursor: default;
     z-index: 2000; }
+
+body.cortexModule #upperPanel {
+  height: 295px; }
+
+body.cortexModule #lowerPanel {
+  top: 370px; }
+
+@media only screen and (max-width: 1630px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1490px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1360px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.7); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1230px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1130px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; }
+  body.cortexModule .moduleSubMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1090px) {
+  body.cortexModule .tileMenuArea {
+    transform: scale(0.55); }
+  body.cortexModule .lowerRightDecoration {
+    display: none; }
+  body.cortexModule .moduleSubMenuArea {
+    transform: scale(0.75); } }
 
 .ui-dialog .ui-dialog {
   padding: 0px 0px;

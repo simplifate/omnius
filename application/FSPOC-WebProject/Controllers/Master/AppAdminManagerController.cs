@@ -11,6 +11,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Tapestry.Service;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -41,7 +42,6 @@ namespace FSS.Omnius.Controllers.Master
         {
             var core = HttpContext.GetCORE();
             core.Entitron.AppId = Id;
-            bool dbSchemeLocked = false;
 
             using (var context = new DBEntities())
             {
@@ -51,71 +51,113 @@ namespace FSS.Omnius.Controllers.Master
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                 try
                 {
-                    app.DbSchemeLocked = dbSchemeLocked = true;
-                    context.SaveChanges();
-                    core.Entitron.AppId = app.Id;
-                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
-                    if (dbSchemeCommit == null)
-                        dbSchemeCommit = new DbSchemeCommit();
-                    DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
-                    app.DbSchemeLocked = false;
-                    context.SaveChanges();
+                    try
+                    {
+                        app.DbSchemeLocked = true;
+                        context.SaveChanges();
+                        core.Entitron.AppId = app.Id;
+                        var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                        if (dbSchemeCommit == null)
+                            dbSchemeCommit = new DbSchemeCommit();
+                        DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
+                        app.DbSchemeLocked = false;
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Error in Entitron: {ex.Message}", ex);
+                    }
 
 
                     // Mozaic pages
-                    foreach (var editorPage in app.MozaicEditorPages)
+                    try
                     {
-                        editorPage.Recompile();
-                        string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
-                        var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
-                        if (oldPage == null)
+                        foreach (var editorPage in app.MozaicEditorPages)
                         {
-                            var newPage = new Page
+                            editorPage.Recompile();
+                            string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
+                            var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
+                            if (oldPage == null)
                             {
-                                ViewName = editorPage.Name,
-                                ViewPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml",
-                                ViewContent = editorPage.CompiledPartialView
-                            };
-                            context.Pages.Add(newPage);
-                            context.SaveChanges();
-                            editorPage.CompiledPageId = newPage.Id;
+                                var newPage = new Page
+                                {
+                                    ViewName = editorPage.Name,
+                                    ViewPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml",
+                                    ViewContent = editorPage.CompiledPartialView
+                                };
+                                context.Pages.Add(newPage);
+                                context.SaveChanges();
+                                editorPage.CompiledPageId = newPage.Id;
+                            }
+                            else
+                            {
+                                oldPage.ViewName = editorPage.Name;
+                                oldPage.ViewContent = editorPage.CompiledPartialView;
+                                editorPage.CompiledPageId = oldPage.Id;
+                            }
                         }
-                        else
-                        {
-                            oldPage.ViewName = editorPage.Name;
-                            oldPage.ViewContent = editorPage.CompiledPartialView;
-                            editorPage.CompiledPageId = oldPage.Id;
-                        }
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Error in Mozaic: {ex.Message}", ex);
+                    }
 
                     // Tapestry
-                    var service = new TapestryGeneratorService();
-                    var blockMapping = service.GenerateTapestry(core);
+                    Dictionary<int, Block> blockMapping = null;
+                    try
+                    {
+                        var service = new TapestryGeneratorService();
+                        blockMapping = service.GenerateTapestry(core);
+                    }
+                    catch(Exception e)
+                    {
+                        throw new Exception($"Error in Tapestry: {e.Message}", e);
+                    }
 
                     // menu layout
-                    string path = $"/Views/App/{Id}/menuLayout.cshtml";
-                    var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
-                    if (menuLayout == null)
+                    try
                     {
-                        menuLayout = new Page
+                        string path = $"/Views/App/{Id}/menuLayout.cshtml";
+                        var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
+                        if (menuLayout == null)
                         {
-                            ViewPath = $"/Views/App/{Id}/menuLayout.cshtml"
-                        };
-                        context.Pages.Add(menuLayout);
+                            menuLayout = new Page
+                            {
+                                ViewPath = $"/Views/App/{Id}/menuLayout.cshtml"
+                            };
+                            context.Pages.Add(menuLayout);
+                        }
+                        menuLayout.ViewName = $"{app.Name} layout";
+                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
+
+                        app.IsPublished = true;
+                        context.SaveChanges();
                     }
-                    menuLayout.ViewName = $"{app.Name} layout";
-                    menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
+                    catch(Exception ex)
+                    {
+                        throw new Exception($"Error in menu generate: {ex.Message}", ex);
+                    }
 
-                    app.IsPublished = true;
-                    context.SaveChanges();
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Success.Add("Stránky byly úpěšně zkompilovány.");
+                    ViewBag.Message = message;
 
+                    return View();
+                }
+                catch(Exception ex)
+                {
+                    //pass the message object to view
+                    var message = new Message();
+                    message.Errors.Add(ex.Message);
+                    ViewBag.Message = message;
 
                     return View();
                 }
                 finally
                 {
-                    app.DbSchemeLocked = dbSchemeLocked = false;
+                    app.DbSchemeLocked = false;
                     context.SaveChanges();
                 }
             }
@@ -151,7 +193,7 @@ namespace FSS.Omnius.Controllers.Master
                     IsInMenu = b.IsInMenu,
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
-                    BlockId = blockMapping[b.Id].Id
+                    BlockName = blockMapping[b.Id].Name
                 });
             }
 

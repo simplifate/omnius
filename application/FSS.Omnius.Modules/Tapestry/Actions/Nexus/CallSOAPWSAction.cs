@@ -57,11 +57,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
             object[] args;
             List<string> parameters = new List<string>();
-            IEnumerable<string> urlParams = core._form.AllKeys.Where(k => k.StartsWith("Param[") && k.EndsWith("]"));
+            IEnumerable<string> urlParams = vars.Keys.Where(k => k.StartsWith("Param[") && k.EndsWith("]"));
 
             if(urlParams.Count() > 0) {
                 foreach(string key in urlParams) {
-                    parameters.Add(core._form[key]);
+                    parameters.Add((string)vars[key]);
                 }
                 args = parameters.ToArray<object>();
             }

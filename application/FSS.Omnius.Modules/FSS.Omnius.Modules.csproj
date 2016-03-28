@@ -195,8 +195,10 @@
     <Compile Include="Entitron\Entity\Tapestry\WorkFlowType.cs" />
     <Compile Include="Entitron\Entity\Watchtower\LogModels.cs" />
     <Compile Include="Entitron\Service\BackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\ConditionalFilteringService.cs" />
     <Compile Include="Entitron\Service\DatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IBackupGeneratorService.cs" />
+    <Compile Include="Entitron\Service\IConditionalFilteringService.cs" />
     <Compile Include="Entitron\Service\IDatabaseGenerateService.cs" />
     <Compile Include="Entitron\Service\IRecoveryService.cs" />
     <Compile Include="Entitron\Service\RecoveryService.cs" />
@@ -654,6 +656,82 @@
     <Compile Include="Migrations\201603141129547_Fix cortex conflict.Designer.cs">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603171030577_BlockDisplayName.cs" />
+    <Compile Include="Migrations\201603171030577_BlockDisplayName.Designer.cs">
+      <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603181026526_cascadeDelete.cs" />
+    <Compile Include="Migrations\201603181026526_cascadeDelete.Designer.cs">
+      <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603181106522_splitConnections.cs" />
+    <Compile Include="Migrations\201603181106522_splitConnections.Designer.cs">
+      <DependentUpon>201603181106522_splitConnections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603181127565_splitConnectionsRepair.cs" />
+    <Compile Include="Migrations\201603181127565_splitConnectionsRepair.Designer.cs">
+      <DependentUpon>201603181127565_splitConnectionsRepair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603191225115_Conditions and condition sets.cs" />
+    <Compile Include="Migrations\201603191225115_Conditions and condition sets.Designer.cs">
+      <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603191237383_Conditions 2.cs" />
+    <Compile Include="Migrations\201603191237383_Conditions 2.Designer.cs">
+      <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.cs" />
+    <Compile Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.Designer.cs">
+      <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.cs" />
+    <Compile Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.Designer.cs">
+      <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603211040585_blockTemp.cs" />
+    <Compile Include="Migrations\201603211040585_blockTemp.Designer.cs">
+      <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603221517303_cortex-db-update.cs" />
+    <Compile Include="Migrations\201603221517303_cortex-db-update.Designer.cs">
+      <DependentUpon>201603221517303_cortex-db-update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603231121543_ActionRuleCascade.cs" />
+    <Compile Include="Migrations\201603231121543_ActionRuleCascade.Designer.cs">
+      <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.cs" />
+    <Compile Include="Migrations\201603241521464_addAjaxToWFItem.Designer.cs">
+      <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.cs" />
+    <Compile Include="Migrations\201603261504456_Add ActionId to resource rules.Designer.cs">
+      <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603281221022_Mozaic editor parent component.cs" />
+    <Compile Include="Migrations\201603281221022_Mozaic editor parent component.Designer.cs">
+      <DependentUpon>201603281221022_Mozaic editor parent component.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603281407051_WFitemMergeStep1.cs" />
+    <Compile Include="Migrations\201603281407051_WFitemMergeStep1.Designer.cs">
+      <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.cs" />
+    <Compile Include="Migrations\201603281452451_WFitemMergeStep2.Designer.cs">
+      <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.cs" />
+    <Compile Include="Migrations\201603281818163_ConnectionSplitStep1.Designer.cs">
+      <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603282059441_ConnectionSplitStep2.cs" />
+    <Compile Include="Migrations\201603282059441_ConnectionSplitStep2.Designer.cs">
+      <DependentUpon>201603282059441_ConnectionSplitStep2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603282201536_addIdToModel.cs" />
+    <Compile Include="Migrations\201603282201536_addIdToModel.Designer.cs">
+      <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -675,8 +753,8 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\AddModelAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
+    <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
@@ -685,6 +763,12 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserAddress.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserCompany.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserDepartment.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserDisplayName.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserEmail.cs" />
+    <Compile Include="Tapestry\Actions\other\GetUserJob.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
@@ -697,8 +781,6 @@
     <Compile Include="Tapestry\Running\ActionRule.cs" />
     <Compile Include="Tapestry\Actions\ActionSequence.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CompareAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\CreateDBItemFromDictAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\DeleteDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\EntitronRepository.cs" />
@@ -1022,6 +1104,63 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603141129547_Fix cortex conflict.resx">
       <DependentUpon>201603141129547_Fix cortex conflict.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603171030577_BlockDisplayName.resx">
+      <DependentUpon>201603171030577_BlockDisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181026526_cascadeDelete.resx">
+      <DependentUpon>201603181026526_cascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181106522_splitConnections.resx">
+      <DependentUpon>201603181106522_splitConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603181127565_splitConnectionsRepair.resx">
+      <DependentUpon>201603181127565_splitConnectionsRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191225115_Conditions and condition sets.resx">
+      <DependentUpon>201603191225115_Conditions and condition sets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191237383_Conditions 2.resx">
+      <DependentUpon>201603191237383_Conditions 2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191359417_Revert DbRelations %28temporary%29.resx">
+      <DependentUpon>201603191359417_Revert DbRelations %28temporary%29.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603210942175_addedPriorityToPersonaAppRoles.resx">
+      <DependentUpon>201603210942175_addedPriorityToPersonaAppRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603211040585_blockTemp.resx">
+      <DependentUpon>201603211040585_blockTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603221517303_cortex-db-update.resx">
+      <DependentUpon>201603221517303_cortex-db-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603231121543_ActionRuleCascade.resx">
+      <DependentUpon>201603231121543_ActionRuleCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603241521464_addAjaxToWFItem.resx">
+      <DependentUpon>201603241521464_addAjaxToWFItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261504456_Add ActionId to resource rules.resx">
+      <DependentUpon>201603261504456_Add ActionId to resource rules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281221022_Mozaic editor parent component.resx">
+      <DependentUpon>201603281221022_Mozaic editor parent component.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281407051_WFitemMergeStep1.resx">
+      <DependentUpon>201603281407051_WFitemMergeStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281452451_WFitemMergeStep2.resx">
+      <DependentUpon>201603281452451_WFitemMergeStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603281818163_ConnectionSplitStep1.resx">
+      <DependentUpon>201603281818163_ConnectionSplitStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603282059441_ConnectionSplitStep2.resx">
+      <DependentUpon>201603282059441_ConnectionSplitStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603282201536_addIdToModel.resx">
+      <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

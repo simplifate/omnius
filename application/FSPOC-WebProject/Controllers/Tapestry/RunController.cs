@@ -19,7 +19,7 @@ namespace FSS.Omnius.Controllers.Tapestry
     public class RunController : Controller
     {
         [HttpGet]
-        public ActionResult Index(string appName, int blockId = -1, int modelId = -1, string message = null, string messageType = null)
+        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
         {
             using (var context = new DBEntities())
             {
@@ -29,26 +29,43 @@ namespace FSS.Omnius.Controllers.Tapestry
                     core.Entitron.AppName = appName;
                 core.User = User.GetLogged(core);
 
+                // get block
                 Block block = null;
                 try
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
-                    core.Entitron.AppId = block.WorkFlow.ApplicationId;
+                    int blockId = Convert.ToInt32(blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                }
+                catch(FormatException)
+                {
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
+                }
+
+                try
+                {
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
                 }
                 catch (NullReferenceException)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
+                // fill data
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
-                ViewData["pageName"] = block.Name;
+                ViewData["pageName"] = block.DisplayName;
 
+                DBItem modelRow = null;
+                if(modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
+                {
+                    modelRow = core.Entitron.GetDynamicTable(block.ModelName).GetById(modelId);
+                }
                 foreach (var resourceMappingPair in block.ResourceMappingPairs)
                 {
                     DataTable dataSource = new DataTable();
                     var columnDisplayNameDictionary = new Dictionary<string, string>();
-                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName))
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName)
+                        && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
                     {
                         string tableName = resourceMappingPair.Source.TableName;
                         var entitronTable = core.Entitron.GetDynamicTable(tableName);
@@ -57,7 +74,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
                         {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
-                            getAllColumns = false;
+                            if(columnFilter.Count > 0)
+                                getAllColumns = false;
                         }
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
                         dataSource.Columns.Add("hiddenId", typeof(int));
@@ -82,41 +100,83 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var entitronRowList = entitronTable.Select().ToList();
                         foreach (var entitronRow in entitronRowList)
                         {
-                            var newRow = dataSource.NewRow();
-                            newRow["hiddenId"] = (int)entitronRow["id"];
-                            foreach (var entitronColumn in entitronColumnList)
+                            if (resourceMappingPair.Source.ConditionSets.Count == 0
+                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.Source.ConditionSets, entitronRow))
                             {
-                                if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                var newRow = dataSource.NewRow();
+                                newRow["hiddenId"] = (int)entitronRow["id"];
+                                foreach (var entitronColumn in entitronColumnList)
                                 {
-                                    if (entitronColumn.type == "bit")
+                                    if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
                                     {
-                                        if ((bool)entitronRow[entitronColumn.Name] == true)
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
+                                        if (entitronColumn.type == "bit")
+                                        {
+                                            if ((bool)entitronRow[entitronColumn.Name] == true)
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
+                                            else
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                        }
                                         else
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
                                     }
-                                    else
-                                        newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
                                 }
-                            }
-                            if (!dataSource.Columns.Contains("IsActive") || (string)newRow["IsActive"] == "Ano")
                                 dataSource.Rows.Add(newRow);
+                            }
                         }
-
                     }
                     if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
                         || resourceMappingPair.TargetType == "name-value-list")
                     {
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                     }
-                    else if (resourceMappingPair.TargetType == "dropdown-select")
+                    else if (resourceMappingPair.TargetType == "dropdown-select" && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
                     {
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
                         {
-                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["Name"]]);
+                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["name"]]);
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
+                    }
+                    if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && resourceMappingPair.TargetType == "checkbox")
+                    {
+                        ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                        && resourceMappingPair.TargetType == "dropdown-select")
+                    {
+                        ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                    }
+                    if(resourceMappingPair.Source.TypeClass == "actionItem" && (resourceMappingPair.TargetType == "input-single-line"
+                        || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        switch(resourceMappingPair.Source.ActionId)
+                        {
+                            case 501:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+                                break;
+                            case 502:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+                                break;
+                            case 503:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+                                break;
+                            case 504:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+                                break;
+                            case 505:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Department;
+                                break;
+                            case 506:
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+                                break;
+                        }
                     }
                 }
 
@@ -125,15 +185,39 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
         }
         [HttpPost]
-        public ActionResult Index(string appName, string button, FormCollection fc, int blockId = -1, int modelId = -1)
+        public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
+            core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+
             using (DBEntities context = new DBEntities())
             {
-                Block block = context.Blocks.SingleOrDefault(b => b.Id == blockId) ?? context.WorkFlows.FirstOrDefault(w => w.Application.Name == appName && w.Type.Name == "Init").InitBlock;
-                var result = core.Tapestry.run(HttpContext.GetLoggedUser(), appName, block, button, modelId, fc);
+                // get block
+                Block block = null;
+                try
+                {
+                    int blockId = Convert.ToInt32(blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                }
+                catch (FormatException)
+                {
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
+                }
 
-                return RedirectToRoute("Run", new { appName = appName, blockId = result.Item2.Id, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+                try
+                {
+                    block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null).InitBlock;
+                }
+                catch (NullReferenceException)
+                {
+                    return new HttpStatusCodeResult(404);
+                }
+
+                // run
+                var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc);
+
+                // redirect
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
             }
         }
     }

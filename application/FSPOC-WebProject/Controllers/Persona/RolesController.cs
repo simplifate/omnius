@@ -42,10 +42,13 @@ namespace FSPOC_WebProject.Controllers.Persona
                 #endregion
 
                 #region Rows headers
-                foreach (var user in context.Users)
-                {
-                    rowHeaders.Add(new RowHeaderAppRolesForTable(user.Id, user.DisplayName));
-                }
+               
+                   //find ad_group =>
+                   ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
+                    foreach (ADgroup_User adgu in adg.ADgroup_Users) {
+                        rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
+
+                   }
                 #endregion
 
                 #region Column headers + data
@@ -61,7 +64,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                     data.Add(boolColumn);
                     #endregion
 
-                    colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name));
+                    colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name,role.Priority));
 
                     #region Data
                     List<int> MemberList = role.Users.Select(u => u.UserId).ToList();
@@ -81,8 +84,10 @@ namespace FSPOC_WebProject.Controllers.Persona
                                 throw new IndexOutOfRangeException("There is no user with this ID");
                             }
                         }
-
-                        data[x][index] = true;
+                        if(index == rowHeaders.Count)
+                            data[x][index-1] = true;
+                        else
+                            data[x][index] = true;
                     }
                     #endregion
 
@@ -140,6 +145,8 @@ namespace FSPOC_WebProject.Controllers.Persona
                     ViewBag.Saved = false;
                     return View("App", model);
                 }
+              
+                
             }
 
             for (int i = 0; i < model.ColHeaders.Count; i++)
@@ -154,6 +161,13 @@ namespace FSPOC_WebProject.Controllers.Persona
                             ViewBag.Saved = false;
                             return View("App", model);
                         }
+                  
+                }
+                if (String.IsNullOrEmpty(currHeader.Priority.ToString()) || currHeader.Priority == 0)
+                {
+                    ViewBag.BadPriorityRole = true;
+                    ViewBag.Saved = false;
+                    return View("App", model);
                 }
             }
             #endregion
@@ -196,6 +210,10 @@ namespace FSPOC_WebProject.Controllers.Persona
                                 {
                                     realRole.Name = colHeader.Name;
                                 }
+                                if (realRole.Priority != colHeader.Priority)
+                                {
+                                    realRole.Priority = colHeader.Priority;
+                                }
                                 #endregion
 
                                 realRole.Users.Clear();
@@ -216,7 +234,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 
                             realRole.ADgroup = app.ADgroups.First();
                             realRole.Name = colHeader.Name;
-
+                            realRole.Priority = colHeader.Priority;
                             if (realRole.Name == "Nová role")
                             {
 
@@ -298,7 +316,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         private ActionResult addColumn(AjaxPersonaAppRolesForTable model)
         {
             #region ColHeader
-            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role");
+            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role",0);
 
             if (model.ColHeaders == null)
             {

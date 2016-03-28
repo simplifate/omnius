@@ -53,25 +53,25 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
+            DBTable table = core.Entitron.GetDynamicTable(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"]);
             DBEntities e = new DBEntities();
             
             //
             var select = table.Select();
-            int CondCount = core._form.AllKeys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
+            int CondCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
             Conditions condition = new Conditions(select);
             Condition_concat outCondition = null;
 
             // setConditions
             for (int i = 0; i < CondCount; i++)
             {
-                string condOperator = core._form[$"CondOperator[{i}]"];
-                string condColumn = core._form[$"CondColumn[{i}]"];
-                object condValue = core._form[$"CondValue[{i}]"];
+                string condOperator = (string)vars[$"CondOperator[{i}]"];
+                string condColumn = (string)vars[$"CondColumn[{i}]"];
+                object condValue = vars[$"CondValue[{i}]"];
 
                 DBColumn column = table.columns.Single(c => c.Name == condColumn);
                 int typeId = e.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.type)).Id;
-                var value = CORE.Convertor.convert(typeId, condValue);
+                var value = Convertor.convert(typeId, condValue);
 
                 switch (condOperator)
                 {
@@ -93,9 +93,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
                 condition = outCondition.and();
             }
-            
+
             // return
-            vars["Data"] = select.where(i => outCondition).ToList();
+            outputVars["Data"] = select.where(i => outCondition).ToList();
         }
     }
 }

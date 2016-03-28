@@ -54,6 +54,7 @@
         url: "/api/tapestry/apps/" + appId + "/metablocks/" + metablockId,
         dataType: "json",
         data: postData,
+        async: false,
         error: function (request, status, error) {
             alert(request.responseText);
         },

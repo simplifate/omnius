@@ -2,13 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using Newtonsoft.Json;
 using System.IO;
-using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Text;
 using System.Web;
+using FSS.Omnius.Modules.Entitron.Service;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -19,7 +17,7 @@ namespace FSS.Omnius.Controllers.CORE
 
         public FileStreamResult BackupApp(int id)
         {
-            var backupService = new FSS.Omnius.Modules.Entitron.Service.BackupGeneratorService();
+            var backupService = new BackupGeneratorService();
             var context = new DBEntities();
             string jsonText = backupService.ExportApplication(id);
             var appName = context.Applications.SingleOrDefault(a => a.Id == id).Name;
@@ -42,12 +40,26 @@ namespace FSS.Omnius.Controllers.CORE
                 BinaryReader b = new BinaryReader(file.InputStream);
                 byte[] binData = b.ReadBytes((int)file.InputStream.Length);
 
-                string result = System.Text.Encoding.UTF8.GetString(binData);
+                string result = Encoding.UTF8.GetString(binData);
 
                 //Now we use recover service
-                var service = new FSS.Omnius.Modules.Entitron.Service.RecoveryService();
+                var service = new RecoveryService();
                 Application app = service.RecoverApplication(result);
-                  
+                app.IsEnabled = false;
+                app.IsPublished = false;
+                app.DbSchemeLocked = false;
+
+                try
+                {
+                    var context = HttpContext.GetCORE().Entitron.GetStaticTables();
+                    context.Applications.Add(app);
+                    context.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                    ViewData["Message"] = ex.Message;
+                    return View();
+                }
             }
             return View();
         }

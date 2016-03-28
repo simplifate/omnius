@@ -57,9 +57,6 @@ $(function () {
         $(".uic > checkbox").each(function (index, element) {
             $(element).prop("checked", false);
         });
-        $(".input-single-line, .input-multiline").each(function (index, element) {
-            $(element).val("");
-        });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
@@ -79,15 +76,33 @@ $(function () {
             table.css("top", "0px");
             table.on("click", ".rowEditAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').submit();
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').submit();
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').submit();
+                if (confirm('Jste si jistí?')) {
+                    rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
+                }
+            });
+            table.find("tfoot th").each(function () {
+                var title = $(this).text();
+                if (title != "Akce")
+                    $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                else
+                    $(this).html("");
+            });
+            dataTable = table.DataTable();
+            dataTable.columns().eq(0).each(function (colIdx) {
+                $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
+                    dataTable
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
             });
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
@@ -102,6 +117,38 @@ $(function () {
             newReplacer.addClass("uic color-picker");
             newReplacer.attr("uicClasses", "color-picker");
             newReplacer.attr("uicName", newComponent.attr("uicName"));
+        });
+        $(".uic.input-single-line").each(function (index, element) {
+            newComponent = $(element);
+            autosumTargetName = newComponent.attr("writeSumInto");
+            if (autosumTargetName) {
+                autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+                newComponent.attr("autosumTarget", autosumTargetName);
+                newComponent.on("change", function () {
+                    sourceInputName = $(this).attr("name");
+                    if (sourceInputName.indexOf("_") == -1)
+                        sourceInputNameWithoutPrefix = sourceInputName;
+                    else
+                        sourceInputNameWithoutPrefix = sourceInputName.substring(sourceInputName.indexOf("_") + 1, sourceInputName.length);
+                    sum = 0;
+                    $(".uic.input-single-line").each(function (index, element) {
+                        inputName = $(element).attr("name");
+                        if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
+                            numericValue = parseInt($(element).val());
+                            if (!isNaN(numericValue)) {
+                                sum += numericValue;
+                            }
+                        }
+                    });
+                    autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+                    targetTemplate = autosumTarget.attr("contentTemplate");
+                    if (targetTemplate) {
+                        autosumTarget.text(targetTemplate.replace("{{var1}}", sum));
+                    }
+                    else
+                        autosumTarget.text(sum);
+                });
+            }
         });
         $(".uic.panel-component").each(function (index, element) {
             panel = $(element);

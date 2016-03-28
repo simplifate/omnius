@@ -64,13 +64,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             List<string> rows = new List<string>();
 
             List<string> columns = new List<string>();
-            if (string.IsNullOrEmpty(core._form["Columns"])) {
+            if (!vars.ContainsKey("Columns")) {
                 foreach(DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns) {
                     columns.Add(col.Name);
                 }
             }
             else {
-                columns = core._form["Columns"].Split(';').ToList();
+                columns = (vars["Columns"] as string).Split(';').ToList();
             }
 
             List<string> header = new List<string>();

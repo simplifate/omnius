@@ -95,8 +95,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowRule> TapestryDesignerWorkflowRules { get; set; }
         public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
-        public virtual DbSet<TapestryDesignerWorkflowSymbol> TapestryDesignerWorkflowSymbols { get; set; }
-        //public virtual DbSet<TapestryDesignerRule> TapestryDesignerRules { get; set; }
+        public virtual DbSet<TapestryDesignerResourceRule> TapestryDesignerResourceRules { get; set; }
+        public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
+        public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
+        public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
@@ -165,7 +167,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<MozaicEditorPage>()
-                .HasMany(e => e.Components);
+                .HasMany(e => e.Components)
+                .WithOptional(e => e.MozaicEditorPage);
+            modelBuilder.Entity<MozaicEditorComponent>()
+                .HasMany(e => e.ChildComponents)
+                .WithOptional(e => e.ParentComponent);
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.MozaicEditorPages)
                 .WithRequired(e => e.ParentApp);
@@ -298,14 +304,30 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.PreBlockActions);
 
             modelBuilder.Entity<TapestryDesignerResourceRule>()
-                .HasMany<TapestryDesignerConnection>(e => e.Connections)
-                .WithOptional(e => e.ResourceRule)
+                .HasMany<TapestryDesignerResourceConnection>(e => e.Connections)
+                .WithRequired(e => e.ResourceRule)
                 .HasForeignKey(e => e.ResourceRuleId);
+            modelBuilder.Entity<TapestryDesignerResourceConnection>()
+                .HasRequired<TapestryDesignerResourceItem>(e => e.Source)
+                .WithMany(e => e.SourceToConnection)
+                .HasForeignKey(e => e.SourceId);
+            modelBuilder.Entity<TapestryDesignerResourceConnection>()
+                .HasRequired<TapestryDesignerResourceItem>(e => e.Target)
+                .WithMany(e => e.TargetToConnection)
+                .HasForeignKey(e => e.TargetId);
 
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
-                .HasMany<TapestryDesignerConnection>(e => e.Connections)
-                .WithOptional(e => e.WorkflowRule)
+                .HasMany<TapestryDesignerWorkflowConnection>(e => e.Connections)
+                .WithRequired(e => e.WorkflowRule)
                 .HasForeignKey(e => e.WorkflowRuleId);
+            modelBuilder.Entity<TapestryDesignerWorkflowConnection>()
+                .HasRequired<TapestryDesignerWorkflowItem>(e => e.Source)
+                .WithMany(e => e.SourceToConnection)
+                .HasForeignKey(e => e.SourceId);
+            modelBuilder.Entity<TapestryDesignerWorkflowConnection>()
+                .HasRequired<TapestryDesignerWorkflowItem>(e => e.Target)
+                .WithMany(e => e.TargetToConnection)
+                .HasForeignKey(e => e.TargetId);
 
             // Database Designer
             modelBuilder.Entity<DbTable>()
@@ -360,8 +382,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.WorkflowItems);
-            modelBuilder.Entity<TapestryDesignerSwimlane>()
-                .HasMany(s => s.WorkflowSymbols);
 
             // Watchtower
         }

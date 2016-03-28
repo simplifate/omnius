@@ -19,11 +19,13 @@ function SaveBlock(commitMessage) {
                 TypeClass: GetItemTypeClass(currentItem),
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
+                ActionId: currentItem.attr("actionid"),
                 PageId: currentItem.attr("pageId"),
                 ComponentName: currentItem.attr("componentName"),
                 TableName: currentItem.attr("tableName"),
                 ColumnName: currentItem.attr("columnName"),
-                ColumnFilter: currentItem.data("columnFilter")
+                ColumnFilter: currentItem.data("columnFilter"),
+                ConditionSets: currentItem.data("conditionSets")
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");
@@ -33,11 +35,9 @@ function SaveBlock(commitMessage) {
             sourceDiv = $(currentConnection.source);
             targetDiv = $(currentConnection.target);
             connectionArray.push({
-                Source: sourceDiv.attr("saveId"),
-                SourceType: 0,
+                SourceId: sourceDiv.attr("saveId"),
                 SourceSlot: 0,
-                Target: targetDiv.attr("saveId"),
-                TargetType: 0,
+                TargetId: targetDiv.attr("saveId"),
                 TargetSlot: 0
             });
         }
@@ -80,21 +80,9 @@ function SaveBlock(commitMessage) {
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
                     OutputVariables: currentItem.data("outputVariables"),
-                    ComponentName: currentItem.attr("componentName")
-                });
-            });
-            currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
-                currentSymbol = $(symbolDiv);
-                currentSymbol.attr("saveId", saveId);
-                saveId++;
-                symbolArray.push({
-                    Id: currentSymbol.attr("saveId"),
-                    Label: currentSymbol.find(".itemLabel").text(),
-                    Type: currentSymbol.attr("symbolType"),
-                    DialogType: currentSymbol.attr("dialogType"),
-                    PositionX: parseInt(currentSymbol.css("left")),
-                    PositionY: parseInt(currentSymbol.css("top")),
-                    Condition: currentSymbol.data("condition")
+                    ComponentName: currentItem.attr("componentName"),
+                    isAjaxAction: currentItem.data("isAjaxAction"),
+                    Condition: currentItem.data("condition")
                 });
             });
             swimlanesArray.push({
@@ -118,11 +106,9 @@ function SaveBlock(commitMessage) {
                 sourceSlot = 0;
             if (!sourceDiv.hasClass("subSymbol")) {
                 connectionArray.push({
-                    Source: sourceDiv.attr("saveId"),
-                    SourceType: sourceDiv.hasClass("symbol") ? 1 : 0,
+                    SourceId: sourceDiv.attr("saveId"),
                     SourceSlot: sourceSlot,
-                    Target: targetDiv.attr("saveId"),
-                    TargetType: targetDiv.hasClass("symbol") ? 1 : 0,
+                    TargetId: targetDiv.attr("saveId"),
                     TargetSlot: 0
                 });
             }

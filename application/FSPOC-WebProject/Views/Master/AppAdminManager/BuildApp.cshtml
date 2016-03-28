@@ -1,9 +1,12 @@
-﻿@{
+﻿@using FSS.Omnius.Modules.Tapestry;
+
+@{
     Page.Title = "Validace aplikačného profilu";
     Page.ModuleClass = "adminAppModule";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    var message = ViewBag.Message;
 }
 <div id="appBuildResults">
-    <div class="buildSuccess">Stránky byly úpěšně zkompilovány.</div>
+    <div class="build @message.Type.ToString()">@message.ToUser()</div>
     <a href="/Master/AppAdminManager">Zpět na aplikační profily</a>
 </div>
