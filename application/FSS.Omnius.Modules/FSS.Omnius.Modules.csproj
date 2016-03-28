@@ -742,6 +742,7 @@
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
+    <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
