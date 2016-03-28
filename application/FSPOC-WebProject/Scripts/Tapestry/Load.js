@@ -196,8 +196,13 @@
                     }
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
-                        newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
-                            + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
+                        if (currentItemData.TypeClass == "circle-thick" || currentItemData.TypeClass.substr(0, 8) == "gateway-" || currentItemData.Condition != null)
+                            newItem = $('<img id="wfItem' + currentItemData.Id + '" class="item" symbolType="' + currentItemData.TypeClass +
+                            '" src="/Content/images/TapestryIcons/' + currentItemData.TypeClass + '.png" style="left: ' + currentItemData.PositionX + 'px; top: '
+                            + currentItemData.PositionY + 'px;" />');
+                        else
+                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
+                                + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
                         newItem.addClass(currentItemData.TypeClass);
                         if (currentItemData.ActionId != null)
                             newItem.attr('actionId', currentItemData.ActionId);
@@ -211,24 +216,15 @@
                             newItem.attr('targetId', currentItemData.TargetId);
                         if (currentItemData.isAjaxAction != null)
                             newItem.data('isAjaxAction', currentItemData.isAjaxAction);
+                        if (currentItemData.TypeClass == "circle-thick")
+                            newItem.attr("endpoints", "final");
+                        if (currentItemData.TypeClass.substr(0, 8) == "gateway-")
+                            newItem.attr("endpoints", "gateway");
+                        if (currentItemData.Condition != null)
+                            newItem.data("condition", currentItemData.Condition);
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
-                    }
-                    for (k = 0; k < currentSwimlaneData.WorkflowSymbols.length; k++) {
-                        currentSymbolData = currentSwimlaneData.WorkflowSymbols[k];
-                        newSymbol = $('<img id="wfSymbol' + currentSymbolData.Id + '" class="symbol" symbolType="' + currentSymbolData.Type +
-                            '" src="/Content/images/TapestryIcons/' + currentSymbolData.Type + '.png" style="left: ' + currentSymbolData.PositionX + 'px; top: '
-                            + currentSymbolData.PositionY + 'px;" />');
-                        if (currentSymbolData.Type == "circle-thick")
-                            newSymbol.attr("endpoints", "final");
-                        else if (currentSymbolData.Type.substr(0, 8) == "gateway-")
-                            newSymbol.attr("endpoints", "gateway");
-                        if (currentSymbolData.Condition != null)
-                            newSymbol.data("condition", currentSymbolData.Condition);
-                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
-                        targetSwimlane.append(newSymbol);
-                        AddToJsPlumb(newSymbol);
                     }
                 }
                 newRule.find(".swimlaneRolesArea").droppable({
@@ -296,8 +292,8 @@
                 currentInstance = newRule.data("jsPlumbInstance");
                 for (j = 0; j < currentRuleData.Connections.length; j++) {
                     currentConnectionData = currentRuleData.Connections[j];
-                    sourceId = (currentConnectionData.SourceType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Source;
-                    targetId = (currentConnectionData.TargetType == 1 ? "wfSymbol" : "wfItem") + currentConnectionData.Target;
+                    sourceId = "wfItem" + currentConnectionData.Source;
+                    targetId = "wfItem" + currentConnectionData.Target;
                     if (currentConnectionData.SourceSlot == 1)
                         sourceEndpointUuid = "BottomCenter";
                     else

@@ -36,10 +36,8 @@ function SaveBlock(commitMessage) {
             targetDiv = $(currentConnection.target);
             connectionArray.push({
                 Source: sourceDiv.attr("saveId"),
-                SourceType: 0,
                 SourceSlot: 0,
                 Target: targetDiv.attr("saveId"),
-                TargetType: 0,
                 TargetSlot: 0
             });
         }
@@ -83,20 +81,7 @@ function SaveBlock(commitMessage) {
                     InputVariables: currentItem.data("inputVariables"),
                     OutputVariables: currentItem.data("outputVariables"),
                     ComponentName: currentItem.attr("componentName"),
-                    isAjaxAction: currentItem.data("isAjaxAction")
-                });
-            });
-            currentSwimlane.find(".symbol").each(function (symbolIndex, symbolDiv) {
-                currentSymbol = $(symbolDiv);
-                currentSymbol.attr("saveId", saveId);
-                saveId++;
-                symbolArray.push({
-                    Id: currentSymbol.attr("saveId"),
-                    Label: currentSymbol.find(".itemLabel").text(),
-                    Type: currentSymbol.attr("symbolType"),
-                    DialogType: currentSymbol.attr("dialogType"),
-                    PositionX: parseInt(currentSymbol.css("left")),
-                    PositionY: parseInt(currentSymbol.css("top")),
+                    isAjaxAction: currentItem.data("isAjaxAction"),
                     Condition: currentSymbol.data("condition")
                 });
             });
@@ -122,10 +107,8 @@ function SaveBlock(commitMessage) {
             if (!sourceDiv.hasClass("subSymbol")) {
                 connectionArray.push({
                     Source: sourceDiv.attr("saveId"),
-                    SourceType: sourceDiv.hasClass("symbol") ? 1 : 0,
                     SourceSlot: sourceSlot,
                     Target: targetDiv.attr("saveId"),
-                    TargetType: targetDiv.hasClass("symbol") ? 1 : 0,
                     TargetSlot: 0
                 });
             }
