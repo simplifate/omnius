@@ -210,6 +210,8 @@
                             newItem.data('inputVariables', currentItemData.InputVariables);
                         if (currentItemData.OutputVariables != null)
                             newItem.data('outputVariables', currentItemData.OutputVariables);
+                        if (currentItemData.PageId != null)
+                            newItem.attr("pageId", currentItemData.PageId);
                         if (currentItemData.ComponentName != null)
                             newItem.attr('componentName', currentItemData.ComponentName);
                         if (currentItemData.TargetId != null)
