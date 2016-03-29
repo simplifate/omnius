@@ -7,12 +7,27 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.Tapestry_WorkFlow", "Id", c => c.Int(nullable: false, identity: true));
+            DropForeignKey("dbo.Tapestry_Blocks", "WorkFlowId", "dbo.Tapestry_WorkFlow");
+            DropForeignKey("dbo.Tapestry_WorkFlow", "ParentId", "dbo.Tapestry_WorkFlow");
+            DropPrimaryKey("dbo.Tapestry_WorkFlow");
+            DropColumn("dbo.Tapestry_WorkFlow", "Id");
+            AddColumn("dbo.Tapestry_WorkFlow", "Id", c => c.Int(identity: true));
+            AddPrimaryKey("dbo.Tapestry_WorkFlow", "Id");
+            AddForeignKey("dbo.Tapestry_Blocks", "WorkFlowId", "dbo.Tapestry_WorkFlow", "Id");
+            AddForeignKey("dbo.Tapestry_WorkFlow", "ParentId", "dbo.Tapestry_WorkFlow", "Id");
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.Tapestry_WorkFlow", "Id", c => c.Int(nullable: false));
+            DropForeignKey("dbo.Tapestry_Blocks", "WorkFlowId", "dbo.Tapestry_WorkFlow");
+            DropForeignKey("dbo.Tapestry_WorkFlow", "ParentId", "dbo.Tapestry_WorkFlow");
+            DropPrimaryKey("dbo.Tapestry_WorkFlow");
+            DropColumn("dbo.Tapestry_WorkFlow", "Id");
+            DropColumn("dbo.Tapestry_WorkFlow", "Id");
+            AddColumn("dbo.Tapestry_WorkFlow", "Id", c => c.Int(nullable: false));
+            AddPrimaryKey("dbo.Tapestry_WorkFlow", "Id");
+            AddForeignKey("dbo.Tapestry_Blocks", "WorkFlowId", "dbo.Tapestry_WorkFlow", "Id");
+            AddForeignKey("dbo.Tapestry_WorkFlow", "ParentId", "dbo.Tapestry_WorkFlow", "Id");
         }
     }
 }
