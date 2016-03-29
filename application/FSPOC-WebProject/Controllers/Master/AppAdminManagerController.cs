@@ -148,6 +148,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
                 catch(Exception ex)
                 {
+                    Logger.Log.Error(ex, Request);
                     //pass the message object to view
                     var message = new Message();
                     message.Errors.Add(ex.Message);
