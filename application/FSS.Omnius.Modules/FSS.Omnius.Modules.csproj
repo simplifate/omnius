@@ -732,6 +732,10 @@
     <Compile Include="Migrations\201603282201536_addIdToModel.Designer.cs">
       <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603290102436_identityWorkflow.cs" />
+    <Compile Include="Migrations\201603290102436_identityWorkflow.Designer.cs">
+      <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1161,6 +1165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603282201536_addIdToModel.resx">
       <DependentUpon>201603282201536_addIdToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603290102436_identityWorkflow.resx">
+      <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
