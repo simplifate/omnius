@@ -248,6 +248,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string OutputVariables { get; set; }
         public int? StateId { get; set; }
         public int? TargetId { get; set; }
+        public string TargetName { get; set; }
         public string ComponentId { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }

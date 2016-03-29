@@ -736,6 +736,10 @@
     <Compile Include="Migrations\201603290102436_identityWorkflow.Designer.cs">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603291050130_Add TargetName.cs" />
+    <Compile Include="Migrations\201603291050130_Add TargetName.Designer.cs">
+      <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1168,6 +1172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603290102436_identityWorkflow.resx">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291050130_Add TargetName.resx">
+      <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
