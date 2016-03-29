@@ -41,7 +41,7 @@ namespace FSS.Omnius.Modules.Migrations
             if (!context.DataTypes.Any())
                 context.DataTypes.AddOrUpdate(
                     new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "NVarChar", shortcut = "s", limited = true, DBColumnTypeName = "varchar" },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "bool", SqlName = "Boolean", shortcut = "b", limited = false, DBColumnTypeName = "boolean" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "bool", SqlName = "Bit", shortcut = "b", limited = false, DBColumnTypeName = "boolean" },
                     new Entitron.Entity.CORE.DataType { CSharpName = "int", SqlName = "Integer", shortcut = "i", limited = false, DBColumnTypeName = "integer" },
                     new Entitron.Entity.CORE.DataType { CSharpName = "float", SqlName = "Float", shortcut = "f", limited = false, DBColumnTypeName = "float" },
                     new Entitron.Entity.CORE.DataType { CSharpName = "DateTime", SqlName = "DateTime", shortcut = "d", limited = false, DBColumnTypeName = "datetime" },
