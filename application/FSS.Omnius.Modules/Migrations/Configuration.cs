@@ -40,13 +40,18 @@ namespace FSS.Omnius.Modules.Migrations
 
             if (!context.DataTypes.Any())
                 context.DataTypes.AddOrUpdate(
-                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "NVarChar", shortcut = "s", limited = true },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "bool", SqlName = "Boolean", shortcut = "b", limited = false },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "int", SqlName = "Integer", shortcut = "i", limited = false },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "float", SqlName = "Float", shortcut = "f", limited = false },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "DateTime", SqlName = "DateTime", shortcut = "d", limited = false },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "XML", shortcut = "x", limited = true },
-                    new Entitron.Entity.CORE.DataType { CSharpName = "blob", SqlName = "Blob", shortcut = "l", limited = true }
+                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "NVarChar", shortcut = "s", limited = true, DBColumnTypeName = "varchar" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "bool", SqlName = "Boolean", shortcut = "b", limited = false, DBColumnTypeName = "boolean" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "int", SqlName = "Integer", shortcut = "i", limited = false, DBColumnTypeName = "integer" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "float", SqlName = "Float", shortcut = "f", limited = false, DBColumnTypeName = "float" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "DateTime", SqlName = "DateTime", shortcut = "d", limited = false, DBColumnTypeName = "datetime" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "string", SqlName = "XML", shortcut = "x", limited = true, DBColumnTypeName = "xml" },
+                    new Entitron.Entity.CORE.DataType { CSharpName = "blob", SqlName = "Blob", shortcut = "l", limited = true, DBColumnTypeName = "blob" }
+                );
+
+            if (!context.Applications.Any())
+                context.Applications.AddOrUpdate(
+                    new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsSystem = true, TitleFontSize = 12, Color = 1, TileHeight = 5, TileWidth = 5 }
                 );
         }
     }
