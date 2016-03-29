@@ -180,7 +180,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         }
                         targetName = component.Name;
                         targetType = component.Type;
-                    };
+                    }
                     return new ResourceMappingPair
                     {
                         Source = source,
