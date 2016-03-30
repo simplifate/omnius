@@ -744,6 +744,10 @@
     <Compile Include="Migrations\201603291528171_Add pageId.Designer.cs">
       <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603301510267_blockUnique.cs" />
+    <Compile Include="Migrations\201603301510267_blockUnique.Designer.cs">
+      <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1182,6 +1186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603291528171_Add pageId.resx">
       <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603301510267_blockUnique.resx">
+      <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

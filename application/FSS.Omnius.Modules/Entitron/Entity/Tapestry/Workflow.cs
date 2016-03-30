@@ -2,6 +2,7 @@
 {
     using Master;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Tapestry_WorkFlow")]
@@ -14,8 +15,13 @@
         }
 
         public int Id { get; set; }
+        [Required]
+        [StringLength(50)]
+        [Index("Unique_workflowNameApp", 2, IsUnique = true)]
+        public string Name { get; set; }
         public int? InitBlockId { get; set; }
         public int? ParentId { get; set; }
+        [Index("Unique_workflowNameApp", 1, IsUnique = true)]
         public int ApplicationId { get; set; }
         public int TypeId { get; set; }
         public bool IsInMenu { get; set; }
