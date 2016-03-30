@@ -63,6 +63,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             WorkFlow resultWF = new WorkFlow
             {
                 ApplicationId = _core.Entitron.AppId,
+                Name = block.Name.RemoveDiacritics(),
                 Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial"),
             };
             _context.WorkFlows.Add(resultWF);
