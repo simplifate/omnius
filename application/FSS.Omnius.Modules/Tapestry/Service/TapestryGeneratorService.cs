@@ -295,39 +295,37 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem prevItem = null;
             while (item != null && (prevItem == null || !blockMapping.ContainsKey(prevItem)))
             {
-                // create
-                TapestryDesignerWorkflowItem wfItem = (TapestryDesignerWorkflowItem)item;
                 // action
-                if (wfItem.ActionId != null)
+                if (item.ActionId != null)
                 {
                     ActionRule_Action result = new ActionRule_Action
                     {
-                        ActionId = wfItem.ActionId.Value,
+                        ActionId = item.ActionId.Value,
                         Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
-                        InputVariablesMapping = wfItem.InputVariables,
-                        OutputVariablesMapping = wfItem.OutputVariables
+                        InputVariablesMapping = item.InputVariables,
+                        OutputVariablesMapping = item.OutputVariables
                     };
                     rule.ActionRule_Actions.Add(result);
                 }
                 // target
-                if (wfItem.TargetId != null)
+                if (item.TargetId != null)
                 {
-                    rule.TargetBlock = _blockMapping[wfItem.TargetId.Value];
+                    rule.TargetBlock = _blockMapping[item.TargetId.Value];
                 }
                 // gateway-x
-                if (wfItem.TypeClass == "gateway-x")
+                if (item.TypeClass == "gateway-x")
                 {
                     Block splitBlock = blockMapping[item];
                     // if not already in conditionMapping
                     if (!conditionMapping.ContainsKey(splitBlock))
-                        conditionMapping.Add(splitBlock, wfItem.Condition);
+                        conditionMapping.Add(splitBlock, item.Condition);
                 }
 
                 // TODO: other items
 
 
                 // next connection
-                connection = workflowRule.Connections.FirstOrDefault(c => c.SourceId == connection.TargetId);
+                connection = workflowRule.Connections.FirstOrDefault(c => c.SourceId == item.Id);
                 prevItem = item;
                 item = connection != null ? connection.Target : null;
             }
