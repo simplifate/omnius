@@ -186,7 +186,7 @@ body.adminAppModule #appBuildResults {
   cursor: default;
   position: absolute;
   left: 0px;
-  right: 0px;
+  width: 100vw;
   height: 75px;
   background-color: #457fa9;
   z-index: 30; }
@@ -261,6 +261,7 @@ body.adminAppModule #appBuildResults {
   position: absolute;
   left: 0px;
   top: 75px;
+  height: 100vh;
   width: 225px;
   background-color: #455d73; }
   #leftBar .leftMenu {
@@ -995,7 +996,8 @@ body.tapestryModule #lowerPanel {
       body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace {
         position: relative;
         height: 360px;
-        background-color: #e0e2e2; }
+        background-color: #e0e2e2;
+        display: none; }
         body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace .toolboxSymbol {
           position: absolute; }
         body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace .toolboxSymbol.ui-draggable-dragging {
