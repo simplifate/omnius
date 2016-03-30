@@ -295,34 +295,51 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem prevItem = null;
             while (item != null && (prevItem == null || !blockMapping.ContainsKey(prevItem)))
             {
-                // action
-                if (item.ActionId != null)
+                switch(item.TypeClass)
                 {
-                    ActionRule_Action result = new ActionRule_Action
-                    {
-                        ActionId = item.ActionId.Value,
-                        Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
-                        InputVariablesMapping = item.InputVariables,
-                        OutputVariablesMapping = item.OutputVariables
-                    };
-                    rule.ActionRule_Actions.Add(result);
-                }
-                // target
-                if (item.TargetId != null)
-                {
-                    rule.TargetBlock = _blockMapping[item.TargetId.Value];
-                }
-                // gateway-x
-                if (item.TypeClass == "gateway-x")
-                {
-                    Block splitBlock = blockMapping[item];
-                    // if not already in conditionMapping
-                    if (!conditionMapping.ContainsKey(splitBlock))
-                        conditionMapping.Add(splitBlock, item.Condition);
-                }
+                    case "actionItem":
+                        ActionRule_Action result = new ActionRule_Action
+                        {
+                            ActionId = item.ActionId.Value,
+                            Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
+                            InputVariablesMapping = item.InputVariables,
+                            OutputVariablesMapping = item.OutputVariables
+                        };
+                        rule.ActionRule_Actions.Add(result);
+                        break;
 
-                // TODO: other items
+                    case "targetItem":
+                        rule.TargetBlock = _blockMapping[item.TargetId.Value];
+                        break;
 
+                    case "gateway-x":
+                        Block splitBlock = blockMapping[item];
+                        // if not already in conditionMapping
+                        if (!conditionMapping.ContainsKey(splitBlock))
+                            conditionMapping.Add(splitBlock, item.Condition);
+                        break;
+
+                    case "circle-thick":
+                        break;
+                    case "attributeItem":
+                        break;
+                    case "templateItem":
+                        break;
+                    case "stateItem":
+                        break;
+                    case "circle-single":
+                        break;
+                    case "circle-single-dashed":
+                        break;
+                    case "uiItem":
+                        break;
+                    case "database":
+                        break;
+                    case "comment":
+                        break;
+                    default:
+                        break;
+                }
 
                 // next connection
                 connection = workflowRule.Connections.FirstOrDefault(c => c.SourceId == item.Id);
