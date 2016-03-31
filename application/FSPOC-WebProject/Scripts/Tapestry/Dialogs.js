@@ -502,7 +502,13 @@ $(function () {
                         tbody = chooseTablesDialog.find("#table-table tbody:nth-child(2)");
                         for (i = 0; i < data.Tables.length; i++) {
                             newTableRow = $('<tr class="tableRow" tableId="' + data.Tables[i].Id + '"><td>' + data.Tables[i].Name + '</td></tr>');
-                            if (AssociatedTableIds.indexOf(data.Tables[i].Id) != -1)
+                            if (AssociatedTableName.indexOf(data.Tables[i].Name) != -1)
+                                newTableRow.addClass("highlightedRow");
+                            tbody.append(newTableRow);
+                        }
+                        for (i = 0; i < SystemTables.length; i++) {
+                            newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td>' + SystemTables[i].Name + '</td></tr>');
+                            if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
                                 newTableRow.addClass("highlightedRow");
                             tbody.append(newTableRow);
                         }
@@ -527,15 +533,25 @@ $(function () {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
+                            tableName = $(element).find('td').text();
                             AssociatedTableIds.push(parseInt(tableId));
-                            AssociatedTableName.push($(element).find('td').text())
+                            AssociatedTableName.push(tableName);
                             currentTable = data.Tables.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];
-                            for (i = 0; i < currentTable.Columns.length; i++) {
-                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                    + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
-                            }
+                            if (currentTable)
+                                for (i = 0; i < currentTable.Columns.length; i++) {
+                                    $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                }
+                            systemTable = SystemTables.filter(function (value) {
+                                return value.Name == tableName;
+                            })[0];
+                            if(systemTable)
+                                for (i = 0; i < systemTable.Columns.length; i++) {
+                                    $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                        + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
+                                }
                         }
                     });
                     $("#blockHeaderDbResCount").text(tableCount);

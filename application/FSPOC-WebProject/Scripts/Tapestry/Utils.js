@@ -1,4 +1,10 @@
 ﻿var LastAssignedNumber = 0;
+SystemTables = [
+    {
+        Name: "Omnius::Users",
+        Columns: ["DisplayName", "Company", "Job", "Address", "Email"]
+    }
+];
 
 function CreateJsPlumbInstanceForRule(ruleElement) {
     newInstance = jsPlumb.getInstance({
