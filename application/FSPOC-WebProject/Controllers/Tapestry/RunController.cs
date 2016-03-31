@@ -74,7 +74,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
                         {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
-                            if(columnFilter.Count > 0)
+                            if (columnFilter.Count > 0)
                                 getAllColumns = false;
                         }
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
@@ -153,30 +153,37 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
                     }
-                    if(resourceMappingPair.Source.TypeClass == "actionItem" && (resourceMappingPair.TargetType == "input-single-line"
-                        || resourceMappingPair.TargetType == "input-multiline"))
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
-                        switch(resourceMappingPair.Source.ActionId)
-                        {
-                            case 501:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
-                                break;
-                            case 502:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
-                                break;
-                            case 503:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
-                                break;
-                            case 504:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
-                                break;
-                            case 505:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Department;
-                                break;
-                            case 506:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
-                                break;
-                        }
+                        if(resourceMappingPair.Source.TableName == "Omnius::Users")
+                            switch (resourceMappingPair.Source.ColumnName)
+                            {
+                                case "DisplayName":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+                                    break;
+                                case "Company":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+                                    break;
+                                case "Job":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+                                    break;
+                                case "Email":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+                                    break;
+                                case "Address":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+                                    break;
+                            }
+                        else if (resourceMappingPair.Source.TableName == "Users")
+                            switch (resourceMappingPair.Source.ColumnName)
+                            {
+                                case "kostl":
+                                    var epkUserRow = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList()[0];
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRow["kostl"];
+                                    break;
+                            }
                     }
                 }
 

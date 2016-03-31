@@ -788,12 +788,6 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserAddress.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserCompany.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserDepartment.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserDisplayName.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserEmail.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserJob.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />

@@ -159,7 +159,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     TapestryDesignerResourceItem source = connection.Source;
                     TapestryDesignerResourceItem target = connection.Target;
 
-                    string targetName = "", targetType = "";
+                    string targetName = "", targetType = "", dataSourceParams = "";
+
+                    if (source.ActionId == 1023)
+                        continue;
 
                     if (!string.IsNullOrEmpty(target.ComponentName))
                     {
@@ -175,8 +178,22 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     break;
                             }
                         }
-                        targetName = component.Name;
-                        targetType = component.Type;
+                        if (component != null)
+                        {
+                            targetName = component.Name;
+                            targetType = component.Type;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(source.ColumnName))
+                    {
+                        foreach (TapestryDesignerResourceConnection relatedConnection in resourceRule.Connections)
+                        {
+                            if (relatedConnection.TargetId == source.Id)
+                            {
+                                if (relatedConnection.Source.ActionId == 1023)
+                                    dataSourceParams = "currentUser";
+                            }
+                        }
                     }
                     return new ResourceMappingPair
                     {
@@ -184,7 +201,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         Target = target,
                         TargetName = targetName,
                         TargetType = targetType,
-                        SourceColumnFilter = source.ColumnFilter
+                        SourceColumnFilter = source.ColumnFilter,
+                        DataSourceParams = dataSourceParams
                     };
                 }
             }
