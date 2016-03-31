@@ -161,7 +161,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     string targetName = "", targetType = "", dataSourceParams = "";
 
-                    if (source.ActionId == 1023)
+                    if (source.ActionId == 1023 || source.ActionId == 1024)
                         continue;
 
                     if (!string.IsNullOrEmpty(target.ComponentName))
@@ -192,6 +192,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             {
                                 if (relatedConnection.Source.ActionId == 1023)
                                     dataSourceParams = "currentUser";
+                                else if (relatedConnection.Source.ActionId == 1024)
+                                    dataSourceParams = "superior";
                             }
                         }
                     }
