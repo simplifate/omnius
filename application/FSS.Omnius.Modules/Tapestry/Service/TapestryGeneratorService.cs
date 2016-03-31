@@ -14,42 +14,39 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private DBEntities _context;
 
         private Dictionary<int, Block> _blockMapping;
-        private List<WorkFlow> _addedWF;
 
         public TapestryGeneratorService()
         {
             _blockMapping = new Dictionary<int, Block>();
-            _addedWF = new List<WorkFlow>();
         }
 
         public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
         {
             _core = core;
             _context = core.Entitron.GetStaticTables();
+            Application app = core.Entitron.Application;
 
             // remove old temp blocks - should do nothing
-            _context.WorkFlows.RemoveRange(_context.Blocks.Where(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.IsTemp).GroupBy(b => b.WorkFlow).Select(g => g.Key));
+            _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
             _context.SaveChanges();
-
-            var oldWF = _context.WorkFlows.Where(w => w.ApplicationId == core.Entitron.AppId).ToList();
 
             try
             {
                 // generate new
-                WorkFlow wf = saveMetaBlock(_core.Entitron.Application.TapestryDesignerRootMetablock, true);
+                WorkFlow wf = saveMetaBlock(app.TapestryDesignerRootMetablock, true);
                 _context.SaveChanges();
                 
                 // remove old
-                _context.WorkFlows.RemoveRange(oldWF);
+                _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
                 _context.SaveChanges();
 
-                foreach (Block block in _context.Blocks.Where(b => b.IsTemp && b.WorkFlow.ApplicationId == core.Entitron.AppId))
-                    block.IsTemp = false;
+                foreach (WorkFlow workflow in app.WorkFlows)
+                    workflow.IsTemp = false;
                 _context.SaveChanges();
             }
             catch(Exception ex)
             {
-                _context.WorkFlows.RemoveRange(_addedWF);
+                _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
                 _context.SaveChanges();
 
                 throw ex;
@@ -65,9 +62,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 ApplicationId = _core.Entitron.AppId,
                 Name = block.Name.RemoveDiacritics(),
                 Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial"),
+                IsTemp = true
             };
             _context.WorkFlows.Add(resultWF);
-            _addedWF.Add(resultWF);
             _context.SaveChanges();
 
             // child meta block
@@ -89,8 +86,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = childBlock.Name.RemoveDiacritics(),
                     DisplayName = childBlock.Name,
                     ModelName = modelName != null ? modelName.Split(',').First() : null,
-                    IsVirtual = false,
-                    IsTemp = true
+                    IsVirtual = false
                 };
                 resultWF.Blocks.Add(resultBlock);
                 if (childBlock.IsInitial)
@@ -219,8 +215,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"split_{block.Name}_{random}",
                     DisplayName = $"split[{block.Name}_{random}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true,
-                    IsTemp = true
+                    IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);
                 TapestryDesignerWorkflowItem it = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == splitItem.Key);
@@ -244,8 +239,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"join_{block.Name}_{random}",
                     DisplayName = $"join[{block.Name}_{random}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true,
-                    IsTemp = true
+                    IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);
 

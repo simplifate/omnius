@@ -25,6 +25,8 @@
         public int ApplicationId { get; set; }
         public int TypeId { get; set; }
         public bool IsInMenu { get; set; }
+        [Index("Unique_workflowNameApp", 3, IsUnique = true)]
+        public bool IsTemp { get; set; }
         public virtual Application Application { get; set; }
         public virtual ICollection<Block> Blocks { get; set; }
         public virtual Block InitBlock { get; set; }

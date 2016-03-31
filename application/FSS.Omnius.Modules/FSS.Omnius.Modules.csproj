@@ -752,6 +752,10 @@
     <Compile Include="Migrations\201603310847502_Add DataSourceParams.Designer.cs">
       <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603311101178_tempWorkflow.cs" />
+    <Compile Include="Migrations\201603311101178_tempWorkflow.Designer.cs">
+      <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1197,6 +1201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603310847502_Add DataSourceParams.resx">
       <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603311101178_tempWorkflow.resx">
+      <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

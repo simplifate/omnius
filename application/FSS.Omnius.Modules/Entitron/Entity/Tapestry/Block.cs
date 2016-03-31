@@ -37,10 +37,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public bool IsVirtual { get; set; }
         public bool IsInMenu { get; set; }
-        [Index("blockUniqueness", Order = 2, IsUnique = true)]
-        public bool IsTemp { get; set; }
 
-        [Index("blockUniqueness", Order = 3, IsUnique = true)]
+        [Index("blockUniqueness", Order = 2, IsUnique = true)]
         public int WorkFlowId { get; set; }
 
         public int? MozaicPageId { get; set; }
