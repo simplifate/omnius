@@ -184,7 +184,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         Target = target,
                         TargetName = targetName,
                         TargetType = targetType,
-                        SourceColumnFilter = source.ColumnFilter
+                        SourceColumnFilter = source.ColumnFilter,
+                        Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id.Value]
                     };
                 }
             }

@@ -271,7 +271,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
-                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs);
+                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs)
+                .WithRequired(e => e.Block)
+                .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
                 .HasMany<ActionRule>(e => e.SourceTo_ActionRules)
@@ -367,7 +369,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.ResourceRules)
-                .WithOptional(s => s.ParentBlockCommit)
+                .WithRequired(s => s.ParentBlockCommit)
                 .HasForeignKey(x => x.ParentBlockCommit_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()

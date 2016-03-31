@@ -12,5 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string DataSourceParams { get; set; }
         public virtual TapestryDesignerResourceItem Source { get; set; }
         public virtual TapestryDesignerResourceItem Target { get; set; }
+        public int BlockId { get; set; }
+        public virtual Block Block { get; set; }
     }
 }
