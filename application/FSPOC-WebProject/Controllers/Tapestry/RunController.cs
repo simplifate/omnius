@@ -179,9 +179,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                             switch (resourceMappingPair.Source.ColumnName)
                             {
                                 case "kostl":
-                                    var epkUserRow = core.Entitron.GetDynamicTable("Users").Select()
-                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList()[0];
-                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRow["kostl"];
+                                    var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                                    if(epkUserRowList.Count > 0)
+                                        ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0]["kostl"];
                                     break;
                             }
                     }
