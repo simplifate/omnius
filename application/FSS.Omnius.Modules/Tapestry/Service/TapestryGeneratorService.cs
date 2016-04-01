@@ -205,7 +205,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         TargetType = targetType,
                         SourceColumnFilter = source.ColumnFilter,
                         DataSourceParams = dataSourceParams,
-                        Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id.Value]
+                        Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
                     };
                 }
             }

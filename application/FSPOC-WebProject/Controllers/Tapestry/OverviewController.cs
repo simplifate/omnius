@@ -25,23 +25,21 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         int appId = int.Parse(formParams["appId"]);
                         HttpContext.GetLoggedUser().DesignAppId = appId;
                         HttpContext.GetCORE().Entitron.GetStaticTables().SaveChanges();
-                        var rootMetablock = context.Applications.Include("TapestryDesignerRootMetablock")
-                            .Where(c => c.Id == appId).First().TapestryDesignerRootMetablock;
+                        var app = context.Applications.Find(appId);
+                        var rootMetablock = app.TapestryDesignerRootMetablock;
                         if(rootMetablock == null)
                         {
                             var newRootMetablock = new TapestryDesignerMetablock
                             {
-                                Name = "Root metablock"
+                                Name = "Root metablock",
+                                ParentApp = app
                             };
                             context.TapestryDesignerMetablocks.Add(newRootMetablock);
-                            context.Applications.Find(appId).TapestryDesignerRootMetablock = newRootMetablock;
-                            newRootMetablock.ParentApp = context.Applications.Find(appId);
                             context.SaveChanges();
                             metablockId = newRootMetablock.Id;
                         }
                         else
-                            metablockId = context.Applications.Include("TapestryDesignerRootMetablock")
-                            .Where(c => c.Id == appId).First().TapestryDesignerRootMetablock.Id;
+                            metablockId = rootMetablock.Id;
                         ViewData["appName"] = context.Applications.Find(appId).DisplayName;
                         ViewData["currentAppId"] = appId;
                     }
@@ -66,7 +64,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 {
                     var userApp = HttpContext.GetLoggedUser().DesignApp;
                     if (userApp == null)
-                        userApp = context.Applications.Include("TapestryDesignerRootMetablock").First();
+                        userApp = context.Applications.First();
                     ViewData["metablockId"] = userApp.TapestryDesignerRootMetablock.Id;
                     ViewData["parentMetablockId"] = 0;
                     ViewData["appName"] = userApp.DisplayName;
@@ -133,8 +131,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 rootMetablockId = parentMetablock.Id;
             }
 
-            return context.Applications.Include("TapestryDesignerRootMetablock")
-                                       .Where(a => a.TapestryDesignerRootMetablock.Id == rootMetablockId).First();
+            return context.Applications.SingleOrDefault(a => a.TapestryDesignerMetablocks.Any(mb => mb.Id == rootMetablockId));
         }
 
     }

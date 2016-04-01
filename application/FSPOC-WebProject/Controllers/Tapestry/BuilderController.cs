@@ -33,9 +33,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         parentMetablock = context.TapestryDesignerMetablocks.Include("ParentMetablock").Include("ParentApp")
                             .Where(c => c.Id == parentMetablock.Id).First().ParentMetablock;
                     }
-                    Application app = context.Applications.Include("TapestryDesignerRootMetablock")
-                                                          .Where(a => a.TapestryDesignerRootMetablock.Id == rootMetablockId)
-                                                          .First();
+                    Application app = context.Applications.SingleOrDefault(a => a.TapestryDesignerMetablocks.Any(mb => mb.Id == rootMetablockId));
 
                     ViewData["appId"] = app != null ? app.Id : appId;
                     //ViewData["screenCount"] = context.TapestryDesignerBlocks.Find(blockId).Pages.Count();

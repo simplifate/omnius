@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
@@ -34,6 +35,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
 
         public TapestryDesignerMetablock ParentMetablock { get; set; }
+        public int ParentAppId { get; set; }
         public Application ParentApp { get; set; }
 
         [JsonIgnore]
@@ -54,6 +56,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int TargetType { get; set; }
         public int? SourceId { get; set; }
         public int? TargetId { get; set; }
+
+        [Required]
+        public virtual TapestryDesignerMetablock TapestryDesignerMetablock { get; set; }
     }
     [Table("TapestryDesigner_Blocks")]
     public class TapestryDesignerBlock
@@ -72,7 +77,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
         [JsonIgnore]
-        public int? ParentMetablock_Id { get; set; }
+        public int ParentMetablock_Id { get; set; }
         [JsonIgnore]
         public virtual ICollection<TapestryDesignerWorkflowItem> TargetFor { get; set; }
 
@@ -102,7 +107,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
         [JsonIgnore]
-        public int? ParentBlock_Id { get; set; }
+        public int ParentBlock_Id { get; set; }
 
         public TapestryDesignerBlockCommit()
         {
@@ -148,7 +153,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
         [JsonIgnore]
-        public int? ParentBlockCommit_Id { get; set; }
+        public int ParentBlockCommit_Id { get; set; }
 
         public TapestryDesignerResourceRule()
         {
@@ -170,7 +175,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerWorkflowConnection> Connections { get; set; }
 
         [JsonIgnore]
-        public int? ParentBlockCommit_Id { get; set; }
+        public int ParentBlockCommit_Id { get; set; }
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
         public TapestryDesignerWorkflowRule()
@@ -192,7 +197,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
         [JsonIgnore]
-        public int? ParentWorkflowRule_Id { get; set; }
+        public int ParentWorkflowRule_Id { get; set; }
 
         public TapestryDesignerSwimlane()
         {
@@ -215,7 +220,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ColumnFilter { get; set; }
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
-        public int? ParentRuleId { get; set; }
+        public int ParentRuleId { get; set; }
         [JsonIgnore]
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
 
@@ -240,7 +245,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
-        public int? ParentSwimlaneId { get; set; }
+        public int ParentSwimlaneId { get; set; }
         [JsonIgnore]
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
@@ -378,6 +383,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Variable { get; set; }
         public string Operator { get; set; }
         public string Value { get; set; }
+
+        [Required]
+        public virtual TapestryDesignerConditionSet TapestryDesignerConditionSet { get; set; }
     }
     [Table("TapestryDesigner_ConditionSets")]
     public class TapestryDesignerConditionSet
@@ -385,6 +393,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
+
+        [Required]
+        public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
         public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
 
         public TapestryDesignerConditionSet()

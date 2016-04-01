@@ -768,6 +768,10 @@
     <Compile Include="Migrations\201604011034314_targetRelation.Designer.cs">
       <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604011055555_requiredParent.cs" />
+    <Compile Include="Migrations\201604011055555_requiredParent.Designer.cs">
+      <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1220,6 +1224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604011034314_targetRelation.resx">
       <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011055555_requiredParent.resx">
+      <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
