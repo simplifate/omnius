@@ -52,17 +52,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.EPK
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var sap = core.Entitron.GetDynamicTable("Users");
-            string username = core.User.UserName;
-            int i = username.IndexOf('\\') >= 0 ? username.IndexOf('\\') : 0;
-            var thisSap = sap.Select().where(c => c.column("ad_id").Equal(username.Substring(i))).First();
+            // var sap = core.Entitron.GetDynamicTable("Users");
+            // string username = core.User.UserName;
+            // int i = username.IndexOf('\\') >= 0 ? username.IndexOf('\\') : 0;
+            // var thisSap = sap.Select().where(c => c.column("ad_id").Equal(username.Substring(i))).First();
 
-            var plan = core.Entitron.GetDynamicTable("Plans");
-            var thisSapPlan = plan.Select().where(c => c.column("objid").Equal(thisSap["plans"])).First();
+            // var plan = core.Entitron.GetDynamicTable("Plans");
+            // var thisSapPlan = plan.Select().where(c => c.column("objid").Equal(thisSap["plans"])).First();
 
             outputVars["year"] = DateTime.Now.Year;
-            outputVars["client_sapid2"] = thisSap["sapid2"];
-            outputVars["client_function"] = thisSapPlan["stext"];
+            // outputVars["client_sapid2"] = thisSap["sapid2"];
+            // outputVars["client_function"] = thisSapPlan["stext"];
         }
     }
 }
