@@ -54,6 +54,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
                 ViewData["pageName"] = block.DisplayName;
+                ViewData["blockName"] = block.Name;
 
                 DBItem modelRow = null;
                 if(modelId != -1 && !string.IsNullOrEmpty(block.ModelName))

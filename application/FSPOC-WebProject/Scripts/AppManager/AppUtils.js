@@ -116,3 +116,11 @@ function ClonePanel(paneName) {
         }
     });
 }
+function HideOption(option) {
+    if (option.parent("span.hiddenOption").length == 0)
+        option.wrap('<span class="hiddenOption" />');
+}
+function ShowOption(option) {
+    if (option.parent("span.hiddenOption").length)
+        option.unwrap();
+}

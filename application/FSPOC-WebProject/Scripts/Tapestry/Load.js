@@ -316,11 +316,11 @@
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
                     AssociatedTableName = data.AssociatedTableName;
-                    $("#blockHeaderDbResCount").text(data.AssociatedTableIds.length);
+                    $("#blockHeaderDbResCount").text(data.AssociatedTableName.length);
                     somethingWasAdded = false;
-                    for (tableIndex = 0; tableIndex < data.AssociatedTableIds.length; tableIndex++) {
+                    for (tableIndex = 0; tableIndex < data.AssociatedTableName.length; tableIndex++) {
                         currentTable = tableData.Tables.filter(function (value) {
-                            return value.Id == data.AssociatedTableIds[tableIndex];
+                            return value.Name == data.AssociatedTableName[tableIndex];
                         })[0];
                         if (currentTable != undefined) {
                             for (columnIndex = 0; columnIndex < currentTable.Columns.length; columnIndex++) {
@@ -328,6 +328,14 @@
                                     + currentTable.Name + '" columnName="' + currentTable.Columns[columnIndex].Name + '">' + currentTable.Name + '.' + currentTable.Columns[columnIndex].Name + '</div>'));
                             }
                         }
+                        systemTable = SystemTables.filter(function (value) {
+                            return value.Name == data.AssociatedTableName[tableIndex];
+                        })[0];
+                        if (systemTable)
+                            for (i = 0; i < systemTable.Columns.length; i++) {
+                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
+                                    + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
+                            }
                     };
                 }
             });

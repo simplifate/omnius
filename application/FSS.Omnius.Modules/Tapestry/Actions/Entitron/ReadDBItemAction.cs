@@ -55,7 +55,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], (int)vars["Id"]);
+            if(core.Entitron.Application == null)
+                core.Entitron.AppName = "EvidencePeriodik";
+            int targetId = vars["Id"] is int ? (int)vars["Id"] : int.Parse((string)vars["Id"]);
+            outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], targetId);
             if(outputVars["Data"] == null)
                 throw new Exception($"Položka nebyla nalezena (Tabulka: {vars["TableName"]}, Id: {vars["Id"]}, Akce: {Name} ({Id}))");
         }
