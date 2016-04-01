@@ -73,6 +73,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
         [JsonIgnore]
         public int? ParentMetablock_Id { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<TapestryDesignerWorkflowItem> TargetFor { get; set; }
 
         public TapestryDesignerBlock()
         {
@@ -247,12 +249,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
         public int? StateId { get; set; }
-        public int? TargetId { get; set; }
         public string TargetName { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
+        public int? TargetId { get; set; }
+        [JsonIgnore]
+        public TapestryDesignerBlock Target { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<TapestryDesignerWorkflowConnection> SourceToConnection { get; set; }

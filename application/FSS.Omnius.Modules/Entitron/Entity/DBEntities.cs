@@ -331,6 +331,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.TargetToConnection)
                 .HasForeignKey(e => e.TargetId);
 
+            modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany<TapestryDesignerWorkflowItem>(e => e.TargetFor)
+                .WithOptional(e => e.Target)
+                .HasForeignKey(e => e.TargetId);
+
             // Database Designer
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)

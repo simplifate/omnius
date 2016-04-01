@@ -764,6 +764,10 @@
     <Compile Include="Migrations\201604010915108_repairTriggerRules.Designer.cs">
       <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604011034314_targetRelation.cs" />
+    <Compile Include="Migrations\201604011034314_targetRelation.Designer.cs">
+      <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1213,6 +1217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604010915108_repairTriggerRules.resx">
       <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011034314_targetRelation.resx">
+      <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
