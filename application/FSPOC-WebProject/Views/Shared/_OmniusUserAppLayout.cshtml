@@ -66,7 +66,7 @@
         @RenderBody()
     </div>
     <input type="hidden" id="currentAppName" value="@ViewData["appName"]" />
-    <input type="hidden" id="currentBlockId" value="@ViewData["blockName"]" />
+    <input type="hidden" id="currentBlockName" value="@ViewData["blockName"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
     {
         <div id="modalRepository">

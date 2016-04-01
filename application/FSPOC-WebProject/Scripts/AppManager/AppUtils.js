@@ -102,7 +102,11 @@ function ClonePanel(paneName) {
                 if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
                     numericValue = parseInt($(element).val());
                     if (!isNaN(numericValue)) {
-                        sum += numericValue;
+                        multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                        if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
+                            sum += (numericValue * multiplierTextbox.val());
+                        else
+                            sum += numericValue;
                     }
                 }
             });
@@ -115,6 +119,43 @@ function ClonePanel(paneName) {
                 autosumTarget.text(sum);
         }
     });
+}
+function RecalculateAutosum(panelDiv) {
+    autosumTarget = null;
+    panelDiv.find(".uic.input-single-line").each(function (index, element) {
+        autosumTargetName = $(element).attr("writeSumInto");
+        if (autosumTargetName) {
+            autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+            sourceInputName = $(element).attr("name");
+        }
+    });
+    if (autosumTarget) {
+        if (sourceInputName.indexOf("_") == -1)
+            sourceInputNameWithoutPrefix = sourceInputName;
+        else
+            sourceInputNameWithoutPrefix = sourceInputName.substring(sourceInputName.indexOf("_") + 1, sourceInputName.length);
+        sum = 0;
+        $(".uic.input-single-line").each(function (index, element) {
+            inputName = $(element).attr("name");
+            if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
+                numericValue = parseInt($(element).val());
+                if (!isNaN(numericValue)) {
+                    multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                    if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
+                        sum += (numericValue * multiplierTextbox.val());
+                    else
+                        sum += numericValue;
+                }
+            }
+        });
+        autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
+        targetTemplate = autosumTarget.attr("contentTemplate");
+        if (targetTemplate) {
+            autosumTarget.text(targetTemplate.replace("{{var1}}", sum));
+        }
+        else
+            autosumTarget.text(sum);
+    }
 }
 function HideOption(option) {
     if (option.parent("span.hiddenOption").length == 0)
