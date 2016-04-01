@@ -760,6 +760,10 @@
     <Compile Include="Migrations\201603311320176_mappingPairs.Designer.cs">
       <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604010915108_repairTriggerRules.cs" />
+    <Compile Include="Migrations\201604010915108_repairTriggerRules.Designer.cs">
+      <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1205,6 +1209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603311320176_mappingPairs.resx">
       <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604010915108_repairTriggerRules.resx">
+      <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
