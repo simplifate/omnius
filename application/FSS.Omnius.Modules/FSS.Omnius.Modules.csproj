@@ -772,6 +772,10 @@
     <Compile Include="Migrations\201604011055555_requiredParent.Designer.cs">
       <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604011145470_repairTrigger.cs" />
+    <Compile Include="Migrations\201604011145470_repairTrigger.Designer.cs">
+      <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1227,6 +1231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604011055555_requiredParent.resx">
       <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011145470_repairTrigger.resx">
+      <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
