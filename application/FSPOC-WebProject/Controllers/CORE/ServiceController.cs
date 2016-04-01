@@ -7,6 +7,8 @@ using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Text;
 using System.Web;
 using FSS.Omnius.Modules.Entitron.Service;
+using System.Collections.Generic;
+using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -49,10 +51,35 @@ namespace FSS.Omnius.Controllers.CORE
                 app.IsPublished = false;
                 app.DbSchemeLocked = false;
 
+                Dictionary<int, MozaicEditorPage> pageMapping = new Dictionary<int, MozaicEditorPage>();
+                foreach(var page in app.MozaicEditorPages)
+                {
+                    pageMapping.Add(page.Id, page);
+                }
+
                 try
                 {
                     var context = HttpContext.GetCORE().Entitron.GetStaticTables();
                     context.Applications.Add(app);
+                    context.SaveChanges();
+
+                    foreach (var meta in app.TapestryDesignerMetablocks)
+                    {
+                        foreach (var block in meta.Blocks)
+                        {
+                            foreach (var commit in block.BlockCommits)
+                            {
+                                List<int> newPageIds = new List<int>();
+                                List<int> pageIds = commit.AssociatedPageIds.Split(',').Select(p => Convert.ToInt32(p)).ToList();
+                                foreach(int pageId in pageIds)
+                                {
+                                    newPageIds.Add(pageMapping[pageId].Id);
+                                }
+
+                                commit.AssociatedPageIds = string.Join(",", newPageIds.Select(i => i.ToString()).ToList());
+                            }
+                        }
+                    }
                     context.SaveChanges();
                 }
                 catch(Exception ex)

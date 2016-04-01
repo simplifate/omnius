@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             DBEntities context = core.Entitron.GetStaticTables();
             foreach(User user in context.Users)
             {
-                core.Persona.GetUser(user);
+                core.Persona.GetUser(user, user.UserName);
             }
             
             //NexusLdapService ldap = new NexusLdapService();

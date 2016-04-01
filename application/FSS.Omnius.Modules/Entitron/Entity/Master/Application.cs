@@ -72,6 +72,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         public virtual ICollection<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
 
+        [JsonIgnore]
         public TapestryDesignerMetablock TapestryDesignerRootMetablock
         {
             get
