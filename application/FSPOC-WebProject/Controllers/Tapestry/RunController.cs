@@ -156,7 +156,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
                         && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
-                        if(resourceMappingPair.Source.TableName == "Omnius::Users")
+                        if (resourceMappingPair.Source.TableName == "Omnius::Users")
                             switch (resourceMappingPair.Source.ColumnName)
                             {
                                 case "DisplayName":
@@ -176,17 +176,31 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     break;
                             }
                         else if (resourceMappingPair.Source.TableName == "Users")
-                            switch (resourceMappingPair.Source.ColumnName)
+                        {
+                            var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                            if (epkUserRowList.Count > 0)
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.Source.ColumnName];
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "superior"
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        var tableUsers = core.Entitron.GetDynamicTable("Users");
+                        if (resourceMappingPair.Source.TableName == "Users")
+                        {
+                            var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                            if (epkUserRowList.Count > 0)
                             {
-                                case "kostl":
-                                    var epkUserRow = core.Entitron.GetDynamicTable("Users").Select()
-                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList()[0];
-                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRow["kostl"];
-                                    break;
+                                int superiorId = (int)epkUserRowList[0]["h_pernr"];
+                                var epkSuperiorRowList = tableUsers.Select()
+                                        .where(c => c.column("pernr").Equal(superiorId)).ToList();
+                                if (epkSuperiorRowList.Count > 0)
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][resourceMappingPair.Source.ColumnName];
                             }
+                        }
                     }
                 }
-
                 // show
                 return View(block.MozaicPage.ViewPath);
             }
