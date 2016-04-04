@@ -90,6 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<int> AssociatedPageIds { get; set; }
         public List<int> AssociatedTableIds { get; set; }
         public List<string> AssociatedTableName { get; set; }
+        public List<string> RoleWhitelist { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
@@ -97,6 +98,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>();
             PortTargets = new List<int>();
             AssociatedPageIds = new List<int>();
+            RoleWhitelist = new List<string>();
         }
     }
     public class AjaxTapestryDesignerBlockCommitHeader

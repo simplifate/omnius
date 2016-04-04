@@ -134,6 +134,7 @@ function SaveBlock(commitMessage) {
         AssociatedTableName: AssociatedTableName,
         AssociatedPageIds: AssociatedPageIds,
         AssociatedTableIds: AssociatedTableIds,
+        RoleWhitelist: RoleWhitelist,
         ParentMetablockId: $("#parentMetablockId").val()
     }    
     appId = $("#currentAppId").val();

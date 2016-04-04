@@ -1,4 +1,4 @@
-﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [];
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [];
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -843,5 +843,51 @@ $(function () {
             CurrentItem.data("conditionSets", setArray);
             conditionsDialog.dialog("close");
         }
+    }
+    chooseWhitelistRolesDialog = $("#choose-whitelist-roles-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 500,
+        buttons: {
+            "Change": function () {
+                chooseWhitelistRolesDialog_SubmitData();
+            },
+            Cancel: function () {
+                chooseWhitelistRolesDialog.dialog("close");
+            }
+        },
+        open: function (event, ui) {
+            chooseWhitelistRolesDialog.find("#role-table:first tbody:nth-child(2) tr").remove();
+            appId = $("#currentAppId").val();
+            $.ajax({
+                type: "GET",
+                url: "/api/Persona/app-roles/" + appId,
+                dataType: "json",
+                success: function (data) {
+                    tbody = chooseWhitelistRolesDialog.find("#role-table tbody:nth-child(2)");
+                    for (i = 0; i < data.Roles.length; i++) {
+                        newTableRow = $('<tr class="roleRow"><td>' + data.Roles[i].Name + '</td></tr>');
+                        if (RoleWhitelist.indexOf(data.Roles[i].Name) != -1)
+                            newTableRow.addClass("highlightedRow");
+                        tbody.append(newTableRow);
+                        newTableRow.on("click", function (event) {
+                            $(this).toggleClass("highlightedRow");
+                        });
+                    }
+                }
+            });
+        }
+    });
+    function chooseWhitelistRolesDialog_SubmitData() {
+        RoleWhitelist = [];
+        roleCount = 0;
+        chooseWhitelistRolesDialog.find("#role-table:first tbody:nth-child(2) tr").each(function (index, element) {
+            if ($(element).hasClass("highlightedRow")) {
+                RoleWhitelist.push($(element).find("td").text());
+                roleCount++;
+            }
+        });
+        $("#blockHeaderRolesCount").text(roleCount);
+        chooseWhitelistRolesDialog.dialog("close");
     }
 });

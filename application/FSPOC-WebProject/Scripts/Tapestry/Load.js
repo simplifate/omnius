@@ -303,6 +303,8 @@
                     currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
                 }
             }
+            RoleWhitelist = data.RoleWhitelist;
+            $("#blockHeaderRolesCount").text(RoleWhitelist.length);
             appId = $("#currentAppId").val();
             $.ajax({
                 type: "GET",

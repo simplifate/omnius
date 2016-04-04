@@ -84,7 +84,7 @@
     <div id="tapestryWorkspace">
         <div id="blockHeaderPanel">
             Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">0</span>
-            Obrazovky <span id="blockHeaderScreenCount">0</span>
+            Obrazovky <span id="blockHeaderScreenCount">0</span> Povolené role <span id="blockHeaderRolesCount">0</span>
             <div id="controlButtonArea">
                 <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
                 <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
@@ -295,30 +295,19 @@
                 <div class="conditionSetIcon addOrConditionSetIcon">Add OR group</div>
             </div>
             <div class="conditionSetArea">
-                <!--
-                <div class="conditionSet">
-                    <div class="conditionSetHeading"><div class="conditionSetHeading"><span class="conditionSetPrefix">A</span>ll of these conditions must be met</div></div>
-                    <div class="removeConditionSetIcon">X</div>
-                    <table class="conditionTable">
-                        <tr>
-                            <td class="conditionOperator"></td>
-                            <td class="conditionVariableCell">
-                                <select></select>
-                            </td>
-                            <td class="conditionOperatorCell">
-                                <select><option selected="selected">==</option><option>!=</option></select>
-                            </td>
-                            <td class="conditionValueCell">
-                                <select><option selected="selected">True</option><<option>False</option></select>
-                            </td>
-                            <td class="conditionActions">
-                                <div class="conditionActionIcon addAndConditionIcon">&</div><div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                -->
             </div>
         </fieldset>
     </form>
+</div>
+<div id="choose-whitelist-roles-dialog" title="Choose roles">
+    <table id="role-table" class="table table-hover">
+        <theader>
+            <tr>
+                <th>Role name</th>
+            </tr>
+        </theader>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
 </div>

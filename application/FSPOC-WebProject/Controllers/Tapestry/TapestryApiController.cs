@@ -105,7 +105,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
                                     : blockCommit.AssociatedTableName.Split(',').ToList(),
                                 AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
-                                    : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
+                                    : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList(),
+                                RoleWhitelist = string.IsNullOrEmpty(blockCommit.RoleWhitelist) ? new List<string>()
+                                    : blockCommit.RoleWhitelist.Split(',').ToList(),
                             };
                             LoadResourceRules(blockCommit, result);
                             LoadWorkflowRules(blockCommit, result);
@@ -154,6 +156,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
                         AssociatedTableName = postData.AssociatedTableName != null ? string.Join(",", postData.AssociatedTableName) : "",
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
+                        RoleWhitelist = postData.RoleWhitelist != null ? string.Join(",", postData.RoleWhitelist) : "",
                     };
                     targetBlock.BlockCommits.Add(blockCommit);
 

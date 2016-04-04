@@ -125,6 +125,9 @@ $(function () {
         $("#blockHeaderScreenCount").on("click", function () {
             chooseScreensDialog.dialog("open");
         });
+        $("#blockHeaderRolesCount").on("click", function () {
+            chooseWhitelistRolesDialog.dialog("open");
+        });
         $(window).scroll(function () {
             leftBar = $("#tapestryLeftBar");
             scrollTop = $(window).scrollTop();
