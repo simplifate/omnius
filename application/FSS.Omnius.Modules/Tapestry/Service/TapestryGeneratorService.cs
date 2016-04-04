@@ -166,7 +166,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     if (!string.IsNullOrEmpty(target.ComponentName))
                     {
-                        var targetPage = context.MozaicEditorPages.Find(target.PageId);
+                        var targetPage = target.Page;
                         var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
                         if (component == null)
                         {

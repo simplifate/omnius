@@ -214,6 +214,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int? ActionId { get; set; }
         public int? PageId { get; set; }
+        [JsonIgnore]
+        public virtual MozaicEditorPage Page { get; set; }
         public string ComponentName { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }

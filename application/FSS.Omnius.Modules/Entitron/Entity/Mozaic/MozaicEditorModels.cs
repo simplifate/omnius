@@ -4,6 +4,10 @@ using System.Text;
 
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Linq;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using System;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
@@ -18,6 +22,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string CompiledPartialView { get; set; }
         public int CompiledPageId { get; set; }
         public virtual ICollection<MozaicEditorComponent> Components { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
 
         public virtual Application ParentApp { get; set; }
 
@@ -220,11 +227,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Placeholder { get; set; }
         public string Properties { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<MozaicEditorComponent> ChildComponents { get; set; }
+        public int? ParentComponentId { get; set; }
+        [JsonIgnore]
         public virtual MozaicEditorComponent ParentComponent { get; set; }
+        public int MozaicEditorPageId { get; set; }
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
-
+    
     public class MozaicModalMetadataItem
     {
         public int Id { get; set; }

@@ -168,7 +168,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             modelBuilder.Entity<MozaicEditorPage>()
                 .HasMany(e => e.Components)
-                .WithOptional(e => e.MozaicEditorPage);
+                .WithRequired(e => e.MozaicEditorPage);
             modelBuilder.Entity<MozaicEditorComponent>()
                 .HasMany(e => e.ChildComponents)
                 .WithOptional(e => e.ParentComponent);

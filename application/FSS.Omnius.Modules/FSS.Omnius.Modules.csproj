@@ -780,6 +780,14 @@
     <Compile Include="Migrations\201604041141371_Tapestry role whitelist.Designer.cs">
       <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604042210534_pageRelation.cs" />
+    <Compile Include="Migrations\201604042210534_pageRelation.Designer.cs">
+      <DependentUpon>201604042210534_pageRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604042336288_componentParent.cs" />
+    <Compile Include="Migrations\201604042336288_componentParent.Designer.cs">
+      <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1241,6 +1249,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604041141371_Tapestry role whitelist.resx">
       <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604042210534_pageRelation.resx">
+      <DependentUpon>201604042210534_pageRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604042336288_componentParent.resx">
+      <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

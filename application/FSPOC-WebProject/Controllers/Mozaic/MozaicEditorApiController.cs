@@ -198,7 +198,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             {
                 newComponent.ChildComponents = new List<MozaicEditorComponent>();
                 foreach (var ajaxChildComponent in ajaxComponent.ChildComponents)
-                    newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, null, newComponent));
+                    newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, page, newComponent));
             }
             return newComponent;
         }

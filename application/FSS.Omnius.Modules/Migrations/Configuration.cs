@@ -51,12 +51,7 @@ namespace FSS.Omnius.Modules.Migrations
 
             if (!context.Applications.Any())
                 context.Applications.AddOrUpdate(
-                    new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsSystem = true, TitleFontSize = 12, Color = 1, TileHeight = 5, TileWidth = 5 }
-                );
-
-            if (!context.Applications.Any())
-                context.Applications.AddOrUpdate(
-                    new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsEnabled = true, IsPublished = false, IsSystem = true }
+                    new Entitron.Entity.Master.Application { Name = "System", DisplayName = "System", IsSystem = true, IsPublished = false, IsEnabled = true, TitleFontSize = 12, Color = 1, TileHeight = 5, TileWidth = 5 }
                 );
         }
     }
