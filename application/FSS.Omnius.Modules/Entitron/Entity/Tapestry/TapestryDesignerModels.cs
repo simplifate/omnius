@@ -104,6 +104,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public string AssociatedPageIds { get; set; }
         public string AssociatedTableIds { get; set; }
+        public string RoleWhitelist { get; set; }
 
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
         [JsonIgnore]

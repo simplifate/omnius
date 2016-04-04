@@ -776,6 +776,10 @@
     <Compile Include="Migrations\201604011145470_repairTrigger.Designer.cs">
       <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604041141371_Tapestry role whitelist.cs" />
+    <Compile Include="Migrations\201604041141371_Tapestry role whitelist.Designer.cs">
+      <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1234,6 +1238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604011145470_repairTrigger.resx">
       <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604041141371_Tapestry role whitelist.resx">
+      <DependentUpon>201604041141371_Tapestry role whitelist.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
