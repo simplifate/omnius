@@ -28,7 +28,7 @@ namespace FSS.Omnius.Modules.Migrations
             AddForeignKey("dbo.TapestryDesigner_WorkflowRules", "ParentBlockCommit_Id", "dbo.TapestryDesigner_BlocksCommits", "Id");
             Sql("CREATE TRIGGER [dbo].[Trigger_BlockCommitToRules] ON [dbo].[TapestryDesigner_BlocksCommits] INSTEAD OF DELETE AS BEGIN DELETE FROM [dbo].[TapestryDesigner_ResourceRules] WHERE [ParentBlockCommit_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_WorkflowRules] WHERE [ParentBlockCommit_Id] IN (SELECT Id FROM deleted); DELETE FROM [dbo].[TapestryDesigner_BlocksCommits] WHERE Id IN (SELECT Id FROM deleted); END");
 
-                DropForeignKey("dbo.TapestryDesigner_ResourceConnections", "ResourceRuleId", "dbo.TapestryDesigner_ResourceRules");
+            DropForeignKey("dbo.TapestryDesigner_ResourceConnections", "ResourceRuleId", "dbo.TapestryDesigner_ResourceRules");
             DropForeignKey("dbo.TapestryDesigner_WorkflowConnections", "WorkflowRuleId", "dbo.TapestryDesigner_WorkflowRules");
             DropForeignKey("dbo.TapestryDesigner_Connections", "ResourceRuleId", "dbo.TapestryDesigner_ResourceRules");
             DropForeignKey("dbo.TapestryDesigner_Connections", "WorkflowRuleId", "dbo.TapestryDesigner_WorkflowRules");

@@ -258,7 +258,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     StateId = ajaxItem.StateId,
                                     TargetId = ajaxItem.TargetId,
                                     OutputVariables = ajaxItem.OutputVariables,
-                                    ComponentId = ajaxItem.ComponentName,
+                                    PageId = ajaxItem.PageId,
+                                    ComponentName = ajaxItem.ComponentName,
                                     isAjaxAction = ajaxItem.isAjaxAction
                                 };
                                 swimlane.WorkflowItems.Add(item);
@@ -286,7 +287,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             .Where(c => c.SourceType == 0 && c.SourceId == targetBlock.Id);
                         foreach (var connection in oldMetablockConnections)
                             context.Entry(connection).State = EntityState.Deleted;
-                        TapestryDesignerMetablock nearbyMetablock = new TapestryDesignerMetablock();
+                        TapestryDesignerMetablock nearbyMetablock = null;
                         var portTargetBlock = context.TapestryDesignerBlocks.Find(portTargetBlockId);
                         if (portTargetBlock.ParentMetablock.Id == targetBlock.ParentMetablock.Id)
                             targetBlock.ParentMetablock.Connections.Add(new TapestryDesignerMetablockConnection
@@ -401,7 +402,10 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     var targetMetablock = context.TapestryDesignerMetablocks.Find(metablockId);
                     if (targetMetablock == null)
                     {
-                        targetMetablock = new TapestryDesignerMetablock();
+                        targetMetablock = new TapestryDesignerMetablock
+                        {
+                            Id = appId
+                        };
                         if (postData.ParentMetablockId != null)
                             targetMetablock.ParentMetablock = context.TapestryDesignerMetablocks.Find(postData.ParentMetablockId);
 
@@ -476,7 +480,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             PositionX = ajaxMetablock.PositionX,
                             PositionY = ajaxMetablock.PositionY,
                             IsInitial = ajaxMetablock.IsInitial,
-                            IsInMenu = ajaxMetablock.IsInMenu
+                            IsInMenu = ajaxMetablock.IsInMenu,
+                            Id = appId
                         };
                         targetMetablock.Metablocks.Add(newMetablock);
                         context.SaveChanges();
@@ -625,14 +630,15 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadApp(Application requestedApp, AjaxTapestryDesignerApp result)
         {
+            var metablock = requestedApp.TapestryDesignerRootMetablock;
             var ajaxMetablock = new AjaxTapestryDesignerMetablock
             {
-                Id = requestedApp.TapestryDesignerRootMetablock.Id,
-                Name = requestedApp.TapestryDesignerRootMetablock.Name,
-                PositionX = requestedApp.TapestryDesignerRootMetablock.PositionX,
-                PositionY = requestedApp.TapestryDesignerRootMetablock.PositionY
+                Id = metablock.Id,
+                Name = metablock.Name,
+                PositionX = metablock.PositionX,
+                PositionY = metablock.PositionY
             };
-            LoadMetablocks(requestedApp.TapestryDesignerRootMetablock, ajaxMetablock);
+            LoadMetablocks(metablock, ajaxMetablock);
             result.RootMetablock = ajaxMetablock;
         }
         private static void LoadMetablocks(TapestryDesignerMetablock requestedMetablock, AjaxTapestryDesignerMetablock result)
@@ -779,7 +785,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     InputVariables = item.InputVariables,
                     OutputVariables = item.OutputVariables,
                     StateId = item.StateId,
-                    ComponentName = item.ComponentId,
+                    PageId = item.PageId,
+                    ComponentName = item.ComponentName,
                     TargetId = item.TargetId,
                     isAjaxAction = item.isAjaxAction
                 };

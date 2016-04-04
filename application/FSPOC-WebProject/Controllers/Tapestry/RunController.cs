@@ -54,6 +54,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;
                 ViewData["pageName"] = block.DisplayName;
+                ViewData["blockName"] = block.Name;
 
                 DBItem modelRow = null;
                 if(modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
@@ -74,7 +75,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
                         {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
-                            if(columnFilter.Count > 0)
+                            if (columnFilter.Count > 0)
                                 getAllColumns = false;
                         }
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
@@ -153,33 +154,54 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
                     }
-                    if(resourceMappingPair.Source.TypeClass == "actionItem" && (resourceMappingPair.TargetType == "input-single-line"
-                        || resourceMappingPair.TargetType == "input-multiline"))
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
-                        switch(resourceMappingPair.Source.ActionId)
+                        if (resourceMappingPair.Source.TableName == "Omnius::Users")
+                            switch (resourceMappingPair.Source.ColumnName)
+                            {
+                                case "DisplayName":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+                                    break;
+                                case "Company":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+                                    break;
+                                case "Job":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+                                    break;
+                                case "Email":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+                                    break;
+                                case "Address":
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+                                    break;
+                            }
+                        else if (resourceMappingPair.Source.TableName == "Users")
                         {
-                            case 501:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
-                                break;
-                            case 502:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
-                                break;
-                            case 503:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
-                                break;
-                            case 504:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
-                                break;
-                            case 505:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Department;
-                                break;
-                            case 506:
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
-                                break;
+                            var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                            if (epkUserRowList.Count > 0)
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.Source.ColumnName];
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "superior"
+                        && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
+                    {
+                        var tableUsers = core.Entitron.GetDynamicTable("Users");
+                        if (resourceMappingPair.Source.TableName == "Users")
+                        {
+                            var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                            if (epkUserRowList.Count > 0)
+                            {
+                                int superiorId = (int)epkUserRowList[0]["h_pernr"];
+                                var epkSuperiorRowList = tableUsers.Select()
+                                        .where(c => c.column("pernr").Equal(superiorId)).ToList();
+                                if (epkSuperiorRowList.Count > 0)
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][resourceMappingPair.Source.ColumnName];
+                            }
                         }
                     }
                 }
-
                 // show
                 return View(block.MozaicPage.ViewPath);
             }

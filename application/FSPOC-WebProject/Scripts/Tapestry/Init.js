@@ -49,31 +49,72 @@ $(function () {
             $("#conditions-dialog").dialog("open");
         });
         $(".toolboxCategoryHeader_Symbols").on("click", function () {
+            $(this).toggleClass("hiddenCategory");
             $(".symbolToolboxSpace").slideToggle();
         });
         $(".toolboxCategoryHeader_Actions").on("click", function () {
-            $(".toolboxLi_Actions").slideToggle();
+            if($(".toolboxLi_Actions").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Actions").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_Attributes").on("click", function () {
-            $(".toolboxLi_Attributes").slideToggle();
+            if ($(".toolboxLi_Attributes").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Attributes").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_UI").on("click", function () {
-            $(".toolboxLi_UI").slideToggle();
+            if ($(".toolboxLi_UI").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_UI").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_Roles").on("click", function () {
-            $(".toolboxLi_Roles").slideToggle();
+            if ($(".toolboxLi_Roles").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Roles").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_States").on("click", function () {
-            $(".toolboxLi_States").slideToggle();
+            if ($(".toolboxLi_States").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_States").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_Targets").on("click", function () {
-            $(".toolboxLi_Targets").slideToggle();
+            if ($(".toolboxLi_Targets").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Targets").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_Templates").on("click", function () {
-            $(".toolboxLi_Templates").slideToggle();
+            if ($(".toolboxLi_Templates").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Templates").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $(".toolboxCategoryHeader_Integrations").on("click", function () {
-            $(".toolboxLi_Integrations").slideToggle();
+            if ($(".toolboxLi_Integrations").length > 0) {
+                $(this).toggleClass("hiddenCategory");
+                $(".toolboxLi_Integrations").slideToggle();
+            }
+            else
+                $(this).removeClass("hiddenCategory");
         });
         $("#blockHeaderBlockName").on("click", function () {
             renameBlockDialog.dialog("open");
@@ -130,7 +171,7 @@ $(function () {
                 if (edge > rightmostRuleEdge)
                     rightmostRuleEdge = edge;
             });
-            newRule = $('<div class="rule resourceRule" style="width: 250px; height: 60px; left: ' + (rightmostRuleEdge + 10) + 'px; top: 10px;"></div>');
+            newRule = $('<div class="rule resourceRule" style="width: 350px; height: 60px; left: ' + (rightmostRuleEdge + 10) + 'px; top: 10px;"></div>');
             $("#resourceRulesPanel .scrollArea").append(newRule);
             newRule.draggable({
                 containment: "parent",
@@ -351,52 +392,71 @@ $(function () {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem" actionId="' + currentLibraryItem.attr("actionId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Attributes").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Actions").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "column-attribute") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "table-attribute") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "ui") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_UI").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "page-ui") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem pageUi" pageId="' + currentLibraryItem.attr("pageId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_UI").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "role") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_States").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Roles").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "state") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem stateItem" stateId="' + currentLibraryItem.attr("stateId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_States").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "target") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem" targetId="' + currentLibraryItem.attr("targetId") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
-
                         $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Targets").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (libType == "template") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Templates").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     else if (["ldap", "ws", "smtp", "webdav"].indexOf(libType) != -1) {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Integrations").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
                     }
                     if (newToolboxLi)
                         newToolboxLi.find(".toolboxItem").draggable({

@@ -186,7 +186,7 @@ body.adminAppModule #appBuildResults {
   cursor: default;
   position: absolute;
   left: 0px;
-  right: 0px;
+  width: 100vw;
   height: 75px;
   background-color: #457fa9;
   z-index: 30; }
@@ -261,6 +261,7 @@ body.adminAppModule #appBuildResults {
   position: absolute;
   left: 0px;
   top: 75px;
+  height: 100vh;
   width: 225px;
   background-color: #455d73; }
   #leftBar .leftMenu {
@@ -445,8 +446,10 @@ body.adminAppModule #appBuildResults {
   left: 0px;
   top: 50px;
   bottom: 0px;
-  width: 310px;
-  border-right: 1px solid #f1f0ee; }
+  min-width: 310px;
+  border-right: 1px solid #f1f0ee;
+  overflow-x: hidden;
+  overflow-y: auto; }
   #userLeftBar .widgetLabel {
     position: absolute;
     font-family: RweHeadlineRegular;
@@ -593,7 +596,8 @@ body.adminAppModule #appBuildResults {
   left: 310px;
   top: 50px;
   right: 0px;
-  bottom: 0px; }
+  bottom: 0px;
+  overflow: auto; }
 
 #helpContainer {
   margin-left: 40px; }
@@ -995,7 +999,8 @@ body.tapestryModule #lowerPanel {
       body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace {
         position: relative;
         height: 360px;
-        background-color: #e0e2e2; }
+        background-color: #e0e2e2;
+        display: none; }
         body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace .toolboxSymbol {
           position: absolute; }
         body.tapestryModule #lowerPanel #tapestryLeftBar .tapestryToolbox .symbolToolboxSpace .toolboxSymbol.ui-draggable-dragging {
@@ -3413,4 +3418,7 @@ body.cortexModule #lowerPanel {
   color: #f06771;
   font-family: Myriad-Pro;
   font-size: 22px; }
+
+.hiddenOption {
+  display: none; }
 

@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using Entitron;
     using Persona;
     using Newtonsoft.Json;
+    using System.Linq;
     [Table("Master_Applications")]
     public partial class Application
     {
@@ -69,7 +70,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
         public bool DbSchemeLocked { get; set; }
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
-        public virtual TapestryDesignerMetablock TapestryDesignerRootMetablock { get; set; }
+        public virtual ICollection<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
+
+        [JsonIgnore]
+        public TapestryDesignerMetablock TapestryDesignerRootMetablock
+        {
+            get
+            {
+                return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null);
+            }
+        }
 
         [JsonIgnore]
         public ICollection<User> DesignedBy { get; set; }

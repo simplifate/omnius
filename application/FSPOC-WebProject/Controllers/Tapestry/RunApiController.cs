@@ -17,11 +17,16 @@ namespace FSPOC_WebProject.Controllers.Tapestry
     {
         [Route("api/run/{appName}/{blockIdentify=}")]
         [HttpPost]
-        public JToken Run(string appName, string button, M.FormCollection fc, string blockIdentify, int modelId = -1)
+        public JToken Run(string appName, string button, [FromBody]JToken body, string blockIdentify, [FromUri]int modelId = -1)
         {
             CORE core = new CORE();
             core.Entitron.Application = core.Entitron.GetStaticTables().Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
             User currentUser = User.GetLogged(core);
+            var fc = new M.FormCollection();
+            var inputObject = body as JObject;
+            if (inputObject != null)
+                foreach (var pair in inputObject)
+                    fc.Add(pair.Key, pair.Value.ToString());
 
             using (DBEntities context = new DBEntities())
             {

@@ -139,8 +139,10 @@
     left: 0px;
     top: 50px;
     bottom: 0px;
-    width: 310px;
+    min-width: 310px;
     border-right: 1px solid #f1f0ee;
+    overflow-x: hidden;
+    overflow-y: auto;
         
     .widgetLabel {
         position: absolute;
@@ -312,6 +314,7 @@
     top: 50px;
     right: 0px;
     bottom: 0px;
+    overflow: auto;
 }
 #helpContainer {
     margin-left: 40px;

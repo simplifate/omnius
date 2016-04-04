@@ -736,6 +736,46 @@
     <Compile Include="Migrations\201603290102436_identityWorkflow.Designer.cs">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603291050130_Add TargetName.cs" />
+    <Compile Include="Migrations\201603291050130_Add TargetName.Designer.cs">
+      <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603291528171_Add pageId.cs" />
+    <Compile Include="Migrations\201603291528171_Add pageId.Designer.cs">
+      <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603301510267_blockUnique.cs" />
+    <Compile Include="Migrations\201603301510267_blockUnique.Designer.cs">
+      <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603310847502_Add DataSourceParams.cs" />
+    <Compile Include="Migrations\201603310847502_Add DataSourceParams.Designer.cs">
+      <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603311101178_tempWorkflow.cs" />
+    <Compile Include="Migrations\201603311101178_tempWorkflow.Designer.cs">
+      <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603311320176_mappingPairs.cs" />
+    <Compile Include="Migrations\201603311320176_mappingPairs.Designer.cs">
+      <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604010915108_repairTriggerRules.cs" />
+    <Compile Include="Migrations\201604010915108_repairTriggerRules.Designer.cs">
+      <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604011034314_targetRelation.cs" />
+    <Compile Include="Migrations\201604011034314_targetRelation.Designer.cs">
+      <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604011055555_requiredParent.cs" />
+    <Compile Include="Migrations\201604011055555_requiredParent.Designer.cs">
+      <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604011145470_repairTrigger.cs" />
+    <Compile Include="Migrations\201604011145470_repairTrigger.Designer.cs">
+      <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -757,6 +797,8 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
@@ -767,12 +809,6 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserAddress.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserCompany.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserDepartment.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserDisplayName.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserEmail.cs" />
-    <Compile Include="Tapestry\Actions\other\GetUserJob.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
@@ -1168,6 +1204,36 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603290102436_identityWorkflow.resx">
       <DependentUpon>201603290102436_identityWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291050130_Add TargetName.resx">
+      <DependentUpon>201603291050130_Add TargetName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291528171_Add pageId.resx">
+      <DependentUpon>201603291528171_Add pageId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603301510267_blockUnique.resx">
+      <DependentUpon>201603301510267_blockUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603310847502_Add DataSourceParams.resx">
+      <DependentUpon>201603310847502_Add DataSourceParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603311101178_tempWorkflow.resx">
+      <DependentUpon>201603311101178_tempWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603311320176_mappingPairs.resx">
+      <DependentUpon>201603311320176_mappingPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604010915108_repairTriggerRules.resx">
+      <DependentUpon>201604010915108_repairTriggerRules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011034314_targetRelation.resx">
+      <DependentUpon>201604011034314_targetRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011055555_requiredParent.resx">
+      <DependentUpon>201604011055555_requiredParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604011145470_repairTrigger.resx">
+      <DependentUpon>201604011145470_repairTrigger.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

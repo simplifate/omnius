@@ -51,7 +51,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     using (DBEntities context = new DBEntities())
                     {
-                        var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentId == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
+                        var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
                         stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                     }

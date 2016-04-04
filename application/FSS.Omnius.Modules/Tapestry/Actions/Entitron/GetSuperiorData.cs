@@ -1,16 +1,16 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using System.Collections.Generic;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.other
+namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
-    [OtherRepository]
-    class GetUserDepartment : Action
+    [EntitronRepository]
+    class GetSuperiorData : Action
     {
         public override int Id
         {
             get
             {
-                return 505;
+                return 1024;
             }
         }
 
@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return "Get user's department";
+                return "Get superior data";
             }
         }
 
@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             {
                 return new string[]
                 {
-                    "Department"
+                    "SuperiorData"
                 };
             }
         }
@@ -52,7 +52,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            outputVars["Department"] = core.User.Department;
+            var tableUsers = core.Entitron.GetDynamicTable("Users");
+            var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+            if (epkUserRowList.Count > 0)
+            {
+                int superiorId = (int)epkUserRowList[0]["h_pernr"];
+                var epkSuperiorRowList = tableUsers.Select()
+                        .where(c => c.column("pernr").Equal(superiorId)).ToList();
+                if (epkSuperiorRowList.Count > 0)
+                    outputVars["SuperiorData"] = epkSuperiorRowList[0];
+            }
         }
     }
 }

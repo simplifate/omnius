@@ -136,7 +136,11 @@ $(function () {
                         if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
                             numericValue = parseInt($(element).val());
                             if (!isNaN(numericValue)) {
-                                sum += numericValue;
+                                multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                                if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
+                                    sum += (numericValue * multiplierTextbox.val());
+                                else
+                                    sum += numericValue;
                             }
                         }
                     });
@@ -149,6 +153,10 @@ $(function () {
                         autosumTarget.text(sum);
                 });
             }
+        });
+        $(".uic.input-single-line").on("change", function () {
+            if ($(this).attr("id") == "uic_pieces_textbox" && $(this).parents(".panel-component"))
+                RecalculateAutosum($(this).parents(".panel-component"));
         });
         $(".uic.panel-component").each(function (index, element) {
             panel = $(element);

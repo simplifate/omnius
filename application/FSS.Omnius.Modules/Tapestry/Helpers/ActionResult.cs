@@ -45,8 +45,11 @@ namespace FSS.Omnius.Modules.Tapestry
         {
             Dictionary<string, object> result = new Dictionary<string, object>();
             result.AddOrUpdateRange(OutputData);
-            result.AddOrUpdateRange(ReverseInputData.Last());
-            ReverseInputData.RemoveAt(ReverseInputData.Count - 1);
+            if (ReverseInputData.Count > 0)
+            {
+                result.AddOrUpdateRange(ReverseInputData.Last());
+                ReverseInputData.RemoveAt(ReverseInputData.Count - 1);
+            }
 
             return result;
         }

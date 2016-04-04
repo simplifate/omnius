@@ -86,10 +86,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                     context.SaveChanges();
                     var newRootMetablock = new TapestryDesignerMetablock
                     {
-                        Name = "Root metablock"
+                        Name = "Root metablock",
+                        ParentApp = newApp
                     };
                     context.TapestryDesignerMetablocks.Add(newRootMetablock);
-                    newRootMetablock.ParentApp = newApp;
                     context.SaveChanges();
                 }
             }

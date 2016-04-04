@@ -241,7 +241,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<Application>()
-                .HasMany(e => e.ColumnMetadata)
+                .HasMany<ColumnMetadata>(e => e.ColumnMetadata)
                 .WithRequired(e => e.Application);
 
             modelBuilder.Entity<WorkFlowType>()
@@ -271,7 +271,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
-                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs);
+                .HasMany<ResourceMappingPair>(e => e.ResourceMappingPairs)
+                .WithRequired(e => e.Block)
+                .HasForeignKey(e => e.BlockId);
 
             modelBuilder.Entity<Block>()
                 .HasMany<ActionRule>(e => e.SourceTo_ActionRules)
@@ -329,6 +331,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.TargetToConnection)
                 .HasForeignKey(e => e.TargetId);
 
+            modelBuilder.Entity<TapestryDesignerBlock>()
+                .HasMany<TapestryDesignerWorkflowItem>(e => e.TargetFor)
+                .WithOptional(e => e.Target)
+                .HasForeignKey(e => e.TargetId);
+
             // Database Designer
             modelBuilder.Entity<DbTable>()
                         .HasMany(s => s.Columns)
@@ -349,35 +356,36 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                         .HasMany(e => e.DatabaseDesignerSchemeCommits);
 
             modelBuilder.Entity<TapestryDesignerMetablock>()
-                .HasOptional(s => s.ParentApp)
-                .WithOptionalDependent(s => s.TapestryDesignerRootMetablock);
+                .HasRequired<Application>(s => s.ParentApp)
+                .WithMany(s => s.TapestryDesignerMetablocks)
+                .HasForeignKey(e => e.ParentAppId);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Metablocks)
                 .WithOptional(s => s.ParentMetablock)
                 .HasForeignKey(x => x.ParentMetablock_Id);
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasMany(s => s.Blocks)
-                .WithOptional(s => s.ParentMetablock)
+                .WithRequired(s => s.ParentMetablock)
                 .HasForeignKey(x => x.ParentMetablock_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlock>()
                 .HasMany(s => s.BlockCommits)
-                .WithOptional(s => s.ParentBlock)
+                .WithRequired(s => s.ParentBlock)
                 .HasForeignKey(x => x.ParentBlock_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.ResourceRules)
-                .WithOptional(s => s.ParentBlockCommit)
+                .WithRequired(s => s.ParentBlockCommit)
                 .HasForeignKey(x => x.ParentBlockCommit_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerBlockCommit>()
                 .HasMany(s => s.WorkflowRules)
-                .WithOptional(s => s.ParentBlockCommit)
+                .WithRequired(s => s.ParentBlockCommit)
                 .HasForeignKey(x => x.ParentBlockCommit_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerWorkflowRule>()
                 .HasMany(s => s.Swimlanes)
-                .WithOptional(s => s.ParentWorkflowRule)
+                .WithRequired(s => s.ParentWorkflowRule)
                 .HasForeignKey(x => x.ParentWorkflowRule_Id)
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerSwimlane>()

@@ -99,11 +99,12 @@ $(function () {
         else if (CurrentModuleIs("mozaicEditorModule"))
             RecalculateMozaicToolboxHeight();
     });
-    $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
-    $(window).scroll(function () {
-        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
-    });
-    $(window).resize(function () {
-        $("#leftBar").css("height", $(window).height() + $(window).scrollTop() - 75);
+    $("#upperPanel").width($(window).width() - 208);
+    $("#minimizedUpperPanel").width($(window).width() - 208);
+    $("#leftBar").height($(document).height() - 75);
+    $(window).on("resize", function () {
+        $("#upperPanel").width($(window).width() - 208);
+        $("#minimizedUpperPanel").width($(window).width() - 208);
+        $("#leftBar").height($(document).height() - 75);
     });
 });

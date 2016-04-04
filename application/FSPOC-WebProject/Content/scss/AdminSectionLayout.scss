@@ -4,7 +4,7 @@
     @include no-select();
     position: absolute;
     left: 0px;
-    right: 0px;
+    width: 100vw;
     height: 75px;
     background-color: #457fa9;
     z-index: 30;
@@ -86,6 +86,7 @@
     position: absolute;
     left: 0px;
     top: 75px;
+    height: 100vh;
     width: 225px;
     background-color: #455d73;
 

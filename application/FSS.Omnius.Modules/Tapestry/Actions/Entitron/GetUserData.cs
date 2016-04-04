@@ -1,16 +1,16 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using System.Collections.Generic;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.other
+namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
-    [OtherRepository]
-    class GetUserEmail : Action
+    [EntitronRepository]
+    class GetUserData : Action
     {
         public override int Id
         {
             get
             {
-                return 504;
+                return 1023;
             }
         }
 
@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return "Get user's email";
+                return "Get user data";
             }
         }
 
@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             {
                 return new string[]
                 {
-                    "Email"
+                    "UserData"
                 };
             }
         }
@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            outputVars["Email"] = core.User.Email;
+            outputVars["UserData"] = core.User;
         }
     }
 }

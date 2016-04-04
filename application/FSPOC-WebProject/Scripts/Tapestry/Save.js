@@ -80,6 +80,7 @@ function SaveBlock(commitMessage) {
                     ActionId: currentItem.attr("actionid"),
                     InputVariables: currentItem.data("inputVariables"),
                     OutputVariables: currentItem.data("outputVariables"),
+                    PageId: currentItem.attr("pageId"),
                     ComponentName: currentItem.attr("componentName"),
                     isAjaxAction: currentItem.data("isAjaxAction"),
                     Condition: currentItem.data("condition")

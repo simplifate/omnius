@@ -27,3 +27,81 @@ $('body').on('click', '.runAjax', function (e) {
     e.preventDefault();
     AjaxRunAndReplace(window.location.pathname, $(this).val());
 });
+if ($("#currentBlockName").val() == "Zadaniobjednavkyperiodika") {
+    $("body").on("change", "#uic_periodical_dropdown", function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
+            data: { 'targetId': $(this).val() },
+            success: function (data) {
+                $("#uic_interval_dropdown option").each(function (index, element) {
+                    option = $(element);
+                    if (option.attr("value") == data.periodical.id_periodical_interval) {
+                        ShowOption(option);
+                    }
+                    else
+                        HideOption(option);
+                });
+                $("#uic_form_dropdown option").each(function (index, element) {
+                    option = $(element);
+                    if (option.attr("value") == data.periodical.id_periodical_form) {
+                        ShowOption(option);
+                    }
+                    else
+                        HideOption(option);
+                });
+                $("#uic_type_dropdown option").each(function (index, element) {
+                    option = $(element);
+                    if (option.attr("value") == data.periodical.id_periodical_types) {
+                        ShowOption(option);
+                    }
+                    else
+                        HideOption(option);
+                });
+            }
+        });
+    });
+}
+else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
+    $(".dropdown-select").on("change", function (e) {
+        if($(this).attr("id") == "uic_periodical_dropdown") {
+            panel = $(this).parents(".panel-component");
+            dropdownName = $(this).attr("name");
+            if (dropdownName.startsWith("panelCopy"))
+                dropdownName = dropdownName.substring(dropdownName.indexOf("_") + 1, dropdownName.length);
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
+                data: { 'targetId': $(this).val() },
+                success: function (data) {
+                    panel.find("#uic_interval_dropdown option").each(function (index, element) {
+                        option = $(element);
+                        if (option.attr("value") == data.periodical.id_periodical_interval) {
+                            ShowOption(option);
+                        }
+                        else
+                            HideOption(option);
+                    });
+                    panel.find("#uic_form_dropdown option").each(function (index, element) {
+                        option = $(element);
+                        if (option.attr("value") == data.periodical.id_periodical_form) {
+                            ShowOption(option);
+                        }
+                        else
+                            HideOption(option);
+                    });
+                    panel.find("#uic_type_dropdown option").each(function (index, element) {
+                        option = $(element);
+                        if (option.attr("value") == data.periodical.id_periodical_types) {
+                            ShowOption(option);
+                        }
+                        else
+                            HideOption(option);
+                    });
+                    panel.find("#uic_prince_vat_10_textbox").val(data.periodical.tentatively_net_of_VAT10);
+                    RecalculateAutosum(panel);
+                }
+            });
+        }
+    });
+}
