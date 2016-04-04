@@ -54,6 +54,9 @@ $(function () {
         $("#appManagerIcon").removeClass("activeIcon");
     };
     if ($("#userLeftBar").length > 0) {
+        $(".uic").each(function (index, element) {
+            $(element).attr("originalId", $(element).attr("Id"));
+        });
         $(".uic > checkbox").each(function (index, element) {
             $(element).prop("checked", false);
         });
@@ -136,7 +139,7 @@ $(function () {
                         if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
                             numericValue = parseInt($(element).val());
                             if (!isNaN(numericValue)) {
-                                multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                                multiplierTextbox = $(element).parents(".panel-component").find('[originalId="uic_pieces_textbox"]');
                                 if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
                                     sum += (numericValue * multiplierTextbox.val());
                                 else
@@ -155,7 +158,7 @@ $(function () {
             }
         });
         $(".uic.input-single-line").on("change", function () {
-            if ($(this).attr("id") == "uic_pieces_textbox" && $(this).parents(".panel-component"))
+            if ($(this).attr("originalId") == "uic_pieces_textbox" && $(this).parents(".panel-component"))
                 RecalculateAutosum($(this).parents(".panel-component"));
         });
         $(".uic.panel-component").each(function (index, element) {

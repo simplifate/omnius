@@ -64,8 +64,8 @@ if ($("#currentBlockName").val() == "Zadaniobjednavkyperiodika") {
 }
 else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
     $(".dropdown-select").on("change", function (e) {
-        if($(this).attr("id") == "uic_periodical_dropdown") {
-            panel = $(this).parents(".panel-component");
+        if ($(this).attr("originalId") == "uic_periodical_dropdown") {
+            panel = $(this).parents(".uic.panel-component");
             dropdownName = $(this).attr("name");
             if (dropdownName.startsWith("panelCopy"))
                 dropdownName = dropdownName.substring(dropdownName.indexOf("_") + 1, dropdownName.length);
@@ -74,7 +74,7 @@ else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
                 data: { 'targetId': $(this).val() },
                 success: function (data) {
-                    panel.find("#uic_interval_dropdown option").each(function (index, element) {
+                    panel.find('[originalId="uic_interval_dropdown"] option').each(function (index, element) {
                         option = $(element);
                         if (option.attr("value") == data.periodical.id_periodical_interval) {
                             ShowOption(option);
@@ -82,7 +82,7 @@ else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
                         else
                             HideOption(option);
                     });
-                    panel.find("#uic_form_dropdown option").each(function (index, element) {
+                    panel.find('[originalId="uic_form_dropdown"] option').each(function (index, element) {
                         option = $(element);
                         if (option.attr("value") == data.periodical.id_periodical_form) {
                             ShowOption(option);
@@ -90,7 +90,7 @@ else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
                         else
                             HideOption(option);
                     });
-                    panel.find("#uic_type_dropdown option").each(function (index, element) {
+                    panel.find('[originalId="uic_type_dropdown"] option').each(function (index, element) {
                         option = $(element);
                         if (option.attr("value") == data.periodical.id_periodical_types) {
                             ShowOption(option);
@@ -98,7 +98,7 @@ else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
                         else
                             HideOption(option);
                     });
-                    panel.find("#uic_prince_vat_10_textbox").val(data.periodical.tentatively_net_of_VAT10);
+                    panel.find('[originalId="uic_prince_vat_10_textbox"]').val(data.periodical.tentatively_net_of_VAT10);
                     RecalculateAutosum(panel);
                 }
             });

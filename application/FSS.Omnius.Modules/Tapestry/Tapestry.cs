@@ -94,6 +94,14 @@ namespace FSS.Omnius.Modules.Tapestry
                 {
                     if (fc.AllKeys.Contains(source.ComponentName))
                         _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
+                    for (int panelIndex = 1; fc.AllKeys.Contains($"panelCopy{panelIndex}Marker"); panelIndex++)
+                    {
+                        if (fc.AllKeys.Contains(source.ComponentName))
+                        {
+                            _results.OutputData.Add($"__Model.panelCopy{panelIndex}.{target.TableName}.{target.ColumnName}",
+                                fc[$"panelCopy{panelIndex}_" + source.ComponentName]);
+                        }
+                    }
                 }
             }
 

@@ -65,11 +65,24 @@ function ClonePanel(paneName) {
         componentName = currentComponent.attr("name");
         if (componentName)
             currentComponent.attr("name", "panelCopy" + panelCount + "_" + componentName);
+        componentId = currentComponent.attr("id");
+        if (componentId)
+            currentComponent.attr("id", "panelCopy" + panelCount + "_" + componentId);
     });
+    newPanel.append('<input type="hidden", name="panelCopy' + panelCount + 'Marker" value="true">');
     firstPanel.parents(".mozaicForm").append(newPanel);
     newPanel.css("top", panelBottom + 10);
     newPanel.find('input.input-single-line, textarea').each(function (item, element) {
         $(element).val("");
+    });
+    newPanel.find(".uic.input-with-datepicker").each(function (item, element) {
+        datePicker = $(element);
+        datePicker.off("focus");
+        datePicker.off("keydown");
+        datePicker.off("keyup");
+        datePicker.off("keypress");
+        datePicker.removeClass("hasDatepicker");
+        datePicker.datepicker($.datepicker.regional['cs']);
     });
     removePanelIcon = $('<div class="fa fa-remove removePanelIcon"></div>');
     newPanel.append(removePanelIcon);
@@ -102,7 +115,7 @@ function ClonePanel(paneName) {
                 if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
                     numericValue = parseInt($(element).val());
                     if (!isNaN(numericValue)) {
-                        multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                        multiplierTextbox = $(element).parents(".panel-component").find('[originalId="uic_pieces_textbox"]');
                         if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
                             sum += (numericValue * multiplierTextbox.val());
                         else
@@ -130,7 +143,7 @@ function RecalculateAutosum(panelDiv) {
         }
     });
     if (autosumTarget) {
-        if (sourceInputName.indexOf("_") == -1)
+        if (sourceInputName.indexOf("panelCopy") == -1)
             sourceInputNameWithoutPrefix = sourceInputName;
         else
             sourceInputNameWithoutPrefix = sourceInputName.substring(sourceInputName.indexOf("_") + 1, sourceInputName.length);
@@ -140,7 +153,7 @@ function RecalculateAutosum(panelDiv) {
             if (inputName.indexOf(sourceInputNameWithoutPrefix, inputName - sourceInputNameWithoutPrefix.length) !== -1) {
                 numericValue = parseInt($(element).val());
                 if (!isNaN(numericValue)) {
-                    multiplierTextbox = $(element).parents(".panel-component").find("#uic_pieces_textbox");
+                    multiplierTextbox = $(element).parents(".panel-component").find('[originalId="uic_pieces_textbox"]');
                     if (multiplierTextbox && !isNaN(multiplierTextbox.val()) && multiplierTextbox.val() > 0)
                         sum += (numericValue * multiplierTextbox.val());
                     else

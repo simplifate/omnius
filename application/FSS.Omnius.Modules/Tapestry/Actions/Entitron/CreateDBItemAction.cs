@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "?TableName" };
+                return new string[] { "?TableName", "?ReturnAssignedId" };
             }
         }
 
@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { };
+                return new string[] { "AssignedId" };
             }
         }
 
@@ -72,9 +72,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
                 }
             }
-
+            DateTime timestamp = DateTime.Now;
+            bool timestampCreated = false;
+            if (table.columns.Exists(c => c.Name == "date"))
+            {
+                item.createProperty(table.columns.Find(c => c.Name == "date").ColumnId, "date", timestamp);
+                timestampCreated = true;
+            }
             table.Add(item);
             core.Entitron.Application.SaveChanges();
+
+            if (vars.ContainsKey("ReturnAssignedId") && timestampCreated)
+            {
+                var searchResults = table.Select().where(c => c.column("date").Equal(timestamp)).ToList();
+                if(searchResults.Count > 0)
+                    outputVars["AssignedId"] = searchResults[0]["id"];
+            }
         }
     }
 }
