@@ -84,6 +84,7 @@ namespace FSS.Omnius.Controllers.CORE
                 }
                 catch(Exception ex)
                 {
+                    Logger.Log.Error(ex, Request);
                     ViewData["Message"] = ex.Message;
                     return View();
                 }
