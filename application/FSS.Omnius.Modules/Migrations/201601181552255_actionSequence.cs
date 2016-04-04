@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Migrations
                 "dbo.Tapestry_ActionSequences",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         ChildId = c.Int(nullable: false),
                         Order = c.Int(nullable: false),
                     })
@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Migrations
                 "dbo.Tapestry_Actions",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         MasterId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id);

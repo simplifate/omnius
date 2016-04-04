@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Migrations
                 "dbo.Nexus_CachedFiles",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         Blob = c.Binary(),
                     })
                 .PrimaryKey(t => t.Id)

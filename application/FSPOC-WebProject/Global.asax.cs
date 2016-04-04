@@ -33,13 +33,7 @@ namespace FSPOC_WebProject
             string body = $"URL: {Request.Url.AbsoluteUri}{Environment.NewLine}Errors:{Environment.NewLine}";
             foreach (var error in Context.AllErrors)
             {
-                var curError = error;
-                while (curError != null)
-                {
-                    body += $"Message: {curError.Message}{Environment.NewLine}Trace: {curError.StackTrace}{Environment.NewLine}{Environment.NewLine}";
-
-                    curError = curError.InnerException;
-                }
+                Logger.Log.Error(error, Request);
             }
 
             Logger.Log.Error(body);

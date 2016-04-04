@@ -70,35 +70,11 @@ namespace FSS.Omnius.Modules.Persona
             DBEntities context = _CORE.Entitron.GetStaticTables();
             User user = context.Users.SingleOrDefault(u => u.UserName == username);
 
-            return GetUser(user, username);
-        }
-        public User GetUser(User user, string username)
-        {
             // is in DB
             if (user != null)
             {
-                // is local-only
-                if (user.isLocalUser)
-                    return user;
-
-                // is from AD
-                else
-                {
-                    if (user.localExpiresAt < DateTime.UtcNow)
-                    {
-                        var userWithGroups = GetUserFromAD(user.UserName);
-                        // user not found - was deleted in AD
-                        if (userWithGroups == null)
-                            return null;
-                        // user found in AD
-                        SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
-                        user = userWithGroups.Item1;
-                    }
-
-                    return user;
-                }
+                return RefreshUser(user);
             }
-
             // not in db
             else
             {
@@ -111,6 +87,29 @@ namespace FSS.Omnius.Modules.Persona
                 // user found in AD
                 SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
                 return userWithGroups.Item1;
+            }
+        }
+        public User RefreshUser(User user)
+        {
+            // is local-only
+            if (user.isLocalUser)
+                return user;
+
+            // is from AD
+            else
+            {
+                if (user.localExpiresAt < DateTime.UtcNow)
+                {
+                    var userWithGroups = GetUserFromAD(user.UserName);
+                    // user not found - was deleted in AD
+                    if (userWithGroups == null)
+                        return null;
+                    // user found in AD
+                    SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+                    user = userWithGroups.Item1;
+                }
+
+                return user;
             }
         }
         
@@ -152,6 +151,8 @@ namespace FSS.Omnius.Modules.Persona
                 MobilPhone = "",
                 LastLogin = DateTime.FromFileTime((long)ldapResult["lastlogon"]),
                 CurrentLogin = DateTime.UtcNow,
+
+                ModuleAccessPermission = new ModuleAccessPermission(),
 
                 isLocalUser = false,
                 localExpiresAt = DateTime.UtcNow + _expirationTime

@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         State,
         Port
     }
-    [Table("TapestryDesigner_Metablocks")]
+    [Table("TapestryDesigner_MetaBlocks")]
     public class TapestryDesignerMetablock
     {
         public int Id { get; set; }

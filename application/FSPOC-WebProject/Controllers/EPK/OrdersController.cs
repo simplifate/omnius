@@ -67,7 +67,9 @@ namespace FSS.Omnius.Controllers.EPK
             {
                 masterUser = users.Select().where(c => c.column("pernr").Equal(masterUser["h_pernr"])).ToList().FirstOrDefault();
             }
-            DBItem approverUser = users.Select().where(c => c.column("pernr").Equal(user["h_pernr"])).First();
+            DBItem approverUser = null;
+            if (user != null)
+                approverUser = users.Select().where(c => c.column("pernr").Equal(user["h_pernr"])).ToList().FirstOrDefault();
 
             ViewData["uic451"] = user != null ? $"{user["nachn"]} {user["vorna"]}" : "";
             ViewData["uic450"] = masterUser != null ? e.GetDynamicTable("Org").Select().where(c => c.column("orgeh").Equal(masterUser["h_orgeh"])).First()["stext"] : "";

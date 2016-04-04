@@ -82,7 +82,7 @@ namespace FSS.Omnius.Modules.Migrations
                 c => new
                     {
                         MozaicPageId = c.Int(nullable: false),
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         ModelName = c.String(maxLength: 50),
                         IsVirtual = c.Boolean(nullable: false),
@@ -111,7 +111,7 @@ namespace FSS.Omnius.Modules.Migrations
                 "dbo.Tapestry_WorkFlow",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         InitBlockId = c.Int(nullable: false),
                         ParentId = c.Int(),
                         ApplicationId = c.Int(nullable: false),

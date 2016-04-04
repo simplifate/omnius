@@ -13,7 +13,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
 
-            sqlString = "SELECT Distinct TABLE_NAME name FROM information_schema.TABLES";
+            sqlString = "SELECT Distinct TABLE_NAME name FROM INFORMATION_SCHEMA.TABLES";
 
             return base.BaseExecutionWithRead(connection);
         }

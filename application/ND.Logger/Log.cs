@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Configuration;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace Logger
 {
@@ -107,6 +109,48 @@ namespace Logger
         {
             //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
             //ProcessLog(msg, methodName, verbose);
+        }
+        public static void Error(Exception ex, HttpRequest Request, bool verbose = false)
+        {
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //string body = $"URL: {Request.Url.AbsoluteUri}<br/>Method: {Request.HttpMethod}<br/>Current User: {Request.RequestContext.HttpContext.User.Identity.Name}<br/>POST data:<br/>";
+            //NameValueCollection form = Request.Unvalidated.Form;
+            //foreach (string key in form.AllKeys)
+            //{
+            //    body += $"{key} => {form[key]}<br />";
+            //}
+
+            //body += "<br />Errors:<br />";
+            //var curError = ex;
+            //while (curError != null)
+            //{
+            //    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+
+            //    curError = curError.InnerException;
+            //}
+
+            //ProcessLog(body, methodName, verbose);
+        }
+        public static void Error(Exception ex, HttpRequestBase Request, bool verbose = false)
+        {
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //string body = $"URL: {Request.Url.AbsoluteUri}<br/>Method: {Request.HttpMethod}<br/>Current User: {Request.RequestContext.HttpContext.User.Identity.Name}<br/>POST data:<br/>";
+            //NameValueCollection form = Request.Unvalidated.Form;
+            //foreach (string key in form.AllKeys)
+            //{
+            //    body += $"{key} => {form[key]}<br />";
+            //}
+
+            //body += "<br />Errors:<br />";
+            //var curError = ex;
+            //while (curError != null)
+            //{
+            //    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+
+            //    curError = curError.InnerException;
+            //}
+
+            //ProcessLog(body, methodName, verbose);
         }
 
         // Method of "Info" Logs
