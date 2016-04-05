@@ -788,6 +788,10 @@
     <Compile Include="Migrations\201604042336288_componentParent.Designer.cs">
       <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604050708595_repairTriggerComponentParent.cs" />
+    <Compile Include="Migrations\201604050708595_repairTriggerComponentParent.Designer.cs">
+      <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1256,6 +1260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604042336288_componentParent.resx">
       <DependentUpon>201604042336288_componentParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604050708595_repairTriggerComponentParent.resx">
+      <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
