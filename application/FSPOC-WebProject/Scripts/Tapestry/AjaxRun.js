@@ -63,6 +63,31 @@ if ($("#currentBlockName").val() == "Zadaniobjednavkyperiodika") {
     });
 }
 else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
+    $("#uic_approver_textbox").on("change", function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
+            data: { "SearchQuery": $(this).val() },
+            success: function (data) {
+                $("#uic_approver_select_dropdown option").remove();
+                for (i = 0; i < data.UserList.length; i++) {
+                    currentUser = data.UserList[i];
+                    $("#uic_approver_select_dropdown").append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
+                }
+            }
+        });
+    });
+    $("#uic_approver_select_dropdown").on("change", function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
+            data: { "targetId": $(this).val() },
+            success: function (data) {
+                $("#uic_occupation_select_dropdown option").remove();
+                $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
+            }
+        });
+    });
     $(".dropdown-select").on("change", function (e) {
         if ($(this).attr("originalId") == "uic_periodical_dropdown") {
             panel = $(this).parents(".uic.panel-component");
