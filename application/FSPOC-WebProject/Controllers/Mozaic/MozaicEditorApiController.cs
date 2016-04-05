@@ -63,7 +63,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         ModalWidth = requestedPage.ModalWidth,
                         ModalHeight = requestedPage.ModalHeight
                     };
-                    foreach (var component in requestedPage.Components)
+                    foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null))
                     {
                         var ajaxComponent = new AjaxMozaicEditorComponent
                         {

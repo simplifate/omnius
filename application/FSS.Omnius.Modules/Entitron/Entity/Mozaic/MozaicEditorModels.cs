@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
 
-            RenderComponentList(this.Components, stringBuilder, true);
+            RenderComponentList(Components.Where(c => c.ParentComponent == null).ToList(), stringBuilder, true);
 
             stringBuilder.Append("</form>");
             CompiledPartialView = stringBuilder.ToString();
