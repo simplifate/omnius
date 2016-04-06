@@ -213,8 +213,12 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 foreach (var childComponent in component.ChildComponents)
                     childComponentList.Add(childComponent);
                 foreach (var childComponent in childComponentList)
+                {
                     component.ChildComponents.Remove(childComponent);
+                    context.Entry(childComponent).State = EntityState.Deleted;
+                }
                 page.Components.Remove(component);
+                context.Entry(component).State = EntityState.Deleted;
             }
             context.SaveChanges();
         }
