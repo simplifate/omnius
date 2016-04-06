@@ -111,6 +111,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             };
                             LoadResourceRules(blockCommit, result);
                             LoadWorkflowRules(blockCommit, result);
+                            if (requestedBlock.ToolboxState != null)
+                                LoadToolboxState(requestedBlock, result);
                         }
                     }
                     catch (InvalidOperationException)
@@ -313,6 +315,25 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             });
                         }
                     }
+                    var toolboxState = new TapestryDesignerToolboxState();
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Actions)
+                        toolboxState.Actions.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Attributes)
+                        toolboxState.Attributes.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.UiComponents)
+                        toolboxState.UiComponents.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Roles)
+                        toolboxState.Roles.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.States)
+                        toolboxState.States.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Targets)
+                        toolboxState.Targets.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Templates)
+                        toolboxState.Templates.Add(convertToolboxItem(ajaxToolboxItem));
+                    foreach (var ajaxToolboxItem in postData.ToolboxState.Integrations)
+                        toolboxState.Integrations.Add(convertToolboxItem(ajaxToolboxItem));
+
+                    targetBlock.ToolboxState = toolboxState;
                     targetBlock.Name = postData.Name;
                     context.SaveChanges();
                 }
@@ -322,6 +343,38 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 var errorMessage = $"Tapestry Designer: error when saving block data (POST api/tapestry/apps/{appId}/blocks/{blockId}). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
+        }
+        private static ToolboxItem convertToolboxItem(AjaxToolboxItem ajaxItem)
+        {
+            return new ToolboxItem
+            {
+                TypeClass = ajaxItem.TypeClass,
+                Label = ajaxItem.Label,
+                ActionId = ajaxItem.ActionId,
+                TableName = ajaxItem.TableName,
+                ColumnName = ajaxItem.ColumnName,
+                PageId = ajaxItem.PageId,
+                ComponentName = ajaxItem.ComponentName,
+                StateId = ajaxItem.StateId,
+                TargetName = ajaxItem.TargetName,
+                TargetId = ajaxItem.TargetId
+            };
+        }
+        private static AjaxToolboxItem convertToolboxItem(ToolboxItem item)
+        {
+            return new AjaxToolboxItem
+            {
+                TypeClass = item.TypeClass,
+                Label = item.Label,
+                ActionId = item.ActionId,
+                TableName = item.TableName,
+                ColumnName = item.ColumnName,
+                PageId = item.PageId,
+                ComponentName = item.ComponentName,
+                StateId = item.StateId,
+                TargetName = item.TargetName,
+                TargetId = item.TargetId
+            };
         }
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}/commits")]
         [HttpGet]
@@ -827,6 +880,28 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 };
                 result.Connections.Add(ajaxConnection);
             }
+        }
+        private static void LoadToolboxState(TapestryDesignerBlock requestedBlock, AjaxTapestryDesignerBlockCommit result)
+        {
+            var ajaxToolboxState = new AjaxTapestryDesignerToolboxState();
+            var blockToolboxState = requestedBlock.ToolboxState;
+            foreach (var toolboxItem in blockToolboxState.Actions)
+                ajaxToolboxState.Actions.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.Attributes)
+                ajaxToolboxState.Attributes.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.UiComponents)
+                ajaxToolboxState.UiComponents.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.Roles)
+                ajaxToolboxState.Roles.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.States)
+                ajaxToolboxState.States.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.Targets)
+                ajaxToolboxState.Targets.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.Templates)
+                ajaxToolboxState.Templates.Add(convertToolboxItem(toolboxItem));
+            foreach (var toolboxItem in blockToolboxState.Integrations)
+                ajaxToolboxState.Integrations.Add(convertToolboxItem(toolboxItem));
+            result.ToolboxState = ajaxToolboxState;
         }
         private static void DeleteMetablock(TapestryDesignerMetablock metablockToDelete, DBEntities context)
         {

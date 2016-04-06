@@ -83,7 +83,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public DateTime Timestamp { get; set; }
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
 
-        public BlockToolboxState ToolboxState { get; set; }
         public List<AjaxTapestryDesignerResourceRule> ResourceRules { get; set; }
         public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public List<int> PortTargets { get; set; }
@@ -91,6 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<int> AssociatedTableIds { get; set; }
         public List<string> AssociatedTableName { get; set; }
         public List<string> RoleWhitelist { get; set; }
+        public AjaxTapestryDesignerToolboxState ToolboxState { get; set; }
 
         public AjaxTapestryDesignerBlockCommit()
         {
@@ -270,5 +270,45 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         {
             Conditions = new List<AjaxTapestryDesignerCondition>();
         }
+    }
+    public class AjaxTapestryDesignerToolboxState
+    {
+        public int Id { get; set; }
+        public List<AjaxToolboxItem> Actions { get; set; }
+        public List<AjaxToolboxItem> Attributes { get; set; }
+        public List<AjaxToolboxItem> UiComponents { get; set; }
+        public List<AjaxToolboxItem> Roles { get; set; }
+        public List<AjaxToolboxItem> States { get; set; }
+        public List<AjaxToolboxItem> Targets { get; set; }
+        public List<AjaxToolboxItem> Templates { get; set; }
+        public List<AjaxToolboxItem> Integrations { get; set; }
+
+        public TapestryDesignerBlockCommit AssociatedBlockCommit { get; set; }
+
+        public AjaxTapestryDesignerToolboxState()
+        {
+            Actions = new List<AjaxToolboxItem>();
+            Attributes = new List<AjaxToolboxItem>();
+            UiComponents = new List<AjaxToolboxItem>();
+            Roles = new List<AjaxToolboxItem>();
+            States = new List<AjaxToolboxItem>();
+            Targets = new List<AjaxToolboxItem>();
+            Templates = new List<AjaxToolboxItem>();
+            Integrations = new List<AjaxToolboxItem>();
+        }
+    }
+    public class AjaxToolboxItem
+    {
+        public int Id { get; set; }
+        public string TypeClass { get; set; }
+        public string Label { get; set; }
+        public int? ActionId { get; set; }
+        public string TableName { get; set; }
+        public string ColumnName { get; set; }
+        public int? PageId { get; set; }
+        public string ComponentName { get; set; }
+        public int? StateId { get; set; }
+        public string TargetName { get; set; }
+        public int? TargetId { get; set; }
     }
 }

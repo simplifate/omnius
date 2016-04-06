@@ -125,6 +125,62 @@ function SaveBlock(commitMessage) {
             Connections: connectionArray
         });
     });
+    toolboxState = {
+        Actions: [],
+        Attributes: [],
+        UiComponents: [],
+        Roles: [],
+        States: [],
+        Targets: [],
+        Templates: [],
+        Integrations: []
+    }
+    $(".tapestryToolbox .toolboxItem").each(function (itemIndex, itemDiv) {
+        toolboxItem = $(itemDiv);
+        toolboxItemData = {
+            Label: toolboxItem.find(".itemLabel").text(),
+            ActionId: toolboxItem.attr("ActionId"),
+            TableName: toolboxItem.attr("TableName"),
+            ColumnName: toolboxItem.attr("ColumnName"),
+            PageId: toolboxItem.attr("PageId"),
+            ComponentName: toolboxItem.attr("ComponentName"),
+            StateId: toolboxItem.attr("StateId"),
+            TargetName: toolboxItem.attr("TargetName"),
+            TargetId: toolboxItem.attr("TargetId")
+        }
+        if (toolboxItem.hasClass("actionItem")) {
+            toolboxItemData.TypeClass = "actionItem";
+            toolboxState.Actions.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("attributeItem")) {
+            toolboxItemData.TypeClass = "attributeItem";
+            toolboxState.Attributes.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("uiItem")) {
+            toolboxItemData.TypeClass = "uiItem";
+            toolboxState.UiComponents.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("roleItem")) {
+            toolboxItemData.TypeClass = "roleItem";
+            toolboxState.Roles.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("stateItem")) {
+            toolboxItemData.TypeClass = "stateItem";
+            toolboxState.States.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("targetItem")) {
+            toolboxItemData.TypeClass = "targetItem";
+            toolboxState.Targets.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("templateItem")) {
+            toolboxItemData.TypeClass = "templateItem";
+            toolboxState.Templates.push(toolboxItemData);
+        }
+        else if (toolboxItem.hasClass("integrationItem")) {
+            toolboxItemData.TypeClass = "integrationItem";
+            toolboxState.Integrations.push(toolboxItemData);
+        }
+    });
     postData = {
         CommitMessage: commitMessage,
         Name: $("#blockHeaderBlockName").text(),
@@ -135,6 +191,7 @@ function SaveBlock(commitMessage) {
         AssociatedPageIds: AssociatedPageIds,
         AssociatedTableIds: AssociatedTableIds,
         RoleWhitelist: RoleWhitelist,
+        ToolboxState: toolboxState,
         ParentMetablockId: $("#parentMetablockId").val()
     }    
     appId = $("#currentAppId").val();
