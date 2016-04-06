@@ -315,25 +315,27 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             });
                         }
                     }
-                    var toolboxState = new TapestryDesignerToolboxState();
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Actions)
-                        toolboxState.Actions.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Attributes)
-                        toolboxState.Attributes.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.UiComponents)
-                        toolboxState.UiComponents.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Roles)
-                        toolboxState.Roles.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.States)
-                        toolboxState.States.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Targets)
-                        toolboxState.Targets.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Templates)
-                        toolboxState.Templates.Add(convertToolboxItem(ajaxToolboxItem));
-                    foreach (var ajaxToolboxItem in postData.ToolboxState.Integrations)
-                        toolboxState.Integrations.Add(convertToolboxItem(ajaxToolboxItem));
-
-                    targetBlock.ToolboxState = toolboxState;
+                    if (postData.ToolboxState != null)
+                    {
+                        var toolboxState = new TapestryDesignerToolboxState();
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Actions)
+                            toolboxState.Actions.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Attributes)
+                            toolboxState.Attributes.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.UiComponents)
+                            toolboxState.UiComponents.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Roles)
+                            toolboxState.Roles.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.States)
+                            toolboxState.States.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Targets)
+                            toolboxState.Targets.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Templates)
+                            toolboxState.Templates.Add(convertToolboxItem(ajaxToolboxItem));
+                        foreach (var ajaxToolboxItem in postData.ToolboxState.Integrations)
+                            toolboxState.Integrations.Add(convertToolboxItem(ajaxToolboxItem));
+                        targetBlock.ToolboxState = toolboxState;
+                    }
                     targetBlock.Name = postData.Name;
                     context.SaveChanges();
                 }
