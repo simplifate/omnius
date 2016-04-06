@@ -42,7 +42,6 @@ namespace FSPOC_WebProject
                       "~/Content/jquery.contextMenu.css",
                       "~/Content/css/jquery.dataTables.min.css",
                       "~/Content/css/jquery.datetimepicker.css",
-                      "~/Content/css/font-awesome.min.css",
                       "~/Content/spectrum.css"
                       ));
 

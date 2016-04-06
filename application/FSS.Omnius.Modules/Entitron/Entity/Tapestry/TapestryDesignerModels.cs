@@ -75,6 +75,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInMenu { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
+        public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
 
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
         [JsonIgnore]
@@ -278,39 +279,47 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             TargetToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
         }
     }
-    [Table("TapestryDesigner_BlockToolboxStates")]
-    public class BlockToolboxState
+    [Table("TapestryDesigner_ToolboxStates")]
+    public class TapestryDesignerToolboxState
     {
         public int Id { get; set; }
-        public virtual ICollection<MenuItem> Attributes { get; set; }
-        public virtual ICollection<MenuItem> Views { get; set; }
-        public virtual ICollection<MenuItem> Actions { get; set; }
-        public virtual ICollection<MenuItem> Operators { get; set; }
-        public virtual ICollection<MenuItem> Roles { get; set; }
-        public virtual ICollection<MenuItem> States { get; set; }
-        public virtual ICollection<MenuItem> Ports { get; set; }
+        public virtual ICollection<ToolboxItem> Actions { get; set; }
+        public virtual ICollection<ToolboxItem> Attributes { get; set; }
+        public virtual ICollection<ToolboxItem> UiComponents { get; set; }
+        public virtual ICollection<ToolboxItem> Roles { get; set; }
+        public virtual ICollection<ToolboxItem> States { get; set; }
+        public virtual ICollection<ToolboxItem> Targets { get; set; }
+        public virtual ICollection<ToolboxItem> Templates { get; set; }
+        public virtual ICollection<ToolboxItem> Integrations { get; set; }
 
         public TapestryDesignerBlockCommit AssociatedBlockCommit { get; set; }
 
-        public BlockToolboxState()
+        public TapestryDesignerToolboxState()
         {
-            Attributes = new List<MenuItem>();
-            Views = new List<MenuItem>();
-            Actions = new List<MenuItem>();
-            Operators = new List<MenuItem>();
-            Roles = new List<MenuItem>();
-            States = new List<MenuItem>();
-            Ports = new List<MenuItem>();
+            Actions = new List<ToolboxItem>();
+            Attributes = new List<ToolboxItem>();
+            UiComponents = new List<ToolboxItem>();
+            Roles = new List<ToolboxItem>();
+            States = new List<ToolboxItem>();
+            Targets = new List<ToolboxItem>();
+            Templates = new List<ToolboxItem>();
+            Integrations = new List<ToolboxItem>();
         }
     }
-    [Table("TapestryDesigner_MenuItems")]
-    public class MenuItem
+    [Table("TapestryDesigner_ToolboxItems")]
+    public class ToolboxItem
     {
         public int Id { get; set; }
-        public int ItemReferenceId { get; set; }
-        public int ItemType { get; set; }
-        public string DialogType { get; set; }
-        public bool IsDataSource { get; set; }
+        public string TypeClass { get; set; }
+        public string Label { get; set; }
+        public int? ActionId { get; set; }
+        public string TableName { get; set; }
+        public string ColumnName { get; set; }
+        public int? PageId { get; set; }
+        public string ComponentName { get; set; }
+        public int? StateId { get; set; }
+        public string TargetName { get; set; }
+        public int? TargetId { get; set; }
     }
     //[Table("TapestryDesigner_Items")]
     //public class TapestryDesignerItem

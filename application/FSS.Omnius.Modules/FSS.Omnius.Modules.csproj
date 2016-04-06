@@ -796,6 +796,10 @@
     <Compile Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.Designer.cs">
       <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604061859547_Tapestry - save toolbox state.cs" />
+    <Compile Include="Migrations\201604061859547_Tapestry - save toolbox state.Designer.cs">
+      <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1273,6 +1277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.resx">
       <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604061859547_Tapestry - save toolbox state.resx">
+      <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

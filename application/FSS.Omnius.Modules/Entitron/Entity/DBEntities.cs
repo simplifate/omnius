@@ -390,6 +390,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.WorkflowItems);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Actions);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Attributes);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.UiComponents);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Roles);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.States);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Targets);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Templates);
+            modelBuilder.Entity<TapestryDesignerToolboxState>()
+                .HasMany(s => s.Integrations);
 
             // Watchtower
         }
