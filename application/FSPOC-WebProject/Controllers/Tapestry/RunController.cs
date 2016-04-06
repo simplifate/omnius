@@ -65,10 +65,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     DataTable dataSource = new DataTable();
                     var columnDisplayNameDictionary = new Dictionary<string, string>();
-                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.TableName)
-                        && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Sources[0].TableName)
+                        && string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName))
                     {
-                        string tableName = resourceMappingPair.Source.TableName;
+                        string tableName = resourceMappingPair.Sources[0].TableName;
                         var entitronTable = core.Entitron.GetDynamicTable(tableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
@@ -101,8 +101,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var entitronRowList = entitronTable.Select().ToList();
                         foreach (var entitronRow in entitronRowList)
                         {
-                            if (resourceMappingPair.Source.ConditionSets.Count == 0
-                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.Source.ConditionSets, entitronRow))
+                            if (resourceMappingPair.Sources[0].ConditionSets.Count == 0
+                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.Sources[0].ConditionSets, entitronRow))
                             {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = (int)entitronRow["id"];
@@ -130,7 +130,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                     }
-                    else if (resourceMappingPair.TargetType == "dropdown-select" && string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName))
+                    else if (resourceMappingPair.TargetType == "dropdown-select" && string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName))
                     {
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
@@ -139,26 +139,26 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
-                    if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                    if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName)
                         && resourceMappingPair.TargetType == "checkbox")
                     {
-                        ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                        ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Sources[0].ColumnName];
                     }
-                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName)
                         && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
-                        ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                        ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Sources[0].ColumnName];
                     }
-                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName)
+                    else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName)
                         && resourceMappingPair.TargetType == "dropdown-select")
                     {
-                        ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Source.ColumnName];
+                        ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.Sources[0].ColumnName];
                     }
-                    if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
+                    if (!string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
                         && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
-                        if (resourceMappingPair.Source.TableName == "Omnius::Users")
-                            switch (resourceMappingPair.Source.ColumnName)
+                        if (resourceMappingPair.Sources[0].TableName == "Omnius::Users")
+                            switch (resourceMappingPair.Sources[0].ColumnName)
                             {
                                 case "DisplayName":
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
@@ -176,19 +176,19 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
                                     break;
                             }
-                        else if (resourceMappingPair.Source.TableName == "Users")
+                        else if (resourceMappingPair.Sources[0].TableName == "Users")
                         {
                             var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                             if (epkUserRowList.Count > 0)
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.Source.ColumnName];
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.Sources[0].ColumnName];
                         }
                     }
-                    else if (!string.IsNullOrEmpty(resourceMappingPair.Source.ColumnName) && resourceMappingPair.DataSourceParams == "superior"
+                    else if (!string.IsNullOrEmpty(resourceMappingPair.Sources[0].ColumnName) && resourceMappingPair.DataSourceParams == "superior"
                         && (resourceMappingPair.TargetType == "input-single-line" || resourceMappingPair.TargetType == "input-multiline"))
                     {
                         var tableUsers = core.Entitron.GetDynamicTable("Users");
-                        if (resourceMappingPair.Source.TableName == "Users")
+                        if (resourceMappingPair.Sources[0].TableName == "Users")
                         {
                             var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                             if (epkUserRowList.Count > 0)
@@ -197,7 +197,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                 var epkSuperiorRowList = tableUsers.Select()
                                         .where(c => c.column("pernr").Equal(superiorId)).ToList();
                                 if (epkSuperiorRowList.Count > 0)
-                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][resourceMappingPair.Source.ColumnName];
+                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][resourceMappingPair.Sources[0].ColumnName];
                             }
                         }
                     }

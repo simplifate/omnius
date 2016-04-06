@@ -87,7 +87,7 @@ namespace FSS.Omnius.Modules.Tapestry
             // map inputs
             foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
             {
-                TapestryDesignerResourceItem source = pair.Source;
+                TapestryDesignerResourceItem source = pair.Sources[0];
                 TapestryDesignerResourceItem target = pair.Target;
 
                 if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")

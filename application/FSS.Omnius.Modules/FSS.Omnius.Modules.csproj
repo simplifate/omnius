@@ -792,6 +792,10 @@
     <Compile Include="Migrations\201604050708595_repairTriggerComponentParent.Designer.cs">
       <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.cs" />
+    <Compile Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.Designer.cs">
+      <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -828,6 +832,7 @@
     <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\FormatStringAction.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
@@ -1265,6 +1270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604050708595_repairTriggerComponentParent.resx">
       <DependentUpon>201604050708595_repairTriggerComponentParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604060906502_Allow multiple sources, add variables to resource items.resx">
+      <DependentUpon>201604060906502_Allow multiple sources, add variables to resource items.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

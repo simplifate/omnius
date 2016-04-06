@@ -197,9 +197,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             }
                         }
                     }
+                    var sourceList = new List<TapestryDesignerResourceItem>();
+                    sourceList.Add(source);
                     return new ResourceMappingPair
                     {
-                        Source = source,
+                        Sources = sourceList,
                         Target = target,
                         TargetName = targetName,
                         TargetType = targetType,

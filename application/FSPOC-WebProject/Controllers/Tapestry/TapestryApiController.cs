@@ -180,6 +180,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = ajaxItem.PositionX,
                                 PositionY = ajaxItem.PositionY,
                                 ActionId = ajaxItem.ActionId,
+                                InputVariables = ajaxItem.InputVariables,
+                                OutputVariables = ajaxItem.OutputVariables,
                                 PageId = ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,

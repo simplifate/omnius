@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
@@ -11,8 +12,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string SourceColumnFilter { get; set; }
         public string DataSourceParams { get; set; }
         public virtual TapestryDesignerResourceItem Source { get; set; }
+        public virtual List<TapestryDesignerResourceItem> Sources { get; set; }
         public virtual TapestryDesignerResourceItem Target { get; set; }
         public int BlockId { get; set; }
         public virtual Block Block { get; set; }
+
+        public ResourceMappingPair()
+        {
+            Sources = new List<TapestryDesignerResourceItem>();
+        }
     }
 }
