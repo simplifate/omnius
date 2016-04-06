@@ -36,9 +36,13 @@ namespace FSPOC_WebProject
                       "~/Scripts/RuleDetailViewModel.js"
                       ));
 
-            bundles.Add(new StyleBundle("~/bundles/css").Include(
+            bundles.Add(new StyleBundle("~/Content/css-libs").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
+                      "~/Content/jquery.contextMenu.css",
+                      "~/Content/css/jquery.dataTables.min.css",
+                      "~/Content/css/jquery.datetimepicker.css",
+                      "~/Content/css/font-awesome.min.css",
                       "~/Content/spectrum.css"
                       ));
 
