@@ -845,6 +845,10 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         private static void DeleteBlock(TapestryDesignerBlock blockToDelete, DBEntities context)
         {
             var blockCommitList = new List<TapestryDesignerBlockCommit>();
+            foreach(var wfItem in blockToDelete.TargetFor)
+            {
+                wfItem.Target = null;
+            }
             foreach (var blockCommit in blockToDelete.BlockCommits)
             {
                 var resRuleList = new List<TapestryDesignerResourceRule>();
