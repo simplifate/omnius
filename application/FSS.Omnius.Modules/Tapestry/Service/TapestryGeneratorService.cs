@@ -35,7 +35,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // generate new
                 WorkFlow wf = saveMetaBlock(app.TapestryDesignerRootMetablock, true);
                 _context.SaveChanges();
-                
+
                 // remove old
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
                 _context.SaveChanges();
@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     workflow.IsTemp = false;
                 _context.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
                 _context.SaveChanges();
@@ -100,7 +100,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 {
                     saveBlockContent(childBlock, resultWF);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception($"block [{childBlock.Name}] - {e.Message}", e);
                 }
@@ -197,11 +197,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             }
                         }
                     }
-                    var sourceList = new List<TapestryDesignerResourceItem>();
-                    sourceList.Add(source);
                     return new ResourceMappingPair
                     {
-                        Sources = sourceList,
+                        Source = source,
                         Target = target,
                         TargetName = targetName,
                         TargetType = targetType,
@@ -313,7 +311,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem prevItem = null;
             while (item != null && (prevItem == null || !blockMapping.ContainsKey(prevItem)))
             {
-                switch(item.TypeClass)
+                switch (item.TypeClass)
                 {
                     case "actionItem":
                         ActionRule_Action result = new ActionRule_Action

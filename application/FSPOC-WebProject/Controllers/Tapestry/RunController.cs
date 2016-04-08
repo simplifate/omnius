@@ -65,7 +65,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     DataTable dataSource = new DataTable();
                     var columnDisplayNameDictionary = new Dictionary<string, string>();
-                    var source = resourceMappingPair.Sources.Count > 0 ? resourceMappingPair.Sources[0] : new TapestryDesignerResourceItem();
+                    var source = resourceMappingPair.Source;
                     if (!string.IsNullOrEmpty(source.TableName)
                         && string.IsNullOrEmpty(source.ColumnName))
                     {

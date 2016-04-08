@@ -800,6 +800,10 @@
     <Compile Include="Migrations\201604061859547_Tapestry - save toolbox state.Designer.cs">
       <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604081157582_Remove resoure mapping pair source array.cs" />
+    <Compile Include="Migrations\201604081157582_Remove resoure mapping pair source array.Designer.cs">
+      <DependentUpon>201604081157582_Remove resoure mapping pair source array.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1280,6 +1284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604061859547_Tapestry - save toolbox state.resx">
       <DependentUpon>201604061859547_Tapestry - save toolbox state.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604081157582_Remove resoure mapping pair source array.resx">
+      <DependentUpon>201604081157582_Remove resoure mapping pair source array.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
