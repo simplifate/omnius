@@ -40,9 +40,13 @@ namespace FSPOC_WebProject
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.contextMenu.css",
-                      "~/Content/css/jquery.dataTables.min.css",
                       "~/Content/css/jquery.datetimepicker.css",
                       "~/Content/spectrum.css"
+                      ));
+
+            bundles.Add(new StyleBundle("~/Content/css-bundle/css-libs").Include(
+                      "~/Content/css/jquery.dataTables.min.css",
+                      "~/Content/css/font-awesome.min.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/CommonLibraries").IncludeDirectory(
