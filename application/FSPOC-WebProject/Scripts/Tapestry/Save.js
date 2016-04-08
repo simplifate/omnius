@@ -140,12 +140,12 @@ function SaveBlock(commitMessage) {
         toolboxItemData = {
             Label: toolboxItem.find(".itemLabel").text(),
             ActionId: toolboxItem.attr("ActionId"),
-            TableName: toolboxItem.attr("TableName"),
-            ColumnName: toolboxItem.attr("ColumnName"),
+            TableName: toolboxItem.attr("TableName") ? toolboxItem.attr("TableName") : null,
+            ColumnName: toolboxItem.attr("ColumnName") ? toolboxItem.attr("ColumnName") : null,
             PageId: toolboxItem.attr("PageId"),
-            ComponentName: toolboxItem.attr("ComponentName"),
+            ComponentName: toolboxItem.attr("ComponentName") ? toolboxItem.attr("ComponentName") : null,
             StateId: toolboxItem.attr("StateId"),
-            TargetName: toolboxItem.attr("TargetName"),
+            TargetName: toolboxItem.attr("TargetName") ? toolboxItem.attr("TargetName") : null,
             TargetId: toolboxItem.attr("TargetId")
         }
         if (toolboxItem.hasClass("actionItem")) {
