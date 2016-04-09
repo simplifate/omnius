@@ -827,6 +827,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetDictionaryFromTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
