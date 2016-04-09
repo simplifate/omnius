@@ -23,5 +23,11 @@
 
         public int PositionX { get; set; }
         public int PositionY { get; set; }
+
+        public UsersApplications()
+        {
+            PositionX = 10;
+            PositionY = 10;
+        }
     }
 }
