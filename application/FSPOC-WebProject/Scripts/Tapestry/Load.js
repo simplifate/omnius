@@ -492,7 +492,7 @@
                 dataType: "json",
                 success: function (integrationData) {
                     integrationsInToolboxState = data.ToolboxState ? data.ToolboxState.Integrations : [];
-                    $(".tapestryToolbox .toolboxLi_Templates").remove();
+                    $(".tapestryToolbox .toolboxLi_Integrations").remove();
                     for (integrationIndex = 0; integrationIndex < integrationData.Ldap.length; integrationIndex++) {
                         integrationLibId = ++lastLibId;
                         integrationLibraryItem = $('<div libId="' + integrationLibId + '" libType="ldap" class="libraryItem">LDAP: ' + integrationData.Ldap[integrationIndex].Name + '</div>');
