@@ -334,11 +334,20 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 switch (item.TypeClass)
                 {
                     case "actionItem":
+                        string generatedInputVariables = "";
+                        if (item.ActionId == 2005) // Send mail
+                        {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
+                            {
+                                if (relatedConnections.Source.TypeClass == "templateItem")
+                                    generatedInputVariables = ";Template=s$" + relatedConnections.Source.Label;
+                            }
+                        }
                         ActionRule_Action result = new ActionRule_Action
                         {
                             ActionId = item.ActionId.Value,
                             Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
-                            InputVariablesMapping = item.InputVariables,
+                            InputVariablesMapping = item.InputVariables + generatedInputVariables,
                             OutputVariablesMapping = item.OutputVariables
                         };
                         rule.ActionRule_Actions.Add(result);

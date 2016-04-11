@@ -561,8 +561,8 @@ $(function () {
         }
         actionPropertiesDialog = $("#action-properties-dialog").dialog({
             autoOpen: false,
-            width: 400,
-            height: 190,
+            width: 900,
+            height: 200,
             buttons: {
                 "Save": function () {
                     actionPropertiesDialog_SubmitData();

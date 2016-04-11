@@ -53,11 +53,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             var result = new Dictionary<string, string>();
-            foreach (var row in (List<DBItem>)vars["TableData"])
+            if (vars["TableData"] is DBItem)
             {
+                var row = (DBItem)vars["TableData"];
                 string key = (string)row[(string)vars["KeyColumn"]];
                 string value = (string)row[(string)vars["ValueColumn"]];
                 result.Add(key, value);
+            }
+            else
+            {
+                foreach (var row in (List<DBItem>)vars["TableData"])
+                {
+                    string key = (string)row[(string)vars["KeyColumn"]];
+                    string value = (string)row[(string)vars["ValueColumn"]];
+                    result.Add(key, value);
+                }
             }
             outputVars["Result"] = result;
         }

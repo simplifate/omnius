@@ -105,6 +105,8 @@
                         + currentItemData.Label + '</div>');
                     if (currentItemData.ActionId != null)
                         newItem.attr("actionId", currentItemData.ActionId);
+                    if (currentItemData.StateId != null)
+                        newItem.attr("stateId", currentItemData.StateId);
                     if (currentItemData.PageId != null)
                         newItem.attr("pageId", currentItemData.PageId);
                     if (currentItemData.ComponentName != null)
@@ -215,6 +217,8 @@
                             newItem.attr('componentName', currentItemData.ComponentName);
                         if (currentItemData.TargetId != null)
                             newItem.attr('targetId', currentItemData.TargetId);
+                        if (currentItemData.StateId != null)
+                            newItem.attr("stateId", currentItemData.StateId);
                         if (currentItemData.isAjaxAction != null)
                             newItem.data('isAjaxAction', currentItemData.isAjaxAction);
                         if (currentItemData.TypeClass == "circle-thick")
