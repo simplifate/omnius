@@ -194,7 +194,8 @@ namespace FSS.Omnius.Controllers.Master
                     IsInMenu = b.IsInMenu,
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
-                    BlockName = blockMapping[b.Id].Name
+                    BlockName = blockMapping[b.Id].Name,
+                    bc = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault()
                 });
             }
 
