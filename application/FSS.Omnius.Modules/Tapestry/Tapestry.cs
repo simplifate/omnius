@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
-using FSS.Omnius.Modules.Tapestry;
-using System.Collections.Specialized;
-using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using FSS.Omnius.Modules.Entitron.Entity;
-using System.Data;
 using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
@@ -52,7 +46,6 @@ namespace FSS.Omnius.Modules.Tapestry
         {
             // __CORE__
             // __Result[uicName]__
-            // __Model__
             // __ModelId__
             // __Model.{TableName}.{columnName}
             // __TableName__
@@ -68,14 +61,9 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // get actionRule
             ActionRule actionRule = null;
-            ActionRule nextRule;
-            try
-            { nextRule = GetActionRule(block, buttonId, _results, modelId); }
-            catch (MissingMethodException)
-            {
-                _results.Message.Warnings.Add("Zadaný příkaz nenalezen");
+            ActionRule nextRule = GetActionRule(block, _results, buttonId);
+            if (nextRule == null)
                 return new Tuple<ActionResult, Block>(_results, block);
-            }
 
             // get inputs
             string[] keys = fc.AllKeys;
@@ -118,7 +106,7 @@ namespace FSS.Omnius.Modules.Tapestry
                     return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
 
-                nextRule = GetAutoActionRule(actionRule.TargetBlock, _results);
+                nextRule = GetActionRule(actionRule.TargetBlock, _results);
             }
 
             Block resultBlock = actionRule.TargetBlock;
@@ -133,7 +121,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return new Tuple<ActionResult, Block>(_results, resultBlock);
         }
 
-        public ActionRule Rollback(List<ActionRule> prevActionRules)
+        private ActionRule Rollback(List<ActionRule> prevActionRules)
         {
             prevActionRules.Reverse();
             foreach (ActionRule actRule in prevActionRules)
@@ -143,46 +131,46 @@ namespace FSS.Omnius.Modules.Tapestry
             return prevActionRules.Last();
         }
 
-        private ActionRule GetActionRule(Block block, string buttonId, ActionResult results, int modelId)
+        private ActionRule GetActionRule(Block block, ActionResult results, string buttonId = null)
         {
-            ActionRule rule = block.SourceTo_ActionRules.SingleOrDefault(ar => ar.ExecutedBy == buttonId);
-            if (rule == null)
-                throw new MissingMethodException($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
-
-            if (false && !_CORE.User.canUseAction(rule.Id, _CORE.Entitron.GetStaticTables()))
-                throw new UnauthorizedAccessException(string.Format("User cannot execute action rule[{0}]", rule.Id));
-            
-            results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(rule.SourceBlock.ModelName, modelId);
-
-            rule.PreRun(results);
-            if (false && !rule.CanRun(results.OutputData))
-                throw new UnauthorizedAccessException(string.Format("Cannot pass conditions: rule[{0}]", rule.Id));
-
-            return rule;
-        }
-        private ActionRule GetAutoActionRule(Block block, ActionResult results, int? modelId = null)
-        {
-            var actionRules = block.SourceTo_ActionRules.Where(ar => ar.Actor.Name == "Auto").ToList();
-            var authorizedActionRules = actionRules.Where(ar => _CORE.User.canUseAction(ar.Id, _CORE.Entitron.GetStaticTables())).ToList();
-
-            // not authorized
-            if (actionRules.Count > 0 && authorizedActionRules.Count == 0)
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+            IQueryable<ActionRule> ARs;
+            if (buttonId != null)
             {
-                results.Message.Errors.Add("You are not authorized");
+                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.ExecutedBy == buttonId);
+                if (!ARs.Any())
+                {
+                    results.Message.Errors.Add($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
+                    return null;
+                }
+            }
+            else
+            {
+                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.Actor.Name == "Auto");
+                if (!ARs.Any())
+                    return null;
+            }
+
+            // authorize
+            PersonaAppRole role = _CORE.Entitron.GetStaticTables().Roles.Where(r => r.Users.Any(u => u.UserId == _CORE.User.Id) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
+            bool hasAnonnymousAccess = role == null && ARs.Any(ar => !ar.ActionRuleRights.Any());
+            if (role == null && !hasAnonnymousAccess)
+            {
+                results.Message.Errors.Add($"You are not authorized to Block [{block.Name}] with Executor[{buttonId}]");
                 return null;
             }
 
-            foreach (ActionRule ar in authorizedActionRules)
+            // check
+            var swimlaneARs = hasAnonnymousAccess ? ARs.Where(ar => !ar.ActionRuleRights.Any()) : ARs.Where(ar => ar.ActionRuleRights.Any(arr => arr.AppRoleId == role.Id));
+            foreach(var rule in swimlaneARs)
             {
-                if (modelId != null)
-                    results.OutputData["__MODEL__"] = _CORE.Entitron.GetDynamicItem(block.ModelName, modelId.Value);
-
-                ar.PreRun(results);
-                if (ar.CanRun(results.OutputData))
-                    return ar;
+                rule.PreRun(results);
+                if (rule.CanRun(results.OutputData))
+                    return rule;
             }
-
-            // nothing that meets the conditions
+            
+            // nothing meets condition
+            results.Message.Errors.Add($"WF can't continue - block[{block.Name}]");
             return null;
         }
     }

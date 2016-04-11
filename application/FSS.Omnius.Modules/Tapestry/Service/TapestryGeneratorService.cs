@@ -35,7 +35,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 // generate new
                 WorkFlow wf = saveMetaBlock(app.TapestryDesignerRootMetablock, true);
                 _context.SaveChanges();
-
+                
                 // remove old
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
                 _context.SaveChanges();
@@ -223,7 +223,23 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
             Dictionary<Block, string> conditionMapping = new Dictionary<Block, string>();
             Dictionary<TapestryDesignerWorkflowItem, Block> BlockMapping = new Dictionary<TapestryDesignerWorkflowItem, Block>();
+            HashSet<Block> blockHasRights = new HashSet<Block> { block };
 
+            // create virtual starting items
+            TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
+            BlockMapping.Add(virtualBeginItem, block);
+            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem"))
+            {
+                TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
+                {
+                    Source = virtualBeginItem,
+                    Target = item
+                };
+                
+                todoConnections.Add(conn);
+            }
+
+            //
             var splitItems = workflowRule.Connections.GroupBy(c => c.SourceId).Where(c => c.Count() > 1);
             var joinItems = workflowRule.Connections.GroupBy(c => c.TargetId).Where(c => c.Count() > 1);
 
@@ -253,6 +269,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 {
                     conditionMapping.Add(newBlock, it.Condition);
                 }
+                // rights
+                if (checkBlockHasRights(splitItem))
+                    blockHasRights.Add(newBlock);
             }
             foreach (var joinItem in joinItems)
             {
@@ -277,26 +296,20 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     BlockMapping.Add(it, newBlock);
                 }
             }
-
-            // begin
-            TapestryDesignerWorkflowItem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
-            if (item == null)
-                return;
-            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { Target = item }, BlockMapping, conditionMapping, stateColumnMapping, item.ComponentName);
-
-
+            
             //// ACTIONS ////
             foreach (TapestryDesignerWorkflowConnection conection in todoConnections)
             {
                 TapestryDesignerWorkflowItem it = conection.Source;
                 Block thisBlock = BlockMapping[it];
-                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping);
+                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
             }
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerWorkflowConnection connection,
-            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, Dictionary<int, string> stateColumnMapping, string init = null)
+            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
+            string init = connection.Target.ComponentName;
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
             {
@@ -311,7 +324,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             startBlock.SourceTo_ActionRules.Add(rule);
             // rights
-            AddActionRuleRights(rule, connection.Target.ParentSwimlane);
+            if (blockHasRights.Contains(startBlock))
+                AddActionRuleRights(rule, connection.Target.ParentSwimlane);
 
             TapestryDesignerWorkflowItem item = connection.Target;
             TapestryDesignerWorkflowItem prevItem = null;
@@ -390,6 +404,21 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             return rule;
+        }
+
+        private bool checkBlockHasRights(IEnumerable<TapestryDesignerWorkflowConnection> connections)
+        {
+            if (connections.Count() < 2)
+                return false;
+
+            TapestryDesignerSwimlane originalSwimlane = connections.First().Target.ParentSwimlane;
+            foreach (var connection in connections)
+            {
+                if (connection.Target.ParentSwimlane != originalSwimlane)
+                    return true;
+            }
+
+            return false;
         }
 
         private void AddActionRuleRights(ActionRule rule, TapestryDesignerSwimlane swimlane)
