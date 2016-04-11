@@ -115,6 +115,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         {
             // block
             Block resultBlock = _blockMapping[block.Id];
+            var stateColumnMapping = new Dictionary<int, string>();
 
             TapestryDesignerBlockCommit commit = block.BlockCommits.OrderBy(bc => bc.Timestamp).LastOrDefault();
             if (commit == null) // no commit
@@ -122,14 +123,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // Resources
             foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {
-                var pair = saveResourceRule(resourceRule, wf.Application);
+                var pair = saveResourceRule(resourceRule, wf.Application, stateColumnMapping);
                 resultBlock.ResourceMappingPairs.Add(pair);
             }
 
             // ActionRule
             foreach (TapestryDesignerWorkflowRule workflowRule in commit.WorkflowRules)
             {
-                saveWFRule(workflowRule, resultBlock, wf);
+                saveWFRule(workflowRule, resultBlock, wf, stateColumnMapping);
             }
 
             if (commit.AssociatedPageIds != "")
@@ -149,7 +150,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
         }
 
-        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app)
+        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping)
         {
             AttributeRule result = new AttributeRule();
             using (var context = new DBEntities())
@@ -197,6 +198,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             }
                         }
                     }
+                    if (source.StateId != null && !string.IsNullOrEmpty(target.ColumnName))
+                    {
+                        stateColumnMapping.Add(source.StateId.Value, target.ColumnName);
+                        continue;
+                    }
                     return new ResourceMappingPair
                     {
                         Source = source,
@@ -212,7 +218,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return null;
         }
 
-        private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf)
+        private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf, Dictionary<int, string> stateColumnMapping)
         {
             HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
             Dictionary<Block, string> conditionMapping = new Dictionary<Block, string>();
@@ -276,7 +282,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem item = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem");
             if (item == null)
                 return;
-            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { Target = item }, BlockMapping, conditionMapping, item.ComponentName);
+            createActionRule(workflowRule, block, new TapestryDesignerWorkflowConnection { Target = item }, BlockMapping, conditionMapping, stateColumnMapping, item.ComponentName);
 
 
             //// ACTIONS ////
@@ -284,12 +290,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 TapestryDesignerWorkflowItem it = conection.Source;
                 Block thisBlock = BlockMapping[it];
-                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping);
+                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping);
             }
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerWorkflowConnection connection,
-            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, string init = null)
+            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, Dictionary<int, string> stateColumnMapping, string init = null)
         {
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
@@ -342,6 +348,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     case "templateItem":
                         break;
                     case "stateItem":
+                        if (stateColumnMapping.ContainsKey(item.StateId.Value))
+                        {
+                            string stateColumn = stateColumnMapping[item.StateId.Value];
+                            ActionRule_Action setStateAction = new ActionRule_Action
+                            {
+                                ActionId = 1029,
+                                Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
+                                InputVariablesMapping = $"ColumnName=s${stateColumn};StateId=i${item.StateId.Value}",
+                                OutputVariablesMapping = ""
+                            };
+                            rule.ActionRule_Actions.Add(setStateAction);
+                        }
                         break;
                     case "circle-single":
                         break;

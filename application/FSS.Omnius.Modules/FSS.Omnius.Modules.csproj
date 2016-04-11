@@ -835,6 +835,7 @@
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
