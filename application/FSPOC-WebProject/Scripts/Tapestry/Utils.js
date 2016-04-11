@@ -30,7 +30,6 @@ function CreateJsPlumbInstanceForRule(ruleElement) {
     ruleElement.data("jsPlumbInstance", newInstance);
     return newInstance;
 }
-
 function AddToJsPlumb(item) {
     if (!item.attr("id")) {
         itemId = AssingID();
@@ -147,6 +146,19 @@ function AddToJsPlumb(item) {
         dropOptions: { hoverClass: "dragHover" },
         anchor: "Continuous",
         allowLoopback: false
+    });
+}
+function ToolboxItemDraggable(item) {
+    item.find(".toolboxItem").draggable({
+        helper: "clone",
+        appendTo: '#tapestryWorkspace',
+        containment: 'window',
+        tolerance: "fit",
+        revert: true,
+        scroll: true,
+        start: function () {
+            dragModeActive = true;
+        }
     });
 }
 function AssingID() {

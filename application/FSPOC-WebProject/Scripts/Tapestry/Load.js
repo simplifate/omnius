@@ -90,7 +90,6 @@
                                 instance.repaintEverything();
                             }
                             if (droppedElement.position().top + droppedElement.height() + 5 > ruleContent.height()) {
-                                console.log("matched");
                                 droppedElement.css("top", ruleContent.height() - droppedElement.height() - 15);
                                 instance = ruleContent.data("jsPlumbInstance");
                                 instance.repaintEverything();
@@ -282,7 +281,6 @@
                             ui.helper.remove();
                             AddToJsPlumb(droppedElement);
                             if (droppedElement.position().top + droppedElement.height() + 10 > ruleContent.height()) {
-                                console.log("matched");
                                 droppedElement.css("top", ruleContent.height() - droppedElement.height() - 20);
                                 instance = ruleContent.parents(".workflowRule").data("jsPlumbInstance");
                                 instance.repaintEverything();
@@ -326,6 +324,7 @@
                             newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + tableData.Tables[tableIndex].Name + '">'
                                 + '<span class="itemLabel">Table: ' + tableData.Tables[tableIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
+                            ToolboxItemDraggable(newToolboxLiAttribute);
                             attributeLibraryItem.addClass("highlighted");
                         }
                     }
@@ -350,6 +349,7 @@
                                     newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentTable.Name + '" columnName="' + currentTable.Columns[columnIndex].Name + '"><span class="itemLabel">'
                                         + currentTable.Name + '.' + currentTable.Columns[columnIndex].Name + '</span></div></li>');
                                     $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
+                                    ToolboxItemDraggable(newToolboxLiAttribute);
                                     attributeLibraryItem.addClass("highlighted");
                                 }
                             }
@@ -385,6 +385,7 @@
                             newToolboxLiAction = $('<li libId="' + actionLibId + '" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem" actionId="' + actionData.Items[actionIndex].Id + '"><span class="itemLabel">'
                             + actionData.Items[actionIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_Attributes").before(newToolboxLiAction);
+                            ToolboxItemDraggable(newToolboxLiAction);
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
@@ -409,6 +410,7 @@
                             newToolboxLiRole = $('<li libId="' + roleLibId + '" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">'
                             + roleData.Roles[roleIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_States").before(newToolboxLiRole);
+                            ToolboxItemDraggable(newToolboxLiRole);
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
@@ -433,6 +435,7 @@
                             newToolboxLiState = $('<li libId="' + stateLibId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem stateItem" stateId="' + stateData.States[stateIndex].Id + '"><span class="itemLabel">'
                             + stateData.States[stateIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLiState);
+                            ToolboxItemDraggable(newToolboxLiState);
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
@@ -457,6 +460,7 @@
                             newToolboxLiTarget = $('<li libId="' + targetLibId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem" targetId="' + targetData.ListItems[targetIndex].Id + '"><span class="itemLabel">'
                             + targetData.ListItems[targetIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLiTarget);
+                            ToolboxItemDraggable(newToolboxLiTarget);
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
@@ -478,8 +482,10 @@
                             return value.Label == templateData[templateIndex].Name;
                         }).length;
                         if (templateMatch) {
-                            $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before('<li libId="' + templateLibId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
+                            newToolboxLiIntegration = $('<li libId="' + templateLibId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
                                 + templateData[templateIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before(newToolboxLiIntegration);
+                            ToolboxItemDraggable(newToolboxLiIntegration);
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
@@ -501,8 +507,10 @@
                             return value.Label == "LDAP: " + integrationData.Ldap[integrationIndex].Name;
                         }).length;
                         if (integrationMatch) {
-                            $(".tapestryToolbox").append('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
+                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                                 + 'LDAP: ' + integrationData.Ldap[integrationIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox").append(newToolboxLiIntegration);
+                            ToolboxItemDraggable(newToolboxLiIntegration);
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
@@ -514,8 +522,10 @@
                             return value.Label == "WS: " + integrationData.WS[integrationIndex].Name;
                         }).length;
                         if (integrationMatch) {
-                            $(".tapestryToolbox").append('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
+                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                                 + 'WS: ' + integrationData.WS[integrationIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox").append(newToolboxLiIntegration);
+                            ToolboxItemDraggable(newToolboxLiIntegration);
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
@@ -527,8 +537,10 @@
                             return value.Label == "SMTP: " + integrationData.SMTP[integrationIndex].Name;
                         }).length;
                         if (integrationMatch) {
-                            $(".tapestryToolbox").append('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
+                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                                 + 'SMTP: ' + integrationData.SMTP[integrationIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox").append(newToolboxLiIntegration);
+                            ToolboxItemDraggable(newToolboxLiIntegration);
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
@@ -540,8 +552,10 @@
                             return value.Label == "WebDAV: " + integrationData.WebDAV[integrationIndex].Name;
                         }).length;
                         if (integrationMatch) {
-                            $(".tapestryToolbox").append('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
+                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                                 + 'WebDAV: ' + integrationData.WebDAV[integrationIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox").append(newToolboxLiIntegration);
+                            ToolboxItemDraggable(newToolboxLiIntegration);
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
@@ -569,8 +583,10 @@
                                     return value.PageId == uiPageData.Id && (!value.ComponentName || value.ComponentName == "undefined");
                                 }).length;
                                 if (uicMatch) {
-                                    $(".tapestryToolbox .toolboxCategoryHeader_Roles").before('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem pageUi" pageId="' + uiPageData.Id + '">'
+                                    newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem pageUi" pageId="' + uiPageData.Id + '">'
                                         + '<span class="itemLabel">Screen: ' + uiPageData.Name + '</span></div></li>');
+                                    $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
+                                    ToolboxItemDraggable(newToolboxLiUic);
                                     uicLibraryItem.addClass("highlighted");
                                 }
                             }
@@ -583,8 +599,10 @@
                                 return value.PageId == uiPageData.Id && value.ComponentName == uiPageData.Components[componentIndex].Name;
                             }).length;
                             if (uicMatch) {
-                                $(".tapestryToolbox .toolboxCategoryHeader_Roles").before('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '"><span class="itemLabel">'
+                                newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '"><span class="itemLabel">'
                                     + uiPageData.Components[componentIndex].Name + '</span></div></li>');
+                                $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
+                                ToolboxItemDraggable(newToolboxLiUic);
                                 uicLibraryItem.addClass("highlighted");
                             }
                             if (uiPageData.Components[componentIndex].Type == "data-table-with-actions") {
@@ -605,8 +623,10 @@
                                         return value.PageId == uiPageData.Id && value.ComponentName == uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name;
                                     }).length;
                                     if (uicMatch) {
-                                        $(".tapestryToolbox .toolboxCategoryHeader_Roles").before('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '"><span class="itemLabel">'
+                                        newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '"><span class="itemLabel">'
                                             + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '</span></div></li>');
+                                        $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
+                                        ToolboxItemDraggable(newToolboxLiUic);
                                         uicLibraryItem.addClass("highlighted");
                                     }
                                 }
