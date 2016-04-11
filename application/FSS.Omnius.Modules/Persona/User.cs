@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
@@ -47,6 +48,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
                 return true;
 
             return Roles.Any(r => r.AppRole.ActionRuleRights.Any(arr => arr.ActionRuleId == actionId));
+        }
+        public bool canUseBlock(TapestryDesignerBlockCommit bc)
+        {
+            if (bc == null)
+                return true;
+
+            int appId = bc.ParentBlock.ParentMetablock.ParentAppId;
+            string[] roles = bc.RoleWhitelist.Split(',');
+            foreach (string role in roles)
+            {
+                if (Roles.Any(r => r.AppRole.ADgroup.ApplicationId == appId && r.AppRole.Name == role))
+                    return true;
+            }
+            return false;
         }
         public bool HasRole(string roleName, DBEntities context)
         {
