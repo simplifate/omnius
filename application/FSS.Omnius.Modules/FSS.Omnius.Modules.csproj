@@ -808,6 +808,10 @@
     <Compile Include="Migrations\201604110911042_Add StateId to ResourceItem.Designer.cs">
       <DependentUpon>201604110911042_Add StateId to ResourceItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604121231256_cortex-montly-type.cs" />
+    <Compile Include="Migrations\201604121231256_cortex-montly-type.Designer.cs">
+      <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1296,6 +1300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604110911042_Add StateId to ResourceItem.resx">
       <DependentUpon>201604110911042_Add StateId to ResourceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604121231256_cortex-montly-type.resx">
+      <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
