@@ -1,8 +1,13 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Cortex;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Cortex
@@ -62,43 +67,40 @@ namespace FSS.Omnius.Controllers.Cortex
         public ActionResult Save(Task model)
         {
             DBEntities e = new DBEntities();
-            if (ModelState.IsValid) {
-                // Záznam již existuje - pouze upravujeme
-                if (!model.Id.Equals(null)) {
-                    Task row = e.Tasks.Single(m => m.Id == model.Id);
-                    row.Active                  = model.Active;
-                    row.AppId                   = model.AppId;
-                    row.Daily_Repeat            = model.Daily_Repeat;
-                    row.Duration                = model.Duration;
-                    row.End_Date                = model.End_Date;
-                    row.End_Time                = model.End_Time;
-                    row.Hourly_Repeat           = model.Hourly_Repeat;
-                    row.Idle_Time               = model.Idle_Time;
-                    row.Minute_Repeat           = model.Minute_Repeat;
-                    row.Monthly_Days            = model.Monthly_Days;
-                    row.Monthly_In_Days         = model.Monthly_In_Days;
-                    row.Monthly_In_Modifiers    = model.Monthly_In_Modifiers;
-                    row.Monthly_Months          = model.Monthly_Months;
-                    row.Name                    = model.Name;
-                    row.Start_Date              = model.Start_Date;
-                    row.Start_Time              = model.Start_Time;
-                    row.Type                    = model.Type;
-                    row.Url                     = model.Url;
-                    row.Weekly_Days             = model.Weekly_Days;
-                    row.Weekly_Repeat           = model.Weekly_Repeat;
+            Task row = !model.Id.Equals(null) ? e.Tasks.Single(m => m.Id == model.Id) : new Task();
+               
+            row.Active = model.Active;
+            row.AppId = model.AppId;
+            row.Daily_Repeat = model.Daily_Repeat;
+            row.Duration = model.Duration;
+            row.End_Date = model.End_Date;
+            row.End_Time = model.End_Time;
+            row.Hourly_Repeat = model.Hourly_Repeat;
+            row.Idle_Time = model.Idle_Time;
+            row.Minute_Repeat = model.Minute_Repeat;
+            row.Monthly_Days = GetDaysInMonthFlags();
+            row.Monthly_In_Days = GetDaysFlags("Monthly_In_Days[]");
+            row.Monthly_In_Modifiers = GetModifierFlags();
+            row.Monthly_Months = GetMonthsFlags();
+            row.Name = model.Name;
+            row.Start_Date = model.Start_Date;
+            row.Start_Time = model.Start_Time;
+            row.Type = model.Type;
+            row.Url = model.Url;
+            row.Weekly_Days = GetDaysFlags("Weekly_Days[]");
+            row.Weekly_Repeat = model.Weekly_Repeat;
 
-                    e.SaveChanges();
-                }
-                else {
-                    e.Tasks.Add(model);
-                    e.SaveChanges();
-                }
-                
-                return RedirectToRoute("Cortex", new { @action = "Index" });
+            if(model.Id.Equals(null)) {
+                e.Tasks.Add(row);
+                CreateScheduleTask(row);
             }
             else {
-                return View("~/Views/Cortex/Form.cshtml", model);
+                ChangeScheduleTask(row);
             }
+
+            //e.SaveChanges();
+
+            return RedirectToRoute("Cortex", new { @action = "Index" });
         }
 
         private void MapScheduleTypeNames()
@@ -151,10 +153,155 @@ namespace FSS.Omnius.Controllers.Cortex
 
         private void MapDaysInMonthNames()
         {
-            for(int i = 1; i <= 31; i++) {
-                daysInMonthNames.Add((DaysInMonth)i, i.ToString());
+            int i = 1;
+            foreach (DaysInMonth day in Enum.GetValues(typeof(DaysInMonth))) {
+                if(day == DaysInMonth.LAST) {
+                    daysInMonthNames.Add(day, "Poslední");
+                    continue;
+                }
+
+                daysInMonthNames.Add(day, i.ToString());
+                i++;
             }
-            daysInMonthNames.Add(DaysInMonth.LAST, "Poslední");
+        }
+
+        private int GetDaysFlags(string formKey)
+        {
+            int flag = 0;
+            if (!String.IsNullOrEmpty((string)Request.Form[formKey])) {
+                List<string> selected = ((string)Request.Form[formKey]).Split(',').ToList();
+                foreach (Days day in Enum.GetValues(typeof(Days))) {
+                    if (selected.Contains(day.ToString())) {
+                        flag = flag | (int)day;
+                    }
+                }
+            }
+            return flag;
+        }
+
+        private int GetModifierFlags()
+        {
+            int flag = 0;
+            if (!String.IsNullOrEmpty((string)Request.Form["Monthly_In_Modifiers[]"])) {
+                List<string> selected = ((string)Request.Form["Monthly_In_Modifiers[]"]).Split(',').ToList();
+                foreach (InModifiers mod in Enum.GetValues(typeof(InModifiers))) {
+                    if (selected.Contains(mod.ToString())) {
+                        flag = flag | (int)mod;
+                    }
+                }
+            }
+            return flag;
+        }
+
+        private int GetMonthsFlags()
+        {
+            int flag = 0;
+            if (!String.IsNullOrEmpty((string)Request.Form["Monthly_Months[]"])) {
+                List<string> selected = ((string)Request.Form["Monthly_Months[]"]).Split(',').ToList();
+                foreach (Months month in Enum.GetValues(typeof(Months))) {
+                    if (selected.Contains(month.ToString())) {
+                        flag = flag | (int)month;
+                    }
+                }
+            }
+            return flag;
+        }
+
+        private Int64 GetDaysInMonthFlags()
+        {
+            Int64 flag = 0;
+
+            if(!String.IsNullOrEmpty((string)Request.Form["Monthly_Days[]"])) { 
+                List<string> selected = ((string)Request.Form["Monthly_Days[]"]).Split(',').ToList();
+                foreach (DaysInMonth day in Enum.GetValues(typeof(DaysInMonth))) {
+                    if(selected.Contains(day.ToString())) {
+                        flag = flag | (Int64)day;
+                    }
+                }
+            }
+            return flag;
+        }
+
+        private void CreateScheduleTask(Task model)
+        {
+            ConfigurationSection loggerConfig = (ConfigurationSection)WebConfigurationManager.GetSection("logger");
+
+            string cmdText = String.Empty;
+            string run = String.Empty;
+            string logPath = loggerConfig.ElementInformation.Properties["rootDir"].Value.ToString();
+
+            logPath += "\\Cortex\\" + model.Name + ".html";
+            run = "wget -O \\\"" + logPath + "\\\" " + Request.Url.Host + "/" + model.Url;
+
+            cmdText += "Schtasks /create /sc " + model.Type.ToString();     // Nastaví typ tasku 
+            cmdText += " /tn \"" + model.Name + "\"";                       // Nastaví jméno tasku
+            cmdText += " /tr \"" + run + "\"";                              // Spouštěná úloha
+
+            // Modifikátor
+            switch(model.Type) 
+            {
+                case ScheduleType.MINUTE: {
+                        cmdText += model.Minute_Repeat == null ? "" : " /mo " + model.Minute_Repeat;
+                        break;
+                    }
+                case ScheduleType.HOURLY: {
+                        cmdText += model.Hourly_Repeat == null ? "" : " /mo " + model.Hourly_Repeat;
+                        break;
+                    }
+                case ScheduleType.DAILY: {
+                        cmdText += model.Daily_Repeat == null ? "" : " /mo " + model.Daily_Repeat;
+                        break;
+                    }
+                case ScheduleType.WEEKLY: {
+                        cmdText += model.Weekly_Repeat == null ? "" : " /mo " + model.Weekly_Repeat;
+                        break;
+                    }
+                case ScheduleType.MONTHLY: {
+                        if(model.Monthly_Type == MonthlyType.IN) {
+                            List<string> mods = new List<string>();
+                            if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(InModifiers.FIRST)) mods.Add(InModifiers.FIRST.ToString());
+                            if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(InModifiers.SECOND)) mods.Add(InModifiers.SECOND.ToString());
+                            if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(InModifiers.THIRD)) mods.Add(InModifiers.THIRD.ToString());
+                            if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(InModifiers.FOURTH)) mods.Add(InModifiers.FOURTH.ToString());
+                            if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(InModifiers.LAST)) mods.Add(InModifiers.LAST.ToString());
+
+                            if(mods.Count() > 0) {
+                                cmdText += " /mo " + String.Join(",", mods);
+                            } 
+                        }
+                        if(model.Monthly_Type == MonthlyType.DAYS && (DaysInMonth)model.Monthly_Days == DaysInMonth.LAST) {
+                            cmdText += " /mo " + DaysInMonth.LAST.ToString();
+                        }
+                        break;
+                    }
+            }
+
+            // Den
+            switch(model.Type) {
+                /*case ScheduleType.WEEKLY: {
+                        List<string> days = new List<string>();
+                        
+                    }*/
+            }
+            
+        }
+
+        private void ChangeScheduleTask(Task model)
+        {
+
+        }
+
+        private void Execute(string cmdText)
+        {
+            using (Process process = new Process()) {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = "/C " + cmdText;
+                process.StartInfo = startInfo;
+                process.Start();
+            }
         }
     }
 }
