@@ -53,6 +53,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            if (core.Entitron.Application == null)
+                core.Entitron.AppName = "EvidencePeriodik";
             var result = new DBItem();
             var user = core.User;
 
@@ -60,6 +62,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             result.createProperty(1, "UserName", user.UserName);
             result.createProperty(2, "DisplayName", user.DisplayName);
             result.createProperty(3, "Email", user.Email);
+            result.createProperty(4, "Job", user.Job);
+            result.createProperty(5, "Company", user.Company);
+            result.createProperty(6, "Address", user.Address);
+
+            var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(user.Email)).ToList();
+            if (epkUserRowList.Count > 0)
+            {
+                var userRecord = epkUserRowList[0];
+                result.createProperty(20, "kostl", userRecord["kostl"]);
+            }
             outputVars["UserData"] = result;
         }
     }
