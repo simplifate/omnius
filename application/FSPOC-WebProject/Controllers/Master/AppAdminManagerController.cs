@@ -129,7 +129,7 @@ namespace FSS.Omnius.Controllers.Master
                             context.Pages.Add(menuLayout);
                         }
                         menuLayout.ViewName = $"{app.Name} layout";
-                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping);
+                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
 
                         app.IsPublished = true;
                         context.SaveChanges();
@@ -164,28 +164,35 @@ namespace FSS.Omnius.Controllers.Master
             }
         }
 
-        private string GetApplicationMenu(Modules.CORE.CORE core, Dictionary<int, Block> blockMapping, int rootId = 0, int level = 0)
+        private Tuple<string, HashSet<string>> GetApplicationMenu(Modules.CORE.CORE core, Dictionary<int, Block> blockMapping, int rootId = 0, int level = 0)
         {
             DBEntities e = core.Entitron.GetStaticTables();
             rootId = rootId == 0 ? core.Entitron.Application.TapestryDesignerRootMetablock.Id : rootId;
+            HashSet<string> rights = new HashSet<string>();
 
             List<TapestryDesignerMenuItem> items = new List<TapestryDesignerMenuItem>();
             foreach (TapestryDesignerMetablock m in e.TapestryDesignerMetablocks.Include("ParentMetablock").Where(m => m.ParentMetablock.Id == rootId && m.IsInMenu == true))
             {
+                var menuResult = GetApplicationMenu(core, blockMapping, m.Id, level + 1);
+                rights.AddRange(menuResult.Item2);
                 items.Add(new TapestryDesignerMenuItem()
                 {
                     Id = m.Id,
                     Name = m.Name,
-                    SubMenu = GetApplicationMenu(core, blockMapping, m.Id, level + 1),
+                    SubMenu = menuResult.Item1,
                     IsInitial = m.IsInitial,
                     IsInMenu = m.IsInMenu,
                     MenuOrder = m.MenuOrder,
-                    IsMetablock = true
+                    IsMetablock = true,
+                    rights = string.Join(",", menuResult.Item2)
                 });
             }
 
             foreach (TapestryDesignerBlock b in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => b.ParentMetablock.Id == rootId && b.IsInMenu == true))
             {
+                var commit = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
+                if (commit != null)
+                    rights.AddRange(commit.RoleWhitelist.Split(','));
                 items.Add(new TapestryDesignerMenuItem()
                 {
                     Id = b.Id,
@@ -195,7 +202,7 @@ namespace FSS.Omnius.Controllers.Master
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
                     BlockName = blockMapping[b.Id].Name,
-                    rights = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault().RoleWhitelist
+                    rights = commit != null ? commit.RoleWhitelist : ""
                 });
             }
 
@@ -208,7 +215,7 @@ namespace FSS.Omnius.Controllers.Master
                 var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
                 viewResult.View.Render(viewContext, sw);
                 viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                return sw.GetStringBuilder().ToString();
+                return new Tuple<string, HashSet<string>>(sw.GetStringBuilder().ToString(), rights);
             }
         }
     }
