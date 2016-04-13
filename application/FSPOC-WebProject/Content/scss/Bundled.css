@@ -1356,6 +1356,9 @@ body.tapestryModule .ui-dialog-content .formTable td {
 body.tapestryModule .ui-dialog-content .formTable tr td:first-child {
   width: 175px; }
 
+body.tapestryModule .ui-dialog-content .formTable .wideInput {
+  width: 690px; }
+
 body.tapestryModule .columnFilterTable {
   width: 100%; }
   body.tapestryModule .columnFilterTable td:first-child {

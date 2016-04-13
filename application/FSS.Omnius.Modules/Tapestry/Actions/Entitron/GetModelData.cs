@@ -51,7 +51,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            DBItem model = (DBItem)vars["__MODEL__"];
+            DBItem model = (vars["__CORE__"] as CORE.CORE).Entitron.GetDynamicItem((string)vars["__TableName__"], (int)vars["__ModelId__"]);
             if (vars.ContainsKey("ColumnId"))
                 outputVars["Data"] = model[(int)vars["ColumnId"]];
             else

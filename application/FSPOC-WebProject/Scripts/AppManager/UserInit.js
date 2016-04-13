@@ -211,5 +211,10 @@ $(function () {
             });
             ModalDialogArray.push(currentDialog);
         });
+        notificationMessage = GetUrlParameter("message");
+        if (notificationMessage) {
+            notificationType = GetUrlParameter("messageType");
+            ShowAppNotification(notificationMessage, notificationType);
+        }
     }
 });

@@ -97,6 +97,26 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return new Condition_concat(_conditions);
         }
+        public Condition_concat Contains(object value)
+        {
+            if (_conditions.isCheck)
+                _conditions._concat = _conditions._concat.Replace("WHERE", "");
+
+            string parValue = _conditions._query.safeAddParam("value", $"%{value}%");
+            _conditions._sql += string.Format("{0}([{1}] LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
+
+            return new Condition_concat(_conditions);
+        }
+        public Condition_concat ContainsCaseInsensitive(object value)
+        {
+            if (_conditions.isCheck)
+                _conditions._concat = _conditions._concat.Replace("WHERE", "");
+
+            string parValue = _conditions._query.safeAddParam("value", $"%{value}%");
+            _conditions._sql += string.Format("{0}(LOWER([{1}]) LIKE LOWER(@{2}))", _conditions._concat, _conditions._columnName, parValue);
+
+            return new Condition_concat(_conditions);
+        }
         public Condition_concat Like(object value)
         {
             if (_conditions.isCheck)

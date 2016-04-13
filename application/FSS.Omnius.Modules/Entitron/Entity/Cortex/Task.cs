@@ -10,6 +10,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         MINUTE = 1, HOURLY = 2, DAILY = 4, WEEKLY = 8, MONTHLY = 16, ONCE = 32, ONSTART = 64, ONIDLE = 128
     }
 
+    public enum MonthlyType
+    {
+        IN = 1, DAYS
+    }
+
     [Flags]
     public enum Days
     {
@@ -80,16 +85,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         [Display(Name = "Opakovat každých")]
         public int? Weekly_Repeat { get; set; }
         
-        public Days? Weekly_Days { get; set; }
+        // Flags: Days
+        public int? Weekly_Days { get; set; }
 
+        public MonthlyType? Monthly_Type { get; set; }
+
+        // Flags: Months
         [Display(Name = "Měsíce")]
-        public Months? Monthly_Months { get; set; }
+        public int? Monthly_Months { get; set; }
 
+        // Flags: DaysInMonth
         [Display(Name = "Dny")]
-        public DaysInMonth? Monthly_Days { get; set; }
+        public Int64? Monthly_Days { get; set; }
 
-        public InModifiers? Monthly_In_Modifiers { get; set; }
-        public Days? Monthly_In_Days { get; set; }
+        // Flags: InModifiers
+        public int? Monthly_In_Modifiers { get; set; }
+
+        // Flags: Days
+        public int? Monthly_In_Days { get; set; }
 
         [Range(1,999)]
         [Display(Name = "Doba nečinosti")]

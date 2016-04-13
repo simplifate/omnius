@@ -34,11 +34,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                 try
                 {
                     int blockId = Convert.ToInt32(blockIdentify);
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                    block = context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Id == blockId);
                 }
-                catch(FormatException)
+                catch (FormatException)
                 {
-                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify);
                 }
 
                 try
@@ -220,11 +220,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                 try
                 {
                     int blockId = Convert.ToInt32(blockIdentify);
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                    block = context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Id == blockId);
                 }
                 catch (FormatException)
                 {
-                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify);
+                    block = context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify);
                 }
 
                 try

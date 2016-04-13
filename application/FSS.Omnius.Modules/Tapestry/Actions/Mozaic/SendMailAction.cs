@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override string[] InputVar
         {
             get {
-                return new string[] { "Recipients", "CC", "BCC", "Subject", "Template" };
+                return new string[] { "Recipients", "Subject", "Template", "?CC", "?BCC", "?Data" };
             }
         }
         public override string[] OutputVar
@@ -44,7 +44,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            Mailer mail = new Mailer(null, (string)vars["Template"], new object());
+            var dataDictionary = new Dictionary<string, string>();
+            if (vars.ContainsKey("Data"))
+                dataDictionary = (Dictionary<string, string>)vars["Data"];
+
+            Mailer mail = new Mailer("Test", (string)vars["Template"], dataDictionary);
             mail.Subject((string)vars["Subject"]);
             mail.To((Dictionary<string, string>)vars["Recipients"]);
             mail.SendMail();
