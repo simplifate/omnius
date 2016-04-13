@@ -8,14 +8,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("Tapestry_ActionRule_Action")]
     public partial class ActionRule_Action
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
         public int ActionRuleId { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override int ActionId { get; set; }
 
         public override int Order { get; set; }

@@ -812,6 +812,10 @@
     <Compile Include="Migrations\201604121231256_cortex-montly-type.Designer.cs">
       <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604130808394_actionRule_Action_Id.cs" />
+    <Compile Include="Migrations\201604130808394_actionRule_Action_Id.Designer.cs">
+      <DependentUpon>201604130808394_actionRule_Action_Id.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1304,6 +1308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604121231256_cortex-montly-type.resx">
       <DependentUpon>201604121231256_cortex-montly-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604130808394_actionRule_Action_Id.resx">
+      <DependentUpon>201604130808394_actionRule_Action_Id.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
