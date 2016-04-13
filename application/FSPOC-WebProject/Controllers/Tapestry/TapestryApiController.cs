@@ -544,7 +544,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             PositionY = ajaxMetablock.PositionY,
                             IsInitial = ajaxMetablock.IsInitial,
                             IsInMenu = ajaxMetablock.IsInMenu,
-                            Id = appId
+                            ParentAppId = appId
                         };
                         targetMetablock.Metablocks.Add(newMetablock);
                         context.SaveChanges();
