@@ -59,7 +59,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ADgroup> ADgroups { get; set; }
+        public virtual ICollection<PersonaAppRole> Roles { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Table> Tables { get; set; }

@@ -820,6 +820,10 @@
     <Compile Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.Designer.cs">
       <DependentUpon>201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604131344422_appRoleRelation.cs" />
+    <Compile Include="Migrations\201604131344422_appRoleRelation.Designer.cs">
+      <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1318,6 +1322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.resx">
       <DependentUpon>201604130908533_Add ModelTableName to TapestryDesignerBlockCommit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604131344422_appRoleRelation.resx">
+      <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

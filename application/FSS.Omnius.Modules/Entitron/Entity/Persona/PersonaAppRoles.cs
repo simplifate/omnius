@@ -19,8 +19,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public new string Name { get; set; }
 
         [JsonIgnore]
-        public int ADgroupId { get; set; }
-        public virtual ADgroup ADgroup { get; set; }
+        public int ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
         [Required]
         public int Priority { get; set; }
         [JsonIgnore]

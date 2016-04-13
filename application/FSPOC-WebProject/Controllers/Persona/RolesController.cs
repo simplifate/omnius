@@ -52,7 +52,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                 #endregion
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ADgroup.ApplicationId == app.Id);
+                var roles = context.Roles.Where(c => c.ApplicationId == app.Id);
 
                 int x = 0;
                 foreach (var role in roles)
@@ -178,7 +178,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                 Application app = context.Applications.Find(model.AppID);
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ADgroup.ApplicationId == app.Id);
+                var roles = context.Roles.Where(c => c.ApplicationId == app.Id);
 
                 #region Save columns
                 int x = 0;
@@ -232,7 +232,7 @@ namespace FSPOC_WebProject.Controllers.Persona
                             #region New role
                             PersonaAppRole realRole = new PersonaAppRole();
 
-                            realRole.ADgroup = app.ADgroups.First();
+                            realRole.Application = app;
                             realRole.Name = colHeader.Name;
                             realRole.Priority = colHeader.Priority;
                             if (realRole.Name == "Nová role")

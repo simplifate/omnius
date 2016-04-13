@@ -92,9 +92,8 @@ namespace FSPOC_WebProject.Controllers.Persona
             try {
                 using (var context = new DBEntities()) {
                     AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
-                    int adGroupId = context.ADgroups.Where(g => g.ApplicationId == appId).First().Id;
 
-                    result.Roles = context.Roles.Where(r => r.ADgroupId == adGroupId).Select(r => new AjaxPersonaAppRoles_Role()
+                    result.Roles = context.Roles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
                     {
                         Id = r.Id,
                         Name = r.Name

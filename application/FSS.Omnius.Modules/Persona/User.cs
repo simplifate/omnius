@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             string[] roles = rights.Split(',');
             foreach (string role in roles)
             {
-                if (Roles.Any(r => r.AppRole.ADgroup.ApplicationId == appId && r.AppRole.Name == role))
+                if (Roles.Any(r => r.AppRole.ApplicationId == appId && r.AppRole.Name == role))
                     return true;
             }
             return false;

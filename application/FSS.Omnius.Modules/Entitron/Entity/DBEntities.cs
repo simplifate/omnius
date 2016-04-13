@@ -190,9 +190,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Persona
             modelBuilder.Entity<PersonaAppRole>()
-                .HasRequired<ADgroup>(e => e.ADgroup)
-                .WithMany(e => e.AppRoles)
-                .HasForeignKey(e => e.ADgroupId);
+                .HasRequired<Application>(e => e.Application)
+                .WithMany(e => e.Roles)
+                .HasForeignKey(e => e.ApplicationId);
 
             modelBuilder.Entity<ModuleAccessPermission>()
                 .HasRequired(e => e.User)
