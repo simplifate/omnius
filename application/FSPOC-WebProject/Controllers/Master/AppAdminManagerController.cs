@@ -191,7 +191,7 @@ namespace FSS.Omnius.Controllers.Master
             foreach (TapestryDesignerBlock b in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => b.ParentMetablock.Id == rootId && b.IsInMenu == true))
             {
                 var commit = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
-                if (commit != null)
+                if (commit != null && !string.IsNullOrWhiteSpace(commit.RoleWhitelist))
                     rights.AddRange(commit.RoleWhitelist.Split(','));
                 items.Add(new TapestryDesignerMenuItem()
                 {
