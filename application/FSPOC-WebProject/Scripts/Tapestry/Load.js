@@ -334,6 +334,7 @@
                     }
                     AssociatedTableIds = data.AssociatedTableIds;
                     AssociatedTableName = data.AssociatedTableName;
+                    ModelTableName = data.ModelTableName;
                     $("#blockHeaderDbResCount").text(data.AssociatedTableName.length);
                     somethingWasAdded = false;
                     for (tableIndex = 0; tableIndex < data.AssociatedTableName.length; tableIndex++) {

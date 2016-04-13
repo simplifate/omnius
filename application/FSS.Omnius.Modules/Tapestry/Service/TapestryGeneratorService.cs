@@ -80,13 +80,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 TapestryDesignerBlockCommit commit = childBlock.BlockCommits.OrderByDescending(c => c.Timestamp).FirstOrDefault();
 
-                string modelName = null;
-                if (commit != null)
+                string modelName;
+                if (commit == null)
+                    modelName = null;
+                else
                 {
                     if (!string.IsNullOrEmpty(commit.ModelTableName))
                         modelName = commit.ModelTableName;
                     else if (!string.IsNullOrEmpty(commit.AssociatedTableName))
                         modelName = commit.AssociatedTableName.Split(',').First();
+                    else
+                        modelName = null;
                 }
 
                 Block resultBlock = new Block

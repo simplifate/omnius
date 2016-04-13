@@ -1431,6 +1431,12 @@ body.tapestryModule #conditions-dialog {
   body.tapestryModule #conditions-dialog .conditionTable .conditionActions .removeConditionIcon:hover {
     background-color: #f06771; }
 
+body.tapestryModule .modelMarker {
+  float: right;
+  margin-right: 10px;
+  font-weight: bold;
+  color: blue; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryResponsiveArea {
     transform: scale(0.9);

@@ -187,6 +187,7 @@ function SaveBlock(commitMessage) {
         ResourceRules: resourceRulesArray,
         WorkflowRules: workflowRulesArray,
         PortTargets: portTargetsArray,
+        ModelTableName: ModelTableName,
         AssociatedTableName: AssociatedTableName,
         AssociatedPageIds: AssociatedPageIds,
         AssociatedTableIds: AssociatedTableIds,

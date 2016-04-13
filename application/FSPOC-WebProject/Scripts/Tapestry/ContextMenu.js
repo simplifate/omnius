@@ -194,5 +194,21 @@
                 "remove-swimlane": { name: "Remove swimlane", icon: "delete" },
             }
         });
+        $.contextMenu({
+            selector: '.tableRow',
+            trigger: 'right',
+            zIndex: 300,
+            callback: function (key, options) {
+                if (key == "model") {
+                    tableRow = options.$trigger;
+                    tableRow.addClass("highlightedRow");
+                    tableRow.parents("table").find(".modelMarker").remove();
+                    tableRow.find("td:first").append('<div class="modelMarker">Model</div>');
+                }
+            },
+            items: {
+                "model": { name: "Set as model", icon: "edit" }
+            }
+        });
     }
 });

@@ -661,6 +661,12 @@ body.tapestryModule {
             }
         }
     }
+    .modelMarker {
+        float: right;
+        margin-right: 10px;
+        font-weight: bold;
+        color: blue;
+    }
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryResponsiveArea {
             transform: scale(0.9);

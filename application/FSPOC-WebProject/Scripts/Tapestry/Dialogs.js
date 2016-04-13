@@ -1,4 +1,4 @@
-﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [];
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableName;
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -501,15 +501,19 @@ $(function () {
                     success: function (data) {
                         tbody = chooseTablesDialog.find("#table-table tbody:nth-child(2)");
                         for (i = 0; i < data.Tables.length; i++) {
-                            newTableRow = $('<tr class="tableRow" tableId="' + data.Tables[i].Id + '"><td>' + data.Tables[i].Name + '</td></tr>');
+                            newTableRow = $('<tr class="tableRow" tableId="' + data.Tables[i].Id + '"><td><span class="tableName">' + data.Tables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(data.Tables[i].Name) != -1)
                                 newTableRow.addClass("highlightedRow");
+                            if (data.Tables[i].Name == ModelTableName)
+                                newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
                         for (i = 0; i < SystemTables.length; i++) {
-                            newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td>' + SystemTables[i].Name + '</td></tr>');
+                            newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td><span class="tableName">' + SystemTables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
                                 newTableRow.addClass("highlightedRow");
+                            if (data.Tables[i].Name == ModelTableName)
+                                newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
                     }
@@ -533,7 +537,7 @@ $(function () {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
-                            tableName = $(element).find('td').text();
+                            tableName = $(element).find('td .tableName').text();
                             AssociatedTableIds.push(parseInt(tableId));
                             AssociatedTableName.push(tableName);
                             currentTable = data.Tables.filter(function (value) {
@@ -554,6 +558,10 @@ $(function () {
                                 }
                         }
                     });
+                    modelMarker = chooseTablesDialog.find("#table-table:first tbody:nth-child(2) .modelMarker");
+                    if (modelMarker.length) {
+                        ModelTableName = modelMarker.parents("td").find(".tableName").text();
+                    }
                     $("#blockHeaderDbResCount").text(tableCount);
                     chooseTablesDialog.dialog("close");
                 }
