@@ -89,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<int> AssociatedPageIds { get; set; }
         public List<int> AssociatedTableIds { get; set; }
         public List<string> AssociatedTableName { get; set; }
+        public string ModelTableName { get; set; }
         public List<string> RoleWhitelist { get; set; }
         public AjaxTapestryDesignerToolboxState ToolboxState { get; set; }
 

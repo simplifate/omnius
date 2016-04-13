@@ -100,6 +100,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionY = blockCommit.PositionY,
                                 Timestamp = blockCommit.Timestamp,
                                 CommitMessage = blockCommit.CommitMessage,
+                                ModelTableName = blockCommit.ModelTableName,
                                 AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                     : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
                                 AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
@@ -155,6 +156,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Timestamp = DateTime.UtcNow,
                         CommitMessage = postData.CommitMessage,
                         Name = postData.Name,
+                        ModelTableName = postData.ModelTableName,
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
                         AssociatedTableName = postData.AssociatedTableName != null ? string.Join(",", postData.AssociatedTableName) : "",
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
@@ -420,6 +422,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         PositionY = blockCommit.PositionY,
                         Timestamp = blockCommit.Timestamp,
                         CommitMessage = blockCommit.CommitMessage,
+                        ModelTableName = blockCommit.ModelTableName,
                         AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                 : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
                         AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()

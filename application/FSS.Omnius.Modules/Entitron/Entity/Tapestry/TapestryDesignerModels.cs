@@ -94,6 +94,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
         public string AssociatedTableName { get; set; }
+        public string ModelTableName { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
