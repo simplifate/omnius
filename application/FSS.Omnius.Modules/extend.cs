@@ -66,5 +66,13 @@ namespace System
 
             return -1;
         }
+
+        public static void AddRange<TKey>(this HashSet<TKey> source, IEnumerable<TKey> items)
+        {
+            foreach (TKey item in items)
+            {
+                source.Add(item);
+            }
+        }
     }
 }
