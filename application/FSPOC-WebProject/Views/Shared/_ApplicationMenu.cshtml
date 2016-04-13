@@ -4,7 +4,7 @@
 @if (Model.Count() > 0) {
     <ul @((int)ViewData["Level"] == 0 ? " id=appMenu" : "")>
         @foreach (TapestryDesignerMenuItem item in Model.OrderBy(i => i.MenuOrder)) {
-            @("if (Context.GetLoggedUser().canUseBlock(item.bc))")
+            @Html.Raw($"@if (Context.GetLoggedUser().canUseBlock(\"{item.rights}\",{ViewBag.AppId}))")
             @("{")
             <li>
              @if (item.IsMetablock)
