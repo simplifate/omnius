@@ -456,14 +456,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 });
             }
         }
-
-        //private WFitem getItem(TapestryDesignerWorkflowRule workflowRule, int itemType, Func<WFitem, bool> select)
-        //{
-        //    return
-        //        itemType == 0
-        //        ? (WFitem)_context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && select(i))
-        //        : _context.TapestryDesignerWorkflowSymbols.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && select(i));
-        //}
     }
 
     public class ConnectionTargetSource

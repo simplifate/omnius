@@ -39,7 +39,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         public bool isAdmin()
         {
-            return ADgroup_Users.Any(adu => adu.ADgroup.Application.IsSystem);
+            return ADgroup_Users.Any(adu => adu.ADgroup.Application != null && adu.ADgroup.Application.IsSystem);
         }
         public bool canUseAction(int actionId, DBEntities context)
         {
