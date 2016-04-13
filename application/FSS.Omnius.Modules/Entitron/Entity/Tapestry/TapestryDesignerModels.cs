@@ -440,7 +440,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInitial { get; set; }
         public string BlockName { get; set; }
 
-        public TapestryDesignerBlockCommit bc { get; set; }
-        public TapestryDesignerMetablock mb { get; set; }
+        public string rights { get; set; }
     }
 }

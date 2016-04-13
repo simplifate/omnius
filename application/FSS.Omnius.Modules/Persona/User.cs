@@ -49,13 +49,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
             return Roles.Any(r => r.AppRole.ActionRuleRights.Any(arr => arr.ActionRuleId == actionId));
         }
-        public bool canUseBlock(TapestryDesignerBlockCommit bc)
+        public bool canUseBlock(string rights,int appId)
         {
-            if (bc == null)
-                return true;
+            if (string.IsNullOrEmpty(rights))
+                return false;
 
-            int appId = bc.ParentBlock.ParentMetablock.ParentAppId;
-            string[] roles = bc.RoleWhitelist.Split(',');
+            string[] roles = rights.Split(',');
             foreach (string role in roles)
             {
                 if (Roles.Any(r => r.AppRole.ADgroup.ApplicationId == appId && r.AppRole.Name == role))

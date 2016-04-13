@@ -195,12 +195,13 @@ namespace FSS.Omnius.Controllers.Master
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
                     BlockName = blockMapping[b.Id].Name,
-                    bc = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault()
+                    rights = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault().RoleWhitelist
                 });
             }
 
             ViewData.Model = items;
             ViewData["Level"] = level;
+            ViewBag.AppId = core.Entitron.Application.Id;
             using (var sw = new StringWriter())
             {
                 var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, "~/Views/Shared/_ApplicationMenu.cshtml");
