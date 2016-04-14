@@ -154,6 +154,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? ActionId { get; set; }
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }
+        public int? StateId { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public string TableName { get; set; }

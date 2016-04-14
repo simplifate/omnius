@@ -34,7 +34,10 @@ namespace System
         {
             foreach (var pair in range)
             {
-                source.Add(pair.Key, pair.Value);
+                if (source.ContainsKey(pair.Key))
+                    source[pair.Key] = pair.Value;
+                else
+                    source.Add(pair.Key, pair.Value);
             }
         }
         public static void AddOrUpdateRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)

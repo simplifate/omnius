@@ -125,9 +125,9 @@ $(function () {
             newComponent = $(element);
             autosumTargetName = newComponent.attr("writeSumInto");
             if (autosumTargetName) {
-                autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
-                newComponent.attr("autosumTarget", autosumTargetName);
                 newComponent.on("change", function () {
+                    autosumTargetName = $(this).attr("writeSumInto");
+                    autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
                     sourceInputName = $(this).attr("name");
                     if (sourceInputName.indexOf("_") == -1)
                         sourceInputNameWithoutPrefix = sourceInputName;

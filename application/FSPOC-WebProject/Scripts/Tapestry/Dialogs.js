@@ -350,7 +350,7 @@ $(function () {
                                 }
                                 if (cData.ChildComponents) {
                                     for (j = 0; j < cData.ChildComponents.length; j++) {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + cData.ChildComponents[j].Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
                                         + cData.ChildComponents[j].Name + '</div>');
                                     }
                                 }

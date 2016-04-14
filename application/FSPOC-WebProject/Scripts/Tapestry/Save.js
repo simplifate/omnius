@@ -20,6 +20,7 @@ function SaveBlock(commitMessage) {
                 PositionX: parseInt(currentItem.css("left")),
                 PositionY: parseInt(currentItem.css("top")),
                 ActionId: currentItem.attr("actionid"),
+                StateId: currentItem.attr("stateid"),
                 PageId: currentItem.attr("pageId"),
                 ComponentName: currentItem.attr("componentName"),
                 TableName: currentItem.attr("tableName"),

@@ -205,17 +205,20 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         private void deleteComponents(MozaicEditorPage page, DBEntities context)
         {
             var componentList = new List<MozaicEditorComponent>();
-            foreach (var component in page.Components)
+            foreach (var component in page.Components.Where(c => c.ParentComponent == null))
                 componentList.Add(component);
             foreach (var component in componentList)
             {
                 var childComponentList = new List<MozaicEditorComponent>();
-                foreach (var childComponent in component.ChildComponents)
-                    childComponentList.Add(childComponent);
-                foreach (var childComponent in childComponentList)
+                if (component.ChildComponents != null)
                 {
-                    component.ChildComponents.Remove(childComponent);
-                    context.Entry(childComponent).State = EntityState.Deleted;
+                    foreach (var childComponent in component.ChildComponents)
+                        childComponentList.Add(childComponent);
+                    foreach (var childComponent in childComponentList)
+                    {
+                        component.ChildComponents.Remove(childComponent);
+                        context.Entry(childComponent).State = EntityState.Deleted;
+                    }
                 }
                 page.Components.Remove(component);
                 context.Entry(component).State = EntityState.Deleted;

@@ -150,7 +150,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             string key = chainedKey.Substring(0, index);
-            if (key == "__Model")
+            if (key == "__Model" || key == "__Result")
                 return vars[chainedKey];
             return GetChained(vars[key], chainedKey.Substring(index));
         }
