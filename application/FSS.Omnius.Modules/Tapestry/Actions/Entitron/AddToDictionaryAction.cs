@@ -62,15 +62,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (vars.ContainsKey("Dictionary"))
                 dictionary = (Dictionary<string, string>)vars["Dictionary"];
             var mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
-            var rowData = (DBItem)vars["RowData"];
+            DBItem rowData = new DBItem();
+            bool useRowData = true;
+            if (!vars.ContainsKey("RowData"))
+                useRowData = false;
+            else if (vars["RowData"] is string)
+                rowData = (DBItem)vars[(string)vars["RowData"]];
+            else
+                rowData = (DBItem)vars["RowData"];
             foreach (string mappingString in mappingStringList)
             {
                 List<string> tokens = mappingString.Split(':').ToList();
                 if (tokens.Count != 2)
                     continue;
                 string columnName = tokens[1];
-                var value = rowData[columnName];
-                dictionary.Add(tokens[0], value == null ? "" : (string)value);
+                object value;
+                if (useRowData)
+                    value = rowData[columnName];
+                else
+                    value = vars[columnName];
+                dictionary.Add(tokens[0], value == null ? "" : value.ToString());
             }
             outputVars["Result"] = dictionary;
         }

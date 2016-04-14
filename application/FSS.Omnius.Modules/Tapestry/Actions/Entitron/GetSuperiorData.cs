@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
@@ -59,8 +60,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 int superiorId = (int)epkUserRowList[0]["h_pernr"];
                 var epkSuperiorRowList = tableUsers.Select()
                         .where(c => c.column("pernr").Equal(superiorId)).ToList();
+                DBItem result;
                 if (epkSuperiorRowList.Count > 0)
-                    outputVars["SuperiorData"] = epkSuperiorRowList[0];
+                    result = epkSuperiorRowList[0];
+                else
+                    result = epkUserRowList[0];
+                result.createProperty(1000, "DisplayName", result["vorna"] + " " + result["nachn"]);
+                outputVars["SuperiorData"] = result;
             }
         }
     }

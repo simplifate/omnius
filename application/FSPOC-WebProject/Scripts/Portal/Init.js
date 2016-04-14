@@ -99,12 +99,14 @@ $(function () {
         else if (CurrentModuleIs("mozaicEditorModule"))
             RecalculateMozaicToolboxHeight();
     });
-    $("#upperPanel").width($(window).width() - 208);
-    $("#minimizedUpperPanel").width($(window).width() - 208);
+    $("#topBar").width($(window).width());
+    $("#upperPanel").width($(window).width() - 225);
+    $("#minimizedUpperPanel").width($(window).width() - 225);
     $("#leftBar").height($(document).height() - 75);
     $(window).on("resize", function () {
-        $("#upperPanel").width($(window).width() - 208);
-        $("#minimizedUpperPanel").width($(window).width() - 208);
+        $("#topBar").width($(window).width());
+        $("#upperPanel").width($(window).width() - 225);
+        $("#minimizedUpperPanel").width($(window).width() - 225);
         $("#leftBar").height($(document).height() - 75);
     });
 });

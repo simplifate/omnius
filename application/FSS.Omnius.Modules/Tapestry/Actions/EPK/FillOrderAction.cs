@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.EPK
         {
             get
             {
-                return new string[] { "year" };
+                return new string[] { "PurchaseDate" };
             }
         }
 
@@ -60,9 +60,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.EPK
             // var plan = core.Entitron.GetDynamicTable("Plans");
             // var thisSapPlan = plan.Select().where(c => c.column("objid").Equal(thisSap["plans"])).First();
 
-            outputVars["year"] = DateTime.Now.Year;
+            // outputVars["year"] = DateTime.Now.Year;
             // outputVars["client_sapid2"] = thisSap["sapid2"];
             // outputVars["client_function"] = thisSapPlan["stext"];
+            outputVars["PurchaseDate"] = DateTime.Now.ToString("dd.MM.y");
         }
     }
 }

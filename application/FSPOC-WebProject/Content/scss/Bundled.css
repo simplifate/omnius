@@ -2796,7 +2796,7 @@ body.mozaicEditorModule {
     top: 370px;
     padding: 0px; }
   body.mozaicEditorModule #mozaicContainer {
-    height: 900px;
+    height: 2000px;
     font-family: MyriadPro; }
     body.mozaicEditorModule #mozaicContainer #mozaicLeftBar {
       -webkit-touch-callout: none;
