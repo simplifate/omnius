@@ -1,14 +1,11 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
     using Master;
 
     [Table("Entitron___META")]
-    public partial class Table
+    public partial class Table : IEntity
     {
         public int Id { get; set; }
         [Required]

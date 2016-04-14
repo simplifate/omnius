@@ -2,7 +2,7 @@
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public class AjaxTransferWorkflowHeader
+    public class AjaxTransferWorkflowHeader : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

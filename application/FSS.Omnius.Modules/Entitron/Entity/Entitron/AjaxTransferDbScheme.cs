@@ -2,7 +2,7 @@
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
-    public class AjaxTransferDbScheme
+    public class AjaxTransferDbScheme : IEntity
     {
         public string CommitMessage { get; set; }
         public List<AjaxTransferDbTable> Tables { get; set; }

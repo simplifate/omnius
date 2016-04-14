@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Hermes_Email_Placeholder")]
-    public partial class EmailPlaceholder
+    public partial class EmailPlaceholder : IEntity
     {
         public int? Id { get; set; }
 

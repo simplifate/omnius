@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public class AjaxTransferWorkflowSate
+    public class AjaxTransferWorkflowSate : IEntity
     {
         public string CommitMessage { get; set; }
         public List<AjaxTransferActivity> Activities { get; set; }

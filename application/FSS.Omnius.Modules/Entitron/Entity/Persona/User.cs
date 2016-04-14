@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity.EntityFramework;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
+    using Master;
+
     [Table("Persona_Users")]
-    public partial class User : IdentityUser<int, UserLogin, User_Role, UserClaim>
+    public partial class User : IdentityUser<int, UserLogin, User_Role, UserClaim>, IEntity
     {
         public User()
         {

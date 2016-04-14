@@ -7,7 +7,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     using System.Data.Entity.Spatial;
 
     [Table("Mozaic_Css")]
-    public partial class Css
+    public partial class Css : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Css()

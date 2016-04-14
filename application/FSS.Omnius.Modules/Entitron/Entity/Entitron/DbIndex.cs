@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
     [Table("Entitron_DbIndex")]
-    public class DbIndex
+    public class DbIndex : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

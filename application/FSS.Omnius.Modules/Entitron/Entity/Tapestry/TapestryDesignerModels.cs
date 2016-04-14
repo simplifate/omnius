@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-using FSS.Omnius.Modules.Entitron.Entity.Master;
-using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
+    using Master;
+    using Mozaic;
+
     public enum ItemTypes
     {
         Attribute,
@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         Port
     }
     [Table("TapestryDesigner_MetaBlocks")]
-    public class TapestryDesignerMetablock
+    public class TapestryDesignerMetablock : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_MetablocksConnections")]
-    public class TapestryDesignerMetablockConnection
+    public class TapestryDesignerMetablockConnection : IEntity
     {
         public int Id { get; set; }
         public int SourceType { get; set; }
@@ -62,7 +62,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerMetablock TapestryDesignerMetablock { get; set; }
     }
     [Table("TapestryDesigner_Blocks")]
-    public class TapestryDesignerBlock
+    public class TapestryDesignerBlock : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -89,7 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_BlocksCommits")]
-    public class TapestryDesignerBlockCommit
+    public class TapestryDesignerBlockCommit : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -143,7 +143,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    }
     //}
     [Table("TapestryDesigner_ResourceRules")]
-    public class TapestryDesignerResourceRule
+    public class TapestryDesignerResourceRule : IEntity
     {
         public int Id { get; set; }
         public int PositionX { get; set; }
@@ -165,7 +165,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_WorkflowRules")]
-    public partial class TapestryDesignerWorkflowRule
+    public partial class TapestryDesignerWorkflowRule : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -188,7 +188,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_Swimlanes")]
-    public class TapestryDesignerSwimlane
+    public class TapestryDesignerSwimlane : IEntity
     {
         public int Id { get; set; }
         public int SwimlaneIndex { get; set; }
@@ -207,7 +207,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_ResourceItems")]
-    public class TapestryDesignerResourceItem
+    public class TapestryDesignerResourceItem : IEntity
     {
         public int Id { get; set; }
         public string Label { get; set; }
@@ -244,7 +244,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_WorkflowItems")]
-    public partial class TapestryDesignerWorkflowItem
+    public partial class TapestryDesignerWorkflowItem : IEntity
     {
         public int Id { get; set; }
         public string TypeClass { get; set; }
@@ -282,7 +282,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_ToolboxStates")]
-    public class TapestryDesignerToolboxState
+    public class TapestryDesignerToolboxState : IEntity
     {
         public int Id { get; set; }
         public virtual ICollection<ToolboxItem> Actions { get; set; }
@@ -309,7 +309,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
     [Table("TapestryDesigner_ToolboxItems")]
-    public class ToolboxItem
+    public class ToolboxItem : IEntity
     {
         public int Id { get; set; }
         public string TypeClass { get; set; }
@@ -359,7 +359,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    {
     //    }
     //}
-    public abstract class TapestryDesignerConnection
+    public abstract class TapestryDesignerConnection : IEntity
     {
         public int Id { get; set; }
         public int SourceId { get; set; }
@@ -392,7 +392,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
     [Table("TapestryDesigner_Conditions")]
-    public class TapestryDesignerCondition
+    public class TapestryDesignerCondition : IEntity
     {
         public int Id { get; set; }
         public int Index { get; set; }
@@ -405,7 +405,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerConditionSet TapestryDesignerConditionSet { get; set; }
     }
     [Table("TapestryDesigner_ConditionSets")]
-    public class TapestryDesignerConditionSet
+    public class TapestryDesignerConditionSet : IEntity
     {
         public int Id { get; set; }
         public int SetIndex { get; set; }
@@ -428,7 +428,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //    public string Value { get; set; }
     //}
 
-    public class TapestryDesignerMenuItem
+    public class TapestryDesignerMenuItem : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
 {
-    public class AjaxTransferNexusModel
+    public class AjaxTransferNexusModel : IEntity
     {
         public List<AjaxTransferNexusLDAP> Ldap { get; set; }
         public List<AjaxTrasferNexuWS> WS { get; set; }
@@ -22,26 +18,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
         }
     }
 
-    public class AjaxTransferNexusLDAP
+    public class AjaxTransferNexusLDAP : IEntity
     {
         public int? Id { get; set; }
         public string Name { get; set; }
     }
 
-    public class AjaxTrasferNexuWS
+    public class AjaxTrasferNexuWS : IEntity
     {
         public int? Id { get; set; }
         public WSType Type { get; set; }
         public string Name { get; set; }
     }
     
-    public class AjaxTransferNexusWebDAV
+    public class AjaxTransferNexusWebDAV : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
-    public class AjaxTransferHermesSMTP
+    public class AjaxTransferHermesSMTP : IEntity
     {
         public int? Id { get; set; }
         public string Name { get; set; }

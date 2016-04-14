@@ -43,7 +43,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
     }
    
     [Table("Cortex_Task")]
-    public partial class Task
+    public partial class Task : IEntity
     {
         public int? Id { get; set; }
 

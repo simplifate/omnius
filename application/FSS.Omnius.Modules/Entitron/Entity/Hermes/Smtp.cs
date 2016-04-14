@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Hermes_Smtp")]
-    public partial class Smtp
+    public partial class Smtp : IEntity
     {
         public int? Id { get; set; }
 

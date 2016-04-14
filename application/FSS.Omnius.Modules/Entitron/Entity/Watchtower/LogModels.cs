@@ -5,7 +5,7 @@ using FSS.Omnius.Modules.Watchtower;
 namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
 {
     [Table("Watchtower_LogItems")]
-    public class LogItem
+    public class LogItem : IEntity
     {
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }
@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
         public int? AppId { get; set; }
         public string Message { get; set; }
     }
-    public class AjaxLogItem
+    public class AjaxLogItem : IEntity
     {
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }

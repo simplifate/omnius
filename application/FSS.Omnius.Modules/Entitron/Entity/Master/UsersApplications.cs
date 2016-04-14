@@ -1,17 +1,11 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using Tapestry;
-    using Mozaic;
     using Entitron;
     using Persona;
-    using Newtonsoft.Json;
+
     [Table("Master_UsersApplications")]
-    public partial class UsersApplications
+    public partial class UsersApplications : IEntity
     {
         public int Id { get; set; }
         [Index("IX_userApp", 1, IsUnique = true)]

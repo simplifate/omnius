@@ -1,13 +1,11 @@
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Mozaic_TemplateCategories")]
-    public partial class TemplateCategory
+    public partial class TemplateCategory : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TemplateCategory()

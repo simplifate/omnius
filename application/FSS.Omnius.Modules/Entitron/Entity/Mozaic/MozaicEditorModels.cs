@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-
-using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Linq;
-using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
-using System;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
+    using Master;
+    using Tapestry;
+
     [Table("MozaicEditor_Pages")]
-    public class MozaicEditorPage
+    public class MozaicEditorPage : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -207,7 +205,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         }
     }
     [Table("MozaicEditor_Components")]
-    public class MozaicEditorComponent
+    public class MozaicEditorComponent : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -236,7 +234,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
     
-    public class MozaicModalMetadataItem
+    public class MozaicModalMetadataItem : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }

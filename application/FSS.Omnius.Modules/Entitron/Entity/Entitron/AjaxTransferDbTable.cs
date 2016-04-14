@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
-    public class AjaxTransferDbTable
+    public class AjaxTransferDbTable : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

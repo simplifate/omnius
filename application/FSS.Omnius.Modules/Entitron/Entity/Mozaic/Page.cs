@@ -1,15 +1,11 @@
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using Master;
     using Tapestry;
 
     [Table("Mozaic_Pages")]
-    public partial class Page
+    public partial class Page : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Page()

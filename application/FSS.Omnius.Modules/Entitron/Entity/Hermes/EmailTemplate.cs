@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Hermes_Email_Template")]
-    public partial class EmailTemplate
+    public partial class EmailTemplate : IEntity
     {
         public int? Id { get; set; }
 

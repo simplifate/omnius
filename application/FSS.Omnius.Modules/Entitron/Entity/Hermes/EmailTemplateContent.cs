@@ -1,13 +1,12 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Hermes
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web.Mvc;
 
     [Table("Hermes_Email_Template_Content")]
     [MetadataType(typeof(Hermes_Email_Template_Content_Metadata))]
-    public partial class EmailTemplateContent
+    public partial class EmailTemplateContent : IEntity
     {
         public int? Id { get; set; }
 

@@ -10,7 +10,7 @@
     }
 
     [Table("Nexus_WS")]
-    public partial class WS
+    public partial class WS : IEntity
     {
         public int? Id { get; set; }
 

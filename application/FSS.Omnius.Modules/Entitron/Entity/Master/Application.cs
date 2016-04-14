@@ -1,20 +1,17 @@
-using System.Data.Entity;
-
 namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
     using Tapestry;
     using Mozaic;
     using Entitron;
     using Persona;
     using Newtonsoft.Json;
     using System.Linq;
+
     [Table("Master_Applications")]
-    public partial class Application
+    public partial class Application : IEntity
     {
         public Application()
         {

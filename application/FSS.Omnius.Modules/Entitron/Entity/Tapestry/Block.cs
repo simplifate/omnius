@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Spatial;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     using Mozaic;
 
     [Table("Tapestry_Blocks")]
-    public partial class Block
+    public partial class Block : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Block()

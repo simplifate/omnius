@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public class AjaxTransferCommitHeader
+    public class AjaxTransferCommitHeader : IEntity
     {
         public int Id { get; set; }
         public string CommitMessage { get; set; }

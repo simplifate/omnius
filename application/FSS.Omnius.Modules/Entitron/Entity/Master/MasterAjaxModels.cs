@@ -1,6 +1,6 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
-    public class AjaxAppProperties
+    public class AjaxAppProperties : IEntity
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
@@ -9,12 +9,12 @@
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
     }
-    public class AjaxAppState
+    public class AjaxAppState : IEntity
     {
         public int Id { get; set; }
         public bool IsEnabled { get; set; }
     }
-    public class AjaxAppCoordinates
+    public class AjaxAppCoordinates : IEntity
     {
         public string positionX { get; set; }
         public string positionY { get; set; }

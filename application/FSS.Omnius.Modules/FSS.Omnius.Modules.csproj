@@ -132,6 +132,7 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
     <Compile Include="Entitron\Entity\Entitron\ColumnMetadata.cs" />
+    <Compile Include="Entitron\Entity\Entity.cs" />
     <Compile Include="Entitron\Entity\Hermes\HermesAjaxTransferEmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailLog.cs" />

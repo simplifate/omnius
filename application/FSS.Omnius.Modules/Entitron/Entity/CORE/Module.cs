@@ -4,7 +4,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.CORE
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("CORE_Modules")]
-    public partial class Module
+    public partial class Module : IEntity
     {
         public int Id { get; set; }
 
@@ -16,15 +16,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.CORE
         public string Description { get; set; }
 
         public bool IsEnabled { get; set; }
-
-        
-        public Module Update(Module model)
-        {
-            Name = model.Name;
-            Description = model.Description;
-            IsEnabled = model.IsEnabled;
-
-            return this;
-        }
     }
 }

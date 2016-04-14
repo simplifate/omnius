@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
 {
     [Table("Nexus_WebDavServers")]
-    public class WebDavServer
+    public class WebDavServer : IEntity
     {
         public int Id { get; set; }
 
@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
     }
 
     [Table("Nexus_CachedFiles")]
-    public class FileSyncCache
+    public class FileSyncCache : IEntity
     {
         public int Id { get; set; }
         public byte[] Blob { get; set; }
@@ -35,7 +35,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
     }
 
     [Table("Nexus_FileMetadataRecords")]
-    public class FileMetadata
+    public class FileMetadata : IEntity
     {
         public int Id { get; set; }
         public string Filename { get; set; }
