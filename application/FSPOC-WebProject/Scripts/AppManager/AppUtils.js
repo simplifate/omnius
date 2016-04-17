@@ -124,7 +124,6 @@ function ClonePanel(paneName) {
                     }
                 }
             });
-            autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
             targetTemplate = autosumTarget.attr("contentTemplate");
             if (targetTemplate) {
                 autosumTarget.text(targetTemplate.replace("{{var1}}", sum));
@@ -162,7 +161,6 @@ function RecalculateAutosum(panelDiv) {
                 }
             }
         });
-        autosumTarget = $('.uic[name="' + autosumTargetName + '"]');
         targetTemplate = autosumTarget.attr("contentTemplate");
         if (targetTemplate) {
             autosumTarget.text(targetTemplate.replace("{{var1}}", sum));
