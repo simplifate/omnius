@@ -848,7 +848,9 @@
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetCurrentTimeAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetDictionaryFromTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetModelUrlAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
@@ -893,6 +895,7 @@
     <Compile Include="Tapestry\Running\WFitem.cs" />
     <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
+    <Compile Include="Tapestry\TapestryUtils.cs" />
     <Compile Include="Watchtower\WatchtowerLogger.cs" />
   </ItemGroup>
   <ItemGroup>

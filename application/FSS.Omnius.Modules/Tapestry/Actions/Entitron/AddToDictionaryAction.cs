@@ -81,7 +81,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     value = rowData[columnName];
                 else
                     value = vars[columnName];
-                dictionary.Add(tokens[0], value == null ? "" : value.ToString());
+                if(dictionary.ContainsKey(tokens[0]))
+                    dictionary[tokens[0]] = (value == null ? "" : value.ToString());
+                else
+                    dictionary.Add(tokens[0], value == null ? "" : value.ToString());
             }
             outputVars["Result"] = dictionary;
         }

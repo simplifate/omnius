@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableData", "KeyColumn", "ValueColumn" };
+                return new string[] { "TableData", "KeyColumn", "ValueColumn", "?StaticKey", "?StaticValue" };
             }
         }
 
@@ -53,12 +53,24 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             var result = new Dictionary<string, string>();
-            if (vars["TableData"] is DBItem)
+            if(vars.ContainsKey("StaticKey") && vars.ContainsKey("StaticValue"))
+            {
+                string key = (string)vars["StaticKey"];
+                string value = (string)vars["StaticValue"];
+                if (result.ContainsKey(key))
+                    result[key] = value;
+                else
+                    result.Add(key, value);
+            }
+            else if (vars["TableData"] is DBItem)
             {
                 var row = (DBItem)vars["TableData"];
                 string key = (string)row[(string)vars["KeyColumn"]];
                 string value = (string)row[(string)vars["ValueColumn"]];
-                result.Add(key, value);
+                if (result.ContainsKey(key))
+                    result[key] = value;
+                else
+                    result.Add(key, value);
             }
             else
             {
@@ -66,7 +78,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 {
                     string key = (string)row[(string)vars["KeyColumn"]];
                     string value = (string)row[(string)vars["ValueColumn"]];
-                    result.Add(key, value);
+                    if (result.ContainsKey(key))
+                        result[key] = value;
+                    else
+                        result.Add(key, value);
                 }
             }
             outputVars["Result"] = result;

@@ -38,7 +38,10 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
-                output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
+                if (pair.Value is string)
+                    output.Add(key, (string)pair.Value);
+                else
+                    output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
             }
             return output;
         }
