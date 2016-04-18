@@ -20,7 +20,7 @@
                 <col>
                 <col width="80">                
                 <col width="150">
-                <col width="90">
+                <col width="120">
             </colgroup>
             <thead>
                 <tr>
@@ -51,6 +51,7 @@
                             <td class="table-row-action" nowrap>
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "EditContent", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-file-text-o ico-only btn btn-default", @title = "Upravit obsah" })
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Clone", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-copy ico-only btn btn-default", @title = "Klonovat" })
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = t.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
                                 @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = t.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete šablonu smazat?')" })
                             </td>

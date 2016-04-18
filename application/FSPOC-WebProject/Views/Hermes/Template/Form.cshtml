@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
 }
 
-@using (Html.BeginRouteForm("Hermes", new { @action = "Save" }, FormMethod.Post))
+@using (Html.BeginRouteForm("Hermes", new { @action = ViewData.ContainsKey("Action") ? ViewData["Action"] : "Save" }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava šablony e-mailu" : "Nová šablona e-mailu")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? (ViewData.ContainsKey("Action") && ViewData["Action"].ToString() == "SaveClone" ? "Kopie šablony e-mailu" : "Úprava šablony e-mailu") : "Nová šablona e-mailu")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AppId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.AppId, new SelectList((DbSet<Application>)ViewData["ApplicationList"], "Id", "Name", Model.AppId), new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.AppId, new SelectList((DbSet<Application>)ViewData["ApplicationList"], "Id", "Name", Model != null ? Model.AppId : null), new { @class = "form-control" })
             </div>
         </div>
 

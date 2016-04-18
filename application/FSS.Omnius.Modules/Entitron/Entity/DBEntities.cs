@@ -47,6 +47,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<EmailPlaceholder> EmailPlaceholders { get; set; }
         public virtual DbSet<EmailQueue> EmailQueueItems { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<EmailTemplateContent> EmailContents { get; set; }
         public virtual DbSet<Smtp> SMTPs { get; set; }
 
         // Cortex

@@ -142,6 +142,66 @@ namespace FSS.Omnius.Controllers.Hermes
             return RedirectToRoute("Hermes", new { @action = "Index" });            
         }
 
+        public ActionResult Clone(int id)
+        {
+            DBEntities e = new DBEntities();
+            ViewData["ApplicationList"] = e.Applications;
+            ViewData["Action"] = "SaveClone";
+
+            return View("~/Views/Hermes/Template/Form.cshtml", e.EmailTemplates.Single(m => m.Id == id));
+        }
+
+        [HttpPost]
+        public ActionResult SaveClone(EmailTemplate model)
+        {
+            DBEntities e = new DBEntities();
+            if (ModelState.IsValid) {
+                EmailTemplate row = e.EmailTemplates.Include("PlaceholderList").Include("ContentList").Single(m => m.Id == model.Id);
+
+                // Naklonujeme šablonu
+                EmailTemplate newRow = new EmailTemplate();
+                newRow.Name = model.Name;
+                newRow.AppId = model.AppId;
+                newRow.Is_HTML = model.Is_HTML;
+                
+                e.EmailTemplates.Add(newRow);
+                e.SaveChanges();
+
+                // Naklonujeme proměnné
+                foreach(EmailPlaceholder plc in row.PlaceholderList) {
+                    EmailPlaceholder newPlc = new EmailPlaceholder();
+                    newPlc.Description = plc.Description;
+                    newPlc.Hermes_Email_Template_Id = newRow.Id;
+                    newPlc.Num_Order = plc.Num_Order;
+                    newPlc.Prop_Name = plc.Prop_Name;
+
+                    e.EmailPlaceholders.Add(newPlc);
+                }
+
+                // Naklonujeme content
+                foreach(EmailTemplateContent content in row.ContentList) {
+                    EmailTemplateContent newContent = new EmailTemplateContent();
+                    newContent.Content = content.Content;
+                    newContent.Content_Plain = content.Content_Plain;
+                    newContent.From_Email = content.From_Email;
+                    newContent.From_Name = content.From_Name;
+                    newContent.Hermes_Email_Template_Id = newRow.Id;
+                    newContent.LanguageId = content.LanguageId;
+                    newContent.Subject = content.Subject;
+
+                    e.EmailContents.Add(newContent);
+                }
+
+                e.SaveChanges();
+                
+                return RedirectToRoute("Hermes", new { @action = "Index" });
+            }
+            else {
+                return View("~/Views/Hermes/Template/Form.cshtml", model);
+            }
+        }
+
+
         #endregion
 
         #region tools
