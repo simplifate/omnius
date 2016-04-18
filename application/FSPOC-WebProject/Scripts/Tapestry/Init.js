@@ -412,6 +412,13 @@ $(function () {
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
+                    else if (libType == "view-attribute") {
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
+                            + currentLibraryItem.text() + '</span></div></li>');
+                        $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
+                        if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
+                            newToolboxLi.hide();
+                    }
                     else if (libType == "ui") {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');

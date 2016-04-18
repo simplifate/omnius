@@ -114,7 +114,10 @@
                     if (currentItemData.TableName != null) {
                         newItem.data("columnFilter", currentItemData.ColumnFilter);
                         newItem.attr("tableName", currentItemData.TableName);
-                        newItem.addClass("tableAttribute");
+                        if (currentItemData.Label.indexOf("View:") == 0)
+                            newItem.addClass("viewAttribute");
+                        else
+                            newItem.addClass("tableAttribute");
                     }
                     if (currentItemData.ColumnName != null) {
                         newItem.attr("columnName", currentItemData.ColumnName);
@@ -327,6 +330,22 @@
                         if (attributeMatch) {
                             newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + tableData.Tables[tableIndex].Name + '">'
                                 + '<span class="itemLabel">Table: ' + tableData.Tables[tableIndex].Name + '</span></div></li>');
+                            $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
+                            ToolboxItemDraggable(newToolboxLiAttribute);
+                            attributeLibraryItem.addClass("highlighted");
+                        }
+                    }
+                    for (viewIndex = 0; viewIndex < tableData.Views.length; viewIndex++) {
+                        attributeLibId = ++lastLibId;
+                        attributeLibraryItem = $('<div libId="' + ++attributeLibId + '" libType="view-attribute" class="libraryItem viewAttribute" tableName="'
+                            + tableData.Views[viewIndex].Name + '">View: ' + tableData.Views[viewIndex].Name + '</div>')
+                        $("#libraryCategory-Attributes").append(attributeLibraryItem);
+                        attributeMatch = attributesInToolboxState.filter(function (value) {
+                            return !value.ColumnName && value.TableName == tableData.Views[viewIndex].Name;
+                        }).length;
+                        if (attributeMatch) {
+                            newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + tableData.Views[viewIndex].Name + '">'
+                                + '<span class="itemLabel">View: ' + tableData.Views[viewIndex].Name + '</span></div></li>');
                             $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
                             ToolboxItemDraggable(newToolboxLiAttribute);
                             attributeLibraryItem.addClass("highlighted");
