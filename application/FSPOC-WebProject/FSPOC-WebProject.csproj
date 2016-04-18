@@ -208,7 +208,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CORE\ServiceController.cs" />
+    <Compile Include="Controllers\Master\ServiceController.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
@@ -1545,7 +1545,7 @@
     <Content Include="Views\Mozaic\EPK\31.cshtml" />
     <Content Include="Views\Mozaic\EPK\9.cshtml" />
     <Content Include="Views\Mozaic\EPK\_layout.cshtml" />
-    <Content Include="Views\CORE\Service\RecoverApp.cshtml" />
+    <Content Include="Views\Master\Service\RecoverApp.cshtml" />
     <Content Include="Views\Cortex\Form.cshtml" />
     <Content Include="Views\Cortex\Index.cshtml" />
     <Content Include="Views\Cortex\Cortex\Header.cshtml" />
