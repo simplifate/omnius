@@ -67,7 +67,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
                 {
                     if (column.type == "datetime")
-                        item.createProperty(column.ColumnId, column.Name, DateTime.Parse((string)vars[$"__Model.{table.tableName}.{column.Name}"]));
+                        item.createProperty(column.ColumnId, column.Name, DateTime.ParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture));
                     else
                         item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
                 }
