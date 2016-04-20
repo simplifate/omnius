@@ -117,7 +117,6 @@
     <Compile Include="CORE\CORE.cs" />
     <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
-    <Compile Include="CORE\Module.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />

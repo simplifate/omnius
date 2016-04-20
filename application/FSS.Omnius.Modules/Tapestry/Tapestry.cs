@@ -12,7 +12,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public class Tapestry : RunableModule
+    public class Tapestry : Module
     {
         private CORE.CORE _CORE;
         private ActionResult _results;
