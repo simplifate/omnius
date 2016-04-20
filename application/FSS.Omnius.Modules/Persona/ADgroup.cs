@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             // refresh all users
             DBEntities context = core.Entitron.GetStaticTables();
-            foreach(User user in context.Users)
+            foreach(User user in context.Users.ToList())
             {
                 core.Persona.RefreshUser(user);
             }
