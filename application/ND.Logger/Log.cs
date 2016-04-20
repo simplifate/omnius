@@ -110,6 +110,22 @@ namespace Logger
             //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
             //ProcessLog(msg, methodName, verbose);
         }
+        public static void Error(Exception ex, bool verbose = false)
+        {
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
+            //string body = "";
+
+            //body += "<br />Errors:<br />";
+            //var curError = ex;
+            //while (curError != null)
+            //{
+            //    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+
+            //    curError = curError.InnerException;
+            //}
+
+            //ProcessLog(body, methodName, verbose);
+        }
         public static void Error(Exception ex, HttpRequest Request, bool verbose = false)
         {
             //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name.ToString();
