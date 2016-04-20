@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             if (vars.ContainsKey("Data"))
                 dataDictionary = (Dictionary<string, string>)vars["Data"];
 
-            Mailer mail = new Mailer("Test", (string)vars["Template"], dataDictionary);
+            Mailer mail = new Mailer("", (string)vars["Template"], dataDictionary);
             mail.To((Dictionary<string, string>)vars["Recipients"]);
             mail.SendMail();
         }
