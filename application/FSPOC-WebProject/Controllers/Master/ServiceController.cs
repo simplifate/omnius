@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using FSS.Omnius.Modules.Entitron.Entity;
 using System.IO;
 using System.Text;
 using System.Web;
-using FSS.Omnius.Modules.Entitron.Service;
 using System.Collections.Generic;
+using FSS.Omnius.Modules.Entitron.Service;
+using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -53,13 +54,7 @@ namespace FSS.Omnius.Controllers.Master
             Application dbApp = context.Applications.Find(app.Id);
             if (dbApp != null)
             {
-                dbApp.ColumnMetadata.Clear();
-                dbApp.DatabaseDesignerSchemeCommits.Clear();
-                dbApp.MozaicEditorPages.Clear();
-                dbApp.Roles.Clear();
-                dbApp.TapestryDesignerMetablocks.Clear();
-
-                dbApp.Update(app);
+                dbApp.UpdateDeep(app, ignoreAttribute: typeof(JsonIgnoreAttribute));
             }
             // new app
             else
