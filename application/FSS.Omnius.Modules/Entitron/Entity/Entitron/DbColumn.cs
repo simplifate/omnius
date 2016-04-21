@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
     [Table("Entitron_DbColumn")]
-    public class DbColumn
+    public class DbColumn : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

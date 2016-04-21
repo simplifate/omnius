@@ -5,7 +5,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Tapestry_WorkFlow_Types")]
-    public partial class WorkFlowType
+    public partial class WorkFlowType : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WorkFlowType()

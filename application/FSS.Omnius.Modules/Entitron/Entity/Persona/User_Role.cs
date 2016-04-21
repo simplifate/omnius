@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_User_Role")]
-    public partial class User_Role : IdentityUserRole<int>
+    public partial class User_Role : IdentityUserRole<int>, IEntity
     {
         [Key]
         [Column(Order = 1)]

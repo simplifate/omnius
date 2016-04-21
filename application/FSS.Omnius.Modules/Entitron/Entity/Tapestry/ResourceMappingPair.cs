@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     [Table("Tapestry_ResourceMappingPairs")]
-    public class ResourceMappingPair
+    public class ResourceMappingPair : IEntity
     {
         public int Id { get; set; }
         public string TargetName { get; set; }

@@ -2,12 +2,12 @@
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
-    public class AjaxMozaicEditorPageHeader
+    public class AjaxMozaicEditorPageHeader : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
-    public class AjaxMozaicEditorPage
+    public class AjaxMozaicEditorPage : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             Components = new List<AjaxMozaicEditorComponent>();
         }
     }
-    public class AjaxMozaicEditorComponent
+    public class AjaxMozaicEditorComponent : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

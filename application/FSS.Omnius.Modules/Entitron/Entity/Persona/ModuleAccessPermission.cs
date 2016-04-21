@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_ModuleAccessPermissions")]
-    public partial class ModuleAccessPermission
+    public partial class ModuleAccessPermission : IEntity
     {
         [Key]
         public int UserId { get; set; }
@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public bool Cortex { get; set; }
     }
 
-    public class AjaxModuleAccessPermission
+    public class AjaxModuleAccessPermission : IEntity
     {
         public int UserId { get; set; }
 
@@ -46,7 +46,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public bool Cortex { get; set; }
     }
 
-    public class AjaxModuleAccessPermissionSettings
+    public class AjaxModuleAccessPermissionSettings : IEntity
     {
         public List<AjaxModuleAccessPermission> PermissionList { get; set; }
     }

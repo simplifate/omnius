@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Spatial;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
 
     [Table("Tapestry_Actors")]
-    public partial class Actor
+    public partial class Actor : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Actor()

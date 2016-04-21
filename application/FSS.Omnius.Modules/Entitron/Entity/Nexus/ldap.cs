@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Nexus_Ldap")]
-    public partial class Ldap
+    public partial class Ldap : IEntity
     {
         public int? Id { get; set; }
 

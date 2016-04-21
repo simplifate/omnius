@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     [Table("Tapestry_PreBlockActions")]
-    public partial class PreBlockAction
+    public partial class PreBlockAction : IEntity
     {
         [Key]
         [Column(Order = 0)]

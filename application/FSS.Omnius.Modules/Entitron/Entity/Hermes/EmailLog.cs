@@ -12,7 +12,7 @@
     }
 
     [Table("Hermes_Email_Log")]
-    public partial class EmailLog
+    public partial class EmailLog : IEntity
     {
         public int? Id { get; set; }
 

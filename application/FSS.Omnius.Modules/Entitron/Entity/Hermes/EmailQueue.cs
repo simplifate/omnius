@@ -3,7 +3,6 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Net.Mail;
 
     public enum EmailQueueStatus
     {
@@ -12,7 +11,7 @@
     };
 
     [Table("Hermes_Email_Queue")]
-    public partial class EmailQueue
+    public partial class EmailQueue : IEntity
     {
         public int? Id { get; set; }
         

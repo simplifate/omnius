@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Tapestry_WorkFlow")]
-    public class WorkFlow
+    public class WorkFlow : IEntity
     {
         public WorkFlow()
         {

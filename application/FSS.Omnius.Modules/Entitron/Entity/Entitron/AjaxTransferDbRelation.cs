@@ -1,6 +1,6 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
-    public class AjaxTransferDbRelation
+    public class AjaxTransferDbRelation : IEntity
     {
         public int Type { get; set; }
         public int LeftTable { get; set; }

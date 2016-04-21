@@ -1,15 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-using FSS.Omnius.Modules.Entitron.Entity.Master;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
+    using Master;
+
     [Table("Persona_AppRoles")]
-    public class PersonaAppRole : IdentityRole<int, User_Role>
+    public class PersonaAppRole : IdentityRole<int, User_Role>, IEntity
     {
         public PersonaAppRole()
         {

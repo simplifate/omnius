@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
-using System.Linq;
-using FSS.Omnius.Modules.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_ActionRuleRights")]
-    public partial class ActionRuleRight
+    public partial class ActionRuleRight : IEntity
     {
         [Key]
         [Column(Order = 1)]

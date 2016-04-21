@@ -1,16 +1,12 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.CORE
 {
     [Table("CORE_DataTypes")]
-    public class DataType
+    public class DataType : IEntity
     {
         public DataType()
         {

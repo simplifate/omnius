@@ -2,8 +2,8 @@
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
-     public class AjaxPersonaAppRoles
-     {
+     public class AjaxPersonaAppRoles : IEntity
+    {
          public string AppName { get; set; }
          public List<AjaxPersonaAppRoles_User> Users { get; set; }
          public List<AjaxPersonaAppRoles_Role> Roles { get; set; }
@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
          }
      }
 
-    public class AjaxPersonaAppstates
+    public class AjaxPersonaAppstates : IEntity
     {
         public string StateName { get; set; }
         public List<AjaxPersonaAppRoles_State> States { get; set; }
@@ -27,14 +27,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     }
 
 
-    public class AjaxPersonaAppRoles_User
-     {
+    public class AjaxPersonaAppRoles_User : IEntity
+    {
          public int Id { get; set; }
          public string Name { get; set; }
      }
 
-     public class AjaxPersonaAppRoles_Role
-     {
+     public class AjaxPersonaAppRoles_Role : IEntity
+    {
          public int Id { get; set; }
          public string Name { get; set; }
          public List<int> MemberList { get; set; }
@@ -45,14 +45,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
          }
      }
 
-    public class AjaxPersonaAppRoles_State
+    public class AjaxPersonaAppRoles_State : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
 
-    public class ColumnHeaderAppRolesForTable
+    public class ColumnHeaderAppRolesForTable : IEntity
     {
         //Roles
         public int Id { get; set; }
@@ -69,7 +69,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
     }
 
-    public class RowHeaderAppRolesForTable
+    public class RowHeaderAppRolesForTable : IEntity
     {
         //Users
         public int Id { get; set; }
@@ -84,7 +84,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
     }
 
-    public class AjaxPersonaAppRolesForTable
+    public class AjaxPersonaAppRolesForTable : IEntity
     {
         public string AppName { get; set; }
         public int AppID { get; set; }

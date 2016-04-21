@@ -10,7 +10,7 @@
     }
     
     [Table("Nexus_Ext_DB")]
-    public partial class ExtDB
+    public partial class ExtDB : IEntity
     {
         public int? Id { get; set; }
 

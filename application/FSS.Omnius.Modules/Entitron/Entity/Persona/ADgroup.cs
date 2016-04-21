@@ -1,17 +1,14 @@
-﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
+    using Master;
+
     [Table("Persona_ADgroups")]
-    public partial class ADgroup
+    public partial class ADgroup : IEntity
     {
         public ADgroup()
         {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public class AjaxTransferTapestryActionList
+    public class AjaxTransferTapestryActionList : IEntity
     {
         public List<AjaxTransferTapestryActionItem> Items { get; set; }
 
@@ -16,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         }
     }
 
-    public class AjaxTransferTapestryActionItem
+    public class AjaxTransferTapestryActionItem : IEntity
     {
         public int Id { get; set; }
         public int? ReverseActionId { get; set; }

@@ -1,6 +1,6 @@
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
-    public class AjaxTransferDbColumn
+    public class AjaxTransferDbColumn : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

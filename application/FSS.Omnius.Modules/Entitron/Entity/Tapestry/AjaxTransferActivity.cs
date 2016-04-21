@@ -1,6 +1,6 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public class AjaxTransferActivity
+    public class AjaxTransferActivity : IEntity
     {
         public int Id { get; set; }
         public int ActType { get; set; }

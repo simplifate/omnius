@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Spatial;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     [Table("Tapestry_ActionRule_Action")]
-    public partial class ActionRule_Action
+    public partial class ActionRule_Action : IEntity
     {
         public int Id { get; set; }
         public int ActionRuleId { get; set; }
