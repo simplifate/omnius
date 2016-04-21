@@ -10,7 +10,7 @@ namespace Logger
     class Folder
     {
         private string pathToLogDir = "";
-        private string rootDir = GeneralConfig.Config.RootDir;
+        private string rootDir = Log.rootPath;
         public string LogPath
         {
             get

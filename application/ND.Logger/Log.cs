@@ -12,6 +12,14 @@ namespace Logger
 {
     public static class Log
     {
+        public static void ConfigureRootDir(HttpServerUtility server)
+        {
+            rootPath = GeneralConfig.Config.RootDir;
+            if (rootPath[0] == '~')
+                rootPath = server.MapPath(rootPath);
+        }
+        internal static string rootPath;
+
         // enum with only available log types
         public enum Type
         {
@@ -92,7 +100,7 @@ namespace Logger
         // Gets log config according to parsed method name to Log.LogType
         private static LogElement ConfigFromMethodName(string methodName)
         {
-            Log.Type logType = (Log.Type)Enum.Parse(typeof(Log.Type), methodName);
+            Type logType = (Type)Enum.Parse(typeof(Type), methodName);
             return GeneralConfig.Config.Settings[logType];
         }
 
