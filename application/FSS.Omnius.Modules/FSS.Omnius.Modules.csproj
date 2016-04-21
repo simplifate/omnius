@@ -117,6 +117,7 @@
     <Compile Include="CORE\CORE.cs" />
     <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
+    <Compile Include="CORE\IModule.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Entitron\Entity\Entitron\DbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\DbView.cs" />
     <Compile Include="Entitron\Entity\Entitron\RelationTypes.cs" />
-    <Compile Include="Entitron\Entity\CORE\Module.cs" />
     <Compile Include="Entitron\Entity\Nexus\ldap.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Page.cs" />
     <Compile Include="Entitron\Entity\Entitron\Table.cs" />
@@ -823,6 +823,10 @@
     <Compile Include="Migrations\201604131344422_appRoleRelation.Designer.cs">
       <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604210802463_dropModules.cs" />
+    <Compile Include="Migrations\201604210802463_dropModules.Designer.cs">
+      <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1327,6 +1331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604131344422_appRoleRelation.resx">
       <DependentUpon>201604131344422_appRoleRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604210802463_dropModules.resx">
+      <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

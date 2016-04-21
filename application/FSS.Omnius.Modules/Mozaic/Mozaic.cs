@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
-using System.ComponentModel.DataAnnotations.Schema;
-using FSS.Omnius.Modules.Tapestry;
-
-namespace FSS.Omnius.Modules.Mozaic
+﻿namespace FSS.Omnius.Modules.Mozaic
 {
-    [NotMapped]
-    public class Mozaic : Module
+    using CORE;
+    
+    public class Mozaic : IModule
     {
-        private CORE.CORE _CORE;
-        public Mozaic(CORE.CORE core)
+        private CORE _CORE;
+        public Mozaic(CORE core)
         {
-            Name = "Mozaic";
             _CORE = core;
         }
 

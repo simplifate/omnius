@@ -29,7 +29,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         // CORE
         public virtual DbSet<DataType> DataTypes { get; set; }
-        public virtual DbSet<Module> Modules { get; set; }
         public virtual DbSet<ConfigPair> ConfigPairs { get; set; }
 
         // Entitron

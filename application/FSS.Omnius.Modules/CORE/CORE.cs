@@ -9,20 +9,14 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Modules.CORE
 {
-    [NotMapped]
-    public class CORE : Module
+    public class CORE : IModule
     {
-        private IQueryable<Module> _enabledModules = null;
-
-        private Dictionary<string, Module> _modules = new Dictionary<string, Module>();
+        private Dictionary<string, IModule> _modules = new Dictionary<string, IModule>();
         
         public User User { get; set; }
 
         public CORE()
-        {
-            Name = "CORE";
-
-            _modules["CORE"] = this;
+        {            
             _modules["Entitron"] = new Entitron.Entitron(this);
         }
         
@@ -30,8 +24,8 @@ namespace FSS.Omnius.Modules.CORE
         {
             get
             {
-                if (!isModuleEnabled("Entitron"))
-                    throw new ModuleNotFoundOrEnabledException("Entitron");
+                //if (!isModuleEnabled("Entitron"))
+                //    throw new ModuleNotFoundOrEnabledException("Entitron");
 
                 if (!_modules.ContainsKey("Entitron"))
                     _modules["Entitron"] = new Entitron.Entitron(this);
@@ -43,8 +37,8 @@ namespace FSS.Omnius.Modules.CORE
         {
             get
             {
-                if (!isModuleEnabled("Mozaic"))
-                    throw new ModuleNotFoundOrEnabledException("Mozaic");
+                //if (!isModuleEnabled("Mozaic"))
+                //    throw new ModuleNotFoundOrEnabledException("Mozaic");
 
                 if (!_modules.ContainsKey("Mozaic"))
                     _modules["Mozaic"] = new Mozaic.Mozaic(this);
@@ -56,8 +50,8 @@ namespace FSS.Omnius.Modules.CORE
         {
             get
             {
-                if (!isModuleEnabled("Tapestry"))
-                    throw new ModuleNotFoundOrEnabledException("Tapestry");
+                //if (!isModuleEnabled("Tapestry"))
+                //    throw new ModuleNotFoundOrEnabledException("Tapestry");
 
                 if (!_modules.ContainsKey("Tapestry"))
                     _modules["Tapestry"] = new Tapestry.Tapestry(this);
@@ -69,8 +63,8 @@ namespace FSS.Omnius.Modules.CORE
         {
             get
             {
-                if (!isModuleEnabled("Persona"))
-                    throw new ModuleNotFoundOrEnabledException("Persona");
+                //if (!isModuleEnabled("Persona"))
+                //    throw new ModuleNotFoundOrEnabledException("Persona");
 
                 if (!_modules.ContainsKey("Persona"))
                     _modules["Persona"] = new Persona.Persona(this);
@@ -79,12 +73,12 @@ namespace FSS.Omnius.Modules.CORE
             }
         }
 
-        private bool isModuleEnabled(string moduleName)
-        {
-            if (_enabledModules == null)
-                _enabledModules = (_modules["Entitron"] as Entitron.Entitron).GetStaticTables().Modules.Where(m => m.IsEnabled);
+        //private bool isModuleEnabled(string moduleName)
+        //{
+        //    if (_enabledModules == null)
+        //        _enabledModules = (_modules["Entitron"] as Entitron.Entitron).GetStaticTables().Modules.Where(m => m.IsEnabled);
 
-            return _enabledModules.Any(m => m.Name == moduleName);
-        }
+        //    return _enabledModules.Any(m => m.Name == moduleName);
+        //}
     }
 }

@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Newtonsoft.Json.Linq;
-using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public class Tapestry : Module
+    using CORE;
+    using Entitron;
+    using Entitron.Entity;
+    using Entitron.Entity.Tapestry;
+    using Entitron.Entity.Persona;
+
+    public class Tapestry : IModule
     {
-        private CORE.CORE _CORE;
+        private CORE _CORE;
         private ActionResult _results;
 
-        public Tapestry(CORE.CORE core)
+        public Tapestry(CORE core)
         {
-            Name = "Tapestry";
-
             _CORE = core;
             _results = new ActionResult();
         }

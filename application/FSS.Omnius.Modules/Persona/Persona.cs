@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using System.ComponentModel.DataAnnotations.Schema;
-using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Nexus.Service;
-using System.DirectoryServices;
+
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Persona
 {
-    [NotMapped]
-    public class Persona : Module
+    using CORE;
+    using Nexus.Service;
+    using Entitron.Entity;
+    using Entitron.Entity.CORE;
+    using Entitron.Entity.Persona;
+    
+    public class Persona : IModule
     {
         private TimeSpan _expirationTime;
-        private CORE.CORE _CORE;
+        private CORE _CORE;
 
         private const string _AdGroupContainer = "OU=OSS";
 
-        public Persona(CORE.CORE core)
+        public Persona(CORE core)
         {
-            Name = "Persona";
             _CORE = core;
 
             ConfigPair pair = _CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");

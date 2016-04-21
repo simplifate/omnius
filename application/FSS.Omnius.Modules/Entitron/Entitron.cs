@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSS.Omnius.Modules.Entitron
 {
     using Entity;
-    using Entity.CORE;
+    using CORE;
     using Entity.Master;
     using Service;
     using Table;
-    [NotMapped]
-    public class Entitron : Module
+
+    public class Entitron : IModule
     {
         public const string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=Omnius;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework;Min Pool Size=3;Load Balance Timeout=180;";
-        private CORE.CORE _CORE;
+        private CORE _CORE;
         private DBEntities entities = null;
 
         public Application Application { get; set; }
@@ -38,9 +35,8 @@ namespace FSS.Omnius.Modules.Entitron
         }
         public IConditionalFilteringService filteringService { get; set; }
 
-        public Entitron(CORE.CORE core, string ApplicationName = null)
+        public Entitron(CORE core, string ApplicationName = null)
         {
-            Name = "Entitron";
             _CORE = core;
             AppName = ApplicationName;
             filteringService = new ConditionalFilteringService();
