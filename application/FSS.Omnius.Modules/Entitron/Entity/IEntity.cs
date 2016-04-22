@@ -14,7 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     {
         public static void Update<T>(this T thisEntity, T newEntity, Type ignoreAttribute = null) where T : IEntity
         {
-            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties();
+            // ignore method without setter
+            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
             if (ignoreAttribute != null)
                 properties = properties.Where(p => p.GetCustomAttribute(ignoreAttribute) == null);
 
@@ -38,7 +39,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                     typeof(DateTime?)
                 };
 
-            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties();
+            // ignore method without setter
+            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
             if (ignoreAttribute != null)
                 properties = properties.Where(p => basicsTypes.Contains(p.PropertyType) && p.GetCustomAttribute(ignoreAttribute) == null);
 
@@ -64,7 +66,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 };
 
             // get mapped properties
-            IEnumerable<PropertyInfo> properties = newEntity.GetType().GetProperties();
+            // ignore method without setter
+            IEnumerable<PropertyInfo> properties = newEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
             if (ignoreAttribute != null)
                 properties = properties.Where(p => p.GetCustomAttribute(ignoreAttribute) == null);
 
