@@ -82,6 +82,7 @@
         </tbody>
     </table>
     <button id="btnAddApp" class="btn btn-primary">Přidat aplikaci</button>
+    @Html.RouteLink("Import", "Master", new { @controller = "Service", @action = "RecoverApp" }, new { @class = "btn btn-default" })
 </div>
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
     <input type="hidden" name="appId" />

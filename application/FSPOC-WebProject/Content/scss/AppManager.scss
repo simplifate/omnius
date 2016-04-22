@@ -94,6 +94,7 @@ body.adminAppModule {
     }
     #lowerPanel {
         top: 200px;
+        margin-bottom: 20px;
     }
     .appManagerLowerDecoration {
         position: absolute;
@@ -123,8 +124,6 @@ body.adminAppModule {
     }
     #btnAddApp {
         margin-left: 85px;
-        margin-top: 10px;
-        margin-bottom: 30px;
     }
     .formTable {
         label, select {

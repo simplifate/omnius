@@ -99,7 +99,8 @@ body.adminAppModule #upperPanel {
   height: 135px; }
 
 body.adminAppModule #lowerPanel {
-  top: 200px; }
+  top: 200px;
+  margin-bottom: 20px; }
 
 body.adminAppModule .appManagerLowerDecoration {
   position: absolute;
@@ -122,9 +123,7 @@ body.adminAppModule .adminAppTable {
       display: inline-block; }
 
 body.adminAppModule #btnAddApp {
-  margin-left: 85px;
-  margin-top: 10px;
-  margin-bottom: 30px; }
+  margin-left: 85px; }
 
 body.adminAppModule .formTable label, body.adminAppModule .formTable select {
   margin-bottom: 0px;
