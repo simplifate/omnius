@@ -1,11 +1,12 @@
 ﻿function CurrentModuleIs(moduleClass) {
     return $("body").hasClass(moduleClass) ? true : false;
 }
-function CreateCzechDataTable(element) {
+function CreateCzechDataTable(element, simpleMode) {
+    featureSwitch = !simpleMode;
     element.DataTable({
-        "paging": true,
-        "info": true,
-        "filter": true,
+        "paging": featureSwitch,
+        "info": featureSwitch,
+        "filter": featureSwitch,
         "language": {
             "sEmptyTable":     "Tabulka neobsahuje žádná data",
             "sInfo":           "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",

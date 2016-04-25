@@ -52,7 +52,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.find(".info-container-body").text(cData.Content);
     }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
-        newComponent.text(cData.Label);
+        newComponent.html(cData.Label);
         newComponent.attr("contentTemplate", cData.Content);
     }
     else if (newComponent.hasClass("checkbox-control")) {
@@ -68,7 +68,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.append($('<thead><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr></thead>'
             + '<tbody><tr><td>Value1</td><td>Value2</td><td>Value3</td></tr><tr><td>Value4</td><td>Value5</td><td>Value6</td></tr>'
             + '<tr><td>Value7</td><td>Value8</td><td>Value9</td></tr></tbody>'));
-        CreateCzechDataTable(newComponent);
+        CreateCzechDataTable(newComponent, newComponent.hasClass("data-table-simple-mode"));
         newComponent.css("width", cData.Width);
         wrapper = newComponent.parents(".dataTables_wrapper");
         wrapper.css("position", "absolute");

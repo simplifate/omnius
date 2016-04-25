@@ -67,9 +67,9 @@ $(function () {
         $(window).resize(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         });
-        $(".uic.data-table").each(function(index, element) {
+        $(".uic.data-table").each(function (index, element) {
             table = $(element);
-            CreateCzechDataTable(table);
+            CreateCzechDataTable(table, table.hasClass("data-table-simple-mode"));
             wrapper = table.parents(".dataTables_wrapper");
             wrapper.css("position", "absolute");
             wrapper.css("left", table.css("left"));
@@ -91,22 +91,29 @@ $(function () {
                     $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
                 }
             });
-            table.find("tfoot th").each(function () {
-                var title = $(this).text();
-                if (title != "Akce")
-                    $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
-                else
-                    $(this).html("");
-            });
-            dataTable = table.DataTable();
-            dataTable.columns().eq(0).each(function (colIdx) {
-                $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
-                    dataTable
-                        .column(colIdx)
-                        .search(this.value)
-                        .draw();
+            if (!table.hasClass("data-table-simple-mode")) {
+                table.find("tfoot th").each(function () {
+                    var title = $(this).text();
+                    if (title != "Akce")
+                        $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                    else
+                        $(this).html("");
                 });
-            });
+                dataTable = table.DataTable();
+                dataTable.columns().eq(0).each(function (colIdx) {
+                    $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
+                        dataTable
+                            .column(colIdx)
+                            .search(this.value)
+                            .draw();
+                    });
+                });
+            }
+            mozaicForm = $("#userContentArea .mozaicForm");
+            if (table.width() > mozaicForm.width()) {
+                mozaicForm.width(table.width());
+                $("#appMenu").width(table.width());
+            }
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {

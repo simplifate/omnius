@@ -39,12 +39,12 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     if (leftOperand is bool)
                         return ((bool)leftOperand ? "true" : "false") == condition.Value;
                     else
-                        return (string)leftOperand == condition.Value;
+                        return leftOperand.ToString() == condition.Value.ToString();
                 case "!=":
                     if (leftOperand is bool)
                         return ((bool)leftOperand ? "true" : "false") != condition.Value;
                     else
-                        return (string)leftOperand != condition.Value;
+                        return leftOperand.ToString() == condition.Value.ToString();
                 case ">":
                     return Convert.ToInt64(leftOperand) > Convert.ToInt64(condition.Value);
                 case ">=":

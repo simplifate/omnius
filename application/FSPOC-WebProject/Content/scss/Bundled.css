@@ -742,6 +742,10 @@ body.adminAppModule #appBuildResults {
     font-size: 14px;
     color: #58585a;
     white-space: nowrap; }
+    .mozaicForm .control-label b {
+      font-size: 1.15em; }
+    .mozaicForm .control-label u {
+      color: #0065a9; }
   .mozaicForm .form-heading {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -795,6 +799,10 @@ body.adminAppModule #appBuildResults {
         color: #0065a9; }
       .mozaicForm .data-table .actionIcons .fa-remove {
         color: #e3001b; }
+  .mozaicForm .data-table-simple-mode {
+    background-color: white; }
+    .mozaicForm .data-table-simple-mode tfoot {
+      display: none; }
   .mozaicForm .name-value-list {
     font-family: MyriadPro;
     font-size: 14px; }
@@ -2985,6 +2993,10 @@ body.mozaicEditorModule {
     font-size: 14px;
     color: #58585a;
     white-space: nowrap; }
+    body.mozaicEditorModule .control-label b {
+      font-size: 1.15em; }
+    body.mozaicEditorModule .control-label u {
+      color: #0065a9; }
   body.mozaicEditorModule .form-heading {
     font-family: RweHeadlineRegular;
     font-size: 28px;
@@ -3027,6 +3039,8 @@ body.mozaicEditorModule {
       color: #0065a9; }
     body.mozaicEditorModule .data-table .actionIcons .fa-remove {
       color: #e3001b; }
+  body.mozaicEditorModule .data-table-simple-mode {
+    background-color: white; }
   body.mozaicEditorModule .name-value-list {
     font-family: MyriadPro;
     font-size: 14px; }

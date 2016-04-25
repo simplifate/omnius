@@ -56,7 +56,7 @@ function GetMozaicContainerComponentArray(container, nested) {
             label = currentUic.find(".radio-label").text();
         }
         else if (currentUic.hasClass("form-heading") || currentUic.hasClass("control-label")) {
-            label = currentUic.text();
+            label = currentUic.html();
             content = currentUic.attr("contentTemplate");
             type = "label";
         }

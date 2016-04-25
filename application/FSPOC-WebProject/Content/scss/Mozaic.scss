@@ -303,6 +303,13 @@ body.mozaicEditorModule {
         font-size: 14px;
         color: #58585a;
         white-space: nowrap;
+
+        b {
+            font-size: 1.15em;
+        }
+        u {
+            color: #0065a9;
+        }
     }
     .form-heading {
         font-family: RweHeadlineRegular;
@@ -362,6 +369,9 @@ body.mozaicEditorModule {
                 color: #e3001b;
             }
         }
+    }
+    .data-table-simple-mode {
+        background-color: white;
     }
     .name-value-list {
         font-family: MyriadPro;

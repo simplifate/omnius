@@ -465,6 +465,13 @@
         font-size: 14px;
         color: #58585a;
         white-space: nowrap;
+
+        b {
+            font-size: 1.15em;
+        }
+        u {
+            color: #0065a9;
+        }
     }
     .form-heading {
         @include no-select();
@@ -535,6 +542,12 @@
             .fa-remove {
                 color: #e3001b;
             }
+        }
+    }
+    .data-table-simple-mode {
+        background-color: white;
+        tfoot {
+            display: none;
         }
     }
     .name-value-list {

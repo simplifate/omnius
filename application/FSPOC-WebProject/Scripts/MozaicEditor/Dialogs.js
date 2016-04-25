@@ -34,7 +34,7 @@ $(function () {
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
                 }
                 else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
-                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.attr("contentTemplate"));
                 }
                 else if (CurrentComponent.hasClass("checkbox-control")) {
@@ -79,7 +79,7 @@ $(function () {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
             }
             else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
-                CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.html(componentPropertiesDialog.find("#component-label").val());
                 CurrentComponent.attr("contentTemplate", componentPropertiesDialog.find("#component-content").val());
             }
             else if (CurrentComponent.hasClass("checkbox-control")) {

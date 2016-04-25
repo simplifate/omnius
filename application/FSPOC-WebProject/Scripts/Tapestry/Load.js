@@ -653,6 +653,13 @@
                                         ToolboxItemDraggable(newToolboxLiUic);
                                         uicLibraryItem.addClass("highlighted");
                                     }
+                                    if (uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Type == "data-table-with-actions") {
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_edit" libType="ui" class="libraryItem">'
+                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_EditAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
+                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DetailsAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DeleteAction</div>');
+                                    }
                                 }
                             }
                         }

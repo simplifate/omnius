@@ -36,7 +36,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 droppedElement.css("width", "600px");
             }
             else if (droppedElement.hasClass("data-table")) {
-                CreateCzechDataTable(droppedElement);
+                CreateCzechDataTable(droppedElement, droppedElement.hasClass("data-table-simple-mode"));
                 droppedElement.css("width", "1000px");
                 wrapper = droppedElement.parents(".dataTables_wrapper");
                 wrapper.css("position", "absolute");

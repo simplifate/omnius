@@ -512,7 +512,7 @@ $(function () {
                             newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td><span class="tableName">' + SystemTables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
                                 newTableRow.addClass("highlightedRow");
-                            if (data.Tables[i].Name == ModelTableName)
+                            if (SystemTables[i].Name == ModelTableName)
                                 newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
