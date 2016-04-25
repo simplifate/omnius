@@ -8,6 +8,23 @@ namespace System
 {
     public static partial class ExtendMethods
     {
+        public static char ToUpper(this char input)
+        {
+            int i = input;
+            if (i >= 97 && i <= 122)
+                i -= 32;
+
+            return (char)i;
+        }
+        public static char ToLower(this char input)
+        {
+            int i = input;
+            if (i >= 65 && i <= 90)
+                i += 32;
+
+            return (char)i;
+        }
+
         public static string Random(this string str, int length, string chars = "abcdefghijklmnopqrstuvwxyz")
         {
             var random = new Random();
@@ -20,14 +37,24 @@ namespace System
         }
         public static string RemoveDiacritics(this string input)
         {
-            string decomposed = input.Normalize(NormalizationForm.FormD);
-            char[] filtered = decomposed
-                .Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark).ToArray();
-            string newString = new string(filtered);
-            Regex rgx = new Regex("[^a-zA-Z0-9]");
-            newString = rgx.Replace(newString, "");
+            input = input.Normalize(NormalizationForm.FormD);
 
-            return newString;
+            // remove diacriticts
+            input = new string(input
+                .Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                .ToArray());
+
+            // remove special symbols
+            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            var splitted = rgx.Split(input)
+                .Where(s => s.Length != 0) // remove empty
+                .Select(s => s[0].ToUpper() + s.Substring(1).ToLower()) // good case
+                .ToArray();
+
+            // merge
+            input = string.Join("", splitted);
+
+            return input;
         }
 
         public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> source, IEnumerable<KeyValuePair<TKey, TValue>> range)
