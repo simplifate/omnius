@@ -861,6 +861,12 @@
     <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\DivideAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\MathRepository.cs" />
+    <Compile Include="Tapestry\Actions\Math\ModuloAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\MultiplyAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\SubtractAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
