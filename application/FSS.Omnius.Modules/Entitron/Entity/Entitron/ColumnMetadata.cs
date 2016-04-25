@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
@@ -11,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public string ColumnName { get; set; }
         public string ColumnDisplayName { get; set; }
 
+        [JsonIgnore]
         public virtual Application Application { get; set; }
     }
 }

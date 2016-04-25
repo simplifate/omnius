@@ -11,10 +11,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Hermes;
     using Watchtower;
     using Cortex;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using Microsoft.AspNet.Identity.EntityFramework;
-
+    using System.Reflection;
+    using System;
+    using System.Collections.Generic;
     public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
         public static DBEntities Create()
@@ -23,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         }
 
         public DBEntities()
-            : base(Omnius.Modules.Entitron.Entitron.connectionString)
+            : base(Modules.Entitron.Entitron.connectionString)
         {
         }
 
@@ -77,7 +78,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        //public virtual DbSet<PersonaAppRole> AppRoles { get; set; }
+        //public virtual DbSet<PersonaAppRole> Roles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -408,6 +409,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.Integrations);
 
             // Watchtower
+        }
+
+
+        public void Remove(IEntity item)
+        {
+            dynamic list = getList(item.GetType());
+
+            list.Remove((dynamic)item);
+        }
+        public void RemoveRange(IEnumerable<IEntity> items)
+        {
+            foreach (IEntity item in items)
+                Remove(item);
+        }
+        private object getList(Type type)
+        {
+            PropertyInfo prop = GetType().GetProperties().SingleOrDefault(p => p.PropertyType.GenericTypeArguments.FirstOrDefault() == type || p.PropertyType.GenericTypeArguments.FirstOrDefault() == type.BaseType);
+            return prop.GetValue(this);
         }
     }
 }

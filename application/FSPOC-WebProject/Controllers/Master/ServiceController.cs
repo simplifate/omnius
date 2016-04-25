@@ -51,10 +51,13 @@ namespace FSS.Omnius.Controllers.Master
             Application app = service.RecoverApplication(result);
 
             // update
-            Application dbApp = context.Applications.Find(app.Id);
+            Application dbApp = context.Applications.SingleOrDefault(a => a.Name == app.Name);
             if (dbApp != null)
             {
-                dbApp.UpdateDeep(app, ignoreAttribute: typeof(JsonIgnoreAttribute));
+                app.Id = dbApp.Id;
+
+                var todelete = dbApp.UpdateDeep(app, context, ignoreAttribute: typeof(JsonIgnoreAttribute));
+                context.RemoveRange(todelete);
             }
             // new app
             else
@@ -81,7 +84,7 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     foreach (var block in meta.Blocks)
                     {
-                        foreach (var commit in block.BlockCommits)
+                        foreach (var commit in block.BlockCommits.Where(bc => !string.IsNullOrWhiteSpace(bc.AssociatedPageIds)))
                         {
                             List<int> newPageIds = new List<int>();
                             List<int> pageIds = commit.AssociatedPageIds.Split(',').Select(p => Convert.ToInt32(p)).ToList();
@@ -96,7 +99,7 @@ namespace FSS.Omnius.Controllers.Master
                     context.SaveChanges();
                 }
 
-                return View();
+                return RedirectToRoute("Master", new { @controller = "AppAdminManager", @action = "Index" });
             }
             catch (Exception ex)
             {

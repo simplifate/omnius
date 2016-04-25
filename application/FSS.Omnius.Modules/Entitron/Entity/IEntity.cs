@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             }
         }
 
-        public static void UpdateDeep<T>(this T thisEntity, T newEntity, HashSet<Type> basicsTypes = null, Type ignoreAttribute = null) where T : IEntity
+        public static HashSet<IEntity> UpdateDeep<T>(this T thisEntity, T newEntity, DBEntities context, HashSet<Type> basicsTypes = null, Type ignoreAttribute = null) where T : IEntity
         {
             // basics types
             if (basicsTypes == null)
@@ -71,6 +71,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             if (ignoreAttribute != null)
                 properties = properties.Where(p => p.GetCustomAttribute(ignoreAttribute) == null);
 
+            HashSet<IEntity> deletedITems = new HashSet<IEntity>();
+
             // update
             foreach (var property in properties)
             {
@@ -89,35 +91,57 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                     // inner IEntity
                     else if (newValue is IEntity)
                     {
-                        (thisValue as IEntity).UpdateDeep((IEntity)newValue, basicsTypes, ignoreAttribute);
+                        (thisValue as IEntity).UpdateDeep((IEntity)newValue, context, basicsTypes, ignoreAttribute);
                     }
                     // ICollection
                     else if (newValue.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>)))
                     {
-                        // Type itemType = property.PropertyType.GenericTypeArguments.First(); // type
+                        Type itemType = property.PropertyType.GenericTypeArguments.First(); // type
 
                         IEnumerator<IEntity> thisEnumerator = (thisValue as dynamic).GetEnumerator();
                         IEnumerator<IEntity> newEnumerator = (newValue as dynamic).GetEnumerator();
 
                         thisEnumerator.Reset();
                         newEnumerator.Reset();
+                        HashSet<dynamic> toAdd = new HashSet<dynamic>();
                         while (newEnumerator.MoveNext())
                         {
+                            // add new
                             if (!thisEnumerator.MoveNext())
                             {
                                 do
                                 {
-                                    (thisValue as dynamic).Add((dynamic)newEnumerator.Current);
+                                    toAdd.Add((dynamic)newEnumerator.Current);
                                 }
                                 while (newEnumerator.MoveNext());
                                 property.SetValue(thisEntity, thisValue);
                             }
+                            // replace changes
                             else
-                                thisEnumerator.Current.UpdateDeep(newEnumerator.Current, basicsTypes, ignoreAttribute);
+                                deletedITems.AddRange(thisEnumerator.Current.UpdateDeep(newEnumerator.Current, context, basicsTypes, ignoreAttribute));
+                        }
+                        // remove old
+                        HashSet<dynamic> toRemove = new HashSet<dynamic>();
+                        while (thisEnumerator.MoveNext())
+                        {
+                            toRemove.Add((dynamic)thisEnumerator.Current);
+                        }
+
+                        // update list
+                        foreach (dynamic item in toAdd)
+                        {
+                            (thisValue as dynamic).Add(item);
+                        }
+                        foreach (dynamic item in toRemove)
+                        {
+                            (thisValue as dynamic).Remove(item);
+                            deletedITems.Add((IEntity)item);
                         }
                     }
                 }
             }
+
+            return deletedITems;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         [JsonIgnore]
         public int ApplicationId { get; set; }
+        [JsonIgnore]
         public virtual Application Application { get; set; }
         [Required]
         public int Priority { get; set; }

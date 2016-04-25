@@ -21,6 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 
         [JsonIgnore]
         public int DbSchemeCommitId { get; set; }
+        [JsonIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }

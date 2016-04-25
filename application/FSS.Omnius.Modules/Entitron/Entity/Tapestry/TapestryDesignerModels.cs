@@ -35,13 +35,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerMetablock> Metablocks { get; set; }
         public virtual ICollection<TapestryDesignerBlock> Blocks { get; set; }
 
+        public int? ParentMetablock_Id { get; set; }
         [JsonIgnore]
         public TapestryDesignerMetablock ParentMetablock { get; set; }
+        [JsonIgnore]
         public int ParentAppId { get; set; }
+        [JsonIgnore]
         public Application ParentApp { get; set; }
-
-        public int? ParentMetablock_Id { get; set; }
-
+        
         public TapestryDesignerMetablock()
         {
             Metablocks = new List<TapestryDesignerMetablock>();
@@ -59,6 +60,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? TargetId { get; set; }
 
         [Required]
+        [JsonIgnore]
         public virtual TapestryDesignerMetablock TapestryDesignerMetablock { get; set; }
     }
     [Table("TapestryDesigner_Blocks")]
@@ -76,7 +78,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
-
+        
+        [JsonIgnore]
         public virtual TapestryDesignerMetablock ParentMetablock { get; set; }
         [JsonIgnore]
         public int ParentMetablock_Id { get; set; }
@@ -109,6 +112,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string AssociatedTableIds { get; set; }
         public string RoleWhitelist { get; set; }
 
+        [JsonIgnore]
         public virtual TapestryDesignerBlock ParentBlock { get; set; }
         [JsonIgnore]
         public int ParentBlock_Id { get; set; }
@@ -154,6 +158,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
         public virtual ICollection<TapestryDesignerResourceConnection> Connections { get; set; }
 
+        [JsonIgnore]
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
         [JsonIgnore]
         public int ParentBlockCommit_Id { get; set; }
@@ -179,6 +184,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [JsonIgnore]
         public int ParentBlockCommit_Id { get; set; }
+        [JsonIgnore]
         public virtual TapestryDesignerBlockCommit ParentBlockCommit { get; set; }
 
         public TapestryDesignerWorkflowRule()
@@ -197,6 +203,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         
         public virtual ICollection<TapestryDesignerWorkflowItem> WorkflowItems { get; set; }
 
+        [JsonIgnore]
         public virtual TapestryDesignerWorkflowRule ParentWorkflowRule { get; set; }
         [JsonIgnore]
         public int ParentWorkflowRule_Id { get; set; }
@@ -227,6 +234,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ColumnFilter { get; set; }
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
+        [JsonIgnore]
         public int ParentRuleId { get; set; }
         [JsonIgnore]
         public virtual TapestryDesignerResourceRule ParentRule { get; set; }
@@ -252,6 +260,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
+        [JsonIgnore]
         public int ParentSwimlaneId { get; set; }
         [JsonIgnore]
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
@@ -377,6 +386,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [JsonIgnore]
         public int WorkflowRuleId { get; set; }
+        [JsonIgnore]
         public virtual TapestryDesignerWorkflowRule WorkflowRule { get; set; }
     }
     [Table("TapestryDesigner_ResourceConnections")]
@@ -389,6 +399,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         [JsonIgnore]
         public int ResourceRuleId { get; set; }
+        [JsonIgnore]
         public virtual TapestryDesignerResourceRule ResourceRule { get; set; }
     }
     [Table("TapestryDesigner_Conditions")]

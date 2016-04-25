@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         [JsonIgnore]
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
 
+        [JsonIgnore]
         public virtual Application ParentApp { get; set; }
 
         public void Recompile()
@@ -230,7 +231,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public int? ParentComponentId { get; set; }
         [JsonIgnore]
         public virtual MozaicEditorComponent ParentComponent { get; set; }
+        [JsonIgnore]
         public int MozaicEditorPageId { get; set; }
+        [JsonIgnore]
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
     

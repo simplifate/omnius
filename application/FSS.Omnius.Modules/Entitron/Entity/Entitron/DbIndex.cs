@@ -12,7 +12,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public bool Unique { get; set; }
         public string ColumnNames { get; set; }
 
+        [JsonIgnore]
         public int DbTableId { get; set; }
+        [JsonIgnore]
         public virtual DbTable DbTable { get; set; }
     }
 }

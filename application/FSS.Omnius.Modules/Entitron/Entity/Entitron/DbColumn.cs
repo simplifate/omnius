@@ -17,7 +17,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public bool ColumnLengthIsMax { get; set; }
         public string DefaultValue { get; set; }
 
+        [JsonIgnore]
         public int DbTableId { get; set; }
+        [JsonIgnore]
         public virtual DbTable DbTable { get; set; }
     }
 }
