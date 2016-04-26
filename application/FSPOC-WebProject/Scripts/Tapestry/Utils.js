@@ -240,10 +240,12 @@ function GetItemTypeClass(item) {
     return typeClass;
 }
 function RecalculateToolboxHeight() {
-    leftBar = $("#tapestryLeftBar");
-    scrollTop = $(window).scrollTop();
-    lowerPanelTop = $("#lowerPanel").offset().top;
-    leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+    var leftBar = $("#tapestryLeftBar");
+    var scrollTop = $(window).scrollTop();
+    var lowerPanelTop = $("#lowerPanel").offset().top;
+    var bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top
+    leftBar.height(bottomPanelHeight);
+    $("#lowerPanelSpinnerOverlay").height(bottomPanelHeight);
     $("#workflowRulesPanel").height($(window).height() - 30);
     $("#tapestryLeftBarMinimized").height($("#workflowRulesPanel").offset().top + $("#workflowRulesPanel").height() - lowerPanelTop);
 }

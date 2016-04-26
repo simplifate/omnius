@@ -964,6 +964,12 @@ body.tapestryModule #upperPanel {
 body.tapestryModule #lowerPanel {
   top: 432px;
   padding: 0px; }
+  body.tapestryModule #lowerPanel #lowerPanelSpinnerOverlay {
+    position: absolute;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none; }
   body.tapestryModule #lowerPanel #tapestryLeftBar {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

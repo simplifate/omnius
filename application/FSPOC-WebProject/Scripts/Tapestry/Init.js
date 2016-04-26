@@ -129,13 +129,17 @@ $(function () {
             chooseWhitelistRolesDialog.dialog("open");
         });
         $(window).scroll(function () {
-            leftBar = $("#tapestryLeftBar");
-            scrollTop = $(window).scrollTop();
-            lowerPanelTop = $("#lowerPanel").offset().top;
-            if (scrollTop > lowerPanelTop)
+            var leftBar = $("#tapestryLeftBar");
+            var scrollTop = $(window).scrollTop();
+            var lowerPanelTop = $("#lowerPanel").offset().top;
+            var overlay = $("#lowerPanelSpinnerOverlay");
+            if (scrollTop > lowerPanelTop) {
                 leftBar.css("top", scrollTop - lowerPanelTop);
-            else
+                overlay.css("top", scrollTop - lowerPanelTop);
+            } else {
                 leftBar.css("top", 0);
+                overlay.css("top", 0);
+            }
             RecalculateToolboxHeight();
         });
         $(window).resize(function () {

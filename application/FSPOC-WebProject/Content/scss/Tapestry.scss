@@ -92,6 +92,14 @@ body.tapestryModule {
         top: 432px;
         padding: 0px;
 
+        #lowerPanelSpinnerOverlay {
+            position: absolute;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            display: none;
+        }
+
         #tapestryLeftBar {
             @include no-select();
             position: absolute;
