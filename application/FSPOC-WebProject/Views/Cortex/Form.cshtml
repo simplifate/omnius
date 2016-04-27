@@ -135,7 +135,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">
-                    <input type="radio" name="Month_Type" id="Month_Type_Day" value="1" />
+                    <input type="radio" name="Month_Type" id="Month_Type_Day" value="2" />
                     Dny
                 </label>
                 <div class="col-md-6">
@@ -155,14 +155,14 @@
                 <div class="col-md-6">
                     @foreach(KeyValuePair<InModifiers, string> mod in (Dictionary<InModifiers, string>)ViewData["ModifierNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_In_Modifiers[]" value="@mod.Key" />
+                            <input type="radio" name="Monthly_In_Modifiers[]" value="@mod.Key" />
                             @mod.Value
                         </label>
                     }
                     <br />
                     @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_In_Days[]" value="@day.Key" />
+                            <input type="radio" name="Monthly_In_Days[]" value="@day.Key" />
                             @day.Value
                         </label>
                     }
