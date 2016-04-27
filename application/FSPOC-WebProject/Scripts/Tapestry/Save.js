@@ -1,6 +1,7 @@
 ﻿var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
+    $("#lowerPanelSpinnerOverlay").fadeIn();
     resourceRulesArray = [];
     workflowRulesArray = [];
     portTargetsArray = [];
@@ -204,9 +205,10 @@ function SaveBlock(commitMessage) {
         data: postData,
         success: function () {
             ChangedSinceLastSave = false;
-            alert("OK");
+            $("#lowerPanelSpinnerOverlay").fadeOut();
         },
         error: function (request, status, error) {
+            $("#lowerPanelSpinnerOverlay").fadeOut();
             alert(request.responseText);
         }
     });
