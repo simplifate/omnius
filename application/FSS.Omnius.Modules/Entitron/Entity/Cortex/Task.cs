@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
     [Flags]
     public enum Months
     {
-        JAN = 1, FEB = 2, MAR = 4, APR = 8, MAY = 16, JUNE = 32, JULY = 64, AUG = 128, SEPT = 256, OCT = 512, NOV = 1024, DEC = 2048
+        JAN = 1, FEB = 2, MAR = 4, APR = 8, MAY = 16, JUN = 32, JUL = 64, AUG = 128, SEP = 256, OCT = 512, NOV = 1024, DEC = 2048
     }
 
     [Flags]
