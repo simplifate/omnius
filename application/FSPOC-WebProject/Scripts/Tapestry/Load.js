@@ -594,6 +594,9 @@
             $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
             uicInToolboxState = data.ToolboxState ? data.ToolboxState.UiComponents : [];
             $(".tapestryToolbox .toolboxLi_UI").remove();
+
+            var pageLoadsPending = data.AssociatedPageIds.length;
+            if (pageLoadsPending === 0) $("#libraryCategory-UI .spinner-2").hide();
             for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
                 pageId = data.AssociatedPageIds[pageIndex];
                 $.ajax({
@@ -667,11 +670,11 @@
                                 }
                             }
                         }
-                        $("#libraryCategory-UI .spinner-2").fadeOut();
+                        pageLoadsPending--;
+                        if (pageLoadsPending === 0) {
+                            $("#libraryCategory-UI .spinner-2").fadeOut();
+                        }
                     },
-                    error: function(request){
-                        alert(request.repsonseText);
-                    }
                 });
             }
             $("#lowerPanelSpinnerOverlay").fadeOut();
