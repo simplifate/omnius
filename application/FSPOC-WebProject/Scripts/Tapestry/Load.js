@@ -1,4 +1,5 @@
 ﻿function LoadBlock(commitId) {
+    $("#lowerPanelSpinnerOverlay").fadeIn();
     appId = $("#currentAppId").val();
     blockId = $("#currentBlockId").val();
     if (commitId)
@@ -666,6 +667,7 @@
                     }
                 });
             }
+            $("#lowerPanelSpinnerOverlay").fadeOut();
         }
     });
 };
