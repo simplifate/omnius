@@ -81,7 +81,6 @@
 </div>
 <div id="lowerPanel">
     <div id="lowerPanelSpinnerOverlay">
-        <!--taken from http://tobiasahlin.com/spinkit/; last spinner-->
         <div class="spinner-2 largeSpinner">
             <div class="double-bounce1"></div>
             <div class="double-bounce2"></div>
@@ -210,13 +209,17 @@
     <input type="hidden" name="metablockId" />
 </form>
 <div id="history-dialog" title="Load from history">
+    <div class="spinner-2 darkSpinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
     <table id="commit-table" class="table table-hover">
-        <theader>
+        <thead>
             <tr>
                 <th style="width:240px;">Date created</th>
                 <th>Commit message</th>
             </tr>
-        </theader>
+        </thead>
         <tbody>
             <tr></tr>
         </tbody>

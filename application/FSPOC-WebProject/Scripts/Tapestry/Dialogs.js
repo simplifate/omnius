@@ -193,6 +193,8 @@ $(function () {
                 }
             },
             open: function (event, ui) {
+                historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
+                $("#history-dialog .spinner-2").show();
                 historyDialog.data("selectedCommitId", null);
                 appId = $("#currentAppId").val();
                 blockId = $("#currentBlockId").val();
@@ -204,7 +206,7 @@ $(function () {
                         alert(request.responseText);
                     },
                     success: function (data) {
-                        historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
+                        $("#history-dialog .spinner-2").show();
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
                         commitIdArray = [];
 
@@ -226,6 +228,8 @@ $(function () {
                             var rowIndex = $(this).index();
                             historyDialog.data("selectedCommitId", commitIdArray[rowIndex]);
                         });
+
+                        $("#history-dialog .spinner-2").hide();
                     }
                 });
             }

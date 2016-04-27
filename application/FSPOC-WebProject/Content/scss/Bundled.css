@@ -1338,6 +1338,9 @@ body.tapestryModule #lowerPanel {
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 
+body.tapestryModule #history-dialog .spinner-2 {
+  display: none; }
+
 body.tapestryModule .highlightedRow {
   background-color: #49c3f1 !important;
   color: white !important; }
@@ -3457,12 +3460,15 @@ body.cortexModule #lowerPanel {
 .hiddenOption {
   display: none; }
 
-/*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
 .spinner-2.largeSpinner {
   width: 80px;
   height: 80px;
   margin: -40px; }
 
+.spinner-2.darkSpinner > div {
+  background-color: black; }
+
+/*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
 .spinner-2 {
   width: 40px;
   height: 40px;
