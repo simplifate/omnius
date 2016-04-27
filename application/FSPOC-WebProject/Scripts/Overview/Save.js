@@ -1,4 +1,5 @@
 ﻿function SaveMetablock(callback) {
+    $("#overviewPanelSpinnerOverlay").show();
     blockArray = [];
     metablockArray = [];
 
@@ -70,8 +71,8 @@
                 $("#overviewPanel .metablock[tempId='" + temporaryId + "']").attr("metablockId", realId);
             }
             ChangedSinceLastSave = false;
-            if (callback)
-                callback();
+            if (callback) callback();
+            $("#overviewPanelSpinnerOverlay").hide();
         }
     });
 }

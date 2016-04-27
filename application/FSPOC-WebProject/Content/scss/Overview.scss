@@ -22,6 +22,17 @@ body.overviewModule {
         }
     }
 
+    #overviewPanelSpinnerOverlay{
+        position: absolute;
+        left: 229px;
+        top: 140px;
+        right: 150px;
+        bottom: 0px;
+        z-index: 2500;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+    }
+
     #overviewPanel {
         @include no-select();
         position: absolute;
