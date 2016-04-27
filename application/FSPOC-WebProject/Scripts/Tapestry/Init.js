@@ -134,11 +134,11 @@ $(function () {
             var lowerPanelTop = $("#lowerPanel").offset().top;
             var overlay = $("#lowerPanelSpinnerOverlay");
             if (scrollTop > lowerPanelTop) {
-                leftBar.css("top", scrollTop - lowerPanelTop);
-                overlay.css("top", scrollTop - lowerPanelTop);
+                leftBar.css({ top: 0, position: "fixed" });
+                overlay.css({ top: 0, position: "fixed" });
             } else {
-                leftBar.css("top", 0);
-                overlay.css("top", 0);
+                leftBar.css({ top: 0, position: "absolute" });
+                overlay.css({ top: 0, position: "absolute" });
             }
             RecalculateToolboxHeight();
         });
