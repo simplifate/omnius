@@ -319,7 +319,6 @@
                 success: function (tableData) {
                     attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
                     $(".tapestryToolbox .toolboxLi_Attributes").remove();
-                    $("#libraryCategory-Attributes .libraryItem").remove();
                     for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {
                         attributeLibId = ++lastLibId;
                         attributeLibraryItem = $('<div libId="' + ++attributeLibId + '" libType="table-attribute" class="libraryItem tableAttribute" tableName="'
@@ -388,9 +387,12 @@
                                     + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
                             }
                     };
+                    $("#libraryCategory-Attributes .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-Actions .libraryItem').remove();
+            
+            $('.libraryItem').remove();
+            $('.libraryCategory .spinner-2').fadeIn();
             $.ajax({
                 type: "GET",
                 url: "/api/tapestry/actions",
@@ -414,9 +416,9 @@
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-Actions .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-Roles .libraryItem').remove();
             $.ajax({
                 type: "GET",
                 url: "/api/Persona/app-roles/" + appId,
@@ -439,9 +441,9 @@
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-Roles .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-States .libraryItem').remove();
             $.ajax({
                 type: "GET",
                 url: "/api/Persona/app-states/" + appId,
@@ -464,9 +466,9 @@
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-States .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-Targets .libraryItem').remove();
             $.ajax({
                 type: "GET",
                 url: "/api/tapestry/apps/" + appId + "/blocks",
@@ -489,9 +491,9 @@
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-Targets .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-Templates .libraryItem').remove();
             $.ajax({
                 type: "GET",
                 url: "/api/hermes/" + appId + "/templates",
@@ -514,9 +516,9 @@
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-Templates .spinner-2").fadeOut();
                 }
             });
-            $('#libraryCategory-Integration .libraryItem').remove();
             $.ajax({
                 type: "GET",
                 url: "/api/nexus/" + appId + "/gateways",
@@ -584,11 +586,12 @@
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
+                    $("#libraryCategory-Integration .spinner-2").fadeOut();
                 }
             });
+
             AssociatedPageIds = data.AssociatedPageIds;
             $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
-            $("#libraryCategory-UI .libraryItem").remove();
             uicInToolboxState = data.ToolboxState ? data.ToolboxState.UiComponents : [];
             $(".tapestryToolbox .toolboxLi_UI").remove();
             for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
@@ -664,6 +667,10 @@
                                 }
                             }
                         }
+                        $("#libraryCategory-UI .spinner-2").fadeOut();
+                    },
+                    error: function(request){
+                        alert(request.repsonseText);
                     }
                 });
             }

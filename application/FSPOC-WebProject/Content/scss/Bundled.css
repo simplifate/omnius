@@ -930,7 +930,10 @@ body.tapestryModule #upperPanel {
       display: inline-block;
       vertical-align: top;
       overflow-x: hidden;
-      overflow-y: auto; }
+      overflow-y: auto;
+      position: relative; }
+      body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategory .spinner-2 {
+        display: none; }
     body.tapestryModule #upperPanel #tapestryLibraryArea .libraryCategoryHeader {
       width: 100%;
       height: 30px;
@@ -3464,7 +3467,7 @@ body.cortexModule #lowerPanel {
   width: 40px;
   height: 40px;
   margin: -20px;
-  position: relative;
+  position: absolute;
   left: 50%;
   top: 50%; }
   .spinner-2 .double-bounce1, .spinner-2 .double-bounce2 {

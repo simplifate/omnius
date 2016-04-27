@@ -60,6 +60,11 @@ body.tapestryModule {
                 vertical-align: top;
                 overflow-x: hidden;
                 overflow-y: auto;
+                position: relative;
+
+                .spinner-2{
+                    display: none
+                }
             }
 
             .libraryCategoryHeader {
