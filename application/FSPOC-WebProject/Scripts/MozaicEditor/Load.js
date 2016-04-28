@@ -1,4 +1,5 @@
 ﻿function LoadMozaicPage(pageId) {
+    $("#lowerPanelSpinnerOverlay").fadeIn();
     appId = $("#currentAppId").val();
     if (pageId == "current")
         pageId = $("#currentPageId").val();
@@ -28,6 +29,7 @@
                 $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
                 $("#modalSizeVisualization").show();
             }
+            $("#lowerPanelSpinnerOverlay").fadeOut();
         }
     });
 }
