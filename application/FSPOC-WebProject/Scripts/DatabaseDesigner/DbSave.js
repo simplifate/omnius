@@ -1,4 +1,5 @@
 ﻿function SaveDbScheme(commitMessage) {
+    $(".work-area-spinner-overlay").fadeIn();
     columnIdCounter = 0;
     tableArray = [];
     relationArray = [];
@@ -80,7 +81,9 @@
         type: "POST",
         url: "/api/database/apps/" + appId + "/commits",
         data: postData,
-        success: function () { alert("OK") },
+        success: function () {
+            $(".work-area-spinner-overlay").fadeOut();
+        },
         error: function (request, status, error) {
             alert(request.responseText);
         }

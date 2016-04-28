@@ -1338,9 +1338,6 @@ body.tapestryModule #lowerPanel {
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 
-body.tapestryModule #history-dialog .spinner-2 {
-  display: none; }
-
 body.tapestryModule .highlightedRow {
   background-color: #49c3f1 !important;
   color: white !important; }
@@ -1898,6 +1895,14 @@ body.dbDesignerModule {
     overflow: scroll;
     border: 2px solid grey;
     background-color: white; }
+  body.dbDesignerModule .work-area-spinner-overlay {
+    position: absolute;
+    left: 225px;
+    top: 105px;
+    right: 205px;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none; }
   body.dbDesignerModule .database-container {
     touch-action: none;
     width: auto;
@@ -3476,6 +3481,9 @@ body.cortexModule #lowerPanel {
 
 .spinner-2.darkSpinner > div {
   background-color: black; }
+
+#history-dialog .spinner-2 {
+  display: none; }
 
 /*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
 .spinner-2 {

@@ -324,8 +324,12 @@
     height: 80px;
     margin: -40px;
 } 
-.spinner-2.darkSpinner > div{
+.spinner-2.darkSpinner > div {
     background-color: black;
+}
+
+#history-dialog .spinner-2 {
+    display: none;
 }
 
 /*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
