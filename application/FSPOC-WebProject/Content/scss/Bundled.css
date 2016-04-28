@@ -2779,6 +2779,12 @@ body.mozaicComponentManagerModule {
   body.mozaicComponentManagerModule #lowerPanel {
     top: 360px;
     padding: 50px; }
+  body.mozaicComponentManagerModule #lowerPanelSpinnerOverlay {
+    position: absolute;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1100;
+    display: none; }
 
 body.mozaicEditorModule {
   background-color: #f2f2f3; }

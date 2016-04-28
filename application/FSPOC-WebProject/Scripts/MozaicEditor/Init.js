@@ -139,7 +139,7 @@ $(function () {
         $(window).scroll(function () {
             var leftBar = $("#mozaicLeftBar");
             var scrollTop = $(window).scrollTop();
-            lowerPanelTop = $("#lowerPanel").offset().top;
+            var lowerPanelTop = $("#lowerPanel").offset().top;
             var overlay = $("#lowerPanelSpinnerOverlay");
 
             leftBar.css({ top: 0 });
@@ -156,5 +156,19 @@ $(function () {
         $(window).resize(function () {
             RecalculateMozaicToolboxHeight();
         });
+    } else {
+        $(window).on("scroll resize", function () {
+            var scrollTop = $(window).scrollTop();
+            var upperPanelBottom = $("#upperPanel").offset().top + $("#upperPanel").height();
+            var overlay = $("#lowerPanelSpinnerOverlay");
+            overlay.css({ left: 225, top: 0, right: 0, width: "auto" });
+            if (scrollTop > upperPanelBottom) {
+                overlay.css({ top: 0, position: "fixed" });
+                overlay.css({ height: window.innerHeight });
+            } else {
+                overlay.css({ top: upperPanelBottom + 1, position: "absolute" });
+                overlay.css({ height: window.innerHeight - upperPanelBottom + scrollTop - 20 });
+            }
+        })
     }
 });
