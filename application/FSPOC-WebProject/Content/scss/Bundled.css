@@ -2828,6 +2828,12 @@ body.mozaicEditorModule {
   body.mozaicEditorModule #lowerPanel {
     top: 370px;
     padding: 0px; }
+    body.mozaicEditorModule #lowerPanel #lowerPanelSpinnerOverlay {
+      position: absolute;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1100;
+      display: none; }
   body.mozaicEditorModule #mozaicContainer {
     height: 2000px;
     font-family: MyriadPro; }

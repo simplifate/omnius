@@ -1,9 +1,16 @@
 ﻿function RecalculateMozaicToolboxHeight() {
-    leftBar = $("#mozaicLeftBar");
-    leftBarMinimized = $("#mozaicLeftBarMinimized");
-    scrollTop = $(window).scrollTop();
-    lowerPanelTop = $("#lowerPanel").offset().top;
-    leftBar.height($(window).height() + scrollTop - lowerPanelTop - leftBar.position().top);
+    var leftBar = $("#mozaicLeftBar");
+    var leftBarMinimized = $("#mozaicLeftBarMinimized");
+    var scrollTop = $(window).scrollTop();
+    var lowerPanelTop = $("#lowerPanel").offset().top;
+    var bottomPanelHeight;
+    if (scrollTop > lowerPanelTop) {
+        bottomPanelHeight = window.innerHeight;
+    } else {
+        bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top;
+    }
+    leftBar.height(bottomPanelHeight);
+    $("#lowerPanelSpinnerOverlay").height(bottomPanelHeight);
     leftBarMinimized.height($(window).height() + scrollTop - lowerPanelTop - leftBarMinimized.position().top);
 }
 function CreateDroppableMozaicContainer(target, allowNesting) {

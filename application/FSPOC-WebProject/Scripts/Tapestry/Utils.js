@@ -243,11 +243,17 @@ function RecalculateToolboxHeight() {
     var leftBar = $("#tapestryLeftBar");
     var scrollTop = $(window).scrollTop();
     var lowerPanelTop = $("#lowerPanel").offset().top;
-    var bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top
+    var bottomPanelHeight; 
+    if (scrollTop > lowerPanelTop) {
+        bottomPanelHeight = window.innerHeight;
+    } else {
+        bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top;
+    }
     leftBar.height(bottomPanelHeight);
     $("#lowerPanelSpinnerOverlay").height(bottomPanelHeight);
     $("#workflowRulesPanel").height($(window).height() - 30);
     $("#tapestryLeftBarMinimized").height($("#workflowRulesPanel").offset().top + $("#workflowRulesPanel").height() - lowerPanelTop);
+    
 }
 function LoadConditionColumns(parent) {
     columnSelect = parent.find(".conditionVariableCell select");
