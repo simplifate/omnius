@@ -174,6 +174,7 @@ $(function () {
             }
         });
         function newPageDialog_SubmitData() {
+            $("#lowerPanelSpinnerOverlay").fadeIn();
             newPageDialog.dialog("close");
             postData = {
                 Name: newPageDialog.find("#new-page-name").val(),
@@ -190,10 +191,11 @@ $(function () {
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
-                    if (SaveRequested)
+                    if (SaveRequested) {
                         SaveMozaicPage();
-                    else
-                        alert("OK");
+                    } else {
+                        $("#lowerPanelSpinnerOverlay").fadeOut();
+                    }
                 }
             });
         }
