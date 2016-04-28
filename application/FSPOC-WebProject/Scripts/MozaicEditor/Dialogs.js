@@ -117,6 +117,8 @@ $(function () {
                 }
             },
             open: function (event, ui) {
+                choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
+                $("#choose-page-dialog .spinner-2").fadeIn();
                 choosePageDialog.data("selectedCommitId", null);
                 appId = $("#currentAppId").val();
                 $.ajax({
@@ -127,7 +129,6 @@ $(function () {
                         alert(request.responseText);
                     },
                     success: function (data) {
-                        choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
                         tbody = choosePageDialog.find("#page-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
                             tbody.append($('<tr class="pageRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>'));
@@ -137,6 +138,7 @@ $(function () {
                             $(this).addClass("highlightedRow");
                             choosePageDialog.data("selectedCommitId", $(this).attr("pageId"));
                         });
+                        $("#choose-page-dialog .spinner-2").fadeOut();
                     }
                 });
             }

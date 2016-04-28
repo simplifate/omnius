@@ -3128,6 +3128,8 @@ body.mozaicEditorModule {
     user-select: none;
     cursor: default;
     z-index: 2000; }
+  body.mozaicEditorModule #choose-page-dialog .spinner-2 {
+    display: none; }
 
 body.cortexModule #upperPanel {
   height: 295px; }
@@ -3485,7 +3487,7 @@ body.cortexModule #lowerPanel {
   height: 80px;
   margin: -40px; }
 
-.spinner-2.darkSpinner > div {
+.ui-dialog .spinner-2 > div {
   background-color: black; }
 
 #history-dialog .spinner-2 {

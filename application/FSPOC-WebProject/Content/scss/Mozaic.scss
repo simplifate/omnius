@@ -456,4 +456,8 @@ body.mozaicEditorModule {
         @include no-select();
         z-index: 2000;
     }
+
+    #choose-page-dialog .spinner-2{
+        display:none;
+    }
 }
