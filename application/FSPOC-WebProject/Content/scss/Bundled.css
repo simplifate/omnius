@@ -971,7 +971,7 @@ body.tapestryModule #lowerPanel {
     position: absolute;
     width: 100%;
     background: rgba(0, 0, 0, 0.8);
-    z-index: 30;
+    z-index: 1100;
     display: none; }
   body.tapestryModule #lowerPanel #tapestryLeftBar {
     -webkit-touch-callout: none;
