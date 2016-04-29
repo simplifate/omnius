@@ -156,7 +156,7 @@ $(function () {
         $(window).resize(function () {
             RecalculateMozaicToolboxHeight();
         });
-    } else {
+    } else if (CurrentModuleIs("mozaicComponentManagerModule")) {
         $(window).on("scroll resize", function () {
             var scrollTop = $(window).scrollTop();
             var upperPanelBottom = $("#upperPanel").offset().top + $("#upperPanel").height();
