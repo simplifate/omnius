@@ -1,6 +1,27 @@
 ﻿var maintenanceModeActive = false;
 
 $(function () {
+    var ajaxRunning = false;
+    $(document).ajaxStart(function () { ajaxRunning = true});
+    $(document).ajaxStop(function () { ajaxRunning = false});
+    (function awaitAjax() {
+        setTimeout(function () {
+            if (ajaxRunning) {
+                $(document).on("ajaxStop", function doAwait() {
+                    $(document).off("ajaxStop", doAwait);
+                    awaitAjax();
+                });
+            } else {
+                $("#pageOverlay").css({ visibility: "hidden" });
+                $(document.body).css({ visibility: "visible" });
+            }
+        }, 0);
+    })();
+    $(document).on("beforeunload", function () {
+        $("#pageOverlay").css({ visibility: "visible" });
+        $(document.body).css({ visibility: "hidden" });
+    });
+
     $("#identitySuperMenu").on("click", function () {
         $("#leftBar .leftMenu li.identitySubMenu").slideToggle();
     });

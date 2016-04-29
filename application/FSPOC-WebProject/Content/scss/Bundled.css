@@ -3504,7 +3504,13 @@ body.cortexModule #lowerPanel {
   left: 225px;
   top: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  background: #f2f2f3; }
+  #pageOverlay .spinner-2 {
+    width: 80px;
+    height: 80px; }
+  #pageOverlay .spinner-2 > * {
+    background: #455d73; }
 
 /*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
 .spinner-2 {
@@ -3542,4 +3548,10 @@ body.cortexModule #lowerPanel {
   50% {
     transform: scale(1);
     -webkit-transform: scale(1); } }
+
+body {
+  visibility: hidden; }
+
+#pageOverlay, #leftBar, #topBar {
+  visibility: visible; }
 

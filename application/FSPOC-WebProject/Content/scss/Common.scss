@@ -338,6 +338,14 @@
     top: 0;
     right: 0;
     bottom: 0;
+    background: #f2f2f3;
+    .spinner-2 {
+        width: 80px;
+        height: 80px;
+    }
+    .spinner-2 > * {
+        background: #455d73;
+    }
 }
 
 /*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
@@ -388,4 +396,14 @@
             -webkit-transform: scale(1.0);
         }
     }
+}
+
+// to be overriden when the page is done loading:
+
+body{
+    visibility: hidden;
+}
+
+#pageOverlay, #leftBar, #topBar {
+    visibility: visible;
 }
