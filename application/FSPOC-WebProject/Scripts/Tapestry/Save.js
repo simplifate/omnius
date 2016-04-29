@@ -1,7 +1,7 @@
 ﻿var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
-    $("#lowerPanelSpinnerOverlay").fadeIn();
+    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
     resourceRulesArray = [];
     workflowRulesArray = [];
     portTargetsArray = [];
@@ -205,10 +205,10 @@ function SaveBlock(commitMessage) {
         data: postData,
         success: function () {
             ChangedSinceLastSave = false;
-            $("#lowerPanelSpinnerOverlay").fadeOut();
+            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
         },
         error: function (request, status, error) {
-            $("#lowerPanelSpinnerOverlay").fadeOut();
+            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
             alert(request.responseText);
         }
     });

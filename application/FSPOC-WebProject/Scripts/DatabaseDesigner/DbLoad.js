@@ -1,5 +1,5 @@
 ﻿function LoadDbScheme(commitId) {
-    $(".work-area-spinner-overlay").fadeIn();
+    $(".work-area-spinner-overlay").delay(1000).fadeIn();
     appId = $("#currentAppId").val();
     $.ajax({
         type: "GET",
@@ -136,7 +136,7 @@
                 newView.data("dbViewQuery", data.Views[i].Query);
                 instance.draggable(newView);
             }
-            $(".work-area-spinner-overlay").fadeOut();
+            $(".work-area-spinner-overlay").stop(true).fadeOut();
         }
     });
 }

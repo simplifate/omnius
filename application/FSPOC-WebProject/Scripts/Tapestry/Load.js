@@ -1,5 +1,5 @@
 ﻿function LoadBlock(commitId) {
-    $("#lowerPanelSpinnerOverlay").fadeIn();
+    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
     appId = $("#currentAppId").val();
     blockId = $("#currentBlockId").val();
     if (commitId)
@@ -387,12 +387,12 @@
                                     + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
                             }
                     };
-                    $("#libraryCategory-Attributes .spinner-2").fadeOut();
+                    $("#libraryCategory-Attributes .spinner-2").stop(true).fadeOut();
                 }
             });
             
             $('.libraryItem').remove();
-            $('.libraryCategory .spinner-2').fadeIn();
+            $('.libraryCategory .spinner-2').delay(1000).fadeIn();
             $.ajax({
                 type: "GET",
                 url: "/api/tapestry/actions",
@@ -416,7 +416,7 @@
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Actions .spinner-2").fadeOut();
+                    $("#libraryCategory-Actions .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -441,7 +441,7 @@
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Roles .spinner-2").fadeOut();
+                    $("#libraryCategory-Roles .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -466,7 +466,7 @@
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-States .spinner-2").fadeOut();
+                    $("#libraryCategory-States .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -491,7 +491,7 @@
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Targets .spinner-2").fadeOut();
+                    $("#libraryCategory-Targets .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -516,7 +516,7 @@
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Templates .spinner-2").fadeOut();
+                    $("#libraryCategory-Templates .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -586,7 +586,7 @@
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Integration .spinner-2").fadeOut();
+                    $("#libraryCategory-Integration .spinner-2").stop(true).fadeOut();
                 }
             });
 
@@ -672,12 +672,12 @@
                         }
                         pageLoadsPending--;
                         if (pageLoadsPending === 0) {
-                            $("#libraryCategory-UI .spinner-2").fadeOut();
+                            $("#libraryCategory-UI .spinner-2").stop(true).fadeOut();
                         }
                     },
                 });
             }
-            $("#lowerPanelSpinnerOverlay").fadeOut();
+            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
         }
     });
 };

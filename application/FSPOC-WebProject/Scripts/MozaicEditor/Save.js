@@ -1,5 +1,5 @@
 ﻿function SaveMozaicPage() {
-    $("#lowerPanelSpinnerOverlay").fadeIn();
+    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
     SaveRequested = false;
     componentArray = GetMozaicContainerComponentArray($("#mozaicPageContainer"), false);
     postData = {
@@ -16,7 +16,7 @@
         url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
         data: postData,
         success: function () {
-            $("#lowerPanelSpinnerOverlay").fadeOut();
+            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
         },
         error: function (request, status, error) {
             alert(request.responseText);
