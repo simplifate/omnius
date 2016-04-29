@@ -17,7 +17,7 @@ $(function () {
             }
         }, 0);
     })();
-    $(document).on("beforeunload", function () {
+    $(window).on("beforeunload", function () {
         $("#pageOverlay").css({ visibility: "visible" });
         $(document.body).css({ visibility: "hidden" });
     });
