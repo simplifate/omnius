@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ColumnName", "StateId" };
+                return new string[] { "ColumnName", "StateId", "?RowId" };
             }
         }
 
@@ -53,11 +53,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
-            if (vars.ContainsKey("__TableName__") && vars.ContainsKey("__ModelId__"))
+            if (vars.ContainsKey("__TableName__") && (vars.ContainsKey("__ModelId__") || vars.ContainsKey("RowId")))
             {
-                DBItem model = ent.GetDynamicItem((string)vars["__TableName__"], (int)vars["__ModelId__"]);
+                int rowId = vars.ContainsKey("RowId") ? (int)vars["RowId"] : (int)vars["__ModelId__"];
+                DBItem model = ent.GetDynamicItem((string)vars["__TableName__"], rowId);
                 model[(string)vars["ColumnName"]] = (int)vars["StateId"];
-                model.table.Update(model, (int)vars["__ModelId__"]);
+                model.table.Update(model, rowId);
                 ent.Application.SaveChanges();
             }
             else

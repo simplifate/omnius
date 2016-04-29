@@ -28,7 +28,7 @@ $('body').on('click', '.runAjax', function (e) {
     AjaxRunAndReplace(window.location.pathname, $(this).val());
 });
 $(function () {
-    if ($("#currentBlockName").val() == "Zadaniobjednavkyperiodika") {
+    if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("body").on("change", "#uic_periodical_dropdown", function (e) {
             $.ajax({
                 type: "POST",
@@ -67,7 +67,7 @@ $(function () {
             });
         });
     }
-    else if ($("#currentBlockName").val() == "Hromadnaobjednavkaproasistentky") {
+    else if ($("#currentBlockName").val() == "HromadnaObjednavkaProAsistentky") {
         $("#uic_approver_textbox").on("change", function (e) {
             $.ajax({
                 type: "POST",

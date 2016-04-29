@@ -76,6 +76,7 @@ function ClonePanel(paneName) {
     newPanel.find('input.input-single-line, textarea').each(function (item, element) {
         $(element).val("");
     });
+    newPanel.find('.uic[originalId="uic_pieces_textbox"]').val(1);
     newPanel.find(".uic.input-with-datepicker").each(function (item, element) {
         datePicker = $(element);
         datePicker.off("focus");
