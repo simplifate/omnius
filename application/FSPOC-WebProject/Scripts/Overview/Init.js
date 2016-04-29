@@ -43,7 +43,7 @@ $(function () {
         });
         window.onbeforeunload = function () {
             if (ChangedSinceLastSave)
-                SaveMetablock();
+                SaveMetablock(null, true);
             return null;
         };
         $("#btnZoomIn").on("click", function () {
