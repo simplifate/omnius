@@ -1,7 +1,7 @@
 ﻿var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
-    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
+    $(document.body).addClass("pageSpinnerShown");
     resourceRulesArray = [];
     workflowRulesArray = [];
     portTargetsArray = [];
@@ -205,10 +205,10 @@ function SaveBlock(commitMessage) {
         data: postData,
         success: function () {
             ChangedSinceLastSave = false;
-            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
+            $(document.body).removeClass("pageSpinnerShown");
         },
         error: function (request, status, error) {
-            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
+            $(document.body).removeClass("pageSpinnerShown");
             alert(request.responseText);
         }
     });
