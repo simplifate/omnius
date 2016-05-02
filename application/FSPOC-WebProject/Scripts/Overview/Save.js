@@ -1,9 +1,5 @@
 ﻿function SaveMetablock(callback, pageUnloading) {
-    if (pageUnloading) {
-        $("#pageOvelay").show();
-    } else {
-        $("#overviewPanelSpinnerOverlay").show();
-    }
+    $(document.body).addClass("pageSpinnerShown");
     blockArray = [];
     metablockArray = [];
 
@@ -76,7 +72,7 @@
             }
             ChangedSinceLastSave = false;
             if (callback) callback();
-            $("#overviewPanelSpinnerOverlay").hide();
+            $(document.body).removeClass("pageSpinnerShown");
         }
     });
 }

@@ -1,11 +1,14 @@
 ﻿function LoadBlock(commitId) {
-    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
+    $(document.body).addClass("pageSpinnerShown");
+
     appId = $("#currentAppId").val();
     blockId = $("#currentBlockId").val();
-    if (commitId)
+    if (commitId) {
         url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits/" + commitId;
-    else
+    } else {
         url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId;
+    }
+
     $.ajax({
         type: "GET",
         url: url,
@@ -387,12 +390,10 @@
                                     + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
                             }
                     };
-                    $("#libraryCategory-Attributes .spinner-2").stop(true).fadeOut();
                 }
             });
             
             $('.libraryItem').remove();
-            $('.libraryCategory .spinner-2').delay(1000).fadeIn();
             $.ajax({
                 type: "GET",
                 url: "/api/tapestry/actions",
@@ -416,7 +417,6 @@
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Actions .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -441,7 +441,6 @@
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Roles .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -466,7 +465,6 @@
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-States .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -491,7 +489,6 @@
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Targets .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -516,7 +513,6 @@
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Templates .spinner-2").stop(true).fadeOut();
                 }
             });
             $.ajax({
@@ -586,7 +582,6 @@
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
-                    $("#libraryCategory-Integration .spinner-2").stop(true).fadeOut();
                 }
             });
 
@@ -595,8 +590,6 @@
             uicInToolboxState = data.ToolboxState ? data.ToolboxState.UiComponents : [];
             $(".tapestryToolbox .toolboxLi_UI").remove();
 
-            var pageLoadsPending = data.AssociatedPageIds.length;
-            if (pageLoadsPending === 0) $("#libraryCategory-UI .spinner-2").stop(true).hide();
             for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
                 pageId = data.AssociatedPageIds[pageIndex];
                 $.ajax({
@@ -670,14 +663,12 @@
                                 }
                             }
                         }
-                        pageLoadsPending--;
-                        if (pageLoadsPending === 0) {
-                            $("#libraryCategory-UI .spinner-2").stop(true).fadeOut();
-                        }
                     },
                 });
             }
-            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
+            $(document).one("ajaxStop", function () {
+                $(document.body).removeClass("pageSpinnerShown");
+            });
         }
     });
 };
