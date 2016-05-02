@@ -188,7 +188,7 @@ namespace FSS.Omnius.Controllers.Master
                 });
             }
 
-            foreach (TapestryDesignerBlock b in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => b.ParentMetablock.Id == rootId && b.IsInMenu == true))
+            foreach (TapestryDesignerBlock b in e.TapestryDesignerBlocks.Include("ParentMetablock").Where(b => !b.IsDeleted && b.ParentMetablock.Id == rootId && b.IsInMenu == true))
             {
                 var commit = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
                 if (commit != null && !string.IsNullOrWhiteSpace(commit.RoleWhitelist))

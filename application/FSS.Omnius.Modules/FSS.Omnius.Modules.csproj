@@ -828,6 +828,10 @@
     <Compile Include="Migrations\201604210802463_dropModules.Designer.cs">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605020810435_overviewTrash.cs" />
+    <Compile Include="Migrations\201605020810435_overviewTrash.Designer.cs">
+      <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -853,11 +857,13 @@
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCurrentTimeAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetDictionariesFromRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetDictionaryFromTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelUrlAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\SelectFromViewAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
@@ -1341,6 +1347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604210802463_dropModules.resx">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020810435_overviewTrash.resx">
+      <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

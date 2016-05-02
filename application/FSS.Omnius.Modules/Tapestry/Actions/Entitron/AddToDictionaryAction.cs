@@ -58,9 +58,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
 
-            var dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
-                dictionary = (Dictionary<string, string>)vars["Dictionary"];
+                dictionary = (Dictionary<string, object>)vars["Dictionary"];
             var mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
             DBItem rowData = new DBItem();
             bool useRowData = true;
@@ -82,7 +82,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else
                     value = vars[columnName];
                 if(dictionary.ContainsKey(tokens[0]))
-                    dictionary[tokens[0]] = (value == null ? "" : value.ToString());
+                {
+                    if (value == null)
+                        dictionary[tokens[0]] = "";
+                    else if (value is Dictionary<string, string>)
+                        dictionary[tokens[0]] = value;
+                    else
+                        dictionary[tokens[0]] = value.ToString();
+                }
                 else
                     dictionary.Add(tokens[0], value == null ? "" : value.ToString());
             }

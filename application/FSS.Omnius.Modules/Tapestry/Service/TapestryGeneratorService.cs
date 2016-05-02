@@ -68,7 +68,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _context.SaveChanges();
 
             // child meta block
-            foreach (TapestryDesignerMetablock childMetaBlock in block.Metablocks)
+            foreach (TapestryDesignerMetablock childMetaBlock in block.Metablocks.Where(mb => !mb.IsDeleted))
             {
                 WorkFlow wf = saveMetaBlock(childMetaBlock);
                 wf.Parent = resultWF;
@@ -76,7 +76,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _context.SaveChanges();
 
             // child block
-            foreach (TapestryDesignerBlock childBlock in block.Blocks)
+            foreach (TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted))
             {
                 TapestryDesignerBlockCommit commit = childBlock.BlockCommits.OrderByDescending(c => c.Timestamp).FirstOrDefault();
 
@@ -106,7 +106,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                 _blockMapping.Add(childBlock.Id, resultBlock);
             }
-            foreach (TapestryDesignerBlock childBlock in block.Blocks)
+            foreach (TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted))
             {
                 try
                 {

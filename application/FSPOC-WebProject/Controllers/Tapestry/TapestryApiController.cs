@@ -412,7 +412,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    TapestryDesignerBlockCommit blockCommit = context.TapestryDesignerBlocks.Where(b => b.Id == blockId).First()
+                    TapestryDesignerBlockCommit blockCommit = context.TapestryDesignerBlocks.First(b => b.Id == blockId)
                         .BlockCommits.Where(c => c.Id == commitId).First();
 
                     AjaxTapestryDesignerBlockCommit result = new AjaxTapestryDesignerBlockCommit
@@ -477,7 +477,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     }
                     targetMetablock.Name = postData.Name;
                     var blocksToDelete = new List<TapestryDesignerBlock>();
-                    foreach (var oldBlock in targetMetablock.Blocks)
+                    foreach (var oldBlock in targetMetablock.Blocks.Where(b => !b.IsDeleted))
                     {
                         var match = postData.Blocks.Where(c => !c.IsNew && c.Id == oldBlock.Id);
                         if (match.Count() == 0)
@@ -518,7 +518,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         DeleteBlock(block, context);
                     }
                     var metablocksToDelete = new List<TapestryDesignerMetablock>();
-                    foreach (var oldMetablock in targetMetablock.Metablocks)
+                    foreach (var oldMetablock in targetMetablock.Metablocks.Where(mb => !mb.IsDeleted))
                     {
                         var match = postData.Metablocks.Where(c => !c.IsNew && c.Id == oldMetablock.Id);
                         if (match.Count() == 0)
@@ -582,7 +582,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     var metablockList = new List<AjaxTapestryDesignerMetablock>();
                     var connectionList = new List<AjaxTapestryDesignerMetablockConnection>();
 
-                    foreach (var sourceBlock in requestedMetablock.Blocks)
+                    foreach (var sourceBlock in requestedMetablock.Blocks.Where(b => !b.IsDeleted))
                     {
                         blockList.Add(new AjaxTapestryDesignerBlock
                         {
@@ -594,7 +594,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             IsInMenu = sourceBlock.IsInMenu
                         });
                     }
-                    foreach (var sourceMetablock in requestedMetablock.Metablocks)
+                    foreach (var sourceMetablock in requestedMetablock.Metablocks.Where(mb => !mb.IsDeleted))
                     {
                         metablockList.Add(new AjaxTapestryDesignerMetablock
                         {
@@ -669,7 +669,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     }
                     foreach (KeyValuePair<int, int> row in data.Blocks)
                     {
-                        TapestryDesignerBlock block = context.TapestryDesignerBlocks.Where(b => b.Id == row.Key).First();
+                        TapestryDesignerBlock block = context.TapestryDesignerBlocks.First(b => b.Id == row.Key);
                         block.MenuOrder = row.Value;
                     }
                     context.SaveChanges();
@@ -707,7 +707,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void LoadMetablocks(TapestryDesignerMetablock requestedMetablock, AjaxTapestryDesignerMetablock result)
         {
-            foreach (TapestryDesignerMetablock metablock in requestedMetablock.Metablocks)
+            foreach (TapestryDesignerMetablock metablock in requestedMetablock.Metablocks.Where(mb => !mb.IsDeleted))
             {
                 var ajaxMetablock = new AjaxTapestryDesignerMetablock
                 {
@@ -719,7 +719,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 LoadMetablocks(metablock, ajaxMetablock);
                 result.Metablocks.Add(ajaxMetablock);
             }
-            foreach (TapestryDesignerBlock block in requestedMetablock.Blocks)
+            foreach (TapestryDesignerBlock block in requestedMetablock.Blocks.Where(b => !b.IsDeleted))
             {
                 var ajaxBlock = new AjaxTapestryDesignerBlock
                 {
@@ -912,98 +912,24 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void DeleteMetablock(TapestryDesignerMetablock metablockToDelete, DBEntities context)
         {
-            var blockList = new List<TapestryDesignerBlock>();
-            var metablockList = new List<TapestryDesignerMetablock>();
-            foreach (var metablock in metablockToDelete.Metablocks)
-                metablockList.Add(metablock);
-            foreach (var metablock in metablockList)
-                DeleteMetablock(metablock, context);
-            foreach (var block in metablockToDelete.Blocks)
-                blockList.Add(block);
-            foreach (var block in blockList)
-                DeleteBlock(block, context);
-            context.Entry(metablockToDelete).State = EntityState.Deleted;
+            metablockToDelete.IsDeleted = true;
+            metablockToDelete.Name = $"{metablockToDelete.Name}-{DateTime.UtcNow.ToString()}";
         }
         private static void DeleteBlock(TapestryDesignerBlock blockToDelete, DBEntities context)
         {
-            var blockCommitList = new List<TapestryDesignerBlockCommit>();
-            foreach(var wfItem in blockToDelete.TargetFor)
-            {
-                wfItem.Target = null;
-            }
-            foreach (var blockCommit in blockToDelete.BlockCommits)
-            {
-                var resRuleList = new List<TapestryDesignerResourceRule>();
-                foreach (var rule in blockCommit.ResourceRules)
-                {
-                    var itemList = new List<TapestryDesignerResourceItem>();
-                    var connectionList = new List<TapestryDesignerResourceConnection>();
-                    foreach (var item in rule.ResourceItems)
-                    {
-                        var conditionSetList = new List<TapestryDesignerConditionSet>();
-                        foreach (var conditionSet in item.ConditionSets)
-                        {
-                            var conditionList = new List<TapestryDesignerCondition>();
-                            foreach (var condition in conditionSet.Conditions)
-                                conditionList.Add(condition);
-                            foreach (var condition in conditionList)
-                                conditionSet.Conditions.Remove(condition);
-                            conditionSetList.Add(conditionSet);
-                        }
-                        foreach (var conditionSet in conditionSetList)
-                            item.ConditionSets.Remove(conditionSet);
-                        itemList.Add(item);
-                    }
-                    foreach (var item in itemList)
-                        rule.ResourceItems.Remove(item);
-                    foreach (var connection in rule.Connections)
-                        connectionList.Add(connection);
-                    foreach (var connection in connectionList)
-                        rule.Connections.Remove(connection);
-                    resRuleList.Add(rule);
-                }
-                foreach (var rule in resRuleList)
-                    blockCommit.ResourceRules.Remove(rule);
-                var wfRuleList = new List<TapestryDesignerWorkflowRule>();
-                foreach (var rule in blockCommit.WorkflowRules)
-                {
-                    var swimlaneList = new List<TapestryDesignerSwimlane>();
-                    var connectionList = new List<TapestryDesignerWorkflowConnection>();
-                    foreach (var swimlane in rule.Swimlanes)
-                        swimlaneList.Add(swimlane);
-                    foreach (var swimlane in swimlaneList)
-                    {
-                        var itemList = new List<TapestryDesignerWorkflowItem>();
-                        foreach (var item in swimlane.WorkflowItems)
-                            itemList.Add(item);
-                        foreach (var item in itemList)
-                            swimlane.WorkflowItems.Remove(item);
-                        rule.Swimlanes.Remove(swimlane);
-                    }
-                    foreach (var connection in rule.Connections)
-                        connectionList.Add(connection);
-                    foreach (var connection in connectionList)
-                        rule.Connections.Remove(connection);
-                    wfRuleList.Add(rule);
-                }
-                foreach (var rule in wfRuleList)
-                    blockCommit.WorkflowRules.Remove(rule);
-                blockCommitList.Add(blockCommit);
-            }
-            foreach (var blockCommit in blockCommitList)
-                blockToDelete.BlockCommits.Remove(blockCommit);
-            context.Entry(blockToDelete).State = EntityState.Deleted;
+            blockToDelete.IsDeleted = true;
+            blockToDelete.Name = $"{blockToDelete.Name}-{DateTime.UtcNow.ToString()}";
         }
         private void CollectBlocksToList(TapestryDesignerMetablock rootMetablock,
             AjaxTapestryDesignerBlockList list, DBEntities context)
         {
-            foreach (TapestryDesignerBlock block in rootMetablock.Blocks)
+            foreach (TapestryDesignerBlock block in rootMetablock.Blocks.Where(b => !b.IsDeleted))
                 list.ListItems.Add(new AjaxTapestryDesignerBlockListItem
                 {
                     Id = block.Id,
                     Name = block.Name
                 });
-            foreach (TapestryDesignerMetablock metablock in rootMetablock.Metablocks)
+            foreach (TapestryDesignerMetablock metablock in rootMetablock.Metablocks.Where(mb => !mb.IsDeleted))
                 CollectBlocksToList(metablock, list, context);
         }
         private bool GetNearbyAncestor(TapestryDesignerMetablock environment, TapestryDesignerMetablock currentMetablock,

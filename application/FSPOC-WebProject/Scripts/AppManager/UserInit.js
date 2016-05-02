@@ -168,6 +168,7 @@ $(function () {
             if ($(this).attr("originalId") == "uic_pieces_textbox" && $(this).parents(".panel-component"))
                 RecalculateAutosum($(this).parents(".panel-component"));
         });
+        $("#uic_item_count_textbox, #uic_pieces_textbox").val(1);
         $(".uic.panel-component").each(function (index, element) {
             panel = $(element);
             hidingCheckboxName = panel.attr("panelHiddenBy");
