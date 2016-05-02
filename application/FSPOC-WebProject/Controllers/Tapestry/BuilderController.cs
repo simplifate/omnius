@@ -16,7 +16,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     int blockId = int.Parse(formParams["blockId"]);
                     var parentMetablock = context.TapestryDesignerBlocks.Include("ParentMetablock")
-                        .Where(c => c.Id == blockId).First().ParentMetablock;
+                        .First(c => c.Id == blockId).ParentMetablock;
                     ViewData["blockId"] = blockId;
                     if (parentMetablock == null)
                         ViewData["parentMetablockId"] = 0;

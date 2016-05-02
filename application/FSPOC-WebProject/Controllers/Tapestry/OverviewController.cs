@@ -86,7 +86,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                                                     .Include("ParentMetablock")
                                                                     .Where(m => m.Id == id).First();
 
-                foreach(TapestryDesignerMetablock mb in parentMetablock.Metablocks) {
+                foreach(TapestryDesignerMetablock mb in parentMetablock.Metablocks.Where(mb => !mb.IsDeleted)) {
                     model.Add(new TapestryDesignerMenuItem()
                     {
                         Id = mb.Id,
@@ -98,7 +98,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         IsMetablock = true
                     });
                 }
-                foreach(TapestryDesignerBlock b in parentMetablock.Blocks) {
+                foreach(TapestryDesignerBlock b in parentMetablock.Blocks.Where(b => !b.IsDeleted)) {
                     model.Add(new TapestryDesignerMenuItem()
                     {
                         Id = b.Id,
