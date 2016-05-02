@@ -3549,7 +3549,7 @@ body.cortexModule #lowerPanel {
     transform: scale(1);
     -webkit-transform: scale(1); } }
 
-body {
+body[class] {
   visibility: hidden; }
 
 #pageOverlay, #leftBar, #topBar {
