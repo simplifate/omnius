@@ -3549,9 +3549,14 @@ body.cortexModule #lowerPanel {
     transform: scale(1);
     -webkit-transform: scale(1); } }
 
-body[class] {
-  visibility: hidden; }
+body.pageSpinnerShown > * {
+  display: none; }
 
-#pageOverlay, #leftBar, #topBar {
-  visibility: visible; }
+body.pageSpinnerShown #pageOverlay,
+body.pageSpinnerShown #leftBar,
+body.pageSpinnerShown #topBar {
+  display: initial; }
+
+#pageOverlay {
+  display: none; }
 

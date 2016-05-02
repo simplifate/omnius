@@ -1,5 +1,9 @@
-﻿function SaveMetablock(callback, synchronous) {
-    $("#overviewPanelSpinnerOverlay").show();
+﻿function SaveMetablock(callback, pageUnloading) {
+    if (pageUnloading) {
+        $("#pageOvelay").show();
+    } else {
+        $("#overviewPanelSpinnerOverlay").show();
+    }
     blockArray = [];
     metablockArray = [];
 
@@ -55,7 +59,7 @@
         url: "/api/tapestry/apps/" + appId + "/metablocks/" + metablockId,
         dataType: "json",
         data: postData,
-        async: !synchronous,
+        async: !pageUnloading,
         error: function (request, status, error) {
             alert(request.responseText);
         },

@@ -12,14 +12,12 @@ $(function () {
                     awaitAjax();
                 });
             } else {
-                $("#pageOverlay").css({ visibility: "hidden" });
-                $(document.body).css({ visibility: "visible" });
+                $(document.body).removeClass("pageSpinnerShown");
             }
         }, 0);
     })();
     $(window).on("beforeunload", function () {
-        $("#pageOverlay").css({ visibility: "visible" });
-        $(document.body).css({ visibility: "hidden" });
+        $(document.body).addClass("pageSpinnerShown");
     });
 
     $("#identitySuperMenu").on("click", function () {

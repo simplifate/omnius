@@ -398,12 +398,16 @@
     }
 }
 
-// to be overriden when the page is done loading:
-
-body[class] {
-    visibility: hidden;
+body.pageSpinnerShown > *{
+    display: none;
 }
 
-#pageOverlay, #leftBar, #topBar {
-    visibility: visible;
+body.pageSpinnerShown #pageOverlay, 
+body.pageSpinnerShown #leftBar, 
+body.pageSpinnerShown #topBar {
+    display: initial;
+}
+
+#pageOverlay {
+    display: none;
 }
