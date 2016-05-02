@@ -29,6 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<TapestryDesignerMetablockConnection> Connections { get; set; }
         [JsonIgnore]
@@ -59,7 +60,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? SourceId { get; set; }
         public int? TargetId { get; set; }
 
-        [Required]
+        [JsonIgnore]
+        public virtual int TapestryDesignerMetablockId { get; set; }
         [JsonIgnore]
         public virtual TapestryDesignerMetablock TapestryDesignerMetablock { get; set; }
     }
@@ -75,6 +77,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int MenuOrder { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }

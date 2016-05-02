@@ -828,6 +828,10 @@
     <Compile Include="Migrations\201604210802463_dropModules.Designer.cs">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605020810435_overviewTrash.cs" />
+    <Compile Include="Migrations\201605020810435_overviewTrash.Designer.cs">
+      <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1343,6 +1347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604210802463_dropModules.resx">
       <DependentUpon>201604210802463_dropModules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605020810435_overviewTrash.resx">
+      <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
