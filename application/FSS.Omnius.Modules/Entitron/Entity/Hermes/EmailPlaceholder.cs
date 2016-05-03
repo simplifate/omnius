@@ -15,7 +15,7 @@
         [Required]
         [StringLength(255)]
         [Index(IsClustered = false, IsUnique = false)]
-        [RegularExpression("^[a-zA-Z0-9_.]+$")]
+        [RegularExpression("^[a-zA-Z0-9_.@]+$")]
         [Display(Name = "Poměnná")]
         public string Prop_Name { get; set; }
 

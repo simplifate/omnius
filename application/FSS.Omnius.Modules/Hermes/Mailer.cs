@@ -106,7 +106,7 @@ namespace FSS.Omnius.Modules.Hermes
 
         public string SetData(string content)
         {
-            Regex regExpList = new Regex("^\\{list\\.([^\\}]+)}$");
+            Regex regExpList = new Regex("^\\{list\\@([^\\}]+)}$");
 
             foreach (EmailPlaceholder p in plcs)
             {
@@ -116,7 +116,7 @@ namespace FSS.Omnius.Modules.Hermes
                     Match m = regExpList.Match(key);
                     ParseList(ref content, p.Prop_Name, m.Groups[1].ToString(), GetValue(data, m.Groups[1].ToString()));
                 }
-                else
+                else if(!key.Contains("@"))
                 {
                     object value = GetValue(data, p.Prop_Name);
                     content = content.Replace(key, value == null ? string.Empty : value.ToString());
@@ -363,7 +363,7 @@ namespace FSS.Omnius.Modules.Hermes
 
         private void ParseList(ref string content, string listKey, string objectKey, object model)
         {
-            Regex regExpList = new Regex("(\\{" + listKey + "\\}(.*?)\\{end." + listKey + "\\})", RegexOptions.Singleline);
+            Regex regExpList = new Regex("(\\{" + listKey + "\\}(.*?)\\{end@" + listKey + "\\})", RegexOptions.Singleline);
             MatchCollection lists = regExpList.Matches(content);
 
             foreach (Match list in lists)
@@ -378,7 +378,7 @@ namespace FSS.Omnius.Modules.Hermes
                     {
                         if(p.Prop_Name.StartsWith(objectKey))
                         {
-                            string propName = p.Prop_Name.Replace(objectKey + ".", "");
+                            string propName = p.Prop_Name.Replace(objectKey + "@", "");
                             object value = GetValue(item, propName);
                             text = text.Replace("{" + p.Prop_Name + "}", value == null ? string.Empty : value.ToString());    
                         } 

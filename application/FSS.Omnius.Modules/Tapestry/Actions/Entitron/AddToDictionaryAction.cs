@@ -85,13 +85,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 {
                     if (value == null)
                         dictionary[tokens[0]] = "";
-                    else if (value is Dictionary<string, string>)
+                    else if (value is List<Dictionary<string, string>>)
                         dictionary[tokens[0]] = value;
                     else
                         dictionary[tokens[0]] = value.ToString();
                 }
                 else
-                    dictionary.Add(tokens[0], value == null ? "" : value.ToString());
+                {
+                    if (value == null)
+                        dictionary.Add(tokens[0], "");
+                    else if (value is List<Dictionary<string, string>>)
+                        dictionary.Add(tokens[0], value);
+                    else
+                        dictionary.Add(tokens[0], value.ToString());
+                }
             }
             outputVars["Result"] = dictionary;
         }
