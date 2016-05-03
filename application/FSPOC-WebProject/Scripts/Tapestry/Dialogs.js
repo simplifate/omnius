@@ -379,6 +379,8 @@ $(function () {
                 }
             },
             open: function (event, ui) {
+                var formTable = tableAttributePropertiesDialog.find(".columnFilterTable tbody");
+                formTable.find("tr").remove();
                 $("#table-attribute-properties-dialog .spinner-2").show();
                 $("#btnOpenTableConditions").hide();
                 appId = $("#currentAppId").val();
@@ -393,8 +395,6 @@ $(function () {
                         columnFilter = CurrentItem.data("columnFilter");
                         if (columnFilter == undefined)
                             columnFilter = [];
-                        formTable = tableAttributePropertiesDialog.find(".columnFilterTable tbody");
-                        formTable.find("tr").remove();
                         targetTable = data.Tables.filter(function (value, index, ar) {
                             return value.Name == tableName;
                         })[0];
