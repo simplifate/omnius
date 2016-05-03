@@ -13,7 +13,7 @@
     @Styles.Render("~/Content/scss/Bundled.min.css")
     @RenderSection("Styles", false)
 </head>
-<body class="@Page.ModuleClass userLayout">
+<body class="@Page.ModuleClass userLayout pageSpinnerShown">
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/CommonLibraries")
@@ -63,6 +63,14 @@
     <div id="userContentArea">
         <div id="appNotificationArea"></div>
         @RenderBody()
+    </div>
+    <div id="pageOverlay">
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
     </div>
     <input type="hidden" id="currentAppName" value="@ViewData["appName"]" />
     <input type="hidden" id="currentBlockName" value="@ViewData["blockName"]" />
