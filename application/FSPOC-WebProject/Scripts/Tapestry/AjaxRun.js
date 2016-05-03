@@ -27,9 +27,20 @@ $('body').on('click', '.runAjax', function (e) {
     e.preventDefault();
     AjaxRunAndReplace(window.location.pathname, $(this).val());
 });
+
 $(function () {
+    var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("body").on("change", "#uic_periodical_dropdown", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "approver_select_dropdown_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
             $.ajax({
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
@@ -63,12 +74,23 @@ $(function () {
                         $("#uic_ship_to_textbox").val(data.user.Email);
                     else
                         $("#uic_ship_to_textbox").val(data.user.Address);
+
+                    spinner.remove();
                 }
             });
         });
     }
     else if ($("#currentBlockName").val() == "HromadnaObjednavkaProAsistentky") {
         $("#uic_approver_textbox").on("change", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "approver_select_dropdown_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
             $.ajax({
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
@@ -79,10 +101,20 @@ $(function () {
                         currentUser = data.UserList[i];
                         $("#uic_approver_select_dropdown").append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
                     }
+                    spinner.remove();
                 }
             });
         });
         $("#uic_approver_select_dropdown").on("change", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "approver_select_dropdown_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
             $.ajax({
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
@@ -92,11 +124,21 @@ $(function () {
                     $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
                     $("#uic_company_textbox").val("RWE");
                     $("#uic_ns_textbox").val(data.user.kostl);
+                    spinner.remove();
                 }
             });
         });
         $(".dropdown-select").on("change", function (e) {
             if ($(this).attr("originalId") == "uic_periodical_dropdown") {
+                var spinner = $(inlineSpinnerTemplate)
+                    .attr({ id: "approver_select_dropdown_spinner" })
+                    .css({
+                        position: "absolute",
+                        top: $(this).position().top,
+                        left: $(this).position().left + $(this).outerWidth()
+                    })
+                    .insertAfter(this);
+
                 panel = $(this).parents(".uic.panel-component");
                 dropdownName = $(this).attr("name");
                 if (dropdownName.startsWith("panelCopy"))
@@ -132,6 +174,8 @@ $(function () {
                         });
                         panel.find('[originalId="uic_prince_vat_10_textbox"]').val(data.periodical.tentatively_net_of_VAT10);
                         RecalculateAutosum(panel);
+
+                        spinner.remove();
                     }
                 });
             }

@@ -2,8 +2,8 @@
 
 $(function () {
     var ajaxRunning = false;
-    $(document).ajaxStart(function () { ajaxRunning = true});
-    $(document).ajaxStop(function () { ajaxRunning = false});
+    $(document).ajaxStart(function () { ajaxRunning = true });
+    $(document).ajaxStop(function () { ajaxRunning = false });
     (function awaitAjax() {
         setTimeout(function () {
             if (ajaxRunning) {
