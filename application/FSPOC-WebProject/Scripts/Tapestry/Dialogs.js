@@ -379,6 +379,7 @@ $(function () {
                 }
             },
             open: function (event, ui) {
+                $("#table-attribute-properties-dialog .spinner-2").show();
                 $("#btnOpenTableConditions").hide();
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
@@ -407,6 +408,7 @@ $(function () {
                             CurrentTableColumnArray.push({ Id: targetTable.Columns[i].Id, Name: targetTable.Columns[i].Name, Type: targetTable.Columns[i].Type });
                         }
                         $("#btnOpenTableConditions").show();
+                        $("#table-attribute-properties-dialog .spinner-2").hide();
                     }
                 });
             }

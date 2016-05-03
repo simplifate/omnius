@@ -315,6 +315,7 @@
             RoleWhitelist = data.RoleWhitelist;
             $("#blockHeaderRolesCount").text(RoleWhitelist.length);
             appId = $("#currentAppId").val();
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/database/apps/" + appId + "/commits/latest",
@@ -390,9 +391,11 @@
                                     + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
                             }
                     };
+                    pageSpinner.hide();
                 }
             });
             
+            pageSpinner.show();
             $('.libraryItem').remove();
             $.ajax({
                 type: "GET",
@@ -417,8 +420,10 @@
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/Persona/app-roles/" + appId,
@@ -441,8 +446,10 @@
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/Persona/app-states/" + appId,
@@ -465,8 +472,10 @@
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/tapestry/apps/" + appId + "/blocks",
@@ -489,8 +498,10 @@
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/hermes/" + appId + "/templates",
@@ -513,8 +524,10 @@
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
+            pageSpinner.show();
             $.ajax({
                 type: "GET",
                 url: "/api/nexus/" + appId + "/gateways",
@@ -582,6 +595,7 @@
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
+                    pageSpinner.hide();
                 }
             });
 
@@ -592,6 +606,7 @@
 
             for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
                 pageId = data.AssociatedPageIds[pageIndex];
+                pageSpinner.show();
                 $.ajax({
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
@@ -663,12 +678,11 @@
                                 }
                             }
                         }
-                    },
+                        pageSpinner.hide();
+                    }
                 });
             }
-            $(document).one("ajaxStop", function () {
-                pageSpinner.hide();
-            });
+            pageSpinner.hide();
         }
     });
 };
