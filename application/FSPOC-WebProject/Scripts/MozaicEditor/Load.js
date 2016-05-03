@@ -1,5 +1,5 @@
 ﻿function LoadMozaicPage(pageId) {
-    $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
+    pageSpinner.show();
     appId = $("#currentAppId").val();
     if (pageId == "current")
         pageId = $("#currentPageId").val();
@@ -29,7 +29,7 @@
                 $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
                 $("#modalSizeVisualization").show();
             }
-            $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
+            pageSpinner.hide();
         }
     });
 }
