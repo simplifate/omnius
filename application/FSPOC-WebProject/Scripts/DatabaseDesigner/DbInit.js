@@ -22,16 +22,6 @@ $(function () {
         $("#btnClearScheme").on("click", function () {
             ClearDbScheme();
         });
-        $("#btnGenerate").on("click", function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/database/apps/" + $("#currentAppId").val() + "/generate",
-                success: function () { alert("Success") },
-                error: function (request, status, error) {
-                    alert(request.responseText);
-                }
-            });
-        });
         $("#btnZoomIn").on("click", function () {
             ZoomFactor += 0.1;
             $(".database-container").css("transform", "scale(" + ZoomFactor + ")");
