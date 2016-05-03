@@ -1,5 +1,5 @@
 ﻿function LoadBlock(commitId) {
-    $(document.body).addClass("pageSpinnerShown");
+    pageSpinner.show();
 
     appId = $("#currentAppId").val();
     blockId = $("#currentBlockId").val();
@@ -667,7 +667,7 @@
                 });
             }
             $(document).one("ajaxStop", function () {
-                $(document.body).removeClass("pageSpinnerShown");
+                pageSpinner.hide();
             });
         }
     });

@@ -1,5 +1,5 @@
 ﻿function SaveMetablock(callback, pageUnloading) {
-    $(document.body).addClass("pageSpinnerShown");
+    pageSpinner.show();
     blockArray = [];
     metablockArray = [];
 
@@ -72,7 +72,7 @@
             }
             ChangedSinceLastSave = false;
             if (callback) callback();
-            $(document.body).removeClass("pageSpinnerShown");
+            pageSpinner.hide();
         }
     });
 }

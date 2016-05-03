@@ -1,5 +1,5 @@
 ﻿function LoadMetablock() {
-    $(document.body).addClass("pageSpinnerShown");
+    pageSpinner.show();
     appId = $("#currentAppId").val();
     metablockId = $("#currentMetablockId").val();
     url = "/api/tapestry/apps/" + appId + "/metablocks/" + metablockId;
@@ -80,7 +80,7 @@
                     source: sourceId, target: targetId, editable: false, paintStyle: connectorPaintStyle
                 });
             }
-            $(document.body).removeClass("pageSpinnerShown");
+            pageSpinner.hide();
         }
     });
 }

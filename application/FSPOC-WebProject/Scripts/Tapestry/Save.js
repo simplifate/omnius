@@ -1,7 +1,7 @@
 ﻿var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
-    $(document.body).addClass("pageSpinnerShown");
+    pageSpinner.show();
     resourceRulesArray = [];
     workflowRulesArray = [];
     portTargetsArray = [];
@@ -205,10 +205,10 @@ function SaveBlock(commitMessage) {
         data: postData,
         success: function () {
             ChangedSinceLastSave = false;
-            $(document.body).removeClass("pageSpinnerShown");
+            pageSpinner.hide();
         },
         error: function (request, status, error) {
-            $(document.body).removeClass("pageSpinnerShown");
+            pageSpinner.hide();
             alert(request.responseText);
         }
     });

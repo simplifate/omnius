@@ -1,23 +1,33 @@
 ﻿var maintenanceModeActive = false;
 
-$(function () {
-    var ajaxRunning = false;
-    $(document).ajaxStart(function () { ajaxRunning = true });
-    $(document).ajaxStop(function () { ajaxRunning = false });
-    (function awaitAjax() {
-        setTimeout(function () {
-            if (ajaxRunning) {
-                $(document).on("ajaxStop", function doAwait() {
-                    $(document).off("ajaxStop", doAwait);
-                    awaitAjax();
-                });
-            } else {
+var pageSpinner = (function () {
+    var uses = 1;
+    return {
+        show: function (n) {
+            if (!arguments.length) {
+                n = 1;
+            }
+            if (n) {
+                $(document.body).addClass("pageSpinnerShown");
+            }
+            uses += n;
+        },
+        hide: function (n) {
+            if (!arguments.length) {
+                n = 1;
+            }
+            uses -= n;
+            if (!uses) {
                 $(document.body).removeClass("pageSpinnerShown");
             }
-        }, 0);
-    })();
+        }
+    }
+})()
+
+$(function () {
+    pageSpinner.hide();
     $(window).on("beforeunload", function () {
-        $(document.body).addClass("pageSpinnerShown");
+        pageSpinner.show();
     });
 
     $("#identitySuperMenu").on("click", function () {
