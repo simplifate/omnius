@@ -486,8 +486,7 @@ body.userLayout #pageOverlay {
   left: 0;
   width: 100%;
   height: 100%;
-  //background-color: #065a90; //foreground blue
-  background-color: #ceeaf8; //top menu bottom blue
+  background-color: #065a90; 
   -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
           animation: sk-foldCubeAngle 2.4s infinite linear both;
   -webkit-transform-origin: 100% 100%;
