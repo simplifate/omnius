@@ -10,17 +10,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     public partial class ActionRule : ActionRuleBase
     {
         /// <summary>
-        /// Check Conditions
-        /// </summary>
-        /// <param name="tempVars">temporary variables to check</param>
-        /// <returns>are conditions ok?</returns>
-        public bool CanRun(Dictionary<string, object> tempVars)
-        {
-            KeyValueString condition = new KeyValueString(Condition);
-            return condition.CompareResolved(tempVars);
-        }
-
-        /// <summary>
         /// Run function to prepare conditions
         /// </summary>
         /// <param name="tempVars"></param>

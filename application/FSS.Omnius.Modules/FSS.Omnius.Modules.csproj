@@ -836,6 +836,10 @@
     <Compile Include="Migrations\201605041236075_Add condition sets to gateways.Designer.cs">
       <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605041320457_TapestryAdvanceConditions.cs" />
+    <Compile Include="Migrations\201605041320457_TapestryAdvanceConditions.Designer.cs">
+      <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1358,6 +1362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605041236075_Add condition sets to gateways.resx">
       <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605041320457_TapestryAdvanceConditions.resx">
+      <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

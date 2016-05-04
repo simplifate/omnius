@@ -11,6 +11,7 @@ namespace FSS.Omnius.Modules.Tapestry
     using Entitron.Entity;
     using Entitron.Entity.Tapestry;
     using Entitron.Entity.Persona;
+    using Service;
 
     public class Tapestry : IModule
     {
@@ -163,12 +164,25 @@ namespace FSS.Omnius.Modules.Tapestry
 
             // check
             var swimlaneARs = hasAnonnymousAccess ? ARs.Where(ar => !ar.ActionRuleRights.Any()) : ARs.Where(ar => ar.ActionRuleRights.Any(arr => arr.AppRoleId == role.Id));
-            foreach(var rule in swimlaneARs)
+            ActionRule defaultRule = null;
+            foreach (ActionRule rule in swimlaneARs)
             {
+                // this is default rule (false branch)
+                if (rule.isDefault)
+                {
+                    defaultRule = rule;
+                    continue;
+                }
+
                 rule.PreRun(results);
-                if (rule.CanRun(results.OutputData))
+                if (GatewayDecisionService.MatchConditionSets(
+                        context.TapestryDesignerConditionSets.Where(cs => cs.TapestryDesignerWorkflowItem.Id == rule.ItemWithConditionId).ToList(),
+                        results.OutputData))
                     return rule;
             }
+
+            if (defaultRule != null)
+                return defaultRule;
             
             // nothing meets condition
             results.Message.Errors.Add($"WF can't continue - block[{block.Name}]");

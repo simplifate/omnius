@@ -233,7 +233,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf, Dictionary<int, string> stateColumnMapping)
         {
             HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
-            Dictionary<Block, string> conditionMapping = new Dictionary<Block, string>();
+            Dictionary<Block, int> conditionMapping = new Dictionary<Block, int>();
             Dictionary<TapestryDesignerWorkflowItem, Block> BlockMapping = new Dictionary<TapestryDesignerWorkflowItem, Block>();
             HashSet<Block> blockHasRights = new HashSet<Block> { block };
 
@@ -277,9 +277,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 BlockMapping.Add(it, newBlock);
 
                 // conditions
-                if (it.TypeClass == "gateway-x")
+                if (it.SymbolType == "gateway-x")
                 {
-                    conditionMapping.Add(newBlock, it.Condition);
+                    conditionMapping.Add(newBlock, it.Id);
                 }
                 // rights
                 if (checkBlockHasRights(splitItem))
@@ -319,7 +319,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerWorkflowConnection connection,
-            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, string> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
+            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, int> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
             string init = connection.Target.ComponentName;
             string ActorName = (init != null ? "Manual" : "Auto");
@@ -332,7 +332,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // condition
             if (conditionMapping.ContainsKey(startBlock))
             {
-                rule.Condition = connection.SourceSlot == 0 ? conditionMapping[startBlock] : $"!{conditionMapping[startBlock]}";
+                // branch true
+                if (connection.SourceSlot == 0)
+                    rule.ItemWithConditionId = conditionMapping[startBlock];
+
+                // branch false
+                else
+                    rule.isDefault = true;
             }
             startBlock.SourceTo_ActionRules.Add(rule);
             // rights
@@ -369,13 +375,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         rule.TargetBlock = _blockMapping[item.TargetId.Value];
                         break;
 
-                    case "gateway-x":
-                        Block splitBlock = blockMapping[item];
-                        // if not already in conditionMapping
-                        if (!conditionMapping.ContainsKey(splitBlock))
-                            conditionMapping.Add(splitBlock, item.Condition);
+                    case "symbol":
+                        switch (item.SymbolType)
+                        {
+                            case "gateway-x":
+                                Block splitBlock = blockMapping[item];
+                                // if not already in conditionMapping
+                                if (!conditionMapping.ContainsKey(splitBlock))
+                                    conditionMapping.Add(splitBlock, item.Id);
+                                break;
+                        }
                         break;
-
                     case "circle-thick":
                         break;
                     case "attributeItem":
