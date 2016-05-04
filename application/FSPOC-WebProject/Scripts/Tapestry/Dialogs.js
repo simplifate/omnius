@@ -498,6 +498,7 @@ $(function () {
             },
             open: function (event, ui) {
                 chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").remove();
+                chooseTablesDialog.find(".spinner-2").show();
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest";
                 $.ajax({
@@ -522,6 +523,7 @@ $(function () {
                                 newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
+                        chooseTablesDialog.find(".spinner-2").hide();
                     }
                 });
             }
