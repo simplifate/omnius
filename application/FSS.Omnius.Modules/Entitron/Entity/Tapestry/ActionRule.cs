@@ -16,7 +16,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Id { get; set; }
         public string Name { get; set; }
         public int PreFunctionCount { get; set; }
-        public string Condition { get; set; }
+        public int? ItemWithConditionId { get; set; }
+        public bool isDefault { get; set; }
 
         public virtual HashSet<ActionRule_Action> ActionRule_Actions { get; set; }
 
