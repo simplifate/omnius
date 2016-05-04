@@ -550,17 +550,20 @@ body.userLayout #pageOverlay {
 }
 
 body.pageSpinnerShown > *{
-    display: none;
+    opacity: 0;
 }
 
-body.pageSpinnerShown #pageOverlay, 
+body.pageSpinnerShown #pageOverlay{
+    display: block;
+    opacity: 1;
+}
 body.pageSpinnerShown #leftBar, 
 body.pageSpinnerShown #topBar ,
 body.pageSpinnerShown #userLeftBar, 
 body.pageSpinnerShown #userTopBar {
-    display: initial;
+    opacity: 1;
 }
 
 #pageOverlay {
-    display: none;
+    display:none;
 }
