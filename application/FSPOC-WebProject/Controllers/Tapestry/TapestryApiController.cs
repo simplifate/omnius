@@ -270,11 +270,33 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     OutputVariables = ajaxItem.OutputVariables,
                                     PageId = ajaxItem.PageId,
                                     ComponentName = ajaxItem.ComponentName,
-                                    isAjaxAction = ajaxItem.isAjaxAction
+                                    isAjaxAction = ajaxItem.isAjaxAction,
+                                    SymbolType = ajaxItem.SymbolType
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
+                                foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
+                                {
+                                    TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
+                                    {
+                                        SetIndex = ajaxConditionSet.SetIndex,
+                                        SetRelation = ajaxConditionSet.SetRelation
+                                    };
+                                    item.ConditionSets.Add(conditionSet);
+                                    foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
+                                    {
+                                        TapestryDesignerCondition condition = new TapestryDesignerCondition
+                                        {
+                                            Index = ajaxCondition.Index,
+                                            Relation = ajaxCondition.Relation,
+                                            Variable = ajaxCondition.Variable,
+                                            Operator = ajaxCondition.Operator,
+                                            Value = ajaxCondition.Value
+                                        };
+                                        conditionSet.Conditions.Add(condition);
+                                    }
+                                }
                             }
                         }
                         foreach (AjaxTapestryDesignerWorkflowConnection ajaxConnection in ajaxRule.Connections)
@@ -785,6 +807,20 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 result.ConditionSets.Add(ajaxConditionSet);
             }
         }
+        private static void LoadConditionSets(TapestryDesignerWorkflowItem requestedItem, AjaxTapestryDesignerWorkflowItem result)
+        {
+            foreach (TapestryDesignerConditionSet conditionSet in requestedItem.ConditionSets)
+            {
+                var ajaxConditionSet = new AjaxTapestryDesignerConditionSet
+                {
+                    Id = conditionSet.Id,
+                    SetIndex = conditionSet.SetIndex,
+                    SetRelation = conditionSet.SetRelation
+                };
+                LoadConditions(conditionSet, ajaxConditionSet);
+                result.ConditionSets.Add(ajaxConditionSet);
+            }
+        }
         private static void LoadConditions(TapestryDesignerConditionSet requestedConditionSet, AjaxTapestryDesignerConditionSet result)
         {
             foreach (TapestryDesignerCondition condition in requestedConditionSet.Conditions)
@@ -853,8 +889,10 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
                     TargetId = item.TargetId,
-                    isAjaxAction = item.isAjaxAction
+                    isAjaxAction = item.isAjaxAction,
+                    SymbolType = item.SymbolType
                 };
+                LoadConditionSets(item, ajaxItem);
                 result.WorkflowItems.Add(ajaxItem);
             }
         }

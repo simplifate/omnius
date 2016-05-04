@@ -66,7 +66,7 @@ function SaveBlock(commitMessage) {
             currentSwimlane.find(".swimlaneRolesArea .roleItem").each(function (roleIndex, roleDiv) {
                 rolesArray.push($(roleDiv).text());
             });
-            currentSwimlane.find(".item").each(function (itemIndex, itemDiv) {
+            currentSwimlane.find(".item, .symbol").each(function (itemIndex, itemDiv) {
                 currentItem = $(itemDiv);
                 currentItem.attr("saveId", saveId);
                 saveId++;
@@ -85,15 +85,16 @@ function SaveBlock(commitMessage) {
                     PageId: currentItem.attr("pageId"),
                     ComponentName: currentItem.attr("componentName"),
                     isAjaxAction: currentItem.data("isAjaxAction"),
-                    Condition: currentItem.data("condition")
+                    Condition: currentItem.data("condition"),
+                    ConditionSets: currentItem.data("conditionSets"),
+                    SymbolType: currentItem.attr("symbolType")
                 });
             });
             swimlanesArray.push({
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
-                WorkflowItems: itemArray,
-                WorkflowSymbols: symbolArray
+                WorkflowItems: itemArray
             });
         });
         currentInstance = currentRule.data("jsPlumbInstance");

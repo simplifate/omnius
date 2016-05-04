@@ -680,7 +680,7 @@ body.tapestryModule {
         white-space: nowrap;
     }
 
-    #conditions-dialog {
+    #conditions-dialog, #gateway-conditions-dialog {
         font-family: MyriadPro;
         font-size: 16px;
 
@@ -728,6 +728,10 @@ body.tapestryModule {
         }
 
         .conditionTable {
+            select {
+                height: 29px;
+            }
+
             td {
                 padding-left: 5px;
                 padding-right: 5px;
@@ -739,6 +743,8 @@ body.tapestryModule {
             }
 
             .conditionActions {
+                 width: 100px;
+
                 .conditionActionIcon {
                     display: inline-block;
                     background-color: #49c3f1;

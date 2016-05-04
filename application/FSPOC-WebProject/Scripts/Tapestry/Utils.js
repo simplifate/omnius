@@ -127,6 +127,9 @@ function AddToJsPlumb(item) {
     });
     instance = item.parents(".rule").data("jsPlumbInstance");
     specialEndpointsType = item.attr("endpoints");
+    if (item.attr("symbolType") && item.attr("symbolType").indexOf("gateway-") == 0) {
+        specialEndpointsType = "gateway";
+    }
     if (specialEndpointsType == "gateway") {
         instance.addEndpoint(itemId, trueEndpoint, {
             anchor: "RightMiddle", uuid: itemId + "RightMiddle"
@@ -134,7 +137,6 @@ function AddToJsPlumb(item) {
         instance.addEndpoint(itemId, falseEndpoint, {
             anchor: "BottomCenter", uuid: itemId + "BottomCenter"
         });
-
     }
     else if (specialEndpointsType == "final" || item.hasClass("targetItem")) { }
     else {
@@ -235,6 +237,9 @@ function GetItemTypeClass(item) {
     else if (item.hasClass("templateItem")) {
         typeClass = "templateItem";
     }
+    else if (item.hasClass("symbol")) {
+        typeClass = "symbol";
+    }
     else
         typeClass = "";
     return typeClass;
@@ -302,5 +307,10 @@ var ConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHe
 var ConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select></select>'
     + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option>is empty</option><option>is not empty</option></select></td><td class="conditionValueCell">'
     + '<select><option selected="selected">True</option></select></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+    + '</tr>';
+var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><input type="text"></input>'
+    + '</td><td class="conditionOperatorCell"><select><option selected="selected">==</option><option>!=</option><option>&gt;</option><option>&gt;=</option><option>&lt;</option><option>&lt;=</option><option inputType="none">is empty</option><option inputType="none">is not empty</option><option>contains</option></select></td><td class="conditionValueCell">'
+    + '<input type="text"></input></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';

@@ -832,6 +832,10 @@
     <Compile Include="Migrations\201605020810435_overviewTrash.Designer.cs">
       <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605041236075_Add condition sets to gateways.cs" />
+    <Compile Include="Migrations\201605041236075_Add condition sets to gateways.Designer.cs">
+      <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -909,6 +913,7 @@
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
     <Compile Include="Tapestry\Running\PreBlockAction.cs" />
     <Compile Include="Tapestry\Running\WFitem.cs" />
+    <Compile Include="Tapestry\Service\GatewayDecisionService.cs" />
     <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Tapestry\TapestryUtils.cs" />
@@ -1350,6 +1355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605020810435_overviewTrash.resx">
       <DependentUpon>201605020810435_overviewTrash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605041236075_Add condition sets to gateways.resx">
+      <DependentUpon>201605041236075_Add condition sets to gateways.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

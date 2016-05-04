@@ -633,7 +633,7 @@ $(function () {
         }
         conditionsDialog = $("#conditions-dialog").dialog({
             autoOpen: false,
-            width: 740,
+            width: 800,
             height: 560,
             buttons: {
                 "Save": function () {
@@ -903,5 +903,153 @@ $(function () {
         });
         $("#blockHeaderRolesCount").text(roleCount);
         chooseWhitelistRolesDialog.dialog("close");
+    }
+    gatewayConditionsDialog = $("#gateway-conditions-dialog").dialog({
+        autoOpen: false,
+        width: 800,
+        height: 560,
+        buttons: {
+            "Save": function () {
+                gatewayConditionsDialog_SubmitData();
+            },
+            Cancel: function () {
+                gatewayConditionsDialog.dialog("close");
+            }
+        },
+        create: function () {
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    gatewayConditionsDialog_SubmitData();
+                    return false;
+                }
+            });
+            $(this).find(".addAndConditionSetIcon").on("click", function () {
+                newConditionSet = $(ConditionSetTemplate);
+                newConditionSet.find(".conditionSetPrefix").text("AND a");
+                newConditionSet.find(".conditionTable").append($(ManualInputConditionTemplate));
+                gatewayConditionsDialog.find(".conditionSetArea").append(newConditionSet);
+                if (newConditionSet.index() == 0)
+                    newConditionSet.find(".conditionSetPrefix").text("A");
+            });
+            $(this).find(".addOrConditionSetIcon").on("click", function () {
+                newConditionSet = $(ConditionSetTemplate);
+                newConditionSet.find(".conditionSetPrefix").text("OR a");
+                newConditionSet.find(".conditionTable").append($(ManualInputConditionTemplate));
+                gatewayConditionsDialog.find(".conditionSetArea").append(newConditionSet);
+                if (newConditionSet.index() == 0)
+                    newConditionSet.find(".conditionSetPrefix").text("A");
+            });
+            $(this).on("click", ".addAndConditionIcon", function () {
+                newCondition = $(ManualInputConditionTemplate);
+                newCondition.find(".conditionOperator").text("and");
+                $(this).parents("tr").after(newCondition);
+            });
+            $(this).on("click", ".addOrConditionIcon", function () {
+                newCondition = $(ManualInputConditionTemplate);
+                newCondition.find(".conditionOperator").text("or");
+                $(this).parents("tr").after(newCondition);
+            });
+            $(this).on("click", ".removeConditionIcon", function () {
+                currentCondition = $(this).parents("tr");
+                if (currentCondition.index() == 0)
+                    currentCondition.parents("table").find("tr:eq(1)").find(".conditionOperator").text("");
+                if (currentCondition.parents("table").find("tr").length == 1) {
+                    if (currentCondition.parents(".conditionSet").index() == 0)
+                        currentCondition.parents(".conditionSetArea").find(".conditionSet:eq(1)").find(".conditionSetPrefix").text("A");
+                    currentCondition.parents(".conditionSet").remove();
+                }
+                else
+                    currentCondition.remove();
+            });
+            $(this).on("click", ".removeConditionSetIcon", function () {
+                currentConditionSet = $(this).parents(".conditionSet");
+                if (currentConditionSet.index() == 0)
+                    currentConditionSet.parents(".conditionSetArea").find(".conditionSet:eq(1)").find(".conditionSetPrefix").text("A");
+                currentConditionSet.remove();
+            });
+            $(this).on("change", ".conditionOperatorCell select", function () {
+                currentCondition = $(this).parents("tr");
+                var optionSelected = $("option:selected", this);
+                inputType = optionSelected.attr("inputType");
+                if (inputType === "none")
+                    currentCondition.find(".conditionValueCell input, .conditionValueCell select").hide();
+                else
+                    currentCondition.find(".conditionValueCell input, .conditionValueCell select").show();
+            });
+        },
+        open: function () {
+            conditionSetArea = gatewayConditionsDialog.find(".conditionSetArea");
+            conditionSetArea.find(".conditionSet").remove();
+            conditionSetData = CurrentItem.data("conditionSets");
+            if (!conditionSetData)
+                conditionSetData = [];
+            for (conditionSetIndex = 0; conditionSetIndex < conditionSetData.length; conditionSetIndex++) {
+                currentConditionSetData = conditionSetData[conditionSetIndex];
+                if (currentConditionSetData.SetRelation == "OR")
+                    prefix = "OR a";
+                else
+                    prefix = "AND a";
+                newConditionSet = $(ConditionSetTemplate);
+                newConditionSet.find(".conditionSetPrefix").text(prefix);
+                conditionSetArea.append(newConditionSet);
+                if (conditionSetIndex == 0)
+                    newConditionSet.find(".conditionSetPrefix").text("A");
+                conditionTable = newConditionSet.find(".conditionTable");
+                for (conditionIndex = 0; conditionIndex < currentConditionSetData.Conditions.length; conditionIndex++) {
+                    currentConditionData = currentConditionSetData.Conditions[conditionIndex];
+                    newCondition = $(ManualInputConditionTemplate);
+                    if (conditionIndex > 0)
+                        newCondition.find(".conditionOperator").text(currentConditionData.Relation.toLowerCase());
+                    conditionTable.append(newCondition);
+                    columnSelect = newCondition.find(".conditionVariableCell input");
+                    columnSelect.val(currentConditionData.Variable);
+                    conditionOperatorCell = newCondition.find(".conditionOperatorCell");
+                    conditionOperatorCell.find("select").val(currentConditionData.Operator);
+                    conditionValueCell = newCondition.find(".conditionValueCell");
+                    var optionSelected = $("option:selected", conditionOperatorCell);
+                    inputType = optionSelected.attr("inputType");
+                    if (inputType === "none")
+                        conditionValueCell.find("input").hide();
+                    else {
+                        conditionValueCell.find("input").show();
+                        conditionValueCell.find("input").val(currentConditionData.Value);
+                    }
+                }
+            }
+        }
+    });
+    function gatewayConditionsDialog_SubmitData() {
+        setArray = [];
+        gatewayConditionsDialog.find(".conditionSet").each(function (setIndex, setElement) {
+            currentSet = $(setElement);
+            conditionArray = [];
+            currentSet.find(".conditionTable tr").each(function (index, element) {
+                currentCondition = $(element);
+                relationCellValue = currentCondition.find(".conditionOperator").text();
+                if (relationCellValue == "")
+                    relation = "AND";
+                else
+                    relation = relationCellValue.toUpperCase();
+                conditionArray.push({
+                    Index: index,
+                    Relation: relation,
+                    Variable: currentCondition.find(".conditionVariableCell input").val(),
+                    Operator: currentCondition.find(".conditionOperatorCell select option:selected").text(),
+                    Value: currentCondition.find(".conditionValueCell input").val()
+                });
+            });
+            setPrefix = currentSet.find(".conditionSetPrefix").text();
+            if (setPrefix == "OR a")
+                setRelation = "OR";
+            else
+                setRelation = "AND";
+            setArray.push({
+                SetIndex: setIndex,
+                SetRelation: setRelation,
+                Conditions: conditionArray
+            });
+        });
+        CurrentItem.data("conditionSets", setArray);
+        gatewayConditionsDialog.dialog("close");
     }
 });

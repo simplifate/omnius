@@ -204,9 +204,9 @@
                     }
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
-                        if (currentItemData.TypeClass == "circle-thick" || currentItemData.TypeClass.substr(0, 8) == "gateway-" || currentItemData.Condition != null)
-                            newItem = $('<img id="wfItem' + currentItemData.Id + '" class="item" symbolType="' + currentItemData.TypeClass +
-                            '" src="/Content/images/TapestryIcons/' + currentItemData.TypeClass + '.png" style="left: ' + currentItemData.PositionX + 'px; top: '
+                        if (currentItemData.TypeClass == "symbol")
+                            newItem = $('<img id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="' + currentItemData.SymbolType +
+                            '" src="/Content/images/TapestryIcons/' + currentItemData.SymbolType + '.png" style="left: ' + currentItemData.PositionX + 'px; top: '
                             + currentItemData.PositionY + 'px;" />');
                         else
                             newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
@@ -234,6 +234,9 @@
                             newItem.attr("endpoints", "gateway");
                         if (currentItemData.Condition != null)
                             newItem.data("condition", currentItemData.Condition);
+                        if (currentItemData.ConditionSets != null) {
+                            newItem.data("conditionSets", currentItemData.ConditionSets);
+                        }
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);

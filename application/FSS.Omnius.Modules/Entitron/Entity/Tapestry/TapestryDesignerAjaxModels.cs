@@ -187,6 +187,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ComponentName { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
+        public string SymbolType { get; set; }
+        public virtual List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }
+
+        public AjaxTapestryDesignerWorkflowItem()
+        {
+            ConditionSets = new List<AjaxTapestryDesignerConditionSet>();
+        }
     }
     public class AjaxTapestryDesignerSwimlane : IEntity
     {

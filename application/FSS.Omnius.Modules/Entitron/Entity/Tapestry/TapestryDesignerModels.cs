@@ -279,6 +279,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
         public int? TargetId { get; set; }
+        public string SymbolType { get; set; }
+        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
+
         [JsonIgnore]
         public TapestryDesignerBlock Target { get; set; }
 
@@ -291,6 +294,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         {
             SourceToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
             TargetToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
+            ConditionSets = new HashSet<TapestryDesignerConditionSet>();
         }
     }
     [Table("TapestryDesigner_ToolboxStates")]
@@ -425,8 +429,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
 
-        [Required]
         public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
+        public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
         public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
 
         public TapestryDesignerConditionSet()

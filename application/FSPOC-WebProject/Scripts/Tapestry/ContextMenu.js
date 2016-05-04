@@ -24,7 +24,7 @@
                     else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
                     {
                         CurrentItem = item;
-                        gatewayXPropertiesDialog.dialog("open");
+                        gatewayConditionsDialog.dialog("open");
                     }
                     else if (item.hasClass("uiItem"))
                     {

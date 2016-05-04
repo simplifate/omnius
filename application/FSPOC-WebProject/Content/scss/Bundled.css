@@ -1389,10 +1389,10 @@ body.tapestryModule #btnOpenTableConditions {
   margin-top: 15px;
   white-space: nowrap; }
 
-body.tapestryModule #conditions-dialog {
+body.tapestryModule #conditions-dialog, body.tapestryModule #gateway-conditions-dialog {
   font-family: MyriadPro;
   font-size: 16px; }
-  body.tapestryModule #conditions-dialog .conditionSetIcon {
+  body.tapestryModule #conditions-dialog .conditionSetIcon, body.tapestryModule #gateway-conditions-dialog .conditionSetIcon {
     display: inline-block;
     background-color: #49c3f1;
     color: black;
@@ -1400,14 +1400,14 @@ body.tapestryModule #conditions-dialog {
     margin: 3px;
     padding: 2px 10px;
     cursor: pointer; }
-  body.tapestryModule #conditions-dialog .conditionSetIcon:hover {
+  body.tapestryModule #conditions-dialog .conditionSetIcon:hover, body.tapestryModule #gateway-conditions-dialog .conditionSetIcon:hover {
     background-color: #2ddef9; }
-  body.tapestryModule #conditions-dialog .conditionSet {
+  body.tapestryModule #conditions-dialog .conditionSet, body.tapestryModule #gateway-conditions-dialog .conditionSet {
     position: relative;
     border-top: 1px solid black;
     padding-top: 7px;
     margin-top: 15px; }
-  body.tapestryModule #conditions-dialog .removeConditionSetIcon {
+  body.tapestryModule #conditions-dialog .removeConditionSetIcon, body.tapestryModule #gateway-conditions-dialog .removeConditionSetIcon {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -1419,33 +1419,37 @@ body.tapestryModule #conditions-dialog {
     margin: 3px;
     text-align: center;
     cursor: pointer; }
-  body.tapestryModule #conditions-dialog .removeConditionSetIcon:hover {
+  body.tapestryModule #conditions-dialog .removeConditionSetIcon:hover, body.tapestryModule #gateway-conditions-dialog .removeConditionSetIcon:hover {
     background-color: #f06771; }
-  body.tapestryModule #conditions-dialog .conditionSetHeading {
+  body.tapestryModule #conditions-dialog .conditionSetHeading, body.tapestryModule #gateway-conditions-dialog .conditionSetHeading {
     margin-bottom: 6px; }
-  body.tapestryModule #conditions-dialog .conditionTable td {
+  body.tapestryModule #conditions-dialog .conditionTable select, body.tapestryModule #gateway-conditions-dialog .conditionTable select {
+    height: 29px; }
+  body.tapestryModule #conditions-dialog .conditionTable td, body.tapestryModule #gateway-conditions-dialog .conditionTable td {
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 3px; }
-  body.tapestryModule #conditions-dialog .conditionTable td.conditionOperator {
+  body.tapestryModule #conditions-dialog .conditionTable td.conditionOperator, body.tapestryModule #gateway-conditions-dialog .conditionTable td.conditionOperator {
     width: 40px; }
-  body.tapestryModule #conditions-dialog .conditionTable .conditionActions .conditionActionIcon {
-    display: inline-block;
-    background-color: #49c3f1;
-    color: black;
-    font-family: MyriadPro;
-    width: 24px;
-    height: 24px;
-    margin: 3px;
-    text-align: center;
-    cursor: pointer; }
-  body.tapestryModule #conditions-dialog .conditionTable .conditionActions .conditionActionIcon:hover {
-    background-color: #2ddef9; }
-  body.tapestryModule #conditions-dialog .conditionTable .conditionActions .removeConditionIcon {
-    background-color: #d9534f;
-    color: white; }
-  body.tapestryModule #conditions-dialog .conditionTable .conditionActions .removeConditionIcon:hover {
-    background-color: #f06771; }
+  body.tapestryModule #conditions-dialog .conditionTable .conditionActions, body.tapestryModule #gateway-conditions-dialog .conditionTable .conditionActions {
+    width: 100px; }
+    body.tapestryModule #conditions-dialog .conditionTable .conditionActions .conditionActionIcon, body.tapestryModule #gateway-conditions-dialog .conditionTable .conditionActions .conditionActionIcon {
+      display: inline-block;
+      background-color: #49c3f1;
+      color: black;
+      font-family: MyriadPro;
+      width: 24px;
+      height: 24px;
+      margin: 3px;
+      text-align: center;
+      cursor: pointer; }
+    body.tapestryModule #conditions-dialog .conditionTable .conditionActions .conditionActionIcon:hover, body.tapestryModule #gateway-conditions-dialog .conditionTable .conditionActions .conditionActionIcon:hover {
+      background-color: #2ddef9; }
+    body.tapestryModule #conditions-dialog .conditionTable .conditionActions .removeConditionIcon, body.tapestryModule #gateway-conditions-dialog .conditionTable .conditionActions .removeConditionIcon {
+      background-color: #d9534f;
+      color: white; }
+    body.tapestryModule #conditions-dialog .conditionTable .conditionActions .removeConditionIcon:hover, body.tapestryModule #gateway-conditions-dialog .conditionTable .conditionActions .removeConditionIcon:hover {
+      background-color: #f06771; }
 
 body.tapestryModule .modelMarker {
   float: right;

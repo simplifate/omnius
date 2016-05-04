@@ -122,8 +122,6 @@ $(function () {
                 success: function (data) {
                     $("#uic_occupation_select_dropdown option").remove();
                     $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
-                    $("#uic_company_textbox").val("RWE");
-                    $("#uic_ns_textbox").val(data.user.kostl);
                     spinner.remove();
                 }
             });
