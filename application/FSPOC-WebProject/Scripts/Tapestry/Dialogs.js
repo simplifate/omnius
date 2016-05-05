@@ -271,52 +271,57 @@ $(function () {
             }
         });
         function chooseScreensDialog_SubmitData() {
+            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").hide();
+            chooseScreensDialog.find(".spinner-2").show();
             somethingWasAdded = false;
             pageCount = 0;
             appId = $("#currentAppId").val();
             AssociatedPageIds = [];
             $("#libraryCategory-UI .libraryItem").remove();
-            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
-                if ($(element).hasClass("highlightedRow")) {
-                    pageCount++;
-                    pageId = $(element).attr("pageId");
-                    AssociatedPageIds.push(parseInt(pageId));
-                    url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
-                    $.ajax({
-                        type: "GET",
-                        url: url,
-                        dataType: "json",
-                        async: false,
-                        success: function (data) {
-                            for (i = 0; i < data.Components.length; i++) {
-                                if (i == 0) {
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                        + data.Name + '</div>');
-                                }
-                                cData = data.Components[i];
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                + cData.Name + '</div>');
-                                if (cData.Type == "data-table-with-actions") {
+            setTimeout(function () {
+                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
+                    if ($(element).hasClass("highlightedRow")) {
+                        pageCount++;
+                        pageId = $(element).attr("pageId");
+                        AssociatedPageIds.push(parseInt(pageId));
+                        url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            dataType: "json",
+                            async: false,
+                            success: function (data) {
+                                for (i = 0; i < data.Components.length; i++) {
+                                    if (i == 0) {
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
+                                            + data.Name + '</div>');
+                                    }
+                                    cData = data.Components[i];
                                     $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_EditAction</div>');
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DetailsAction</div>');
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
-                                        + cData.Name + '_DeleteAction</div>');
-                                }
-                                if (cData.ChildComponents) {
-                                    for (j = 0; j < cData.ChildComponents.length; j++) {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
-                                        + cData.ChildComponents[j].Name + '</div>');
+                                    + cData.Name + '</div>');
+                                    if (cData.Type == "data-table-with-actions") {
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                            + cData.Name + '_EditAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                            + cData.Name + '_DetailsAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentId="' + cData.Id + '" libType="ui" class="libraryItem">'
+                                            + cData.Name + '_DeleteAction</div>');
+                                    }
+                                    if (cData.ChildComponents) {
+                                        for (j = 0; j < cData.ChildComponents.length; j++) {
+                                            $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
+                                            + cData.ChildComponents[j].Name + '</div>');
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
-                }
-            });
-            $("#blockHeaderScreenCount").text(pageCount);
-            chooseScreensDialog.dialog("close");
+                        });
+                    }
+                });
+                $("#blockHeaderScreenCount").text(pageCount);
+                chooseScreensDialog.find(".spinner-2").hide();
+                chooseScreensDialog.dialog("close");
+            }, 4);
         }
         tableAttributePropertiesDialog = $("#table-attribute-properties-dialog").dialog({
             autoOpen: false,
