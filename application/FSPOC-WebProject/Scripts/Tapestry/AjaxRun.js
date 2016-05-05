@@ -178,6 +178,15 @@ $(function () {
                 });
             }
             else if ($(this).attr("originalId") == "uic_subscriber_name_select_dropdown") {
+                var spinner = $(inlineSpinnerTemplate)
+                    .attr({ id: "approver_select_dropdown_spinner" })
+                    .css({
+                        position: "absolute",
+                        top: $(this).position().top,
+                        left: $(this).position().left + $(this).outerWidth()
+                    })
+                    .insertAfter(this);
+
                 panel = $(this).parents(".uic.panel-component");
                 dropdownName = $(this).attr("name");
                 if (dropdownName.startsWith("panelCopy"))
@@ -193,12 +202,22 @@ $(function () {
                         panel.find('.uic[originalId="uic_address_textbox"]').val(data.user.stras + " " + data.user.hsnmr + ", " + data.user.pstlz + " " + data.user.ort01);
                         panel.find('.uic[originalId="uic_company_textbox"]').val("RWE");
                         panel.find('.uic[originalId="uic_ns_textbox"]').val(data.user.kostl);
+                        spinner.remove();
                     }
                 });
             }
         });
         $(".input-single-line").on("change", function (e) {
             if ($(this).attr("originalId") == "uic_reciever_textbox") {
+                var spinner = $(inlineSpinnerTemplate)
+                    .attr({ id: "approver_select_dropdown_spinner" })
+                    .css({
+                        position: "absolute",
+                        top: $(this).position().top,
+                        left: $(this).position().left + $(this).outerWidth()
+                    })
+                    .insertAfter(this);
+
                 panel = $(this).parents(".uic.panel-component");
                 dropdownName = $(this).attr("name");
                 if (dropdownName.startsWith("panelCopy"))
@@ -214,6 +233,7 @@ $(function () {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
                         }
+                        spinner.remove();
                     }
                 });
             }
