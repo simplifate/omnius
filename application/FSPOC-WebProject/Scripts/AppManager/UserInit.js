@@ -115,6 +115,19 @@ $(function () {
                 $("#appMenu").width(table.width());
             }
         });
+        $(".uic.button-simple, .uic.button-dropdown").on("click", function () {
+            $(".uic.data-table").each(function (tableIndex, tableElement) {
+                var visibleRowList = "";
+                var dataTable = $(tableElement).DataTable();
+                dataTable.rows({ search: 'applied' }).data().each(function (value, index) {
+                    if (index > 0)
+                        visibleRowList += ",";
+                    visibleRowList += value[0];
+                });
+                tableName = $(tableElement).attr("name");
+                $('input[name="' + tableName + '"').val(visibleRowList);
+            });
+        });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {
             newComponent = $(element);
