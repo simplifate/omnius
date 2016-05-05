@@ -100,57 +100,7 @@ $(function () {
             else
                 alert("No template selected");
         }
-        choosePortDialog = $("#choose-port-dialog").dialog({
-            autoOpen: false,
-            width: 450,
-            height: 500,
-            buttons: {
-                "Choose": function () {
-                    choosePortDialog_SubmitData();
-                },
-                Cancel: function () {
-                    choosePortDialog.dialog("close");
-                }
-            },
-            open: function (event, ui) {
-                $("#choose-port-dialog").find("#choice-port tbody:nth-child(2) tr").remove();
-                $.ajax({
-                    type: "GET",
-                    url: "/api/tapestry/apps/" + appId + "/blocks",
-                    dataType: "json",
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    },
-                    success: function (data) {
-                        tbody = $("#choose-port-dialog").find("#choice-port tbody:nth-child(2)");
-                        for (i = 0; i < data.ListItems.length; i++) {
-                            tbody.append($('<tr class="portRow formRow" portId="' + data.ListItems[i].Id + '"><td>'
-                                + data.ListItems[i].Name + '</td></tr>'));
-                        }
-                        if (CurrentItem.data("portId"))
-                            tbody.find('tr[portId="' + CurrentItem.data("portId") + '"]').addClass("highlightedRow");
-                        $(document).on("click", "tr.portRow", function (event) {
-                            choosePortDialog.find("#choice-port tbody:nth-child(2) tr").removeClass("highlightedRow");
-                            $(this).addClass("highlightedRow");
-                        });
-                    }
-                });
-            }
-        });
-        function choosePortDialog_SubmitData() {
-            selectedRow = choosePortDialog.find("#choice-port:first tbody:nth-child(2) tr.highlightedRow");
-            if (selectedRow.length) {
-                CurrentItem.data("portId", selectedRow.attr("portId"));
-                CurrentItem.html('<i class="fa fa-sign-out" style="margin-left: 1px; margin-right: 5px;"></i>'
-                    + selectedRow.find("td").text());
-                CurrentItem.parents(".rule").data("jsPlumbInstance").recalculateOffsets();
-                CurrentItem.parents(".rule").data("jsPlumbInstance").repaintEverything();
-                choosePortDialog.dialog("close");
-                ChangedSinceLastSave = true;
-            }
-            else
-                alert("No port selected");
-        }
+        
         renameRuleDialog = $("#rename-rule-dialog").dialog({
             autoOpen: false,
             width: 400,
