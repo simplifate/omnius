@@ -870,6 +870,7 @@
     <Compile Include="Tapestry\Actions\Entitron\GetModelUrlAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\MassEditAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectFromViewAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
