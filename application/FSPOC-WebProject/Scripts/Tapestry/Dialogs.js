@@ -486,6 +486,8 @@ $(function () {
             }
         });
         function chooseTablesDialog_SubmitData() {
+            chooseTablesDialog.find("#table-table:first tbody:nth-child(2) tr").hide();
+            chooseTablesDialog.find(".spinner-2").show();
             appId = $("#currentAppId").val();
             url = "/api/database/apps/" + appId + "/commits/latest";
             $.ajax({
@@ -529,6 +531,7 @@ $(function () {
                     }
                     $("#blockHeaderDbResCount").text(tableCount);
                     chooseTablesDialog.dialog("close");
+                    chooseTablesDialog.find(".spinner-2").hide();
                 }
             });
         }
