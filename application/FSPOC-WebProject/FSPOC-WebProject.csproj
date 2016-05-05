@@ -1322,6 +1322,7 @@
     <Content Include="Scripts\cm\theme\zenburn.css" />
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
+    <Content Include="Scripts\CommonLibraries\jquery.ba-throttle-debounce.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
     <Content Include="Scripts\CORE\logout.js" />
     <Content Include="Scripts\Hermes\Init.js" />
