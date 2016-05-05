@@ -294,6 +294,8 @@ $(function () {
                 });
             },
             open: function (event, ui) {
+                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
+                chooseScreensDialog.find(".spinner-2").show();
                 appId = $("#currentAppId").val();
                 $.ajax({
                     type: "GET",
@@ -303,7 +305,6 @@ $(function () {
                         alert(request.responseText);
                     },
                     success: function (data) {
-                        chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
                         tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
                             newScreenRow = $('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>');
@@ -314,6 +315,7 @@ $(function () {
                         $("#screen-table .screenRow").on("click", function () {
                             $(this).toggleClass("highlightedRow");
                         });
+                        chooseScreensDialog.find(".spinner-2").hide();
                     }
                 });
             }
@@ -874,6 +876,7 @@ $(function () {
         },
         open: function (event, ui) {
             chooseWhitelistRolesDialog.find("#role-table:first tbody:nth-child(2) tr").remove();
+            chooseWhitelistRolesDialog.find(".spinner-2").show();
             appId = $("#currentAppId").val();
             $.ajax({
                 type: "GET",
@@ -890,6 +893,7 @@ $(function () {
                             $(this).toggleClass("highlightedRow");
                         });
                     }
+                    chooseWhitelistRolesDialog.find(".spinner-2").hide();
                 }
             });
         }
