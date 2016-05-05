@@ -229,6 +229,7 @@ $(function () {
                     success: function (data) {
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
                         targetDropdown.find("option").remove();
+                        targetDropdown.append("<option selected> --- Prosím vyberte Uživatele --- </option>");
                         for (i = 0; i < data.UserList.length; i++) {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
