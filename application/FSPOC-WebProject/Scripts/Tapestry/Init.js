@@ -135,7 +135,7 @@ $(function () {
             var overlay = $("#lowerPanelSpinnerOverlay");
             
             overlay.css({right: 0, width: 'auto'});
-            if (scrollTop > lowerPanelTop) {
+            if (scrollTop > lowerPanelTop - 75) {
                 leftBar.css({ top:75, left: 225, position: "fixed" });
                 overlay.css({ top:75, left: 225, position: "fixed" });
             } else {
