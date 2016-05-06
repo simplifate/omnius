@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "ColumnName", "Value", "?IdList" };
+                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData" };
             }
         }
 
@@ -64,7 +64,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             var targetValue = int.Parse((string)vars["Value"]);
             var idList = new List<object>();
             List<DBItem> results = null;
-            if (vars.ContainsKey("IdList"))
+            if (vars.ContainsKey("TableData"))
+            {
+                results = (List<DBItem>)vars["TableData"];
+            }
+            else if (vars.ContainsKey("IdList"))
             {
                 idList = ((string)vars["IdList"]).Split(',').Select(int.Parse).Cast<object>().ToList();
                 results = table.Select().where(c => c.column("id").In(idList)).ToList();

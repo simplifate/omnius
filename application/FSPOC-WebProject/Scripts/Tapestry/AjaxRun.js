@@ -250,20 +250,11 @@ $(function () {
                         panel.find('.uic[originalId="uic_address_textbox"]').val(data.user.stras + " " + data.user.hsnmr + ", " + data.user.pstlz + " " + data.user.ort01);
                         panel.find('.uic[originalId="uic_company_textbox"]').val("RWE");
                         panel.find('.uic[originalId="uic_ns_textbox"]').val(data.user.kostl);
+                        panel.find('.uic[originalId="uic_subscriber_full_name_textbox"]').val(data.user.vorna + " " + data.user.nachn);
                     }
                 });
             }
         });
-        var recieverTextbox = $("#uic_reciever_textbox");
-        recieverTextbox.on("change", updateSubscriberList);
-        recieverTextbox.on("input", $.debounce(1000, updateSubscriberList));
-        recieverTextbox.on("keypress", function(e){
-            if(e.which == 9 || e.which == 13){
-                updateSubscriberList();
-                e.preventDefault();
-            }
-        });
-
         function updateSubscriberList(e) {
             if ($(this).attr("originalId") == "uic_reciever_textbox") {
                 var spinner = $(inlineSpinnerTemplate)
@@ -296,6 +287,15 @@ $(function () {
                 });
             }
         };
+        var recieverTextbox = $("#uic_reciever_textbox");
+        recieverTextbox.on("change", updateSubscriberList);
+        recieverTextbox.on("input", $.debounce(1000, updateSubscriberList));
+        recieverTextbox.on("keypress", function (e) {
+            if (e.which == 9 || e.which == 13) {
+                updateSubscriberList();
+                e.preventDefault();
+            }
+        });
     }
     else if ($("#currentBlockName").val() == "SchvaleniObjednavkyPeriodika") {
         $.ajax({
