@@ -31,10 +31,19 @@ $('body').on('click', '.runAjax', function (e) {
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+        var userSelectDropdown = $("#uic_user_select_dropdown");
+        var userSelectDropdownSpinner = $(inlineSpinnerTemplate)
+                    .attr({ id: "approver_select_dropdown_spinner" })
+                    .css({
+                        position: "absolute",
+                        top: $(userSelectDropdown).position().top,
+                        left: $(userSelectDropdown).position().left + $(userSelectDropdown).outerWidth()
+                    })
+                    .insertAfter(userSelectDropdown);
         $.ajax({
             type: "POST",
-            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_dropdown",
-            data: { },
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_label",
+            data: {},
             success: function (data) {
                 $("#uic_user_select_dropdown option").remove();
                 $("#uic_user_select_dropdown").append('<option value="' + data.user.rwe_id + '">Za sebe</option>');
@@ -42,7 +51,30 @@ $(function () {
                     $("#uic_user_select_dropdown").append('<option value="' + data.managers[i].manager_id + '">' + data.managers[i].manager_full_name + '</option>');
                 }
                 $("#uic_user_select_dropdown").val(data.user.rwe_id);
+                userSelectDropdownSpinner.remove();
             }
+        });
+        $("body").on("change", "#uic_user_select_dropdown", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "approver_select_dropdown_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
+                data: { 'targetId': $(this).val() },
+                success: function (data) {
+                    $("#uic_subscriber_textbox").val(data.user[0].full_name);
+                    $("#uic_ns_textbox").val(data.user[0].kostl);
+                    $("#uic_company_textbox").val("RWE");
+                    spinner.remove();
+                }
+            });
         });
         $("body").on("change", "#uic_periodical_dropdown", function (e) {
             var spinner = $(inlineSpinnerTemplate)
