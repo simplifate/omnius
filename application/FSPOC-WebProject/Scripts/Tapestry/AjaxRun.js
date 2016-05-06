@@ -31,6 +31,8 @@ $('body').on('click', '.runAjax', function (e) {
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+        $("#uic_begin_dtpicker").val("01.01.2017");
+        $("#uic_end_dtpicker").val("31.12.2017");
         var userSelectDropdown = $("#uic_user_select_dropdown");
         var userSelectDropdownSpinner = $(inlineSpinnerTemplate)
                     .attr({ id: "approver_select_dropdown_spinner" })
@@ -69,10 +71,10 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
                 success: function (data) {
+                    spinner.remove();
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
                     $("#uic_ns_textbox").val(data.user[0].kostl);
                     $("#uic_company_textbox").val("RWE");
-                    spinner.remove();
                 }
             });
         });
