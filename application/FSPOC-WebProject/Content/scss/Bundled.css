@@ -3506,9 +3506,9 @@ body.cortexModule #lowerPanel {
   display: none; }
 
 #pageOverlay {
-  position: absolute;
+  position: fixed;
   left: 225px;
-  top: 0;
+  top: 75px;
   right: 0;
   bottom: 0;
   background: #f2f2f3; }
@@ -3522,7 +3522,8 @@ body.cortexModule #lowerPanel {
 body.userLayout #pageOverlay {
   left: 310px;
   top: 50px;
-  background: #ffffff; }
+  background: #ffffff;
+  position: absolute; }
 
 /*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
 .spinner-2 {
