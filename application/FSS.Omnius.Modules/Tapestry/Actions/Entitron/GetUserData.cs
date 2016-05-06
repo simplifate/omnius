@@ -74,6 +74,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 result.createProperty(20, "kostl", userRecord["kostl"]);
                 result.createProperty(21, "sapid1", userRecord["sapid1"]);
                 result.createProperty(22, "sapid2", userRecord["sapid2"]);
+                result.createProperty(23, "rwe_id", userRecord["id"]);
             }
             outputVars["UserData"] = result;
         }

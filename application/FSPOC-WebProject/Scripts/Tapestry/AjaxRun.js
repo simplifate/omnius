@@ -31,6 +31,19 @@ $('body').on('click', '.runAjax', function (e) {
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+        $.ajax({
+            type: "POST",
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_dropdown",
+            data: { },
+            success: function (data) {
+                $("#uic_user_select_dropdown option").remove();
+                $("#uic_user_select_dropdown").append('<option value="' + data.user.rwe_id + '">Za sebe</option>');
+                for (i = 0; i < data.managers.length; i++) {
+                    $("#uic_user_select_dropdown").append('<option value="' + data.managers[i].manager_id + '">' + data.managers[i].manager_full_name + '</option>');
+                }
+                $("#uic_user_select_dropdown").val(data.user.rwe_id);
+            }
+        });
         $("body").on("change", "#uic_periodical_dropdown", function (e) {
             var spinner = $(inlineSpinnerTemplate)
                 .attr({ id: "approver_select_dropdown_spinner" })
