@@ -46,6 +46,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
                 success: function (data) {
+                    spinner.remove();
                     $("#uic_interval_dropdown option").each(function (index, element) {
                         option = $(element);
                         if (option.attr("value") == data.periodical.id_periodical_interval) {
@@ -75,7 +76,6 @@ $(function () {
                     else
                         $("#uic_ship_to_textbox").val(data.user.Address);
 
-                    spinner.remove();
                 }
             });
         });
@@ -96,12 +96,12 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "SearchQuery": $(this).val() },
                 success: function (data) {
+                    spinner.remove();
                     $("#uic_approver_select_dropdown option").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
                         $("#uic_approver_select_dropdown").append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
                     }
-                    spinner.remove();
                 }
             });
         });
@@ -120,9 +120,9 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "targetId": $(this).val() },
                 success: function (data) {
+                    spinner.remove();
                     $("#uic_occupation_select_dropdown option").remove();
                     $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
-                    spinner.remove();
                 }
             });
         });
@@ -146,6 +146,7 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
                     data: { 'targetId': $(this).val() },
                     success: function (data) {
+                        spinner.remove();
                         panel.find('[originalId="uic_interval_dropdown"] option').each(function (index, element) {
                             option = $(element);
                             if (option.attr("value") == data.periodical.id_periodical_interval) {
@@ -173,7 +174,6 @@ $(function () {
                         panel.find('[originalId="uic_prince_vat_10_textbox"]').val(data.periodical.tentatively_net_of_VAT10);
                         RecalculateAutosum(panel);
 
-                        spinner.remove();
                     }
                 });
             }
@@ -196,13 +196,13 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_select_dropdown",
                     data: { "targetId": $(this).val() },
                     success: function (data) {
+                        spinner.remove();
                         panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"] option').remove();
                         panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"]').append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
                         panel.find('.uic[originalId="uic_function_textbox"]').val(data.job[0].stext);
                         panel.find('.uic[originalId="uic_address_textbox"]').val(data.user.stras + " " + data.user.hsnmr + ", " + data.user.pstlz + " " + data.user.ort01);
                         panel.find('.uic[originalId="uic_company_textbox"]').val("RWE");
                         panel.find('.uic[originalId="uic_ns_textbox"]').val(data.user.kostl);
-                        spinner.remove();
                     }
                 });
             }
@@ -237,6 +237,7 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_textbox",
                     data: { "SearchQuery": $(this).val() },
                     success: function (data) {
+                        spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
                         targetDropdown.find("option").remove();
                         targetDropdown.append("<option selected> --- Prosím vyberte Uživatele --- </option>");
@@ -244,7 +245,6 @@ $(function () {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
                         }
-                        spinner.remove();
                     }
                 });
             }
