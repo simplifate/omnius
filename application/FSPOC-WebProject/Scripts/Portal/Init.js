@@ -131,11 +131,9 @@ $(function () {
     $("#topBar").width($(window).width());
     $("#upperPanel").width($(window).width() - 225);
     $("#minimizedUpperPanel").width($(window).width() - 225);
-    $("#leftBar").height($(document).height() - 75);
     $(window).on("resize", function () {
         $("#topBar").width($(window).width());
         $("#upperPanel").width($(window).width() - 225);
         $("#minimizedUpperPanel").width($(window).width() - 225);
-        $("#leftBar").height($(document).height() - 75);
     });
 });

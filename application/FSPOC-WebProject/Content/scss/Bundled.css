@@ -188,6 +188,7 @@ body.adminAppModule #appBuildResults {
   width: 100vw;
   height: 75px;
   background-color: #457fa9;
+  position: fixed;
   z-index: 30; }
   #topBar #omniusLogo {
     width: 225px;
@@ -257,12 +258,13 @@ body.adminAppModule #appBuildResults {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
-  position: absolute;
+  position: fixed;
   left: 0px;
   top: 75px;
-  height: 100vh;
+  bottom: 0;
   width: 225px;
-  background-color: #455d73; }
+  background-color: #455d73;
+  overflow: auto; }
   #leftBar .leftMenu {
     padding-left: 0px; }
     #leftBar .leftMenu li {
