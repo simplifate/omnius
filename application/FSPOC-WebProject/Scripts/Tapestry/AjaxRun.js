@@ -207,12 +207,13 @@ $(function () {
                 });
             }
         });
-        var recieverTextbox = $(".input-single-line[originalId='uic_reciever_textbox']");
+        var recieverTextbox = $("#uic_reciever_textbox");
         recieverTextbox.on("change", updateSubscriberList);
-        recieverTextbox.on("input", $.debounce(updateSubscriberList));
+        recieverTextbox.on("input", $.debounce(1000, updateSubscriberList));
         recieverTextbox.on("keypress", function(e){
             if(e.which == 9 || e.which == 13){
                 updateSubscriberList();
+                e.preventDefault();
             }
         });
 
