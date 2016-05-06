@@ -108,6 +108,15 @@ $(function () {
                             .draw();
                     });
                 });
+                if ($("#currentBlockName").val() == "PrehledObjednavek") {
+                    var currentUser = $("#currentUserName").val();
+                    dataTable
+                        .order([1, 'desc'])
+                        .column(4)
+                        .search(currentUser)
+                        .draw();
+                    table.find("tfoot th:nth-child(5) input").val(currentUser);
+                }
             }
             mozaicForm = $("#userContentArea .mozaicForm");
             if (table.width() > mozaicForm.width()) {

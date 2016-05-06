@@ -78,7 +78,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 query = (string)vars["Query"] + "%";
 
             outputVars["Data"] = core.Entitron.GetDynamicTable((string)vars["TableName"]).Select()
-                .where(c => c.column((string)vars["ColumnName"]).Like(query)).ToList();
+                .where(c => c.column((string)vars["ColumnName"]).LikeCaseInsensitive(query)).ToList();
         }
     }
 }

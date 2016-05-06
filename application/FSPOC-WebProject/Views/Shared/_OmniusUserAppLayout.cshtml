@@ -74,6 +74,7 @@
     </div>
     <input type="hidden" id="currentAppName" value="@ViewData["appName"]" />
     <input type="hidden" id="currentBlockName" value="@ViewData["blockName"]" />
+    <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
     {
         <div id="modalRepository">
