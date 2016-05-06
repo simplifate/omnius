@@ -74,7 +74,7 @@ $(function () {
                     spinner.remove();
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
                     $("#uic_ns_textbox").val(data.user[0].kostl);
-                    $("#uic_company_textbox").val("RWE");
+                    $("#uic_company_textbox").val(data.user[0].Company);
                 }
             });
         });
