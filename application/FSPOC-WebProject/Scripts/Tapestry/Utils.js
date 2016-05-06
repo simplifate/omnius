@@ -250,7 +250,7 @@ function RecalculateToolboxHeight() {
     var lowerPanelTop = $("#lowerPanel").offset().top;
     var bottomPanelHeight; 
     if (scrollTop > lowerPanelTop) {
-        bottomPanelHeight = window.innerHeight;
+        bottomPanelHeight = window.innerHeight - 75;
     } else {
         bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top;
     }
