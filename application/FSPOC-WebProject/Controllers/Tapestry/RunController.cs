@@ -50,6 +50,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                     return new HttpStatusCodeResult(404);
                 }
 
+                ViewData["tapestry"] = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, null).Item1.OutputData;
+
                 // fill data
                 ViewData["appName"] = core.Entitron.Application.DisplayName;
                 ViewData["appIcon"] = core.Entitron.Application.Icon;

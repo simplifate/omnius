@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             return output;
         }
-        private Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             // __CORE__
             // __Result[uicName]__
@@ -53,7 +53,6 @@ namespace FSS.Omnius.Modules.Tapestry
             // __TableName__
 
             // init action
-            fc = fc ?? new NameValueCollection();
             _CORE.User = user;
             _results.OutputData.Add("__CORE__", _CORE);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
@@ -66,30 +65,33 @@ namespace FSS.Omnius.Modules.Tapestry
             ActionRule nextRule = GetActionRule(block, _results, buttonId);
             if (nextRule == null)
                 return new Tuple<ActionResult, Block>(_results, block);
-
+            
             // get inputs
-            string[] keys = fc.AllKeys;
-            foreach (string key in keys)
+            if (fc != null)
             {
-                _results.OutputData.Add(key, fc[key]);
-            }
-
-            // map inputs
-            foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
-            {
-                TapestryDesignerResourceItem source = pair.Source;
-                TapestryDesignerResourceItem target = pair.Target;
-
-                if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
+                string[] keys = fc.AllKeys;
+                foreach (string key in keys)
                 {
-                    if (fc.AllKeys.Contains(source.ComponentName))
-                        _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
-                    for (int panelIndex = 1; fc.AllKeys.Contains($"panelCopy{panelIndex}Marker"); panelIndex++)
+                    _results.OutputData.Add(key, fc[key]);
+                }
+
+                // map inputs
+                foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
+                {
+                    TapestryDesignerResourceItem source = pair.Source;
+                    TapestryDesignerResourceItem target = pair.Target;
+
+                    if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
                     {
                         if (fc.AllKeys.Contains(source.ComponentName))
+                            _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
+                        for (int panelIndex = 1; fc.AllKeys.Contains($"panelCopy{panelIndex}Marker"); panelIndex++)
                         {
-                            _results.OutputData.Add($"__Model.panelCopy{panelIndex}.{target.TableName}.{target.ColumnName}",
-                                fc[$"panelCopy{panelIndex}_" + source.ComponentName]);
+                            if (fc.AllKeys.Contains(source.ComponentName))
+                            {
+                                _results.OutputData.Add($"__Model.panelCopy{panelIndex}.{target.TableName}.{target.ColumnName}",
+                                    fc[$"panelCopy{panelIndex}_" + source.ComponentName]);
+                            }
                         }
                     }
                 }

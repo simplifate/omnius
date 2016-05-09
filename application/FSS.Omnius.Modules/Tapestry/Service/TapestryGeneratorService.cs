@@ -240,7 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // create virtual starting items
             TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
             BlockMapping.Add(virtualBeginItem, block);
-            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.TypeClass == "uiItem"))
+            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single")))
             {
                 TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
                 {
@@ -322,6 +322,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, int> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
             string init = connection.Target.ComponentName;
+            if (workflowRule.Name == "INIT") // initial ActionRule
+                init = "INIT";
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
             {
