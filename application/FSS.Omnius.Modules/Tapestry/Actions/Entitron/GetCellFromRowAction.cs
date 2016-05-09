@@ -57,7 +57,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             if (core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
-            outputVars["CellValue"] = ((DBItem)vars["RowData"])[(string)vars["ColumnName"]];
+            DBItem rowData = vars["RowData"] is List<DBItem> ? ((List<DBItem>)vars["RowData"])[0] : (DBItem)vars["RowData"];
+            outputVars["CellValue"] = rowData[(string)vars["ColumnName"]];
         }
     }
 }

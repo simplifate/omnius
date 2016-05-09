@@ -311,4 +311,54 @@ $(function () {
         });
         orderTable.find("thead tr th:nth-child(2), tbody tr td:nth-child(2), tfoot tr th:nth-child(2)").hide();
     }
+    else if ($("#currentBlockName").val() == "NovyZastupce") {
+        $("#uic_user_textbox").on("change", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "user_textbox_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
+                data: { "SearchQuery": $(this).val() },
+                success: function (data) {
+                    spinner.remove();
+                    $("#uic_select_user_dropdown option").remove();
+                    for (i = 0; i < data.UserList.length; i++) {
+                        currentUser = data.UserList[i];
+                        $("#uic_select_user_dropdown").append('<option value="' + currentUser.pernr + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
+                    }
+                }
+            });
+        });
+        $("#uic_deputy_textbox").on("change", function (e) {
+            var spinner = $(inlineSpinnerTemplate)
+                .attr({ id: "deputy_textbox_spinner" })
+                .css({
+                    position: "absolute",
+                    top: $(this).position().top,
+                    left: $(this).position().left + $(this).outerWidth()
+                })
+                .insertAfter(this);
+
+            $.ajax({
+                type: "POST",
+                url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
+                data: { "SearchQuery": $(this).val() },
+                success: function (data) {
+                    spinner.remove();
+                    $("#uic_select_deputy_dropdown option").remove();
+                    for (i = 0; i < data.UserList.length; i++) {
+                        currentUser = data.UserList[i];
+                        $("#uic_select_deputy_dropdown").append('<option value="' + currentUser.pernr + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
+                    }
+                }
+            });
+        });
+    }
 });
