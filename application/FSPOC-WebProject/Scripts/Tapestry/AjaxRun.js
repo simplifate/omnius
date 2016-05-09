@@ -239,13 +239,13 @@ $(function () {
                     data: { "targetId": $(this).val() },
                     success: function (data) {
                         spinner.remove();
-                        panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"] option').remove();
-                        panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"]').append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
-                        panel.find('.uic[originalId="uic_function_textbox"]').val(data.job[0].stext);
-                        panel.find('.uic[originalId="uic_address_textbox"]').val(data.user.stras + " " + data.user.hsnmr + ", " + data.user.pstlz + " " + data.user.ort01);
-                        panel.find('.uic[originalId="uic_company_textbox"]').val("RWE");
-                        panel.find('.uic[originalId="uic_ns_textbox"]').val(data.user.kostl);
-                        panel.find('.uic[originalId="uic_subscriber_full_name_textbox"]').val(data.user.vorna + " " + data.user.nachn);
+                        var currentUser = data.user[0];
+                        panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"]').append('<option value="' + currentUser.Job + '">' + currentUser.Job + '</option>');
+                        panel.find('.uic[originalId="uic_function_textbox"]').val(currentUser.Job);
+                        panel.find('.uic[originalId="uic_address_textbox"]').val(currentUser.stras + " " + currentUser.hsnmr + ", " + currentUser.pstlz + " " + currentUser.ort01);
+                        panel.find('.uic[originalId="uic_company_textbox"]').val(currentUser.Company);
+                        panel.find('.uic[originalId="uic_ns_textbox"]').val(currentUser.kostl);
+                        panel.find('.uic[originalId="uic_subscriber_full_name_textbox"]').val(currentUser.full_name);
                     }
                 });
             }
