@@ -82,11 +82,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             {
                                 if (nameValuePair[0].ToLower() == "autosum")
                                     stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
-                                else if(nameValuePair[0].ToLower() == "role")
+                                else if (nameValuePair[0].ToLower() == "role")
                                     stringBuilder.Append($" uicRole=\"{nameValuePair[1]}\"");
                             }
                         }
                     }
+                    if (c.Classes.Contains("input-read-only"))
+                        stringBuilder.Append($" readonly ");
                     stringBuilder.Append($"/>");
                 }
                 else if (c.Type == "input-multiline")
@@ -108,6 +110,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             }
                         }
                     }
+                    if (c.Classes.Contains("input-read-only"))
+                        stringBuilder.Append($" readonly ");
                     stringBuilder.Append($">@ViewData[\"inputData_{c.Name}\"]</{c.Tag}>");
                 }
                 else if (c.Type == "label")
