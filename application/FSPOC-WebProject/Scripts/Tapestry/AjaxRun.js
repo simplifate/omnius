@@ -117,9 +117,13 @@ $(function () {
                         $("#uic_ship_to_textbox").val(data.user.Email);
                     else
                         $("#uic_ship_to_textbox").val(data.user.Address);
-
+                    $('.uic[uicRole="price"]').val(data.periodical.tentatively_net_of_VAT10);
+                    $('.uic[uicRole="output"]').val(data.periodical.tentatively_net_of_VAT10 * parseInt($('.uic[uicRole="count"]').val()));
                 }
             });
+        });
+        $("body").on("change", '.uic[uicRole="count"]', function (e) {
+            $('.uic[uicRole="output"]').val($('.uic[uicRole="price"]').val() * parseInt($('.uic[uicRole="count"]').val()));
         });
     }
     else if ($("#currentBlockName").val() == "HromadnaObjednavkaProAsistentky") {

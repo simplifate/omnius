@@ -74,11 +74,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
-                        string[] nameValuePair = c.Properties.Split('=');
-                        if (nameValuePair.Length == 2)
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
                         {
-                            if (nameValuePair[0].ToLower() == "autosum")
-                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                            string[] nameValuePair = c.Properties.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                if (nameValuePair[0].ToLower() == "autosum")
+                                    stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                                else if(nameValuePair[0].ToLower() == "role")
+                                    stringBuilder.Append($" uicRole=\"{nameValuePair[1]}\"");
+                            }
                         }
                     }
                     stringBuilder.Append($"/>");
@@ -89,11 +95,17 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
-                        string[] nameValuePair = c.Properties.Split('=');
-                        if (nameValuePair.Length == 2)
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
                         {
-                            if (nameValuePair[0].ToLower() == "autosum")
-                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                            string[] nameValuePair = c.Properties.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                if (nameValuePair[0].ToLower() == "autosum")
+                                    stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
+                                else if (nameValuePair[0].ToLower() == "role")
+                                    stringBuilder.Append($" uicRole=\"{nameValuePair[1]}\"");
+                            }
                         }
                     }
                     stringBuilder.Append($">@ViewData[\"inputData_{c.Name}\"]</{c.Tag}>");
