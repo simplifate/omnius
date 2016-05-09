@@ -250,7 +250,8 @@ $(function () {
                 });
             }
         });
-        function updateSubscriberList(e) {
+
+        $("#uic_reciever_textbox").trackInputDone(function() {
             if ($(this).attr("originalId") == "uic_reciever_textbox") {
                 var spinner = $(inlineSpinnerTemplate)
                     .attr({ id: "approver_select_dropdown_spinner" })
@@ -281,16 +282,8 @@ $(function () {
                     }
                 });
             }
-        };
-        var recieverTextbox = $("#uic_reciever_textbox");
-        recieverTextbox.on("change", updateSubscriberList);
-        recieverTextbox.on("input", $.debounce(1000, updateSubscriberList));
-        recieverTextbox.on("keypress", function (e) {
-            if (e.which == 9 || e.which == 13) {
-                updateSubscriberList();
-                e.preventDefault();
-            }
         });
+
     }
     else if ($("#currentBlockName").val() == "SchvaleniObjednavkyPeriodika") {
         $.ajax({

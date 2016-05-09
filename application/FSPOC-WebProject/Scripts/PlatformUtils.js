@@ -71,3 +71,30 @@ function CreateColorPicker(target) {
         ]
     });
 }
+
+(function ($) {
+    $.fn.trackInputDone = function (selector, cb) {
+        if (typeof selector === "function") {
+            cb = selector;
+            selector = null;
+        }
+        if (cb) this.on("inputDone", selector, cb);
+
+        this.on("input keypress", function (e) {
+            if (e.type === "keypress" && e.which === 13) {
+                e.preventDefault();
+                recheckInput.call(this);
+            } else {
+                clearTimeout($(this).data("inputTrackerTimeout"));
+                $(this).data("inputTrackerTimeout", setTimeout(recheckInput.bind(this), 1000));
+            }
+        }).on("change", recheckInput);
+
+        function recheckInput() {
+            if ($(this).data("inputTrackerPrevValue") !== this.value) {
+                $(this).trigger("inputDone");
+                $(this).data("inputTrackerPrevValue", this.value);
+            }
+        }
+    }
+})(jQuery);
