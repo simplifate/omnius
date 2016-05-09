@@ -3187,28 +3187,25 @@ body.cortexModule #lowerPanel {
   body.cortexModule .moduleSubMenuArea {
     transform: scale(0.75); } }
 
-.ui-dialog .ui-dialog {
+.ui-dialog {
+  position: fixed !important;
   padding: 0px 0px;
   border: 1px solid black;
   border-radius: 4px; }
-
-.ui-dialog .ui-widget-header {
-  background-image: none;
-  background-color: #2d74b2;
-  color: white; }
-
-.ui-dialog .ui-dialog .ui-dialog-buttonpane {
-  padding: 3px; }
-
-.ui-dialog .ui-dialog .ui-dialog-buttonset button {
-  margin: 3px; }
-
-.ui-dialog .ui-dialog-titlebar-close {
-  background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
-  border: medium none; }
-
-.ui-dialog .ui-dialog-titlebar-close:hover {
-  background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
+  .ui-dialog .ui-widget-header {
+    background-image: none;
+    background-color: #2d74b2;
+    color: white; }
+  .ui-dialog .ui-dialog-buttonpane {
+    padding: 3px;
+    border-radius: 4px; }
+  .ui-dialog .ui-dialog-buttonset button {
+    margin: 3px; }
+  .ui-dialog .ui-dialog-titlebar-close {
+    background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px transparent;
+    border: medium none; }
+  .ui-dialog .ui-dialog-titlebar-close:hover {
+    background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
 
 .lowerLeftDecoration {
   position: absolute;
