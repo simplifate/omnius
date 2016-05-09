@@ -118,7 +118,7 @@ $(function () {
             },
             open: function (event, ui) {
                 choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
-                $("#choose-page-dialog .spinner-2").delay(1000).fadeIn();
+                $("#choose-page-dialog .spinner-2").show();
                 choosePageDialog.data("selectedCommitId", null);
                 appId = $("#currentAppId").val();
                 $.ajax({
@@ -138,7 +138,7 @@ $(function () {
                             $(this).addClass("highlightedRow");
                             choosePageDialog.data("selectedCommitId", $(this).attr("pageId"));
                         });
-                        $("#choose-page-dialog .spinner-2").stop(true).fadeOut();
+                        $("#choose-page-dialog .spinner-2").hide();
                     }
                 });
             }
