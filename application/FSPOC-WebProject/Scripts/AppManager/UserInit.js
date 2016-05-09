@@ -108,14 +108,14 @@ $(function () {
                             .draw();
                     });
                 });
-                if ($("#currentBlockName").val() == "PrehledObjednavek") {
+                if ($("#currentBlockName").val() == "ZakladniReport") {
                     var currentUser = $("#currentUserName").val();
                     dataTable
                         .order([1, 'desc'])
-                        .column(4)
+                        .column(9)
                         .search(currentUser)
                         .draw();
-                    table.find("tfoot th:nth-child(5) input").val(currentUser);
+                    table.find("tfoot th:nth-child(10) input").val(currentUser);
                 }
             }
             mozaicForm = $("#userContentArea .mozaicForm");
