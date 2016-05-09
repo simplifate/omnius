@@ -176,7 +176,7 @@ $(function () {
             }
         });
         function newPageDialog_SubmitData() {
-            $("#lowerPanelSpinnerOverlay").delay(1000).fadeIn();
+            pageSpinner.show();
             newPageDialog.dialog("close");
             postData = {
                 Name: newPageDialog.find("#new-page-name").val(),
@@ -196,7 +196,7 @@ $(function () {
                     if (SaveRequested) {
                         SaveMozaicPage();
                     } else {
-                        $("#lowerPanelSpinnerOverlay").stop(true).fadeOut();
+                        pageSpinner.hide();
                     }
                 }
             });
