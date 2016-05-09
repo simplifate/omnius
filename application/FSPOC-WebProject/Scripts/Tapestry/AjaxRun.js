@@ -219,7 +219,7 @@ $(function () {
                     }
                 });
             }
-            else if ($(this).attr("originalId") == "uic_subscriber_name_select_dropdown") {
+            else if ($(this).attr("originalId") == "uic_subscriber_name_select_dropdown" && this.value) {
                 var spinner = $(inlineSpinnerTemplate)
                     .attr({ id: "approver_select_dropdown_spinner" })
                     .css({
@@ -273,7 +273,7 @@ $(function () {
                         spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
                         targetDropdown.find("option").remove();
-                        targetDropdown.append("<option selected> --- Prosím vyberte Uživatele --- </option>");
+                        targetDropdown.append("<option selected value = ''> --- Prosím vyberte Uživatele --- </option>");
                         for (i = 0; i < data.UserList.length; i++) {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
