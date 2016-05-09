@@ -34,26 +34,19 @@ $(function () {
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
         var userSelectDropdown = $("#uic_user_select_dropdown");
-        var userSelectDropdownSpinner = $(inlineSpinnerTemplate)
-                    .attr({ id: "approver_select_dropdown_spinner" })
-                    .css({
-                        position: "absolute",
-                        top: $(userSelectDropdown).position().top,
-                        left: $(userSelectDropdown).position().left + $(userSelectDropdown).outerWidth()
-                    })
-                    .insertAfter(userSelectDropdown);
+        pageSpinner.show();
         $.ajax({
             type: "POST",
             url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_label",
             data: {},
             success: function (data) {
+                pageSpinner.hide();
                 $("#uic_user_select_dropdown option").remove();
                 $("#uic_user_select_dropdown").append('<option value="' + data.user.rwe_id + '">Za sebe</option>');
                 for (i = 0; i < data.managers.length; i++) {
                     $("#uic_user_select_dropdown").append('<option value="' + data.managers[i].manager_id + '">' + data.managers[i].manager_full_name + '</option>');
                 }
                 $("#uic_user_select_dropdown").val(data.user.rwe_id);
-                userSelectDropdownSpinner.remove();
             }
         });
         $("body").on("change", "#uic_user_select_dropdown", function (e) {
