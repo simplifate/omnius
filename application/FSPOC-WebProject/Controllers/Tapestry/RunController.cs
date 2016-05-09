@@ -170,7 +170,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var dropdownDictionary = new Dictionary<int, string>();
                         foreach (DataRow datarow in dataSource.Rows)
                         {
-                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow[columnDisplayNameDictionary["name"]]);
+                            dropdownDictionary.Add((int)datarow["hiddenId"], (string)datarow["name"]);
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
