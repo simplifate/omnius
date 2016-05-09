@@ -256,7 +256,7 @@ function RecalculateToolboxHeight() {
     }
     leftBar.height(bottomPanelHeight);
     $("#lowerPanelSpinnerOverlay").height(bottomPanelHeight);
-    $("#workflowRulesPanel").height($(window).height() - 30);
+    $("#workflowRulesPanel").height($(window).height() - 105);
     $("#tapestryLeftBarMinimized").height($("#workflowRulesPanel").offset().top + $("#workflowRulesPanel").height() - lowerPanelTop);
     
 }
