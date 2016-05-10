@@ -1325,6 +1325,7 @@
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
     <Content Include="Scripts\CORE\logout.js" />
     <Content Include="Scripts\Hermes\Init.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery.ba-throttle-debounce.min.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
@@ -1335,9 +1336,6 @@
     <Content Include="Scripts\DatabaseDesigner\DbSqlServerDef.js" />
     <Content Include="Scripts\DatabaseDesigner\DbUtils.js" />
     <Content Include="Scripts\DatabaseDesigner\DbVisualConfiguration.js" />
-    <Content Include="Scripts\jquery-2.1.4.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-collision.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
