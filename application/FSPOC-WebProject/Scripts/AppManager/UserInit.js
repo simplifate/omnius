@@ -117,6 +117,24 @@ $(function () {
                         .draw();
                     table.find("tfoot th:nth-child(10) input").val(currentUser);
                 }
+                else if ($("#currentBlockName").val() == "ReportProAsistentky") {
+                    var currentUser = $("#currentUserName").val();
+                    dataTable
+                        .order([1, 'desc'])
+                        .column(4)
+                        .search(currentUser)
+                        .draw();
+                    table.find("tfoot th:nth-child(5) input").val(currentUser);
+                }
+                else if ($("#currentBlockName").val() == "ReportProVedouciPracovniky") {
+                    var currentUser = $("#currentUserName").val();
+                    dataTable
+                        .order([1, 'desc'])
+                        .column(4)
+                        .search(currentUser)
+                        .draw();
+                    table.find("tfoot th:nth-child(5) input").val(currentUser);
+                }
             }
             mozaicForm = $("#userContentArea .mozaicForm");
             if (table.width() > mozaicForm.width()) {

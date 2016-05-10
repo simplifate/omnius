@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData" };
+                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData", "?ValueType" };
             }
         }
 
@@ -61,7 +61,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
             string targetColumnName = (string)vars["ColumnName"];
-            var targetValue = int.Parse((string)vars["Value"]);
+            object targetValue;
+            if (vars.ContainsKey("ValueType") && (string)vars["ValueType"] == "string")
+                targetValue = (string)vars["Value"];
+            else
+                targetValue = int.Parse((string)vars["Value"]);
             var idList = new List<object>();
             List<DBItem> results = null;
             if (vars.ContainsKey("TableData"))
