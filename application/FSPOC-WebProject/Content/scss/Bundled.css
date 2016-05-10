@@ -664,6 +664,8 @@ body.adminAppModule #appBuildResults {
     height: 75px;
     border: 1px solid #b8b4ab;
     padding-left: 6px; }
+  .mozaicForm .input-read-only {
+    background-color: #e0e0e0; }
   .mozaicForm .info-container {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2976,6 +2978,8 @@ body.mozaicEditorModule {
     height: 75px;
     border: 1px solid #b8b4ab;
     padding-left: 6px; }
+  body.mozaicEditorModule .input-read-only {
+    background-color: #e0e0e0; }
   body.mozaicEditorModule .info-container {
     color: #58585a;
     position: relative;

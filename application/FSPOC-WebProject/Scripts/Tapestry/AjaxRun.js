@@ -302,6 +302,20 @@ $(function () {
             }
         });
     }
+    else if ($("#currentBlockName").val() == "EditaceObjednavky") {
+        $.ajax({
+            type: "POST",
+            url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=periodical_textbox",
+            data: { "targetId": GetUrlParameter("modelId") },
+            success: function (data) {
+                dataRow = data.ViewData[0];
+                $("#uic_periodical_textbox").val(dataRow.Periodikum);
+                $("#uic_interval_textbox").val(dataRow["Četnost"]);
+                $("#uic_form_textbox").val(dataRow.Forma);
+                $("#uic_type_textbox").val(dataRow.Typ);
+            }
+        });
+    }
     else if ($("#currentBlockName").val() == "SchvaleniHromadneObjednavky") {
         var heapOrderId = GetUrlParameter("modelId");
         var orderTable = $("#uic_order_table");

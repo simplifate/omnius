@@ -394,6 +394,9 @@
         border: 1px solid #b8b4ab;
         padding-left: 6px;
     }
+    .input-read-only {
+        background-color: #e0e0e0;
+    }
     .info-container {
         @include no-select();
         color: #58585a;
