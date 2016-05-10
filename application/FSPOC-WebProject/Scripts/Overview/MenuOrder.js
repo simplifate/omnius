@@ -13,6 +13,8 @@
         });
 
         $('#btnSave').click(function () {
+
+            pageSpinner.show();
             
             var metablockOrder = {};
             var blockOrder = {};
@@ -40,7 +42,7 @@
                 data: JSON.stringify(postData),
                 success: function () {
                     ChangedSinceLastSave = true;
-                    alert('ok');
+                    pageSpinner.hide();
                 },
                 error: function (request, status, error) {
                     alert(request.responseText);
