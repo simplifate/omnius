@@ -75,7 +75,7 @@
                             <button class="btn btn-default btnProperties">Vlastnosti</button>
 
                         }
-                        @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default" })
+                        @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default", @target = "_blank" })
                     </td>
                 </tr>
             }
