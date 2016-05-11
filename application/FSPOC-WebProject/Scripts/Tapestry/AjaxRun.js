@@ -89,7 +89,7 @@ $(function () {
             $.ajax({
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
-                data: { 'targetId': $(this).val() },
+                data: { 'targetId': $(this).val(), 'userId': $("#uic_user_select_dropdown").val() ? $("#uic_user_select_dropdown").val() : 0 },
                 error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
@@ -117,10 +117,12 @@ $(function () {
                         else
                             HideOption(option);
                     });
-                    if (data.periodical.id_periodical_form == 1)
-                        $("#uic_ship_to_textbox").val(data.user.Email);
-                    else
-                        $("#uic_ship_to_textbox").val(data.user.Address);
+                    if (data.user[0]) {
+                        if (data.periodical.id_periodical_form == 1)
+                            $("#uic_ship_to_textbox").val(data.user[0].email);
+                        else
+                            $("#uic_ship_to_textbox").val(data.user[0].stras + " " + data.user[0].hsnmr + ", " + data.user[0].pstlz + " " + data.user[0].ort01);
+                    }
                     $('.uic[uicRole="price"]').val(data.periodical.tentatively_net_of_VAT10);
                     $('.uic[uicRole="output"]').val(data.periodical.tentatively_net_of_VAT10 * parseInt($('.uic[uicRole="count"]').val()));
                 }
@@ -196,7 +198,10 @@ $(function () {
                 $.ajax({
                     type: "POST",
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
-                    data: { 'targetId': $(this).val() },
+                    data: {
+                        'targetId': $(this).val(), 'userId': panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val()
+                       ? panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val() : 0
+                    },
                     error: console.error.bind(console),
                     success: function (data) {
                         spinner.remove();
@@ -226,7 +231,12 @@ $(function () {
                         });
                         panel.find('[originalId="uic_prince_vat_10_textbox"]').val(data.periodical.tentatively_net_of_VAT10);
                         RecalculateAutosum(panel);
-
+                        if (data.user[0]) {
+                            if (data.periodical.id_periodical_form == 1)
+                                panel.find('[originalId="uic_address_textbox"]').val(data.user[0].email);
+                            else
+                                panel.find('[originalId="uic_address_textbox"]').val(data.user[0].stras + " " + data.user[0].hsnmr + ", " + data.user[0].pstlz + " " + data.user[0].ort01);
+                        }
                     }
                 });
             }
