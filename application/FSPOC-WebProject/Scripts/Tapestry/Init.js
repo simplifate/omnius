@@ -236,6 +236,7 @@ $(function () {
                         droppedElement = ui.helper.clone();
                         droppedElement.removeClass("toolboxItem");
                         droppedElement.addClass("item");
+                        droppedElement.css({ width: "", height: "" });
                         $(this).append(droppedElement);
                         ruleContent = $(this);
                         leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
@@ -370,6 +371,7 @@ $(function () {
                         else {
                             droppedElement.removeClass("toolboxItem");
                             droppedElement.addClass("item");
+                            droppedElement.css({ width: "", height: "" });
                             leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
                             topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
                         }
