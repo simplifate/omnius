@@ -98,3 +98,12 @@ function CreateColorPicker(target) {
         }
     }
 })(jQuery);
+
+$(document).on("resize", ".ui-dialog", function (e, ui) {
+    setTimeout(function () {
+        ui.element.find(".ui-dialog-content").css({
+            width: "auto",
+            height: "calc(100% - 6em)"
+        });
+    }, 0);
+})
