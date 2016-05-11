@@ -7,6 +7,7 @@ function CreateCzechDataTable(element, simpleMode) {
         "paging": featureSwitch,
         "info": featureSwitch,
         "filter": featureSwitch,
+        "order": [[0, "desc"]],
         "language": {
             "sEmptyTable":     "Tabulka neobsahuje žádná data",
             "sInfo":           "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
