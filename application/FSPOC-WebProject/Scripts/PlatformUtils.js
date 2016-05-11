@@ -5,6 +5,7 @@ function CreateCzechDataTable(element, simpleMode) {
     featureSwitch = !simpleMode;
     element.DataTable({
         "paging": featureSwitch,
+        "pageLength": 50,
         "info": featureSwitch,
         "filter": featureSwitch,
         "order": [[0, "desc"]],
