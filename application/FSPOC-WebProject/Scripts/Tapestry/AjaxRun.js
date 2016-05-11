@@ -4,6 +4,7 @@
         type: "POST",
         url: "/api/run" + url + '?button=' + uic_name,
         data: { 'modelId': modelId },
+        error: console.error.bind(console),
         success: function (data) {
             $.each(data, function (name, value) {
                 if ($('select#uic_' + name).size() > 0)
@@ -39,6 +40,7 @@ $(function () {
             type: "POST",
             url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_label",
             data: {},
+            error: console.error.bind(console),
             success: function (data) {
                 pageSpinner.hide();
                 $("#uic_user_select_dropdown option").remove();
@@ -65,6 +67,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
@@ -87,6 +90,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_interval_dropdown option").each(function (index, element) {
@@ -141,6 +145,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "SearchQuery": $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_approver_select_dropdown option").remove();
@@ -165,6 +170,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "targetId": $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_occupation_select_dropdown option").remove();
@@ -191,6 +197,7 @@ $(function () {
                     type: "POST",
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
                     data: { 'targetId': $(this).val() },
+                    error: console.error.bind(console),
                     success: function (data) {
                         spinner.remove();
                         panel.find('[originalId="uic_interval_dropdown"] option').each(function (index, element) {
@@ -241,6 +248,7 @@ $(function () {
                     type: "POST",
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_select_dropdown",
                     data: { "targetId": $(this).val() },
+                    error: console.error.bind(console),
                     success: function (data) {
                         spinner.remove();
                         var currentUser = data.user[0];
@@ -274,6 +282,7 @@ $(function () {
                     type: "POST",
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_textbox",
                     data: { "SearchQuery": $(this).val() },
+                    error: console.error.bind(console),
                     success: function (data) {
                         spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
@@ -294,6 +303,7 @@ $(function () {
             type: "POST",
             url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=periodical_textbox",
             data: { "targetId": GetUrlParameter("modelId") },
+            error: console.error.bind(console),
             success: function (data) {
                 $("#uic_periodical_textbox").val(data.PeriodicalName);
                 $("#uic_interval_textbox").val(data.PeriodicalInterval);
@@ -307,6 +317,7 @@ $(function () {
             type: "POST",
             url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=periodical_textbox",
             data: { "targetId": GetUrlParameter("modelId") },
+            error: console.error.bind(console),
             success: function (data) {
                 dataRow = data.ViewData[0];
                 $("#uic_periodical_textbox").val(dataRow.Periodikum);
@@ -340,6 +351,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_select_user_dropdown option").remove();
@@ -364,6 +376,7 @@ $(function () {
                 type: "POST",
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
+                error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
                     $("#uic_select_deputy_dropdown option").remove();
