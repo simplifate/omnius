@@ -6,6 +6,7 @@ function CreateCzechDataTable(element, simpleMode) {
     element.DataTable({
         "paging": featureSwitch,
         "pageLength": 50,
+        "lengthMenu": [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, "Vše"]],
         "info": featureSwitch,
         "filter": featureSwitch,
         "order": [[0, "desc"]],
