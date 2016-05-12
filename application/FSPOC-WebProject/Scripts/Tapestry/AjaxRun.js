@@ -43,7 +43,7 @@ $(function () {
             error: console.error.bind(console),
             success: function (data) {
                 pageSpinner.hide();
-                $("#uic_user_select_dropdown option").remove();
+                $("#uic_user_select_dropdown option[value != '-1']").remove();
                 $("#uic_user_select_dropdown").append('<option value="' + data.user.rwe_id + '">Za sebe</option>');
                 if (data.managers) {
                     for (i = 0; i < data.managers.length; i++) {
@@ -150,7 +150,7 @@ $(function () {
                 error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
-                    $("#uic_approver_select_dropdown option").remove();
+                    $("#uic_approver_select_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
                         $("#uic_approver_select_dropdown").append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
@@ -175,7 +175,7 @@ $(function () {
                 error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
-                    $("#uic_occupation_select_dropdown option").remove();
+                    $("#uic_occupation_select_dropdown option[value != '-1']").remove();
                     $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
                 }
             });
@@ -296,8 +296,8 @@ $(function () {
                     success: function (data) {
                         spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
-                        targetDropdown.find("option").remove();
-                        targetDropdown.append("<option selected value = ''> --- Prosím vyberte Uživatele --- </option>");
+                        targetDropdown.find("option").remove(); //todo: add [value != '-1']
+                        targetDropdown.append("<option selected value = '-1'> --- Prosím vyberte Uživatele --- </option>");
                         for (i = 0; i < data.UserList.length; i++) {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
@@ -364,7 +364,7 @@ $(function () {
                 error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
-                    $("#uic_select_user_dropdown option").remove();
+                    $("#uic_select_user_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
                         $("#uic_select_user_dropdown").append('<option value="' + currentUser.pernr + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
@@ -389,7 +389,7 @@ $(function () {
                 error: console.error.bind(console),
                 success: function (data) {
                     spinner.remove();
-                    $("#uic_select_deputy_dropdown option").remove();
+                    $("#uic_select_deputy_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
                         $("#uic_select_deputy_dropdown").append('<option value="' + currentUser.pernr + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
