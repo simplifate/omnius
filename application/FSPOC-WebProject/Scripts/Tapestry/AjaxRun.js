@@ -296,8 +296,7 @@ $(function () {
                     success: function (data) {
                         spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
-                        targetDropdown.find("option").remove(); //todo: add [value != '-1']
-                        targetDropdown.append("<option selected value = '-1'> --- Prosím vyberte Uživatele --- </option>");
+                        targetDropdown.find("option[value != '-1']").remove();
                         for (i = 0; i < data.UserList.length; i++) {
                             currentUser = data.UserList[i];
                             targetDropdown.append('<option value="' + currentUser.id + '">' + currentUser.vorna + ' ' + currentUser.nachn + '</option>');
