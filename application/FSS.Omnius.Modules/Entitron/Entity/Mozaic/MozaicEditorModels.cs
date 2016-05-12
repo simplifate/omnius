@@ -142,6 +142,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
+                        {
+                            string[] nameValuePair = c.Properties.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                if (nameValuePair[0].ToLower() == "defaultoption")
+                                    stringBuilder.Append($"<option value=\"-1\">{nameValuePair[1]}</option>");
+                            }
+                        }
+                    }
                     stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                     stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
                     stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
