@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             }
         }
 
-        public static HashSet<IEntity> UpdateDeep<T>(this T thisEntity, T newEntity, DBEntities context, HashSet<Type> basicsTypes = null, Type ignoreAttribute = null) where T : IEntity
+        public static void UpdateDeep<T>(this T thisEntity, T newEntity, DBEntities context, HashSet<Type> basicsTypes = null, Type[] ignoreAttribute = null) where T : IEntity
         {
             // basics types
             if (basicsTypes == null)
@@ -69,9 +69,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // ignore method without setter
             IEnumerable<PropertyInfo> properties = newEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
             if (ignoreAttribute != null)
-                properties = properties.Where(p => p.GetCustomAttribute(ignoreAttribute) == null);
-
-            HashSet<IEntity> deletedITems = new HashSet<IEntity>();
+                properties = properties.Where(p => !ignoreAttribute.Any(ia => p.GetCustomAttribute(ia) != null));
 
             // update
             foreach (var property in properties)
@@ -118,7 +116,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                             }
                             // replace changes
                             else
-                                deletedITems.AddRange(thisEnumerator.Current.UpdateDeep(newEnumerator.Current, context, basicsTypes, ignoreAttribute));
+                                thisEnumerator.Current.UpdateDeep(newEnumerator.Current, context, basicsTypes, ignoreAttribute);
                         }
                         // remove old
                         HashSet<dynamic> toRemove = new HashSet<dynamic>();
@@ -135,13 +133,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                         foreach (dynamic item in toRemove)
                         {
                             (thisValue as dynamic).Remove(item);
-                            deletedITems.Add((IEntity)item);
+                            context.Remove((IEntity)item);
                         }
                     }
                 }
             }
-
-            return deletedITems;
         }
     }
 }

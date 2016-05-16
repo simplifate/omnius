@@ -56,8 +56,7 @@ namespace FSS.Omnius.Controllers.Master
             {
                 app.Id = dbApp.Id;
 
-                var todelete = dbApp.UpdateDeep(app, context, ignoreAttribute: typeof(JsonIgnoreAttribute));
-                context.RemoveRange(todelete);
+                dbApp.UpdateDeep(app, context, ignoreAttribute: new Type[] { typeof(ImportExportIgnoreAttribute), typeof(ImportIgnoreAttribute) });
             }
             // new app
             else

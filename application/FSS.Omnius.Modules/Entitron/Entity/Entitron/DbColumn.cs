@@ -6,6 +6,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbColumn")]
     public class DbColumn : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
@@ -17,9 +18,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public bool ColumnLengthIsMax { get; set; }
         public string DefaultValue { get; set; }
 
-        [JsonIgnore]
+        [ImportExportIgnore]
         public int DbTableId { get; set; }
-        [JsonIgnore]
+        [ImportExportIgnore]
         public virtual DbTable DbTable { get; set; }
     }
 }

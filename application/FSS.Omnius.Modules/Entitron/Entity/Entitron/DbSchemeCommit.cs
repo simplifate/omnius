@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbSchemeCommit")]
     public class DbSchemeCommit : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }

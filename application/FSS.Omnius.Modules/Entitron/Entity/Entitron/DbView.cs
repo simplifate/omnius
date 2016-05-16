@@ -6,15 +6,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbView")]
     public class DbView : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Query { get; set; }
         public int PositionX { get; set; }
         public int PositionY { get; set; }
 
-        [JsonIgnore]
+        [ImportExportIgnore]
         public int DbSchemeCommitId { get; set; }
-        [JsonIgnore]
+        [ImportExportIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }

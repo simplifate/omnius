@@ -6,6 +6,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbRelation")]
     public class DbRelation : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public int Type { get; set; }
@@ -19,9 +20,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public virtual DbTable RightTable { get; set; }
         public virtual DbColumn RightColumn { get; set; }*/
 
-        [JsonIgnore]
+        [ImportExportIgnore]
         public int DbSchemeCommitId { get; set; }
-        [JsonIgnore]
+        [ImportExportIgnore]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
     }
 }

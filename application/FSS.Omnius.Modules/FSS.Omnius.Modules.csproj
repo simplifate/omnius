@@ -140,6 +140,7 @@
     <Compile Include="Entitron\Entity\Hermes\EmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailTemplateContent.cs" />
     <Compile Include="Entitron\Entity\Hermes\Smtp.cs" />
+    <Compile Include="Entitron\Entity\IgnoreAttribute.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Master\UsersApplications.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />

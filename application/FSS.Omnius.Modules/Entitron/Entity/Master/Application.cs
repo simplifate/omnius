@@ -28,16 +28,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             UsersApplications = new HashSet<UsersApplications>();
             MozaicEditorPages = new List<MozaicEditorPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
+            TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
         }
 
+        [ImportIgnore]
         public int Id { get; set; }
 
         [Required]
         [StringLength(50)]
         [Index(IsUnique = true)]
         public string Name { get; set; }
+        [StringLength(100)]
+        public string DisplayName { get; set; }
         public string Icon { get; set; }
         public int TitleFontSize { get; set; }
         public int Color { get; set; }
@@ -50,37 +54,38 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
 
-        [StringLength(100)]
-        public string DisplayName { get; set; } // Used by Entitron
-        [JsonIgnore]
+        public bool DbSchemeLocked { get; set; }
+
+        // tapestry
+        [ImportExportIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<ADgroup> ADgroups { get; set; }
-        public virtual ICollection<PersonaAppRole> Roles { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<Table> Tables { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<UsersApplications> UsersApplications {get;set;}
-        // Workflow, UI and DB designers' data
-        public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
-        public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
-        public bool DbSchemeLocked { get; set; }
-        public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
+        // tapestry - designer
         public virtual ICollection<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
-
-        [JsonIgnore]
+        [ImportExportIgnore]
         public TapestryDesignerMetablock TapestryDesignerRootMetablock
         {
-            get
-            {
-                return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null);
-            }
+            get { return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null); }
         }
 
-        [JsonIgnore]
+        // persona
+        [ImportExportIgnore]
+        public virtual ICollection<ADgroup> ADgroups { get; set; }
+        public virtual ICollection<PersonaAppRole> Roles { get; set; }
+        [ImportExportIgnore]
         public ICollection<User> DesignedBy { get; set; }
+        [ImportExportIgnore]
+        public virtual ICollection<UsersApplications> UsersApplications { get; set; }
+
+        // entitron
+        [ImportExportIgnore]
+        public virtual ICollection<Table> Tables { get; set; }
+        [ImportExportIgnore]
+        public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
+        // entitron - designer
+        public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
+        
+        // mozaic
+        public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
     }
 }

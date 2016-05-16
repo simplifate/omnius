@@ -15,19 +15,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             ActionRuleRights = new HashSet<ActionRuleRight>();
         }
-        
+
+        [ImportIgnore]
+        public new int Id { get; set; }
         public new string Name { get; set; }
 
-        [JsonIgnore]
+        [ImportExportIgnore]
         public int ApplicationId { get; set; }
-        [JsonIgnore]
+        [ImportExportIgnore]
         public virtual Application Application { get; set; }
         [Required]
         public int Priority { get; set; }
-        [JsonIgnore]
+        [ImportExportIgnore]
         public new virtual ICollection<User_Role> Users { get; set; }
 
-        [JsonIgnore]
+        [ImportExportIgnore]
         public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }
     }
 }
