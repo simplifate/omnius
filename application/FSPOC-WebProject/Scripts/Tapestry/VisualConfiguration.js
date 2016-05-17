@@ -3,7 +3,7 @@
     paintStyle: { fillStyle: "#54c6f0", width: 12, height: 18 },
     hoverPaintStyle: { fillStyle: "#f98e4b" },
     isSource: true,
-    connector: ["Straight", { stub: [0, 0], gap: 4 }],
+    connector: ["Flowchart", { stub: [5, 5], gap: 4, cornerRadius: 4 }],
     connectorStyle: {
         lineWidth: 2,
         strokeStyle: "#54c6f0",
