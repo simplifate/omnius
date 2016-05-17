@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 
@@ -83,9 +83,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                     object newValue = property.GetValue(newEntity);
                     // null
                     if (newValue == null)
-                    {
                         property.SetValue(thisEntity, null);
-                    }
+                    else if (thisValue == null)
+                        property.SetValue(thisEntity, newValue);
                     // inner IEntity
                     else if (newValue is IEntity)
                     {
@@ -133,7 +133,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                         foreach (dynamic item in toRemove)
                         {
                             (thisValue as dynamic).Remove(item);
-                            context.Remove((IEntity)item);
+                            context.Entry(item).State = EntityState.Deleted;
                         }
                     }
                 }

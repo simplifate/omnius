@@ -320,6 +320,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<ToolboxItem> Templates { get; set; }
         public virtual ICollection<ToolboxItem> Integrations { get; set; }
 
+        [ImportExportIgnore]
         public TapestryDesignerBlockCommit AssociatedBlockCommit { get; set; }
 
         public TapestryDesignerToolboxState()
@@ -337,6 +338,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("TapestryDesigner_ToolboxItems")]
     public class ToolboxItem : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public string TypeClass { get; set; }
         public string Label { get; set; }
@@ -387,6 +389,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     //}
     public abstract class TapestryDesignerConnection : IEntity
     {
+        [ImportIgnore]
         public int Id { get; set; }
         public int SourceId { get; set; }
         public int SourceSlot { get; set; }

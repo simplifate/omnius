@@ -412,21 +412,22 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         }
 
 
-        public void Remove(IEntity item)
-        {
-            dynamic list = getList(item.GetType());
+        //public void Remove(IEntity item)
+        //{
+        //    Entry(item).State = EntityState.Deleted;
+        ////dynamic list = getList(item.GetType());
 
-            list.Remove((dynamic)item);
-        }
-        public void RemoveRange(IEnumerable<IEntity> items)
-        {
-            foreach (IEntity item in items)
-                Remove(item);
-        }
-        private object getList(Type type)
-        {
-            PropertyInfo prop = GetType().GetProperties().SingleOrDefault(p => p.PropertyType.GenericTypeArguments.FirstOrDefault() == type || p.PropertyType.GenericTypeArguments.FirstOrDefault() == type.BaseType);
-            return prop.GetValue(this);
-        }
+        ////list.Remove((dynamic)item);
+        //}
+        //public void RemoveRange(IEnumerable<IEntity> items)
+        //{
+        //    foreach (IEntity item in items)
+        //        Remove(item);
+        //}
+        //private object getList(Type type)
+        //{
+        //    PropertyInfo prop = GetType().GetProperties().SingleOrDefault(p => p.PropertyType.GenericTypeArguments.FirstOrDefault() == type || p.PropertyType.GenericTypeArguments.FirstOrDefault() == type.BaseType);
+        //    return prop.GetValue(this);
+        //}
     }
 }
