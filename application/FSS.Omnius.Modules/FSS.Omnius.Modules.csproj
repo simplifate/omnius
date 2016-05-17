@@ -841,6 +841,10 @@
     <Compile Include="Migrations\201605041320457_TapestryAdvanceConditions.Designer.cs">
       <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605170940531_conditionSetCascade.cs" />
+    <Compile Include="Migrations\201605170940531_conditionSetCascade.Designer.cs">
+      <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1367,6 +1371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605041320457_TapestryAdvanceConditions.resx">
       <DependentUpon>201605041320457_TapestryAdvanceConditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605170940531_conditionSetCascade.resx">
+      <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
