@@ -200,7 +200,22 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
                                     break;
                                 case "Company":
-                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+                                    var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+                                    if (epkUserRowList.Count > 0)
+                                    {
+                                        var abkrsRowList = core.Entitron.GetDynamicTable("ABKRS").Select()
+                                        .where(c => c.column("abkrs").Equal(epkUserRowList[0]["abkrs"])).ToList();
+                                        if (abkrsRowList.Count > 0)
+                                        {
+                                            var companyRowList = core.Entitron.GetDynamicTable("Companies").Select()
+                                                                .where(c => c.column("id_company").Equal(abkrsRowList[0]["id_company"])).ToList();
+                                            if (companyRowList.Count > 0)
+                                            {
+                                                ViewData["inputData_" + resourceMappingPair.TargetName] = companyRowList[0]["name"];
+                                            }
+                                        }
+                                    }
                                     break;
                                 case "Job":
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
