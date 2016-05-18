@@ -40,10 +40,10 @@ $(function () {
             }
         });
         window.onbeforeunload = function () {
-            if (ChangedSinceLastSave)
+            if (ChangedSinceLastSave) {
+                pageSpinner.hide();
                 return "Máte neuložené změny, opravdu si přejete opustit blok?";
-            else
-                return;
+            }
         };
         $("#btnOpenTableConditions").on("click", function () {
             $("#conditions-dialog").dialog("open");
