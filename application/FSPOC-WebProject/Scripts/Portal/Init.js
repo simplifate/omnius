@@ -8,10 +8,10 @@ var pageSpinner = (function () {
             if (!arguments.length) {
                 n = 1;
             }
-            if (n) {
+            uses += n;
+            if (uses > 0) {
                 $(document.body).addClass("pageSpinnerShown");
             }
-            uses += n;
             if (debug) {
                 console.log("page spinner shown %d times, %d total", n, uses);
                 console.trace();
@@ -22,7 +22,7 @@ var pageSpinner = (function () {
                 n = 1;
             }
             uses -= n;
-            if (!uses) {
+            if (uses <= 0) {
                 $(document.body).removeClass("pageSpinnerShown");
             }
             if (debug) {
