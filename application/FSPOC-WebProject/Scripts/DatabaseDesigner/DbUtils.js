@@ -13,7 +13,7 @@ function AddColumnToJsPlumb(item) {
         anchor: ["Continuous", { faces: ["left", "right"] }],
         faces: ["left", "right"],
         container: "database-container",
-        connector: ["Flowchart", { stub: [5, 5], gap: 4, cornerRadius: 4 }],
+        connector: ["Bezier", {curviness: 150}],
         connectorStyle: { strokeStyle: "#1092bd", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 }
     });
 
