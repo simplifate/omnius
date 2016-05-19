@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Nastala neznámá chyba";
+    ViewBag.Title = ViewData["exception"];
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
 }
 <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
@@ -9,7 +9,7 @@
 <script>
     @if (ViewData["exception"] != null)
     {
-        @Html.Raw("ShowAppNotification(" + Json.Encode(ViewData["exception"].ToString()) + ", 'error');");
+        @Html.Raw("ShowAppNotification(" + Json.Encode(ViewData["exception"]) + ", 'error');");
     }
     else
     {
