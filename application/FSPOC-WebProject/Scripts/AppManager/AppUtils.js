@@ -1,5 +1,5 @@
 ﻿function ShowAppNotification(text, type) {
-    type = type.toLowerCase() || "info";
+    var type = type.toLowerCase() || "info";
     $("#appNotificationArea .app-alert").remove();
     switch (type) {
         case "success":
@@ -16,8 +16,9 @@
             icon = "fa-info-circle";
             break;
     }
-    newNotification = $('<div class="app-alert app-alert-' + type + '"><i class="fa ' + icon + ' alertSymbol"></i>'
-        + text + '<div class="fa fa-times closeAlertIcon"></div></div>');
+    var newNotification = $('<div class="app-alert app-alert-' + type + '"><i class="fa ' + icon 
+        + ' alertSymbol"></i><span></span><div class="fa fa-times closeAlertIcon"></div></div>');
+    newNotification.find("span").text(text);
     $("#appNotificationArea").append(newNotification);
     newNotification.find(".closeAlertIcon").on("click", function () {
         $(this).parents(".app-alert").remove();
