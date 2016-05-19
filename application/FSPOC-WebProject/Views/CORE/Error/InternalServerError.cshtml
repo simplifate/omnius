@@ -6,4 +6,13 @@
 
 <div id="appNotificationArea"></div>
 @Scripts.Render("~/bundles/OmniusScripts")
-<script>ShowAppNotification("Nastala neznámá chyba", "error")</script>
+<script>
+    @if (ViewData["exception"] != null)
+    {
+        @Html.Raw("ShowAppNotification(" + Json.Encode(ViewData["exception"].ToString()) + ", 'error');");
+    }
+    else
+    {
+        @Html.Raw("ShowAppNotification('Nastala neznámá chyba', 'error')");
+    }
+</script>

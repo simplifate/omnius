@@ -18,6 +18,8 @@ namespace FSS.Omnius.Controllers.CORE
         }
         public ActionResult InternalServerError()
         {
+            ViewData["exception"] = HttpContext.Items["exception"];
+            HttpContext.Items["exception"] = null;
             return View();
         }
     }
