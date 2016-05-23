@@ -888,6 +888,8 @@
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\ColumnAutosumAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\ColumnAverageAction.cs" />
     <Compile Include="Tapestry\Actions\Math\DivideAction.cs" />
     <Compile Include="Tapestry\Actions\Math\MathRepository.cs" />
     <Compile Include="Tapestry\Actions\Math\ModuloAction.cs" />
