@@ -1,4 +1,15 @@
-﻿function CurrentModuleIs(moduleClass) {
+﻿// IE Buster
+
+if (!window.jQuery) {
+    var message = "Omlouváme se, ale verze Vašeho prohlížeče nepodporuje základní funkce jazyka Javascript, " +
+        "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+
+    var style = "body {background: white !important} div {margin: 25px; border: 5px solid red; padding: 25px; font-weight: bold}";
+
+    document.body.innerHTML = "<div>" + message + "</div><style> " + style + "</style>";
+}
+
+function CurrentModuleIs(moduleClass) {
     return $("body").hasClass(moduleClass) ? true : false;
 }
 function CreateCzechDataTable(element, simpleMode) {
