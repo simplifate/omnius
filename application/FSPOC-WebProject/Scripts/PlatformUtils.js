@@ -1,9 +1,15 @@
 ﻿// IE Buster
 
 if (!window.jQuery) {
-    var message = "Omlouváme se, ale verze Vašeho prohlížeče nepodporuje základní funkce jazyka Javascript, " +
+    var message;
+    if (/^Mozilla\/4\.0.*\bMSIE\b/.test(navigator.userAgent)) {
+        // (emulované) IE5 .. IE8 se hlásí jako Mozilla/4.0, novější prohlížeče jako Mozilla/5.0 a fungují
+        message = "Omlouváme se, ale Vaše verze Internet Exploreru nepodporuje základní funkce jazyka Javascript, " +
         "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
-
+    } else {
+        message = "Omlouváme se, ale verze Vašeho prohlížeče nepodporuje základní funkce jazyka Javascript, " +
+            "které jsou pro chod aplikace nezbytné.  Kontaktujte helpdesk nebo administrátory platformy. ";
+    }
     var style = "body {background: white !important} div {margin: 25px; border: 5px solid red; padding: 25px; font-weight: bold}";
 
     document.body.innerHTML = "<div>" + message + "</div><style> " + style + "</style>";
