@@ -66,8 +66,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             bool useRowData = true;
             if (!vars.ContainsKey("RowData"))
                 useRowData = false;
-            else if (vars["RowData"] is string)
-                rowData = (DBItem)vars[(string)vars["RowData"]];
+            else if (vars["RowData"] is List<DBItem>)
+                rowData = ((List<DBItem>)vars["RowData"])[0];
             else
                 rowData = (DBItem)vars["RowData"];
             foreach (string mappingString in mappingStringList)

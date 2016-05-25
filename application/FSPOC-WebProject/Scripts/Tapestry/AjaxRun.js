@@ -44,13 +44,15 @@ $(function () {
             success: function (data) {
                 pageSpinner.hide();
                 $("#uic_user_select_dropdown option[value != '-1']").remove();
-                $("#uic_user_select_dropdown").append('<option value="' + data.user.rwe_id + '">Za sebe</option>');
+                $("#uic_user_select_dropdown").append('<option value="' + data.user.RweId + '">Za sebe</option>');
                 if (data.managers) {
                     for (i = 0; i < data.managers.length; i++) {
                         $("#uic_user_select_dropdown").append('<option value="' + data.managers[i].manager_id + '">' + data.managers[i].manager_full_name + '</option>');
                     }
                 }
-                $("#uic_user_select_dropdown").val(data.user.rwe_id);
+                $("#uic_user_select_dropdown").val(data.user.RweId);
+                if (data.superior)
+                    $("#uic_supperior_textbox").val(data.superior.DisplayName);
             }
         });
         $("body").on("change", "#uic_user_select_dropdown", function (e) {
@@ -73,6 +75,8 @@ $(function () {
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
                     $("#uic_ns_textbox").val(data.user[0].kostl);
                     $("#uic_company_textbox").val(data.user[0].Company);
+                    if (data.superior)
+                        $("#uic_supperior_textbox").val(data.superior.DisplayName);
                 }
             });
         });

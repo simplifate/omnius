@@ -72,6 +72,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             var superiorView = core.Entitron.GetDynamicView("SuperiorMapping");
             var superiorMappingList = superiorView.Select().where(c => c.column("pernr").Equal(userPernr)).ToList();
             DBItem result;
+            var userView = core.Entitron.GetDynamicView("UserView");
             if (superiorMappingList.Count > 0)
             {
                 outputVars["NoSuperior"] = false;
@@ -81,18 +82,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if (assistantMappingList.Count > 0)
                 {
                     var assistentPernr = assistantMappingList[0]["assistant_pernr"];
-                    var assistentResultList = tableUsers.Select().where(c => c.column("pernr").Equal(assistentPernr)).ToList();
-                    result = assistentResultList[0];
+                    var userViewList = userView.Select().where(c => c.column("pernr").Equal(assistentPernr)).ToList();
+                    result = userViewList[0];
                 }
                 else
                 {
-                    var superiorResultList = tableUsers.Select().where(c => c.column("pernr").Equal(superiorPernr)).ToList();
-                    result = superiorResultList[0];
+                    var userViewList = userView.Select().where(c => c.column("pernr").Equal(superiorPernr)).ToList();
+                    result = userViewList[0];
                 }
             }
             else
             {
-                result = epkUserRowList[0];
+                var userViewList = userView.Select().where(c => c.column("pernr").Equal(userPernr)).ToList();
+                result = userViewList[0];
                 outputVars["NoSuperior"] = true;
             }
             result.createProperty(1000, "DisplayName", result["vorna"] + " " + result["nachn"]);
