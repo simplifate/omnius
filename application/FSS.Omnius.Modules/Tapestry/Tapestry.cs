@@ -51,10 +51,12 @@ namespace FSS.Omnius.Modules.Tapestry
             // __ModelId__
             // __Model.{TableName}.{columnName}
             // __TableName__
+            // __UserId__
 
             // init action
             _CORE.User = user;
             _results.OutputData.Add("__CORE__", _CORE);
+            _results.OutputData.Add("__UserId__", user.Id);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
                 _results.OutputData.Add("__TableName__", block.ModelName);
             if (modelId >= 0)
