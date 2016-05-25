@@ -42,7 +42,8 @@ namespace FSPOC_WebProject
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.contextMenu.css",
                       "~/Content/css/jquery.datetimepicker.css",
-                      "~/Content/spectrum.css"
+                      "~/Content/spectrum.css",
+                      "~/Content/scss/Bundled.min.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css-bundle/css-libs").Include(
