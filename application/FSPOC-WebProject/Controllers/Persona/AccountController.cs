@@ -548,6 +548,8 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             IdentityResult result = null;
 
+            model.User.isLocalUser = true;
+
             if (ModelState.IsValid)
             {
                 result = await UserManager.CreateAsync(model.User, model.NewPassword);
