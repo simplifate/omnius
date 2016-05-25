@@ -308,6 +308,19 @@
         }
     }
 }
+
+body.leftBarHidden {
+    #userLeftBarMinimized {
+        display: block;
+    }
+    #userLeftBar {
+        display: none;
+    }
+    #userContentArea, #helpContainer{
+        left: 60px;
+    }
+}
+
 #userContentArea {
     position: absolute;
     left: 310px;

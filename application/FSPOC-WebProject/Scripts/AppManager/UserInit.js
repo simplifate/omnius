@@ -1,16 +1,10 @@
 ﻿var ModalDialogArray = [];
 $(function () {
     $("#hideMenuIcon").on("click", function () {
-        $("#userLeftBar").hide();
-        $("#userLeftBarMinimized").show();
-        $("#userContentArea").css("left", 60);
-        $("#helpContainer").css("left", 60);
+        document.body.classList.add("leftBarHidden");
     });
     $("#showMenuIcon").on("click", function () {
-        $("#userLeftBarMinimized").hide();
-        $("#userLeftBar").show();
-        $("#userContentArea").css("left", 310);
-        $("#helpContainer").css("left", 310);
+        document.body.classList.remove("leftBarHidden");
     });
     if (CurrentModuleIs("appManagerModule")) {
         $(".appPanel").draggable({

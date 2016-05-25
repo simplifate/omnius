@@ -592,6 +592,15 @@ body.adminAppModule #appBuildResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
+body.leftBarHidden #userLeftBarMinimized {
+  display: block; }
+
+body.leftBarHidden #userLeftBar {
+  display: none; }
+
+body.leftBarHidden #userContentArea, body.leftBarHidden #helpContainer {
+  left: 60px; }
+
 #userContentArea {
   position: absolute;
   left: 310px;
