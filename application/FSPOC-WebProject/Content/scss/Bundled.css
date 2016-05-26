@@ -360,6 +360,8 @@ body.adminAppModule #appBuildResults {
     top: 0px;
     right: 540px;
     height: 50px; }
+  #userTopBar .userBoxMinimized {
+    display: none; }
   #userTopBar .userBox {
     position: absolute;
     top: 0px;
@@ -394,6 +396,8 @@ body.adminAppModule #appBuildResults {
       font-size: 30px;
       color: #0065a9;
       cursor: pointer; }
+  #userTopBar .searchBoxMinimised {
+    display: none; }
   #userTopBar .searchBox {
     position: absolute;
     top: 0px;

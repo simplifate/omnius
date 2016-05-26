@@ -45,6 +45,9 @@
         right: 540px;
         height: 50px;
     }
+    .userBoxMinimized {
+        display: none;
+    }
     .userBox {
         position: absolute;
         top: 0px;
@@ -84,6 +87,9 @@
             cursor: pointer;
         }
 
+    }
+    .searchBoxMinimised {
+        display: none;
     }
     .searchBox {
         position: absolute;
