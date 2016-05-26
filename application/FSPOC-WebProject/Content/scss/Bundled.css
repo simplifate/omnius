@@ -362,13 +362,13 @@ body.adminAppModule #appBuildResults {
     height: 50px; }
   #userTopBar .userBoxMinimized {
     display: none; }
-  #userTopBar .userBox {
+  #userTopBar .userBox, #userTopBar .userBoxMinimized {
     position: absolute;
     top: 0px;
     right: 290px;
     width: 250px;
     height: 50px; }
-    #userTopBar .userBox .avatar {
+    #userTopBar .userBox .avatar, #userTopBar .userBoxMinimized .avatar {
       position: absolute;
       left: 5px;
       top: 5px;
@@ -376,20 +376,20 @@ body.adminAppModule #appBuildResults {
       height: 40px;
       background-image: url(/Content/images/avatar-generic.png);
       background-size: 40px 40px; }
-    #userTopBar .userBox .fullName {
+    #userTopBar .userBox .fullName, #userTopBar .userBoxMinimized .fullName {
       position: absolute;
       left: 65px;
       top: 6px;
       font-family: RweTextMedium;
       font-size: 14px; }
-    #userTopBar .userBox .commands {
+    #userTopBar .userBox .commands, #userTopBar .userBoxMinimized .commands {
       position: absolute;
       left: 65px;
       top: 24px;
       color: #0065a9;
       font-family: RweTextMedium;
       font-size: 14px; }
-    #userTopBar .userBox .notificationIcon {
+    #userTopBar .userBox .notificationIcon, #userTopBar .userBoxMinimized .notificationIcon {
       position: absolute;
       right: 30px;
       top: 8px;
@@ -398,13 +398,13 @@ body.adminAppModule #appBuildResults {
       cursor: pointer; }
   #userTopBar .searchBoxMinimised {
     display: none; }
-  #userTopBar .searchBox {
+  #userTopBar .searchBox, #userTopBar .searchBoxMinimized {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 310px;
     height: 50px; }
-    #userTopBar .searchBox .searchArrow {
+    #userTopBar .searchBox .searchArrow, #userTopBar .searchBoxMinimized .searchArrow {
       position: absolute;
       top: 11px;
       right: 273px;
@@ -413,12 +413,12 @@ body.adminAppModule #appBuildResults {
       background-color: white;
       color: #0065a9;
       cursor: pointer; }
-      #userTopBar .searchBox .searchArrow .fa {
+      #userTopBar .searchBox .searchArrow .fa, #userTopBar .searchBoxMinimized .searchArrow .fa {
         position: absolute;
         left: 6px;
         top: 2px;
         font-size: 26px; }
-    #userTopBar .searchBox .searchInputField {
+    #userTopBar .searchBox .searchInputField, #userTopBar .searchBoxMinimized .searchInputField {
       position: absolute;
       top: 11px;
       right: 85px;
@@ -431,7 +431,7 @@ body.adminAppModule #appBuildResults {
       font-family: RweTextMedium;
       font-size: 14px;
       border: none; }
-    #userTopBar .searchBox .searchIcon {
+    #userTopBar .searchBox .searchIcon, #userTopBar .searchBoxMinimized .searchIcon {
       position: absolute;
       right: 30px;
       top: 8px;
@@ -595,6 +595,32 @@ body.adminAppModule #appBuildResults {
       cursor: pointer; }
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
+
+@media (max-width: 799px) {
+  #userTopBar .userBox {
+    display: none; }
+  #userTopBar .clientTitleArea {
+    left: 150px;
+    right: 140px; }
+  #userTopBar .userBoxMinimized {
+    display: block;
+    width: 90px;
+    position: absolute;
+    right: 50px; }
+    #userTopBar .userBoxMinimized .notificationIcon {
+      right: 0px; }
+  #userTopBar .searchBox {
+    display: none; }
+  #userTopBar .searchBoxMinimized {
+    display: block;
+    width: 50px; }
+    #userTopBar .searchBoxMinimized .searchIcon {
+      right: 10px; } }
+
+@media (max-width: 399px) {
+  #userTopBar .clientTitle {
+    text-transform: initial;
+    font-size: 16px; } }
 
 body.userLayout.leftBarHidden #userLeftBarMinimized {
   display: block; }

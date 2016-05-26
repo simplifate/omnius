@@ -48,7 +48,7 @@
     .userBoxMinimized {
         display: none;
     }
-    .userBox {
+    .userBox, .userBoxMinimized {
         position: absolute;
         top: 0px;
         right: 290px;
@@ -91,7 +91,7 @@
     .searchBoxMinimised {
         display: none;
     }
-    .searchBox {
+    .searchBox, .searchBoxMinimized {
         position: absolute;
         top: 0px;
         right: 0px;
@@ -312,6 +312,44 @@
         .appIconToolbarItem:hover {
             background-color: #ceeaf8;
         }
+    }
+}
+
+@media (max-width: 799px) {
+    #userTopBar {
+        .userBox {
+            display: none;
+        }
+        .clientTitleArea {
+            left: 150px;
+            right: 140px;
+        }
+        .userBoxMinimized {
+            display: block;
+            width: 90px;
+            position: absolute;
+            right: 50px;
+            .notificationIcon {
+                right: 0px;
+            }
+        }
+        .searchBox {
+            display: none;
+        }
+        .searchBoxMinimized {
+            display: block;
+            width: 50px;
+            .searchIcon {
+                right: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 399px) {
+    #userTopBar .clientTitle { 
+        text-transform: initial;
+        font-size: 16px;
     }
 }
 
