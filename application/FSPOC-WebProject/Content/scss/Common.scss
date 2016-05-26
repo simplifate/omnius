@@ -559,11 +559,11 @@ body.pageSpinnerShown #pageOverlay{
     display: block;
     opacity: 1;
 }
-body.pageSpinnerShown #leftBar, 
-body.pageSpinnerShown #topBar ,
-body.pageSpinnerShown #userLeftBar, 
-body.pageSpinnerShown #userTopBar {
-    opacity: 1;
+
+body.pageSpinnerShown{
+    #leftBar, #topBar, #userLeftBar, #userTopBar, #leftBarMinimized, #userLeftBarMinimized{
+        opacity: 1;
+    }
 }
 
 #pageOverlay {

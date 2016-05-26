@@ -315,15 +315,15 @@
     }
 }
 
-body.leftBarHidden {
+body.userLayout.leftBarHidden {
     #userLeftBarMinimized {
         display: block;
     }
     #userLeftBar {
         display: none;
     }
-    #userContentArea, #helpContainer{
-        left: 60px;
+    #userContentArea, #helpContainer, #pageOverlay{
+        left: 50px;
     }
 }
 

@@ -596,14 +596,14 @@ body.adminAppModule #appBuildResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
-body.leftBarHidden #userLeftBarMinimized {
+body.userLayout.leftBarHidden #userLeftBarMinimized {
   display: block; }
 
-body.leftBarHidden #userLeftBar {
+body.userLayout.leftBarHidden #userLeftBar {
   display: none; }
 
-body.leftBarHidden #userContentArea, body.leftBarHidden #helpContainer {
-  left: 60px; }
+body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
+  left: 50px; }
 
 #userContentArea {
   position: absolute;
@@ -3714,10 +3714,7 @@ body.pageSpinnerShown #pageOverlay {
   display: block;
   opacity: 1; }
 
-body.pageSpinnerShown #leftBar,
-body.pageSpinnerShown #topBar,
-body.pageSpinnerShown #userLeftBar,
-body.pageSpinnerShown #userTopBar {
+body.pageSpinnerShown #leftBar, body.pageSpinnerShown #topBar, body.pageSpinnerShown #userLeftBar, body.pageSpinnerShown #userTopBar, body.pageSpinnerShown #leftBarMinimized, body.pageSpinnerShown #userLeftBarMinimized {
   opacity: 1; }
 
 #pageOverlay {
