@@ -85,8 +85,8 @@ namespace FSS.Omnius.Modules.Tapestry
 
         public override void ReverseRun(Dictionary<string, object> vars)
         {
-            if (ReverseActionId != null)
-                RunAction(ReverseActionId.Value, vars);
+            //if (ReverseActionId != null)
+            //    RunAction(ReverseActionId.Value, vars);
         }
         public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars, Message message);
 

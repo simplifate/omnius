@@ -93,6 +93,14 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return output;
         }
+        public DBItem FirstOrDefault()
+        {
+            DBItem output = ExecuteWithRead().FirstOrDefault();
+            if (output != null)
+                output.table = table;
+
+            return output;
+        }
         public int Count()
         {
             return new SqlQuery_SelectCount(this).Count();

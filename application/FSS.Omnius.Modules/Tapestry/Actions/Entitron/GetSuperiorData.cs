@@ -1,5 +1,6 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.Table;
 using System;
 using System.Collections.Generic;
 
@@ -55,46 +56,38 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var tableUsers = core.Entitron.GetDynamicTable("Users");
-            var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-            int userPernr = 0;
+            DBItem epkUser = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).FirstOrDefault();
+            int userPernr;
             if(vars.ContainsKey("Pernr"))
-            {
                 userPernr = (int)vars["Pernr"];
-            }
-            else if (epkUserRowList.Count > 0)
-            {
-                userPernr = (int)epkUserRowList[0]["pernr"];
-            }
+            else if (epkUser != null)
+                userPernr = (int)epkUser["pernr"];
             else
-            {
                 throw new Exception("Váš účet není propojen s tabulkou Users");
-            }
-            var superiorView = core.Entitron.GetDynamicView("SuperiorMapping");
-            var superiorMappingList = superiorView.Select().where(c => c.column("pernr").Equal(userPernr)).ToList();
+
+            DBView superiorView = core.Entitron.GetDynamicView("SuperiorMapping");
+            DBItem superiorMapping = superiorView.Select().where(c => c.column("pernr").Equal(userPernr)).FirstOrDefault();
             DBItem result;
-            var userView = core.Entitron.GetDynamicView("UserView");
-            if (superiorMappingList.Count > 0)
+            DBView userView = core.Entitron.GetDynamicView("UserView");
+            if (superiorMapping != null)
             {
                 outputVars["NoSuperior"] = false;
-                var superiorPernr = superiorMappingList[0]["superior_pernr"];
+                var superiorPernr = superiorMapping["superior_pernr"];
                 var assistantView = core.Entitron.GetDynamicView("AssistantMapping");
-                var assistantMappingList = assistantView.Select().where(c => c.column("pernr").Equal(superiorPernr)).ToList();
-                if (assistantMappingList.Count > 0)
+                var assistantMapping = assistantView.Select().where(c => c.column("pernr").Equal(superiorPernr)).FirstOrDefault();
+                if (assistantMapping != null)
                 {
-                    var assistentPernr = assistantMappingList[0]["assistant_pernr"];
-                    var userViewList = userView.Select().where(c => c.column("pernr").Equal(assistentPernr)).ToList();
-                    result = userViewList[0];
+                    var assistentPernr = assistantMapping["assistant_pernr"];
+                    result = userView.Select().where(c => c.column("pernr").Equal(assistentPernr)).FirstOrDefault();
                 }
                 else
                 {
-                    var userViewList = userView.Select().where(c => c.column("pernr").Equal(superiorPernr)).ToList();
-                    result = userViewList[0];
+                    result = userView.Select().where(c => c.column("pernr").Equal(superiorPernr)).FirstOrDefault();
                 }
             }
             else
             {
-                var userViewList = userView.Select().where(c => c.column("pernr").Equal(userPernr)).ToList();
-                result = userViewList[0];
+                result = userView.Select().where(c => c.column("pernr").Equal(userPernr)).FirstOrDefault();
                 outputVars["NoSuperior"] = true;
             }
             result.createProperty(1000, "DisplayName", result["vorna"] + " " + result["nachn"]);
