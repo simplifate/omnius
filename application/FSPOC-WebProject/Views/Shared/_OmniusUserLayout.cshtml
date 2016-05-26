@@ -42,14 +42,7 @@
     </div>
     <div id="userLeftBar">
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
-        <div class="widgetLabel">Nejpoužívanější aplikace</div>
-        <div class="circles">
-            <div class="fa fa-circle"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-            <div class="fa fa-circle-o"></div>
-        </div>
+        <div class="widgetLabel">Všechny aplikace</div>
         <div class="appList">
             @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
                 <a href="/@app.Name">
