@@ -343,6 +343,8 @@ body.adminAppModule #appBuildResults {
   #userTopBar .activeIcon {
     background-color: #edf8fe;
     cursor: default; }
+  #userTopBar #toggleMenuIcon {
+    display: none; }
   #userTopBar .clientTitle {
     position: absolute;
     font-family: RweHeadlineRegular;
@@ -596,11 +598,23 @@ body.adminAppModule #appBuildResults {
     #userLeftBarMinimized .appIconToolbar .appIconToolbarItem:hover {
       background-color: #ceeaf8; }
 
+body.userLayout.leftBarHidden #userLeftBarMinimized {
+  display: block; }
+
+body.userLayout.leftBarHidden #userLeftBar {
+  display: none; }
+
+body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
+  left: 50px; }
+
 @media (max-width: 799px) {
+  #userTopBar #toggleMenuIcon, #userTopBar a {
+    display: block;
+    float: left; }
   #userTopBar .userBox {
     display: none; }
   #userTopBar .clientTitleArea {
-    left: 150px;
+    left: 200px;
     right: 140px; }
   #userTopBar .userBoxMinimized {
     display: block;
@@ -615,21 +629,16 @@ body.adminAppModule #appBuildResults {
     display: block;
     width: 50px; }
     #userTopBar .searchBoxMinimized .searchIcon {
-      right: 10px; } }
+      right: 10px; }
+  #userLeftBarMinimized {
+    display: none !important; }
+  body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
+    left: 0px; } }
 
 @media (max-width: 399px) {
   #userTopBar .clientTitle {
     text-transform: initial;
     font-size: 16px; } }
-
-body.userLayout.leftBarHidden #userLeftBarMinimized {
-  display: block; }
-
-body.userLayout.leftBarHidden #userLeftBar {
-  display: none; }
-
-body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
-  left: 50px; }
 
 #userContentArea {
   position: absolute;

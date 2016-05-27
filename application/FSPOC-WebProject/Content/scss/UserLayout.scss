@@ -26,6 +26,9 @@
         cursor: default;
     }
 
+    #toggleMenuIcon{
+        display: none;
+    }
     .clientTitle {
         position: absolute;
         font-family: RweHeadlineRegular;
@@ -314,14 +317,30 @@
         }
     }
 }
+body.userLayout.leftBarHidden {
+    #userLeftBarMinimized {
+        display: block;
+    }
+    #userLeftBar {
+        display: none;
+    }
+    #userContentArea, #helpContainer, #pageOverlay{
+        left: 50px;
+    }
+}
 
 @media (max-width: 799px) {
     #userTopBar {
+        #toggleMenuIcon, a {
+            display: block;
+            float: left;
+        }
+
         .userBox {
             display: none;
         }
         .clientTitleArea {
-            left: 150px;
+            left: 200px;
             right: 140px;
         }
         .userBoxMinimized {
@@ -344,24 +363,20 @@
             }
         }
     }
+    #userLeftBarMinimized {
+        display: none !important;
+    }
+    body.userLayout, body.userLayout.leftBarHidden {
+        #userContentArea, #helpContainer, #pageOverlay {
+            left: 0px;
+        }
+    }
 }
 
 @media (max-width: 399px) {
     #userTopBar .clientTitle { 
         text-transform: initial;
         font-size: 16px;
-    }
-}
-
-body.userLayout.leftBarHidden {
-    #userLeftBarMinimized {
-        display: block;
-    }
-    #userLeftBar {
-        display: none;
-    }
-    #userContentArea, #helpContainer, #pageOverlay{
-        left: 50px;
     }
 }
 
