@@ -456,7 +456,8 @@ body.adminAppModule #appBuildResults {
   min-width: 310px;
   border-right: 1px solid #f1f0ee;
   overflow-x: hidden;
-  overflow-y: auto; }
+  overflow-y: auto;
+  z-index: 10; }
   #userLeftBar .widgetLabel {
     position: absolute;
     font-family: RweHeadlineRegular;
@@ -574,7 +575,8 @@ body.adminAppModule #appBuildResults {
   bottom: 0px;
   width: 50px;
   border-right: 1px solid #f1f0ee;
-  display: none; }
+  display: none;
+  z-index: 10; }
   #userLeftBarMinimized #showMenuIcon {
     position: absolute;
     font-size: 28px;

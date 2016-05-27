@@ -152,6 +152,7 @@
     border-right: 1px solid #f1f0ee;
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 10;
         
     .widgetLabel {
         position: absolute;
@@ -290,6 +291,8 @@
     width: 50px;
     border-right: 1px solid #f1f0ee;
     display: none;
+    z-index: 10;
+
     #showMenuIcon {
         position: absolute;
         font-size: 28px;

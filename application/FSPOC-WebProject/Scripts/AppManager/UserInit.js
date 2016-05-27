@@ -1,10 +1,13 @@
 ﻿var ModalDialogArray = [];
 $(function () {
     $("#hideMenuIcon").on("click", function () {
-        document.body.classList.add("leftBarHidden");
+        $(document.body).addClass("leftBarHidden");
     });
     $("#showMenuIcon").on("click", function () {
-        document.body.classList.remove("leftBarHidden");
+        $(document.body).removeClass("leftBarHidden");
+    });
+    $("#toggleMenuIcon").on("click", function () {
+        $(document.body).toggleClass("leftBarHidden");
     });
     if (window.innerWidth < 1280) document.body.classList.add("leftBarHidden");
     if (CurrentModuleIs("appManagerModule")) {
