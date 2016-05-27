@@ -46,6 +46,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             catch (Exception ex)
             {
+                _context.DiscardChanges();
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
                 _context.SaveChanges();
 

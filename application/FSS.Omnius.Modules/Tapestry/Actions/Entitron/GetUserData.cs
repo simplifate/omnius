@@ -60,7 +60,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             DBItem result = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(user.Email)).FirstOrDefault();
 
-            result.createProperty(1010, "rwe_id", result["id"]);
+            result.createProperty(1010, "RweId", result["id"]);
 
             result.createProperty(1000, "Id", user.Id);
             result.createProperty(1001, "UserName", user.UserName);

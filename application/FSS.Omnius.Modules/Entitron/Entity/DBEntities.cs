@@ -410,7 +410,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Watchtower
         }
+        
+        public void DiscardChanges()
+        {
+            var changedEntries = ChangeTracker.Entries()
+                .Where(x => x.State != EntityState.Unchanged).ToList();
 
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Modified))
+            {
+                entry.CurrentValues.SetValues(entry.OriginalValues);
+                entry.State = EntityState.Unchanged;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
+            {
+                entry.State = EntityState.Detached;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Unchanged;
+            }
+        }
 
         //public void Remove(IEntity item)
         //{
