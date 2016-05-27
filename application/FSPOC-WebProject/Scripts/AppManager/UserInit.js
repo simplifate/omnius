@@ -58,6 +58,12 @@ $(function () {
         $(".uic > checkbox").each(function (index, element) {
             $(element).prop("checked", false);
         });
+        $(".userBoxMinimized").click(function () {
+            $(".userBox").toggle();
+        });
+        $(".searchBoxMinimized").click(function () {
+            $(".searchBox").toggle();
+        });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
