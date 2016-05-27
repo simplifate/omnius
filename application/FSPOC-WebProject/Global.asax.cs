@@ -1,5 +1,6 @@
 ﻿using FSPOC_WebProject.Views;
 using FSS.Omnius.Controllers.CORE;
+using FSS.Omnius.Modules.CORE;
 using System;
 using System.Linq;
 using System.Web;
@@ -40,6 +41,12 @@ namespace FSPOC_WebProject
             Logger.Log.Error(body);
         }
 
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (!Context.Items.Contains("CORE"))
+                Context.Items.Add("CORE", new CORE());
+        }
+
         protected void Application_EndRequest()
         {
             // error
@@ -67,6 +74,8 @@ namespace FSPOC_WebProject
                 IController c = new ErrorController();
                 c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
             }
+
+            (Context.Items["CORE"] as CORE).Entitron.CloseStaticTables();
         }
     }
 }

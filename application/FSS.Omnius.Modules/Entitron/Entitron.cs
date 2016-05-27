@@ -49,6 +49,11 @@ namespace FSS.Omnius.Modules.Entitron
 
             return entities;
         }
+        public void CloseStaticTables()
+        {
+            if (entities != null)
+                entities.Dispose();
+        }
 
         public IEnumerable<DBTable> GetDynamicTables()
         {
