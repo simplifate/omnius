@@ -612,7 +612,15 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     #userTopBar .userBoxMinimized .notificationIcon {
       right: 0px; }
   #userTopBar .searchBox {
-    display: none; }
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    background-color: #edf8fe;
+    z-index: 10; }
+    #userTopBar .searchBox .searchInputField {
+      width: calc(100% - 100px); }
   #userTopBar .searchBoxMinimized {
     display: block;
     width: 50px; }
@@ -622,6 +630,10 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     display: none !important; }
   body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
     left: 0px; } }
+
+@media (min-width: 800px) {
+  .userBox, .searchBox {
+    display: block !important; } }
 
 @media (max-width: 399px) {
   #userTopBar .clientTitle {

@@ -341,7 +341,17 @@ body.userLayout.leftBarHidden {
         }
         .searchBox {
             display: none;
+            position: absolute;
+            left: 0;
+            top: 50px;
+            width: 100%;
+            background-color: #edf8fe;
+            z-index: 10;
+            .searchInputField {
+                width: calc(100% - 100px);
+            }
         }
+
         .searchBoxMinimized {
             display: block;
             width: 50px;
@@ -357,6 +367,12 @@ body.userLayout.leftBarHidden {
         #userContentArea, #helpContainer, #pageOverlay {
             left: 0px;
         }
+    }
+}
+
+@media (min-width: 800px) {
+    .userBox, .searchBox {
+        display: block !important;
     }
 }
 
