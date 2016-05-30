@@ -640,6 +640,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       right: 10px; }
   #userLeftBarMinimized {
     display: none !important; }
+  #hideMenuIcon {
+    display: none; }
   body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
     left: 0px; } }
 
@@ -647,10 +649,9 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .userBox, .searchBox {
     display: block !important; } }
 
-@media (max-width: 399px) {
+@media (max-width: 479px) {
   #userTopBar .clientTitle {
-    text-transform: initial;
-    font-size: 16px; } }
+    display: none; } }
 
 #userContentArea {
   position: absolute;

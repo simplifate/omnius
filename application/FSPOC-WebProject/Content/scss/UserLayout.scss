@@ -379,6 +379,9 @@ body.userLayout.leftBarHidden {
     #userLeftBarMinimized {
         display: none !important;
     }
+    #hideMenuIcon {
+        display: none;
+    }
     body.userLayout, body.userLayout.leftBarHidden {
         #userContentArea, #helpContainer, #pageOverlay {
             left: 0px;
@@ -392,10 +395,9 @@ body.userLayout.leftBarHidden {
     }
 }
 
-@media (max-width: 399px) {
+@media (max-width: 479px) {
     #userTopBar .clientTitle { 
-        text-transform: initial;
-        font-size: 16px;
+        display: none;
     }
 }
 
