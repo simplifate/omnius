@@ -608,7 +608,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     top: 50px;
     right: 0;
     width: 150px;
-    border: 1px solid #f1f0ee; }
+    border: 1px solid #f1f0ee;
+    z-index: 10; }
     #userTopBar .userBox .notificationIcon, #userTopBar .userBox .avatar {
       display: none; }
     #userTopBar .userBox .fullName, #userTopBar .userBox .commands {

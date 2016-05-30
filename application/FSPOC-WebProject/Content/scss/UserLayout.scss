@@ -334,6 +334,7 @@ body.userLayout.leftBarHidden {
             right: 0;
             width: 150px;
             border: 1px solid #f1f0ee;
+            z-index: 10;
 
             .notificationIcon, .avatar {
                 display: none;
