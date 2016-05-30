@@ -323,12 +323,13 @@ body.userLayout.leftBarHidden {
             float: left;
         }
 
-        .userBox {
-            display: none;
-        }
         .clientTitleArea {
             left: 200px;
             right: 140px;
+        }
+        .userBox {
+            display: none;
+
         }
         .userBoxMinimized {
             display: block;
@@ -348,7 +349,11 @@ body.userLayout.leftBarHidden {
             background-color: #edf8fe;
             z-index: 10;
             .searchInputField {
-                width: calc(100% - 100px);
+                right: 15px;
+                width: calc(100% - 30px);
+            }
+            .searchIcon {
+                display: none;
             }
         }
 

@@ -599,11 +599,11 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   #userTopBar #toggleMenuIcon, #userTopBar a {
     display: block;
     float: left; }
-  #userTopBar .userBox {
-    display: none; }
   #userTopBar .clientTitleArea {
     left: 200px;
     right: 140px; }
+  #userTopBar .userBox {
+    display: none; }
   #userTopBar .userBoxMinimized {
     display: block;
     width: 90px;
@@ -620,7 +620,10 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     background-color: #edf8fe;
     z-index: 10; }
     #userTopBar .searchBox .searchInputField {
-      width: calc(100% - 100px); }
+      right: 15px;
+      width: calc(100% - 30px); }
+    #userTopBar .searchBox .searchIcon {
+      display: none; }
   #userTopBar .searchBoxMinimized {
     display: block;
     width: 50px; }
