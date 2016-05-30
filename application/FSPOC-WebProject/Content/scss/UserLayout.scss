@@ -318,7 +318,7 @@ body.userLayout.leftBarHidden {
 
 @media (max-width: 799px) {
     #userTopBar {
-        #toggleMenuIcon, a {
+        #toggleMenuIcon, > a {
             display: block;
             float: left;
         }
@@ -329,7 +329,18 @@ body.userLayout.leftBarHidden {
         }
         .userBox {
             display: none;
+            background-color: #edf8fe;
+            top: 50px;
+            right: 0;
+            width: 150px;
+            border: 1px solid #f1f0ee;
 
+            .notificationIcon, .avatar {
+                display: none;
+            }
+            .fullName, .commands {
+                left: 15px;
+            }
         }
         .userBoxMinimized {
             display: block;

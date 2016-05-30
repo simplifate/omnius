@@ -596,14 +596,23 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   left: 50px; }
 
 @media (max-width: 799px) {
-  #userTopBar #toggleMenuIcon, #userTopBar a {
+  #userTopBar #toggleMenuIcon, #userTopBar > a {
     display: block;
     float: left; }
   #userTopBar .clientTitleArea {
     left: 200px;
     right: 140px; }
   #userTopBar .userBox {
-    display: none; }
+    display: none;
+    background-color: #edf8fe;
+    top: 50px;
+    right: 0;
+    width: 150px;
+    border: 1px solid #f1f0ee; }
+    #userTopBar .userBox .notificationIcon, #userTopBar .userBox .avatar {
+      display: none; }
+    #userTopBar .userBox .fullName, #userTopBar .userBox .commands {
+      left: 15px; }
   #userTopBar .userBoxMinimized {
     display: block;
     width: 90px;
