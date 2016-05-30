@@ -132,7 +132,7 @@
     left: 0px;
     top: 50px;
     bottom: 0px;
-    min-width: 310px;
+    width: 310px;
     border-right: 1px solid #f1f0ee;
     overflow-x: hidden;
     overflow-y: auto;
@@ -146,6 +146,7 @@
         color: #0065a9;
         left: 30px;
         top: 30px;
+        overflow: hidden;
     }
     .circles {
         position: absolute;
@@ -164,13 +165,16 @@
         left: 260px;
         top: 35px;
     }
-    #hideMenuIcon {
+    #showMenuIcon, #hideMenuIcon {
         position: absolute;
         font-size: 28px;
         color: #0065a9;
         left: 280px;
         top: 30px;
         cursor: pointer;            
+    }
+    #showMenuIcon {
+        display: none;
     }
     .appList {
         position: absolute;
@@ -265,58 +269,40 @@
         }
     } 
 }
-#userLeftBarMinimized {
-    @include no-select();
-    background-color: #edf8fe;
-    position: absolute;
-    left: 0px;
-    top: 50px;
-    bottom: 0px;
-    width: 50px;
-    border-right: 1px solid #f1f0ee;
-    display: none;
-    z-index: 10;
 
-    #showMenuIcon {
-        position: absolute;
-        font-size: 28px;
-        color: #0065a9;
-        left: 18px;
-        top: 30px;
-        cursor: pointer;   
-    }
-    .appIconToolbar {
-        position: absolute;
-        font-size: 18px;
-        color: #0065a9;
-        left: 0px;
-        top: 75px;
-        width: 100%;
-        .appIconToolbarItem {
-            height: 40px;
-            width: 100%;
-            padding-top: 7px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .appIconToolbarItem:hover {
-            background-color: #ceeaf8;
-        }
-    }
-}
 body.userLayout.leftBarHidden {
-    #userLeftBarMinimized {
-        display: block;
-    }
     #userLeftBar {
-        display: none;
+        width: 50px;
+
+        #hideMenuIcon {
+            display: none;
+        }
+        #showMenuIcon {
+            display: inline-block;
+            left: 20px;
+        }
+        .widgetLabel{
+            width: 0px;
+        }
+        .appListItem {
+            border-top: none;
+        }
+        .appListItem .icon {
+            left: 18px;
+        }
     }
     #userContentArea, #helpContainer, #pageOverlay{
         left: 50px;
     }
+    .infoBox {
+        display: none;
+    }
 }
 
 @media (max-width: 799px) {
+    body.userLayout.leftBarHidden #userLeftBar {
+        width: 0;
+    }
     #userTopBar {
         #toggleMenuIcon, > a {
             display: block;
@@ -376,9 +362,6 @@ body.userLayout.leftBarHidden {
                 right: 10px;
             }
         }
-    }
-    #userLeftBarMinimized {
-        display: none !important;
     }
     #hideMenuIcon {
         display: none;

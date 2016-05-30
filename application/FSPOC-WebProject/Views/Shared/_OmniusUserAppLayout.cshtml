@@ -48,23 +48,10 @@
         </div>
     </div>
     <div id="userLeftBar">
+        <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         <div class="widgetLabel">Menu</div>
         @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/menuLayout.cshtml")
-    </div>
-    <div id="userLeftBarMinimized">
-        <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
-        @if (string.IsNullOrEmpty(Context.GetCORE().Entitron.AppName)) {
-            <div class="appIconToolbar">
-                @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
-                    <a href="/@app.Name">
-                        <div class="appIconToolbarItem">
-                            <div class="icon fa @(app.Icon)"></div>
-                        </div>
-                    </a>
-                }
-            </div>
-        }
     </div>
     <div id="userContentArea">
         <div id="appNotificationArea"></div>
