@@ -18,7 +18,7 @@
     @Scripts.Render("~/bundles/CommonLibraries")
     <div id="userTopBar">
         <div class="icon" id="toggleMenuIcon"><div class="fa fa-bars"></div></div>
-        <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
+        <a href="/Master"><div class="icon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
         @if (Context.GetLoggedUser().isAdmin())
         {
             <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
