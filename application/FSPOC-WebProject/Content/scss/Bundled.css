@@ -644,7 +644,8 @@ body.userLayout.leftBarHidden .infoBox {
   top: 50px;
   right: 0px;
   bottom: 0px;
-  overflow: auto; }
+  overflow: auto;
+  transition: left 0.4s ease-out; }
 
 #helpContainer {
   margin-left: 40px; }
