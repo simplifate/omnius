@@ -7,7 +7,8 @@ $(function () {
         $(document.body).removeClass("leftBarHidden");
     });
     $("#toggleMenuIcon").on("click", function () {
-        $(".userBox, .searchBox").hide();
+        $(".userBox").hide();
+        $(".searchBox").slideUp();
         $(document.body).toggleClass("leftBarHidden");
     });
     if (window.innerWidth < 1280) document.body.classList.add("leftBarHidden");
@@ -61,12 +62,12 @@ $(function () {
         });
         $(".userBoxMinimized").click(function () {
             $(document.body).addClass("leftBarHidden");
-            $(".searchBox").hide();
+            $(".searchBox").slideUp();
             $(".userBox").toggle();
         });
         $(".searchBoxMinimized").click(function () {
             $(document.body).addClass("leftBarHidden");
-            $(".searchBox").toggle();
+            $(".searchBox").slideToggle();
             $(".userBox").hide();
         });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);

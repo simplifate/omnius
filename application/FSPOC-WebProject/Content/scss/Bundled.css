@@ -408,7 +408,7 @@ body.adminAppModule #appBuildResults {
     height: 50px; }
     #userTopBar .searchBox .searchInputField, #userTopBar .searchBoxMinimized .searchInputField {
       position: absolute;
-      top: 11px;
+      bottom: 11px;
       right: 85px;
       width: 215px;
       height: 28px;
