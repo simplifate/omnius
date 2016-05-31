@@ -571,6 +571,8 @@ body.userLayout.leftBarHidden #userLeftBar {
     border-color: #edf8fe; }
   body.userLayout.leftBarHidden #userLeftBar .appListItem .icon {
     left: 18px; }
+  body.userLayout.leftBarHidden #userLeftBar #appMenu {
+    left: 20px; }
 
 body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
   left: 50px; }
