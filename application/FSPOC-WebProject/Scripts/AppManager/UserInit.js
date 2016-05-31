@@ -7,7 +7,7 @@ $(function () {
         $(document.body).removeClass("leftBarHidden");
     });
     $("#toggleMenuIcon").on("click", function () {
-        $(".userBox").hide();
+        $(".userBox").slideUp();
         $(".searchBox").slideUp();
         $(document.body).toggleClass("leftBarHidden");
     });
@@ -63,12 +63,12 @@ $(function () {
         $(".userBoxMinimized").click(function () {
             $(document.body).addClass("leftBarHidden");
             $(".searchBox").slideUp();
-            $(".userBox").toggle();
+            $(".userBox").slideToggle();
         });
         $(".searchBoxMinimized").click(function () {
             $(document.body).addClass("leftBarHidden");
             $(".searchBox").slideToggle();
-            $(".userBox").hide();
+            $(".userBox").slideUp();
         });
         $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         $(window).scroll(function () {
