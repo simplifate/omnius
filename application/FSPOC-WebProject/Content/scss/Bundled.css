@@ -443,16 +443,21 @@ body.adminAppModule #appBuildResults {
   border-right: 1px solid #f1f0ee;
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: 10; }
+  z-index: 10;
+  transition: 0.4s ease-out; }
+  #userLeftBar * {
+    transition: 0.4s ease-out; }
   #userLeftBar .widgetLabel {
     position: absolute;
     font-family: RweHeadlineRegular;
     text-transform: uppercase;
     font-size: 20px;
     color: #0065a9;
-    left: 30px;
+    padding: 0 30px;
     top: 30px;
-    overflow: hidden; }
+    width: 280px;
+    overflow: hidden;
+    white-space: nowrap; }
   #userLeftBar .circles {
     position: absolute;
     color: #0065a9;
@@ -470,7 +475,7 @@ body.adminAppModule #appBuildResults {
     position: absolute;
     font-size: 28px;
     color: #0065a9;
-    left: 280px;
+    right: 12px;
     top: 30px;
     cursor: pointer; }
   #userLeftBar #showMenuIcon {
@@ -495,14 +500,17 @@ body.adminAppModule #appBuildResults {
       #userLeftBar .appList .appListItem .appName {
         position: absolute;
         top: 8px;
-        left: 62px; }
+        left: 62px;
+        right: 10px;
+        white-space: nowrap;
+        overflow: hidden; }
     #userLeftBar .appList .appListItem:hover {
       background-color: #ceeaf8; }
   #userLeftBar .infoBox {
     position: absolute;
     left: 0px;
     bottom: 0px;
-    width: 100%;
+    width: 310px;
     height: 90px;
     color: #919296; }
     #userLeftBar .infoBox .icon {
@@ -555,12 +563,12 @@ body.userLayout.leftBarHidden #userLeftBar {
   body.userLayout.leftBarHidden #userLeftBar #hideMenuIcon {
     display: none; }
   body.userLayout.leftBarHidden #userLeftBar #showMenuIcon {
-    display: inline-block;
-    left: 20px; }
+    display: inline-block; }
   body.userLayout.leftBarHidden #userLeftBar .widgetLabel {
-    width: 0px; }
+    width: 0px;
+    padding: 0 0 0 20px; }
   body.userLayout.leftBarHidden #userLeftBar .appListItem {
-    border-top: none; }
+    border-color: #edf8fe; }
   body.userLayout.leftBarHidden #userLeftBar .appListItem .icon {
     left: 18px; }
 
@@ -568,7 +576,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   left: 50px; }
 
 body.userLayout.leftBarHidden .infoBox {
-  display: none; }
+  opacity: 0;
+  transition: ease-in; }
 
 @media (max-width: 799px) {
   body.userLayout.leftBarHidden #userLeftBar {
@@ -616,7 +625,7 @@ body.userLayout.leftBarHidden .infoBox {
     width: 50px; }
     #userTopBar .searchBoxMinimized .searchIcon {
       right: 10px; }
-  #hideMenuIcon {
+  body.userLayout #userLeftBar #showMenuIcon, body.userLayout #userLeftBar #hideMenuIcon, body.userLayout.leftBarHidden #userLeftBar #showMenuIcon, body.userLayout.leftBarHidden #userLeftBar #hideMenuIcon {
     display: none; }
   body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
     left: 0px; } }
