@@ -11,7 +11,7 @@ $(function () {
         $(".searchBox").slideUp();
         $(document.body).toggleClass("leftBarHidden");
     });
-    if (window.innerWidth < 1280) document.body.classList.add("leftBarHidden");
+
     if (CurrentModuleIs("appManagerModule")) {
         $(".appPanel").draggable({
             grid: [120, 120],

@@ -53,6 +53,11 @@
         <div class="widgetLabel">Menu</div>
         @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/menuLayout.cshtml")
     </div>
+    <script>
+        if (window.innerWidth < 1280) {
+            document.body.classList.add("leftBarHidden");
+        }
+    </script>
     <div id="userContentArea">
         <div id="appNotificationArea"></div>
         @RenderBody()
