@@ -455,7 +455,8 @@ body.adminAppModule #appBuildResults {
     color: #0065a9;
     padding: 0 30px;
     top: 30px;
-    width: 280px;
+    left: 0px;
+    right: 30px;
     overflow: hidden;
     white-space: nowrap; }
   #userLeftBar .circles {
@@ -559,13 +560,13 @@ body.adminAppModule #appBuildResults {
       color: #0065a9; }
 
 body.userLayout.leftBarHidden #userLeftBar {
-  width: 50px; }
+  width: 50px;
+  overflow: hidden; }
   body.userLayout.leftBarHidden #userLeftBar #hideMenuIcon {
     display: none; }
   body.userLayout.leftBarHidden #userLeftBar #showMenuIcon {
     display: inline-block; }
   body.userLayout.leftBarHidden #userLeftBar .widgetLabel {
-    width: 0px;
     padding: 0 0 0 20px; }
   body.userLayout.leftBarHidden #userLeftBar .appListItem {
     border-color: #edf8fe; }

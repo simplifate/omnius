@@ -149,7 +149,8 @@
         color: #0065a9;
         padding: 0 30px;
         top: 30px;
-        width: 280px;
+        left: 0px;
+        right: 30px;
         overflow: hidden;
         white-space: nowrap;
     }
@@ -281,6 +282,7 @@
 body.userLayout.leftBarHidden {
     #userLeftBar {
         width: 50px;
+        overflow: hidden;
 
         #hideMenuIcon {
             display: none;
@@ -289,7 +291,6 @@ body.userLayout.leftBarHidden {
             display: inline-block;
         }
         .widgetLabel{
-            width: 0px;
             padding: 0 0 0 20px;
         }
         .appListItem {
