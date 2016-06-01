@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Watchtower
             {
                 return context.Applications.Find(appId).DisplayName;
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 return string.Format("Aplikace {0} (jméno chybí)", appId);
             }
@@ -49,7 +49,7 @@ namespace FSS.Omnius.Modules.Watchtower
             {
                 return context.Users.Find(id).DisplayName;
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 return string.Format("Uživatel {0} (jméno chybí)", id);
             }
