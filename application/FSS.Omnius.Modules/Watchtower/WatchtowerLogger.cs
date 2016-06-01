@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
 
@@ -17,8 +18,7 @@ namespace FSS.Omnius.Modules.Watchtower
     {
         private Dictionary<int, string> EventTypeMap;
         private Dictionary<int, string> LogLevelMap;
-        private Dictionary<int, string> AppNameMap;
-        private Dictionary<int, string> UserNameMap;
+        private DBEntities context;
 
         public string GetEventTypeString(int id)
         {
@@ -34,17 +34,25 @@ namespace FSS.Omnius.Modules.Watchtower
                 return "Platforma Omnius";
             else if (appId == null)
                 return "Neznámá aplikace";
-            else if (AppNameMap.ContainsKey((int)appId))
-                return AppNameMap[(int)appId];
-            else
-                return String.Format("Aplikace {0} (jméno chybí)", appId);
+            try
+            {
+                return context.Applications.Find(appId).DisplayName;
+            }
+            catch (InvalidOperationException)
+            {
+                return string.Format("Aplikace {0} (jméno chybí)", appId);
+            }
         }
         public string GetUserName(int id)
         {
-            if (UserNameMap.ContainsKey(id))
-                return UserNameMap[id];
-            else
-                return String.Format("Uživatel {0} (jméno chybí)", id);
+            try
+            {
+                return context.Users.Find(id).DisplayName;
+            }
+            catch (InvalidOperationException)
+            {
+                return string.Format("Uživatel {0} (jméno chybí)", id);
+            }
         }
 
         public void LoadMaps()
@@ -59,15 +67,6 @@ namespace FSS.Omnius.Modules.Watchtower
             LogLevelMap.Add((int)LogLevel.Warning, "Varování");
             LogLevelMap.Add((int)LogLevel.Error, "Chyba");
             LogLevelMap.Add((int)LogLevel.FatalError, "Fatální chyba");
-
-            // TODO: Load real data from Persona
-            UserNameMap.Add(0, "Anonym");
-            UserNameMap.Add(1, "Samuel Lachman");
-            UserNameMap.Add(2, "Martin Novák");
-
-            // TODO: Load real data from app profiles
-            AppNameMap.Add(0, "Rezervace služeb");
-            AppNameMap.Add(1, "Překlady");
         }
 
         public void LogEvent(string message, int userId, LogEventType eventType = LogEventType.NotSpecified,
@@ -94,8 +93,7 @@ namespace FSS.Omnius.Modules.Watchtower
         {
             EventTypeMap = new Dictionary<int, string>();
             LogLevelMap = new Dictionary<int, string>();
-            UserNameMap = new Dictionary<int, string>();
-            AppNameMap = new Dictionary<int, string>();
+            context = new DBEntities();
         }
         public static WatchtowerLogger Instance
         {
