@@ -618,10 +618,13 @@ body.userLayout.leftBarHidden .infoBox {
     background-color: #edf8fe;
     z-index: 10; }
     #userTopBar .searchBox .searchInputField {
-      right: 15px;
-      width: calc(100% - 30px); }
+      left: 15px;
+      width: calc(100% - 70px); }
     #userTopBar .searchBox .searchIcon {
-      display: none; }
+      position: absolute;
+      right: 15px; }
+    #userTopBar .searchBox .searchIcon::before {
+      content: "\f061"; }
   #userTopBar .searchBoxMinimized {
     display: block;
     width: 50px; }
@@ -3551,9 +3554,6 @@ body.cortexModule #lowerPanel {
 
 .ui-dialog .spinner-2 > div {
   background-color: black; }
-
-#history-dialog .spinner-2 {
-  display: none; }
 
 #pageOverlay {
   position: fixed;

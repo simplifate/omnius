@@ -359,11 +359,15 @@ body.userLayout.leftBarHidden {
             background-color: #edf8fe;
             z-index: 10;
             .searchInputField {
-                right: 15px;
-                width: calc(100% - 30px);
+                left: 15px;
+                width: calc(100% - 70px);
             }
             .searchIcon {
-                display: none;
+                position: absolute;
+                right: 15px;
+            }
+            .searchIcon::before {
+                content: "\f061";
             }
         }
 
