@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parIndexName = safeAddParam("indexName", indexName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50);" +
+                "DECLARE @realTableName NVARCHAR(100);" +
                 "exec getTableRealName @{0}, @{1}, @realTableName output;" +
                 "SELECT i.Name IndexName , c.Name ColName FROM sys.indexes i " +
                 "INNER JOIN sys.index_columns ic ON ic.object_id = i.object_id AND ic.index_id = i.index_id " +

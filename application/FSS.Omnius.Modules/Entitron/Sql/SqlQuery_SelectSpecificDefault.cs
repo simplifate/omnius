@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parColumnName = safeAddParam("column", columnName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50); exec getTableRealName @{0}, @{1}, @realTableName output;" +
+                "DECLARE @realTableName NVARCHAR(100); exec getTableRealName @{0}, @{1}, @realTableName output;" +
                 "SELECT d.name name, d.definition def FROM sys.default_constraints d " +
                 "INNER JOIN sys.tables t ON t.object_id=d.parent_object_id " +
                 "WHERE t.name= @realTableName and d.name like '%' + @{2}",

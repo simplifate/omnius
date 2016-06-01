@@ -12,14 +12,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
-            string parColumn = safeAddParam("columnName", columnName);
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
-            sqlString =string.Format(
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' DROP COLUMN IF EXISTS ', @{2}, ';')" +
-                "exec(@sql);", parAppName, parTableName, parColumn);
+            sqlString =
+                $"ALTER TABLE {realTableName} DROP COLUMN IF EXISTS [{columnName}];";
 
             base.BaseExecution(connection);
         }

@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parTableName = safeAddParam("tableName", table.tableName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('SELECT COUNT(*) count FROM [', @realTableName, '] {2} {3} {4} {5};');" +
                 "exec sp_executesql @sql, N'{6}', {7};", 
                 parAppName,parTableName,

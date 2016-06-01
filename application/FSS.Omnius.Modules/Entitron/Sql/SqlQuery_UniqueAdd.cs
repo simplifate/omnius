@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parColumns = safeAddParam("columns", keyColumns);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100) @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @realTableName, '_', @{2}, ' UNIQUE (', @{2}, ');')" +
                 "exec (@sql)",
                 parAppName, parTableName, parColumns);

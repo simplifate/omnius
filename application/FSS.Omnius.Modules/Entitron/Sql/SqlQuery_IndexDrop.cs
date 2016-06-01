@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parIndexName = safeAddParam("indexName", indexName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('DROP INDEX IF EXISTS ', @{2}, ' ON ', @realTableName, ';')" +
                 "exec (@sql)",
                 parAppName, parTableName,parIndexName);

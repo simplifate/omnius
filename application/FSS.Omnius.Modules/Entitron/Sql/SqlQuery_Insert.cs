@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             Dictionary<DBColumn, string> values = safeAddParam(data);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql = CONCAT('INSERT INTO ', @realTableName, ' ({2}) Output Inserted.Id VALUES ({3}) ;');" +
                 "exec sp_executesql @sql, N'{4}', {5};",
                 parAppName, // 0

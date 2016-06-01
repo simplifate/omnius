@@ -12,22 +12,14 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", application.Name);
-            string parTableName = safeAddParam("TableName", table.tableName);
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
             Dictionary<DBColumn, string> values = safeAddParam(rowSelect);
-           
-            
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('DELETE FROM ', @realTableName, ' OUTPUT DELETED.* WHERE {2} ;')"+
-                "exec sp_executesql @sql, N'{3}', {4};" 
-                , parAppName,parTableName,
-                string.Join(" AND ", values.Select(s=>s.Key.Name + "= @" + s.Value)),
-                string.Join(", ", _datatypes.Select(s => "@" + s.Key + " " + s.Value)),
-                string.Join(", ", _datatypes.Select(s => "@" + s.Key))
-                
-            );
 
+            string condition = string.Join(" AND ", values.Select(s => s.Key.Name + "= @" + s.Value));
+
+            sqlString =
+                $"DELETE FROM {realTableName} OUTPUT DELETED.* WHERE {condition};";
+            
             base.BaseExecution(transaction);
         }
 

@@ -15,11 +15,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parTableName = safeAddParam("tableName", table.tableName);
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= 'SELECT ch.name name FROM sys.check_constraints ch " +
                 "INNER JOIN sys.tables t ON t.object_id=ch.parent_object_id " +
                 "WHERE t.name = @realTableName;';" +
-                "exec sp_executesql @sql, N'@realTableName NVARCHAR(50)', @realTableName;",
+                "exec sp_executesql @sql, N'@realTableName NVARCHAR(100)', @realTableName;",
                 parAppName, parTableName
                 );
 

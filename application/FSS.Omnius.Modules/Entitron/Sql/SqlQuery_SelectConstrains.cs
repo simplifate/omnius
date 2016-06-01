@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (isDisable) //pokud chceme vypnout nekterou constraint musí být nejdříve zaplá a naopak
             {
                 sqlString = string.Format(
-               "DECLARE @realTableName NVARCHAR(50); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+               "DECLARE @realTableName NVARCHAR(100); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                "SELECT kc.name name FROM sys.check_constraints kc INNER JOIN sys.tables t ON kc.parent_object_id=t.object_id WHERE kc.is_disabled=0 UNION " +
                "SELECT fk.name name FROM sys.foreign_keys fk INNER JOIN sys.tables t ON fk.parent_object_id=t.object_id WHERE fk.is_disabled=0 AND t.name =  @realTableName ;",
                parAppName,
@@ -28,7 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             else
             {
                 sqlString = string.Format(
-               "DECLARE @realTableName NVARCHAR(50); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+               "DECLARE @realTableName NVARCHAR(100); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                "SELECT kc.name name FROM sys.check_constraints kc INNER JOIN sys.tables t ON kc.parent_object_id=t.object_id WHERE kc.is_disabled=1 UNION " +
                "SELECT fk.name name FROM sys.foreign_keys fk INNER JOIN sys.tables t ON fk.parent_object_id=t.object_id WHERE fk.is_disabled=1 AND t.name =  @realTableName ;",
                parAppName,

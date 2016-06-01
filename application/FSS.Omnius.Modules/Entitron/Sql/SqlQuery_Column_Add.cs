@@ -14,14 +14,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName= safeAddParam("tableName", table.tableName);
-            var parColumn= safeAddParam("columnDefinition", column.getSqlDefinition());
+            string columnDefinition = column.getSqlDefinition();
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
-            sqlString =string.Format(
-                "DECLARE @realTableName NVARCHAR(50),@sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql = CONCAT('ALTER TABLE ', @realTableName, ' ADD ', @{2});" +
-                "exec(@sql);", parAppName,parTableName,parColumn);
+            sqlString =
+                $"ALTER TABLE [{realTableName}] ADD {columnDefinition};";
 
             base.BaseExecution(transaction);
         }

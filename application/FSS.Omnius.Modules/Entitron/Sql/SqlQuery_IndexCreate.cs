@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parColumnName = safeAddParam("columnName", string.Join(", ", columnsName));
 
             sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
                 "SET @sql= CONCAT('CREATE {4} INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
                 "exec (@sql);",
                 parAppName, parTableName,parIndexName, parColumnName,unique);

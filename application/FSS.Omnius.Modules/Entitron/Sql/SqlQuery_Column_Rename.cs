@@ -13,17 +13,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
-            string parOriginName = safeAddParam("originColumnName", originColumnName);
             string parNewName = safeAddParam("newColumnName", newColumnName);
+            string parFullOriginColumnName = safeAddParam("fullOriginColumnName", $"Entitron_{application.Name}_{table.tableName}.{originColumnName}");
 
             sqlString =
-                string.Format(
-                "DECLARE @realTableName NVARCHAR(50),@fullOriginName NVARCHAR(100);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @fullOriginName = CONCAT(@realTableName, '.', @{2});" +
-                "exec sp_RENAME @fullOriginName, @{3}, 'COLUMN';",
-                parAppName, parTableName, parOriginName, parNewName);
+                $"exec sp_RENAME @{parFullOriginColumnName}, @{parNewName}, 'COLUMN';";
 
             base.BaseExecution(connection);
         }

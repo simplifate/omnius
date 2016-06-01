@@ -13,17 +13,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", application.Name);
-            string parTableName = safeAddParam("TableName", table.tableName);
-            string parConName = safeAddParam("ConstraintName", constraintName);
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql=CONCAT('ALTER TABLE ', @realTableName, ' CHECK CONSTRAINT ', @{2}, ' ;');" +
-                "exec (@sql);",
-                parAppName, parTableName, parConName
-                );
-
+            sqlString =
+                $"ALTER TABLE {realTableName} CHECK CONSTRAINT [{constraintName}];";
 
             base.BaseExecution(transaction);
         }

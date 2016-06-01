@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             sqlString = 
-                "CREATE PROCEDURE getTableRealName @applicationName NVARCHAR(50), @tableName NVARCHAR(50), @realTableName NVARCHAR(50) OUTPUT AS " +
+                "CREATE PROCEDURE getTableRealName @applicationName NVARCHAR(50), @tableName NVARCHAR(50), @realTableName NVARCHAR(100) OUTPUT AS " +
                 "SET @realTableName = CONCAT('Entitron_', @applicationName, '_', @tableName);";
 
             base.BaseExecution(transaction);
