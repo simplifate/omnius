@@ -574,13 +574,11 @@ body.userLayout.leftBarHidden #userLeftBar {
     left: 18px; }
   body.userLayout.leftBarHidden #userLeftBar #appMenu {
     left: 20px; }
+  body.userLayout.leftBarHidden #userLeftBar .infoBox {
+    opacity: 0; }
 
 body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
   left: 50px; }
-
-body.userLayout.leftBarHidden .infoBox {
-  opacity: 0;
-  transition: ease-in; }
 
 @media (max-width: 799px) {
   body.userLayout.leftBarHidden #userLeftBar {
@@ -1185,6 +1183,10 @@ body.tapestryModule #lowerPanel {
       cursor: pointer; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .item, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol {
       z-index: 20; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .processedItem {
+      border: 2px solid black; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .activeItem {
+      border: 2px solid green; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
@@ -1272,6 +1274,8 @@ body.tapestryModule #lowerPanel {
           padding-left: 10px;
           padding-right: 10px;
           white-space: nowrap; }
+        body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .activeItem, body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .processedItem {
+          height: 24px; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
       height: 900px; }
@@ -1382,6 +1386,8 @@ body.tapestryModule #lowerPanel {
               font-family: MyriadPro;
               font-size: 12px;
               text-align: center; }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .activeItem, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .processedItem {
+              height: 64px; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem {
               background-color: #5bb3e4;
               color: black; }

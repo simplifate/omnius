@@ -332,6 +332,7 @@ $(function () {
                 },
                 Cancel: function () {
                     tableAttributePropertiesDialog.dialog("close");
+                    CurrentItem.removeClass("activeItem");
                 }
             },
             open: function (event, ui) {
@@ -376,7 +377,7 @@ $(function () {
                 if($(checkboxElement).is(":checked"))
                     columnFilter.push(columnName);
             });
-            CurrentItem.data("columnFilter", columnFilter);
+            CurrentItem.data("columnFilter", columnFilter).removeClass("activeItem");;
             tableAttributePropertiesDialog.dialog("close");
         }
         uiitemPropertiesDialog = $("#uiItem-properties-dialog").dialog({
@@ -508,6 +509,7 @@ $(function () {
                 },
                 Cancel: function () {
                     actionPropertiesDialog.dialog("close");
+                    CurrentItem.removeClass("activeItem");
                 }
             },
             create: function () {
@@ -526,6 +528,7 @@ $(function () {
         function actionPropertiesDialog_SubmitData() {
             CurrentItem.data("inputVariables", actionPropertiesDialog.find("#input-variables").val());
             CurrentItem.data("outputVariables", actionPropertiesDialog.find("#output-variables").val());
+            CurrentItem.removeClass("activeItem");
             actionPropertiesDialog.dialog("close");
         }
         conditionsDialog = $("#conditions-dialog").dialog({
@@ -813,6 +816,7 @@ $(function () {
             },
             Cancel: function () {
                 gatewayConditionsDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
             }
         },
         create: function () {
@@ -948,7 +952,7 @@ $(function () {
                 Conditions: conditionArray
             });
         });
-        CurrentItem.data("conditionSets", setArray);
+        CurrentItem.data("conditionSets", setArray).removeClass("activeItem");
         gatewayConditionsDialog.dialog("close");
     }
 });

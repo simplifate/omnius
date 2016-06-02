@@ -302,13 +302,13 @@ body.userLayout.leftBarHidden {
         #appMenu {
             left: 20px;
         }
+        .infoBox {
+            opacity: 0;
+            //transition: 0.4s ease-in;
+        }
     }
     #userContentArea, #helpContainer, #pageOverlay{
         left: 50px;
-    }
-    .infoBox {
-        opacity: 0;
-        transition: ease-in;
     }
 }
 
