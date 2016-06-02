@@ -99,6 +99,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                                         else
                                             newRow[columnName] = "Ne";
                                     }
+                                    else if(entitronRow[columnName] is DateTime)
+                                    {
+                                        newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
+                                    }
                                     else
                                         newRow[columnName] = entitronRow[columnName];
                                 }
@@ -155,6 +159,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                                                     newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
                                                 else
                                                     newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                            }
+                                            else if (entitronRow[entitronColumn.Name] is DateTime)
+                                            {
+                                                newRow[entitronColumn.Name] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
                                             }
                                             else
                                                 newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
