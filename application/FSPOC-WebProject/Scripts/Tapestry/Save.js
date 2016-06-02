@@ -6,6 +6,7 @@ function SaveBlock(commitMessage) {
     workflowRulesArray = [];
     portTargetsArray = [];
     saveId = 0;
+    $(".activeItem, .processedItem").removeClass("activeItem processedItem");
     $("#resourceRulesPanel .resourceRule").each(function (ruleIndex, ruleDiv) {
         itemArray = [];
         connectionArray = [];

@@ -13,9 +13,6 @@
                     ChangedSinceLastSave = true;
                 }
                 else if (key == "properties") {
-                    if (!item.hasClass("processedItem")) {
-                        item.css({ left: "-=2px", top: "-=2px" });
-                    }
                     item.addClass("activeItem processedItem");
                     if (item.hasClass("tableAttribute")) {
                         CurrentItem = item;

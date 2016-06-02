@@ -1184,9 +1184,9 @@ body.tapestryModule #lowerPanel {
     body.tapestryModule #lowerPanel #tapestryWorkspace .item, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol {
       z-index: 20; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .processedItem {
-      border: 2px solid black; }
+      box-shadow: 0 0 0 2px black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .activeItem {
-      border: 2px solid green; }
+      box-shadow: 0 0 0 2px green; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
@@ -1274,8 +1274,6 @@ body.tapestryModule #lowerPanel {
           padding-left: 10px;
           padding-right: 10px;
           white-space: nowrap; }
-        body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .activeItem, body.tapestryModule #lowerPanel #tapestryWorkspace #resourceRulesPanel .resourceRule .processedItem {
-          height: 24px; }
     body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel {
       position: relative;
       height: 900px; }
@@ -1386,8 +1384,6 @@ body.tapestryModule #lowerPanel {
               font-family: MyriadPro;
               font-size: 12px;
               text-align: center; }
-            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .activeItem, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .processedItem {
-              height: 64px; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem {
               background-color: #5bb3e4;
               color: black; }

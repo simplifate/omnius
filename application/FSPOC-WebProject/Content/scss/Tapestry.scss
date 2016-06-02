@@ -326,11 +326,11 @@ body.tapestryModule {
             }
 
             .processedItem {
-                border: 2px solid black;
+                box-shadow: 0 0 0 2px black;
             }
 
             .activeItem {
-                border: 2px solid green;
+                box-shadow: 0 0 0 2px green;
             }
 
             .rule.ui-draggable-dragging, .item.ui-draggable-dragging, .symbol.ui-draggable-dragging {
@@ -456,10 +456,6 @@ body.tapestryModule {
                         padding-left: 10px;
                         padding-right: 10px;
                         white-space: nowrap;
-                    }
-
-                    .activeItem, .processedItem {
-                        height: 24px;
                     }
                 }
             }
@@ -600,10 +596,6 @@ body.tapestryModule {
                                 font-family: MyriadPro;
                                 font-size: 12px;
                                 text-align: center;
-                            }
-
-                            .activeItem, .processedItem {
-                                height: 64px;
                             }
 
                             .actionItem {
