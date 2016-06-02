@@ -522,7 +522,8 @@ body.adminAppModule #appBuildResults {
       position: absolute;
       left: 85px;
       top: 5px;
-      font-size: 12px; }
+      font-size: 12px;
+      opacity: inherit; }
   #userLeftBar #appMenu {
     position: absolute;
     left: 0px;
