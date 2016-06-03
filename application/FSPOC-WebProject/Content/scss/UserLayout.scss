@@ -279,6 +279,11 @@
     } 
 }
 
+body.userLayout #appNotificationArea {
+    position: relative;
+    z-index: 10;
+}
+
 body.userLayout.leftBarHidden {
     #userLeftBar {
         width: 50px;

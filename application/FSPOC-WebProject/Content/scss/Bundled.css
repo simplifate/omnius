@@ -560,6 +560,10 @@ body.adminAppModule #appBuildResults {
       text-decoration: none;
       color: #0065a9; }
 
+body.userLayout #appNotificationArea {
+  position: relative;
+  z-index: 10; }
+
 body.userLayout.leftBarHidden #userLeftBar {
   width: 50px;
   overflow: hidden; }
