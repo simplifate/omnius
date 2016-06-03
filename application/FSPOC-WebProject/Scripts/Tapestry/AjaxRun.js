@@ -70,8 +70,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
                     $("#uic_ns_textbox").val(data.user[0].kostl);
                     $("#uic_company_textbox").val(data.user[0].Company);
@@ -95,8 +95,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val(), 'userId': $("#uic_user_select_dropdown").val() ? $("#uic_user_select_dropdown").val() : 0 },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_interval_dropdown option").each(function (index, element) {
                         option = $(element);
                         if (option.attr("value") == data.periodical.id_periodical_interval) {
@@ -152,8 +152,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_approver_select_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
@@ -177,8 +177,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "targetId": $(this).val() },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_occupation_select_dropdown option[value != '-1']").remove();
                     $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
                 }
@@ -207,8 +207,8 @@ $(function () {
                        ? panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val() : 0
                     },
                     error: console.error.bind(console),
+                    complete: function(){spinner.remove()},
                     success: function (data) {
-                        spinner.remove();
                         panel.find('[originalId="uic_interval_dropdown"] option').each(function (index, element) {
                             option = $(element);
                             if (option.attr("value") == data.periodical.id_periodical_interval) {
@@ -263,8 +263,8 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_select_dropdown",
                     data: { "targetId": $(this).val() },
                     error: console.error.bind(console),
+                    complete: function(){spinner.remove()},
                     success: function (data) {
-                        spinner.remove();
                         var currentUser = data.user[0];
                         panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"]').append('<option value="' + currentUser.Job + '">' + currentUser.Job + '</option>');
                         panel.find('.uic[originalId="uic_function_textbox"]').val(currentUser.Job);
@@ -297,8 +297,8 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_textbox",
                     data: { "SearchQuery": $(this).val() },
                     error: console.error.bind(console),
+                    complete: function(){spinner.remove()},
                     success: function (data) {
-                        spinner.remove();
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
                         targetDropdown.find("option[value != '-1']").remove();
                         for (i = 0; i < data.UserList.length; i++) {
@@ -365,8 +365,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_select_user_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
@@ -390,8 +390,8 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
+                complete: function(){spinner.remove()},
                 success: function (data) {
-                    spinner.remove();
                     $("#uic_select_deputy_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
                         currentUser = data.UserList[i];
