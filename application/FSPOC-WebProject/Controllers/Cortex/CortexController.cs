@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace FSS.Omnius.Controllers.Cortex
 {
@@ -106,7 +107,7 @@ namespace FSS.Omnius.Controllers.Cortex
         
         private void CreateTask(Task model)
         {
-            string cmd = BuildTaskParams(model);
+            string cmd = BuildTaskXML(model);
             Execute(cmd);
         }
 
@@ -121,7 +122,7 @@ namespace FSS.Omnius.Controllers.Cortex
             string cmd = "Schtasks /delete /tn \"" + model.Name + "\"";
             Execute(cmd);
         }
-
+        /*
         private string BuildTaskParams(Task model)
         {
             string cmd = String.Empty;
@@ -165,8 +166,8 @@ namespace FSS.Omnius.Controllers.Cortex
                                 cmd += " /mo " + String.Join(",", mods);
                             }
                         }
-                        if (model.Monthly_Type == MonthlyType.DAYS && (DaysInMonth)model.Monthly_Days == DaysInMonth.LAST) {
-                            cmd += " /mo " + DaysInMonth.LAST.ToString();
+                        if (model.Monthly_Type == MonthlyType.DAYS && ((DaysInMonth)model.Monthly_Days).HasFlag(DaysInMonth.LASTDAY)) {
+                            cmd += " /mo " + DaysInMonth.LASTDAY.ToString();
                         }
                         break;
                     }
@@ -184,7 +185,7 @@ namespace FSS.Omnius.Controllers.Cortex
                 case ScheduleType.MONTHLY: {
                         if (model.Monthly_Type == MonthlyType.DAYS) {
                             foreach (DaysInMonth day in Enums<DaysInMonth>()) {
-                                if (((DaysInMonth)model.Monthly_Days).HasFlag(day)) days.Add(day.ToString());
+                                if (((DaysInMonth)model.Monthly_Days).HasFlag(day) && day != DaysInMonth.LASTDAY) days.Add(day.ToString().Replace("_", ""));
                             }
                         }
                         if (model.Monthly_Type == MonthlyType.IN) {
@@ -244,7 +245,281 @@ namespace FSS.Omnius.Controllers.Cortex
 
             return cmd;
         }
-        
+        */
+        private string BuildTaskXML(Task model)
+        {
+            string cmd = String.Empty;
+            string run = String.Empty;
+            string runAttr = String.Empty;
+
+            ConfigurationSection loggerConfig = (ConfigurationSection)WebConfigurationManager.GetSection("logger");
+            string logPath = loggerConfig.ElementInformation.Properties["rootDir"].Value.ToString();
+
+            logPath += "\\Cortex\\" + model.Name + ".html";
+            run = "wget";
+            runAttr = "-O \\\"" + logPath + "\\\" http://" + Request.Url.Host + model.Url;
+
+            cmd += "Schtask /create /U mnvk8 /P Mnk20051993 /TN \"" + model.Name + "\" /XML ";
+
+            /*cmd += "Schtasks /create /sc " + model.Type.ToString();     // Nastaví typ tasku 
+            cmd += " /tn \"" + model.Name + "\"";                       // Nastaví jméno tasku
+            cmd += " /tr \"" + run + "\"";                              // Spouštěná úloha*/
+
+            XmlDocument xml = new XmlDocument();
+            XmlNode n = xml.CreateXmlDeclaration("1.0", "UTF-8", null);
+            xml.AppendChild(n);
+
+            XmlNode tn = xml.CreateElement("Task");
+            XmlAttribute version = xml.CreateAttribute("version");
+            XmlAttribute ns = xml.CreateAttribute("xmlns");
+            version.Value = "1.2";
+            ns.Value = "http://schemas.microsoft.com/windows/2004/02/mit/task";
+            tn.Attributes.Append(version);
+            tn.Attributes.Append(ns);
+
+            XmlNode triggers = xml.CreateElement("Triggers");
+            XmlNode trigger = xml.CreateElement("CalendarTrigger");
+
+            // Počátek platnosti
+            string startDate = (model.Start_Date != null ? (DateTime)model.Start_Date : DateTime.Now).ToString("yyyy-MM-dd");
+            string startTime = ((TimeSpan)model.Start_Time).ToString(@"hh\:mm") + ":00";
+
+            XmlNode start = xml.CreateElement("StartBoundary");
+            start.AppendChild(xml.CreateTextNode(string.Format("{0}T{1}", startDate, startTime)));
+            trigger.AppendChild(start);
+            
+            // Konec platnosti
+            if(model.End_Time != null || model.End_Date != null) {
+                string endDate = (model.End_Date != null ? (DateTime)model.End_Date : DateTime.Now).ToString("yyyy-MM-dd");
+                string endTime = model.End_Time != null ? ((TimeSpan)model.End_Time).ToString(@"hh\:mm") + ":00" : "00:00:00";
+
+                XmlNode end = xml.CreateElement("EndBoundary");
+                end.AppendChild(xml.CreateTextNode(string.Format("{0}T{1}", endDate, endTime)));
+                trigger.AppendChild(end);
+            }
+
+            // Enabled
+            XmlNode triggerEnabled = xml.CreateElement("Enabled");
+            triggerEnabled.AppendChild(xml.CreateTextNode("true"));
+            trigger.AppendChild(triggerEnabled);
+
+            if(model.Type == ScheduleType.MONTHLY) 
+            {
+                XmlNode monthly = xml.CreateElement("ScheduleByMonth");
+                if(model.Monthly_Type == MonthlyType.DAYS) 
+                {
+                    List<string> daysOfMonth = new List<string>();
+                    foreach (DaysInMonth day in Enums<DaysInMonth>()) {
+                        if (((DaysInMonth)model.Monthly_Days).HasFlag(day)) daysOfMonth.Add(day.ToString().Replace("_", ""));
+                    }
+                    if(daysOfMonth.Count() > 0) {
+                        XmlNode daysOfMonthNode = xml.CreateElement("DaysOfMonth");
+                        foreach(string day in daysOfMonth) {
+                            XmlNode dayNode = xml.CreateElement("Day");
+                            dayNode.AppendChild(xml.CreateTextNode(day));
+                            daysOfMonthNode.AppendChild(dayNode);
+                        }
+                        monthly.AppendChild(daysOfMonthNode);
+                    }
+                }
+
+                List<string> months = new List<string>();
+                foreach (Months month in Enums<Months>()) {
+                    if (((Months)model.Monthly_Months).HasFlag(month)) months.Add(month.ToString());
+                }
+                if (months.Count() > 0) {
+                    XmlNode monthsNode = xml.CreateElement("Months");
+                    foreach(string month in months) {
+                        monthsNode.AppendChild(xml.CreateElement(month));
+                    }
+                    monthly.AppendChild(monthsNode);
+                }
+                trigger.AppendChild(monthly);
+            }
+
+            triggers.AppendChild(trigger);
+            tn.AppendChild(triggers);
+
+            // SETTINGS
+            XmlNode settings                    = xml.CreateElement("Settings");
+            XmlNode mip                         = xml.CreateElement("MultipleInstancesPolicy");
+            XmlNode disallowOnBattery           = xml.CreateElement("DisallowStartIfOnBatteries");
+            XmlNode stopOnBattery               = xml.CreateElement("StopIfGoingOnBatteries");
+            XmlNode allowHardTerminate          = xml.CreateElement("AllowHardTerminate");
+            XmlNode startWhenAvailable          = xml.CreateElement("StartWhenAvailable");
+            XmlNode runOnlyIfNetworkAvailable   = xml.CreateElement("RunOnlyIfNetworkAvailable");
+            XmlNode idleSettings                = xml.CreateElement("IdleSettings");
+            XmlNode stopOnIdleEnd               = xml.CreateElement("StopOnIdleEnd");
+            XmlNode restartOnIdle               = xml.CreateElement("RestartOnIdle");
+            XmlNode allowStartOnDemand          = xml.CreateElement("AllowStartOnDemand");
+            XmlNode enabled                     = xml.CreateElement("Enabled");
+            XmlNode hidden                      = xml.CreateElement("Hidden");
+            XmlNode runOnlyIfIdle               = xml.CreateElement("RunOnlyIfIdle");
+            XmlNode wakeToRun                   = xml.CreateElement("WakeToRun");
+            XmlNode executionTimeLimit          = xml.CreateElement("ExecutionTimeLimit");
+            XmlNode priority                    = xml.CreateElement("Priority");
+
+            mip.AppendChild(xml.CreateTextNode("IgnoreNew"));
+            disallowOnBattery.AppendChild(xml.CreateTextNode("false"));
+            stopOnBattery.AppendChild(xml.CreateTextNode("false"));
+            allowHardTerminate.AppendChild(xml.CreateTextNode("true"));
+            startWhenAvailable.AppendChild(xml.CreateTextNode("false"));
+            runOnlyIfNetworkAvailable.AppendChild(xml.CreateTextNode("false"));
+            stopOnIdleEnd.AppendChild(xml.CreateTextNode("true"));
+            restartOnIdle.AppendChild(xml.CreateTextNode("false"));
+            allowStartOnDemand.AppendChild(xml.CreateTextNode("true"));
+            enabled.AppendChild(xml.CreateTextNode(model.Active ? "true" : "false"));
+            hidden.AppendChild(xml.CreateTextNode("false"));
+            runOnlyIfIdle.AppendChild(xml.CreateTextNode("false"));
+            wakeToRun.AppendChild(xml.CreateTextNode("false"));
+            executionTimeLimit.AppendChild(xml.CreateTextNode("PT72H"));
+            priority.AppendChild(xml.CreateTextNode("7"));
+
+            idleSettings.AppendChild(stopOnIdleEnd);
+            idleSettings.AppendChild(restartOnIdle);
+
+            settings.AppendChild(mip);
+            settings.AppendChild(disallowOnBattery);
+            settings.AppendChild(stopOnBattery);
+            settings.AppendChild(allowHardTerminate);
+            settings.AppendChild(startWhenAvailable);
+            settings.AppendChild(runOnlyIfNetworkAvailable);
+            settings.AppendChild(idleSettings);
+            settings.AppendChild(allowStartOnDemand);
+            settings.AppendChild(enabled);
+            settings.AppendChild(hidden);
+            settings.AppendChild(runOnlyIfIdle);
+            settings.AppendChild(wakeToRun);
+            settings.AppendChild(executionTimeLimit);
+            settings.AppendChild(priority);
+
+            tn.AppendChild(settings);
+
+            // ACTION
+            XmlNode actions = xml.CreateElement("Actions");
+            XmlAttribute context = xml.CreateAttribute("Context");
+            context.Value = "Author";
+            actions.Attributes.Append(context);
+
+            XmlNode exec = xml.CreateElement("Exec");
+            XmlNode command = xml.CreateElement("Command");
+            XmlNode arguments = xml.CreateElement("Arguments");
+
+            command.AppendChild(xml.CreateTextNode(run));
+            arguments.AppendChild(xml.CreateTextNode(runAttr));
+
+            exec.AppendChild(command);
+            exec.AppendChild(arguments);
+            actions.AppendChild(exec);
+            tn.AppendChild(actions);
+            xml.AppendChild(tn);
+
+            // Uložení XML
+            string xmlPath = @"C:\\Temp\\Task_" + model.Name + ".xml";
+
+            xml.Save(xmlPath);
+            cmd += xmlPath;
+
+            // Start time
+            /*List<ScheduleType> stAllowed = new List<ScheduleType>() { ScheduleType.MINUTE, ScheduleType.HOURLY, ScheduleType.DAILY, ScheduleType.WEEKLY, ScheduleType.MONTHLY, ScheduleType.ONCE };
+            if (stAllowed.Contains(model.Type)) {
+                cmd += " /st " + model.Start_Time.ToString(@"hh\:mm");
+            }
+
+            // End time
+            if ((model.Type == ScheduleType.MINUTE || model.Type == ScheduleType.HOURLY) && model.End_Time != null) {
+                cmd += " /et " + ((TimeSpan)model.End_Time).ToString(@"hh\:mm");
+            }*/
+
+            // end date
+            /*List<ScheduleType> edNotAllowed = new List<ScheduleType>() { ScheduleType.ONCE, ScheduleType.ONIDLE, ScheduleType.ONSTART };
+            if (model.End_Date != null && !edNotAllowed.Contains(model.Type)) {
+                cmd += " /ed " + ((DateTime)model.End_Date).ToShortDateString();
+            }*/
+
+            /*
+
+
+            // Modifikátor
+            switch (model.Type) {
+                case ScheduleType.MINUTE: {
+                        cmd += model.Minute_Repeat == null ? "" : " /mo " + model.Minute_Repeat;
+                        break;
+                    }
+                case ScheduleType.HOURLY: {
+                        cmd += model.Hourly_Repeat == null ? "" : " /mo " + model.Hourly_Repeat;
+                        break;
+                    }
+                case ScheduleType.DAILY: {
+                        cmd += model.Daily_Repeat == null ? "" : " /mo " + model.Daily_Repeat;
+                        break;
+                    }
+                case ScheduleType.WEEKLY: {
+                        cmd += model.Weekly_Repeat == null ? "" : " /mo " + model.Weekly_Repeat;
+                        break;
+                    }
+                case ScheduleType.MONTHLY: {
+                        if (model.Monthly_Type == MonthlyType.IN) {
+                            List<string> mods = new List<string>();
+                            foreach (InModifiers mod in Enums<InModifiers>()) {
+                                if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(mod)) mods.Add(mod.ToString());
+                            }
+                            if (mods.Count() > 0) {
+                                cmd += " /mo " + String.Join(",", mods);
+                            }
+                        }
+                        if (model.Monthly_Type == MonthlyType.DAYS && ((DaysInMonth)model.Monthly_Days).HasFlag(DaysInMonth.LASTDAY)) {
+                            cmd += " /mo " + DaysInMonth.LASTDAY.ToString();
+                        }
+                        break;
+                    }
+            }
+
+            // Den
+            List<string> days = new List<string>();
+            switch (model.Type) {
+                case ScheduleType.WEEKLY: {
+                        foreach (Days day in Enums<Days>()) {
+                            if (((Days)model.Weekly_Days).HasFlag(day)) days.Add(day.ToString());
+                        }
+                        break;
+                    }
+                case ScheduleType.MONTHLY: {
+                        if (model.Monthly_Type == MonthlyType.DAYS) {
+                            foreach (DaysInMonth day in Enums<DaysInMonth>()) {
+                                if (((DaysInMonth)model.Monthly_Days).HasFlag(day) && day != DaysInMonth.LASTDAY) days.Add(day.ToString().Replace("_", ""));
+                            }
+                        }
+                        if (model.Monthly_Type == MonthlyType.IN) {
+                            foreach (Days day in Enums<Days>()) {
+                                if (((Days)model.Monthly_In_Days).HasFlag(day)) days.Add(day.ToString());
+                            }
+                        }
+                        break;
+                    }
+            }
+            if (days.Count() > 0) {
+                cmd += " /d " + String.Join(",", days);
+            }
+            
+
+            // Idle time
+            if (model.Idle_Time > 0 && model.Type == ScheduleType.ONIDLE) {
+                cmd += " /i " + model.Idle_Time;
+            }
+
+            
+
+            // Duration
+            if ((model.Type == ScheduleType.MINUTE || model.Type == ScheduleType.HOURLY) && model.Duration != null) {
+                cmd += " /du " + String.Format("{0:0000}:{1:00}", (int)((TimeSpan)model.Duration).TotalHours, ((TimeSpan)model.Duration).Minutes);
+            }
+            */
+            
+
+            return cmd;
+        }
+
         private void Execute(string cmdText)
         {
             using (Process process = new Process()) {
@@ -291,18 +566,18 @@ namespace FSS.Omnius.Controllers.Cortex
 
         private void MapMonthNames()
         {
-            monthsNames.Add(Months.JAN, "Leden");
-            monthsNames.Add(Months.FEB, "Únor");
-            monthsNames.Add(Months.MAR, "Březen");
-            monthsNames.Add(Months.APR, "Duben");
-            monthsNames.Add(Months.MAY, "Květen");
-            monthsNames.Add(Months.JUN, "Červen");
-            monthsNames.Add(Months.JUL, "Červenec");
-            monthsNames.Add(Months.AUG, "Srpen");
-            monthsNames.Add(Months.SEP, "Září");
-            monthsNames.Add(Months.OCT, "Říjen");
-            monthsNames.Add(Months.NOV, "Listopad");
-            monthsNames.Add(Months.DEC, "Prosinec");
+            monthsNames.Add(Months.January, "Leden");
+            monthsNames.Add(Months.February, "Únor");
+            monthsNames.Add(Months.March, "Březen");
+            monthsNames.Add(Months.April, "Duben");
+            monthsNames.Add(Months.May, "Květen");
+            monthsNames.Add(Months.June, "Červen");
+            monthsNames.Add(Months.July, "Červenec");
+            monthsNames.Add(Months.August, "Srpen");
+            monthsNames.Add(Months.September, "Září");
+            monthsNames.Add(Months.October, "Říjen");
+            monthsNames.Add(Months.November, "Listopad");
+            monthsNames.Add(Months.December, "Prosinec");
         }
 
         private void MapModifierNames()
@@ -318,7 +593,7 @@ namespace FSS.Omnius.Controllers.Cortex
         {
             int i = 0;
             foreach (DaysInMonth day in Enums<DaysInMonth>()) {
-                if (day == DaysInMonth.LAST) daysInMonthNames.Add(day, "Poslední");
+                if (day == DaysInMonth.Last) daysInMonthNames.Add(day, "Poslední");
                 else daysInMonthNames.Add(day, (++i).ToString());
             }
         }

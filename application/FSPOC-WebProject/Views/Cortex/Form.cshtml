@@ -135,21 +135,21 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">
-                    <input type="radio" name="Month_Type" id="Month_Type_Day" value="2" />
+                    <input type="radio" name="Monthly_Type" id="Month_Type_Day" value="2" />
                     Dny
                 </label>
                 <div class="col-md-6">
                     @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonthNames"]) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_Days[]" value="@day.Key" />
-                            @day.Value; 
+                            @day.Value
                         </label>
                     }
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">
-                    <input type="radio" name="Month_Type" id="Month_Type_In" value="1" />
+                    <input type="radio" name="Monthly_Type" id="Month_Type_In" value="1" />
                     V
                 </label>
                 <div class="col-md-6">
