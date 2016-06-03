@@ -23,6 +23,7 @@
     newNotification.find(".closeAlertIcon").on("click", function () {
         $(this).parents(".app-alert").remove();
     });
+    newNotification[0].scrollIntoView({behavior: "smooth"});
 };
 function HidePanel(paneName) {
     panel = $("#userContentArea").find('div[name="' + paneName + '"]');
