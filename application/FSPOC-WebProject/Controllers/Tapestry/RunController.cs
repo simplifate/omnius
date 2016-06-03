@@ -162,7 +162,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                             }
                                             else if (entitronRow[entitronColumn.Name] is DateTime)
                                             {
-                                                newRow[entitronColumn.Name] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
                                             }
                                             else
                                                 newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
