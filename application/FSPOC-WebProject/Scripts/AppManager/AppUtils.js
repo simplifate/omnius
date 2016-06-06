@@ -20,10 +20,11 @@
         + ' alertSymbol"></i><span></span><div class="fa fa-times closeAlertIcon"></div></div>');
     newNotification.find("span").text(text);
     $("#appNotificationArea").append(newNotification);
+    $("#upperPanel, #lowerPanel, #minimizedUpperPanel, #userContentArea").css({ top: "+=" + newNotification.outerHeight() + "px" });
     newNotification.find(".closeAlertIcon").on("click", function () {
+        $("#upperPanel, #lowerPanel, #minimizedUpperPanel, #userContentArea").css({ top: "-=" + newNotification.outerHeight() + "px" });
         $(this).parents(".app-alert").remove();
     });
-    newNotification[0].scrollIntoView({behavior: "smooth"});
 };
 function HidePanel(paneName) {
     panel = $("#userContentArea").find('div[name="' + paneName + '"]');

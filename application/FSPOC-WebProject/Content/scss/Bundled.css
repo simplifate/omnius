@@ -560,9 +560,13 @@ body.adminAppModule #appBuildResults {
       text-decoration: none;
       color: #0065a9; }
 
-body.userLayout #appNotificationArea {
-  position: relative;
-  z-index: 10; }
+#appNotificationArea {
+  position: absolute;
+  left: 310px;
+  top: 50px;
+  right: 0;
+  z-index: 5;
+  transition: left 0.4s ease-out; }
 
 body.userLayout.leftBarHidden #userLeftBar {
   width: 50px;
@@ -582,7 +586,7 @@ body.userLayout.leftBarHidden #userLeftBar {
   body.userLayout.leftBarHidden #userLeftBar .infoBox {
     opacity: 0; }
 
-body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
+body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay, body.userLayout.leftBarHidden #appNotificationArea {
   left: 50px; }
 
 @media (max-width: 799px) {
@@ -636,7 +640,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       right: 10px; }
   body.userLayout #userLeftBar #showMenuIcon, body.userLayout #userLeftBar #hideMenuIcon, body.userLayout.leftBarHidden #userLeftBar #showMenuIcon, body.userLayout.leftBarHidden #userLeftBar #hideMenuIcon {
     display: none; }
-  body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay {
+  body.userLayout #userContentArea, body.userLayout #helpContainer, body.userLayout #pageOverlay, body.userLayout #appNotificationArea, body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #helpContainer, body.userLayout.leftBarHidden #pageOverlay, body.userLayout.leftBarHidden #appNotificationArea {
     left: 0px; } }
 
 @media (min-width: 800px) {
