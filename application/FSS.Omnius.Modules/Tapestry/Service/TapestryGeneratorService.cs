@@ -14,10 +14,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private DBEntities _context;
 
         private Dictionary<int, Block> _blockMapping;
+        private HashSet<TapestryDesignerBlock> _allBlocks;
 
         public TapestryGeneratorService()
         {
             _blockMapping = new Dictionary<int, Block>();
+            _allBlocks = new HashSet<TapestryDesignerBlock>();
         }
 
         public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
@@ -33,7 +35,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             try
             {
                 // generate new
-                WorkFlow wf = saveMetaBlock(app.TapestryDesignerRootMetablock, true);
+                saveMetaBlock(app.TapestryDesignerRootMetablock, true);
+                saveBlocks();
                 _context.SaveChanges();
                 
                 // remove old
@@ -99,24 +102,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = childBlock.Name.RemoveDiacritics(),
                     DisplayName = childBlock.Name,
                     ModelName = modelName,
-                    IsVirtual = false
+                    IsVirtual = false,
+                    WorkFlow = resultWF
                 };
-                resultWF.Blocks.Add(resultBlock);
                 if (childBlock.IsInitial)
                     resultBlock.InitForWorkFlow.Add(resultWF);
 
                 _blockMapping.Add(childBlock.Id, resultBlock);
-            }
-            foreach (TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted))
-            {
-                try
-                {
-                    saveBlockContent(childBlock, resultWF);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"block [{childBlock.Name}] - {e.Message}", e);
-                }
+                _allBlocks.Add(childBlock);
             }
             _context.SaveChanges();
 
@@ -124,7 +117,23 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return resultWF;
         }
 
-        private void saveBlockContent(TapestryDesignerBlock block, WorkFlow wf)
+        private void saveBlocks()
+        {
+            foreach(TapestryDesignerBlock block in _allBlocks)
+            {
+                try
+                {
+                    saveBlockContent(block);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"block [{block.Name}] - {e.Message}", e);
+                }
+            }
+            _context.SaveChanges();
+        }
+
+        private void saveBlockContent(TapestryDesignerBlock block)
         {
             // block
             Block resultBlock = _blockMapping[block.Id];
@@ -136,14 +145,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // Resources
             foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {
-                var pair = saveResourceRule(resourceRule, wf.Application, stateColumnMapping);
+                var pair = saveResourceRule(resourceRule, resultBlock.WorkFlow.Application, stateColumnMapping);
                 resultBlock.ResourceMappingPairs.Add(pair);
             }
 
             // ActionRule
             foreach (TapestryDesignerWorkflowRule workflowRule in commit.WorkflowRules)
             {
-                saveWFRule(workflowRule, resultBlock, wf, stateColumnMapping);
+                saveWFRule(workflowRule, resultBlock, resultBlock.WorkFlow, stateColumnMapping);
             }
 
             if (commit.AssociatedPageIds != "")
