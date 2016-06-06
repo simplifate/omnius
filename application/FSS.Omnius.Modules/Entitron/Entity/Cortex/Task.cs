@@ -7,7 +7,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
 {
     public enum ScheduleType
     {
-        MINUTE = 1, HOURLY = 2, DAILY = 4, WEEKLY = 8, MONTHLY = 16, ONCE = 32, ONSTART = 64, ONIDLE = 128
+        DAILY = 1, WEEKLY = 2, MONTHLY = 4, ONCE = 8, ONIDLE = 16
     }
 
     public enum MonthlyType
@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
     [Flags]
     public enum Days
     {
-        MON = 1, TUE = 2, WED = 4, THU = 8, FRI = 16, SAT = 32, SUN = 64
+        Monday = 1, Tuesday = 2, Wednesday = 4, Thursday = 8, Friday = 16, Saturday = 32, Sunday = 64
     }
 
     [Flags]
@@ -69,13 +69,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         [Display(Name = "URL úlohy")]
         public string Url { get; set; }
 
+        [Display(Name = "Opakovat")]
+        public bool Repeat { get; set; }
+
         [Range(1, 1439)]
         [Display(Name = "Opakovat každých")]
-        public int? Minute_Repeat { get; set; }
+        public int? Repeat_Minute { get; set; }
 
         [Range(1, 23)]
-        [Display(Name = "Opakovat každých")]
-        public int? Hourly_Repeat { get; set; }
+        [Display(Name = "Po dobu")]
+        public int? Repeat_Duration { get; set; }
 
         [Range(1,365)]
         [Display(Name = "Opakovat každých")]
