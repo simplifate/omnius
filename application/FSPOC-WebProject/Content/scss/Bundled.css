@@ -561,7 +561,7 @@ body.adminAppModule #appBuildResults {
       color: #0065a9; }
 
 #appNotificationArea {
-  position: absolute;
+  position: fixed;
   left: 310px;
   top: 50px;
   right: 0;
@@ -3501,9 +3501,6 @@ body.adminLayout #appNotificationArea {
   left: 225px;
   right: 0px;
   height: auto; }
-
-#lowerPanel.minimizedPanelMode {
-  top: 115px !important; }
 
 #lowerPanelContainer {
   position: absolute;

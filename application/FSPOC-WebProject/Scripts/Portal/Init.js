@@ -129,7 +129,7 @@ $(function () {
     $("#hideUpperPanelIcon").on("click", function () {
         $("#upperPanel").hide();
         $("#minimizedUpperPanel").show();
-        $("#lowerPanel").addClass("minimizedPanelMode");
+        $("#lowerPanel").css({ top: "-=95px" });
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
@@ -138,7 +138,7 @@ $(function () {
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
-        $("#lowerPanel").removeClass("minimizedPanelMode");
+        $("#lowerPanel").css({ top: "+=95px" });
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
