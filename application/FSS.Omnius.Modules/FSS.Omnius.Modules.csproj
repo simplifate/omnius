@@ -845,6 +845,10 @@
     <Compile Include="Migrations\201605170940531_conditionSetCascade.Designer.cs">
       <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606061241384_Cortex-Repeat.cs" />
+    <Compile Include="Migrations\201606061241384_Cortex-Repeat.Designer.cs">
+      <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1374,6 +1378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605170940531_conditionSetCascade.resx">
       <DependentUpon>201605170940531_conditionSetCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606061241384_Cortex-Repeat.resx">
+      <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

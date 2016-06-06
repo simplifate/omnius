@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace FSS.Omnius.Controllers.Cortex
 {
@@ -21,6 +22,8 @@ namespace FSS.Omnius.Controllers.Cortex
         public Dictionary<Months, string> monthsNames = new Dictionary<Months, string>();
         public Dictionary<DaysInMonth, string> daysInMonthNames = new Dictionary<DaysInMonth, string>();
         public Dictionary<InModifiers, string> modifiersNames = new Dictionary<InModifiers, string>();
+
+        private XmlDocument xml;
 
         public CortexController()
         {
@@ -76,9 +79,10 @@ namespace FSS.Omnius.Controllers.Cortex
             row.Duration = model.Duration;
             row.End_Date = model.End_Date;
             row.End_Time = model.End_Time;
-            row.Hourly_Repeat = model.Hourly_Repeat;
+            row.Repeat = model.Repeat;
+            row.Repeat_Minute = model.Repeat_Minute;
+            row.Repeat_Duration = model.Repeat_Duration;
             row.Idle_Time = model.Idle_Time;
-            row.Minute_Repeat = model.Minute_Repeat;
             row.Monthly_Days = GetDaysInMonthFlags();
             row.Monthly_In_Days = GetDaysFlags("Monthly_In_Days[]");
             row.Monthly_In_Modifiers = GetModifierFlags();
@@ -248,177 +252,137 @@ namespace FSS.Omnius.Controllers.Cortex
         */
         private string BuildTaskXML(Task model)
         {
-            string cmd = String.Empty;
-            string run = String.Empty;
-            string runAttr = String.Empty;
+            string cmd = string.Empty;
+            string run = string.Empty;
+            string runAttr = string.Empty;
 
             ConfigurationSection loggerConfig = (ConfigurationSection)WebConfigurationManager.GetSection("logger");
             string logPath = loggerConfig.ElementInformation.Properties["rootDir"].Value.ToString();
+
+            string cortexUserName = WebConfigurationManager.AppSettings["CortexUserName"];
+            string cortexUserPassword = WebConfigurationManager.AppSettings["CortexUserPassword"];
 
             logPath += "\\Cortex\\" + model.Name + ".html";
             run = "wget";
             runAttr = "-O \\\"" + logPath + "\\\" http://" + Request.Url.Host + model.Url;
 
-            cmd += "Schtask /create /U mnvk8 /P Mnk20051993 /TN \"" + model.Name + "\" /XML ";
-
-            /*cmd += "Schtasks /create /sc " + model.Type.ToString();     // Nastaví typ tasku 
-            cmd += " /tn \"" + model.Name + "\"";                       // Nastaví jméno tasku
-            cmd += " /tr \"" + run + "\"";                              // Spouštěná úloha*/
-
-            XmlDocument xml = new XmlDocument();
-            XmlNode n = xml.CreateXmlDeclaration("1.0", "UTF-8", null);
+            cmd += "Schtasks /create /ru " + cortexUserName + " /rp " + cortexUserPassword + " /TN \"" + model.Name + "\" /XML ";
+            
+            xml = new XmlDocument();
+            XmlNode n = xml.CreateXmlDeclaration("1.0", "UTF-16", null);
             xml.AppendChild(n);
 
-            XmlNode tn = xml.CreateElement("Task");
-            XmlAttribute version = xml.CreateAttribute("version");
-            XmlAttribute ns = xml.CreateAttribute("xmlns");
-            version.Value = "1.2";
-            ns.Value = "http://schemas.microsoft.com/windows/2004/02/mit/task";
-            tn.Attributes.Append(version);
-            tn.Attributes.Append(ns);
+            XmlNode task = createNode("Task", new {version = "1.2", xmlns = "http://schemas.microsoft.com/windows/2004/02/mit/task" });
 
-            XmlNode triggers = xml.CreateElement("Triggers");
-            XmlNode trigger = xml.CreateElement("CalendarTrigger");
+            string triggerName = "";
+            switch(model.Type) {
+                case ScheduleType.ONCE:
+                    triggerName = "TimeTrigger";
+                    break;
+                case ScheduleType.ONIDLE:
+                    triggerName = "IdleTrigger";
+                    break;
+                default:
+                    triggerName = "CalendarTrigger";
+                    break;
+            }
+
+            XmlNode triggers = createNode("Triggers");
+            XmlNode trigger = createNode(triggerName);
 
             // Počátek platnosti
-            string startDate = (model.Start_Date != null ? (DateTime)model.Start_Date : DateTime.Now).ToString("yyyy-MM-dd");
-            string startTime = ((TimeSpan)model.Start_Time).ToString(@"hh\:mm") + ":00";
+            string startDateTime = string.Format("{0}T{1}",
+                    (model.Start_Date != null ? (DateTime)model.Start_Date : DateTime.Now).ToString("yyyy-MM-dd"),
+                    ((TimeSpan)model.Start_Time).ToString(@"hh\:mm") + ":00"
+                );
+            trigger.AppendChild(createNode("StartBoundary", startDateTime));
 
-            XmlNode start = xml.CreateElement("StartBoundary");
-            start.AppendChild(xml.CreateTextNode(string.Format("{0}T{1}", startDate, startTime)));
-            trigger.AppendChild(start);
-            
             // Konec platnosti
             if(model.End_Time != null || model.End_Date != null) {
-                string endDate = (model.End_Date != null ? (DateTime)model.End_Date : DateTime.Now).ToString("yyyy-MM-dd");
-                string endTime = model.End_Time != null ? ((TimeSpan)model.End_Time).ToString(@"hh\:mm") + ":00" : "00:00:00";
-
-                XmlNode end = xml.CreateElement("EndBoundary");
-                end.AppendChild(xml.CreateTextNode(string.Format("{0}T{1}", endDate, endTime)));
-                trigger.AppendChild(end);
+                string endDateTime = string.Format("{0}T{1}",
+                        (model.End_Date != null ? (DateTime)model.End_Date : DateTime.Now).ToString("yyyy-MM-dd"),
+                        model.End_Time != null ? ((TimeSpan)model.End_Time).ToString(@"hh\:mm") + ":00" : "00:00:00"
+                    );
+                trigger.AppendChild(createNode("EndBoundary", endDateTime));
             }
 
             // Enabled
-            XmlNode triggerEnabled = xml.CreateElement("Enabled");
-            triggerEnabled.AppendChild(xml.CreateTextNode("true"));
-            trigger.AppendChild(triggerEnabled);
+            trigger.AppendChild(createNode("Enabled", "true"));
 
-            if(model.Type == ScheduleType.MONTHLY) 
-            {
-                XmlNode monthly = xml.CreateElement("ScheduleByMonth");
-                if(model.Monthly_Type == MonthlyType.DAYS) 
-                {
-                    List<string> daysOfMonth = new List<string>();
-                    foreach (DaysInMonth day in Enums<DaysInMonth>()) {
-                        if (((DaysInMonth)model.Monthly_Days).HasFlag(day)) daysOfMonth.Add(day.ToString().Replace("_", ""));
+            
+            switch(model.Type) {
+                case ScheduleType.MONTHLY: {
+                        trigger.AppendChild(createMonthlyTrigger(model));
+                        break;
                     }
-                    if(daysOfMonth.Count() > 0) {
-                        XmlNode daysOfMonthNode = xml.CreateElement("DaysOfMonth");
-                        foreach(string day in daysOfMonth) {
-                            XmlNode dayNode = xml.CreateElement("Day");
-                            dayNode.AppendChild(xml.CreateTextNode(day));
-                            daysOfMonthNode.AppendChild(dayNode);
-                        }
-                        monthly.AppendChild(daysOfMonthNode);
+                case ScheduleType.WEEKLY: {
+                        trigger.AppendChild(createWeeklyTrigger(model));
+                        break;
                     }
-                }
-
-                List<string> months = new List<string>();
-                foreach (Months month in Enums<Months>()) {
-                    if (((Months)model.Monthly_Months).HasFlag(month)) months.Add(month.ToString());
-                }
-                if (months.Count() > 0) {
-                    XmlNode monthsNode = xml.CreateElement("Months");
-                    foreach(string month in months) {
-                        monthsNode.AppendChild(xml.CreateElement(month));
+                case ScheduleType.DAILY: {
+                        trigger.AppendChild(createDaylyTrigger(model));
+                        break;
                     }
-                    monthly.AppendChild(monthsNode);
-                }
-                trigger.AppendChild(monthly);
             }
 
             triggers.AppendChild(trigger);
-            tn.AppendChild(triggers);
+            task.AppendChild(triggers);
+
+            // Idle Settings
+            XmlNode idleSettings = createNode("IdleSettings");
+            idleSettings.AppendChild(createNode("StopOnIdleEnd", "true"));
+            idleSettings.AppendChild(createNode("RestartOnIdle", "false"));
+
+            if(model.Type == ScheduleType.ONIDLE) {
+                idleSettings.AppendChild(createNode("Duration", "PT" + model.Idle_Time + "M"));
+                idleSettings.AppendChild(createNode("WaitTimeout", "PT1H"));
+            }
 
             // SETTINGS
-            XmlNode settings                    = xml.CreateElement("Settings");
-            XmlNode mip                         = xml.CreateElement("MultipleInstancesPolicy");
-            XmlNode disallowOnBattery           = xml.CreateElement("DisallowStartIfOnBatteries");
-            XmlNode stopOnBattery               = xml.CreateElement("StopIfGoingOnBatteries");
-            XmlNode allowHardTerminate          = xml.CreateElement("AllowHardTerminate");
-            XmlNode startWhenAvailable          = xml.CreateElement("StartWhenAvailable");
-            XmlNode runOnlyIfNetworkAvailable   = xml.CreateElement("RunOnlyIfNetworkAvailable");
-            XmlNode idleSettings                = xml.CreateElement("IdleSettings");
-            XmlNode stopOnIdleEnd               = xml.CreateElement("StopOnIdleEnd");
-            XmlNode restartOnIdle               = xml.CreateElement("RestartOnIdle");
-            XmlNode allowStartOnDemand          = xml.CreateElement("AllowStartOnDemand");
-            XmlNode enabled                     = xml.CreateElement("Enabled");
-            XmlNode hidden                      = xml.CreateElement("Hidden");
-            XmlNode runOnlyIfIdle               = xml.CreateElement("RunOnlyIfIdle");
-            XmlNode wakeToRun                   = xml.CreateElement("WakeToRun");
-            XmlNode executionTimeLimit          = xml.CreateElement("ExecutionTimeLimit");
-            XmlNode priority                    = xml.CreateElement("Priority");
-
-            mip.AppendChild(xml.CreateTextNode("IgnoreNew"));
-            disallowOnBattery.AppendChild(xml.CreateTextNode("false"));
-            stopOnBattery.AppendChild(xml.CreateTextNode("false"));
-            allowHardTerminate.AppendChild(xml.CreateTextNode("true"));
-            startWhenAvailable.AppendChild(xml.CreateTextNode("false"));
-            runOnlyIfNetworkAvailable.AppendChild(xml.CreateTextNode("false"));
-            stopOnIdleEnd.AppendChild(xml.CreateTextNode("true"));
-            restartOnIdle.AppendChild(xml.CreateTextNode("false"));
-            allowStartOnDemand.AppendChild(xml.CreateTextNode("true"));
-            enabled.AppendChild(xml.CreateTextNode(model.Active ? "true" : "false"));
-            hidden.AppendChild(xml.CreateTextNode("false"));
-            runOnlyIfIdle.AppendChild(xml.CreateTextNode("false"));
-            wakeToRun.AppendChild(xml.CreateTextNode("false"));
-            executionTimeLimit.AppendChild(xml.CreateTextNode("PT72H"));
-            priority.AppendChild(xml.CreateTextNode("7"));
-
-            idleSettings.AppendChild(stopOnIdleEnd);
-            idleSettings.AppendChild(restartOnIdle);
-
-            settings.AppendChild(mip);
-            settings.AppendChild(disallowOnBattery);
-            settings.AppendChild(stopOnBattery);
-            settings.AppendChild(allowHardTerminate);
-            settings.AppendChild(startWhenAvailable);
-            settings.AppendChild(runOnlyIfNetworkAvailable);
+            XmlNode settings = createNode("Settings");
+            settings.AppendChild(createNode("MultipleInstancesPolicy", "IgnoreNew"));
+            settings.AppendChild(createNode("DisallowStartIfOnBatteries", "false"));
+            settings.AppendChild(createNode("StopIfGoingOnBatteries", "false"));
+            settings.AppendChild(createNode("AllowHardTerminate", "true"));
+            settings.AppendChild(createNode("StartWhenAvailable", "false"));
+            settings.AppendChild(createNode("RunOnlyIfNetworkAvailable", "true"));
+            settings.AppendChild(createNode("AllowStartOnDemand", "true"));
+            settings.AppendChild(createNode("Enabled", model.Active ? "true" : "false"));
+            settings.AppendChild(createNode("Hidden", "false"));
+            settings.AppendChild(createNode("RunOnlyIfIdle", model.Type == ScheduleType.ONIDLE ? "true" : "false"));
+            settings.AppendChild(createNode("WakeToRun", "false"));
+            settings.AppendChild(createNode("ExecutionTimeLimit", "PT72H"));
+            settings.AppendChild(createNode("Priority", "7"));
             settings.AppendChild(idleSettings);
-            settings.AppendChild(allowStartOnDemand);
-            settings.AppendChild(enabled);
-            settings.AppendChild(hidden);
-            settings.AppendChild(runOnlyIfIdle);
-            settings.AppendChild(wakeToRun);
-            settings.AppendChild(executionTimeLimit);
-            settings.AppendChild(priority);
 
-            tn.AppendChild(settings);
+            task.AppendChild(settings);
 
+            // Principals
+            XmlNode principals = createNode("Principals");
+            XmlNode principal = createNode("Principal", new { id = "Author" });
+            principal.AppendChild(createNode("UserId", System.Security.Principal.WindowsIdentity.GetCurrent().User.ToString()));
+            principal.AppendChild(createNode("LogonType", "S4U"));
+            principal.AppendChild(createNode("RunLevel", "LeastPrivilege"));
+
+            principals.AppendChild(principal);
+            task.AppendChild(principals);
+            
             // ACTION
-            XmlNode actions = xml.CreateElement("Actions");
-            XmlAttribute context = xml.CreateAttribute("Context");
-            context.Value = "Author";
-            actions.Attributes.Append(context);
+            XmlNode actions = createNode("Actions", new { Context = "Author" });
 
-            XmlNode exec = xml.CreateElement("Exec");
-            XmlNode command = xml.CreateElement("Command");
-            XmlNode arguments = xml.CreateElement("Arguments");
+            XmlNode exec = createNode("Exec");
+            exec.AppendChild(createNode("Command", run));
+            exec.AppendChild(createNode("Arguments", runAttr));
 
-            command.AppendChild(xml.CreateTextNode(run));
-            arguments.AppendChild(xml.CreateTextNode(runAttr));
-
-            exec.AppendChild(command);
-            exec.AppendChild(arguments);
             actions.AppendChild(exec);
-            tn.AppendChild(actions);
-            xml.AppendChild(tn);
+            task.AppendChild(actions);
+            xml.AppendChild(task);
 
             // Uložení XML
             string xmlPath = @"C:\\Temp\\Task_" + model.Name + ".xml";
-
+            
             xml.Save(xmlPath);
-            cmd += xmlPath;
+            cmd += "\"" + xmlPath + "\"";
 
             // Start time
             /*List<ScheduleType> stAllowed = new List<ScheduleType>() { ScheduleType.MINUTE, ScheduleType.HOURLY, ScheduleType.DAILY, ScheduleType.WEEKLY, ScheduleType.MONTHLY, ScheduleType.ONCE };
@@ -536,6 +500,119 @@ namespace FSS.Omnius.Controllers.Cortex
 
         #region TOOLS
 
+        private XmlNode createNode(string nodeName, Object attributes, string content)
+        {
+            XmlNode node = xml.CreateElement(nodeName);
+
+            foreach (var prop in attributes.GetType().GetProperties()) {
+                XmlAttribute attr = xml.CreateAttribute(prop.Name);
+                attr.Value = prop.GetValue(attributes).ToString();
+                node.Attributes.Append(attr);
+            }
+         
+            if(!String.IsNullOrEmpty(content)) {
+                node.AppendChild(xml.CreateTextNode(content));
+            }
+            return node;
+        }
+        private XmlNode createNode(string nodeName, Object attributes) {
+            return createNode(nodeName, attributes, string.Empty);
+        }
+        private XmlNode createNode(string nodeName, string content) {
+            return createNode(nodeName, new { }, content);
+        }
+        private XmlNode createNode(string nodeName) {
+            return createNode(nodeName, new { }, string.Empty);
+        }
+
+        private XmlNode createMonthlyTrigger(Task model)
+        {
+            XmlNode trigger;
+            if (model.Monthly_Type == MonthlyType.DAYS) {
+                trigger = createNode("ScheduleByMonth");
+                List<string> daysOfMonth = new List<string>();
+                foreach (DaysInMonth day in Enums<DaysInMonth>()) {
+                    if (((DaysInMonth)model.Monthly_Days).HasFlag(day)) daysOfMonth.Add(day.ToString().Replace("_", ""));
+                }
+                if (daysOfMonth.Count() > 0) {
+                    XmlNode daysOfMonthNode = createNode("DaysOfMonth");
+                    foreach (string day in daysOfMonth) {
+                        daysOfMonthNode.AppendChild(createNode("Day", day));
+                    }
+                    trigger.AppendChild(daysOfMonthNode);
+                }
+            }
+            else //(model.Monthly_Type == MonthlyType.IN) 
+            {
+                trigger = createNode("ScheduleByMonthDayOfWeek");
+                List<string> weeks = new List<string>();
+                int i = 1;
+                foreach (InModifiers mod in Enums<InModifiers>()) {
+                    if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(mod)) weeks.Add(i <= 4 ? i.ToString() : "Last");
+                    i++;
+                }
+                if (weeks.Count > 0) {
+                    XmlNode weeksNode = createNode("Weeks");
+                    foreach (string week in weeks) {
+                        weeksNode.AppendChild(createNode("Week", week));
+                    }
+                    trigger.AppendChild(weeksNode);
+                }
+
+                List<string> daysOfWeek = new List<string>();
+                foreach (Days day in Enums<Days>()) {
+                    if (((Days)model.Monthly_In_Days).HasFlag(day)) daysOfWeek.Add(day.ToString());
+                }
+                if (daysOfWeek.Count() > 0) {
+                    XmlNode daysOfWeekNode = createNode("DaysOfWeek");
+                    foreach (string day in daysOfWeek) {
+                        daysOfWeekNode.AppendChild(createNode(day));
+                    }
+                    trigger.AppendChild(daysOfWeekNode);
+                }
+            }
+
+            List<string> months = new List<string>();
+            foreach (Months month in Enums<Months>()) {
+                if (((Months)model.Monthly_Months).HasFlag(month)) months.Add(month.ToString());
+            }
+            if (months.Count() > 0) {
+                XmlNode monthsNode = createNode("Months");
+                foreach (string month in months) {
+                    monthsNode.AppendChild(createNode(month));
+                }
+                trigger.AppendChild(monthsNode);
+            }
+            return trigger;
+        }
+
+        private XmlNode createWeeklyTrigger(Task model)
+        {
+            XmlNode trigger = createNode("ScheduleByWeek");
+
+            List<string> daysOfWeek = new List<string>();
+            foreach (Days day in Enums<Days>()) {
+                if (((Days)model.Weekly_Days).HasFlag(day)) daysOfWeek.Add(day.ToString());
+            }
+            if (daysOfWeek.Count() > 0) {
+                XmlNode daysOfWeekNode = createNode("DaysOfWeek");
+                foreach (string day in daysOfWeek) {
+                    daysOfWeekNode.AppendChild(createNode(day));
+                }
+                trigger.AppendChild(daysOfWeekNode);
+            }
+            trigger.AppendChild(createNode("WeeksInterval", model.Weekly_Repeat.ToString()));
+
+            return trigger;
+        }
+
+        private XmlNode createDaylyTrigger(Task model)
+        {
+            XmlNode trigger = createNode("ScheduleByDay");
+            trigger.AppendChild(createNode("DaysInterval", model.Daily_Repeat.ToString()));
+            return trigger;
+        }
+
         private IEnumerable Enums<T>()
         {
             return Enum.GetValues(typeof(T));
@@ -543,25 +620,22 @@ namespace FSS.Omnius.Controllers.Cortex
 
         private void MapScheduleTypeNames()
         {
-            scheduleTypeNames.Add(ScheduleType.MINUTE, "Minutově");
-            scheduleTypeNames.Add(ScheduleType.HOURLY, "Hodinově");
             scheduleTypeNames.Add(ScheduleType.DAILY, "Denně");
             scheduleTypeNames.Add(ScheduleType.WEEKLY, "Týdně");
             scheduleTypeNames.Add(ScheduleType.MONTHLY, "Měsíčně");
             scheduleTypeNames.Add(ScheduleType.ONCE, "Jednou");
             scheduleTypeNames.Add(ScheduleType.ONIDLE, "Při nečinnosti");
-            scheduleTypeNames.Add(ScheduleType.ONSTART, "Při startu");
         }
 
         private void MapDayNames()
         {
-            daysNames.Add(Days.MON, "Pondělí");
-            daysNames.Add(Days.TUE, "Úterý");
-            daysNames.Add(Days.WED, "Středa");
-            daysNames.Add(Days.THU, "Čtvrtek");
-            daysNames.Add(Days.FRI, "Pátek");
-            daysNames.Add(Days.SAT, "Sobota");
-            daysNames.Add(Days.SUN, "Neděle");
+            daysNames.Add(Days.Monday, "Pondělí");
+            daysNames.Add(Days.Tuesday, "Úterý");
+            daysNames.Add(Days.Wednesday, "Středa");
+            daysNames.Add(Days.Thursday, "Čtvrtek");
+            daysNames.Add(Days.Friday, "Pátek");
+            daysNames.Add(Days.Saturday, "Sobota");
+            daysNames.Add(Days.Sunday, "Neděle");
         }
 
         private void MapMonthNames()
