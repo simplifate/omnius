@@ -1,6 +1,5 @@
 ﻿function ShowAppNotification(text, type) {
     var type = type.toLowerCase() || "info";
-    $("#appNotificationArea .app-alert").remove();
     switch (type) {
         case "success":
             icon = "fa-check";
@@ -13,6 +12,7 @@
             break;
         case "info":
         default:
+            type = "info";
             icon = "fa-info-circle";
             break;
     }
