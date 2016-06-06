@@ -10,7 +10,7 @@
     @RenderSection("Styles", false)
     @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = Context.GetLoggedUser().ModuleAccessPermission; }
 </head>
-<body class="@Page.ModuleClass pageSpinnerShown">
+<body class="@Page.ModuleClass adminLayout pageSpinnerShown">
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/CommonLibraries")
@@ -88,6 +88,7 @@
             <div class="double-bounce2"></div>
         </div>
     </div>
+    <div id="appNotificationArea"></div>
     @RenderBody()
 
     @Scripts.Render("~/bundles/knockout")
