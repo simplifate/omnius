@@ -54,13 +54,6 @@ $(function () {
         $("#appManagerIcon").removeClass("activeIcon");
     };
     if ($("#userLeftBar").length > 0) {
-        $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
-            ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
-        })
-        $(window).on("error", function () {
-            ShowAppNotification("Nastala neočekávaná chyba", "error");
-        })
-
         $(".uic").each(function (index, element) {
             $(element).attr("originalId", $(element).attr("Id"));
         });

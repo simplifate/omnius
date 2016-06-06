@@ -34,6 +34,13 @@ var pageSpinner = (function () {
 })()
 
 $(function () {
+    $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
+        ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
+    })
+    $(window).on("error", function () {
+        ShowAppNotification("Nastala neočekávaná chyba", "error");
+    })
+
     pageSpinner.hide();
     $(window).on("beforeunload", function () {
         pageSpinner.show();
