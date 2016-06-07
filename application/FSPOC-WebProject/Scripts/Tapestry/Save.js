@@ -211,7 +211,6 @@ function SaveBlock(commitMessage) {
         },
         error: function (request, status, error) {
             pageSpinner.hide();
-            alert(request.responseText);
         }
     });
 }

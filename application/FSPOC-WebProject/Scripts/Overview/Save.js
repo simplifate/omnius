@@ -56,9 +56,6 @@
         dataType: "json",
         data: postData,
         async: !pageUnloading,
-        error: function (request, status, error) {
-            alert(request.responseText);
-        },
         success: function (data) {
             for (i = 0; i < data.BlockIdPairs.length; i++) {
                 temporaryId = data.BlockIdPairs[i].TemporaryId;

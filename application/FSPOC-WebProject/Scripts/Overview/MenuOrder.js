@@ -43,9 +43,6 @@
                 success: function () {
                     ChangedSinceLastSave = true;
                     pageSpinner.hide();
-                },
-                error: function (request, status, error) {
-                    alert(request.responseText);
                 }
             });
         });

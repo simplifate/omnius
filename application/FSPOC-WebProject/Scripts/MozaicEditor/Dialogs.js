@@ -125,9 +125,6 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    },
                     success: function (data) {
                         tbody = choosePageDialog.find("#page-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
@@ -187,9 +184,6 @@ $(function () {
                 type: "POST",
                 url: "/api/mozaic-editor/apps/" + appId + "/pages",
                 data: postData,
-                error: function (request, status, error) {
-                    alert(request.responseText);
-                },
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());

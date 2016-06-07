@@ -8,9 +8,6 @@
         type: "GET",
         url: url,
         dataType: "json",
-        error: function (request, status, error) {
-            alert(request.responseText);
-        },
         success: function (data) {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();

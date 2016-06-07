@@ -32,9 +32,6 @@ $(function () {
                 type: "GET",
                 url: "/api/master/apps/" + CurrentAppId + "/properties",
                 dataType: "json",
-                error: function (request, status, error) {
-                    alert(request.responseText);
-                },
                 success: function (data) {
                     appPropertiesDialog.find("#app-name").val(data.DisplayName);
                     appPropertiesDialog.find("#tile-width").val(data.TileWidth);
@@ -58,10 +55,7 @@ $(function () {
             type: "POST",
             url: "/api/master/apps/" + CurrentAppId + "/properties",
             data: postData,
-            success: function () { alert("OK") },
-            error: function (request, status, error) {
-                alert(request.responseText);
-            },
+            success: function () { alert("OK") }
         });
     }
     addAppDialog = $("#new-app-dialog").dialog({
@@ -106,9 +100,6 @@ $(function () {
             type: "POST",
             url: "/api/master/apps",
             data: postData,
-            error: function (request, status, error) {
-                alert(request.responseText);
-            },
             success: function () {
                 location.reload();
             }

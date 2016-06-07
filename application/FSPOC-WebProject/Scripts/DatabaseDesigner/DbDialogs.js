@@ -274,9 +274,6 @@ $(function () {
                     type: "GET",
                     url: "/api/database/apps/" + appId + "/commits",
                     dataType: "json",
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    },
                     success: function (data) {
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
                         commitIdArray = [];
