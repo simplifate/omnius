@@ -41,8 +41,10 @@ $(function () {
             url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_select_label",
             data: {},
             error: console.error.bind(console),
+            complete: function () {
+                pageSpinner.hide()
+            },
             success: function (data) {
-                pageSpinner.hide();
                 $("#uic_user_select_dropdown option[value != '-1']").remove();
                 $("#uic_user_select_dropdown").append('<option value="' + data.user.RweId + '">Za sebe</option>');
                 if (data.managers) {

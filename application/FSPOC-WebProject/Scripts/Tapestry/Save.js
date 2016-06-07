@@ -205,12 +205,11 @@ function SaveBlock(commitMessage) {
         type: "POST",
         url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId,
         data: postData,
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function () {
             ChangedSinceLastSave = false;
-            pageSpinner.hide();
-        },
-        error: function (request, status, error) {
-            pageSpinner.hide();
         }
     });
 }

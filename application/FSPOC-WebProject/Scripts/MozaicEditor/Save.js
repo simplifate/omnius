@@ -15,7 +15,7 @@
         type: "POST",
         url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
         data: postData,
-        success: function () {
+        complete: function () {
             pageSpinner.hide();
         }
     });

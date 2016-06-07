@@ -56,6 +56,9 @@
         dataType: "json",
         data: postData,
         async: !pageUnloading,
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function (data) {
             for (i = 0; i < data.BlockIdPairs.length; i++) {
                 temporaryId = data.BlockIdPairs[i].TemporaryId;
@@ -69,7 +72,6 @@
             }
             ChangedSinceLastSave = false;
             if (callback) callback();
-            pageSpinner.hide();
         }
     });
 }

@@ -8,6 +8,9 @@
         type: "GET",
         url: url,
         dataType: "json",
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function (data) {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();
@@ -26,7 +29,6 @@
                 $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
                 $("#modalSizeVisualization").show();
             }
-            pageSpinner.hide();
         }
     });
 }

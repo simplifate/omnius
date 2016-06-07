@@ -5,6 +5,9 @@
         type: "GET",
         url: "/api/database/apps/" + appId + "/commits/" + commitId,
         dataType: "json",
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function (data) {
             ClearDbScheme();
             for (i = 0; i < data.Tables.length; i++) {
@@ -133,7 +136,6 @@
                 newView.data("dbViewQuery", data.Views[i].Query);
                 instance.draggable(newView);
             }
-            pageSpinner.hide();
         }
     });
 }

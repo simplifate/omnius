@@ -40,9 +40,11 @@
                 url: "/api/tapestry/saveMenuOrder",
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(postData),
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function () {
                     ChangedSinceLastSave = true;
-                    pageSpinner.hide();
                 }
             });
         });

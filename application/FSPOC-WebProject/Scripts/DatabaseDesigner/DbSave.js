@@ -81,7 +81,7 @@
         type: "POST",
         url: "/api/database/apps/" + appId + "/commits",
         data: postData,
-        success: function () {
+        complete: function () {
             pageSpinner.hide();
         }
     });

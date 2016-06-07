@@ -13,6 +13,9 @@
         type: "GET",
         url: url,
         dataType: "json",
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function (data) {
             ChangedSinceLastSave = false;
             $("#resourceRulesPanel .resourceRule").remove();
@@ -322,6 +325,9 @@
                 type: "GET",
                 url: "/api/database/apps/" + appId + "/commits/latest",
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (tableData) {
                     attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
                     $(".tapestryToolbox .toolboxLi_Attributes").remove();
@@ -393,7 +399,6 @@
                                     + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
                             }
                     };
-                    pageSpinner.hide();
                 }
             });
             
@@ -403,6 +408,9 @@
                 type: "GET",
                 url: "/api/tapestry/actions",
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (actionData) {
                     actionsInToolboxState = data.ToolboxState ? data.ToolboxState.Actions : [];
                     $(".tapestryToolbox .toolboxLi_Actions").remove();
@@ -422,7 +430,6 @@
                             actionLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
             pageSpinner.show();
@@ -430,6 +437,9 @@
                 type: "GET",
                 url: "/api/Persona/app-roles/" + appId,
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (roleData) {
                     rolesInToolboxState = data.ToolboxState ? data.ToolboxState.Roles : [];
                     $(".tapestryToolbox .toolboxLi_Roles").remove();
@@ -448,7 +458,6 @@
                             roleLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
             pageSpinner.show();
@@ -456,6 +465,9 @@
                 type: "GET",
                 url: "/api/Persona/app-states/" + appId,
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (stateData) {
                     statesInToolboxState = data.ToolboxState ? data.ToolboxState.States : [];
                     $(".tapestryToolbox .toolboxLi_States").remove();
@@ -474,7 +486,6 @@
                             stateLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
             pageSpinner.show();
@@ -482,6 +493,9 @@
                 type: "GET",
                 url: "/api/tapestry/apps/" + appId + "/blocks",
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (targetData) {
                     targetsInToolboxState = data.ToolboxState ? data.ToolboxState.Targets : [];
                     $(".tapestryToolbox .toolboxLi_Targets").remove();
@@ -500,7 +514,6 @@
                             targetLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
             pageSpinner.show();
@@ -508,6 +521,9 @@
                 type: "GET",
                 url: "/api/hermes/" + appId + "/templates",
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (templateData) {
                     templatesInToolboxState = data.ToolboxState ? data.ToolboxState.Templates : [];
                     $(".tapestryToolbox .toolboxLi_Templates").remove();
@@ -526,7 +542,6 @@
                             templateLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
             pageSpinner.show();
@@ -534,6 +549,9 @@
                 type: "GET",
                 url: "/api/nexus/" + appId + "/gateways",
                 dataType: "json",
+                complete: function () {
+                    pageSpinner.hide()
+                },
                 success: function (integrationData) {
                     integrationsInToolboxState = data.ToolboxState ? data.ToolboxState.Integrations : [];
                     $(".tapestryToolbox .toolboxLi_Integrations").remove();
@@ -597,7 +615,6 @@
                             integrationLibraryItem.addClass("highlighted");
                         }
                     }
-                    pageSpinner.hide();
                 }
             });
 
@@ -613,6 +630,9 @@
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
                     dataType: "json",
+                    complete: function () {
+                        pageSpinner.hide()
+                    },
                     success: function (uiPageData) {
                         for (componentIndex = 0; componentIndex < uiPageData.Components.length; componentIndex++) {
                             if (componentIndex == 0) {
@@ -680,11 +700,9 @@
                                 }
                             }
                         }
-                        pageSpinner.hide();
                     }
                 });
             }
-            pageSpinner.hide();
         }
     });
 };

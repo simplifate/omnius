@@ -7,6 +7,9 @@
         type: "GET",
         url: url,
         dataType: "json",
+        complete: function () {
+            pageSpinner.hide()
+        },
         success: function (data) {
             $("#headerMetablockName").text(data.Name);
             $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {
@@ -77,7 +80,6 @@
                     source: sourceId, target: targetId, editable: false, paintStyle: connectorPaintStyle
                 });
             }
-            pageSpinner.hide();
         }
     });
 }
