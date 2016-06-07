@@ -152,9 +152,6 @@ $(function () {
                     type: "GET",
                     url: "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits",
                     dataType: "json",
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    },
                     success: function (data) {
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
                         commitIdArray = [];
@@ -250,9 +247,6 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    },
                     success: function (data) {
                         tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
