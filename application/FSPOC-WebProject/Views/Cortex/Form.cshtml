@@ -2,8 +2,10 @@
 @using System.Data.Entity;
 @using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity.Cortex
+@using FSS.Omnius.Controllers.Cortex
 @{
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+    CortexController c = (CortexController)this.ViewContext.Controller;
 }
 
 @using (Html.BeginRouteForm("Cortex", new { @action = "Save" }, FormMethod.Post))
@@ -87,7 +89,7 @@
                 <div class="col-md-6">
                     @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Weekly_Days[]" value="@day.Key" />
+                            <input type="checkbox" name="Weekly_Days[]" value="@day.Key" @(Model == null ? "" : ((Days)Model.Weekly_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
                         </label>
                     }
@@ -101,7 +103,7 @@
                 <div class="col-md-6">
                     @foreach(KeyValuePair<Months, string> month in (Dictionary<Months, string>)ViewData["MonthsNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_Months[]" value="@month.Key" />
+                            <input type="checkbox" name="Monthly_Months[]" value="@month.Key" @(Model == null ? "" : ((Months)Model.Monthly_Months).HasFlag(month.Key) ? "checked" : "") />
                             @month.Value
                         </label>
                     }
@@ -109,13 +111,13 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">
-                    <input type="radio" name="Monthly_Type" id="Month_Type_Day" value="2" />
+                    <input type="radio" name="Monthly_Type" id="Month_Type_Day" value="2" @(Model == null ? "" : Model.Monthly_Type == MonthlyType.DAYS ? "checked" : "") />
                     Dny
                 </label>
                 <div class="col-md-6">
                     @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonthNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_Days[]" value="@day.Key" />
+                            <input type="checkbox" name="Monthly_Days[]" value="@day.Key" @(Model == null ? "" : ((DaysInMonth)Model.Monthly_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
                         </label>
                     }
@@ -123,20 +125,20 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">
-                    <input type="radio" name="Monthly_Type" id="Month_Type_In" value="1" />
+                    <input type="radio" name="Monthly_Type" id="Month_Type_In" value="1" @(Model == null ? "" : Model.Monthly_Type == MonthlyType.IN ? "checked" : "") />
                     V
                 </label>
                 <div class="col-md-6">
                     @foreach(KeyValuePair<InModifiers, string> mod in (Dictionary<InModifiers, string>)ViewData["ModifierNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_In_Modifiers[]" value="@mod.Key" />
+                            <input type="checkbox" name="Monthly_In_Modifiers[]" value="@mod.Key" @(Model == null ? "" : ((InModifiers)Model.Monthly_In_Modifiers).HasFlag(mod.Key) ? "checked" : "") />
                             @mod.Value
                         </label>
                     }
                     <br />
                     @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Monthly_In_Days[]" value="@day.Key" />
+                            <input type="checkbox" name="Monthly_In_Days[]" value="@day.Key" @(Model == null ? "" : ((Days)Model.Monthly_In_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
                         </label>
                     }
@@ -168,7 +170,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-1">
-                @Html.EditorFor(model => model.Start_Time, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Start_Time, new { @Value = Model != null && Model.Start_Time != null ? ((TimeSpan)Model.Start_Time).ToString(@"hh\:mm") : "", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Start_Time, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -176,7 +178,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.End_Time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-1">
-                @Html.EditorFor(model => model.End_Time, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.End_Time, new { @Value = Model != null && Model.End_Time != null ? ((TimeSpan)Model.End_Time).ToString(@"hh\:mm") : "", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.End_Time, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -184,7 +186,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-2">
-                @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Start_Date, new { @Value = Model != null && Model.Start_Date != null ? ((DateTime)Model.Start_Date).ToString("dd.MM.yyyy") : "", @class = "form-control"})
                 @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -192,7 +194,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-2">
-                @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.End_Date, new { @Value = Model != null && Model.End_Date != null ? ((DateTime)Model.End_Date).ToString("dd.MM.yyyy") : "", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -201,7 +203,7 @@
             @Html.LabelFor(model => model.Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="Repeat" value="true" id="Repeat" />
+                    <input type="checkbox" name="Repeat" value="true" id="Repeat" @(Model == null ? "" : Model.Repeat ? "checked" : "") />
                     Ano
                 </label>
             </div>

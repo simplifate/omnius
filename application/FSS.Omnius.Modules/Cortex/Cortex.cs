@@ -250,7 +250,7 @@
 
                 startInfo.FileName = "cmd.exe";
                 startInfo.Arguments = "/K " + cmdText;
-                startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                //startInfo.WindowStyle = ProcessWindowStyle.Normal;
                 process.StartInfo = startInfo;
                 process.Start();
             }

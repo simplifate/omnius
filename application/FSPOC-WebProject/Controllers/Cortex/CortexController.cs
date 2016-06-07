@@ -75,6 +75,20 @@ namespace FSS.Omnius.Controllers.Cortex
             return View("~/Views/Cortex/Form.cshtml", e.Tasks.Single(t => t.Id == id));
         }
 
+        public ActionResult Detail(int? id)
+        {
+            DBEntities e = new DBEntities();
+
+            ViewData["ApplicationList"] = e.Applications;
+            ViewData["ScheduleTypeNames"] = scheduleTypeNames;
+            ViewData["DaysNames"] = daysNames;
+            ViewData["MonthsNames"] = monthsNames;
+            ViewData["ModifierNames"] = modifiersNames;
+            ViewData["DaysInMonthNames"] = daysInMonthNames;
+
+            return View("~/Views/Cortex/Detail.cshtml", e.Tasks.Single(t => t.Id == id));
+        }
+
         public ActionResult Save(Task model)
         {
             Modules.Cortex.Cortex cortex = new Modules.Cortex.Cortex(Request);
@@ -173,7 +187,50 @@ namespace FSS.Omnius.Controllers.Cortex
                 else daysInMonthNames.Add(day, (++i).ToString());
             }
         }
-        
+
+        public string ViewWeekDays(Days set)
+        {
+            List<string> days = new List<string>();
+            foreach(Days d in Enums<Days>()) {
+                if (set.HasFlag(d)) days.Add(daysNames[d]);
+            }
+            return string.Join(", ", days);
+        }
+
+        public string ViewMonths(Task t)
+        {
+            List<string> months = new List<string>();
+            if(t.Monthly_Months != null) {
+                foreach(Months m in Enums<Months>()) {
+                    if (((Months)t.Monthly_Months).HasFlag(m)) months.Add(monthsNames[m]);
+                }
+            }
+            return string.Join(", ", months);
+        }
+
+        public string ViewInModifiers(Task t)
+        {
+            List<string> mod = new List<string>();
+            if(t.Monthly_In_Modifiers != null) {
+                foreach(InModifiers m in Enums<InModifiers>()) {
+                    if (((InModifiers)t.Monthly_In_Modifiers).HasFlag(m)) mod.Add(modifiersNames[m]);
+                }
+            }
+            return string.Join(", ", mod);
+        }
+
+        public string ViewMonthDays(Task t)
+        {
+            List<string> days = new List<string>();
+            if(t.Monthly_Days != null) {
+                foreach(DaysInMonth d in Enums<DaysInMonth>()) {
+                    if (((DaysInMonth)t.Monthly_Days).HasFlag(d)) days.Add(daysInMonthNames[d]);
+                }
+            }
+            return string.Join(", ", days);
+        }
+
+
         public string BuildWeekDays(Task t)
         {
             ResetSequences();
@@ -284,7 +341,7 @@ namespace FSS.Omnius.Controllers.Cortex
             sequences = new List<string>();
             sequence = new List<string>();
         }
-
+        
         private IEnumerable Enums<T>()
         {
             return Enum.GetValues(typeof(T));
