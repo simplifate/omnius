@@ -133,6 +133,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         [Display(Name = "Datum ukončení")]
         public DateTime? End_Date { get; set; }
 
-        public Application Application { get; set; } 
+        public virtual Application Application { get; set; } 
     }
 }

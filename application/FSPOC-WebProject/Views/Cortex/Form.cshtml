@@ -11,7 +11,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
 
-    <div class="form-horizontal">
+    <section class="form-horizontal">
         <h4>@(Model != null ? "Úprava úlohy" : "Vytvoření úlohy")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -57,32 +57,6 @@
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <section id="ScheduleType@(ScheduleType.MINUTE.ToString())Options" class="st-options hide">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Minute_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-2">
-                    <div class="input-group">
-                        @Html.EditorFor(model => model.Minute_Repeat, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 1439 } })
-                        <div class="input-group-addon">minut</div>
-                    </div>
-                    @Html.ValidationMessageFor(model => model.Minute_Repeat, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </section>
-
-        <section id="ScheduleType@(ScheduleType.HOURLY.ToString())Options" class="st-options hide">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Hourly_Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-2">
-                    <div class="input-group">
-                        @Html.EditorFor(model => model.Hourly_Repeat, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 23 } })
-                        <div class="input-group-addon">hodin</div>
-                    </div>
-                    @Html.ValidationMessageFor(model => model.Hourly_Repeat, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </section>
 
         <section id="ScheduleType@(ScheduleType.DAILY.ToString())Options" class="st-options hide">
             <div class="form-group">
@@ -224,22 +198,57 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Repeat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="Repeat" value="true" id="Repeat" />
+                    Ano
+                </label>
+            </div>
+        </div>
+
+        <section class="hide" id="RepeatOptions">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Repeat_Minute, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Repeat_Minute, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 1439 } })
+                        <div class="input-group-addon">minut</div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Repeat_Minute, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Repeat_Duration, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    <div class="input-group">
+                        @Html.EditorFor(model => model.Repeat_Duration, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 24 } })
+                        <div class="input-group-addon">hodin</div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Repeat_Duration, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </section>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-    </div>
+    </section>
     <script>
         /* <![CDATA[ */
         
         $('#Type').change(function () {
             $('.st-options, #FormGroupDuration').addClass('hide');
             $('#ScheduleType' + this.value + 'Options').removeClass('hide');
+        }).change();
 
-            if (this.value == 'MINUTE' || this.value == 'HOURLY') {
-                $('#FormGroupDuration').removeClass('hide');
-            }
-
+        $('#Repeat').change(function () {
+            if (this.checked)
+                $('#RepeatOptions').removeClass('hide');
+            else
+                $('#RepeatOptions').addClass('hide');
         }).change();
 
         $.datetimepicker.setLocale('cs');
