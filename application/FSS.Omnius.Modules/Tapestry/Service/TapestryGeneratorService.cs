@@ -105,6 +105,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     IsVirtual = false,
                     WorkFlow = resultWF
                 };
+                resultWF.Blocks.Add(resultBlock);
                 if (childBlock.IsInitial)
                     resultBlock.InitForWorkFlow.Add(resultWF);
 
