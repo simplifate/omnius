@@ -140,12 +140,13 @@ $(function () {
             var leftBar = $("#mozaicLeftBar");
             var scrollTop = $(window).scrollTop();
             var lowerPanelTop = $("#lowerPanel").offset().top;
+            var topBarHeight = $("#topBar").height() + $("#appNotificationArea").height();
             var overlay = $("#lowerPanelSpinnerOverlay");
 
             overlay.css({ right: 0, width: 'auto' });
-            if (scrollTop > lowerPanelTop - 75) {
-                leftBar.css({ top: 75, left: 225, position: "fixed" });
-                overlay.css({ top: 75, left: 225, position: "fixed" });
+            if (scrollTop > lowerPanelTop - topBarHeight) {
+                leftBar.css({ top: topBarHeight, left: 225, position: "fixed" });
+                overlay.css({ top: topBarHeight, left: 225, position: "fixed" });
             } else {
                 leftBar.css({ top: 0, left: 0, position: "absolute" });
                 overlay.css({ top: 0, left: 0, position: "absolute" });

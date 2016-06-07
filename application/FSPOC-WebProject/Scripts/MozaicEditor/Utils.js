@@ -3,9 +3,11 @@
     var leftBarMinimized = $("#mozaicLeftBarMinimized");
     var scrollTop = $(window).scrollTop();
     var lowerPanelTop = $("#lowerPanel").offset().top;
+    var topBarHeight = $("#topBar").height() + $("#appNotificationArea").height();
     var bottomPanelHeight;
-    if (scrollTop > lowerPanelTop - 75) {
-        bottomPanelHeight = window.innerHeight - 75;
+
+    if (scrollTop > lowerPanelTop - topBarHeight) {
+        bottomPanelHeight = window.innerHeight - topBarHeight;
     } else {
         bottomPanelHeight = $(window).height() + scrollTop - lowerPanelTop - leftBar.position().top;
     }
