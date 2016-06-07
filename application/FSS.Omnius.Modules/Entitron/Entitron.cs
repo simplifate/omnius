@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron
 
     public class Entitron : IModule
     {
-        public const string connectionString = "data source=vo8qh1qcem.database.windows.net;initial catalog=Omnius;user id=binu@vo8qh1qcem;password=Domaybietd90;MultipleActiveResultSets=True;App=EntityFramework;Min Pool Size=3;Load Balance Timeout=180;";
+        public const string connectionString = "data source=omnius-develop.database.windows.net;initial catalog=Omnius_Dev;user id=fss;password=dLsvPd$3?Wh%_52F;MultipleActiveResultSets=True;App=EntityFramework;Min Pool Size=3;Load Balance Timeout=180;";
         private CORE _CORE;
         private DBEntities entities = null;
 
