@@ -10,7 +10,7 @@
     @RenderSection("Styles", false)
     @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = Context.GetLoggedUser().ModuleAccessPermission; }
 </head>
-<body class="@Page.ModuleClass adminLayout pageSpinnerShown">
+<body data-module="@Page.ModuleClass" class="@Page.ModuleClass adminLayout pageSpinnerShown">
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/CommonLibraries")

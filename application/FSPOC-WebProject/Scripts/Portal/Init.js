@@ -34,10 +34,7 @@ var pageSpinner = (function () {
 })()
 
 $(function () {
-    var currentModule;
-    $.each(document.body.className.split(/\s+/), function(){
-        if (/Module$/.test(this)) currentModule = ""+this;
-    })
+    var currentModule = document.body.getAttribute("data-module");
 
     $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
         ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
