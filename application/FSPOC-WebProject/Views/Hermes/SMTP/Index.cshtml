@@ -47,7 +47,7 @@
                             <td class="text-center">@(s.Is_Default == true ? "ano" : "ne")</td>
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Hermes", new { @action = "Detail", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
-                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Ajax.RouteLink(" ", "Hermes", new { @action = "Edit", @id = s.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer", OnFailure = "debugger;" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
                                 @Html.RouteLink(" ", "Hermes", new { @action = "Delete", @id = s.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
                             </td>
                         </tr>

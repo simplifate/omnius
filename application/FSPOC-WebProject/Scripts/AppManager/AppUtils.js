@@ -193,3 +193,11 @@ function GetUrlParameter(sParam) {
         }
     }
 };
+$(function () {
+    $("[data-ajax='true']").on("click", function () {
+        pageSpinner.show();
+        $(document).one("ajaxComplete", function () {
+            pageSpinner.hide();
+        });
+    });
+});

@@ -13,6 +13,11 @@ $(function () {
     });
 
     if (CurrentModuleIs("appManagerModule")) {
+        $(".appPanel").each(function () {
+            while($(this).collision(".appPanel").length > 1) {
+                $(this).css({top: "+=120px"});
+            }
+        });
         $(".appPanel").draggable({
             grid: [120, 120],
             revert: "invalid",
@@ -35,7 +40,7 @@ $(function () {
             greedy: true,
             tolerance: "touch",
             drop: function (event, ui) {
-                ui.draggable.draggable("option", "revert", true);
+ //               ui.draggable.draggable("option", "revert", true);
             }
         });
         $(".appPanel").bind("dragstart", function (event, ui) {

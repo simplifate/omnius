@@ -40,6 +40,9 @@ $(function () {
     $(window).on("error", function () {
         ShowAppNotification("Nastala neočekávaná chyba", "error");
     })
+    $("[data-ajax='true']").data("ajax-failure", function (xhr) {
+        ShowAppNotification(xhr.responseText || "nastala chyba sítě", "error");
+    }.toString()); 
 
     pageSpinner.hide();
     $(window).on("beforeunload", function () {
