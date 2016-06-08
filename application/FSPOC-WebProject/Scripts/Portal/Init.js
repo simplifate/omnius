@@ -34,6 +34,11 @@ var pageSpinner = (function () {
 })()
 
 $(function () {
+    var currentModule;
+    $.each(document.body.className.split(/\s+/), function(){
+        if (/Module$/.test(this)) currentModule = ""+this;
+    })
+
     $(document).on("ajaxError", function (event, jqxhr, settings, thrownError) {
         ShowAppNotification(jqxhr.responseText || "nastala chyba sítě", "error");
     })
@@ -61,6 +66,7 @@ $(function () {
     }
     else if (CurrentModuleIs("adminAppModule")) {
         $("#adminMenuApps").addClass("active");
+        
     }
     else if (CurrentModuleIs("nexusModule")) {
         $("#adminMenuNexus").addClass("active");
@@ -129,10 +135,16 @@ $(function () {
     $("#notificationArea .indicatorBar").on("click", function () {
         $(this).remove();
     });
+    moduleTopBarSize = {};
+    if (moduleTopBarSize[currentModule] === undefined) {
+        ShowAppNotification("unknown top bar height for " + currentModule, "warning");
+        $("#hideUpperPanelIcon").hide();
+    }
+
     $("#hideUpperPanelIcon").on("click", function () {
         $("#upperPanel").hide();
         $("#minimizedUpperPanel").show();
-        $("#lowerPanel").css({ top: "-=95px" });
+        $("#lowerPanel").css({ top: "-=" + moduleTopBarSize[currentModule] + "px" });
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
@@ -141,7 +153,7 @@ $(function () {
     $("#showUpperPanelIcon").on("click", function () {
         $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
-        $("#lowerPanel").css({ top: "+=95px" });
+        $("#lowerPanel").css({ top: "-=" + moduleTopBarSize[currentModule] + "px" });
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
