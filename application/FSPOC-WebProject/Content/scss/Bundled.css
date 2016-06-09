@@ -1933,8 +1933,8 @@ body.dbDesignerModule {
     width: 150px; }
   body.dbDesignerModule .top-bar-container {
     position: absolute;
-    left: 225px;
-    top: 75px;
+    left: 0px;
+    top: 0px;
     right: 205px;
     height: 32px;
     background-color: #455d73;
@@ -1951,21 +1951,13 @@ body.dbDesignerModule {
     margin-left: 20px; }
   body.dbDesignerModule .work-area-container {
     position: absolute;
-    left: 225px;
-    top: 105px;
+    left: 0px;
+    top: 30px;
     right: 205px;
     bottom: 0px;
     overflow: scroll;
     border: 2px solid grey;
     background-color: white; }
-  body.dbDesignerModule .work-area-spinner-overlay {
-    position: absolute;
-    left: 225px;
-    top: 105px;
-    right: 205px;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    display: none; }
   body.dbDesignerModule .database-container {
     touch-action: none;
     width: auto;
@@ -1989,7 +1981,7 @@ body.dbDesignerModule {
   body.dbDesignerModule .toolbox {
     float: right;
     padding-right: 15px;
-    padding-top: 100px; }
+    padding-top: 25px; }
   body.dbDesignerModule .menuLabel {
     width: 175px;
     text-align: center;

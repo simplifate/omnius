@@ -4,29 +4,25 @@
     Page.ModuleClass = "dbDesignerModule";
 }
 
-<div class="top-bar-container">@ViewData["appName"]</div>
-<div class="toolbox">
-    <div class="menuButtons">
-        <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
-        <button type="button" id="btnAddView" class="btn btn-primary btn-lg">Add view</button>
-        <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
-        <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load latest</button>
-        <button type="button" id="btnOpenHistory" class="btn btn-default btn-lg">History</button>
-        <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
-        <center>
-            <div id="zoomLabel">Zoom 100%</div>
-            <button type="button" id="btnZoomIn">Zoom in</button>
-            <button type="button" id="btnZoomOut">Zoom out</button>
-        </center>
+<div id="lowerPanel">
+    <div class="top-bar-container">@ViewData["appName"]</div>
+    <div class="toolbox">
+        <div class="menuButtons">
+            <button type="button" id="btnAddTable" class="btn btn-primary btn-lg">Add table</button>
+            <button type="button" id="btnAddView" class="btn btn-primary btn-lg">Add view</button>
+            <button type="button" id="btnSaveScheme" class="btn btn-default btn-lg">Save scheme</button>
+            <button type="button" id="btnLoadScheme" class="btn btn-default btn-lg">Load latest</button>
+            <button type="button" id="btnOpenHistory" class="btn btn-default btn-lg">History</button>
+            <button type="button" id="btnClearScheme" class="btn btn-danger btn-lg">Clear scheme</button>
+            <center>
+                <div id="zoomLabel">Zoom 100%</div>
+                <button type="button" id="btnZoomIn">Zoom in</button>
+                <button type="button" id="btnZoomOut">Zoom out</button>
+            </center>
+        </div>
     </div>
-</div>
-<div class="work-area-container">
-    <div id="database-container" class="database-container"></div>
-</div>
-<div class="work-area-spinner-overlay">
-    <div class="spinner-2 largeSpinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
+    <div class="work-area-container">
+        <div id="database-container" class="database-container"></div>
     </div>
 </div>
 <input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
@@ -84,9 +80,9 @@
                     </td>
                 </tr>
                 @*<tr>
-                    <td><label for="primary-key-checkbox">Primary key</label></td>
-                    <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
-                </tr>*@
+                        <td><label for="primary-key-checkbox">Primary key</label></td>
+                        <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" value="" class="text ui-widget-content ui-corner-all"></td>
+                    </tr>*@
                 <tr>
                     <td><label for="unique-checkbox">Unique</label></td>
                     <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
@@ -129,9 +125,9 @@
                     </td>
                 </tr>
                 @*<tr>
-                    <td><label for="primary-key-checkbox">Primary key</label></td>
-                    <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
-                </tr>*@
+                        <td><label for="primary-key-checkbox">Primary key</label></td>
+                        <td><input type="checkbox" name="primary-key-checkbox" id="primary-key-checkbox" class="text ui-widget-content ui-corner-all"></td>
+                    </tr>*@
                 <tr>
                     <td><label for="unique-checkbox">Unique</label></td>
                     <td><input type="checkbox" name="unique-checkbox" id="unique-checkbox" class="text ui-widget-content ui-corner-all"></td>
