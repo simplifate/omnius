@@ -132,25 +132,22 @@ $(function () {
     $("#notificationArea .indicatorBar").on("click", function () {
         $(this).remove();
     });
-    moduleTopBarSize = {};
-    if (moduleTopBarSize[currentModule] === undefined) {
-        ShowAppNotification("unknown top bar height for " + currentModule, "warning");
-        $("#hideUpperPanelIcon").hide();
-    }
 
     $("#hideUpperPanelIcon").on("click", function () {
-        $("#upperPanel").hide();
         $("#minimizedUpperPanel").show();
-        $("#lowerPanel").css({ top: "-=" + moduleTopBarSize[currentModule] + "px" });
+        $("#lowerPanel").css({ top: "+=" + $("#minimizedUpperPanel").height() + "px" });
+        $("#lowerPanel").css({ top: "-=" + $("#upperPanel").height() + "px" });
+        $("#upperPanel").hide();
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
             RecalculateMozaicToolboxHeight();
     });
     $("#showUpperPanelIcon").on("click", function () {
-        $("#minimizedUpperPanel").hide();
         $("#upperPanel").show();
-        $("#lowerPanel").css({ top: "-=" + moduleTopBarSize[currentModule] + "px" });
+        $("#lowerPanel").css({ top: "+=" + $("#upperPanel").height() + "px" });
+        $("#lowerPanel").css({ top: "-=" + $("#minimizedUpperPanel").height() + "px" });
+        $("#minimizedUpperPanel").hide();
         if (CurrentModuleIs("tapestryModule"))
             RecalculateToolboxHeight();
         else if (CurrentModuleIs("mozaicEditorModule"))
