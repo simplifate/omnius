@@ -3,45 +3,41 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "overviewModule";
 }
-<div id="overviewHeaderArea">
-    App: <span id="headerAppName">@ViewData["appName"]</span><br /> Metablock: <span id="headerMetablockName"></span>
-</div>
-<div id="overviewMenu">
-    <button id="btnAddBlock" class="btn-omnius-rectangular">Add block</button>
-    <button id="btnAddMetablock" class="btn-omnius-rectangular">Add metablock</button>
-    <hr />
-    <button id="btnMenuOrder" class="btn-omnius-rectangular">Order</button>
-    <hr />
-    <button id="btnSave" class="btn-omnius-rectangular">Save</button>
-    <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
-    <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
-    <hr />
-    <button id="btnGoUp" class="btn-omnius-rectangular" @((int)ViewData["parentMetablockId"]==0?"disabled=disabled":"")>Go up</button>
-</div>
-<div id="overviewPanel">
-    <div class="scrollArea">
+<div id="lowerPanel">
+    <div id="overviewHeaderArea">
+        App: <span id="headerAppName">@ViewData["appName"]</span><br /> Metablock: <span id="headerMetablockName"></span>
     </div>
-</div>
-<div id="overviewPanelSpinnerOverlay">
-    <div class="spinner-2 largeSpinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
+    <div id="overviewMenu">
+        <button id="btnAddBlock" class="btn-omnius-rectangular">Add block</button>
+        <button id="btnAddMetablock" class="btn-omnius-rectangular">Add metablock</button>
+        <hr />
+        <button id="btnMenuOrder" class="btn-omnius-rectangular">Order</button>
+        <hr />
+        <button id="btnSave" class="btn-omnius-rectangular">Save</button>
+        <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
+        <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
+        <hr />
+        <button id="btnGoUp" class="btn-omnius-rectangular" @((int)ViewData["parentMetablockId"] == 0 ? "disabled=disabled" : "")>Go up</button>
     </div>
+    <div id="overviewPanel">
+        <div class="scrollArea">
+        </div>
+    </div>
+    <div id="zoomPanel">
+        <div id="zoomLabel">Zoom 100%</div>
+        <button type="button" id="btnZoomIn">Zoom in</button>
+        <button type="button" id="btnZoomOut">Zoom out</button>
+    </div>
+    <form id="openBlockForm" method="post" action="/Tapestry/Builder">
+        <input type="hidden" name="blockId" />
+    </form>
+    <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+        <input type="hidden" name="metablockId" />
+    </form>
+    <input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
+    <input type="hidden" id="currentAppId" value="@ViewData["currentAppId"]" />
+    <input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 </div>
-<div id="zoomPanel">
-    <div id="zoomLabel">Zoom 100%</div>
-    <button type="button" id="btnZoomIn">Zoom in</button>
-    <button type="button" id="btnZoomOut">Zoom out</button>
-</div>
-<form id="openBlockForm" method="post" action="/Tapestry/Builder">
-    <input type="hidden" name="blockId" />
-</form>
-<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
-    <input type="hidden" name="metablockId" />
-</form>
-<input type="hidden" id="currentMetablockId" value="@ViewData["metablockId"]" />
-<input type="hidden" id="currentAppId" value="@ViewData["currentAppId"]" />
-<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <div id="add-block-dialog" title="Add block">
     <form>
         <fieldset>
