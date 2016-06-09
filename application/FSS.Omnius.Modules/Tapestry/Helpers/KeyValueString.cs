@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -207,6 +208,9 @@ namespace FSS.Omnius.Modules.Tapestry
 
         private static object resolveSingleProperty(object o, string calling)
         {
+            if (o is DBItem && ((DBItem)o).getColumnNames().Contains(calling))
+                return ((DBItem)o)[calling];
+
             PropertyInfo property = o.GetType().GetProperty(calling);
 
             if (property == null)
