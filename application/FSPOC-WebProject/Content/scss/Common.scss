@@ -252,8 +252,9 @@ body.adminLayout #appNotificationArea {
 #lowerPanel {
     position: absolute;
     left: 225px;
+    top: 75px;
     right: 0px;
-    height: auto;
+    bottom: 0;
 }
 #lowerPanelContainer {
     position: absolute;
