@@ -1740,8 +1740,8 @@ body.menuOrderModule {
     user-select: none;
     cursor: default;
     position: absolute;
-    left: 235px;
-    top: 82px;
+    left: 10px;
+    top: 7px;
     text-align: left;
     font-size: 18px;
     color: white; }
@@ -1757,8 +1757,8 @@ body.menuOrderModule {
     cursor: default;
     position: absolute;
     background-color: #c0c0c0;
-    left: 229px;
-    top: 140px;
+    left: 4px;
+    top: 65px;
     right: 150px;
     bottom: 0px;
     overflow: scroll; }
@@ -1792,7 +1792,7 @@ body.menuOrderModule {
     cursor: default;
     position: absolute;
     right: 0px;
-    top: 140px;
+    top: 65px;
     bottom: 0px;
     width: 150px;
     background-color: #3a3a3a;
