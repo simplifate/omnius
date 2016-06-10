@@ -40,7 +40,7 @@ $(function () {
             greedy: true,
             tolerance: "touch",
             drop: function (event, ui) {
- //               ui.draggable.draggable("option", "revert", true);
+                ui.draggable.draggable("option", "revert", true);
             }
         });
         $(".appPanel").bind("dragstart", function (event, ui) {
