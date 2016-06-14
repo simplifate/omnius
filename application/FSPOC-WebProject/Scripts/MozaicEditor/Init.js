@@ -109,8 +109,8 @@ $(function () {
             containment: "parent",
             drag: function (event, ui) {
                 if (GridResolution > 0) {
-                    ui.position.left -= (ui.position.left % GridResolution);
-                    ui.position.top -= (ui.position.top % GridResolution);
+                    ui.position.left = Math.round(ui.position.left / GridResolution) * GridResolution;
+                    ui.position.top = Math.round(ui.position.top / GridResolution) * GridResolution;
                 }
             }
         });

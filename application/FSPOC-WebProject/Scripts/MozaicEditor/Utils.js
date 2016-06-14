@@ -75,8 +75,8 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 CreateDroppableMozaicContainer(droppedElement, false);
             }
             if (GridResolution > 0) {
-                droppedElement.css("left", droppedElement.position().left - (droppedElement.position().left % GridResolution));
-                droppedElement.css("top", droppedElement.position().top - (droppedElement.position().top % GridResolution));
+                newDraggable.css("left", Math.round(newDraggable.position().left / GridResolution) * GridResolution);
+                newDraggable.css("top", Math.round(newDraggable.position().top / GridResolution) * GridResolution);
             }
             ui.helper.remove();
             
@@ -85,8 +85,8 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 containment: "parent",
                 drag: function (event, ui) {
                     if (GridResolution > 0) {
-                        ui.position.left -= (ui.position.left % GridResolution);
-                        ui.position.top -= (ui.position.top % GridResolution);
+                        ui.position.left = Math.round(ui.position.left / GridResolution) * GridResolution;
+                        ui.position.top = Math.round(ui.position.top / GridResolution) * GridResolution;
                     }
                 }
             });
