@@ -8,7 +8,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbSchemeCommit")]
     public class DbSchemeCommit : IEntity
     {
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }

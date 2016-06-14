@@ -7,15 +7,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbIndex")]
     public class DbIndex : IEntity
     {
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Unique { get; set; }
         public string ColumnNames { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParentKey = true)]
         public int DbTableId { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParent = true)]
         public virtual DbTable DbTable { get; set; }
     }
 }

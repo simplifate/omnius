@@ -159,6 +159,7 @@
     <Compile Include="Entitron\Entity\Persona\UserClaim.cs" />
     <Compile Include="Entitron\Entity\Persona\UserLogin.cs" />
     <Compile Include="Entitron\Entity\Persona\User_Role.cs" />
+    <Compile Include="Entitron\Entity\PropertyActions.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionRule_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\ActionSequence_Action.cs" />
     <Compile Include="Entitron\Entity\Tapestry\Actor.cs" />

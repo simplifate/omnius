@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             ColumnMetadata = new HashSet<ColumnMetadata>();
         }
 
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
 
         [Required]
