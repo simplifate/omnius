@@ -23,7 +23,7 @@
         [Display(Name = "HTML e-mail")]
         public bool Is_HTML { get; set; }
 
-        public Application Application { get; set; }
+        public virtual Application Application { get; set; }
 
         public virtual ICollection<EmailPlaceholder> PlaceholderList { get; set; }
         public virtual ICollection<EmailTemplateContent> ContentList { get; set; }

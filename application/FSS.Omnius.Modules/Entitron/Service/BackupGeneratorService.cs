@@ -46,26 +46,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            var a = base.CreateProperties(type, memberSerialization);
-            List<JsonProperty> b = new List<JsonProperty>();
-            foreach(var q in a)
-            {
-                var q2 = type.BaseType.GetProperties().Where(u => u.Name == q.PropertyName);
-                if (!q2.Any())
-                    q2 = type.GetProperties().Where(u => u.Name == q.PropertyName);
+            var result = base.CreateProperties(type, memberSerialization);
+            result = result.Where(p => !p.AttributeProvider.GetAttributes(true).Any(a =>
+                        a.GetType() == typeof(ImportExportIgnoreAttribute)
+                        && !(a as ImportExportIgnoreAttribute).IsKey
+                        && !(a as ImportExportIgnoreAttribute).IsLinkKey
+                    )).ToList();
 
-                bool export = true;
-                foreach (var q3 in q2)
-                {
-                    if (q3 != null && q3.GetCustomAttributes(true).Any(at => at.GetType() == typeof(ImportExportIgnoreAttribute)))
-                        export = false;
-                }
-                if (export)
-                    b.Add(q);
-            }
-            //= a.Where(p => type.BaseType.GetProperty(p.PropertyName) == null 
-            //                    || !type.BaseType.GetProperty(p.PropertyName).GetCustomAttributes(true).Any(at => at.GetType() == typeof(ImportExportIgnoreAttribute))).ToList();
-            return b;
+            return result;
         }
     }
 }

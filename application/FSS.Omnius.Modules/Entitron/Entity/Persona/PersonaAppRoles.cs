@@ -16,13 +16,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             ActionRuleRights = new HashSet<ActionRuleRight>();
         }
 
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public new int Id { get; set; }
         public new string Name { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParentKey = true)]
         public int ApplicationId { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParent = true)]
         public virtual Application Application { get; set; }
         [Required]
         public int Priority { get; set; }

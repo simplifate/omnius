@@ -1,5 +1,7 @@
 ﻿namespace FSS.Omnius.Modules.Entitron.Entity.Hermes
 {
+    using Newtonsoft.Json;
+    using Master;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -26,6 +28,7 @@
         [DataType(DataType.Text)]
         public string AttachmentList { get; set; }
 
+        [LinkToEntity(typeof(Application))]
         public int? Application_Id { get; set; }
 
         public EmailQueueStatus Status { get; set; }

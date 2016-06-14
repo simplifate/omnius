@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     [Table("MozaicEditor_Pages")]
     public class MozaicEditorPage : IEntity
     {
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsModal { get; set; }
@@ -25,7 +25,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         [ImportExportIgnore]
         public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParent = true)]
         public virtual Application ParentApp { get; set; }
 
         public void Recompile()
@@ -240,7 +240,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     [Table("MozaicEditor_Components")]
     public class MozaicEditorComponent : IEntity
     {
-        [ImportIgnore]
+        public MozaicEditorComponent()
+        {
+            ChildComponents = new HashSet<MozaicEditorComponent>();
+        }
+
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -261,12 +266,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
         [ImportExportIgnore]
         public virtual ICollection<MozaicEditorComponent> ChildComponents { get; set; }
+        [ImportExportIgnore(IsLinkKey = true)]
         public int? ParentComponentId { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsLink = true)]
         public virtual MozaicEditorComponent ParentComponent { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParentKey = true)]
         public int MozaicEditorPageId { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParent = true)]
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
     

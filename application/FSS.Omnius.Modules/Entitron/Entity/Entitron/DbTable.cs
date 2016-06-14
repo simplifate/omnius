@@ -6,7 +6,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     [Table("Entitron_DbTable")]
     public class DbTable : IEntity
     {
-        [ImportIgnore]
+        [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
         public string Name { get; set; }
         public int PositionX { get; set; }
@@ -15,9 +15,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public virtual ICollection<DbColumn> Columns { get; set; }
         public virtual ICollection<DbIndex> Indices { get; set; }
 
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParentKey = true)]
         public int DbSchemeCommitId { get; set; }
-        [ImportExportIgnore]
+        [ImportExportIgnore(IsParent = true)]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 
         public DbTable()

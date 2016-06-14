@@ -48,56 +48,36 @@ namespace FSS.Omnius.Controllers.Master
             // transfer to object
             var context = HttpContext.GetCORE().Entitron.GetStaticTables();
             var service = new RecoveryService();
-            Application app = service.RecoverApplication(result);
-
-            // update
-            Application dbApp = context.Applications.SingleOrDefault(a => a.Name == app.Name);
-            if (dbApp != null)
-            {
-                app.Id = dbApp.Id;
-
-                dbApp.UpdateDeep(app, context, ignoreAttribute: new Type[] { typeof(ImportExportIgnoreAttribute), typeof(ImportIgnoreAttribute) });
-            }
-            // new app
-            else
-            {
-                // set basics value
-                app.IsEnabled = false;
-                app.IsPublished = false;
-                app.DbSchemeLocked = false;
-
-                context.Applications.Add(app);
-            }
-
-            // pageMapping
-            Dictionary<int, MozaicEditorPage> pageMapping = new Dictionary<int, MozaicEditorPage>();
-            foreach(var page in app.MozaicEditorPages)
-                pageMapping.Add(page.Id, page);
-
+            
             try
             {
-                context.SaveChanges();
+                // get apps
+                Application newApp = service.RecoverApplication(result);
+                Application dbApp = context.Applications.SingleOrDefault(a => a.Name == newApp.Name);
 
-                // page id remap
-                foreach (var meta in app.TapestryDesignerMetablocks)
+                // update
+                if (dbApp != null)
+                    dbApp.UpdateDeep(newApp, context);
+                else
                 {
-                    foreach (var block in meta.Blocks)
-                    {
-                        foreach (var commit in block.BlockCommits.Where(bc => !string.IsNullOrWhiteSpace(bc.AssociatedPageIds)))
-                        {
-                            List<int> newPageIds = new List<int>();
-                            List<int> pageIds = commit.AssociatedPageIds.Split(',').Select(p => Convert.ToInt32(p)).ToList();
-                            foreach (int pageId in pageIds)
-                            {
-                                newPageIds.Add(pageMapping[pageId].Id);
-                            }
+                    // set basics value
+                    newApp.IsEnabled = false;
+                    newApp.IsPublished = false;
+                    newApp.DbSchemeLocked = false;
 
-                            commit.AssociatedPageIds = string.Join(",", newPageIds.Select(i => i.ToString()).ToList());
-                        }
-                    }
-                    context.SaveChanges();
+                    context.Applications.Add(newApp);
+                    dbApp = newApp;
                 }
 
+                // map Id
+                var idMapping = dbApp.MapIds(newApp);
+                // link object
+                dbApp.UpdateEntityLinks(idMapping);
+                context.SaveChanges();
+                // link Id
+                dbApp.UpdateEntityIdLinks(idMapping);
+                context.SaveChanges();
+                
                 return RedirectToRoute("Master", new { @controller = "AppAdminManager", @action = "Index" });
             }
             catch (Exception ex)

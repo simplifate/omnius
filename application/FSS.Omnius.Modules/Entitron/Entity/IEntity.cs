@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,132 +13,167 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
     public static class EntityExtension
     {
-        public static void Update<T>(this T thisEntity, T newEntity, Type ignoreAttribute = null) where T : IEntity
+        private static HashSet<Type> _basicType = new HashSet<Type>
         {
-            // ignore method without setter
-            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
-            if (ignoreAttribute != null)
-                properties = properties.Where(p => p.GetCustomAttribute(ignoreAttribute) == null);
+            typeof(int),
+            typeof(int?),
+            typeof(bool),
+            typeof(bool?),
+            typeof(string),
+            typeof(DateTime),
+            typeof(DateTime?)
+        };
 
-            foreach (var property in properties)
+        public static int GetId(this IEntity thisEntity)
+        {
+            return (int)thisEntity.GetType().GetProperties().FirstOrDefault(p => p.Name == "Id").GetValue(thisEntity);
+        }
+        
+        public static void UpdateDeep<T>(this T thisEntity, T newEntity, DBEntities context, HashSet<Type> basicsTypes = null) where T : IEntity
+        {
+            // INIT
+            if (basicsTypes == null)
+                basicsTypes = _basicType;
+
+            DoublePropertyActions pActions = new DoublePropertyActions
             {
-                property.SetValue(thisEntity, property.GetValue(newEntity));
-            }
+                GlobalCondition = (prop, thisVal, newVal) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null || prop.GetCustomAttribute<ImportExportIgnoreAttribute>().IsLinkKey,
+                RecurseCondition = (prop, thisVal, newVal) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null,
+                addAndRemove = true,
+                removeFunc = (list, item) => context.Entry(item).State = EntityState.Deleted,
+            };
+            // basics types || new inner link
+            pActions.AddAction(
+                (prop, thisVal, newVal) => basicsTypes.Contains(prop.PropertyType) || thisVal == null,
+                (prop, thisE, newE, thisVal, newVal) => prop.SetValue(thisE, newVal)
+            );
+
+            pActions.Run(thisEntity, newEntity, 0, true);
+        }
+        
+        public static Dictionary<Tuple<Type, int>, IEntity> MapIds<T>(this T thisEntity, T newEntity) where T : IEntity
+        {
+            Dictionary<Tuple<Type, int>, IEntity> idMapping = new Dictionary<Tuple<Type, int>, IEntity>();
+
+            DoublePropertyActions pActions = new DoublePropertyActions
+            {
+                RecurseCondition = (prop, thisVal, newVal) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null,
+                addNew = true,
+                removeOld = false
+            };
+            pActions.newItemFunc = (newItem, deep) => pActions.Run(newItem, newItem, deep + 1, true);
+            // map Id
+            pActions.AddAction(
+                (prop, thisVal, newVal) => { var attr = prop.GetCustomAttribute<ImportExportIgnoreAttribute>(); return attr != null && attr.IsKey; },
+                (prop, thisE, newE, thisVal, newVal) => idMapping[new Tuple<Type, int>(newE.GetType(), (int)newVal)] = thisE
+            );
+
+            pActions.Run(thisEntity, newEntity, 0, true);
+            return idMapping;
         }
 
-        public static void UpdateBasicsParams<T>(this T thisEntity, T newEntity, HashSet<Type> basicsTypes = null, Type ignoreAttribute = null) where T : IEntity
+        public static void UpdateEntityLinks<T>(this T thisEntity, Dictionary<Tuple<Type, int>, IEntity> idMapping) where T : IEntity
         {
-            if (basicsTypes == null)
-                basicsTypes = new HashSet<Type>
-                {
-                    typeof(int),
-                    typeof(int?),
-                    typeof(bool),
-                    typeof(bool?),
-                    typeof(string),
-                    typeof(DateTime),
-                    typeof(DateTime?)
-                };
-
-            // ignore method without setter
-            IEnumerable<PropertyInfo> properties = thisEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
-            if (ignoreAttribute != null)
-                properties = properties.Where(p => basicsTypes.Contains(p.PropertyType) && p.GetCustomAttribute(ignoreAttribute) == null);
-
-            foreach (var property in properties)
+            PropertyActions pActions = new PropertyActions
             {
-                property.SetValue(thisEntity, property.GetValue(newEntity));
-            }
-        }
-
-        public static void UpdateDeep<T>(this T thisEntity, T newEntity, DBEntities context, HashSet<Type> basicsTypes = null, Type[] ignoreAttribute = null) where T : IEntity
-        {
-            // basics types
-            if (basicsTypes == null)
-                basicsTypes = new HashSet<Type>
+                RecurseCondition = (prop, val) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null
+            };
+            // links
+            pActions.AddAction(
+                (prop, value) => { var attr = prop.GetCustomAttribute<ImportExportIgnoreAttribute>(); return attr != null && attr.IsLink; },
+                (prop, entity, value) =>
                 {
-                    typeof(int),
-                    typeof(int?),
-                    typeof(bool),
-                    typeof(bool?),
-                    typeof(string),
-                    typeof(DateTime),
-                    typeof(DateTime?)
-                };
-
-            // get mapped properties
-            // ignore method without setter
-            IEnumerable<PropertyInfo> properties = newEntity.GetType().GetProperties().Where(p => p.GetSetMethod() != null);
-            if (ignoreAttribute != null)
-                properties = properties.Where(p => !ignoreAttribute.Any(ia => p.GetCustomAttribute(ia) != null));
-
-            // update
-            foreach (var property in properties)
-            {
-                // basics types
-                if (basicsTypes.Contains(property.PropertyType))
-                    property.SetValue(thisEntity, property.GetValue(newEntity));
-                else
-                {
-                    object thisValue = property.GetValue(thisEntity);
-                    object newValue = property.GetValue(newEntity);
-                    // null
-                    if (newValue == null)
-                        property.SetValue(thisEntity, null);
-                    else if (thisValue == null)
-                        property.SetValue(thisEntity, newValue);
-                    // inner IEntity
-                    else if (newValue is IEntity)
+                    // has Id
+                    PropertyInfo idProperty = entity.GetType().GetProperties().FirstOrDefault(p => p.Name == $"{prop.Name}Id" || p.Name == $"{prop.Name}_Id");
+                    if (idProperty != null)
                     {
-                        (thisValue as IEntity).UpdateDeep((IEntity)newValue, context, basicsTypes, ignoreAttribute);
-                    }
-                    // ICollection
-                    else if (newValue.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>)))
-                    {
-                        Type itemType = property.PropertyType.GenericTypeArguments.First(); // type
-
-                        IEnumerator<IEntity> thisEnumerator = (thisValue as dynamic).GetEnumerator();
-                        IEnumerator<IEntity> newEnumerator = (newValue as dynamic).GetEnumerator();
-
-                        thisEnumerator.Reset();
-                        newEnumerator.Reset();
-                        HashSet<dynamic> toAdd = new HashSet<dynamic>();
-                        while (newEnumerator.MoveNext())
+                        int? id = (int?)idProperty.GetValue(entity);
+                        if (id != null)
                         {
-                            // add new
-                            if (!thisEnumerator.MoveNext())
+                            Tuple<Type, int> key = new Tuple<Type, int>(prop.PropertyType, id.Value);
+                            if (idMapping.ContainsKey(key))
                             {
-                                do
-                                {
-                                    toAdd.Add((dynamic)newEnumerator.Current);
-                                }
-                                while (newEnumerator.MoveNext());
-                                property.SetValue(thisEntity, thisValue);
+                                IEntity targetE = idMapping[key];
+                                idProperty.SetValue(entity, targetE.GetId());
+                                prop.SetValue(entity, targetE);
                             }
-                            // replace changes
+                            else if (idProperty.PropertyType.IsGenericType && idProperty.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                // TODO - warning
+                            }
                             else
-                                thisEnumerator.Current.UpdateDeep(newEnumerator.Current, context, basicsTypes, ignoreAttribute);
-                        }
-                        // remove old
-                        HashSet<dynamic> toRemove = new HashSet<dynamic>();
-                        while (thisEnumerator.MoveNext())
-                        {
-                            toRemove.Add((dynamic)thisEnumerator.Current);
-                        }
-
-                        // update list
-                        foreach (dynamic item in toAdd)
-                        {
-                            (thisValue as dynamic).Add(item);
-                        }
-                        foreach (dynamic item in toRemove)
-                        {
-                            (thisValue as dynamic).Remove(item);
-                            context.Entry(item).State = EntityState.Deleted;
+                            {
+                                // TODO - problém
+                            }
                         }
                     }
                 }
-            }
+            );
+
+            pActions.Run(thisEntity, true);
+        }
+
+        public static void UpdateEntityIdLinks<T>(this T thisEntity, Dictionary<Tuple<Type, int>, IEntity> idMapping, Func<ImportExportIgnoreAttribute, bool> attributeCondition = null) where T : IEntity
+        {
+            PropertyActions pActions = new PropertyActions
+            {
+                RecurseCondition = (prop, val) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null,
+                GlobalCondition = (prop, val) => prop.GetCustomAttribute<ImportExportIgnoreAttribute>() == null && prop.GetCustomAttribute<LinkToEntityAttribute>() != null
+            };
+            // attribute LinkToEntity - multiple items - string
+            pActions.AddAction(
+                (prop, val) => prop.GetCustomAttribute<LinkToEntityAttribute>().MultipleItems,
+                (prop, entity, value) =>
+                {
+                    string ids = (string)prop.GetValue(entity);
+                    // id is filled
+                    if (!string.IsNullOrWhiteSpace(ids))
+                    {
+                        List<int> newIds = new List<int>();
+                        foreach (int id in ids.Split(',').Select(i => Convert.ToInt32(i)))
+                        {
+                            Tuple<Type, int> key = new Tuple<Type, int>(prop.GetCustomAttribute<LinkToEntityAttribute>().GetType(entity), id);
+                            // link to non-deleted row
+                            if (idMapping.ContainsKey(key))
+                            {
+                                IEntity targetE = idMapping[key];
+                                newIds.Add(targetE.GetId());
+                            }
+                            else
+                            {
+                                // TODO: warning
+                            }
+                        }
+                        string newIdsString = string.Join(",", newIds);
+                        prop.SetValue(entity, newIdsString);
+                    }
+                }
+            );
+            // attribute LinkToEntity - single target - int
+            pActions.AddAction(
+                (prop, val) => !prop.GetCustomAttribute<LinkToEntityAttribute>().MultipleItems,
+                (prop, entity, value) =>
+                {
+                    int? id = (int?)prop.GetValue(entity);
+                    // id is filled
+                    if (id != null)
+                    {
+                        Tuple<Type, int> key = new Tuple<Type, int>(prop.GetCustomAttribute<LinkToEntityAttribute>().GetType(entity), id.Value);
+                        // link to non-deleted row
+                        if (idMapping.ContainsKey(key))
+                        {
+                            IEntity targetE = idMapping[key];
+                            prop.SetValue(entity, targetE.GetId());
+                        }
+                        else
+                        {
+                            // TODO: warning
+                        }
+                    }
+                }
+            );
+
+            pActions.Run(thisEntity, true);
         }
     }
 }
