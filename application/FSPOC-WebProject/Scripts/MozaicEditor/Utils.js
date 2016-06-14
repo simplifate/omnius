@@ -31,6 +31,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
             droppedElement.removeClass("toolboxItem");
             droppedElement.removeClass("ui-draggable-dragging");
             droppedElement.addClass("uic");
+            var newDraggable = droppedElement;
             if (!droppedElement.hasClass("radio-control"))
                 droppedElement.attr("uicName", "");
             droppedElement.attr("uicStyles", "");
@@ -48,6 +49,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 CreateCzechDataTable(droppedElement, droppedElement.hasClass("data-table-simple-mode"));
                 droppedElement.css("width", "1000px");
                 wrapper = droppedElement.parents(".dataTables_wrapper");
+                newDraggable = wrapper;
                 wrapper.css("position", "absolute");
                 wrapper.css("left", droppedElement.css("left"));
                 wrapper.css("top", droppedElement.css("top"));
@@ -59,6 +61,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 droppedElement.val("#f00");
                 CreateColorPicker(droppedElement);
                 newReplacer = target.find(".sp-replacer:last");
+                newDraggable = newReplacer;
                 newReplacer.css("position", "absolute");
                 newReplacer.css("left", droppedElement.css("left"));
                 newReplacer.css("top", droppedElement.css("top"));
@@ -76,39 +79,17 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 droppedElement.css("top", droppedElement.position().top - (droppedElement.position().top % GridResolution));
             }
             ui.helper.remove();
-            if (droppedElement.hasClass("data-table"))
-                wrapper.draggable({
-                    cancel: false,
-                    containment: "parent",
-                    drag: function (event, ui) {
-                        if (GridResolution > 0) {
-                            ui.position.left -= (ui.position.left % GridResolution);
-                            ui.position.top -= (ui.position.top % GridResolution);
-                        }
+            
+            newDraggable.draggable({
+                cancel: false,
+                containment: "parent",
+                drag: function (event, ui) {
+                    if (GridResolution > 0) {
+                        ui.position.left -= (ui.position.left % GridResolution);
+                        ui.position.top -= (ui.position.top % GridResolution);
                     }
-                });
-            else if (droppedElement.hasClass("color-picker"))
-                newReplacer.draggable({
-                    cancel: false,
-                    containment: "parent",
-                    drag: function (event, ui) {
-                        if (GridResolution > 0) {
-                            ui.position.left -= (ui.position.left % GridResolution);
-                            ui.position.top -= (ui.position.top % GridResolution);
-                        }
-                    }
-                });
-            else
-                droppedElement.draggable({
-                    cancel: false,
-                    containment: "parent",
-                    drag: function (event, ui) {
-                        if (GridResolution > 0) {
-                            ui.position.left -= (ui.position.left % GridResolution);
-                            ui.position.top -= (ui.position.top % GridResolution);
-                        }
-                    }
-                });
+                }
+            });
         }
     });
 };
