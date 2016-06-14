@@ -94,6 +94,9 @@ $(function () {
     else if (CurrentModuleIs("hermesModule")) {
         $("#adminMenuHermes").addClass("active");
     }
+    else if (CurrentModuleIs("cortexModule")) {
+        $("#adminMenuCortex").addClass("active");
+    }
 
     $("#usersOnlineIndicator").on("click", function () {
         $(".clickableIndicatorRectangle").removeClass("highlighted");
