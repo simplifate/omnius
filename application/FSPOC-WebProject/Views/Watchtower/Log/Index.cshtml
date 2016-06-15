@@ -5,132 +5,130 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "watchtowerModule";
 }
-<div id="logContainer">
-    <div id="filterFormPanel">
-        <div id="watchtowerFormResponiveArea">
-            <div class="panelLabel">Watchtower</div>
-            <svg id="filterPanelDecoration" width="1300px" height="357px">
-                <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
-                <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
-                <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
-                <path d="M700 74 L1140 74 L1200 134 L1200 240 L980 240 L900 320 L190 320" stroke="#49c4f1" stroke-width="1" fill="none" />
-            </svg>
-            <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
-            <div id="filterPanelLabel">Vyhledávání</div>
-            <form id="filterLogForm" method="post" action="/Watchtower">
-                <table id="filterLogTable">
-                    <tr>
-                        <td><label for="type">Typ události</label></td>
-                        <td>
-                            <select id="filterSelectType" name="type">
-                                <option value="all">Vše</option>
-                                <option value="1">Akce uživatele</option>
-                                <option value="2">Přístup odepřen</option>
-                                <option value="0">Nespecifikovaná akce</option>
-                            </select>
-                        </td>
-                        <td><label for="user">Uživatel</label></td>
-                        <td>
-                            <select id="filterSelectUser" name="user">
-                                <option value="all">Všichni</option>
-                                <option value="0">Anonym</option>
-                                <option value="1">Samuel Lachman</option>
-                                <option value="2">Martin Novák</option>
-                            </select>
-                        </td>
-                        <td><label for="message">Zpráva</label></td>
-                        <td>
-                            <input id="filterSearchMessage" name="message" type="text" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="level">Úroveň</label></td>
-                        <td>
-                            <select id="filterSelectLevel" name="level">
-                                <option value="all">Vše</option>
-                                <option value="0">Informace</option>
-                                <option value="1">Varování</option>
-                                <option value="2">Chyba</option>
-                                <option value="3">Fatální chyba</option>
-                            </select>
-                        </td>
-                        <td><label for="time-from">Čas (od)</label></td>
-                        <td>
-                            <input id="filterSearchTimeFrom" name="time-from" type="text" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="source">Zdroj</label></td>
-                        <td>
-                            <select id="filterSelectSource" name="source">
-                                <option value="all">Vše</option>
-                                <option value="platform">Platforma Omnius</option>
-                                <option value="0">Aplikace "Rezervace služeb"</option>
-                                <option value="1">Aplikace "Překlady"</option>
-                            </select>
-                        </td>
-                        <td><label for="time-to">Čas (do)</label></td>
-                        <td>
-                            <input id="filterSearchTimeTo" name="time-to" type="text" />
-                        </td>
-                    </tr>
-                </table>
-                <div id="formButtonArea">
-                    <button id="resetSearchForm" type="reset" class="btn-omnius-rectangular">Zrušit</button>
-                    <button id="submitSearchForm" type="submit" class="btn-omnius-rectangular">Hledat</button>
-                </div>
-            </form>
-        </div>
-        <div id="hideFilterIcon" class="fa fa-caret-up"></div>
-        <input id="previousSearchType" type="hidden" value="@ViewData["type"]" />
-        <input id="previousSearchSource" type="hidden" value="@ViewData["source"]" />
-        <input id="previousSearchLevel" type="hidden" value="@ViewData["level"]" />
-        <input id="previousSearchUser" type="hidden" value="@ViewData["user"]" />
-        <input id="previousSearchMessage" type="hidden" value="@ViewData["message"]" />
-        <input id="previousSearchTimeFrom" type="hidden" value="@ViewData["time-from"]" />
-        <input id="previousSearchTimeTo" type="hidden" value="@ViewData["time-to"]" />
-    </div>
-    <div id="filterFormPanelMinimized">
+<div id="upperPanel">
+    <div id="watchtowerFormResponiveArea">
         <div class="panelLabel">Watchtower</div>
-        <div id="showFilterIcon" class="fa fa-caret-down"></div>
-    </div>
-    <div id="watchtowerLogTableContainter">
-        @if (Model.Count() > 0)
-        {
-            <table id="watchtowerLogTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Čas</th>
-                        <th>Typ události</th>
-                        <th>Úroveň</th>
-                        <th>Uživatel</th>
-                        <th>Zdroj</th>
-                        <th>Zpráva</th>
-                    </tr>
-                </thead>
-                @foreach (AjaxLogItem item in Model)
-            {
-                    <tr>
-                        <td>@item.TimeString</td>
-                        <td>@item.LogEventTypeString</td>
-                        <td>@item.LogLevelString</td>
-                        <td>@item.UserName</td>
-                        <td>@item.LogEventSourceString</td>
-                        <td>@Html.Raw(item.Message)</td>
-                    </tr>
-                }
+        <svg id="filterPanelDecoration" width="1300px" height="357px">
+            <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+            <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+            <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+            <path d="M700 74 L1140 74 L1200 134 L1200 240 L980 240 L900 320 L190 320" stroke="#49c4f1" stroke-width="1" fill="none" />
+        </svg>
+        <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+        <div id="filterPanelLabel">Vyhledávání</div>
+        <form id="filterLogForm" method="post" action="/Watchtower">
+            <table id="filterLogTable">
+                <tr>
+                    <td><label for="type">Typ události</label></td>
+                    <td>
+                        <select id="filterSelectType" name="type">
+                            <option value="all">Vše</option>
+                            <option value="1">Akce uživatele</option>
+                            <option value="2">Přístup odepřen</option>
+                            <option value="0">Nespecifikovaná akce</option>
+                        </select>
+                    </td>
+                    <td><label for="user">Uživatel</label></td>
+                    <td>
+                        <select id="filterSelectUser" name="user">
+                            <option value="all">Všichni</option>
+                            <option value="0">Anonym</option>
+                            <option value="1">Samuel Lachman</option>
+                            <option value="2">Martin Novák</option>
+                        </select>
+                    </td>
+                    <td><label for="message">Zpráva</label></td>
+                    <td>
+                        <input id="filterSearchMessage" name="message" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="level">Úroveň</label></td>
+                    <td>
+                        <select id="filterSelectLevel" name="level">
+                            <option value="all">Vše</option>
+                            <option value="0">Informace</option>
+                            <option value="1">Varování</option>
+                            <option value="2">Chyba</option>
+                            <option value="3">Fatální chyba</option>
+                        </select>
+                    </td>
+                    <td><label for="time-from">Čas (od)</label></td>
+                    <td>
+                        <input id="filterSearchTimeFrom" name="time-from" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="source">Zdroj</label></td>
+                    <td>
+                        <select id="filterSelectSource" name="source">
+                            <option value="all">Vše</option>
+                            <option value="platform">Platforma Omnius</option>
+                            <option value="0">Aplikace "Rezervace služeb"</option>
+                            <option value="1">Aplikace "Překlady"</option>
+                        </select>
+                    </td>
+                    <td><label for="time-to">Čas (do)</label></td>
+                    <td>
+                        <input id="filterSearchTimeTo" name="time-to" type="text" />
+                    </td>
+                </tr>
             </table>
+            <div id="formButtonArea">
+                <button id="resetSearchForm" type="reset" class="btn-omnius-rectangular">Zrušit</button>
+                <button id="submitSearchForm" type="submit" class="btn-omnius-rectangular">Hledat</button>
+            </div>
+        </form>
+    </div>
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+    <input id="previousSearchType" type="hidden" value="@ViewData["type"]" />
+    <input id="previousSearchSource" type="hidden" value="@ViewData["source"]" />
+    <input id="previousSearchLevel" type="hidden" value="@ViewData["level"]" />
+    <input id="previousSearchUser" type="hidden" value="@ViewData["user"]" />
+    <input id="previousSearchMessage" type="hidden" value="@ViewData["message"]" />
+    <input id="previousSearchTimeFrom" type="hidden" value="@ViewData["time-from"]" />
+    <input id="previousSearchTimeTo" type="hidden" value="@ViewData["time-to"]" />
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Watchtower</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    @if (Model.Count() > 0)
+    {
+        <table id="watchtowerLogTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Čas</th>
+                    <th>Typ události</th>
+                    <th>Úroveň</th>
+                    <th>Uživatel</th>
+                    <th>Zdroj</th>
+                    <th>Zpráva</th>
+                </tr>
+            </thead>
+            @foreach (AjaxLogItem item in Model)
+        {
+                <tr>
+                    <td>@item.TimeString</td>
+                    <td>@item.LogEventTypeString</td>
+                    <td>@item.LogLevelString</td>
+                    <td>@item.UserName</td>
+                    <td>@item.LogEventSourceString</td>
+                    <td>@Html.Raw(item.Message)</td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        if ((bool)ViewData["filter"])
+        {
+            <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
         }
         else
         {
-            if ((bool)ViewData["filter"])
-            {
-                <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
-            }
-            else
-            {
-                <div class="logIsEmpty">Log zatím neobsahuje žádné záznamy</div>
-            }
+            <div class="logIsEmpty">Log zatím neobsahuje žádné záznamy</div>
         }
-    </div>
+    }
 </div>
