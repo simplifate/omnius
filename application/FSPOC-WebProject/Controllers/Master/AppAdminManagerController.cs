@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using FSS.Omnius.Modules.Entitron.Entity;
@@ -11,7 +10,10 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Tapestry.Service;
-using FSS.Omnius.Modules.CORE;
+using System.Net;
+using Microsoft.Web.WebSockets;
+using RazorEngine.Templating;
+using RazorEngine;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -40,129 +42,150 @@ namespace FSS.Omnius.Controllers.Master
         }
         public ActionResult BuildApp(int Id)
         {
-            var core = HttpContext.GetCORE();
-            core.Entitron.AppId = Id;
+            string menuPath = Server.MapPath("~/Views/Shared/_ApplicationMenu.cshtml");
 
-            using (var context = new DBEntities())
+            if (HttpContext.IsWebSocketRequest)
             {
-                var app = context.Applications.Find(Id);
+                HttpContext.AcceptWebSocketRequest(new BuildWebSocketHandler(Id, menuPath));
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.SwitchingProtocols;
+                return null;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+    }
+
+    class BuildWebSocketHandler : WebSocketHandler
+    {
+        private int _AppId;
+        private string _menuPath;
+
+        public BuildWebSocketHandler(int appId, string menuPath)
+        {
+            _AppId = appId;
+            _menuPath = menuPath;
+        }
+
+        public override void OnOpen()
+        {
+            var core = new Modules.CORE.CORE();
+            core.Entitron.AppId = _AppId;
+            var app = core.Entitron.Application;
+            DBEntities context = core.Entitron.GetStaticTables();
+
+            try
+            {
                 // Entitron Generate Database
+                StartEntitron();
                 if (app.DbSchemeLocked)
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                 try
                 {
-                    try
-                    {
-                        app.DbSchemeLocked = true;
-                        context.SaveChanges();
-                        core.Entitron.AppId = app.Id;
-                        var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
-                        if (dbSchemeCommit == null)
-                            dbSchemeCommit = new DbSchemeCommit();
-                        DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
-                        app.DbSchemeLocked = false;
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception($"Error in Entitron: {ex.Message}", ex);
-                    }
-
-
-                    // Mozaic pages
-                    try
-                    {
-                        foreach (var editorPage in app.MozaicEditorPages)
-                        {
-                            editorPage.Recompile();
-                            string requestedPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml";
-                            var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
-                            if (oldPage == null)
-                            {
-                                var newPage = new Page
-                                {
-                                    ViewName = editorPage.Name,
-                                    ViewPath = $"/Views/App/{Id}/Page/{editorPage.Id}.cshtml",
-                                    ViewContent = editorPage.CompiledPartialView
-                                };
-                                context.Pages.Add(newPage);
-                                context.SaveChanges();
-                                editorPage.CompiledPageId = newPage.Id;
-                            }
-                            else
-                            {
-                                oldPage.ViewName = editorPage.Name;
-                                oldPage.ViewContent = editorPage.CompiledPartialView;
-                                editorPage.CompiledPageId = oldPage.Id;
-                            }
-                        }
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception($"Error in Mozaic: {ex.Message}", ex);
-                    }
-
-                    // Tapestry
-                    Dictionary<int, Block> blockMapping = null;
-                    try
-                    {
-                        var service = new TapestryGeneratorService();
-                        blockMapping = service.GenerateTapestry(core);
-                    }
-                    catch(Exception e)
-                    {
-                        throw new Exception($"Error in Tapestry: {e.Message}", e);
-                    }
-
-                    // menu layout
-                    try
-                    {
-                        string path = $"/Views/App/{Id}/menuLayout.cshtml";
-                        var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
-                        if (menuLayout == null)
-                        {
-                            menuLayout = new Page
-                            {
-                                ViewPath = $"/Views/App/{Id}/menuLayout.cshtml"
-                            };
-                            context.Pages.Add(menuLayout);
-                        }
-                        menuLayout.ViewName = $"{app.Name} layout";
-                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
-
-                        app.IsPublished = true;
-                        context.SaveChanges();
-                    }
-                    catch(Exception ex)
-                    {
-                        throw new Exception($"Error in menu generate: {ex.Message}", ex);
-                    }
-
-                    //pass the message object to view
-                    var message = new Message();
-                    message.Success.Add("Stránky byly úpěšně zkompilovány.");
-                    ViewBag.Message = message;
-
-                    return View();
-                }
-                catch(Exception ex)
-                {
-                    Logger.Log.Error(ex, Request);
-                    //pass the message object to view
-                    var message = new Message();
-                    message.Errors.Add(ex.Message);
-                    ViewBag.Message = message;
-
-                    return View();
-                }
-                finally
-                {
+                    app.DbSchemeLocked = true;
+                    context.SaveChanges();
+                    core.Entitron.AppId = app.Id;
+                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                    if (dbSchemeCommit == null)
+                        dbSchemeCommit = new DbSchemeCommit();
+                    new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
                     app.DbSchemeLocked = false;
                     context.SaveChanges();
                 }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error in Entitron: {ex.Message}", ex);
+                }
+
+
+                // Mozaic pages
+                StartMozaic();
+                try
+                {
+                    foreach (var editorPage in app.MozaicEditorPages)
+                    {
+                        editorPage.Recompile();
+                        string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
+                        var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
+                        if (oldPage == null)
+                        {
+                            var newPage = new Page
+                            {
+                                ViewName = editorPage.Name,
+                                ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
+                                ViewContent = editorPage.CompiledPartialView
+                            };
+                            context.Pages.Add(newPage);
+                            context.SaveChanges();
+                            editorPage.CompiledPageId = newPage.Id;
+                        }
+                        else
+                        {
+                            oldPage.ViewName = editorPage.Name;
+                            oldPage.ViewContent = editorPage.CompiledPartialView;
+                            editorPage.CompiledPageId = oldPage.Id;
+                        }
+                    }
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error in Mozaic: {ex.Message}", ex);
+                }
+
+                // Tapestry
+                StartTapestry();
+                Dictionary<int, Block> blockMapping = null;
+                try
+                {
+                    var service = new TapestryGeneratorService();
+                    blockMapping = service.GenerateTapestry(core);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Error in Tapestry: {e.Message}", e);
+                }
+
+                // menu layout
+                StartMenu();
+                try
+                {
+                    string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
+                    var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
+                    if (menuLayout == null)
+                    {
+                        menuLayout = new Page
+                        {
+                            ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
+                        };
+                        context.Pages.Add(menuLayout);
+                    }
+                    menuLayout.ViewName = $"{app.Name} layout";
+                    menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
+
+                    app.IsPublished = true;
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error in menu generate: {ex.Message}", ex);
+                }
+
+                // DONE
+                Done();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage(ex);
+            }
+            finally
+            {
+                app.DbSchemeLocked = false;
+                context.SaveChanges();
+                core.Entitron.CloseStaticTables();
             }
         }
+
 
         private Tuple<string, HashSet<string>> GetApplicationMenu(Modules.CORE.CORE core, Dictionary<int, Block> blockMapping, int rootId = 0, int level = 0)
         {
@@ -206,17 +229,40 @@ namespace FSS.Omnius.Controllers.Master
                 });
             }
 
-            ViewData.Model = items;
-            ViewData["Level"] = level;
-            ViewBag.AppId = core.Entitron.Application.Id;
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, "~/Views/Shared/_ApplicationMenu.cshtml");
-                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                return new Tuple<string, HashSet<string>>(sw.GetStringBuilder().ToString(), rights);
-            }
+            DynamicViewBag ViewBag = new DynamicViewBag();
+            ViewBag.AddValue("Level", level);
+            ViewBag.AddValue("AppId", core.Entitron.AppId);
+            ViewBag.AddValue("AppName", core.Entitron.AppName);
+
+            string source = File.ReadAllText(_menuPath);
+
+            string result = Engine.Razor.RunCompile(source, new Random().Next().ToString(), null, items, ViewBag);
+            return new Tuple<string, HashSet<string>>(result, rights);
+        }
+
+        private void StartEntitron()
+        {
+            Send("Entitron");
+        }
+        private void StartMozaic()
+        {
+            Send("Mozaic");
+        }
+        private void StartTapestry()
+        {
+            Send("Tapestry");
+        }
+        private void StartMenu()
+        {
+            Send("Menu");
+        }
+        private void Done()
+        {
+            Send("Done");
+        }
+        private void ErrorMessage(Exception ex)
+        {
+            Send(ex.Message);
         }
     }
 }

@@ -20,7 +20,11 @@
         });
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
-            window.location.href = "/Master/AppAdminManager/BuildApp/" + CurrentAppId;
+            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+
+            ws.onmessage = function (e) {
+                alert(e.data.toString());
+            };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");

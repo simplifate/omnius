@@ -1,20 +1,23 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
 @model List<TapestryDesignerMenuItem>
 
-@if (Model.Count() > 0) {
-    <ul @((int)ViewData["Level"] == 0 ? " id=appMenu" : "")>
-        @foreach (TapestryDesignerMenuItem item in Model.OrderBy(i => i.MenuOrder)) {
-            @Html.Raw($"@if (Context.GetLoggedUser().canUseBlock(\"{item.rights}\",{ViewBag.AppId}))")
+@if (Model.Count() > 0)
+{
+    <ul @((int)ViewBag.Level == 0 ? " id=appMenu" : "")>
+        @foreach (TapestryDesignerMenuItem item in Model.OrderBy(i => i.MenuOrder))
+        {
+            @Raw("@if (Context.GetLoggedUser().canUseBlock(\"" + item.rights + "\"," + ViewBag.AppId + "))")
             @("{")
             <li>
-             @if (item.IsMetablock)
-             {
-                 <h4>@item.Name</h4>
-                 @Html.Raw(item.SubMenu)
-             }
-             else {
-                 <a href="/@Context.GetCORE().Entitron.AppName/@item.BlockName">@item.Name</a>
-             }
+                @if (item.IsMetablock)
+                {
+                    <h4>@item.Name</h4>
+                    @Raw(item.SubMenu)
+                }
+                else
+                {
+                    <a href="/@ViewBag.AppName/@item.BlockName">@item.Name</a>
+                }
             </li>
             @("}")
         }
