@@ -384,6 +384,7 @@ $(function () {
                 },
                 Cancel: function () {
                     uiitemPropertiesDialog.dialog("close");
+                    CurrentItem.removeClass("activeItem");
                 }
             },
             open: function (event, ui) {
@@ -393,6 +394,7 @@ $(function () {
         function uiitemPropertiesDialog_SubmitData() {
             CurrentItem.data("isAjaxAction", uiitemPropertiesDialog.find("#ajax-action").is(':checked'));
             uiitemPropertiesDialog.dialog("close");
+            CurrentItem.removeClass("activeItem");
         }
         chooseTablesDialog = $("#choose-tables-dialog").dialog({
             autoOpen: false,
