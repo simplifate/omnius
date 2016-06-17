@@ -46,6 +46,9 @@ function AddToJsPlumb(item) {
             rule.data("jsPlumbInstance").repaintEverything();
             resourceRuleMode = rule.hasClass("resourceRule");
 
+            ui.position.left = Math.round((ui.position.left + element.width()/2) / 20) * 20 - element.width()/2;
+            ui.position.top = Math.round((ui.position.top + element.height()/2) / 20) * 20 - element.height()/2;
+
             rightEdge = ui.position.left + element.width() + (resourceRuleMode ? 20 : 122);
             bottomEdge = ui.position.top + element.height() + 20;
 

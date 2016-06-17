@@ -1388,6 +1388,7 @@ body.tapestryModule #lowerPanel {
               height: 60px;
               border-radius: 6px;
               padding-top: 20px;
+              padding-bottom: 20px;
               padding-left: 8px;
               padding-right: 8px;
               font-family: MyriadPro;
