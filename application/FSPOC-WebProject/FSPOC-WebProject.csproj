@@ -1397,14 +1397,6 @@
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfCreate.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfDialogs.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfInit.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfLoad.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfSave.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfUtils.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfVisualConfiguration.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
