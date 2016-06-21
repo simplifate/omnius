@@ -128,6 +128,10 @@ function AddToJsPlumb(item) {
             ChangedSinceLastSave = true;
         }
     });
+    item.css({
+        left: Math.round((item.position().left + item.width()/2) / 20) * 20 - item.width()/2,
+        top: Math.round((item.position().top + item.height()/2) / 20) * 20 - item.height()/2
+    });
     instance = item.parents(".rule").data("jsPlumbInstance");
     specialEndpointsType = item.attr("endpoints");
     if (item.attr("symbolType") && item.attr("symbolType").indexOf("gateway-") == 0) {
