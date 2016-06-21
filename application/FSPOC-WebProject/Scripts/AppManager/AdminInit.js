@@ -23,7 +23,7 @@
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
 
             ws.onmessage = function (e) {
-                alert(e.data.toString());
+                ShowAppNotification(e.data.toString(), 'success');
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
