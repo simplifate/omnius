@@ -54,8 +54,17 @@ $(function () {
                     });
                     componentPropertiesDialog.find("#component-content").val(tabString);
                 }
+                else if (CurrentComponent.hasClass("wizard-phases")) {
+                    componentPropertiesDialog.find("#component-label").val("");
+                    var phaseLabels = "";
+                    CurrentComponent.find(".phase-label").each(function (index, element) {
+                        phaseLabels += $(element).text() + ";";
+                    });
+                    phaseLabels = phaseLabels.slice(0, -1);
+                    componentPropertiesDialog.find("#component-content").val(phaseLabels);
+                }
                 else if (CurrentComponent.hasClass("button-simple") || CurrentComponent.hasClass("button-dropdown")) {
-                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
                 }
                 else {
                     componentPropertiesDialog.find("#component-label").val("");
@@ -70,7 +79,7 @@ $(function () {
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
             if (CurrentComponent.hasClass("button-simple"))
-                CurrentComponent.html(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
                 CurrentComponent.html(componentPropertiesDialog.find("#component-label").val() + '<i class="fa fa-caret-down">');
             else if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
@@ -102,6 +111,12 @@ $(function () {
                 }
                 CurrentComponent.css("width", "auto");
             }
+            else if (CurrentComponent.hasClass("wizard-phases")) {
+                var phaseLabelArray = componentPropertiesDialog.find("#component-content").val().split(";");
+                CurrentComponent.find(".phase1 .phase-label").text(phaseLabelArray[0] ? phaseLabelArray[0] : "Fáze 1");
+                CurrentComponent.find(".phase2 .phase-label").text(phaseLabelArray[1] ? phaseLabelArray[1] : "Fáze 2");
+                CurrentComponent.find(".phase3 .phase-label").text(phaseLabelArray[2] ? phaseLabelArray[2] : "Fáze 3");
+            }
             componentPropertiesDialog.dialog("close");
         }
         choosePageDialog = $("#choose-page-dialog").dialog({
@@ -117,7 +132,7 @@ $(function () {
                 }
             },
             open: function (event, ui) {
-                choosePageDialog.find("#page-table:first tbody:nth-child(2) tr").remove();
+                choosePageDialog.find("#page-table:first tbody tr").remove();
                 $("#choose-page-dialog .spinner-2").show();
                 choosePageDialog.data("selectedCommitId", null);
                 appId = $("#currentAppId").val();
@@ -125,6 +140,9 @@ $(function () {
                     type: "GET",
                     url: "/api/mozaic-editor/apps/" + appId + "/pages",
                     dataType: "json",
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
                         tbody = choosePageDialog.find("#page-table tbody:nth-child(2)");
                         for (i = 0; i < data.length; i++) {
@@ -184,12 +202,16 @@ $(function () {
                 type: "POST",
                 url: "/api/mozaic-editor/apps/" + appId + "/pages",
                 data: postData,
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                },
                 success: function (data) {
                     $("#currentPageId").val(data);
                     $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
                     if (SaveRequested) {
                         SaveMozaicPage();
-                    } else {
+                    }
+                    else {
                         pageSpinner.hide();
                     }
                 }

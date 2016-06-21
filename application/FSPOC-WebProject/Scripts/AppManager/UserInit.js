@@ -200,6 +200,11 @@ $(function () {
             newReplacer.attr("uicClasses", "color-picker");
             newReplacer.attr("uicName", newComponent.attr("uicName"));
         });
+        $(".uic.countdown-component").each(function (index, element) {
+            var newDateObj = new Date();
+            newDateObj.setTime(newDateObj.getTime() + (5 * 60 * 1000));
+            $(element).countdown({ until: newDateObj, format: 'HMS' });
+        });
         $(".uic.input-single-line").each(function (index, element) {
             newComponent = $(element);
             autosumTargetName = newComponent.attr("writeSumInto");

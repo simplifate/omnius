@@ -839,6 +839,9 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       font-size: 14px;
       color: #58585a;
       white-space: nowrap; }
+  .mozaicForm .dataTables_wrapper .inner_wrapper {
+    width: 100%;
+    overflow-x: auto; }
   .mozaicForm .data-table {
     width: 250px;
     border: 1px solid #4b8ad1;
@@ -859,10 +862,12 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
         font-size: 16px;
         margin-right: 5px;
         cursor: pointer; }
-      .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search {
+      .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search, .mozaicForm .data-table .actionIcons .fa-sign-in {
         color: #0065a9; }
       .mozaicForm .data-table .actionIcons .fa-remove {
         color: #e3001b; }
+      .mozaicForm .data-table .actionIcons .fa-sign-in {
+        font-size: 20px; }
   .mozaicForm .data-table-simple-mode {
     background-color: white; }
     .mozaicForm .data-table-simple-mode tfoot {
@@ -3083,6 +3088,73 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .tab-navigation.toolboxItem {
     width: 250px;
     background-color: white; }
+  body.mozaicEditorModule .wizard-phases {
+    position: relative;
+    width: 850px;
+    height: 88px;
+    white-space: nowrap;
+    overflow: hidden; }
+    body.mozaicEditorModule .wizard-phases .wizard-phases-frame {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      border-radius: 5px;
+      border: 2px solid #0066AA; }
+    body.mozaicEditorModule .wizard-phases .phase-background {
+      position: absolute;
+      z-index: 40;
+      margin: 2px; }
+    body.mozaicEditorModule .wizard-phases .phase {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+      z-index: 45; }
+    body.mozaicEditorModule .wizard-phases .phase1 {
+      width: 316px; }
+    body.mozaicEditorModule .wizard-phases .phase2 {
+      width: 277px; }
+    body.mozaicEditorModule .wizard-phases .phase3 {
+      width: 255px; }
+    body.mozaicEditorModule .wizard-phases .phase-label {
+      position: absolute;
+      left: 82px;
+      top: 31px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      color: #0066aa; }
+    body.mozaicEditorModule .wizard-phases .phase-active .phase-label {
+      color: white; }
+    body.mozaicEditorModule .wizard-phases .phase-icon-circle {
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #00548f;
+      background-color: rgba(42, 163, 213, 0.8); }
+    body.mozaicEditorModule .wizard-phases .phase-done .phase-icon-circle {
+      background-color: rgba(0, 204, 0, 0.7); }
+    body.mozaicEditorModule .wizard-phases .phase-icon-number {
+      width: 100%;
+      padding-left: 2px;
+      padding-top: 1px;
+      text-align: center;
+      font-size: 30px;
+      font-family: RweHeadlineRegular;
+      font-weight: bold;
+      color: white; }
+    body.mozaicEditorModule .wizard-phases .phase-icon-symbol {
+      width: 100%;
+      padding-left: 2px;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 23px;
+      color: white; }
+  body.mozaicEditorModule .wizard-phases.toolboxItem {
+    width: 250px;
+    overflow: hidden; }
   body.mozaicEditorModule .control-label {
     font-family: MyriadPro;
     font-size: 14px;
@@ -3118,6 +3190,11 @@ body.mozaicEditorModule {
   body.mozaicEditorModule .color-picker.toolboxItem {
     color: red;
     width: 90px; }
+  body.mozaicEditorModule .countdown-component {
+    width: 260px;
+    height: 50px;
+    border: 1px solid #ccc;
+    background-color: #eee; }
   body.mozaicEditorModule .panel-component {
     min-width: 260px;
     min-height: 60px;
@@ -3481,8 +3558,7 @@ body.adminLayout #appNotificationArea {
   position: absolute;
   left: 225px;
   top: 75px;
-  right: 0px;
-  bottom: 0; }
+  right: 0px; }
 
 #lowerPanelContainer {
   position: absolute;

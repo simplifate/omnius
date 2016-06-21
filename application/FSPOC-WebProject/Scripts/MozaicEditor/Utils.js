@@ -5,7 +5,6 @@
     var lowerPanelTop = $("#lowerPanel").offset().top;
     var topBarHeight = $("#topBar").height() + $("#appNotificationArea").height();
     var bottomPanelHeight;
-
     if (scrollTop > lowerPanelTop - topBarHeight) {
         bottomPanelHeight = window.innerHeight - topBarHeight;
     } else {
@@ -21,8 +20,8 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
         tolerance: "fit",
         accept: ".toolboxItem",
         greedy: true,
-        accept: function(element) {
-            if(!element.hasClass("toolboxItem") || (element.hasClass("panel-component") && !allowNesting))
+        accept: function (element) {
+            if (!element.hasClass("toolboxItem") || (element.hasClass("panel-component") && !allowNesting))
                 return false;
             else return true;
         },
@@ -69,6 +68,9 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 newReplacer.addClass("uic color-picker");
                 newReplacer.attr("uicClasses", "color-picker");
             }
+            else if (droppedElement.hasClass("wizard-phases")) {
+                droppedElement.css("width", "");
+            }
             else if (droppedElement.hasClass("panel-component")) {
                 droppedElement.css("width", 500);
                 droppedElement.css("height", 120);
@@ -79,17 +81,25 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
                 newDraggable.css("top", Math.round(newDraggable.position().top / GridResolution) * GridResolution);
             }
             ui.helper.remove();
-            
             newDraggable.draggable({
-                cancel: false,
-                containment: "parent",
-                drag: function (event, ui) {
-                    if (GridResolution > 0) {
-                        ui.position.left = Math.round(ui.position.left / GridResolution) * GridResolution;
-                        ui.position.top = Math.round(ui.position.top / GridResolution) * GridResolution;
+                    cancel: false,
+                    containment: "parent",
+                    drag: function (event, ui) {
+                        if (GridResolution > 0) {
+                            ui.position.left -= (ui.position.left % GridResolution);
+                            ui.position.top -= (ui.position.top % GridResolution);
+                        }
                     }
-                }
-            });
+                });
         }
     });
 };
+WizardPhasesContentTemplate = '<div class="wizard-phases-frame"></div><svg class="phase-background" width="846px" height="84px"><defs>' +
+'<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#dceffa ;stop-opacity:1" />' +
+'<stop offset="100%" style="stop-color:#8dceed;stop-opacity:1" /></linearGradient><linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">' +
+'<stop offset="0%" style="stop-color:#0099cc;stop-opacity:1" /><stop offset="100%" style="stop-color:#0066aa;stop-opacity:1" />' +
+'</linearGradient></defs><path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" /><path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
+'<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" /></svg><div class="phase phase1 phase-active"><div class="phase-icon-circle">' +
+'<div class="phase-icon-number">1</div></div><div class="phase-label">Fáze 1</div></div><div class="phase phase2"><div class="phase-icon-circle">' +
+'<div class="phase-icon-number">2</div></div><div class="phase-label">Fáze 2</div></div><div class="phase phase3"><div class="phase-icon-circle">' +
+'<div class="phase-icon-number">3</div></div><div class="phase-label">Fáze 3</div></div>';
