@@ -1397,14 +1397,6 @@
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfCreate.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfDialogs.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfInit.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfLoad.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfSave.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfUtils.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfVisualConfiguration.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1473,7 +1465,6 @@
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
     <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
-    <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
     <Content Include="Views\Master\Home\Help.cshtml" />
     <Content Include="Views\Nexus\WS\Form.cshtml" />
     <Content Include="Views\Nexus\WS\Detail.cshtml" />
