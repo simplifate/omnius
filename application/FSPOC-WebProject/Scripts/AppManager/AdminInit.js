@@ -21,6 +21,10 @@
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            ws.onerror = function (e) {
+                $(document).trigger("ajaxError", {})
+                console.log(e);
+            }
 
             ws.onmessage = function (e) {
                 ShowAppNotification(e.data.toString(), 'success');
