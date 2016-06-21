@@ -1,8 +1,16 @@
 ﻿var LastAssignedNumber = 0;
 SystemTables = [
     {
+        Name: "Omnius::AppRoles",
+        Columns: ["Id", "Name", "Priority", "ApplicationId"]
+    },
+    {
         Name: "Omnius::Users",
-        Columns: ["DisplayName", "Company", "Job", "Address", "Email"]
+        Columns: ["Id", "DisplayName", "Company", "Job", "Address", "Email"]
+    },
+    {
+        Name: "Omnius::LogItems",
+        Columns: ["Id", "Timestamp", "LogEventType", "UserId", "IsPlatformEvent", "AppId", "Message"]
     }
 ];
 

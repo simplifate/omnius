@@ -82,16 +82,20 @@ $(function () {
         $(window).resize(function () {
             $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
         });
-        $(".uic.data-table").each(function (index, element) {
-            table = $(element);
+        try {
+            $(".uic.data-table").each(function (index, element) {
+            var table = $(element);
+            var tableWidth = parseInt(table.attr("uicWidth"));
             CreateCzechDataTable(table, table.hasClass("data-table-simple-mode"));
             wrapper = table.parents(".dataTables_wrapper");
             wrapper.css("position", "absolute");
             wrapper.css("left", table.css("left"));
             wrapper.css("top", table.css("top"));
+            wrapper.css("width", tableWidth + 5);
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
+            table.wrap("<div class='inner_wrapper'>");
             table.on("click", ".rowEditAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
                 $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
@@ -150,13 +154,26 @@ $(function () {
                         .draw();
                     table.find("tfoot th:nth-child(5) input").val(currentUser);
                 }
+                table.find("thead th").each(function (index, element) {
+                    if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
+                        table.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
+                    }
+                    else if ($(element).text() == "Barva") {
+                        table.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
+
+                        table.find("td:nth-child(" + (index + 1) + ")").each(function (tdIndex, tdElement) {
+                            var colorCode = $(tdElement).text();
+                            $(tdElement).parents("tr").find("td:nth-child(" + (index + 2) + ")")
+                                .prepend('<div class="colorRectangle" style="background-color:' + colorCode + '"></div>');
+                        });
+                    }
+                });
             }
-            mozaicForm = $("#userContentArea .mozaicForm");
-            if (table.width() > mozaicForm.width()) {
-                mozaicForm.width(table.width());
-                $("#appMenu").width(table.width());
-            }
-        });
+            });
+        }
+        catch (err) {
+            console.log(err);
+        }
         $(".uic.button-simple, .uic.button-dropdown").on("click", function () {
             $(".uic.data-table").each(function (tableIndex, tableElement) {
                 var visibleRowList = "";
@@ -256,6 +273,10 @@ $(function () {
                 }
             }
         });
+        $(".uic.panel-component").each(function (index, element) {
+            RecalculatePanelDimensions($(element));
+        });
+        RecalculateMozaicFormHeight();
         $("#modalRepository .modalRepositoryItem").each(function (index, element) {
             currentDialog = $(element);
             currentDialog.dialog({

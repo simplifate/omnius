@@ -5,6 +5,7 @@ SqlServerDataTypes = [
     ["integer", "Integer", false],
     ["float", "Float", false],
     ["currency", "Currency", false],
+    ["decimal", "Decimal", false],
     ["date", "Date", false],
     ["time", "Time", false],
     ["datetime", "DateTime", false],
