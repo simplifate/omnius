@@ -613,6 +613,10 @@ body.userLayout.leftBarHidden {
             white-space: nowrap;
         }
     }
+    .dataTables_wrapper .inner_wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
     .data-table {
         width: 250px;
         border: 1px solid #4b8ad1;
@@ -645,11 +649,14 @@ body.userLayout.leftBarHidden {
                 margin-right: 5px;
                 cursor: pointer;
             }
-            .fa-edit, .fa-search {
+            .fa-edit, .fa-search, .fa-sign-in {
                 color: #0065a9;
             }
             .fa-remove {
                 color: #e3001b;
+            }
+            .fa-sign-in {
+                font-size: 20px;
             }
         }
     }
