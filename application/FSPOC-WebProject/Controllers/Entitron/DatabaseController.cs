@@ -238,10 +238,10 @@ namespace FSS.Omnius.Controllers.Entitron
                         string name = commit.Tables.SingleOrDefault(x=>x.Id==rightTable).Name + commit.Tables.SingleOrDefault(x => x.Id == rightTable).Columns.SingleOrDefault(x=>x.Id==rightColumn).Name + "_" + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Name + commit.Tables.SingleOrDefault(x => x.Id == leftTable).Columns.SingleOrDefault(x => x.Id == leftColumn).Name;
                         commit.Relations.Add(new DbRelation
                         {
-                            LeftTable = leftTable,
-                            RightTable = rightTable,
-                            LeftColumn = leftColumn,
-                            RightColumn = rightColumn,
+                            LeftTableId = leftTable,
+                            RightTableId = rightTable,
+                            LeftColumnId = leftColumn,
+                            RightColumnId = rightColumn,
                             Type = ajaxRelation.Type,
                             Name = name
                         });
@@ -355,10 +355,10 @@ namespace FSS.Omnius.Controllers.Entitron
                 {
                     DbRelation databaseRelation = e.DbRelation.SingleOrDefault(x => x.Id == schemeRelation.Id);
 
-                    if (databaseRelation.LeftTable != schemeRelation.LeftTable) databaseRelation.LeftTable = schemeRelation.LeftTable;
-                    if (databaseRelation.RightTable != schemeRelation.RightTable) databaseRelation.RightTable = schemeRelation.RightTable;
-                    if (databaseRelation.LeftColumn != schemeRelation.LeftColumn) databaseRelation.LeftColumn = schemeRelation.LeftColumn;
-                    if (databaseRelation.RightColumn != schemeRelation.RightColumn) databaseRelation.RightColumn = schemeRelation.RightColumn;
+                    if (databaseRelation.LeftTableId != schemeRelation.LeftTableId) databaseRelation.LeftTableId = schemeRelation.LeftTableId;
+                    if (databaseRelation.RightTableId != schemeRelation.RightTableId) databaseRelation.RightTableId = schemeRelation.RightTableId;
+                    if (databaseRelation.LeftColumnId != schemeRelation.LeftColumnId) databaseRelation.LeftColumnId = schemeRelation.LeftColumnId;
+                    if (databaseRelation.RightColumnId != schemeRelation.RightColumnId) databaseRelation.RightColumnId = schemeRelation.RightColumnId;
                     if (databaseRelation.Type != schemeRelation.Type) databaseRelation.Type = schemeRelation.Type;
                 }
             }
@@ -433,10 +433,10 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 result.Relations.Add(new AjaxTransferDbRelation
                 {
-                    LeftColumn = relation.LeftColumn,
-                    LeftTable = relation.LeftTable,
-                    RightColumn = relation.RightColumn,
-                    RightTable = relation.RightTable,
+                    LeftColumn = relation.LeftColumnId,
+                    LeftTable = relation.LeftTableId,
+                    RightColumn = relation.RightColumnId,
+                    RightTable = relation.RightTableId,
                     Type = relation.Type
                 });
             }

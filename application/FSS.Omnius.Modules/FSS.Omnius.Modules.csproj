@@ -851,6 +851,10 @@
     <Compile Include="Migrations\201606061241384_Cortex-Repeat.Designer.cs">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606210930404_RelationColumnRename.cs" />
+    <Compile Include="Migrations\201606210930404_RelationColumnRename.Designer.cs">
+      <DependentUpon>201606210930404_RelationColumnRename.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1383,6 +1387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606061241384_Cortex-Repeat.resx">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606210930404_RelationColumnRename.resx">
+      <DependentUpon>201606210930404_RelationColumnRename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
