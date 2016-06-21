@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FSPOC_WebProject</RootNamespace>
     <AssemblyName>FSPOC-WebProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -24,6 +24,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>fc1943c4</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +84,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -92,10 +94,8 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -137,6 +137,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Unity.Mvc5">
       <HintPath>..\packages\Unity.Mvc5.1.1\lib\net45\Unity.Mvc5.dll</HintPath>
       <Private>True</Private>
@@ -1397,14 +1398,6 @@
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfActivityDef.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfCreate.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfDialogs.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfInit.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfLoad.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfSave.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfUtils.js" />
-    <Content Include="Scripts\WorkflowDesigner\WfVisualConfiguration.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1473,7 +1466,6 @@
     <Content Include="Views\Mozaic\Page\Index.cshtml" />
     <Content Include="Views\Shared\_OmniusUserLayout.cshtml" />
     <Content Include="Views\Master\AppAdminManager\Index.cshtml" />
-    <Content Include="Views\CORE\Portal\AppValidation.cshtml" />
     <Content Include="Views\Master\Home\Help.cshtml" />
     <Content Include="Views\Nexus\WS\Form.cshtml" />
     <Content Include="Views\Nexus\WS\Detail.cshtml" />

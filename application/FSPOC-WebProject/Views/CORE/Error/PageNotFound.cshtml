@@ -1,8 +1,15 @@
-﻿@{
+﻿@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+    @Html.Raw("Stránka Nenalezena");
+}
+else
+{
     ViewBag.Title = "Stránka nenalezena";
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
-}
-<link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
-@Scripts.Render("~/bundles/OmniusScripts")
-<script>ShowAppNotification("Stránka nenalezena", "error")</script>
+    <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/OmniusScripts")
+    <script>ShowAppNotification("Stránka nenalezena", "error")</script>
+}

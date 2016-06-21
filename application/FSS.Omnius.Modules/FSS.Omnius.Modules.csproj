@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FSS.Omnius.Modules</RootNamespace>
     <AssemblyName>FSS.Omnius.Modules</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>88c073b2</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -892,6 +893,8 @@
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\ColumnAutosumAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\ColumnAverageAction.cs" />
     <Compile Include="Tapestry\Actions\Math\DivideAction.cs" />
     <Compile Include="Tapestry\Actions\Math\MathRepository.cs" />
     <Compile Include="Tapestry\Actions\Math\ModuloAction.cs" />
