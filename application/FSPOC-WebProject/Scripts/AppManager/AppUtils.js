@@ -204,6 +204,33 @@ function GetUrlParameter(sParam) {
         }
     }
 };
+function RecalculateMozaicFormHeight() {
+    var mozaicForm = $("#userContentArea .mozaicForm");
+    var mozaicFormHeight = mozaicForm.height();
+    mozaicForm.find(".uic").each(function (index, element) {
+        currentUic = $(element);
+        if (currentUic.position().top + currentUic.height() > mozaicFormHeight) {
+            mozaicFormHeight = currentUic.position().top + currentUic.height();
+        }
+    });
+    mozaicForm.height(mozaicFormHeight + 30);
+}
+function RecalculatePanelDimensions(panel) {
+    var panelWidth = panel.width();
+    var panelHeight = panel.hasClass("panelAutoHeight") ? 0 : panel.height();
+
+    panel.find(".uic").each(function (index, element) {
+        currentUic = $(element);
+        if (currentUic.position().left + currentUic.width() + 30 > panelWidth) {
+            panelWidth = currentUic.position().left + currentUic.width() + 30;
+        }
+        if (currentUic.position().top + currentUic.height() + 30 > panelHeight) {
+            panelHeight = currentUic.position().top + currentUic.height() + 30;
+        }
+    });
+    panel.width(panelWidth);
+    panel.height(panelHeight);
+}
 $(function () {
     $("[data-ajax='true']").on("click", function () {
         pageSpinner.show();

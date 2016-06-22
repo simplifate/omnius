@@ -143,7 +143,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 .Where(x1 => !dbSchemeCommit.Relations.Any(x2 => "fk_" + x2.Name.ToLower() == x1)).Distinct().ToList();
 
             //adding new FKs
-            /*foreach (string fkname in newFK)
+            foreach (string fkname in newFK)
             {
                 DbRelation efRelation = dbSchemeCommit.Relations.SingleOrDefault(x => x.Name.ToLower() == fkname.ToLower());
                 DbTable rightTable = efRelation.RightTable;
@@ -159,7 +159,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 entitronFK.name = efRelation.Name;
 
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
-            }*/
+            }
             e.Application.SaveChanges();
 
             //dropping old FKs

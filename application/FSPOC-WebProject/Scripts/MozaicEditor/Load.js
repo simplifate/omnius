@@ -11,6 +11,9 @@
         complete: function () {
             pageSpinner.hide()
         },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        },
         success: function (data) {
             $("#mozaicPageContainer .uic").remove();
             $("#mozaicPageContainer .dataTables_wrapper").remove();
@@ -102,6 +105,19 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newReplacer.addClass("uic color-picker");
         newReplacer.attr("uicClasses", "color-picker");
         newReplacer.attr("uicName", newComponent.attr("uicName"));
+    }
+    else if (newComponent.hasClass("countdown-component")) {
+        newComponent.html('<span class="countdown-row countdown-show3"><span class="countdown-section"><span class="countdown-amount">0</span>'
+            + '<span class="countdown-period">Hodin</span></span><span class="countdown-section"><span class="countdown-amount">29</span>'
+            + '<span class="countdown-period">Minut</span></span><span class="countdown-section"><span class="countdown-amount">59</span>'
+            + '<span class="countdown-period">Sekund</span></span></span>');
+    }
+    else if (newComponent.hasClass("wizard-phases")) {
+        newComponent.html(WizardPhasesContentTemplate);
+        var phaseLabelArray = cData.Content.split(";");
+        newComponent.find(".phase1 .phase-label").text(phaseLabelArray[0] ? phaseLabelArray[0] : "Fáze 1");
+        newComponent.find(".phase2 .phase-label").text(phaseLabelArray[1] ? phaseLabelArray[1] : "Fáze 2");
+        newComponent.find(".phase3 .phase-label").text(phaseLabelArray[2] ? phaseLabelArray[2] : "Fáze 3");
     }
     else if (newComponent.hasClass("panel-component")) {
         CreateDroppableMozaicContainer(newComponent, false);

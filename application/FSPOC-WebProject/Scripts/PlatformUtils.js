@@ -72,6 +72,7 @@ jQuery(function ($) {
     };
     $.datepicker.setDefaults($.datepicker.regional['cs']);
 });
+$.countdown.setDefaults($.countdown.regionalOptions['cs']);
 function CreateColorPicker(target) {
     target.spectrum({
         showPaletteOnly: true,

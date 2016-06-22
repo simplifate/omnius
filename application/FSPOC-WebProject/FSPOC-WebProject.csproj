@@ -288,6 +288,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\ErrorCss.css" />
+    <Content Include="Content\css\jquery.countdown.css" />
     <Content Include="Content\scss\Cortex.scss" />
     <Content Include="Content\spectrum.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
@@ -1350,8 +1351,11 @@
     <Content Include="Scripts\DatabaseDesigner\DbVisualConfiguration.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-collision.min.js" />
+    <Content Include="Scripts\jquery.countdown-cs.js" />
+    <Content Include="Scripts\jquery.countdown.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.min.js" />
+    <Content Include="Scripts\jquery.plugin.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
