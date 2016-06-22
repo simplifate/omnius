@@ -44,6 +44,26 @@ function EditRelation(connection, sourceLabel, targetLabel) {
 }
 
 function AddTable(tableName) {
+    var tableAllowed = true;
+    $("#database-container .dbTable").each(function (tableIndex, tableDiv) {
+        if ($(tableDiv).find(".dbTableName").text().toLowerCase() == tableName.toLowerCase()) {
+            tableAllowed = false;
+            alert("This table name is already used.");
+            return false;
+        }
+       
+        var regex = /^[0-9a-zA-Z]+$/;
+        if (!regex.test(tableName)) {
+            tableAllowed = false;
+            alert("Incorrect table name.");
+            return false;
+        }    
+    });
+
+    if (!tableAllowed) {
+        return;
+    }
+
     newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
         + tableName + '</div><div class="editTableIcon fa fa-pencil"></div><div class="addColumnIcon fa fa-plus"></div></div>'
         + '<div class="dbTableBody"><div class="dbColumn idColumn dbPrimaryKey" dbColumnType="integer">'
