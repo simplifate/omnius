@@ -2024,6 +2024,8 @@ body.dbDesignerModule {
     z-index: 200;
     color: white;
     background-color: #4d41e7; }
+  body.dbDesignerModule #lowerPanel {
+    bottom: 0px; }
 
 @font-face {
   font-family: "RweHeadlineRegular";
