@@ -64,7 +64,7 @@ $(function () {
                     componentPropertiesDialog.find("#component-content").val(phaseLabels);
                 }
                 else if (CurrentComponent.hasClass("button-simple") || CurrentComponent.hasClass("button-dropdown")) {
-                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
                 }
                 else {
                     componentPropertiesDialog.find("#component-label").val("");
@@ -79,7 +79,7 @@ $(function () {
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
             if (CurrentComponent.hasClass("button-simple"))
-                CurrentComponent.html(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
                 CurrentComponent.html(componentPropertiesDialog.find("#component-label").val() + '<i class="fa fa-caret-down">');
             else if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
