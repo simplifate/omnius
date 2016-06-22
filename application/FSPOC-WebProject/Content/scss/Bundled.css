@@ -1735,6 +1735,8 @@ body.overviewModule {
   body.overviewModule .btn-tapestry:hover {
     background-color: #2ddef9;
     color: black; }
+  body.overviewModule #lowerPanel {
+    bottom: 0px; }
 
 body.menuOrderModule {
   background-color: #3a3a3a; }
