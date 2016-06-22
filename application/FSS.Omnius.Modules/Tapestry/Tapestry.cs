@@ -140,10 +140,11 @@ namespace FSS.Omnius.Modules.Tapestry
         private ActionRule GetActionRule(Block block, ActionResult results, string buttonId = null)
         {
             DBEntities context = _CORE.Entitron.GetStaticTables();
-            IQueryable<ActionRule> ARs;
+            List<ActionRule> actionRules = block.SourceTo_ActionRules.ToList();
+            IEnumerable<ActionRule> ARs;
             if (buttonId != null)
             {
-                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.ExecutedBy == buttonId);
+                ARs = actionRules.Where(ar => ar.ExecutedBy == buttonId);
                 if (!ARs.Any())
                 {
                     results.Message.Errors.Add($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
@@ -152,7 +153,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             else
             {
-                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.Actor.Name == "Auto");
+                ARs = actionRules.Where(ar => ar.Actor.Name == "Auto");
                 if (!ARs.Any())
                     return null;
             }
