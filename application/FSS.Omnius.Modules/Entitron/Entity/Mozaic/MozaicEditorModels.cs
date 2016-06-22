@@ -56,11 +56,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "button-simple")
                 {
+                    bool invisible = false;
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
+                        {
+                            string[] nameValuePair = tokens.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                // No settings yet
+                            }
+                            else
+                            {
+                                if (tokens == "hidden")
+                                    invisible = true;
+                            }
+                        }
+                    }
                     using (DBEntities context = new DBEntities())
                     {
                         var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
                         stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
+                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">{c.Label}</{c.Tag}>");
                     }
                 }
                 else if (c.Type == "button-dropdown")
@@ -78,7 +96,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         string[] tokenPairs = c.Properties.Split(';');
                         foreach (string tokens in tokenPairs)
                         {
-                            string[] nameValuePair = c.Properties.Split('=');
+                            string[] nameValuePair = tokens.Split('=');
                             if (nameValuePair.Length == 2)
                             {
                                 if (nameValuePair[0].ToLower() == "autosum")
@@ -101,7 +119,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         string[] tokenPairs = c.Properties.Split(';');
                         foreach (string tokens in tokenPairs)
                         {
-                            string[] nameValuePair = c.Properties.Split('=');
+                            string[] nameValuePair = tokens.Split('=');
                             if (nameValuePair.Length == 2)
                             {
                                 if (nameValuePair[0].ToLower() == "autosum")
@@ -109,6 +127,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                 else if (nameValuePair[0].ToLower() == "role")
                                     stringBuilder.Append($" uicRole=\"{nameValuePair[1]}\"");
                             }
+
                         }
                     }
                     if (c.Classes.Contains("input-read-only"))
@@ -148,7 +167,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         string[] tokenPairs = c.Properties.Split(';');
                         foreach (string tokens in tokenPairs)
                         {
-                            string[] nameValuePair = c.Properties.Split('=');
+                            string[] nameValuePair = tokens.Split('=');
                             if (nameValuePair.Length == 2)
                             {
                                 if (nameValuePair[0].ToLower() == "defaultoption")
@@ -164,7 +183,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else if (c.Type == "data-table-read-only")
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
@@ -177,21 +196,45 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{ var tableData = (System.Data.DataTable)ViewData[\"tableData_{c.Name}\"];");
-                    stringBuilder.Append($"foreach (System.Data.DataColumn col in tableData.Columns) {{<tr><td class=\"name-cell\">@col.Caption</td>");
+                    stringBuilder.Append($"foreach (System.Data.DataColumn col in tableData.Columns) {{ if (!col.Caption.StartsWith(\"hidden__\")){{<tr><td class=\"name-cell\">@col.Caption</td>");
                     stringBuilder.Append($"<td class=\"value-cell\">@(tableData.Rows.Count>0?tableData.Rows[0][col.ColumnName]:\"no data\")</td></tr>");
-                    stringBuilder.Append($"}} }} }}</{c.Tag}>");
+                    stringBuilder.Append($"}} }} }} }}</{c.Tag}>");
                 }
                 else if (c.Type == "data-table-with-actions")
                 {
+                    string actionButtons = "edit-delete";
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] nameValuePair = c.Properties.Split('=');
+                        if (nameValuePair.Length == 2)
+                        {
+                            if (nameValuePair[0].ToLower() == "actions")
+                            {
+                                actionButtons = nameValuePair[1].ToLower();
+                            }
+                        }
+                    }
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-                    stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\"><i class=\"fa fa-edit rowEditAction\"></i>");
-                    stringBuilder.Append($"<i class=\"fa fa-remove rowDeleteAction\"></i></td></tr>}}</tbody>}} }}</{c.Tag}>");
-                    stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
+                    stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\">");
+                    switch (actionButtons)
+                    {
+                        case "enter":
+                            stringBuilder.Append($"<i class=\"fa fa-sign-in rowEditAction\"></i>");
+                            break;
+                        case "delete":
+                            stringBuilder.Append($"<i class=\"fa fa-remove rowDeleteAction\"></i>");
+                            break;
+                        case "edit-delete":
+                        default:
+                            stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i><i class=\"fa fa-remove rowDeleteAction\"></i>");
+                            break;
+                    }
+                    stringBuilder.Append($"</td></tr>}}</tbody>}} }}</{c.Tag}>");
                 }
                 else if (c.Type == "tab-navigation")
                 {
@@ -205,21 +248,82 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     }
                     stringBuilder.Append($"</{c.Tag}>");
                 }
-                else if (c.Type == "panel" && allowNesting)
+                else if (c.Type == "wizard-phases")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
+                    var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
+                    int labelCount = phaseLabelArray.Count;
+                    int activePhase = 1;
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
                         string[] nameValuePair = c.Properties.Split('=');
                         if (nameValuePair.Length == 2)
                         {
-                            if (nameValuePair[0].ToLower() == "hide")
-                                stringBuilder.Append($" panelHiddenBy=\"{nameValuePair[1]}\"");
-                            else if (nameValuePair[0].ToLower() == "clone")
-                                stringBuilder.Append($" panelClonedBy=\"{nameValuePair[1]}\"");
+                            if (nameValuePair[0].ToLower() == "activephase")
+                                activePhase = int.Parse(nameValuePair[1]);
                         }
                     }
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    stringBuilder.Append($"<div class=\"wizard-phases-frame\"></div><svg class=\"phase-background\" width=\"846px\" height=\"84px\">");
+                    stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
+                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#dceffa ;stop-opacity:1\" /><stop offset=\"100%\"");
+                    stringBuilder.Append($"style =\"stop-color:#8dceed;stop-opacity:1\" /></linearGradient>");
+                    stringBuilder.Append($"<linearGradient id=\"grad-blue\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
+                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#0099cc;stop-opacity:1\" />");
+                    stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");
+
+                    stringBuilder.Append($"<path d=\"M0 0 L0 88 L 280 88 L324 44 L280 0 Z\"");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 1 ? "#grad-blue" : "#grad-light")})\" />");
+                    stringBuilder.Append($"<path d=\"M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z\"");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 2 ? "#grad-blue" : "#grad-light")})\" />");
+                    stringBuilder.Append($"<path d=\"M560 0 L604 44 L560 88 L850 88 L850 0 Z\"");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 3 ? "#grad-blue" : "#grad-light")})\" /></svg>");
+
+                    stringBuilder.Append($"<div class=\"phase phase1 {(activePhase == 1 ? "phase-active" : "")} {(activePhase > 1 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
+                    stringBuilder.Append($"{(activePhase > 1 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">1</div>")}</div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}</div></div>");
+
+                    stringBuilder.Append($"<div class=\"phase phase2 {(activePhase == 2 ? "phase-active" : "")} {(activePhase > 2 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
+                    stringBuilder.Append($"{(activePhase > 2 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">2</div>")}</div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}</div></div>");
+
+                    stringBuilder.Append($"<div class=\"phase phase3 {(activePhase == 3 ? "phase-active" : "")}\"><div class=\"phase-icon-circle\">");
+                    stringBuilder.Append($"<div class=\"phase-icon-number\">3</div></div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}</div></div>");
+
+                    stringBuilder.Append($"</{c.Tag}>");
+                }
+                else if (c.Type == "countdown")
+                {
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" countdownTarget=\"@(ViewData.ContainsKey(\"countdownTargetData_{c.Name}\")");
+                    stringBuilder.Append($" ? @ViewData[\"countdownTargetData_{c.Name}\"] : \"\")\">{c.Content}</{c.Tag}>");
+                }
+                else if (c.Type == "panel" && allowNesting)
+                {
+                    bool invisible = false;
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
+                        {
+                            string[] nameValuePair = tokens.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                if (nameValuePair[0].ToLower() == "hiddenby")
+                                    stringBuilder.Append($" panelHiddenBy=\"{nameValuePair[1]}\"");
+                                else if (nameValuePair[0].ToLower() == "clone")
+                                    stringBuilder.Append($" panelClonedBy=\"{nameValuePair[1]}\"");
+                            }
+                            else
+                            {
+                                if (tokens == "hidden")
+                                    invisible = true;
+                            }
+                        }
+                    }
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\"");
                     stringBuilder.Append($">");
                     RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");

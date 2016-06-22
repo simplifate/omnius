@@ -17,6 +17,10 @@
         data: postData,
         complete: function () {
             pageSpinner.hide();
+        },
+        success: function () { alert("OK") },
+        error: function (request, status, error) {
+            alert(request.responseText);
         }
     });
 }
@@ -83,6 +87,17 @@ function GetMozaicContainerComponentArray(container, nested) {
         }
         else if (currentUic.hasClass("color-picker"))
             type = "color-picker";
+        else if (currentUic.hasClass("countdown-component"))
+            type = "countdown";
+        else if (currentUic.hasClass("wizard-phases")) {
+            type = "wizard-phases";
+            var phaseLabels = "";
+            currentUic.find(".phase-label").each(function (index, element) {
+                phaseLabels += $(element).text() + ";";
+            });
+            phaseLabels = phaseLabels.slice(0, -1);
+            content = phaseLabels;
+        }
         else if (currentUic.hasClass("panel-component"))
             type = "panel";
         else

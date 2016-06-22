@@ -15,6 +15,9 @@ namespace FSPOC_WebProject
                         "~/Scripts/jquery-collision.min.js",
                         "~/Scripts/jquery.dataTables.min.js",
                         "~/Scripts/jquery.datetimepicker.min.js",
+                        "~/Scripts/jquery.plugin.min.js",
+                        "~/Scripts/jquery.countdown.min.js",
+                        "~/Scripts/jquery.countdown-cs.js",
                         "~/Scripts/jquery.ba-throttle-debounce.min.js",
                         "~/Scripts/spectrum.js"
                         ));
@@ -42,6 +45,7 @@ namespace FSPOC_WebProject
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.contextMenu.css",
                       "~/Content/css/jquery.datetimepicker.css",
+                      "~/Content/css/jquery.countdown.css",
                       "~/Content/spectrum.css",
                       "~/Content/scss/Bundled.min.css"
                       ));

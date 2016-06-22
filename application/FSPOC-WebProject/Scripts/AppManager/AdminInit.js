@@ -21,9 +21,12 @@
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            ws.onerror = function () {
+                $(document).trigger("ajaxError", {})
+            }
 
             ws.onmessage = function (e) {
-                alert(e.data.toString());
+                ShowAppNotification(e.data.toString(), 'success');
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
