@@ -1,9 +1,11 @@
-﻿using FSS.Omnius.Modules.CORE;
+﻿using FSPOC_WebProject;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System.Linq;
-using System.Web;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace System.Web.Mvc
 {
@@ -23,20 +25,46 @@ namespace System.Web.Mvc
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             CORE core = filterContext.HttpContext.GetCORE();
-            User user = filterContext.HttpContext.User.GetLogged(core);
+            IPrincipal contextUser = filterContext.HttpContext.User;
+            User user = contextUser.GetLogged(core);
 
-            // not logged -> redirect
+            // not logged
             if (user == null)
             {
-                filterContext.Result = new RedirectToRouteResult(
-                    "Persona",
-                    new Web.Routing.RouteValueDictionary(new {
-                        @controller = "Account",
-                        @action = "Login",
-                        @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
-                    })
-                );
-                return;
+                Task<IdentityResult> createUserTaks = null;
+
+                // SAML -> create new user
+                if (filterContext.HttpContext.User.Identity.AuthenticationType == "ApplicationCookie")
+                {
+                    user = new User
+                    {
+                        UserName = contextUser.Identity.Name,
+                        DisplayName = contextUser.Identity.Name,
+                        Email = contextUser.Identity.Name,
+                        isLocalUser = true,
+                        localExpiresAt = DateTime.UtcNow,
+                        LastLogin = DateTime.UtcNow,
+                        LastLogout = DateTime.UtcNow,
+                        CurrentLogin = DateTime.UtcNow
+                    };
+                    createUserTaks = filterContext.HttpContext.GetOwinContext().Get<ApplicationUserManager>().CreateAsync(user, "".Random(20) + "".Random(2, "_-+=<>;:,.") + "".Random(3, "1234567890"));
+                    createUserTaks.Wait();
+                }
+
+                // redirect
+                if (createUserTaks == null || !createUserTaks.Result.Succeeded)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        "Persona",
+                        new Web.Routing.RouteValueDictionary(new
+                        {
+                            @controller = "Account",
+                            @action = "Login",
+                            @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
+                        })
+                    );
+                    return;
+                }
             }
 
             // Module
