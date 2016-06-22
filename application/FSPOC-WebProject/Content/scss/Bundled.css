@@ -1735,6 +1735,8 @@ body.overviewModule {
   body.overviewModule .btn-tapestry:hover {
     background-color: #2ddef9;
     color: black; }
+  body.overviewModule #lowerPanel {
+    bottom: 0px; }
 
 body.menuOrderModule {
   background-color: #3a3a3a; }
@@ -2024,6 +2026,8 @@ body.dbDesignerModule {
     z-index: 200;
     color: white;
     background-color: #4d41e7; }
+  body.dbDesignerModule #lowerPanel {
+    bottom: 0px; }
 
 @font-face {
   font-family: "RweHeadlineRegular";
