@@ -77,6 +77,8 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -120,6 +122,9 @@
     <Compile Include="CORE\IModule.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
     <Compile Include="Cortex\Cortex.cs" />
+    <Compile Include="Cortex\CortexAzureWebJobs.cs" />
+    <Compile Include="Cortex\CortexSchtasks.cs" />
+    <Compile Include="Cortex\Interface\ICortexAPI.cs" />
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
