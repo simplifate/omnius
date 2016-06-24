@@ -1,5 +1,7 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
-@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Persona.User>
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<FSS.Omnius.Modules.Entitron.Entity.Persona.User>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 
 @{

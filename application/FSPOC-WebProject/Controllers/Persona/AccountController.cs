@@ -14,7 +14,8 @@ using FSPOC_WebProject.Models;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
-
+using PagedList;
+using PagedList.Mvc;
 namespace FSPOC_WebProject.Controllers.Persona
 {
     public class AccountController : Controller
@@ -63,6 +64,20 @@ namespace FSPOC_WebProject.Controllers.Persona
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+        //Overloading Login for system user 
+        //GET Action
+        [HttpGet]
+        public async Task<ActionResult> LoginSystem(string userName, string password, string returnUrl)
+        {
+            var result = await SignInManager.PasswordSignInAsync(userName, password,false,false);
+            if (result == SignInStatus.Success)
+                    return RedirectToLocal(returnUrl);
+            else
+                return View();
+        }
+
+
 
         //
         // POST: /Account/Login
@@ -507,16 +522,20 @@ namespace FSPOC_WebProject.Controllers.Persona
         #endregion
 
         // GET: Users
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             DBEntities e = new DBEntities();
             if (Request.IsAjaxRequest())
             {
-                return PartialView("AjaxIndex", e.Users);
+                if (page == null)
+                    page = 1;
+                return PartialView("AjaxIndex", e.Users.ToList().ToPagedList((int)page ,5));
             }
             else
             {
-                return View(e.Users);
+                if (page == null)
+                    page = 1;
+                return View(e.Users.ToList().ToPagedList((int)page, 5));
             }
         }
 

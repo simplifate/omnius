@@ -1,5 +1,6 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
-
+@using PagedList
+@using PagedList.Mvc
     <svg class="lowerLeftDecoration" width="40px" height="320px">
         <path d="M31 0 L31 320" stroke="#457fa9" stroke-width="1" fill="none"></path>
     </svg>
@@ -39,6 +40,7 @@
             }
         </tbody>
     </table>
+    @Html.PagedListPager((IPagedList)Model, page => Url.RouteUrl("Persona", new { controller = "Account", action = "Index", page = page}))
     <div>
         @Html.ActionLink("Přidat uživatele", "Create", new { }, new { @class = "btn btn-primary" })
     </div>
