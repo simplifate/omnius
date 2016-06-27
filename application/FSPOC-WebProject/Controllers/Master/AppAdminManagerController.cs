@@ -10,6 +10,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Modules.Tapestry.Service;
+using System.Web.Helpers; 
 using System.Net;
 using Microsoft.Web.WebSockets;
 using RazorEngine.Templating;
@@ -77,9 +78,14 @@ namespace FSS.Omnius.Controllers.Master
             try
             {
                 // Entitron Generate Database
-                StartEntitron();
                 if (app.DbSchemeLocked)
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
+
+                Send(Json.Encode(new { module = "entitron", type = "info", message = "aktualizace databáze", isHeader = true }));
+                Send(Json.Encode(new { module = "mozaic", type = "info", message = "aktualizace uživatelského rozhraní", isHeader = true }));
+                Send(Json.Encode(new { module = "tapestry", type = "info", message = "aktualizace workflow", isHeader = true }));
+                Send(Json.Encode(new { module = "menu", type = "info", message = "aktualizace menu", isHeader = true }));
+
                 try
                 {
                     app.DbSchemeLocked = true;
@@ -91,15 +97,15 @@ namespace FSS.Omnius.Controllers.Master
                     new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
                     app.DbSchemeLocked = false;
                     context.SaveChanges();
+                    Send(Json.Encode(new { module = "entitron", type = "success", isHeader = true }));
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Error in Entitron: {ex.Message}", ex);
+                    Send(Json.Encode(new { module = "entitron", type = "error", isHeader = true, message = ex.Message, abort = true }));
                 }
 
 
                 // Mozaic pages
-                StartMozaic();
                 try
                 {
                     foreach (var editorPage in app.MozaicEditorPages)
@@ -127,27 +133,27 @@ namespace FSS.Omnius.Controllers.Master
                         }
                     }
                     context.SaveChanges();
+                    Send(Json.Encode(new { module = "mozaic", type = "success", isHeader = true }));
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Error in Mozaic: {ex.Message}", ex);
+                    Send(Json.Encode(new { module = "mozaic", type = "error", isHeader = true, message = ex.Message, abort = true }));
                 }
 
                 // Tapestry
-                StartTapestry();
                 Dictionary<int, Block> blockMapping = null;
                 try
                 {
                     var service = new TapestryGeneratorService();
                     blockMapping = service.GenerateTapestry(core);
+                    Send(Json.Encode(new { module = "tapestry", type = "success", isHeader = true }));
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    throw new Exception($"Error in Tapestry: {e.Message}", e);
+                    Send(Json.Encode(new { module = "tapestry", type = "error", isHeader = true, message = ex.Message, abort = true }));
                 }
 
                 // menu layout
-                StartMenu();
                 try
                 {
                     string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
@@ -165,14 +171,14 @@ namespace FSS.Omnius.Controllers.Master
 
                     app.IsPublished = true;
                     context.SaveChanges();
+                    Send(Json.Encode(new { module = "menu", type = "success", isHeader = true }));
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Error in menu generate: {ex.Message}", ex);
+                    Send(Json.Encode(new { module = "menu", type = "error", isHeader = true, message = ex.Message, abort = true }));
                 }
 
                 // DONE
-                Done();
             }
             catch (Exception ex)
             {
@@ -240,26 +246,6 @@ namespace FSS.Omnius.Controllers.Master
             return new Tuple<string, HashSet<string>>(result, rights);
         }
 
-        private void StartEntitron()
-        {
-            Send("Entitron");
-        }
-        private void StartMozaic()
-        {
-            Send("Mozaic");
-        }
-        private void StartTapestry()
-        {
-            Send("Tapestry");
-        }
-        private void StartMenu()
-        {
-            Send("Menu");
-        }
-        private void Done()
-        {
-            Send("Done");
-        }
         private void ErrorMessage(Exception ex)
         {
             Send(ex.Message);

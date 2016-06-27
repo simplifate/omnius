@@ -25,8 +25,15 @@
                 $(document).trigger("ajaxError", {})
             }
 
-            ws.onmessage = function (e) {
-                ShowAppNotification(e.data.toString(), 'success');
+            ws.onmessage = function (event) {
+                var response;
+                try{
+                    response = JSON.parse(event.data);
+                } catch(e) {
+                    response = { message: event.data, type: "info" };
+                }
+
+                ShowAppNotification(response.message, response.type);
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
