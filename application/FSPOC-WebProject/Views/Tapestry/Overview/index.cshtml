@@ -17,7 +17,8 @@
         <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
         <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
         <hr />
-        <button id="btnGoUp" class="btn-omnius-rectangular" @((int)ViewData["parentMetablockId"] == 0 ? "disabled=disabled" : "")>Go up</button>
+        <button id="btnGoUp" class="btn-omnius-rectangular" @((int) ViewData["parentMetablockId"] == 0 ? "disabled=disabled" : "")>Go up</button>
+        <button id="btnTrash" class="btn-omnius-rectangular">Trash</button>
     </div>
     <div id="overviewPanel">
         <div class="scrollArea">
@@ -112,30 +113,57 @@
         <fieldset>
             <table class="table">
                 <tbody>
-                    <tr>
-                        <td>
-                            <label for="p-block-name">Name:</label>
-                            <input type="text" name="p-block-name" id="p-block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="block-is-in-menu">
-                                <input type="checkbox" name="block-is-in-menu" id="block-is-in-menu" value="1" />
-                                Show in menu
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="block-set-as-initial">
-                                <input type="checkbox" name="block-set-as-initial" id="block-set-as-initial" value="1" />
-                                Set as initial
-                            </label>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <label for="p-block-name">Name:</label>
+                        <input type="text" name="p-block-name" id="p-block-name" value="" class="text ui-widget-content ui-corner-all" style="width: 365px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="block-is-in-menu">
+                            <input type="checkbox" name="block-is-in-menu" id="block-is-in-menu" value="1"/>
+                            Show in menu
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="block-set-as-initial">
+                            <input type="checkbox" name="block-set-as-initial" id="block-set-as-initial" value="1"/>
+                            Set as initial
+                        </label>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </fieldset>
     </form>
+</div>
+
+<div id="trash-dialog" title="Trash">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="block-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Deleted blocks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+    <table id="metablock-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Deleted meta blocks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
 </div>

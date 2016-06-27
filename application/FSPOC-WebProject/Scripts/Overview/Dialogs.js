@@ -93,6 +93,116 @@
             ChangedSinceLastSave = true;
             addMetablockDialog.dialog("close");
         }
+        trashDialog = $("#trash-dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            width: 700,
+            height: 540,
+            buttons: {
+                "Load": function () {
+                    trashDialog_SubmitData();
+                },
+                Cancel: function () {
+                    trashDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        trashDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function (event, ui) {
+                trashDialog.find("#metablock-table:first tbody:nth-child(2) tr").remove();
+                trashDialog.find("#block-table:first tbody:nth-child(2) tr").remove();
+                trashDialog.find(" .spinner-2").show();
+                trashDialog.data("selectedMetablock", null);
+                trashDialog.data("selectedBlock", null);
+                appId = $("#currentAppId").val();
+                blockId = $("#currentBlockId").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/database/apps/" + appId + "/trashDialog",
+                    dataType: "json",
+                    success: function (data) {
+                        tBlockBody = trashDialog.find("#block-table tbody:nth-child(2)");
+                        tMetablockBody = trashDialog.find("#metablock-table tbody:nth-child(2)");
+                        blockIdArray = [];
+
+                        // Fill blocks in the trash rows
+                        for (i = 0; i < data[0].length; i++) {
+                            blockIdArray.push(data[0][i].Id);
+                            newRow = $('<tr class="blockRow"><td>' + data[0][i].Name + '</td></tr>');
+                            tBlockBody.append(newRow);
+                        }
+
+                        // Highlight the selected block row
+                        $(document).on('click', 'tr.blockRow', function (event) {
+                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedRow");
+                            $(this).addClass("highlightedRow");
+                            var rowIndex = $(this).index();
+                            trashDialog.data("selectedBlock", data[0][rowIndex]);
+                        });
+
+                        // Fill metablocks in the trash rows
+                        for (i = 0; i < data[1].length; i++) {
+                            blockIdArray.push(data[1][i].Id);
+                            newRow = $('<tr class="blockRow"><td>' + data[1][i].Name + '</td></tr>');
+                            tMetablockBody.append(newRow);
+                        }
+                     
+                        // Highlight the selected metablock row
+                        $(document).on('click', 'tr.blockRow', function (event) {
+                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedRow");
+                            $(this).addClass("highlightedRow");
+                            var rowIndex = $(this).index();
+                            trashDialog.data("selectedMetablock", data[1][rowIndex]);
+                        });
+
+                        trashDialog.find(".spinner-2").hide();
+                    }
+                });
+            }
+        });
+        function trashDialog_SubmitData() {
+            if (trashDialog.data("selectedMetablock")) {
+                trashDialog.dialog("close");
+                if (ChangedSinceLastSave)
+                    confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
+                else
+                    confirmed = true;
+                if (confirmed) {
+                    currentMetablockData = trashDialog.data("selectedMetablock");
+                    newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
+                    + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
+                    currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
+                    '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
+                    + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                    newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
+                    $("#overviewPanel .scrollArea").append(newMetablock);
+                    instance.draggable(newMetablock, {
+                        containment: "parent",
+                        stop: function () {
+                            ChangedSinceLastSave = true;
+                        }
+                    });
+
+                    newMetablock.on("dblclick", function () {
+                        metablockToOpen = $(this);
+                        SaveMetablock(function () {
+                            openMetablockForm = $("#openMetablockForm");
+                            openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
+                            openMetablockForm.submit();
+                        });
+                    });
+
+                }
+            }
+            else
+                alert("Please select a block"); 
+        }
         renameMetablockDialog = $("#rename-metablock-dialog").dialog({
             autoOpen: false,
             width: 400,

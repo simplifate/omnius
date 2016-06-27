@@ -499,7 +499,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     }
                     targetMetablock.Name = postData.Name;
                     var blocksToDelete = new List<TapestryDesignerBlock>();
-                    foreach (var oldBlock in targetMetablock.Blocks.Where(b => !b.IsDeleted))
+                    foreach (var oldBlock in targetMetablock.Blocks)
                     {
                         var match = postData.Blocks.Where(c => !c.IsNew && c.Id == oldBlock.Id);
                         if (match.Count() == 0)
@@ -514,6 +514,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             oldBlock.PositionY = newBlock.PositionY;
                             oldBlock.IsInitial = newBlock.IsInitial;
                             oldBlock.IsInMenu = newBlock.IsInMenu;
+                            oldBlock.IsDeleted = false;
                         }
                     }
                     foreach (var ajaxBlock in postData.Blocks.Where(c => c.IsNew))
@@ -540,7 +541,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         DeleteBlock(block, context);
                     }
                     var metablocksToDelete = new List<TapestryDesignerMetablock>();
-                    foreach (var oldMetablock in targetMetablock.Metablocks.Where(mb => !mb.IsDeleted))
+                    foreach (var oldMetablock in targetMetablock.Metablocks)
                     {
                         var match = postData.Metablocks.Where(c => !c.IsNew && c.Id == oldMetablock.Id);
                         if (match.Count() == 0)
@@ -555,6 +556,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             oldMetablock.PositionY = newMetablock.PositionY;
                             oldMetablock.IsInitial = newMetablock.IsInitial;
                             oldMetablock.IsInMenu = newMetablock.IsInMenu;
+                            oldMetablock.IsDeleted = false;
                         }
                     }
                     foreach (var ajaxMetablock in postData.Metablocks.Where(c => c.IsNew))
@@ -950,8 +952,11 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void DeleteMetablock(TapestryDesignerMetablock metablockToDelete, DBEntities context)
         {
-            metablockToDelete.IsDeleted = true;
-            metablockToDelete.Name = $"{metablockToDelete.Name}-{DateTime.UtcNow.ToString()}";
+            if (!metablockToDelete.IsDeleted)
+            {
+                metablockToDelete.IsDeleted = true;
+                metablockToDelete.Name = $"{metablockToDelete.Name}-{DateTime.UtcNow.ToString()}";
+            }   
         }
         private static void DeleteBlock(TapestryDesignerBlock blockToDelete, DBEntities context)
         {
