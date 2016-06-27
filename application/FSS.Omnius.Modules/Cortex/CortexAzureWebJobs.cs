@@ -29,6 +29,11 @@ namespace FSS.Omnius.Modules.Cortex
             SetFullAPIUrl();
         }
 
+        public string List()
+        {
+            return "";
+        }
+
         public void Create(Task model)
         {
             string fileName = string.Format("{0}-{1}.php", model.Id, model.Name.Replace(' ', '_'));

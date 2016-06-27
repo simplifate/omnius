@@ -27,6 +27,8 @@
         {
             string APIType = WebConfigurationManager.AppSettings["CortexAPI"];
             switch (APIType) {
+                case "AzureScheduler":
+                    return new CortexAzureScheduler(Request);
                 case "AzureWebJobs":
                     return new CortexAzureWebJobs(Request);
                 case "Schtaks":
@@ -34,6 +36,12 @@
                 default:
                     throw new Exception("Not implemented schedule task api");
             }
+        }
+
+        public string List()
+        {
+            ICortexAPI api = GetAPI();
+            return api.List();
         }
 
         public int? Save(Task model)

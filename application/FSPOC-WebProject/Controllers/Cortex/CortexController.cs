@@ -89,6 +89,14 @@ namespace FSS.Omnius.Controllers.Cortex
             return View("~/Views/Cortex/Detail.cshtml", e.Tasks.Single(t => t.Id == id));
         }
 
+        public ActionResult Test()
+        {
+            Modules.Cortex.Cortex cortex = new Modules.Cortex.Cortex(Request);
+            ViewData["Data"] = cortex.List();
+            
+            return View("~/Views/Cortex/Test.cshtml");
+        }
+
         public ActionResult Save(Task model)
         {
             Modules.Cortex.Cortex cortex = new Modules.Cortex.Cortex(Request);

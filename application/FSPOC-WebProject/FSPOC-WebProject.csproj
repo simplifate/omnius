@@ -1558,6 +1558,7 @@
     <Content Include="Views\Cortex\Cortex\Header.cshtml" />
     <Content Include="Views\Cortex\Cortex\Decoration.cshtml" />
     <Content Include="Views\Cortex\Detail.cshtml" />
+    <Content Include="Views\Cortex\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

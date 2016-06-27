@@ -24,6 +24,11 @@
             Request = request;
         }
 
+        public string List()
+        {
+            return "";
+        }
+
         public void Create(Task t)
         {
             string cmd = BuildTaskXML(t);
