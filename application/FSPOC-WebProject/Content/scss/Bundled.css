@@ -160,22 +160,6 @@ body.adminAppModule #validationResults {
     body.adminAppModule #validationResults #errorPanel #btnRetryValidation {
       margin-top: 30px; }
 
-body.adminAppModule #appBuildResults {
-  position: absolute;
-  left: 290px;
-  top: 125px;
-  width: 70%; }
-  body.adminAppModule #appBuildResults .build {
-    margin-left: 15px;
-    margin-bottom: 30px;
-    padding: 15px;
-    font-size: 16px;
-    border-radius: 10px; }
-  body.adminAppModule #appBuildResults .Success {
-    background-color: #dff0d8; }
-  body.adminAppModule #appBuildResults .Error {
-    background-color: #d9534f; }
-
 #topBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

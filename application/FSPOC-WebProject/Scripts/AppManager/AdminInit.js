@@ -48,6 +48,8 @@
                 
                 if (response.message) $message.children("span").text(response.message);
                 $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
+
+                if (response.abort) $message.nextAll().remove();
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
