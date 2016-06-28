@@ -81,10 +81,10 @@ namespace FSS.Omnius.Controllers.Master
                 if (app.DbSchemeLocked)
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
 
-                Send(Json.Encode(new { module = "entitron", type = "info", message = "aktualizace databáze", isHeader = true }));
-                Send(Json.Encode(new { module = "mozaic", type = "info", message = "aktualizace uživatelského rozhraní", isHeader = true }));
-                Send(Json.Encode(new { module = "tapestry", type = "info", message = "aktualizace workflow", isHeader = true }));
-                Send(Json.Encode(new { module = "menu", type = "info", message = "aktualizace menu", isHeader = true }));
+                Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
+                Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
+                Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
+                Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
 
                 try
                 {
@@ -97,11 +97,11 @@ namespace FSS.Omnius.Controllers.Master
                     new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
                     app.DbSchemeLocked = false;
                     context.SaveChanges();
-                    Send(Json.Encode(new { module = "entitron", type = "success", isHeader = true }));
+                    Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { module = "entitron", type = "error", isHeader = true, message = ex.Message, abort = true }));
+                    Send(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
                 }
 
 
@@ -133,11 +133,11 @@ namespace FSS.Omnius.Controllers.Master
                         }
                     }
                     context.SaveChanges();
-                    Send(Json.Encode(new { module = "mozaic", type = "success", isHeader = true }));
+                    Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { module = "mozaic", type = "error", isHeader = true, message = ex.Message, abort = true }));
+                    Send(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // Tapestry
@@ -146,11 +146,11 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     var service = new TapestryGeneratorService();
                     blockMapping = service.GenerateTapestry(core);
-                    Send(Json.Encode(new { module = "tapestry", type = "success", isHeader = true }));
+                    Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { module = "tapestry", type = "error", isHeader = true, message = ex.Message, abort = true }));
+                    Send(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // menu layout
@@ -171,11 +171,11 @@ namespace FSS.Omnius.Controllers.Master
 
                     app.IsPublished = true;
                     context.SaveChanges();
-                    Send(Json.Encode(new { module = "menu", type = "success", isHeader = true }));
+                    Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { module = "menu", type = "error", isHeader = true, message = ex.Message, abort = true }));
+                    Send(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // DONE

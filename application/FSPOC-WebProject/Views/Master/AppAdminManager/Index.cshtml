@@ -37,7 +37,7 @@
         <tbody>
             @foreach (Application app in (List<Application>)ViewData["Apps"])
             {
-                <tr appId="@app.Id">
+                <tr appId="@app.Id" data-display-name="@app.DisplayName">
                     <td>@app.DisplayName</td>
                     @if (@app.Id!=30)
                     {
@@ -183,3 +183,4 @@
         </fieldset>
     </form>
 </div>
+<div id="app-build-dialog"></div>

@@ -105,4 +105,10 @@ $(function () {
             }
         });
     }
+    appBuildDialog = $("#app-build-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 600,
+        height: 320
+    });
 });

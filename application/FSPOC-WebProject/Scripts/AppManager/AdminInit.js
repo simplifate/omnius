@@ -18,22 +18,36 @@
             openMetablockForm.find("input[name='appId']").val(CurrentAppId);
             openMetablockForm.submit();
         });
+
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
+
+            appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
+            var messagesById = {};
+
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
             ws.onerror = function () {
                 $(document).trigger("ajaxError", {})
             }
-
             ws.onmessage = function (event) {
                 var response;
                 try{
                     response = JSON.parse(event.data);
                 } catch(e) {
-                    response = { message: event.data, type: "info" };
+                    response = { message: event.data, type: "error" };
                 }
 
-                ShowAppNotification(response.message, response.type);
+                var $message;
+                if (response.id && messagesById[response.id]) {
+                    $message = messagesById[response.id]
+                } else {
+                    var parent = response.parentId ? messagesById[response.parentId] : appBuildDialog;
+                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo(parent);
+                    if (response.id) messagesById[response.id] = $message;
+                }
+                
+                if (response.message) $message.children("span").text(response.message);
+                $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
