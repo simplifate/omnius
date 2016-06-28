@@ -28,9 +28,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int PositionY { get; set; }
         public int? ParentMetablockId { get; set; }
         public int MenuOrder { get; set; }
+        public int ParentAppId { get; set; }
         public bool IsNew { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
+        public bool IsDeleted { get; set; }
 
         public List<AjaxTapestryDesignerMetablockConnection> Connections { get; set; }
         public List<AjaxTapestryDesignerMetablock> Metablocks { get; set; }

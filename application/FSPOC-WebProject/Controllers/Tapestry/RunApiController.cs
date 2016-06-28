@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,6 +56,61 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 var result = core.Tapestry.jsonRun(currentUser, block, button, modelId, fc);
 
                 return result;
+            }
+        }
+
+        [Route("api/database/apps/{appId}/trashDialog")]
+        [HttpGet]
+        public List<Object> GetDeletedMetablocksList(int appId)
+        {
+            try
+            {
+                using (var context = new DBEntities())
+                {
+                    var result = new List<Object>();
+
+                    var blocksList = new List<AjaxTapestryDesignerBlock>();
+                    var metablocksList = new List<AjaxTapestryDesignerMetablock>();                 
+                    var requestedApp = context.Applications.Find(appId);
+
+                    foreach (var block in context.TapestryDesignerBlocks.Where(b => b.IsDeleted && b.ParentMetablock.ParentAppId == appId))
+                    {
+                        blocksList.Add(new AjaxTapestryDesignerBlock
+                        {
+                            Id = block.Id,
+                            Name = block.Name,
+                            PositionX = block.PositionX,
+                            PositionY = block.PositionY,
+                            MenuOrder = block.MenuOrder,
+                            IsInitial = block.IsInitial,
+                            IsInMenu = block.IsInMenu
+                        });
+                    }
+
+                    foreach (var metablock in requestedApp.TapestryDesignerMetablocks.Where(b => b.IsDeleted))
+                    {
+                        metablocksList.Add(new AjaxTapestryDesignerMetablock
+                        {
+                            Id = metablock.Id,
+                            Name = metablock.Name,
+                            PositionX = metablock.PositionX,
+                            PositionY = metablock.PositionY,
+                            ParentAppId = metablock.ParentAppId,
+                            IsInitial = metablock.IsInitial,
+                            IsInMenu = metablock.IsInMenu,
+                        });
+                    }
+
+                    result.Add(blocksList);
+                    result.Add(metablocksList);
+                    
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry: error when loading the blocks history";
+                throw ex;
             }
         }
     }

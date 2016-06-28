@@ -46,6 +46,9 @@ $(function () {
                 SaveMetablock(null, true);
             return null;
         };
+        $("#btnTrash").on("click", function () {
+            trashDialog.dialog("open");
+        });
         $("#btnZoomIn").on("click", function () {
             ZoomFactor += 0.1;
             $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
