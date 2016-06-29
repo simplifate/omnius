@@ -86,7 +86,7 @@ namespace FSS.Omnius.Controllers.Master
                 if (app.TapestryChangedSinceLastBuild) Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
                 if (app.MenuChangedSinceLastBuild) Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
                 
-                if(!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild)
+                if(!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild)
                 {
                     Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
                     return;

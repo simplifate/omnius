@@ -690,10 +690,12 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     {
                         TapestryDesignerMetablock metablock = context.TapestryDesignerMetablocks.Where(m => m.Id == row.Key).First();
                         metablock.MenuOrder = row.Value;
+                        metablock.ParentApp.MenuChangedSinceLastBuild = true;
                     }
                     foreach (KeyValuePair<int, int> row in data.Blocks)
                     {
                         TapestryDesignerBlock block = context.TapestryDesignerBlocks.First(b => b.Id == row.Key);
+                        block.ParentMetablock.ParentApp.MenuChangedSinceLastBuild = true;
                         block.MenuOrder = row.Value;
                     }
                     context.SaveChanges();
