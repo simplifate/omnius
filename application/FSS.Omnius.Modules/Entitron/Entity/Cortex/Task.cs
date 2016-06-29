@@ -15,6 +15,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
         IN = 1, DAYS
     }
 
+    public enum RepetitionMinutes
+    {
+        m1 = 1, m2 = 2, m3 = 3, m4 = 4, m5 = 5, m6 = 6, m10 = 10, m12 = 12, m15 = 15, m20 = 20, m30 = 30, m60 = 60
+    }
+
     [Flags]
     public enum Days
     {

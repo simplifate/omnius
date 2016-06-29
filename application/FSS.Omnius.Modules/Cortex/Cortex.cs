@@ -29,8 +29,6 @@
             switch (APIType) {
                 case "AzureScheduler":
                     return new CortexAzureScheduler(Request);
-                case "AzureWebJobs":
-                    return new CortexAzureWebJobs(Request);
                 case "Schtaks":
                     return new CortexSchtasks(Request);
                 default:
