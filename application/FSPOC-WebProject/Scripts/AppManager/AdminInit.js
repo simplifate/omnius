@@ -58,6 +58,14 @@
                 if (response.done) {
                     setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
                 }
+
+                var childrenHeight = 0;
+                appBuildDialog.children().each(function () {
+                    console.log($(this).height(), this.textContent);
+                    childrenHeight += $(this).outerHeight();
+                });
+                appBuildDialog.css({ height: childrenHeight + 32 });
+                console.log("total:", childrenHeight);
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
