@@ -50,6 +50,10 @@
                 $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
 
                 if (response.abort) $message.nextAll().remove();
+
+                if (response.done) {
+                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
+                }
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {

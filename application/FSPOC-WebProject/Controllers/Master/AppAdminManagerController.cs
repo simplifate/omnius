@@ -171,7 +171,7 @@ namespace FSS.Omnius.Controllers.Master
 
                     app.IsPublished = true;
                     context.SaveChanges();
-                    Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
+                    Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu", done = true }));
                 }
                 catch (Exception ex)
                 {
