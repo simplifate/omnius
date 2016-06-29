@@ -83,9 +83,11 @@ namespace FSS.Omnius.Controllers.Master
 
                 if (app.EntitronChangedSinceLastBuild) Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 if (app.MozaicChangedSinceLastBuild) Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
-                if (app.TapestryChangedSinceLastBuild) Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
-                if (app.MenuChangedSinceLastBuild) Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
-                
+                if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
+                {
+                    Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
+                    Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
+                }
                 if(!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild)
                 {
                     Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
@@ -154,7 +156,7 @@ namespace FSS.Omnius.Controllers.Master
                     }
                 }
 
-                if (app.TapestryChangedSinceLastBuild)
+                if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
                 {
                     // Tapestry
                     Dictionary<int, Block> blockMapping = null;
@@ -198,7 +200,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // DONE
-                Send(Json.Encode(new { done = true }));
+                Send(Json.Encode(new { message = "Aktualizace proběhla úsěpšně", type = "success", done = true }));
             }
             catch (Exception ex)
             {

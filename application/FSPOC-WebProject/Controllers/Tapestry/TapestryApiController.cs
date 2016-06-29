@@ -46,7 +46,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    Application app = context.Applications.First(a => a.Id == appId);
+                    Application app = context.Applications.Find(appId);
                     AjaxTapestryDesignerApp result = new AjaxTapestryDesignerApp
                     {
                         Id = app.Id,
@@ -141,6 +141,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
+                    var app = context.Applications.Find(appId);
+                    app.TapestryChangedSinceLastBuild = true;
                     Dictionary<int, int> resourceIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> workflowItemIdMapping = new Dictionary<int, int>();
                     Dictionary<int, int> workflowSymbolIdMapping = new Dictionary<int, int>();
@@ -484,6 +486,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
+                    var app = context.Applications.Find(appId);
+                    app.TapestryChangedSinceLastBuild = true;
+                    app.MenuChangedSinceLastBuild = true;
                     AjaxTapestryDesignerIdMapping idMapping = new AjaxTapestryDesignerIdMapping();
                     var targetMetablock = context.TapestryDesignerMetablocks.Find(metablockId);
                     if (targetMetablock == null)
