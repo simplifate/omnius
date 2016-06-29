@@ -19,6 +19,7 @@
             openMetablockForm.submit();
         });
 
+        var currentWs;
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
@@ -26,10 +27,13 @@
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            currentWs = ws;
             ws.onerror = function () {
                 $(document).trigger("ajaxError", {})
             }
             ws.onmessage = function (event) {
+                if (currentWs !== ws) return;
+
                 var response;
                 try{
                     response = JSON.parse(event.data);
