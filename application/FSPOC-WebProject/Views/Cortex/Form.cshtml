@@ -55,7 +55,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Type, new SelectList((Dictionary<ScheduleType, string>)ViewData["ScheduleTypeNames"], "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- žádná --", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Type, new SelectList(c.scheduleTypeNames, "Key", "Value", Model != null ? (ScheduleType?)Model.Type : null), "-- žádná --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -87,7 +87,7 @@
             <div class="form-group">
                 <label class="control-label col-md-2">&nbsp;</label>
                 <div class="col-md-6">
-                    @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
+                    @foreach(KeyValuePair<Days, string> day in c.daysNames) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Weekly_Days[]" value="@day.Key" @(Model == null ? "" : ((Days)Model.Weekly_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
@@ -101,7 +101,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Monthly_Months, htmlAttributes: new { @class = "control-label col-md-2"})
                 <div class="col-md-6">
-                    @foreach(KeyValuePair<Months, string> month in (Dictionary<Months, string>)ViewData["MonthsNames"]) {
+                    @foreach(KeyValuePair<Months, string> month in c.monthsNames) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_Months[]" value="@month.Key" @(Model == null ? "" : ((Months)Model.Monthly_Months).HasFlag(month.Key) ? "checked" : "") />
                             @month.Value
@@ -115,7 +115,7 @@
                     Dny
                 </label>
                 <div class="col-md-6">
-                    @foreach(KeyValuePair<DaysInMonth, string> day in (Dictionary<DaysInMonth, string>)ViewData["DaysInMonthNames"]) {
+                    @foreach(KeyValuePair<DaysInMonth, string> day in c.daysInMonthNames) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_Days[]" value="@day.Key" @(Model == null ? "" : ((DaysInMonth)Model.Monthly_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
@@ -129,14 +129,14 @@
                     V
                 </label>
                 <div class="col-md-6">
-                    @foreach(KeyValuePair<InModifiers, string> mod in (Dictionary<InModifiers, string>)ViewData["ModifierNames"]) {
+                    @foreach(KeyValuePair<InModifiers, string> mod in c.modifiersNames) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_In_Modifiers[]" value="@mod.Key" @(Model == null ? "" : ((InModifiers)Model.Monthly_In_Modifiers).HasFlag(mod.Key) ? "checked" : "") />
                             @mod.Value
                         </label>
                     }
                     <br />
-                    @foreach(KeyValuePair<Days, string> day in (Dictionary<Days, string>)ViewData["DaysNames"]) {
+                    @foreach(KeyValuePair<Days, string> day in c.daysNames) {
                         <label class="checkbox-inline">
                             <input type="checkbox" name="Monthly_In_Days[]" value="@day.Key" @(Model == null ? "" : ((Days)Model.Monthly_In_Days).HasFlag(day.Key) ? "checked" : "") />
                             @day.Value
@@ -214,7 +214,7 @@
                 @Html.LabelFor(model => model.Repeat_Minute, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-2">
                     <div class="input-group">
-                        @Html.EditorFor(model => model.Repeat_Minute, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 1439 } })
+                        @Html.DropDownListFor(model => model.Type, new SelectList(c.repetitionMinutesNames, "Key", "Value", Model != null ? (RepetitionMinutes?)Model.Repeat_Minute : null), "-- vyberte --", new { @class = "form-control" })
                         <div class="input-group-addon">minut</div>
                     </div>
                     @Html.ValidationMessageFor(model => model.Repeat_Minute, "", new { @class = "text-danger" })
