@@ -1796,6 +1796,8 @@ body.menuOrderModule {
     body.menuOrderModule #overviewMenu hr {
       border-color: #457fa9;
       border-width: 2px; }
+  body.menuOrderModule #lowerPanel {
+    bottom: 0px; }
 
 body.dbDesignerModule {
   background-color: #e0e0e0;
