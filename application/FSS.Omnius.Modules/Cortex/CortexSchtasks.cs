@@ -157,9 +157,9 @@
             settings.AppendChild(createNode("Priority", "7"));
             settings.AppendChild(idleSettings);
 
-            if (model.Type == ScheduleType.ONCE) {
-                settings.AppendChild(createNode("DeleteExpiredTaskAfter", "PT0S"));
-            }
+            //if (model.Type == ScheduleType.ONCE) {
+            //    settings.AppendChild(createNode("DeleteExpiredTaskAfter", "PT0S"));
+            //}
 
             task.AppendChild(settings);
 

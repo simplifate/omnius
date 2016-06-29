@@ -11,6 +11,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Threading;
+using Microsoft.Azure;
+using System.Xml.Linq;
+using System.Linq;
+using Microsoft.WindowsAzure.Scheduler;
+using Microsoft.WindowsAzure.Scheduler.Models;
 
 namespace FSS.Omnius.Modules.Cortex
 {
@@ -21,9 +26,7 @@ namespace FSS.Omnius.Modules.Cortex
         private string subscriptionId;
         private string cloudServiceId;
         private string jobCollectionId;
-        private string baseUrl;
-        private string apiVersion;
-        private string fullAPIUrl;
+        private string subscriptionCertificate;
 
         private string systemAccountName;
         private string systemAccountPass;
@@ -32,43 +35,27 @@ namespace FSS.Omnius.Modules.Cortex
         {
             Request = request;
             GetSettings();
-            SetFullAPIUrl();
         }
 
         public string List()
         {
-            string url = string.Format("{0}?api-version={1}", fullAPIUrl, apiVersion);
+            SchedulerClient client = GetClient();
+            JobListResponse result = client.Jobs.List(new JobListParameters());
 
-            HttpWebRequest r = GetRequest(url);
-            r.Method = "GET";
+            string o = "<ul>";
+            foreach(Job j in result) {
+                o += "<li>" + j.Id + "</li>";
+            }
+            o += "</ul>";
 
-            WebResponse res = r.GetResponse();
-            var content = res.GetResponseStream();
-
-            return string.Join("", content);
+            return o;
         }
 
         public void Create(Task model)
         {
-            string url = string.Format("{0}/{1}?api-version={3}", fullAPIUrl, GetJobId(model), apiVersion);
-
-            WebRequest r = GetRequest(url);
-            r.Method = "PUT";
-            r.Headers.Add("Content-Type", "application/json");
-
-
-
-
-               /* using (WebClient c = new WebClient()) {
-                    c.Headers.Add("Content-Disposition: attachement; filename=" + fileName + ".zip");
-                    c.Headers.Add("Content-Type: application/zip");
-                    //c.Credentials = new NetworkCredential(userName, password);
-                    using(Stream putStream = c.OpenWrite(url, "PUT")) {
-                        byte[] content = memStream.ToArray();
-                        putStream.Write(content, 0, content.Length);
-                    }
-                }*/
-            
+            SchedulerClient client = GetClient();
+            JobCreateParameters p = GetParams(model);
+            JobCreateResponse result = client.Jobs.Create(p);
         }
 
         public void Change(Task model, Task original)
@@ -79,13 +66,9 @@ namespace FSS.Omnius.Modules.Cortex
 
         public void Delete(Task model)
         {
-            string url = string.Format("{0}/{1}?api-version={3}", fullAPIUrl, GetJobId(model), apiVersion);
-
-            HttpWebRequest r = GetRequest(url);
-            r.Method = "DELETE";
-            
-            
-            WebResponse res = r.GetResponse();
+            SchedulerClient client = GetClient();
+            string jobId = GetJobId(model);
+            var response = client.Jobs.Delete(jobId);
         }
         
         #region tools
@@ -95,21 +78,136 @@ namespace FSS.Omnius.Modules.Cortex
             subscriptionId = WebConfigurationManager.AppSettings["CortexAzureSubscriptionId"];
             cloudServiceId = WebConfigurationManager.AppSettings["CortexAzureCloudServiceId"];
             jobCollectionId = WebConfigurationManager.AppSettings["CortexAzureJobCollectionId"];
-            baseUrl = WebConfigurationManager.AppSettings["CortexAzureSchedulerBaseUrl"];
-            apiVersion = WebConfigurationManager.AppSettings["CortexAzureSchedulerAPIVersion"];
+            subscriptionCertificate = WebConfigurationManager.AppSettings["CortexAzureSchedulerCertificate"];
 
             systemAccountName = WebConfigurationManager.AppSettings["SystemAccountName"];
             systemAccountPass = WebConfigurationManager.AppSettings["SystemAccountPass"];
         }
 
-        private void SetFullAPIUrl()
+        private JobCreateParameters GetParams(Task model)
         {
-            fullAPIUrl = string.Format("{0}{1}/cloudServices/{2}/resources/scheduler/~/jobCollections/{3}/jobs", 
-                    baseUrl + (baseUrl.EndsWith("/") ? "" : "/"),
-                    subscriptionId,
-                    cloudServiceId,
-                    jobCollectionId
-                );
+            JobCreateParameters p = new JobCreateParameters();
+
+            p.Action = new JobAction()
+            {
+                Type = JobActionType.Http,
+                Request = new JobHttpRequest()
+                {
+                    Body = "",
+                    Method = "GET",
+                    Uri = new Uri("http://" + Request.Url.Host + model.Url)
+                }
+            };
+            p.StartTime = model.Start_Date == null ? DateTime.UtcNow : model.Start_Date + model.Start_Time;
+
+            JobRecurrence r = new JobRecurrence();
+
+            switch(model.Type) {
+                case ScheduleType.DAILY:
+                    r.Frequency = JobRecurrenceFrequency.Day;
+                    r.Interval = model.Daily_Repeat;
+                    break;
+                case ScheduleType.WEEKLY:
+                    r.Frequency = JobRecurrenceFrequency.Week;
+                    r.Interval = model.Weekly_Repeat;
+                    r.Schedule = new JobRecurrenceSchedule()
+                    {
+                        Days = GetWeeklyDays(model.Weekly_Days),
+                    };
+                    break;
+                case ScheduleType.MONTHLY:
+                    r.Frequency = JobRecurrenceFrequency.Month;
+                    r.Schedule = CreateMonthlySchedule(model);
+                    break;
+                case ScheduleType.ONCE:
+                    r.Count = 1;
+                    break;
+                case ScheduleType.ONIDLE:
+                    throw new NotImplementedException("Pro Azure scheduler nelze plánovat OnIdle úlohy");
+            }
+
+            if(model.End_Date != null) {
+                r.EndTime = model.End_Date + model.End_Time;
+            }
+            
+            p.Recurrence = r;
+
+            return p;
+        }
+
+        private JobRecurrenceSchedule CreateMonthlySchedule(Task model)
+        {
+            JobRecurrenceSchedule s = new JobRecurrenceSchedule();
+
+            if(model.Monthly_Type == MonthlyType.DAYS) {
+                List<int> monthDays = new List<int>();
+                int i = 1;
+                foreach (DaysInMonth d in Enums<DaysInMonth>()) {
+                    if(((DaysInMonth)model.Monthly_Days).HasFlag(d)) {
+                        if(d != DaysInMonth.Last) {
+                            monthDays.Add(i);
+                        }
+                        else {
+                            monthDays.Add(-1);
+                        }
+                    }
+                    i++;
+                }
+                if (monthDays.Count > 0) {
+                    s.MonthDays = monthDays;
+                }
+            }
+            if(model.Monthly_Type == MonthlyType.IN) {
+                List<JobScheduleDay> days = GetWeeklyDays(model.Monthly_In_Days);
+                if(days.Count > 0) {
+                    s.Days = days;
+                }
+
+                List<JobScheduleMonthlyOccurrence> oList = new List<JobScheduleMonthlyOccurrence>();
+                int mIndex = 1;
+                foreach(InModifiers mod in Enums<InModifiers>()) {
+                    if(((InModifiers)model.Monthly_In_Modifiers).HasFlag(mod)) {
+                        foreach(JobScheduleDay d in days) {
+                            JobScheduleMonthlyOccurrence o = new JobScheduleMonthlyOccurrence();
+                            o.Day = d;
+                            o.Occurrence = mod == InModifiers.LAST ? -1 : mIndex;
+                            oList.Add(o);  
+                        }
+                    }
+                    mIndex++;
+                }
+
+                if (oList.Count > 0) {
+                    s.MonthlyOccurrences = oList;
+                }
+            }
+
+            List<int> months = new List<int>();
+            int m = 1;
+            foreach(Months month in Enums<Months>()) {
+                if (((Months)model.Monthly_Months).HasFlag(month)) months.Add(m);
+                m++;
+            }
+            if(months.Count > 0) {
+                s.Months = months;
+            }
+
+
+
+            return s;
+        }
+
+        private List<JobScheduleDay> GetWeeklyDays(int? days)
+        {
+            List<JobScheduleDay> list = new List<JobScheduleDay>();
+            if(days != null) {
+                int i = 0;
+                foreach(Days day in Enums<Days>()) {
+                    if (((Days)days).HasFlag(day)) list.Add((JobScheduleDay)i);
+                    i++;
+                }
+            }
+            return list;
         }
 
         private string GetJobId(Task model)
@@ -118,76 +216,16 @@ namespace FSS.Omnius.Modules.Cortex
             return ExtendMethods.URLSafeString(jobId);
         }
 
-        private HttpWebRequest GetRequest(string url)
+        private SchedulerClient GetClient()
         {
-            //X509Certificate2 cert = new X509Certificate2(@"C:\Temp\cert-localhost.pfx", "FssOmniusTest");
-            //X509Certificate2 cert = GetStoreCertificate("820D1304B011256D8D6A49C80325A854A7422F51");
-
-            string token = GetAuthorizationHeader();
-
-            HttpWebRequest r = (HttpWebRequest)HttpWebRequest.Create(url);
-            r.Headers.Add("x-ms-version", "2013-06-01");
-            r.Headers.Add(HttpRequestHeader.Authorization, "Bearer " + token);
-            r.Host = "localhost";
-            //r.ClientCertificates.Add(cert);
-
-            return r;
+            var credentials = GetCertFromPublishSettingsFile();
+            return new SchedulerClient(cloudServiceId, jobCollectionId, credentials);
         }
 
-        private static X509Certificate2 GetStoreCertificate(string thumbprint)
+        public CertificateCloudCredentials GetCertFromPublishSettingsFile()
         {
-            List<StoreLocation> locations = new List<StoreLocation>{
-                StoreLocation.CurrentUser,
-                StoreLocation.LocalMachine
-              };
-
-            foreach (var location in locations) {
-                X509Store store = new X509Store("My", location);
-                try {
-                    store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-                    X509Certificate2Collection certificates = store.Certificates.Find(
-                      X509FindType.FindByThumbprint, thumbprint, false);
-                    if (certificates.Count == 1) {
-                        return certificates[0];
-                    }
-                }
-                finally {
-                    store.Close();
-                }
-            }
-            throw new ArgumentException(string.Format(
-              "A Certificate with Thumbprint '{0}' could not be located.",
-              thumbprint));
-        }
-
-        private static string GetAuthorizationHeader()
-        {
-            AuthenticationResult result = null;
-
-            //var context = new AuthenticationContext("https://login.windows.net/1acafdbb-53ac-49c7-8130-2ce9180e4076");
-            var context = new AuthenticationContext("https://login.microsoftonline.com/1acafdbb-53ac-49c7-8130-2ce9180e4076/oauth2/authorize");
-
-            var c = new UserCredential("martin.novak@futuresolutionservices.com", "Mnk20051993");
-
-            var thread = new Thread(() =>
-            {
-                result = context.AcquireToken(
-                  "https://management.core.windows.net/",
-                  "e2431075-fbf2-4c05-be15-b4d91122c69a",
-                  c);
-            });
-            
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Name = "AquireTokenThread";
-            thread.Start();
-            thread.Join();
-
-            if (result == null) {
-                throw new InvalidOperationException("Failed to obtain the JWT token");
-            }
-
-            string token = result.AccessToken;
-            return token;
+            var certificate = new X509Certificate2(Convert.FromBase64String(subscriptionCertificate));
+            return new CertificateCloudCredentials(subscriptionId, certificate);
         }
 
         private IEnumerable Enums<T>()
