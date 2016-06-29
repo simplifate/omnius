@@ -54,6 +54,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
 
+        public bool TapestryChangedSinceLastBuild { get; set; }
+        public bool MozaicChangedSinceLastBuild { get; set; }
+        public bool EntitronChangedSinceLastBuild { get; set; }
         public bool DbSchemeLocked { get; set; }
 
         // tapestry

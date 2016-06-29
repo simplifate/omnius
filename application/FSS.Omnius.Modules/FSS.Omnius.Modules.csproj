@@ -865,6 +865,10 @@
     <Compile Include="Migrations\201606061241384_Cortex-Repeat.Designer.cs">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606291006426_changed-since-last-save-bools.cs" />
+    <Compile Include="Migrations\201606291006426_changed-since-last-save-bools.Designer.cs">
+      <DependentUpon>201606291006426_changed-since-last-save-bools.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1399,6 +1403,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606061241384_Cortex-Repeat.resx">
       <DependentUpon>201606061241384_Cortex-Repeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606291006426_changed-since-last-save-bools.resx">
+      <DependentUpon>201606291006426_changed-since-last-save-bools.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
