@@ -54,15 +54,28 @@ namespace FSS.Omnius.Modules.Cortex
         public void Create(Task model)
         {
             SchedulerClient client = GetClient();
-            JobCreateParameters p = GetParams(model);
-            JobCreateResponse result = client.Jobs.Create(p);
+            JobCreateOrUpdateParameters p = GetParams(model);
 
+            try {
+                JobCreateOrUpdateResponse result = client.Jobs.CreateOrUpdate(GetJobId(model), p);
 
+                try {
+                    JobUpdateStateResponse resultState = client.Jobs.UpdateState(GetJobId(model), new JobUpdateStateParameters(model.Active ? JobState.Enabled : JobState.Disabled));
+                }
+                catch (Hyak.Common.CloudException e) {
+                    string error = e.Message;
+                }
+            }
+            catch (Hyak.Common.CloudException e) {
+                string error = e.Message;
+            }
         }
 
         public void Change(Task model, Task original)
         {
-            Delete(original);
+            if (GetJobId(model) != GetJobId(original)) {
+                Delete(original);
+            }
             Create(model);
         }
 
@@ -70,7 +83,11 @@ namespace FSS.Omnius.Modules.Cortex
         {
             SchedulerClient client = GetClient();
             string jobId = GetJobId(model);
-            var response = client.Jobs.Delete(jobId);
+
+            try {
+                var response = client.Jobs.Delete(jobId);
+            }
+            catch(Hyak.Common.CloudException e) {}
         }
         
         #region tools
@@ -86,9 +103,9 @@ namespace FSS.Omnius.Modules.Cortex
             systemAccountPass = WebConfigurationManager.AppSettings["SystemAccountPass"];
         }
 
-        private JobCreateParameters GetParams(Task model)
+        private JobCreateOrUpdateParameters GetParams(Task model)
         {
-            JobCreateParameters p = new JobCreateParameters();
+            JobCreateOrUpdateParameters p = new JobCreateOrUpdateParameters();
 
             p.Action = new JobAction()
             {
@@ -96,12 +113,17 @@ namespace FSS.Omnius.Modules.Cortex
                 Request = new JobHttpRequest()
                 {
                     Body = "",
+                    Headers = new Dictionary<string, string>()
+                    {
+                        { "Content-Type", "application/x-www-form-urlencoded" }
+                    },
                     Method = "GET",
-                    Uri = new Uri("http://" + Request.Url.Host + model.Url)
+                    Uri = new Uri(string.Format("http://{0}{1}", Request.Url.Host, model.Url)),
+                    Authentication = new BasicAuthentication() { Username = systemAccountName, Password = systemAccountPass, Type = HttpAuthenticationType.Basic }
                 }
             };
             p.StartTime = model.Start_Date == null ? DateTime.UtcNow : model.Start_Date + model.Start_Time;
-
+         
             JobRecurrence r = new JobRecurrence();
 
             switch(model.Type) {
@@ -128,12 +150,33 @@ namespace FSS.Omnius.Modules.Cortex
                     throw new NotImplementedException("Pro Azure scheduler nelze plánovat OnIdle úlohy");
             }
 
+            if(model.Repeat == true) {
+                JobRecurrenceSchedule s = r.Schedule ?? new JobRecurrenceSchedule();
+
+                int minutes = (int)model.Repeat_Minute;
+                int startHour = model.Start_Time == null ? DateTime.Now.Hour : model.Start_Time.Hours;
+
+                List<int> minuteSchedule = new List<int>();
+                for(int i = 1; i <= 60; i++) {
+                    if((i%minutes) == 0) {
+                        minuteSchedule.Add(i);
+                    }
+                }
+                List<int> hourSchedule = new List<int>();
+                for(int i = 0; i < model.Repeat_Duration; i++) {
+                    int hour = startHour + i;
+                    hourSchedule.Add(hour > 23 ? hour - 24 : hour);
+                }
+                s.Minutes = minuteSchedule;
+                s.Hours = hourSchedule;
+            }
+
             if(model.End_Date != null) {
                 r.EndTime = model.End_Date + model.End_Time;
             }
             
             p.Recurrence = r;
-
+            
             return p;
         }
 

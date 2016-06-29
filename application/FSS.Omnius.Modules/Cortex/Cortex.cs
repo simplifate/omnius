@@ -75,6 +75,7 @@
 
             if (model.Id.Equals(null)) {
                 e.Tasks.Add(row);
+                e.SaveChanges();
                 api.Create(row);
             }
             else {
