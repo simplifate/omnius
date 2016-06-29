@@ -128,6 +128,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             {
                 using (var context = new DBEntities())
                 {
+                    var app = context.Applications.Find(appId);
+                    app.MozaicChangedSinceLastBuild = true;
+                    app.TapestryChangedSinceLastBuild = true;
                     var newPage = new MozaicEditorPage
                     {
                         Name = postData.Name
@@ -153,17 +156,20 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             try
             {
                 using (var context = new DBEntities())
-            {
-                var requestedPage = context.MozaicEditorPages.Find(pageId);
-                deleteComponents(requestedPage, context);
-                requestedPage.Name = postData.Name;
-                requestedPage.IsModal = postData.IsModal;
-                requestedPage.ModalWidth = postData.ModalWidth;
-                requestedPage.ModalHeight = postData.ModalHeight;
-                foreach (var ajaxComponent in postData.Components)
-                    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
-                context.SaveChanges();
-            }
+                {
+                    var app = context.Applications.Find(appId);
+                    app.MozaicChangedSinceLastBuild = true;
+                    app.TapestryChangedSinceLastBuild = true;
+                    var requestedPage = context.MozaicEditorPages.Find(pageId);
+                    deleteComponents(requestedPage, context);
+                    requestedPage.Name = postData.Name;
+                    requestedPage.IsModal = postData.IsModal;
+                    requestedPage.ModalWidth = postData.ModalWidth;
+                    requestedPage.ModalHeight = postData.ModalHeight;
+                    foreach (var ajaxComponent in postData.Components)
+                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                    context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
