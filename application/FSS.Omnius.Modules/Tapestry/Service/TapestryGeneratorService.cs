@@ -325,11 +325,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 TapestryDesignerWorkflowItem it = conection.Source;
                 Block thisBlock = BlockMapping[it];
-                createActionRule(workflowRule, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
+                createActionRule(workflowRule, block, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
             }
         }
 
-        private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block startBlock, TapestryDesignerWorkflowConnection connection,
+        private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block nonVirtualBlock, Block startBlock, TapestryDesignerWorkflowConnection connection,
             Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, int> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
             string init = connection.Target.ComponentName;
@@ -444,7 +444,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 if (blockMapping.ContainsKey(prevItem))
                     rule.TargetBlock = blockMapping[prevItem];
                 else
-                    rule.TargetBlock = startBlock;
+                    rule.TargetBlock = nonVirtualBlock;
             }
 
             return rule;
