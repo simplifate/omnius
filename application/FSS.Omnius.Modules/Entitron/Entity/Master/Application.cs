@@ -57,6 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool TapestryChangedSinceLastBuild { get; set; }
         public bool MozaicChangedSinceLastBuild { get; set; }
         public bool EntitronChangedSinceLastBuild { get; set; }
+        public bool MenuChangedSinceLastBuild { get; set; }
         public bool DbSchemeLocked { get; set; }
 
         // tapestry

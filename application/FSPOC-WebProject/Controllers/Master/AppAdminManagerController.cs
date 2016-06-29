@@ -82,9 +82,17 @@ namespace FSS.Omnius.Controllers.Master
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
 
                 if (app.EntitronChangedSinceLastBuild) Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
-                Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
-                Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
-                Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
+                if (app.MozaicChangedSinceLastBuild) Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
+                if (app.TapestryChangedSinceLastBuild)
+                {
+                    Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
+                    Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
+                }
+                if(!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild)
+                {
+                    Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
+                    return;
+                }
 
                 if (app.EntitronChangedSinceLastBuild)
                 {
@@ -98,6 +106,7 @@ namespace FSS.Omnius.Controllers.Master
                             dbSchemeCommit = new DbSchemeCommit();
                         new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
                         app.DbSchemeLocked = false;
+                        app.EntitronChangedSinceLastBuild = false;
                         context.SaveChanges();
                         Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
                     }
@@ -108,76 +117,83 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // Mozaic pages
-                try
+                if (app.MozaicChangedSinceLastBuild)
                 {
-                    foreach (var editorPage in app.MozaicEditorPages)
+                    try
                     {
-                        editorPage.Recompile();
-                        string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
-                        var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
-                        if (oldPage == null)
+                        foreach (var editorPage in app.MozaicEditorPages)
                         {
-                            var newPage = new Page
+                            editorPage.Recompile();
+                            string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
+                            var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
+                            if (oldPage == null)
                             {
-                                ViewName = editorPage.Name,
-                                ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
-                                ViewContent = editorPage.CompiledPartialView
-                            };
-                            context.Pages.Add(newPage);
-                            context.SaveChanges();
-                            editorPage.CompiledPageId = newPage.Id;
+                                var newPage = new Page
+                                {
+                                    ViewName = editorPage.Name,
+                                    ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
+                                    ViewContent = editorPage.CompiledPartialView
+                                };
+                                context.Pages.Add(newPage);
+                                context.SaveChanges();
+                                editorPage.CompiledPageId = newPage.Id;
+                            }
+                            else
+                            {
+                                oldPage.ViewName = editorPage.Name;
+                                oldPage.ViewContent = editorPage.CompiledPartialView;
+                                editorPage.CompiledPageId = oldPage.Id;
+                            }
                         }
-                        else
-                        {
-                            oldPage.ViewName = editorPage.Name;
-                            oldPage.ViewContent = editorPage.CompiledPartialView;
-                            editorPage.CompiledPageId = oldPage.Id;
-                        }
+                        context.SaveChanges();
+
+                        Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
                     }
-                    context.SaveChanges();
-                    Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
-                }
-
-                // Tapestry
-                Dictionary<int, Block> blockMapping = null;
-                try
-                {
-                    var service = new TapestryGeneratorService();
-                    blockMapping = service.GenerateTapestry(core);
-                    Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
-                }
-
-                // menu layout
-                try
-                {
-                    string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
-                    var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
-                    if (menuLayout == null)
+                    catch (Exception ex)
                     {
-                        menuLayout = new Page
-                        {
-                            ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
-                        };
-                        context.Pages.Add(menuLayout);
+                        throw new Exception(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
                     }
-                    menuLayout.ViewName = $"{app.Name} layout";
-                    menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
-
-                    app.IsPublished = true;
-                    context.SaveChanges();
-                    Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu", done = true }));
                 }
-                catch (Exception ex)
+
+                if (app.TapestryChangedSinceLastBuild)
                 {
-                    throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
+                    // Tapestry
+                    Dictionary<int, Block> blockMapping = null;
+                    try
+                    {
+                        var service = new TapestryGeneratorService();
+                        blockMapping = service.GenerateTapestry(core);
+                        Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
+                    }
+
+                    // menu layout
+                    try
+                    {
+                        string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
+                        var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
+                        if (menuLayout == null)
+                        {
+                            menuLayout = new Page
+                            {
+                                ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
+                            };
+                            context.Pages.Add(menuLayout);
+                        }
+                        menuLayout.ViewName = $"{app.Name} layout";
+                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
+
+                        app.IsPublished = true;
+                        context.SaveChanges();
+                        Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu"}));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
+                    }
                 }
 
                 // DONE
