@@ -81,29 +81,31 @@ namespace FSS.Omnius.Controllers.Master
                 if (app.DbSchemeLocked)
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
 
-                Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
+                if (app.EntitronChangedSinceLastBuild) Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
                 Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
                 Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
 
-                try
+                if (app.EntitronChangedSinceLastBuild)
                 {
-                    app.DbSchemeLocked = true;
-                    context.SaveChanges();
-                    core.Entitron.AppId = app.Id;
-                    var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
-                    if (dbSchemeCommit == null)
-                        dbSchemeCommit = new DbSchemeCommit();
-                    new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
-                    app.DbSchemeLocked = false;
-                    context.SaveChanges();
-                    Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
+                    try
+                    {
+                        app.DbSchemeLocked = true;
+                        context.SaveChanges();
+                        core.Entitron.AppId = app.Id;
+                        var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                        if (dbSchemeCommit == null)
+                            dbSchemeCommit = new DbSchemeCommit();
+                        new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core);
+                        app.DbSchemeLocked = false;
+                        context.SaveChanges();
+                        Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
-                }
-
 
                 // Mozaic pages
                 try
