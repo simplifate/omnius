@@ -333,7 +333,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, int> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
             string init = connection.Target.ComponentName;
-            if (workflowRule.Name == "INIT") // initial ActionRule
+            if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) // initial ActionRule
                 init = "INIT";
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
