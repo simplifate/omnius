@@ -101,7 +101,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
+                    throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
                 }
 
 
@@ -137,7 +137,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
+                    throw new Exception(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // Tapestry
@@ -150,7 +150,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
+                    throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // menu layout
@@ -175,7 +175,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
                 catch (Exception ex)
                 {
-                    Send(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
+                    throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
                 }
 
                 // DONE
