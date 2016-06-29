@@ -79,7 +79,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Cortex
 
         [Range(1, 1439)]
         [Display(Name = "Opakovat každých")]
-        public int? Repeat_Minute { get; set; }
+        public RepetitionMinutes? Repeat_Minute { get; set; }
 
         [Range(1, 23)]
         [Display(Name = "Po dobu")]

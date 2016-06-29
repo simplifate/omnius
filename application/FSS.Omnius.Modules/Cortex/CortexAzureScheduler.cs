@@ -56,6 +56,8 @@ namespace FSS.Omnius.Modules.Cortex
             SchedulerClient client = GetClient();
             JobCreateParameters p = GetParams(model);
             JobCreateResponse result = client.Jobs.Create(p);
+
+
         }
 
         public void Change(Task model, Task original)

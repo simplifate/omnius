@@ -19,6 +19,7 @@ namespace FSS.Omnius.Controllers.Cortex
         public Dictionary<Months, string> monthsShortNames = new Dictionary<Months, string>();
         public Dictionary<DaysInMonth, string> daysInMonthNames = new Dictionary<DaysInMonth, string>();
         public Dictionary<InModifiers, string> modifiersNames = new Dictionary<InModifiers, string>();
+        public Dictionary<RepetitionMinutes, string> repetitionMinutesNames = new Dictionary<RepetitionMinutes, string>();
 
         private List<string> sequences = new List<string>();
         private List<string> sequence = new List<string>();
@@ -32,6 +33,7 @@ namespace FSS.Omnius.Controllers.Cortex
             MapMonthShortNames();
             MapModifierNames();
             MapDaysInMonthNames();
+            MapRepetitionMinutesNames();
         }
 
         public ActionResult Index()
@@ -52,11 +54,6 @@ namespace FSS.Omnius.Controllers.Cortex
             DBEntities e = new DBEntities();
              
             ViewData["ApplicationList"] = e.Applications;
-            ViewData["ScheduleTypeNames"] = scheduleTypeNames;
-            ViewData["DaysNames"] = daysNames;
-            ViewData["MonthsNames"] = monthsNames;
-            ViewData["ModifierNames"] = modifiersNames;
-            ViewData["DaysInMonthNames"] = daysInMonthNames;
 
             return View("~/Views/Cortex/Form.cshtml");
         }
@@ -66,11 +63,6 @@ namespace FSS.Omnius.Controllers.Cortex
             DBEntities e = new DBEntities();
 
             ViewData["ApplicationList"] = e.Applications;
-            ViewData["ScheduleTypeNames"] = scheduleTypeNames;
-            ViewData["DaysNames"] = daysNames;
-            ViewData["MonthsNames"] = monthsNames;
-            ViewData["ModifierNames"] = modifiersNames;
-            ViewData["DaysInMonthNames"] = daysInMonthNames;
 
             return View("~/Views/Cortex/Form.cshtml", e.Tasks.Single(t => t.Id == id));
         }
@@ -193,6 +185,13 @@ namespace FSS.Omnius.Controllers.Cortex
             foreach (DaysInMonth day in Enums<DaysInMonth>()) {
                 if (day == DaysInMonth.Last) daysInMonthNames.Add(day, "Poslední");
                 else daysInMonthNames.Add(day, (++i).ToString());
+            }
+        }
+
+        private void MapRepetitionMinutesNames()
+        {
+            foreach(RepetitionMinutes m in Enums<RepetitionMinutes>()) {
+                repetitionMinutesNames.Add(m, m.ToString().Replace("m", ""));
             }
         }
 
