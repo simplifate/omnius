@@ -169,6 +169,8 @@ namespace FSS.Omnius.Controllers.Entitron
                     if (requestedApp.DbSchemeLocked)
                         throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                     requestedApp.DbSchemeLocked = dbSchemeLocked = true;
+                    requestedApp.EntitronChangedSinceLastBuild = true;
+                    requestedApp.TapestryChangedSinceLastBuild = true;
                     context.SaveChanges();
                     commit.Timestamp = DateTime.UtcNow;
                     commit.CommitMessage = postData.CommitMessage;
