@@ -33,21 +33,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             // remove old temp blocks - should do nothing
             _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
-            sendWs(Json.Encode(new { childOf = "tapestry", type="success", id="tapestry-temp", message= "odstraněny staré dočasné bloky" }));
             _context.SaveChanges();
 
             try
             {
                 // generate new
                 saveMetaBlock(app.TapestryDesignerRootMetablock, true);
-                saveBlocks();
+                saveBlocks(sendWs);
                 _context.SaveChanges();
-                sendWs(Json.Encode(new { childOf = "tapestry", type = "success", id ="tapestry-new", message= "uloženy nové bloky" }));
                 
                 // remove old
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
                 _context.SaveChanges();
-                sendWs(Json.Encode(new { childOf = "tapestry", type = "success", id ="tapestry-rmold", message= "odstraněny staré bloky" }));
 
                 foreach (WorkFlow workflow in app.WorkFlows)
                     workflow.IsTemp = false;
@@ -124,20 +121,29 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return resultWF;
         }
 
-        private void saveBlocks()
+        private void saveBlocks(SendWS sendWs)
         {
+            int progress = 0, progressMax = _allBlocks.Count;
+            bool abort = false;
             foreach(TapestryDesignerBlock block in _allBlocks)
             {
+                progress++;
                 try
                 {
+                    sendWs(Json.Encode(new { id = "tapestry", type = "info",
+                        message = $"aktualizuji workflow <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                     saveBlockContent(block);
                 }
                 catch (Exception e)
                 {
-                    throw new Exception($"block [{block.Name}] - {e.Message}", e);
+                    sendWs(Json.Encode(new { childOf = "tapestry", message = $"{block.Name} - ${e.Message}", abort = true }));
+                    abort = true;
                 }
             }
+            sendWs(Json.Encode(new { id = "tapestry", type = "info", message = "ukládám aktualizovaný workflow" }));
             _context.SaveChanges();
+            if (abort)
+                throw new Exception("během aktualizace workflow došlo k chybám");
         }
 
         private void saveBlockContent(TapestryDesignerBlock block)

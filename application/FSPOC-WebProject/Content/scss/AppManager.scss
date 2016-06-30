@@ -167,3 +167,12 @@ body.adminAppModule {
         }
     }
 }
+
+#app-build-dialog {
+    span.build-progress {
+        float: right;
+    }
+    progress {
+        vertical-align: -0.2em; //default in Firefox and Chrome; looks kinda bad in Edge; predicted to look bad in IE9, but we don't use IE9; vertical-align:initial doesn't work.
+    }
+}
