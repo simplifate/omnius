@@ -62,7 +62,6 @@
 
                 var childrenHeight = 0;
                 appBuildDialog.children().each(function () {
-                    console.log($(this).height(), this.textContent);
                     childrenHeight += $(this).outerHeight();
                 });
                 appBuildDialog.css({ height: childrenHeight + 32 });
