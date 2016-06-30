@@ -81,14 +81,26 @@ namespace FSS.Omnius.Controllers.Master
                 if (app.DbSchemeLocked)
                     throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
 
-                if (app.EntitronChangedSinceLastBuild) Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
-                if (app.MozaicChangedSinceLastBuild) Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
+                if (app.EntitronChangedSinceLastBuild)
+                    Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
+                else
+                    Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
+
+                if (app.MozaicChangedSinceLastBuild)
+                    Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
+                else
+                    Send(Json.Encode(new { id = "mozaic", type = "success", message = "uživatelské rozhraní není potřeba aktualizovat" }));
                 if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
                 {
                     Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
                     Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
                 }
-                if(!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild)
+                else
+                {
+                    Send(Json.Encode(new { id = "tapestry", type = "success", message = "workflow není potřeba aktualizovat" }));
+                    Send(Json.Encode(new { id = "menu", type = "success", message = "menu není potřeba aktualizovat" }));
+                }
+                if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild)
                 {
                     Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
                     return;
