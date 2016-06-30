@@ -106,12 +106,13 @@ namespace FSS.Omnius.Controllers.Master
                     return;
                 }
 
+                app.DbSchemeLocked = true;
+                context.SaveChanges();
+
                 if (app.EntitronChangedSinceLastBuild)
                 {
                     try
                     {
-                        app.DbSchemeLocked = true;
-                        context.SaveChanges();
                         core.Entitron.AppId = app.Id;
                         var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
                         if (dbSchemeCommit == null)
