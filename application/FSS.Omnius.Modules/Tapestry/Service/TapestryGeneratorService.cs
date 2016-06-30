@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Helpers;
 
 namespace FSS.Omnius.Modules.Tapestry.Service
 {
@@ -16,13 +17,15 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private Dictionary<int, Block> _blockMapping;
         private HashSet<TapestryDesignerBlock> _allBlocks;
 
+        public delegate void SendWS(string str);
+
         public TapestryGeneratorService()
         {
             _blockMapping = new Dictionary<int, Block>();
             _allBlocks = new HashSet<TapestryDesignerBlock>();
         }
 
-        public Dictionary<int, Block> GenerateTapestry(CORE.CORE core)
+        public Dictionary<int, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
         {
             _core = core;
             _context = core.Entitron.GetStaticTables();
@@ -30,6 +33,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             // remove old temp blocks - should do nothing
             _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
+            sendWs(Json.Encode(new { childOf = "tapestry", type="success", id="tapestry-temp", message= "odstraněny staré dočasné bloky" }));
             _context.SaveChanges();
 
             try
@@ -38,10 +42,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 saveMetaBlock(app.TapestryDesignerRootMetablock, true);
                 saveBlocks();
                 _context.SaveChanges();
+                sendWs(Json.Encode(new { childOf = "tapestry", type = "success", id ="tapestry-new", message= "uloženy nové bloky" }));
                 
                 // remove old
                 _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
                 _context.SaveChanges();
+                sendWs(Json.Encode(new { childOf = "tapestry", type = "success", id ="tapestry-rmold", message= "odstraněny staré bloky" }));
 
                 foreach (WorkFlow workflow in app.WorkFlows)
                     workflow.IsTemp = false;

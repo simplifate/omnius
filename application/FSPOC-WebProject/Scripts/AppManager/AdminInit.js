@@ -43,10 +43,11 @@
 
                 var $message;
                 if (response.id && messagesById[response.id]) {
-                    $message = messagesById[response.id]
+                    $message = messagesById[response.id];
                 } else {
-                    var parent = response.parentId ? messagesById[response.parentId] : appBuildDialog;
-                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo(parent);
+                    var $parent = response.childOf ? messagesById[response.childOf] : appBuildDialog;
+                    $message = $("<div class='app-alert'><span>").data("messageId", response.id).appendTo($parent);
+                    if (!$parent.is("#app-build-dialog, .app-alert-odd")) $message.addClass("app-alert-odd");
                     if (response.id) messagesById[response.id] = $message;
                 }
                 
@@ -56,7 +57,7 @@
                 if (response.abort) $message.nextAll().remove();
 
                 if (response.done) {
-                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
+                    //setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
                 }
 
                 var childrenHeight = 0;
