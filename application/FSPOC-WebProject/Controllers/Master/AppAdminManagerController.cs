@@ -177,7 +177,7 @@ namespace FSS.Omnius.Controllers.Master
                     {
                         var service = new TapestryGeneratorService();
                         blockMapping = service.GenerateTapestry(core, x => Send(x));
-                        //app.TapestryChangedSinceLastBuild = false;
+                        app.TapestryChangedSinceLastBuild = false;
                         Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
                     }
                     catch (Exception ex)
