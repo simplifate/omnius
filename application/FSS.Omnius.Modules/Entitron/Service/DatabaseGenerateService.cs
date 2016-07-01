@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
@@ -10,19 +11,29 @@ namespace FSS.Omnius.Modules.Entitron.Service
 {
     public class DatabaseGenerateService : IDatabaseGenerateService
     {
+        public delegate void SendWs(string str);
         /// <summary>
         /// </summary>
         /// <param name="dbSchemeCommit"></param>
-        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
+        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core, SendWs sendWs)
         {
             if (dbSchemeCommit != null)
             {
                 Entitron e = core.Entitron;
                 GenerateTables(e, dbSchemeCommit);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace tabulek" }));
                 GenerateRelation(e, dbSchemeCommit);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace relací" }));
                 GenerateView(e, dbSchemeCommit);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace pohledů" }));
                 DroppingOldTables(e, dbSchemeCommit);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "staré pohledy byly smazány" }));
             }
+        }
+
+        public void GenerateDatabase(DbSchemeCommit dbSchemeCommit, CORE.CORE core)
+        {
+            GenerateDatabase(dbSchemeCommit, core, _ => { });
         }
 
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
