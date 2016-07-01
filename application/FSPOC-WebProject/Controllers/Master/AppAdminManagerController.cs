@@ -113,6 +113,7 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     try
                     {
+                        Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
                         core.Entitron.AppId = app.Id;
                         var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
                         if (dbSchemeCommit == null)
@@ -134,6 +135,7 @@ namespace FSS.Omnius.Controllers.Master
                 {
                     try
                     {
+                        Send(Json.Encode(new { id = "mozaic", type = "info", message = "probíhá aktualizace uživatelského rozhraní" }));
                         foreach (var editorPage in app.MozaicEditorPages)
                         {
                             editorPage.Recompile();
@@ -175,6 +177,7 @@ namespace FSS.Omnius.Controllers.Master
                     Dictionary<int, Block> blockMapping = null;
                     try
                     {
+                        Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
                         var service = new TapestryGeneratorService();
                         blockMapping = service.GenerateTapestry(core, x => Send(x));
                         app.TapestryChangedSinceLastBuild = false;
@@ -188,6 +191,7 @@ namespace FSS.Omnius.Controllers.Master
                     // menu layout
                     try
                     {
+                        Send(Json.Encode(new { id = "menu", type = "info", message = "probíhá aktualizace menu" }));
                         string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
                         var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
                         if (menuLayout == null)
@@ -204,7 +208,7 @@ namespace FSS.Omnius.Controllers.Master
                         app.IsPublished = true;
                         app.MenuChangedSinceLastBuild = false;
                         context.SaveChanges();
-                        Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu"}));
+                        Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
                     }
                     catch (Exception ex)
                     {
