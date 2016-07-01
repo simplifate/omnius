@@ -176,6 +176,7 @@ body.adminAppModule {
         float: right;
     }
     progress {
-        vertical-align: -0.2em; //default in Firefox and Chrome; looks kinda bad in Edge; predicted to look bad in IE9, but we don't use IE9; vertical-align:initial doesn't work.
-    }
+        vertical-align: -0.2em; 
+        //w3.org says progress elements should have a vertical align of -0.2 em. IEdge, of course, ignores this. 
+        //As a result, IEdge gets an ugly result. IE9 doesn't know <progress> at all, but it can't websocket either, so...
 }
