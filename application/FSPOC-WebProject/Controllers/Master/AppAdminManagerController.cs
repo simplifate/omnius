@@ -75,11 +75,15 @@ namespace FSS.Omnius.Controllers.Master
             var app = core.Entitron.Application;
             DBEntities context = core.Entitron.GetStaticTables();
 
+            if (app.DbSchemeLocked)
+            {
+                Send(Json.Encode(new { type = "error", message = "This application's database scheme is locked because another process is currently working with it.", abort = true }));
+                return;
+            }
+
             try
             {
                 // Entitron Generate Database
-                if (app.DbSchemeLocked)
-                    throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
 
                 if (app.EntitronChangedSinceLastBuild)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
