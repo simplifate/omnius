@@ -20,14 +20,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
             if (dbSchemeCommit != null)
             {
                 Entitron e = core.Entitron;
-                GenerateTables(e, dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace tabulek" }));
+                GenerateTables(e, dbSchemeCommit, sendWs);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace tabulek", id = "entitron-gentables" }));
                 GenerateRelation(e, dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace relací" }));
+                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
                 GenerateView(e, dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "proběhla aktualizace pohledů" }));
+                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
                 DroppingOldTables(e, dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "info", message = "staré pohledy byly smazány" }));
+                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány" }));
             }
         }
 
@@ -36,20 +36,24 @@ namespace FSS.Omnius.Modules.Entitron.Service
             GenerateDatabase(dbSchemeCommit, core, _ => { });
         }
 
-        private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit)
+        private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
             DBEntities ent = new DBEntities();
             var app = ent.Applications.Find(e.AppId);
             ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
 
+            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
             foreach (DbTable efTable in dbSchemeCommit.Tables)
             {
+                progress++;
+                sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
+                    message = $"aktualizuji tabulky <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                 DBTable entitronTable = e.Application.GetTable(efTable.Name);
 
                 bool tableExists = DBTable.isInDB(e.Application.Name, efTable.Name);
 
-                //if table doesnt exist, create new one
+                //if table doesn't exist, create new one
                 if (entitronTable == null || !tableExists)
                 {
                     entitronTable = new DBTable();
