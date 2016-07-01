@@ -28,11 +28,15 @@
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
             currentWs = ws;
+            var timeLast = Date.now();
             ws.onerror = function () {
                 $(document).trigger("ajaxError", {})
             }
             ws.onmessage = function (event) {
                 if (currentWs !== ws) return;
+
+                console.log(Date.now() - timeLast, event.data);
+                timeLast = Date.now();
 
                 var response;
                 try{
@@ -52,12 +56,13 @@
                 }
                 
                 if (response.message) $message.children("span").html(response.message);
+
                 $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
 
                 if (response.abort) $message.nextAll().remove();
 
                 if (response.done) {
-                    //setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
+                    setTimeout(function () { appBuildDialog.dialog("close") }, 1000);
                 }
 
                 var childrenHeight = 0;
@@ -65,7 +70,6 @@
                     childrenHeight += $(this).outerHeight();
                 });
                 appBuildDialog.css({ height: childrenHeight + 32 });
-                console.log("total:", childrenHeight);
             };
         });
         $(".adminAppTable .actions .btnProperties").on("click", function () {
