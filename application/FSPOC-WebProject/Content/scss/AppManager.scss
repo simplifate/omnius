@@ -169,6 +169,9 @@ body.adminAppModule {
 }
 
 #app-build-dialog {
+    .app-alert {
+        overflow: auto;
+    }
     span.build-progress {
         float: right;
     }

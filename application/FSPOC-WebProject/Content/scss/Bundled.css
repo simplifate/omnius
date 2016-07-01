@@ -160,6 +160,9 @@ body.adminAppModule #validationResults {
     body.adminAppModule #validationResults #errorPanel #btnRetryValidation {
       margin-top: 30px; }
 
+#app-build-dialog .app-alert {
+  overflow: auto; }
+
 #app-build-dialog span.build-progress {
   float: right; }
 

@@ -108,7 +108,7 @@ $(function () {
     appBuildDialog = $("#app-build-dialog").dialog({
         autoOpen: false,
         resizable: false,
-        width: 600,
+        width: 640,
         height: 320
     });
 });

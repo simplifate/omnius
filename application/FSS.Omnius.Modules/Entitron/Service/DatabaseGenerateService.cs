@@ -26,8 +26,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
                 GenerateView(e, dbSchemeCommit);
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
-                DroppingOldTables(e, dbSchemeCommit);
-                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány" }));
+                DroppingOldTables(e, dbSchemeCommit, sendWs);
+                sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány", id = "entitron-deltables" }));
             }
         }
 
@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 progress++;
                 sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
-                    message = $"aktualizuji tabulky <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
+                    message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                 DBTable entitronTable = e.Application.GetTable(efTable.Name);
 
                 bool tableExists = DBTable.isInDB(e.Application.Name, efTable.Name);
@@ -223,7 +223,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             e.Application.SaveChanges();
         }
 
-        private void DroppingOldTables(Entitron e, DbSchemeCommit dbSchemeCommit)
+        private void DroppingOldTables(Entitron e, DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
             //list of tables, which are in database, but not in scheme
             List<string> deletedTables = e.Application.GetTables().Select(x => x.tableName.ToLower())
@@ -237,9 +237,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
             }
             e.Application.SaveChanges();
 
+            int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
+
             //foreach for tables again, for getting all columns
             foreach (DbTable schemeTable in dbSchemeCommit.Tables)
             {
+                progress++;
+                sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-deltables", type = "info",
+                    message = $"probíhá odstranění starých tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                 DBTable entitronTable = e.Application.GetTables()
                     .SingleOrDefault(x => x.tableName.ToLower() == schemeTable.Name.ToLower());
 
