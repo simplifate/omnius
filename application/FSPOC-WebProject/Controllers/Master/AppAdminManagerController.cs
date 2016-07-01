@@ -120,7 +120,7 @@ namespace FSS.Omnius.Controllers.Master
                             dbSchemeCommit = new DbSchemeCommit();
                         new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core, x => Send(x));
                         app.DbSchemeLocked = false;
-                        //app.EntitronChangedSinceLastBuild = false;
+                        app.EntitronChangedSinceLastBuild = false;
                         context.SaveChanges();
                         Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
                     }
