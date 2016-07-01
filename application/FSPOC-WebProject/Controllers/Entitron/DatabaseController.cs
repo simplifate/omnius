@@ -104,57 +104,7 @@ namespace FSS.Omnius.Controllers.Entitron
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
-
-        [Route("api/database/apps/{appId}/generate")]
-        [HttpGet]
-        public void Generate(int appId)
-        {
-            bool dbSchemeLocked = false;
-            try
-            {
-                using (var context = new DBEntities())
-                {
-                    var requestedApp = context.Applications.Find(appId);
-                    if (requestedApp.DbSchemeLocked)
-                        throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
-                    requestedApp.DbSchemeLocked = dbSchemeLocked = true;
-                    context.SaveChanges();
-                    Modules.CORE.CORE core = new Modules.CORE.CORE();
-                    core.Entitron.AppId = appId;
-                    var dbSchemeCommit = requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).First();
-                    DatabaseGenerateService.GenerateDatabase(dbSchemeCommit, core);
-                    requestedApp.DbSchemeLocked = false;
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (dbSchemeLocked)
-                {
-                    using (var context = new DBEntities())
-                    {
-                        var requestedApp = context.Applications.Find(appId);
-                        requestedApp.DbSchemeLocked = false;
-                        context.SaveChanges();
-                    }
-                }
-                string error = "";
-                if (ex is InvalidOperationException)
-                    error = ex.Message;
-                else
-                {
-                    while (ex != null)
-                    {
-                        error += ex.Message + Environment.NewLine;
-                        error += ex.StackTrace + Environment.NewLine + Environment.NewLine;
-
-                        ex = ex.InnerException;
-                    }
-                }
-                throw GetHttpInternalServerErrorResponseException(error);
-            }
-        }
-
+        
         [Route("api/database/apps/{appId}/commits")]
         [HttpPost]
         public void SaveScheme(int appId, AjaxTransferDbScheme postData)
