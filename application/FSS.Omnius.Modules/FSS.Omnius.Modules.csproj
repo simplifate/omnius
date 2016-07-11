@@ -205,6 +205,7 @@
     <Compile Include="Entitron\Entity\Persona\ADgroup.cs" />
     <Compile Include="Entitron\Entity\Persona\ADgroup_User.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
+    <Compile Include="Entitron\Entity\Persona\AjaxUsers.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
     <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\UserClaim.cs" />

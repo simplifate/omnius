@@ -522,22 +522,30 @@ namespace FSPOC_WebProject.Controllers.Persona
         #endregion
 
         // GET: Users
-        public ActionResult Index(int? page)
+        public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
             if (Request.IsAjaxRequest())
             {
-                if (page == null)
-                    page = 1;
-                return PartialView("AjaxIndex", e.Users.ToList().ToPagedList((int)page ,5));
+            
+                return PartialView("AjaxIndex");
             }
             else
             {
-                if (page == null)
-                    page = 1;
-                return View(e.Users.ToList().ToPagedList((int)page, 5));
+              
+                return View();
             }
         }
+
+        //getUser JSON (for dataTable)
+        public JsonResult loadData()
+        {
+            DBEntities e = ControllerContext.HttpContext.GetCORE().Entitron.GetStaticTables();
+            //var data = e.Users.OrderBy(a => a.UserName).ToList();
+            var data = AjaxUsers.converToAjaxUsers(e.Users.ToList()).OrderBy(a => a.UserName);
+                return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+
+        }
+
 
         public ActionResult Detail(int id)
         {

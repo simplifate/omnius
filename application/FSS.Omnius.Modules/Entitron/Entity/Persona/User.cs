@@ -91,5 +91,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             if (updateFrom.localExpiresAt != null)
                 localExpiresAt = updateFrom.localExpiresAt;
         }
+
+     
     }
 }
