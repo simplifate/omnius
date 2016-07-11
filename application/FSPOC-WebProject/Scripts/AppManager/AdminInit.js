@@ -23,20 +23,25 @@
         $(".adminAppTable .actions .btnValidate").on("click", function () {
             CurrentAppId = $(this).parents("tr").attr("appId");
 
+            if (typeof WebSocket === "undefined") {
+                ShowAppNotification("Váš prohlížeč nepodporuje webSockety, a nemůže být využit k aktualizaci aplikací", "error");
+                return;
+            }
+
             appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
             var messagesById = {};
 
             var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
             currentWs = ws;
-            var timeLast = Date.now();
+            //var timeLast = Date.now();
             ws.onerror = function () {
                 $(document).trigger("ajaxError", {})
             }
             ws.onmessage = function (event) {
                 if (currentWs !== ws) return;
 
-                console.log(Date.now() - timeLast, event.data);
-                timeLast = Date.now();
+                //console.log(Date.now() - timeLast, event.data);
+                //timeLast = Date.now();
 
                 var response;
                 try{
@@ -55,7 +60,7 @@
                     if (response.id) messagesById[response.id] = $message;
                 }
                 
-                if (response.message) $message.children("span").html(response.message);
+                if (response.message) $message.children("span").html(response.message).nextAll().remove();
 
                 $message.removeClass("app-alert-info app-alert-error app-alert-success app-alert-warning").addClass("app-alert-" + (response.type || "info"));
 
