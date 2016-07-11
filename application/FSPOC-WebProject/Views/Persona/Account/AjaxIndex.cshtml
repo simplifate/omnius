@@ -1,47 +1,79 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
-@using PagedList
-@using PagedList.Mvc
     <svg class="lowerLeftDecoration" width="40px" height="320px">
         <path d="M31 0 L31 320" stroke="#457fa9" stroke-width="1" fill="none"></path>
     </svg>
-    <table class="table table-bordered table-striped table-omnius">
-        <thead>
-            <tr>
-                <th>Jméno</th>
-                <th>Uživatelské jméno</th>
-                <th>Firma</th>
-                <th>Oddělení</th>
-                <th>Tým</th>
-                <th>Práce</th>
-                <th>Email</th>
-                <th>Pracovní telefon</th>
-                <th>Upravit/Smazat</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (User u in Model)
-            {
+    <table id="myTable">
+        @*<table class="table table-bordered table-striped table-omnius" id="dataTable">*@
+
+            <thead>
                 <tr>
-                    <td>
-                        @Ajax.ActionLink(u.DisplayName, "Detail", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace })
-                    </td>
-                    <td>@u.UserName</td>
-                    <td>@u.Company</td>
-                    <td>@u.Department</td>
-                    <td>@u.Team</td>
-                    <td>@u.Job</td>
-                    <td>@u.Email</td>
-                    <td>@u.WorkPhone</td>
-                    <td>
-                        @Ajax.ActionLink(" ", "Update", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
-                        @Html.ActionLink(" ", "Delete", new { @id = u.Id }, new { @class = "fa fa-trash ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
-                    </td>
+                    <th>Jméno</th>
+                    <th>Uživatelské jméno</th>
+                    <th>Firma</th>
+                    <th>Oddělení</th>
+                    <th>Tým</th>
+                    <th>Práce</th>
+                    <th>Email</th>
+                    <th>Pracovní telefon</th>
+                    @*<th>Upravit/Smazat</th>*@
                 </tr>
-            }
-        </tbody>
-    </table>
-    @Html.PagedListPager((IPagedList)Model, page => Url.RouteUrl("Persona", new { controller = "Account", action = "Index", page = page}))
+            </thead>
+            @*<tbody>
+                @foreach (User u in Model)
+                {
+                    <tr>
+                        <td>
+                            @Ajax.ActionLink(u.DisplayName, "Detail", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace })
+                        </td>
+                        <td>@u.UserName</td>
+                        <td>@u.Company</td>
+                        <td>@u.Department</td>
+                        <td>@u.Team</td>
+                        <td>@u.Job</td>
+                        <td>@u.Email</td>
+                        <td>@u.WorkPhone</td>
+                        <td>
+                            @Ajax.ActionLink(" ", "Update", new { @id = u.Id }, new AjaxOptions() { UpdateTargetId = "DetailUser", InsertionMode = InsertionMode.Replace }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                            @Html.ActionLink(" ", "Delete", new { @id = u.Id }, new { @class = "fa fa-trash ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                        </td>
+                    </tr>
+                }
+            </tbody>*@
+        </table>
     <div>
         @Html.ActionLink("Přidat uživatele", "Create", new { }, new { @class = "btn btn-primary" })
     </div>
     <div id="DetailUser"></div>
+
+@* Load datatable css *@
+<link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+@* Load datatable js *@
+
+<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "ajax": {
+                    "url": "/Persona/Account/loadData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                         //{ "data": "DisplayName", "autoWidth": true },
+                         {
+                               "data": "DisplayName",
+                               "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                   $(nTd).html("<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#DetailUser'  href='/CORE/Account/Detail/" + oData.Id + "'>" + oData.DisplayName + "</a>");
+                               }
+                         },
+                        { "data": "UserName", "autoWidth": true },
+                        { "data": "Company", "autoWidth": true },
+                        { "data": "Department", "autoWidth": true },
+                        { "data": "Team", "autoWidth": true },
+                       { "data": "Job", "autoWidth": true },
+                        { "data": "Email", "autoWidth": true },
+                       { "data": "WorkPhone", "autoWidth": true }
+                    ]
+            });
+        });
+</script>
