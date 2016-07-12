@@ -1734,6 +1734,8 @@ body.overviewModule {
     vertical-align: middle; }
   body.overviewModule .ui-dialog-content .formTable tr td:first-child {
     width: 150px; }
+  body.overviewModule .highlightedBlockRow {
+    background-color: lightblue !important; }
   body.overviewModule .btn-tapestry {
     background-color: #49c3f1;
     color: black; }

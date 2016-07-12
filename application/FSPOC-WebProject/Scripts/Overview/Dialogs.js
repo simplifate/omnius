@@ -130,8 +130,9 @@
                         tBlockBody = trashDialog.find("#block-table tbody:nth-child(2)");
                         tMetablockBody = trashDialog.find("#metablock-table tbody:nth-child(2)");
                         blockIdArray = [];
+                        metablockIdArray = [];
 
-                        // Fill blocks in the trash rows
+                        // Fill blocks in the block-table rows
                         for (i = 0; i < data[0].length; i++) {
                             blockIdArray.push(data[0][i].Id);
                             newRow = $('<tr class="blockRow"><td>' + data[0][i].Name + '</td></tr>');
@@ -139,69 +140,98 @@
                         }
 
                         // Highlight the selected block row
-                        $(document).on('click', 'tr.blockRow', function (event) {
-                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedRow");
-                            $(this).addClass("highlightedRow");
+                        $(document).on('click', '#block-table tr.blockRow', function (event) {
+                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                            $(this).addClass("highlightedBlockRow");
                             var rowIndex = $(this).index();
-                            trashDialog.data("selectedBlock", data[0][rowIndex]);
+                            trashDialog.data("selectedBlockOrMetablock", data[0][rowIndex]);
+                            trashDialog.data("selectedTypeOfBlock", "block");
                         });
 
-                        // Fill metablocks in the trash rows
+                        // Fill metablocks in the metablock-table rows
                         for (i = 0; i < data[1].length; i++) {
-                            blockIdArray.push(data[1][i].Id);
+                            metablockIdArray.push(data[1][i].Id);
                             newRow = $('<tr class="blockRow"><td>' + data[1][i].Name + '</td></tr>');
                             tMetablockBody.append(newRow);
                         }
-                     
-                        // Highlight the selected metablock row
-                        $(document).on('click', 'tr.blockRow', function (event) {
-                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedRow");
-                            $(this).addClass("highlightedRow");
-                            var rowIndex = $(this).index();
-                            trashDialog.data("selectedMetablock", data[1][rowIndex]);
-                        });
 
+                        // Highlight the selected metablock row
+                        $(document).on('click', '#metablock-table tr.blockRow', function (event) {
+                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                            $(this).addClass("highlightedBlockRow");
+                            var rowIndex = $(this).index();
+                            trashDialog.data("selectedBlockOrMetablock", data[1][rowIndex]);
+                            trashDialog.data("selectedTypeOfBlock", "metablock");
+                        });
+                     
                         trashDialog.find(".spinner-2").hide();
                     }
                 });
             }
         });
         function trashDialog_SubmitData() {
-            if (trashDialog.data("selectedMetablock")) {
+            if (trashDialog.data("selectedBlockOrMetablock")) {
                 trashDialog.dialog("close");
                 if (ChangedSinceLastSave)
                     confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
                 else
                     confirmed = true;
                 if (confirmed) {
-                    currentMetablockData = trashDialog.data("selectedMetablock");
-                    newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
-                    + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
-                    currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
-                    '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
-                    + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
-                    newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
-                    $("#overviewPanel .scrollArea").append(newMetablock);
-                    instance.draggable(newMetablock, {
-                        containment: "parent",
-                        stop: function () {
-                            ChangedSinceLastSave = true;
-                        }
-                    });
-
-                    newMetablock.on("dblclick", function () {
-                        metablockToOpen = $(this);
-                        SaveMetablock(function () {
-                            openMetablockForm = $("#openMetablockForm");
-                            openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
-                            openMetablockForm.submit();
+                    // Draw block or metablock as user chose
+                    if (trashDialog.data("selectedTypeOfBlock") == "block") {
+                        currentBlockData = trashDialog.data("selectedBlockOrMetablock");
+                        newBlock = $('<div class="block" id="block' + currentBlockData.Id + '" isInitial="' + currentBlockData.IsInitial + '" style="left: '
+                            + currentBlockData.PositionX + 'px; top: ' + currentBlockData.PositionY + 'px;" blockId="'
+                            + currentBlockData.Id + '" tableId="' + currentBlockData.AssociatedTableId + '"><div class="blockName">'
+                            + currentBlockData.Name + '</div><div class="blockInfo">'
+                            + (currentBlockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                        newBlock.data("IsInMenu", currentBlockData.IsInMenu);
+                        $("#overviewPanel .scrollArea").append(newBlock);
+                        instance.draggable(newBlock, {
+                            containment: "parent",
+                            stop: function () {
+                                ChangedSinceLastSave = true;
+                            }
                         });
-                    });
+                        newBlock.on("dblclick", function () {
+                            blockToOpen = $(this);
+                            SaveMetablock(function () {
+                                openBlockForm = $("#openBlockForm");
+                                openBlockForm.find("input[name='blockId']").val(blockToOpen.attr("blockId"));
+                                openBlockForm.submit();
+                            });
+                        });
+                    } else {
+                        currentMetablockData = trashDialog.data("selectedBlockOrMetablock");
+                        newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
+                        + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
+                        currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
+                        '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
+                        + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                        newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
+                        $("#overviewPanel .scrollArea").append(newMetablock);
+                        instance.draggable(newMetablock, {
+                            containment: "parent",
+                            stop: function () {
+                                ChangedSinceLastSave = true;
+                            }
+                        });
 
+                        newMetablock.on("dblclick", function () {
+                            metablockToOpen = $(this);
+                            SaveMetablock(function () {
+                                openMetablockForm = $("#openMetablockForm");
+                                openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
+                                openMetablockForm.submit();
+                            });
+                        });
+                    }             
                 }
             }
             else
-                alert("Please select a block"); 
+                alert("Please select a block");
         }
         renameMetablockDialog = $("#rename-metablock-dialog").dialog({
             autoOpen: false,
