@@ -1,8 +1,8 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using FSS.Omnius.Modules.Entitron.Sql;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -70,8 +70,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 object condValue = vars[$"CondValue[{i}]"];
 
                 DBColumn column = table.columns.Single(c => c.Name == condColumn);
-                int typeId = e.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.type)).Id;
-                var value = Convertor.convert(typeId, condValue);
+                var value = Convertor.convert(DataType.ByDBColumnTypeName(column.type), condValue);
 
                 switch (condOperator)
                 {

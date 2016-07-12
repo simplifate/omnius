@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web.Helpers;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Table;
+using FSS.Omnius.Modules.Entitron.Entity.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -68,7 +68,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             isPrimary = column.PrimaryKey,
                             canBeNull = column.AllowNull,
                             maxLength = column.ColumnLength,
-                            type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(column.Type)).SqlName
+                            type = DataType.ByDBColumnTypeName(column.Type).SqlName
                         };
                         entitronTable.columns.Add(col);
                         app.ColumnMetadata.Add(new ColumnMetadata
@@ -305,7 +305,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         Name = efColumn.Name,
                         canBeNull = efColumn.AllowNull,
                         maxLength = efColumn.ColumnLength,
-                        type = ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName,
+                        type = DataType.ByDBColumnTypeName(efColumn.Type).SqlName,
                         DefaultValue = efColumn.DefaultValue
                     };
                     entitronTable.columns.AddToDB(entitronColumn);
@@ -320,7 +320,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     if (entitronColumn.canBeNull != efColumn.AllowNull ||
                         entitronColumn.maxLength != efColumn.ColumnLength ||
                         entitronColumn.type != efColumn.Type)
-                        entitronTable.columns.ModifyInDB(entitronColumn.Name, ent.DataTypes.Single(t => t.DBColumnTypeName.Contains(efColumn.Type)).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
+                        entitronTable.columns.ModifyInDB(entitronColumn.Name, DataType.ByDBColumnTypeName(efColumn.Type).SqlName, efColumn.ColumnLength, entitronColumn.precision, entitronColumn.scale, efColumn.AllowNull);
 
                     if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique == false && !efColumn.PrimaryKey)
                     {

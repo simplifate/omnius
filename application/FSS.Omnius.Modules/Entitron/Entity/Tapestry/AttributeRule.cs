@@ -20,8 +20,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int AttributeDataTypeId { get; set; }
 
         public int BlockId { get; set; }
-
-        public virtual CORE.DataType AttributeDataType { get; set; }
+        
+        public virtual CORE.DataType AttributeDataType
+        {
+            get
+            {
+                return CORE.DataType.ById(AttributeDataTypeId);
+            }
+            set
+            {
+                AttributeDataTypeId = value.Id;
+            }
+        }
         public virtual Block Block { get; set; }
     }
 }

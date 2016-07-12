@@ -919,6 +919,10 @@
     <Compile Include="Migrations\201606291203568_fourth-bool.Designer.cs">
       <DependentUpon>201606291203568_fourth-bool.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607120948457_removeDataType.cs" />
+    <Compile Include="Migrations\201607120948457_removeDataType.Designer.cs">
+      <DependentUpon>201607120948457_removeDataType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1465,6 +1469,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606291203568_fourth-bool.resx">
       <DependentUpon>201606291203568_fourth-bool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120948457_removeDataType.resx">
+      <DependentUpon>201607120948457_removeDataType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

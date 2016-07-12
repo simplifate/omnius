@@ -12,18 +12,11 @@ namespace FSS.Omnius.Modules.CORE
     {
         public static object convert(int dataTypeId, object input)
         {
-            DBEntities e = new DBEntities();
-            DataType type = e.DataTypes.SingleOrDefault(dt => dt.Id == dataTypeId);
-
-            return convert(type, input);
+            return convert(DataType.ById(dataTypeId), input);
         }
         public static object convert(char shortcut, object input)
         {
-            DBEntities e = new DBEntities();
-            string s = shortcut.ToString();
-            DataType type = e.DataTypes.SingleOrDefault(dt => dt.shortcut == s);
-
-            return convert(type, input);
+            return convert(DataType.ByShort(shortcut), input);
         }
         public static object convert(DataType type, object input)
         {

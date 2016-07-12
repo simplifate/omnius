@@ -29,7 +29,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         }
 
         // CORE
-        public virtual DbSet<DataType> DataTypes { get; set; }
         public virtual DbSet<ConfigPair> ConfigPairs { get; set; }
 
         // Entitron
@@ -126,11 +125,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.ContentList)
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
-            
-            modelBuilder.Entity<DataType>()
-                .HasMany(e => e.AttributeRules)
-                .WithRequired(e => e.AttributeDataType)
-                .HasForeignKey(e => e.AttributeDataTypeId);
 
             // Cortex
             modelBuilder.Entity<Task>()
