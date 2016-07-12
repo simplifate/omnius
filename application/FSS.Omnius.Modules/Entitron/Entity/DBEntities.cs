@@ -89,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<PreBlockAction> PreBlockActions { get; set; }
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
+        public virtual DbSet<ResourceMappingPair> ResourceMappingPairs { get; set; }
         
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }

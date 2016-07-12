@@ -22,7 +22,8 @@ namespace FSS.Omnius.Modules.Entitron
             get { return (Application != null) ? Application.Name : null; }
             set
             {
-                Application = GetStaticTables().Applications.SingleOrDefault(a => a.Name == value);
+                if (value != null)
+                    Application = GetStaticTables().Applications.SingleOrDefault(a => a.Name == value);
             }
         }
         public int AppId

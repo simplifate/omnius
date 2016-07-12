@@ -1,5 +1,6 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity
+
 @{
     Page.Title = "Omnius App Manager";
     Page.ModuleClass = "appManagerModule";
@@ -8,23 +9,22 @@
 }
 
 <div class="appWorkspace">
-    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).Where(c=>c.IsSystem==false))
+    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).ToList())
     {
         var positionX = 10;
         var positionY = 10;
+        UsersApplications uApp = app.UsersApplications.SingleOrDefault(u => u.UserId == LoggedUser.Id);
         //if theres is an user and the application in usersapplications table we take the value from that.If not,we create the new userApp entity.
-        if(app.UsersApplications.Any(ua => ua.UserId == LoggedUser.Id && ua.ApplicationId == app.Id))
+        if (uApp != null)
         {
-            var userApp = app.UsersApplications.Single(u => u.UserId == LoggedUser.Id);
-            positionX = userApp.PositionX;
-            positionY = userApp.PositionY;
+            positionX = uApp.PositionX;
+            positionY = uApp.PositionY;
         }
         else
         {
-            using (DBEntities db = new DBEntities()) {
-                db.UsersApplications.Add(new UsersApplications() {ApplicationId = app.Id,UserId = LoggedUser.Id});
-                db.SaveChanges();
-            }
+            DBEntities db = Context.GetCORE().Entitron.GetStaticTables();
+            db.UsersApplications.Add(new UsersApplications() {ApplicationId = app.Id,UserId = LoggedUser.Id});
+            db.SaveChanges();
         }
             <div class="appPanel appColor@(app.Color)" style="width: @(app.TileWidth*120-20)px; height: @(app.TileHeight*120-20)px;
          left: @(positionX)px; top: @(positionY)px;" data-target="/@app.Name">

@@ -40,11 +40,10 @@ namespace System
 
         public static User GetLogged(this IPrincipal user, CORE core)
         {
-            
-            if (core.User != null && core.User.UserName == user.Identity.Name)
-                return core.User;
+            if (core.User == null || core.User.UserName != user.Identity.Name)
+                core.User = core.Persona.AuthenticateUser(user.Identity.Name);
 
-            return core.Persona.AuthenticateUser(user.Identity.Name);
+            return core.User;
         }
     }
 }

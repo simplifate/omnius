@@ -6,11 +6,14 @@ using System.Web.Caching;
 using System.Web.Hosting;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
+using System.Collections.Generic;
 
 namespace FSPOC_WebProject.Views
 {
     public class MyVirtualPathProvider: VirtualPathProvider
     {
+        private Dictionary<string, Page> _cache = new Dictionary<string, Page>();
+
         public override bool FileExists(string virtualPath)
         {
             var view = GetViewFromDatabase(virtualPath);
@@ -74,13 +77,17 @@ namespace FSPOC_WebProject.Views
             //je to protože zatím není známo jaký rozlišovací cestu budou mít pohledy z mozaicu
             if (virtualPath.StartsWith("/Views/App/"))
             {
+                if (_cache.ContainsKey(virtualPath))
+                    return _cache[virtualPath];
+
                 DBEntities db = new DBEntities();
-                return db.Pages.FirstOrDefault(x => x.ViewPath == virtualPath);
+                Page page = db.Pages.FirstOrDefault(x => x.ViewPath == virtualPath);
+
+                _cache.Add(virtualPath, page);
+                return page;
             }
-            else
-            {
-                return null;
-            }            
+
+            return null;
         }
     }
 }
