@@ -232,7 +232,7 @@ function RecalculatePanelDimensions(panel) {
     panel.height(panelHeight);
 }
 $(function () {
-    $(document, "[data-ajax='true']").on("click", function () {
+    $(document).on("click", "[data-ajax='true']", function () {
         pageSpinner.show();
         $(document).one("ajaxComplete", function () {
             pageSpinner.hide();
