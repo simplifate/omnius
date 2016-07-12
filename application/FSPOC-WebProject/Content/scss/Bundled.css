@@ -2657,6 +2657,8 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     .personaModule #lowerPanel .editAppRolesIcon:hover {
       text-decoration: none;
       color: #f98e4b; }
+    .personaModule #lowerPanel #DetailUser {
+      min-height: 1600px; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }
