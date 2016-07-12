@@ -176,6 +176,9 @@ body.overviewModule {
     .ui-dialog-content .formTable tr td:first-child {
         width: 150px;
     }
+    .highlightedBlockRow {
+        background-color: lightblue !important;
+    }
     .btn-tapestry {
         background-color: #49c3f1;
         color: black;

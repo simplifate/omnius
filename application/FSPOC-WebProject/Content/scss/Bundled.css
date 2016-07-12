@@ -1734,6 +1734,8 @@ body.overviewModule {
     vertical-align: middle; }
   body.overviewModule .ui-dialog-content .formTable tr td:first-child {
     width: 150px; }
+  body.overviewModule .highlightedBlockRow {
+    background-color: lightblue !important; }
   body.overviewModule .btn-tapestry {
     background-color: #49c3f1;
     color: black; }
@@ -2657,6 +2659,8 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
     .personaModule #lowerPanel .editAppRolesIcon:hover {
       text-decoration: none;
       color: #f98e4b; }
+    .personaModule #lowerPanel #DetailUser {
+      min-height: 1600px; }
 
 .personaModulesModule {
   background-color: #f2f2f3; }

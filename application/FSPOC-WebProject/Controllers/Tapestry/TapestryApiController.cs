@@ -967,8 +967,11 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         }
         private static void DeleteBlock(TapestryDesignerBlock blockToDelete, DBEntities context)
         {
-            blockToDelete.IsDeleted = true;
-            blockToDelete.Name = $"{blockToDelete.Name}-{DateTime.UtcNow.ToString()}";
+            if (!blockToDelete.IsDeleted)
+            {
+                blockToDelete.IsDeleted = true;
+                blockToDelete.Name = $"{blockToDelete.Name}-{DateTime.UtcNow.ToString()}";
+            }
         }
         private void CollectBlocksToList(TapestryDesignerMetablock rootMetablock,
             AjaxTapestryDesignerBlockList list, DBEntities context)

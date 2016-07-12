@@ -59,9 +59,12 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             }
         }
 
+        /** 
+         * Gathering of deleted blocks and metablocks for Trash dialog purposes (Overview)
+         */
         [Route("api/database/apps/{appId}/trashDialog")]
         [HttpGet]
-        public List<Object> GetDeletedMetablocksList(int appId)
+        public List<Object> GetDeletedBlocksList(int appId)
         {
             try
             {
@@ -109,7 +112,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             }
             catch (Exception ex)
             {
-                var errorMessage = $"Tapestry: error when loading the blocks history";
+                var errorMessage = $"Overview: error when loading the blocks history";
                 throw ex;
             }
         }

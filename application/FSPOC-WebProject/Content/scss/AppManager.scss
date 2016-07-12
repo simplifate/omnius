@@ -179,4 +179,5 @@ body.adminAppModule {
         vertical-align: -0.2em; 
         //w3.org says progress elements should have a vertical align of -0.2 em. IEdge, of course, ignores this. 
         //As a result, IEdge gets an ugly result. IE9 doesn't know <progress> at all, but it can't websocket either, so...
+    }
 }
