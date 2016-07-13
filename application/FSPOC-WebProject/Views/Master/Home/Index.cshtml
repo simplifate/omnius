@@ -1,5 +1,6 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity
+@using System.Data.Entity
 
 @{
     Page.Title = "Omnius App Manager";
@@ -9,7 +10,7 @@
 }
 
 <div class="appWorkspace">
-    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).ToList())
+    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).Include("UsersApplications").ToList())
     {
         var positionX = 10;
         var positionY = 10;
