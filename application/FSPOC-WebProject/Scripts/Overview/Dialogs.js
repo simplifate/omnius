@@ -112,7 +112,7 @@
                         trashDialog_SubmitData();
                         return false;
                     }
-                })
+                })                           
             },
             open: function (event, ui) {
                 trashDialog.find("#metablock-table:first tbody:nth-child(2) tr").remove();
@@ -165,7 +165,7 @@
                             trashDialog.data("selectedBlockOrMetablock", data[1][rowIndex]);
                             trashDialog.data("selectedTypeOfBlock", "metablock");
                         });
-                     
+
                         trashDialog.find(".spinner-2").hide();
                     }
                 });
@@ -203,6 +203,8 @@
                                 openBlockForm.submit();
                             });
                         });
+
+                        SaveMetablock();
                     } else {
                         currentMetablockData = trashDialog.data("selectedBlockOrMetablock");
                         newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
@@ -227,6 +229,8 @@
                                 openMetablockForm.submit();
                             });
                         });
+
+                        SaveMetablock();
                     }             
                 }
             }
