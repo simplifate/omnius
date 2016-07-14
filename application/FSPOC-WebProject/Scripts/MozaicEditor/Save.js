@@ -133,6 +133,7 @@ function GetMozaicContainerComponentArray(container, nested) {
             Content: content,
             Label: label,
             Placeholder: currentUic.attr("placeholder"),
+            TabIndex: currentUic.attr("tabindex"),
             ChildComponents: currentUic.hasClass("panel-component") ? GetMozaicContainerComponentArray(currentUic, true) : []
         };
         if (nested)

@@ -42,6 +42,8 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
     targetContainer.append(newComponent);
     if (cData.Placeholder)
         newComponent.attr("placeholder", cData.Placeholder);
+    if (cData.TabIndex)
+        newComponent.attr("tabindex", cData.TabIndex);
     if (cData.Properties)
         newComponent.attr("uicProperties", cData.Properties);
     if (newComponent.hasClass("button-simple"))

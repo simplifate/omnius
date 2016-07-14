@@ -77,18 +77,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     using (DBEntities context = new DBEntities())
                     {
                         var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">{c.Label}</{c.Tag}>");
                     }
                 }
                 else if (c.Type == "button-dropdown")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
                 }
                 else if (c.Type == "input-single-line")
                 {
-                    stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" ");
+                    stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" tabindex=\"{c.TabIndex}\" ");
                     stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
@@ -112,7 +112,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "input-multiline")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} placeholder=\"{c.Placeholder}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} placeholder=\"{c.Placeholder}\" tabindex=\"{c.TabIndex}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -148,19 +148,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "checkbox")
                 {
-                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "radio")
                 {
-                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" /><span class=\"radio-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {

@@ -24,9 +24,10 @@ $(function () {
             open: function () {
                 componentPropertiesDialog.find("#component-name").val(CurrentComponent.attr("uicName"));
                 componentPropertiesDialog.find("#component-width").val(CurrentComponent.css("width"));
-                componentPropertiesDialog.find("#component-height").val(CurrentComponent.css("height"));
+                componentPropertiesDialog.find("#component-height").val(CurrentComponent.css("height"));            
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
+                componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
@@ -78,6 +79,7 @@ $(function () {
             CurrentComponent.css("height", componentPropertiesDialog.find("#component-height").val());
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
+            CurrentComponent.attr("tabindex", componentPropertiesDialog.find("#component-tabindex").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
