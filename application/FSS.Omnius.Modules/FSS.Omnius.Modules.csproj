@@ -927,6 +927,10 @@
     <Compile Include="Migrations\201607140838442_add tabindex to component properties.Designer.cs">
       <DependentUpon>201607140838442_add tabindex to component properties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607151241382_mozaic-editor-page-version.cs" />
+    <Compile Include="Migrations\201607151241382_mozaic-editor-page-version.Designer.cs">
+      <DependentUpon>201607151241382_mozaic-editor-page-version.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1479,6 +1483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607140838442_add tabindex to component properties.resx">
       <DependentUpon>201607140838442_add tabindex to component properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607151241382_mozaic-editor-page-version.resx">
+      <DependentUpon>201607151241382_mozaic-editor-page-version.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
