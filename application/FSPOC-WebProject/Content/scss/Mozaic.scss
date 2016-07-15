@@ -117,6 +117,12 @@ body.mozaicEditorModule {
             display: none;
         }
     }
+    #lowerPanel.mozaicEditorAbsolute {
+        .bootstrap-editor-cat,
+        .toolboxItem.bootstrap-row {
+            display: none;
+        }
+    }
     #lowerPanel.mozaicEditorBootstrap {
         top: 280px;
     }

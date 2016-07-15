@@ -2927,6 +2927,9 @@ body.mozaicEditorModule {
       background: rgba(0, 0, 0, 0.8);
       z-index: 1100;
       display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .bootstrap-editor-cat,
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .toolboxItem.bootstrap-row {
+    display: none; }
   body.mozaicEditorModule #lowerPanel.mozaicEditorBootstrap {
     top: 280px; }
   body.mozaicEditorModule #mozaicContainer {
