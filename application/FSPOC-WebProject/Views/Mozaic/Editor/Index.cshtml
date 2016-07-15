@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "mozaicEditorModule";
 }
-<div id="upperPanel">
+<div id="upperPanel" class="mozaicEditorAbsolute">
     <div class="panelLabel">Mozaic visual editor</div>
     <svg class="backgroundDecoration" width="540px" height="357px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -18,6 +18,8 @@
         <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
         <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
         <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+        <button id="btnToBootstrap" class="btn-omnius-rectangular">Do Bootstrap</button>
+        <button id="btnPreview" class="btn-omnius-rectangular">Náhled</button>
     </div>
     <div id="appInfoPanel">
         App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
@@ -50,7 +52,7 @@
     <div class="panelLabel">Mozaic visual editor</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
-<div id="lowerPanel">
+<div id="lowerPanel" class="mozaicEditorAbsolute">
     <div id="lowerPanelSpinnerOverlay">
         <div class="spinner-2 largeSpinner">
             <div class="double-bounce1"></div>

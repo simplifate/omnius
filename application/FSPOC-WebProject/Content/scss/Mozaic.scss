@@ -45,10 +45,6 @@ body.mozaicEditorModule {
             }
         }
         #gridControlPanel {
-            position: absolute;
-            left: 100px;
-            top: 200px;
-
             label {
                 color: white;
             }
@@ -61,10 +57,6 @@ body.mozaicEditorModule {
             }
         }
         #modalControlPanel {
-            position: absolute;
-            left: 440px;
-            top: 200px;
-
             label {
                 color: white;
             }
@@ -80,6 +72,35 @@ body.mozaicEditorModule {
             #modalWidthInput {
                 margin-right: 18px;
             }
+        }
+        #btnToBootstrap {
+            display: none;
+        }
+    }
+    #upperPanel.mozaicEditorAbsolute {
+        #gridControlPanel {
+            position: absolute;
+            left: 100px;
+            top: 200px;
+        }
+        #modalControlPanel {
+            position: absolute;
+            left: 440px;
+            top: 200px;
+        }
+        #btnToBootstrap {
+            display: initial;
+        }
+        #btnPreview{
+            display: none;
+        }
+    }
+    #upperPanel.mozaicEditorBootstrap {
+        #gridControlPanel {
+            display: none;
+        }
+        #modalControlPanel {
+            display: none;
         }
     }
 

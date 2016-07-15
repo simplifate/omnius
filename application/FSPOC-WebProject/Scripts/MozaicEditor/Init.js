@@ -29,6 +29,9 @@ $(function () {
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");
         });
+        $("#btnToBootstrap").on("click", function () {
+            $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
+        })
 
         $("#hideMozaicTooboxIcon").on("click", function () {
             $("#mozaicLeftBar").hide();
