@@ -20,6 +20,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public int? ModalHeight { get; set; }
         public string CompiledPartialView { get; set; }
         public int CompiledPageId { get; set; }
+        public VersionEnum Version {get; set; }
         public virtual ICollection<MozaicEditorComponent> Components { get; set; }
 
         [ImportExportIgnore]
@@ -341,6 +342,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             Components = new List<MozaicEditorComponent>();
         }
     }
+
+    public enum VersionEnum { Absolute, Bootstrap };
+
     [Table("MozaicEditor_Components")]
     public class MozaicEditorComponent : IEntity
     {
