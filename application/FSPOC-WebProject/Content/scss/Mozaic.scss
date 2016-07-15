@@ -96,6 +96,7 @@ body.mozaicEditorModule {
         }
     }
     #upperPanel.mozaicEditorBootstrap {
+        height: 205px;
         #gridControlPanel {
             display: none;
         }
@@ -115,6 +116,9 @@ body.mozaicEditorModule {
             z-index: 1100;
             display: none;
         }
+    }
+    #lowerPanel.mozaicEditorBootstrap {
+        top: 280px;
     }
     #mozaicContainer {
         height: 2000px;

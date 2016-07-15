@@ -31,6 +31,7 @@ $(function () {
         });
         $("#btnToBootstrap").on("click", function () {
             $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
+            RecalculateMozaicToolboxHeight();
         })
 
         $("#hideMozaicTooboxIcon").on("click", function () {

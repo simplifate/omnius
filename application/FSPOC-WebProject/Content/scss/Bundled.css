@@ -2912,10 +2912,12 @@ body.mozaicEditorModule {
     display: initial; }
   body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #btnPreview {
     display: none; }
-  body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #gridControlPanel {
-    display: none; }
-  body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #modalControlPanel {
-    display: none; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap {
+    height: 205px; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #gridControlPanel {
+      display: none; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #modalControlPanel {
+      display: none; }
   body.mozaicEditorModule #lowerPanel {
     top: 370px;
     padding: 0px; }
@@ -2925,6 +2927,8 @@ body.mozaicEditorModule {
       background: rgba(0, 0, 0, 0.8);
       z-index: 1100;
       display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorBootstrap {
+    top: 280px; }
   body.mozaicEditorModule #mozaicContainer {
     height: 2000px;
     font-family: MyriadPro; }
