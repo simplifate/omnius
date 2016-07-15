@@ -32,6 +32,7 @@ $(function () {
         $("#btnToBootstrap").on("click", function () {
             $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
             RecalculateMozaicToolboxHeight();
+            convertAbsoluteToBootstrap();
         })
 
         $("#hideMozaicTooboxIcon").on("click", function () {
@@ -160,6 +161,11 @@ $(function () {
         $(window).resize(function () {
             RecalculateMozaicToolboxHeight();
         });
+
+        function convertAbsoluteToBootstrap() {
+
+        }
+
     } else if (CurrentModuleIs("mozaicComponentManagerModule")) {
         $(window).on("scroll resize", function () {
             var scrollTop = $(window).scrollTop();
@@ -175,4 +181,5 @@ $(function () {
             }
         })
     }
+
 });

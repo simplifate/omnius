@@ -32,6 +32,17 @@
                 $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
                 $("#modalSizeVisualization").show();
             }
+
+            var panels = $(".mozaicEditorAbsolute, .mozaicEditorBootstrap").removeClass("mozaicEditorAbsolute mozaicEditorBootstrap");
+            switch (data.version) {
+                case "0":
+                default:
+                    panels.addClass("mozaicEditorAbsolute");
+                    break;
+                case "1":
+                    panels.addClass("mozaicEditorBootstrap");
+                    break;
+            }
         }
     });
 }
