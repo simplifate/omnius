@@ -1,6 +1,7 @@
 ﻿$(function () {
     if (CurrentModuleIs("personaModulesModule") || CurrentModuleIs("personaRolesModule")) {
-        $(".checkboxCell").on("click", function () {
+        $('body').on('click','.checkboxCell', function () {
+
             checkboxCell = $(this);
             if (checkboxCell.hasClass("yesCell")) {
                 checkboxCell.removeClass("yesCell");
@@ -15,10 +16,11 @@
         });
     }
     if (CurrentModuleIs("personaModulesModule")) {
-        $("#btnSaveModuleAccessTable").on("click", function () {
+        $('body').on('click','#btnSaveModuleAccessTable', function () {
             SaveModulePermissions();
         });
-        $("#btnReloadModuleAccessTable").on("click", function () {
+        $('body').on('click','#btnReloadModuleAccessTable', function () {
+
             location.reload();
         });
     }

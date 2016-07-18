@@ -1,8 +1,10 @@
 ﻿function SaveModulePermissions() {
     permissionArray = [];
-    moduleAccessTable = $("#moduleAccessTable");
 
-    moduleAccessTable.find("tr.hiddenIdRow td").each(function (index, element) {
+    moduleAccessTable = $("#moduleAccessTable");
+    var rows = $("#moduleAccessTable").dataTable().fnGetNodes();
+   
+    moduleAccessTable.find("td.userIds").each(function (index, element) {
         if(index > 0)
             permissionArray.push({ UserId: parseInt($(element).text()) })
     });
@@ -11,54 +13,15 @@
             permissionArray[index - 1].UserName = $(element).text();
     });
 
-    moduleAccessTable.find("tr[moduleId='Core'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Core = $(element).hasClass("yesCell");
+    var modules = ["Core", "Master","Tapestry","Entitron","Mozaic","Persona","Nexus","Sentry","Hermes","Athena","Watchtower","Cortex"];
+
+    $.each(modules, function (index, object) {
+        moduleAccessTable.find("tr[moduleId='" + object + "'] td").each(function (index, element) {
+            if (index > 0)
+                permissionArray[index - 1][object] = $(element).hasClass("yesCell");
+        });
     });
-    moduleAccessTable.find("tr[moduleId='Master'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Master = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Tapestry'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Tapestry = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Entitron'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Entitron = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Mozaic'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Mozaic = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Persona'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Persona = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Nexus'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Nexus = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Sentry'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Sentry = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Hermes'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Hermes = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Athena'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Athena = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Watchtower'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Watchtower = $(element).hasClass("yesCell");
-    });
-    moduleAccessTable.find("tr[moduleId='Cortex'] td").each(function (index, element) {
-        if (index > 0)
-            permissionArray[index - 1].Cortex = $(element).hasClass("yesCell");
-    });
+    
     postData = {
         PermissionList: permissionArray
     };

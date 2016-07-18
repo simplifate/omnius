@@ -41,7 +41,7 @@
         }
         else
         {
-        <table id="myTable" class="table table-bordered table-striped table-omnius">
+        <table id="moduleAccessTable" class="table table-bordered table-striped table-omnius">
             <thead>
                 <tr>
                     <th></th>
@@ -57,19 +57,27 @@
                         <th>Athena</th>
                         <th>Watchtower</th>
                         <th>Cortex</th>
+                        <th class="hide_me">User's id</th>
 
                 </tr>
             </thead>
             <tbody>
-                @*@foreach (var user in Model)
+             
+                @for (int i = 0; i < Model.Count; i++)
                 {
-                      <tr>
-                          <td>@user.UserName</td>
-                      </tr>
-                 }*@
-                
-            
-            
+                    if (i == 0)
+                    {
+                        <tr class="hiddenIdRow">
+                            <td></td>
+                        </tr>
+                    }
+                    else {
+                        <tr class="hiddenIdRow">
+                          <td>@Model[i].UserId</td>
+                        </tr>
+                    }
+                }
+
             </tbody>
         </table>
         <div id="personaModulesFormButtonsPanel">
@@ -90,22 +98,24 @@
 <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script>
         $(document).ready(function () {
-            $('#myTable').DataTable({
+            $('#moduleAccessTable').DataTable({
                 "ajax": {
                     "url": "/Persona/Modules/loadData",
                     "type": "GET",
                     "datatype": "json"
                 },
                 "columns": [
+                       
+
                          { "data": "UserName", "autoWidth": true },
                       
                         {
                             "data" : "Core",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Core) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Core' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Core' class='checkboxCell noCell core'><i class='fa fa-times'></i></td>");
                                 }
                             }
                                   
@@ -114,9 +124,9 @@
                             "data" : "Master",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Master == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Master' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Master' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         }, 
@@ -125,9 +135,9 @@
                            "data": "Tapestry",
                            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                if (oData.Tapestry == true) {
-                                   $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Tapestry' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                } else {
-                                   $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Tapestry' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                }
                            }
 
@@ -136,9 +146,9 @@
                             "data": "Entitron",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Entitron == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Entitron'  class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Entitron' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         },
@@ -146,9 +156,9 @@
                             "data": "Mozaic",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Mozaic == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Mozaic'  class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Mozaic' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
 
@@ -157,9 +167,9 @@
                             "data": "Persona",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Persona == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Persona' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Persona' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         },
@@ -168,9 +178,9 @@
                            "data": "Nexus",
                            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                if (oData.Nexus == true) {
-                                   $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Nexus' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                } else {
-                                   $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Nexus' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                }
                            }
 
@@ -179,9 +189,9 @@
                             "data": "Sentry",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Sentry == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Sentry' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Sentry' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         },
@@ -189,9 +199,9 @@
                              "data": "Hermes",
                              "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                  if (oData.Hermes == true) {
-                                     $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                     $(nTd).html("<td moduleId = 'Hermes' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                  } else {
-                                     $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                     $(nTd).html("<td moduleId = 'Hermes' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                  }
                              }
 
@@ -200,9 +210,9 @@
                             "data": "Athena",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Athena == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Athena' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Athena' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         },
@@ -211,9 +221,9 @@
                            "data": "Watchtower",
                            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                if (oData.Watchtower == true) {
-                                   $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Watchtower' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                } else {
-                                   $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                   $(nTd).html("<td moduleId = 'Watchtower' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                }
                            }
 
@@ -222,12 +232,21 @@
                             "data": "Cortex",
                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                                 if (oData.Cortex == true) {
-                                    $(nTd).html("<td class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Cortex' class='checkboxCell yesCell'><i class='fa fa-check'></i></td>");
                                 } else {
-                                    $(nTd).html("<td class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
+                                    $(nTd).html("<td moduleId = 'Cortex' class='checkboxCell noCell'><i class='fa fa-times'></i></td>");
                                 }
                             }
                         },
+                         {
+                             "data": "UserId", "autoWidth": true,
+                             "fnDrawCallback": function (oSettings) {
+                                 $(oSettings.nTHead).hide();
+                             },
+                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                 $(nTd).html("<td class = 'userIds'>" + oData.UserId + "</td>").hide();
+                             }
+                         }
                     ]
             });
         });
