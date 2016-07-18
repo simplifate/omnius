@@ -21,6 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string CompiledPartialView { get; set; }
         public int CompiledPageId { get; set; }
         public VersionEnum Version {get; set; }
+        public bool IsDeleted { get; set; }
         public virtual ICollection<MozaicEditorComponent> Components { get; set; }
 
         [ImportExportIgnore]
