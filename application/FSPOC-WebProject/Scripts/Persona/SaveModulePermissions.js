@@ -2,6 +2,14 @@
     permissionArray = [];
 
     moduleAccessTable = $("#moduleAccessTable");
+    moduleAccessTable.find("tbody tr").each(function (index, element) {
+        var userId = parseInt($(element).find("td:first").text());
+        permissionArray.push({
+            UserId: userId,
+            Core: $(element).find("td").eq(2).hasClass("yesCell")
+        });
+    });
+
 
 
         alert(moduleAccessTable.html());
