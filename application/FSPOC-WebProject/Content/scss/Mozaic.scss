@@ -43,6 +43,10 @@ body.mozaicEditorModule {
                 font-weight: bold;
                 color: #f1a57a;
             }
+            #headerPageName:hover {
+                color: #2ddef9;
+                cursor: pointer;
+            }
         }
         #gridControlPanel {
             label {

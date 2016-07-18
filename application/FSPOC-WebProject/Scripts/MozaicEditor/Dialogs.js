@@ -121,6 +121,35 @@ $(function () {
             }
             componentPropertiesDialog.dialog("close");
         }
+        renamePageDialog = $("#rename-page-dialog").dialog({
+            autoOpen: false,
+            width: 400,
+            height: 190,
+            buttons: {
+                "Save": function () {
+                    renamePageDialog_SubmitData();
+                },
+                Cancel: function () {
+                    renamePageDialog.dialog("close");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        renamePageDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                renamePageDialog.find("#page-name").val($("#headerPageName").text());
+            }
+        });
+        function renamePageDialog_SubmitData() {
+            renamePageDialog.dialog("close");
+            $("#headerPageName").text(renamePageDialog.find("#page-name").val());
+            ChangedSinceLastSave = true;
+        }
         choosePageDialog = $("#choose-page-dialog").dialog({
             autoOpen: false,
             width: 700,

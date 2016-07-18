@@ -2880,6 +2880,9 @@ body.mozaicEditorModule {
       body.mozaicEditorModule #upperPanel #appInfoPanel #headerAppName, body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName {
         font-weight: bold;
         color: #f1a57a; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName:hover {
+        color: #2ddef9;
+        cursor: pointer; }
     body.mozaicEditorModule #upperPanel #gridControlPanel label {
       color: white; }
     body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {

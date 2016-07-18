@@ -6,6 +6,9 @@ $(function () {
         if (pageId)
             LoadMozaicPage(pageId);
 
+        $("#headerPageName").on("click", function () {
+            renamePageDialog.dialog("open");
+        });
         $("#btnNewPage").on("click", function () {
             newPageDialog.dialog("open");
         });
