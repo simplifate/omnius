@@ -105,7 +105,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                                     Content = childComponent.Content,
                                     Label = childComponent.Label,
                                     Placeholder = childComponent.Placeholder,
-                                    TabIndex = component.TabIndex,
+                                    TabIndex = childComponent.TabIndex,
                                     Properties = childComponent.Properties
                                 });
                             }
