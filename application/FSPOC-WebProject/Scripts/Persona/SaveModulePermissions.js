@@ -2,7 +2,11 @@
     permissionArray = [];
 
     moduleAccessTable = $("#moduleAccessTable");
-    var rows = $("#moduleAccessTable").dataTable().fnGetNodes();
+
+
+        alert(moduleAccessTable.html());
+    
+
    
     moduleAccessTable.find("td.userIds").each(function (index, element) {
         if(index > 0)
