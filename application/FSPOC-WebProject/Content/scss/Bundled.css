@@ -2732,6 +2732,10 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       color: #f06771; }
     .personaModulesModule #lowerPanel #moduleAccessTable .hiddenIdRow {
       display: none; }
+    .personaModulesModule #lowerPanel #moduleAccessTable th.hide_me, .personaModulesModule #lowerPanel #moduleAccessTable td.hide_me {
+      display: none; }
+    .personaModulesModule #lowerPanel #moduleAccessTable tr th:first-child, .personaModulesModule #lowerPanel #moduleAccessTable tr > td:first-child {
+      display: none; }
     .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel {
       position: relative;
       margin-left: 10px;
