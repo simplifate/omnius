@@ -73,6 +73,7 @@ function CreateDroppableMozaicContainer(target, allowNesting) {
             }
             else if(droppedElement.hasClass("bootstrap-row")) {
                 droppedElement.css({left: 20, right: 20, width: "auto"});
+                CreateDroppableMozaicContainer(droppedElement, false);
             }
             else if (droppedElement.hasClass("panel-component")) {
                 droppedElement.css("width", 500);
