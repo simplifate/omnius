@@ -106,7 +106,14 @@
             .hiddenIdRow {
                 display: none;
             }
+            
+            th.hide_me, td.hide_me {
+                display: none;
+
+            }
+
         }
+     
         #personaModulesFormButtonsPanel {
             position: relative;
             margin-left: 10px;
