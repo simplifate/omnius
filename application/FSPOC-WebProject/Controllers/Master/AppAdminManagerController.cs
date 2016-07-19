@@ -84,7 +84,6 @@ namespace FSS.Omnius.Controllers.Master
             try
             {
                 // Entitron Generate Database
-
                 if (app.EntitronChangedSinceLastBuild)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 else
@@ -113,6 +112,10 @@ namespace FSS.Omnius.Controllers.Master
                 app.DbSchemeLocked = true;
                 context.SaveChanges();
 
+                // clear page cache
+                if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
+                    FSPOC_WebProject.Views.MyVirtualPathProvider.ClearAllCache();
+                
                 if (app.EntitronChangedSinceLastBuild)
                 {
                     try

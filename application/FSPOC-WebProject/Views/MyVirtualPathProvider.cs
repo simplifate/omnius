@@ -12,7 +12,25 @@ namespace FSPOC_WebProject.Views
 {
     public class MyVirtualPathProvider: VirtualPathProvider
     {
+        private static List<MyVirtualPathProvider> _all = new List<MyVirtualPathProvider>();
+        public static void ClearAllCache()
+        {
+            foreach(MyVirtualPathProvider provider in _all)
+            {
+                provider.ClearCache();
+            }
+        }
+
         private Dictionary<string, Page> _cache = new Dictionary<string, Page>();
+
+        public MyVirtualPathProvider()
+        {
+            _all.Add(this);
+        }
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
 
         public override bool FileExists(string virtualPath)
         {

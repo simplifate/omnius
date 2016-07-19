@@ -26,8 +26,11 @@ namespace FSS.Omnius.Controllers.Tapestry
             Block block = getBlockWithResource(core, context, appName, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
-            
-            ViewData["tapestry"] = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, null).Item1.OutputData;
+
+            var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, null);
+            if (result.Item2.Id != block.Id)
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId });
+            ViewData["tapestry"] = result.Item1.OutputData;
 
             // fill data
             ViewData["appName"] = core.Entitron.Application.DisplayName;
