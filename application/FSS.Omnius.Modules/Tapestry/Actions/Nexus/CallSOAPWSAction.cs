@@ -50,24 +50,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-
             string serviceName = (string)vars["WSName"];
             string methodName = (string)vars["MethodName"];
-
-            object[] args;
+            
             List<string> parameters = new List<string>();
             IEnumerable<string> urlParams = vars.Keys.Where(k => k.StartsWith("Param[") && k.EndsWith("]"));
-
-            if(urlParams.Count() > 0) {
-                foreach(string key in urlParams) {
-                    parameters.Add((string)vars[key]);
-                }
-                args = parameters.ToArray<object>();
+            
+            foreach(string key in urlParams) {
+                parameters.Add((string)vars[key]);
             }
-            else {
-                args = new object[] { };
-            }
+            object[] args = parameters.ToArray<object>();
 
             NexusWSService svc = new NexusWSService();
             JToken data = svc.CallWebService(serviceName, methodName, args);
