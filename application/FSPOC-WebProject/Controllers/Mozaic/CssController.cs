@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace FSS.Omnius.Controllers.Mozaic
 {
-    [PersonaAuthorize(NeedsAdmin = true)]
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class CssController : Controller
     {
         // GET: Css

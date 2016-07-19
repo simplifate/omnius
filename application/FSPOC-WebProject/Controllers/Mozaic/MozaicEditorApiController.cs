@@ -12,6 +12,7 @@ using Logger;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
+    [System.Web.Mvc.PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class MozaicEditorApiController : ApiController
     {
         [Route("api/mozaic-editor/apps/{appId}/pages")]

@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSPOC_WebProject.Controllers.Mozaic
 {
+    [PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class EditorController : Controller
     {
         // GET: Editor
