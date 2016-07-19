@@ -14,6 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public bool IsModal { get; set; }
         public int? ModalWidth { get; set; }
         public int? ModalHeight { get; set; }
+        public bool IsDeleted { get; set; }
         public List<AjaxMozaicEditorComponent> Components { get; set; }
 
         public AjaxMozaicEditorPage()

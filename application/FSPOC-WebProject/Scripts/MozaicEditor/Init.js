@@ -32,6 +32,9 @@ $(function () {
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");
         });
+        $("#btnDelete").on("click", function () {
+            DeleteMozaicPage();
+        });
         $("#btnToBootstrap").on("click", function () {
             $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
             RecalculateMozaicToolboxHeight();

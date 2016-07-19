@@ -146,3 +146,19 @@ function GetMozaicContainerComponentArray(container, nested) {
     else
         return componentArrayLevel1;
 }
+function DeleteMozaicPage() {
+    pageSpinner.show();
+    appId = $("#currentAppId").val();
+    pageId = $("#currentPageId").val();
+    $.ajax({
+        type: "POST",
+        url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId + "/delete",
+        complete: function () {
+            pageSpinner.hide();
+        },
+        success: function () { alert("OK. Page deleted.") },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
+    });
+}

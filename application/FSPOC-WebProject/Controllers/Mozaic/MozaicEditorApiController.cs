@@ -24,7 +24,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var result = new List<AjaxMozaicEditorPageHeader>();
                 using (var context = new DBEntities())
                 {
-                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.OrderBy(o => o.Name))
+                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
                     {
                         result.Add(new AjaxMozaicEditorPageHeader
                         {
@@ -181,7 +181,26 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+        [Route("api/mozaic-editor/apps/{appId}/pages/{pageId}/delete")]
+        [HttpPost]
+        public void DeletePage(int appId, int pageId)
+        {
+            try
+            {
+                var context = new DBEntities();
+                var page = context.MozaicEditorPages.Find(pageId);
+                page.IsDeleted = true;
+                context.SaveChanges();
 
+                RedirectToRoute("api/mozaic-editor/apps/" + appId, null);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Mozaic editor: error deleting page with id={pageId} (POST api/mozaic-editor/apps/{appId}/pages/{pageId}) " +
+                    $"Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
         private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent,
             MozaicEditorPage page, MozaicEditorComponent parentComponent)
         {
