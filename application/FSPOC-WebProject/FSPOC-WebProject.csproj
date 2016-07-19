@@ -229,15 +229,6 @@
     <Compile Include="Controllers\CORE\Utilities.cs" />
     <Compile Include="Controllers\CORE\ErrorController.cs" />
     <Compile Include="Controllers\Cortex\CortexController.cs" />
-    <Compile Include="Controllers\EPK\FormsController.cs" />
-    <Compile Include="Controllers\EPK\Heap_OrdersController.cs" />
-    <Compile Include="Controllers\EPK\IntervalsController.cs" />
-    <Compile Include="Controllers\EPK\OrdersController.cs" />
-    <Compile Include="Controllers\EPK\PeriodicalsController.cs" />
-    <Compile Include="Controllers\EPK\ReportController.cs" />
-    <Compile Include="Controllers\EPK\SuppliersController.cs" />
-    <Compile Include="Controllers\EPK\TypesController.cs" />
-    <Compile Include="Controllers\EPK\WF_StatesController.cs" />
     <Compile Include="Controllers\Hermes\HermesApiController.cs" />
     <Compile Include="Controllers\Hermes\PlaceholderController.cs" />
     <Compile Include="Controllers\Hermes\LogController.cs" />
@@ -253,7 +244,6 @@
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
-    <Compile Include="Controllers\Mozaic\ViewPageController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
@@ -1560,14 +1550,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Backup\" />
-    <Folder Include="Views\Companies\" />
-    <Folder Include="Views\Forms\" />
-    <Folder Include="Views\Heap_Orders\" />
-    <Folder Include="Views\Interval\" />
-    <Folder Include="Views\Periodicals\" />
     <Folder Include="Views\Persona\Users\" />
-    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
