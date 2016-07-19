@@ -158,6 +158,9 @@ $(function () {
                 "Open": function () {
                     historyDialog_SubmitData();
                 },
+                "Delete": function() {
+                    deleteMozaicPage_SubmitData();
+                },
                 Cancel: function () {
                     choosePageDialog.dialog("close");
                 }
@@ -165,7 +168,7 @@ $(function () {
             open: function (event, ui) {
                 choosePageDialog.find("#page-table:first tbody tr").remove();
                 $("#choose-page-dialog .spinner-2").show();
-                choosePageDialog.data("selectedCommitId", null);
+                choosePageDialog.data("selectedPageId", null);
                 appId = $("#currentAppId").val();
                 $.ajax({
                     type: "GET",
@@ -182,7 +185,7 @@ $(function () {
                         $(document).on('click', 'tr.pageRow', function (event) {
                             choosePageDialog.find("#page-table tbody:nth-child(2) tr").removeClass("highlightedRow");
                             $(this).addClass("highlightedRow");
-                            choosePageDialog.data("selectedCommitId", $(this).attr("pageId"));
+                            choosePageDialog.data("selectedPageId", $(this).attr("pageId"));
                         });
                         $("#choose-page-dialog .spinner-2").hide();
                     }
@@ -190,12 +193,31 @@ $(function () {
             }
         });
         function historyDialog_SubmitData() {
-            if (choosePageDialog.data("selectedCommitId")) {
+            if (choosePageDialog.data("selectedPageId")) {
                 choosePageDialog.dialog("close");
-                LoadMozaicPage(choosePageDialog.data("selectedCommitId"));
+                LoadMozaicPage(choosePageDialog.data("selectedPageId"));
             }
             else
                 alert("Please select a commit");
+        }
+        function deleteMozaicPage_SubmitData() {
+            pageSpinner.show();
+            appId = $("#currentAppId").val();
+            pageId = choosePageDialog.data("selectedPageId");
+            $.ajax({
+                type: "POST",
+                url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId + "/delete",
+                complete: function () {
+                    pageSpinner.hide();
+                },
+                success: function() {
+                    alert("OK. Page deleted.");
+                    choosePageDialog.dialog("close");
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+            });
         }
         newPageDialog = $("#new-page-dialog").dialog({
             autoOpen: false,

@@ -191,8 +191,6 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var page = context.MozaicEditorPages.Find(pageId);
                 page.IsDeleted = true;
                 context.SaveChanges();
-
-                RedirectToRoute("api/mozaic-editor/apps/" + appId, null);
             }
             catch (Exception ex)
             {
