@@ -2732,6 +2732,10 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
       color: #f06771; }
     .personaModulesModule #lowerPanel #moduleAccessTable .hiddenIdRow {
       display: none; }
+    .personaModulesModule #lowerPanel #moduleAccessTable th.hide_me, .personaModulesModule #lowerPanel #moduleAccessTable td.hide_me {
+      display: none; }
+    .personaModulesModule #lowerPanel #moduleAccessTable tr th:first-child, .personaModulesModule #lowerPanel #moduleAccessTable tr > td:first-child {
+      display: none; }
     .personaModulesModule #lowerPanel #personaModulesFormButtonsPanel {
       position: relative;
       margin-left: 10px;
@@ -2880,32 +2884,47 @@ body.mozaicEditorModule {
       body.mozaicEditorModule #upperPanel #appInfoPanel #headerAppName, body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName {
         font-weight: bold;
         color: #f1a57a; }
-    body.mozaicEditorModule #upperPanel #gridControlPanel {
-      position: absolute;
-      left: 100px;
-      top: 200px; }
-      body.mozaicEditorModule #upperPanel #gridControlPanel label {
-        color: white; }
-      body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {
-        margin-left: 8px;
-        margin-right: 14px; }
-      body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
-        margin-left: 6px; }
-    body.mozaicEditorModule #upperPanel #modalControlPanel {
-      position: absolute;
-      left: 440px;
-      top: 200px; }
-      body.mozaicEditorModule #upperPanel #modalControlPanel label {
-        color: white; }
-      body.mozaicEditorModule #upperPanel #modalControlPanel #currentPageIsModal {
-        margin-left: 6px;
-        margin-right: 18px; }
-      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput, body.mozaicEditorModule #upperPanel #modalControlPanel #modalHeightInput {
-        width: 60px;
-        height: 18px;
-        margin-left: 6px; }
-      body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput {
-        margin-right: 18px; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName:hover {
+        color: #2ddef9;
+        cursor: pointer; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel label {
+      color: white; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {
+      margin-left: 8px;
+      margin-right: 14px; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
+      margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel label {
+      color: white; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #currentPageIsModal {
+      margin-left: 6px;
+      margin-right: 18px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput, body.mozaicEditorModule #upperPanel #modalControlPanel #modalHeightInput {
+      width: 60px;
+      height: 18px;
+      margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput {
+      margin-right: 18px; }
+    body.mozaicEditorModule #upperPanel #btnToBootstrap {
+      display: none; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #gridControlPanel {
+    position: absolute;
+    left: 100px;
+    top: 200px; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #modalControlPanel {
+    position: absolute;
+    left: 440px;
+    top: 200px; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #btnToBootstrap {
+    display: initial; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #btnPreview {
+    display: none; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap {
+    height: 205px; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #gridControlPanel {
+      display: none; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #modalControlPanel {
+      display: none; }
   body.mozaicEditorModule #lowerPanel {
     top: 370px;
     padding: 0px; }
@@ -2915,6 +2934,11 @@ body.mozaicEditorModule {
       background: rgba(0, 0, 0, 0.8);
       z-index: 1100;
       display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .bootstrap-editor-cat,
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .toolboxItem.bootstrap-row {
+    display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorBootstrap {
+    top: 280px; }
   body.mozaicEditorModule #mozaicContainer {
     height: 2000px;
     font-family: MyriadPro; }

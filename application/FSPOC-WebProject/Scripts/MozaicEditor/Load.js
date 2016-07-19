@@ -32,6 +32,17 @@
                 $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
                 $("#modalSizeVisualization").show();
             }
+
+            var panels = $(".mozaicEditorAbsolute, .mozaicEditorBootstrap").removeClass("mozaicEditorAbsolute mozaicEditorBootstrap");
+            switch (data.version) {
+                case "0":
+                default:
+                    panels.addClass("mozaicEditorAbsolute");
+                    break;
+                case "1":
+                    panels.addClass("mozaicEditorBootstrap");
+                    break;
+            }
         }
     });
 }
@@ -42,6 +53,8 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
     targetContainer.append(newComponent);
     if (cData.Placeholder)
         newComponent.attr("placeholder", cData.Placeholder);
+    if (cData.TabIndex)
+        newComponent.attr("tabindex", cData.TabIndex);
     if (cData.Properties)
         newComponent.attr("uicProperties", cData.Properties);
     if (newComponent.hasClass("button-simple"))

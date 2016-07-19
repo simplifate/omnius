@@ -43,12 +43,12 @@ body.mozaicEditorModule {
                 font-weight: bold;
                 color: #f1a57a;
             }
+            #headerPageName:hover {
+                color: #2ddef9;
+                cursor: pointer;
+            }
         }
         #gridControlPanel {
-            position: absolute;
-            left: 100px;
-            top: 200px;
-
             label {
                 color: white;
             }
@@ -61,10 +61,6 @@ body.mozaicEditorModule {
             }
         }
         #modalControlPanel {
-            position: absolute;
-            left: 440px;
-            top: 200px;
-
             label {
                 color: white;
             }
@@ -81,6 +77,36 @@ body.mozaicEditorModule {
                 margin-right: 18px;
             }
         }
+        #btnToBootstrap {
+            display: none;
+        }
+    }
+    #upperPanel.mozaicEditorAbsolute {
+        #gridControlPanel {
+            position: absolute;
+            left: 100px;
+            top: 200px;
+        }
+        #modalControlPanel {
+            position: absolute;
+            left: 440px;
+            top: 200px;
+        }
+        #btnToBootstrap {
+            display: initial;
+        }
+        #btnPreview{
+            display: none;
+        }
+    }
+    #upperPanel.mozaicEditorBootstrap {
+        height: 205px;
+        #gridControlPanel {
+            display: none;
+        }
+        #modalControlPanel {
+            display: none;
+        }
     }
 
     #lowerPanel {
@@ -94,6 +120,15 @@ body.mozaicEditorModule {
             z-index: 1100;
             display: none;
         }
+    }
+    #lowerPanel.mozaicEditorAbsolute {
+        .bootstrap-editor-cat,
+        .toolboxItem.bootstrap-row {
+            display: none;
+        }
+    }
+    #lowerPanel.mozaicEditorBootstrap {
+        top: 280px;
     }
     #mozaicContainer {
         height: 2000px;

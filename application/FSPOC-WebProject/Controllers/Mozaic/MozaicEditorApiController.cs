@@ -81,6 +81,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                             Content = component.Content,
                             Label = component.Label,
                             Placeholder = component.Placeholder,
+                            TabIndex = component.TabIndex,
                             Properties = component.Properties ?? ""
                         };
                         if (component.ChildComponents.Count > 0)
@@ -104,6 +105,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                                     Content = childComponent.Content,
                                     Label = childComponent.Label,
                                     Placeholder = childComponent.Placeholder,
+                                    TabIndex = childComponent.TabIndex,
                                     Properties = childComponent.Properties
                                 });
                             }
@@ -197,6 +199,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 Content = ajaxComponent.Content,
                 Label = ajaxComponent.Label,
                 Placeholder = ajaxComponent.Placeholder,
+                TabIndex = ajaxComponent.TabIndex,
                 Properties = ajaxComponent.Properties,
                 MozaicEditorPage = page
             };

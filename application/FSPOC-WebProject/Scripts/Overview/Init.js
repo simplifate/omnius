@@ -71,6 +71,7 @@ $(function () {
                         instance.removeAllEndpoints(options.$trigger, true);
                         options.$trigger.remove();
                         ChangedSinceLastSave = true;
+                        SaveMetablock();
                         break;
                     }
                     case "initial": {

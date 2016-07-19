@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "mozaicEditorModule";
 }
-<div id="upperPanel">
+<div id="upperPanel" class="mozaicEditorAbsolute">
     <div class="panelLabel">Mozaic visual editor</div>
     <svg class="backgroundDecoration" width="540px" height="357px">
         <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
@@ -18,6 +18,10 @@
         <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
         <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
         <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+        @{
+            //<button id="btnToBootstrap" class="btn-omnius-rectangular">Do Bootstrap</button>
+            //<button id="btnPreview" class="btn-omnius-rectangular">Náhled</button>
+        }
     </div>
     <div id="appInfoPanel">
         App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
@@ -50,7 +54,7 @@
     <div class="panelLabel">Mozaic visual editor</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
-<div id="lowerPanel">
+<div id="lowerPanel" class="mozaicEditorAbsolute">
     <div id="lowerPanelSpinnerOverlay">
         <div class="spinner-2 largeSpinner">
             <div class="double-bounce1"></div>
@@ -61,6 +65,9 @@
         <div id="mozaicLeftBar">
             <div class="leftBarHeader">Paleta</div>
             <div id="hideMozaicTooboxIcon" class="fa fa-caret-left"></div>
+            <hr class="toolboxCategoryHr bootstrap-editor-cat" />
+            <div class="toolboxCategoryLabel bootstrap-editor-cat">Bootstrap row</div>
+            <div class="toolboxItem panel-component bootstrap-row"></div>
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Buttons</div>
             <button class="toolboxItem button-simple button-large" uicClasses="button-simple button-large">Large button</button>
@@ -293,6 +300,10 @@
                     <td><input type="text" name="component-placeholder" id="component-placeholder" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
                 <tr>
+                    <td><label for="component-tabindex">TabIndex</label></td>
+                    <td><input type="text" name="component-tabindex" id="component-tabindex" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
                     <td><label for="component-content">Content</label></td>
                     <td><input type="text" name="component-content" id="component-content" value="" class="text ui-widget-content ui-corner-all"></td>
                 </tr>
@@ -328,7 +339,15 @@
     <form>
         <fieldset>
             <label for="new-page-name">Page name</label>
-            <input type="text" name="new-page-name" id="new-page-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+            <input type="text" name="new-page-name" id="new-page-name" value="" class="text ui-widget-content ui-corner-all" style="width: 365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-page-dialog" title="Rename page">
+    <form>
+        <fieldset>
+            <label for="page-name">Choose a new name</label>
+            <input type="text" name="page-name" id="page-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
         </fieldset>
     </form>
 </div>

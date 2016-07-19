@@ -16,9 +16,10 @@
         <button id="btnSave" class="btn-omnius-rectangular">Save</button>
         <button id="btnLoad" class="btn-omnius-rectangular">Load</button>
         <button id="btnClear" class="btn-omnius-rectangular">Clear</button>
-        <hr />
-        <button id="btnGoUp" class="btn-omnius-rectangular" @((int) ViewData["parentMetablockId"] == 0 ? "disabled=disabled" : "")>Go up</button>
+        <hr/>
         <button id="btnTrash" class="btn-omnius-rectangular">Trash</button>
+        <hr/>
+        <button id="btnGoUp" class="btn-omnius-rectangular" @((int) ViewData["parentMetablockId"] == 0 ? "disabled=disabled" : "")>Go up</button>
     </div>
     <div id="overviewPanel">
         <div class="scrollArea">

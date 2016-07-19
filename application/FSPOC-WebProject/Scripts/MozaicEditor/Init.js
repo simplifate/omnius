@@ -6,6 +6,9 @@ $(function () {
         if (pageId)
             LoadMozaicPage(pageId);
 
+        $("#headerPageName").on("click", function () {
+            renamePageDialog.dialog("open");
+        });
         $("#btnNewPage").on("click", function () {
             newPageDialog.dialog("open");
         });
@@ -29,6 +32,11 @@ $(function () {
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");
         });
+        $("#btnToBootstrap").on("click", function () {
+            $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
+            RecalculateMozaicToolboxHeight();
+            convertAbsoluteToBootstrap();
+        })
 
         $("#hideMozaicTooboxIcon").on("click", function () {
             $("#mozaicLeftBar").hide();
@@ -156,6 +164,11 @@ $(function () {
         $(window).resize(function () {
             RecalculateMozaicToolboxHeight();
         });
+
+        function convertAbsoluteToBootstrap() {
+
+        }
+
     } else if (CurrentModuleIs("mozaicComponentManagerModule")) {
         $(window).on("scroll resize", function () {
             var scrollTop = $(window).scrollTop();
@@ -171,4 +184,5 @@ $(function () {
             }
         })
     }
+
 });
