@@ -18,15 +18,10 @@
             Athena: ($(rows[i]).find("td[moduleId=Athena]").hasClass("yesCell")),
             Watchtower: ($(rows[i]).find("td[moduleId=Watchtower]").hasClass("yesCell")),
             Cortex: ($(rows[i]).find("td[moduleId=Cortex]").hasClass("yesCell")),
-
+            Mozaic: ($(rows[i]).find("td[moduleId=Mozaic]").hasClass("yesCell"))
         });
     }
    
-
-
-
-    
-    
     postData = {
         PermissionList: permissionArray
     };
