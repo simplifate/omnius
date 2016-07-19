@@ -14,6 +14,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public PersonaAppRole()
         {
             ActionRuleRights = new HashSet<ActionRuleRight>();
+            Users = new HashSet<User_Role>();
         }
 
         [ImportExportIgnore(IsKey = true)]

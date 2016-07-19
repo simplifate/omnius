@@ -6,12 +6,10 @@ using System.Web.Mvc;
 using System.Linq;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity;
-using T = FSS.Omnius.Modules.Tapestry;
 using C = FSS.Omnius.Modules.CORE;
-using E = FSS.Omnius.Modules.Entitron;
 using System.Collections.Generic;
-using System.IO;
 using System.Data;
+using System.Data.Entity;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -25,9 +23,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             DBEntities context = core.Entitron.GetStaticTables();
             core.Entitron.AppName = appName;
 
-            Block block = blockIdentify != null
-                ? context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify)
-                : context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+            Block block = getBlockWithResource(core, context, appName, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
             
@@ -252,9 +248,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             DBEntities context = core.Entitron.GetStaticTables();
             core.Entitron.AppName = appName;
 
-            Block block = blockIdentify != null
-                ? context.Blocks.SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify)
-                : context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+            Block block = getBlockWithWF(core, context, appName, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -263,6 +257,31 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // redirect
             return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+        }
+
+        private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)
+        {
+            return blockName != null
+                ? context.Blocks
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+                    .Include(b => b.SourceTo_ActionRules)
+                    .SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+                : context.Blocks
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+                    .Include(b => b.SourceTo_ActionRules)
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+        }
+        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+        {
+            return blockName != null
+                ? context.Blocks
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+                    .Include(b => b.SourceTo_ActionRules)
+                    .SingleOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
         }
     }
 }

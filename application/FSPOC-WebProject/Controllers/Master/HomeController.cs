@@ -15,7 +15,7 @@ namespace FSS.Omnius.Controllers.Master
         private List<Application> getAppList()
         {
             Modules.CORE.CORE core = HttpContext.GetCORE();
-            User currentUser = User.GetLogged(core);
+            User currentUser = HttpContext.GetLoggedUser();
             try
             {
                 return core.Entitron.GetStaticTables().Applications.Where(a =>

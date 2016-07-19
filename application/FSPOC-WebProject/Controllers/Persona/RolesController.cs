@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
@@ -21,7 +22,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             ViewBag.Saved = false;
 
-            using (var context = new DBEntities())
+            using (var context = HttpContext.GetCORE().Entitron.GetStaticTables())
             {
                 #region Getting app
                 Application app;
@@ -52,10 +53,10 @@ namespace FSPOC_WebProject.Controllers.Persona
                 #endregion
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ApplicationId == app.Id);
+                var roles = context.Roles.Where(c => c.ApplicationId == app.Id).Include("Users");
 
                 int x = 0;
-                foreach (var role in roles)
+                foreach (PersonaAppRole role in roles)
                 {
                     #region Data column prepare
                     //Creating a column length of rowHeaders.Count

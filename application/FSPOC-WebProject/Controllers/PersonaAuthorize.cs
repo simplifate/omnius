@@ -4,7 +4,6 @@ using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace System.Web.Mvc
@@ -25,8 +24,7 @@ namespace System.Web.Mvc
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             CORE core = filterContext.HttpContext.GetCORE();
-            IPrincipal contextUser = filterContext.HttpContext.User;
-            User user = contextUser.GetLogged(core);
+            User user = filterContext.HttpContext.GetLoggedUser();
 
             // not logged
             if (user == null)
@@ -36,11 +34,12 @@ namespace System.Web.Mvc
                 // SAML -> create new user
                 if (filterContext.HttpContext.User.Identity.AuthenticationType == "ApplicationCookie")
                 {
+                    string username = filterContext.HttpContext.User.Identity.Name;
                     user = new User
                     {
-                        UserName = contextUser.Identity.Name,
-                        DisplayName = contextUser.Identity.Name,
-                        Email = contextUser.Identity.Name,
+                        UserName = username,
+                        DisplayName = username,
+                        Email = username,
                         isLocalUser = true,
                         localExpiresAt = DateTime.UtcNow,
                         LastLogin = DateTime.UtcNow,

@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// <param name="tempVars"></param>
         public void PreRun(ActionResult results)
         {
-            var aars = ActionRule_Actions.Where(aar => aar.Order < PreFunctionCount).OrderBy(aar => aar.Order);
+            var aars = ActionRule_Actions.Where(aar => aar.Order < PreFunctionCount).OrderBy(aar => aar.Order).ToList();
 
             InnerRun(results, aars);
         }

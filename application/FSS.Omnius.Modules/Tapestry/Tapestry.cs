@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Data.Entity;
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry
@@ -167,7 +168,9 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // check
-            var swimlaneARs = hasAnonnymousAccess ? ARs.Where(ar => !ar.ActionRuleRights.Any()) : ARs.Where(ar => ar.ActionRuleRights.Any(arr => arr.AppRoleId == role.Id));
+            var swimlaneARs = hasAnonnymousAccess
+                ? ARs.Where(ar => !ar.ActionRuleRights.Any()).ToList()
+                : ARs.Where(ar => ar.ActionRuleRights.Any(arr => arr.AppRoleId == role.Id)).ToList();
             ActionRule defaultRule = null;
             foreach (ActionRule rule in swimlaneARs)
             {
