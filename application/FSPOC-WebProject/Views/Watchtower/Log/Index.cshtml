@@ -1,9 +1,13 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
+@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@using FSS.Omnius.Modules.Entitron.Entity.Master;
+
 @model List<AjaxLogItem>
 @{
     Page.Title = "Omnius Watchtower - Log";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "watchtowerModule";
+
 }
 <div id="upperPanel">
     <div id="watchtowerFormResponiveArea">
@@ -32,9 +36,17 @@
                     <td>
                         <select id="filterSelectUser" name="user">
                             <option value="all">Všichni</option>
-                            <option value="0">Anonym</option>
-                            <option value="1">Samuel Lachman</option>
-                            <option value="2">Martin Novák</option>
+                            @foreach (User user in (List<User>)ViewData["users"])
+                            {
+                                if ((ViewData["user"]).ToString() != "all" && user.Id == Convert.ToInt32(ViewData["user"]))
+                                {
+                                  <option value="@user.Id" selected>@user.DisplayName</option>
+                                }
+                                else {
+                                <option value="@user.Id">@user.DisplayName</option>
+                                }
+                            }
+
                         </select>
                     </td>
                     <td><label for="message">Zpráva</label></td>
@@ -61,11 +73,20 @@
                 <tr>
                     <td><label for="source">Zdroj</label></td>
                     <td>
+
                         <select id="filterSelectSource" name="source">
                             <option value="all">Vše</option>
-                            <option value="platform">Platforma Omnius</option>
-                            <option value="0">Aplikace "Rezervace služeb"</option>
-                            <option value="1">Aplikace "Překlady"</option>
+                            @foreach (Application app in (List<Application>)ViewData["apps"])
+                            {
+
+                                if ((ViewData["source"]).ToString() != "all" && app.Id == Convert.ToInt32(ViewData["source"]))
+                                {
+                                    <option value="@app.Id" selected>@app.Name</option>
+                                }
+                                else {
+                                    <option value="@app.Id">@app.Name</option>
+                                }
+                            }
                         </select>
                     </td>
                     <td><label for="time-to">Čas (do)</label></td>

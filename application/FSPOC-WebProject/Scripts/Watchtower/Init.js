@@ -6,4 +6,13 @@
     $("#filterSearchMessage").val($("#previousSearchMessage").val());
     $("#filterSearchTimeFrom").val($("#previousSearchTimeFrom").val());
     $("#filterSearchTimeTo").val($("#previousSearchTimeTo").val());
+
+    $("#filterSearchTimeFrom,#filterSearchTimeTo").datetimepicker({
+        datepicker: true, 
+        timepicker: true, 
+        step: 5, 
+        format: "d-m-Y H:i"
+       
+    }); 
+
 });

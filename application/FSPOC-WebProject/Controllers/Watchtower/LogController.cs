@@ -17,6 +17,11 @@ namespace FSS.Omnius.Controllers.Watchtower
                 List<LogItem> searchResults = new List<LogItem>();
                 List<AjaxLogItem> model = new List<AjaxLogItem>();
 
+                //all USers
+                ViewData["users"] = context.Users.ToList();
+                //all Applications
+                ViewData["apps"] = context.Applications.ToList();
+
                 if (Request.HttpMethod == "POST")
                 {
                     bool filterByLevel = formParams["level"] != "all";
@@ -36,8 +41,9 @@ namespace FSS.Omnius.Controllers.Watchtower
                     bool limitByTimeTo = formParams["time-to"] != "";
                     DateTime timeFrom = new DateTime();
                     DateTime timeTo = new DateTime();
-                    bool timeFromOK = limitByTimeFrom ? DateTime.TryParse(formParams["time-from"], out timeFrom) : true;
-                    bool timeToOK = limitByTimeTo ? DateTime.TryParse(formParams["time-to"], out timeTo) : true;
+                    string format = "dd-MM-yyyy HH:mm";
+                    bool timeFromOK = DateTime.TryParseExact(formParams["time-from"], format, null, System.Globalization.DateTimeStyles.None, out timeFrom);
+                    bool timeToOK = DateTime.TryParseExact(formParams["time-to"], format, null, System.Globalization.DateTimeStyles.None, out timeTo);
 
                     if (!timeFromOK || !timeToOK)
                         ViewData["timeFormatError"] = true;
@@ -74,6 +80,9 @@ namespace FSS.Omnius.Controllers.Watchtower
                     ViewData["message"] = "";
                     ViewData["time-from"] = "";
                     ViewData["time-to"] = "";
+
+         
+
                 }
 
                 foreach (var r in searchResults)
