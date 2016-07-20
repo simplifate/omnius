@@ -32,9 +32,6 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
             if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password))
             {
-                string url = ws.GetType().GetProperty("Url").GetValue(ws) as string;
-                Uri uri = new Uri(url);
-
                 ws.GetType().GetProperty("PreAuthenticate").SetValue(ws, true);
                 ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password));
             }
