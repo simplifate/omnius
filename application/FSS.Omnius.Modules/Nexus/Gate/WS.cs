@@ -36,17 +36,30 @@ namespace FSS.Omnius.Modules.Nexus.Gate
                 Uri uri = new Uri(url);
 
                 ws.GetType().GetProperty("PreAuthenticate").SetValue(ws, true);
-                ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password, uri.Host));
+                ws.GetType().GetProperty("Credentials").SetValue(ws, new NetworkCredential(row.Auth_User, row.Auth_Password));
             }
 
             MethodInfo mi = ws.GetType().GetMethod(methodName);
 
             object response = mi.Invoke(ws, args);
+            string jsonText;
+           
+            try
+            {
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(response as string);
 
-            XmlDocument xml = new XmlDocument();
-            xml.LoadXml(response as string);
-
-            string jsonText = JsonConvert.SerializeXmlNode(xml);
+                jsonText = JsonConvert.SerializeXmlNode(xml);
+            }
+            catch(Exception e)
+            {
+                if (e is ArgumentNullException || e is XmlException)
+                {
+                    jsonText = JsonConvert.SerializeObject(response);
+                }
+                else
+                    throw e;
+            }
             JToken json = JToken.Parse(jsonText);
 
             return json;

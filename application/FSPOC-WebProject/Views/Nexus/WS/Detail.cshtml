@@ -24,7 +24,7 @@
                 <td>@Html.DisplayNameFor(model => model.WSDL_File)</td>
                 <td>
                     <button id="btnShowWsdlFile" onclick="ShowWsdlButtonClick(this)">Náhled</button>
-                    <div class="wsdlFileString">@(HttpUtility.HtmlEncode(UTF8Encoding.UTF8.GetString(Model.WSDL_File)))</div>
+                    <div class="wsdlFileString">@(Model.WSDL_File != null ? HttpUtility.HtmlEncode(UTF8Encoding.UTF8.GetString(Model.WSDL_File)) : "")</div>
                 </td>
             </tr>
         }
