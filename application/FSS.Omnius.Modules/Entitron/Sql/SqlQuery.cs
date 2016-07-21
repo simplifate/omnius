@@ -174,12 +174,12 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 a.Precision = decA.Precision;
                 a.Scale = decA.Scale;
                 _datatypes[key] = string.Format("{0}({1}, {2})", a.SqlDbType.ToString(),
-                    (a.Precision != -1) ? a.Precision.ToString() : "18", (a.Scale != -1) ? a.Scale.ToString() : "0");
+                    (a.Precision != 0) ? a.Precision.ToString() : "18", (a.Scale != 0) ? a.Scale.ToString() : "0");
             }
             else if (type == "Float")
             {
                 _datatypes[key] = string.Format("{0}({1})", a.SqlDbType.ToString(),
-                   (a.Precision != -1||a.Precision!=null) ? a.Precision.ToString() : "53");
+                   (a.Precision != 0) ? a.Precision.ToString() : "53");
             }
             else
             {
