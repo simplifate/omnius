@@ -36,6 +36,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Tag { get; set; }
         public string Attributes { get; set; }
         public string Classes { get; set; }
+        public string BootstrapClasses { get; set; }
         public string Styles { get; set; }
         public string Content { get; set; }
 

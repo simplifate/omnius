@@ -935,6 +935,10 @@
     <Compile Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.Designer.cs">
       <DependentUpon>201607181414222_AddMozaicEditorPageIsDeletedColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607211141272_add-bootstrap-classes.cs" />
+    <Compile Include="Migrations\201607211141272_add-bootstrap-classes.Designer.cs">
+      <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1493,6 +1497,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607181414222_AddMozaicEditorPageIsDeletedColumn.resx">
       <DependentUpon>201607181414222_AddMozaicEditorPageIsDeletedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607211141272_add-bootstrap-classes.resx">
+      <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
