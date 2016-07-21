@@ -20,7 +20,6 @@ namespace FSS.Omnius.Modules.Nexus.Service
         }
         private void finishDownload(IAsyncResult result)
         {
-            int statusCode = 0;
             WebDavAsyncState downloadAsyncState = (WebDavAsyncState)result.AsyncState;
             HttpWebRequest httpWebRequest = downloadAsyncState.Request;
 
@@ -36,7 +35,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
                         {
                             currentMetadataItem = context.FileMetadataRecords.Find(downloadAsyncState.Metadata.Id);
                         }
-                        catch(InvalidOperationException ex)
+                        catch(InvalidOperationException)
                         {
                             currentMetadataItem = downloadAsyncState.Metadata;
                             context.FileMetadataRecords.Add(currentMetadataItem);
