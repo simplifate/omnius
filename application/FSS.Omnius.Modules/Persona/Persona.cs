@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Persona
     using Entitron.Entity;
     using Entitron.Entity.CORE;
     using Entitron.Entity.Persona;
-    
+    using Tapestry.Actions.AuctionSystem;
     public class Persona : IModule
     {
         private TimeSpan _expirationTime;
@@ -213,5 +213,13 @@ namespace FSS.Omnius.Modules.Persona
             // save
             context.SaveChanges();
         }
+
+        public void RefreshUsers(List<User> users)
+        {
+            
+        }
+
     }
+
+  
 }
