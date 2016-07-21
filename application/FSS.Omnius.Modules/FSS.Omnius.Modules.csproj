@@ -960,6 +960,7 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tapestry\Actions\AuctionSystem\GetWSO_Users.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
