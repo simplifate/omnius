@@ -96,14 +96,6 @@ namespace FSPOC_WebProject
                 namespaces: new string[] { "FSS.Omnius.Controllers.Watchtower" }
             );
 
-            // EPK
-            routes.MapRoute(
-                name: "EPK",
-                url: "EPK/{controller}/{action}/{id}",
-                defaults: new { controller = "Orders", action = "Index", id = UrlParameter.Optional },
-                namespaces: new string[] { "FSS.Omnius.Controllers.EPK" }
-            );
-
             // RUN
             routes.MapRoute(
                 name: "Run",
