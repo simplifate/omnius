@@ -162,7 +162,7 @@ namespace FSS.Omnius.Modules.Hermes
 
                             att = new Attachment(fileContent, fileInfo.Filename);
                         }
-                        catch(NullReferenceException e)
+                        catch(NullReferenceException)
                         {
                             WatchtowerLogger.Instance.LogEvent(
                                 String.Format("Odeslání e-mailu se nezdařilo - příloha <b>{0}</b> nebyla nalezena", attachmentList[i]["Value"].ToString()),

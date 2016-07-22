@@ -600,11 +600,10 @@ namespace FSPOC_WebProject.Controllers.Persona
         [HttpPost]
         public ActionResult Edit(User model)
         {
-            IdentityResult result = null;
             if (ModelState.IsValid)
             {
                 DBEntities e = new DBEntities();
-                FSS.Omnius.Modules.Entitron.Entity.Persona.User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
+                User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
                 e.Users.AddOrUpdate(user, model);
                 e.SaveChanges();
                 ViewBag.ShowTable = false;

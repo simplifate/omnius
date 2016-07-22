@@ -87,7 +87,7 @@ namespace FSS.Omnius.Modules.Cortex
             try {
                 var response = client.Jobs.Delete(jobId);
             }
-            catch(Hyak.Common.CloudException e) {}
+            catch(Hyak.Common.CloudException) {}
         }
         
         #region tools

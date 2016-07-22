@@ -23,47 +23,27 @@ namespace System.Web.Mvc
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            // Allow Anonymous
+            if (filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
+                || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
+                return;
+
             CORE core = filterContext.HttpContext.GetCORE();
             User user = filterContext.HttpContext.GetLoggedUser();
 
             // not logged
             if (user == null)
             {
-                Task<IdentityResult> createUserTaks = null;
-
-                // SAML -> create new user
-                if (filterContext.HttpContext.User.Identity.AuthenticationType == "ApplicationCookie")
-                {
-                    string username = filterContext.HttpContext.User.Identity.Name;
-                    user = new User
+                filterContext.Result = new RedirectToRouteResult(
+                    "Persona",
+                    new Web.Routing.RouteValueDictionary(new
                     {
-                        UserName = username,
-                        DisplayName = username,
-                        Email = username,
-                        isLocalUser = true,
-                        localExpiresAt = DateTime.UtcNow,
-                        LastLogin = DateTime.UtcNow,
-                        LastLogout = DateTime.UtcNow,
-                        CurrentLogin = DateTime.UtcNow
-                    };
-                    createUserTaks = filterContext.HttpContext.GetOwinContext().Get<ApplicationUserManager>().CreateAsync(user, "".Random(20) + "".Random(2, "_-+=<>;:,.") + "".Random(3, "1234567890"));
-                    createUserTaks.Wait();
-                }
-
-                // redirect
-                if (createUserTaks == null || !createUserTaks.Result.Succeeded)
-                {
-                    filterContext.Result = new RedirectToRouteResult(
-                        "Persona",
-                        new Web.Routing.RouteValueDictionary(new
-                        {
-                            @controller = "Account",
-                            @action = "Login",
-                            @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
-                        })
-                    );
-                    return;
-                }
+                        @controller = "Account",
+                        @action = "Login",
+                        @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
+                    })
+                );
+                return;
             }
 
             // Module

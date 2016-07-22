@@ -17,7 +17,7 @@ namespace FSPOC_WebProject
         {
             ViewEngines        .Engines.Clear();
             ViewEngines        .Engines.Add(new MyRazorViewEngine());
-            ViewEngines        .Engines.Add(new MyWebFormViewEngine());
+            //ViewEngines        .Engines.Add(new MyWebFormViewEngine());
             AreaRegistration   .RegisterAllAreas();
             UnityConfig        .RegisterComponents();
             GlobalConfiguration.Configure(WebApiConfig.Register);
