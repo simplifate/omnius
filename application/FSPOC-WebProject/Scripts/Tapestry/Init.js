@@ -366,6 +366,7 @@ $(function () {
                         if (droppedElement.hasClass("toolboxSymbol")) {
                             droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
                             droppedElement.addClass("symbol");
+                            droppedElement.css({ height: "" });
                             leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
                             topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                         }

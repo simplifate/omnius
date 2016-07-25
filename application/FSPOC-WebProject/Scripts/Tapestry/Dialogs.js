@@ -531,7 +531,7 @@ $(function () {
                 },
                 Cancel: function () {
                     labelPropertyDialog.dialog("close");
-                    CurrentItem.removeClass("activeItem");
+                    CurrentItem.removeClass("activeItem processedItem");
                 }
             },
             open: function () {

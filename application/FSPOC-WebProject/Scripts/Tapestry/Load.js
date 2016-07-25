@@ -206,8 +206,8 @@
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
                         if (currentItemData.TypeClass === "symbol" && currentItemData.SymbolType === "comment") {
-                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + currentItemData.PositionX + 'px; top: '
-                            + currentItemData.PositionY + 'px;"> <img src="/Content/images/TapestryIcons/comment.png" /> <span class="itemLabel" style="left: 6px; top:6px; position:absolute;">'
+                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + currentItemData.PositionX +
+                            'px; top: ' + currentItemData.PositionY + 'px; width: 30px; padding: 3px; border: 2px solid grey; border-right: none; min-height: 60px;"> <span class="itemLabel">'
                             + currentItemData.Label + '</span></div>');
                         }else if (currentItemData.TypeClass == "symbol") {
                             newItem = $('<img id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="' + currentItemData.SymbolType +
@@ -288,6 +288,7 @@
                             if (droppedElement.hasClass("toolboxSymbol")) {
                                 droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
                                 droppedElement.addClass("symbol");
+                                droppedElement.css({ height: "" });
                                 leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
                                 topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
                             }
