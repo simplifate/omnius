@@ -270,5 +270,52 @@ $(function () {
                 }
             });
         }
+        trashPageDialog = $("#trash-page-dialog").dialog({
+            autoOpen: false,
+            width: 700,
+            height: 540,
+            buttons: {
+                "Load": function () {
+                    trashPageDialog_SubmitData();
+                },
+                Cancel: function () {
+                    trashPageDialog.dialog("close");
+                }
+            },
+            open: function (event, ui) {
+                trashPageDialog.find("#trash-page-table:first tbody tr").remove();
+                $("#trash-page-dialog .spinner-2").show();
+                trashPageDialog.data("selectedPageId", null);
+                appId = $("#currentAppId").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/api/mozaic-editor/apps/" + appId + "/deletedPages",
+                    dataType: "json",
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
+                    success: function (data) {
+                        tbody = trashPageDialog.find("#trash-page-table tbody:nth-child(2)");
+                        for (i = 0; i < data.length; i++) {
+                            tbody.append($('<tr class="pageRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>'));
+                        }
+                        $(document).on('click', 'tr.pageRow', function (event) {
+                            trashPageDialog.find("#trash-page-table tbody:nth-child(2) tr").removeClass("highlightedRow");
+                            $(this).addClass("highlightedRow");
+                            trashPageDialog.data("selectedPageId", $(this).attr("pageId"));
+                        });
+                        $("#trash-page-dialog .spinner-2").hide();
+                    }
+                });
+            }
+        });
+        function trashPageDialog_SubmitData() {
+            if (trashPageDialog.data("selectedPageId")) {
+                trashPageDialog.dialog("close");
+                LoadMozaicPage(trashPageDialog.data("selectedPageId"));
+            }
+            else
+                alert("Please select a commit");
+        }
     }
 });

@@ -32,12 +32,14 @@ $(function () {
         $("#btnLoad").on("click", function () {
             LoadMozaicPage("current");
         });
-        $("#btnToBootstrap").on("click", function () {
+        $("#btnTrashPage").on("click", function () {
+            trashPageDialog.dialog("open");
+        });
+        $("#btnToBootstrap").on("click", function() {
             $(".mozaicEditorAbsolute").removeClass("mozaicEditorAbsolute").addClass("mozaicEditorBootstrap");
             RecalculateMozaicToolboxHeight();
             convertAbsoluteToBootstrap();
-        })
-
+        });
         $("#hideMozaicTooboxIcon").on("click", function () {
             $("#mozaicLeftBar").hide();
             $("#mozaicLeftBarMinimized").show();

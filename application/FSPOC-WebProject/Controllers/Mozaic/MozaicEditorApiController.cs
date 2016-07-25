@@ -113,6 +113,14 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         }
                         result.Components.Add(ajaxComponent);
                     }
+
+                    // Renew deleted page
+                    if (requestedPage.IsDeleted)
+                    {                       
+                        requestedPage.IsDeleted = false;
+                        context.SaveChanges();
+                    }
+                    
                     return result;
                 }
             }
@@ -171,6 +179,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     requestedPage.ModalHeight = postData.ModalHeight;
                     foreach (var ajaxComponent in postData.Components)
                         requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                    requestedPage.IsDeleted = false;
                     context.SaveChanges();
                 }
             }
@@ -195,6 +204,33 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             catch (Exception ex)
             {
                 var errorMessage = $"Mozaic editor: error deleting page with id={pageId} (POST api/mozaic-editor/apps/{appId}/pages/{pageId}) " +
+                    $"Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+        [Route("api/mozaic-editor/apps/{appId}/deletedPages")]
+        [HttpGet]
+        public IEnumerable<AjaxMozaicEditorPageHeader> GetDeletedPageList(int appId)
+        {
+            try
+            {
+                var result = new List<AjaxMozaicEditorPageHeader>();
+                using (var context = new DBEntities())
+                {
+                    foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name))
+                    {
+                        result.Add(new AjaxMozaicEditorPageHeader
+                        {
+                            Id = page.Id,
+                            Name = page.Name ?? "(nepojmenovaná stránka)"
+                        });
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Mozaic editor: error loading deleted page list (GET api/mozaic-editor/apps/{appId}/deletedPages) " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }

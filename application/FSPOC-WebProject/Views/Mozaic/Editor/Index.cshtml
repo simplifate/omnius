@@ -18,6 +18,7 @@
         <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
         <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
         <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+        <button id="btnTrashPage" class="btn-omnius-rectangular">Trash</button>
         @{
             //<button id="btnToBootstrap" class="btn-omnius-rectangular">Do Bootstrap</button>
             //<button id="btnPreview" class="btn-omnius-rectangular">Náhled</button>
@@ -347,7 +348,23 @@
     <form>
         <fieldset>
             <label for="page-name">Choose a new name</label>
-            <input type="text" name="page-name" id="page-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+            <input type="text" name="page-name" id="page-name" value="" class="text ui-widget-content ui-corner-all" style="width: 365px;">
         </fieldset>
     </form>
+</div>
+<div id="trash-page-dialog" title="Deleted pages">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="trash-page-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
 </div>
