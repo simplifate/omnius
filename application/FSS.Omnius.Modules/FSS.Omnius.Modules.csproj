@@ -939,6 +939,10 @@
     <Compile Include="Migrations\201607211141272_add-bootstrap-classes.Designer.cs">
       <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607250917494_AddUserIsActiveColumn2.cs" />
+    <Compile Include="Migrations\201607250917494_AddUserIsActiveColumn2.Designer.cs">
+      <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1501,6 +1505,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607211141272_add-bootstrap-classes.resx">
       <DependentUpon>201607211141272_add-bootstrap-classes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607250917494_AddUserIsActiveColumn2.resx">
+      <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

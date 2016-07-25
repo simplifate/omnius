@@ -43,6 +43,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [Required]
         public DateTime? localExpiresAt { get; set; }
 
+        public bool isActive { get; set; }
+
         public int? DesignAppId { get; set; }
         
         public virtual ICollection<ADgroup_User> ADgroup_Users { get; set; }
@@ -90,6 +92,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
             if (updateFrom.localExpiresAt != null)
                 localExpiresAt = updateFrom.localExpiresAt;
+
+            //if (updateFrom.isActive != null)
+            //    isActive = updateFrom.isActive;
         }
 
      
