@@ -534,14 +534,6 @@ $(function () {
                     CurrentItem.removeClass("activeItem");
                 }
             },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        labelPropertyDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
             open: function () {
                 labelPropertyDialog.find("#label-input").val(CurrentItem.find(".itemLabel").text());
             }
