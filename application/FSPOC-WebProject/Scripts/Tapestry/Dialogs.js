@@ -521,11 +521,35 @@ $(function () {
                 actionPropertiesDialog.find("#output-variables").val(CurrentItem.data("outputVariables"));
             }
         });
-        function actionPropertiesDialog_SubmitData() {
-            CurrentItem.data("inputVariables", actionPropertiesDialog.find("#input-variables").val());
-            CurrentItem.data("outputVariables", actionPropertiesDialog.find("#output-variables").val());
-            CurrentItem.removeClass("activeItem");
-            actionPropertiesDialog.dialog("close");
+        labelPropertyDialog = $("#label-property-dialog").dialog({
+            autoOpen: false,
+            width: 900,
+            height: 200,
+            buttons: {
+                "Save": function () {
+                    labelPropertyDialog_SubmitData();
+                },
+                Cancel: function () {
+                    labelPropertyDialog.dialog("close");
+                    CurrentItem.removeClass("activeItem");
+                }
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        labelPropertyDialog_SubmitData();
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                labelPropertyDialog.find("#label-input").val(CurrentItem.find(".itemLabel").text());
+            }
+        });
+        function labelPropertyDialog_SubmitData() {
+            CurrentItem.find(".itemLabel").text(labelPropertyDialog.find("#label-input").val());
+            CurrentItem.removeClass("activeItem processedItem");
+            labelPropertyDialog.dialog("close");
         }
         conditionsDialog = $("#conditions-dialog").dialog({
             autoOpen: false,

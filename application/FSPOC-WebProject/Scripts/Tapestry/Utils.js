@@ -142,9 +142,6 @@ function AddToJsPlumb(item) {
     });
     instance = item.parents(".rule").data("jsPlumbInstance");
     specialEndpointsType = item.attr("endpoints");
-    if (item.attr("symbolType") && item.attr("symbolType").indexOf("gateway-") == 0) {
-        specialEndpointsType = "gateway";
-    }
     if (specialEndpointsType == "gateway") {
         instance.addEndpoint(itemId, trueEndpoint, {
             anchor: "RightMiddle", uuid: itemId + "RightMiddle"

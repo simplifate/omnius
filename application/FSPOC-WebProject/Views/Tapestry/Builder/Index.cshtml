@@ -65,7 +65,10 @@
                 <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-pentagon" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
                 <img class="toolboxSymbol" symbolType="page" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
                 <img class="toolboxSymbol" symbolType="database" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
-                <img class="toolboxSymbol" symbolType="comment" src="~/Content/images/TapestryIcons/comment.png" style="left: 18px; top: 280px;" />
+                <div class="toolboxSymbol" endpoints="final" symbolType="comment" style="left: 18px; top: 280px;">
+                    <img src="~/Content/images/TapestryIcons/comment.png" />
+                    <span class="itemLabel" style="left:6px; top:6px; position: absolute;"></span>
+                </div>
             </li>
             <li class="toolboxCategoryHeader_Actions"><span class="toolboxCategoryLabel">Akce</span></li>
             <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
@@ -224,6 +227,18 @@
                 <tr>
                     <td><label for="output-variables">Output variables</label></td>
                     <td><input class="wideInput" type="text" name="output-variables" id="output-variables" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="label-property-dialog" title="Item label">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="label-input">Item label</label></td>
+                    <td><textarea class="wideInput" type="text" name="label-input" id="label-input" value="" class="text ui-widget-content ui-corner-all"></textarea></td>
                 </tr>
             </table>
         </fieldset>

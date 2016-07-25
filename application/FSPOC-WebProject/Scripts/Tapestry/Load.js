@@ -205,13 +205,18 @@
                     }
                     for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
                         currentItemData = currentSwimlaneData.WorkflowItems[k];
-                        if (currentItemData.TypeClass == "symbol")
+                        if (currentItemData.TypeClass === "symbol" && currentItemData.SymbolType === "comment") {
+                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + currentItemData.PositionX + 'px; top: '
+                            + currentItemData.PositionY + 'px;"> <img src="/Content/images/TapestryIcons/comment.png" /> <span class="itemLabel" style="left: 6px; top:6px; position:absolute;">'
+                            + currentItemData.Label + '</span></div>');
+                        }else if (currentItemData.TypeClass == "symbol") {
                             newItem = $('<img id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="' + currentItemData.SymbolType +
                             '" src="/Content/images/TapestryIcons/' + currentItemData.SymbolType + '.png" style="left: ' + currentItemData.PositionX + 'px; top: '
                             + currentItemData.PositionY + 'px;" />');
-                        else
+                        }else{
                             newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
-                                + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
+                            + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
+                        }
                         newItem.addClass(currentItemData.TypeClass);
                         if (currentItemData.ActionId != null)
                             newItem.attr('actionId', currentItemData.ActionId);
