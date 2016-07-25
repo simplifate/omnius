@@ -55,6 +55,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var db = core.Entitron.GetStaticTables();
+
             NexusWSService webService = new NexusWSService();
             object[] parameters = new[] { "Auction_User" };
             JToken results = webService.CallWebService("RWE_WSO_SOAP", "getUserListOfRole", parameters);
@@ -111,7 +113,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                         case "http://wso2.org/claims/role":
                             var roles  = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0,8) == "Auction_").Select(e => e.Remove(0,8));
                             foreach (string role in roles) {
-                                var db = core.Entitron.GetStaticTables();
                                     PersonaAppRole approle = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
                                     if (approle == null) {
                                         db.Roles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
