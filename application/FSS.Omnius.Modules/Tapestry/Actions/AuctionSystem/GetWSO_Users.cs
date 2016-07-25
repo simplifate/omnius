@@ -111,10 +111,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                         case "http://wso2.org/claims/role":
                             var roles  = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0,8) == "Auction_").Select(e => e.Remove(0,8));
                             foreach (string role in roles) {
-                                using (var db = new Modules.Entitron.Entity.DBEntities()) {
-                                    PersonaAppRole roleObj = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
-                                    if (roleObj != null && !newUser.Roles.Contains(new User_Role { AppRole = roleObj, User = newUser })) {
-                                        newUser.Roles.Add(new User_Role { AppRole = roleObj, User = newUser });
+                                using (var db = new Modules.Entitron.Entity.DBEntities())
+                                {
+                                    PersonaAppRole approle = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
+                                    if (approle == null) {
+                                        db.Roles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
+                                    }
+                                    User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
+                                    if (approle != null && !newUser.Roles.Contains(new User_Role { AppRole = approle, User = newUser }))
+                                    {
+                                        newUser.Roles.Add(new User_Role { AppRole = approle, User = newUser });
+
                                     }
                                 }
                             }
@@ -123,11 +130,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                     }
 
                 }
-
-                //set role for user
-                //object[] paramaters = new[] { newUser.UserName };
-                //JToken userRoles = webService.CallWebService("RWE_WSO_SOAP", "getRoleListOfUser", paramaters);
-
+                
 
                 listUsers.Add(newUser);
 
