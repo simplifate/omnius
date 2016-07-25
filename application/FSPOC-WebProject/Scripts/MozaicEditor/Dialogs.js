@@ -158,8 +158,10 @@ $(function () {
                 "Open": function () {
                     historyDialog_SubmitData();
                 },
-                "Delete": function() {
-                    deleteMozaicPage_SubmitData();
+                "Delete": function () {
+                    if (confirm('Are you sure you want to delete this page?')) {
+                        deleteMozaicPage_SubmitData();
+                    }
                 },
                 Cancel: function () {
                     choosePageDialog.dialog("close");
@@ -210,14 +212,14 @@ $(function () {
                 complete: function () {
                     pageSpinner.hide();
                 },
-                success: function() {
+                success: function () {
                     alert("OK. Page deleted.");
                     choosePageDialog.dialog("close");
                 },
                 error: function (request, status, error) {
                     alert(request.responseText);
                 }
-            });
+            });    
         }
         newPageDialog = $("#new-page-dialog").dialog({
             autoOpen: false,
