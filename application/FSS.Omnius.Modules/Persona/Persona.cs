@@ -214,54 +214,49 @@ namespace FSS.Omnius.Modules.Persona
             context.SaveChanges();
         }
 
-        public static void RefreshUsersFromWSO(List<User> usersWSO,CORE core)
+        public static void RefreshUsersFromWSO(List<User> usersWSO, CORE core)
         {
             var db = core.Entitron.GetStaticTables();
-                //iterate all users from WSO
-                foreach (User user in usersWSO)
-                {
-                    //if theres already this user. we will update the db
-                    var databaseUser = db.Users.SingleOrDefault(u => !u.isLocalUser && u.UserName == user.UserName);
-                    if (databaseUser != null) { 
-                        databaseUser.UserName = user.UserName;
-                        databaseUser.Company = user.Company;
-                        databaseUser.MobilPhone = user.MobilPhone;
-                        databaseUser.DisplayName = user.DisplayName;
-                        databaseUser.Email = user.Email;
+            //iterate all users from WSO
+            foreach (User user in usersWSO)
+            {
+                //if theres already this user. we will update the db
+                var databaseUser = db.Users.SingleOrDefault(u => !u.isLocalUser && u.UserName == user.UserName);
+                if (databaseUser != null)
+                { 
+                    databaseUser.UserName = user.UserName;
+                    databaseUser.Company = user.Company;
+                    databaseUser.MobilPhone = user.MobilPhone;
+                    databaseUser.DisplayName = user.DisplayName;
+                    databaseUser.Email = user.Email;
                     //Refresh ROLES
-                     databaseUser.Roles.Clear();
-
-                    foreach (var role in user.Roles) {
-                            databaseUser.Roles.Add(new User_Role { AppRole = role.AppRole, User = databaseUser });
-                        }
-                    db.SaveChanges();
+                    databaseUser.Roles.Clear();
+                    foreach (var role in user.Roles)
+                    {
+                        databaseUser.Roles.Add(new User_Role { AppRole = role.AppRole, User = databaseUser });
+                    }
                     //end refresh roles
-
+                    databaseUser.isActive = true;
+                    db.SaveChanges();
                 }
 
                 //if the user is not in DB, we will add this user to DB
-                else {
-                        db.Users.Add(user);
-                    }
+                else
+                {
+                    db.Users.Add(user);
                 }
+            }
 
-                //iterate the users in the DB
-
-                //foreach (User user in db.Users)
-                //{
-                //    //if this user is in db but not in the  WSO, set inactive
-                //    if (!usersWSO.Any(u => u.UserName == user.UserName)) {
-                //        //set inactive
-
-                //    }
-                //}
-                db.SaveChanges();
-            
-            
-           
+            //iterate the users in the DB
+            foreach (User user in db.Users)
+            {
+                //if this user is in db but not in the  WSO, set inactive
+                if (!usersWSO.Any(u => u.UserName == user.UserName))
+                {
+                    user.isActive = false;
+                }
+            }
+            db.SaveChanges();       
         }
-
     }
-
-  
 }

@@ -82,9 +82,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                 newUser.TwoFactorEnabled = false;
                 newUser.LockoutEnabled = false;
                 newUser.AccessFailedCount = 0;
+                newUser.isActive = true;
                 foreach (JToken property in userClaim.Children())
                 {
-                    var xx = property.Children();
                     var a = (property.Children().Single(c => (c as JProperty).Name == "claimUri") as JProperty).Value.ToString();
 
                     switch (a)
@@ -112,38 +112,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                             //SET ROLES FOR this newly created USER
                         case "http://wso2.org/claims/role":
                             var roles  = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0,8) == "Auction_").Select(e => e.Remove(0,8));
-                            foreach (string role in roles) {
+                            foreach (string role in roles)
+                            {
                                     PersonaAppRole approle = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
-                                    if (approle == null) {
+                                    if (approle == null)
+                                    {
                                         db.Roles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
                                         db.SaveChanges();
                                     }
-                                    User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
+                                    //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
                                     if (approle != null && !newUser.Roles.Contains(new User_Role { AppRole = approle, User = newUser }))
                                     {
                                         newUser.Roles.Add(new User_Role { AppRole = approle, User = newUser });
-
                                     }
                             }
                             break;
-
                     }
-
-                }
-                
-
+                }              
                 listUsers.Add(newUser);
-
             }
 
             //Now we can cal the resfresh method from persona
-
             Persona.Persona.RefreshUsersFromWSO(listUsers,core);
-
         }
-
-
-
-
     }
 }
