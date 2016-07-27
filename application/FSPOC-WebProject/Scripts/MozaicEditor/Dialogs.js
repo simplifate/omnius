@@ -278,6 +278,10 @@ $(function () {
                     }
                 }
             });
+            // Clear Mozaic page container after creating new page
+            $("#mozaicPageContainer .uic").remove();
+            $("#mozaicPageContainer .dataTables_wrapper").remove();
+            $("#mozaicPageContainer .color-picker").remove();
         }
         trashPageDialog = $("#trash-page-dialog").dialog({
             autoOpen: false,
