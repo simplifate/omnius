@@ -215,6 +215,13 @@ $(function () {
                 success: function () {
                     alert("OK. Page deleted.");
                     choosePageDialog.dialog("close");
+                    // Clear MozaicPageContainer, but only when deleted page is currently opened
+                    if ($("#currentPageId").val() == pageId) {
+                        $("#mozaicPageContainer .uic").remove();
+                        $("#mozaicPageContainer .dataTables_wrapper").remove();
+                        $("#mozaicPageContainer .color-picker").remove();
+                        $("#headerPageName").remove();
+                    }
                 },
                 error: function (request, status, error) {
                     alert(request.responseText);
