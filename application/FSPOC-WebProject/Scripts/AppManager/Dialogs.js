@@ -55,7 +55,12 @@ $(function () {
             type: "POST",
             url: "/api/master/apps/" + CurrentAppId + "/properties",
             data: postData,
-            success: function () { alert("OK") }
+            success: function() {
+                alert("OK");
+                // Reload page to change application name in AppManager table
+                // after application name was changed
+                location.reload();
+            }
         });
     }
     addAppDialog = $("#new-app-dialog").dialog({
