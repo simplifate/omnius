@@ -29,7 +29,7 @@ $(function () {
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
-                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.attr("placeholder"));
+                    componentPropertiesDialog.find("#component-placeholder").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".info-container-header").text());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
@@ -70,6 +70,7 @@ $(function () {
                 else {
                     componentPropertiesDialog.find("#component-label").val("");
                     componentPropertiesDialog.find("#component-content").val("");
+                    componentPropertiesDialog.find("#component-placeholder").val("");
                 }
             }
         });
@@ -85,7 +86,7 @@ $(function () {
             else if (CurrentComponent.hasClass("button-dropdown"))
                 CurrentComponent.html(componentPropertiesDialog.find("#component-label").val() + '<i class="fa fa-caret-down">');
             else if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
-                CurrentComponent.attr("placeholder", componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.attr("placeholder", componentPropertiesDialog.find("#component-placeholder").val());
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
             }
