@@ -4,7 +4,7 @@ $(function () {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
             autoOpen: false,
             width: 700,
-            height: 400,
+            height: 'auto',
             buttons: {
                 "Save": function () {
                     componentPropertiesDialog_SubmitData();
@@ -28,23 +28,29 @@ $(function () {
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
+                // Show table row for placeholder attribute by default
+                componentPropertiesDialog.find("#component-placeholder").parents('tr').show();
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-placeholder").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".info-container-header").text());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.attr("contentTemplate"));
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("checkbox-control")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".checkbox-label").text());
                     componentPropertiesDialog.find("#component-content").val("");
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("radio-control")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".radio-label").text());
                     componentPropertiesDialog.find("#component-content").val("");
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("tab-navigation")) {
                     componentPropertiesDialog.find("#component-label").val("");
@@ -54,6 +60,7 @@ $(function () {
                             tabString += $(element).find("a").text() + ";";
                     });
                     componentPropertiesDialog.find("#component-content").val(tabString);
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("wizard-phases")) {
                     componentPropertiesDialog.find("#component-label").val("");
@@ -63,14 +70,18 @@ $(function () {
                     });
                     phaseLabels = phaseLabels.slice(0, -1);
                     componentPropertiesDialog.find("#component-content").val(phaseLabels);
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("button-simple") || CurrentComponent.hasClass("button-dropdown")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
                 else {
+                    // Classes: data-dable, name-value-list, countdown-component, panel-component, color-picker
                     componentPropertiesDialog.find("#component-label").val("");
                     componentPropertiesDialog.find("#component-content").val("");
                     componentPropertiesDialog.find("#component-placeholder").val("");
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
             }
         });
