@@ -28,19 +28,22 @@ $(function () {
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
-                // Show table row for placeholder attribute by default
+                // Show table row for relevant attributes by default
                 componentPropertiesDialog.find("#component-placeholder").parents('tr').show();
+                componentPropertiesDialog.find("#component-tabindex").parents('tr').show();
                 if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
                     componentPropertiesDialog.find("#component-placeholder").val(CurrentComponent.attr("placeholder"));
                 else if (CurrentComponent.hasClass("info-container")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".info-container-header").text());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
+                    componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.attr("contentTemplate"));
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
+                    componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("checkbox-control")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".checkbox-label").text());
@@ -76,11 +79,17 @@ $(function () {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
-                else {
-                    // Classes: data-dable, name-value-list, countdown-component, panel-component, color-picker
+                else if (CurrentComponent.hasClass("name-value-list") || CurrentComponent.hasClass("panel-component")
+                    || CurrentComponent.hasClass("countdown-component")) {
                     componentPropertiesDialog.find("#component-label").val("");
                     componentPropertiesDialog.find("#component-content").val("");
-                    componentPropertiesDialog.find("#component-placeholder").val("");
+                    componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
+                    componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
+                }
+                else {
+                    // Classes: data-dable, color-picker
+                    componentPropertiesDialog.find("#component-label").val("");
+                    componentPropertiesDialog.find("#component-content").val("");
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                 }
             }
