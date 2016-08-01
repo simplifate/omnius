@@ -31,8 +31,11 @@ $(function () {
                 // Show table row for relevant attributes by default
                 componentPropertiesDialog.find("#component-placeholder").parents('tr').show();
                 componentPropertiesDialog.find("#component-tabindex").parents('tr').show();
-                if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline"))
+                componentPropertiesDialog.find("#component-label").parents('tr').show();
+                if (CurrentComponent.hasClass("input-single-line") || CurrentComponent.hasClass("input-multiline")) {
                     componentPropertiesDialog.find("#component-placeholder").val(CurrentComponent.attr("placeholder"));
+                    componentPropertiesDialog.find("#component-label").parents('tr').hide();
+                }
                 else if (CurrentComponent.hasClass("info-container")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".info-container-header").text());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.find(".info-container-body").text());
@@ -64,6 +67,7 @@ $(function () {
                     });
                     componentPropertiesDialog.find("#component-content").val(tabString);
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
+                    componentPropertiesDialog.find("#component-label").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("wizard-phases")) {
                     componentPropertiesDialog.find("#component-label").val("");
@@ -74,6 +78,7 @@ $(function () {
                     phaseLabels = phaseLabels.slice(0, -1);
                     componentPropertiesDialog.find("#component-content").val(phaseLabels);
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
+                    componentPropertiesDialog.find("#component-label").parents('tr').hide();
                 }
                 else if (CurrentComponent.hasClass("button-simple") || CurrentComponent.hasClass("button-dropdown")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.text());
