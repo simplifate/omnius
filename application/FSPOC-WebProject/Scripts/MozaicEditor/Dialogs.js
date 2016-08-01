@@ -109,6 +109,7 @@ $(function () {
                 CurrentComponent.attr("placeholder", componentPropertiesDialog.find("#component-placeholder").val());
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
+                CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
             }
             else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                 CurrentComponent.html(componentPropertiesDialog.find("#component-label").val());
