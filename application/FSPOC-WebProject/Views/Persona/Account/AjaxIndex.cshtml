@@ -15,7 +15,7 @@
                     <th>Práce</th>
                     <th>Email</th>
                     <th>Pracovní telefon</th>
-                    @*<th>Upravit/Smazat</th>*@
+                    <th>Akce</th>
                 </tr>
             </thead>
             @*<tbody>
@@ -43,6 +43,7 @@
     <div>
         @Html.ActionLink("Přidat uživatele", "Create", new { }, new { @class = "btn btn-primary" })
     </div>
+<br />
     <div id="DetailUser"></div>
 
 @* Load datatable css *@
@@ -59,7 +60,6 @@
                     "datatype": "json"
                 },
                 "columns": [
-                         //{ "data": "DisplayName", "autoWidth": true },
                          {
                                "data": "DisplayName",
                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -72,7 +72,13 @@
                         { "data": "Team", "autoWidth": true },
                        { "data": "Job", "autoWidth": true },
                         { "data": "Email", "autoWidth": true },
-                       { "data": "WorkPhone", "autoWidth": true }
+                       { "data": "WorkPhone", "autoWidth": true },
+                       {
+                             "data": null,
+                             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                 $(nTd).html("<a data-ajax='true' data-ajax-mode='replace' data-ajax-update='#DetailUser'  href='/CORE/Account/Update/" + oData.Id + "'>" + 'Upravit' + "</a>  <a href='/CORE/Account/Delete/"+ oData.Id +"' onclick='return confirm('Opravdu chcete záznam smazat?')' title='Smazat'>Smazat</a>");
+                             }
+                        }
                     ]
             });
         });
