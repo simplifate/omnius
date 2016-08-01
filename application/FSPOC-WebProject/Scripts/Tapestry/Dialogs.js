@@ -521,6 +521,11 @@ $(function () {
                 actionPropertiesDialog.find("#output-variables").val(CurrentItem.data("outputVariables"));
             }
         });
+        function actionPropertiesDialog_SubmitData() {
+            CurrentItem.data("inputVariables", actionPropertiesDialog.find("#input-variables").val());
+            CurrentItem.data("outputVariables", actionPropertiesDialog.find("#output-variables").val());
+            actionPropertiesDialog.dialog("close");
+        }
         labelPropertyDialog = $("#label-property-dialog").dialog({
             autoOpen: false,
             width: 900,
