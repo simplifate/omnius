@@ -296,7 +296,11 @@ $(function () {
                 },
                 success: function (data) {
                     $("#currentPageId").val(data);
-                    $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
+                    if (newPageDialog.find("#new-page-name").val() == "")
+                        $("#headerPageName").text("Nepojmenovaná stránka");
+                    else
+                        $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
+                    
                     if (SaveRequested) {
                         SaveMozaicPage();
                     }
