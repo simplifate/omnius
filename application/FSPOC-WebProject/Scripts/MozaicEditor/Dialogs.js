@@ -258,7 +258,7 @@ $(function () {
         newPageDialog = $("#new-page-dialog").dialog({
             autoOpen: false,
             width: 400,
-            height: 190,
+            height: 170,
             buttons: {
                 "Save": function () {
                     newPageDialog_SubmitData();

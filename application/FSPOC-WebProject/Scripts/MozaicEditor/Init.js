@@ -22,7 +22,7 @@ $(function () {
         });
         $("#btnSave").on("click", function () {
             pageId = $("#currentPageId").val();
-            if (!pageId) {
+            if (pageId == 0) {
                 SaveRequested = true;
                 newPageDialog.dialog("open");
             }
