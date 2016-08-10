@@ -52,7 +52,7 @@ function AddTable(tableName) {
             return false;
         }
        
-        var regex = /^[0-9a-zA-Z]+$/;
+        var regex = /^[0-9a-zA-Z_]+$/;
         if (!regex.test(tableName)) {
             tableAllowed = false;
             alert("Incorrect table name.");
