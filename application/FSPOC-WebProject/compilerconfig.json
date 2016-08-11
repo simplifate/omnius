@@ -2,5 +2,9 @@
   {
     "outputFile": "Content/scss/Bundled.css",
     "inputFile": "Content/scss/Bundled.scss"
+  },
+  {
+    "outputFile": "Content/scss/MozaicTemplates/DefaultMozaicTemplate.css",
+    "inputFile": "Content/scss/MozaicTemplates/DefaultMozaicTemplate.scss"
   }
 ]

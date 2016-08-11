@@ -287,6 +287,12 @@
     <Content Include="Content\css\ErrorCss.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\scss\Cortex.scss" />
+    <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.css">
+      <DependentUpon>DefaultMozaicTemplate.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.min.css">
+      <DependentUpon>DefaultMozaicTemplate.css</DependentUpon>
+    </Content>
     <Content Include="Content\spectrum.css" />
     <Content Include="Content\images\AdminBackgroundLower.png" />
     <Content Include="Content\images\AdminBackgroundUpper.png" />
@@ -460,9 +466,9 @@
     <Content Include="Content\scss\Overview.scss" />
     <Content Include="Content\scss\Portal.scss" />
     <None Include="compilerconfig.json" />
-    <Content Include="compilerconfig.json.defaults">
+    <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
-    </Content>
+    </None>
     <Content Include="Content\scss\AdminSectionLayout.scss" />
     <Content Include="Content\scss\Mixins.scss" />
     <Content Include="Content\fonts\Fat-TecA07.otf" />
@@ -880,6 +886,7 @@
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
     <Content Include="Content\scss\Mozaic.scss" />
+    <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
