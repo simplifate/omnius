@@ -31,6 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
+            CssTemplate = new MozaicCssTemplate();
         }
 
         [ImportExportIgnore(IsKey = true)]
@@ -59,6 +60,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool EntitronChangedSinceLastBuild { get; set; }
         public bool MenuChangedSinceLastBuild { get; set; }
         public bool DbSchemeLocked { get; set; }
+
+        [ImportExportIgnore]
+        public virtual MozaicCssTemplate CssTemplate { get; set; }
 
         // tapestry
         [ImportExportIgnore]

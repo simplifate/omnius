@@ -63,6 +63,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TemplateCategory> TemplateCategories { get; set; }
         public virtual DbSet<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual DbSet<MozaicEditorComponent> MozaicEditorComponents { get; set; }
+        public virtual DbSet<MozaicCssTemplate> CssTemplates { get; set; }
 
         // Nexus
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
