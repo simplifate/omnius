@@ -944,6 +944,10 @@
     <Compile Include="Migrations\201607250917494_AddUserIsActiveColumn2.Designer.cs">
       <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608110907187_AddCSSTemplateTable.cs" />
+    <Compile Include="Migrations\201608110907187_AddCSSTemplateTable.Designer.cs">
+      <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1509,6 +1513,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607250917494_AddUserIsActiveColumn2.resx">
       <DependentUpon>201607250917494_AddUserIsActiveColumn2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608110907187_AddCSSTemplateTable.resx">
+      <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
