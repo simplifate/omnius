@@ -887,6 +887,7 @@
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
     <Content Include="Content\scss\Mozaic.scss" />
     <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.scss" />
+    <Content Include="Content\scss\MozaicTemplates\PortalInternichAudituTemplate.scss" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />

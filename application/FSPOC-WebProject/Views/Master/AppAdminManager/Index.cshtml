@@ -1,4 +1,5 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 @{
     Page.Title = "Správa aplikací";
     Page.ModuleClass = "adminAppModule";
@@ -102,6 +103,17 @@
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
                 </tr>
                 <tr>
+                    <td><label for="template">Template</label></td>
+                    <td>
+                        <select name="template" id="template">
+                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
+                            {
+                                <option value="@template.Id">@template.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="tile-width">Šířka dlaždice</label></td>
                     <td>
                         <select name="tile-width" id="tile-width">
@@ -145,6 +157,17 @@
                 <tr>
                     <td><label for="app-name">Název aplikace</label></td>
                     <td><input type="text" name="app-name" id="app-name" value=""></td>
+                </tr>
+                <tr>
+                    <td><label for="template">Template</label></td>
+                    <td>
+                        <select name="template" id="template">
+                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
+                            {
+                                <option value="@template.Id">@template.Name</option>
+                            }
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="tile-width">Šířka dlaždice</label></td>

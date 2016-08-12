@@ -38,6 +38,7 @@ namespace FSS.Omnius.Controllers.Master
                     appList.Add(app);
                 }
                 ViewData["Apps"] = appList;
+                ViewData["Mozaic_CssTemplates"] = context.CssTemplates.ToList();
                 return View();
             }
         }

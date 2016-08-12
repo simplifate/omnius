@@ -23,11 +23,12 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 using (var context = new DBEntities())
                 {
-                    Application app = context.Applications.First(a => a.Id == appId);
+                    Application app = context.Applications.Include("CSSTemplate").First(a => a.Id == appId);
                     AjaxAppProperties result = new AjaxAppProperties
                     {
                         Id = app.Id,
                         DisplayName = app.DisplayName,
+                        CSSTemplateId = app.CssTemplate.Id,
                         TileWidth = app.TileWidth,
                         TileHeight = app.TileHeight,
                         Color = app.Color,
@@ -52,6 +53,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
                     app.DisplayName = postData.DisplayName;
+                    app.CssTemplate = context.CssTemplates.Find(postData.CSSTemplateId);
                     app.TileWidth = postData.TileWidth;
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;

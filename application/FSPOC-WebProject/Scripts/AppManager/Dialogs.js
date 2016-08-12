@@ -24,6 +24,7 @@ $(function () {
         },
         open: function () {
             appPropertiesDialog.find("#app-name").val("");
+            appPropertiesDialog.find("#template").val(1);
             appPropertiesDialog.find("#tile-width").val(2);
             appPropertiesDialog.find("#tile-height").val(1);
             appPropertiesDialog.find("#bg-color").val(0);
@@ -34,6 +35,7 @@ $(function () {
                 dataType: "json",
                 success: function (data) {
                     appPropertiesDialog.find("#app-name").val(data.DisplayName);
+                    appPropertiesDialog.find("#template").val(data.CSSTemplateId);
                     appPropertiesDialog.find("#tile-width").val(data.TileWidth);
                     appPropertiesDialog.find("#tile-height").val(data.TileHeight);
                     appPropertiesDialog.find("#bg-color").val(data.Color);
@@ -46,6 +48,7 @@ $(function () {
         appPropertiesDialog.dialog("close");
         postData = {
             DisplayName: appPropertiesDialog.find("#app-name").val(),
+            CSSTemplateId: appPropertiesDialog.find("#template").val(),
             TileWidth: appPropertiesDialog.find("#tile-width").val(),
             TileHeight: appPropertiesDialog.find("#tile-height").val(),
             Color: appPropertiesDialog.find("#bg-color").val(),
@@ -86,6 +89,7 @@ $(function () {
         },
         open: function () {
             addAppDialog.find("#app-name").val("");
+            addAppDialog.find("#template").val(1);
             addAppDialog.find("#tile-width").val(2);
             addAppDialog.find("#tile-height").val(1);
             addAppDialog.find("#bg-color").val(0);
@@ -96,6 +100,7 @@ $(function () {
         addAppDialog.dialog("close");
         postData = {
             DisplayName: addAppDialog.find("#app-name").val(),
+            Template: addAppDialog.find("#template").val(),
             TileWidth: addAppDialog.find("#tile-width").val(),
             TileHeight: addAppDialog.find("#tile-height").val(),
             Color: addAppDialog.find("#bg-color").val(),

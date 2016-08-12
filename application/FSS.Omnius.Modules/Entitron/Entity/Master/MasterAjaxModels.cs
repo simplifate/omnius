@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
+        public int CSSTemplateId { get; set; }
         public string Icon { get; set; }
         public int Color { get; set; }
         public int TileWidth { get; set; }
