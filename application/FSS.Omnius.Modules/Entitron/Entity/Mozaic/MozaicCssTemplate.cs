@@ -12,6 +12,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string CSS { get; set; }
+        public string Url { get; set; }
     }
 }
