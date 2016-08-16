@@ -9,10 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title RWE OSS</title>
     @Styles.Render("~/Content/css-libs")
-    @Styles.Render("~/Content/css-libs")
-    @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/")
-
-
+    @Styles.Render("~/Content/css-bundle/css-libs")
+    <style>
+        @{
+            int appId = Context.GetCORE().Entitron.AppId;
+            var context = new DBEntities();
+            var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == appId).First();
+        }
+        @Html.Partial($"{applicationTemplate.CssTemplate.Url}")        
+    </style>
     @RenderSection("Styles", false)
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">

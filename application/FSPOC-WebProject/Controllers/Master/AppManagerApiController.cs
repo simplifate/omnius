@@ -79,6 +79,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     {
                         Name = postData.DisplayName.RemoveDiacritics(),
                         DisplayName = postData.DisplayName,
+                        CssTemplate = context.CssTemplates.Find(postData.CSSTemplateId),
                         TileWidth = postData.TileWidth,
                         TileHeight = postData.TileHeight,
                         Color = postData.Color,

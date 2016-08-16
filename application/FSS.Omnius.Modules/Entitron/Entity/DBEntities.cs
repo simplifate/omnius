@@ -133,12 +133,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasOptional(t => t.Application);
 
             // Master
+            modelBuilder.Entity<Application>()
+                .HasOptional(e => e.CssTemplate);
 
             // Mozaic
             //modelBuilder.Entity<Application>()
             //    .HasMany<Page>(e => e.Pages);
             //    .WithRequired(e => e.Application);
-            
+
             modelBuilder.Entity<Page>()
                 .HasMany<Block>(e => e.Blocks)
                 .WithOptional(e => e.MozaicPage)
