@@ -948,6 +948,10 @@
     <Compile Include="Migrations\201608110907187_AddCSSTemplateTable.Designer.cs">
       <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.cs" />
+    <Compile Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.Designer.cs">
+      <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1516,6 +1520,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608110907187_AddCSSTemplateTable.resx">
       <DependentUpon>201608110907187_AddCSSTemplateTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.resx">
+      <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

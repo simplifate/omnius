@@ -155,6 +155,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerBlockCommit commit = block.BlockCommits.OrderBy(bc => bc.Timestamp).LastOrDefault();
             if (commit == null) // no commit
                 return;
+
+            resultBlock.RoleWhitelist = commit.RoleWhitelist;
+
             // Resources
             foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {

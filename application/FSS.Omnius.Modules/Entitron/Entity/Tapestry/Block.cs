@@ -58,5 +58,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual WorkFlow WorkFlow { get; set; }
         
         public virtual ICollection<WorkFlow> InitForWorkFlow { get; set; }
+
+        public virtual string RoleWhitelist { get; set; }
     }
 }
