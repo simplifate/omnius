@@ -34,7 +34,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool userIsAllowed = false;
                 foreach (var role in block.RoleWhitelist.Split(',').ToList())
                 {
-                    if (user.IsInGroup(role))
+                    if (user.HasRole(role, context))
                         userIsAllowed = true;
                 }
                 if (!userIsAllowed)
