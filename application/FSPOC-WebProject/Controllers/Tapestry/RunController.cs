@@ -28,16 +28,19 @@ namespace FSS.Omnius.Controllers.Tapestry
                 return new HttpStatusCodeResult(404);
 
             // Check if user has one of allowed roles, otherwise return 403
-            User user = core.User;
-            bool userIsAllowed = false;
-            foreach (var role in block.RoleWhitelist.Split(',').ToList())
+            if (!String.IsNullOrEmpty(block.RoleWhitelist))
             {
-                if (user.IsInGroup(role))
-                    userIsAllowed = true;
+                User user = core.User;
+                bool userIsAllowed = false;
+                foreach (var role in block.RoleWhitelist.Split(',').ToList())
+                {
+                    if (user.IsInGroup(role))
+                        userIsAllowed = true;
+                }
+                if (!userIsAllowed)
+                    return new HttpStatusCodeResult(403);
             }
-            if (!userIsAllowed)
-                return new HttpStatusCodeResult(403);
-
+            
             var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, null);
             if (result.Item2.Id != block.Id)
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId });
