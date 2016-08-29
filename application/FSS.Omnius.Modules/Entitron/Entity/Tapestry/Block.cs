@@ -41,6 +41,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int? MozaicPageId { get; set; }
         public virtual Page MozaicPage { get; set; }
+
+        public int? EditorPageId { get; set; }
         
         public virtual ICollection<PreBlockAction> PreBlockActions { get; set; }
 
