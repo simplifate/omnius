@@ -38,7 +38,8 @@ namespace FSPOC_WebProject.Views
             "~/Views/%1/{1}/{0}.cshtml",
             "~/Views/%1/{1}/{0}.vbhtml",
             "~/Views/Shared/{0}.cshtml",
-            "~/Views/Shared/{0}.vbhtml"
+            "~/Views/Shared/{0}.vbhtml",
+            "~/Views/App/{0}"
         };
 
             MasterLocationFormats = new[] {

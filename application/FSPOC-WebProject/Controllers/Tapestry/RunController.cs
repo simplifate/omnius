@@ -255,8 +255,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                 }
             }
+            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{block.EditorPageId}.cshtml";
+
             // show
-            return View(block.MozaicPage.ViewPath);
+            //return View(block.MozaicPage.ViewPath);
+            return View(viewPath);
         }
         [HttpPost]
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1)

@@ -184,6 +184,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         break;
                     }
                 }
+                resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
         }
