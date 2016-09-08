@@ -18,13 +18,18 @@ namespace FSS.Omnius.Controllers.Entitron
     [System.Web.Mvc.PersonaAuthorize(NeedsAdmin = true, Module = "Entitron")]
     public class DatabaseController : ApiController
     {
-        public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,
+        /*public DatabaseController(IRepository<DbSchemeCommit> repositoryDbSchemeCommit,
             IDatabaseGenerateService databaseGenerateService)
         {
             if (repositoryDbSchemeCommit == null) throw new ArgumentNullException(nameof(repositoryDbSchemeCommit));
             if (databaseGenerateService == null) throw new ArgumentNullException(nameof(databaseGenerateService));
             RepositoryDbSchemeCommit = repositoryDbSchemeCommit;
             DatabaseGenerateService = databaseGenerateService;
+        }*/
+
+        public DatabaseController()
+        {
+
         }
 
         private IRepository<DbSchemeCommit> RepositoryDbSchemeCommit { get; }

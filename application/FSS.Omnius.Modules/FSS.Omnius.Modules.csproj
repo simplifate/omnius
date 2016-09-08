@@ -952,6 +952,10 @@
     <Compile Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.Designer.cs">
       <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609081823076_Merge Mozaic build from AS.cs" />
+    <Compile Include="Migrations\201609081823076_Merge Mozaic build from AS.Designer.cs">
+      <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1523,6 +1527,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608161238551_AddRoleWhitelistAttributeToBlock.resx">
       <DependentUpon>201608161238551_AddRoleWhitelistAttributeToBlock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609081823076_Merge Mozaic build from AS.resx">
+      <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

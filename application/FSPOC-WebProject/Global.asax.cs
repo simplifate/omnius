@@ -1,13 +1,18 @@
 ﻿using FSPOC_WebProject.Views;
 using FSS.Omnius.Controllers.CORE;
-using FSS.Omnius.Modules.CORE;
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Net.Mail;
+using System.Net;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Service;
+using FSS.Omnius.Controllers.Tapestry;
 
 namespace FSPOC_WebProject
 {
@@ -15,36 +20,73 @@ namespace FSPOC_WebProject
     {
         protected void Application_Start()
         {
-            ViewEngines        .Engines.Clear();
-            ViewEngines        .Engines.Add(new MyRazorViewEngine());
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new MyRazorViewEngine());
             //ViewEngines        .Engines.Add(new MyWebFormViewEngine());
-            AreaRegistration   .RegisterAllAreas();
-            UnityConfig        .RegisterComponents();
+            AreaRegistration.RegisterAllAreas();
+            UnityConfig.RegisterComponents();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig       .RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig        .RegisterRoutes(RouteTable.Routes);
-            BundleConfig       .RegisterBundles(BundleTable.Bundles);
-            Logger.Log         .ConfigureRootDir(Server);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Logger.Log.ConfigureRootDir(Server);
             App_Start.AppStart.AppInitialize();
-
             Logger.Log.Info("Omnius starts");
         }
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            string body = $"URL: {Request.Url.AbsoluteUri}{Environment.NewLine}Errors:{Environment.NewLine}";
-            foreach (var error in Context.AllErrors)
+            string body = $"URL: {Request.Url.AbsoluteUri}<br/>Method: {Request.HttpMethod}<br/>Current User: {Context.User.Identity.Name}<br/>POST data:<br/>";
+            NameValueCollection form = Request.Unvalidated.Form;
+            foreach (string key in form.AllKeys)
             {
-                Logger.Log.Error(error, Request);
+                body += $"{key} => {Server.HtmlEncode(form[key])}<br />";
             }
 
-            Logger.Log.Error(body);
+            body += "<br />Errors:<br />";
+            foreach (var error in Context.AllErrors)
+            {
+                var curError = error;
+                while (curError != null)
+                {
+                    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+
+                    curError = curError.InnerException;
+                }
+            }
+
+            string username = "Helpdesk@futurespoc.com";
+            string password = "pwd4FSPOCmail";
+
+            int port = 587;
+            string host = "imap.smtp.cz";
+
+            MailMessage message = new MailMessage()
+            {
+                Subject = $"Error message from {Request.Url.Authority} [{DateTime.UtcNow.ToString()}]",
+                IsBodyHtml = true,
+                Body = body
+            };
+            message.To.Add("samuel.lachman@futuresolutionservices.com");
+            message.From = new MailAddress(username);
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = host,
+                Port = port,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(username, password),
+                EnableSsl = true,
+                Timeout = 10000
+            };
+
+            smtp.Send(message);
         }
 
-        protected void Application_BeginRequest(object sender, EventArgs e)
+        protected void Application_BeginRequest()
         {
-            if (!Context.Items.Contains("CORE"))
-                Context.Items.Add("CORE", new CORE());
+            RunController.requestStart = DateTime.Now;
+            DBEntities.Create();
         }
 
         protected void Application_EndRequest()
@@ -74,8 +116,7 @@ namespace FSPOC_WebProject
                 IController c = new ErrorController();
                 c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
             }
-
-            (Context.Items["CORE"] as CORE).Entitron.CloseStaticTables();
+            DBEntities.Destroy();
         }
     }
 }

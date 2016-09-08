@@ -16,6 +16,10 @@ namespace FSS.Omnius.Controllers.Tapestry
     [PersonaAuthorize]
     public class RunController : Controller
     {
+        public static DateTime requestStart;
+        public static DateTime startTime;
+        public static DateTime prepareEnd;
+
         [HttpGet]
         public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
         {

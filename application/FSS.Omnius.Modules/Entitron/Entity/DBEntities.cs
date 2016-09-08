@@ -15,17 +15,105 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Microsoft.AspNet.Identity.EntityFramework;
     using System.Reflection;
     using System;
+    using System.Web;
+    using System.Web.Mvc;
     using System.Collections.Generic;
+    using System.Data.Entity.Core.EntityClient;
+    using System.Data.SqlClient;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Common;
+    using Service;
+    using System.Threading;
+
     public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
-        public static DBEntities Create()
+        private bool isDisposed = false;
+
+        private HttpRequest _r;
+        private static HttpRequest r
         {
-            return new DBEntities();
+            get {
+                return HttpContext.Current.Request;
+            }
+        }
+        
+        private static Dictionary<HttpRequest, DBEntities> _instances = new Dictionary<HttpRequest, DBEntities>();
+        public static DBEntities instance {
+            get {
+                if(!_instances.ContainsKey(r) || _instances[r].isDisposed) {
+                    if(_instances.ContainsKey(r))
+                        _instances.Remove(r);
+                    Create();
+                }
+
+                return _instances[r];
+                //return new DBEntities();
+            }
         }
 
-        public DBEntities()
-            : base(Modules.Entitron.Entitron.connectionString)
+        private static Dictionary<HttpRequest, List<string>> _messages = new Dictionary<HttpRequest, List<string>>();
+        public static List<string> messages
         {
+            get {
+                return _messages.ContainsKey(r) ? _messages[r] : new List<string>();
+            }
+        }
+
+        private static Dictionary<HttpRequest, DbConnection> _connections = new Dictionary<HttpRequest, DbConnection>();
+        private static DbConnection connection
+        {
+            get {
+                if (!_connections.ContainsKey(r)) {
+                    SqlConnectionFactory f = new SqlConnectionFactory(Omnius.Modules.Entitron.Entitron.connectionString);
+                    _connections.Add(r, f.CreateConnection(Omnius.Modules.Entitron.Entitron.connectionString));
+                    _connections[r].Open();
+                }
+                return _connections[r];
+            }
+        }
+        
+        public static void Create()
+        {   
+            _instances.Add(r, new DBEntities(r));
+        }
+
+        public static void Destroy()
+        {
+            _connections[r].Close();
+            _connections[r].Dispose();
+            _instances[r].Dispose();
+
+            _connections.Remove(r);
+            _instances.Remove(r);
+            _messages.Remove(r);
+        }
+        
+        protected override void Dispose(bool disposing)
+        {
+            _instances[r].isDisposed = true;
+        }
+
+        public static DBEntities GetInstance()
+        {
+            return instance;
+        }
+        
+        public DBEntities(HttpRequest req) : base(connection, false)
+        {
+            _r = req;
+            Database.Log = s => Log(s);
+        }
+
+        public DBEntities() : base(FSS.Omnius.Modules.Entitron.Entitron.connectionString)
+        {
+        }
+
+        public void Log(string message)
+        {
+            if(!_messages.ContainsKey(_r)) {
+                _messages.Add(_r, new List<string>());
+            }
+            _messages[_r].Add(message);
         }
 
         // CORE

@@ -27,7 +27,7 @@ namespace FSPOC_WebProject
             // register all your components with the container here
             // it is NOT necessary to register your controllers
 
-            container.RegisterType<DbContext, DBEntities>();
+            //container.RegisterType<DbContext, DBEntities>();
             container.RegisterType<IUserStore<User, int>, UserStore<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>>();
             container.RegisterType<UserManager<User, int>>(new HierarchicalLifetimeManager());
             container.RegisterType<IOwinContext>(new InjectionFactory(c => c.Resolve<HttpContextBase>().GetOwinContext()));

@@ -19,16 +19,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         public delegate void SendWS(string str);
 
-        public TapestryGeneratorService()
+        public TapestryGeneratorService(DBEntities context)
         {
             _blockMapping = new Dictionary<int, Block>();
             _allBlocks = new HashSet<TapestryDesignerBlock>();
+            _context = context;
         }
 
         public Dictionary<int, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
         {
             _core = core;
-            _context = core.Entitron.GetStaticTables();
+
+            //_context = DBEntities.instance;
             Application app = core.Entitron.Application;
 
             // remove old temp blocks - should do nothing
@@ -192,67 +194,65 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping)
         {
             AttributeRule result = new AttributeRule();
-            using (var context = new DBEntities())
+
+            foreach (TapestryDesignerResourceConnection connection in resourceRule.Connections)
             {
-                foreach (TapestryDesignerResourceConnection connection in resourceRule.Connections)
+                TapestryDesignerResourceItem source = connection.Source;
+                TapestryDesignerResourceItem target = connection.Target;
+
+                string targetName = "", targetType = "", dataSourceParams = "";
+
+                if (source.ActionId == 1023 || source.ActionId == 1024)
+                    continue;
+
+                if (!string.IsNullOrEmpty(target.ComponentName))
                 {
-                    TapestryDesignerResourceItem source = connection.Source;
-                    TapestryDesignerResourceItem target = connection.Target;
-
-                    string targetName = "", targetType = "", dataSourceParams = "";
-
-                    if (source.ActionId == 1023 || source.ActionId == 1024)
-                        continue;
-
-                    if (!string.IsNullOrEmpty(target.ComponentName))
+                    var targetPage = target.Page;
+                    var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
+                    if (component == null)
                     {
-                        var targetPage = target.Page;
-                        var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
-                        if (component == null)
+                        foreach (var parentComponent in targetPage.Components)
                         {
-                            foreach (var parentComponent in targetPage.Components)
-                            {
-                                if (parentComponent.ChildComponents.Count > 0)
-                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
-                                if (component != null)
-                                    break;
-                            }
-                        }
-                        if (component != null)
-                        {
-                            targetName = component.Name;
-                            targetType = component.Type;
+                            if (parentComponent.ChildComponents.Count > 0)
+                                component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
+                            if (component != null)
+                                break;
                         }
                     }
-                    if (!string.IsNullOrEmpty(source.ColumnName))
+                    if (component != null)
                     {
-                        foreach (TapestryDesignerResourceConnection relatedConnection in resourceRule.Connections)
-                        {
-                            if (relatedConnection.TargetId == source.Id)
-                            {
-                                if (relatedConnection.Source.ActionId == 1023)
-                                    dataSourceParams = "currentUser";
-                                else if (relatedConnection.Source.ActionId == 1024)
-                                    dataSourceParams = "superior";
-                            }
-                        }
+                        targetName = component.Name;
+                        targetType = component.Type;
                     }
-                    if (source.StateId != null && !string.IsNullOrEmpty(target.ColumnName))
-                    {
-                        stateColumnMapping.Add(source.StateId.Value, target.ColumnName);
-                        continue;
-                    }
-                    return new ResourceMappingPair
-                    {
-                        Source = source,
-                        Target = target,
-                        TargetName = targetName,
-                        TargetType = targetType,
-                        SourceColumnFilter = source.ColumnFilter,
-                        DataSourceParams = dataSourceParams,
-                        Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
-                    };
                 }
+                if (!string.IsNullOrEmpty(source.ColumnName))
+                {
+                    foreach (TapestryDesignerResourceConnection relatedConnection in resourceRule.Connections)
+                    {
+                        if (relatedConnection.TargetId == source.Id)
+                        {
+                            if (relatedConnection.Source.ActionId == 1023)
+                                dataSourceParams = "currentUser";
+                            else if (relatedConnection.Source.ActionId == 1024)
+                                dataSourceParams = "superior";
+                        }
+                    }
+                }
+                if (source.StateId != null && !string.IsNullOrEmpty(target.ColumnName))
+                {
+                    stateColumnMapping.Add(source.StateId.Value, target.ColumnName);
+                    continue;
+                }
+                return new ResourceMappingPair
+                {
+                    Source = source,
+                    Target = target,
+                    TargetName = targetName,
+                    TargetType = targetType,
+                    SourceColumnFilter = source.ColumnFilter,
+                    DataSourceParams = dataSourceParams,
+                    Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
+                };
             }
             return null;
         }
