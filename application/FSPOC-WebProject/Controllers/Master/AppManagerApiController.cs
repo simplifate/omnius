@@ -21,7 +21,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     Application app = context.Applications.Include("CSSTemplate").First(a => a.Id == appId);
                     AjaxAppProperties result = new AjaxAppProperties
@@ -49,7 +49,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
                     app.DisplayName = postData.DisplayName;
@@ -73,7 +73,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var newApp = new Application
                     {
@@ -108,7 +108,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     Application app = context.Applications.Where(a => a.Id == appId).First();
                     app.IsEnabled = postData.IsEnabled;

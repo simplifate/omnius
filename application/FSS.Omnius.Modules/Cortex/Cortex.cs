@@ -44,7 +44,7 @@
 
         public int? Save(Task model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Task row = !model.Id.Equals(null) ? e.Tasks.Single(m => m.Id == model.Id) : new Task();
             Task original = !model.Id.Equals(null) ? e.Tasks.Single(m => m.Id == model.Id) : null;
 
@@ -88,7 +88,7 @@
         
         public void Delete(int taskId)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Task row = e.Tasks.Single(m => m.Id == taskId);
 
             ICortexAPI api = GetAPI();

@@ -20,7 +20,7 @@ namespace FSS.Omnius.Controllers.Nexus
         // GET: WS
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(WS model, HttpPostedFileBase upload)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (ModelState.IsValid)
             {
                 if (upload != null && upload.ContentLength > 0)
@@ -90,19 +90,19 @@ namespace FSS.Omnius.Controllers.Nexus
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Nexus/WS/Detail.cshtml", e.WSs.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Nexus/WS/Form.cshtml", e.WSs.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             WS row = e.WSs.Single(m => m.Id == id);
 
             e.WSs.Remove(row);

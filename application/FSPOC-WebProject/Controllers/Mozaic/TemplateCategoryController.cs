@@ -16,14 +16,14 @@ namespace FSS.Omnius.Controllers.Mozaic
         public ActionResult Index()
         {
             
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             
             return View(e.TemplateCategories);
         }
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
 
             return View(tempCategory);
@@ -31,7 +31,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Create()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             TemplateCategory tempCategory = new TemplateCategory();
 
             List<string> categories = new List<string>();
@@ -50,7 +50,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [HttpPost]
         public ActionResult Create(TemplateCategory model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             e.TemplateCategories.Add(model);
             e.SaveChanges();
@@ -60,7 +60,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Update(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
 
             List<string> categories= new List<string>();
@@ -79,7 +79,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [HttpPost]
         public ActionResult Update(TemplateCategory model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == model.Id);
 
             e.TemplateCategories.AddOrUpdate(tempCategory, model);
@@ -90,7 +90,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             TemplateCategory tempCategory = e.TemplateCategories.SingleOrDefault(x => x.Id == id);
 
             e.TemplateCategories.Remove(tempCategory);

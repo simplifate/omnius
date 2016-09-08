@@ -19,7 +19,7 @@ namespace FSPOC_WebProject.Controllers.Hermes
             try
             {
                 List<HermesAjaxTransferEmailTemplate> result = new List<HermesAjaxTransferEmailTemplate>();
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     foreach (var template in context.EmailTemplates.Where(t => t.AppId == appId)) {
                         result.Add(new HermesAjaxTransferEmailTemplate()

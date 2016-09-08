@@ -42,21 +42,20 @@ namespace FSS.Omnius.Controllers.Entitron
         {
             try
             {
-                using (var context = new DBEntities())
+                var context = DBEntities.instance;
+                
+                var result = new List<AjaxTransferCommitHeader>();
+                var requestedApp = context.Applications.Find(appId);
+                foreach (var commit in requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp))
                 {
-                    var result = new List<AjaxTransferCommitHeader>();
-                    var requestedApp = context.Applications.Find(appId);
-                    foreach (var commit in requestedApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp))
+                    result.Add(new AjaxTransferCommitHeader
                     {
-                        result.Add(new AjaxTransferCommitHeader
-                        {
-                            Id = commit.Id,
-                            CommitMessage = commit.CommitMessage,
-                            TimeCommit = commit.Timestamp
-                        });
-                    }
-                    return result;
+                        Id = commit.Id,
+                        CommitMessage = commit.CommitMessage,
+                        TimeCommit = commit.Timestamp
+                    });
                 }
+                return result;
             }
             catch (Exception ex)
             {
@@ -118,7 +117,7 @@ namespace FSS.Omnius.Controllers.Entitron
             try
             {
                 DbSchemeCommit commit = new DbSchemeCommit();
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var requestedApp = context.Applications.Find(appId);
                     if (requestedApp.DbSchemeLocked)
@@ -221,7 +220,7 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 if (dbSchemeLocked)
                 {
-                    using (var context = new DBEntities())
+                    using (var context = DBEntities.instance)
                     {
                         var requestedApp = context.Applications.Find(appId);
                         requestedApp.DbSchemeLocked = false;
@@ -237,7 +236,7 @@ namespace FSS.Omnius.Controllers.Entitron
 
         public void SaveChanges(DbSchemeCommit SchemeCommit)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             foreach (DbTable schemeTable in SchemeCommit.Tables)
             {
                 IEnumerable<DbTable> removeTables = SchemeCommit.Tables.Where(x1 => !e.DbTables.Any(x2 => x2.Id == x1.Id));
@@ -342,7 +341,7 @@ namespace FSS.Omnius.Controllers.Entitron
         /// <exception cref="InstanceNotFoundException">Not found commit for commitId</exception>
         private AjaxTransferDbScheme GetCommit(int appId, int commitId = -1)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 var result = new AjaxTransferDbScheme();
                 var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);

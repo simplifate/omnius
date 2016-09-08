@@ -549,7 +549,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View(e.Users.SingleOrDefault(x => x.Id == id));
         }
 
@@ -592,7 +592,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         public ActionResult Update(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             User u = e.Users.SingleOrDefault(x => x.Id == id);
             return View(u);
         }
@@ -602,7 +602,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             if (ModelState.IsValid)
             {
-                DBEntities e = new DBEntities();
+                DBEntities e = DBEntities.instance;
                 User user = e.Users.SingleOrDefault(x => x.Id == model.Id);
                 e.Users.AddOrUpdate(user, model);
                 e.SaveChanges();
@@ -616,7 +616,7 @@ namespace FSPOC_WebProject.Controllers.Persona
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             e.Users.Remove(e.Users.SingleOrDefault(x => x.Id == id));
             e.SaveChanges();
 

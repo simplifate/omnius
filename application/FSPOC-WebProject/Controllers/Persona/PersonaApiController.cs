@@ -20,7 +20,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     foreach(AjaxModuleAccessPermission ajaxPermission in postData.PermissionList)
                     {
@@ -55,7 +55,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     AjaxModuleAccessPermissionSettings result = new AjaxModuleAccessPermissionSettings();
                     result.PermissionList = context.ModuleAccessPermissions.Select(c => new AjaxModuleAccessPermission
@@ -90,7 +90,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         public AjaxPersonaAppRoles LoadAppRoles(int appId)
         {
             try {
-                using (var context = new DBEntities()) {
+                using (var context = DBEntities.instance) {
                     AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
 
                     result.Roles = context.Roles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
@@ -113,7 +113,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     AjaxPersonaAppstates result = new AjaxPersonaAppstates();
                     var entitron = new CORE().Entitron;

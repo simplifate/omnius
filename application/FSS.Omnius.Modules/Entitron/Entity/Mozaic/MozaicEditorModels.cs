@@ -76,7 +76,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             }
                         }
                     }
-                    using (DBEntities context = new DBEntities())
+                    using (DBEntities context = DBEntities.instance)
                     {
                         var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
                         stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");

@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
-            DBEntities ent = new DBEntities();
+            DBEntities ent = DBEntities.instance;
             var app = ent.Applications.Find(e.AppId);
             ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
             ent.SaveChanges();
@@ -282,7 +282,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         private void UpdateColumns(DBTable entitronTable, DbTable schemeTable, Entitron e)
         {
-            DBEntities ent = new DBEntities();
+            DBEntities ent = DBEntities.instance;
             var app = ent.Applications.Find(e.AppId);
             ent.SaveChanges();
 

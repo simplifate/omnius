@@ -19,7 +19,7 @@ namespace FSS.Omnius.Controllers.Master
         public FileStreamResult BackupApp(int id)
         {
             var backupService = new BackupGeneratorService();
-            var context = new DBEntities();
+            var context = DBEntities.instance;
             string jsonText = backupService.ExportApplication(id);
             var appName = context.Applications.SingleOrDefault(a => a.Id == id).Name;
             var byteArray = Encoding.UTF8.GetBytes(jsonText);

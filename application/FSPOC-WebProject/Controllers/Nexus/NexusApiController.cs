@@ -22,7 +22,7 @@ namespace FSPOC_WebProject.Controllers.Nexus
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     Application app = context.Applications.First(a => a.Id == appId);
                     AjaxTransferNexusModel result = new AjaxTransferNexusModel();

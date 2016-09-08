@@ -10,7 +10,7 @@ namespace FSS.Omnius.Controllers.Nexus
     {
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["LdapServersCount"] = e.Ldaps.Count();
             ViewData["WebServicesCount"] = e.WSs.Count();
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
@@ -24,7 +24,7 @@ namespace FSS.Omnius.Controllers.Nexus
         [HttpPost]
         public ActionResult Save(WebDavServer model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (!model.Id.Equals(null) && model.Id > 0)
             {
                 WebDavServer row = e.WebDavServers.Single(m => m.Id == model.Id);
@@ -45,17 +45,17 @@ namespace FSS.Omnius.Controllers.Nexus
         }
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Nexus/WebDAV/Detail.cshtml", e.WebDavServers.Single(m => m.Id == id));
         }
         public ActionResult Edit(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Nexus/WebDAV/Form.cshtml", e.WebDavServers.Single(m => m.Id == id));
         }
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             WebDavServer row = e.WebDavServers.Single(m => m.Id == id);
 
             e.WebDavServers.Remove(row);

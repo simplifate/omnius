@@ -12,7 +12,7 @@ namespace FSPOC_WebProject.Controllers.Persona
         [PersonaAuthorize(NeedsAdmin = true, Module = "Persona")]
         public ActionResult Index()
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 List<AjaxModuleAccessPermission> model = context.ModuleAccessPermissions
                     .Select(c => new AjaxModuleAccessPermission

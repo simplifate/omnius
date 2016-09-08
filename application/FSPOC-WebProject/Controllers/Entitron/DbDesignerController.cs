@@ -11,7 +11,7 @@ namespace FSS.Omnius.Controllers.Entitron
         // GET: DbDesigner
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 int appId = 0;
                 string appName = "";

@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         public ExtDB(string serverName, string dbName)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             Entitron.Entity.Nexus.ExtDB row = e.ExtDBs.Single(m => m.DB_Server == serverName && m.DB_Name == dbName);
             if (row == null) {

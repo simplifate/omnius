@@ -166,7 +166,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
         private static Entitron.Entity.Nexus.WS GetModel(string serviceName)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Entitron.Entity.Nexus.WS row = e.WSs.Single(m => m.Name == serviceName);
             return row;
         }

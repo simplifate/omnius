@@ -13,7 +13,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: Queue
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -22,14 +22,14 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             
             return PartialView("~/Views/Hermes/Queue/Detail.cshtml", e.EmailQueueItems.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailQueue row = e.EmailQueueItems.Single(m => m.Id == id);
 
             e.EmailQueueItems.Remove(row);

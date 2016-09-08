@@ -174,7 +174,7 @@ namespace FSPOC_WebProject.Controllers.Persona
             #endregion
 
             #region Save model
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 Application app = context.Applications.Find(model.AppID);
 

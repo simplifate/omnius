@@ -16,14 +16,14 @@ namespace FSS.Omnius.Controllers.Mozaic
         // GET: Css
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             return View(e.Css);
         }
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Css css = e.Css.SingleOrDefault(x => x.Id == id);
 
             return View(css);
@@ -33,7 +33,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         // Start update environment
         public ActionResult Update(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Css css = e.Css.SingleOrDefault(x => x.Id == id);
             
             return SetUpdateCss(css);
@@ -52,7 +52,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [ValidateInput(false)]
         public ActionResult Update(Css model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             if (string.IsNullOrWhiteSpace(model.Name))
             {
@@ -68,7 +68,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Css css = e.Css.SingleOrDefault(x => x.Id == id);
 
             e.Css.Remove(css);

@@ -54,7 +54,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             DBTable table = core.Entitron.GetDynamicTable(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"]);
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             
             //
             var select = table.Select();

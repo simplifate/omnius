@@ -12,7 +12,7 @@ namespace FSS.Omnius.Controllers.Watchtower
     {
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 List<LogItem> searchResults = new List<LogItem>();
                 List<AjaxLogItem> model = new List<AjaxLogItem>();

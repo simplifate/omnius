@@ -22,7 +22,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
 
             return View(temp);
@@ -30,7 +30,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Create()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Template temp= new Template();
 
             ViewBag.Categories = e.TemplateCategories;
@@ -42,7 +42,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [ValidateInput(false)]
         public ActionResult Create(Template model, int cat)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             foreach (Template t in e.Templates)
             {
                 if (t.Name == model.Name)
@@ -63,7 +63,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Update(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
            
             ViewBag.Categories = e.TemplateCategories;
@@ -75,7 +75,7 @@ namespace FSS.Omnius.Controllers.Mozaic
         [ValidateInput(false)]
         public ActionResult Update(Template model, int cat)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Template temp = e.Templates.SingleOrDefault(x => x.Id == model.Id);
 
             foreach (Template t in e.Templates)
@@ -98,7 +98,7 @@ namespace FSS.Omnius.Controllers.Mozaic
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Template temp = e.Templates.SingleOrDefault(x => x.Id == id); ;
 
             e.Templates.Remove(temp);

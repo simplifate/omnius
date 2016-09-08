@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
     {
         public void ExportAllDatabaseDesignerData(string filename)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 var commits = from c in context.DBSchemeCommits orderby c.Timestamp descending select c;
                 string jsonOutput = JsonConvert.SerializeObject(commits.ToList(), Formatting.Indented,
@@ -23,7 +23,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
         public string ExportApplication(int id) 
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 var application = context.Applications.SingleOrDefault(a => a.Id == id);
                 if (application != null)

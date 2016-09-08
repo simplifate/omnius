@@ -13,7 +13,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
     {
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 if (Request.HttpMethod == "POST")
                 {
@@ -79,7 +79,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             TapestryDesignerMetablock parentMetablock;
             List<TapestryDesignerMenuItem> model = new List<TapestryDesignerMenuItem>();
 
-            using (DBEntities context = new DBEntities()) 
+            using (DBEntities context = DBEntities.instance) 
             {
                 parentMetablock = context.TapestryDesignerMetablocks.Include("Metablocks")
                                                                     .Include("Blocks")

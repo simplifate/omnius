@@ -12,7 +12,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         {
             if (Request.HttpMethod == "POST")
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     int blockId = int.Parse(formParams["blockId"]);
                     var parentMetablock = context.TapestryDesignerBlocks.Include("ParentMetablock")

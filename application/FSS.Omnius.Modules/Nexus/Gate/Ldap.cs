@@ -41,7 +41,7 @@ namespace FSS.Omnius.Nexus.Gate
 
         public Ldap()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ldapList = e.Ldaps;
         }
 

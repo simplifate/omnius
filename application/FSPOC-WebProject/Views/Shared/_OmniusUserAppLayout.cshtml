@@ -13,7 +13,7 @@
     <style>
         @{
             int appId = Context.GetCORE().Entitron.AppId;
-            var context = new DBEntities();
+            var context = DBEntities.instance;
             var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == appId).First();
         }
         @Html.Partial($"{applicationTemplate.CssTemplate.Url}")        

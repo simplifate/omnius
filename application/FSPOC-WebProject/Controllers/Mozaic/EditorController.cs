@@ -12,7 +12,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         // GET: Editor
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 if (formParams["appId"] != null)
                 {

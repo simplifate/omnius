@@ -11,7 +11,7 @@ namespace FSS.Omnius.Controllers.Hermes
     {
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();

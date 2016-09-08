@@ -22,7 +22,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     return context.Applications
                         .Select(c => new AjaxTapestryDesignerAppHeader
@@ -44,7 +44,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     Application app = context.Applications.Find(appId);
                     AjaxTapestryDesignerApp result = new AjaxTapestryDesignerApp
@@ -68,7 +68,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     AjaxTapestryDesignerBlockCommit result;
                     TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
@@ -139,7 +139,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var app = context.Applications.Find(appId);
                     app.TapestryChangedSinceLastBuild = true;
@@ -411,7 +411,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     return context.TapestryDesignerBlocks.Find(blockId).BlockCommits.OrderByDescending(c => c.Timestamp)
                         .Select(c => new AjaxTapestryDesignerBlockCommitHeader
@@ -434,7 +434,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     TapestryDesignerBlockCommit blockCommit = context.TapestryDesignerBlocks.First(b => b.Id == blockId)
                         .BlockCommits.Where(c => c.Id == commitId).First();
@@ -470,7 +470,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         [HttpGet]
         public AjaxTapestryDesignerBlockList GetBlockList(int appId)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 var result = new AjaxTapestryDesignerBlockList();
                 var rootMetablock = context.Applications.Find(appId).TapestryDesignerRootMetablock;
@@ -484,7 +484,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var app = context.Applications.Find(appId);
                     app.TapestryChangedSinceLastBuild = true;
@@ -604,7 +604,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var requestedMetablock = context.TapestryDesignerMetablocks.Find(metablockId);
                     var blockList = new List<AjaxTapestryDesignerBlock>();
@@ -689,7 +689,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (DBEntities context = new DBEntities())
+                using (DBEntities context = DBEntities.instance)
                 {
                     foreach (KeyValuePair<int, int> row in data.Metablocks)
                     {

@@ -29,7 +29,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 foreach (var pair in inputObject)
                     fc.Add(pair.Key, pair.Value.ToString());
 
-            using (DBEntities context = new DBEntities())
+            using (DBEntities context = DBEntities.instance)
             {
                 // get block
                 Block block = null;
@@ -68,7 +68,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var result = new List<Object>();
 

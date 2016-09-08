@@ -28,7 +28,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
                 int contentLength = int.Parse(response.GetResponseHeader("Content-Length"));
                 using (Stream responseStream = response.GetResponseStream())
                 {
-                    using (var context = new DBEntities())
+                    using (var context = DBEntities.instance)
                     {
                         FileMetadata currentMetadataItem;
                         try

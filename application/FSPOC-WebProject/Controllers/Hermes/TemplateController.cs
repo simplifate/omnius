@@ -19,7 +19,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: SMTP
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -30,7 +30,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Create()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["ApplicationList"] = e.Applications;
             return View("~/Views/Hermes/Template/Form.cshtml");
         }
@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [HttpPost]
         public ActionResult Save(EmailTemplate model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -66,13 +66,13 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Hermes/Template/Detail.cshtml", e.EmailTemplates.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["ApplicationList"] = e.Applications;
 
             return View("~/Views/Hermes/Template/Form.cshtml", e.EmailTemplates.Single(m => m.Id == id));
@@ -80,7 +80,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailTemplate row = e.EmailTemplates.Single(m => m.Id == id);
 
             e.EmailTemplates.Remove(row);
@@ -91,7 +91,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult EditContent(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailTemplate template = e.EmailTemplates.Single(m => m.Id == id);
 
             ViewData["LanguageList"] = LanguageList;
@@ -103,7 +103,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [ValidateInput(false)]
         public ActionResult SaveContent(EmailTemplate model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             if (!model.Id.Equals(null))
             {
@@ -144,7 +144,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Clone(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["ApplicationList"] = e.Applications;
             ViewData["Action"] = "SaveClone";
 
@@ -154,7 +154,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [HttpPost]
         public ActionResult SaveClone(EmailTemplate model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (ModelState.IsValid) {
                 EmailTemplate row = e.EmailTemplates.Include("PlaceholderList").Include("ContentList").Single(m => m.Id == model.Id);
 

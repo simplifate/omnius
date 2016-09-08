@@ -1,6 +1,7 @@
 ﻿using System.Web.Hosting;
 using System.Reflection;
 using FSPOC_WebProject.Views;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSPOC_WebProject.App_Start
 {

@@ -13,7 +13,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: Placeholder list
         public ActionResult Index(int? emailId)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailTemplate template = e.EmailTemplates.Single(t => t.Id == emailId);
 
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
@@ -41,7 +41,7 @@ namespace FSS.Omnius.Controllers.Hermes
             if (emailId == null)
                 throw new Exception("Došlo k neoèekávané chybì");
 
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -76,7 +76,7 @@ namespace FSS.Omnius.Controllers.Hermes
         
         public ActionResult Edit(int? emailId, int? id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["emailId"] = emailId;
 
             return View("~/Views/Hermes/Placeholder/Form.cshtml", e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.Single(p => p.Id == id));
@@ -84,7 +84,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Delete(int? emailId, int? id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailPlaceholder row = e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.Single(p => p.Id == id);
 
             if (row == null)
@@ -98,7 +98,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult ChangeOrder(int? emailId)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             EmailTemplate template = e.EmailTemplates.Single(t => t.Id == emailId);
 
             ViewData["emailId"] = template.Id;
@@ -108,7 +108,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult SaveNumOrder(int? emailId, ICollection<int> ids)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             List<EmailPlaceholder> list = e.EmailTemplates.Single(t => t.Id == emailId).PlaceholderList.ToList();
 
             int order = 1;

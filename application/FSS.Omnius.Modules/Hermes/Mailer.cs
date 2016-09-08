@@ -44,7 +44,7 @@ namespace FSS.Omnius.Modules.Hermes
 
         private void Init(string serverName = "")
         {
-            e = new DBEntities();
+            e = DBEntities.instance;
 
             if (string.IsNullOrEmpty(serverName))
             {

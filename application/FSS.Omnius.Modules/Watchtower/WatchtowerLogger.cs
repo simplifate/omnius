@@ -72,7 +72,7 @@ namespace FSS.Omnius.Modules.Watchtower
         public void LogEvent(string message, int userId, LogEventType eventType = LogEventType.NotSpecified,
             LogLevel level = LogLevel.Info, bool isPlatormEvent = true, int? appId = null)
         {
-            using (var context = new DBEntities())
+            using (var context = DBEntities.instance)
             {
                 var logItem = new LogItem
                 {
@@ -93,7 +93,7 @@ namespace FSS.Omnius.Modules.Watchtower
         {
             EventTypeMap = new Dictionary<int, string>();
             LogLevelMap = new Dictionary<int, string>();
-            context = new DBEntities();
+            context = DBEntities.instance;
         }
         public static WatchtowerLogger Instance
         {

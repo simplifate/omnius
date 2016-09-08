@@ -11,7 +11,7 @@
     @{
         if (ViewBag.ShowTable == true)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             @Html.Partial("AjaxIndex", e.Users)
         }
     }

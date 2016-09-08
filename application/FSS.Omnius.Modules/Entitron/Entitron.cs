@@ -46,7 +46,7 @@ namespace FSS.Omnius.Modules.Entitron
         public DBEntities GetStaticTables()
         {
             if (entities == null)
-                entities = new DBEntities();
+                entities = DBEntities.instance;
 
             return entities;
         }

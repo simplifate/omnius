@@ -22,7 +22,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             try
             {
                 var result = new List<AjaxMozaicEditorPageHeader>();
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted == false).OrderBy(o => o.Name))
                     {
@@ -48,7 +48,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var requestedPage = context.MozaicEditorPages.Find(pageId);
 
@@ -137,7 +137,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var app = context.Applications.Find(appId);
                     app.MozaicChangedSinceLastBuild = true;
@@ -166,7 +166,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             try
             {
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     var app = context.Applications.Find(appId);
                     app.MozaicChangedSinceLastBuild = true;
@@ -196,7 +196,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
         {
             try
             {
-                var context = new DBEntities();
+                var context = DBEntities.instance;
                 var page = context.MozaicEditorPages.Find(pageId);
                 page.IsDeleted = true;
                 context.SaveChanges();
@@ -215,7 +215,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             try
             {
                 var result = new List<AjaxMozaicEditorPageHeader>();
-                using (var context = new DBEntities())
+                using (var context = DBEntities.instance)
                 {
                     foreach (var page in context.Applications.Find(appId).MozaicEditorPages.Where(p => p.IsDeleted).OrderBy(o => o.Name))
                     {

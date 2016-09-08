@@ -15,7 +15,7 @@ namespace FSS.Omnius.Controllers.Hermes
         // GET: SMTP
         public ActionResult Index()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
@@ -32,7 +32,7 @@ namespace FSS.Omnius.Controllers.Hermes
         [HttpPost]
         public ActionResult Save(Smtp model)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             if (ModelState.IsValid)
             {
                 // Záznam již existuje - pouze upravujeme
@@ -63,19 +63,19 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Detail(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Hermes/SMTP/Detail.cshtml", e.SMTPs.Single(m => m.Id == id));
         }
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             return View("~/Views/Hermes/SMTP/Form.cshtml", e.SMTPs.Single(m => m.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             Smtp row = e.SMTPs.Single(m => m.Id == id);
 
             e.SMTPs.Remove(row);
@@ -90,7 +90,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult Test()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             
             Dictionary<string, object> model = new Dictionary<string, object>();
             model.Add("count", e.WSs.Count());
@@ -110,7 +110,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
         public ActionResult TestSender()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             /*Modules.Entitron.Entity.Nexus.Ldap m = e.Ldaps.Single(l => l.Is_Default == true);
             
             Mailer mail = new Mailer("Test", "Založení AD serveru", m);

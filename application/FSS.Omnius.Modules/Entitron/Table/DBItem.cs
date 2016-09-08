@@ -109,7 +109,7 @@ namespace FSS.Omnius.Modules.Entitron
 
         public List<string> getColumnDisplayNames()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
             DbSchemeCommit commit = e.Applications.Find(table.Application.Id).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
 
             List<string> displayNames = new List<string>();

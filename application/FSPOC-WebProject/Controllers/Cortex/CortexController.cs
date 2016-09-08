@@ -38,7 +38,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Index()
         {
-            DBEntities context = new DBEntities();
+            DBEntities context = DBEntities.instance;
 
             ViewBag.ScheduleTypeNames = scheduleTypeNames;
             ViewBag.DaysNames = daysNames;
@@ -51,7 +51,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Create()
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
              
             ViewData["ApplicationList"] = e.Applications;
 
@@ -60,7 +60,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Edit(int id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             ViewData["ApplicationList"] = e.Applications;
 
@@ -69,7 +69,7 @@ namespace FSS.Omnius.Controllers.Cortex
 
         public ActionResult Detail(int? id)
         {
-            DBEntities e = new DBEntities();
+            DBEntities e = DBEntities.instance;
 
             ViewData["ApplicationList"] = e.Applications;
             ViewData["ScheduleTypeNames"] = scheduleTypeNames;
