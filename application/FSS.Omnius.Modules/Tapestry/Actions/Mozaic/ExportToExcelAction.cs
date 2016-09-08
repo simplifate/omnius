@@ -90,7 +90,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
             Dictionary<string, string> foreignColumnNames = new Dictionary<string, string>();
 
-            using (DBEntities e = DBEntities.instance) {
+            using (DBEntities e = new DBEntities()) {
                 if (vars.ContainsKey("ForeignKeys")) {
                     foreach(KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
                         foreignData.Add(key.Key, new Dictionary<int, string>());

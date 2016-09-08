@@ -58,7 +58,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
-            DBEntities e = DBEntities.instance;
+            DBEntities e = new DBEntities();
 
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]

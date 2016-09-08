@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry
             // resolve
             foreach(KeyValuePair<string, string> pair in _value)
             {
-                object realValue = parseValue(pair.Value, vars);
+                object realValue = ParseValue(pair.Value, vars);
                 _result.Add(pair.Key, realValue);
             }
         }
@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             foreach(var pair in _result)
             {
-                object key = parseValue(pair.Key, vars);
+                object key = ParseValue(pair.Key, vars);
                 if (!Equals(key, _result[pair.Key]))
                     return _not;
             }
@@ -115,7 +115,7 @@ namespace FSS.Omnius.Modules.Tapestry
         /// <param name="input">string to resolv</param>
         /// <param name="vars">variables to take values from</param>
         /// <returns>value of input</returns>
-        private object parseValue(string input, Dictionary<string, object> vars)
+        public static object ParseValue(string input, Dictionary<string, object> vars)
         {
             // value
             if (input.Length > 1 && input[1] == '$')
