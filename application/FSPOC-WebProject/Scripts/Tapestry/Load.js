@@ -679,6 +679,10 @@
                                     + uiPageData.Components[componentIndex].Name + '_DetailsAction</div>');
                                 $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
                                     + uiPageData.Components[componentIndex].Name + '_DeleteAction</div>');
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_actionA" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].Name + '_A_Action</div>');
+                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_actionB" libType="ui" class="libraryItem">'
+                                    + uiPageData.Components[componentIndex].Name + '_B_Action</div>');
                             }
                             if (uiPageData.Components[componentIndex].ChildComponents) {
                                 for (childComponentIndex = 0; childComponentIndex < uiPageData.Components[componentIndex].ChildComponents.length; childComponentIndex++) {
@@ -701,7 +705,12 @@
                                             + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_EditAction</div>');
                                         $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_detail" libType="ui" class="libraryItem">'
                                             + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DetailsAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DeleteAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
+                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DeleteAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_actionA" libType="ui" class="libraryItem">'
+                                            + uiPageData.Components[componentIndex].Name + '_A_Action</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="datatable_actionB" libType="ui" class="libraryItem">'
+                                            + uiPageData.Components[componentIndex].Name + '_B_Action</div>');
                                     }
                                 }
                             }

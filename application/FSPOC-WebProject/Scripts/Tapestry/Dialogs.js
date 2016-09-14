@@ -299,6 +299,10 @@ $(function () {
                                             + cData.Name + '_DetailsAction</div>');
                                         $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_delete" libType="ui" class="libraryItem">'
                                             + cData.Name + '_DeleteAction</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_actionA" libType="ui" class="libraryItem">'
+                                            + cData.Name + '_A_Action</div>');
+                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="datatable_actionB" libType="ui" class="libraryItem">'
+                                            + cData.Name + '_B_Action</div>');
                                     }
                                     if (cData.ChildComponents) {
                                         for (j = 0; j < cData.ChildComponents.length; j++) {

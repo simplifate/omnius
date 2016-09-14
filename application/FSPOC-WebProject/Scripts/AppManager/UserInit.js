@@ -110,6 +110,14 @@ $(function () {
                     $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
                 }
             });
+            table.on("click", ".row_A_Action", function () {
+                    rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionA" /></form>').appendTo('body').submit();
+                });
+            table.on("click", ".row_B_Action", function () {
+                    rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionB" /></form>').appendTo('body').submit();
+                });
             if (!table.hasClass("data-table-simple-mode")) {
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
