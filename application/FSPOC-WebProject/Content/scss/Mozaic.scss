@@ -495,6 +495,22 @@ body.mozaicEditorModule {
     .visible-panel-pale-background {
         background-color: #d4f0fe;
     }
+    .named-panel {
+        background-color: #cce0f5;
+
+        .named-panel-header {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            min-height: 25px;
+            padding: 1px 6px;
+            background-color: #0066cc;
+            color: white;
+            font-family: MyriadPro;
+            font-size: 18px;
+        }
+    }
     .data-table {
         width: 250px;
         border: 1px solid #4b8ad1;

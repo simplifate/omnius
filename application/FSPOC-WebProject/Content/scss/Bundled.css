@@ -525,6 +525,9 @@ body.adminAppModule #validationResults {
     color: #58585a;
     font-size: 18px;
     padding-left: 0px; }
+    #userLeftBar #appMenu > li > a {
+      padding-left: 40px;
+      font-size: 16px; }
     #userLeftBar #appMenu > li {
       list-style: none; }
       #userLeftBar #appMenu > li h4 {
@@ -895,6 +898,19 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     min-width: 60px; }
   .mozaicForm .visible-panel-pale-background {
     background-color: #d4f0fe; }
+  .mozaicForm .named-panel {
+    background-color: #cce0f5; }
+    .mozaicForm .named-panel .named-panel-header {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      min-height: 25px;
+      padding: 1px 6px;
+      background-color: #0066cc;
+      color: white;
+      font-family: MyriadPro;
+      font-size: 18px; }
   .mozaicForm .removePanelIcon {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -3240,6 +3256,19 @@ body.mozaicEditorModule {
     border: 1px dashed #0080ff; }
   body.mozaicEditorModule .visible-panel-pale-background {
     background-color: #d4f0fe; }
+  body.mozaicEditorModule .named-panel {
+    background-color: #cce0f5; }
+    body.mozaicEditorModule .named-panel .named-panel-header {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      min-height: 25px;
+      padding: 1px 6px;
+      background-color: #0066cc;
+      color: white;
+      font-family: MyriadPro;
+      font-size: 18px; }
   body.mozaicEditorModule .data-table {
     width: 250px;
     border: 1px solid #4b8ad1; }

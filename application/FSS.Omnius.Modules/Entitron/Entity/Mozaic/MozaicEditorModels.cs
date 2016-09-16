@@ -327,6 +327,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\"");
                     stringBuilder.Append($">");
+                    if(c.Classes.Contains("named-panel"))
+                    {
+                        stringBuilder.Append($"<div class=\"named-panel-header\">{c.Label}</div>");
+                    }
                     RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");
                 }

@@ -98,6 +98,10 @@ function GetMozaicContainerComponentArray(container, nested) {
             phaseLabels = phaseLabels.slice(0, -1);
             content = phaseLabels;
         }
+        else if (currentUic.hasClass("named-panel")) {
+            type = "panel";
+            label = currentUic.find(".named-panel-header").text();
+        }
         else if (currentUic.hasClass("panel-component"))
             type = "panel";
         else

@@ -293,6 +293,8 @@ namespace FSS.Omnius.Controllers.Master
                 var commit = b.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
                 if (commit != null && !string.IsNullOrWhiteSpace(commit.RoleWhitelist))
                     rights.AddRange(commit.RoleWhitelist.Split(','));
+                else
+                    rights.Add("User");
                 items.Add(new TapestryDesignerMenuItem()
                 {
                     Id = b.Id,
@@ -302,7 +304,7 @@ namespace FSS.Omnius.Controllers.Master
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
                     BlockName = blockMapping[b.Id].Name,
-                    rights = commit != null ? commit.RoleWhitelist : ""
+                    rights = commit != null && !string.IsNullOrEmpty(commit.RoleWhitelist) ? commit.RoleWhitelist : "User"
                 });
             }
 

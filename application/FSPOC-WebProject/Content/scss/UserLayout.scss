@@ -242,6 +242,10 @@
         font-size: 18px;
         padding-left: 0px;
 
+        > li > a {
+            padding-left: 40px;
+            font-size: 16px;
+        }
         > li {
             list-style: none;
             h4 {
@@ -709,6 +713,22 @@ body.userLayout.leftBarHidden {
     }
     .visible-panel-pale-background {
         background-color: #d4f0fe;
+    }
+    .named-panel {
+        background-color: #cce0f5;
+
+        .named-panel-header {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            min-height: 25px;
+            padding: 1px 6px;
+            background-color: #0066cc;
+            color: white;
+            font-family: MyriadPro;
+            font-size: 18px;
+        }
     }
     .removePanelIcon {
         @include no-select();

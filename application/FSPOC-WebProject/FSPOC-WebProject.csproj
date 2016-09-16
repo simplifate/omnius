@@ -1408,6 +1408,9 @@
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\App\83\menuLayout.cshtml" />
+    <Content Include="Views\App\83\Page\932.cshtml" />
+    <Content Include="Views\App\83\Page\938.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

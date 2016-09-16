@@ -42,6 +42,9 @@ $(function () {
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                     componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
+                else if (CurrentComponent.hasClass("named-panel")) {
+                    componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".named-panel-header").text());
+                }
                 else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.html());
                     componentPropertiesDialog.find("#component-content").val(CurrentComponent.attr("contentTemplate"));
@@ -115,6 +118,9 @@ $(function () {
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
                 CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
+            }
+            else if (CurrentComponent.hasClass("named-panel")) {
+                CurrentComponent.find(".named-panel-header").text(componentPropertiesDialog.find("#component-label").val());
             }
             else if (CurrentComponent.hasClass("form-heading") || CurrentComponent.hasClass("control-label")) {
                 CurrentComponent.html(componentPropertiesDialog.find("#component-label").val());
@@ -309,10 +315,6 @@ $(function () {
                     }
                 }
             });
-            // Clear Mozaic page container after creating new page
-            $("#mozaicPageContainer .uic").remove();
-            $("#mozaicPageContainer .dataTables_wrapper").remove();
-            $("#mozaicPageContainer .color-picker").remove();
         }
         trashPageDialog = $("#trash-page-dialog").dialog({
             autoOpen: false,

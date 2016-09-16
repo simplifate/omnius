@@ -68,6 +68,10 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.find(".info-container-header").text(cData.Label);
         newComponent.find(".info-container-body").text(cData.Content);
     }
+    else if (newComponent.hasClass("named-panel")) {
+        newComponent.append($('<div class="named-panel-header"></div>'));
+        newComponent.find(".named-panel-header").text(cData.Label);
+    }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
         newComponent.html(cData.Label);
         newComponent.attr("contentTemplate", cData.Content);
