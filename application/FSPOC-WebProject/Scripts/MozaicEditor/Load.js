@@ -72,6 +72,10 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.append($('<div class="named-panel-header"></div>'));
         newComponent.find(".named-panel-header").text(cData.Label);
     }
+    else if (newComponent.hasClass("multiple-select")) {
+        newComponent.append($('<option value="1">Multiple</option><option value="2">Choice</option><option value="3">Select</option>'));
+        newComponent.attr("multiple", "");
+    }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
         newComponent.html(cData.Label);
         newComponent.attr("contentTemplate", cData.Content);

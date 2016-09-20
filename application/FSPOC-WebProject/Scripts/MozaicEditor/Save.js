@@ -70,6 +70,8 @@ function GetMozaicContainerComponentArray(container, nested) {
             type = "input-multiline";
         else if (currentUic.hasClass("dropdown-select"))
             type = "dropdown-select";
+        else if (currentUic.hasClass("multiple-select"))
+            type = "multiple-select";
         else if (currentUic.hasClass("data-table-with-actions"))
             type = "data-table-with-actions";
         else if (currentUic.hasClass("data-table"))
