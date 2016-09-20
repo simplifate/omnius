@@ -51,6 +51,8 @@ function GetMozaicContainerComponentArray(container, nested) {
             type = "button-simple";
         else if (currentUic.hasClass("button-dropdown"))
             type = "button-dropdown";
+        else if (currentUic.hasClass("button-browse"))
+            type = "button-browse";
         else if (currentUic.hasClass("checkbox-control")) {
             type = "checkbox";
             label = currentUic.find(".checkbox-label").text();

@@ -76,6 +76,9 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.append($('<option value="1">Multiple</option><option value="2">Choice</option><option value="3">Select</option>'));
         newComponent.attr("multiple", "");
     }
+    else if (newComponent.hasClass("button-browse")) {
+        newComponent.attr("type", "file");
+    }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
         newComponent.html(cData.Label);
         newComponent.attr("contentTemplate", cData.Content);
