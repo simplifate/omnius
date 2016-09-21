@@ -806,6 +806,10 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       font-size: 1.15em; }
     .mozaicForm .control-label u {
       color: #0065a9; }
+  .mozaicForm .detail-label {
+    color: #0066cc;
+    font-weight: bold;
+    text-align: right; }
   .mozaicForm .form-heading {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -3219,6 +3223,10 @@ body.mozaicEditorModule {
       font-size: 1.15em; }
     body.mozaicEditorModule .control-label u {
       color: #0065a9; }
+  body.mozaicEditorModule .detail-label {
+    color: #0066cc;
+    font-weight: bold;
+    text-align: right; }
   body.mozaicEditorModule .form-heading {
     font-family: RweHeadlineRegular;
     font-size: 28px;
