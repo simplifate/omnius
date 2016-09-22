@@ -586,6 +586,11 @@ body.userLayout.leftBarHidden {
             color: #0065a9;
         }
     }
+    .detail-label {
+        color: #0066cc;
+        font-weight: bold;
+        text-align: right;
+    }
     .form-heading {
         @include no-select();
         font-family: RweHeadlineRegular;

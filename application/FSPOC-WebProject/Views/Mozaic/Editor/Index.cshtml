@@ -77,6 +77,7 @@
             <button class="toolboxItem button-dropdown button-small" uicClasses="button-dropdown button-small">Small button<i class="fa fa-caret-down"></i></button>
             <button class="toolboxItem button-simple button-extra-small" uicClasses="button-simple button-extra-small">Extra small</button>
             <button class="toolboxItem button-dropdown button-extra-small" uicClasses="button-dropdown button-extra-small">Extra small<i class="fa fa-caret-down"></i></button>
+            <input type="file" class="toolboxItem button-browse" uicClasses="button-browse" />
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Inputs</div>
             <input type="text" placeholder="Single line input" class="toolboxItem input-single-line" uicClasses="input-single-line" />
@@ -92,10 +93,16 @@
             </div>
             <select class="toolboxItem dropdown-select" uicClasses="dropdown-select"><option selected="selected">Dropdown</option></select>
             <input type="text" class="toolboxItem color-picker basic" uicClasses="color-picker basic" value="Color picker" />
+            <select multiple class="toolboxItem multiple-select" uicClasses="dropdown-select multiple-select" style="width: 90px; height: 60px">
+                <option value="1">Multiple</option>
+                <option value="2">Choice</option>
+                <option value="3">Select</option>
+            </select>
             <hr class="toolboxCategoryHr" />
             <div class="toolboxCategoryLabel">Labels</div>
             <div class="toolboxItem form-heading" uicClasses="form-heading" contentTemplate="">Form heading</div>
             <div class="toolboxItem control-label" uicClasses="control-label" contentTemplate="">Control label</div>
+            <div class="toolboxItem control-label detail-label" uicClasses="control-label detail-label" contentTemplate="" style="width: 160px">Detail label</div>
             <div class="toolboxItem info-container" uicClasses="info-container">
                 <div class="fa fa-info-circle info-container-icon"></div>
                 <div class="info-container-header">Info container</div>

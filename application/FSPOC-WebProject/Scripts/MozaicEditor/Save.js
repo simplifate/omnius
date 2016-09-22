@@ -51,6 +51,8 @@ function GetMozaicContainerComponentArray(container, nested) {
             type = "button-simple";
         else if (currentUic.hasClass("button-dropdown"))
             type = "button-dropdown";
+        else if (currentUic.hasClass("button-browse"))
+            type = "button-browse";
         else if (currentUic.hasClass("checkbox-control")) {
             type = "checkbox";
             label = currentUic.find(".checkbox-label").text();
@@ -70,6 +72,8 @@ function GetMozaicContainerComponentArray(container, nested) {
             type = "input-multiline";
         else if (currentUic.hasClass("dropdown-select"))
             type = "dropdown-select";
+        else if (currentUic.hasClass("multiple-select"))
+            type = "multiple-select";
         else if (currentUic.hasClass("data-table-with-actions"))
             type = "data-table-with-actions";
         else if (currentUic.hasClass("data-table"))

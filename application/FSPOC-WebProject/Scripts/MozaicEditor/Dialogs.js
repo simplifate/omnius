@@ -293,6 +293,7 @@ $(function () {
                 Components: []
             };
             appId = $("#currentAppId").val();
+            newPageName = newPageDialog.find("#new-page-name").val()
             $.ajax({
                 type: "POST",
                 url: "/api/mozaic-editor/apps/" + appId + "/pages",
@@ -302,10 +303,10 @@ $(function () {
                 },
                 success: function (data) {
                     $("#currentPageId").val(data);
-                    if (newPageDialog.find("#new-page-name").val() == "")
+                    if (newPageName == "")
                         $("#headerPageName").text("Nepojmenovaná stránka");
                     else
-                        $("#headerPageName").text(newPageDialog.find("#new-page-name").val());
+                        $("#headerPageName").text(newPageName);
                     
                     if (SaveRequested) {
                         SaveMozaicPage();
