@@ -92,7 +92,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     else
                                         newRow[columnName] = "Ne";
                                 }
-                                else if(entitronRow[columnName] is DateTime)
+                                else if (entitronRow[columnName] is DateTime)
                                 {
                                     newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
                                 }
@@ -171,7 +171,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                 }
-                else if (resourceMappingPair.TargetType == "dropdown-select" && string.IsNullOrEmpty(source.ColumnName))
+                else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(source.ColumnName))
                 {
                     var dropdownDictionary = new Dictionary<int, string>();
                     foreach (DataRow datarow in dataSource.Rows)
@@ -192,7 +192,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
                 }
                 else if (modelRow != null && !string.IsNullOrEmpty(source.ColumnName)
-                    && resourceMappingPair.TargetType == "dropdown-select")
+                    && (resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select"))
                 {
                     ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
                 }
