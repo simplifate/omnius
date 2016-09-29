@@ -327,6 +327,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else if (c.Type == "panel" && allowNesting)
                 {
                     bool invisible = false;
+                    string generatedAttributes = "";
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
                         string[] tokenPairs = c.Properties.Split(';');
@@ -336,9 +337,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             if (nameValuePair.Length == 2)
                             {
                                 if (nameValuePair[0].ToLower() == "hiddenby")
-                                    stringBuilder.Append($" panelHiddenBy=\"{nameValuePair[1]}\"");
+                                    generatedAttributes += $" panelHiddenBy=\"{nameValuePair[1]}\"";
                                 else if (nameValuePair[0].ToLower() == "clone")
-                                    stringBuilder.Append($" panelClonedBy=\"{nameValuePair[1]}\"");
+                                    generatedAttributes += $" panelClonedBy=\"{nameValuePair[1]}\"";
                             }
                             else
                             {
@@ -347,7 +348,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             }
                         }
                     }
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" {generatedAttributes} style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\"");
                     stringBuilder.Append($">");
                     if(c.Classes.Contains("named-panel"))
