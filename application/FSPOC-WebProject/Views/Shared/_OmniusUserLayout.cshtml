@@ -2,20 +2,20 @@
 @using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.Modules.Entitron.Entity.Tapestry
 @using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@using FSS.Omnius.Modules.CORE
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title RWE OSS</title>
-    @Styles.Render("~/Content/css-libs")
-    @Styles.Render("~/Content/css-bundle/css-libs")
+    <link rel="stylesheet" href="@Services.GetFileVersion("/Content/bundle.css")" />
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script> 
     @RenderSection("Styles", false)
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/CommonLibraries")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>  
     <div id="userTopBar">
         <div class="icon" id="toggleMenuIcon"><div class="fa fa-bars"></div></div>
         <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
@@ -98,7 +98,7 @@
             }
         </div>
     }
-    @Scripts.Render("~/bundles/OmniusScripts")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
     @RenderSection("scripts", required: false)
 
 </body>

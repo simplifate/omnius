@@ -4,11 +4,7 @@
     "inputFile": "Content/scss/Bundled.scss"
   },
   {
-    "outputFile": "Content/scss/MozaicTemplates/DefaultMozaicTemplate.css",
-    "inputFile": "Content/scss/MozaicTemplates/DefaultMozaicTemplate.scss"
-  },
-  {
-    "outputFile": "Content/scss/MozaicTemplates/PortalInternichAudituTemplate.css",
-    "inputFile": "Content/scss/MozaicTemplates/PortalInternichAudituTemplate.scss"
+    "outputFile": "Scripts/jquery.validate.unobtrusive.es5.js",
+    "inputFile": "Scripts/jquery.validate.unobtrusive.js"
   }
 ]

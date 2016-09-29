@@ -1,20 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using FSS.Omnius.Modules.CORE
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.9">
     <title>@Page.Title</title>
-    @Styles.Render("~/Content/css-libs")
-    @Styles.Render("~/Content/css-bundle/css-libs")
-    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="@Services.GetFileVersion("/Content/bundle.css")" />
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
     @RenderSection("Styles", false)
     @{ FSS.Omnius.Modules.Entitron.Entity.Persona.ModuleAccessPermission map = Context.GetLoggedUser().ModuleAccessPermission; }
 </head>
 <body data-module="@Page.ModuleClass" class="@Page.ModuleClass adminLayout pageSpinnerShown">
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/CommonLibraries")
-    @Scripts.Render("~/bundles/OmniusScripts")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusAdminScripts.min.js")"></script>  
     <div id="topBar">
         <div id="omniusLogo"></div>
         <div class="searchField">
@@ -91,7 +91,7 @@
     <div id="appNotificationArea"></div>
     @RenderBody()
 
-    @Scripts.Render("~/bundles/knockout")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/knockout.min.js")"></script>  
     @RenderSection("scripts", required: false)
 </body>
 </html>

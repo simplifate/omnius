@@ -1,0 +1,115 @@
+[
+  {
+    "outputFileName": "Scripts/Bundles/jquery.js",
+    "inputFiles": [
+      "Scripts/moment-with-locales.min.js",
+      "Scripts/jquery-2.2.3.js",
+      "Scripts/jquery-ui.js",
+      "Scripts/jquery.validate.js",
+      "Scripts/jquery.validate.messages_cs.js",
+      "Scripts/jquery.contextMenu.js",
+      "Scripts/jquery-collision.min.js",
+      "Scripts/jquery.dataTables.min.js",
+      "Scripts/jquery.dataTables.datetime-moment.js",
+      "Scripts/jquery.datetimepicker.min.js",
+      "Scripts/jquery.plugin.min.js",
+      "Scripts/spectrum.js",
+      "Scripts/bootstrap.js",
+      "Scripts/jquery.countdown.min.js",
+      "Scripts/jquery.countdown-cs.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/omniusAdminScripts.js",
+    "inputFiles": [
+      "Scripts/Watchtower/Init.js",
+      "Scripts/Tapestry/VisualConfiguration.js",
+      "Scripts/Tapestry/Utils.js",
+      "Scripts/Tapestry/Save.js",
+      "Scripts/Tapestry/Load.js",
+      "Scripts/Tapestry/InitDemo.js",
+      "Scripts/Tapestry/Init.js",
+      "Scripts/Tapestry/Dialogs.js",
+      "Scripts/Tapestry/ContextMenu.js",
+      "Scripts/Tapestry/Conditions.js",
+      "Scripts/Portal/ModuleAdmin.js",
+      "Scripts/Portal/Init.js",
+      "Scripts/Persona/SaveModulePermissions.js",
+      "Scripts/Persona/Init.js",
+      "Scripts/Overview/VisualConfiguration.js",
+      "Scripts/Overview/Save.js",
+      "Scripts/Overview/MenuOrder.js",
+      "Scripts/Overview/Load.js",
+      "Scripts/Overview/Init.js",
+      "Scripts/Overview/Dialogs.js",
+      "Scripts/Nexus/Init.js",
+      "Scripts/Nexus/Dialogs.js",
+      "Scripts/MozaicEditor/Utils.js",
+      "Scripts/MozaicEditor/Save.js",
+      "Scripts/MozaicEditor/Load.js",
+      "Scripts/MozaicEditor/Init.js",
+      "Scripts/MozaicEditor/Dialogs.js",
+      "Scripts/Hermes/Init.js",
+      "Scripts/DatabaseDesigner/DbVisualConfiguration.js",
+      "Scripts/DatabaseDesigner/DbUtils.js",
+      "Scripts/DatabaseDesigner/DbSqlServerDef.js",
+      "Scripts/DatabaseDesigner/DbSave.js",
+      "Scripts/DatabaseDesigner/DbLoad.js",
+      "Scripts/DatabaseDesigner/DbInit.js",
+      "Scripts/DatabaseDesigner/DbDialogs.js",
+      "Scripts/AppManager/Dialogs.js",
+      "Scripts/AppManager/AdminInit.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/omniusUserScripts.js",
+    "inputFiles": [
+      "Scripts/UserScripts/AjaxRun.js",
+      "Scripts/UserScripts/AppUtils.js",
+      "Scripts/UserScripts/logout.js",
+      "Scripts/UserScripts/Spinner.js",
+      "Scripts/UserScripts/UserInit.js",
+      "Scripts/PlatformUtils.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/bundle.css",
+    "inputFiles": [
+      "Content/bootstrap.min.css",
+      "Content/jquery-ui.css",
+      "Content/jquery.contextMenu.css",
+      "Content/css/jquery.countdown.css",
+      "Content/css/jquery.datetimepicker.css",
+      "Content/css/jquery.dataTables.min.css",
+      "Content/css/font-awesome.min.css",
+      "Content/scss/Bundled.css",
+      "Content/spectrum.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/commonLibraries.js",
+    "inputFiles": [
+      "Scripts/CommonLibraries/dom.jsPlumb-1.7.6-min.js",
+      "Scripts/CommonLibraries/jquery-collision.min.js",
+      "Scripts/CommonLibraries/jquery.contextMenu.js",
+      "Scripts/CommonLibraries/ModuleSwitcher.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/modernizr.js",
+    "inputFiles": [
+      "Scripts/modernizr-2.8.3.js",
+      "Scripts/respond.js",
+      "Scripts/respond.matchmedia.addListener.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/knockout.js",
+    "inputFiles": [
+      "Scripts/RuleDetailViewModel.js",
+      "Scripts/RuleListViewModel.js",
+      "Scripts/knockout-3.3.0.debug.js",
+      "Scripts/BlockViewModel.js"
+    ]
+  }
+]

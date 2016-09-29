@@ -28,7 +28,7 @@ namespace FSPOC_WebProject
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");

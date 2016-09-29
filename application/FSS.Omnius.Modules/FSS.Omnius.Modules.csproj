@@ -167,6 +167,7 @@
     <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\IModule.cs" />
     <Compile Include="CORE\ModuleNotFoundOrEnabledException.cs" />
+    <Compile Include="CORE\Services.cs" />
     <Compile Include="Cortex\Cortex.cs" />
     <Compile Include="Cortex\CortexAzureScheduler.cs" />
     <Compile Include="Cortex\CortexSchtasks.cs" />

@@ -280,10 +280,15 @@
     <Compile Include="Views\MyVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bundleconfig.json" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bundle.css" />
+    <Content Include="Content\bundle.min.css">
+      <DependentUpon>bundle.css</DependentUpon>
+    </Content>
     <Content Include="Content\css\ErrorCss.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\scss\Cortex.scss" />
@@ -437,12 +442,16 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\AppManager\AdminInit.js" />
-    <Content Include="Scripts\AppManager\AppUtils.js" />
+    <Content Include="Scripts\Bundles\omniusAdminScripts.js" />
+    <Content Include="Scripts\Bundles\omniusAdminScripts.min.js">
+      <DependentUpon>omniusAdminScripts.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
-    <Content Include="Scripts\AppManager\UserInit.js" />
+    <Content Include="Scripts\UserScripts\Spinner.js" />
+    <Content Include="Scripts\UserScripts\UserInit.js" />
     <Content Include="Scripts\BlockViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -474,6 +483,26 @@
     <Content Include="Content\fonts\Fat-TecA07.otf" />
     <Content Include="Content\fonts\MYRIADPRO-REGULAR.OTF" />
     <Content Include="Content\scss\Common.scss" />
+    <Content Include="Scripts\Bundles\commonLibraries.js" />
+    <Content Include="Scripts\Bundles\commonLibraries.min.js">
+      <DependentUpon>commonLibraries.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bundles\jquery.js" />
+    <Content Include="Scripts\Bundles\jquery.min.js">
+      <DependentUpon>jquery.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bundles\knockout.js" />
+    <Content Include="Scripts\Bundles\knockout.min.js">
+      <DependentUpon>knockout.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bundles\modernizr.js" />
+    <Content Include="Scripts\Bundles\modernizr.min.js">
+      <DependentUpon>modernizr.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bundles\omniusUserScripts.js" />
+    <Content Include="Scripts\Bundles\omniusUserScripts.min.js">
+      <DependentUpon>omniusUserScripts.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />
@@ -1338,12 +1367,10 @@
     <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
     <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
     <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
-    <Content Include="Scripts\CORE\logout.js" />
+    <Content Include="Scripts\UserScripts\logout.js" />
     <Content Include="Scripts\Hermes\Init.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
-    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.ba-throttle-debounce.min.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
@@ -1365,11 +1392,16 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.es5.js">
+      <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.es5.min.js">
+      <DependentUpon>jquery.validate.unobtrusive.es5.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js" />
     <Content Include="Scripts\knockout-3.4.0.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\MozaicEditor\Dialogs.js" />
     <Content Include="Scripts\MozaicEditor\Init.js" />
@@ -1391,12 +1423,11 @@
     <Content Include="Scripts\Portal\ModuleAdmin.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\RuleDetailViewModel.js" />
     <Content Include="Scripts\RuleListViewModel.js" />
     <Content Include="Scripts\spectrum.js" />
-    <Content Include="Scripts\Tapestry\AjaxRun.js" />
+    <Content Include="Scripts\UserScripts\AjaxRun.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
@@ -1674,6 +1705,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\CORE\" />
     <Folder Include="Views\Persona\Users\" />
   </ItemGroup>
   <ItemGroup>
