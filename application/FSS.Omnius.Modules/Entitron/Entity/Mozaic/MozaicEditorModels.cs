@@ -240,10 +240,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     switch (actionButtons)
                     {
                         case "enter":
-                            stringBuilder.Append($"<i class=\"fa fa-sign-in rowEditAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i>");
+                            break;
+                        case "enter-details":
+                            stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i>");
                             break;
                         case "delete":
-                            stringBuilder.Append($"<i class=\"fa fa-remove rowDeleteAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            break;
+                        case "details":
+                            stringBuilder.Append($"<i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i>");
+                            break;
+                        case "details-edit-delete":
+                            stringBuilder.Append($"<i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"Editovat\" class=\"fa fa-edit rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
                             break;
                         case "edit-delete":
                         default:
