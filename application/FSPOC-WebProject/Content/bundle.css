@@ -2688,7 +2688,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     width: 260px;
     height: 75px;
     border: 1px solid #b8b4ab;
-    padding-left: 6px; }
+    padding-left: 6px;
+    resize: none; }
   .mozaicForm .input-read-only {
     background-color: #e0e0e0; }
   .mozaicForm .info-container {
