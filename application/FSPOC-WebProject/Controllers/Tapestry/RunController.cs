@@ -80,8 +80,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                         foreach (var entitronRow in entitronRowList)
                         {
                             var newRow = dataSource.NewRow();
-                            newRow["hiddenId"] = entitronRow["id"];
-                            foreach (var columnName in entitronRow.getColumnNames())
+                            var columnNames = entitronRow.getColumnNames();
+                            newRow["hiddenId"] = columnNames.Contains("id") ? entitronRow["id"] : -1;
+                            foreach (var columnName in columnNames)
                             {
                                 if (!columnsCreated)
                                     dataSource.Columns.Add(columnName);
