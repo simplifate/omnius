@@ -1702,6 +1702,8 @@
     <Content Include="Views\App\83\Page\995.cshtml" />
     <Content Include="Views\App\83\Page\996.cshtml" />
     <Content Include="Views\App\83\Page\997.cshtml" />
+    <Content Include="Views\App\83\Page\998.cshtml" />
+    <Content Include="Views\App\83\Page\999.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
