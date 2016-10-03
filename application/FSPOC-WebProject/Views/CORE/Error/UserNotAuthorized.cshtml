@@ -1,4 +1,6 @@
-﻿@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+﻿@using FSS.Omnius.Modules.CORE
+
+@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
 {
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
     @Html.Raw("Nemáte Přístup");
@@ -9,6 +11,6 @@ else
     Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
     <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
-    @Scripts.Render("~/bundles/OmniusScripts")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
     <script>ShowAppNotification("Nemáte přístup", "error")</script>
 }
