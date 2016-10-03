@@ -803,7 +803,7 @@ $(function () {
             wrapper.css("position", "absolute");
             wrapper.css("left", table.css("left"));
             wrapper.css("top", table.css("top"));
-            wrapper.css("width", tableWidth + 5);
+            wrapper.css("width", tableWidth + 8);
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
