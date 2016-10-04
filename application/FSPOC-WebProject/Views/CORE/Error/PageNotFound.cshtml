@@ -1,4 +1,6 @@
-﻿@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+﻿@using FSS.Omnius.Modules.CORE
+
+@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
 {
     Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
     @Html.Raw("Stránka Nenalezena");
@@ -10,6 +12,6 @@ else
 
     <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
 
-    @Scripts.Render("~/bundles/OmniusScripts")
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
     <script>ShowAppNotification("Stránka nenalezena", "error")</script>
 }
