@@ -706,7 +706,12 @@ var pageSpinner = (function () {
 $(function () {
     pageSpinner.hide();
     $(window).on("beforeunload", function () {
-        pageSpinner.show();
+        if (typeof window.ignoreUnload == 'undefined' || window.ignoreUnload == false) {
+            pageSpinner.show();
+        }
+        else {
+            window.ignoreUnload = false;
+        }
     });
 });
 
@@ -914,6 +919,9 @@ $(function () {
                 tableName = $(tableElement).attr("name");
                 $('input[name="' + tableName + '"').val(visibleRowList);
             });
+            if (this.value.indexOf('export') !== -1) {
+                window.ignoreUnload = true;
+            }
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {

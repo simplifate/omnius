@@ -21,6 +21,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
     [MozaicRepository]
     public class ExportToExcelAction : Action
     {
+        private CORE.CORE core;
+
         public override int Id
         {
             get
@@ -39,7 +41,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "?TableName", "?ViewName", "?Filter" };
             }
         }
 
@@ -64,41 +66,54 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"];
-
-            // Získáme data podle podmínek
-            Dictionary<string, object> selectOutput = new Dictionary<string, object>();
-            Entitron.SelectAction selectAction = new Entitron.SelectAction();
-            selectAction.InnerRun(vars, selectOutput, InvertedInputVars, message);
-
-            List<DBItem> data = (List<DBItem>)selectOutput["Data"];
-
-            // Připravíme CSV
+            core = (CORE.CORE)vars["__CORE__"];
+            List<DBItem> data = new List<DBItem>();
             List<string> rows = new List<string>();
-
             List<string> columns = new List<string>();
-            if (!vars.ContainsKey("Columns")) {
-                foreach(DBColumn col in core.Entitron.GetDynamicTable(tableName).columns) {
-                    columns.Add(col.Name);
+            List<DbColumn> DBColumns = new List<DbColumn>();
+            string abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            bool isTable = false;
+            bool isView = false;
+
+            List<string> chars = new List<string>();
+            for(int i = -1; i < abc.Length; i++) {
+                for(int j = 0; j < abc.Length; j++) {
+                    string ch = (i >= 0 ? abc[i].ToString() : "") + abc[j].ToString();
+                    chars.Add(ch);
                 }
             }
+
+            string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"];
+            string viewName = vars.ContainsKey("ViewName") ? (string)vars["ViewName"] : "";
+            
+            if(vars.ContainsKey("ViewName")) {
+                data = ExportFromView(viewName, vars);
+                columns = GetColumnsFromView(data, vars);
+                isView = true;
+            }
+            else if(!string.IsNullOrEmpty(tableName)) {
+                data = ExportFromTable(tableName, vars, InvertedInputVars, message);
+                columns = GetColumnsFromTable(tableName, vars);
+                isTable = true;
+            }
             else {
-                columns = (vars["Columns"] as string).Split(';').ToList();
+                throw new Exception("Nebylo nalezeno jméno tabulky ani jméno pohledu");
             }
 
+            // Připravíme XLS
+            
             Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
             Dictionary<string, string> foreignColumnNames = new Dictionary<string, string>();
 
             using (DBEntities e = new DBEntities()) {
                 if (vars.ContainsKey("ForeignKeys")) {
-                    foreach(KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
+                    foreach (KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
                         foreignData.Add(key.Key, new Dictionary<int, string>());
                         string[] target = key.Value.Split('.');
                         string foreignTable = target[0];
                         string foreignColumn = target[1];
 
-                        foreach(DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
+                        foreach (DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
                             foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
                         }
 
@@ -106,17 +121,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         foreignColumnNames[key.Key] = foreignDbColumn.DisplayName ?? foreignDbColumn.Name;
                     }
                 }
+
+                if (isTable) {
+                    DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.ToList();
+                }
                 
-                Dictionary<string, string> columnsDisplayName = new Dictionary<string, string>();
-            
-                var DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns;
-                
-                string abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            
-                using (MemoryStream stream = new MemoryStream()) 
-                {
-                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) 
-                    {
+                using (MemoryStream stream = new MemoryStream()) {
+                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) {
                         WorkbookPart bookPart = xls.AddWorkbookPart();
                         bookPart.Workbook = new Workbook();
                         bookPart.Workbook.AppendChild<Sheets>(new Sheets());
@@ -125,70 +136,89 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
 
                         int c = 0;
-                        foreach (DbColumn col in DBColumns) {
-                            if (columns.Contains(col.Name)) {
-                                string name;
-                                if(foreignColumnNames.ContainsKey(col.Name)) {
-                                    name = foreignColumnNames[col.Name];
-                                }
-                                else {
-                                    name = col.DisplayName ?? col.Name;
-                                }
-
-                                int i = InsertSharedStringItem(name, strings);
-                                Cell cell = InsertCellInWorksheet(abc[c].ToString(), 1, sheetPart);
-                                cell.CellValue = new CellValue(i.ToString());
-                                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-                                c++;
-                            }
-                        }
-
-                        uint r = 1;
-                        foreach (DBItem item in data) {
-                            c = 0;
-                            r++;
-
+                        if(isTable) {
                             foreach (DbColumn col in DBColumns) {
-                                if(columns.Contains(col.Name)) {
-                                    string value;
-                                    
-                                    if(foreignData.ContainsKey(col.Name)) {
-                                        if(foreignData[col.Name].ContainsKey((int)item[col.Name])) {
-                                            value = foreignData[col.Name][(int)item[col.Name]];
-                                        }
-                                        else {
-                                            value = item[col.Name].ToString();
-                                        }
+                                if (columns.Contains(col.Name)) {
+                                    string name;
+                                    if (foreignColumnNames.ContainsKey(col.Name)) {
+                                        name = foreignColumnNames[col.Name];
                                     }
-                                    else { 
-                                        value = item[col.Name].ToString();
-                                        if(col.Type == "boolean") {
-                                            value = value == "True" ? "Ano" : "Ne";
-                                        }
+                                    else {
+                                        name = col.DisplayName ?? col.Name;
                                     }
 
-                                    int i = InsertSharedStringItem(value, strings);
-                                    Cell cell = InsertCellInWorksheet(abc[c].ToString(), r, sheetPart);
+                                    int i = InsertSharedStringItem(name, strings);
+                                    Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
                                     cell.CellValue = new CellValue(i.ToString());
                                     cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
                                     c++;
                                 }
                             }
                         }
-                        //sheetPart.Worksheet.Save();
-                        //ystrings.SharedStringTable.Save();
-                        //xls.WorkbookPart.Workbook.Save();
+                        if(isView) {
+                            foreach(string colName in columns) {
+                                int i = InsertSharedStringItem(colName, strings);
+                                Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
+                                cell.CellValue = new CellValue(i.ToString());
+                                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                c++;
+                            }
+                        }
+                        
+                        uint r = 1;
+                        foreach (DBItem item in data) {
+                            c = 0;
+                            r++;
+
+                            if (isTable) {
+                                foreach (DbColumn col in DBColumns) {
+                                    if (columns.Contains(col.Name)) {
+                                        string value;
+
+                                        if (foreignData.ContainsKey(col.Name)) {
+                                            if (foreignData[col.Name].ContainsKey((int)item[col.Name])) {
+                                                value = foreignData[col.Name][(int)item[col.Name]];
+                                            }
+                                            else {
+                                                value = item[col.Name].ToString();
+                                            }
+                                        }
+                                        else {
+                                            value = item[col.Name].ToString();
+                                            if (col.Type == "boolean") {
+                                                value = value == "True" ? "Ano" : "Ne";
+                                            }
+                                        }
+
+                                        int i = InsertSharedStringItem(value, strings);
+                                        Cell cell = InsertCellInWorksheet(chars[c], r, sheetPart);
+                                        cell.CellValue = new CellValue(i.ToString());
+                                        cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                        c++;
+                                    }
+                                }
+                            }
+                            if(isView) {
+                                foreach(string colName in columns) {
+                                    string value = item[colName].ToString();
+
+                                    int i = InsertSharedStringItem(value, strings);
+                                    Cell cell = InsertCellInWorksheet(chars[c], r, sheetPart);
+                                    cell.CellValue = new CellValue(i.ToString());
+                                    cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                                    c++;
+                                }
+                            }
+                        }
                         xls.Close();
 
                         stream.Seek(0, SeekOrigin.Begin);
-                        //new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-                        //StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-
+                        
                         HttpContext context = HttpContext.Current;
                         HttpResponse response = context.Response;
-                    
+
                         response.Clear();
+                        response.StatusCode = 202;
                         response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                         response.AddHeader("content-disposition", "attachment; filename=export.xlsx");
                         response.BinaryWrite(stream.ToArray());
@@ -198,6 +228,62 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                     }
                 }
             }
+        }
+
+        private List<DBItem> ExportFromTable(string tableName, Dictionary<string, object> vars, Dictionary<string, object> InvertedInputVars, Message message)
+        {
+            // Získáme data podle podmínek
+            Dictionary<string, object> selectOutput = new Dictionary<string, object>();
+            Entitron.SelectAction selectAction = new Entitron.SelectAction();
+            selectAction.InnerRun(vars, selectOutput, InvertedInputVars, message);
+
+            List<DBItem> rows = (List<DBItem>)selectOutput["Data"];
+            return rows;
+        }
+
+        private List<DBItem> ExportFromView(string viewName, Dictionary<string, object> vars)
+        {
+            FSS.Omnius.Modules.Entitron.Table.DBView view = core.Entitron.GetDynamicView(viewName);
+
+            List<DBItem> rows;
+            if (vars.ContainsKey("Filter")) {
+                string[] ids = ((string)vars["Filter"]).Split(',');
+                rows = view.Select().where(m => m.column("id").In(ids)).ToList();
+            }
+            else {
+                rows = view.Select().ToList();
+            }
+            return rows;
+        }
+
+        private List<string> GetColumnsFromTable(string tableName, Dictionary<string, object> vars)
+        {
+            List<string> columns = new List<string>();
+
+            if (!vars.ContainsKey("Columns")) {
+                foreach (DBColumn col in core.Entitron.GetDynamicTable(tableName).columns) {
+                    columns.Add(col.Name);
+                }
+            }
+            else {
+                columns = (vars["Columns"] as string).Split(';').ToList();
+            }
+            return columns;
+        }
+
+        private List<string> GetColumnsFromView(List<DBItem> data, Dictionary<string, object> vars)
+        {
+            List<string> columns = new List<string>();
+
+            if (!vars.ContainsKey("Columns")) {
+                if(data.Count > 0) { 
+                    columns = data.First().getColumnNames();
+                }
+            }
+            else {
+                columns = (vars["Columns"] as string).Split(';').ToList();
+            }
+            return columns;
         }
 
         private int InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
