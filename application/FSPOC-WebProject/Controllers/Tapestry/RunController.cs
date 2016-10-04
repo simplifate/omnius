@@ -10,6 +10,8 @@ using C = FSS.Omnius.Modules.CORE;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -21,7 +23,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         public static DateTime prepareEnd;
 
         [HttpGet]
-        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
+        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null, string registry = null)
         {
             C.CORE core = HttpContext.GetCORE();
             DBEntities context = core.Entitron.GetStaticTables();
@@ -56,6 +58,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["pageName"] = block.DisplayName;
             ViewData["blockName"] = block.Name;
             ViewData["userName"] = core.User.DisplayName;
+            ViewData["crossBlockRegistry"] = registry;
 
             DBItem modelRow = null;
             if (modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
@@ -277,12 +280,20 @@ namespace FSS.Omnius.Controllers.Tapestry
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
+            var crossBlockRegistry = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(fc["registry"]))
+                crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(fc["registry"]);
+            foreach (var pair in crossBlockRegistry)
+            {
+                fc.Add(pair.Key, pair.Value.ToString());
+            }
+
             // run
             var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc);
 
             // redirect
             if (Response.StatusCode != 202) {
-                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
             }
             return null;
         }
