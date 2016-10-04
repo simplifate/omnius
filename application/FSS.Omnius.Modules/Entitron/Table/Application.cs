@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public List<string> GetViewNames()
         {
-            SqlQuery_SelectViews query = new SqlQuery_SelectViews();
+            SqlQuery_SelectViews query = new SqlQuery_SelectViews(Name);
             List<string> viewNames=new List<string>();
             foreach (DBItem i in query.ExecuteWithRead())
             {

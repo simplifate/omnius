@@ -281,7 +281,10 @@ namespace FSS.Omnius.Controllers.Tapestry
             var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc);
 
             // redirect
-            return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+            if (Response.StatusCode != 200) {
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString() });
+            }
+            return new HttpStatusCodeResult(200);
         }
 
         private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)

@@ -117,7 +117,15 @@ $(function () {
             table.on("click", ".row_B_Action", function () {
                     rowId = parseInt($(this).parents("tr").find("td:first").text());
                     $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionB" /></form>').appendTo('body').submit();
+            });
+            table.DataTable().on("draw", function () {
+                var t = $(this);
+                t.find("thead th").each(function (index, element) {
+                    if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
+                        t.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
+                    }
                 });
+            });
             if (!table.hasClass("data-table-simple-mode")) {
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
