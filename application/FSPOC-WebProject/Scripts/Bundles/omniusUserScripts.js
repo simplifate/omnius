@@ -632,7 +632,12 @@ function RecalculatePanelDimensions(panel) {
             panelWidth = currentUic.position().left + currentUic.width() + 30;
         }
         if (currentUic.position().top + currentUic.height() + 30 > panelHeight) {
-            panelHeight = currentUic.position().top + currentUic.height() + 30;
+            if (currentUic.hasClass("data-table")) {
+                panelHeight = currentUic.position().top + currentUic.height() + 60;
+            }
+            else {
+                panelHeight = currentUic.position().top + currentUic.height() + 30;
+            }
         }
     });
     panel.width(panelWidth);
