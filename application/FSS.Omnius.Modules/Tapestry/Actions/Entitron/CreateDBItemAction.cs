@@ -74,7 +74,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
             DateTime timestamp = DateTime.Now;
             string timestampColumn = "";
-            if (table.columns.Exists(c => c.Name == "date"))
+            if (table.columns.Exists(c => c.Name == "ID_USER_VLOZIL"))
+            {
+                int userId = core.User.Id;
+                item.createProperty(table.columns.Find(c => c.Name == "ID_USER_VLOZIL").ColumnId, "ID_USER_VLOZIL", userId);
+                item.createProperty(table.columns.Find(c => c.Name == "ID_USER_EDITOVAL").ColumnId, "ID_USER_EDITOVAL", userId);
+                item.createProperty(table.columns.Find(c => c.Name == "DATUM_VLOZENI").ColumnId, "DATUM_VLOZENI", timestamp);
+                item.createProperty(table.columns.Find(c => c.Name == "DATUM_EDITACE").ColumnId, "DATUM_EDITACE", timestamp);
+                timestampColumn = "DATUM_VLOZENI";
+            }
+            else if (table.columns.Exists(c => c.Name == "date"))
             {
                 item.createProperty(table.columns.Find(c => c.Name == "date").ColumnId, "date", timestamp);
                 timestampColumn = "date";
@@ -87,7 +96,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             table.Add(item);
             core.Entitron.Application.SaveChanges();
 
-            if (vars.ContainsKey("ReturnAssignedId") && timestampColumn != "")
+            if (timestampColumn != "")
             {
                 var searchResults = table.Select().where(c => c.column(timestampColumn).Equal(timestamp)).ToList();
                 if(searchResults.Count > 0)

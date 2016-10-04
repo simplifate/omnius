@@ -82,6 +82,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     row[column.Name] = vars[$"__Model.{tableName}.{column.Name}"];
             }
 
+            if (table.columns.Exists(c => c.Name == "ID_USER_EDITOVAL"))
+            {
+                row["ID_USER_EDITOVAL"] = core.User.Id;
+                row["DATUM_EDITACE"] = DateTime.Now;
+            }
+
             table.Update(row, itemId);
             ent.Application.SaveChanges();
         }
