@@ -254,6 +254,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\">");
                     switch (actionButtons)
                     {
+                        case "download":
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i>");
+                            break;
+                        case "download-delete":
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            break;
                         case "enter":
                             stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i>");
                             break;
