@@ -260,6 +260,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             break;
                     }
                     stringBuilder.Append($"</td></tr>}}</tbody></{c.Tag}>}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">Tabulka neobsahuje žádná data</div> }} }}");
+                    stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
                 }
                 else if (c.Type == "tab-navigation")
                 {
