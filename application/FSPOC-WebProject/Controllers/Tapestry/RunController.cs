@@ -61,6 +61,14 @@ namespace FSS.Omnius.Controllers.Tapestry
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId });
             ViewData["tapestry"] = result.Item1.OutputData;
 
+            foreach (var pair in result.Item1.OutputData)
+            {
+                if (pair.Key.StartsWith("_uic_"))
+                {
+                    ViewData[pair.Key.Substring(5)] = pair.Value;
+                }
+            }
+
             // fill data
             ViewData["appName"] = core.Entitron.Application.DisplayName;
             ViewData["appIcon"] = core.Entitron.Application.Icon;
