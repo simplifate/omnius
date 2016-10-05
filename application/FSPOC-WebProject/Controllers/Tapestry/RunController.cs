@@ -46,8 +46,17 @@ namespace FSS.Omnius.Controllers.Tapestry
                 if (!userIsAllowed)
                     return new HttpStatusCodeResult(403);
             }
-            
-            var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, null);
+
+            var crossBlockRegistry = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(registry))
+                crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(registry);
+            FormCollection fc = new FormCollection();
+            foreach (var pair in crossBlockRegistry)
+            {
+                fc.Add(pair.Key, pair.Value.ToString());
+            }
+
+            var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, fc);
             if (result.Item2.Id != block.Id)
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId });
             ViewData["tapestry"] = result.Item1.OutputData;
