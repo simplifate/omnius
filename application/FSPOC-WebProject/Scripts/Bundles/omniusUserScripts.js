@@ -632,7 +632,12 @@ function RecalculatePanelDimensions(panel) {
             panelWidth = currentUic.position().left + currentUic.width() + 30;
         }
         if (currentUic.position().top + currentUic.height() + 30 > panelHeight) {
-            panelHeight = currentUic.position().top + currentUic.height() + 30;
+            if (currentUic.hasClass("data-table")) {
+                panelHeight = currentUic.position().top + currentUic.height() + 60;
+            }
+            else {
+                panelHeight = currentUic.position().top + currentUic.height() + 30;
+            }
         }
     });
     panel.width(panelWidth);
@@ -706,7 +711,12 @@ var pageSpinner = (function () {
 $(function () {
     pageSpinner.hide();
     $(window).on("beforeunload", function () {
-        pageSpinner.show();
+        if (typeof window.ignoreUnload == 'undefined' || window.ignoreUnload == false) {
+            pageSpinner.show();
+        }
+        else {
+            window.ignoreUnload = false;
+        }
     });
 });
 
@@ -914,6 +924,9 @@ $(function () {
                 tableName = $(tableElement).attr("name");
                 $('input[name="' + tableName + '"').val(visibleRowList);
             });
+            if (this.value.indexOf('export') !== -1) {
+                window.ignoreUnload = true;
+            }
         });
         $(".uic.input-with-datepicker").datepicker($.datepicker.regional['cs']);
         $(".uic.color-picker").each(function (index, element) {

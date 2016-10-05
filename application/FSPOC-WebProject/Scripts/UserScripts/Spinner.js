@@ -34,6 +34,11 @@
 $(function () {
     pageSpinner.hide();
     $(window).on("beforeunload", function () {
-        pageSpinner.show();
+        if (typeof window.ignoreUnload == 'undefined' || window.ignoreUnload == false) {
+            pageSpinner.show();
+        }
+        else {
+            window.ignoreUnload = false;
+        }
     });
 });

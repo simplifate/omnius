@@ -1,7 +1,16 @@
-﻿ var CurrentTable, CurrentColumn, CurrentConnection, CurrentView, CurrentIndex;
+﻿var CurrentTable, CurrentColumn, CurrentConnection, CurrentView, CurrentIndex;
 
 $(function () {
     if (CurrentModuleIs("dbDesignerModule")) {
+
+        var cmList = {};
+        var cmConfig = {
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: "sql",
+            extraKeys: { "Ctrl-Space": "autocomplete" }
+        };
+
         addTableDialog = $("#add-table-dialog").dialog({
             autoOpen: false,
             resizable: false,
@@ -266,15 +275,17 @@ $(function () {
                 }
             },
             open: function (event, ui) {
-                        historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
-                $("#history-dialog .spinner-2").show();
                 historyDialog.data("selectedCommitId", null);
                 appId = $("#currentAppId").val();
                 $.ajax({
                     type: "GET",
                     url: "/api/database/apps/" + appId + "/commits",
                     dataType: "json",
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    },
                     success: function (data) {
+                        historyDialog.find("#commit-table:first tbody:nth-child(2) tr").remove();
                         tbody = historyDialog.find("#commit-table tbody:nth-child(2)");
                         commitIdArray = [];
 
@@ -296,7 +307,6 @@ $(function () {
                             var rowIndex = $(this).index();
                             historyDialog.data("selectedCommitId", commitIdArray[rowIndex]);
                         });
-                        $("#history-dialog .spinner-2").hide();
                     }
                 });
             }
@@ -341,8 +351,8 @@ $(function () {
         addViewDialog = $("#add-view-dialog").dialog({
             autoOpen: false,
             resizable: false,
-            width: 400,
-            height: 310,
+            width: '75%',
+            //height: 600,
             buttons: {
                 "Add": function () {
                     addViewDialog_SubmitData();
@@ -362,6 +372,16 @@ $(function () {
             open: function () {
                 addViewDialog.find("#new-view-name").val("");
                 addViewDialog.find("#new-view-query").val("");
+
+                if (typeof cmList['new-view-query'] == 'undefined') {
+                    cmList['new-view-query'] = CodeMirror.fromTextArea(document.getElementById('new-view-query'), cmConfig);
+                    cmList['new-view-query'].on('blur', function (i) {
+                        i.save();
+                    });
+                }
+                else {
+                    cmList['new-view-query'].setValue('');
+                }
             }
         });
         function addViewDialog_SubmitData() {
@@ -373,8 +393,8 @@ $(function () {
         editViewDialog = $("#edit-view-dialog").dialog({
             autoOpen: false,
             resizable: false,
-            width: 400,
-            height: 310,
+            width: '75%',
+            //height: 600,
             buttons: {
                 "Save": function () {
                     editViewDialog_SubmitData();
@@ -394,6 +414,16 @@ $(function () {
             open: function () {
                 editViewDialog.find("#view-name").val(CurrentView.data("dbViewName"));
                 editViewDialog.find("#view-query").val(CurrentView.data("dbViewQuery"));
+
+                if (typeof cmList['view-query'] == 'undefined') {
+                    cmList['view-query'] = CodeMirror.fromTextArea(document.getElementById('view-query'), cmConfig);
+                    cmList['view-query'].on('blur', function (i) {
+                        i.save();
+                    });
+                }
+                else {
+                    cmList['view-query'].setValue(CurrentView.data("dbViewQuery"));
+                }
             }
         });
         function editViewDialog_SubmitData() {

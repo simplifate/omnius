@@ -24,11 +24,13 @@ namespace FSS.Omnius.Modules.Tapestry
             _CORE = core;
             _results = new ActionResult();
         }
-        
-        public Tuple<Message, Block> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
+
+        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {
             Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
-            return new Tuple<Message, Block>(result.Item1.Message, result.Item2);
+            var CrossBlockRegistry = result.Item1.OutputData.ContainsKey("CrossBlockRegistry")
+                ? (Dictionary<string, object>)result.Item1.OutputData["CrossBlockRegistry"] : new Dictionary<string, object>();
+            return new Tuple<Message, Block, Dictionary<string, object>>(result.Item1.Message, result.Item2, CrossBlockRegistry);
         }
         public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
         {

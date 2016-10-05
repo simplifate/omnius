@@ -41,6 +41,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
             RenderComponentList(Components.Where(c => c.ParentComponent == null).ToList(), stringBuilder, true);
 
+            stringBuilder.Append("<input type=\"hidden\" name=\"registry\" value=\"@ViewData[\"crossBlockRegistry\"]\" />");
             stringBuilder.Append("</form>");
             CompiledPartialView = stringBuilder.ToString();
         }
@@ -161,9 +162,23 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "radio")
                 {
+                    string value = "";
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
+                        {
+                            string[] nameValuePair = tokens.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                if (nameValuePair[0].ToLower() == "value")
+                                    value = nameValuePair[1];
+                            }
+                        }
+                    }
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" /><span class=\"radio-label\">{c.Label}</span></div>");
+                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" value=\"{value}\" /><span class=\"radio-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {
@@ -239,6 +254,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\">");
                     switch (actionButtons)
                     {
+                        case "download":
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i>");
+                            break;
+                        case "download-delete":
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            break;
                         case "enter":
                             stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i>");
                             break;
