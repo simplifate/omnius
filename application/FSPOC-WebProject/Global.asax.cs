@@ -13,6 +13,7 @@ using System.Net;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Controllers.Tapestry;
+using System.Collections.Generic;
 
 namespace FSPOC_WebProject
 {
@@ -36,24 +37,35 @@ namespace FSPOC_WebProject
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            string body = $"URL: {Request.Url.AbsoluteUri}<br/>Method: {Request.HttpMethod}<br/>Current User: {Context.User.Identity.Name}<br/>POST data:<br/>";
+            List<string> bodyLines = new List<string>();
+            bodyLines.Add($"URL: {Request.Url.AbsoluteUri}");
+            bodyLines.Add($"Method: {Request.HttpMethod}");
+            bodyLines.Add($"Current User: {Context.User.Identity.Name}");
+            bodyLines.Add("POST data:");
+
             NameValueCollection form = Request.Unvalidated.Form;
             foreach (string key in form.AllKeys)
             {
-                body += $"{key} => {Server.HtmlEncode(form[key])}<br />";
+                bodyLines.Add($"{key} => {Server.HtmlEncode(form[key])}");
             }
 
-            body += "<br />Errors:<br />";
+            bodyLines.Add("");
+            bodyLines.Add("Errors:");
             foreach (var error in Context.AllErrors)
             {
                 var curError = error;
                 while (curError != null)
                 {
-                    body += $"Message: {curError.Message}<br />Method: {curError.TargetSite.ToString()}<br />Trace: {curError.StackTrace}<br /><br />";
+                    bodyLines.Add($"Message: {curError.Message}");
+                    bodyLines.Add($"Method: {curError.TargetSite.ToString()}");
+                    bodyLines.Add($"Trace: {curError.StackTrace}");
+                    bodyLines.Add("");
 
                     curError = curError.InnerException;
                 }
             }
+
+            Logger.Log.Fatal(string.Join(Environment.NewLine, bodyLines));
 
             string username = "Helpdesk@futurespoc.com";
             string password = "pwd4FSPOCmail";
@@ -65,7 +77,7 @@ namespace FSPOC_WebProject
             {
                 Subject = $"Error message from {Request.Url.Authority} [{DateTime.UtcNow.ToString()}]",
                 IsBodyHtml = true,
-                Body = body
+                Body = string.Join("<br />", bodyLines)
             };
             message.To.Add("samuel.lachman@futuresolutionservices.com");
             message.From = new MailAddress(username);
