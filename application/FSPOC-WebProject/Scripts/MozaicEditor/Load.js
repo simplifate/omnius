@@ -47,7 +47,7 @@
     });
 }
 function LoadMozaicEditorComponents(targetContainer, cData) {
-    newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + '" ' + cData.Attributes + ' class="uic ' + cData.Classes
+    newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + '" uicAttributes="' + (cData.Attributes || "") + '" class="uic ' + cData.Classes
                     + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
                     + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
     targetContainer.append(newComponent);
@@ -55,6 +55,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.attr("placeholder", cData.Placeholder);
     if (cData.TabIndex)
         newComponent.attr("tabindex", cData.TabIndex);
+   
     if (cData.Properties)
         newComponent.attr("uicProperties", cData.Properties);
     if (newComponent.hasClass("button-simple"))

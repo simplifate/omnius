@@ -1,5 +1,6 @@
 ﻿@import "Mixins.scss";
 @import "Fonts.scss";
+$color_error: #f15921;
 
 #userTopBar {
     @include no-select();
@@ -290,6 +291,7 @@
     right: 0;
     z-index: 5;
     transition: left 0.4s ease-out;
+
 }
 
 body.userLayout.leftBarHidden {
@@ -458,10 +460,12 @@ body.userLayout.leftBarHidden {
     .uic {
         position: absolute;
     }
+    
     .button-simple {
         background-color: #4b8ad1;
         border: 1px solid #4b8ad1;
         color: white;
+
     }
     .button-dropdown {
         background-color: white;
@@ -497,6 +501,9 @@ body.userLayout.leftBarHidden {
         height: 25px;
         border: 1px solid #b8b4ab;
         padding-left: 6px;
+        &.has-error {
+        border: 1px solid red;
+    }
     }
     .input-multiline {
         width: 260px;
@@ -504,6 +511,9 @@ body.userLayout.leftBarHidden {
         border: 1px solid #b8b4ab;
         padding-left: 6px;
         resize: none;
+        &.has-error {
+        border: 1px solid red;
+    }
     }
     .input-read-only {
         background-color: #e0e0e0;

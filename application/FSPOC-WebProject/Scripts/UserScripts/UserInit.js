@@ -1,4 +1,6 @@
 ﻿var ModalDialogArray = [];
+var mozaicFormValidator;
+
 $(function () {
     $("#hideMenuIcon").on("click", function () {
         $(document.body).addClass("leftBarHidden");
@@ -190,6 +192,35 @@ $(function () {
         catch (err) {
             console.log(err);
         }
+        
+
+        $.extend($.validator.methods, {
+            greaterThan: function (value, element, attr) {
+                return this.optional(element) || +value > +attr;;
+            }
+        });
+        $.extend($.validator.methods, {
+            greaterOrEqual: function (value, element, attr) {
+                return this.optional(element) || +value >= +attr;
+            }
+        });
+
+        mozaicFormValidator = $(".mozaicForm").validate({
+            errorLabelContainer: $("<div>"), //put error messages into a detached element, AKA a trash bin; todo: find a better way to get rid of them
+            ignore: "[readonly]",
+            unhighlight: function (element) {
+                $(".uic[ignoredonvalidation]").addClass("cancel");
+                $(element).removeClass("has-error");
+                if (this.numberOfInvalids() === 0) $("[disableOnError]").removeClass("looks-disabled");
+            },
+            highlight: function (element) {
+                $(".uic[ignoredonvalidation]").addClass("cancel");
+                $(element).addClass("has-error");
+                $("[disableOnError]").addClass("looks-disabled");
+            }
+        });
+        mozaicFormValidator.form();
+
         $(".uic.button-simple, .uic.button-dropdown").on("click", function () {
             $(".uic.data-table").each(function (tableIndex, tableElement) {
                 var visibleRowList = "";

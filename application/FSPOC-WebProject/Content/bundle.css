@@ -2684,12 +2684,16 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     height: 25px;
     border: 1px solid #b8b4ab;
     padding-left: 6px; }
+    .mozaicForm .input-single-line.has-error {
+      border: 1px solid red; }
   .mozaicForm .input-multiline {
     width: 260px;
     height: 75px;
     border: 1px solid #b8b4ab;
     padding-left: 6px;
     resize: none; }
+    .mozaicForm .input-multiline.has-error {
+      border: 1px solid red; }
   .mozaicForm .input-read-only {
     background-color: #e0e0e0; }
   .mozaicForm .info-container {
