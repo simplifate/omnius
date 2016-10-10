@@ -11,13 +11,14 @@ namespace FSS.Omnius.Modules.Persona
     using Entitron.Entity;
     using Entitron.Entity.CORE;
     using Entitron.Entity.Persona;
-    using Tapestry.Actions.AuctionSystem;
+
     public class Persona : IModule
     {
         private TimeSpan _expirationTime;
         private CORE _CORE;
 
         private const string _AdGroupContainer = "OU=OSS";
+        private static Dictionary<string, string> _ADServerMapping = new Dictionary<string, string> { { "ext", "rwe-ext" }, { "rwe", "rwe-cz" } };
 
         public Persona(CORE core)
         {
@@ -59,75 +60,72 @@ namespace FSS.Omnius.Modules.Persona
             _CORE.Entitron.GetStaticTables().SaveChanges();
         }
 
-        public User GetUser(string username)
+        public User GetUser(string username = null, string identify = null)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            // validate
+            if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(identify))
+                return null;
+            // init
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+
+            // username
+            if (!string.IsNullOrWhiteSpace(username))
+            {
+                // get user
+                User user = context.Users.SingleOrDefault(u => u.UserName == username);
+
+                // if it's OK
+                if (user != null && (user.isLocalUser || user.localExpiresAt > DateTime.UtcNow))
+                    return user;
+            }
+
+            // username & identify
+            // get from AD
+            var userWithGroups = GetUserFromAD(username, identify);
+
+            // user doesn't exist in AD
+            if (userWithGroups == null)
                 return null;
 
-            DBEntities context = _CORE.Entitron.GetStaticTables();
-            User user = context.Users.SingleOrDefault(u => u.UserName == username);
-
-            // is in DB
-            if (user != null)
-            {
-                return RefreshUser(user);
-            }
-            // not in db
-            else
-            {
-                var userWithGroups = GetUserFromAD(username);
-
-                // user doesn't exist
-                if (userWithGroups == null)
-                    return null;
-
-                // user found in AD
-                SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
-                return userWithGroups.Item1;
-            }
-        }
-        public User RefreshUser(User user)
-        {
-            // is local-only
-            if (user.isLocalUser)
-                return user;
-
-            // is from AD
-            else
-            {
-                if (user.localExpiresAt < DateTime.UtcNow)
-                {
-                    var userWithGroups = GetUserFromAD(user.UserName);
-                    // user not found - was deleted in AD
-                    if (userWithGroups == null)
-                        return null;
-                    // user found in AD
-                    SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
-                    user = userWithGroups.Item1;
-                }
-
-                return user;
-            }
+            // save with groups
+            SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+            return userWithGroups.Item1;
         }
         
-        private Tuple<User, List<string>> GetUserFromAD(string username)
+        private Tuple<User, List<string>> GetUserFromAD(string username = null, string identify = null)
         {
             DBEntities context = _CORE.Entitron.GetStaticTables();
 
             // split username & domain
-            int domainIndex = username.IndexOf('\\');
-            string serverName = null;
-            string onlyName = username;
-            if (domainIndex != -1)
+            string serverName;
+            string onlyName = null;
+            // use username
+            if (!string.IsNullOrWhiteSpace(username)) 
             {
-                serverName = username.Substring(0, domainIndex).ToLower();
-                onlyName = username.Substring(domainIndex + 1);
+                int domainIndex = username.IndexOf('\\');
+                serverName = null;
+                onlyName = username;
+                if (domainIndex != -1)
+                {
+                    serverName = username.Substring(0, domainIndex).ToLower();
+                    onlyName = username.Substring(domainIndex + 1);
+                }
             }
+            // use identify
+            else if (!string.IsNullOrWhiteSpace(identify))
+            {
+                serverName = getUserServer(identify);
+            }
+            // nothing
+            else
+                return null;
 
             // search in AD
             NexusLdapService search = new NexusLdapService();
             if (serverName != null) search.UseServer(serverName);
-            JToken ldapResult = search.SearchByLogin(onlyName);
+            JToken ldapResult = (onlyName != null)
+                ? search.SearchByLogin(onlyName)
+                : search.SearchByIdentify(identify);
 
             // no user found
             if (ldapResult == null)
@@ -136,7 +134,7 @@ namespace FSS.Omnius.Modules.Persona
             // user attributes
             User user = new User
             {
-                UserName = username,
+                UserName = username ?? $"{getUserServer(identify).ToUpper()}\\{ldapResult["samaccountname"]}",
                 DisplayName = (string)ldapResult["displayname"],
                 Email = (string)ldapResult["mail"],
                 Address = "",
@@ -257,6 +255,28 @@ namespace FSS.Omnius.Modules.Persona
                 }
             }
             db.SaveChanges();       
+        }
+
+        private string getUserServer(string identify)
+        {
+            int iStart = 0;
+            int iEnd = 0;
+            string serverName = null;
+
+            do
+            {
+                iStart = identify.IndexOf("DC=", iEnd) + 3;
+                iEnd = identify.IndexOf(",", iStart);
+                // not found
+                if (iStart == -1)
+                    return null;
+
+                serverName = identify.Substring(iStart, iEnd - iStart);
+            }
+            while (!_ADServerMapping.ContainsKey(serverName));
+
+            // map if found
+            return _ADServerMapping[serverName];
         }
     }
 }

@@ -96,12 +96,16 @@ namespace FSS.Omnius.Nexus.Gate
 
         public JToken SearchByAdLogin(string adLogin, string baseDN = null, string[] properties = null)
         {
-            return FindOne("(SAMAccountname=" + adLogin + ")", baseDN, properties);
+            return FindOne($"(SAMAccountname={adLogin})", baseDN, properties);
         }
 
         public JToken SearchByEmail(string email, string baseDN = null, string[] properties = null)
         {
-            return FindOne("(Mail=" + email + ")", baseDN, properties);
+            return FindOne($"(Mail={email})", baseDN, properties);
+        }
+        public JToken SearchByIdentify(string identify, string baseDN = null, string[] properties = null)
+        {
+            return FindOne($"(distinguishedname={identify})", baseDN, properties);
         }
 
         public JArray GetUsers(string baseDN = "", string[] properties = null)

@@ -18,25 +18,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             // Add custom user claims here
             return userIdentity;
         }
-
-        /// <summary>
-        /// without saving...
-        /// </summary>
-        /// <param name="groupNames"></param>
-        public void UpdateAppRightFromAd(IEnumerable<string> newADgroupNames, DBEntities context)
-        {
-            // AD groups
-            List<ADgroup_User> newADgroups = context.ADgroups.Where(ad => newADgroupNames.Contains(ad.Name)).ToList().Select(ad => new ADgroup_User { ADgroup = ad, User = this }).ToList();
-
-            // DB groups
-            List<ADgroup_User> oldADgroups = context.ADgroup_Users.Where(adu => adu.UserId == Id).ToList();
-
-            // update
-            ADgroup.RemoveDuplicated(oldADgroups, newADgroups, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            context.ADgroup_Users.RemoveRange(oldADgroups);
-            context.ADgroup_Users.AddRange(newADgroups);
-        }
-
+        
         public bool isAdmin()
         {
             return ADgroup_Users.Any(adu => adu.ADgroup.Application != null && adu.ADgroup.Application.IsSystem);

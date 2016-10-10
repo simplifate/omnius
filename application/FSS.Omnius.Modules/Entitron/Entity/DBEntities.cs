@@ -33,7 +33,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         private static HttpRequest r
         {
             get {
-                return HttpContext.Current.Request;
+                try
+                {
+                    return HttpContext.Current.Request;
+                }
+                catch(HttpException)
+                {
+                    return null;
+                }
             }
         }
         

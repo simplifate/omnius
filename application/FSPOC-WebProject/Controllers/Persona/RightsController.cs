@@ -12,14 +12,20 @@ namespace FSPOC_WebProject.Controllers.Persona
     {
         public ActionResult Index()
         {
-            CORE core = HttpContext.GetCORE();
-            ADgroup.RefreshFromAD(core);
-            DBEntities context = core.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.instance;
 
             ViewBag.ADgroups = context.ADgroups.OrderBy(ad => ad.Name).ToList();
             ViewBag.ADgroups_Users = context.ADgroup_Users.OrderBy(adu => new { adu.User.DisplayName, adu.ADgroup.Name }).ToList();
 
             return View();
+        }
+
+        public ActionResult Refresh()
+        {
+            CORE core = HttpContext.GetCORE();
+            ADgroup.RefreshFromAD(core);
+
+            return RedirectToRoute("Persona", new { controller = "Rights", action = "Index" });
         }
     }
 }

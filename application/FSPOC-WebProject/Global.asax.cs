@@ -11,9 +11,9 @@ using System.Web.Routing;
 using System.Net.Mail;
 using System.Net;
 using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Service;
 using FSS.Omnius.Controllers.Tapestry;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace FSPOC_WebProject
 {
@@ -37,62 +37,57 @@ namespace FSPOC_WebProject
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            List<string> bodyLines = new List<string>();
-            bodyLines.Add($"URL: {Request.Url.AbsoluteUri}");
-            bodyLines.Add($"Method: {Request.HttpMethod}");
-            bodyLines.Add($"Current User: {Context.User.Identity.Name}");
-            bodyLines.Add("POST data:");
-
-            NameValueCollection form = Request.Unvalidated.Form;
-            foreach (string key in form.AllKeys)
+            try
             {
-                bodyLines.Add($"{key} => {Server.HtmlEncode(form[key])}");
-            }
-
-            bodyLines.Add("");
-            bodyLines.Add("Errors:");
-            foreach (var error in Context.AllErrors)
-            {
-                var curError = error;
-                while (curError != null)
+                List<string> bodyLines = new List<string>();
+                bodyLines.Add($"URL: {Request.Url.AbsoluteUri}");
+                bodyLines.Add($"Method: {Request.HttpMethod}");
+                bodyLines.Add($"Current User: {Context.User?.Identity?.Name}");
+            
+                bodyLines.Add("POST data:");
+                NameValueCollection form = Request.Unvalidated.Form;
+                foreach (string key in form.AllKeys)
                 {
-                    bodyLines.Add($"Message: {curError.Message}");
-                    bodyLines.Add($"Method: {curError.TargetSite.ToString()}");
-                    bodyLines.Add($"Trace: {curError.StackTrace}");
-                    bodyLines.Add("");
-
-                    curError = curError.InnerException;
+                    bodyLines.Add($"{key} => {Server.HtmlEncode(form[key])}");
                 }
+                    
+                bodyLines.Add("");
+                bodyLines.Add("Errors:");
+                foreach (var error in Context.AllErrors)
+                {
+                    var curError = error;
+                    while (curError != null)
+                    {
+                        bodyLines.Add($"Message: {curError.Message}");
+                        bodyLines.Add($"Method: {curError.TargetSite.ToString()}");
+                        bodyLines.Add($"Error type: {curError.GetType()}");
+                        bodyLines.Add($"Trace: {curError.StackTrace}");
+
+                        // validation error
+                        if (curError?.GetType() == typeof(DbEntityValidationException))
+                        {
+                            bodyLines.Add($"Validation errors:");
+                            foreach (DbEntityValidationResult valE in (curError as DbEntityValidationException).EntityValidationErrors)
+                            {
+                                foreach (var validationMessage in valE.ValidationErrors)
+                                {
+                                    bodyLines.Add($" -> {validationMessage.PropertyName}: {validationMessage.ErrorMessage}");
+                                }
+                            }
+                        }
+
+                        bodyLines.Add("");
+                        // inner error
+                        curError = curError.InnerException;
+                    }
+                }
+
+                Logger.Log.Fatal(string.Join(Environment.NewLine, bodyLines));
             }
-
-            Logger.Log.Fatal(string.Join(Environment.NewLine, bodyLines));
-
-            string username = "Helpdesk@futurespoc.com";
-            string password = "pwd4FSPOCmail";
-
-            int port = 587;
-            string host = "imap.smtp.cz";
-
-            MailMessage message = new MailMessage()
+            catch (Exception exc)
             {
-                Subject = $"Error message from {Request.Url.Authority} [{DateTime.UtcNow.ToString()}]",
-                IsBodyHtml = true,
-                Body = string.Join("<br />", bodyLines)
-            };
-            message.To.Add("samuel.lachman@futuresolutionservices.com");
-            message.From = new MailAddress(username);
-            SmtpClient smtp = new SmtpClient
-            {
-                Host = host,
-                Port = port,
-                UseDefaultCredentials = false,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(username, password),
-                EnableSsl = true,
-                Timeout = 10000
-            };
-
-            smtp.Send(message);
+                Logger.Log.Error($"!Failed to log error!:{Environment.NewLine}{exc.Message}");
+            }
         }
 
         protected void Application_BeginRequest()

@@ -11,6 +11,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     public partial class ADgroup
     {
+        public static string groupADServer = "rwe-cz";
         
         public static void RemoveDuplicated<T>(List<T> oldData, List<T> newData) where T : IComparable
         {
@@ -34,41 +35,33 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             // refresh all users
             DBEntities context = core.Entitron.GetStaticTables();
-            foreach(User user in context.Users.ToList())
-            {
-                core.Persona.RefreshUser(user);
-            }
-            
-            //NexusLdapService ldap = new NexusLdapService();
-
-            //// get ADgroup_User from AD
-            //List<ADgroup_User> rightsLdap = new List<ADgroup_User>();
-            //foreach (ADgroup group in context.ADgroups)
+            //foreach(User user in context.Users.ToList())
             //{
-            //    var ADapps = ldap.GetGroups(group.Name);
-            //    if (ADapps.Count() == 0)
-            //        continue;
-
-            //    foreach (JToken member in ADapps["member"])
-            //    {
-            //        string userName = (string)member;
-            //        int startI = userName.IndexOf("CN=") + 3;
-            //        int EndI = userName.IndexOf(',', startI);
-
-            //        // save user with groups
-            //        core.Persona.GetUser(userName);
-            //    }
+            //    core.Persona.RefreshUser(user);
             //}
 
-            //// update
-            //List<ADgroup_User> rightsDB = context.ADgroup_Users.ToList();
-            //RemoveDuplicated(rightsDB, rightsLdap, (a, b) => a.ADgroupId == b.ADgroupId && a.UserId == b.UserId);
-            //// don't remove local users rights
-            //rightsDB.RemoveAll(r => r.User.isLocalUser);
-            //context.ADgroup_Users.RemoveRange(rightsDB);
+            NexusLdapService ldap = new NexusLdapService();
+            ldap.UseServer(groupADServer);
 
-            //context.ADgroup_Users.AddRange(rightsLdap);
-            //context.SaveChanges();
+            // get ADgroup_User from AD
+            List<ADgroup_User> rightsLdap = new List<ADgroup_User>();
+            foreach (ADgroup group in context.ADgroups.ToList())
+            {
+                var ADapps = ldap.GetGroups(group.Name);
+                if (ADapps.Count() == 0)
+                    continue;
+                
+                foreach (JToken ADapp in ADapps) // should be only 1
+                {
+                    foreach (JToken member in ADapp["member"])
+                    {
+                        // save user with groups
+                        core.Persona.GetUser(identify: (string)member);
+                    }
+                }
+            }
+            
+            context.SaveChanges();
         }
 
         public override string ToString()

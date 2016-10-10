@@ -27,6 +27,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return ldap.SearchByEmail(email, baseDN, properties);
         }
 
+        public JToken SearchByIdentify(string identify, string baseDN = "", string[] properties = null)
+        {
+            return ldap.SearchByIdentify(identify, baseDN, properties);
+        }
+
         public JToken GetUsers(string baseDN = "", string[] properties = null)
         {
             return ldap.GetUsers(baseDN, properties);
