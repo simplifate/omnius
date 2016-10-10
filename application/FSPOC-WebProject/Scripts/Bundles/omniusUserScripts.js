@@ -918,13 +918,21 @@ $(function () {
 
         $.extend($.validator.methods, {
             greaterThan: function (value, element, attr) {
-                return this.optional(element) || +value > +attr;;
+                return this.optional(element) || +value > +attr;
             }
         });
         $.extend($.validator.methods, {
             greaterOrEqual: function (value, element, attr) {
                 return this.optional(element) || +value >= +attr;
             }
+        });
+        $.extend($.validator.methods, {
+            optionSelected: function (value, element, attr) {
+                return $(element).attr("required") == undefined || +value != +attr;
+            }
+        });
+        jQuery.validator.addClassRules("dropdown-select", {
+            optionSelected: -1
         });
 
         mozaicFormValidator = $(".mozaicForm").validate({
