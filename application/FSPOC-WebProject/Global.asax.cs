@@ -83,6 +83,40 @@ namespace FSPOC_WebProject
                 }
 
                 Logger.Log.Fatal(string.Join(Environment.NewLine, bodyLines));
+
+                try
+                {
+                    string username = "Helpdesk@futurespoc.com";
+                    string password = "pwd4FSPOCmail";
+
+                    int port = 587;
+                    string host = "imap.smtp.cz";
+
+                    MailMessage message = new MailMessage()
+                    {
+                        Subject = $"Error message from {Request.Url.Authority} [{DateTime.UtcNow.ToString()}]",
+                        IsBodyHtml = true,
+                        Body = string.Join("<br />", bodyLines)
+                    };
+                    message.To.Add("samuel.lachman@futuresolutionservices.com");
+                    message.From = new MailAddress(username);
+                    SmtpClient smtp = new SmtpClient
+                    {
+                        Host = host,
+                        Port = port,
+                        UseDefaultCredentials = false,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        Credentials = new NetworkCredential(username, password),
+                        EnableSsl = true,
+                        Timeout = 10000
+                    };
+
+                    smtp.Send(message);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Log.Error($"Failed to send Error mail: {exc.Message}");
+                }
             }
             catch (Exception exc)
             {
