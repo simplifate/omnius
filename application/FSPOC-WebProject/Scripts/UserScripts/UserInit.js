@@ -227,7 +227,8 @@ $(function () {
                 $("[disableOnError]").addClass("looks-disabled");
             }
         });
-        mozaicFormValidator.form();
+        if ($(".mozaicForm").length)
+            mozaicFormValidator.form();
 
         $(".uic.button-simple, .uic.button-dropdown").on("click", function () {
             $(".uic.data-table").each(function (tableIndex, tableElement) {
