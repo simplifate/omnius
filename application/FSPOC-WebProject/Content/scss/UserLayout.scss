@@ -467,6 +467,10 @@ body.userLayout.leftBarHidden {
         color: white;
 
     }
+    .button-simple[disabled], .button-simple.looks-disabled {
+        background-color: #d5d2d2;
+        color: black;
+    }
     .button-dropdown {
         background-color: white;
         border: 1px solid #4b8ad1;

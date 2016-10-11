@@ -688,6 +688,9 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     background-color: #4b8ad1;
     border: 1px solid #4b8ad1;
     color: white; }
+  .mozaicForm .button-simple[disabled], .mozaicForm .button-simple.looks-disabled {
+    background-color: #d5d2d2;
+    color: black; }
   .mozaicForm .button-dropdown {
     background-color: white;
     border: 1px solid #4b8ad1;
