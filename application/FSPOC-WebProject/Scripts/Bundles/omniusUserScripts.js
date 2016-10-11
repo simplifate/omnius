@@ -941,12 +941,12 @@ $(function () {
             unhighlight: function (element) {
                 $(".uic[ignoredonvalidation]").addClass("cancel");
                 $(element).removeClass("has-error");
-                if (this.numberOfInvalids() === 0) $("[disableOnError]").removeClass("looks-disabled");
+                if (this.numberOfInvalids() === 0) $(".uic.button-simple:not([ignoredonvalidation])").removeClass("looks-disabled");
             },
             highlight: function (element) {
                 $(".uic[ignoredonvalidation]").addClass("cancel");
                 $(element).addClass("has-error");
-                $("[disableOnError]").addClass("looks-disabled");
+                $(".uic.button-simple:not([ignoredonvalidation])").addClass("looks-disabled");
             }
         });
         if ($(".mozaicForm").length)
