@@ -8,59 +8,82 @@ namespace FSS.Omnius.Modules.Nexus.Service
 {
     public class WebDavFileSyncService : IFileSyncService
     {
-        public void DownloadFile(FileMetadata file)
+        public void DownloadFile(FileMetadata file, FileSyncServiceDownloadedEventHandler downloadedHandler = null)
         {
-            Uri downloadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Filename);
+            Uri downloadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Id + "_" + file.Filename);
             AsyncCallback callback = new AsyncCallback(finishDownload);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(downloadUri);
             httpWebRequest.Method = WebRequestMethods.Http.Get.ToString();
             if (!file.WebDavServer.AnonymousMode)
                 httpWebRequest.Credentials = new NetworkCredential(file.WebDavServer.AuthUsername, file.WebDavServer.AuthPassword);
-            httpWebRequest.BeginGetResponse(callback, new WebDavAsyncState { Metadata = file, Request = httpWebRequest });
+            httpWebRequest.BeginGetResponse(callback, new WebDavAsyncState { Metadata = file, Request = httpWebRequest, DownloadedHandler = downloadedHandler });
         }
         private void finishDownload(IAsyncResult result)
         {
-            WebDavAsyncState downloadAsyncState = (WebDavAsyncState)result.AsyncState;
-            HttpWebRequest httpWebRequest = downloadAsyncState.Request;
+            try
+            { 
+                WebDavAsyncState downloadAsyncState = (WebDavAsyncState)result.AsyncState;
+                HttpWebRequest httpWebRequest = downloadAsyncState.Request;
 
-            using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.EndGetResponse(result))
-            {
-                int contentLength = int.Parse(response.GetResponseHeader("Content-Length"));
-                using (Stream responseStream = response.GetResponseStream())
+                FileMetadata currentMetadataItem;
+
+                using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.EndGetResponse(result))
                 {
-                    using (var context = DBEntities.instance)
+                    int contentLength = int.Parse(response.GetResponseHeader("Content-Length"));
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        FileMetadata currentMetadataItem;
-                        try
+                        //using (var context = DBEntities.instance)
+                        using (var context = new DBEntities())
                         {
-                            currentMetadataItem = context.FileMetadataRecords.Find(downloadAsyncState.Metadata.Id);
-                        }
-                        catch(InvalidOperationException)
-                        {
-                            currentMetadataItem = downloadAsyncState.Metadata;
-                            context.FileMetadataRecords.Add(currentMetadataItem);
-                        }
-                        if (currentMetadataItem.CachedCopy == null)
-                            currentMetadataItem.CachedCopy = new FileSyncCache();
-
-                        byte[] buffer = new byte[16 * 1024];
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            int read;
-                            while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
+                            
+                            try
                             {
-                                ms.Write(buffer, 0, read);
+                                currentMetadataItem = context.FileMetadataRecords.Find(downloadAsyncState.Metadata.Id);
                             }
-                            currentMetadataItem.CachedCopy.Blob = ms.ToArray();
+                            catch(InvalidOperationException)
+                            {
+                                currentMetadataItem = downloadAsyncState.Metadata;
+                                context.FileMetadataRecords.Add(currentMetadataItem);
+                            }
+                            if (currentMetadataItem.CachedCopy == null)
+                                currentMetadataItem.CachedCopy = new FileSyncCache();
+
+                            byte[] buffer = new byte[16 * 1024];
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                int read;
+                                while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    ms.Write(buffer, 0, read);
+                                }
+                                currentMetadataItem.CachedCopy.Blob = ms.ToArray();
+                                //currentMetadataItem.Filename = "_" + currentMetadataItem.Filename;
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                 }
+
+                if (downloadAsyncState.DownloadedHandler != null)
+                    downloadAsyncState.DownloadedHandler(this, new FileSyncServiceDownloadedEventArgs() { FileMetadata = currentMetadataItem, Result = FileSyncServiceDownloadedResult.Success });
+            }
+            catch(Exception exc)
+            {
+                WebDavAsyncState downloadAsyncState = (WebDavAsyncState)result.AsyncState;
+                if (downloadAsyncState.DownloadedHandler != null)
+                    downloadAsyncState.DownloadedHandler(this, new FileSyncServiceDownloadedEventArgs() { FileMetadata = null, Result = FileSyncServiceDownloadedResult.Error });
+                throw exc;
             }
         }
         public void UploadFile(FileMetadata file)
         {
-            Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Filename);
+            //TODO: spustit elasticsearch indexaci na jiném vlákně
+
+            //šebela
+            if (file.Id == 0)
+                throw new ArgumentException("Add FileMetadata do context and save to generate Id");
+
+            Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Id + "_" + file.Filename);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uploadUri);
             httpWebRequest.Method = WebRequestMethods.Http.Put.ToString();
             if (!file.WebDavServer.AnonymousMode)
@@ -83,5 +106,6 @@ namespace FSS.Omnius.Modules.Nexus.Service
     {
         public FileMetadata Metadata;
         public HttpWebRequest Request;
+        public FileSyncServiceDownloadedEventHandler DownloadedHandler;
     }
 }

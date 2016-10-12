@@ -24,6 +24,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public bool Athena { get; set; }
         public bool Watchtower { get; set; }
         public bool Cortex { get; set; }
+
+#warning TODO: compass
+        //public bool Compass { get; set; }
     }
 
     public class AjaxModuleAccessPermission : IEntity

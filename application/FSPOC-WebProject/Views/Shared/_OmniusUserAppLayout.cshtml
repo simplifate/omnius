@@ -52,8 +52,13 @@
             <div class="searchIcon fa fa-search"></div>
         </div>
         <div class="searchBox">
-            <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField" />
-            <div class="searchIcon fa fa-search"></div>
+            @using (Html.BeginRouteForm("Compass", new { Controller = "Compass", Action = "Index_App" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField" name="search" />
+                <div class="searchIcon fa fa-search"></div>
+            }
         </div>
     </div>
     <div id="userLeftBar">

@@ -224,6 +224,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Compass\CompassController.cs" />
     <Compile Include="Controllers\Master\ServiceController.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
@@ -1704,6 +1705,8 @@
     <Content Include="Views\App\83\Page\997.cshtml" />
     <Content Include="Views\App\83\Page\998.cshtml" />
     <Content Include="Views\App\83\Page\999.cshtml" />
+    <Content Include="Views\Compass\Compass\Index.cshtml" />
+    <Content Include="Views\Compass\Compass\AjaxIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
