@@ -965,6 +965,10 @@
     <Compile Include="Migrations\201609081823076_Merge Mozaic build from AS.Designer.cs">
       <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610131145516_AppConnectionString.cs" />
+    <Compile Include="Migrations\201610131145516_AppConnectionString.Designer.cs">
+      <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1570,6 +1574,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609081823076_Merge Mozaic build from AS.resx">
       <DependentUpon>201609081823076_Merge Mozaic build from AS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610131145516_AppConnectionString.resx">
+      <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
