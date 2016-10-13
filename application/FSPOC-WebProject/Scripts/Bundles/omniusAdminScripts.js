@@ -9499,6 +9499,7 @@ MBE.types.form = {
         'input-search': '<input type="search" name="" value="" class="form-control">',
         'input-password': '<input type="password" name="" value="" class="form-control">',
         'input-file': '<input type="file" name="" value="" class="form-control">',
+        'static-control': '<p class="form-control-static">Static value</p>',
     },
 
     options: {
@@ -9553,6 +9554,13 @@ MBE.types.form = {
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }]
+            }
+        },
+        'static-control': {
+            'staticControlOptions': {
+                name: 'Static control options',
+                type: 'group',
+                groupItems: [MBE.types.text.options.paragraph.paragraphOptions]
             }
         },
 
@@ -9613,7 +9621,7 @@ MBE.types.form = {
             },
             'stateOptions': {
                 name: 'State',
-                disallowFor: ['input-hidden'],
+                disallowFor: ['input-hidden', 'static-control'],
                 type: 'boolean',
                 options: {
                     'readonly': 'Readonly',
@@ -9624,7 +9632,10 @@ MBE.types.form = {
             },
             'inputOptions': {
                 name: 'Input',
-                allowFor: ['input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                allowFor: [
+                    'input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                    'input-file'
+                ],
                 type: 'group',
                 groupItems: [{
                     label: 'Autofocus',
