@@ -17,6 +17,14 @@ namespace FSPOC_WebProject
                 namespaces: new string[] { "FSS.Omnius.Controllers.CORE" }
             );
 
+            // Compass
+            routes.MapRoute(
+                name: "Compass",
+                url: "Compass/{controller}/{action}/{id}",
+                defaults: new { controller = "Compass", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Compass" }
+            );
+
             // Entitron
             routes.MapRoute(
                 name: "Entitron",

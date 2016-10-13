@@ -25,6 +25,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Service;
     using System.Threading;
 
+    //michal šebela:
+    //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
+    //TODO: doladit pøístup z vláken, které nejsou z Http request, dispose, log db
+
     public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
         private bool isDisposed = false;
@@ -32,23 +36,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         private HttpRequest _r;
         private static HttpRequest r
         {
-            get {
+            get
+            {
                 try
                 {
+                    if (HttpContext.Current == null)
+                        return null;    //pro pøístup z jiného vlákna - viz. WebDavFileSyncService
                     return HttpContext.Current.Request;
                 }
-                catch(HttpException)
+                catch (HttpException)
                 {
                     return null;
                 }
             }
         }
-        
+
         private static Dictionary<HttpRequest, DBEntities> _instances = new Dictionary<HttpRequest, DBEntities>();
-        public static DBEntities instance {
-            get {
-                if(!_instances.ContainsKey(r) || _instances[r].isDisposed) {
-                    if(_instances.ContainsKey(r))
+        public static DBEntities instance
+        {
+            get
+            {
+                if (!_instances.ContainsKey(r) || _instances[r].isDisposed)
+                {
+                    if (_instances.ContainsKey(r))
                         _instances.Remove(r);
                     Create();
                 }
@@ -58,53 +68,75 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             }
         }
 
+        private static object _messagesLock = new object();
         private static Dictionary<HttpRequest, List<string>> _messages = new Dictionary<HttpRequest, List<string>>();
         public static List<string> messages
         {
-            get {
-                return _messages.ContainsKey(r) ? _messages[r] : new List<string>();
+            get
+            {
+                lock (_messagesLock)
+                {
+                    return _messages.ContainsKey(r) ? _messages[r] : new List<string>();
+                }
             }
         }
 
+        private static object _connectionsLock = new object();
         private static Dictionary<HttpRequest, DbConnection> _connections = new Dictionary<HttpRequest, DbConnection>();
         private static DbConnection connection
         {
-            get {
-                if (!_connections.ContainsKey(r)) {
-                    SqlConnectionFactory f = new SqlConnectionFactory(Omnius.Modules.Entitron.Entitron.connectionString);
-                    _connections.Add(r, f.CreateConnection(Omnius.Modules.Entitron.Entitron.connectionString));
-                    _connections[r].Open();
+            get
+            {
+                lock (_connectionsLock)
+                {
+                    if (!_connections.ContainsKey(r))
+                    {
+                        SqlConnectionFactory f = new SqlConnectionFactory(Omnius.Modules.Entitron.Entitron.connectionString);
+                        _connections.Add(r, f.CreateConnection(Omnius.Modules.Entitron.Entitron.connectionString));
+                        _connections[r].Open();
+                    }
+                    return _connections[r];
                 }
-                return _connections[r];
             }
         }
-        
+
         public static void Create()
-        {   
+        {
             _instances.Add(r, new DBEntities(r));
         }
 
         public static void Destroy()
         {
-            _connections[r].Close();
-            _connections[r].Dispose();
+            lock (_connectionsLock)
+            {
+                _connections[r].Close();
+                _connections[r].Dispose();
+                _connections.Remove(r);
+            }
+
             _instances[r].Dispose();
 
-            _connections.Remove(r);
             _instances.Remove(r);
-            _messages.Remove(r);
+
+            lock (_messagesLock)
+            {
+                _messages.Remove(r);
+            }
         }
-        
+
         protected override void Dispose(bool disposing)
         {
-            _instances[r].isDisposed = true;
+            if (r != null)
+            {
+                _instances[r].isDisposed = true;
+            }
         }
 
         public static DBEntities GetInstance()
         {
             return instance;
         }
-        
+
         public DBEntities(HttpRequest req) : base(connection, false)
         {
             _r = req;
@@ -117,10 +149,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         public void Log(string message)
         {
-            if(!_messages.ContainsKey(_r)) {
-                _messages.Add(_r, new List<string>());
+            lock (_messagesLock)
+            {
+                if (!_messages.ContainsKey(_r))
+                {
+                    _messages.Add(_r, new List<string>());
+                }
+                _messages[_r].Add(message);
             }
-            _messages[_r].Add(message);
         }
 
         // CORE
@@ -186,7 +222,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<WorkFlow> WorkFlows { get; set; }
         public virtual DbSet<WorkFlowType> WorkFlowTypes { get; set; }
         public virtual DbSet<ResourceMappingPair> ResourceMappingPairs { get; set; }
-        
+
         public virtual DbSet<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
         public virtual DbSet<TapestryDesignerBlock> TapestryDesignerBlocks { get; set; }
         public virtual DbSet<TapestryDesignerMetablockConnection> TapestryDesignerMetablockConnections { get; set; }
@@ -205,7 +241,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // CORE
-            
+
             // Entitron
             modelBuilder.Entity<Application>()
                 .HasMany<Table>(e => e.Tables)
@@ -246,9 +282,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WithMany(e => e.Css)
                 .Map(m => m.ToTable("Mozaic_CssPages").MapLeftKey("CssId").MapRightKey("PageId"));
 
- //           modelBuilder.Entity<Template>()
- //               .HasMany<Page>(e => e.Pages);
- ////               .WithRequired(e => e.MasterTemplate);
+            //           modelBuilder.Entity<Template>()
+            //               .HasMany<Page>(e => e.Pages);
+            ////               .WithRequired(e => e.MasterTemplate);
 
             modelBuilder.Entity<TemplateCategory>()
                 .HasMany<Template>(e => e.Templates)
@@ -354,7 +390,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<WorkFlow>(e => e.InitForWorkFlow)
                 .WithOptional(e => e.InitBlock)
                 .HasForeignKey(e => e.InitBlockId);
-            
+
             modelBuilder.Entity<WorkFlow>()
                 .HasMany<Block>(e => e.Blocks)
                 .WithRequired(e => e.WorkFlow)
@@ -385,7 +421,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<ActionRule_Action>(e => e.ActionRule_Actions)
                 .WithRequired(e => e.ActionRule)
                 .HasForeignKey(e => e.ActionRuleId);
-            
+
             modelBuilder.Entity<Actor>()
                 .HasMany<ActionRule>(e => e.ActionRules)
                 .WithRequired(e => e.Actor)
@@ -504,7 +540,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
             // Watchtower
         }
-        
+
         public void DiscardChanges()
         {
             var changedEntries = ChangeTracker.Entries()
