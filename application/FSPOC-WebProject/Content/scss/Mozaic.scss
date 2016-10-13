@@ -616,3 +616,234 @@ body.mozaicEditorModule {
         display:none;
     }
 }
+
+.mozaicBootstrapEditorModule {
+                     
+    ul.category {
+        margin: 0px;
+        padding: 10px;
+
+        li {
+            font-weight: normal;
+            list-style: none;
+        }
+
+        > li {
+            font-weight: bold;
+            > ul {
+                padding: 0px 20px;
+                li:hover {
+                    background: #d0d2d2;
+                }   
+            }
+        }
+    }
+
+    #mozaicPageContainer {
+        -webkit-user-select: none;   /* Chrome/Safari/Opera */
+        -moz-user-select: none;      /* Firefox */
+        -ms-user-select: none;       /* Internet Explorer/Edge */
+        user-select: none;           /* Non-prefixed version, currently */
+        
+        #mozaicPageTree {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            width: 240px;
+            background: #e0e2e2;
+
+            .leftBarHeader {
+                height: 32px;
+                background-color: #bdbbbc;
+                font-family: FatTec;
+                font-size: 16px;
+                padding: 8px 10px;
+            }
+
+            ul {
+                padding: 0px;
+                margin: 0px;
+                li {
+                    list-style: none;
+                    margin: 0px 0px 0px 15px;
+                    .fa {
+                        margin-left: -15px;
+                        margin-top: 3px;
+                        float: left;
+                    }
+                    a, span {
+                        font-weight: bold;
+                        color: #000;
+                        display: block;
+                        padding: 1px 5px;
+                        &.active {
+                            background: #fff;
+                            border: 1px solid blue;
+                            padding: 0px 4px;
+                        }
+                        &.drop-target {
+                            background: #fbffd4;
+                            border: 1px solid orange;
+                            padding: 0px 4px;
+                        }
+                    }
+                }
+            }
+            div.tree-nav {
+                margin-top: 1em;
+                padding: 0px 10px 0px 25px;
+                .fa {
+                    margin-left: -20px;
+                }
+                span {
+                    display: block;
+                    b {
+                        &.active {
+                            background: #fff;
+                            border: 1px solid blue;
+                            padding: 0px 4px;
+                        }
+                        &.drop-target {
+                            background: #fbffd4;
+                            outline: 1px solid orange;
+                        }
+                    }
+                }
+                .sub-tree {
+                    padding-left: 10px; 
+                }
+                .node.dragged {
+                    b {
+                        font-style: italic;
+                        color: #aaa;
+                    }
+                    .sub-tree {
+                        display: none;
+                    }
+                }
+
+                #drop-placeholder {
+                    height: 0px;
+                    outline: 1px solid blue;
+                }
+            }
+        }
+
+        #mozaicPageWorkspace {
+            position: absolute;
+            left: 12px;
+            right: 252px;
+            top: 48px;
+            padding: 20px 0px 20px;
+            bottom: 0px;
+
+            #drop-placeholder {
+                height: 0px;
+                outline: 1px solid blue;
+            }
+
+        }
+
+        .container, .container-fluid {
+            border: 1px dashed #01a1f7;
+        }
+
+        .mbe-drag-handle {
+            display: none;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            left: -4px;
+            top: -4px;
+            background: blue;
+            border-radius: 100%;
+            cursor: move;
+        }
+
+        .mbe-active {
+            outline: 1px solid blue;
+            position: relative;
+            > .mbe-drag-handle {
+                display: block;
+            }
+        }
+
+        @mixin empty($selector, $content) {
+            #{$selector}.empty-element:before {
+                content: $content;
+            }
+        }
+
+        .empty-element:before {
+            display: block;
+            background: #efefef;
+            color: #ccc;
+            padding: 5px 10px;
+            content: "empty item";  
+        }
+
+        @include empty('.row', 'empty row');
+        @include empty('div[class^="col-"]', 'empty column');
+        @include empty('header', 'empty header');
+        @include empty('footer', 'empty footer');
+        @include empty('hgroup', 'empty hgroup');
+        @include empty('section', 'empty section');
+        @include empty('article', 'empty article');
+        @include empty('aside', 'empty aside');
+        @include empty('.clearfix', 'empty clearfix');
+        @include empty('form', 'empty form');
+        @include empty('.form-group', 'empty form group');
+
+        div.clearfix.empty-element:before {
+            font-size: 6px;
+            padding: 1px 10px;
+        }
+
+        .dragged[data-uic] {
+            opacity: 0.5;
+        }
+
+        .container, .container-fluid, .row {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+    }
+
+    .dialog-options {
+        fieldset {
+            padding: 10px 10px;
+            border-bottom: 1px solid #dedede;
+        }
+        legend {
+            font-size: 0.9em;
+            font-weight: bold;
+            border: none;
+            margin-bottom: -5px;
+            margin-top: 10px;
+        }
+        .option-group {
+             label {
+                font-weight: normal;
+                font-size: 0.8em;
+                width: 200px;
+            }
+            select {
+                min-width: 100px;
+            }
+        }
+    }
+
+    .drag-over {
+        outline: 2px dashed #aaa;
+    }
+    .drag-ghost {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+}

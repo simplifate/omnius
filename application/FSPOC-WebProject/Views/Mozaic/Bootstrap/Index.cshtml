@@ -1,0 +1,291 @@
+﻿@{
+    Page.Title = "Omnius Mozaic bootstrap visual editor";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicEditorModule mozaicBootstrapEditorModule";
+}
+<div id="upperPanel" class="mozaicEditorAbsolute">
+    <div class="panelLabel">Mozaic visual editor</div>
+    <svg class="backgroundDecoration" width="540px" height="357px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 295 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+    <div id="controlButtonArea">
+        <button id="btnNewPage" class="btn-omnius-rectangular">Nová stránka</button>
+        <button id="btnChoosePage" class="btn-omnius-rectangular">Zvolit stránku</button>
+        <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
+        <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
+        <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+        <button id="btnTrashPage" class="btn-omnius-rectangular">Trash</button>
+        @{
+            //<button id="btnToBootstrap" class="btn-omnius-rectangular">Do Bootstrap</button>
+            //<button id="btnPreview" class="btn-omnius-rectangular">Náhled</button>
+        }
+    </div>
+    <div id="appInfoPanel">
+        App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
+    </div>
+    <div id="gridControlPanel">
+        <label for="gridResolution">Mřížka:</label>
+        <select id="gridResolutionDropdown" name="gridResolution">
+            <option selected="selected" value="off">Žádná</option>
+            <option value="5">5px</option>
+            <option value="10">10px</option>
+            <option value="15">15px</option>
+            <option value="20">20px</option>
+            <option value="25">25px</option>
+            <option value="30">30px</option>
+            <option value="35">35px</option>
+            <option value="40">40px</option>
+            <option value="45">45px</option>
+            <option value="50">50px</option>
+        </select>
+        <label for="gridShow">Zobrazit:</label>
+        <input type="checkbox" id="gridShowCheckbox" name="gridShow" />
+    </div>
+    <div id="modalControlPanel">
+        <label>Uložit jako modal:</label><input type="checkbox" id="currentPageIsModal" />
+        <label>Šířka:</label><input type="text" id="modalWidthInput" value="400" />
+        <label>Výška:</label><input type="text" id="modalHeightInput" value="300" />
+    </div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Mozaic bootstrap visual editor</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel" class="mozaicEditorAbsolute">
+    <div id="lowerPanelSpinnerOverlay">
+        <div class="spinner-2 largeSpinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    <div id="mozaicContainer">
+        <div id="mozaicLeftBar">
+            <div class="leftBarHeader">Paleta</div>
+            <div id="hideMozaicTooboxIcon" class="fa fa-caret-left"></div>
+            
+            <div class="toolbox-container">
+                <ul class="category">
+                    <li>Text
+                        <ul data-type="text">
+                            <li data-template="heading">Heading</li>
+                            <li data-template="paragraph">Paragraph</li>
+                            <li data-template="alert">Alert</li>
+                            <li data-template="blockquote">Blockquote</li>
+                            <li data-template="small">Small</li>
+                            <li data-template="strong">Bold</li>
+                            <li data-template="italic">Italic</li>
+                            <li data-template="span">Span</li>
+                        </ul>
+                    </li>
+                    <li>Image
+                        <ul>
+                            <li>Image</li>
+                            <li>Icon</li>
+                            <li>Carousel</li>
+                            <li>Figure</li>
+                            <li>Figcaption</li>
+                        </ul>
+                    </li>
+                    <li>Controls
+                        <ul data-type="controls">
+                            <li data-template="button">Button</li>
+                            <li>Split button</li>
+                            <li data-template="button-group">Button group</li>
+                            <li data-template="button-toolbar">Button toolbar</li>
+                            <li>Dropdown</li>
+                            <li data-template="link">Link</li>
+                        </ul>
+                    </li>
+                    <li>Grid
+                        <ul data-type="grid">
+                            <li data-template="row">Row</li>
+                            <li data-template="column">Column</li>
+                            <li data-template="clearfix">Clearfix</li>
+                        </ul>
+                    </li>
+                    <li>Containers
+                        <ul data-type="containers">
+                            <li data-template="container">Container</li>
+                            <li>Panel</li>
+                            <li>Tabs</li>
+                            <li>Accordion</li>
+                            <li>Collapse</li>
+                            <li>List group</li>
+                            <li>Media</li>
+                            <li>Jumbotron</li>
+                            <li>Thumbnail</li>
+                            <li>Well</li>
+                            <li>List</li>
+                            <li>Div</li>
+                        </ul>
+                    </li>
+                    <li>Page
+                        <ul data-type="page">
+                            <li>Navbar</li>
+                            <li>Nav</li>
+                            <li data-template="page-header">Page header</li>
+                            <li data-template="header">Header</li>
+                            <li data-template="footer">Footer</li>
+                            <li data-template="hgroup">Hgroup</li>
+                            <li data-template="section">Section</li>
+                            <li data-template="article">Article</li>
+                            <li data-template="aside">Aside</li>
+                        </ul>
+                    </li>
+                    <li>Pagination
+                        <ul>
+                            <li>Pagination</li>
+                            <li>Pager</li>
+                        </ul>
+                    </li>
+                    <li>Table
+                        <ul>
+                            <li>Table</li>
+                            <li>Table row</li>
+                            <li>Table cell</li>
+                        </ul>
+                    </li>
+                    <li>Form
+                        <ul data-type="form">
+                            <li data-template="form">Form</li>
+                            <li data-template="form-group">Form group</li>
+                            <li data-template="label">Field label</li>
+                            <li data-template="input-text">Text input</li>
+                            <li data-template="input-email">Email input</li>
+                            <li data-template="input-color">Color input</li>
+                            <li>Select</li>
+                            <li data-template="input-tel">Telephone input</li>
+                            <li>Date and time input</li>
+                            <li data-template="input-number">Number input</li>
+                            <li data-template="input-range">Range input</li>
+                            <li data-template="input-hidden">Hidden input</li>
+                            <li data-template="input-url">URL input</li>
+                            <li data-template="input-search">Search input</li>
+                            <li data-template="input-password">Password input</li>
+                            <li data-template="input-file">File input</li>
+                            <li>Checkbox</li>
+                            <li>Checkbox with label</li>
+                            <li>Radio</li>
+                            <li>Radio with label</li>
+                            <li>Form control feedback</li>
+                            <li>Static control</li>
+                            <li>Textarea</li>
+                            <li>Help text block</li>
+                            <li>Input group</li>
+                            <li>Fieldset</li>
+                        </ul>
+                    </li>
+                    <li>Misc
+                        <ul>
+                            <li>Map</li>
+                            <li>Video</li>
+                            <li>Custom code</li>
+                            <li>Modal</li>
+                            <li>Badge</li>
+                            <li>Label</li>
+                            <li>Caret</li>
+                            <li>Close</li>
+                            <li>Breadcrumbs</li>
+                            <li>Hr</li>
+                            <li>Responsive embed</li>
+                            <li>Progress bar</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div id="mozaicLeftBarMinimized">
+            <div id="showMozaicTooboxIcon" class="fa fa-caret-right"></div>
+            <div class="leftBarHeader">Paleta</div>
+        </div>
+    </div>
+    <div id="mozaicPageContainer">
+        <ol id="mozaicPageBreadcrumbs" class="breadcrumb">
+            <li><span>Body</span></li>
+        </ol>
+        <div id="mozaicPageTree">
+            <div class="leftBarHeader">Navigace</div>
+            <div class="tree-nav">
+                <div class="node root">
+                    <span class="node-handle">
+                        <i class="fa fa-caret-down fa-fw"></i>
+                        <b>Body</b>
+                    </span>
+                    <div class="sub-tree"></div>
+                </div>
+            </div>
+        </div>
+        <div id="mozaicPageWorkspace">
+
+        </div>
+        <div id="drop-placeholder"></div>
+        <div id="modalSizeVisualization"></div>
+    </div>
+</div>
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
+<input type="hidden" id="currentPageId" value="@ViewData["pageId"]" />
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="choose-page-dialog" title="Choose page">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="page-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="new-page-dialog" title="Create new page">
+    <form>
+        <fieldset>
+            <label for="new-page-name">Page name</label>
+            <input type="text" name="new-page-name" id="new-page-name" value="" class="text ui-widget-content ui-corner-all" style="width: 365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-page-dialog" title="Rename page">
+    <form>
+        <fieldset>
+            <label for="page-name">Choose a new name</label>
+            <input type="text" name="page-name" id="page-name" value="" class="text ui-widget-content ui-corner-all" style="width: 365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="trash-page-dialog" title="Deleted pages">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="trash-page-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>

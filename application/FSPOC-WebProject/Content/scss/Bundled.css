@@ -3355,6 +3355,182 @@ body.mozaicEditorModule {
   body.mozaicEditorModule #choose-page-dialog .spinner-2 {
     display: none; }
 
+.mozaicBootstrapEditorModule ul.category {
+  margin: 0px;
+  padding: 10px; }
+  .mozaicBootstrapEditorModule ul.category li {
+    font-weight: normal;
+    list-style: none; }
+  .mozaicBootstrapEditorModule ul.category > li {
+    font-weight: bold; }
+    .mozaicBootstrapEditorModule ul.category > li > ul {
+      padding: 0px 20px; }
+      .mozaicBootstrapEditorModule ul.category > li > ul li:hover {
+        background: #d0d2d2; }
+
+.mozaicBootstrapEditorModule #mozaicPageContainer {
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently */ }
+  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 240px;
+    background: #e0e2e2; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree .leftBarHeader {
+      height: 32px;
+      background-color: #bdbbbc;
+      font-family: FatTec;
+      font-size: 16px;
+      padding: 8px 10px; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul {
+      padding: 0px;
+      margin: 0px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li {
+        list-style: none;
+        margin: 0px 0px 0px 15px; }
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li .fa {
+          margin-left: -15px;
+          margin-top: 3px;
+          float: left; }
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span {
+          font-weight: bold;
+          color: #000;
+          display: block;
+          padding: 1px 5px; }
+          .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.active, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.active {
+            background: #fff;
+            border: 1px solid blue;
+            padding: 0px 4px; }
+          .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.drop-target, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.drop-target {
+            background: #fbffd4;
+            border: 1px solid orange;
+            padding: 0px 4px; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav {
+      margin-top: 1em;
+      padding: 0px 10px 0px 25px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .fa {
+        margin-left: -20px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span {
+        display: block; }
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span b.active {
+          background: #fff;
+          border: 1px solid blue;
+          padding: 0px 4px; }
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span b.drop-target {
+          background: #fbffd4;
+          outline: 1px solid orange; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
+        padding-left: 10px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged b {
+        font-style: italic;
+        color: #aaa; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged .sub-tree {
+        display: none; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav #drop-placeholder {
+        height: 0px;
+        outline: 1px solid blue; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace {
+    position: absolute;
+    left: 12px;
+    right: 252px;
+    top: 48px;
+    padding: 20px 0px 20px;
+    bottom: 0px; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace #drop-placeholder {
+      height: 0px;
+      outline: 1px solid blue; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .container, .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid {
+    border: 1px dashed #01a1f7; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-drag-handle {
+    display: none;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    background: blue;
+    border-radius: 100%;
+    cursor: move; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-active {
+    outline: 1px solid blue;
+    position: relative; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-active > .mbe-drag-handle {
+      display: block; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .empty-element:before {
+    display: block;
+    background: #efefef;
+    color: #ccc;
+    padding: 5px 10px;
+    content: "empty item"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .row.empty-element:before {
+    content: "empty row"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer div[class^="col-"].empty-element:before {
+    content: "empty column"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer header.empty-element:before {
+    content: "empty header"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer footer.empty-element:before {
+    content: "empty footer"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer hgroup.empty-element:before {
+    content: "empty hgroup"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer section.empty-element:before {
+    content: "empty section"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer article.empty-element:before {
+    content: "empty article"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer aside.empty-element:before {
+    content: "empty aside"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .clearfix.empty-element:before {
+    content: "empty clearfix"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer form.empty-element:before {
+    content: "empty form"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .form-group.empty-element:before {
+    content: "empty form group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer div.clearfix.empty-element:before {
+    font-size: 6px;
+    padding: 1px 10px; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .dragged[data-uic] {
+    opacity: 0.5; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .container, .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid, .mozaicBootstrapEditorModule #mozaicPageContainer .row {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px; }
+
+.mozaicBootstrapEditorModule .dialog-options fieldset {
+  padding: 10px 10px;
+  border-bottom: 1px solid #dedede; }
+
+.mozaicBootstrapEditorModule .dialog-options legend {
+  font-size: 0.9em;
+  font-weight: bold;
+  border: none;
+  margin-bottom: -5px;
+  margin-top: 10px; }
+
+.mozaicBootstrapEditorModule .dialog-options .option-group label {
+  font-weight: normal;
+  font-size: 0.8em;
+  width: 200px; }
+
+.mozaicBootstrapEditorModule .dialog-options .option-group select {
+  min-width: 100px; }
+
+.mozaicBootstrapEditorModule .drag-over {
+  outline: 2px dashed #aaa; }
+
+.mozaicBootstrapEditorModule .drag-ghost {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.75); }
+
 body.cortexModule #upperPanel {
   height: 295px; }
 

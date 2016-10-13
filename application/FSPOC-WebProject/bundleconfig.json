@@ -13,6 +13,7 @@
       "Scripts/jquery.dataTables.datetime-moment.js",
       "Scripts/jquery.datetimepicker.min.js",
       "Scripts/jquery.plugin.min.js",
+      "Scripts/jquery-sortable.js",
       "Scripts/spectrum.js",
       "Scripts/bootstrap.js",
       "Scripts/jquery.countdown.min.js",
@@ -58,7 +59,20 @@
       "Scripts/DatabaseDesigner/DbInit.js",
       "Scripts/DatabaseDesigner/DbDialogs.js",
       "Scripts/AppManager/Dialogs.js",
-      "Scripts/AppManager/AdminInit.js"
+      "Scripts/AppManager/AdminInit.js",
+      "Scripts/MozaicEditor/Bootstrap/Sortable.js",
+      "Scripts/MozaicEditor/Bootstrap/Main.js",
+      "Scripts/MozaicEditor/Bootstrap/DnD.js",
+      "Scripts/MozaicEditor/Bootstrap/Navigator.js",
+      "Scripts/MozaicEditor/Bootstrap/Selection.js",
+      "Scripts/MozaicEditor/Bootstrap/Path.js",
+      "Scripts/MozaicEditor/Bootstrap/CommonOptions.js",
+      "Scripts/MozaicEditor/Bootstrap/_Containers.js",
+      "Scripts/MozaicEditor/Bootstrap/_Text.js",
+      "Scripts/MozaicEditor/Bootstrap/_Controls.js",
+      "Scripts/MozaicEditor/Bootstrap/_Grid.js",
+      "Scripts/MozaicEditor/Bootstrap/_Page.js",
+      "Scripts/MozaicEditor/Bootstrap/_Form.js"
     ]
   },
   {

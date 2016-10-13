@@ -238,6 +238,7 @@
     <Compile Include="Controllers\LoggedUserHelper.cs" />
     <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
+    <Compile Include="Controllers\Mozaic\BootstrapController.cs" />
     <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\EditorController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
@@ -446,6 +447,15 @@
     <Content Include="Scripts\Bundles\omniusAdminScripts.min.js">
       <DependentUpon>omniusAdminScripts.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\DnD.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\Main.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\Navigator.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\Path.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\Sortable.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\_Containers.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\_Grid.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\_Text.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\Spinner.js" />
@@ -1704,6 +1714,7 @@
     <Content Include="Views\App\83\Page\997.cshtml" />
     <Content Include="Views\App\83\Page\998.cshtml" />
     <Content Include="Views\App\83\Page\999.cshtml" />
+    <Content Include="Views\Mozaic\Bootstrap\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
