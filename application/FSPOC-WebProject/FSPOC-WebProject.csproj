@@ -1719,6 +1719,22 @@
     <Content Include="Views\App\83\Page\998.cshtml" />
     <Content Include="Views\App\83\Page\999.cshtml" />
     <Content Include="Views\Mozaic\Bootstrap\Index.cshtml" />
+    <Content Include="Views\App\83\Page\1000.cshtml" />
+    <Content Include="Views\App\83\Page\1001.cshtml" />
+    <Content Include="Views\App\83\Page\1002.cshtml" />
+    <Content Include="Views\App\83\Page\1003.cshtml" />
+    <Content Include="Views\App\83\Page\1005.cshtml" />
+    <Content Include="Views\App\83\Page\1006.cshtml" />
+    <Content Include="Views\App\83\Page\1007.cshtml" />
+    <Content Include="Views\App\83\Page\1008.cshtml" />
+    <Content Include="Views\App\83\Page\1009.cshtml" />
+    <Content Include="Views\App\83\Page\1010.cshtml" />
+    <Content Include="Views\App\83\Page\1011.cshtml" />
+    <Content Include="Views\App\83\Page\1012.cshtml" />
+    <Content Include="Views\App\83\Page\1013.cshtml" />
+    <Content Include="Views\App\83\Page\1014.cshtml" />
+    <Content Include="Views\App\83\Page\1015.cshtml" />
+    <Content Include="Views\App\83\Page\1016.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
