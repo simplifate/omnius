@@ -77,7 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                LogError(ex.Message, core.User.Id, core.Entitron.AppId);
+                LogError($"{ex.Message} StackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar, message);
