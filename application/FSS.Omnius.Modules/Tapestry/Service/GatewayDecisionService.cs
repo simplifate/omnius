@@ -57,9 +57,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 case "<=":
                     return Convert.ToInt64(leftOperand) <= Convert.ToInt64(condition.Value);
                 case "is empty":
-                    return leftOperand == null;
+                    return string.IsNullOrEmpty((string)leftOperand);
                 case "is not empty":
-                    return leftOperand != null;
+                    return !string.IsNullOrEmpty((string)leftOperand);
                 case "contains":
                     return ((string)leftOperand).Contains(condition.Value);
             }
