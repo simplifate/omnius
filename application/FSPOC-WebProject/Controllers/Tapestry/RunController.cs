@@ -67,6 +67,39 @@ namespace FSS.Omnius.Controllers.Tapestry
                 {
                     ViewData[pair.Key.Substring(5)] = pair.Value;
                 }
+                if (pair.Key.StartsWith("_uictable_"))
+                {
+                    var entitronRowList = (List<DBItem>)pair.Value;
+                    bool columnsCreated = false;
+                    DataTable dataSource = new DataTable();
+                    foreach (var entitronRow in entitronRowList)
+                    {
+                        var newRow = dataSource.NewRow();
+                        var columnNames = entitronRow.getColumnNames();
+                        newRow["hiddenId"] = columnNames.Contains("id") ? entitronRow["id"] : -1;
+                        foreach (var columnName in columnNames)
+                        {
+                            if (!columnsCreated)
+                                dataSource.Columns.Add(columnName);
+                            if (entitronRow[columnName] is bool)
+                            {
+                                if ((bool)entitronRow[columnName] == true)
+                                    newRow[columnName] = "Ano";
+                                else
+                                    newRow[columnName] = "Ne";
+                            }
+                            else if (entitronRow[columnName] is DateTime)
+                            {
+                                newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
+                            }
+                            else
+                                newRow[columnName] = entitronRow[columnName];
+                        }
+                        columnsCreated = true;
+                        dataSource.Rows.Add(newRow);
+                    }
+                    ViewData[pair.Key.Substring(10)] = dataSource;
+                }
             }
 
             // fill data
