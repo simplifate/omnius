@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ViewName", "ColumnName", "Value" };
+                return new string[] { "ViewName", "ColumnName", "Value", "?ColumnName2", "?Value2" };
             }
         }
 
@@ -59,9 +59,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 core.Entitron.AppName = "EvidencePeriodik";
 
             var view = core.Entitron.GetDynamicView((string)vars["ViewName"]);
-            string columnName = (string)vars["ColumnName"];
-
-            outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+            if (!vars.ContainsKey("ColumnName"))
+            {
+                outputVars["Result"] = view.Select().ToList();
+            }
+            else if (vars.ContainsKey("ColumnName2"))
+            {
+                string columnName = (string)vars["ColumnName"];
+                string columnName2 = (string)vars["ColumnName2"];
+                outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"]).and().column(columnName2).Equal(vars["Value2"])).ToList();
+            }
+            else
+            {
+                string columnName = (string)vars["ColumnName"];
+                outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+            }
         }
     }
 }

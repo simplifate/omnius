@@ -32,6 +32,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         }
         private static bool matchCondition(TapestryDesignerCondition condition, Dictionary<string, object> vars)
         {
+            if (!vars.ContainsKey(condition.Variable))
+                return false;
+
             var leftOperand = vars[condition.Variable];
             switch (condition.Operator)
             {
