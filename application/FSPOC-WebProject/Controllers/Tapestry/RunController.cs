@@ -72,6 +72,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     var entitronRowList = (List<DBItem>)pair.Value;
                     bool columnsCreated = false;
                     DataTable dataSource = new DataTable();
+                    dataSource.Columns.Add("hiddenId", typeof(int));
                     foreach (var entitronRow in entitronRowList)
                     {
                         var newRow = dataSource.NewRow();
