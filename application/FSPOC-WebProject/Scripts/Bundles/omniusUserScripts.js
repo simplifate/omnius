@@ -915,7 +915,16 @@ $(function () {
             console.log(err);
         }
         
-
+        $.extend($.validator.methods, {
+            auditNumber: function (value, element, attr) {
+                return value.match(/^[0-9]{4} [PA] [0-9]{2}$/);
+            }
+        });
+        $.extend($.validator.methods, {
+            auditNumberNonWF: function (value, element, attr) {
+                return value.match(/^[0-9]{4} C [0-9]{2}$/);
+            }
+        });
         $.extend($.validator.methods, {
             greaterThan: function (value, element, attr) {
                 return this.optional(element) || +value > +attr;

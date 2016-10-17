@@ -27480,8 +27480,7 @@ $.extend( $.validator, {
 			method, value;
 
 		for ( method in $.validator.methods ) {
-
-			// support for <input required> in both html5 and older browsers
+		    // support for <input required> in both html5 and older browsers
 			if ( method === "required" ) {
 				value = element.getAttribute( method );
 
@@ -27494,12 +27493,12 @@ $.extend( $.validator, {
 				// force non-HTML5 browsers to return bool
 				value = !!value;
 			} else {
-				value = $element.attr( method );
+			    value = $element.attr(method);
 			}
 
 			this.normalizeAttributeRule( rules, type, method, value );
 		}
-
+        
 		// maxlength may be returned as -1, 2147483647 ( IE ) and 524288 ( safari ) for text inputs
 		if ( rules.maxlength && /-1|2147483647|524288/.test( rules.maxlength ) ) {
 			delete rules.maxlength;
