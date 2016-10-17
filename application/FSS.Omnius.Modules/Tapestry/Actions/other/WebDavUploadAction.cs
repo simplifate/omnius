@@ -72,6 +72,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 {
                     HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
+                    if (file.ContentLength == 0)
+                        continue;
+
                     FileMetadata fmd = new FileMetadata();
                     fmd.AppFolderName = core.Entitron.AppName;
                     fmd.CachedCopy = new FileSyncCache();
@@ -93,6 +96,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                     IFileSyncService service = new WebDavFileSyncService();
                     service.UploadFile(fmd);
+
+                    //TODO?: předat dalším akcim identifikátory
+                    //outputVars.Add("input_" + fileName, fmd.Id);
                 }
             }
         }
