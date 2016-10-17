@@ -6,6 +6,7 @@
     onDragEnter: [],
     onDragLeave: [],
     onDragEnd: [],
+    onDrop: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -38,6 +39,20 @@
         ;
     },
 
+    getUIC: function() 
+    {
+        var self = MBE.DnD;
+        var item = $(self.currentElement)
+        
+        if (item.hasClass('node')) {
+            return item.find('> .node-handle b').data('targetuic');
+        }
+        else if (!item.is('[data-uic]')) {
+            return self.createUIC(item);
+        }
+        return item;
+    },
+
     createUIC: function (item)
     {
         var type = item.data('type');
@@ -45,10 +60,6 @@
 
         var elm = $(MBE.types[type].templates[template]);
         elm.attr('data-uic', type + "|" + template);
-
-        elm.contents().filter(function () {
-            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('empty-element');
-        }).wrap('<span class="mbe-text-node" />');
 
         return elm;
     },
@@ -175,26 +186,12 @@
     _workSpaceDrop: function(event)
     {
         event.stopImmediatePropagation();
-
-        var target = MBE.DnD.placeholder.clone();
-        target.removeAttr('id');
-
-        MBE.DnD.placeholder.after(target);
-        
-        var item = $(MBE.DnD.currentElement);
-        var uic;
-        if (item.hasClass('node')) {
-            uic = item.find('> .node-handle b').data('targetuic');
-        }
-        else if (!item.is('[data-uic]')) {
-            uic = MBE.DnD.createUIC(item);
-        }
-        else {
-            uic = item;
-        }
-
-        target.replaceWith(uic);
-        MBE.DnD.domNeedUpdate = true;
+            
+        var self = MBE.DnD;
+        var uic = self.getUIC();
+        self.placeholder.after(uic);
+        self.callListeners('onDrop', uic[0], [self.placeholder.parent()]);
+        self.domNeedUpdate = true;
     },
 
     _navNodeDrop: function(event)
@@ -283,16 +280,21 @@
     {
         $('[data-uic]').removeClass('empty-element');
         $('[data-uic]:not(input, select):empty').addClass('empty-element');
+
+        MBE.workspace.find('*').contents().filter(function () {
+            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
+        }).wrap('<span class="mbe-text-node" />');
+
         MBE.DnD.callListeners('onDOMUpdate', MBE.workspace[0]);
 
         MBE.DnD.domNeedUpdate = false;
     },
 
-    callListeners: function(eventType, context)
+    callListeners: function(eventType, context, params)
     {
         for (var i = 0; i < MBE.DnD[eventType].length; i++) {
             var f = MBE.DnD[eventType][i];
-            f.apply(context, []);
+            f.apply(context, params ? params : []);
         }
     }
 }

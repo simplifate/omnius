@@ -40,9 +40,11 @@
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            $('.mbe-active').remove();
-            MBE.path.update.apply(MBE.workspace, []);
-            MBE.DnD.updateDOM();
+            if ($('.mbe-active').length && !$('.mbe-active').is('[locked]')) {
+                $('.mbe-active').remove();
+                MBE.path.update.apply(MBE.workspace, []);
+                MBE.DnD.updateDOM();
+            }
         }
     },
 

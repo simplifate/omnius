@@ -8082,9 +8082,11 @@ var MBE = {
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            $('.mbe-active').remove();
-            MBE.path.update.apply(MBE.workspace, []);
-            MBE.DnD.updateDOM();
+            if ($('.mbe-active').length && !$('.mbe-active').is('[locked]')) {
+                $('.mbe-active').remove();
+                MBE.path.update.apply(MBE.workspace, []);
+                MBE.DnD.updateDOM();
+            }
         }
     },
 
@@ -8137,6 +8139,7 @@ MBE.DnD = {
     onDragEnter: [],
     onDragLeave: [],
     onDragEnd: [],
+    onDrop: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -8169,6 +8172,20 @@ MBE.DnD = {
         ;
     },
 
+    getUIC: function() 
+    {
+        var self = MBE.DnD;
+        var item = $(self.currentElement)
+        
+        if (item.hasClass('node')) {
+            return item.find('> .node-handle b').data('targetuic');
+        }
+        else if (!item.is('[data-uic]')) {
+            return self.createUIC(item);
+        }
+        return item;
+    },
+
     createUIC: function (item)
     {
         var type = item.data('type');
@@ -8176,10 +8193,6 @@ MBE.DnD = {
 
         var elm = $(MBE.types[type].templates[template]);
         elm.attr('data-uic', type + "|" + template);
-
-        elm.contents().filter(function () {
-            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('empty-element');
-        }).wrap('<span class="mbe-text-node" />');
 
         return elm;
     },
@@ -8306,26 +8319,12 @@ MBE.DnD = {
     _workSpaceDrop: function(event)
     {
         event.stopImmediatePropagation();
-
-        var target = MBE.DnD.placeholder.clone();
-        target.removeAttr('id');
-
-        MBE.DnD.placeholder.after(target);
-        
-        var item = $(MBE.DnD.currentElement);
-        var uic;
-        if (item.hasClass('node')) {
-            uic = item.find('> .node-handle b').data('targetuic');
-        }
-        else if (!item.is('[data-uic]')) {
-            uic = MBE.DnD.createUIC(item);
-        }
-        else {
-            uic = item;
-        }
-
-        target.replaceWith(uic);
-        MBE.DnD.domNeedUpdate = true;
+            
+        var self = MBE.DnD;
+        var uic = self.getUIC();
+        self.placeholder.after(uic);
+        self.callListeners('onDrop', uic[0], [self.placeholder.parent()]);
+        self.domNeedUpdate = true;
     },
 
     _navNodeDrop: function(event)
@@ -8414,16 +8413,21 @@ MBE.DnD = {
     {
         $('[data-uic]').removeClass('empty-element');
         $('[data-uic]:not(input, select):empty').addClass('empty-element');
+
+        MBE.workspace.find('*').contents().filter(function () {
+            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
+        }).wrap('<span class="mbe-text-node" />');
+
         MBE.DnD.callListeners('onDOMUpdate', MBE.workspace[0]);
 
         MBE.DnD.domNeedUpdate = false;
     },
 
-    callListeners: function(eventType, context)
+    callListeners: function(eventType, context, params)
     {
         for (var i = 0; i < MBE.DnD[eventType].length; i++) {
             var f = MBE.DnD[eventType][i];
-            f.apply(context, []);
+            f.apply(context, params ? params : []);
         }
     }
 }
@@ -8479,6 +8483,10 @@ MBE.navigator = {
 
             if (subNode.find('[data-uic]').length) {
                 label.before('<i class="fa fa-caret-down fa-fw"></i>');
+            }
+            if (subNode.is('[locked]')) {
+                label.after('<span class="fa fa-lock fa-fw"></span>');
+                item.find('.node-handle').attr('draggable', false);
             }
             target.append(item);
 
@@ -8569,7 +8577,9 @@ MBE.selection = {
         elm = $(elm);
         if(elm.is('[data-uic]')) {
             elm.addClass('mbe-active');
-            elm.prepend('<span class="mbe-drag-handle" draggable="true"></span>');
+            if (!elm.is('[locked]')) {
+                elm.prepend('<span class="mbe-drag-handle" draggable="true"></span>');
+            }
         }
     }
 
@@ -9100,11 +9110,11 @@ MBE.types.text = {
             'textOptions': {
                 name: 'Text options',
                 type: 'group',
-                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link'],
+                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
                 groupItems: [{
                     type: 'select',
                     label: 'Alignment',
-                    allowFor: ['heading', 'paragraph', 'alert'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
                     options: {
                         'null': 'Default',
                         'text-left': 'Left',
@@ -9117,7 +9127,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Transformation',
-                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
                     options: {
                         'null': 'None',
                         'text-lowercase': 'Lowercase',
@@ -9129,7 +9139,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Color',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
                     options: {
                         'null': 'Default',
                         'text-muted': 'Muted',
@@ -9144,7 +9154,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Background',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
                     options: {
                         'null': 'Default',
                         'bg-primary': 'Primary',
@@ -9157,7 +9167,7 @@ MBE.types.text = {
                     get: MBE.options.hasClass
                 }, {
                     type: 'boolean',
-                    allowFor: ['heading', 'paragraph', 'alert'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
                     options: {
                         'text-nowrap': 'No wrap'
                     },
@@ -9168,6 +9178,17 @@ MBE.types.text = {
         }
     }
 };
+MBE.types.image = {
+
+    templates: {
+        'figure': '<figure></figure>',
+        'figcaption': '<figcaption>Caption</figcaption>'
+    },
+
+    options: {
+
+    }
+}
 MBE.types.controls = {
 
     templates: {
@@ -9491,7 +9512,9 @@ MBE.types.form = {
         'input-text': '<input type="text" name="" value="" class="form-control">',
         'input-email': '<input type="email" name="" value="" class="form-control">',
         'input-color': '<input type="color" name="" value="" class="form-control">',
+        'select': '<select name="" class="form-control"></select>',
         'input-tel': '<input type="tel" name="" value="" class="form-control">',
+        'input-date': '<input type="date" name="" value="" class="form-control">',
         'input-number': '<input type="number" name="" value="" class="form-control">',
         'input-range': '<input type="range" name="" value="" class="form-control">',
         'input-hidden': '<input type="hidden" name="" value="">',
@@ -9500,6 +9523,14 @@ MBE.types.form = {
         'input-password': '<input type="password" name="" value="" class="form-control">',
         'input-file': '<input type="file" name="" value="" class="form-control">',
         'static-control': '<p class="form-control-static">Static value</p>',
+        'help-text': '<p class="help-block">Help text for field</p>',
+        'input-group': '<div class="input-group">'
+                            + '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>'
+                            + '<input type="text" name="" value="" class="form-control" data-uic="form|input-text">'
+                            + '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
+                        + '</div>',
+        'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
+        'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
     },
 
     options: {
@@ -9556,6 +9587,25 @@ MBE.types.form = {
                 }]
             }
         },
+        'select': {
+            'selectOptions': {
+                name: 'Select options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Default option',
+                    type: 'text',
+                    get: function () {
+                        return $('option', this).length == 1 ? $('option', this).eq(0).text() : '';
+                    },
+                    set: function (opt) {
+                        $('option', this).remove();
+                        if (opt.value) {
+                            $(this).append('<option value="">' + opt.value + '</option>');
+                        }
+                    }
+                }],
+            }
+        },
         'static-control': {
             'staticControlOptions': {
                 name: 'Static control options',
@@ -9563,13 +9613,62 @@ MBE.types.form = {
                 groupItems: [MBE.types.text.options.paragraph.paragraphOptions]
             }
         },
+        'help-text': {
+            'helpTextOptions': {
+                name: 'Help text block options',
+                type: 'group',
+                groupItems: [MBE.types.text.options.paragraph.paragraphOptions]
+            },
+            'textOptions': MBE.types.text.options.common.textOptions
+        },
+        'input-group': {
+            'inputGroupOptions': {
+                name: 'Input group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Size',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'input-group-lg': 'Large',
+                        'input-group-sm': 'Small'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'Addons',
+                    type: 'boolean',
+                    options: {
+                        'left': 'Show left addon',
+                        'right': 'Show right addon'
+                    },
+                    get: function (value) {
+                        return $('[data-uic="form|' + value + '-addon"]', this).length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            if (opt.value == 'left') {
+                                $(this).prepend(MBE.types.form.templates['left-addon']);
+                            }
+                            else {
+                                $(this).append(MBE.types.form.templates['right-addon']);
+                            }
+                        }
+                        else {
+                            $('[data-uic="form|' + opt.value + '-addon"]', this).remove();
+                        }
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
 
         common: {
             'mainOptions': {
                 name: 'Main',
                 allowFor: [
-                    'input-text', 'input-email', 'input-color', 'input-tel', 'input-number', 'input-range', 'input-hidden',
-                    'input-url', 'input-search', 'input-password', 'input-file'
+                    'input-text', 'input-email', 'input-color', 'select', 'input-tel', 'input-number', 'input-range', 'input-hidden',
+                    'input-url', 'input-search', 'input-password', 'input-file', 'input-date'
                 ],
                 type: 'group',
                 groupItems: [{
@@ -9580,21 +9679,21 @@ MBE.types.form = {
                     set: MBE.options.setAttr
                 }, {
                     label: 'Min',
-                    allowFor: ['input-number', 'input-range'],
+                    allowFor: ['input-number', 'input-range', 'input-date'],
                     type: 'text',
                     attr: 'min',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Max',
-                    allowFor: ['input-number', 'input-range'],
+                    allowFor: ['input-number', 'input-range', 'input-date'],
                     type: 'text',
                     attr: 'max',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Step',
-                    allowFor: ['input-number', 'input-range'],
+                    allowFor: ['input-number', 'input-range', 'input-date'],
                     type: 'text',
                     attr: 'step',
                     get: MBE.options.hasAttr,
@@ -9617,11 +9716,25 @@ MBE.types.form = {
                     attr: 'placeholder',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Type',
+                    allowFor: ['input-date'],
+                    type: 'select',
+                    attr: 'type',
+                    options: {
+                        'date': 'Date',
+                        'time': 'Time',
+                        'datetime-local': 'Datetime local',
+                        'month': 'Month',
+                        'week': 'Week'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
                 }]
             },
             'stateOptions': {
                 name: 'State',
-                disallowFor: ['input-hidden', 'static-control'],
+                disallowFor: ['input-hidden', 'static-control', 'help-text'],
                 type: 'boolean',
                 options: {
                     'readonly': 'Readonly',
@@ -9633,13 +9746,13 @@ MBE.types.form = {
             'inputOptions': {
                 name: 'Input',
                 allowFor: [
-                    'input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                    'input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
                     'input-file'
                 ],
                 type: 'group',
                 groupItems: [{
                     label: 'Autofocus',
-                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                    allowFor: ['input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
                     type: 'boolean',
                     options: {
                         'autofocus': 'Autofocus'
@@ -9670,5 +9783,27 @@ MBE.types.form = {
                 }]
             }
         }
+    },
+
+    init: function () {
+        MBE.DnD.onDOMUpdate.push(MBE.types.form._domUpdate);
+        MBE.DnD.onDrop.push(MBE.types.form._drop);
+    },
+
+    _drop: function(target) {
+        if (target.is('.input-group-addon') && $(this).is('input, button, select, div')) {
+            target.toggleClass('input-group-addon input-group-btn');
+        }
+        if (target.is('.input-group-btn') && !$(this).is('input, button, select, div')) {
+            target.toggleClass('input-group-addon input-group-btn');
+        }
+    },
+
+    _domUpdate: function () {
+        $('.input-group-btn:empty').each(function () {
+            $(this).removeClass('input-group-btn').addClass('input-group-addon');
+        });
     }
 };
+
+MBE.onInit.push(MBE.types.form.init);

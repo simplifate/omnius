@@ -458,6 +458,7 @@
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Controls.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Form.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Grid.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\_Image.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Page.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Text.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />

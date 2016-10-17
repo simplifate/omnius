@@ -49,6 +49,10 @@
             if (subNode.find('[data-uic]').length) {
                 label.before('<i class="fa fa-caret-down fa-fw"></i>');
             }
+            if (subNode.is('[locked]')) {
+                label.after('<span class="fa fa-lock fa-fw"></span>');
+                item.find('.node-handle').attr('draggable', false);
+            }
             target.append(item);
 
             MBE.navigator.buildSubNodes(subNode, item.find('.sub-tree'));

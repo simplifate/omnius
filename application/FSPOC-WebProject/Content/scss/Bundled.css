@@ -3416,15 +3416,15 @@ body.mozaicEditorModule {
     .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav {
       margin-top: 1em;
       padding: 0px 10px 0px 25px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .fa {
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav i.fa {
         margin-left: -20px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span {
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle {
         display: block; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span b.active {
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.active {
           background: #fff;
           border: 1px solid blue;
           padding: 0px 4px; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span b.drop-target {
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.drop-target {
           background: #fbffd4;
           outline: 1px solid orange; }
       .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
@@ -3470,6 +3470,10 @@ body.mozaicEditorModule {
     color: #ccc;
     padding: 5px 10px;
     content: "empty item"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .container.empty-element:before {
+    content: "empty container"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid.empty-element:before {
+    content: "empty-container"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .row.empty-element:before {
     content: "empty row"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer div[class^="col-"].empty-element:before {
@@ -3492,6 +3496,14 @@ body.mozaicEditorModule {
     content: "empty form"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .form-group.empty-element:before {
     content: "empty form group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer figure.empty-element:before {
+    content: "empty figure"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-addon.empty-element:before {
+    content: "empty addon"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
+    content: "empty addon"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-addon.empty-element:before, .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
+    padding: 0px; }
   .mozaicBootstrapEditorModule #mozaicPageContainer div.clearfix.empty-element:before {
     font-size: 6px;
     padding: 1px 10px; }

@@ -82,12 +82,12 @@
                         </ul>
                     </li>
                     <li>Image
-                        <ul>
+                        <ul data-type="image">
                             <li>Image</li>
                             <li>Icon</li>
                             <li>Carousel</li>
-                            <li>Figure</li>
-                            <li>Figcaption</li>
+                            <li data-template="figure">Figure</li>
+                            <li data-template="figcaption">Figcaption</li>
                         </ul>
                     </li>
                     <li>Controls
@@ -157,9 +157,9 @@
                             <li data-template="input-text">Text input</li>
                             <li data-template="input-email">Email input</li>
                             <li data-template="input-color">Color input</li>
-                            <li>Select</li>
+                            <li data-template="select">Select</li>
                             <li data-template="input-tel">Telephone input</li>
-                            <li>Date and time input</li>
+                            <li data-template="input-date">Date and time input</li>
                             <li data-template="input-number">Number input</li>
                             <li data-template="input-range">Range input</li>
                             <li data-template="input-hidden">Hidden input</li>
@@ -174,9 +174,11 @@
                             <li>Form control feedback</li>
                             <li data-template="static-control">Static control</li>
                             <li>Textarea</li>
-                            <li>Help text block</li>
-                            <li>Input group</li>
+                            <li data-template="help-text">Help text block</li>
+                            <li data-template="input-group">Input group</li>
                             <li>Fieldset</li>
+                            <li data-template="left-addon" class="hide">Left addon</li>
+                            <li data-template="right-addon" class="hide">Right addon</li>
                         </ul>
                     </li>
                     <li>Misc

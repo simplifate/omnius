@@ -20,7 +20,7 @@ body.mozaicComponentManagerModule {
     }
 }
 body.mozaicEditorModule {
-    background-color: #f2f2f3;
+    background-color: #f2f2f3; 
 
     #upperPanel {
         height: 295px;
@@ -693,10 +693,10 @@ body.mozaicEditorModule {
             div.tree-nav {
                 margin-top: 1em;
                 padding: 0px 10px 0px 25px;
-                .fa {
+                i.fa {
                     margin-left: -20px;
                 }
-                span {
+                span.node-handle {
                     display: block;
                     b {
                         &.active {
@@ -783,6 +783,8 @@ body.mozaicEditorModule {
             content: "empty item";  
         }
 
+        @include empty('.container', 'empty container');
+        @include empty('.container-fluid', 'empty-container');
         @include empty('.row', 'empty row');
         @include empty('div[class^="col-"]', 'empty column');
         @include empty('header', 'empty header');
@@ -794,6 +796,15 @@ body.mozaicEditorModule {
         @include empty('.clearfix', 'empty clearfix');
         @include empty('form', 'empty form');
         @include empty('.form-group', 'empty form group');
+        @include empty('figure', 'empty figure');
+        @include empty('.input-group-addon', 'empty addon');
+        @include empty('.input-group-btn', 'empty addon');
+
+        .input-group-addon, .input-group-btn {
+            &.empty-element:before {
+                padding: 0px;
+            }
+        }
 
         div.clearfix.empty-element:before {
             font-size: 6px;

@@ -29,7 +29,9 @@
         elm = $(elm);
         if(elm.is('[data-uic]')) {
             elm.addClass('mbe-active');
-            elm.prepend('<span class="mbe-drag-handle" draggable="true"></span>');
+            if (!elm.is('[locked]')) {
+                elm.prepend('<span class="mbe-drag-handle" draggable="true"></span>');
+            }
         }
     }
 
