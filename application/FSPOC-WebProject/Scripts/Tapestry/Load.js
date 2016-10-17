@@ -236,7 +236,7 @@
                             newItem.data('isAjaxAction', currentItemData.isAjaxAction);
                         if (currentItemData.TypeClass == "circle-thick")
                             newItem.attr("endpoints", "final");
-                        if (currentItemData.TypeClass && currentItemData.TypeClass.substr(0, 8) == "gateway-")
+                        if (currentItemData.SymbolType && currentItemData.SymbolType.substr(0, 8) == "gateway-")
                             newItem.attr("endpoints", "gateway");
                         if (currentItemData.Condition != null)
                             newItem.data("condition", currentItemData.Condition);
