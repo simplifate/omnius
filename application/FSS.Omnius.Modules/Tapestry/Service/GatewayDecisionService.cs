@@ -62,6 +62,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     return !string.IsNullOrEmpty((string)leftOperand);
                 case "contains":
                     return ((string)leftOperand).Contains(condition.Value);
+                case "exists":
+                    return true;
             }
             return true;
         }
