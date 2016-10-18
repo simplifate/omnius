@@ -83,7 +83,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     file.InputStream.Read(streamBytes, 0, file.ContentLength);
                     fmd.CachedCopy.Blob = streamBytes;
 
-                    fmd.Filename = Path.GetFileName(file.FileName);   //TODO?: udělat novou propertu ServerFileName ? na serveru by to bylo s ID_FileName a v db jen FileName
+                    fmd.Filename = Path.GetFileName(file.FileName);
                     fmd.TimeChanged = DateTime.Now;
                     fmd.TimeCreated = DateTime.Now;
                     fmd.Version = 0;
