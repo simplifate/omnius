@@ -19,11 +19,11 @@ namespace FSS.Omnius.Modules.Compass.Service
         {
             CheckMapping(); //TODO: provádět pouze jednou, dát pryč podmínku na exists
 
-            IFileSyncService webDavService = new WebDavFileSyncService();
+            WebDavFileSyncService webDavService = new WebDavFileSyncService();
 
             foreach(FileMetadata file in files)
             {
-                webDavService.DownloadFile(file, OnDownloaded); //TODO?: podmínka na blob == null ?
+                webDavService.BeginDownloadFile(file, OnDownloaded); //TODO?: podmínka na blob == null ?
             }
         }
 

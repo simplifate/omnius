@@ -5,7 +5,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 {
     public interface IFileSyncService
     {
-        void DownloadFile(FileMetadata file, FileSyncServiceDownloadedEventHandler downloadedHandler = null);
+        void DownloadFile(FileMetadata file);
         void UploadFile(FileMetadata file);
     }
 

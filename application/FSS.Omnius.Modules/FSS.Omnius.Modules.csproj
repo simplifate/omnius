@@ -1048,6 +1048,7 @@
     <Compile Include="Tapestry\Actions\other\LogToActivityProtocolAction.cs" />
     <Compile Include="Tapestry\Actions\other\MergeDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\other\ModifyDatetimeAction.cs" />
+    <Compile Include="Tapestry\Actions\other\WebDavDownloadAction.cs" />
     <Compile Include="Tapestry\Actions\other\WebDavUploadAction.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
