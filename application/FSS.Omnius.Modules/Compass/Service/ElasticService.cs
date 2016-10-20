@@ -15,15 +15,37 @@ namespace FSS.Omnius.Modules.Compass.Service
 {
     public class ElasticService : IElasticService
     {
-        public void Index(List<FileMetadata> files)
+        public void Index(List<FileMetadata> files, bool useCache = false)
         {
+            CheckConfiguration();
+
             CheckMapping(); //TODO: provádět pouze jednou, dát pryč podmínku na exists
 
             WebDavFileSyncService webDavService = new WebDavFileSyncService();
 
             foreach(FileMetadata file in files)
             {
+                if (useCache && file.CachedCopy != null && file.CachedCopy.Blob != null)
+                {
+                    OnDownloaded(null, new FileSyncServiceDownloadedEventArgs() { Result = FileSyncServiceDownloadedResult.Success, FileMetadata = file });
+                    continue;
+                }
+
                 webDavService.BeginDownloadFile(file, OnDownloaded); //TODO?: podmínka na blob == null ?
+            }
+        }
+
+        private void CheckConfiguration()
+        {
+            if (!IsElasticServiceConfigured)
+                throw new ElasticServiceException("Elastic search is not configured in web.config.");
+        }
+
+        public bool IsElasticServiceConfigured
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(GetConfig("ElasticSearchServerUri")) && !string.IsNullOrWhiteSpace(GetConfig("ElasticSearchServerUri"));
             }
         }
 
@@ -120,6 +142,8 @@ namespace FSS.Omnius.Modules.Compass.Service
 
         public ElasticServiceFoundDocument[] Search(string query, string appName = null)
         {
+            CheckConfiguration();
+
             string indexName = GetConfig("ElasticSearchServerIndexName");
             var client = GetClient();
 

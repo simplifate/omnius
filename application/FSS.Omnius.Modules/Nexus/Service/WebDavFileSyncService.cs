@@ -2,7 +2,10 @@
 using System.Net;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using FSS.Omnius.Modules.Compass;
 using System.IO;
+using FSS.Omnius.Modules.Compass.Service;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
@@ -106,11 +109,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public void UploadFile(FileMetadata file)
         {
-            //TODO: spustit elasticsearch indexaci na jiném vlákně
-
             //šebela
             if (file.Id == default(int))
-                throw new ArgumentException("Add FileMetadata do context and save to generate Id");
+                throw new ArgumentException("Add FileMetadata to context and save to generate Id");
 
             Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Id + "_" + file.Filename);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uploadUri);
@@ -124,6 +125,14 @@ namespace FSS.Omnius.Modules.Nexus.Service
             Stream requestStream = httpWebRequest.GetRequestStream();
             requestStream.Write(file.CachedCopy.Blob, 0, file.CachedCopy.Blob.Length);
             httpWebRequest.GetResponse();
+
+            IElasticService serviceElastic = new ElasticService();
+            if (serviceElastic.IsElasticServiceConfigured)
+            {
+                List<FileMetadata> files = new List<Entitron.Entity.Nexus.FileMetadata>();
+                files.Add(file);
+                serviceElastic.Index(files, true);
+            }
         }
         private Uri getUri(string baseUrl, string appFolder, string filename)
         {

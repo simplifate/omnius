@@ -9,7 +9,8 @@ namespace FSS.Omnius.Modules.Compass.Service
 {
     public interface IElasticService
     {
-        void Index(List<FileMetadata> files);
+        bool IsElasticServiceConfigured { get; }
+        void Index(List<FileMetadata> files, bool useCache = false);
         ElasticServiceFoundDocument[] Search(string query, string appName = null);
     }
 }

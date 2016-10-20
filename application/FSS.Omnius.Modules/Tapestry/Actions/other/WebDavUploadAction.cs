@@ -8,7 +8,9 @@ using System.Web;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Nexus.Service;
+using FSS.Omnius.Modules.Compass;
 using System.IO;
+
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
@@ -29,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[0];
+                return new string[] { "InputName", "WebDavServerName" };
             }
         }
 
@@ -45,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[0];
+                return new string[] { "UploadMetadataId" };
             }
         }
 
@@ -59,6 +61,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            if(!vars.ContainsKey(InputVar[0]))
+            {
+                throw new Exception($"Input Var {InputVar[0]} was not defined for WebDavUploadAction!");
+            }
+
             var files = HttpContext.Current.Request.Files;
             if (files == null)
                 return;
@@ -72,9 +79,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 {
                     HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
-                    if (file.ContentLength == 0)
+                    if (file.ContentLength == 0 || fileName != vars[InputVar[0]].ToString())
                         continue;
-
+                    
                     FileMetadata fmd = new FileMetadata();
                     fmd.AppFolderName = core.Entitron.AppName;
                     fmd.CachedCopy = new FileSyncCache();
@@ -88,8 +95,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     fmd.TimeCreated = DateTime.Now;
                     fmd.Version = 0;
 
-#warning webdavservers parametrizovat
-                    fmd.WebDavServer = entities.WebDavServers.First();
+                    string name = vars.ContainsKey(InputVar[1]) ? vars[InputVar[1]].ToString() : string.Empty;
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        fmd.WebDavServer = entities.WebDavServers.Single(a => a.Name == name);
+                    }
+                    else
+                        fmd.WebDavServer = entities.WebDavServers.First();
 
                     entities.FileMetadataRecords.Add(fmd);
                     entities.SaveChanges(); //ukládat po jednom souboru
@@ -97,8 +109,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     IFileSyncService service = new WebDavFileSyncService();
                     service.UploadFile(fmd);
 
-                    //TODO?: předat dalším akcim identifikátory
-                    //outputVars.Add("input_" + fileName, fmd.Id);
+                    outputVars.Add(this.OutputVar[0], fmd.Id);
                 }
             }
         }
