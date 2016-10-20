@@ -45,7 +45,7 @@ namespace FSS.Omnius.Modules.Compass.Service
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(GetConfig("ElasticSearchServerUri")) && !string.IsNullOrWhiteSpace(GetConfig("ElasticSearchServerUri"));
+                return !string.IsNullOrWhiteSpace(WebConfigurationManager.AppSettings["ElasticSearchServerUri"]) && !string.IsNullOrWhiteSpace(WebConfigurationManager.AppSettings["ElasticSearchServerIndexName"]);
             }
         }
 
