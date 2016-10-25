@@ -3,6 +3,7 @@ using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Sql;
 using FSS.Omnius.Modules.Watchtower;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,7 +73,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else
             {
                 string columnName = (string)vars["ColumnName"];
-                outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+                var varValue = vars["Value"];
+                if (varValue.ToString().Contains(",")){
+                    var x = vars["Value"].ToString().Split(',');
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).In((IEnumerable<object>)x)).ToList();
+                }
+                else {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+                }
             }
         }
     }
