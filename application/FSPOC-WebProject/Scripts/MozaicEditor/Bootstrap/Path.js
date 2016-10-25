@@ -23,14 +23,17 @@
 
         if(target.is('[data-uic]')) {
             
-            target.parentsUntil('#mozaicPageWorkspace').each(function () {
+            $(target.parentsUntil('#mozaicPageWorkspace').get().reverse()).each(function () {
                 MBE.path.add(this);
             });
             MBE.path.add(this);
         }
     },
 
-    add: function(elm) {
+    add: function (elm) {
+        if (!$(elm).is('[data-uic]'))
+            return;
+
         var item = $(MBE.path.template);
         item.find('a').html(MBE.getComponentName(elm)).data('targetuic', elm);
         item.appendTo(MBE.path.root);

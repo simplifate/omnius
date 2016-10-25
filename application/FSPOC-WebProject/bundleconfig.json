@@ -67,13 +67,16 @@
       "Scripts/MozaicEditor/Bootstrap/Selection.js",
       "Scripts/MozaicEditor/Bootstrap/Path.js",
       "Scripts/MozaicEditor/Bootstrap/CommonOptions.js",
+      "Scripts/MozaicEditor/Bootstrap/Toolbar.js",
       "Scripts/MozaicEditor/Bootstrap/_Containers.js",
       "Scripts/MozaicEditor/Bootstrap/_Text.js",
       "Scripts/MozaicEditor/Bootstrap/_Image.js",
       "Scripts/MozaicEditor/Bootstrap/_Controls.js",
       "Scripts/MozaicEditor/Bootstrap/_Grid.js",
       "Scripts/MozaicEditor/Bootstrap/_Page.js",
-      "Scripts/MozaicEditor/Bootstrap/_Form.js"
+      "Scripts/MozaicEditor/Bootstrap/_Table.js",
+      "Scripts/MozaicEditor/Bootstrap/_Form.js",
+      "Scripts/MozaicEditor/Bootstrap/_Misc.js"
     ]
   },
   {

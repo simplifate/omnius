@@ -83,9 +83,9 @@
                     </li>
                     <li>Image
                         <ul data-type="image">
-                            <li>Image</li>
+                            <li data-template="image">Image</li>
                             <li>Icon</li>
-                            <li>Carousel</li>
+                            <!--li>Carousel</li-->
                             <li data-template="figure">Figure</li>
                             <li data-template="figcaption">Figcaption</li>
                         </ul>
@@ -93,10 +93,14 @@
                     <li>Controls
                         <ul data-type="controls">
                             <li data-template="button">Button</li>
-                            <li>Split button</li>
+                            <li data-template="split-button">Split button</li>
                             <li data-template="button-group">Button group</li>
                             <li data-template="button-toolbar">Button toolbar</li>
-                            <li>Dropdown</li>
+                            <li data-template="button-dropdown">Dropdown</li>
+                            <li data-template="dropdown-menu" class="hide">Menu</li>
+                            <li data-template="dropdown-menu-item" class="hide">Menu item</li>
+                            <li data-template="dropdown-menu-header" class="hide">Header</li>
+                            <li data-template="dropdown-menu-divider" class="hide">Divider</li>
                             <li data-template="link">Link</li>
                         </ul>
                     </li>
@@ -110,17 +114,25 @@
                     <li>Containers
                         <ul data-type="containers">
                             <li data-template="container">Container</li>
-                            <li>Panel</li>
-                            <li>Tabs</li>
-                            <li>Accordion</li>
+                            <li data-template="panel">Panel</li>
+                            <li data-template="panel-heading" class="hide">Panel heading</li>
+                            <li data-template="panel-body" class="hide">Panel body</li>
+                            <li data-template="panel-footer" class="hide">Panel footer</li>
+                            <li data-template="tabs">Tabs</li>
+                            <li data-template="tab" class="hide">Tab</li>
+                            <li data-template="tab-items" class="hide">Tab items</li>
+                            <li data-template="tab-content" class="hide">Tab content</li>
+                            <li data-template="tab-pane" class="hide">Tab pane</li>
+                            <li data-template="accordion">Accordion</li>
                             <li>Collapse</li>
                             <li>List group</li>
                             <li>Media</li>
                             <li>Jumbotron</li>
                             <li>Thumbnail</li>
-                            <li>Well</li>
-                            <li>List</li>
-                            <li>Div</li>
+                            <li data-template="well">Well</li>
+                            <li data-template="list">List</li>
+                            <li data-template="list-item" class="hide">List item</li>
+                            <li data-template="div">Div</li>
                         </ul>
                     </li>
                     <li>Page
@@ -143,10 +155,16 @@
                         </ul>
                     </li>
                     <li>Table
-                        <ul>
-                            <li>Table</li>
-                            <li>Table row</li>
-                            <li>Table cell</li>
+                        <ul data-type="table">
+                            <li data-template="table">Table</li>
+                            <li data-template="tr">Table row</li>
+                            <li data-template="cell">Table cell</li>
+                            <li data-template="td" class="hide">Table cell</li>
+                            <li data-template="th" class="hide">Table cell</li>
+                            <li data-template="thead" class="hide">Table header</li>
+                            <li data-template="tbody" class="hide">Table body</li>
+                            <li data-template="tfoot" class="hide">Table footer</li>
+                            <li data-template="caption" class="hide">Caption</li>
                         </ul>
                     </li>
                     <li>Form
@@ -167,34 +185,37 @@
                             <li data-template="input-search">Search input</li>
                             <li data-template="input-password">Password input</li>
                             <li data-template="input-file">File input</li>
-                            <li>Checkbox</li>
-                            <li>Checkbox with label</li>
-                            <li>Radio</li>
-                            <li>Radio with label</li>
+                            <li data-template="checkbox-group">Checkbox group</li>
+                            <li data-template="radio-group">Radio group</li>
+                            <li data-template="checkbox">Checkbox</li>
+                            <li data-template="checkbox-label">Checkbox with label</li>
+                            <li data-template="radio">Radio</li>
+                            <li data-template="radio-label">Radio with label</li>
                             <li>Form control feedback</li>
                             <li data-template="static-control">Static control</li>
-                            <li>Textarea</li>
+                            <li data-template="textarea">Textarea</li>
                             <li data-template="help-text">Help text block</li>
                             <li data-template="input-group">Input group</li>
-                            <li>Fieldset</li>
+                            <li data-template="fieldset">Fieldset</li>
+                            <li data-template="legend" class="hide">Legend</li>
                             <li data-template="left-addon" class="hide">Left addon</li>
                             <li data-template="right-addon" class="hide">Right addon</li>
                         </ul>
                     </li>
                     <li>Misc
-                        <ul>
-                            <li>Map</li>
-                            <li>Video</li>
+                        <ul data-type="misc">
+                            <!--li>Map</li-->
+                            <!--li>Video</li-->
                             <li>Custom code</li>
                             <li>Modal</li>
-                            <li>Badge</li>
-                            <li>Label</li>
-                            <li>Caret</li>
-                            <li>Close</li>
+                            <li data-template="badge">Badge</li>
+                            <li data-template="tag">Label</li>
+                            <li data-template="caret">Caret</li>
+                            <li data-template="close">Close</li>
                             <li>Breadcrumbs</li>
-                            <li>Hr</li>
-                            <li>Responsive embed</li>
-                            <li>Progress bar</li>
+                            <li data-template="hr">Hr</li>
+                            <li data-template="responsive-embed">Responsive embed</li>
+                            <li data-template="progressBar">Progress bar</li>
                         </ul>
                     </li>
                 </ul>
@@ -207,9 +228,19 @@
         </div>
     </div>
     <div id="mozaicPageContainer">
-        <ol id="mozaicPageBreadcrumbs" class="breadcrumb">
-            <li><span>Body</span></li>
-        </ol>
+        <div id="mozaicPageContext">
+            <ol id="mozaicPageBreadcrumbs" class="breadcrumb">
+                <li><span>Body</span></li>
+            </ol>
+            <nav class="navbar">
+                <div class="container-fluid" id="mozaicPageContextToolbar">
+                    <div class="toolbar pull-right">
+                        <button type="button" data-action="fullscreen" title="Fullscreen" class="btn navbar-btn"><span class="fa fa-arrows-alt fa-fw"></span></button>
+                    </div>
+                    <div class="toolbar pull-left"></div>
+                </div>
+            </nav>
+        </div>
         <div id="mozaicPageTree">
             <div class="leftBarHeader">Navigace</div>
             <div class="tree-nav">

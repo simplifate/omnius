@@ -17,6 +17,13 @@
         'input-search': '<input type="search" name="" value="" class="form-control">',
         'input-password': '<input type="password" name="" value="" class="form-control">',
         'input-file': '<input type="file" name="" value="" class="form-control">',
+        'textarea': '<textarea class="form-control" name="" value=""></textarea>',
+        'checkbox-group': '<div class="checkbox"></div>',
+        'radio-group': '<div class="radio"></div>',
+        'checkbox': '<input type="checkbox" name="" value="">',
+        'checkbox-label': '<label for="" data-uic="form|label"><input type="checkbox" name="" value="" data-uic="form|checkbox"> Checkbox</label>',
+        'radio': '<input type="radio" name="" value="">',
+        'radio-label': '<label for="" data-uic="form|label"><input type="radio" name="" value="" data-uic="form|radio"> Radio</label>',
         'static-control': '<p class="form-control-static">Static value</p>',
         'help-text': '<p class="help-block">Help text for field</p>',
         'input-group': '<div class="input-group">'
@@ -24,6 +31,8 @@
                             + '<input type="text" name="" value="" class="form-control" data-uic="form|input-text">'
                             + '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
                         + '</div>',
+        'fieldset': '<fieldset><legend data-uic="form|legend" locked>Field group</legend></fieldset>',
+        'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
         'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
     },
@@ -157,13 +166,86 @@
                 }]
             }
         },
+        'fieldset': {
+            'FieldsetOptions': {
+                name: 'Fieldset options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Name',
+                    type: 'text',
+                    attr: 'name',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'State',
+                    type: 'boolean',
+                    options: {
+                        'disabled': 'Disabled'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Legend',
+                    type: 'boolean',
+                    options: {
+                        'legend': 'Show legend'
+                    },
+                    get: function (value) {
+                        return $('[data-uic="form|' + value + '"]', this).length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            if (opt.value == 'legend') {
+                                $(this).prepend(MBE.types.form.templates['legend']);
+                            }
+                        }
+                        else {
+                            $('[data-uic="form|' + opt.value + '"]', this).remove();
+                        }
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
+        'checkbox-group': {
+            'checkboxGroupOptions': {
+                name: 'Checkbox group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'checkbox': 'Default',
+                        'checkbox-inline': 'Inline'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'radio-group': {
+            'radioGroupOptions': {
+                name: 'Radio group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'radio': 'Default',
+                        'radio-inline': 'Inline'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
 
         common: {
             'mainOptions': {
                 name: 'Main',
                 allowFor: [
                     'input-text', 'input-email', 'input-color', 'select', 'input-tel', 'input-number', 'input-range', 'input-hidden',
-                    'input-url', 'input-search', 'input-password', 'input-file', 'input-date'
+                    'input-url', 'input-search', 'input-password', 'input-file', 'input-date', 'textarea', 'checkbox', 'radio'
                 ],
                 type: 'group',
                 groupItems: [{
@@ -173,29 +255,36 @@
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
+                    label: 'Rows',
+                    allowFor: ['textarea'],
+                    type: 'number',
+                    attr: 'rows',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
                     label: 'Min',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'min',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Max',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'max',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Step',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'step',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Size',
-                    disallowFor: ['input-hidden'],
+                    disallowFor: ['input-hidden', 'checkbox', 'radio'],
                     type: 'select',
                     options: {
                         'null': 'Default',
@@ -206,7 +295,7 @@
                     set: MBE.options.toggleClass
                 }, {
                     label: 'Placeholder',
-                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-url', 'input-search', 'input-password'],
+                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-url', 'input-search', 'input-password', 'textarea'],
                     type: 'text',
                     attr: 'placeholder',
                     get: MBE.options.hasAttr,
@@ -225,14 +314,33 @@
                     },
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Checked',
+                    allowFor: ['checkbox', 'radio'],
+                    type: 'boolean',
+                    options: {
+                        'checked': 'Checked'
+                    },
+                    get: MBE.options.hasProp,
+                    set: MBE.options.setProp
                 }]
             },
             'stateOptions': {
                 name: 'State',
-                disallowFor: ['input-hidden', 'static-control', 'help-text'],
+                disallowFor: ['input-hidden', 'static-control', 'help-text', 'legend', 'checkbox', 'radio'],
                 type: 'boolean',
                 options: {
                     'readonly': 'Readonly',
+                    'disabled': 'Disabled'
+                },
+                get: MBE.options.hasAttr,
+                set: MBE.options.setAttr
+            },
+            'crStateOptions': {
+                name: 'State',
+                allowFor: ['checkbox', 'radio'],
+                type: 'boolean',
+                options: {
                     'disabled': 'Disabled'
                 },
                 get: MBE.options.hasAttr,
@@ -242,12 +350,15 @@
                 name: 'Input',
                 allowFor: [
                     'input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
-                    'input-file'
+                    'input-file', 'textarea'
                 ],
                 type: 'group',
                 groupItems: [{
                     label: 'Autofocus',
-                    allowFor: ['input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                    allowFor: [
+                        'input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                        'textarea'
+                    ],
                     type: 'boolean',
                     options: {
                         'autofocus': 'Autofocus'
@@ -256,7 +367,10 @@
                     set: MBE.options.setAttr
                 }, {
                     label: 'Autocomplete',
-                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                    allowFor: [
+                        'input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                        'textarea'
+                    ],
                     type: 'select',
                     options: {
                         'null': 'Default',

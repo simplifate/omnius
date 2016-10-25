@@ -50,6 +50,7 @@
         else if (!item.is('[data-uic]')) {
             return self.createUIC(item);
         }
+        
         return item;
     },
 
@@ -59,7 +60,9 @@
         var template = item.data('template');
 
         var elm = $(MBE.types[type].templates[template]);
-        elm.attr('data-uic', type + "|" + template);
+        if (!elm.data('uic')) {
+            elm.attr('data-uic', type + "|" + template);
+        }
 
         return elm;
     },
@@ -223,6 +226,8 @@
             $(target.parents('.node').eq(0).find('> .node-handle b').data('targetuic')).append(uic);
         }
 
+        MBE.DnD.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
+
         MBE.DnD.domNeedUpdate = true;
     },
 
@@ -279,7 +284,7 @@
     updateDOM: function()
     {
         $('[data-uic]').removeClass('empty-element');
-        $('[data-uic]:not(input, select):empty').addClass('empty-element');
+        $('[data-uic]:not(input, select, hr, img, .caret, li.divider):empty').addClass('empty-element');
 
         MBE.workspace.find('*').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');

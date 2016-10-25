@@ -618,6 +618,16 @@ body.mozaicEditorModule {
 }
 
 .mozaicBootstrapEditorModule {
+    
+    #lowerPanel.fullscreen {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        z-index: 100;
+        background: #fff;
+    }
                      
     ul.category {
         margin: 0px;
@@ -709,6 +719,10 @@ body.mozaicEditorModule {
                             outline: 1px solid orange;
                         }
                     }
+                    .item-id {
+                        display: inline-block;
+                        margin-left: 8px;
+                    }
                 }
                 .sub-tree {
                     padding-left: 10px; 
@@ -734,7 +748,7 @@ body.mozaicEditorModule {
             position: absolute;
             left: 12px;
             right: 252px;
-            top: 48px;
+            top: 95px;
             padding: 20px 0px 20px;
             bottom: 0px;
 
@@ -743,10 +757,47 @@ body.mozaicEditorModule {
                 outline: 1px solid blue;
             }
 
+            .embed-responsive iframe {
+                background: #eee;
+            }
+
+            .container, .container-fluid {
+               border: 1px dashed #01a1f7;
+            }
+            .container, .container-fluid, .row {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
         }
 
-        .container, .container-fluid {
-            border: 1px dashed #01a1f7;
+        #mozaicPageContext {
+            margin-right: 240px;
+
+            .breadcrumb {
+                padding: 6px 15px;
+                margin-bottom: 0px;
+                background: #bdbbbc;
+                border-radius: 0px;
+            }
+            .navbar {
+                background: #eee;
+                border-radius: 0px;
+                padding: 6px 0px;
+                font-size: 12px;
+
+                .navbar-text {
+                    float: none;
+                    display: inline-block;
+                    margin: 5px 15px;
+                }
+                .navbar-btn {
+                    font-size: 12px;
+                    padding: 4px 10px;
+                    margin: 4px 2px;
+                }
+            }
         }
 
         .mbe-drag-handle {
@@ -786,7 +837,7 @@ body.mozaicEditorModule {
         @include empty('.container', 'empty container');
         @include empty('.container-fluid', 'empty-container');
         @include empty('.row', 'empty row');
-        @include empty('div[class^="col-"]', 'empty column');
+        @include empty('div[class*="col-"]', 'empty column');
         @include empty('header', 'empty header');
         @include empty('footer', 'empty footer');
         @include empty('hgroup', 'empty hgroup');
@@ -799,6 +850,18 @@ body.mozaicEditorModule {
         @include empty('figure', 'empty figure');
         @include empty('.input-group-addon', 'empty addon');
         @include empty('.input-group-btn', 'empty addon');
+        @include empty('.checkbox', 'empty checkbox group');
+        @include empty('.checkbox-inline', 'empty checkbox group');
+        @include empty('.radio', 'empty radio group');
+        @include empty('.radio-inline', 'empty checkbox group');
+        @include empty('.panel-heading', 'empty panel heading');
+        @include empty('.panel-body', 'empty panel body');
+        @include empty('.panel-footer', 'empty panel footer');
+        @include empty('[data-uic="containers|div"]', 'empty div');
+        @include empty('.well', 'empty well');
+        @include empty('tr', 'empty table row');
+        @include empty('td', 'empty cell');
+        @include empty('th', 'empty cell');
 
         .input-group-addon, .input-group-btn {
             &.empty-element:before {
@@ -814,14 +877,6 @@ body.mozaicEditorModule {
         .dragged[data-uic] {
             opacity: 0.5;
         }
-
-        .container, .container-fluid, .row {
-            padding-top: 8px;
-            padding-bottom: 8px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
     }
 
     .dialog-options {

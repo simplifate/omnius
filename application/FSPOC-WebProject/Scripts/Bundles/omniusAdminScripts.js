@@ -8047,6 +8047,7 @@ var MBE = {
     sortableOptions: {},
 
     onInit: [],
+    onBeforeDelete: {},
 
     workspace: null,
 
@@ -8062,6 +8063,8 @@ var MBE = {
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
             .on('keydown', MBE.onKeyDown)
+            .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
+            .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
         ;
         
         $('ul.category > li ul').hide();
@@ -8082,7 +8085,12 @@ var MBE = {
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            if ($('.mbe-active').length && !$('.mbe-active').is('[locked]')) {
+            var target = $('.mbe-active');
+            if (target.length && !target.is('[locked]')) {
+                if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
+                    MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
+                }
+
                 $('.mbe-active').remove();
                 MBE.path.update.apply(MBE.workspace, []);
                 MBE.DnD.updateDOM();
@@ -8125,6 +8133,48 @@ var MBE = {
         var uic = $(elm).data('uic').split(/\|/);
         var template = uic[1];
         return $('li[data-template="' + template + '"]').text();
+    },
+
+    toggleFullscreen: function()
+    {
+        if (MBE.runPrefixMethod(document, "FullScreen") || MBE.runPrefixMethod(document, "IsFullScreen")) {
+            MBE.runPrefixMethod(document, "CancelFullScreen");
+        }
+        else {
+            MBE.runPrefixMethod(document.body, "RequestFullScreen");
+        }
+        return false;
+    },
+	
+    isFullscreen: function()
+    {
+        return MBE.runPrefixMethod(document, "FullScreen") || MBE.runPrefixMethod(document, "IsFullScreen");
+    },
+
+    fullscreenResize: function()
+    {
+        $('#lowerPanel').toggleClass('fullscreen');
+    },
+
+    runPrefixMethod: function (obj, method, testAPI) 
+    {
+        var p = 0, m, t;
+        var prefixList = ["webkit", "moz", "ms", "o", ""];
+        while (p < prefixList.length && !obj[m]) {
+            m = method;
+            if (prefixList[p] == "") {
+                m = m.substr(0,1).toLowerCase() + m.substr(1);
+            }
+            m = prefixList[p] + m;
+            t = typeof obj[m];
+            if (t != "undefined") {
+                prefixList = [prefixList[p]];
+                return (t == "function" ? obj[m]() : obj[m]);
+            }
+            p++;
+        }
+        if(testAPI)
+            return -1;
     }
 }
 
@@ -8183,6 +8233,7 @@ MBE.DnD = {
         else if (!item.is('[data-uic]')) {
             return self.createUIC(item);
         }
+        
         return item;
     },
 
@@ -8192,7 +8243,9 @@ MBE.DnD = {
         var template = item.data('template');
 
         var elm = $(MBE.types[type].templates[template]);
-        elm.attr('data-uic', type + "|" + template);
+        if (!elm.data('uic')) {
+            elm.attr('data-uic', type + "|" + template);
+        }
 
         return elm;
     },
@@ -8356,6 +8409,8 @@ MBE.DnD = {
             $(target.parents('.node').eq(0).find('> .node-handle b').data('targetuic')).append(uic);
         }
 
+        MBE.DnD.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
+
         MBE.DnD.domNeedUpdate = true;
     },
 
@@ -8412,7 +8467,7 @@ MBE.DnD = {
     updateDOM: function()
     {
         $('[data-uic]').removeClass('empty-element');
-        $('[data-uic]:not(input, select):empty').addClass('empty-element');
+        $('[data-uic]:not(input, select, hr, img, .caret, li.divider):empty').addClass('empty-element');
 
         MBE.workspace.find('*').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
@@ -8472,25 +8527,35 @@ MBE.navigator = {
 
     buildSubNodes: function(node, target) 
     {
-        node.find('> [data-uic]').each(function () {
-            var item = $(MBE.navigator.nodeTemplate);
-            var label = item.find('b');
+        node.children().each(function () {
             var subNode = $(this);
-            
-            subNode.data('navitem', label);
-            
-            label.html(MBE.getComponentName(this)).data('targetuic', this);
+            var item;
 
-            if (subNode.find('[data-uic]').length) {
-                label.before('<i class="fa fa-caret-down fa-fw"></i>');
-            }
-            if (subNode.is('[locked]')) {
-                label.after('<span class="fa fa-lock fa-fw"></span>');
-                item.find('.node-handle').attr('draggable', false);
-            }
-            target.append(item);
+            if (subNode.is('[data-uic]')) {
+                item = $(MBE.navigator.nodeTemplate);
+                var label = item.find('b');
 
-            MBE.navigator.buildSubNodes(subNode, item.find('.sub-tree'));
+                subNode.data('navitem', label);
+
+                label.html(MBE.getComponentName(this)).data('targetuic', this);
+
+                if (subNode.find('[data-uic]').length) {
+                    label.before('<i class="fa fa-caret-down fa-fw"></i>');
+                }
+                if (subNode.is('[locked]')) {
+                    label.after('<span class="fa fa-lock fa-fw"></span>');
+                    item.find('.node-handle').attr('draggable', false);
+                }
+                if (subNode.attr('id') && subNode.attr('id').length) {
+                    label.parent().append('<i class="item-id">#' + subNode.attr('id') + '</i>');
+                }
+                if (subNode.hasClass('mbe-active')) {
+                    label.addClass('active');
+                }
+                target.append(item);
+            }
+
+            MBE.navigator.buildSubNodes(subNode, subNode.is('[data-uic]') ? item.find('.sub-tree') : target);
         });
     },
 
@@ -8611,14 +8676,17 @@ MBE.path = {
 
         if(target.is('[data-uic]')) {
             
-            target.parentsUntil('#mozaicPageWorkspace').each(function () {
+            $(target.parentsUntil('#mozaicPageWorkspace').get().reverse()).each(function () {
                 MBE.path.add(this);
             });
             MBE.path.add(this);
         }
     },
 
-    add: function(elm) {
+    add: function (elm) {
+        if (!$(elm).is('[data-uic]'))
+            return;
+
         var item = $(MBE.path.template);
         item.find('a').html(MBE.getComponentName(elm)).data('targetuic', elm);
         item.appendTo(MBE.path.root);
@@ -8662,7 +8730,6 @@ MBE.options = {
             var optSet = MBE.types[self.targetType].options[self.targetTemplate];
             for (var opt in optSet) {
                 d.append(self.createOptions(optSet[opt]));
-                console.log(optSet[opt]);
                 if (typeof optSet[opt].onBuild == 'function') {
                     onBuild.push(optSet[opt].onBuild);
                 }
@@ -8702,8 +8769,13 @@ MBE.options = {
         if (typeof opt.allowFor != 'undefined' && $.inArray(MBE.options.targetTemplate, opt.allowFor) == -1) {
             return false;
         }
-        if (typeof opt.disallowFor != 'undefined' && $.inArray(MBE.options.targetTemplate, opt.disallowFor) != -1) {
-            return false;
+        if (typeof opt.disallowFor != 'undefined') {
+            if (typeof opt.disallowFor == 'function') {
+                return opt.disallowFor.apply(MBE.options.target, []);
+            }
+            else if ($.inArray(MBE.options.targetTemplate, opt.disallowFor) != -1) {
+                return false;
+            }
         }
         return true;
     },
@@ -8770,7 +8842,7 @@ MBE.options = {
         var set = opt.set;
 
         var lb = $('<label>' + opt.label + '</label>');
-        var inp = $('<input type="text" value="' + opt.get(false, opt) + '">');
+        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '">');
         
         if(typeof opt.attr != 'undefined') {
             inp.data('attr', opt.attr);
@@ -8779,6 +8851,12 @@ MBE.options = {
         inp.on('change', function () {
             set.apply(MBE.options.target, [this]);
         });
+        if (typeof opt.change == 'function') {
+            var onChange = opt.change;
+            inp.on('change', function () {
+                onChange.apply(MBE.options.target, [this]);
+            });
+        }
 
         group.append(lb);
         group.append(inp);
@@ -8816,7 +8894,8 @@ MBE.options = {
                         case 'select': {
                             f.append(self.createSelect(item));
                             break;
-                        } 
+                        }
+                        case 'number':
                         case 'text': {
                             f.append(self.createText(item));
                             break;
@@ -8860,6 +8939,27 @@ MBE.options = {
             else {
                 t.removeAttr(opt.value);
             }
+        }
+    },
+
+    hasProp: function (value, opt) {
+        var t = $(MBE.options.target);
+        if (value !== false) {
+            return t.is(':' + value);
+        }
+        else {
+            return t.is(':' + opt.attr);
+        }
+    },
+
+    setProp: function (opt) {
+        var attr = $(opt).data('attr');
+        var t = $(MBE.options.target);
+        if (attr) {
+            t.prop(attr, opt.value == 'null' ? '' : opt.value);
+        }
+        else { // Je to checkbox
+            t.prop(opt.value, opt.checked);
         }
     },
 
@@ -8939,26 +9039,622 @@ MBE.options.common = {
 };
 
 MBE.onInit.push(MBE.options.init);
+MBE.toolbar = {
+
+    menu: {},
+    toolbar: null,
+
+    init: function () {
+        MBE.selection.onSelect.push(MBE.toolbar._select);
+        MBE.toolbar.toolbar = $('#mozaicPageContextToolbar .toolbar.pull-left');
+    },
+
+    _select: function () {
+        var self = MBE.toolbar;
+        self.clear();
+
+        var uic = $(this).data('uic');
+        if (!uic) {
+            return;
+        }
+
+        uic = uic.split('|');
+        var type = uic[0];
+        var template = uic[1];
+
+        if (typeof self.menu[type] == 'undefined' || typeof self.menu[type][template] == 'undefined') {
+            return;
+        }
+
+        var menu = self.menu[type][template];
+        if (typeof menu.allowFor == 'function' && !menu.allowFor.apply(this, []))
+            return;
+
+        for (var i = 0; i < menu.items.length; i++) {
+            var item = menu.items[i];
+            switch (item.type) {
+                case 'text': {
+                    self.toolbar.append('<p class="navbar-text">' + item.label + '</p>');
+                    break;
+                }
+                case 'button': {
+                    var button = $('<button type="button" class="btn navbar-btn">' + item.label + '</button>');
+                    self.toolbar.append(button);
+                    button.click({callback: item.callback}, function (event) {
+                        event.data.callback.apply($('.mbe-active')[0], []);
+                    });
+                }
+            }
+        }
+    },
+
+    clear: function () {
+        MBE.toolbar.toolbar.html('');
+    }
+
+};
+
+MBE.onInit.push(MBE.toolbar.init);
 MBE.types.containers = {
 
     templates: {
-        'container': '<div class="container-fluid"></div>'
+        'container': '<div class="container-fluid"></div>',
+        'panel': '<div class="panel panel-default">' +
+                    '<div class="panel-heading" data-uic="containers|panel-heading" locked>' +
+                        '<h3 class="panel-title" data-uic="text|heading">Panel title</h3>' +
+                    '</div>' +
+                    '<div class="panel-body" data-uic="containers|panel-body" locked>' +
+                        '<p data-uic="text|paragraph">Panel body</p>' +
+                    '</div>' +
+                    '<div class="panel-footer" data-uic="containers|panel-footer" locked>' + 
+                        '<span data-uic="text|span">Panel footer</span>' +
+                    '</div>' +
+                '</div>',
+        'panel-heading': '<div class="panel-heading" data-uic="containers|panel-heading" locked><span data-uic="text|span">Panel heading</span></div>',
+        'panel-body': '<div class="panel-body" data-uic="containers|panel-body" locked><p data-uic="text|paragraph">Panel body</p></div>',
+        'panel-footer': '<div class="panel-footer" data-uic="containers|panel-footer" locked><span data-uic="text|span">Panel footer</span></div>',
+        'tabs': '<div></div>',
+        'tab': '<li data-uic="containers|tab"><a href="" data-uic="controls|link" data-toggle="tab" locked></a></li>',
+        'tab-items': '<ul class="nav nav-tabs" data-uic="containers|tab-items" locked></ul>',
+        'tab-content': '<div class="tab-content" data-uic="containers|tab-content" locked></div>',
+        'tab-pane': '<div class="tab-pane" data-uic="containers|tab-pane"><p data-uic="text|paragraph">Tab content</p></div>',
+        'accordion': '<div class="panel-group"></div>',
+        'well': '<div class="well"><span data-uic="text|span">Text of the well</span></div>',
+        'list': '<ul><li data-uic="containers|list-item">Item 1</li><li data-uic="containers|list-item">Item 2</li></ul>',
+        'list-item': '<li data-uic="containers|list-item">Item</li>',
+        'div': '<div></div>'
     },
-
+    
     options: {
         'container': {
             'containerOptions': {
                 name: 'Container options',
                 type: 'boolean',
                 options: {
-                    'container container-fluid': 'Fluid'
+                    'container-fluid': 'Fluid'
                 },
-                set: MBE.options.toggleClass,
+                set: function (opt) {
+                    $(this).toggleClass('container container-fluid');
+                },
                 get: MBE.options.hasClass
             }
+        },
+        'panel': {
+            'panelOptions': {
+                name: 'Panel options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'panel-default': 'Default',
+                        'panel-primary': 'Primary',
+                        'panel-success': 'Success',
+                        'panel-info': 'Info',
+                        'panel-warning': 'Warning',
+                        'panel-danger': 'Danger',
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'Show',
+                    type: 'boolean',
+                    options: {
+                        'panel-heading': 'Show panel heading',
+                        'panel-body': 'Show panel body',
+                        'panel-footer': 'Show panel footer'
+                    },
+                    get: function (value) {
+                        return $('> .' + value, this).length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            switch (opt.value) {
+                                case 'panel-heading': $(this).prepend(MBE.types.containers.templates['panel-heading']); break;
+                                case 'panel-footer': $(this).append(MBE.types.containers.templates['panel-footer']); break;
+                                case 'panel-body':
+                                    if ($('> .panel-heading', this).length) {
+                                        $('> .panel-heading', this).after(MBE.types.containers.templates['panel-body']);
+                                    }
+                                    else {
+                                        $(this).prepend(MBE.types.containers.templates['panel-body']);
+                                    }
+                                    break;
+                            }
+                        }
+                        else {
+                            $('> .' + opt.value, this).remove();
+                        }
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
+        'tab-items': {
+            'tabItemsOptions': {
+                name: 'Tab items options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Justified',
+                    type: 'boolean',
+                    options: {
+                        'nav-justified': 'Justified'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'tab-content': {
+            'tabContentOptions': {
+                name: 'Tab content options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Fade',
+                    type: 'boolean',
+                    options: {
+                        'fade': 'Fade'
+                    },
+                    get: function () {
+                        return $('> .fade', MBE.options.target).length;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            $('> .tab-pane', this).addClass('fade').filter('.active').addClass('in');
+                        }
+                        else {
+                            $('> .tab-pane', this).removeClass('fade in');
+                        }
+                    }
+                }],
+            }
+        },
+        'well': {
+            'wellOptions': {
+                name: 'Well options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Size',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'well-lg': 'Large',
+                        'well-sm': 'Small'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'list': {
+            'listOptions': {
+                name: 'List options',
+                type: 'group',
+                groupItems: [{
+                    id: 'ListStyle',
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'ul': 'Unordered (UL)',
+                        'ol': 'Ordered (OL)',
+                        'ul.list-unstyled': 'Unstyled (UL)',
+                        'ul.list-inline': 'Inline (UL)'
+                    },
+                    get: MBE.options.is,
+                    set: function (opt) {
+                        var tc = opt.value.split('.');
+                        var tagName = tc[0];
+                        var className = tc.length > 1 ? tc[1] : '';
+
+                        $(this).removeClass().addClass(className);
+                        if (!$(this).is(tagName)) {
+                            MBE.options.toggleTagName.apply(this, [{ value: tagName }]);
+                        }
+
+                        if (opt.value == 'ol') {
+                            $('#ListNumberingType, #ListNumberingStart, #ListNumberingReversed').show();
+                        }
+                        else {
+                            $('#ListNumberingType, #ListNumberingStart, #ListNumberingReversed').hide();
+                            $(this).removeAttr('type start reversed');
+                        }
+                    }
+                }, {
+                    id: 'ListNumberingType',
+                    label: 'Numbering type',
+                    type: 'select',
+                    options: {
+                        '1': 'Number (1, 2, 3)',
+                        'a': 'Letters (a, b, c)',
+                        'A': 'Letters (A, B, C)',
+                        'i': 'Roman (i, ii, iii)',
+                        'I': 'Roman (I, II, III)'
+                    },
+                    attr: 'type',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    id: 'ListNumberingStart',
+                    label: 'Start',
+                    type: 'number',
+                    attr: 'start',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    id: 'ListNumberingReversed',
+                    label: 'Reversed',
+                    type: 'boolean',
+                    attr: 'reversed',
+                    options: {
+                        'reversed': 'Reversed'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }],
+                onBuild: function () {
+                    var opt = $('#ListStyle select');
+                    $('#ListNumberingType, #ListNumberingStart, #ListNumberingReversed').toggle(opt.val() == 'ol');
+                }
+            }
         }
+    },
+
+    init: function()
+    {
+        var self = MBE.types.containers;
+        var menu = MBE.toolbar.menu;
+
+        MBE.DnD.onDrop.push(MBE.types.containers._drop);
+        MBE.types.controls.options.link.linkOptions.groupItems[0].change = self.tabIdChange;
+
+        self.options.panel.panelOptions.groupItems[1].disallowFor = self.panelIsNotInAccordion;
+
+        menu['containers'] = {};
+
+        menu['containers']['list'] = {
+            items: [
+                { type: 'text', label: 'ADD TO LIST' },
+                { type: 'button', label: 'BEGIN', callback: self.listAddToBegin },
+                { type: 'button', label: 'END', callback: self.listAddToEnd },
+            ]
+        };
+        menu['containers']['list-item'] = {
+            items: [
+                { type: 'text', label: 'ADD TO LIST' },
+                { type: 'button', label: 'BEFORE', callback: self.listItemAddBefore },
+                { type: 'button', label: 'AFTER', callback: self.listItemAddAfter },
+                { type: 'button', label: 'BEGIN', callback: self.listAddToBegin },
+                { type: 'button', label: 'END', callback: self.listAddToEnd },
+                { type: 'text', label: 'ITEM' },
+                { type: 'button', label: 'DELETE', callback: self.listItemDelete }
+            ]
+        };
+        menu['containers']['tab-items'] = {
+            items: [
+                { type: 'text', label: 'ADD TAB' },
+                { type: 'button', label: 'BEGIN', callback: self.tabAddToBegin },
+                { type: 'button', label: 'END', callback: self.tabAddToEnd },
+            ]
+        };
+        menu['containers']['tab'] = {
+            items: [
+                { type: 'text', label: 'TAB' },
+                { type: 'button', label: 'SHOW', callback: self.tabShow },
+                { type: 'text', label: 'ADD TAB' },
+                { type: 'button', label: 'BEGIN', callback: self.tabAddToBegin },
+                { type: 'button', label: 'END', callback: self.tabAddToEnd },
+                { type: 'button', label: 'LEFT', callback: self.tabAddToLeft },
+                { type: 'button', label: 'RIGHT', callback: self.tabAddToRight },
+            ]
+        };
+        menu['containers']['accordion'] = {
+            items: [
+                { type: 'text', label: 'ADD ITEM' },
+                { type: 'button', label: 'BEGIN', callback: self.accordionAddToBegin },
+                { type: 'button', label: 'END', callback: self.accordionAddToEnd }
+            ]
+        };
+        menu['containers']['panel'] = {
+            allowFor: self.panelIsInAccordion,
+            items: [
+                { type: 'text', label: 'ADD ITEM' },
+                { type: 'button', label: 'BEGIN', callback: self.accordionAddToBegin },
+                { type: 'button', label: 'END', callback: self.accordionAddToEnd },
+                { type: 'button', label: 'BEFORE', callback: self.accordionAddBefore },
+                { type: 'button', label: 'AFTER', callback: self.accordionAddAfter },
+            ]
+        };
+
+        MBE.onBeforeDelete['containers|tab'] = self._tabDelete;
+        
+    },
+
+    _drop: function(target)
+    {
+        console.log(this);
+        if (target.is('.panel-heading') && $(this).is('[data-uic="text|heading"]')) {
+            $(this).addClass('panel-title');
+        }
+
+        if ($(this).is('[data-uic="containers|tabs"]') && $(this).is(':empty')) {
+            MBE.types.containers.buildTabs.apply(this, []);
+        }
+
+        if ($(this).is('[data-uic="containers|accordion"]') && $(this).is(':empty')) {
+            MBE.types.containers.buildAccordion.apply(this, []);
+        }
+    },
+
+
+    /******************************************************************/
+    /* LIST CONTEXT METHODS                                           */
+    /******************************************************************/
+    listItemAddBefore: function () {
+        $(this).before($(MBE.types.containers.templates['list-item']));
+        MBE.DnD.updateDOM();
+    },
+
+    listItemAddAfter: function () {
+        $(this).after($(MBE.types.containers.templates['list-item']));
+        MBE.DnD.updateDOM();
+    },
+
+    listItemDelete: function() {
+        $(this).remove();
+        MBE.DnD.updateDOM();
+    },
+
+    listAddToBegin: function () {
+        var target = $(this).is('li') ? $(this).parent() : $(this);
+        target.prepend($(MBE.types.containers.templates['list-item']));
+        MBE.DnD.updateDOM();
+    },
+
+    listAddToEnd: function () {
+        var target = $(this).is('li') ? $(this).parent() : $(this);
+        target.append($(MBE.types.containers.templates['list-item']));
+        MBE.DnD.updateDOM();
+    },
+
+    /******************************************************************/
+    /* TABS CONTEXT METHOD                                            */
+    /******************************************************************/
+    tabShow: function () {
+        var tabs = $(this).siblings('li');
+        tabs.each(function() {
+            var link = $('a', this);
+            $(link.attr('href')).removeClass('active');
+            $(this).removeClass('active');
+        })
+        $(this).addClass('active');
+        $($('a', this).attr('href')).addClass('active');
+    },
+
+    tabIdChange: function() {
+        var elm = $(this);
+        if (elm.parent().is('[data-uic="containers|tab"]')) {
+            var prevId = elm.data('prevId');
+            var newId = elm.attr('href').replace('#', '');
+            $('#' + prevId).attr('id', newId);
+            elm.data('prevId', newId);
+            MBE.DnD.updateDOM();
+        }
+    },
+
+    tabAdd: function(pos) {
+        var self = MBE.types.containers;
+        var tabIndex = $('[data-toggle="tab"]', MBE.workspace).length + 1;
+        var tab = $(this).is('li') ? $(this) : null;
+        var tabs = $(this).is('.nav-tabs') ? $(this) : $(this).parent();
+        var content = tabs.next();
+
+        var tabItem = $(self.templates['tab']);
+        var tabPane = $(self.templates['tab-pane']);
+        var tabId = 'tab-' + tabIndex;
+
+        tabPane.attr('id', tabId);
+        tabItem.find('a').attr('href', '#' + tabId).data('prevId', tabId).html('Tab ' + tabIndex);
+
+        switch (pos) {
+            case 'begin':
+                tabs.prepend(tabItem);
+                content.prepend(tabPane);
+                break;
+            case 'end':
+                tabs.append(tabItem);
+                content.append(tabPane);
+                break;
+            case 'left':
+                tab.before(tabItem);
+                $(tab.find('a').attr('href')).before(tabPane);
+                break;
+            case 'right':
+                tab.after(tabItem);
+                $(tab.find('a').attr('href')).after(tabPane);
+                break;
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    tabAddToLeft: function() {
+        MBE.types.containers.tabAdd.apply(this, ['left']);
+    },
+
+    tabAddToRight: function () {
+        MBE.types.containers.tabAdd.apply(this, ['right']);
+    },
+
+    tabAddToBegin: function () {
+        MBE.types.containers.tabAdd.apply(this, ['begin']);
+    },
+
+    tabAddToEnd: function () {
+        MBE.types.containers.tabAdd.apply(this, ['end']);
+    },
+
+    buildTabs: function () 
+    {
+        var self = MBE.types.containers;
+        var target = $(this);
+        var items = $(self.templates['tab-items']);
+        var content = $(self.templates['tab-content']);
+        var tabIndex = $('[data-toggle="tab"]', MBE.workspace).length + 1;
+        var prefix = ['First', 'Second', 'Third'];
+
+        target.append(items);
+        target.append(content);
+        for (var i = 0; i < 3; i++) {
+            var tab = $(self.templates['tab']);
+            var pane = $(self.templates['tab-pane']);
+
+            tab.find('a').attr('href', '#tab-' + tabIndex).html(prefix[i] + ' Tab').data('prevId', 'tab-' + tabIndex);
+            pane.find('p').html(prefix[i] + ' tab content');
+            pane.attr('id', 'tab-' + tabIndex);
+
+            if (i == 0) {
+                tab.addClass('active');
+                pane.addClass('active');
+            }
+
+            items.append(tab);
+            content.append(pane);
+            tabIndex++;
+        }
+    },
+
+    _tabDelete: function() {
+        var tabId = $('a', this).attr('href');
+        $(tabId).remove();
+    },
+
+    /******************************************************************/
+    /* ACCORDION CONTEXT METHODS                                      */
+    /******************************************************************/
+    buildAccordion: function()
+    {
+        var self = MBE.types.containers;
+        var target = $(this);
+        var accordionIndex = MBE.workspace.find('.panel-group').length;
+        var id = 'accordion-' + accordionIndex;
+
+        target.attr('id', id);
+        for(var i = 1; i <= 3; i++)
+        {
+            var item = $(self.templates['panel']);
+            item.attr('data-uic', 'containers|panel');
+            item.find('.panel-title').attr('locked', 'true').html('').append($(MBE.types.controls.templates.link));
+            item.find('.panel-title a').html('Accordion item').attr({
+                'locked': true,
+                'data-uic': 'controls|link',
+                'data-toggle': 'collapse',
+                'data-parent': '#'+id,
+                'href': '#' + id + ' .item-' + i
+            });
+
+            var wrapper = $('<div class="panel-collapse collapse item-'+ i + (i == 1 ? ' in' : '') + '"></div>');
+
+            item.find('.panel-body p').html('Item body.').parent().wrap(wrapper);
+            item.find('.panel-footer').remove();
+
+            target.append(item);
+        }
+    },
+
+    accordionAddItem: function (pos)
+    {
+        var self = MBE.types.containers;
+        var target = $(this).is('.panel-group') ? $(this) : $(this).parent();
+        var panel = $(this).is('.panel-group') ? null : $(this);
+        var id = target.attr('id');
+        var panelIndex = target.find('.panel-collapse').length + 1;
+
+        var item = $(self.templates['panel']);
+        item.attr('data-uic', 'containers|panel');
+        item.find('.panel-title').attr('locked', 'true').html('').append($(MBE.types.controls.templates.link));
+        item.find('.panel-title a').html('Accordion item').attr({
+            'locked': true,
+            'data-uic': 'controls|link',
+            'data-toggle': 'collapse',
+            'data-parent': '#' + id,
+            'href': '#' + id + ' .item-' + panelIndex
+        });
+
+        var wrapper = $('<div class="panel-collapse collapse item-' + panelIndex + '"></div>');
+
+        item.find('.panel-body p').html('Item body.').parent().wrap(wrapper);
+        item.find('.panel-footer').remove();
+
+        switch (pos) {
+            case 'begin':
+                target.prepend(item);
+                break;
+            case 'end':
+                target.append(item);
+                break;
+            case 'before':
+                panel.before(item);
+                break;
+            case 'after':
+                panel.after(item);
+                break;
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    accordionAddToBegin: function() {
+        MBE.types.containers.accordionAddItem.apply(this, ['begin']);
+    },
+
+    accordionAddToEnd: function() {
+        MBE.types.containers.accordionAddItem.apply(this, ['end']);
+    },
+
+    accordionAddBefore: function() {
+        MBE.types.containers.accordionAddItem.apply(this, ['before']);
+    },
+
+    accordionAddAfter: function() {
+        MBE.types.containers.accordionAddItem.apply(this, ['after']);
+    },
+
+    panelIsNotInAccordion: function()
+    {
+        if ($(this).parent().hasClass('panel-group')) {
+            return false;
+        }
+        return true;
+    },
+
+    panelIsInAccordion: function()
+    {
+        if ($(this).parent().hasClass('panel-group')) {
+            return true;
+        }
+        return false;
     }
 };
+
+MBE.onInit.push(MBE.types.containers.init);
 MBE.types.text = {
 
     templates: {
@@ -9110,11 +9806,11 @@ MBE.types.text = {
             'textOptions': {
                 name: 'Text options',
                 type: 'group',
-                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                 groupItems: [{
                     type: 'select',
                     label: 'Alignment',
-                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'Default',
                         'text-left': 'Left',
@@ -9127,7 +9823,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Transformation',
-                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'None',
                         'text-lowercase': 'Lowercase',
@@ -9139,7 +9835,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Color',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'Default',
                         'text-muted': 'Muted',
@@ -9154,7 +9850,7 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Background',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption'],
                     options: {
                         'null': 'Default',
                         'bg-primary': 'Primary',
@@ -9167,7 +9863,7 @@ MBE.types.text = {
                     get: MBE.options.hasClass
                 }, {
                     type: 'boolean',
-                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'text-nowrap': 'No wrap'
                     },
@@ -9181,12 +9877,62 @@ MBE.types.text = {
 MBE.types.image = {
 
     templates: {
+        'image': '<img src="" width="80" height="80" alt="">',
         'figure': '<figure></figure>',
         'figcaption': '<figcaption>Caption</figcaption>'
     },
 
     options: {
-
+        'image': {
+            'imageOptions': {
+                name: 'Image options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Source URL',
+                    type: 'text',
+                    attr: 'src',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Width',
+                    type: 'text',
+                    attr: 'width',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Height',
+                    type: 'text',
+                    attr: 'height',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Alt',
+                    type: 'text',
+                    attr: 'alt',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'img-rounded': 'Rounded',
+                        'img-circle': 'Circle',
+                        'img-thumbnail': 'Thumbnail'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'Responsive',
+                    type: 'boolean',
+                    options: {
+                        'img-responsive': 'Responsive'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        }
     }
 }
 MBE.types.controls = {
@@ -9208,6 +9954,12 @@ MBE.types.controls = {
                                 + '<button type="button" class="btn btn-default" data-uic="controls|button">Button 4</button>'
                             + '</div>'
                         + '</div>',
+        'split-button': '<div class="btn-group"></div>',
+        'button-dropdown': '<div class="btn-group"></div>',
+        'dropdown-menu': '<ul class="dropdown-menu" data-uic="controls|dropdown-menu" locked></ul>',
+        'dropdown-menu-item': '<li data-uic="controls|dropdown-menu-item"></li>',
+        'dropdown-menu-header': '<li class="dropdown-header" data-uic="controls|dropdown-menu-header">Header</li>',
+        'dropdown-menu-divider': '<li class="divider" data-uic="controls|dropdown-menu-divider"></li>',
         'link': '<a href="#" target="">Link</a>'
     },
 
@@ -9416,8 +10168,158 @@ MBE.types.controls = {
             },
             'textOptions': MBE.types.text.options.common.textOptions
         }
+    },
+
+    init: function () 
+    {
+        var self = MBE.types.controls;
+
+        MBE.DnD.onDrop.push(MBE.types.controls._drop);
+
+        var menu = MBE.toolbar.menu;
+        menu['controls'] = {};
+        menu['controls']['button-dropdown'] = {
+            allowFor: self.isDropdown,
+            items: [
+                { type: 'text', label: 'ADD TO MENU' },
+                { type: 'button', label: 'ITEM', callback: self.dropdownAddItem },
+                { type: 'button', label: 'HEADER', callback: self.dropdownAddHeader },
+                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider }
+            ]
+        };
+        menu['controls']['split-button'] = menu['controls']['button-dropdown'];
+        menu['controls']['button'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-item'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-header'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-divider'] = menu['controls']['button-dropdown'];
+        menu['controls']['link'] = menu['controls']['button-dropdown'];
+    },
+
+    _drop: function(target)
+    {
+        if ($(this).is('[data-uic="controls|button-dropdown"]:empty') || $(this).is('[data-uic="controls|split-button"]:empty')) {
+            MBE.types.controls.dropdownBuild.apply(this, []);
+        }
+    },
+
+    /**************************************************************/
+    /* DROPDOWN CONTEXT METHODS                                   */
+    /**************************************************************/
+    isDropdown: function() {
+        return $(this).is('[data-uic="controls|button-dropdown"]') ||
+               $(this).parents('[data-uic="controls|button-dropdown"]').length ||
+               $(this).is('[data-uic="controls|split-button"]') ||
+               $(this).parents('[data-uic="controls|split-button"]').length;
+    },
+
+    dropdownBuild: function()
+    {
+        var self = MBE.types.controls;
+        var dd = $(this);
+        var button = $(self.templates['button']);
+        var menu = $(self.templates['dropdown-menu']);
+        var caret = $(MBE.types.misc.templates['caret']);
+        var isSplitButton = dd.is('[data-uic="controls|split-button"]');
+        
+        caret.attr('data-uic', 'misc|caret');
+
+        button.attr({
+            'locked': true,
+            'data-uic': 'controls|button',
+            'data-toggle': 'dropdown'
+        }).addClass('dropdown-toggle').html(isSplitButton ? '' : 'Dropdown ');
+        button.append(caret);
+
+        if (isSplitButton) {
+            var actionButton = $(self.templates['button']);
+            actionButton.attr({
+                'locked': true,
+                'data-uic': 'controls|button'
+            }).html('Action').appendTo(dd);
+        }
+        
+        var names = ['First item', 'Second item', 'Third item'];
+        for (var i = 0; i < 3; i++)
+        {
+            var item = $(self.templates['dropdown-menu-item']);
+            var link = $(self.templates.link);
+
+            link.attr({
+                'data-uic': 'controls|link',
+                'locked': true
+            }).html(names[i]).appendTo(item);
+            
+            item.appendTo(menu);
+        }
+
+        dd.append(button);
+        dd.append(menu);
+        MBE.DnD.updateDOM();
+    },
+
+    dropdownGetTarget: function()
+    {
+        var elm = $(this);
+        if (elm.is('[data-uic="controls|button-dropdown"]')) {
+            return $(this);
+        }
+        if (elm.parents('[data-uic="controls|button-dropdown"]').length) {
+            return elm.parents('[data-uic="controls|button-dropdown"]').eq(0);
+        }
+        if (elm.is('[data-uic="controls|split-button"]')) {
+            return $(this);
+        }
+        if (elm.parents('[data-uic="controls|split-button"]').length) {
+            return elm.parents('[data-uic="controls|split-button"]').eq(0);
+        }
+        return $('<div></div>');
+    },
+
+    dropdownAddItem: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-item']);
+        var link = $(self.templates.link);
+
+        link.attr({
+            'data-uic': 'controls|link',
+            'locked': true
+        }).html('Menu item').appendTo(item);
+        
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownAddHeader: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-header']);
+
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownAddDivider: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-divider']);
+
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
     }
 }
+
+MBE.onInit.push(MBE.types.controls.init);
 MBE.types.grid = {
 
     templates: {
@@ -9503,6 +10405,284 @@ MBE.types.page = {
 
     }
 };
+MBE.types.table = {
+
+    templates: {
+        'table': '<table class="table"></table>',
+        'tr': '<tr data-uic="table|tr"></tr>',
+        'cell': '<td></td>',
+        'td': '<td data-uic="table|td">Column</td>',
+        'th': '<th data-uic="table|th">Cell</th>',
+        'thead': '<thead data-uic="table|thead" locked></thead>',
+        'tbody': '<tbody data-uic="table|tbody" locked></tbody>',
+        'tfoot': '<tfoot data-uic="table|tfoot" locked></tfoot>',
+        'caption': '<caption data-uic="table|caption" locked>Caption</caption>'
+    },
+
+    options: {
+        'table': {
+            'tableOptions': {
+                name: 'Table options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'boolean',
+                    options: {
+                        'table-striped': 'Striped',
+                        'table-bordered': 'Bordered',
+                        'table-hover': 'Hover',
+                        'table-condensed': 'Condensed'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    name: 'Responsive',
+                    type: 'boolean',
+                    options: {
+                        'table-responsive': 'Responsive'
+                    },
+                    get: function (value) {
+                        return $(MBE.options.target).parent().is('.' + value);
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            $(this).wrap('<div class="table-responsive"></div>');
+                        }
+                        else {
+                            $(this).unwrap();
+                        }
+                    }
+                }, {
+                    name: 'Show',
+                    type: 'boolean',
+                    options: {
+                        'thead': 'Show table header',
+                        'tfoot': 'Show table footer',
+                        'caption': 'Show caption'
+                    },
+                    get: function (value) {
+                        return $('> ' + value, MBE.options.target).length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            switch (opt.value) {
+                                case 'caption': {
+                                    $(this).prepend($(MBE.types.table.templates['caption']));
+                                    break;
+                                }
+                                case 'thead': {
+                                    $('tbody', this).before(MBE.types.table.createTHead.apply(this, []));
+                                    break;
+                                }
+                                case 'tfoot': {
+                                    $('tbody', this).after(MBE.types.table.createTFoot.apply(this, []));
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            $('> ' + opt.value, this).remove();
+                        }
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
+        'caption': {
+            'captionOptions': {
+                name: 'Caption options',
+                type: 'boolean',
+                options: {
+                    'lead': 'Lead'
+                },
+                set: MBE.options.toggleClass,
+                get: MBE.options.hasClass
+            },
+            'textOptions': MBE.types.text.options.common.textOptions
+        },
+        'tr': {
+            'trOptions': {
+                name: 'Table row options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Defaut',
+                        'active': 'Active',
+                        'success': 'Success',
+                        'info': 'Info',
+                        'warning': 'Warning',
+                        'danger': 'Danger'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'td': {
+            'tdOptions': {
+                name: 'Table cell options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Defaut',
+                        'active': 'Active',
+                        'success': 'Success',
+                        'info': 'Info',
+                        'warning': 'Warning',
+                        'danger': 'Danger'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'Rowspan',
+                    type: 'number',
+                    attr: 'rowspan',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Colspan',
+                    type: 'number',
+                    attr: 'colspan',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }]
+            },
+            'textOptions': MBE.types.text.options.common.textOptions
+        }
+    },
+
+    init: function()
+    {
+        var self = MBE.types.table;
+        var menu = MBE.toolbar.menu;
+
+        self.options.th = self.options.td;
+
+        MBE.DnD.onDrop.push(self._drop);
+
+        menu.table = {};
+        menu.table.table = {
+            items: [
+                { type: 'text', label: 'ADD ROW' },
+                { type: 'button', label: 'ABOVE', callback: 'rowAddAbove' },
+                { type: 'button', label: 'BELOW', callback: 'rowAddBelow' },
+                { type: 'button', label: 'TOP', callback: 'rowAddTop' },
+                { type: 'button', label: 'BOTTOM', callback: 'rowAddBottom' },
+                { type: 'text', label: 'ADD COLUMN' },
+                { type: 'button', label: 'LEFT', callback: 'columnAddLeft' },
+                { type: 'button', label: 'RIGHT', callback: 'columnAddRight' },
+                { type: 'button', label: 'BEGIN', callback: 'columnAddBegin' },
+                { type: 'button', label: 'END', callback: 'columnAddEnd' }
+            ]
+        };
+        menu.table.thead = menu.table.tbody = menu.table.tfoot = menu.table.tr = menu.table.td = menu.table.th = menu.table.table;
+    },
+
+    _drop: function()
+    {
+        if ($(this).is('table:empty')) {
+            MBE.types.table.build.apply(this, []);
+        }
+        if ($(this).is('[data-uic="table|cell"]')) {
+            MBE.types.table.insertCell.apply(this, []);
+        }
+    },
+
+    /****************************************************/
+    /* TABLE CONTEXT METHODS                            */
+    /****************************************************/
+    build: function()
+    {
+        var self = MBE.types.table;
+        var target = $(this);
+        var thead = $(self.templates['thead']);
+        var tbody = $(self.templates['tbody']);
+        var row = $(self.templates['tr']);
+
+        target.append(thead);
+        target.append(tbody);
+
+        var r = row.clone();
+        thead.append(r);
+
+        for (var i = 1; i <= 3; i++) {
+            var cell = $(self.templates['th']);
+            cell.html('Column ' + i);
+            cell.appendTo(r);
+        }
+
+        for (var i = 0; i < 2; i++) {
+            var r = row.clone();
+            for (var j = 1; j <= 3; j++) {
+                var cell = $(self.templates['td']);
+                cell.html('Cell ' + j);
+                cell.appendTo(r);
+            }
+            tbody.append(r);
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    insertCell: function () {
+        var self = MBE.types.table;
+        var elm = $(this);
+        if (elm.parent().parent().is('thead')) {
+            elm.replaceWith($(self.templates['th']));
+        }
+        else {
+            elm.replaceWith($(self.templates['td']));
+        }
+    },
+
+    getCellCount: function() {
+        var maxCellCount = 0;
+        $('tbody tr', this).each(function () {
+            var cellCount = 0;
+            $('td', this).each(function () {
+                cellCount += this.colSpan ? Number(this.colSpan) : 1;
+            });
+            if (cellCount > maxCellCount) {
+                maxCellCount = cellCount;
+            }
+        });
+        return maxCellCount;
+    },
+
+    createTHead: function ()
+    {
+        var self = MBE.types.table;
+        var thead = $(self.templates['thead']);
+        var row = $(self.templates['tr']);
+        var maxCellCount = self.getCellCount.apply(this, []);
+
+        for (var i = 1; i <= maxCellCount; i++) {
+            var cell = $(self.templates['th']);
+            cell.html('Column ' + i).appendTo(row);
+        }
+        thead.append(row);
+        return thead;
+    },
+
+    createTFoot: function ()
+    {
+        var self = MBE.types.table;
+        var tfoot = $(self.templates['tfoot']);
+        var row = $(self.templates['tr']);
+        var maxCellCount = self.getCellCount.apply(this, []);
+
+        for (var i = 1; i <= maxCellCount; i++) {
+            var cell = $(self.templates['td']);
+            cell.html('Summary ' + i).appendTo(row);
+        }
+        tfoot.append(row);
+        return tfoot;
+    }
+};
+MBE.onInit.push(MBE.types.table.init);
 MBE.types.form = {
 
     templates: {
@@ -9522,6 +10702,13 @@ MBE.types.form = {
         'input-search': '<input type="search" name="" value="" class="form-control">',
         'input-password': '<input type="password" name="" value="" class="form-control">',
         'input-file': '<input type="file" name="" value="" class="form-control">',
+        'textarea': '<textarea class="form-control" name="" value=""></textarea>',
+        'checkbox-group': '<div class="checkbox"></div>',
+        'radio-group': '<div class="radio"></div>',
+        'checkbox': '<input type="checkbox" name="" value="">',
+        'checkbox-label': '<label for="" data-uic="form|label"><input type="checkbox" name="" value="" data-uic="form|checkbox"> Checkbox</label>',
+        'radio': '<input type="radio" name="" value="">',
+        'radio-label': '<label for="" data-uic="form|label"><input type="radio" name="" value="" data-uic="form|radio"> Radio</label>',
         'static-control': '<p class="form-control-static">Static value</p>',
         'help-text': '<p class="help-block">Help text for field</p>',
         'input-group': '<div class="input-group">'
@@ -9529,6 +10716,8 @@ MBE.types.form = {
                             + '<input type="text" name="" value="" class="form-control" data-uic="form|input-text">'
                             + '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
                         + '</div>',
+        'fieldset': '<fieldset><legend data-uic="form|legend" locked>Field group</legend></fieldset>',
+        'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
         'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
     },
@@ -9662,13 +10851,86 @@ MBE.types.form = {
                 }]
             }
         },
+        'fieldset': {
+            'FieldsetOptions': {
+                name: 'Fieldset options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Name',
+                    type: 'text',
+                    attr: 'name',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'State',
+                    type: 'boolean',
+                    options: {
+                        'disabled': 'Disabled'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Legend',
+                    type: 'boolean',
+                    options: {
+                        'legend': 'Show legend'
+                    },
+                    get: function (value) {
+                        return $('[data-uic="form|' + value + '"]', this).length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            if (opt.value == 'legend') {
+                                $(this).prepend(MBE.types.form.templates['legend']);
+                            }
+                        }
+                        else {
+                            $('[data-uic="form|' + opt.value + '"]', this).remove();
+                        }
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
+        'checkbox-group': {
+            'checkboxGroupOptions': {
+                name: 'Checkbox group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'checkbox': 'Default',
+                        'checkbox-inline': 'Inline'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'radio-group': {
+            'radioGroupOptions': {
+                name: 'Radio group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'radio': 'Default',
+                        'radio-inline': 'Inline'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
 
         common: {
             'mainOptions': {
                 name: 'Main',
                 allowFor: [
                     'input-text', 'input-email', 'input-color', 'select', 'input-tel', 'input-number', 'input-range', 'input-hidden',
-                    'input-url', 'input-search', 'input-password', 'input-file', 'input-date'
+                    'input-url', 'input-search', 'input-password', 'input-file', 'input-date', 'textarea', 'checkbox', 'radio'
                 ],
                 type: 'group',
                 groupItems: [{
@@ -9678,29 +10940,36 @@ MBE.types.form = {
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
+                    label: 'Rows',
+                    allowFor: ['textarea'],
+                    type: 'number',
+                    attr: 'rows',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
                     label: 'Min',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'min',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Max',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'max',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Step',
                     allowFor: ['input-number', 'input-range', 'input-date'],
-                    type: 'text',
+                    type: 'number',
                     attr: 'step',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
                     label: 'Size',
-                    disallowFor: ['input-hidden'],
+                    disallowFor: ['input-hidden', 'checkbox', 'radio'],
                     type: 'select',
                     options: {
                         'null': 'Default',
@@ -9711,7 +10980,7 @@ MBE.types.form = {
                     set: MBE.options.toggleClass
                 }, {
                     label: 'Placeholder',
-                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-url', 'input-search', 'input-password'],
+                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-url', 'input-search', 'input-password', 'textarea'],
                     type: 'text',
                     attr: 'placeholder',
                     get: MBE.options.hasAttr,
@@ -9730,14 +10999,33 @@ MBE.types.form = {
                     },
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Checked',
+                    allowFor: ['checkbox', 'radio'],
+                    type: 'boolean',
+                    options: {
+                        'checked': 'Checked'
+                    },
+                    get: MBE.options.hasProp,
+                    set: MBE.options.setProp
                 }]
             },
             'stateOptions': {
                 name: 'State',
-                disallowFor: ['input-hidden', 'static-control', 'help-text'],
+                disallowFor: ['input-hidden', 'static-control', 'help-text', 'legend', 'checkbox', 'radio'],
                 type: 'boolean',
                 options: {
                     'readonly': 'Readonly',
+                    'disabled': 'Disabled'
+                },
+                get: MBE.options.hasAttr,
+                set: MBE.options.setAttr
+            },
+            'crStateOptions': {
+                name: 'State',
+                allowFor: ['checkbox', 'radio'],
+                type: 'boolean',
+                options: {
                     'disabled': 'Disabled'
                 },
                 get: MBE.options.hasAttr,
@@ -9747,12 +11035,15 @@ MBE.types.form = {
                 name: 'Input',
                 allowFor: [
                     'input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
-                    'input-file'
+                    'input-file', 'textarea'
                 ],
                 type: 'group',
                 groupItems: [{
                     label: 'Autofocus',
-                    allowFor: ['input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                    allowFor: [
+                        'input-text', 'input-email', 'select', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                        'textarea'
+                    ],
                     type: 'boolean',
                     options: {
                         'autofocus': 'Autofocus'
@@ -9761,7 +11052,10 @@ MBE.types.form = {
                     set: MBE.options.setAttr
                 }, {
                     label: 'Autocomplete',
-                    allowFor: ['input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password'],
+                    allowFor: [
+                        'input-text', 'input-email', 'input-tel', 'input-number', 'input-url', 'input-search', 'input-password',
+                        'textarea'
+                    ],
                     type: 'select',
                     options: {
                         'null': 'Default',
@@ -9807,3 +11101,139 @@ MBE.types.form = {
 };
 
 MBE.onInit.push(MBE.types.form.init);
+MBE.options.getProgressBarClass = function (value) {
+    return $('.progress-bar', this).hasClass(value);
+};
+MBE.options.setProgressBarClass = function (opt) {
+    if (opt.type == 'select') {
+        var classes = new Array();
+        $(opt).find('option').each(function () {
+            classes.push(this.value);
+        });
+        $('.progress-bar', this).removeClass(classes.join(' '));
+        if (opt.value == 'null') {
+            return;
+        }
+    }
+    $('.progress-bar', this).toggleClass(opt.value);
+};
+
+MBE.types.misc = {
+
+    templates: {
+        'badge': '<span class="badge">4</span>',
+        'tag': '<span class="label label-default">label</span>',
+        'caret': '<span class="caret"></span>',
+        'close': '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        'hr': '<hr />',
+        'responsive-embed': '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src=""></iframe></div>',
+        'progressBar': '<div class="progress">' + 
+                            '<div class="progress-bar" role="progressbar" style="min-width:2em; width:0%"></div>' +
+                        '</div>'
+    },
+
+    options: {
+        'tag': {
+            'tagOptions': {
+                name: 'Label options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'label-default': 'Default',
+                        'label-primary': 'Primary',
+                        'label-success': 'Success',
+                        'label-info': 'Info',
+                        'label-warning': 'Warning',
+                        'label-danger': 'Danger',
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'progressBar': {
+            'progressBarOptions': {
+                name: 'Progress bar options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Percentage',
+                    type: 'number',
+                    get: function () {
+                        return parseInt($('.progress-bar', this).css('width'));
+                    },
+                    set: function (opt) {
+                        $('.progress-bar', this).css('width', opt.value + '%');
+                        if ($('.progress-bar', this).text().length > 0) {
+                            $('.progress-bar', this).html(opt.value + '%');
+                        }
+                    }
+                }, {
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'progress-bar-success': 'Success',
+                        'progress-bar-info': 'Info',
+                        'progress-bar-warning': 'Warning',
+                        'progress-bar-danger': 'Danger'
+                    },
+                    get: MBE.options.getProgressBarClass,
+                    set: MBE.options.setProgressBarClass
+                }, {
+                    label: 'Options',
+                    type: 'boolean',
+                    options: {
+                        'progress-bar-striped': 'Striped',
+                        'active': 'Animated'
+                    },
+                    get: MBE.options.getProgressBarClass,
+                    set: MBE.options.setProgressBarClass
+                }, {
+                    label: 'Show label',
+                    type: 'boolean',
+                    options: {
+                        'show-label': 'Show label'
+                    },
+                    get: function () {
+                        return $('.progress-bar', this).text().length > 0;
+                    },
+                    set: function (opt) {
+                        if (opt.checked) {
+                            $('.progress-bar', this).html($('.progress-bar', this)[0].style.width);
+                        }
+                        else {
+                            $('.progress-bar', this).html('');
+                        }
+                    }
+                }]
+            }
+        },
+        'responsive-embed': {
+            'responsiveEmbedOptions': {
+                name: 'Responsive embed options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Source URL',
+                    type: 'text',
+                    get: function () {
+                        return $('> iframe', MBE.options.target).attr('src').length ? $('> iframe', MBE.options.target).attr('src') : '';
+                    },
+                    set: function (opt) {
+                        $('> iframe', this).attr('src', opt.value);
+                    }
+                }, {
+                    label: 'Aspect ratio',
+                    type: 'select',
+                    options: {
+                        'embed-responsive-16by9': '16 by 9',
+                        'embed-responsive-4by3': '4 by 3'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
+        }
+    }
+}

@@ -149,11 +149,11 @@
             'textOptions': {
                 name: 'Text options',
                 type: 'group',
-                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                 groupItems: [{
                     type: 'select',
                     label: 'Alignment',
-                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'Default',
                         'text-left': 'Left',
@@ -166,7 +166,7 @@
                 }, {
                     type: 'select',
                     label: 'Transformation',
-                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'None',
                         'text-lowercase': 'Lowercase',
@@ -178,7 +178,7 @@
                 }, {
                     type: 'select',
                     label: 'Color',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'null': 'Default',
                         'text-muted': 'Muted',
@@ -193,7 +193,7 @@
                 }, {
                     type: 'select',
                     label: 'Background',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption'],
                     options: {
                         'null': 'Default',
                         'bg-primary': 'Primary',
@@ -206,7 +206,7 @@
                     get: MBE.options.hasClass
                 }, {
                     type: 'boolean',
-                    allowFor: ['heading', 'paragraph', 'alert', 'help-text'],
+                    allowFor: ['heading', 'paragraph', 'alert', 'help-text', 'caption', 'th', 'td'],
                     options: {
                         'text-nowrap': 'No wrap'
                     },

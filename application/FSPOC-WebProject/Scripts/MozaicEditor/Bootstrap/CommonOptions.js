@@ -29,7 +29,6 @@
             var optSet = MBE.types[self.targetType].options[self.targetTemplate];
             for (var opt in optSet) {
                 d.append(self.createOptions(optSet[opt]));
-                console.log(optSet[opt]);
                 if (typeof optSet[opt].onBuild == 'function') {
                     onBuild.push(optSet[opt].onBuild);
                 }
@@ -69,8 +68,13 @@
         if (typeof opt.allowFor != 'undefined' && $.inArray(MBE.options.targetTemplate, opt.allowFor) == -1) {
             return false;
         }
-        if (typeof opt.disallowFor != 'undefined' && $.inArray(MBE.options.targetTemplate, opt.disallowFor) != -1) {
-            return false;
+        if (typeof opt.disallowFor != 'undefined') {
+            if (typeof opt.disallowFor == 'function') {
+                return opt.disallowFor.apply(MBE.options.target, []);
+            }
+            else if ($.inArray(MBE.options.targetTemplate, opt.disallowFor) != -1) {
+                return false;
+            }
         }
         return true;
     },
@@ -137,7 +141,7 @@
         var set = opt.set;
 
         var lb = $('<label>' + opt.label + '</label>');
-        var inp = $('<input type="text" value="' + opt.get(false, opt) + '">');
+        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '">');
         
         if(typeof opt.attr != 'undefined') {
             inp.data('attr', opt.attr);
@@ -146,6 +150,12 @@
         inp.on('change', function () {
             set.apply(MBE.options.target, [this]);
         });
+        if (typeof opt.change == 'function') {
+            var onChange = opt.change;
+            inp.on('change', function () {
+                onChange.apply(MBE.options.target, [this]);
+            });
+        }
 
         group.append(lb);
         group.append(inp);
@@ -183,7 +193,8 @@
                         case 'select': {
                             f.append(self.createSelect(item));
                             break;
-                        } 
+                        }
+                        case 'number':
                         case 'text': {
                             f.append(self.createText(item));
                             break;
@@ -227,6 +238,27 @@
             else {
                 t.removeAttr(opt.value);
             }
+        }
+    },
+
+    hasProp: function (value, opt) {
+        var t = $(MBE.options.target);
+        if (value !== false) {
+            return t.is(':' + value);
+        }
+        else {
+            return t.is(':' + opt.attr);
+        }
+    },
+
+    setProp: function (opt) {
+        var attr = $(opt).data('attr');
+        var t = $(MBE.options.target);
+        if (attr) {
+            t.prop(attr, opt.value == 'null' ? '' : opt.value);
+        }
+        else { // Je to checkbox
+            t.prop(opt.value, opt.checked);
         }
     },
 

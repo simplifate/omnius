@@ -37,25 +37,35 @@
 
     buildSubNodes: function(node, target) 
     {
-        node.find('> [data-uic]').each(function () {
-            var item = $(MBE.navigator.nodeTemplate);
-            var label = item.find('b');
+        node.children().each(function () {
             var subNode = $(this);
-            
-            subNode.data('navitem', label);
-            
-            label.html(MBE.getComponentName(this)).data('targetuic', this);
+            var item;
 
-            if (subNode.find('[data-uic]').length) {
-                label.before('<i class="fa fa-caret-down fa-fw"></i>');
-            }
-            if (subNode.is('[locked]')) {
-                label.after('<span class="fa fa-lock fa-fw"></span>');
-                item.find('.node-handle').attr('draggable', false);
-            }
-            target.append(item);
+            if (subNode.is('[data-uic]')) {
+                item = $(MBE.navigator.nodeTemplate);
+                var label = item.find('b');
 
-            MBE.navigator.buildSubNodes(subNode, item.find('.sub-tree'));
+                subNode.data('navitem', label);
+
+                label.html(MBE.getComponentName(this)).data('targetuic', this);
+
+                if (subNode.find('[data-uic]').length) {
+                    label.before('<i class="fa fa-caret-down fa-fw"></i>');
+                }
+                if (subNode.is('[locked]')) {
+                    label.after('<span class="fa fa-lock fa-fw"></span>');
+                    item.find('.node-handle').attr('draggable', false);
+                }
+                if (subNode.attr('id') && subNode.attr('id').length) {
+                    label.parent().append('<i class="item-id">#' + subNode.attr('id') + '</i>');
+                }
+                if (subNode.hasClass('mbe-active')) {
+                    label.addClass('active');
+                }
+                target.append(item);
+            }
+
+            MBE.navigator.buildSubNodes(subNode, subNode.is('[data-uic]') ? item.find('.sub-tree') : target);
         });
     },
 

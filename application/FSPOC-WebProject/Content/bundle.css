@@ -5324,6 +5324,15 @@ body.mozaicEditorModule {
   body.mozaicEditorModule #choose-page-dialog .spinner-2 {
     display: none; }
 
+.mozaicBootstrapEditorModule #lowerPanel.fullscreen {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 100;
+  background: #fff; }
+
 .mozaicBootstrapEditorModule ul.category {
   margin: 0px;
   padding: 10px; }
@@ -5396,6 +5405,9 @@ body.mozaicEditorModule {
         .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.drop-target {
           background: #fbffd4;
           outline: 1px solid orange; }
+        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle .item-id {
+          display: inline-block;
+          margin-left: 8px; }
       .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
         padding-left: 10px; }
       .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged b {
@@ -5410,14 +5422,41 @@ body.mozaicEditorModule {
     position: absolute;
     left: 12px;
     right: 252px;
-    top: 48px;
+    top: 95px;
     padding: 20px 0px 20px;
     bottom: 0px; }
     .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace #drop-placeholder {
       height: 0px;
       outline: 1px solid blue; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .container, .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid {
-    border: 1px dashed #01a1f7; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .embed-responsive iframe {
+      background: #eee; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container-fluid {
+      border: 1px dashed #01a1f7; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container-fluid, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .row {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-top: 5px;
+      margin-bottom: 5px; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext {
+    margin-right: 240px; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .breadcrumb {
+      padding: 6px 15px;
+      margin-bottom: 0px;
+      background: #bdbbbc;
+      border-radius: 0px; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar {
+      background: #eee;
+      border-radius: 0px;
+      padding: 6px 0px;
+      font-size: 12px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-text {
+        float: none;
+        display: inline-block;
+        margin: 5px 15px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-btn {
+        font-size: 12px;
+        padding: 4px 10px;
+        margin: 4px 2px; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-drag-handle {
     display: none;
     width: 8px;
@@ -5445,7 +5484,7 @@ body.mozaicEditorModule {
     content: "empty-container"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .row.empty-element:before {
     content: "empty row"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer div[class^="col-"].empty-element:before {
+  .mozaicBootstrapEditorModule #mozaicPageContainer div[class*="col-"].empty-element:before {
     content: "empty column"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer header.empty-element:before {
     content: "empty header"; }
@@ -5471,6 +5510,30 @@ body.mozaicEditorModule {
     content: "empty addon"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
     content: "empty addon"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .checkbox.empty-element:before {
+    content: "empty checkbox group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .checkbox-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .radio.empty-element:before {
+    content: "empty radio group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .radio-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-heading.empty-element:before {
+    content: "empty panel heading"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-body.empty-element:before {
+    content: "empty panel body"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-footer.empty-element:before {
+    content: "empty panel footer"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer [data-uic="containers|div"].empty-element:before {
+    content: "empty div"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer .well.empty-element:before {
+    content: "empty well"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer tr.empty-element:before {
+    content: "empty table row"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer td.empty-element:before {
+    content: "empty cell"; }
+  .mozaicBootstrapEditorModule #mozaicPageContainer th.empty-element:before {
+    content: "empty cell"; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-addon.empty-element:before, .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
     padding: 0px; }
   .mozaicBootstrapEditorModule #mozaicPageContainer div.clearfix.empty-element:before {
@@ -5478,11 +5541,6 @@ body.mozaicEditorModule {
     padding: 1px 10px; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .dragged[data-uic] {
     opacity: 0.5; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .container, .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid, .mozaicBootstrapEditorModule #mozaicPageContainer .row {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px; }
 
 .mozaicBootstrapEditorModule .dialog-options fieldset {
   padding: 10px 10px;

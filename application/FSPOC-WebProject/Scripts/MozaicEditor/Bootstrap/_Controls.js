@@ -17,6 +17,12 @@
                                 + '<button type="button" class="btn btn-default" data-uic="controls|button">Button 4</button>'
                             + '</div>'
                         + '</div>',
+        'split-button': '<div class="btn-group"></div>',
+        'button-dropdown': '<div class="btn-group"></div>',
+        'dropdown-menu': '<ul class="dropdown-menu" data-uic="controls|dropdown-menu" locked></ul>',
+        'dropdown-menu-item': '<li data-uic="controls|dropdown-menu-item"></li>',
+        'dropdown-menu-header': '<li class="dropdown-header" data-uic="controls|dropdown-menu-header">Header</li>',
+        'dropdown-menu-divider': '<li class="divider" data-uic="controls|dropdown-menu-divider"></li>',
         'link': '<a href="#" target="">Link</a>'
     },
 
@@ -225,5 +231,155 @@
             },
             'textOptions': MBE.types.text.options.common.textOptions
         }
+    },
+
+    init: function () 
+    {
+        var self = MBE.types.controls;
+
+        MBE.DnD.onDrop.push(MBE.types.controls._drop);
+
+        var menu = MBE.toolbar.menu;
+        menu['controls'] = {};
+        menu['controls']['button-dropdown'] = {
+            allowFor: self.isDropdown,
+            items: [
+                { type: 'text', label: 'ADD TO MENU' },
+                { type: 'button', label: 'ITEM', callback: self.dropdownAddItem },
+                { type: 'button', label: 'HEADER', callback: self.dropdownAddHeader },
+                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider }
+            ]
+        };
+        menu['controls']['split-button'] = menu['controls']['button-dropdown'];
+        menu['controls']['button'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-item'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-header'] = menu['controls']['button-dropdown'];
+        menu['controls']['dropdown-menu-divider'] = menu['controls']['button-dropdown'];
+        menu['controls']['link'] = menu['controls']['button-dropdown'];
+    },
+
+    _drop: function(target)
+    {
+        if ($(this).is('[data-uic="controls|button-dropdown"]:empty') || $(this).is('[data-uic="controls|split-button"]:empty')) {
+            MBE.types.controls.dropdownBuild.apply(this, []);
+        }
+    },
+
+    /**************************************************************/
+    /* DROPDOWN CONTEXT METHODS                                   */
+    /**************************************************************/
+    isDropdown: function() {
+        return $(this).is('[data-uic="controls|button-dropdown"]') ||
+               $(this).parents('[data-uic="controls|button-dropdown"]').length ||
+               $(this).is('[data-uic="controls|split-button"]') ||
+               $(this).parents('[data-uic="controls|split-button"]').length;
+    },
+
+    dropdownBuild: function()
+    {
+        var self = MBE.types.controls;
+        var dd = $(this);
+        var button = $(self.templates['button']);
+        var menu = $(self.templates['dropdown-menu']);
+        var caret = $(MBE.types.misc.templates['caret']);
+        var isSplitButton = dd.is('[data-uic="controls|split-button"]');
+        
+        caret.attr('data-uic', 'misc|caret');
+
+        button.attr({
+            'locked': true,
+            'data-uic': 'controls|button',
+            'data-toggle': 'dropdown'
+        }).addClass('dropdown-toggle').html(isSplitButton ? '' : 'Dropdown ');
+        button.append(caret);
+
+        if (isSplitButton) {
+            var actionButton = $(self.templates['button']);
+            actionButton.attr({
+                'locked': true,
+                'data-uic': 'controls|button'
+            }).html('Action').appendTo(dd);
+        }
+        
+        var names = ['First item', 'Second item', 'Third item'];
+        for (var i = 0; i < 3; i++)
+        {
+            var item = $(self.templates['dropdown-menu-item']);
+            var link = $(self.templates.link);
+
+            link.attr({
+                'data-uic': 'controls|link',
+                'locked': true
+            }).html(names[i]).appendTo(item);
+            
+            item.appendTo(menu);
+        }
+
+        dd.append(button);
+        dd.append(menu);
+        MBE.DnD.updateDOM();
+    },
+
+    dropdownGetTarget: function()
+    {
+        var elm = $(this);
+        if (elm.is('[data-uic="controls|button-dropdown"]')) {
+            return $(this);
+        }
+        if (elm.parents('[data-uic="controls|button-dropdown"]').length) {
+            return elm.parents('[data-uic="controls|button-dropdown"]').eq(0);
+        }
+        if (elm.is('[data-uic="controls|split-button"]')) {
+            return $(this);
+        }
+        if (elm.parents('[data-uic="controls|split-button"]').length) {
+            return elm.parents('[data-uic="controls|split-button"]').eq(0);
+        }
+        return $('<div></div>');
+    },
+
+    dropdownAddItem: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-item']);
+        var link = $(self.templates.link);
+
+        link.attr({
+            'data-uic': 'controls|link',
+            'locked': true
+        }).html('Menu item').appendTo(item);
+        
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownAddHeader: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-header']);
+
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownAddDivider: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        var item = $(self.templates['dropdown-menu-divider']);
+
+        target.find('ul.dropdown-menu').append(item);
+        MBE.DnD.updateDOM();
+
+        setTimeout(function () { target.addClass('open'); }, 1);
     }
 }
+
+MBE.onInit.push(MBE.types.controls.init);

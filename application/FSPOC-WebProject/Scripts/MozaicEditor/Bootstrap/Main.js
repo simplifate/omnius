@@ -5,6 +5,7 @@
     sortableOptions: {},
 
     onInit: [],
+    onBeforeDelete: {},
 
     workspace: null,
 
@@ -20,6 +21,8 @@
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
             .on('keydown', MBE.onKeyDown)
+            .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
+            .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
         ;
         
         $('ul.category > li ul').hide();
@@ -40,7 +43,12 @@
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            if ($('.mbe-active').length && !$('.mbe-active').is('[locked]')) {
+            var target = $('.mbe-active');
+            if (target.length && !target.is('[locked]')) {
+                if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
+                    MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
+                }
+
                 $('.mbe-active').remove();
                 MBE.path.update.apply(MBE.workspace, []);
                 MBE.DnD.updateDOM();
@@ -83,6 +91,48 @@
         var uic = $(elm).data('uic').split(/\|/);
         var template = uic[1];
         return $('li[data-template="' + template + '"]').text();
+    },
+
+    toggleFullscreen: function()
+    {
+        if (MBE.runPrefixMethod(document, "FullScreen") || MBE.runPrefixMethod(document, "IsFullScreen")) {
+            MBE.runPrefixMethod(document, "CancelFullScreen");
+        }
+        else {
+            MBE.runPrefixMethod(document.body, "RequestFullScreen");
+        }
+        return false;
+    },
+	
+    isFullscreen: function()
+    {
+        return MBE.runPrefixMethod(document, "FullScreen") || MBE.runPrefixMethod(document, "IsFullScreen");
+    },
+
+    fullscreenResize: function()
+    {
+        $('#lowerPanel').toggleClass('fullscreen');
+    },
+
+    runPrefixMethod: function (obj, method, testAPI) 
+    {
+        var p = 0, m, t;
+        var prefixList = ["webkit", "moz", "ms", "o", ""];
+        while (p < prefixList.length && !obj[m]) {
+            m = method;
+            if (prefixList[p] == "") {
+                m = m.substr(0,1).toLowerCase() + m.substr(1);
+            }
+            m = prefixList[p] + m;
+            t = typeof obj[m];
+            if (t != "undefined") {
+                prefixList = [prefixList[p]];
+                return (t == "function" ? obj[m]() : obj[m]);
+            }
+            p++;
+        }
+        if(testAPI)
+            return -1;
     }
 }
 
