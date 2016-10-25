@@ -109,7 +109,7 @@
     _uicDragStart: function (event) {
         var e = event.originalEvent;
 
-        MBE.DnD.currentElement = $(this).parent();
+        MBE.DnD.currentElement = $('.mbe-active');
         MBE.DnD.currentElement.addClass('dragged');
         MBE.DnD.isUICDragging = true;
 
@@ -256,8 +256,6 @@
 
     _dragEnd: function(event)
     {
-        console.log('call');
-
         $('body').removeClass('dragging');
         $('.drag-over').removeClass('drag-over');
         $('.drag-ghost').remove();

@@ -649,6 +649,17 @@ body.mozaicEditorModule {
         }
     }
 
+    .mbe-drag-handle {
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        left: -4px;
+        top: -4px;
+        background: blue;
+        border-radius: 100%;
+        cursor: move;
+    }
+
     #mozaicPageContainer {
         -webkit-user-select: none;   /* Chrome/Safari/Opera */
         -moz-user-select: none;      /* Firefox */
@@ -798,18 +809,6 @@ body.mozaicEditorModule {
                     margin: 4px 2px;
                 }
             }
-        }
-
-        .mbe-drag-handle {
-            display: none;
-            width: 8px;
-            height: 8px;
-            position: absolute;
-            left: -4px;
-            top: -4px;
-            background: blue;
-            border-radius: 100%;
-            cursor: move;
         }
 
         .mbe-active {

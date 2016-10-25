@@ -42,6 +42,12 @@
                     button.click({callback: item.callback}, function (event) {
                         event.data.callback.apply($('.mbe-active')[0], []);
                     });
+
+                    if (typeof item.allowFor == 'function') {
+                        if (!item.allowFor.apply($('.mbe-active')[0], [])) {
+                            button.attr('disabled', true);
+                        }
+                    }
                 }
             }
         }

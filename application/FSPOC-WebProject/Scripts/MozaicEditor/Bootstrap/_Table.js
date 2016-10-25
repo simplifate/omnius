@@ -160,16 +160,16 @@
         menu.table = {};
         menu.table.table = {
             items: [
-                { type: 'text', label: 'ADD ROW' },
-                { type: 'button', label: 'ABOVE', callback: 'rowAddAbove' },
-                { type: 'button', label: 'BELOW', callback: 'rowAddBelow' },
-                { type: 'button', label: 'TOP', callback: 'rowAddTop' },
-                { type: 'button', label: 'BOTTOM', callback: 'rowAddBottom' },
-                { type: 'text', label: 'ADD COLUMN' },
-                { type: 'button', label: 'LEFT', callback: 'columnAddLeft' },
-                { type: 'button', label: 'RIGHT', callback: 'columnAddRight' },
-                { type: 'button', label: 'BEGIN', callback: 'columnAddBegin' },
-                { type: 'button', label: 'END', callback: 'columnAddEnd' }
+                { type: 'text',   label: 'ADD ROW' },
+                { type: 'button', label: 'ABOVE',   callback: self.rowAddAbove, allowFor: self.isCellOrRow },
+                { type: 'button', label: 'BELOW',   callback: self.rowAddBelow, allowFor: self.isCellOrRow },
+                { type: 'button', label: 'TOP',     callback: self.rowAddTop },
+                { type: 'button', label: 'BOTTOM',  callback: self.rowAddBottom },
+                { type: 'text',   label: 'ADD COLUMN' },
+                { type: 'button', label: 'LEFT',    callback: self.columnAddLeft, allowFor: self.isCell },
+                { type: 'button', label: 'RIGHT',   callback: self.columnAddRight, allowFor: self.isCell },
+                { type: 'button', label: 'BEGIN',   callback: self.columnAddBegin },
+                { type: 'button', label: 'END',     callback: self.columnAddEnd }
             ]
         };
         menu.table.thead = menu.table.tbody = menu.table.tfoot = menu.table.tr = menu.table.td = menu.table.th = menu.table.table;
@@ -273,6 +273,75 @@
         }
         tfoot.append(row);
         return tfoot;
-    }
+    },
+
+    isCell: function() {
+        return $(this).is('td, th');
+    },
+
+    isCellOrRow: function() {
+        return $(this).is('td, th, tr');
+    },
+
+    addRow: function(pos) 
+    {
+        var self = MBE.types.table;
+        var elm = $(this);
+        var table = elm.is('table') ? elm : elm.parents('table').eq(0);
+        var target = elm.is('table') ? elm.find('tbody') : elm.parents('tbody, thead, tfoot').eq(0);
+        var currentRow = elm.is('tr') ? elm : (elm.is('td, th') ? elm.parent() : null);
+        var row = $(self.templates['tr']);
+        var maxCellCount = self.getCellCount.apply(table[0], []);
+
+        for (var i = 1; i <= maxCellCount; i++) {
+            var cell = $(self.templates[target.is('thead') ? 'th' : 'td']);
+            cell.html((target.is('thead') ? 'Column' : (target.is('tfoot') ? 'Summary' : 'Cell')) + ' ' + i).appendTo(row);
+        } 
+
+        switch (pos) {
+            case 'top': target.prepend(row); break;
+            case 'bottom': target.append(row); break;
+            case 'above': currentRow.before(row); break;
+            case 'below': currentRow.after(row); break;
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    addColumn: function (pos) {
+        var self = MBE.types.table;
+        var elm = $(this);
+        var table = elm.is('table') ? elm : elm.parents('table').eq(0);
+        var index = elm.is('th, td') ? elm[0].cellIndex : null;
+
+        // Pro thead, tbody i tfoot ....
+        table.find('> thead, > tbody, > tfoot').each(function () {
+            var e = $(this);
+            var cell = $(self.templates[e.is('thead') ? 'th' : 'td']);
+            cell.html(e.is('thead') ? 'Column' : (e.is('tfoot') ? 'Summary' : 'Cell'));
+
+            // ... projdeme všechny řádky ...
+            e.find('> tr').each(function () {
+                // ... a umístíme novou buňku na správnou pozici
+                switch (pos) {
+                    case 'begin': $(this).prepend(cell.clone()); break;
+                    case 'end': $(this).append(cell.clone()); break;
+                    case 'left': $(this).find('> td, > th').eq(index).before(cell.clone()); break;
+                    case 'right': $(this).find('> td, > th').eq(index).after(cell.clone()); break;
+                }
+            });
+        });
+
+        MBE.DnD.updateDOM();
+    },
+
+    rowAddAbove:    function () { MBE.types.table.addRow.apply(this, ['above']);    },
+    rowAddBelow:    function () { MBE.types.table.addRow.apply(this, ['below']);    },
+    rowAddTop:      function () { MBE.types.table.addRow.apply(this, ['top']);      },
+    rowAddBottom:   function () { MBE.types.table.addRow.apply(this, ['bottom']);   },
+
+    columnAddLeft:  function () { MBE.types.table.addColumn.apply(this, ['left']);  },
+    columnAddRight: function () { MBE.types.table.addColumn.apply(this, ['right']); },
+    columnAddBegin: function () { MBE.types.table.addColumn.apply(this, ['begin']); },
+    columnAddEnd:   function () { MBE.types.table.addColumn.apply(this, ['end']);   }
 };
 MBE.onInit.push(MBE.types.table.init);

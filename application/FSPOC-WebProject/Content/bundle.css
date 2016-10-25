@@ -5346,6 +5346,16 @@ body.mozaicEditorModule {
       .mozaicBootstrapEditorModule ul.category > li > ul li:hover {
         background: #d0d2d2; }
 
+.mozaicBootstrapEditorModule .mbe-drag-handle {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  background: blue;
+  border-radius: 100%;
+  cursor: move; }
+
 .mozaicBootstrapEditorModule #mozaicPageContainer {
   -webkit-user-select: none;
   /* Chrome/Safari/Opera */
@@ -5457,16 +5467,6 @@ body.mozaicEditorModule {
         font-size: 12px;
         padding: 4px 10px;
         margin: 4px 2px; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-drag-handle {
-    display: none;
-    width: 8px;
-    height: 8px;
-    position: absolute;
-    left: -4px;
-    top: -4px;
-    background: blue;
-    border-radius: 100%;
-    cursor: move; }
   .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-active {
     outline: 1px solid blue;
     position: relative; }
