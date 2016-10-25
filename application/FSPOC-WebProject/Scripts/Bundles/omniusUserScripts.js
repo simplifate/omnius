@@ -850,6 +850,7 @@ $(function () {
                     }
                 });
             });
+            table.DataTable().draw();
             if (!table.hasClass("data-table-simple-mode")) {
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
