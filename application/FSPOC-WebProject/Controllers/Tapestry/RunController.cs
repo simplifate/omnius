@@ -53,7 +53,13 @@ namespace FSS.Omnius.Controllers.Tapestry
             FormCollection fc = new FormCollection();
             foreach (var pair in crossBlockRegistry)
             {
-                fc.Add(pair.Key, pair.Value.ToString());
+                if (pair.Value != null)
+                {
+                    fc.Add(pair.Key, pair.Value.ToString());
+                }
+                else {
+                    fc.Add(pair.Key, "");
+                }
             }
 
             var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, fc);
@@ -336,7 +342,13 @@ namespace FSS.Omnius.Controllers.Tapestry
                 crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(fc["registry"]);
             foreach (var pair in crossBlockRegistry)
             {
-                fc.Add(pair.Key, pair.Value.ToString());
+                if (pair.Value != null)
+                {
+                    fc.Add(pair.Key, pair.Value.ToString());
+                }
+                else {
+                    fc.Add(pair.Key, "");
+                }
             }
 
             // run
