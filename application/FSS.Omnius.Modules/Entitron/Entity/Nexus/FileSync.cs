@@ -46,5 +46,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
 
         public virtual WebDavServer WebDavServer { get; set; }
         public virtual FileSyncCache CachedCopy { get; set; }
+
+        /// <summary>
+        /// Obecný popis souboru
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Název entity, pro kterou platí ModelEntityId
+        /// </summary>
+        [Index]
+        public string ModelEntityName { get; set; }
+
+        /// <summary>
+        /// Id entity, jejiž název je ModelEntityName
+        /// </summary>
+        [Index]
+        public int ModelEntityId { get; set; }
+
+        /// <summary>
+        /// tag souboru (např. aj, čj) defaultně předvyplněn input name, dá se změnit v inputparams WebDavEntityUploadAction
+        /// </summary>
+        public string Tag { get; set; }
+
     }
 }

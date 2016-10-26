@@ -969,6 +969,10 @@
     <Compile Include="Migrations\201610131145516_AppConnectionString.Designer.cs">
       <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610261306472_FileMetadata_webdaventityuploadaction.cs" />
+    <Compile Include="Migrations\201610261306472_FileMetadata_webdaventityuploadaction.Designer.cs">
+      <DependentUpon>201610261306472_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1578,6 +1582,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610131145516_AppConnectionString.resx">
       <DependentUpon>201610131145516_AppConnectionString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610261306472_FileMetadata_webdaventityuploadaction.resx">
+      <DependentUpon>201610261306472_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
