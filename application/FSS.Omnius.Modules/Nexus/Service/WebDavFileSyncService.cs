@@ -12,14 +12,14 @@ namespace FSS.Omnius.Modules.Nexus.Service
     public class WebDavFileSyncService : IFileSyncService
     {
 
-        private HttpWebRequest CreateWebRequest(FileMetadata file)
+        private HttpWebRequest CreateWebRequest(FileMetadata file, string method)
         {
             if (file == null)
                 throw new ArgumentNullException("file");
 
-            Uri downloadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Id + "_" + file.Filename);
+            Uri downloadUri = getUri(file.WebDavServer.UriBasePath, file);
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(downloadUri);
-            httpWebRequest.Method = WebRequestMethods.Http.Get.ToString();
+            httpWebRequest.Method = method; // WebRequestMethods.Http.Get.ToString();
             if (!file.WebDavServer.AnonymousMode)
                 httpWebRequest.Credentials = new NetworkCredential(file.WebDavServer.AuthUsername, file.WebDavServer.AuthPassword);
 
@@ -28,14 +28,14 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public void BeginDownloadFile(FileMetadata file, FileSyncServiceDownloadedEventHandler downloadedHandler = null)
         {
-            HttpWebRequest httpWebRequest = this.CreateWebRequest(file);
+            HttpWebRequest httpWebRequest = this.CreateWebRequest(file, WebRequestMethods.Http.Get);
             AsyncCallback callback = new AsyncCallback(finishDownload);
             httpWebRequest.BeginGetResponse(callback, new WebDavAsyncState { Metadata = file, Request = httpWebRequest, DownloadedHandler = downloadedHandler });
         }
 
         public void DownloadFile(FileMetadata file)
         {
-            HttpWebRequest httpWebRequest = this.CreateWebRequest(file);
+            HttpWebRequest httpWebRequest = this.CreateWebRequest(file, WebRequestMethods.Http.Get);
             using (var response = httpWebRequest.GetResponse())
             {
                 ProcessResponse((HttpWebResponse)response, ref file);
@@ -113,18 +113,47 @@ namespace FSS.Omnius.Modules.Nexus.Service
             if (file.Id == default(int))
                 throw new ArgumentException("Add FileMetadata to context and save to generate Id");
 
-            Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file.AppFolderName, file.Id + "_" + file.Filename);
+            //Uri uploadUri = getUri(file.WebDavServer.UriBasePath, file);
+
+            /*
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uploadUri);
             httpWebRequest.Method = WebRequestMethods.Http.Put.ToString();
             if (!file.WebDavServer.AnonymousMode)
                 httpWebRequest.Credentials = new NetworkCredential(file.WebDavServer.AuthUsername, file.WebDavServer.AuthPassword);
+                */
 
+            HttpWebRequest httpWebRequest;
+
+            /*
+            #region create directory on webdav server if not exists
+
+
+            Uri downloadUri = getUriDirectory(file.WebDavServer.UriBasePath, file);
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(downloadUri);
+            httpWebRequest.Method = WebRequestMethods.Http.MkCol.ToString();
+            if (!file.WebDavServer.AnonymousMode)
+                httpWebRequest.Credentials = new NetworkCredential(file.WebDavServer.AuthUsername, file.WebDavServer.AuthPassword);
+            httpWebRequest.GetResponse();
+
+
+            #endregion*/
+
+            #region upload file to directory
+
+
+            httpWebRequest = CreateWebRequest(file, WebRequestMethods.Http.Put);
             if (file.CachedCopy == null)
                 throw new InvalidOperationException("Cannot upload file: no cached data found for this file.");
             httpWebRequest.ContentLength = file.CachedCopy.Blob.Length;
             Stream requestStream = httpWebRequest.GetRequestStream();
             requestStream.Write(file.CachedCopy.Blob, 0, file.CachedCopy.Blob.Length);
             httpWebRequest.GetResponse();
+
+
+            #endregion
+
+            #region index with elastic search engine
+
 
             IElasticService serviceElastic = new ElasticService();
             if (serviceElastic.IsElasticServiceConfigured)
@@ -133,10 +162,27 @@ namespace FSS.Omnius.Modules.Nexus.Service
                 files.Add(file);
                 serviceElastic.Index(files, true);
             }
+
+
+            #endregion
+
         }
-        private Uri getUri(string baseUrl, string appFolder, string filename)
+
+        /*
+        private Uri getUriDirectory(string baseUrl, FileMetadata fmd)
         {
-            string remotePath = String.Format("{0}/{1}/{2}", baseUrl.TrimEnd('/'), appFolder.Trim('/'), filename.TrimStart('/'));
+            string remotePath = String.Format("{0}/{1}/{2}/{3}", baseUrl.TrimEnd('/'), fmd.AppFolderName.Trim('/'), fmd.ModelEntityName.Trim('/'), fmd.Tag.Trim('/'));
+            return new Uri(remotePath);
+        }*/
+
+        private Uri getUri(string baseUrl, FileMetadata fmd)
+        {
+            return getUri(baseUrl, fmd.AppFolderName, fmd.ModelEntityName, fmd.Tag, fmd.Filename, fmd.Id);
+        }
+
+        private Uri getUri(string baseUrl, string appFolder, string modelEntityName, string tag, string filename, int id)
+        {
+            string remotePath = String.Format("{0}/{1}/{4}", baseUrl.TrimEnd('/'), appFolder.Trim('/'), modelEntityName.Trim('/'), tag.Trim('/'), id + "_" + filename.TrimStart('/'));
             return new Uri(remotePath);
         }
     }
