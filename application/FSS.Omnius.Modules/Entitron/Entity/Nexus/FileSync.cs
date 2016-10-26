@@ -55,13 +55,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
         /// <summary>
         /// Název entity, pro kterou platí ModelEntityId
         /// </summary>
-        [Index]
+        //[Index]
+        //[StringLength(20)]
         public string ModelEntityName { get; set; }
 
         /// <summary>
         /// Id entity, jejiž název je ModelEntityName
         /// </summary>
-        [Index]
+        //[Index]
         public int ModelEntityId { get; set; }
 
         /// <summary>
