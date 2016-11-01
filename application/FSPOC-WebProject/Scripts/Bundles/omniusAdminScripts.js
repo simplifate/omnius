@@ -8050,12 +8050,34 @@ var MBE = {
     onBeforeDelete: {},
 
     workspace: null,
+    workspaceDoc: null,
 
     // Inicializace
+    preInit: function ()
+    {
+        setTimeout(function () {
+            var win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
+            MBE.workspaceDoc = win.document ? win.document : win.contentDocument;
+
+            MBE.workspace = $('body', MBE.workspaceDoc);
+            MBE.workspace
+                    .html('')
+                    .css({
+                        'min-width': '100%',
+                        'min-height': '100%'
+                    })
+                    .addClass('mozaicEditorBody')
+                    .parent()
+                        .css({
+                            'width': '100%',
+                            'height': '100%'
+                        });
+            MBE.init();
+        }, 2000);
+    },
+
     init: function()
     {
-        MBE.workspace = $('#mozaicPageWorkspace');
-
         $(document)
             .on('click', 'ul.category li', MBE.toggleCategory)
             .on('dblclick', '.mbe-text-node', MBE.editText)
@@ -8064,7 +8086,15 @@ var MBE = {
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
             .on('keydown', MBE.onKeyDown)
             .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
+            .on('click', '.device-button', MBE.setDevice)
             .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
+        ;
+        $(MBE.workspaceDoc)
+            .on('keydown', MBE.onKeyDown)
+            .on('dblclick', '.mbe-text-node', MBE.editText)
+            .on('blur', '[contenteditable]', MBE.editTextDone)
+            .on('click', '[data-uic]', MBE.onClick)
+            .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
         
         $('ul.category > li ul').hide();
@@ -8085,13 +8115,14 @@ var MBE = {
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            var target = $('.mbe-active');
-            if (target.length && !target.is('[locked]')) {
+            var target = $('.mbe-active', MBE.workspace);
+            if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
                 if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
                     MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
                 }
 
-                $('.mbe-active').remove();
+                $('.mbe-active', MBE.workspace).remove();
+                $('.mbe-drag-handle', MBE.workspace).remove();
                 MBE.path.update.apply(MBE.workspace, []);
                 MBE.DnD.updateDOM();
             }
@@ -8109,8 +8140,6 @@ var MBE = {
         $('> .fa', this).toggleClass('fa-caret-right fa-caret-down');
     },
 
-    // Active state, navigace
-    
     // Editace textu
     editText: function(event)
     {
@@ -8121,8 +8150,8 @@ var MBE = {
 
     editTextDone: function()
     {
-        $('[contenteditable]').attr('contenteditable', false);
-        $('.mbe-text-node > span').each(function() {
+        $('[contenteditable]', MBE.workspace).attr('contenteditable', false);
+        $('.mbe-text-node > span', MBE.workspace).each(function () {
             $(this).parent().html(this.innerHTML);
         });
     },
@@ -8133,6 +8162,13 @@ var MBE = {
         var uic = $(elm).data('uic').split(/\|/);
         var template = uic[1];
         return $('li[data-template="' + template + '"]').text();
+    },
+
+    setDevice: function () {
+        $('.device-button').removeClass('active');
+        $(this).addClass('active');
+
+        $('#mozaicPageWorkspace > iframe').removeClass('xs sm md lg').addClass($(this).attr('data-action'));
     },
 
     toggleFullscreen: function()
@@ -8179,7 +8215,7 @@ var MBE = {
 }
 
 if ($('body').hasClass('mozaicBootstrapEditorModule')) {
-    $(MBE.init);
+    $(MBE.preInit);
 }
 MBE.DnD = {
     
@@ -8200,24 +8236,27 @@ MBE.DnD = {
         var self = MBE.DnD;
 
         self.placeholder = $('#drop-placeholder');
+        self.placeholder.hide();
 
         $('ul.category > li > ul > li').attr('draggable', true);
         $('ul.category > li > ul > li').each(function () {
             $(this).data('type', $(this).parent().data('type'));
         });
 
-        var workspace = '#mozaicPageWorkspace';
-
         $(document)
             .on('dragstart', 'ul.category li[draggable=true]', self._componentDragStart)
             .on('dragstart', '.tree-nav .node-handle[draggable=true]', self._navNodeDragStart)
-            .on('dragstart', '.mbe-drag-handle[draggable=true]', self._uicDragStart)
-            .on('dragover', workspace + ", [data-uic]:not(.dragged)", self._dragOver)
             .on('dragover', '.tree-nav .node:not(.dragged)', self._navNodeDragOver)
-            .on('dragenter', workspace + ", [data-uic]", self._dragEnter)
-            .on('dragleave', workspace + ", [data-uic]", self._dragLeave)
-            .on('drop', workspace + ", [data-uic]", self._workSpaceDrop)
             .on('drop', '.tree-nav .node:not(.dragged)', self._navNodeDrop)
+            .on('dragend dragstop', self._dragEnd)
+        ;
+
+        $(MBE.workspaceDoc)
+            .on('dragover', "body, [data-uic]:not(.dragged)", self._dragOver)
+            .on('dragenter', "body, [data-uic]", self._dragEnter)
+            .on('dragleave', "body, [data-uic]", self._dragLeave)
+            .on('dragstart', '.mbe-drag-handle[draggable=true]', self._uicDragStart)
+            .on('drop', "body, [data-uic]", self._workSpaceDrop)
             .on('dragend dragstop', self._dragEnd)
         ;
     },
@@ -8292,7 +8331,7 @@ MBE.DnD = {
     _uicDragStart: function (event) {
         var e = event.originalEvent;
 
-        MBE.DnD.currentElement = $('.mbe-active');
+        MBE.DnD.currentElement = $('.mbe-active', MBE.workspace);
         MBE.DnD.currentElement.addClass('dragged');
         MBE.DnD.isUICDragging = true;
 
@@ -8309,12 +8348,13 @@ MBE.DnD = {
     _dragOver: function(event)
     {
         event.preventDefault();
-        
+        console.log('call');
         var target = $(this);
         var childs = target.find(' > *');
 
         if (target.is('.dragged') || target.parents('.dragged').length) {
             event.originalEvent.dataTransfer.effectAllowed = 'none';
+            MBE.DnD.placeholder.hide();
             return false;
         }
 
@@ -8336,6 +8376,7 @@ MBE.DnD = {
                 }
             }
         }
+        MBE.DnD.placeholder.show();
 
         return false;
     },
@@ -8441,9 +8482,11 @@ MBE.DnD = {
     {
         $('body').removeClass('dragging');
         $('.drag-over').removeClass('drag-over');
+        $('.drag-over', MBE.workspace).removeClass('drag-over');
         $('.drag-ghost').remove();
 
-        MBE.workspace.after(MBE.DnD.placeholder);
+        $('#mozaicPageWorkspace').after(MBE.DnD.placeholder);
+        MBE.DnD.placeholder.hide();
 
         if (MBE.DnD.isNavNodeDragging) {
             MBE.DnD.currentElement.removeClass('dragged');
@@ -8464,12 +8507,18 @@ MBE.DnD = {
 
     updateDOM: function()
     {
-        $('[data-uic]').removeClass('empty-element');
-        $('[data-uic]:not(input, select, hr, img, .caret, li.divider):empty').addClass('empty-element');
+        $('[data-uic]', MBE.workspace).removeClass('empty-element');
+        $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
         MBE.workspace.find('*').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
         }).wrap('<span class="mbe-text-node" />');
+
+        MBE.workspace.find('.has-feedback').each(function() {
+            if (!$(this).find('.form-control-feedback').length) {
+                $(this).removeClass('has-feedback');
+            }
+        })
 
         MBE.DnD.callListeners('onDOMUpdate', MBE.workspace[0]);
 
@@ -8615,8 +8664,8 @@ MBE.selection = {
 
     init: function()
     {
-        $(document)
-            .on('click', '[data-uic], #mozaicPageWorkspace', MBE.selection.select)
+        $(MBE.workspaceDoc)
+            .on('click', '[data-uic], body', MBE.selection.select)
         ;
 
         MBE.DnD.onDOMUpdate.push(MBE.selection._update);
@@ -8629,7 +8678,7 @@ MBE.selection = {
         }
 
         MBE.workspace.find('.mbe-active').removeClass('mbe-active');
-        $('.mbe-drag-handle').remove();
+        $('.mbe-drag-handle', MBE.workspace).remove();
         MBE.selection.selectElement(this);
 
         for(var i = 0; i < MBE.selection.onSelect.length; i++) {
@@ -8648,15 +8697,15 @@ MBE.selection = {
                     top: elm.offset().top - 4,
                     left: elm.offset().left - 4
                 });
-                $('body').append(handle);
+                MBE.workspace.append(handle);
             }
         }
     },
 
     _update: function () {
-        var elm = $('.mbe-active');
+        var elm = $('.mbe-active', MBE.workspace);
         if (elm.length) {
-            $('.mbe-drag-handle').css({
+            $('.mbe-drag-handle', MBE.workspace).css({
                 top: elm.offset().top - 4,
                 left: elm.offset().left - 4
             });
@@ -8794,7 +8843,7 @@ MBE.options = {
         return true;
     },
 
-    createCheckBoxList: function(opt) {
+    createCheckBoxList: function(opt, isCollapsed) {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
@@ -8815,20 +8864,25 @@ MBE.options = {
             group.append(lb);
             group.append('<br>');
         }
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
         return group;
     },
 
-    createSelect: function(opt)
+    createSelect: function(opt, isCollapsed)
     {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
-        var group = $('<div class="option-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var lb = $('<label>' + opt.label + '</label>');
-        var sel = $('<select></select>');
+        var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
+        var sel = $('<select class="form-control input-sm"></select>');
         for (var k in opt.options) {
             sel.append('<option value="' + k + '"' + (opt.get(k, opt) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
         };
@@ -8843,20 +8897,27 @@ MBE.options = {
 
         group.append(lb);
         group.append(sel);
+
+        sel.wrap('<div class="col-xs-10"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
         return group;
     },
 
-    createText: function(opt)
+    createText: function(opt, isCollapsed)
     {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
-        var group = $('<div class="option-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var lb = $('<label>' + opt.label + '</label>');
-        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '">');
+        var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
+        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '" class="form-control input-sm">');
         
         if(typeof opt.attr != 'undefined') {
             inp.data('attr', opt.attr);
@@ -8874,27 +8935,138 @@ MBE.options = {
 
         group.append(lb);
         group.append(inp);
+
+        inp.wrap('<div class="col-xs-10"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
+        return group;
+    },
+
+    createIcon: function (opt, isCollapsed)
+    {
+        if (!MBE.options.isAllowed(opt)) {
+            return '';
+        }
+
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var set = opt.set;
+
+        var lb = $('<label class="col-xs-2 control-label">' + opt.label + '</label>');
+       
+        var active = '';
+        var iconList = {};
+        var sSheetList = document.styleSheets;
+
+        for (var f in opt.fontSets)
+        {
+            var list = $('<div class="icon-list col-xs-12 font-set-' + f + '"></div>');
+
+            for (var sSheet = 0; sSheet < sSheetList.length; sSheet++) {
+                var ruleList = document.styleSheets[sSheet].cssRules;
+                for (var rule = 0; rule < ruleList.length; rule++) {
+                    var text = ruleList[rule].selectorText;
+                    var rx = new RegExp('^\.(' + f + '-[^ ]+)::before$');
+                    if (m = rx.exec(text)) {
+                        var btn = $('<a href="#"></a>');
+                        btn.append('<span class="' + f + ' ' + m[1] + '"></span>');
+                        btn.append('<span class="icon-name">' + f + ' ' + m[1] + '</span>');
+                        list.append(btn);
+
+                        var test = '.' + f + '.' + m[1];
+                        if ($(MBE.options.target).is(test)) {
+                            btn.addClass('active');
+                            active = f;
+                        }
+                    }
+                }
+            }
+            list.on('click', 'a', function () {
+                set.apply(MBE.options.target, [this]);
+                return false;
+            });
+            iconList[f] = list;
+        }
+
+        var search = $('<input type="text" value="" placeholder="Find icon..." class="form-control input-sm">');
+
+        search.on('input', function () {
+            var text = this.value;
+            if (text.length) {
+                $('.icon-list').find('a').hide().each(function () {
+                    if ($('.icon-name', this).text().indexOf(text) != -1) {
+                        $(this).show();
+                    }
+                });
+            }
+            else {
+                $('.icon-list').find('a').show();
+            }
+        });
+
+        var sets = $('<select class="form-control input-sm"></select>');
+
+        for (f in opt.fontSets) {
+            var option = $('<option></option>');
+            option.val(f).html(opt.fontSets[f]).appendTo(sets);
+
+            if (active == f) {
+                option.attr('selected', true);
+                iconList[f].show();
+            }
+            else {
+                iconList[f].hide();
+            }
+        }
+
+        sets.change(function () {
+            $('[class*="font-set-"]').hide();
+            $('.font-set-' + this.value).show();
+        });
+        
+        group.append(lb);
+        group.append(sets);
+        group.append(search);
+        group.append('<div class="clearfix"></div>');
+        for (var f in iconList) {
+            group.append(iconList[f]);
+        }
+
+        sets.wrap('<div class="col-xs-4"></div>');
+        search.wrap('<div class="col-xs-6"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+        
         return group;
     },
 
     createOptions: function(opt)
     {
         var self = MBE.options;
+        var isCollapsed = typeof opt.state != 'undefined' && opt.state == 'collapsed';
 
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
         var f = $('<fieldset />');
-        f.append('<legend><span class="fa fa-caret-down fa-fw"></span>' + opt.name + '</legend>');
+        f.append('<legend><span class="fa fa-caret-'+(isCollapsed ? 'right' : 'down')+' fa-fw"></span>' + opt.name + '</legend>');
 
         switch (opt.type) {
             case 'boolean': {
-                f.append(self.createCheckBoxList(opt));        
+                f.append(self.createCheckBoxList(opt, isCollapsed));        
                 break;
             }
             case 'select': {
-                f.append(self.createSelect(opt));
+                f.append(self.createSelect(opt, isCollapsed));
+                break;
+            }
+            case 'icon': {
+                f.append(self.createIcon(opt, isCollapsed));
                 break;
             }
             case 'group': {
@@ -8902,16 +9074,20 @@ MBE.options = {
                     var item = opt.groupItems[i];
                     switch(item.type) {
                         case 'boolean': {
-                            f.append(self.createCheckBoxList(item));
+                            f.append(self.createCheckBoxList(item, isCollapsed));
                             break;
                         }
                         case 'select': {
-                            f.append(self.createSelect(item));
+                            f.append(self.createSelect(item, isCollapsed));
                             break;
                         }
                         case 'number':
                         case 'text': {
-                            f.append(self.createText(item));
+                            f.append(self.createText(item, isCollapsed));
+                            break;
+                        }
+                        case 'icon': {
+                            f.append(self.createIcon(item, isCollapsed));
                             break;
                         }
                     }
@@ -9007,6 +9183,16 @@ MBE.options = {
         $(this).replaceWith(newTag);
         MBE.options.target = newTag[0];
         MBE.DnD.updateDOM();
+    },
+
+    setIcon: function (icon) {
+        var elm = $(this);
+        var currentClass = $('.icon-list a.active .icon-name').text();
+        var newClass = $('.icon-name', icon).text();
+
+        elm.removeClass(currentClass).addClass(newClass);
+        $('.icon-list .active').removeClass('active');
+        $(icon).addClass('active');
     }
 };
 
@@ -9035,7 +9221,8 @@ MBE.options.common = {
             'hidden-lg': 'hidden-lg'
         },
         set: MBE.options.toggleClass,
-        get: MBE.options.hasClass
+        get: MBE.options.hasClass,
+        state: 'collapsed',
     },
 
     accessibility: {
@@ -9048,7 +9235,8 @@ MBE.options.common = {
             'sr-only': 'sr-only'
         },
         set: MBE.options.toggleClass,
-        get: MBE.options.hasClass
+        get: MBE.options.hasClass,
+        state: 'collapsed'
     }
 };
 
@@ -9118,7 +9306,7 @@ MBE.onInit.push(MBE.toolbar.init);
 MBE.types.containers = {
 
     templates: {
-        'container': '<div class="container-fluid"></div>',
+        'container': '<div class="container"></div>',
         'panel': '<div class="panel panel-default">' +
                     '<div class="panel-heading" data-uic="containers|panel-heading" locked>' +
                         '<h3 class="panel-title" data-uic="text|heading">Panel title</h3>' +
@@ -9826,7 +10014,10 @@ MBE.types.text = {
             'textOptions': {
                 name: 'Text options',
                 type: 'group',
-                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                allowFor: [
+                    'heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                    'th', 'td', 'breadcrumbs-active', 'breadcrumbs-inactive'
+                ],
                 groupItems: [{
                     type: 'select',
                     label: 'Alignment',
@@ -9843,7 +10034,10 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Transformation',
-                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                    allowFor: [
+                        'heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                        'th', 'td', 'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'None',
                         'text-lowercase': 'Lowercase',
@@ -9855,7 +10049,10 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Color',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                    allowFor: [
+                        'heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td',
+                        'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'Default',
                         'text-muted': 'Muted',
@@ -9870,7 +10067,10 @@ MBE.types.text = {
                 }, {
                     type: 'select',
                     label: 'Background',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption'],
+                    allowFor: [
+                        'heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                        'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'Default',
                         'bg-primary': 'Primary',
@@ -9898,6 +10098,7 @@ MBE.types.image = {
 
     templates: {
         'image': '<img src="" width="80" height="80" alt="">',
+        'icon': '<span class="fa fa-star"></span>',
         'figure': '<figure></figure>',
         'figcaption': '<figcaption>Caption</figcaption>'
     },
@@ -9950,6 +10151,18 @@ MBE.types.image = {
                     },
                     get: MBE.options.hasClass,
                     set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'icon': {
+            'iconOptions': {
+                name: 'Icon options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Icon',
+                    type: 'icon',
+                    fontSets: { 'fa': 'Font Awesome', 'glyphicon': 'Glyphicons' },
+                    set: MBE.options.setIcon
                 }]
             }
         }
@@ -10808,7 +11021,8 @@ MBE.types.form = {
         'fieldset': '<fieldset><legend data-uic="form|legend" locked>Field group</legend></fieldset>',
         'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
-        'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
+        'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>',
+        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
     },
 
     options: {
@@ -11013,6 +11227,18 @@ MBE.types.form = {
                 }]
             }
         },
+        'form-control-feedback': {
+            'formControlFeedbackOptions': {
+                name: 'Form control feedback options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Icon',
+                    type: 'icon',
+                    fontSets: { 'glyphicon': 'Glyphicons' },
+                    set: MBE.options.setIcon
+                }]
+            }
+        },
 
         common: {
             'mainOptions': {
@@ -11180,6 +11406,9 @@ MBE.types.form = {
         if (target.is('.input-group-btn') && !$(this).is('input, button, select, div')) {
             target.toggleClass('input-group-addon input-group-btn');
         }
+        if ($(this).is('.form-control-feedback')) {
+            target.addClass('has-feedback');
+        }
     },
 
     _domUpdate: function () {
@@ -11218,7 +11447,11 @@ MBE.types.misc = {
         'responsive-embed': '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src=""></iframe></div>',
         'progressBar': '<div class="progress">' + 
                             '<div class="progress-bar" role="progressbar" style="min-width:2em; width:0%"></div>' +
-                        '</div>'
+                        '</div>',
+        'breadcrumbs': '<ol class="breadcrumb"></ol>',
+        'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
+        'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
+        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>'
     },
 
     options: {
@@ -11323,6 +11556,150 @@ MBE.types.misc = {
                     set: MBE.options.toggleClass
                 }]
             }
+        },
+        'breadcrumbs-item': {
+            'breadcrumbsItemOptions': {
+                name: 'Breadcrumbs item options',
+                type: 'boolean',
+                options: {
+                    'active': 'Active'
+                },
+                get: MBE.options.hasClass,
+                set: function (opt) {
+                    $(this).toggleClass(opt.value);
+                    var item = $(this).find('a[locked], span[locked]').eq(0);
+                    if (opt.checked) {
+                        var span = $(MBE.types.misc.templates['breadcrumbs-active']);
+                        span.html(item.html());
+                        item.replaceWith(span);
+                    }
+                    else {
+                        var link = $(MBE.types.misc.templates['breadcrumbs-inactive']);
+                        link.html(item.html());
+                        item.replaceWith(link);
+                    }
+                    MBE.DnD.updateDOM();
+                }
+            }
+        },
+        'breadcrumbs-inactive': MBE.types.controls.options.link,
+        'breadcrumbs-active': MBE.types.text.options.common
+    },
+
+    init: function() 
+    {
+        var self = MBE.types.misc;
+        var menu = MBE.toolbar.menu;
+
+        MBE.DnD.onDrop.push(self._drop);
+
+        menu.misc = {};
+        menu.misc.breadcrumbs = {
+            items: [
+                { type: 'text', label: 'Add item' },
+                { type: 'button', label: 'BEFORE', callback: self.bcAddBefore, allowFor: self.bcIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.bcAddAfter, allowFor: self.bcIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.bcAddToBegin },
+                { type: 'button', label: 'END', callback: self.bcAddToEnd },
+                { type: 'text', label: 'Item' },
+                { type: 'button', label: 'ACTIVATE', callback: self.bcActivate, allowFor: self.bcIsInactiveItemSelected },
+                { type: 'button', label: 'DEACTIVATE', callback: self.bcDeactivate, allowFor: self.bcIsActiveItemSelected },
+                { type: 'button', label: 'DELETE', callback: self.bcDelete, allowFor: self.bcIsItemSelected }
+            ]
         }
-    }
+        menu.misc['breadcrumbs-item'] = menu.misc.breadcrumbs;
+        menu.misc['breadcrumbs-active'] = menu.misc.breadcrumbs;
+        menu.misc['breadcrumbs-inactive'] = menu.misc.breadcrumbs;
+    },
+
+    _drop: function(target)
+    {
+        if ($(this).is('[data-uic="misc|breadcrumbs"]') && $(this).is(':empty')) {
+            MBE.types.misc.buildBreadCrumbs.apply(this, []);
+        }
+    },
+
+    /*****************************************************/
+    /* BREAD CRUMBS CONTEXT METHODS                      */
+    /*****************************************************/
+    buildBreadCrumbs: function ()
+    {
+        var self = MBE.types.misc;
+        var elm = $(this);
+        var linkNames = ['Home', 'Library', 'Data'];
+
+        for (var i = 0; i < linkNames.length; i++) {
+            var link = $(MBE.types.misc.templates['breadcrumbs-inactive']);
+            var item = $(self.templates['breadcrumbs-item']);
+
+            link.html(linkNames[i]).appendTo(item);
+            elm.append(item);
+        }
+    },
+
+    bcGetItem: function() {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]') ? $(this) : $(this).parents('[data-uic="misc|breadcrumbs-item"]').eq(0);
+    },
+
+    bcIsItemSelected: function () {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]') || $(this).parent().is('[data-uic="misc|breadcrumbs-item"]');
+    },
+
+    bcIsActiveItemSelected: function () {
+        return $(this).is('.active[data-uic="misc|breadcrumbs-item"]') || $(this).parent().is('.active[data-uic="misc|breadcrumbs-item"]');
+    },
+
+    bcIsInactiveItemSelected: function () {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]:not(.active)') || $(this).parent().is('[data-uic="misc|breadcrumbs-item"]:not(.active)');
+    },
+
+    bcDelete: function () {
+        var target = MBE.types.misc.bcGetItem.apply(this, []);
+        if (target.length) {
+            target.remove();
+            $('.mbe-drag-handle').remove();
+            MBE.DnD.updateDOM();
+        }
+    },
+
+    bcToggleState: function (state) {
+        var self = MBE.types.misc;
+        var item = self.bcGetItem.apply(this, []);
+        var target = $('> a, > span', item);
+        var replace = $(self.templates['breadcrumbs-' + state]);
+
+        replace.html(target.html());
+        target.replaceWith(replace);
+
+        item.toggleClass('active');
+        MBE.DnD.updateDOM();
+
+        MBE.selection.select.apply(item.is('.mbe-active') ? item[0] : replace[0], []);
+    },
+
+    bcAdd: function(pos) {
+        var self = MBE.types.misc;
+        var target = $(this).is('.breadcrumb') ? $(this) : $(this).parents('.breadcrumb').eq(0);
+        var item = $(self.templates['breadcrumbs-item']);
+        var link = $(self.templates['breadcrumbs-inactive']);
+
+        link.html('Item').appendTo(item);
+        switch (pos) {
+            case 'before': self.bcGetItem.apply(this).before(item); break;
+            case 'after': self.bcGetItem.apply(this).after(item); break;
+            case 'begin': target.prepend(item); break;
+            case 'end': target.append(item); break;
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    bcActivate: function () { MBE.types.misc.bcToggleState.apply(this, ['active']); },
+    bcDeactivate: function () { MBE.types.misc.bcToggleState.apply(this, ['inactive']); },
+
+    bcAddBefore: function () { MBE.types.misc.bcAdd.apply(this, ['before']); },
+    bcAddAfter: function () { MBE.types.misc.bcAdd.apply(this, ['after']); },
+    bcAddToBegin: function () { MBE.types.misc.bcAdd.apply(this, ['begin']); },
+    bcAddToEnd: function() { MBE.types.misc.bcAdd.apply(this, ['end']); },
 }
+
+MBE.onInit.push(MBE.types.misc.init);

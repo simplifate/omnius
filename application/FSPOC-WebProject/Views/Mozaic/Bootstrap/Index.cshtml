@@ -84,7 +84,7 @@
                     <li>Image
                         <ul data-type="image">
                             <li data-template="image">Image</li>
-                            <li>Icon</li>
+                            <li data-template="icon">Icon</li>
                             <!--li>Carousel</li-->
                             <li data-template="figure">Figure</li>
                             <li data-template="figcaption">Figcaption</li>
@@ -124,11 +124,11 @@
                             <li data-template="tab-content" class="hide">Tab content</li>
                             <li data-template="tab-pane" class="hide">Tab pane</li>
                             <li data-template="accordion">Accordion</li>
-                            <li>Collapse</li>
+                            <!--li>Collapse</li>
                             <li>List group</li>
                             <li>Media</li>
                             <li>Jumbotron</li>
-                            <li>Thumbnail</li>
+                            <li>Thumbnail</li-->
                             <li data-template="well">Well</li>
                             <li data-template="list">List</li>
                             <li data-template="list-item" class="hide">List item</li>
@@ -137,8 +137,8 @@
                     </li>
                     <li>Page
                         <ul data-type="page">
-                            <li>Navbar</li>
-                            <li>Nav</li>
+                            <!--li>Navbar</li>
+                            <li>Nav</li-->
                             <li data-template="page-header">Page header</li>
                             <li data-template="header">Header</li>
                             <li data-template="footer">Footer</li>
@@ -148,12 +148,12 @@
                             <li data-template="aside">Aside</li>
                         </ul>
                     </li>
-                    <li>Pagination
+                    <!--li>Pagination
                         <ul>
                             <li>Pagination</li>
                             <li>Pager</li>
                         </ul>
-                    </li>
+                    </li-->
                     <li>Table
                         <ul data-type="table">
                             <li data-template="table">Table</li>
@@ -191,7 +191,7 @@
                             <li data-template="checkbox-label">Checkbox with label</li>
                             <li data-template="radio">Radio</li>
                             <li data-template="radio-label">Radio with label</li>
-                            <li>Form control feedback</li>
+                            <li data-template="form-control-feedback">Form control feedback</li>
                             <li data-template="static-control">Static control</li>
                             <li data-template="textarea">Textarea</li>
                             <li data-template="help-text">Help text block</li>
@@ -212,7 +212,10 @@
                             <li data-template="tag">Label</li>
                             <li data-template="caret">Caret</li>
                             <li data-template="close">Close</li>
-                            <li>Breadcrumbs</li>
+                            <li data-template="breadcrumbs">Breadcrumbs</li>
+                            <li data-template="breadcrumbs-item" class="hide">Breadcrumbs item</li>
+                            <li data-template="breadcrumbs-active" class="hide">Span</li>
+                            <li data-template="breadcrumbs-inactive" class="hide">Link</li>
                             <li data-template="hr">Hr</li>
                             <li data-template="responsive-embed">Responsive embed</li>
                             <li data-template="progressBar">Progress bar</li>
@@ -235,6 +238,10 @@
             <nav class="navbar">
                 <div class="container-fluid" id="mozaicPageContextToolbar">
                     <div class="toolbar pull-right">
+                        <button type="button" data-action="xs" title="Extra small device" class="btn navbar-btn device-button"><span class="fa fa-mobile fa-fw"></span></button>
+                        <button type="button" data-action="sm" title="Small device" class="btn navbar-btn device-button"><span class="fa fa-tablet fa-fw"></span></button>
+                        <button type="button" data-action="md" title="Medium device" class="btn navbar-btn device-button active"><span class="fa fa-laptop fa-fw"></span></button>
+                        <button type="button" data-action="lg" title="Large device" class="btn navbar-btn device-button"><span class="fa fa-desktop fa-fw"></span></button>
                         <button type="button" data-action="fullscreen" title="Fullscreen" class="btn navbar-btn"><span class="fa fa-arrows-alt fa-fw"></span></button>
                     </div>
                     <div class="toolbar pull-left"></div>
@@ -254,7 +261,7 @@
             </div>
         </div>
         <div id="mozaicPageWorkspace">
-
+            <iframe src="/Mozaic/Bootstrap/Workspace" class="md"></iframe>
         </div>
         <div id="drop-placeholder"></div>
         <div id="modalSizeVisualization"></div>

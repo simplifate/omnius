@@ -4,8 +4,8 @@
 
     init: function()
     {
-        $(document)
-            .on('click', '[data-uic], #mozaicPageWorkspace', MBE.selection.select)
+        $(MBE.workspaceDoc)
+            .on('click', '[data-uic], body', MBE.selection.select)
         ;
 
         MBE.DnD.onDOMUpdate.push(MBE.selection._update);
@@ -18,7 +18,7 @@
         }
 
         MBE.workspace.find('.mbe-active').removeClass('mbe-active');
-        $('.mbe-drag-handle').remove();
+        $('.mbe-drag-handle', MBE.workspace).remove();
         MBE.selection.selectElement(this);
 
         for(var i = 0; i < MBE.selection.onSelect.length; i++) {
@@ -37,15 +37,15 @@
                     top: elm.offset().top - 4,
                     left: elm.offset().left - 4
                 });
-                $('body').append(handle);
+                MBE.workspace.append(handle);
             }
         }
     },
 
     _update: function () {
-        var elm = $('.mbe-active');
+        var elm = $('.mbe-active', MBE.workspace);
         if (elm.length) {
-            $('.mbe-drag-handle').css({
+            $('.mbe-drag-handle', MBE.workspace).css({
                 top: elm.offset().top - 4,
                 left: elm.offset().left - 4
             });

@@ -1,7 +1,7 @@
 ﻿MBE.types.containers = {
 
     templates: {
-        'container': '<div class="container-fluid"></div>',
+        'container': '<div class="container"></div>',
         'panel': '<div class="panel panel-default">' +
                     '<div class="panel-heading" data-uic="containers|panel-heading" locked>' +
                         '<h3 class="panel-title" data-uic="text|heading">Panel title</h3>' +

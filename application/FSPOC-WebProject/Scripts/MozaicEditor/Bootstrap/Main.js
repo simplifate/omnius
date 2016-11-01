@@ -8,12 +8,34 @@
     onBeforeDelete: {},
 
     workspace: null,
+    workspaceDoc: null,
 
     // Inicializace
+    preInit: function ()
+    {
+        setTimeout(function () {
+            var win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
+            MBE.workspaceDoc = win.document ? win.document : win.contentDocument;
+
+            MBE.workspace = $('body', MBE.workspaceDoc);
+            MBE.workspace
+                    .html('')
+                    .css({
+                        'min-width': '100%',
+                        'min-height': '100%'
+                    })
+                    .addClass('mozaicEditorBody')
+                    .parent()
+                        .css({
+                            'width': '100%',
+                            'height': '100%'
+                        });
+            MBE.init();
+        }, 2000);
+    },
+
     init: function()
     {
-        MBE.workspace = $('#mozaicPageWorkspace');
-
         $(document)
             .on('click', 'ul.category li', MBE.toggleCategory)
             .on('dblclick', '.mbe-text-node', MBE.editText)
@@ -22,7 +44,15 @@
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
             .on('keydown', MBE.onKeyDown)
             .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
+            .on('click', '.device-button', MBE.setDevice)
             .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
+        ;
+        $(MBE.workspaceDoc)
+            .on('keydown', MBE.onKeyDown)
+            .on('dblclick', '.mbe-text-node', MBE.editText)
+            .on('blur', '[contenteditable]', MBE.editTextDone)
+            .on('click', '[data-uic]', MBE.onClick)
+            .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
         
         $('ul.category > li ul').hide();
@@ -43,13 +73,14 @@
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            var target = $('.mbe-active');
-            if (target.length && !target.is('[locked]')) {
+            var target = $('.mbe-active', MBE.workspace);
+            if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
                 if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
                     MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
                 }
 
-                $('.mbe-active').remove();
+                $('.mbe-active', MBE.workspace).remove();
+                $('.mbe-drag-handle', MBE.workspace).remove();
                 MBE.path.update.apply(MBE.workspace, []);
                 MBE.DnD.updateDOM();
             }
@@ -67,8 +98,6 @@
         $('> .fa', this).toggleClass('fa-caret-right fa-caret-down');
     },
 
-    // Active state, navigace
-    
     // Editace textu
     editText: function(event)
     {
@@ -79,8 +108,8 @@
 
     editTextDone: function()
     {
-        $('[contenteditable]').attr('contenteditable', false);
-        $('.mbe-text-node > span').each(function() {
+        $('[contenteditable]', MBE.workspace).attr('contenteditable', false);
+        $('.mbe-text-node > span', MBE.workspace).each(function () {
             $(this).parent().html(this.innerHTML);
         });
     },
@@ -91,6 +120,13 @@
         var uic = $(elm).data('uic').split(/\|/);
         var template = uic[1];
         return $('li[data-template="' + template + '"]').text();
+    },
+
+    setDevice: function () {
+        $('.device-button').removeClass('active');
+        $(this).addClass('active');
+
+        $('#mozaicPageWorkspace > iframe').removeClass('xs sm md lg').addClass($(this).attr('data-action'));
     },
 
     toggleFullscreen: function()
@@ -137,5 +173,5 @@
 }
 
 if ($('body').hasClass('mozaicBootstrapEditorModule')) {
-    $(MBE.init);
+    $(MBE.preInit);
 }

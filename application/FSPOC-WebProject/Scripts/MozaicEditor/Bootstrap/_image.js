@@ -2,6 +2,7 @@
 
     templates: {
         'image': '<img src="" width="80" height="80" alt="">',
+        'icon': '<span class="fa fa-star"></span>',
         'figure': '<figure></figure>',
         'figcaption': '<figcaption>Caption</figcaption>'
     },
@@ -54,6 +55,18 @@
                     },
                     get: MBE.options.hasClass,
                     set: MBE.options.toggleClass
+                }]
+            }
+        },
+        'icon': {
+            'iconOptions': {
+                name: 'Icon options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Icon',
+                    type: 'icon',
+                    fontSets: { 'fa': 'Font Awesome', 'glyphicon': 'Glyphicons' },
+                    set: MBE.options.setIcon
                 }]
             }
         }

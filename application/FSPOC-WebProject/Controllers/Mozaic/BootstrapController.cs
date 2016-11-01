@@ -36,5 +36,11 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 return View();
             }
         }
+
+        // GET: Workspace
+        public ActionResult Workspace()
+        {
+            return View("Workspace");
+        }
     }
 }

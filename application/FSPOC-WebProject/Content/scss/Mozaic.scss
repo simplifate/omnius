@@ -619,6 +619,10 @@ body.mozaicEditorModule {
 
 .mozaicBootstrapEditorModule {
     
+    #mozaicLeftBar {
+        overflow-y: auto !important;
+    }
+
     #lowerPanel.fullscreen {
         position: fixed;
         left: 0px;
@@ -647,17 +651,6 @@ body.mozaicEditorModule {
                 }   
             }
         }
-    }
-
-    .mbe-drag-handle {
-        width: 8px;
-        height: 8px;
-        position: absolute;
-        left: -4px;
-        top: -4px;
-        background: blue;
-        border-radius: 100%;
-        cursor: move;
     }
 
     #mozaicPageContainer {
@@ -750,6 +743,7 @@ body.mozaicEditorModule {
 
                 #drop-placeholder {
                     height: 0px;
+                    display: block !important;
                     outline: 1px solid blue;
                 }
             }
@@ -760,26 +754,28 @@ body.mozaicEditorModule {
             left: 12px;
             right: 252px;
             top: 95px;
-            padding: 20px 0px 20px;
+            padding: 20px 20px 20px;
             bottom: 0px;
+            background: #efefef;
+            text-align: center;
 
-            #drop-placeholder {
-                height: 0px;
-                outline: 1px solid blue;
-            }
-
-            .embed-responsive iframe {
-                background: #eee;
-            }
-
-            .container, .container-fluid {
-               border: 1px dashed #01a1f7;
-            }
-            .container, .container-fluid, .row {
-                padding-top: 8px;
-                padding-bottom: 8px;
-                margin-top: 5px;
-                margin-bottom: 5px;
+            > iframe {
+                width: 100%;
+                height: 100%;
+                margin: 0px auto;
+                border: none;
+                &.xs {
+                    max-width: 500px;
+                }
+                &.sm {
+                    max-width: 800px;
+                }
+                &.md {
+                    max-width: 1100px;
+                }
+                &.lg {
+                    min-width: 1200px;
+                }
             }
         }
 
@@ -810,72 +806,6 @@ body.mozaicEditorModule {
                 }
             }
         }
-
-        .mbe-active {
-            outline: 1px solid blue;
-            position: relative;
-            > .mbe-drag-handle {
-                display: block;
-            }
-        }
-
-        @mixin empty($selector, $content) {
-            #{$selector}.empty-element:before {
-                content: $content;
-            }
-        }
-
-        .empty-element:before {
-            display: block;
-            background: #efefef;
-            color: #ccc;
-            padding: 5px 10px;
-            content: "empty item";  
-        }
-
-        @include empty('.container', 'empty container');
-        @include empty('.container-fluid', 'empty-container');
-        @include empty('.row', 'empty row');
-        @include empty('div[class*="col-"]', 'empty column');
-        @include empty('header', 'empty header');
-        @include empty('footer', 'empty footer');
-        @include empty('hgroup', 'empty hgroup');
-        @include empty('section', 'empty section');
-        @include empty('article', 'empty article');
-        @include empty('aside', 'empty aside');
-        @include empty('.clearfix', 'empty clearfix');
-        @include empty('form', 'empty form');
-        @include empty('.form-group', 'empty form group');
-        @include empty('figure', 'empty figure');
-        @include empty('.input-group-addon', 'empty addon');
-        @include empty('.input-group-btn', 'empty addon');
-        @include empty('.checkbox', 'empty checkbox group');
-        @include empty('.checkbox-inline', 'empty checkbox group');
-        @include empty('.radio', 'empty radio group');
-        @include empty('.radio-inline', 'empty checkbox group');
-        @include empty('.panel-heading', 'empty panel heading');
-        @include empty('.panel-body', 'empty panel body');
-        @include empty('.panel-footer', 'empty panel footer');
-        @include empty('[data-uic="containers|div"]', 'empty div');
-        @include empty('.well', 'empty well');
-        @include empty('tr', 'empty table row');
-        @include empty('td', 'empty cell');
-        @include empty('th', 'empty cell');
-
-        .input-group-addon, .input-group-btn {
-            &.empty-element:before {
-                padding: 0px;
-            }
-        }
-
-        div.clearfix.empty-element:before {
-            font-size: 6px;
-            padding: 1px 10px;
-        }
-
-        .dragged[data-uic] {
-            opacity: 0.5;
-        }
     }
 
     .dialog-options {
@@ -891,20 +821,99 @@ body.mozaicEditorModule {
             margin-top: 10px;
         }
         .option-group {
-             label {
+            margin-bottom: 10px;
+            float: left;
+            width: 100%;
+            label {
                 font-weight: normal;
-                font-size: 0.8em;
-                width: 200px;
             }
             select {
                 min-width: 100px;
             }
+            .icon-list {
+                margin-top: 15px;
+            }
+        }
+
+        .icon-list {
+            max-height: 280px;
+            overflow: auto;
+
+            &::-webkit-scrollbar {
+                height: 5px;
+                width: 5px;
+                background: #eee;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #393812;
+            }
+
+            &::-webkit-scrollbar-corner {
+                background: #000;
+            }
+
+            a {
+                display: inline-block;
+                vertical-align: top;
+                width: 20%;
+                height: 90px;
+                text-align: center;
+                padding: 10px;
+                .fa, .glyphicon {
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 1.2em;
+                    margin-bottom: 8px;
+                }
+                .icon-name {
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 0.7em;
+                }
+                &:hover {
+                    background: #eef9fe;
+                }
+                &.active {
+                    background: #d9f2fe;
+                }
+            }
         }
     }
 
-    .drag-over {
-        outline: 2px dashed #aaa;
+    .toolbar.pull-left {
+        .btn {
+            text-transform: lowercase;
+        }
     }
+
+    .toolbar.pull-right {
+        .btn {
+            height: 27px;
+            padding-bottom: 0px !important;
+            padding-top: 0px !important;
+            line-height: 25px;
+            .fa {
+                line-height: 25px !important;
+                &.fa-mobile {
+                    font-size: 1.6em;
+                }
+                &.fa-tablet {
+                    font-size: 1.6em;
+                    vertical-align: -4px;
+                }
+                &.fa-laptop {
+                    font-size: 1.6em;
+                    vertical-align: -4px;
+                }
+                &.fa-desktop {
+                    font-size: 1.3em;
+                    vertical-align: -2px;
+                }
+            }
+        }
+    }
+
     .drag-ghost {
         display: block;
         width: 20px;
@@ -912,3 +921,103 @@ body.mozaicEditorModule {
         background: rgba(0, 0, 0, 0.75);
     }
 }
+
+#drop-placeholder {
+    display: none;
+    height: 0px;
+    outline: 1px solid blue;
+}
+
+body.mozaicEditorBody {
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently */
+    box-sizing: border-box;
+    padding: 5px;
+
+    #drop-placeholder {
+        display: block;
+    }
+
+    .drag-over {
+        outline: 2px dashed #aaa;
+    }
+
+    .mbe-drag-handle {
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        left: -4px;
+        top: -4px;
+        background: blue;
+        border-radius: 100%;
+        cursor: move;
+    }
+
+    .embed-responsive iframe {
+        background: #eee;
+    }
+    
+    .mbe-active {
+        outline: 1px solid blue;
+    }
+
+    @mixin empty($selector, $content) {
+        #{$selector}.empty-element:before {
+            content: $content;
+        }
+    }
+
+    .empty-element:before {
+        display: block;
+        background: #efefef;
+        color: #ccc;
+        padding: 5px 10px;
+        content: "empty item";  
+    }
+
+    @include empty('.container', 'empty container');
+    @include empty('.container-fluid', 'empty-container');
+    @include empty('.row', 'empty row');
+    @include empty('div[class*="col-"]', 'empty column');
+    @include empty('header', 'empty header');
+    @include empty('footer', 'empty footer');
+    @include empty('hgroup', 'empty hgroup');
+    @include empty('section', 'empty section');
+    @include empty('article', 'empty article');
+    @include empty('aside', 'empty aside');
+    @include empty('.clearfix', 'empty clearfix');
+    @include empty('form', 'empty form');
+    @include empty('.form-group', 'empty form group');
+    @include empty('figure', 'empty figure');
+    @include empty('.input-group-addon', 'empty addon');
+    @include empty('.input-group-btn', 'empty addon');
+    @include empty('.checkbox', 'empty checkbox group');
+    @include empty('.checkbox-inline', 'empty checkbox group');
+    @include empty('.radio', 'empty radio group');
+    @include empty('.radio-inline', 'empty checkbox group');
+    @include empty('.panel-heading', 'empty panel heading');
+    @include empty('.panel-body', 'empty panel body');
+    @include empty('.panel-footer', 'empty panel footer');
+    @include empty('[data-uic="containers|div"]', 'empty div');
+    @include empty('.well', 'empty well');
+    @include empty('tr', 'empty table row');
+    @include empty('td', 'empty cell');
+    @include empty('th', 'empty cell');
+
+    .input-group-addon, .input-group-btn {
+        &.empty-element:before {
+            padding: 0px;
+        }
+    }
+
+    div.clearfix.empty-element:before {
+        font-size: 6px;
+        padding: 1px 10px;
+    }
+
+    .dragged[data-uic] {
+        opacity: 0.5;
+    }
+}            

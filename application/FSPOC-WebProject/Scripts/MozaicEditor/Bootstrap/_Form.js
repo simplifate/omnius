@@ -34,7 +34,8 @@
         'fieldset': '<fieldset><legend data-uic="form|legend" locked>Field group</legend></fieldset>',
         'legend': '<legend data-uic="form|legend" locked>Field group</legend>',
         'left-addon': '<div class="input-group-addon" data-uic="form|left-addon" locked><span data-uic="text|span">prefix</span></div>',
-        'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>'
+        'right-addon': '<div class="input-group-addon" data-uic="form|right-addon" locked><span data-uic="text|span">suffix</span></div>',
+        'form-control-feedback': '<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
     },
 
     options: {
@@ -239,6 +240,18 @@
                 }]
             }
         },
+        'form-control-feedback': {
+            'formControlFeedbackOptions': {
+                name: 'Form control feedback options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Icon',
+                    type: 'icon',
+                    fontSets: { 'glyphicon': 'Glyphicons' },
+                    set: MBE.options.setIcon
+                }]
+            }
+        },
 
         common: {
             'mainOptions': {
@@ -405,6 +418,9 @@
         }
         if (target.is('.input-group-btn') && !$(this).is('input, button, select, div')) {
             target.toggleClass('input-group-addon input-group-btn');
+        }
+        if ($(this).is('.form-control-feedback')) {
+            target.addClass('has-feedback');
         }
     },
 

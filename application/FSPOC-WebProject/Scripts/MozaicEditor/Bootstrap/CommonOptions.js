@@ -79,7 +79,7 @@
         return true;
     },
 
-    createCheckBoxList: function(opt) {
+    createCheckBoxList: function(opt, isCollapsed) {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
@@ -100,20 +100,25 @@
             group.append(lb);
             group.append('<br>');
         }
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
         return group;
     },
 
-    createSelect: function(opt)
+    createSelect: function(opt, isCollapsed)
     {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
-        var group = $('<div class="option-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var lb = $('<label>' + opt.label + '</label>');
-        var sel = $('<select></select>');
+        var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
+        var sel = $('<select class="form-control input-sm"></select>');
         for (var k in opt.options) {
             sel.append('<option value="' + k + '"' + (opt.get(k, opt) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
         };
@@ -128,20 +133,27 @@
 
         group.append(lb);
         group.append(sel);
+
+        sel.wrap('<div class="col-xs-10"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
         return group;
     },
 
-    createText: function(opt)
+    createText: function(opt, isCollapsed)
     {
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
-        var group = $('<div class="option-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
         var set = opt.set;
 
-        var lb = $('<label>' + opt.label + '</label>');
-        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '">');
+        var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
+        var inp = $('<input type="'+opt.type+'" value="' + opt.get(false, opt) + '" class="form-control input-sm">');
         
         if(typeof opt.attr != 'undefined') {
             inp.data('attr', opt.attr);
@@ -159,27 +171,138 @@
 
         group.append(lb);
         group.append(inp);
+
+        inp.wrap('<div class="col-xs-10"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
+        return group;
+    },
+
+    createIcon: function (opt, isCollapsed)
+    {
+        if (!MBE.options.isAllowed(opt)) {
+            return '';
+        }
+
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var set = opt.set;
+
+        var lb = $('<label class="col-xs-2 control-label">' + opt.label + '</label>');
+       
+        var active = '';
+        var iconList = {};
+        var sSheetList = document.styleSheets;
+
+        for (var f in opt.fontSets)
+        {
+            var list = $('<div class="icon-list col-xs-12 font-set-' + f + '"></div>');
+
+            for (var sSheet = 0; sSheet < sSheetList.length; sSheet++) {
+                var ruleList = document.styleSheets[sSheet].cssRules;
+                for (var rule = 0; rule < ruleList.length; rule++) {
+                    var text = ruleList[rule].selectorText;
+                    var rx = new RegExp('^\.(' + f + '-[^ ]+)::before$');
+                    if (m = rx.exec(text)) {
+                        var btn = $('<a href="#"></a>');
+                        btn.append('<span class="' + f + ' ' + m[1] + '"></span>');
+                        btn.append('<span class="icon-name">' + f + ' ' + m[1] + '</span>');
+                        list.append(btn);
+
+                        var test = '.' + f + '.' + m[1];
+                        if ($(MBE.options.target).is(test)) {
+                            btn.addClass('active');
+                            active = f;
+                        }
+                    }
+                }
+            }
+            list.on('click', 'a', function () {
+                set.apply(MBE.options.target, [this]);
+                return false;
+            });
+            iconList[f] = list;
+        }
+
+        var search = $('<input type="text" value="" placeholder="Find icon..." class="form-control input-sm">');
+
+        search.on('input', function () {
+            var text = this.value;
+            if (text.length) {
+                $('.icon-list').find('a').hide().each(function () {
+                    if ($('.icon-name', this).text().indexOf(text) != -1) {
+                        $(this).show();
+                    }
+                });
+            }
+            else {
+                $('.icon-list').find('a').show();
+            }
+        });
+
+        var sets = $('<select class="form-control input-sm"></select>');
+
+        for (f in opt.fontSets) {
+            var option = $('<option></option>');
+            option.val(f).html(opt.fontSets[f]).appendTo(sets);
+
+            if (active == f) {
+                option.attr('selected', true);
+                iconList[f].show();
+            }
+            else {
+                iconList[f].hide();
+            }
+        }
+
+        sets.change(function () {
+            $('[class*="font-set-"]').hide();
+            $('.font-set-' + this.value).show();
+        });
+        
+        group.append(lb);
+        group.append(sets);
+        group.append(search);
+        group.append('<div class="clearfix"></div>');
+        for (var f in iconList) {
+            group.append(iconList[f]);
+        }
+
+        sets.wrap('<div class="col-xs-4"></div>');
+        search.wrap('<div class="col-xs-6"></div>');
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+        
         return group;
     },
 
     createOptions: function(opt)
     {
         var self = MBE.options;
+        var isCollapsed = typeof opt.state != 'undefined' && opt.state == 'collapsed';
 
         if (!MBE.options.isAllowed(opt)) {
             return '';
         }
 
         var f = $('<fieldset />');
-        f.append('<legend><span class="fa fa-caret-down fa-fw"></span>' + opt.name + '</legend>');
+        f.append('<legend><span class="fa fa-caret-'+(isCollapsed ? 'right' : 'down')+' fa-fw"></span>' + opt.name + '</legend>');
 
         switch (opt.type) {
             case 'boolean': {
-                f.append(self.createCheckBoxList(opt));        
+                f.append(self.createCheckBoxList(opt, isCollapsed));        
                 break;
             }
             case 'select': {
-                f.append(self.createSelect(opt));
+                f.append(self.createSelect(opt, isCollapsed));
+                break;
+            }
+            case 'icon': {
+                f.append(self.createIcon(opt, isCollapsed));
                 break;
             }
             case 'group': {
@@ -187,16 +310,20 @@
                     var item = opt.groupItems[i];
                     switch(item.type) {
                         case 'boolean': {
-                            f.append(self.createCheckBoxList(item));
+                            f.append(self.createCheckBoxList(item, isCollapsed));
                             break;
                         }
                         case 'select': {
-                            f.append(self.createSelect(item));
+                            f.append(self.createSelect(item, isCollapsed));
                             break;
                         }
                         case 'number':
                         case 'text': {
-                            f.append(self.createText(item));
+                            f.append(self.createText(item, isCollapsed));
+                            break;
+                        }
+                        case 'icon': {
+                            f.append(self.createIcon(item, isCollapsed));
                             break;
                         }
                     }
@@ -292,6 +419,16 @@
         $(this).replaceWith(newTag);
         MBE.options.target = newTag[0];
         MBE.DnD.updateDOM();
+    },
+
+    setIcon: function (icon) {
+        var elm = $(this);
+        var currentClass = $('.icon-list a.active .icon-name').text();
+        var newClass = $('.icon-name', icon).text();
+
+        elm.removeClass(currentClass).addClass(newClass);
+        $('.icon-list .active').removeClass('active');
+        $(icon).addClass('active');
     }
 };
 
@@ -320,7 +457,8 @@ MBE.options.common = {
             'hidden-lg': 'hidden-lg'
         },
         set: MBE.options.toggleClass,
-        get: MBE.options.hasClass
+        get: MBE.options.hasClass,
+        state: 'collapsed',
     },
 
     accessibility: {
@@ -333,7 +471,8 @@ MBE.options.common = {
             'sr-only': 'sr-only'
         },
         set: MBE.options.toggleClass,
-        get: MBE.options.hasClass
+        get: MBE.options.hasClass,
+        state: 'collapsed'
     }
 };
 

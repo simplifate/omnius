@@ -14,6 +14,11 @@
   font-family: "MyriadPro";
   src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url("fonts/glyphicons-halflings-regular.eot");
+  src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+
 body.appManagerModule {
   position: fixed;
   width: 100%;
@@ -306,6 +311,11 @@ body.adminAppModule #validationResults {
 @font-face {
   font-family: "MyriadPro";
   src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url("fonts/glyphicons-halflings-regular.eot");
+  src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
 
 #userTopBar {
   -webkit-touch-callout: none;
@@ -2082,6 +2092,11 @@ body.dbDesignerModule {
   font-family: "MyriadPro";
   src: url(/Content/fonts/MYRIADPRO-REGULAR.OTF) format("opentype"); }
 
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url("fonts/glyphicons-halflings-regular.eot");
+  src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+
 body.portalModule {
   background-color: #f2f2f3; }
   body.portalModule #upperPanel {
@@ -3355,6 +3370,9 @@ body.mozaicEditorModule {
   body.mozaicEditorModule #choose-page-dialog .spinner-2 {
     display: none; }
 
+.mozaicBootstrapEditorModule #mozaicLeftBar {
+  overflow-y: auto !important; }
+
 .mozaicBootstrapEditorModule #lowerPanel.fullscreen {
   position: fixed;
   left: 0px;
@@ -3376,16 +3394,6 @@ body.mozaicEditorModule {
       padding: 0px 20px; }
       .mozaicBootstrapEditorModule ul.category > li > ul li:hover {
         background: #d0d2d2; }
-
-.mozaicBootstrapEditorModule .mbe-drag-handle {
-  width: 8px;
-  height: 8px;
-  position: absolute;
-  left: -4px;
-  top: -4px;
-  background: blue;
-  border-radius: 100%;
-  cursor: move; }
 
 .mozaicBootstrapEditorModule #mozaicPageContainer {
   -webkit-user-select: none;
@@ -3458,26 +3466,30 @@ body.mozaicEditorModule {
         display: none; }
       .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav #drop-placeholder {
         height: 0px;
+        display: block !important;
         outline: 1px solid blue; }
   .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace {
     position: absolute;
     left: 12px;
     right: 252px;
     top: 95px;
-    padding: 20px 0px 20px;
-    bottom: 0px; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace #drop-placeholder {
-      height: 0px;
-      outline: 1px solid blue; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .embed-responsive iframe {
-      background: #eee; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container-fluid {
-      border: 1px dashed #01a1f7; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .container-fluid, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace .row {
-      padding-top: 8px;
-      padding-bottom: 8px;
-      margin-top: 5px;
-      margin-bottom: 5px; }
+    padding: 20px 20px 20px;
+    bottom: 0px;
+    background: #efefef;
+    text-align: center; }
+    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0px auto;
+      border: none; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.xs {
+        max-width: 500px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.sm {
+        max-width: 800px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.md {
+        max-width: 1100px; }
+      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.lg {
+        min-width: 1200px; }
   .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext {
     margin-right: 240px; }
     .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .breadcrumb {
@@ -3498,80 +3510,6 @@ body.mozaicEditorModule {
         font-size: 12px;
         padding: 4px 10px;
         margin: 4px 2px; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-active {
-    outline: 1px solid blue;
-    position: relative; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer .mbe-active > .mbe-drag-handle {
-      display: block; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .empty-element:before {
-    display: block;
-    background: #efefef;
-    color: #ccc;
-    padding: 5px 10px;
-    content: "empty item"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .container.empty-element:before {
-    content: "empty container"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .container-fluid.empty-element:before {
-    content: "empty-container"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .row.empty-element:before {
-    content: "empty row"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer div[class*="col-"].empty-element:before {
-    content: "empty column"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer header.empty-element:before {
-    content: "empty header"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer footer.empty-element:before {
-    content: "empty footer"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer hgroup.empty-element:before {
-    content: "empty hgroup"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer section.empty-element:before {
-    content: "empty section"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer article.empty-element:before {
-    content: "empty article"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer aside.empty-element:before {
-    content: "empty aside"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .clearfix.empty-element:before {
-    content: "empty clearfix"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer form.empty-element:before {
-    content: "empty form"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .form-group.empty-element:before {
-    content: "empty form group"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer figure.empty-element:before {
-    content: "empty figure"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-addon.empty-element:before {
-    content: "empty addon"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
-    content: "empty addon"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .checkbox.empty-element:before {
-    content: "empty checkbox group"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .checkbox-inline.empty-element:before {
-    content: "empty checkbox group"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .radio.empty-element:before {
-    content: "empty radio group"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .radio-inline.empty-element:before {
-    content: "empty checkbox group"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-heading.empty-element:before {
-    content: "empty panel heading"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-body.empty-element:before {
-    content: "empty panel body"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .panel-footer.empty-element:before {
-    content: "empty panel footer"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer [data-uic="containers|div"].empty-element:before {
-    content: "empty div"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .well.empty-element:before {
-    content: "empty well"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer tr.empty-element:before {
-    content: "empty table row"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer td.empty-element:before {
-    content: "empty cell"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer th.empty-element:before {
-    content: "empty cell"; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-addon.empty-element:before, .mozaicBootstrapEditorModule #mozaicPageContainer .input-group-btn.empty-element:before {
-    padding: 0px; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer div.clearfix.empty-element:before {
-    font-size: 6px;
-    padding: 1px 10px; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer .dragged[data-uic] {
-    opacity: 0.5; }
 
 .mozaicBootstrapEditorModule .dialog-options fieldset {
   padding: 10px 10px;
@@ -3584,22 +3522,179 @@ body.mozaicEditorModule {
   margin-bottom: -5px;
   margin-top: 10px; }
 
-.mozaicBootstrapEditorModule .dialog-options .option-group label {
-  font-weight: normal;
-  font-size: 0.8em;
-  width: 200px; }
+.mozaicBootstrapEditorModule .dialog-options .option-group {
+  margin-bottom: 10px;
+  float: left;
+  width: 100%; }
+  .mozaicBootstrapEditorModule .dialog-options .option-group label {
+    font-weight: normal; }
+  .mozaicBootstrapEditorModule .dialog-options .option-group select {
+    min-width: 100px; }
+  .mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
+    margin-top: 15px; }
 
-.mozaicBootstrapEditorModule .dialog-options .option-group select {
-  min-width: 100px; }
+.mozaicBootstrapEditorModule .dialog-options .icon-list {
+  max-height: 280px;
+  overflow: auto; }
+  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+    background: #eee; }
+  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
+    background: #393812; }
+  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
+    background: #000; }
+  .mozaicBootstrapEditorModule .dialog-options .icon-list a {
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    height: 90px;
+    text-align: center;
+    padding: 10px; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, .mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
+      display: inline-block;
+      width: 100%;
+      font-size: 1.2em;
+      margin-bottom: 8px; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
+      display: inline-block;
+      width: 100%;
+      font-size: 0.7em; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
+      background: #eef9fe; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
+      background: #d9f2fe; }
 
-.mozaicBootstrapEditorModule .drag-over {
-  outline: 2px dashed #aaa; }
+.mozaicBootstrapEditorModule .toolbar.pull-left .btn {
+  text-transform: lowercase; }
+
+.mozaicBootstrapEditorModule .toolbar.pull-right .btn {
+  height: 27px;
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+  line-height: 25px; }
+  .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa {
+    line-height: 25px !important; }
+    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-mobile {
+      font-size: 1.6em; }
+    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-tablet {
+      font-size: 1.6em;
+      vertical-align: -4px; }
+    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-laptop {
+      font-size: 1.6em;
+      vertical-align: -4px; }
+    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-desktop {
+      font-size: 1.3em;
+      vertical-align: -2px; }
 
 .mozaicBootstrapEditorModule .drag-ghost {
   display: block;
   width: 20px;
   height: 20px;
   background: rgba(0, 0, 0, 0.75); }
+
+#drop-placeholder {
+  display: none;
+  height: 0px;
+  outline: 1px solid blue; }
+
+body.mozaicEditorBody {
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently */
+  box-sizing: border-box;
+  padding: 5px; }
+  body.mozaicEditorBody #drop-placeholder {
+    display: block; }
+  body.mozaicEditorBody .drag-over {
+    outline: 2px dashed #aaa; }
+  body.mozaicEditorBody .mbe-drag-handle {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    background: blue;
+    border-radius: 100%;
+    cursor: move; }
+  body.mozaicEditorBody .embed-responsive iframe {
+    background: #eee; }
+  body.mozaicEditorBody .mbe-active {
+    outline: 1px solid blue; }
+  body.mozaicEditorBody .empty-element:before {
+    display: block;
+    background: #efefef;
+    color: #ccc;
+    padding: 5px 10px;
+    content: "empty item"; }
+  body.mozaicEditorBody .container.empty-element:before {
+    content: "empty container"; }
+  body.mozaicEditorBody .container-fluid.empty-element:before {
+    content: "empty-container"; }
+  body.mozaicEditorBody .row.empty-element:before {
+    content: "empty row"; }
+  body.mozaicEditorBody div[class*="col-"].empty-element:before {
+    content: "empty column"; }
+  body.mozaicEditorBody header.empty-element:before {
+    content: "empty header"; }
+  body.mozaicEditorBody footer.empty-element:before {
+    content: "empty footer"; }
+  body.mozaicEditorBody hgroup.empty-element:before {
+    content: "empty hgroup"; }
+  body.mozaicEditorBody section.empty-element:before {
+    content: "empty section"; }
+  body.mozaicEditorBody article.empty-element:before {
+    content: "empty article"; }
+  body.mozaicEditorBody aside.empty-element:before {
+    content: "empty aside"; }
+  body.mozaicEditorBody .clearfix.empty-element:before {
+    content: "empty clearfix"; }
+  body.mozaicEditorBody form.empty-element:before {
+    content: "empty form"; }
+  body.mozaicEditorBody .form-group.empty-element:before {
+    content: "empty form group"; }
+  body.mozaicEditorBody figure.empty-element:before {
+    content: "empty figure"; }
+  body.mozaicEditorBody .input-group-addon.empty-element:before {
+    content: "empty addon"; }
+  body.mozaicEditorBody .input-group-btn.empty-element:before {
+    content: "empty addon"; }
+  body.mozaicEditorBody .checkbox.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .checkbox-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .radio.empty-element:before {
+    content: "empty radio group"; }
+  body.mozaicEditorBody .radio-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .panel-heading.empty-element:before {
+    content: "empty panel heading"; }
+  body.mozaicEditorBody .panel-body.empty-element:before {
+    content: "empty panel body"; }
+  body.mozaicEditorBody .panel-footer.empty-element:before {
+    content: "empty panel footer"; }
+  body.mozaicEditorBody [data-uic="containers|div"].empty-element:before {
+    content: "empty div"; }
+  body.mozaicEditorBody .well.empty-element:before {
+    content: "empty well"; }
+  body.mozaicEditorBody tr.empty-element:before {
+    content: "empty table row"; }
+  body.mozaicEditorBody td.empty-element:before {
+    content: "empty cell"; }
+  body.mozaicEditorBody th.empty-element:before {
+    content: "empty cell"; }
+  body.mozaicEditorBody .input-group-addon.empty-element:before, body.mozaicEditorBody .input-group-btn.empty-element:before {
+    padding: 0px; }
+  body.mozaicEditorBody div.clearfix.empty-element:before {
+    font-size: 6px;
+    padding: 1px 10px; }
+  body.mozaicEditorBody .dragged[data-uic] {
+    opacity: 0.5; }
 
 body.cortexModule #upperPanel {
   height: 295px; }

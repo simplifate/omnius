@@ -17,24 +17,27 @@
         var self = MBE.DnD;
 
         self.placeholder = $('#drop-placeholder');
+        self.placeholder.hide();
 
         $('ul.category > li > ul > li').attr('draggable', true);
         $('ul.category > li > ul > li').each(function () {
             $(this).data('type', $(this).parent().data('type'));
         });
 
-        var workspace = '#mozaicPageWorkspace';
-
         $(document)
             .on('dragstart', 'ul.category li[draggable=true]', self._componentDragStart)
             .on('dragstart', '.tree-nav .node-handle[draggable=true]', self._navNodeDragStart)
-            .on('dragstart', '.mbe-drag-handle[draggable=true]', self._uicDragStart)
-            .on('dragover', workspace + ", [data-uic]:not(.dragged)", self._dragOver)
             .on('dragover', '.tree-nav .node:not(.dragged)', self._navNodeDragOver)
-            .on('dragenter', workspace + ", [data-uic]", self._dragEnter)
-            .on('dragleave', workspace + ", [data-uic]", self._dragLeave)
-            .on('drop', workspace + ", [data-uic]", self._workSpaceDrop)
             .on('drop', '.tree-nav .node:not(.dragged)', self._navNodeDrop)
+            .on('dragend dragstop', self._dragEnd)
+        ;
+
+        $(MBE.workspaceDoc)
+            .on('dragover', "body, [data-uic]:not(.dragged)", self._dragOver)
+            .on('dragenter', "body, [data-uic]", self._dragEnter)
+            .on('dragleave', "body, [data-uic]", self._dragLeave)
+            .on('dragstart', '.mbe-drag-handle[draggable=true]', self._uicDragStart)
+            .on('drop', "body, [data-uic]", self._workSpaceDrop)
             .on('dragend dragstop', self._dragEnd)
         ;
     },
@@ -109,7 +112,7 @@
     _uicDragStart: function (event) {
         var e = event.originalEvent;
 
-        MBE.DnD.currentElement = $('.mbe-active');
+        MBE.DnD.currentElement = $('.mbe-active', MBE.workspace);
         MBE.DnD.currentElement.addClass('dragged');
         MBE.DnD.isUICDragging = true;
 
@@ -126,12 +129,13 @@
     _dragOver: function(event)
     {
         event.preventDefault();
-        
+        console.log('call');
         var target = $(this);
         var childs = target.find(' > *');
 
         if (target.is('.dragged') || target.parents('.dragged').length) {
             event.originalEvent.dataTransfer.effectAllowed = 'none';
+            MBE.DnD.placeholder.hide();
             return false;
         }
 
@@ -153,6 +157,7 @@
                 }
             }
         }
+        MBE.DnD.placeholder.show();
 
         return false;
     },
@@ -258,9 +263,11 @@
     {
         $('body').removeClass('dragging');
         $('.drag-over').removeClass('drag-over');
+        $('.drag-over', MBE.workspace).removeClass('drag-over');
         $('.drag-ghost').remove();
 
-        MBE.workspace.after(MBE.DnD.placeholder);
+        $('#mozaicPageWorkspace').after(MBE.DnD.placeholder);
+        MBE.DnD.placeholder.hide();
 
         if (MBE.DnD.isNavNodeDragging) {
             MBE.DnD.currentElement.removeClass('dragged');
@@ -281,12 +288,18 @@
 
     updateDOM: function()
     {
-        $('[data-uic]').removeClass('empty-element');
-        $('[data-uic]:not(input, select, hr, img, .caret, li.divider):empty').addClass('empty-element');
+        $('[data-uic]', MBE.workspace).removeClass('empty-element');
+        $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
         MBE.workspace.find('*').contents().filter(function () {
             return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
         }).wrap('<span class="mbe-text-node" />');
+
+        MBE.workspace.find('.has-feedback').each(function() {
+            if (!$(this).find('.form-control-feedback').length) {
+                $(this).removeClass('has-feedback');
+            }
+        })
 
         MBE.DnD.callListeners('onDOMUpdate', MBE.workspace[0]);
 

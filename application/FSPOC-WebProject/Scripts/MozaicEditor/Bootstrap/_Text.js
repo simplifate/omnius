@@ -149,7 +149,10 @@
             'textOptions': {
                 name: 'Text options',
                 type: 'group',
-                allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                allowFor: [
+                    'heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                    'th', 'td', 'breadcrumbs-active', 'breadcrumbs-inactive'
+                ],
                 groupItems: [{
                     type: 'select',
                     label: 'Alignment',
@@ -166,7 +169,10 @@
                 }, {
                     type: 'select',
                     label: 'Transformation',
-                    allowFor: ['heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                    allowFor: [
+                        'heading', 'paragraph', 'alert', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                        'th', 'td', 'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'None',
                         'text-lowercase': 'Lowercase',
@@ -178,7 +184,10 @@
                 }, {
                     type: 'select',
                     label: 'Color',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td'],
+                    allowFor: [
+                        'heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption', 'th', 'td',
+                        'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'Default',
                         'text-muted': 'Muted',
@@ -193,7 +202,10 @@
                 }, {
                     type: 'select',
                     label: 'Background',
-                    allowFor: ['heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption'],
+                    allowFor: [
+                        'heading', 'paragraph', 'small', 'strong', 'italic', 'span', 'link', 'help-text', 'caption',
+                        'breadcrumbs-active', 'breadcrumbs-inactive'
+                    ],
                     options: {
                         'null': 'Default',
                         'bg-primary': 'Primary',

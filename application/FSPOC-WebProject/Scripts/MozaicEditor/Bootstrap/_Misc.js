@@ -26,7 +26,11 @@ MBE.types.misc = {
         'responsive-embed': '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src=""></iframe></div>',
         'progressBar': '<div class="progress">' + 
                             '<div class="progress-bar" role="progressbar" style="min-width:2em; width:0%"></div>' +
-                        '</div>'
+                        '</div>',
+        'breadcrumbs': '<ol class="breadcrumb"></ol>',
+        'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
+        'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
+        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>'
     },
 
     options: {
@@ -131,6 +135,150 @@ MBE.types.misc = {
                     set: MBE.options.toggleClass
                 }]
             }
+        },
+        'breadcrumbs-item': {
+            'breadcrumbsItemOptions': {
+                name: 'Breadcrumbs item options',
+                type: 'boolean',
+                options: {
+                    'active': 'Active'
+                },
+                get: MBE.options.hasClass,
+                set: function (opt) {
+                    $(this).toggleClass(opt.value);
+                    var item = $(this).find('a[locked], span[locked]').eq(0);
+                    if (opt.checked) {
+                        var span = $(MBE.types.misc.templates['breadcrumbs-active']);
+                        span.html(item.html());
+                        item.replaceWith(span);
+                    }
+                    else {
+                        var link = $(MBE.types.misc.templates['breadcrumbs-inactive']);
+                        link.html(item.html());
+                        item.replaceWith(link);
+                    }
+                    MBE.DnD.updateDOM();
+                }
+            }
+        },
+        'breadcrumbs-inactive': MBE.types.controls.options.link,
+        'breadcrumbs-active': MBE.types.text.options.common
+    },
+
+    init: function() 
+    {
+        var self = MBE.types.misc;
+        var menu = MBE.toolbar.menu;
+
+        MBE.DnD.onDrop.push(self._drop);
+
+        menu.misc = {};
+        menu.misc.breadcrumbs = {
+            items: [
+                { type: 'text', label: 'Add item' },
+                { type: 'button', label: 'BEFORE', callback: self.bcAddBefore, allowFor: self.bcIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.bcAddAfter, allowFor: self.bcIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.bcAddToBegin },
+                { type: 'button', label: 'END', callback: self.bcAddToEnd },
+                { type: 'text', label: 'Item' },
+                { type: 'button', label: 'ACTIVATE', callback: self.bcActivate, allowFor: self.bcIsInactiveItemSelected },
+                { type: 'button', label: 'DEACTIVATE', callback: self.bcDeactivate, allowFor: self.bcIsActiveItemSelected },
+                { type: 'button', label: 'DELETE', callback: self.bcDelete, allowFor: self.bcIsItemSelected }
+            ]
         }
-    }
+        menu.misc['breadcrumbs-item'] = menu.misc.breadcrumbs;
+        menu.misc['breadcrumbs-active'] = menu.misc.breadcrumbs;
+        menu.misc['breadcrumbs-inactive'] = menu.misc.breadcrumbs;
+    },
+
+    _drop: function(target)
+    {
+        if ($(this).is('[data-uic="misc|breadcrumbs"]') && $(this).is(':empty')) {
+            MBE.types.misc.buildBreadCrumbs.apply(this, []);
+        }
+    },
+
+    /*****************************************************/
+    /* BREAD CRUMBS CONTEXT METHODS                      */
+    /*****************************************************/
+    buildBreadCrumbs: function ()
+    {
+        var self = MBE.types.misc;
+        var elm = $(this);
+        var linkNames = ['Home', 'Library', 'Data'];
+
+        for (var i = 0; i < linkNames.length; i++) {
+            var link = $(MBE.types.misc.templates['breadcrumbs-inactive']);
+            var item = $(self.templates['breadcrumbs-item']);
+
+            link.html(linkNames[i]).appendTo(item);
+            elm.append(item);
+        }
+    },
+
+    bcGetItem: function() {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]') ? $(this) : $(this).parents('[data-uic="misc|breadcrumbs-item"]').eq(0);
+    },
+
+    bcIsItemSelected: function () {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]') || $(this).parent().is('[data-uic="misc|breadcrumbs-item"]');
+    },
+
+    bcIsActiveItemSelected: function () {
+        return $(this).is('.active[data-uic="misc|breadcrumbs-item"]') || $(this).parent().is('.active[data-uic="misc|breadcrumbs-item"]');
+    },
+
+    bcIsInactiveItemSelected: function () {
+        return $(this).is('[data-uic="misc|breadcrumbs-item"]:not(.active)') || $(this).parent().is('[data-uic="misc|breadcrumbs-item"]:not(.active)');
+    },
+
+    bcDelete: function () {
+        var target = MBE.types.misc.bcGetItem.apply(this, []);
+        if (target.length) {
+            target.remove();
+            $('.mbe-drag-handle').remove();
+            MBE.DnD.updateDOM();
+        }
+    },
+
+    bcToggleState: function (state) {
+        var self = MBE.types.misc;
+        var item = self.bcGetItem.apply(this, []);
+        var target = $('> a, > span', item);
+        var replace = $(self.templates['breadcrumbs-' + state]);
+
+        replace.html(target.html());
+        target.replaceWith(replace);
+
+        item.toggleClass('active');
+        MBE.DnD.updateDOM();
+
+        MBE.selection.select.apply(item.is('.mbe-active') ? item[0] : replace[0], []);
+    },
+
+    bcAdd: function(pos) {
+        var self = MBE.types.misc;
+        var target = $(this).is('.breadcrumb') ? $(this) : $(this).parents('.breadcrumb').eq(0);
+        var item = $(self.templates['breadcrumbs-item']);
+        var link = $(self.templates['breadcrumbs-inactive']);
+
+        link.html('Item').appendTo(item);
+        switch (pos) {
+            case 'before': self.bcGetItem.apply(this).before(item); break;
+            case 'after': self.bcGetItem.apply(this).after(item); break;
+            case 'begin': target.prepend(item); break;
+            case 'end': target.append(item); break;
+        }
+        MBE.DnD.updateDOM();
+    },
+
+    bcActivate: function () { MBE.types.misc.bcToggleState.apply(this, ['active']); },
+    bcDeactivate: function () { MBE.types.misc.bcToggleState.apply(this, ['inactive']); },
+
+    bcAddBefore: function () { MBE.types.misc.bcAdd.apply(this, ['before']); },
+    bcAddAfter: function () { MBE.types.misc.bcAdd.apply(this, ['after']); },
+    bcAddToBegin: function () { MBE.types.misc.bcAdd.apply(this, ['begin']); },
+    bcAddToEnd: function() { MBE.types.misc.bcAdd.apply(this, ['end']); },
 }
+
+MBE.onInit.push(MBE.types.misc.init);
