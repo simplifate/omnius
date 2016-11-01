@@ -83,7 +83,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if (useRowData)
                     value = rowData[columnName];
                 else
-                    value = vars[columnName];
+                    value = KeyValueString.ParseValue(columnName, vars);
                 if(dictionary.ContainsKey(tokens[0]))
                 {
                     if (value == null)
