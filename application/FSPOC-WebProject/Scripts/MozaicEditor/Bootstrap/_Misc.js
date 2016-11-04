@@ -18,6 +18,11 @@ MBE.options.setProgressBarClass = function (opt) {
 MBE.types.misc = {
 
     templates: {
+        'custom-code': '<div></div>',
+        'modal': '<div class="modal fade" tabindex="-1" role="dialog"></div>',
+        'modal-header': '<div class="modal-header" data-uic="misc|modal-header" locked></div>',
+        'modal-body': '<div class="modal-body" data-uic="misc|modal-body" locked></div>',
+        'modal-footer': '<div class="modal-footer" data-uic="misc|modal-footer" locked></div>',
         'badge': '<span class="badge">4</span>',
         'tag': '<span class="label label-default">label</span>',
         'caret': '<span class="caret"></span>',
@@ -34,6 +39,88 @@ MBE.types.misc = {
     },
 
     options: {
+        'custom-code': {
+            'customCodeOptions': {
+                name: 'Custom code',
+                type: 'cm',
+                get: function () {
+                    var html = $(this.innerHTML);
+                    html.find('.mbe-text-node').contents().unwrap();
+                    var helper = $('<div></div>').html(html);
+                    return helper.html();
+                },
+                set: function (opt) {
+                    this.innerHTML = opt.value;
+                    MBE.DnD.updateDOM();
+                }
+            }
+        },
+        'modal': {
+            'modalOptions': {
+                name: 'Modal options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Size',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'modal-lg': 'Large',
+                        'modal-sm': 'Small',
+                    },
+                    get: function (value) {
+                        return $('.modal-dialog', this).hasClass(value);
+                    },
+                    set: function(opt) {
+                        $('.modal-dialog', this).removeClass('modal-sm modal-lg');
+                        if (opt.value != 'null') {
+                            $('.modal-dialog', this).addClass(opt.value);
+                        }
+                    }
+                }, {
+                    label: 'Options',
+                    type: 'boolean',
+                    options: {
+                        'fade': 'Fade',
+                        'show-header': 'Show header',
+                        'show-footer': 'Show footer'
+                    },
+                    get: function (value) {
+                        switch (value) {
+                            case 'fade': return $(this).is('.fade');
+                            case 'show-header': return $('.modal-header', this).length > 0;
+                            case 'show-footer': return $('.modal-footer', this).length > 0;
+                        }
+                    },
+                    set: function (opt) {
+                        var self = MBE.types.misc;
+
+                        switch (opt.value) {
+                            case 'fade': 
+                                $(this).toggleClass('fade'); 
+                                break;
+                            case 'show-header':
+                                if (opt.checked) {
+                                    self.modalCreateHeader().prependTo($('.modal-content', this));            
+                                }
+                                else {
+                                    $('.modal-header', this).remove();
+                                }
+                                break;
+                            case 'show-footer':
+                                if (opt.checked) {
+                                    self.modalCreateFooter().appendTo($('.modal-content', this));            
+                                }
+                                else {
+                                    $('.modal-footer', this).remove();
+                                }
+                                break;
+                        }
+
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
         'tag': {
             'tagOptions': {
                 name: 'Label options',
@@ -189,6 +276,17 @@ MBE.types.misc = {
         menu.misc['breadcrumbs-item'] = menu.misc.breadcrumbs;
         menu.misc['breadcrumbs-active'] = menu.misc.breadcrumbs;
         menu.misc['breadcrumbs-inactive'] = menu.misc.breadcrumbs;
+
+        menu.misc.modal = {
+            items: [
+                { type: 'text', label: 'Modal' },
+                { type: 'button', label: 'Show', callback: self.modalShow, allowFor: self.modalIsInActive },
+                { type: 'button', label: 'Hide', callback: self.modalHide, allowFor: self.modalIsActive }
+            ]
+        };
+        menu.misc['modal-header'] = menu.misc.modal;
+        menu.misc['modal-body'] = menu.misc.modal;
+        menu.misc['modal-footer'] = menu.misc.modal;
     },
 
     _drop: function(target)
@@ -196,6 +294,79 @@ MBE.types.misc = {
         if ($(this).is('[data-uic="misc|breadcrumbs"]') && $(this).is(':empty')) {
             MBE.types.misc.buildBreadCrumbs.apply(this, []);
         }
+
+        if ($(this).is('.modal') && $(this).is(':empty')) {
+            MBE.types.misc.buildModal.apply(this, []);
+        }
+    },
+
+    /*****************************************************/
+    /* MODAL CONTEXT METHODS                             */
+    /*****************************************************/
+    buildModal: function() 
+    {
+        var self = MBE.types.misc;
+        var modal = $(this);
+        var dialog = $('<div class="modal-dialog" role="document"></div>');
+        var content = $('<div class="modal-content"></div>')
+        var body = $(self.templates['modal-body']);
+        
+        
+        
+        self.modalCreateHeader().appendTo(content);
+
+        body.append('<p data-uic="text|paragraph">The content of your modal</p>');
+        body.appendTo(content);
+
+        self.modalCreateFooter().appendTo(content);
+
+        content.appendTo(dialog);
+        dialog.appendTo(modal);
+
+        MBE.DnD.updateDOM();
+    },
+
+    modalCreateHeader: function() {
+        var self = MBE.types.misc;
+        var header = $(self.templates['modal-header']);
+        header.append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        header.append('<h4 class="modal-title" data-uic="text|heading">Modal title</h4>');
+
+        return header;
+    },
+
+    modalCreateFooter: function () {
+        var self = MBE.types.misc;
+        var footer = $(self.templates['modal-footer']);
+        footer.append('<button type="button" class="btn btn-default" data-dismiss="modal" data-uic="controls|button">Close</button>');
+        footer.append('<button type="button" class="btn btn-primary" data-uic="controls|button">Save changes</button>');
+
+        return footer;
+    },
+
+    modalGetTarget: function() {
+        return $(this).is('.modal') ? $(this) : $(this).parents('.modal').eq(0);
+    },
+
+    modalIsActive: function () { return MBE.types.misc.modalGetTarget.apply(this, []).is('.in'); },
+    modalIsInActive: function() { return MBE.types.misc.modalGetTarget.apply(this, []).is(':not(.in)'); },
+
+    modalShow: function() {
+        var m = MBE.types.misc.modalGetTarget.apply(this, []);
+        m.addClass('in')
+         .show()
+         .after('<div class="modal-backdrop fade in" bs-hidden="" bs-system-element="" style="display: block;"></div>');
+        
+        MBE.selection.select.apply(m[0], []);
+    },
+
+    modalHide: function() {
+        var m = MBE.types.misc.modalGetTarget.apply(this, []);
+        m.removeClass('in')
+         .hide()
+         .next('.modal-backdrop').remove();
+
+        MBE.selection.select.apply(m[0], []);
     },
 
     /*****************************************************/

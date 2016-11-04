@@ -129,7 +129,6 @@
     _dragOver: function(event)
     {
         event.preventDefault();
-        console.log('call');
         var target = $(this);
         var childs = target.find(' > *');
 

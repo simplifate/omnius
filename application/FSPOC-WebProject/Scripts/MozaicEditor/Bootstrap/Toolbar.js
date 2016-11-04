@@ -40,11 +40,11 @@
                     var button = $('<button type="button" class="btn navbar-btn">' + item.label + '</button>');
                     self.toolbar.append(button);
                     button.click({callback: item.callback}, function (event) {
-                        event.data.callback.apply($('.mbe-active')[0], []);
+                        event.data.callback.apply($('.mbe-active', MBE.workspaceDoc)[0], []);
                     });
 
                     if (typeof item.allowFor == 'function') {
-                        if (!item.allowFor.apply($('.mbe-active')[0], [])) {
+                        if (!item.allowFor.apply(this, [])) {
                             button.attr('disabled', true);
                         }
                     }

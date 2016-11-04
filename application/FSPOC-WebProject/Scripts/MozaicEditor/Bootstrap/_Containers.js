@@ -25,7 +25,12 @@
         'well': '<div class="well"><span data-uic="text|span">Text of the well</span></div>',
         'list': '<ul><li data-uic="containers|list-item">Item 1</li><li data-uic="containers|list-item">Item 2</li></ul>',
         'list-item': '<li data-uic="containers|list-item">Item</li>',
-        'div': '<div></div>'
+        'div': '<div></div>',
+        'list-group': '<ul class="list-group"></ul>',
+        'list-group-div': '<div class="list-group"></div>',
+        'list-group-item':  '<li class="list-group-item" data-uic="containers|list-group-item">List Group Item</li>',
+        'list-group-item-link': '<a class="list-group-item" data-uic="containers|list-group-item-link">List Group Item</a>',
+        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>'
     },
     
     options: {
@@ -219,6 +224,113 @@
                     $('#ListNumberingType, #ListNumberingStart, #ListNumberingReversed').toggle(opt.val() == 'ol');
                 }
             }
+        },
+        'list-group': {
+            'listGroupOptions': {
+                name: 'List group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'ul': 'Unordered list',
+                        'div-links': 'DIV with links',
+                        'div-buttons': 'DIV with buttons'
+                    },
+                    get: function (value) {
+                        switch (value) {
+                            case 'ul': return $(this).is('ul');
+                            case 'div-links': return $(this).is('div') && $(this).find('> a').length > 0;
+                            case 'div-buttons': return $(this).is('div') && $(this).find('> button').length > 0;
+                        }
+                    },
+                    set: function (opt) 
+                    {
+                        var self = MBE.types.containers;
+                        var target = $(this);
+                        var groupTemplate, itemTemplate;
+
+                        switch(opt.value)
+                        {
+                            case 'ul': {
+                                groupTemplate = 'list-group';
+                                itemTemplate = 'list-group-item';
+                                break; 
+                            }
+                            case 'div-links': {
+                                groupTemplate = 'list-group-div';
+                                itemTemplate = 'list-group-item-link';
+                                break;
+                            }
+                            case 'div-buttons': {
+                                groupTemplate = 'list-group-div';
+                                itemTemplate = 'list-group-item-button';
+                                break;
+                            }
+                        }
+
+                        var group = $(self.templates[groupTemplate]);
+                        target.find('> a, > button, > li').each(function () {
+                            var item = $(self.templates[itemTemplate]);
+                            item.html(this.innerHTML).addClass(this.className).appendTo(group);
+                        });
+                        group.attr('data-uic', 'containers|' + groupTemplate);
+
+                        target.replaceWith(group);
+                        MBE.DnD.updateDOM();
+                        MBE.selection.select.apply(group[0], []);
+                        MBE.options.target = group[0];
+                    }
+                }]
+            }
+        },
+        'list-group-item': {
+            'listGroupItemOptions': {
+                name: 'List group item options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'list-group-item-success': 'Success',
+                        'list-group-item-info': 'Info',
+                        'list-group-item-warning': 'Warning',
+                        'list-group-item-danger': 'Danger'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'URL',
+                    type: 'text',
+                    attr: 'href',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr,
+                    allowFor: ['list-group-item-link'],
+                }, {
+                    label: 'Target',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        '_blank': 'Blank',
+                        '_parent': 'Parent',
+                        '_top': 'Top'
+                    },
+                    attr: 'target',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr,
+                    allowFor: ['list-group-item-link']
+                }, {
+                    label: 'Options',
+                    type: 'boolean',
+                    options: {
+                        'active': 'Active',
+                        'disabled': 'Disabled'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
         }
     },
 
@@ -231,6 +343,9 @@
         MBE.types.controls.options.link.linkOptions.groupItems[0].change = self.tabIdChange;
 
         self.options.panel.panelOptions.groupItems[1].disallowFor = self.panelIsNotInAccordion;
+        self.options['list-group-div'] = self.options['list-group'];
+        self.options['list-group-item-link'] = self.options['list-group-item'];
+        self.options['list-group-item-button'] = self.options['list-group-item'];
 
         menu['containers'] = {};
 
@@ -287,6 +402,23 @@
                 { type: 'button', label: 'AFTER', callback: self.accordionAddAfter },
             ]
         };
+        menu['containers']['list-group'] = {
+            items: [
+                { type: 'text', label: 'ADD ITEM' },
+                { type: 'button', label: 'BEFORE', callback: self.listGroupAddBefore, allowFor: self.listGroupIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.listGroupAddAfter, allowFor: self.listGroupIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.listGroupAddToBegin },
+                { type: 'button', label: 'END', callback: self.listGroupAddToEnd },
+                { type: 'text', label: 'ITEM' },
+                { type: 'button', label: 'ACTIVATE', callback: self.listGroupActivateItem, allowFor: self.listGroupIsInactiveItemSelected },
+                { type: 'button', label: 'DEACTIVATE', callback: self.listGroupDeactivateItem, allowFor: self.listGroupIsActiveItemSelected },
+                { type: 'button', label: 'DELETE', callback: self.listGroupDeleteItem, allowFor: self.listGroupIsItemSelected },
+            ]
+        }
+        menu['containers']['list-group-div'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item-link'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item-button'] = menu['containers']['list-group'];
 
         MBE.onBeforeDelete['containers|tab'] = self._tabDelete;
         
@@ -294,7 +426,6 @@
 
     _drop: function(target)
     {
-        console.log(this);
         if (target.is('.panel-heading') && $(this).is('[data-uic="text|heading"]')) {
             $(this).addClass('panel-title');
         }
@@ -306,8 +437,83 @@
         if ($(this).is('[data-uic="containers|accordion"]') && $(this).is(':empty')) {
             MBE.types.containers.buildAccordion.apply(this, []);
         }
+
+        if ($(this).is('.list-group') && $(this).is(':empty')) {
+            MBE.types.containers.buildListGroup.apply(this, []);
+        }
     },
 
+    /******************************************************************/
+    /* LIST GROUP CONTEXT METHODS                                     */
+    /******************************************************************/
+    buildListGroup: function() {
+        for (var i = 1; i <= 3; i++) {
+            var item = $(MBE.types.containers.templates['list-group-item']);
+            item.html('List Group Item ' + i).appendTo(this);
+        }
+    },
+
+    listGroupIsItemSelected: function () {
+        console.log(this);
+        return $(this).is('.list-group-item');
+    },
+    
+    listGroupIsActiveItemSelected: function() {
+        return $(this).is('.list-group-item.active');
+    },
+
+    listGroupIsInactiveItemSelected: function() {
+        return $(this).is('.list-group-item:not(.active)');
+    },
+
+    listGroupActivateItem: function () {
+        $(this).addClass('active');
+        MBE.selection.select.apply(this, []);
+    },
+
+    listGroupDeactivateItem: function() {
+        $(this).removeClass('active');
+        MBE.selection.select.apply(this, []);
+    },
+
+    listGroupDeleteItem: function() {
+        $(this).remove();
+        $('.mbe-drag-handle', MBE.workspaceDoc).remove();
+        MBE.DnD.updateDOM();
+        MBE.selection.select.apply(MBE.workspaceDoc.body, []);
+    },
+
+    listGroupAdd: function(pos) 
+    {
+        var self = MBE.types.containers;
+        var item = $(self.templates['list-group-item']);
+        var target;
+        if(pos == 'before' || pos == 'after') {
+            target = $(this);
+        }
+        else {
+            if($(this).is('.list-group')) {
+                target = $(this);
+            }
+            else {
+                target = $(this).parent();
+            }
+        }
+
+        switch (pos) {
+            case 'before': target.before(item); break;
+            case 'after': target.after(item); break;
+            case 'begin': target.prepend(item); break;
+            case 'end': target.append(item); break;
+        }
+
+        MBE.DnD.updateDOM();
+    },
+
+    listGroupAddAfter: function() { MBE.types.containers.listGroupAdd.apply(this, ['after']); },
+    listGroupAddBefore: function () { MBE.types.containers.listGroupAdd.apply(this, ['before']); },
+    listGroupAddToBegin: function () { MBE.types.containers.listGroupAdd.apply(this, ['begin']); },
+    listGroupAddToEnd: function() { MBE.types.containers.listGroupAdd.apply(this, ['end']); },
 
     /******************************************************************/
     /* LIST CONTEXT METHODS                                           */

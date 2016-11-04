@@ -120,7 +120,7 @@
         var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
         var sel = $('<select class="form-control input-sm"></select>');
         for (var k in opt.options) {
-            sel.append('<option value="' + k + '"' + (opt.get(k, opt) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
+            sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
         };
 
         if(typeof opt.attr != 'undefined') {
@@ -177,6 +177,54 @@
         if (isCollapsed) {
             group.css('display', 'none');
         }
+
+        return group;
+    },
+
+    createCM: function (opt, isCollapsed) {
+        if (!MBE.options.isAllowed(opt)) {
+            return '';
+        }
+
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var set = opt.set;
+
+        var inp = $('<textarea class="form-control" rows="15">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
+
+        inp.on('change', function () {
+            set.apply(MBE.options.target, [this]);
+        });
+        if (typeof opt.change == 'function') {
+            var onChange = opt.change;
+            inp.on('change', function () {
+                onChange.apply(MBE.options.target, [this]);
+            });
+        }
+
+        group.append(inp);
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
+        setTimeout(function () {
+            var cm = CodeMirror.fromTextArea(inp[0], {
+                lineNumbers: true,
+                lineWrapping: true,
+                mode: "htmlmixed",
+                autoCloseBrackets: true,
+                autoCloseTags: true,
+                matchBrackets: true,
+                matchTags: true,
+                extraKeys: {
+                    "Ctrl-Space": "autocomplete"
+                },
+            });
+            cm.on('blur', function (instance) {
+                cm.save();
+                inp.change();
+            });
+        }, 10);
 
         return group;
     },
@@ -305,6 +353,10 @@
                 f.append(self.createIcon(opt, isCollapsed));
                 break;
             }
+            case 'cm': {
+                f.append(self.createCM(opt, isCollapsed));
+                break;
+            }
             case 'group': {
                 for(var i = 0; i < opt.groupItems.length; i++) {
                     var item = opt.groupItems[i];
@@ -324,6 +376,10 @@
                         }
                         case 'icon': {
                             f.append(self.createIcon(item, isCollapsed));
+                            break;
+                        }
+                        case 'cm': {
+                            f.append(self.createCM(item, isCollapsed));
                             break;
                         }
                     }
@@ -402,6 +458,7 @@
         }
 
         $(this).toggleClass(opt.value);
+        MBE.selection.select.apply(this, []);
     },
 
     toggleTagName: function (opt) {

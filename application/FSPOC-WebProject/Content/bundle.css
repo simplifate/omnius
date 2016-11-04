@@ -5657,6 +5657,12 @@ body.mozaicEditorBody {
     content: "empty cell"; }
   body.mozaicEditorBody th.empty-element:before {
     content: "empty cell"; }
+  body.mozaicEditorBody [data-uic="misc|custom-code"].empty-element:before {
+    content: "empty custom code"; }
+  body.mozaicEditorBody .list-group.empty-element:before {
+    content: "empty list group"; }
+  body.mozaicEditorBody .list-group-item.empty-element:before {
+    content: "empty list group item"; }
   body.mozaicEditorBody .input-group-addon.empty-element:before, body.mozaicEditorBody .input-group-btn.empty-element:before {
     padding: 0px; }
   body.mozaicEditorBody div.clearfix.empty-element:before {

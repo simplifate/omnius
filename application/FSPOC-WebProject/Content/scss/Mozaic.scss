@@ -1005,6 +1005,9 @@ body.mozaicEditorBody {
     @include empty('tr', 'empty table row');
     @include empty('td', 'empty cell');
     @include empty('th', 'empty cell');
+    @include empty('[data-uic="misc|custom-code"]', 'empty custom code');
+    @include empty('.list-group', 'empty list group');
+    @include empty('.list-group-item', 'empty list group item');
 
     .input-group-addon, .input-group-btn {
         &.empty-element:before {

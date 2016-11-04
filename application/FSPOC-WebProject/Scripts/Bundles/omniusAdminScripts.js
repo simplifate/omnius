@@ -8348,7 +8348,6 @@ MBE.DnD = {
     _dragOver: function(event)
     {
         event.preventDefault();
-        console.log('call');
         var target = $(this);
         var childs = target.find(' > *');
 
@@ -8884,7 +8883,7 @@ MBE.options = {
         var lb = $('<label class="control-label col-xs-2">' + opt.label + '</label>');
         var sel = $('<select class="form-control input-sm"></select>');
         for (var k in opt.options) {
-            sel.append('<option value="' + k + '"' + (opt.get(k, opt) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
+            sel.append('<option value="' + k + '"' + (opt.get.apply(MBE.options.target, [k, opt]) ? ' selected' : '') + '>' + opt.options[k] + '</option>');
         };
 
         if(typeof opt.attr != 'undefined') {
@@ -8941,6 +8940,54 @@ MBE.options = {
         if (isCollapsed) {
             group.css('display', 'none');
         }
+
+        return group;
+    },
+
+    createCM: function (opt, isCollapsed) {
+        if (!MBE.options.isAllowed(opt)) {
+            return '';
+        }
+
+        var group = $('<div class="option-group form-group"' + (opt.id ? ' id="' + opt.id + '"' : '') + '></div>');
+        var set = opt.set;
+
+        var inp = $('<textarea class="form-control" rows="15">' + opt.get.apply(MBE.options.target, [opt]) + '</textarea>');
+
+        inp.on('change', function () {
+            set.apply(MBE.options.target, [this]);
+        });
+        if (typeof opt.change == 'function') {
+            var onChange = opt.change;
+            inp.on('change', function () {
+                onChange.apply(MBE.options.target, [this]);
+            });
+        }
+
+        group.append(inp);
+
+        if (isCollapsed) {
+            group.css('display', 'none');
+        }
+
+        setTimeout(function () {
+            var cm = CodeMirror.fromTextArea(inp[0], {
+                lineNumbers: true,
+                lineWrapping: true,
+                mode: "htmlmixed",
+                autoCloseBrackets: true,
+                autoCloseTags: true,
+                matchBrackets: true,
+                matchTags: true,
+                extraKeys: {
+                    "Ctrl-Space": "autocomplete"
+                },
+            });
+            cm.on('blur', function (instance) {
+                cm.save();
+                inp.change();
+            });
+        }, 10);
 
         return group;
     },
@@ -9069,6 +9116,10 @@ MBE.options = {
                 f.append(self.createIcon(opt, isCollapsed));
                 break;
             }
+            case 'cm': {
+                f.append(self.createCM(opt, isCollapsed));
+                break;
+            }
             case 'group': {
                 for(var i = 0; i < opt.groupItems.length; i++) {
                     var item = opt.groupItems[i];
@@ -9088,6 +9139,10 @@ MBE.options = {
                         }
                         case 'icon': {
                             f.append(self.createIcon(item, isCollapsed));
+                            break;
+                        }
+                        case 'cm': {
+                            f.append(self.createCM(item, isCollapsed));
                             break;
                         }
                     }
@@ -9166,6 +9221,7 @@ MBE.options = {
         }
 
         $(this).toggleClass(opt.value);
+        MBE.selection.select.apply(this, []);
     },
 
     toggleTagName: function (opt) {
@@ -9283,11 +9339,11 @@ MBE.toolbar = {
                     var button = $('<button type="button" class="btn navbar-btn">' + item.label + '</button>');
                     self.toolbar.append(button);
                     button.click({callback: item.callback}, function (event) {
-                        event.data.callback.apply($('.mbe-active')[0], []);
+                        event.data.callback.apply($('.mbe-active', MBE.workspaceDoc)[0], []);
                     });
 
                     if (typeof item.allowFor == 'function') {
-                        if (!item.allowFor.apply($('.mbe-active')[0], [])) {
+                        if (!item.allowFor.apply(this, [])) {
                             button.attr('disabled', true);
                         }
                     }
@@ -9330,7 +9386,12 @@ MBE.types.containers = {
         'well': '<div class="well"><span data-uic="text|span">Text of the well</span></div>',
         'list': '<ul><li data-uic="containers|list-item">Item 1</li><li data-uic="containers|list-item">Item 2</li></ul>',
         'list-item': '<li data-uic="containers|list-item">Item</li>',
-        'div': '<div></div>'
+        'div': '<div></div>',
+        'list-group': '<ul class="list-group"></ul>',
+        'list-group-div': '<div class="list-group"></div>',
+        'list-group-item':  '<li class="list-group-item" data-uic="containers|list-group-item">List Group Item</li>',
+        'list-group-item-link': '<a class="list-group-item" data-uic="containers|list-group-item-link">List Group Item</a>',
+        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>'
     },
     
     options: {
@@ -9524,6 +9585,113 @@ MBE.types.containers = {
                     $('#ListNumberingType, #ListNumberingStart, #ListNumberingReversed').toggle(opt.val() == 'ol');
                 }
             }
+        },
+        'list-group': {
+            'listGroupOptions': {
+                name: 'List group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'ul': 'Unordered list',
+                        'div-links': 'DIV with links',
+                        'div-buttons': 'DIV with buttons'
+                    },
+                    get: function (value) {
+                        switch (value) {
+                            case 'ul': return $(this).is('ul');
+                            case 'div-links': return $(this).is('div') && $(this).find('> a').length > 0;
+                            case 'div-buttons': return $(this).is('div') && $(this).find('> button').length > 0;
+                        }
+                    },
+                    set: function (opt) 
+                    {
+                        var self = MBE.types.containers;
+                        var target = $(this);
+                        var groupTemplate, itemTemplate;
+
+                        switch(opt.value)
+                        {
+                            case 'ul': {
+                                groupTemplate = 'list-group';
+                                itemTemplate = 'list-group-item';
+                                break; 
+                            }
+                            case 'div-links': {
+                                groupTemplate = 'list-group-div';
+                                itemTemplate = 'list-group-item-link';
+                                break;
+                            }
+                            case 'div-buttons': {
+                                groupTemplate = 'list-group-div';
+                                itemTemplate = 'list-group-item-button';
+                                break;
+                            }
+                        }
+
+                        var group = $(self.templates[groupTemplate]);
+                        target.find('> a, > button, > li').each(function () {
+                            var item = $(self.templates[itemTemplate]);
+                            item.html(this.innerHTML).addClass(this.className).appendTo(group);
+                        });
+                        group.attr('data-uic', 'containers|' + groupTemplate);
+
+                        target.replaceWith(group);
+                        MBE.DnD.updateDOM();
+                        MBE.selection.select.apply(group[0], []);
+                        MBE.options.target = group[0];
+                    }
+                }]
+            }
+        },
+        'list-group-item': {
+            'listGroupItemOptions': {
+                name: 'List group item options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Style',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'list-group-item-success': 'Success',
+                        'list-group-item-info': 'Info',
+                        'list-group-item-warning': 'Warning',
+                        'list-group-item-danger': 'Danger'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }, {
+                    label: 'URL',
+                    type: 'text',
+                    attr: 'href',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr,
+                    allowFor: ['list-group-item-link'],
+                }, {
+                    label: 'Target',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        '_blank': 'Blank',
+                        '_parent': 'Parent',
+                        '_top': 'Top'
+                    },
+                    attr: 'target',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr,
+                    allowFor: ['list-group-item-link']
+                }, {
+                    label: 'Options',
+                    type: 'boolean',
+                    options: {
+                        'active': 'Active',
+                        'disabled': 'Disabled'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
         }
     },
 
@@ -9536,6 +9704,9 @@ MBE.types.containers = {
         MBE.types.controls.options.link.linkOptions.groupItems[0].change = self.tabIdChange;
 
         self.options.panel.panelOptions.groupItems[1].disallowFor = self.panelIsNotInAccordion;
+        self.options['list-group-div'] = self.options['list-group'];
+        self.options['list-group-item-link'] = self.options['list-group-item'];
+        self.options['list-group-item-button'] = self.options['list-group-item'];
 
         menu['containers'] = {};
 
@@ -9592,6 +9763,23 @@ MBE.types.containers = {
                 { type: 'button', label: 'AFTER', callback: self.accordionAddAfter },
             ]
         };
+        menu['containers']['list-group'] = {
+            items: [
+                { type: 'text', label: 'ADD ITEM' },
+                { type: 'button', label: 'BEFORE', callback: self.listGroupAddBefore, allowFor: self.listGroupIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.listGroupAddAfter, allowFor: self.listGroupIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.listGroupAddToBegin },
+                { type: 'button', label: 'END', callback: self.listGroupAddToEnd },
+                { type: 'text', label: 'ITEM' },
+                { type: 'button', label: 'ACTIVATE', callback: self.listGroupActivateItem, allowFor: self.listGroupIsInactiveItemSelected },
+                { type: 'button', label: 'DEACTIVATE', callback: self.listGroupDeactivateItem, allowFor: self.listGroupIsActiveItemSelected },
+                { type: 'button', label: 'DELETE', callback: self.listGroupDeleteItem, allowFor: self.listGroupIsItemSelected },
+            ]
+        }
+        menu['containers']['list-group-div'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item-link'] = menu['containers']['list-group'];
+        menu['containers']['list-group-item-button'] = menu['containers']['list-group'];
 
         MBE.onBeforeDelete['containers|tab'] = self._tabDelete;
         
@@ -9599,7 +9787,6 @@ MBE.types.containers = {
 
     _drop: function(target)
     {
-        console.log(this);
         if (target.is('.panel-heading') && $(this).is('[data-uic="text|heading"]')) {
             $(this).addClass('panel-title');
         }
@@ -9611,8 +9798,83 @@ MBE.types.containers = {
         if ($(this).is('[data-uic="containers|accordion"]') && $(this).is(':empty')) {
             MBE.types.containers.buildAccordion.apply(this, []);
         }
+
+        if ($(this).is('.list-group') && $(this).is(':empty')) {
+            MBE.types.containers.buildListGroup.apply(this, []);
+        }
     },
 
+    /******************************************************************/
+    /* LIST GROUP CONTEXT METHODS                                     */
+    /******************************************************************/
+    buildListGroup: function() {
+        for (var i = 1; i <= 3; i++) {
+            var item = $(MBE.types.containers.templates['list-group-item']);
+            item.html('List Group Item ' + i).appendTo(this);
+        }
+    },
+
+    listGroupIsItemSelected: function () {
+        console.log(this);
+        return $(this).is('.list-group-item');
+    },
+    
+    listGroupIsActiveItemSelected: function() {
+        return $(this).is('.list-group-item.active');
+    },
+
+    listGroupIsInactiveItemSelected: function() {
+        return $(this).is('.list-group-item:not(.active)');
+    },
+
+    listGroupActivateItem: function () {
+        $(this).addClass('active');
+        MBE.selection.select.apply(this, []);
+    },
+
+    listGroupDeactivateItem: function() {
+        $(this).removeClass('active');
+        MBE.selection.select.apply(this, []);
+    },
+
+    listGroupDeleteItem: function() {
+        $(this).remove();
+        $('.mbe-drag-handle', MBE.workspaceDoc).remove();
+        MBE.DnD.updateDOM();
+        MBE.selection.select.apply(MBE.workspaceDoc.body, []);
+    },
+
+    listGroupAdd: function(pos) 
+    {
+        var self = MBE.types.containers;
+        var item = $(self.templates['list-group-item']);
+        var target;
+        if(pos == 'before' || pos == 'after') {
+            target = $(this);
+        }
+        else {
+            if($(this).is('.list-group')) {
+                target = $(this);
+            }
+            else {
+                target = $(this).parent();
+            }
+        }
+
+        switch (pos) {
+            case 'before': target.before(item); break;
+            case 'after': target.after(item); break;
+            case 'begin': target.prepend(item); break;
+            case 'end': target.append(item); break;
+        }
+
+        MBE.DnD.updateDOM();
+    },
+
+    listGroupAddAfter: function() { MBE.types.containers.listGroupAdd.apply(this, ['after']); },
+    listGroupAddBefore: function () { MBE.types.containers.listGroupAdd.apply(this, ['before']); },
+    listGroupAddToBegin: function () { MBE.types.containers.listGroupAdd.apply(this, ['begin']); },
+    listGroupAddToEnd: function() { MBE.types.containers.listGroupAdd.apply(this, ['end']); },
 
     /******************************************************************/
     /* LIST CONTEXT METHODS                                           */
@@ -11439,6 +11701,11 @@ MBE.options.setProgressBarClass = function (opt) {
 MBE.types.misc = {
 
     templates: {
+        'custom-code': '<div></div>',
+        'modal': '<div class="modal fade" tabindex="-1" role="dialog"></div>',
+        'modal-header': '<div class="modal-header" data-uic="misc|modal-header" locked></div>',
+        'modal-body': '<div class="modal-body" data-uic="misc|modal-body" locked></div>',
+        'modal-footer': '<div class="modal-footer" data-uic="misc|modal-footer" locked></div>',
         'badge': '<span class="badge">4</span>',
         'tag': '<span class="label label-default">label</span>',
         'caret': '<span class="caret"></span>',
@@ -11455,6 +11722,88 @@ MBE.types.misc = {
     },
 
     options: {
+        'custom-code': {
+            'customCodeOptions': {
+                name: 'Custom code',
+                type: 'cm',
+                get: function () {
+                    var html = $(this.innerHTML);
+                    html.find('.mbe-text-node').contents().unwrap();
+                    var helper = $('<div></div>').html(html);
+                    return helper.html();
+                },
+                set: function (opt) {
+                    this.innerHTML = opt.value;
+                    MBE.DnD.updateDOM();
+                }
+            }
+        },
+        'modal': {
+            'modalOptions': {
+                name: 'Modal options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Size',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'modal-lg': 'Large',
+                        'modal-sm': 'Small',
+                    },
+                    get: function (value) {
+                        return $('.modal-dialog', this).hasClass(value);
+                    },
+                    set: function(opt) {
+                        $('.modal-dialog', this).removeClass('modal-sm modal-lg');
+                        if (opt.value != 'null') {
+                            $('.modal-dialog', this).addClass(opt.value);
+                        }
+                    }
+                }, {
+                    label: 'Options',
+                    type: 'boolean',
+                    options: {
+                        'fade': 'Fade',
+                        'show-header': 'Show header',
+                        'show-footer': 'Show footer'
+                    },
+                    get: function (value) {
+                        switch (value) {
+                            case 'fade': return $(this).is('.fade');
+                            case 'show-header': return $('.modal-header', this).length > 0;
+                            case 'show-footer': return $('.modal-footer', this).length > 0;
+                        }
+                    },
+                    set: function (opt) {
+                        var self = MBE.types.misc;
+
+                        switch (opt.value) {
+                            case 'fade': 
+                                $(this).toggleClass('fade'); 
+                                break;
+                            case 'show-header':
+                                if (opt.checked) {
+                                    self.modalCreateHeader().prependTo($('.modal-content', this));            
+                                }
+                                else {
+                                    $('.modal-header', this).remove();
+                                }
+                                break;
+                            case 'show-footer':
+                                if (opt.checked) {
+                                    self.modalCreateFooter().appendTo($('.modal-content', this));            
+                                }
+                                else {
+                                    $('.modal-footer', this).remove();
+                                }
+                                break;
+                        }
+
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
         'tag': {
             'tagOptions': {
                 name: 'Label options',
@@ -11610,6 +11959,17 @@ MBE.types.misc = {
         menu.misc['breadcrumbs-item'] = menu.misc.breadcrumbs;
         menu.misc['breadcrumbs-active'] = menu.misc.breadcrumbs;
         menu.misc['breadcrumbs-inactive'] = menu.misc.breadcrumbs;
+
+        menu.misc.modal = {
+            items: [
+                { type: 'text', label: 'Modal' },
+                { type: 'button', label: 'Show', callback: self.modalShow, allowFor: self.modalIsInActive },
+                { type: 'button', label: 'Hide', callback: self.modalHide, allowFor: self.modalIsActive }
+            ]
+        };
+        menu.misc['modal-header'] = menu.misc.modal;
+        menu.misc['modal-body'] = menu.misc.modal;
+        menu.misc['modal-footer'] = menu.misc.modal;
     },
 
     _drop: function(target)
@@ -11617,6 +11977,79 @@ MBE.types.misc = {
         if ($(this).is('[data-uic="misc|breadcrumbs"]') && $(this).is(':empty')) {
             MBE.types.misc.buildBreadCrumbs.apply(this, []);
         }
+
+        if ($(this).is('.modal') && $(this).is(':empty')) {
+            MBE.types.misc.buildModal.apply(this, []);
+        }
+    },
+
+    /*****************************************************/
+    /* MODAL CONTEXT METHODS                             */
+    /*****************************************************/
+    buildModal: function() 
+    {
+        var self = MBE.types.misc;
+        var modal = $(this);
+        var dialog = $('<div class="modal-dialog" role="document"></div>');
+        var content = $('<div class="modal-content"></div>')
+        var body = $(self.templates['modal-body']);
+        
+        
+        
+        self.modalCreateHeader().appendTo(content);
+
+        body.append('<p data-uic="text|paragraph">The content of your modal</p>');
+        body.appendTo(content);
+
+        self.modalCreateFooter().appendTo(content);
+
+        content.appendTo(dialog);
+        dialog.appendTo(modal);
+
+        MBE.DnD.updateDOM();
+    },
+
+    modalCreateHeader: function() {
+        var self = MBE.types.misc;
+        var header = $(self.templates['modal-header']);
+        header.append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        header.append('<h4 class="modal-title" data-uic="text|heading">Modal title</h4>');
+
+        return header;
+    },
+
+    modalCreateFooter: function () {
+        var self = MBE.types.misc;
+        var footer = $(self.templates['modal-footer']);
+        footer.append('<button type="button" class="btn btn-default" data-dismiss="modal" data-uic="controls|button">Close</button>');
+        footer.append('<button type="button" class="btn btn-primary" data-uic="controls|button">Save changes</button>');
+
+        return footer;
+    },
+
+    modalGetTarget: function() {
+        return $(this).is('.modal') ? $(this) : $(this).parents('.modal').eq(0);
+    },
+
+    modalIsActive: function () { return MBE.types.misc.modalGetTarget.apply(this, []).is('.in'); },
+    modalIsInActive: function() { return MBE.types.misc.modalGetTarget.apply(this, []).is(':not(.in)'); },
+
+    modalShow: function() {
+        var m = MBE.types.misc.modalGetTarget.apply(this, []);
+        m.addClass('in')
+         .show()
+         .after('<div class="modal-backdrop fade in" bs-hidden="" bs-system-element="" style="display: block;"></div>');
+        
+        MBE.selection.select.apply(m[0], []);
+    },
+
+    modalHide: function() {
+        var m = MBE.types.misc.modalGetTarget.apply(this, []);
+        m.removeClass('in')
+         .hide()
+         .next('.modal-backdrop').remove();
+
+        MBE.selection.select.apply(m[0], []);
     },
 
     /*****************************************************/
