@@ -8,9 +8,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public int ActionRuleId { get; set; }
-        public override int ActionId { get; set; }
+        public int ActionId { get; set; }
 
-        public override int Order { get; set; }
+        public int Order { get; set; }
 
         /// <summary>
         /// Target1=source1;target2=source2
@@ -21,10 +21,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         /// d - double
         /// </summary>
         [StringLength(2000)]
-        public override string InputVariablesMapping { get; set; } // target=source;c=d
+        public string InputVariablesMapping { get; set; } // target=source;c=d
 
         [StringLength(2000)]
-        public override string OutputVariablesMapping { get; set; } // target=source;c=d
+        public string OutputVariablesMapping { get; set; } // target=source;c=d
 
         public virtual ActionRule ActionRule { get; set; }
     }

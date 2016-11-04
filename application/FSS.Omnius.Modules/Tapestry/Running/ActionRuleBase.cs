@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public abstract class ActionRuleBase
+    public interface IActionRule
     {
-        public abstract void Run(ActionResult results);
+        void Run(ActionResult results);
+    }
 
-        protected void InnerRun(ActionResult results, IEnumerable<ActionRule_ActionBase> actions)
+    public static class ActionRule_Extension
+    {
+        internal static void InnerRun(this IActionRule actionRule, ActionResult results, IEnumerable<IActionRule_Action> actions)
         {
-            foreach (ActionRule_ActionBase actionMap in actions.OrderBy(a => a.Order))
+            foreach (IActionRule_Action actionMap in actions.OrderBy(a => a.Order))
             {
                 // namapovaní InputVars
                 var remapedParams = actionMap.getInputVariables(results.OutputData);
@@ -25,7 +28,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 if (result.Type == ActionResultType.Error)
                 {
                     foreach (
-                        ActionRule_ActionBase reverseActionMap in
+                        IActionRule_Action reverseActionMap in
                             actions.Where(a => a.Order < actionMap.Order).OrderByDescending(a => a.Order))
                     {
                         var action = Action.All[reverseActionMap.ActionId];
@@ -46,9 +49,9 @@ namespace FSS.Omnius.Modules.Tapestry
             }
         }
 
-        protected void ReverseInnerRun(ActionResult results, IEnumerable<ActionRule_ActionBase> actions)
+        internal static void ReverseInnerRun(this IActionRule actionRule, ActionResult results, IEnumerable<IActionRule_Action> actions)
         {
-            foreach (ActionRule_ActionBase reverseActionMap in actions.OrderByDescending(a => a.Order))
+            foreach (IActionRule_Action reverseActionMap in actions.OrderByDescending(a => a.Order))
             {
                 var action = Action.All[reverseActionMap.ActionId];
                 action.ReverseRun(results.GetLastReverseData());

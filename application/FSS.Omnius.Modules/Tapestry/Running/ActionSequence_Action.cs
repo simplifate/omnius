@@ -8,9 +8,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     public partial class ActionSequence_Action
     {
-        public static List<ActionBase> GetActions(int MasterId, DBEntities context)
+        public static List<IAction> GetActions(int MasterId, DBEntities context)
         {
-            List<ActionBase> result = new List<ActionBase>();
+            List<IAction> result = new List<IAction>();
 
             foreach(ActionSequence_Action asa in context.ActionSequence_Actions.Where(asa => asa.Id == MasterId).OrderBy(asa => asa.Order))
             {

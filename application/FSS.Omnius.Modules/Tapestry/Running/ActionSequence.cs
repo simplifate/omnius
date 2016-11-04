@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry 
 {
-    public class ActionSequence : ActionBase
+    public class ActionSequence : IAction
     {
-        private List<ActionBase> _actions;
+        private List<IAction> _actions;
         
-        public override int Id { get; }
-        public override string[] InputVar { get; }
-        public override string[] OutputVar { get; }
+        public int Id { get; }
+        public string[] InputVar { get; }
+        public string[] OutputVar { get; }
 
         public ActionSequence(int Id, DBEntities context)
         {
@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry
             OutputVar = tempOutput.ToArray();
         }
 
-        public override ActionResult run(Dictionary<string, object> vars)
+        public ActionResult run(Dictionary<string, object> vars)
         {
             ActionResult result = new ActionResult();
 
@@ -45,7 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry
             
             return result;
         }
-        public override void ReverseRun(Dictionary<string, object> vars)
+        public void ReverseRun(Dictionary<string, object> vars)
         {
             _actions.Reverse();
             foreach(Action act in _actions)

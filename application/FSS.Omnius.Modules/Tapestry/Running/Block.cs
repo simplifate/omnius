@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public partial class Block : ActionRuleBase
+    public partial class Block : IActionRule
     {
-        public override void Run(ActionResult results)
+        public void Run(ActionResult results)
         {
-            InnerRun(results, PreBlockActions);
+            this.InnerRun(results, PreBlockActions);
         }
     }
 }

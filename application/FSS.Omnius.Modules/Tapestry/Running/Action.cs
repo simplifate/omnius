@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public abstract class Action : ActionBase
+    public abstract class Action : IAction
     {
         private static IEnumerable<Type> _repositories = null;
         private static Dictionary<int, Action> _actions = null;
@@ -57,10 +57,13 @@ namespace FSS.Omnius.Modules.Tapestry
             }
         }
         
+        public abstract int Id { get; }
+        public abstract string[] InputVar { get; }
+        public abstract string[] OutputVar { get; }
         public abstract int? ReverseActionId { get; }
         public abstract string Name { get; }
         
-        public override ActionResult run(Dictionary<string, object> vars)
+        public virtual ActionResult run(Dictionary<string, object> vars)
         {
             Dictionary<string, object> outputVars = new Dictionary<string, object>();
             ActionResultType outputStatus = ActionResultType.Success;
@@ -83,7 +86,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return new ActionResult(outputStatus, outputVars, invertedVar, message);
         }
 
-        public override void ReverseRun(Dictionary<string, object> vars)
+        public void ReverseRun(Dictionary<string, object> vars)
         {
             //if (ReverseActionId != null)
             //    RunAction(ReverseActionId.Value, vars);

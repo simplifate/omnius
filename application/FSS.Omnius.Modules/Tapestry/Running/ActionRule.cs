@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
-    public partial class ActionRule : ActionRuleBase
+    public partial class ActionRule : IActionRule
     {
         /// <summary>
         /// Run function to prepare conditions
@@ -17,21 +17,21 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order < PreFunctionCount).OrderBy(aar => aar.Order).ToList();
 
-            InnerRun(results, aars);
+            this.InnerRun(results, aars);
         }
 
-        public override void Run(ActionResult results)
+        public void Run(ActionResult results)
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
 
-            InnerRun(results, aars);
+            this.InnerRun(results, aars);
         }
 
         public void ReverseRun(ActionResult results)
         {
             var aars = ActionRule_Actions.Where(aar => aar.Order > PreFunctionCount);
 
-            ReverseInnerRun(results, aars);
+            this.ReverseInnerRun(results, aars);
         }
     }
 }

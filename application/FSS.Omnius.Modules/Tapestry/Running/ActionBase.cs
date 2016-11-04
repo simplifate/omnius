@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public abstract class ActionBase
+    public interface IAction
     {
-        public abstract int Id { get; }
-        public abstract string[] InputVar { get; }
-        public abstract string[] OutputVar { get; }
-
-        public abstract ActionResult run(Dictionary<string, object> vars);
-        public abstract void ReverseRun(Dictionary<string, object> vars);
+        int Id { get; }
+        string[] InputVar { get; }
+        string[] OutputVar { get; }
+        ActionResult run(Dictionary<string, object> vars);
+        void ReverseRun(Dictionary<string, object> vars);
     }
 }

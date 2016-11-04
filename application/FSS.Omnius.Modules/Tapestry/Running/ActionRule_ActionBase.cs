@@ -7,23 +7,26 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    public abstract class ActionRule_ActionBase
+    public interface IActionRule_Action
     {
-        public abstract int ActionId { get; set; }
-        public abstract int Order { get; set; }
-        public abstract string InputVariablesMapping { get; set; }
-        public abstract string OutputVariablesMapping { get; set; }
+        int ActionId { get; set; }
+        int Order { get; set; }
+        string InputVariablesMapping { get; set; }
+        string OutputVariablesMapping { get; set; }
+    }
 
-        public Dictionary<string, object> getInputVariables(Dictionary<string, object> tempVars)
+    public static class IActionRule_Action_Extension
+    {
+        public static Dictionary<string, object> getInputVariables(this IActionRule_Action actionRule_action, Dictionary<string, object> tempVars)
         {
-            KeyValueString mapping = new KeyValueString(InputVariablesMapping);
+            KeyValueString mapping = new KeyValueString(actionRule_action.InputVariablesMapping);
             mapping.Resolve(tempVars);
             mapping.result.AddRange(tempVars);
             return mapping.result;
         }
-        public void RemapOutputVariables(Dictionary<string, object> actionVars)
+        public static void RemapOutputVariables(this IActionRule_Action actionRule_action, Dictionary<string, object> actionVars)
         {
-            KeyValueString mapping = new KeyValueString(OutputVariablesMapping);
+            KeyValueString mapping = new KeyValueString(actionRule_action.OutputVariablesMapping);
             mapping.ChangeKeysInInput(actionVars);
         }
     }
