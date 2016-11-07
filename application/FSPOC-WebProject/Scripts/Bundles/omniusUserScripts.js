@@ -822,6 +822,7 @@ $(function () {
             table.wrap("<div class='inner_wrapper'>");
             table.on("click", ".rowEditAction", function () {
                 rowId = parseInt($(this).parents("tr").find("td:first").text());
+                window.ignoreUnload = true;
                 $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
