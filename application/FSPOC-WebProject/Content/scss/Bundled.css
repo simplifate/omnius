@@ -886,6 +886,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
         color: #e3001b; }
       .mozaicForm .data-table .actionIcons .fa-sign-in {
         font-size: 20px; }
+    .mozaicForm .data-table thead {
+      white-space: nowrap; }
   .mozaicForm .data-table-simple-mode {
     background-color: white; }
     .mozaicForm .data-table-simple-mode tfoot {

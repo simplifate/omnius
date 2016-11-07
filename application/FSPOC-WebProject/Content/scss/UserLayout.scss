@@ -682,6 +682,9 @@ body.userLayout.leftBarHidden {
                 font-size: 20px;
             }
         }
+        thead {
+            white-space: nowrap;
+        }
     }
     .data-table-simple-mode {
         background-color: white;
