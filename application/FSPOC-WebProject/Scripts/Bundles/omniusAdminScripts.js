@@ -4958,8 +4958,12 @@ $(function () {
             }
         });
         function componentPropertiesDialog_SubmitData() {
+
             CurrentComponent.attr("uicName", componentPropertiesDialog.find("#component-name").val());
             CurrentComponent.css("width", componentPropertiesDialog.find("#component-width").val());
+
+            CurrentComponent.parents(".dataTables_wrapper").css("width", CurrentComponent.css("width"));   //to stejné v userinit
+
             CurrentComponent.css("height", componentPropertiesDialog.find("#component-height").val());
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
