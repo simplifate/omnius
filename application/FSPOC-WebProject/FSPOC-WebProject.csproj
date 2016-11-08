@@ -1743,6 +1743,7 @@
     <Content Include="Views\Compass\Compass\AjaxIndex.cshtml" />
     <Content Include="Views\Compass\Compass\Index.cshtml" />
     <Content Include="Views\Mozaic\Bootstrap\Workspace.cshtml" />
+    <Content Include="Views\App\83\Page\1029.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
