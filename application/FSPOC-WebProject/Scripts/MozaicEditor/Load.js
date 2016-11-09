@@ -144,7 +144,8 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.find(".phase2 .phase-label").text(phaseLabelArray[1] ? phaseLabelArray[1] : "Fáze 2");
         newComponent.find(".phase3 .phase-label").text(phaseLabelArray[2] ? phaseLabelArray[2] : "Fáze 3");
     }
-    else if (newComponent.hasClass("panel-component")) {
+
+    if (newComponent.hasClass("panel-component")) { //mšebela: odstraněno else před if (kvůli named-component)
         CreateDroppableMozaicContainer(newComponent, false);
     }
     if (newComponent.hasClass("data-table"))
