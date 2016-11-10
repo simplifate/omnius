@@ -28,7 +28,7 @@ $(function () {
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
-                componentPropertiesDialog.find("#component-attributes").val(CurrentComponent.attr("uicAttributes"))
+                componentPropertiesDialog.find("#component-attributes").val(CurrentComponent.data("uicAttributes"))
 
                 // Show table row for relevant attributes by default
                 componentPropertiesDialog.find("#component-placeholder").parents('tr').show();
@@ -115,7 +115,7 @@ $(function () {
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
             CurrentComponent.attr("tabindex", componentPropertiesDialog.find("#component-tabindex").val());
-            CurrentComponent.attr("uicAttributes", componentPropertiesDialog.find("#component-attributes").val());
+            CurrentComponent.data("uicAttributes", componentPropertiesDialog.find("#component-attributes").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))

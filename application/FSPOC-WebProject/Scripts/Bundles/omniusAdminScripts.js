@@ -4467,7 +4467,7 @@ function GetMozaicContainerComponentArray(container, nested) {
             Width: currentUic.css("width"),
             Height: currentUic.css("height"),
             Tag: tag,
-            Attributes: currentUic.attr("uicAttributes"),
+            Attributes: currentUic.data("uicAttributes"),
             Classes: currentUic.attr("uicClasses"),
             Styles: currentUic.attr("uicStyles"),
             Properties: currentUic.attr("uicProperties") ? currentUic.attr("uicProperties") : "",
@@ -4536,9 +4536,11 @@ function LoadMozaicPage(pageId) {
     });
 }
 function LoadMozaicEditorComponents(targetContainer, cData) {
-    newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + '" uicAttributes="' + (cData.Attributes || "") + '" class="uic ' + cData.Classes
+    newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + */'" class="uic ' + cData.Classes
                     + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
                     + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
+    newComponent.data("uicAttributes", cData.Attributes);
+
     targetContainer.append(newComponent);
     if (cData.Placeholder)
         newComponent.attr("placeholder", cData.Placeholder);
@@ -4882,7 +4884,7 @@ $(function () {
                 componentPropertiesDialog.find("#component-styles").val(CurrentComponent.attr("uicStyles"));
                 componentPropertiesDialog.find("#component-props").val(CurrentComponent.attr("uicProperties"));
                 componentPropertiesDialog.find("#component-tabindex").val(CurrentComponent.attr("tabindex"));
-                componentPropertiesDialog.find("#component-attributes").val(CurrentComponent.attr("uicAttributes"))
+                componentPropertiesDialog.find("#component-attributes").val(CurrentComponent.data("uicAttributes"))
 
                 // Show table row for relevant attributes by default
                 componentPropertiesDialog.find("#component-placeholder").parents('tr').show();
@@ -4969,7 +4971,7 @@ $(function () {
             CurrentComponent.attr("uicStyles", componentPropertiesDialog.find("#component-styles").val());
             CurrentComponent.attr("uicProperties", componentPropertiesDialog.find("#component-props").val());
             CurrentComponent.attr("tabindex", componentPropertiesDialog.find("#component-tabindex").val());
-            CurrentComponent.attr("uicAttributes", componentPropertiesDialog.find("#component-attributes").val());
+            CurrentComponent.data("uicAttributes", componentPropertiesDialog.find("#component-attributes").val());
             if (CurrentComponent.hasClass("button-simple"))
                 CurrentComponent.text(componentPropertiesDialog.find("#component-label").val());
             else if (CurrentComponent.hasClass("button-dropdown"))
