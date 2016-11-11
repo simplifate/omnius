@@ -1004,29 +1004,31 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   border: 1px solid #4b8ad1;
   height: 25px; }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-  background: #4fa7ff !important;
-  padding: 2px 8px !important;
-  border-radius: 0px !important;
-  border: none !important;
-  color: white !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: white !important;
-    background: #519ae2 !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background-color: #0066cc !important;
+.dataTables_wrapper .dataTables_paginate {
+  padding-top: 0.600em !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: #4fa7ff !important;
+    padding: 2px 8px !important;
+    border-radius: 0px !important;
+    border: none !important;
     color: white !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      color: white !important;
+      background: #519ae2 !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      background-color: #0066cc !important;
       color: white !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
-    background-color: transparent !important;
-    color: black !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
-      color: #494d57 !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled {
-      opacity: 0.4; }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled:hover {
-        color: black !important; }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        color: white !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+      background-color: transparent !important;
+      color: black !important; }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
+        color: #494d57 !important; }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled {
+        opacity: 0.4; }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled:hover {
+          color: black !important; }
 
 table.dataTable {
   margin: 0 !important;

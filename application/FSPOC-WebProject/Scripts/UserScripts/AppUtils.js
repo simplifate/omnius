@@ -230,7 +230,7 @@ function RecalculatePanelDimensions(panel) {
         }
         if (currentUic.position().top + currentUic.height() + 30 > panelHeight) {
             if (currentUic.hasClass("data-table")) {
-                panelHeight = currentUic.position().top + currentUic.height() + 60;
+                panelHeight = currentUic.position().top + currentUic.height() + 85;
             }
             else {
                 panelHeight = currentUic.position().top + currentUic.height() + 30;

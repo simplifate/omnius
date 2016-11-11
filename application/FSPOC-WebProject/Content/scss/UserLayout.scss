@@ -825,6 +825,7 @@ body.userLayout.leftBarHidden {
     }
 
     .dataTables_paginate {
+        padding-top: 0.600em !important;
         .paginate_button {
             background: #4fa7ff !important;
             padding: 2px 8px !important;
