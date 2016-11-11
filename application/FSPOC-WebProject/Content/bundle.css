@@ -2969,6 +2969,54 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
 .hiddenForm {
   display: none; }
 
+.dataTables_wrapper input, .dataTables_wrapper select {
+  border: 1px solid #4b8ad1;
+  height: 25px; }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background: #4fa7ff !important;
+  padding: 2px 8px !important;
+  border-radius: 0px !important;
+  border: none !important;
+  color: white !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: white !important;
+    background: #519ae2 !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #0066cc !important;
+    color: white !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+      color: white !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+    background-color: transparent !important;
+    color: black !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
+      color: #494d57 !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled {
+      opacity: 0.4; }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled:hover {
+        color: black !important; }
+
+table.dataTable {
+  margin: 0 !important;
+  width: 100% !important; }
+  table.dataTable thead, table.dataTable tr th {
+    background-color: #f1f1f1; }
+  table.dataTable thead th {
+    border-bottom: 1px solid #4b8ad1; }
+  table.dataTable tfoot th {
+    border-bottom: 1px solid #beccdc;
+    border-top: none;
+    padding: 0 !important; }
+    table.dataTable tfoot th input {
+      width: 100% !important;
+      border: none !important;
+      border-right: 1px solid #beccdc !important;
+      padding: 0px 5px;
+      box-sizing: border-box; }
+    table.dataTable tfoot th:last-child input {
+      border-right: none !important; }
+
 body.tapestryModule .toolboxItem {
   min-width: 218px;
   font-family: MyriadPro;
