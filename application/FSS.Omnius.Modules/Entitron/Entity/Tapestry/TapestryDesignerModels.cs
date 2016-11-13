@@ -85,6 +85,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsChanged { get; set; }
 
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
