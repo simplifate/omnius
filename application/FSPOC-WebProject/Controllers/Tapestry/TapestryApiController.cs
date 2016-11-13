@@ -164,6 +164,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
                         RoleWhitelist = postData.RoleWhitelist != null ? string.Join(",", postData.RoleWhitelist) : "",
                     };
+                    targetBlock.IsChanged = true;
                     targetBlock.BlockCommits.Add(blockCommit);
 
                     foreach (AjaxTapestryDesignerResourceRule ajaxRule in postData.ResourceRules)

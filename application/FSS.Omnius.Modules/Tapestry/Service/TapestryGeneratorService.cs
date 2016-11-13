@@ -123,11 +123,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return resultWF;
         }
 
-        private void saveBlocks(SendWS sendWs)
+        private void saveBlocks(SendWS sendWs) 
         {
-            int progress = 0, progressMax = _allBlocks.Count;
+            int progress = 0, progressMax = _allBlocks.Count(block => block.IsChanged); //TODO Refaktorovat aby v allBlocks byla už jen požadovaná množina
             bool abort = false;
-            foreach(TapestryDesignerBlock block in _allBlocks)
+            foreach(TapestryDesignerBlock block in _allBlocks.Where(block => block.IsChanged))
             {
                 progress++;
                 try
@@ -189,6 +189,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
+            block.IsChanged = false;
         }
 
         private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping)

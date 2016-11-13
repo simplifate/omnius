@@ -203,7 +203,7 @@ namespace FSS.Omnius.Controllers.Master
                         {
                             Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
                             var service = new TapestryGeneratorService(context);
-                            blockMapping = service.GenerateTapestry(core, x => Send(x));
+                            blockMapping = service.GenerateTapestry(core, x => Send(x)); //TODO Tuhle metodu rozšíříme
                             app.TapestryChangedSinceLastBuild = false;
                             Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
                         }

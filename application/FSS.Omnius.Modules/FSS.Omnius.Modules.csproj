@@ -973,6 +973,10 @@
     <Compile Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.Designer.cs">
       <DependentUpon>201610261315588_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.cs" />
+    <Compile Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.Designer.cs">
+      <DependentUpon>201611132038327_IsChangedParameterAddedToBlock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1586,6 +1590,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610261315588_FileMetadata_webdaventityuploadaction.resx">
       <DependentUpon>201610261315588_FileMetadata_webdaventityuploadaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611132038327_IsChangedParameterAddedToBlock.resx">
+      <DependentUpon>201611132038327_IsChangedParameterAddedToBlock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
