@@ -13,17 +13,19 @@ namespace FSS.Omnius.Modules.Tapestry.Service
     {
         private CORE.CORE _core;
         private DBEntities _context;
+        private bool _rebuildInAction;
 
         private Dictionary<int, Block> _blockMapping;
         private HashSet<TapestryDesignerBlock> _allBlocks;
 
         public delegate void SendWS(string str);
 
-        public TapestryGeneratorService(DBEntities context)
+        public TapestryGeneratorService(DBEntities context, bool rebuildInAction)
         {
             _blockMapping = new Dictionary<int, Block>();
             _allBlocks = new HashSet<TapestryDesignerBlock>();
             _context = context;
+            _rebuildInAction = rebuildInAction;
         }
 
         public Dictionary<int, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
@@ -123,11 +125,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return resultWF;
         }
 
-        private void saveBlocks(SendWS sendWs) 
+        private void saveBlocks(SendWS sendWs)
         {
-            int progress = 0, progressMax = _allBlocks.Count(block => block.IsChanged); //TODO Refaktorovat aby v allBlocks byla už jen požadovaná množina
+            var blocksToBuild = _rebuildInAction ? _allBlocks : _allBlocks.Where(block => block.IsChanged);
+            int progress = 0, progressMax = blocksToBuild.Count();
             bool abort = false;
-            foreach(TapestryDesignerBlock block in _allBlocks.Where(block => block.IsChanged))
+            foreach(TapestryDesignerBlock block in blocksToBuild)
             {
                 progress++;
                 try

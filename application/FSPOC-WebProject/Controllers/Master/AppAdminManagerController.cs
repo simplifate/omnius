@@ -56,17 +56,32 @@ namespace FSS.Omnius.Controllers.Master
 
             return RedirectToAction("Index");
         }
+        public ActionResult RebuildApp(int Id)
+        {
+            string menuPath = Server.MapPath("~/Views/Shared/_ApplicationMenu.cshtml");
+
+            if (HttpContext.IsWebSocketRequest)
+            {
+                HttpContext.AcceptWebSocketRequest(new BuildWebSocketHandler(Id, menuPath, true));
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.SwitchingProtocols;
+                return null;
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 
     class BuildWebSocketHandler : WebSocketHandler
     {
         private int _AppId;
         private string _menuPath;
+        private bool _rebuildInAction;
 
-        public BuildWebSocketHandler(int appId, string menuPath)
+        public BuildWebSocketHandler(int appId, string menuPath, bool rebuilInAction = false)
         {
             _AppId = appId;
             _menuPath = menuPath;
+            _rebuildInAction = rebuilInAction;
         }
 
         public override void OnOpen()
@@ -91,11 +106,11 @@ namespace FSS.Omnius.Controllers.Master
                     else
                         Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
 
-                    if (app.MozaicChangedSinceLastBuild)
+                    if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
                         Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
                     else
                         Send(Json.Encode(new { id = "mozaic", type = "success", message = "uživatelské rozhraní není potřeba aktualizovat" }));
-                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
+                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
                     {
                         Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
                         Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
@@ -105,7 +120,7 @@ namespace FSS.Omnius.Controllers.Master
                         Send(Json.Encode(new { id = "tapestry", type = "success", message = "workflow není potřeba aktualizovat" }));
                         Send(Json.Encode(new { id = "menu", type = "success", message = "menu není potřeba aktualizovat" }));
                     }
-                    if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild)
+                    if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild && !_rebuildInAction)
                     {
                         Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
                         return;
@@ -151,7 +166,7 @@ namespace FSS.Omnius.Controllers.Master
                     }
 
                     // Mozaic pages
-                    if (app.MozaicChangedSinceLastBuild)
+                    if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
                     {
                         try
                         {
@@ -195,15 +210,15 @@ namespace FSS.Omnius.Controllers.Master
                         }
                     }
 
-                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
+                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
                     {
                         // Tapestry
                         Dictionary<int, Block> blockMapping = null;
                         try
                         {
                             Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
-                            var service = new TapestryGeneratorService(context);
-                            blockMapping = service.GenerateTapestry(core, x => Send(x)); //TODO Tuhle metodu rozšíříme
+                            var service = new TapestryGeneratorService(context, _rebuildInAction);
+                            blockMapping = service.GenerateTapestry(core, x => Send(x));
                             app.TapestryChangedSinceLastBuild = false;
                             Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
                         }
