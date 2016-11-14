@@ -61,7 +61,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             var dictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
                 dictionary = (Dictionary<string, object>)vars["Dictionary"];
-            var mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
+            
             DBItem rowData = null;
             bool useRowData = true;
             if (!vars.ContainsKey("RowData"))
@@ -72,6 +72,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 rowData = (DBItem)vars["RowData"];
             else if (vars["RowData"] is IEnumerable<DBItem>)
                 rowData = (vars["RowData"] as IEnumerable<DBItem>).FirstOrDefault();
+
+            var autoMapping = (vars.ContainsKey("AutoMapping") && Convert.ToBoolean(vars["AutoMapping"])) || !vars.ContainsKey("KeyMapping");
+
+            List <string> mappingStringList;
+            if (autoMapping)
+            {
+                mappingStringList = rowData.getColumnNames().Select(a => $"{a}:{a}").ToList();
+            }
+            else
+            { 
+                mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
+            }
 
             foreach (string mappingString in mappingStringList)
             {
