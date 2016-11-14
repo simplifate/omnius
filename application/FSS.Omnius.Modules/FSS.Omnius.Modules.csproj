@@ -1008,6 +1008,7 @@
     <Compile Include="Tapestry\Actions\Entitron\GetCurrentTimeAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetDictionariesFromRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetDictionaryFromTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GetAppUrl.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetModelUrlAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetSuperiorData.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetUserData.cs" />
