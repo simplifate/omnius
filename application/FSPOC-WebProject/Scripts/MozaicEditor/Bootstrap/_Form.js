@@ -90,7 +90,14 @@
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }]
-            }
+            },
+            'labelSize': {
+                name: 'Label size',
+                type: 'group',
+                groupItems: MBE.types.grid.options.column.columnSize.groupItems,
+                get: MBE.options.hasClass,
+                set: MBE.options.toggleClass
+            },
         },
         'select': {
             'selectOptions': {

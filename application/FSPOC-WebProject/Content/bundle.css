@@ -5722,6 +5722,29 @@ body.mozaicEditorBody {
     padding: 1px 10px; }
   body.mozaicEditorBody .dragged[data-uic] {
     opacity: 0.5; }
+  body.mozaicEditorBody .table.name-value-list {
+    font-family: MyriadPro;
+    font-size: 14px; }
+    body.mozaicEditorBody .table.name-value-list tr {
+      border-top: 1px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list tr:first-child {
+      border-top: 2px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list tr:last-child {
+      border-bottom: 2px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list td {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      border: none; }
+    body.mozaicEditorBody .table.name-value-list .name-cell {
+      min-width: 140px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-weight: bold;
+      background-color: #d4f0fe; }
+    body.mozaicEditorBody .table.name-value-list .value-cell {
+      min-width: 140px;
+      padding-left: 25px;
+      padding-right: 10px; }
 
 body.cortexModule #upperPanel {
   height: 295px; }

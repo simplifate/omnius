@@ -76,7 +76,8 @@
       "Scripts/MozaicEditor/Bootstrap/_Page.js",
       "Scripts/MozaicEditor/Bootstrap/_Table.js",
       "Scripts/MozaicEditor/Bootstrap/_Form.js",
-      "Scripts/MozaicEditor/Bootstrap/_Misc.js"
+      "Scripts/MozaicEditor/Bootstrap/_Misc.js",
+      "Scripts/MozaicEditor/Bootstrap/_UI.js"
     ]
   },
   {

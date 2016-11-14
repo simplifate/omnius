@@ -177,7 +177,7 @@
 
     _drop: function()
     {
-        if ($(this).is('table:empty')) {
+        if ($(this).is('[data-uic="table|table"]:empty')) {
             MBE.types.table.build.apply(this, []);
         }
         if ($(this).is('[data-uic="table|cell"]')) {
