@@ -21,7 +21,7 @@ body.mozaicComponentManagerModule {
 }
 body.mozaicEditorModule {
     background-color: #f2f2f3; 
-
+    
     #upperPanel {
         height: 295px;
 
@@ -1024,6 +1024,23 @@ body.mozaicEditorBody {
         opacity: 0.5;
     }
 
+    .table.data-table {
+        
+        .actionIcons {
+            white-space: nowrap;
+            .fa {
+                font-size: 16px;
+                margin-right: 8px;
+            }
+            .fa-edit, .fa-search {
+                color: #0065a9;
+            }
+            .fa-remove {
+                color: #e3001b;
+            }
+        }
+    }
+
     .table.name-value-list {
         font-family: MyriadPro;
         font-size: 14px;
@@ -1054,5 +1071,12 @@ body.mozaicEditorBody {
             padding-left: 25px;
             padding-right: 10px;
         }
+    }
+
+    .countdown-component {
+        width: 260px;
+        height: 50px;
+        border: 1px solid #ccc;
+        background-color: #eee;
     }
 }            

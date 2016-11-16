@@ -252,17 +252,22 @@
                 var ruleList = document.styleSheets[sSheet].cssRules;
                 for (var rule = 0; rule < ruleList.length; rule++) {
                     var text = ruleList[rule].selectorText;
-                    var rx = new RegExp('^\.(' + f + '-[^ ]+)::before$');
-                    if (m = rx.exec(text)) {
-                        var btn = $('<a href="#"></a>');
-                        btn.append('<span class="' + f + ' ' + m[1] + '"></span>');
-                        btn.append('<span class="icon-name">' + f + ' ' + m[1] + '</span>');
-                        list.append(btn);
+                    var selectors = text ? text.split(/, ?/) : [];
+                    for (var si = 0; si < selectors.length; si++)
+                    {
+                        var selector = selectors[si];
+                        var rx = new RegExp('^\.(' + f + '-[^ ]+)::before$');
+                        if (m = rx.exec(selector)) {
+                            var btn = $('<a href="#"></a>');
+                            btn.append('<span class="' + f + ' ' + m[1] + '"></span>');
+                            btn.append('<span class="icon-name">' + f + ' ' + m[1] + '</span>');
+                            list.append(btn);
 
-                        var test = '.' + f + '.' + m[1];
-                        if ($(MBE.options.target).is(test)) {
-                            btn.addClass('active');
-                            active = f;
+                            var test = '.' + f + '.' + m[1];
+                            if ($(MBE.options.target).is(test)) {
+                                btn.addClass('active');
+                                active = f;
+                            }
                         }
                     }
                 }
@@ -382,8 +387,18 @@
                             f.append(self.createCM(item, isCollapsed));
                             break;
                         }
+                        case 'builder':
+                        {
+                            f.append(item.builder(item, isCollapsed));
+                            break;
+                        }
                     }
                 }
+                break;
+            }
+            case 'builder':
+            {
+                f.append(opt.builder(opt, isCollapsed));
                 break;
             }
         }

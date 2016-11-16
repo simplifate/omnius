@@ -3753,6 +3753,15 @@ body.mozaicEditorBody {
     padding: 1px 10px; }
   body.mozaicEditorBody .dragged[data-uic] {
     opacity: 0.5; }
+  body.mozaicEditorBody .table.data-table .actionIcons {
+    white-space: nowrap; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 8px; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa-edit, body.mozaicEditorBody .table.data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa-remove {
+      color: #e3001b; }
   body.mozaicEditorBody .table.name-value-list {
     font-family: MyriadPro;
     font-size: 14px; }
@@ -3776,6 +3785,11 @@ body.mozaicEditorBody {
       min-width: 140px;
       padding-left: 25px;
       padding-right: 10px; }
+  body.mozaicEditorBody .countdown-component {
+    width: 260px;
+    height: 50px;
+    border: 1px solid #ccc;
+    background-color: #eee; }
 
 body.cortexModule #upperPanel {
   height: 295px; }
