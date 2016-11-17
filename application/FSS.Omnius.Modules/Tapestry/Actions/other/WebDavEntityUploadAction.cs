@@ -97,7 +97,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 descriptionInputs = vars[InputVar[3]].ToString().Split(',');
             }
 
-            int newId = Convert.ToInt32(vars["NewId"]);
+            int newId;
+            if (vars.ContainsKey("NewId"))
+                newId = Convert.ToInt32(vars["NewId"]);
+            else
+                newId = Convert.ToInt32(vars["__ModelId__"]);
 
             using (var entities = DBEntities.instance)
             {
