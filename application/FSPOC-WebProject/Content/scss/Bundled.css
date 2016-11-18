@@ -858,8 +858,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       color: #58585a;
       white-space: nowrap; }
   .mozaicForm .dataTables_wrapper .inner_wrapper {
-    width: 100%;
-    overflow-x: auto; }
+    width: 100%; }
   .mozaicForm .data-table {
     width: 250px;
     border: 1px solid #4b8ad1;
