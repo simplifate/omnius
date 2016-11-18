@@ -83,19 +83,16 @@ namespace FSS.Omnius.Modules.Tapestry
                 // map inputs
                 foreach (ResourceMappingPair pair in block.ResourceMappingPairs)
                 {
-                    TapestryDesignerResourceItem source = pair.Source;
-                    TapestryDesignerResourceItem target = pair.Target;
-
-                    if (source.TypeClass == "uiItem" && target.TypeClass == "attributeItem")
+                    if (pair.relationType == "uiItem__attributeItem")
                     {
-                        if (fc.AllKeys.Contains(source.ComponentName))
-                            _results.OutputData.Add($"__Model.{target.TableName}.{target.ColumnName}", fc[source.ComponentName]);
+                        if (fc.AllKeys.Contains(pair.SourceComponentName))
+                            _results.OutputData.Add($"__Model.{pair.TargetTableName}.{pair.TargetColumnName}", fc[pair.SourceComponentName]);
                         for (int panelIndex = 1; fc.AllKeys.Contains($"panelCopy{panelIndex}Marker"); panelIndex++)
                         {
-                            if (fc.AllKeys.Contains(source.ComponentName))
+                            if (fc.AllKeys.Contains(pair.SourceComponentName))
                             {
-                                _results.OutputData.Add($"__Model.panelCopy{panelIndex}.{target.TableName}.{target.ColumnName}",
-                                    fc[$"panelCopy{panelIndex}_" + source.ComponentName]);
+                                _results.OutputData.Add($"__Model.panelCopy{panelIndex}.{pair.TargetTableName}.{pair.TargetColumnName}",
+                                    fc[$"panelCopy{panelIndex}_{pair.SourceComponentName}"]);
                             }
                         }
                     }

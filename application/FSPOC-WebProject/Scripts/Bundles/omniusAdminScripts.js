@@ -2988,6 +2988,10 @@ $(function () {
                         CurrentItem = item;
                         tableAttributePropertiesDialog.dialog("open");
                     }
+                    else if (item.hasClass("viewAttribute")) {
+                        CurrentItem = item;
+                        gatewayConditionsDialog.dialog("open");
+                    }
                     else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
                         CurrentItem = item;
                         actionPropertiesDialog.dialog("open");

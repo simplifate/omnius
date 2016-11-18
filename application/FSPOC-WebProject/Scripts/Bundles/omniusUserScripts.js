@@ -629,7 +629,9 @@ function RecalculatePanelDimensions(panel) {
     panel.find(".uic, .dataTables_wrapper").each(function (index, element) {
         currentUic = $(element);
         if (currentUic.position().left + currentUic.width() + 30 > panelWidth) {
-            panelWidth = currentUic.position().left + currentUic.width() + 30;
+            if (!panel.hasClass("named-panel") || currentUic.parent().css("overflow") == "visible") {
+                panelWidth = currentUic.position().left + currentUic.width() + 30;
+            }
         }
         if (currentUic.position().top + currentUic.height() + 30 > panelHeight) {
             panelHeight = currentUic.position().top + currentUic.height() + 30;
