@@ -181,11 +181,6 @@ namespace FSS.Omnius.Controllers.Tapestry
                                 dataSource.Rows.Add(newRow);
                             }
                         }
-                        if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
-                            || resourceMappingPair.TargetType == "name-value-list")
-                        {
-                            ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
-                        }
                     }
                     else
                     {
@@ -248,12 +243,12 @@ namespace FSS.Omnius.Controllers.Tapestry
                                 dataSource.Rows.Add(newRow);
                             }
                         }
-                        if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
-                            || resourceMappingPair.TargetType == "name-value-list")
-                        {
-                            ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
-                        }
                     }
+                }
+                if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
+                            || resourceMappingPair.TargetType == "name-value-list")
+                {
+                    ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                 }
                 else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
