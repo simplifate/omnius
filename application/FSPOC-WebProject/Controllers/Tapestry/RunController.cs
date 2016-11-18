@@ -65,7 +65,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, fc);
             if (result.Item2.Id != block.Id)
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId });
-            ViewData["tapestry"] = result.Item1.OutputData;
+            var tapestryVars = result.Item1.OutputData;
 
             foreach (var pair in result.Item1.OutputData)
             {
@@ -129,43 +129,67 @@ namespace FSS.Omnius.Controllers.Tapestry
                 if (!string.IsNullOrEmpty(resourceMappingPair.SourceTableName)
                     && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
-                    string tableName = resourceMappingPair.SourceTableName;
+                    string sourceTableName = resourceMappingPair.SourceTableName;
                     if (resourceMappingPair.relationType.StartsWith("V:"))
                     {
-                        var entitronView = core.Entitron.GetDynamicView(tableName);
+                        dataSource = new DataTable();
+                        columnDisplayNameDictionary = new Dictionary<string, string>();
+                        var entitronView = core.Entitron.GetDynamicView(sourceTableName);
                         dataSource.Columns.Add("hiddenId", typeof(int));
                         var entitronRowList = entitronView.Select().ToList();
-                        bool columnsCreated = false;
+                        bool noConditions = resourceMappingPair.SourceConditionSets.Count == 0;
+                        bool idAvailable = false;
+                        List<string> columnNameList = null;
+
+                        if (entitronRowList.Count > 0)
+                        {
+                            columnNameList = entitronRowList[0].getColumnNames();
+                            idAvailable = columnNameList.Contains("id");
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        foreach (var columnName in columnNameList)
+                        {
+                            dataSource.Columns.Add(columnName);
+                            columnDisplayNameDictionary.Add(columnName, columnName);
+                        }
                         foreach (var entitronRow in entitronRowList)
                         {
-                            var newRow = dataSource.NewRow();
-                            var columnNames = entitronRow.getColumnNames();
-                            newRow["hiddenId"] = columnNames.Contains("id") ? entitronRow["id"] : -1;
-                            foreach (var columnName in columnNames)
+                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.SourceConditionSets, entitronRow, tapestryVars))
                             {
-                                if (!columnsCreated)
-                                    dataSource.Columns.Add(columnName);
-                                if (entitronRow[columnName] is bool)
+                                var newRow = dataSource.NewRow();
+                                newRow["hiddenId"] = idAvailable ? entitronRow["id"] : 0;
+                                foreach (var columnName in columnNameList)
                                 {
-                                    if ((bool)entitronRow[columnName] == true)
-                                        newRow[columnName] = "Ano";
+                                    var currentCell = entitronRow[columnName];
+                                    if (currentCell is bool)
+                                    {
+                                        if ((bool)currentCell == true)
+                                            newRow[columnName] = "Ano";
+                                        else
+                                            newRow[columnName] = "Ne";
+                                    }
+                                    else if (currentCell is DateTime)
+                                    {
+                                        newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
+                                    }
                                     else
-                                        newRow[columnName] = "Ne";
+                                        newRow[columnName] = currentCell;
                                 }
-                                else if (entitronRow[columnName] is DateTime)
-                                {
-                                    newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
-                                }
-                                else
-                                    newRow[columnName] = entitronRow[columnName];
+                                dataSource.Rows.Add(newRow);
                             }
-                            columnsCreated = true;
-                            dataSource.Rows.Add(newRow);
+                        }
+                        if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
+                            || resourceMappingPair.TargetType == "name-value-list")
+                        {
+                            ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                         }
                     }
                     else
                     {
-                        var entitronTable = core.Entitron.GetDynamicTable(tableName);
+                        var entitronTable = core.Entitron.GetDynamicTable(resourceMappingPair.SourceTableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
@@ -198,7 +222,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         foreach (var entitronRow in entitronRowList)
                         {
                             if (resourceMappingPair.SourceConditionSets.Count == 0
-                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.SourceConditionSets, entitronRow))
+                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.SourceConditionSets, entitronRow, tapestryVars))
                             {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = (int)entitronRow["id"];
@@ -226,12 +250,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                 }
-                string targetType = resourceMappingPair.relationType.Split(new char[] { '_', '_' })[1];
-                if (targetType == "data-table-read-only" || targetType == "data-table-with-actions" || targetType == "name-value-list")
-                {
-                    ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
-                }
-                else if ((targetType == "dropdown-select" || targetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
+                else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
                     var dropdownDictionary = new Dictionary<int, string>();
                     foreach (DataRow datarow in dataSource.Rows)
@@ -244,6 +263,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                     ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                 }
+                string targetType = resourceMappingPair.relationType.Split(new char[] { '_', '_' })[1];
                 if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
                     && targetType == "checkbox")
                 {
