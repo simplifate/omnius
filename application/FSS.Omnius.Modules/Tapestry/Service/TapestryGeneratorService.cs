@@ -257,6 +257,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     SourceColumnFilter = source.ColumnFilter,
                     SourceConditionSets = source.ConditionSets,
 
+                    TargetType = targetType,
                     TargetName = targetName,
                     TargetTableName = target.TableName,
                     TargetColumnName = target.ColumnName,
