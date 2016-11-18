@@ -450,6 +450,7 @@
     </Content>
     <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\DnD.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\IO.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Main.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Navigator.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Path.js" />

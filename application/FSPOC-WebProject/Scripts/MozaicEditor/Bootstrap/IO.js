@@ -1,59 +1,53 @@
-﻿function LoadMozaicPage(pageId) {
-    pageSpinner.show();
-    appId = $("#currentAppId").val();
-    if (pageId == "current")
-        pageId = $("#currentPageId").val();
-    url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
-    $.ajax({
-        type: "GET",
-        url: url,
-        dataType: "json",
-        complete: function () {
-            pageSpinner.hide()
-        },
-        error: function (request, status, error) {
-            alert(request.responseText);
-        },
-        success: function (data) {
-            if ($('body').hasClass('mozaicBootstrapEditorModule')) {
-                MBE.io.convert(data);
-            }
-            else
-            {
-                $("#mozaicPageContainer .uic").remove();
-                $("#mozaicPageContainer .dataTables_wrapper").remove();
-                $("#mozaicPageContainer .color-picker").remove();
+﻿MBE.io = {
 
-                for (i = 0; i < data.Components.length; i++) {
-                    LoadMozaicEditorComponents($("#mozaicPageContainer"), data.Components[i]);
-                }
-                $("#currentPageId").val(data.Id);
-                $("#headerPageName").text(data.Name);
-                $("#currentPageIsModal").prop("checked", data.IsModal);
-                $("#modalWidthInput").val(data.ModalWidth);
-                $("#modalHeightInput").val(data.ModalHeight);
-                if ($("#currentPageIsModal").is(":checked")) {
-                    $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
-                    $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
-                    $("#modalSizeVisualization").show();
-                }
+    convert: function(data)
+    {
+        MBE.workspace.html('');
+        
+        var container = $(MBE.types.containers.templates('container'));
+        container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
 
-                var panels = $(".mozaicEditorAbsolute, .mozaicEditorBootstrap").removeClass("mozaicEditorAbsolute mozaicEditorBootstrap");
-                switch (data.version) {
-                    case "0":
-                    default:
-                        panels.addClass("mozaicEditorAbsolute");
-                        break;
-                    case "1":
-                        panels.addClass("mozaicEditorBootstrap");
-                        break;
-                }
-            }
+
+        for (i = 0; i < data.Components.length; i++) {
+            MBE.io.convertComponent(container, data.Components[i]);
         }
-    });
-}
-function LoadMozaicEditorComponents(targetContainer, cData) {
-    newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + */'" class="uic ' + cData.Classes
+        
+        $("#currentPageId").val(data.Id);
+        $("#headerPageName").text(data.Name);
+    },
+
+    convertComponent: function (targetContainer, c)
+    {
+        var item;
+
+        switch(c.Tag.toLowerCase())
+        {
+            case 'div':
+                // PANEL
+                if (c.Classes.indexOf('panel-component') != -1) {
+                    item = $(MBE.types.containers.templates.panel);
+                    if (c.Classes.indexOf('named-panel') == -1) {
+                        item.find('header').remove();
+                    }
+                    else {
+                        item.find('.panel-title').html(c.Label);
+                    }
+                   
+                    item.find('footer').remove();
+                    item.attr('data-uic', 'containers|panel');
+                }
+        }
+
+
+
+        if (item) {
+            item.appendTo(targetContainer)
+        }
+
+
+        /*
+        
+        newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + /'" class="uic ' + cData.Classes
                     + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
                     + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
     newComponent.data("uicAttributes", cData.Attributes);
@@ -177,5 +171,9 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         for (j = 0; j < cData.ChildComponents.length; j++) {
             LoadMozaicEditorComponents(currentPanel, cData.ChildComponents[j]);
         }
-    }
+    }*/
+}
+
+
+
 }

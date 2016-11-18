@@ -68,6 +68,7 @@
       "Scripts/MozaicEditor/Bootstrap/Path.js",
       "Scripts/MozaicEditor/Bootstrap/CommonOptions.js",
       "Scripts/MozaicEditor/Bootstrap/Toolbar.js",
+      "Scripts/MozaicEditor/Bootstrap/IO.js",
       "Scripts/MozaicEditor/Bootstrap/_Containers.js",
       "Scripts/MozaicEditor/Bootstrap/_Text.js",
       "Scripts/MozaicEditor/Bootstrap/_Image.js",

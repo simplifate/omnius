@@ -41,6 +41,7 @@
                         'data-dtpaging': 'Show pagination',
                         'data-dtinfo': 'Show informations',
                         'data-dtfilter': 'Show filter',
+                        'data-dtcolumnfilter': 'Show column filter',
                         'data-dtordering': 'Enable ordering'
                     },
                     get: function (value) {
@@ -252,6 +253,7 @@
             'data-dtinfo': '1',
             'data-dtfilter': '1',
             'data-dtordering': '1',
+            'data-dtcolumnfilter': '0'
         });
 
         MBE.types.ui.initDataTable.apply(this, []);
@@ -273,6 +275,34 @@
         };
 
         $(this).DataTable(settings);
+        $('> tfoot', this).remove();
+        
+        if ($(this).attr('data-dtcolumnfilter') == '1')
+        {
+            if (!$('> tfoot', this).length) {
+                var foot = $('<tfoot />');
+                var row = $('<tr />');
+
+                $('> thead > tr:first-child > th', this).each(function () {
+                    var cell = $('<th />');
+
+                    if (!$(this).hasClass('actionHeader')) {
+                        var input = $('<input type="text" value="" class="form-control input-sm" placeholder="Hledat v &quot;' + $(this).text() + '&quot;" />');
+                        input.appendTo(cell);
+                    }
+                    else {
+                        cell.html('&nbsp;');
+                    }
+                    
+                    cell.appendTo(row);
+                });
+
+                row.appendTo(foot)
+                $('> thead', this).after(foot);
+            }
+        }
+
+        
     },
 
     dataTableAddAction: function(event, action)
@@ -444,8 +474,9 @@
         
         if (validActions.length) {
             if (!$('tbody > tr > td.actionIcons', target).length) {
-                $('thead > tr', target).append('<th>Akce</th>');
+                $('thead > tr', target).append('<th class="actionHeader">Akce</th>');
                 $('tbody > tr', target).append('<td class="actionIcons"></td>');
+                $('tfoot > tr', target).append('<th class="actionFooter">&nbsp;</th>');
             }
             $('tbody > tr > td.actionIcons', target).html('');
             for (var i = 0; i < validActions.length; i++) {
@@ -457,7 +488,7 @@
         else {
             if ($('tbody tr td.actionIcons', target).length) {
                 var index = $('tbody tr td.actionIcons', target).eq(0)[0].cellIndex;
-                $('> tbody > tr, > thead > tr', target).each(function() {
+                $('> tbody > tr, > thead > tr, > tfoot > tr', target).each(function() {
                     $('> td, > th', this).eq(index).remove();
                 });
             }

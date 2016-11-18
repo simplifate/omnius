@@ -410,6 +410,38 @@
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }]
+            },
+            
+            validationOptions: {
+                name: 'Validation',
+                type: 'group',
+                disallowFor: [
+                    'form', 'label', 'form-group', 'input-hidden', 'input-range', 'form-control-feedback', 'static-control',
+                    'help-text', 'input-group', 'fieldset', 'legend', 'left-addon', 'right-addon'
+                ],
+                groupItems: [{
+                    label: 'Required',
+                    type: 'boolean',
+                    options: {
+                        'required': 'Required'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    disallowFor: ['checkbox', 'radio', 'input-color', 'select', 'input-file'],
+                    label: 'Min length',
+                    type: 'text',
+                    attr: 'minlength',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    disallowFor: ['checkbox', 'radio', 'input-color', 'select', 'input-file'],
+                    label: 'Max length',
+                    type: 'text',
+                    attr: 'maxlength',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }]
             }
         }
     },

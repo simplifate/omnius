@@ -809,6 +809,15 @@ body.mozaicEditorModule {
     }
 
     .dialog-options {
+        height: 80% !important;
+        .ui-dialog-content {
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 39px;
+            bottom: 0px;
+            overflow-y: auto;
+        }
         fieldset {
             padding: 10px 10px;
             border-bottom: 1px solid #dedede;
@@ -1037,6 +1046,16 @@ body.mozaicEditorBody {
             }
             .fa-remove {
                 color: #e3001b;
+            }
+        }
+
+        tfoot {
+            display: table-header-group;
+            th {
+                padding: 3px 10px !important;
+                input {
+                    border: 1px solid #fff !important;
+                }
             }
         }
     }

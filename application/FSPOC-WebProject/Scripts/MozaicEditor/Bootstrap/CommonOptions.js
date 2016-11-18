@@ -53,7 +53,6 @@
             draggable: false,
             resizable: false,
             width: '40%',
-            maxHeight: '90%',
             title: 'Options',
             dialogClass: 'dialog-options',
             close: function () { $(this).remove(); }
@@ -427,7 +426,16 @@
         var attr = $(opt).data('attr');
         var t = $(MBE.options.target);
         if (attr) {
-            t.attr(attr, opt.value == 'null' ? '' : opt.value);
+            if (!opt.value.length) {
+                t.removeAttr(attr);
+            }
+            else  {
+                t.attr(attr, opt.value == 'null' ? '' : opt.value);
+            }
+            
+            if (attr == 'id') {
+                MBE.navigator.rebuild();
+            }
         }
         else { // Je to checkbox
             if(opt.checked) {
@@ -501,11 +509,85 @@
         elm.removeClass(currentClass).addClass(newClass);
         $('.icon-list .active').removeClass('active');
         $(icon).addClass('active');
+    },
+
+    getCustomClasses: function (value, opt) {
+        var c = $(MBE.options.target).attr('data-custom-classes');
+        return c ? c : '';
+    },
+
+    setCustomClasses: function (opt) {
+        var currentClasses = $(this).attr('data-custom-classes');
+        if (currentClasses) {
+            $(this).removeClass(currentClasses);
+        }
+
+        $(this).addClass(opt.value).attr('data-custom-classes', opt.value)
+    },
+
+    getCustomAttributes: function (value, opt) {
+        var t = $(MBE.options.target);
+        var customAttributes = t.attr('data-custom-attributes');
+        if (customAttributes && customAttributes.length) {
+            var data = new Array();
+            var attrList = customAttributes.split(/,/g);
+            for (var i = 0; i < attrList.length; i++) {
+                var attrName = attrList[i];
+                var attrValue = t.attr(attrName);
+                
+                data.push(attrName + '=' + attrValue + '');
+            }
+            return data.join(';');
+        }
+        else {
+            return '';
+        }
+    },
+
+    setCustomAttributes: function (opt) {
+        var customAttributes = new Array();
+        if (opt.value.length) {
+            var data = opt.value.split(/; */g);
+            for (var i = 0; i < data.length; i++) {
+                var pair = data[i].split(/=/);
+                $(this).attr(pair[0], pair.length > 1 ? pair[1] : pair[0]);
+
+                customAttributes.push(pair[0]);
+            }
+        }
+        $(this).attr('data-custom-attributes', customAttributes.join(','));
     }
 };
 
 // Obecné vlastnosti - musí být na konci kvůli referencím na set metody
 MBE.options.common = {
+    common: {
+        name: 'Common',
+        type: 'group',
+        groupItems: [{
+            label: 'ID',
+            type: 'text',
+            attr: 'id',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
+            label: 'Style',
+            type: 'text',
+            attr: 'style',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
+            label: 'Custom classes',
+            type: 'text',
+            get: MBE.options.getCustomClasses,
+            set: MBE.options.setCustomClasses
+        }, {
+            label: 'Custom attributes',
+            type: 'text',
+            get: MBE.options.getCustomAttributes,
+            set: MBE.options.setCustomAttributes
+        }]
+    },
     visibility: {
         name: 'Responsive visibility',
         disallowFor: ['input-hidden'],

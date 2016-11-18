@@ -3563,59 +3563,65 @@ body.mozaicEditorModule {
         padding: 4px 10px;
         margin: 4px 2px; }
 
-.mozaicBootstrapEditorModule .dialog-options fieldset {
-  padding: 10px 10px;
-  border-bottom: 1px solid #dedede; }
-
-.mozaicBootstrapEditorModule .dialog-options legend {
-  font-size: 0.9em;
-  font-weight: bold;
-  border: none;
-  margin-bottom: -5px;
-  margin-top: 10px; }
-
-.mozaicBootstrapEditorModule .dialog-options .option-group {
-  margin-bottom: 10px;
-  float: left;
-  width: 100%; }
-  .mozaicBootstrapEditorModule .dialog-options .option-group label {
-    font-weight: normal; }
-  .mozaicBootstrapEditorModule .dialog-options .option-group select {
-    min-width: 100px; }
-  .mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
-    margin-top: 15px; }
-
-.mozaicBootstrapEditorModule .dialog-options .icon-list {
-  max-height: 280px;
-  overflow: auto; }
-  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
-    background: #eee; }
-  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
-    background: #393812; }
-  .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
-    background: #000; }
-  .mozaicBootstrapEditorModule .dialog-options .icon-list a {
-    display: inline-block;
-    vertical-align: top;
-    width: 20%;
-    height: 90px;
-    text-align: center;
-    padding: 10px; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, .mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
+.mozaicBootstrapEditorModule .dialog-options {
+  height: 80% !important; }
+  .mozaicBootstrapEditorModule .dialog-options .ui-dialog-content {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 39px;
+    bottom: 0px;
+    overflow-y: auto; }
+  .mozaicBootstrapEditorModule .dialog-options fieldset {
+    padding: 10px 10px;
+    border-bottom: 1px solid #dedede; }
+  .mozaicBootstrapEditorModule .dialog-options legend {
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    margin-bottom: -5px;
+    margin-top: 10px; }
+  .mozaicBootstrapEditorModule .dialog-options .option-group {
+    margin-bottom: 10px;
+    float: left;
+    width: 100%; }
+    .mozaicBootstrapEditorModule .dialog-options .option-group label {
+      font-weight: normal; }
+    .mozaicBootstrapEditorModule .dialog-options .option-group select {
+      min-width: 100px; }
+    .mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
+      margin-top: 15px; }
+  .mozaicBootstrapEditorModule .dialog-options .icon-list {
+    max-height: 280px;
+    overflow: auto; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
+      height: 5px;
+      width: 5px;
+      background: #eee; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
+      background: #393812; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
+      background: #000; }
+    .mozaicBootstrapEditorModule .dialog-options .icon-list a {
       display: inline-block;
-      width: 100%;
-      font-size: 1.2em;
-      margin-bottom: 8px; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
-      display: inline-block;
-      width: 100%;
-      font-size: 0.7em; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
-      background: #eef9fe; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
-      background: #d9f2fe; }
+      vertical-align: top;
+      width: 20%;
+      height: 90px;
+      text-align: center;
+      padding: 10px; }
+      .mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, .mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
+        display: inline-block;
+        width: 100%;
+        font-size: 1.2em;
+        margin-bottom: 8px; }
+      .mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
+        display: inline-block;
+        width: 100%;
+        font-size: 0.7em; }
+      .mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
+        background: #eef9fe; }
+      .mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
+        background: #d9f2fe; }
 
 .mozaicBootstrapEditorModule .toolbar.pull-left .btn {
   text-transform: lowercase; }
@@ -3762,6 +3768,12 @@ body.mozaicEditorBody {
       color: #0065a9; }
     body.mozaicEditorBody .table.data-table .actionIcons .fa-remove {
       color: #e3001b; }
+  body.mozaicEditorBody .table.data-table tfoot {
+    display: table-header-group; }
+    body.mozaicEditorBody .table.data-table tfoot th {
+      padding: 3px 10px !important; }
+      body.mozaicEditorBody .table.data-table tfoot th input {
+        border: 1px solid #fff !important; }
   body.mozaicEditorBody .table.name-value-list {
     font-family: MyriadPro;
     font-size: 14px; }

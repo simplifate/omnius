@@ -4504,33 +4504,39 @@ function LoadMozaicPage(pageId) {
             alert(request.responseText);
         },
         success: function (data) {
-            $("#mozaicPageContainer .uic").remove();
-            $("#mozaicPageContainer .dataTables_wrapper").remove();
-            $("#mozaicPageContainer .color-picker").remove();
-
-            for (i = 0; i < data.Components.length; i++) {
-                LoadMozaicEditorComponents($("#mozaicPageContainer"), data.Components[i]);
+            if ($('body').hasClass('mozaicBootstrapEditorModule')) {
+                MBE.io.convert(data);
             }
-            $("#currentPageId").val(data.Id);
-            $("#headerPageName").text(data.Name);
-            $("#currentPageIsModal").prop("checked", data.IsModal);
-            $("#modalWidthInput").val(data.ModalWidth);
-            $("#modalHeightInput").val(data.ModalHeight);
-            if ($("#currentPageIsModal").is(":checked")) {
-                $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
-                $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
-                $("#modalSizeVisualization").show();
-            }
+            else
+            {
+                $("#mozaicPageContainer .uic").remove();
+                $("#mozaicPageContainer .dataTables_wrapper").remove();
+                $("#mozaicPageContainer .color-picker").remove();
 
-            var panels = $(".mozaicEditorAbsolute, .mozaicEditorBootstrap").removeClass("mozaicEditorAbsolute mozaicEditorBootstrap");
-            switch (data.version) {
-                case "0":
-                default:
-                    panels.addClass("mozaicEditorAbsolute");
-                    break;
-                case "1":
-                    panels.addClass("mozaicEditorBootstrap");
-                    break;
+                for (i = 0; i < data.Components.length; i++) {
+                    LoadMozaicEditorComponents($("#mozaicPageContainer"), data.Components[i]);
+                }
+                $("#currentPageId").val(data.Id);
+                $("#headerPageName").text(data.Name);
+                $("#currentPageIsModal").prop("checked", data.IsModal);
+                $("#modalWidthInput").val(data.ModalWidth);
+                $("#modalHeightInput").val(data.ModalHeight);
+                if ($("#currentPageIsModal").is(":checked")) {
+                    $("#modalSizeVisualization").css("width", parseInt($("#modalWidthInput").val()));
+                    $("#modalSizeVisualization").css("height", parseInt($("#modalHeightInput").val()));
+                    $("#modalSizeVisualization").show();
+                }
+
+                var panels = $(".mozaicEditorAbsolute, .mozaicEditorBootstrap").removeClass("mozaicEditorAbsolute mozaicEditorBootstrap");
+                switch (data.version) {
+                    case "0":
+                    default:
+                        panels.addClass("mozaicEditorAbsolute");
+                        break;
+                    case "1":
+                        panels.addClass("mozaicEditorBootstrap");
+                        break;
+                }
             }
         }
     });
@@ -8880,7 +8886,6 @@ MBE.options = {
             draggable: false,
             resizable: false,
             width: '40%',
-            maxHeight: '90%',
             title: 'Options',
             dialogClass: 'dialog-options',
             close: function () { $(this).remove(); }
@@ -9254,7 +9259,16 @@ MBE.options = {
         var attr = $(opt).data('attr');
         var t = $(MBE.options.target);
         if (attr) {
-            t.attr(attr, opt.value == 'null' ? '' : opt.value);
+            if (!opt.value.length) {
+                t.removeAttr(attr);
+            }
+            else  {
+                t.attr(attr, opt.value == 'null' ? '' : opt.value);
+            }
+            
+            if (attr == 'id') {
+                MBE.navigator.rebuild();
+            }
         }
         else { // Je to checkbox
             if(opt.checked) {
@@ -9328,11 +9342,85 @@ MBE.options = {
         elm.removeClass(currentClass).addClass(newClass);
         $('.icon-list .active').removeClass('active');
         $(icon).addClass('active');
+    },
+
+    getCustomClasses: function (value, opt) {
+        var c = $(MBE.options.target).attr('data-custom-classes');
+        return c ? c : '';
+    },
+
+    setCustomClasses: function (opt) {
+        var currentClasses = $(this).attr('data-custom-classes');
+        if (currentClasses) {
+            $(this).removeClass(currentClasses);
+        }
+
+        $(this).addClass(opt.value).attr('data-custom-classes', opt.value)
+    },
+
+    getCustomAttributes: function (value, opt) {
+        var t = $(MBE.options.target);
+        var customAttributes = t.attr('data-custom-attributes');
+        if (customAttributes && customAttributes.length) {
+            var data = new Array();
+            var attrList = customAttributes.split(/,/g);
+            for (var i = 0; i < attrList.length; i++) {
+                var attrName = attrList[i];
+                var attrValue = t.attr(attrName);
+                
+                data.push(attrName + '=' + attrValue + '');
+            }
+            return data.join(';');
+        }
+        else {
+            return '';
+        }
+    },
+
+    setCustomAttributes: function (opt) {
+        var customAttributes = new Array();
+        if (opt.value.length) {
+            var data = opt.value.split(/; */g);
+            for (var i = 0; i < data.length; i++) {
+                var pair = data[i].split(/=/);
+                $(this).attr(pair[0], pair.length > 1 ? pair[1] : pair[0]);
+
+                customAttributes.push(pair[0]);
+            }
+        }
+        $(this).attr('data-custom-attributes', customAttributes.join(','));
     }
 };
 
 // Obecné vlastnosti - musí být na konci kvůli referencím na set metody
 MBE.options.common = {
+    common: {
+        name: 'Common',
+        type: 'group',
+        groupItems: [{
+            label: 'ID',
+            type: 'text',
+            attr: 'id',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
+            label: 'Style',
+            type: 'text',
+            attr: 'style',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
+            label: 'Custom classes',
+            type: 'text',
+            get: MBE.options.getCustomClasses,
+            set: MBE.options.setCustomClasses
+        }, {
+            label: 'Custom attributes',
+            type: 'text',
+            get: MBE.options.getCustomAttributes,
+            set: MBE.options.setCustomAttributes
+        }]
+    },
     visibility: {
         name: 'Responsive visibility',
         disallowFor: ['input-hidden'],
@@ -9438,6 +9526,185 @@ MBE.toolbar = {
 };
 
 MBE.onInit.push(MBE.toolbar.init);
+MBE.io = {
+
+    convert: function(data)
+    {
+        MBE.workspace.html('');
+        
+        var container = $(MBE.types.containers.templates('container'));
+        container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
+
+
+        for (i = 0; i < data.Components.length; i++) {
+            MBE.io.convertComponent(container, data.Components[i]);
+        }
+        
+        $("#currentPageId").val(data.Id);
+        $("#headerPageName").text(data.Name);
+    },
+
+    convertComponent: function (targetContainer, c)
+    {
+        var item;
+
+        switch(c.Tag.toLowerCase())
+        {
+            case 'div':
+                // PANEL
+                if (c.Classes.indexOf('panel-component') != -1) {
+                    item = $(MBE.types.containers.templates.panel);
+                    if (c.Classes.indexOf('named-panel') == -1) {
+                        item.find('header').remove();
+                    }
+                    else {
+                        item.find('.panel-title').html(c.Label);
+                    }
+                   
+                    item.find('footer').remove();
+                    item.attr('data-uic', 'containers|panel');
+                }
+        }
+
+
+
+        if (item) {
+            item.appendTo(targetContainer)
+        }
+
+
+        /*
+        
+        newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + /'" class="uic ' + cData.Classes
+                    + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
+                    + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
+    newComponent.data("uicAttributes", cData.Attributes);
+
+    targetContainer.append(newComponent);
+    if (cData.Placeholder)
+        newComponent.attr("placeholder", cData.Placeholder);
+    if (cData.TabIndex)
+        newComponent.attr("tabindex", cData.TabIndex);
+   
+    if (cData.Properties)
+        newComponent.attr("uicProperties", cData.Properties);
+    if (newComponent.hasClass("button-simple"))
+        newComponent.text(cData.Label);
+    else if (newComponent.hasClass("button-dropdown"))
+        newComponent.html(cData.Label + '<i class="fa fa-caret-down"></i>');
+    else if (newComponent.hasClass("info-container")) {
+        newComponent.append($('<div class="fa fa-info-circle info-container-icon"></div>'
+            + '<div class="info-container-header"></div>'
+            + '<div class="info-container-body"></div>'));
+        newComponent.find(".info-container-header").text(cData.Label);
+        newComponent.find(".info-container-body").text(cData.Content);
+    }
+    else if (newComponent.hasClass("named-panel")) {
+        newComponent.append($('<div class="named-panel-header"></div>'));
+        newComponent.find(".named-panel-header").text(cData.Label);
+    }
+    else if (newComponent.hasClass("multiple-select")) {
+        newComponent.append($('<option value="1">Multiple</option><option value="2">Choice</option><option value="3">Select</option>'));
+        newComponent.attr("multiple", "");
+    }
+    else if (newComponent.hasClass("button-browse")) {
+        newComponent.attr("type", "file");
+    }
+    else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
+        newComponent.html(cData.Label);
+        newComponent.attr("contentTemplate", cData.Content);
+    }
+    else if (newComponent.hasClass("checkbox-control")) {
+        newComponent.append($('<input type="checkbox" /><span class="checkbox-label">' + cData.Label + '</span>'));
+    }
+    else if (newComponent.hasClass("radio-control")) {
+        newComponent.append($('<input type="radio" name="' + cData.Name + '" /><span class="radio-label">' + cData.Label + '</span>'));
+    }
+    else if (newComponent.hasClass("breadcrumb-navigation")) {
+        newComponent.append($('<div class="app-icon fa fa-question"></div><div class="nav-text">APP NAME &gt; Nav</div>'));
+    }
+    else if (newComponent.hasClass("data-table")) {
+        newComponent.append($('<thead><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr></thead>'
+            + '<tbody><tr><td>Value1</td><td>Value2</td><td>Value3</td></tr><tr><td>Value4</td><td>Value5</td><td>Value6</td></tr>'
+            + '<tr><td>Value7</td><td>Value8</td><td>Value9</td></tr></tbody>'));
+        CreateCzechDataTable(newComponent, newComponent.hasClass("data-table-simple-mode"));
+        newComponent.css("width", cData.Width);
+        wrapper = newComponent.parents(".dataTables_wrapper");
+        wrapper.css("position", "absolute");
+        wrapper.css("left", cData.PositionX);
+        wrapper.css("top", cData.PositionY);
+        newComponent.css("position", "relative");
+        newComponent.css("left", "0px");
+        newComponent.css("top", "0px");
+    }
+    else if (newComponent.hasClass("name-value-list")) {
+        newComponent.append($('<tr><td class="name-cell">Platform</td><td class="value-cell">Omnius</td></tr><tr><td class="name-cell">Country</td>'
+            + '<td class="value-cell">Czech Republic</td></tr><tr><td class="name-cell">Year</td><td class="value-cell">2016</td></tr>'));
+    }
+    else if (newComponent.hasClass("tab-navigation")) {
+        tabLabelArray = cData.Content.split(";");
+        newComponent.append($('<li class="active"><a class="fa fa-home"></a></li>'));
+        for (k = 0; k < tabLabelArray.length; k++) {
+            if (tabLabelArray[k].length > 0)
+                newComponent.append($("<li><a>" + tabLabelArray[k] + "</a></li>"));
+        }
+        newComponent.css("width", "auto");
+    }
+    else if (newComponent.hasClass("color-picker")) {
+        CreateColorPicker(newComponent);
+        newReplacer = targetContainer.find(".sp-replacer:last");
+        newReplacer.css("position", "absolute");
+        newReplacer.css("left", newComponent.css("left"));
+        newReplacer.css("top", newComponent.css("top"));
+        newComponent.removeClass("uic");
+        newReplacer.addClass("uic color-picker");
+        newReplacer.attr("uicClasses", "color-picker");
+        newReplacer.attr("uicName", newComponent.attr("uicName"));
+    }
+    else if (newComponent.hasClass("countdown-component")) {
+        newComponent.html('<span class="countdown-row countdown-show3"><span class="countdown-section"><span class="countdown-amount">0</span>'
+            + '<span class="countdown-period">Hodin</span></span><span class="countdown-section"><span class="countdown-amount">29</span>'
+            + '<span class="countdown-period">Minut</span></span><span class="countdown-section"><span class="countdown-amount">59</span>'
+            + '<span class="countdown-period">Sekund</span></span></span>');
+    }
+    else if (newComponent.hasClass("wizard-phases")) {
+        newComponent.html(WizardPhasesContentTemplate);
+        var phaseLabelArray = cData.Content.split(";");
+        newComponent.find(".phase1 .phase-label").text(phaseLabelArray[0] ? phaseLabelArray[0] : "Fáze 1");
+        newComponent.find(".phase2 .phase-label").text(phaseLabelArray[1] ? phaseLabelArray[1] : "Fáze 2");
+        newComponent.find(".phase3 .phase-label").text(phaseLabelArray[2] ? phaseLabelArray[2] : "Fáze 3");
+    }
+
+    if (newComponent.hasClass("panel-component")) { //mšebela: odstraněno else před if (kvůli named-component)
+        CreateDroppableMozaicContainer(newComponent, false);
+    }
+    if (newComponent.hasClass("data-table"))
+        draggableElement = wrapper;
+    else if (newComponent.hasClass("color-picker"))
+        draggableElement = newReplacer;
+    else
+        draggableElement = newComponent;
+    draggableElement.draggable({
+        cancel: false,
+        containment: "parent",
+        drag: function (event, ui) {
+            if (GridResolution > 0) {
+                ui.position.left -= (ui.position.left % GridResolution);
+                ui.position.top -= (ui.position.top % GridResolution);
+            }
+        }
+    });
+    if (cData.ChildComponents) {
+        currentPanel = newComponent;
+        for (j = 0; j < cData.ChildComponents.length; j++) {
+            LoadMozaicEditorComponents(currentPanel, cData.ChildComponents[j]);
+        }
+    }*/
+}
+
+
+
+}
 MBE.types.containers = {
 
     templates: {
@@ -11738,6 +12005,38 @@ MBE.types.form = {
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }]
+            },
+            
+            validationOptions: {
+                name: 'Validation',
+                type: 'group',
+                disallowFor: [
+                    'form', 'label', 'form-group', 'input-hidden', 'input-range', 'form-control-feedback', 'static-control',
+                    'help-text', 'input-group', 'fieldset', 'legend', 'left-addon', 'right-addon'
+                ],
+                groupItems: [{
+                    label: 'Required',
+                    type: 'boolean',
+                    options: {
+                        'required': 'Required'
+                    },
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    disallowFor: ['checkbox', 'radio', 'input-color', 'select', 'input-file'],
+                    label: 'Min length',
+                    type: 'text',
+                    attr: 'minlength',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    disallowFor: ['checkbox', 'radio', 'input-color', 'select', 'input-file'],
+                    label: 'Max length',
+                    type: 'text',
+                    attr: 'maxlength',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }]
             }
         }
     },
@@ -12265,6 +12564,7 @@ MBE.types.ui = {
                         'data-dtpaging': 'Show pagination',
                         'data-dtinfo': 'Show informations',
                         'data-dtfilter': 'Show filter',
+                        'data-dtcolumnfilter': 'Show column filter',
                         'data-dtordering': 'Enable ordering'
                     },
                     get: function (value) {
@@ -12476,6 +12776,7 @@ MBE.types.ui = {
             'data-dtinfo': '1',
             'data-dtfilter': '1',
             'data-dtordering': '1',
+            'data-dtcolumnfilter': '0'
         });
 
         MBE.types.ui.initDataTable.apply(this, []);
@@ -12497,6 +12798,34 @@ MBE.types.ui = {
         };
 
         $(this).DataTable(settings);
+        $('> tfoot', this).remove();
+        
+        if ($(this).attr('data-dtcolumnfilter') == '1')
+        {
+            if (!$('> tfoot', this).length) {
+                var foot = $('<tfoot />');
+                var row = $('<tr />');
+
+                $('> thead > tr:first-child > th', this).each(function () {
+                    var cell = $('<th />');
+
+                    if (!$(this).hasClass('actionHeader')) {
+                        var input = $('<input type="text" value="" class="form-control input-sm" placeholder="Hledat v &quot;' + $(this).text() + '&quot;" />');
+                        input.appendTo(cell);
+                    }
+                    else {
+                        cell.html('&nbsp;');
+                    }
+                    
+                    cell.appendTo(row);
+                });
+
+                row.appendTo(foot)
+                $('> thead', this).after(foot);
+            }
+        }
+
+        
     },
 
     dataTableAddAction: function(event, action)
@@ -12668,8 +12997,9 @@ MBE.types.ui = {
         
         if (validActions.length) {
             if (!$('tbody > tr > td.actionIcons', target).length) {
-                $('thead > tr', target).append('<th>Akce</th>');
+                $('thead > tr', target).append('<th class="actionHeader">Akce</th>');
                 $('tbody > tr', target).append('<td class="actionIcons"></td>');
+                $('tfoot > tr', target).append('<th class="actionFooter">&nbsp;</th>');
             }
             $('tbody > tr > td.actionIcons', target).html('');
             for (var i = 0; i < validActions.length; i++) {
@@ -12681,7 +13011,7 @@ MBE.types.ui = {
         else {
             if ($('tbody tr td.actionIcons', target).length) {
                 var index = $('tbody tr td.actionIcons', target).eq(0)[0].cellIndex;
-                $('> tbody > tr, > thead > tr', target).each(function() {
+                $('> tbody > tr, > thead > tr, > tfoot > tr', target).each(function() {
                     $('> td, > th', this).eq(index).remove();
                 });
             }
