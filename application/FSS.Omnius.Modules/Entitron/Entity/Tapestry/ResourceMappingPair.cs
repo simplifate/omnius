@@ -7,11 +7,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     [Table("Tapestry_ResourceMappingPairs")]
     public class ResourceMappingPair : IEntity
     {
-        public ResourceMappingPair()
-        {
-            SourceConditionSets = new HashSet<TapestryDesignerConditionSet>();
-        }
-
         public int Id { get; set; }
         [StringLength(100)]
         public string relationType { get; set; }
@@ -34,9 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string DataSourceParams { get; set; }
         public int BlockId { get; set; }
         public virtual Block Block { get; set; }
-
-        public virtual ICollection<TapestryDesignerConditionSet> SourceConditionSets { get; set; }
-
+        
         // TO remove
         public string TargetType { get; set; }
         public int? Source_Id { get; set; }

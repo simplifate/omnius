@@ -247,7 +247,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     stateColumnMapping.Add(source.StateId.Value, target.ColumnName);
                     continue;
                 }
-                return new ResourceMappingPair
+                ResourceMappingPair pair = new ResourceMappingPair
                 {
                     relationType = $"{(source.Label.StartsWith("View:") ? "V:" : "")}{source.TypeClass}__{target.TypeClass}",
 
@@ -255,7 +255,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     SourceTableName = source.TableName,
                     SourceColumnName = source.ColumnName,
                     SourceColumnFilter = source.ColumnFilter,
-                    SourceConditionSets = source.ConditionSets,
 
                     TargetType = targetType,
                     TargetName = targetName,
@@ -265,6 +264,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     DataSourceParams = dataSourceParams,
                     Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
                 };
+                _context.SaveChanges();
+                foreach(TapestryDesignerConditionSet cs in source.ConditionSets)
+                {
+                    cs.ResourceMappingPair_Id = pair.Id;
+                }
+                return pair;
             }
             return null;
         }
