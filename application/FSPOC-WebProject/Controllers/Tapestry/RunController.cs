@@ -263,7 +263,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                     ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                 }
-                string targetType = resourceMappingPair.relationType.Split(new char[] { '_', '_' })[1];
+                string targetType = resourceMappingPair.relationType.Split(new string[] { "__" }, StringSplitOptions.None)[1];
                 if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
                     && targetType == "checkbox")
                 {
