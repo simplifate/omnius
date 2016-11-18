@@ -981,6 +981,10 @@
     <Compile Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.Designer.cs">
       <DependentUpon>201611181020083_ResourceMappingPairUpgrade1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.cs" />
+    <Compile Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.Designer.cs">
+      <DependentUpon>201611181120487_ResourceMappingPairUpgrade2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1601,6 +1605,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611181020083_ResourceMappingPairUpgrade1.resx">
       <DependentUpon>201611181020083_ResourceMappingPairUpgrade1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181120487_ResourceMappingPairUpgrade2.resx">
+      <DependentUpon>201611181120487_ResourceMappingPairUpgrade2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

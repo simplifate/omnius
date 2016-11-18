@@ -249,11 +249,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 }
                 return new ResourceMappingPair
                 {
-                    Source = source,
-                    Target = target,
-                    TargetName = targetName,
-                    TargetType = targetType,
+                    relationType = $"{(source.Label.StartsWith("View:") ? "V:" : "")}{source.TypeClass}__{target.TypeClass}",
+
+                    SourceComponentName = source.ComponentName,
+                    SourceTableName = source.TableName,
+                    SourceColumnName = source.ColumnName,
                     SourceColumnFilter = source.ColumnFilter,
+                    SourceConditionSets = source.ConditionSets,
+
+                    TargetName = targetName,
+                    TargetTableName = target.TableName,
+                    TargetColumnName = target.ColumnName,
+                    
                     DataSourceParams = dataSourceParams,
                     Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
                 };

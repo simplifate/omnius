@@ -399,6 +399,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string SetRelation { get; set; }
 
         [ImportExportIgnore(IsParent = true)]
+        public virtual ResourceMappingPair ResourceMappingPair { get; set; }
+        [ImportExportIgnore(IsParent = true)]
         public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
         [ImportExportIgnore(IsParent = true)]
         public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
