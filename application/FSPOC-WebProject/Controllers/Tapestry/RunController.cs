@@ -122,7 +122,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 modelRow = core.Entitron.GetDynamicTable(block.ModelName).GetById(modelId);
             }
-            foreach (var resourceMappingPair in context.ResourceMappingPairs.Include("Source").Where(mp => mp.BlockId == block.Id).ToList())
+            foreach (var resourceMappingPair in context.ResourceMappingPairs.Where(mp => mp.BlockId == block.Id).ToList())
             {
                 DataTable dataSource = new DataTable();
                 var columnDisplayNameDictionary = new Dictionary<string, string>();
