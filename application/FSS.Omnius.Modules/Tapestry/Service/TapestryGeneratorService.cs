@@ -166,8 +166,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // Resources
             foreach (TapestryDesignerResourceRule resourceRule in commit.ResourceRules)
             {
-                var pair = saveResourceRule(resourceRule, resultBlock.WorkFlow.Application, stateColumnMapping);
-                resultBlock.ResourceMappingPairs.Add(pair);
+                var pair = saveResourceRule(resourceRule, resultBlock.WorkFlow.Application, stateColumnMapping, resultBlock);
+                //resultBlock.ResourceMappingPairs.Add(pair);
             }
 
             // ActionRule
@@ -195,7 +195,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             block.IsChanged = false;
         }
 
-        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping)
+        private ResourceMappingPair saveResourceRule(TapestryDesignerResourceRule resourceRule, Application app, Dictionary<int, string> stateColumnMapping, Block resultBlock)
         {
             AttributeRule result = new AttributeRule();
 
@@ -247,7 +247,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     stateColumnMapping.Add(source.StateId.Value, target.ColumnName);
                     continue;
                 }
-                return new ResourceMappingPair
+                ResourceMappingPair pair = new ResourceMappingPair
                 {
                     relationType = $"{(source.Label.StartsWith("View:") ? "V:" : "")}{source.TypeClass}__{target.TypeClass}",
 
@@ -255,7 +255,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     SourceTableName = source.TableName,
                     SourceColumnName = source.ColumnName,
                     SourceColumnFilter = source.ColumnFilter,
-                    SourceConditionSets = source.ConditionSets,
 
                     TargetType = targetType,
                     TargetName = targetName,
@@ -265,6 +264,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     DataSourceParams = dataSourceParams,
                     Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
                 };
+
+                resultBlock.ResourceMappingPairs.Add(pair);
+
+                _context.SaveChanges();
+
+                foreach(TapestryDesignerConditionSet cs in source.ConditionSets)
+                {
+                    cs.ResourceMappingPair_Id = pair.Id;
+                    
+                }
+                return pair;
             }
             return null;
         }

@@ -125,6 +125,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             foreach (var resourceMappingPair in context.ResourceMappingPairs.Where(mp => mp.BlockId == block.Id).ToList())
             {
                 DataTable dataSource = new DataTable();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
                 var columnDisplayNameDictionary = new Dictionary<string, string>();
                 if (!string.IsNullOrEmpty(resourceMappingPair.SourceTableName)
                     && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
@@ -137,7 +138,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var entitronView = core.Entitron.GetDynamicView(sourceTableName);
                         dataSource.Columns.Add("hiddenId", typeof(int));
                         var entitronRowList = entitronView.Select().ToList();
-                        bool noConditions = resourceMappingPair.SourceConditionSets.Count == 0;
+                        bool noConditions = conditionSets.Count == 0;
                         bool idAvailable = false;
                         List<string> columnNameList = null;
 
@@ -157,7 +158,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         foreach (var entitronRow in entitronRowList)
                         {
-                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.SourceConditionSets, entitronRow, tapestryVars))
+                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
                             {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = idAvailable ? entitronRow["id"] : 0;
@@ -216,8 +217,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         var entitronRowList = entitronTable.Select().ToList();
                         foreach (var entitronRow in entitronRowList)
                         {
-                            if (resourceMappingPair.SourceConditionSets.Count == 0
-                                || core.Entitron.filteringService.MatchConditionSets(resourceMappingPair.SourceConditionSets, entitronRow, tapestryVars))
+                            if (conditionSets.Count == 0
+                                || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
                             {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = (int)entitronRow["id"];

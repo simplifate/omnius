@@ -398,8 +398,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
 
-        [ImportExportIgnore(IsParent = true)]
-        public virtual ResourceMappingPair ResourceMappingPair { get; set; }
+        [Index]
+        [ImportExportIgnore(IsParentKey = true)]
+        public virtual int? ResourceMappingPair_Id { get; set; }
         [ImportExportIgnore(IsParent = true)]
         public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
         [ImportExportIgnore(IsParent = true)]

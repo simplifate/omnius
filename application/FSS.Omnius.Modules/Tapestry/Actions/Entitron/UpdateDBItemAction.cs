@@ -79,7 +79,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if (column.type == "bit")
                     row[column.Name] = vars.ContainsKey($"__Model.{tableName}.{column.Name}");
                 else if (vars.ContainsKey($"__Model.{tableName}.{column.Name}"))
-                    row[column.Name] = vars[$"__Model.{tableName}.{column.Name}"];
+                {
+                    var val = vars[$"__Model.{tableName}.{column.Name}"];
+                    if (column.type == "datetime")
+                    {
+                        row[column.Name] = Convert.ToDateTime(val);
+                    }
+                    else
+                    {
+                        row[column.Name] = val;
+                    }
+                    
+                }
             }
 
             if (table.columns.Exists(c => c.Name == "ID_USER_EDITOVAL"))
