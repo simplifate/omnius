@@ -207,7 +207,16 @@ function GetUrlParameter(sParam) {
 function RecalculateMozaicFormHeight() {
     var mozaicForm = $("#userContentArea .mozaicForm");
     var mozaicFormHeight = mozaicForm.height();
-    mozaicForm.find(".uic").each(function (index, element) {
+    mozaicForm.find("> .panel-component").each(function (index, element) {
+        currentUic = $(element);
+        mozaicForm.find("> .panel-component").each(function (index2, element2) {
+            currentUic2 = $(element2);
+            if ((currentUic2.position().top < currentUic.position().top + currentUic.height()) &&
+                currentUic2.position().top + currentUic2.height() > currentUic.position().top + currentUic.height())
+                currentUic2.css("top", currentUic.position().top + currentUic.height() + 10);
+        });
+    });
+    mozaicForm.find("> .uic").each(function (index, element) {
         currentUic = $(element);
         if (currentUic.position().top + currentUic.height() > mozaicFormHeight) {
             mozaicFormHeight = currentUic.position().top + currentUic.height();
