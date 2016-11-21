@@ -53,10 +53,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
-            if (vars.ContainsKey("__TableName__") && (vars.ContainsKey("__ModelId__") || vars.ContainsKey("RowId")))
+            if ((vars.ContainsKey("__TableName__") || (vars.ContainsKey("TableName"))) && (vars.ContainsKey("__ModelId__") || vars.ContainsKey("RowId")))
             {
                 int rowId = vars.ContainsKey("RowId") ? (int)vars["RowId"] : (int)vars["__ModelId__"];
-                DBItem model = ent.GetDynamicItem((string)vars["__TableName__"], rowId);
+                DBItem model = vars.ContainsKey("TableName") ? ent.GetDynamicItem((string)vars["TableName"], rowId)
+                    : ent.GetDynamicItem((string)vars["__TableName__"], rowId);
                 model[(string)vars["ColumnName"]] = (int)vars["StateId"];
                 model.table.Update(model, rowId);
                 ent.Application.SaveChanges();
