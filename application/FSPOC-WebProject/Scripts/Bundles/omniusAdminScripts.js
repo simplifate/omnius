@@ -9534,9 +9534,12 @@ MBE.io = {
 
     convert: function(data)
     {
+        if (!data.Id) {
+            return;
+        }
         MBE.workspace.html('');
         
-        var container = $(MBE.types.containers.templates('container'));
+        var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
 
 
@@ -9546,34 +9549,134 @@ MBE.io = {
         
         $("#currentPageId").val(data.Id);
         $("#headerPageName").text(data.Name);
+
+        MBE.DnD.updateDOM();
     },
 
     convertComponent: function (targetContainer, c)
     {
         var item;
+        var newTarget;
+        var systemClasses = [
+            'panel-component', 'named-panel', 'control-label', 'dropdown-select', 'input-single-line', 'button-browse',
+            'input-multiline', 'uic', 'button-simple', 'button-large', 'button-small', 'button-extra-small'
+        ];
 
         switch(c.Tag.toLowerCase())
         {
             case 'div':
                 // PANEL
-                if (c.Classes.indexOf('panel-component') != -1) {
+                if (c.Classes.indexOf('panel-component') !== -1) {
                     item = $(MBE.types.containers.templates.panel);
-                    if (c.Classes.indexOf('named-panel') == -1) {
-                        item.find('header').remove();
+                    item
+                        .find('.panel-body').html('').end()
+                        .find('.panel-footer').remove().end()
+                        .attr('data-uic', 'containers|panel');
+
+                    if (c.Name) {
+                        item.attr('id', c.Name);
+                    }
+                    if (c.Classes.indexOf('named-panel') === -1) {
+                        item.find('.panel-heading').remove();
                     }
                     else {
                         item.find('.panel-title').html(c.Label);
                     }
-                   
-                    item.find('footer').remove();
-                    item.attr('data-uic', 'containers|panel');
+                    newTarget = item.find('.panel-body');
                 }
+                if (c.Classes.indexOf('control-label') !== -1) {
+                    item = $(MBE.types.form.templates.label);
+                    item
+                        .html(c.Label)
+                        .attr('data-uic', 'form|label');
+                }
+                break;
+            case 'select':
+                item = $(MBE.types.form.templates.select);
+                item.attr({
+                    'data-uic': 'form|select',
+                    'name': c.Name,
+                    'id': c.Name
+                });
+
+                if (c.Properties.indexOf('defaultoption') !== -1)
+                {
+                    var defaultOption = MBE.io.getProperty('defaultoption', c.Properties);
+                    item.append('<option value="">' + defaultOption + '</option>');
+                }
+
+                break;
+            case 'input':
+                if (c.Classes.indexOf('input-single-line') !== -1)
+                {
+                    item = $(MBE.types.form.templates['input-text']);
+                    item.attr('data-uic', 'form|input-text');
+                }
+                if (c.Classes.indexOf('button-browse') !== -1) {
+                    item = $(MBE.types.form.templates['input-file']);
+                    item.attr('data-uic', 'form|input-file');
+                }
+                item.attr({
+                    'name': c.Name,
+                    'id': c.Name
+                });
+                break;
+            case 'textarea':
+                item = $(MBE.types.form.templates.textarea);
+                item.attr({
+                    'data-uic': 'form|textarea',
+                    'name': c.Name,
+                    'id': c.Name,
+                    'rows': 5
+                });
+                break;
+            case 'button':
+                item = $(MBE.types.controls.templates.button);
+                item.attr({
+                    'data-uic': 'controls|button',
+                    'type': 'submit',
+                    'name': c.Name,
+                    'id': c.Name
+                }).html(c.Label).addClass('btn-primary');
+
+                if (c.Classes.indexOf('button-large') !== -1) {
+                    item.addClass('btn-lg');
+                }
+                if (c.Classes.indexOf('button-small') !== -1) {
+                    item.addClass('btn-sm');
+                }
+                if (c.Classes.indexOf('button-extra-small') !== -1) {
+                    item.addClass('btn-xs');
+                }
+                break;
+            case 'table':
+
+                break;
         }
 
          
 
-        if (item) {
+        if (item)
+        {
+            var systemClassesRegExp = new RegExp(systemClasses.join('|'), 'g');
+            var customClass = c.Classes.replace(systemClassesRegExp, '');
+            customClass = customClass.replace(/ {2,}/, ' ').replace(/(^ )|( $)/g, '');
+
+            if (customClass.length) {
+                item.attr('data-custom-classes', customClass).addClass(customClass);
+            }
+            if (c.Placeholder)
+                item.attr("placeholder", c.Placeholder);
+            if (c.TabIndex)
+                item.attr("tabindex", c.TabIndex);
+
             item.appendTo(targetContainer)
+        }
+
+        if (c.ChildComponents) {
+            for (j = 0; j < c.ChildComponents.length; j++) {
+                MBE.io.convertComponent(newTarget ? newTarget : item, c.ChildComponents[j]);
+            }
         }
 
 
@@ -9585,15 +9688,10 @@ MBE.io = {
     newComponent.data("uicAttributes", cData.Attributes);
 
     targetContainer.append(newComponent);
-    if (cData.Placeholder)
-        newComponent.attr("placeholder", cData.Placeholder);
-    if (cData.TabIndex)
-        newComponent.attr("tabindex", cData.TabIndex);
+    
    
     if (cData.Properties)
         newComponent.attr("uicProperties", cData.Properties);
-    if (newComponent.hasClass("button-simple"))
-        newComponent.text(cData.Label);
     else if (newComponent.hasClass("button-dropdown"))
         newComponent.html(cData.Label + '<i class="fa fa-caret-down"></i>');
     else if (newComponent.hasClass("info-container")) {
@@ -9603,16 +9701,9 @@ MBE.io = {
         newComponent.find(".info-container-header").text(cData.Label);
         newComponent.find(".info-container-body").text(cData.Content);
     }
-    else if (newComponent.hasClass("named-panel")) {
-        newComponent.append($('<div class="named-panel-header"></div>'));
-        newComponent.find(".named-panel-header").text(cData.Label);
-    }
     else if (newComponent.hasClass("multiple-select")) {
         newComponent.append($('<option value="1">Multiple</option><option value="2">Choice</option><option value="3">Select</option>'));
         newComponent.attr("multiple", "");
-    }
-    else if (newComponent.hasClass("button-browse")) {
-        newComponent.attr("type", "file");
     }
     else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
         newComponent.html(cData.Label);
@@ -9698,16 +9789,19 @@ MBE.io = {
             }
         }
     });
-    if (cData.ChildComponents) {
-        currentPanel = newComponent;
-        for (j = 0; j < cData.ChildComponents.length; j++) {
-            LoadMozaicEditorComponents(currentPanel, cData.ChildComponents[j]);
+    */
+    },
+
+    getProperty: function(name, properties)
+    {
+        var propList = properties.split(/; */g);
+        for (var i = 0; i < propList.length; i++) {
+            var pair = propList[i].split(/=/);
+            if (pair[0] == name) {
+                return pair[1];
+            }
         }
-    }*/
-}
-
-
-
+    }
 }
 MBE.types.containers = {
 
@@ -10889,8 +10983,8 @@ MBE.types.controls = {
                     label: 'Size',
                     type: 'select',
                     options: {
-                        'btn-lg': 'Large',
                         'null': 'Default',
+                        'btn-lg': 'Large',
                         'btn-sm': 'Small',
                         'btn-xs': 'Extra small'
                     },
