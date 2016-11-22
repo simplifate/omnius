@@ -2999,8 +2999,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
           color: black !important; }
 
 table.dataTable {
-  margin: 0 !important;
-  width: 100% !important; }
+  margin: 0 !important; }
   table.dataTable thead, table.dataTable tr th {
     background-color: #f1f1f1; }
   table.dataTable thead th {

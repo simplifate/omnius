@@ -861,7 +861,9 @@ body.userLayout.leftBarHidden {
 
 table.dataTable {
     margin: 0 !important;
-    width: 100% !important;
+
+    //mšebela - oprava nastavování width tabulek v mozaicu
+    //width: 100% !important;
 
     thead, tr th {
         background-color: #f1f1f1;
