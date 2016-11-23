@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Table_Rename : SqlQuery_withApp
+    class SqlQuery_Table_Rename : SqlQuery_withAppTable
     {
         public string newName{ get; set; }
 

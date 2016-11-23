@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_isTableInEntitron:SqlQuery
+    public class SqlQuery_isTableInEntitron : SqlQuery_withApp
     {
 
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)

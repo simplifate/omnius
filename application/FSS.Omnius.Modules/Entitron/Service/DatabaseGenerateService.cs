@@ -191,7 +191,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
-                bool viewExists = DBView.isInDb(e.Application.Name, efView.Name);
+                bool viewExists = DBView.isInDb(e.Application, efView.Name);
 
                 DBView newView = new DBView()
                 {
@@ -218,7 +218,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             //dropping views
             foreach (string viewName in deleteViews)
             {
-                DBView.Drop(viewName);
+                DBView.Drop(e.Application, viewName);
             }
             e.Application.SaveChanges();
         }

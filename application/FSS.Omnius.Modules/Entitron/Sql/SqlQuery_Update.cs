@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Update : SqlQuery_withApp
+    class SqlQuery_Update : SqlQuery_withAppTable
     {
         public Dictionary<DBColumn, object> changes { get; set; }
         public int recordId { get; set; }

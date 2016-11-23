@@ -7,19 +7,16 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Table_exists : SqlQuery
+    class SqlQuery_Table_exists : SqlQuery_withApp
     {
-        public string applicationName;
         public string tableName;
 
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            if (string.IsNullOrWhiteSpace(applicationName))
-                throw new ArgumentNullException("applicationName");
             if (string.IsNullOrWhiteSpace(tableName))
                 throw new ArgumentNullException("tableName");
 
-            string parAppName = safeAddParam("appName", applicationName);
+            string parAppName = safeAddParam("appName", application.Name);
             string parTableName = safeAddParam("tableName", tableName);
 
             sqlString = string.Format(

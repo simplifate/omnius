@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_IndexColumns:SqlQuery_withApp
+    class SqlQuery_IndexColumns:SqlQuery_withAppTable
     {
         public string indexName { get; set; }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)

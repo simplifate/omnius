@@ -11,10 +11,12 @@ using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery
+    public abstract class SqlQuery
     {
         public const string DB_MasterApplication = "dbo.Master_Applications";
         public const string DB_EntitronMeta = "dbo.Entitron___META";
+
+        public abstract string connectionString { get; }
 
         public string sqlString;
         internal Dictionary<string, object> _params;
@@ -81,7 +83,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             {
                 if (e.Message.Contains("Could not find stored procedure 'getTableRealName'"))
                 {
-                    new SqlInitScript().Execute(connection);
+                    new SqlInitScript(connectionString).Execute(connection);
                     cmd.ExecuteNonQuery();
                 }
                 else
@@ -101,7 +103,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
                 {
                     // declare procedure
-                    new SqlInitScript().Execute(connection);
+                    new SqlInitScript(connectionString).Execute(connection);
                     // repeat execution
                     reader = cmd.ExecuteReader();
                 }

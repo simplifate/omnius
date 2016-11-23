@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public IEnumerable<DBTable> GetTables()
         {
-            List<DBItem> items = (new SqlQuery_Select_TableList() { ApplicationName = Name }).ExecuteWithRead();
+            List<DBItem> items = (new SqlQuery_Select_TableList() { application = this }).ExecuteWithRead();
 
             return items.Select(i =>
                 new DBTable((int)i["tableId"])
@@ -40,7 +40,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
             SqlQuery_Table_exists query = new SqlQuery_Table_exists()
             {
-                applicationName = Name,
+                application = this,
                 tableName = tableName
             };
 
@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public List<string> GetViewNames()
         {
-            SqlQuery_SelectViews query = new SqlQuery_SelectViews(Name);
+            SqlQuery_SelectViews query = new SqlQuery_SelectViews { application = this };
             List<string> viewNames=new List<string>();
             foreach (DBItem i in query.ExecuteWithRead())
             {
@@ -74,7 +74,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
             SqlQuery_ViewExists query = new SqlQuery_ViewExists()
             {
-                appName = Name,
+                application = this,
                 viewName = viewName
             };
 

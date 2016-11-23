@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_ForeignKeyAdd : SqlQuery_withApp
+    class SqlQuery_ForeignKeyAdd : SqlQuery_withAppTable
     {
         public DBTable table2 { get; set; }
         public string foreignKey { get; set; }

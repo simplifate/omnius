@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Delete : SqlQuery_withApp
+    class SqlQuery_Delete : SqlQuery_withAppTable
     {
         public Dictionary<DBColumn,object> rowSelect  { get; set; }
 

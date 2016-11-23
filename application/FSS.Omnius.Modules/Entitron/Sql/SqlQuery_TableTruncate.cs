@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_TableTruncate:SqlQuery_withApp
+    public class SqlQuery_TableTruncate:SqlQuery_withAppTable
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {

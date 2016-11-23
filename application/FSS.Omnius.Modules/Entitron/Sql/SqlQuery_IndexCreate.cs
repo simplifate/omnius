@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_IndexCreate : SqlQuery_withApp
+    public class SqlQuery_IndexCreate : SqlQuery_withAppTable
     {
         public List<string> columnsName { get; set; }
         public string indexName { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_GetForeignKeysForDrop : SqlQuery_withApp
+    public class SqlQuery_GetForeignKeysForDrop : SqlQuery_withAppTable
     {
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {

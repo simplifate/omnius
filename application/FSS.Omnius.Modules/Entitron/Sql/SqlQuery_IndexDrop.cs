@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_IndexDrop : SqlQuery_withApp
+    public class SqlQuery_IndexDrop : SqlQuery_withAppTable
     {
         public string indexName { get; set; }
 

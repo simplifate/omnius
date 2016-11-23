@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Select_TableList : SqlQuery
-    {
-        public string ApplicationName;
-        
+    class SqlQuery_Select_TableList : SqlQuery_withApp
+    {        
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            if (ApplicationName == null)
+            if (application == null)
                 throw new ArgumentNullException("ApplicationName");
 
-            string parAppName = safeAddParam("applicationName", ApplicationName);
+            string parAppName = safeAddParam("applicationName", application.Name);
 
             sqlString = string.Format(
                 "SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
@@ -30,7 +28,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         public override string ToString()
         {
-            return string.Format("Get table list in [{0}]", ApplicationName);
+            return string.Format("Get table list in [{0}]", application.Name);
         }
     }
 }

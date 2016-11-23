@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_SelectSpecificDefault:SqlQuery_withApp
+    public class SqlQuery_SelectSpecificDefault:SqlQuery_withAppTable
     {
         public string columnName { get; set; }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)

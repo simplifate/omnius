@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_ConstraintDrop : SqlQuery_withApp
+    class SqlQuery_ConstraintDrop : SqlQuery_withAppTable
     {
         public string constraintName { get; set; }
         protected override void BaseExecution(MarshalByRefObject transaction)

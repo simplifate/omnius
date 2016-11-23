@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_PrimaryKeyAdd : SqlQuery_withApp
+    class SqlQuery_PrimaryKeyAdd : SqlQuery_withAppTable
     {
         public string keyColumns { get; set; }
         public bool isClusterCreated { get; set; }

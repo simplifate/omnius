@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Table_Create : SqlQuery_withApp
+    class SqlQuery_Table_Create : SqlQuery_withAppTable
     {
         private List<DBColumn> _columns = new List<DBColumn>();
 

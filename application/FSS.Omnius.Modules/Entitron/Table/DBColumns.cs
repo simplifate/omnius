@@ -230,14 +230,23 @@ namespace FSS.Omnius.Modules.Entitron
 
         public static List<string> getMaxLenghtDataTypes()
         {
-            List<string> maxLenghtDataType = new List<string>();
-            SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
-
-            foreach (DBItem s in query.ExecuteWithRead())
+            return new List<string>
             {
-                maxLenghtDataType.Add(s["name"].ToString());
-            }
-            return maxLenghtDataType;
+                "varbinary",
+                "varchar",
+                "binary",
+                "char",
+                "nvarchar",
+                "nchar"
+            };
+            //List<string> maxLenghtDataType = new List<string>();
+            //SqlQuery_SelectStringsTypes query = new SqlQuery_SelectStringsTypes();
+
+            //foreach (DBItem s in query.ExecuteWithRead())
+            //{
+            //    maxLenghtDataType.Add(s["name"].ToString());
+            //}
+            //return maxLenghtDataType;
         }
     }
 }

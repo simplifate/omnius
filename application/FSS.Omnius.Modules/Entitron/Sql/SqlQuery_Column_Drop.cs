@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Column_Drop : SqlQuery_withApp
+    class SqlQuery_Column_Drop : SqlQuery_withAppTable
     {
         public string columnName { get; set; }
         

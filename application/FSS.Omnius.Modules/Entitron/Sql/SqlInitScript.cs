@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlInitScript : SqlQuery
+    class SqlInitScript : SqlQuery_withoutApp
     {
+        public SqlInitScript(string connection) : base(connection)
+        {
+        }
+
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             sqlString = 

@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_SelectStringsTypes:SqlQuery
+    class SqlQuery_SelectStringsTypes : SqlQuery_withoutApp
     {
+        public SqlQuery_SelectStringsTypes(string connection) : base(connection)
+        {
+        }
+
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-
             sqlString = "SELECT name FROM sys.types WHERE max_length=8000;";
 
             return base.BaseExecutionWithRead(connection);

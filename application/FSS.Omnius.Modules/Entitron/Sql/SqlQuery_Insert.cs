@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Insert : SqlQuery_withApp
+    class SqlQuery_Insert : SqlQuery_withAppTable
     {
         public Dictionary<DBColumn, object> data { get; set; }
 

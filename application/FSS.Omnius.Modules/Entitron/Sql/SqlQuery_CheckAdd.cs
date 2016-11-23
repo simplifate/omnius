@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_CheckAdd : SqlQuery_withApp
+    class SqlQuery_CheckAdd : SqlQuery_withAppTable
     {
         public string where { get; set; }
         public string checkName { get; set; }

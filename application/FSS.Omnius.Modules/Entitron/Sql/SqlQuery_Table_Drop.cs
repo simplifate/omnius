@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Table_Drop : SqlQuery_withApp
+    class SqlQuery_Table_Drop : SqlQuery_withAppTable
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {

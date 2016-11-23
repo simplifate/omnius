@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_SelectConstrains : SqlQuery_withApp
+    class SqlQuery_SelectConstrains : SqlQuery_withAppTable
     {
         public bool isDisable { get; set; }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connectioon)

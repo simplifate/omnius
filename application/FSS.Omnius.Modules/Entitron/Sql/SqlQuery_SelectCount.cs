@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 "SET @sql = CONCAT('SELECT COUNT(*) count FROM [', @realTableName, '] {2} {3} {4} {5};');" +
                 "exec sp_executesql @sql, N'{6}', {7};", 
                 parAppName,parTableName,
-                _where.ToString(),
+                _where == null ? string.Empty : _where.ToString(),
                 string.Join(" ", _join),
                 _group,
                 _order,

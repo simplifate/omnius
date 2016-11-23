@@ -19,11 +19,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return this;
         }
-        public T GetQuery<T>(string tableName) where T : SqlQuery_withApp
+        public T GetQuery<T>(string tableName) where T : SqlQuery_withAppTable
         {
             return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
         }
-        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withApp
+        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withAppTable
         {
             List<T> output = new List<T>();
             for(int i = 0; i < _queries.Count; i++)

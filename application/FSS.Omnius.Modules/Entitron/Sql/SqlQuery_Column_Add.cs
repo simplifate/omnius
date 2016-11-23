@@ -8,7 +8,7 @@ using System.Data;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Column_Add : SqlQuery_withApp
+    class SqlQuery_Column_Add : SqlQuery_withAppTable
     {
         public DBColumn column;
         

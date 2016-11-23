@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_ConstraintEnable : SqlQuery_withApp
+    class SqlQuery_ConstraintEnable : SqlQuery_withAppTable
     {
         public string constraintName { get; set; }
 
