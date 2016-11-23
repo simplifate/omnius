@@ -989,6 +989,10 @@
     <Compile Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.Designer.cs">
       <DependentUpon>201611181522498_conditionSetMappingPairRelationRemoved.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611231456099_addBlockBuildLink.cs" />
+    <Compile Include="Migrations\201611231456099_addBlockBuildLink.Designer.cs">
+      <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1615,6 +1619,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611181522498_conditionSetMappingPairRelationRemoved.resx">
       <DependentUpon>201611181522498_conditionSetMappingPairRelationRemoved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611231456099_addBlockBuildLink.resx">
+      <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
