@@ -614,15 +614,34 @@ function GetUrlParameter(sParam) {
 function RecalculateMozaicFormHeight() {
     var mozaicForm = $("#userContentArea .mozaicForm");
     var mozaicFormHeight = mozaicForm.height();
-    mozaicForm.find("> .panel-component").each(function (index, element) {
+    var panels = mozaicForm.find("> .panel-component");
+    var lastUic = null;
+    panels.each(function (index, element) {
+        var currentUic = $(element);
+        if (lastUic !== null) {
+            console.log("Entering new element: "+index);
+            console.log(currentUic);
+            var topPos = currentUic.position().top;
+            var bottomPos = currentUic.position().top + currentUic.height();
+            var lastTopPos = lastUic.position().top;
+            var lastBottomPos = parseInt(lastUic.position().top + lastUic.height());
+            console.log("Calculating: " + topPos + ", " + bottomPos + ", " + lastTopPos + ", " + lastBottomPos);
+            if (topPos < lastBottomPos) {
+                console.log("Overlaping it, moving to: " + (lastBottomPos + 10));
+                currentUic.css("top", lastBottomPos + 10);
+            }
+        }
+        lastUic = currentUic;
+    });
+    /*panels.each(function (index, element) {
         currentUic = $(element);
-        mozaicForm.find("> .panel-component").each(function (index2, element2) {
+        panels.each(function (index2, element2) {
             currentUic2 = $(element2);
             if ((currentUic2.position().top < currentUic.position().top + currentUic.height()) &&
                 currentUic2.position().top + currentUic2.height() > currentUic.position().top + currentUic.height())
                 currentUic2.css("top", currentUic.position().top + currentUic.height() + 10);
         });
-    });
+    });*/
     mozaicForm.find("> .uic").each(function (index, element) {
         currentUic = $(element);
         if (currentUic.position().top + currentUic.height() > mozaicFormHeight) {
