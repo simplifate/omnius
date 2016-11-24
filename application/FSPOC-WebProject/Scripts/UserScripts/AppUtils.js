@@ -225,7 +225,7 @@ function RecalculateMozaicFormHeight() {
             var lastTopPos = lastUic.position().top;
             var lastBottomPos = parseInt(lastUic.position().top + lastUic.height());
             // If top of panel overlaps bottom of last one
-            if (topPos < lastBottomPos) {
+            if (topPos < lastBottomPos + 10) {
                 // Move it under it with 10 px space
                 currentUic.css("top", lastBottomPos + 10);
             }
