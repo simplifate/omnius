@@ -207,34 +207,32 @@ function GetUrlParameter(sParam) {
 function RecalculateMozaicFormHeight() {
     var mozaicForm = $("#userContentArea .mozaicForm");
     var mozaicFormHeight = mozaicForm.height();
+
+    // For fixing panel overlapping when grown (sorting by dom-tree)
+    // First, find every panel in mozaic form
     var panels = mozaicForm.find("> .panel-component");
+
+    // Variable for storing previous panel
     var lastUic = null;
+    // Foreach every panel
     panels.each(function (index, element) {
         var currentUic = $(element);
+        // If is not first one
         if (lastUic !== null) {
-            console.log("Entering new element: "+index);
-            console.log(currentUic);
+            // Calculate positions and save them to self-storytelling variables
             var topPos = currentUic.position().top;
             var bottomPos = currentUic.position().top + currentUic.height();
             var lastTopPos = lastUic.position().top;
             var lastBottomPos = parseInt(lastUic.position().top + lastUic.height());
-            console.log("Calculating: " + topPos + ", " + bottomPos + ", " + lastTopPos + ", " + lastBottomPos);
+            // If top of panel overlaps bottom of last one
             if (topPos < lastBottomPos) {
-                console.log("Overlaping it, moving to: " + (lastBottomPos + 10));
+                // Move it under it with 10 px space
                 currentUic.css("top", lastBottomPos + 10);
             }
         }
+        // Save current as previous
         lastUic = currentUic;
     });
-    /*panels.each(function (index, element) {
-        currentUic = $(element);
-        panels.each(function (index2, element2) {
-            currentUic2 = $(element2);
-            if ((currentUic2.position().top < currentUic.position().top + currentUic.height()) &&
-                currentUic2.position().top + currentUic2.height() > currentUic.position().top + currentUic.height())
-                currentUic2.css("top", currentUic.position().top + currentUic.height() + 10);
-        });
-    });*/
     mozaicForm.find("> .uic").each(function (index, element) {
         currentUic = $(element);
         if (currentUic.position().top + currentUic.height() > mozaicFormHeight) {
