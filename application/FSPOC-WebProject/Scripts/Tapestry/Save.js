@@ -210,6 +210,7 @@ function SaveBlock(commitMessage) {
         },
         success: function () {
             ChangedSinceLastSave = false;
+            alert("OK");
         }
     });
 }
