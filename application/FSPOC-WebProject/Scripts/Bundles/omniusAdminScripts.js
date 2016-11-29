@@ -605,6 +605,7 @@ function SaveBlock(commitMessage) {
         },
         success: function () {
             ChangedSinceLastSave = false;
+            alert("OK");
         }
     });
 }
@@ -5619,6 +5620,9 @@ function SaveDbScheme(commitMessage) {
         data: postData,
         complete: function () {
             pageSpinner.hide();
+        },
+        success: function () {
+            alert("OK");
         }
     });
 }
