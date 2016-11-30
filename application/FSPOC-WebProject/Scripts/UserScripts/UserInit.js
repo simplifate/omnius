@@ -98,29 +98,34 @@ $(function () {
             table.css("left", "0px");
             table.css("top", "0px");
             table.wrap("<div class='inner_wrapper'>");
-            table.on("click", ".rowEditAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                if ($(this).hasClass("fa-download"))
-                    window.ignoreUnload = true;
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
+                table.on("click", ".rowEditAction", function () {
+                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    var tableName = table.attr("name");
+                    if ($(this).hasClass("fa-download"))
+                        window.ignoreUnload = true;
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_EditAction" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').appendTo('body').submit();
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DetailsAction" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
                 if (confirm('Jste si jistí?')) {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
+                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    var tableName = table.attr("name");
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="deleteId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
                 }
             });
             table.on("click", ".row_A_Action", function () {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionA" /></form>').appendTo('body').submit();
-                });
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_A_Action" /></form>').appendTo('body').submit();
+            });
             table.on("click", ".row_B_Action", function () {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionB" /></form>').appendTo('body').submit();
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_B_Action" /></form>').appendTo('body').submit();
             });
             table.DataTable().on("draw", function () {
                 var t = $(this);
