@@ -67,6 +67,10 @@
             left: 150px;
             top: 160px;
             width: 1040px;
+
+            label {
+                white-space: nowrap;
+            }
         }
         #filterLogTable {
             td {

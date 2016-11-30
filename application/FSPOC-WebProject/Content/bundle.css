@@ -4598,6 +4598,8 @@ body.watchtowerModule #upperPanel {
     left: 150px;
     top: 160px;
     width: 1040px; }
+    body.watchtowerModule #upperPanel #filterLogForm label {
+      white-space: nowrap; }
   body.watchtowerModule #upperPanel #filterLogTable td {
     padding-left: 1px;
     padding-right: 30px;
