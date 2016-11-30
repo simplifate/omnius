@@ -202,6 +202,11 @@ $(function () {
             }
         });
         $.extend($.validator.methods, {
+            auditNumberNoWF: function (value, element, attr) {
+                return value.match(/^[0-9]{4} [BCEQ] [0-9]{2,3}$/);
+            }
+        });
+        $.extend($.validator.methods, {
             auditNumberNonWF: function (value, element, attr) {
                 return value.match(/^[0-9]{4} C [0-9]{2,3}$/);
             }
