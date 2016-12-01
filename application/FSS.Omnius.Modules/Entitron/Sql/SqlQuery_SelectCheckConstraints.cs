@@ -11,17 +11,23 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
+            //string parAppName = safeAddParam("applicationName", application.Name);
+            //string parTableName = safeAddParam("tableName", table.tableName);
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= 'SELECT ch.name name FROM sys.check_constraints ch " +
-                "INNER JOIN sys.tables t ON t.object_id=ch.parent_object_id " +
-                "WHERE t.name = @realTableName;';" +
-                "exec sp_executesql @sql, N'@realTableName NVARCHAR(100)', @realTableName;",
-                parAppName, parTableName
-                );
+            sqlString =
+                $"SELECT ch.name name FROM sys.check_constraints ch " +
+                $"INNER JOIN sys.tables t ON t.object_id=ch.parent_object_id " +
+                $"WHERE t.name='{realTableName}'";
+
+
+                //string.Format(
+                //"DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX);exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                //"SET @sql= 'SELECT ch.name name FROM sys.check_constraints ch " +
+                //"INNER JOIN sys.tables t ON t.object_id=ch.parent_object_id " +
+                //"WHERE t.name = @realTableName;';" +
+                //"exec sp_executesql @sql, N'@realTableName NVARCHAR(100)', @realTableName;",
+                //parAppName, parTableName
+                //);
 
             return base.BaseExecutionWithRead(connection);
         }

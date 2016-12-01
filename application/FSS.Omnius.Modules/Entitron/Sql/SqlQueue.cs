@@ -40,12 +40,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             return output;
         }
 
-        public void ExecuteAll()
+        public void ExecuteAll(string connectionString = null)
         {
-            if (Entitron.connectionString == null)
+            connectionString = connectionString ?? Entitron.connectionString;
+            if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -55,6 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     {
                         foreach (SqlQuery query in _queries)
                         {
+                            query.PreExecution();
                             query.Execute(transaction);
                         }
                         transaction.Commit();

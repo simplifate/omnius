@@ -15,8 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parTabName = safeAddParam("TableName", table.tableName);
 
             sqlString =
-                $"DECLARE @realTableName NVARCHAR(100);exec getTableRealName @{parAppName}, @{parTabName}, @realTableName OUTPUT;" +
-                "SELECT column_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE OBJECTPROPERTY(OBJECT_ID(constraint_name), 'IsPrimaryKey') = 1 AND table_name = @realTableName";
+                $"SELECT column_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE OBJECTPROPERTY(OBJECT_ID(constraint_name), 'IsPrimaryKey') = 1 AND table_name = '{realTableName}'";
 
             return base.BaseExecutionWithRead(connection);
         }

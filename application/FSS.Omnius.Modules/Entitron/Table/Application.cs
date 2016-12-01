@@ -90,7 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         public void SaveChanges()
         {
-            queries.ExecuteAll();
+            queries.ExecuteAll(connectionString);
         }
     }
 }

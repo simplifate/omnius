@@ -11,10 +11,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public string constraintName { get; set; }
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
-
             sqlString =
-                $"ALTER TABLE {realTableName} DROP CONSTRAINT IF EXISTS [{constraintName}];";
+                $"ALTER TABLE [{realTableName}] DROP CONSTRAINT IF EXISTS [{constraintName}];";
             
             base.BaseExecution(transaction);
         }

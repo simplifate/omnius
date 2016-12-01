@@ -15,16 +15,20 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string unique = (isUniqueIndex) ? "UNIQUE" : "";
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
+            //string parAppName = safeAddParam("applicationName", application.Name);
+            //string parTableName = safeAddParam("tableName", table.tableName);
             string parIndexName = safeAddParam("indexName", indexName);
             string parColumnName = safeAddParam("columnName", string.Join(", ", columnsName));
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('CREATE {4} INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
-                "exec (@sql);",
-                parAppName, parTableName,parIndexName, parColumnName,unique);
+            sqlString =
+                $"CREATE {unique} INDEX index_{parIndexName} ON [{realTableName}]({parColumnName})";
+
+
+                //string.Format(
+                //"DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                //"SET @sql= CONCAT('CREATE {4} INDEX index_', @{2} , ' ON ', @realTableName, '(', @{3}, ');');" +
+                //"exec (@sql);",
+                //parAppName, parTableName,parIndexName, parColumnName,unique);
 
             base.BaseExecution(transaction);
         }

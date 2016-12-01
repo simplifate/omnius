@@ -42,6 +42,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 {
                     try
                     {
+                        PreExecution();
                         BaseExecution(transaction);
                         transaction.Commit();
                     }
@@ -55,6 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public void Execute(MarshalByRefObject connection)
         {
+            PreExecution();
             BaseExecution(connection);
         }
         public virtual ListJson<DBItem> ExecuteWithRead()
@@ -69,10 +71,15 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             {
                 connection.Open();
 
+                PreExecution();
                 items = BaseExecutionWithRead(connection);
             }
 
             return items;
+        }
+        public virtual void PreExecution()
+        {
+
         }
         protected virtual void BaseExecution(MarshalByRefObject connection)
         {

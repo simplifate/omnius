@@ -12,15 +12,18 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
+            //string parAppName = safeAddParam("applicationName", application.Name);
+            //string parTableName = safeAddParam("tableName", table.tableName);
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(100);" +
-                "exec getTableRealName @{0}, @{1}, @realTableName output;" +
-                "SELECT i.name IndexName, i.is_unique isUnique FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND i.name like 'index%' AND t.name=@realTableName;",
-                parAppName, parTableName
-                );
+            sqlString =
+                $"SELECT i.name IndexName, i.is_unique isUnique FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND i.name like 'index%' AND t.name='{realTableName}';";
+                
+                //string.Format(
+                //"DECLARE @realTableName NVARCHAR(100);" +
+                //"exec getTableRealName @{0}, @{1}, @realTableName output;" +
+                //"SELECT i.name IndexName, i.is_unique isUnique FROM sys.indexes i INNER JOIN sys.tables t ON i.object_id = t.object_id WHERE i.is_primary_key=0 AND i.name like 'index%' AND t.name=@realTableName;",
+                //parAppName, parTableName
+                //);
         
             return base.BaseExecutionWithRead(connection);
         }

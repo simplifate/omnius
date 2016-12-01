@@ -15,7 +15,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string columnDefinition = column.getSqlDefinition();
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
             sqlString =
                 $"ALTER TABLE [{realTableName}] ADD {columnDefinition};";

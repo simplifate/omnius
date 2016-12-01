@@ -12,11 +12,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public string checkName { get; set; }
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
             string fullCheckName = $"CHK_{application.Name}_{table.tableName}_{checkName}";
 
             sqlString =
-                $"ALTER TABLE {realTableName} ADD CONSTRAINT {fullCheckName} CHECK {where};";
+                $"ALTER TABLE [{realTableName}] ADD CONSTRAINT {fullCheckName} CHECK {where};";
 
             base.BaseExecution(transaction);
         }

@@ -12,15 +12,15 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
-            string parIndexName = safeAddParam("indexName", indexName);
+            sqlString =
+                $"DROP INDEX IF EXISTS {indexName} ON [{realTableName}];";
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('DROP INDEX IF EXISTS ', @{2}, ' ON ', @realTableName, ';')" +
-                "exec (@sql)",
-                parAppName, parTableName,parIndexName);
+
+                //string.Format(
+                //"DECLARE @realTableName NVARCHAR(100), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                //"SET @sql= CONCAT('DROP INDEX IF EXISTS ', @{2}, ' ON ', @realTableName, ';')" +
+                //"exec (@sql)",
+                //parAppName, parTableName,parIndexName);
             base.BaseExecution(transaction);
         }
 

@@ -14,13 +14,22 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public DBTable table;
         public DBView view;
 
+        protected string realTableName;
+
+        public override void PreExecution()
+        {
+            if (table != null)
+                realTableName = $"Entitron_{application.Name}_{table.tableName}";
+            else if (view != null)
+                realTableName = view.dbViewName;
+        }
         protected override void BaseExecution(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");
             if (table == null && view == null)
                 throw new ArgumentNullException("table or view");
-
+            
             base.BaseExecution(connection);
         }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
@@ -29,7 +38,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 throw new ArgumentNullException("application");
             if (table == null && view == null)
                 throw new ArgumentNullException("table or view");
-
+            
             return base.BaseExecutionWithRead(connection);
         }
     }

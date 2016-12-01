@@ -11,17 +11,17 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {        
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            if (application == null)
-                throw new ArgumentNullException("ApplicationName");
+            string parAppId = safeAddParam("applicationId", application.Id);
 
-            string parAppName = safeAddParam("applicationName", application.Name);
-
-            sqlString = string.Format(
-                "SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
-                DB_MasterApplication,
-                DB_EntitronMeta,
-                parAppName
-                );
+            sqlString =
+                $"SELECT Name, tableId FROM {DB_EntitronMeta} WHERE ApplicationId=@{parAppId};";
+                
+                //string.Format(
+                //"SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
+                //DB_MasterApplication,
+                //DB_EntitronMeta,
+                //parAppName
+                //);
 
             return base.BaseExecutionWithRead(connection);
         }

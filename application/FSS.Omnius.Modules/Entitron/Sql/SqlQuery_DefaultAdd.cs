@@ -13,7 +13,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
             string defaultName = $"DEF_{realTableName}_{column}";
 
             sqlString =
