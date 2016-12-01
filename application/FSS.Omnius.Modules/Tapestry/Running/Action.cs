@@ -69,7 +69,7 @@ namespace FSS.Omnius.Modules.Tapestry
             ActionResultType outputStatus = ActionResultType.Success;
             var invertedVar = new Dictionary<string, object>();
             Message message = new Message();
-            
+
             try
             {
                 InnerRun(vars, outputVars, invertedVar, message);
@@ -80,7 +80,8 @@ namespace FSS.Omnius.Modules.Tapestry
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                LogError($"{ex.Message} StackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
+                List<string> inputVarValues = invertedVar.Select(v => $"{v.Key} = {(v.Value == null ? "NULL" : v.Value.ToString())}").ToList();
+                LogError($"ActionName: {Name}\nInputVars: {string.Join(", ", inputVarValues)}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar, message);
