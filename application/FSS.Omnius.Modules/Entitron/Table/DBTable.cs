@@ -152,18 +152,27 @@ namespace FSS.Omnius.Modules.Entitron
 
             return this;
         }
-        public static bool isInDB(string applicationName, string tableName)
+
+        private bool? _isInDB = null;
+        public bool isInDB
         {
-            if(applicationName==null || tableName==null)
-                return false;
-            SqlQuery_isTableInEntitron query = new SqlQuery_isTableInEntitron() { };
-            foreach (DBItem i in query.ExecuteWithRead())
+            get
             {
-                string name = Convert.ToString(i["name"]);
-                if(name =="Entitron_"+applicationName+"_"+tableName)
-                    return true;
+                if (_isInDB == null)
+                {
+                    if (Application == null || tableName == null)
+                        return false;
+                    
+                    SqlQuery_isTableInEntitron query = new SqlQuery_isTableInEntitron
+                    {
+                        application = Application,
+                        tableName = tableName
+                    };
+                    _isInDB = (query.ExecuteWithRead().Count == 1);
+                }
+
+                return _isInDB.Value;
             }
-            return false;
         }
 
         public DBTable Add(DBItem item)

@@ -18,7 +18,7 @@ namespace FSS.Omnius.Modules.Entitron
             _table = table;
 
             // if table exists - get columns
-            if (DBTable.isInDB(table.Application.Name,table.tableName))
+            if (table.isInDB)
             {
                 SqlQuery_Select_ColumnList query = new SqlQuery_Select_ColumnList() { application = table.Application, table = table };
 
