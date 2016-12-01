@@ -15,29 +15,25 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private DBEntities _context;
         private bool _rebuildInAction;
 
-        private Dictionary<int, Block> _blockMapping;
-        private HashSet<TapestryDesignerBlock> _allBlocks;
+        private Dictionary<TapestryDesignerBlock, Block> _blockMapping;
+        private HashSet<TapestryDesignerBlock> _blocksToBuild;
 
         public delegate void SendWS(string str);
 
         public TapestryGeneratorService(DBEntities context, bool rebuildInAction)
         {
-            _blockMapping = new Dictionary<int, Block>();
-            _allBlocks = new HashSet<TapestryDesignerBlock>();
+            _blockMapping = new Dictionary<TapestryDesignerBlock, Block>();
+            _blocksToBuild = new HashSet<TapestryDesignerBlock>();
             _context = context;
             _rebuildInAction = rebuildInAction;
         }
 
-        public Dictionary<int, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
+        public Dictionary<TapestryDesignerBlock, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
         {
             _core = core;
 
             //_context = DBEntities.instance;
             Application app = core.Entitron.Application;
-
-            // remove old temp blocks - should do nothing
-            _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
-            _context.SaveChanges();
 
             try
             {
@@ -45,20 +41,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 saveMetaBlock(app.TapestryDesignerRootMetablock, true);
                 saveBlocks(sendWs);
                 _context.SaveChanges();
-                
-                // remove old
-                _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => !w.IsTemp));
-                _context.SaveChanges();
-
-                foreach (WorkFlow workflow in app.WorkFlows)
-                    workflow.IsTemp = false;
-                _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 _context.DiscardChanges();
-                _context.WorkFlows.RemoveRange(app.WorkFlows.Where(w => w.IsTemp));
-                _context.SaveChanges();
 
                 throw ex;
             }
@@ -68,14 +54,19 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private WorkFlow saveMetaBlock(TapestryDesignerMetablock block, bool init = false)
         {
-            WorkFlow resultWF = new WorkFlow
+            string metaBlockName = block.Name.RemoveDiacritics();
+            WorkFlow resultWF = _core.Entitron.Application.WorkFlows.SingleOrDefault(w => w.Name == metaBlockName);
+            if (resultWF == null)
             {
-                ApplicationId = _core.Entitron.AppId,
-                Name = block.Name.RemoveDiacritics(),
-                Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial"),
-                IsTemp = true
-            };
-            _context.WorkFlows.Add(resultWF);
+                resultWF = new WorkFlow
+                {
+                    ApplicationId = _core.Entitron.AppId,
+                    Name = block.Name.RemoveDiacritics(),
+                    IsTemp = false
+                };
+                _context.WorkFlows.Add(resultWF);
+            }
+            resultWF.Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial");
             _context.SaveChanges();
 
             // child meta block
@@ -87,24 +78,33 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             _context.SaveChanges();
 
             // child block
-            foreach (TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted))
+            List<TapestryDesignerBlock> designerToBuild = _rebuildInAction
+                ? block.Blocks.Where(b => !b.IsDeleted).ToList()
+                : block.Blocks.Where(b => !b.IsDeleted && b.IsChanged).ToList();
+            foreach (TapestryDesignerBlock childBlock in designerToBuild)
             {
                 TapestryDesignerBlockCommit commit = childBlock.BlockCommits.OrderByDescending(c => c.Timestamp).FirstOrDefault();
 
-                string modelName;
-                if (commit == null)
-                    modelName = null;
-                else
+                string modelName = null;
+                if (commit != null)
                 {
                     if (!string.IsNullOrEmpty(commit.ModelTableName))
                         modelName = commit.ModelTableName;
                     else if (!string.IsNullOrEmpty(commit.AssociatedTableName))
                         modelName = commit.AssociatedTableName.Split(',').First();
-                    else
-                        modelName = null;
                 }
 
-                Block resultBlock = new Block
+                string blockName = childBlock.Name.RemoveDiacritics();
+                Block resultBlock = resultWF.Blocks.SingleOrDefault(b => b.Name == blockName);
+                // find already builded
+                if (resultBlock != null)
+                {
+                    // remove
+                    _context.Blocks.Remove(resultBlock);
+                    _context.SaveChanges();
+                }
+                // create new
+                resultBlock = new Block
                 {
                     Name = childBlock.Name.RemoveDiacritics(),
                     DisplayName = childBlock.Name,
@@ -116,10 +116,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 if (childBlock.IsInitial)
                     resultBlock.InitForWorkFlow.Add(resultWF);
 
-                _blockMapping.Add(childBlock.Id, resultBlock);
-                _allBlocks.Add(childBlock);
+                _blockMapping.Add(childBlock, resultBlock);
+                _blocksToBuild.Add(childBlock);
             }
             _context.SaveChanges();
+            // map rest
+            if (!_rebuildInAction)
+                foreach(TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted && !b.IsChanged))
+                {
+                    string blockName = childBlock.Name.RemoveDiacritics();
+                    _blockMapping[childBlock] = _context.Blocks.SingleOrDefault(b => b.Name == blockName);
+                }
 
             // DONE :)
             return resultWF;
@@ -127,10 +134,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveBlocks(SendWS sendWs)
         {
-            var blocksToBuild = _rebuildInAction ? _allBlocks : _allBlocks.Where(block => block.IsChanged);
-            int progress = 0, progressMax = blocksToBuild.Count();
+            int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;
-            foreach(TapestryDesignerBlock block in blocksToBuild)
+            foreach(TapestryDesignerBlock block in _blocksToBuild)
             {
                 progress++;
                 try
@@ -154,7 +160,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private void saveBlockContent(TapestryDesignerBlock block)
         {
             // block
-            Block resultBlock = _blockMapping[block.Id];
+            Block resultBlock = _blockMapping[block];
             var stateColumnMapping = new Dictionary<int, string>();
 
             TapestryDesignerBlockCommit commit = block.BlockCommits.OrderBy(bc => bc.Timestamp).LastOrDefault();
@@ -262,7 +268,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     TargetColumnName = target.ColumnName,
                     
                     DataSourceParams = dataSourceParams,
-                    Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock_Id]
+                    Block = _blockMapping[connection.ResourceRule.ParentBlockCommit.ParentBlock]
                 };
 
                 resultBlock.ResourceMappingPairs.Add(pair);
@@ -423,7 +429,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         break;
 
                     case "targetItem":
-                        rule.TargetBlock = _blockMapping[item.TargetId.Value];
+                        rule.TargetBlock = _blockMapping[item.Target];
                         break;
 
                     case "symbol":

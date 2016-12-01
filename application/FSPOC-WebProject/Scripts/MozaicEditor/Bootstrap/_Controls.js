@@ -107,8 +107,8 @@
                     label: 'Size',
                     type: 'select',
                     options: {
-                        'btn-lg': 'Large',
                         'null': 'Default',
+                        'btn-lg': 'Large',
                         'btn-sm': 'Small',
                         'btn-xs': 'Extra small'
                     },

@@ -207,14 +207,31 @@ function GetUrlParameter(sParam) {
 function RecalculateMozaicFormHeight() {
     var mozaicForm = $("#userContentArea .mozaicForm");
     var mozaicFormHeight = mozaicForm.height();
-    mozaicForm.find("> .panel-component").each(function (index, element) {
-        currentUic = $(element);
-        mozaicForm.find("> .panel-component").each(function (index2, element2) {
-            currentUic2 = $(element2);
-            if ((currentUic2.position().top < currentUic.position().top + currentUic.height()) &&
-                currentUic2.position().top + currentUic2.height() > currentUic.position().top + currentUic.height())
-                currentUic2.css("top", currentUic.position().top + currentUic.height() + 10);
-        });
+
+    // For fixing panel overlapping when grown (sorting by dom-tree)
+    // First, find every panel in mozaic form
+    var panels = mozaicForm.find("> .panel-component");
+
+    // Variable for storing previous panel
+    var lastUic = null;
+    // Foreach every panel
+    panels.each(function (index, element) {
+        var currentUic = $(element);
+        // If is not first one
+        if (lastUic !== null) {
+            // Calculate positions and save them to self-storytelling variables
+            var topPos = currentUic.position().top;
+            var bottomPos = currentUic.position().top + currentUic.height();
+            var lastTopPos = lastUic.position().top;
+            var lastBottomPos = parseInt(lastUic.position().top + lastUic.height());
+            // If top of panel overlaps bottom of last one
+            if (topPos < lastBottomPos + 10) {
+                // Move it under it with 10 px space
+                currentUic.css("top", lastBottomPos + 10);
+            }
+        }
+        // Save current as previous
+        lastUic = currentUic;
     });
     mozaicForm.find("> .uic").each(function (index, element) {
         currentUic = $(element);

@@ -614,14 +614,31 @@ function GetUrlParameter(sParam) {
 function RecalculateMozaicFormHeight() {
     var mozaicForm = $("#userContentArea .mozaicForm");
     var mozaicFormHeight = mozaicForm.height();
-    mozaicForm.find("> .panel-component").each(function (index, element) {
-        currentUic = $(element);
-        mozaicForm.find("> .panel-component").each(function (index2, element2) {
-            currentUic2 = $(element2);
-            if ((currentUic2.position().top < currentUic.position().top + currentUic.height()) &&
-                currentUic2.position().top + currentUic2.height() > currentUic.position().top + currentUic.height())
-                currentUic2.css("top", currentUic.position().top + currentUic.height() + 10);
-        });
+
+    // For fixing panel overlapping when grown (sorting by dom-tree)
+    // First, find every panel in mozaic form
+    var panels = mozaicForm.find("> .panel-component");
+
+    // Variable for storing previous panel
+    var lastUic = null;
+    // Foreach every panel
+    panels.each(function (index, element) {
+        var currentUic = $(element);
+        // If is not first one
+        if (lastUic !== null) {
+            // Calculate positions and save them to self-storytelling variables
+            var topPos = currentUic.position().top;
+            var bottomPos = currentUic.position().top + currentUic.height();
+            var lastTopPos = lastUic.position().top;
+            var lastBottomPos = parseInt(lastUic.position().top + lastUic.height());
+            // If top of panel overlaps bottom of last one
+            if (topPos < lastBottomPos + 10) {
+                // Move it under it with 10 px space
+                currentUic.css("top", lastBottomPos + 10);
+            }
+        }
+        // Save current as previous
+        lastUic = currentUic;
     });
     mozaicForm.find("> .uic").each(function (index, element) {
         currentUic = $(element);
@@ -826,29 +843,34 @@ $(function () {
             table.css("left", "0px");
             table.css("top", "0px");
             table.wrap("<div class='inner_wrapper'>");
-            table.on("click", ".rowEditAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                if ($(this).hasClass("fa-download"))
-                    window.ignoreUnload = true;
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_edit" /></form>').appendTo('body').submit();
+                table.on("click", ".rowEditAction", function () {
+                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    var tableName = table.attr("name");
+                    if ($(this).hasClass("fa-download"))
+                        window.ignoreUnload = true;
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_EditAction" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDetailsAction", function () {
-                rowId = parseInt($(this).parents("tr").find("td:first").text());
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_detail" /></form>').appendTo('body').submit();
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DetailsAction" /></form>').appendTo('body').submit();
             });
             table.on("click", ".rowDeleteAction", function () {
                 if (confirm('Jste si jistí?')) {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_delete" /></form>').appendTo('body').submit();
+                    var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                    var tableName = table.attr("name");
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="deleteId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
                 }
             });
             table.on("click", ".row_A_Action", function () {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionA" /></form>').appendTo('body').submit();
-                });
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_A_Action" /></form>').appendTo('body').submit();
+            });
             table.on("click", ".row_B_Action", function () {
-                    rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="datatable_actionB" /></form>').appendTo('body').submit();
+                var rowId = parseInt($(this).parents("tr").find("td:first").text());
+                var tableName = table.attr("name");
+                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_B_Action" /></form>').appendTo('body').submit();
             });
             table.DataTable().on("draw", function () {
                 var t = $(this);
@@ -927,6 +949,11 @@ $(function () {
         $.extend($.validator.methods, {
             auditNumber: function (value, element, attr) {
                 return value.match(/^[0-9]{4} [PA] [0-9]{2,3}$/);
+            }
+        });
+        $.extend($.validator.methods, {
+            auditNumberNoWF: function (value, element, attr) {
+                return value.match(/^[0-9]{4} [BCEQ] [0-9]{2,3}$/);
             }
         });
         $.extend($.validator.methods, {

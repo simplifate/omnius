@@ -213,7 +213,7 @@ namespace FSS.Omnius.Controllers.Master
                     if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
                     {
                         // Tapestry
-                        Dictionary<int, Block> blockMapping = null;
+                        Dictionary<TapestryDesignerBlock, Block> blockMapping = null;
                         try
                         {
                             Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
@@ -279,7 +279,7 @@ namespace FSS.Omnius.Controllers.Master
         }
 
 
-        private Tuple<string, HashSet<string>> GetApplicationMenu(Modules.CORE.CORE core, Dictionary<int, Block> blockMapping, int rootId = 0, int level = 0)
+        private Tuple<string, HashSet<string>> GetApplicationMenu(Modules.CORE.CORE core, Dictionary<TapestryDesignerBlock, Block> blockMapping, int rootId = 0, int level = 0)
         {
             DBEntities e = DBEntities.instance;
             rootId = rootId == 0 ? core.Entitron.Application.TapestryDesignerRootMetablock.Id : rootId;
@@ -318,7 +318,7 @@ namespace FSS.Omnius.Controllers.Master
                     IsInMenu = b.IsInMenu,
                     MenuOrder = b.MenuOrder,
                     IsBlock = true,
-                    BlockName = blockMapping[b.Id].Name,
+                    BlockName = b.Name.RemoveDiacritics(),
                     rights = commit != null && !string.IsNullOrEmpty(commit.RoleWhitelist) ? commit.RoleWhitelist : "User"
                 });
             }
