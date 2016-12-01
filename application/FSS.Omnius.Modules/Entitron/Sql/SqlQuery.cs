@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void Execute(string connectionString = null)
         {
-            connectionString = connectionString ?? Entitron.connectionString;
+            connectionString = connectionString ?? this.connectionString ?? Entitron.connectionString;
             if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
@@ -59,11 +59,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public virtual ListJson<DBItem> ExecuteWithRead()
         {
-            if (Entitron.connectionString == null)
+            string cs = connectionString ?? Entitron.connectionString;
+
+            if (cs == null)
                 throw new ArgumentNullException("connectionString");
 
             ListJson<DBItem> items = null;
-            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(cs))
             {
                 connection.Open();
 
