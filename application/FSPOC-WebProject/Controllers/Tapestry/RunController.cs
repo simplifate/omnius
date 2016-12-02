@@ -185,6 +185,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                     else
                     {
+                        bool disableColumnAlias = (resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select");
                         var entitronTable = core.Entitron.GetDynamicTable(resourceMappingPair.SourceTableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
@@ -196,52 +197,92 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         var entitronColumnList = entitronTable.columns.OrderBy(c => c.ColumnId).ToList();
                         dataSource.Columns.Add("hiddenId", typeof(int));
-                        foreach (var entitronColumn in entitronColumnList)
+                        if(disableColumnAlias)
                         {
-                            if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                            foreach (var entitronColumn in entitronColumnList)
                             {
-                                var columnMetadata = core.Entitron.Application.ColumnMetadata.FirstOrDefault(c => c.TableName == entitronTable.tableName
-                                    && c.ColumnName == entitronColumn.Name);
-                                if (columnMetadata != null && columnMetadata.ColumnDisplayName != null)
+                                dataSource.Columns.Add(entitronColumn.Name);
+                            }
+                            var entitronRowList = entitronTable.Select().ToList();
+                            foreach (var entitronRow in entitronRowList)
+                            {
+                                if (conditionSets.Count == 0
+                                    || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
                                 {
-                                    dataSource.Columns.Add(columnMetadata.ColumnDisplayName);
-                                    columnDisplayNameDictionary.Add(entitronColumn.Name, columnMetadata.ColumnDisplayName);
-                                }
-                                else
-                                {
-                                    dataSource.Columns.Add(entitronColumn.Name);
-                                    columnDisplayNameDictionary.Add(entitronColumn.Name, entitronColumn.Name);
+                                    var newRow = dataSource.NewRow();
+                                    newRow["hiddenId"] = (int)entitronRow["id"];
+                                    foreach (var entitronColumn in entitronColumnList)
+                                    {
+                                        if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                        {
+                                            if (entitronColumn.type == "bit")
+                                            {
+                                                if ((bool)entitronRow[entitronColumn.Name] == true)
+                                                    newRow[entitronColumn.Name] = "Ano";
+                                                else
+                                                    newRow[entitronColumn.Name] = "Ne";
+                                            }
+                                            else if (entitronRow[entitronColumn.Name] is DateTime)
+                                            {
+                                                newRow[entitronColumn.Name] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
+                                            }
+                                            else
+                                                newRow[entitronColumn.Name] = entitronRow[entitronColumn.Name];
+                                        }
+                                    }
+                                    dataSource.Rows.Add(newRow);
                                 }
                             }
                         }
-                        var entitronRowList = entitronTable.Select().ToList();
-                        foreach (var entitronRow in entitronRowList)
+                        else
                         {
-                            if (conditionSets.Count == 0
-                                || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
+                            foreach (var entitronColumn in entitronColumnList)
                             {
-                                var newRow = dataSource.NewRow();
-                                newRow["hiddenId"] = (int)entitronRow["id"];
-                                foreach (var entitronColumn in entitronColumnList)
+                                if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
                                 {
-                                    if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                    var columnMetadata = core.Entitron.Application.ColumnMetadata.FirstOrDefault(c => c.TableName == entitronTable.tableName
+                                        && c.ColumnName == entitronColumn.Name);
+                                    if (columnMetadata != null && columnMetadata.ColumnDisplayName != null)
                                     {
-                                        if (entitronColumn.type == "bit")
-                                        {
-                                            if ((bool)entitronRow[entitronColumn.Name] == true)
-                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
-                                            else
-                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
-                                        }
-                                        else if (entitronRow[entitronColumn.Name] is DateTime)
-                                        {
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
-                                        }
-                                        else
-                                            newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
+                                        dataSource.Columns.Add(columnMetadata.ColumnDisplayName);
+                                        columnDisplayNameDictionary.Add(entitronColumn.Name, columnMetadata.ColumnDisplayName);
+                                    }
+                                    else
+                                    {
+                                        dataSource.Columns.Add(entitronColumn.Name);
+                                        columnDisplayNameDictionary.Add(entitronColumn.Name, entitronColumn.Name);
                                     }
                                 }
-                                dataSource.Rows.Add(newRow);
+                            }
+                            var entitronRowList = entitronTable.Select().ToList();
+                            foreach (var entitronRow in entitronRowList)
+                            {
+                                if (conditionSets.Count == 0
+                                    || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
+                                {
+                                    var newRow = dataSource.NewRow();
+                                    newRow["hiddenId"] = (int)entitronRow["id"];
+                                    foreach (var entitronColumn in entitronColumnList)
+                                    {
+                                        if (getAllColumns || columnFilter.Contains(entitronColumn.Name))
+                                        {
+                                            if (entitronColumn.type == "bit")
+                                            {
+                                                if ((bool)entitronRow[entitronColumn.Name] == true)
+                                                    newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ano";
+                                                else
+                                                    newRow[columnDisplayNameDictionary[entitronColumn.Name]] = "Ne";
+                                            }
+                                            else if (entitronRow[entitronColumn.Name] is DateTime)
+                                            {
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = ((DateTime)entitronRow[entitronColumn.Name]).ToString("d. M. yyyy H:mm:ss");
+                                            }
+                                            else
+                                                newRow[columnDisplayNameDictionary[entitronColumn.Name]] = entitronRow[entitronColumn.Name];
+                                        }
+                                    }
+                                    dataSource.Rows.Add(newRow);
+                                }
                             }
                         }
                     }
