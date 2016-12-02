@@ -298,7 +298,7 @@ function LoadConditionColumns(parent) {
     currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
     switch (varType) {
         case "bool":
-            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">b$true</option><option>b$false</option></select>'));
             currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
             break;
         case "int":

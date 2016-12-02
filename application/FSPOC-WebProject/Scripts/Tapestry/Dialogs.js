@@ -626,7 +626,7 @@ $(function () {
                     currentCondition.find(".conditionOperatorCell select, .conditionValueCell select, .conditionValueCell input").remove();
                     switch(varType) {
                         case "bool":
-                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+                            currentCondition.find(".conditionValueCell").append($('<select><option selected="selected">b$true</option><option>b$false</option></select>'));
                             currentCondition.find(".conditionOperatorCell").append($('<select><option selected="selected">==</option><option>!=</option></select>'));
                             break;
                         case "int":
@@ -702,7 +702,7 @@ $(function () {
                         conditionOperatorCell = newCondition.find(".conditionOperatorCell");
                         switch (varType) {
                             case "bool":
-                                conditionValueCell.append($('<select><option selected="selected">true</option><<option>false</option></select>'));
+                                conditionValueCell.append($('<select><option selected="selected">b$true</option><option>b$false</option></select>'));
                                 conditionOperatorCell.append($('<select><option>==</option><option>!=</option></select>'));
                                 conditionOperatorCell.find("select").val(currentConditionData.Operator);
                                 break;
