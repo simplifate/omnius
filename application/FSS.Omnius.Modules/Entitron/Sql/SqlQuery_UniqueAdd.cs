@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_UniqueAdd : SqlQuery_withApp
+    class SqlQuery_UniqueAdd : SqlQuery_withAppTable
     {
         public string keyColumns { get; set; }
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
-            string parColumns = safeAddParam("columns", keyColumns);
+            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
-            sqlString = string.Format(
-                "DECLARE @realTableName NVARCHAR(100) @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
-                "SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @realTableName, '_', @{2}, ' UNIQUE (', @{2}, ');')" +
-                "exec (@sql)",
-                parAppName, parTableName, parColumns);
+            //string parAppName = safeAddParam("applicationName", application.Name);
+            //string parTableName = safeAddParam("tableName", table.tableName);
+            //string parColumns = safeAddParam("columns", keyColumns);
+
+            sqlString =
+                $"ALTER TABLE {realTableName} ADD CONSTRAINT UN_{realTableName}_{keyColumns} UNIQUE({keyColumns});";
+
+                //string.Format(
+                //"DECLARE @realTableName NVARCHAR(100) @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTableName OUTPUT;" +
+                //"SET @sql= CONCAT('ALTER TABLE ', @realTableName, ' ADD CONSTRAINT UN_', @realTableName, '_', @{2}, ' UNIQUE (', @{2}, ');')" +
+                //"exec (@sql)",
+                //parAppName, parTableName, parColumns);
 
             base.BaseExecution(transaction);
         }

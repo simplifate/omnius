@@ -7,15 +7,10 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Select_ColumnList : SqlQuery_withApp
+    class SqlQuery_Select_ColumnList : SqlQuery_withAppTable
     {
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTableName = safeAddParam("tableName", table.tableName);
-
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
-
             sqlString =
                 "SELECT DISTINCT i.is_unique_constraint is_unique, columns.*, types.name typeName FROM sys.columns columns " +
                 "JOIN sys.types types ON columns.user_type_id = types.user_type_id " +

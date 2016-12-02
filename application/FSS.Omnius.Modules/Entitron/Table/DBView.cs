@@ -20,17 +20,18 @@ namespace FSS.Omnius.Modules.Entitron.Table
         {
             Application.queries.Add(new SqlQuery_ViewCreate()
             {
-                Application = Application,
+                application = Application,
                 viewName = dbViewName,
                 sql = sql
             });
             return this;
         }
 
-        public static void Drop(string completeViewName)
+        public static void Drop(Application application, string completeViewName)
         {
             SqlQuery_ViewDrop query = new SqlQuery_ViewDrop()
             {
+                application = application,
                 viewName = completeViewName
             };
             query.Execute();
@@ -40,24 +41,24 @@ namespace FSS.Omnius.Modules.Entitron.Table
         {
             Application.queries.Add(new SqlQuery_ViewAlter()
             {
-                Application = Application,
+                application = Application,
                 viewName = dbViewName,
                 sql = sql
             });
             return this;
         }
 
-        public static bool isInDb(string appName, string viewName)
+        public static bool isInDb(Application app, string viewName)
         {
-            if (appName == null || viewName == null)
+            if (app == null || viewName == null)
             {
                 return false;
             }
-            SqlQuery_ViewExists query = new SqlQuery_ViewExists() {appName = appName,viewName = viewName};
+            SqlQuery_ViewExists query = new SqlQuery_ViewExists() { application = app, viewName = viewName};
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 string name = Convert.ToString(i["name"]);
-                if (name == "Entitron_" + appName + "_" + viewName)
+                if (name == "Entitron_" + app + "_" + viewName)
                 {
                     return true;
                 }

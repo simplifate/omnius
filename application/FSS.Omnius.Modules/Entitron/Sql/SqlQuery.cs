@@ -11,10 +11,12 @@ using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery
+    public abstract class SqlQuery
     {
         public const string DB_MasterApplication = "dbo.Master_Applications";
         public const string DB_EntitronMeta = "dbo.Entitron___META";
+
+        public abstract string connectionString { get; }
 
         public string sqlString;
         internal Dictionary<string, object> _params;
@@ -28,7 +30,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public void Execute(string connectionString = null)
         {
-            connectionString = connectionString ?? Entitron.connectionString;
+            connectionString = connectionString ?? this.connectionString ?? Entitron.connectionString;
             if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
@@ -40,6 +42,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 {
                     try
                     {
+                        PreExecution();
                         BaseExecution(transaction);
                         transaction.Commit();
                     }
@@ -53,22 +56,30 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public void Execute(MarshalByRefObject connection)
         {
+            PreExecution();
             BaseExecution(connection);
         }
         public virtual ListJson<DBItem> ExecuteWithRead()
         {
-            if (Entitron.connectionString == null)
+            string cs = connectionString ?? Entitron.connectionString;
+
+            if (cs == null)
                 throw new ArgumentNullException("connectionString");
 
             ListJson<DBItem> items = null;
-            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(cs))
             {
                 connection.Open();
 
+                PreExecution();
                 items = BaseExecutionWithRead(connection);
             }
 
             return items;
+        }
+        public virtual void PreExecution()
+        {
+
         }
         protected virtual void BaseExecution(MarshalByRefObject connection)
         {
@@ -81,7 +92,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             {
                 if (e.Message.Contains("Could not find stored procedure 'getTableRealName'"))
                 {
-                    new SqlInitScript().Execute(connection);
+                    new SqlInitScript(connectionString).Execute(connection);
                     cmd.ExecuteNonQuery();
                 }
                 else
@@ -101,7 +112,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
                 {
                     // declare procedure
-                    new SqlInitScript().Execute(connection);
+                    new SqlInitScript(connectionString).Execute(connection);
                     // repeat execution
                     reader = cmd.ExecuteReader();
                 }

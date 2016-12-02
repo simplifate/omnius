@@ -83,6 +83,9 @@
         data: postData,
         complete: function () {
             pageSpinner.hide();
+        },
+        success: function () {
+            alert("OK");
         }
     });
 }

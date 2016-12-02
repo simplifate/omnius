@@ -1,5 +1,6 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Table;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +9,36 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_withApp : SqlQuery
+    public class SqlQuery_withAppTable : SqlQuery_withApp
     {
-        public Application application;
+        public DBTable table;
+        public DBView view;
 
-        public override string connectionString
+        protected string realTableName;
+
+        public override void PreExecution()
         {
-            get
-            {
-                return application.connectionString;
-            }
+            if (table != null)
+                realTableName = $"Entitron_{application.Name}_{table.tableName}";
+            else if (view != null)
+                realTableName = view.dbViewName;
         }
-        
         protected override void BaseExecution(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");
-
+            if (table == null && view == null)
+                throw new ArgumentNullException("table or view");
+            
             base.BaseExecution(connection);
         }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             if (string.IsNullOrWhiteSpace(application.Name))
                 throw new ArgumentNullException("application");
-
+            if (table == null && view == null)
+                throw new ArgumentNullException("table or view");
+            
             return base.BaseExecutionWithRead(connection);
         }
     }

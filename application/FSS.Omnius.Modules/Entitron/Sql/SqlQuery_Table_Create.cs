@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Table_Create : SqlQuery_withApp
+    class SqlQuery_Table_Create : SqlQuery_withAppTable
     {
         private List<DBColumn> _columns = new List<DBColumn>();
 
@@ -73,7 +73,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("AppName", application.Name);
+            string parAppId = safeAddParam("AppId", application.Id);
             string parTableName = safeAddParam("tableName", table.tableName);
 
             string columnDefinition = string.Join(",", _columns.Select(c => c.getSqlDefinition()));
@@ -81,7 +81,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             sqlString =
                 $"CREATE TABLE [{realTableName}] ({columnDefinition});" +
-                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, ( SELECT Id FROM {DB_MasterApplication} WHERE Name= @{parAppName} ) , ( SELECT object_id FROM sys.tables WHERE name='{realTableName}') );";
+                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, @{parAppId} , ( SELECT object_id FROM sys.tables WHERE name='{realTableName}') );";
             
             base.BaseExecution(transaction);
         }

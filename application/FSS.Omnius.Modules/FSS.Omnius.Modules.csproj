@@ -277,6 +277,8 @@
     <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewExists.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_withApp.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_withoutApp.cs" />
     <Compile Include="Entitron\Table\Application.cs" />
     <Compile Include="Entitron\Table\DBView.cs" />
     <Compile Include="Entitron\Table\IToJson.cs" />
@@ -315,7 +317,6 @@
     <Compile Include="Entitron\Sql\SqlQuery_SelectUniqueConstraints.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_Select_ColumnList.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_Select_TableList.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Simple_Table_Create.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_TableTruncate.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_Table_Create.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_Table_Drop.cs" />
@@ -324,7 +325,7 @@
     <Compile Include="Entitron\Sql\SqlQuery_Table_Rename.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_UniqueAdd.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_Update.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_withApp.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_withAppTable.cs" />
     <Compile Include="Entitron\Sql\SqlQueue.cs" />
     <Compile Include="Entitron\Table\AdditionalSqlDefinition.cs" />
     <Compile Include="Entitron\Table\DBColumn.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_InsertSelect : SqlQuery_withApp
+    class SqlQuery_InsertSelect : SqlQuery_withAppTable
     {
         public string table2Name { get; set; }
         public List<string> columns1 { get; set; }
@@ -15,18 +15,23 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppName = safeAddParam("applicationName", application.Name);
-            string parTable1Name = safeAddParam("tableName", table.tableName);
-            string parTable2Name = safeAddParam("tableName", table2Name);
-            string parColumn1Name = safeAddParam("columnName", string.Join(", ", columns1));
-            string parColumn2Name = safeAddParam("columnName", string.Join(", ", columns2));
-            string parWhere = safeAddParam("where", where);
+            string realTableName2 = $"Entitron_{application.Name}_{table2Name}";
 
-            sqlString = string.Format(
-                "DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTable1Name OUTPUT; exec getTableRealName @{0}, @{2}, @realTable2Name OUTPUT;" +
-                "SET @sql=CONCAT('INSERT INTO ', @realTable1Name, '(', @{3},') SELECT ', @{4},' FROM ', @realTable2Name,' ', @{5}, ';');"+
-                "exec (@sql);",
-                parAppName,parTable1Name,parTable2Name, parColumn1Name, parColumn2Name, parWhere);
+            //string parAppName = safeAddParam("applicationName", application.Name);
+            //string parTable1Name = safeAddParam("tableName", table.tableName);
+            //string parTable2Name = safeAddParam("tableName", table2Name);
+            //string parColumn1Name = safeAddParam("columnName", string.Join(", ", columns1));
+            //string parColumn2Name = safeAddParam("columnName", string.Join(", ", columns2));
+            //string parWhere = safeAddParam("where", where);
+
+            sqlString =
+                $"INSERT INTO [{realTableName}]({string.Join(", ", columns1)}) SELECT {string.Join(", ", columns2)} FROM [{realTableName2}] {where};";
+
+                //string.Format(
+                //"DECLARE @realTable1Name NVARCHAR(50), @realTable2Name NVARCHAR(50), @sql NVARCHAR(MAX); exec getTableRealName @{0}, @{1}, @realTable1Name OUTPUT; exec getTableRealName @{0}, @{2}, @realTable2Name OUTPUT;" +
+                //"SET @sql=CONCAT('INSERT INTO ', @realTable1Name, '(', @{3},') SELECT ', @{4},' FROM ', @realTable2Name,' ', @{5}, ';');"+
+                //"exec (@sql);",
+                //parAppName,parTable1Name,parTable2Name, parColumn1Name, parColumn2Name, parWhere);
 
             base.BaseExecution(transaction);
         }

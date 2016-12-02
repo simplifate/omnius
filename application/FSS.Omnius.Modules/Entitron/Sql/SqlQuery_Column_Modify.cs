@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Column_Modify : SqlQuery_withApp
+    class SqlQuery_Column_Modify : SqlQuery_withAppTable
     {
         public DBColumn column{ get; set; }
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string columnDefinition = column.getSqlDefinition();
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
             sqlString =
                 $"ALTER TABLE [{realTableName}] ALTER COLUMN {columnDefinition};";

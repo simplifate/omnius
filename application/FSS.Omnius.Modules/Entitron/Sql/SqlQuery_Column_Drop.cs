@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Column_Drop : SqlQuery_withApp
+    class SqlQuery_Column_Drop : SqlQuery_withAppTable
     {
         public string columnName { get; set; }
         
         protected override void BaseExecution(MarshalByRefObject connection)
         {
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
-
             sqlString =
-                $"ALTER TABLE {realTableName} DROP COLUMN IF EXISTS [{columnName}];";
+                $"ALTER TABLE [{realTableName}] DROP COLUMN IF EXISTS [{columnName}];";
 
             base.BaseExecution(connection);
         }

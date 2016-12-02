@@ -50,11 +50,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
                     message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                 DBTable entitronTable = e.Application.GetTable(efTable.Name);
-
-                bool tableExists = DBTable.isInDB(e.Application.Name, efTable.Name);
-
+                
                 //if table doesn't exist, create new one
-                if (entitronTable == null || !tableExists)
+                if (entitronTable == null)
                 {
                     entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
@@ -191,7 +189,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
-                bool viewExists = DBView.isInDb(e.Application.Name, efView.Name);
+                bool viewExists = DBView.isInDb(e.Application, efView.Name);
 
                 DBView newView = new DBView()
                 {
@@ -218,7 +216,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
             //dropping views
             foreach (string viewName in deleteViews)
             {
-                DBView.Drop(viewName);
+                DBView.Drop(e.Application, viewName);
             }
             e.Application.SaveChanges();
         }

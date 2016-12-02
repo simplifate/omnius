@@ -19,11 +19,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return this;
         }
-        public T GetQuery<T>(string tableName) where T : SqlQuery_withApp
+        public T GetQuery<T>(string tableName) where T : SqlQuery_withAppTable
         {
             return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
         }
-        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withApp
+        public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withAppTable
         {
             List<T> output = new List<T>();
             for(int i = 0; i < _queries.Count; i++)
@@ -40,12 +40,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             return output;
         }
 
-        public void ExecuteAll()
+        public void ExecuteAll(string connectionString = null)
         {
-            if (Entitron.connectionString == null)
+            connectionString = connectionString ?? Entitron.connectionString;
+            if (connectionString == null)
                 throw new ArgumentNullException("connectionString");
 
-            using (SqlConnection connection = new SqlConnection(Entitron.connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -55,6 +56,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     {
                         foreach (SqlQuery query in _queries)
                         {
+                            query.PreExecution();
                             query.Execute(transaction);
                         }
                         transaction.Commit();

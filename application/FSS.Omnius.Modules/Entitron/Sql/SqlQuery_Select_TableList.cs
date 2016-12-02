@@ -7,30 +7,28 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Select_TableList : SqlQuery
-    {
-        public string ApplicationName;
-        
+    class SqlQuery_Select_TableList : SqlQuery_withApp
+    {        
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            if (ApplicationName == null)
-                throw new ArgumentNullException("ApplicationName");
+            string parAppId = safeAddParam("applicationId", application.Id);
 
-            string parAppName = safeAddParam("applicationName", ApplicationName);
-
-            sqlString = string.Format(
-                "SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
-                DB_MasterApplication,
-                DB_EntitronMeta,
-                parAppName
-                );
+            sqlString =
+                $"SELECT Name, tableId FROM {DB_EntitronMeta} WHERE ApplicationId=@{parAppId};";
+                
+                //string.Format(
+                //"SELECT e.Name, e.tableId, a.Name AppName FROM {1} e INNER JOIN {0} a ON e.ApplicationId=a.Id WHERE a.Name=@{2};",
+                //DB_MasterApplication,
+                //DB_EntitronMeta,
+                //parAppName
+                //);
 
             return base.BaseExecutionWithRead(connection);
         }
         
         public override string ToString()
         {
-            return string.Format("Get table list in [{0}]", ApplicationName);
+            return string.Format("Get table list in [{0}]", application.Name);
         }
     }
 }

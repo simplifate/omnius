@@ -8,14 +8,13 @@ using System.Data;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_Column_Add : SqlQuery_withApp
+    class SqlQuery_Column_Add : SqlQuery_withAppTable
     {
         public DBColumn column;
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             string columnDefinition = column.getSqlDefinition();
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
             sqlString =
                 $"ALTER TABLE [{realTableName}] ADD {columnDefinition};";

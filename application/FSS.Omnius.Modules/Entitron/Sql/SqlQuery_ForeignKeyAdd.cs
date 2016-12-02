@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    class SqlQuery_ForeignKeyAdd : SqlQuery_withApp
+    class SqlQuery_ForeignKeyAdd : SqlQuery_withAppTable
     {
         public DBTable table2 { get; set; }
         public string foreignKey { get; set; }
@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     : (onDelete == "default") ?" ON DELETE SET DEFAULT" : "";
             
             sqlString =
-                $"ALTER TABLE [Entitron_{application.Name}_{table.tableName}] ADD CONSTRAINT FK_{foreignName} FOREIGN KEY ({foreignKey}) REFERENCES [Entitron_{application.Name}_{table2.tableName}] ({primaryKey}) " +
+                $"ALTER TABLE [{realTableName}] ADD CONSTRAINT FK_{foreignName} FOREIGN KEY ({foreignKey}) REFERENCES [Entitron_{application.Name}_{table2.tableName}] ({primaryKey}) " +
                 $" {delete} {update} ;";
             
             base.BaseExecution(transaction);

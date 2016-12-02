@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Entitron.Sql
 {
-    public class SqlQuery_Selectable<T> : SqlQuery_withApp where T : SqlQuery_Selectable<T>
+    public class SqlQuery_Selectable<T> : SqlQuery_withAppTable where T : SqlQuery_Selectable<T>
     {
         internal List<string> _join = new List<string>();
-        internal Condition_concat _where = Condition_concat.Empty();
+        internal Condition_concat _where = null;
         internal string _order = "";
         internal string _group = "";
         
