@@ -7,6 +7,7 @@
     onDragLeave: [],
     onDragEnd: [],
     onDrop: [],
+    onBeforeDrop: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -196,6 +197,8 @@
             
         var self = MBE.DnD;
         var uic = self.getUIC();
+
+        self.callListeners('onBeforeDrop', uic[0], [self.placeholder.parent()]);
         self.placeholder.after(uic);
         self.callListeners('onDrop', uic[0], [self.placeholder.parent()]);
         self.domNeedUpdate = true;
@@ -205,20 +208,23 @@
     {
         event.stopImmediatePropagation();
 
-        var target = MBE.DnD.placeholder;
+        var self = MBE.DnD;
+        var target = self.placeholder;
         
-        var item = $(MBE.DnD.currentElement);
+        var item = $(self.currentElement);
         var uic;
 
         if (item.is('.node')) {
             uic = item.find('> .node-handle b').data('targetuic');
         }
         else if (!item.is('[data-uic]')) {
-            uic = MBE.DnD.createUIC(item);
+            uic = self.createUIC(item);
         }
         else {
             uic = item;
         }
+
+        self.callListeners('onBeforeDrop', $(uic)[0], [$(uic).parent()]);
 
         if (target.prev('.node').length) {
             $(target.prev('.node').find('> .node-handle b').data('targetuic')).after(uic);
@@ -230,9 +236,8 @@
             $(target.parents('.node').eq(0).find('> .node-handle b').data('targetuic')).append(uic);
         }
 
-        MBE.DnD.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
-
-        MBE.DnD.domNeedUpdate = true;
+        self.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
+        self.domNeedUpdate = true;
     },
 
     /*******************************************************/

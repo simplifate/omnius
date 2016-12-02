@@ -5,7 +5,7 @@
     sortableOptions: {},
 
     onInit: [],
-    onBeforeDelete: {},
+    onBeforeDelete: { '*': []},
 
     workspace: null,
     workspaceDoc: null,
@@ -77,6 +77,9 @@
             if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
                 if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
                     MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
+                }
+                for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
+                    MBE.onBeforeDelete['*'][i].apply(target[0], []);
                 }
 
                 $('.mbe-active', MBE.workspace).remove();

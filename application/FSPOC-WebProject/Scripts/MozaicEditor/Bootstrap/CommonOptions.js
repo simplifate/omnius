@@ -577,6 +577,12 @@ MBE.options.common = {
             get: MBE.options.hasAttr,
             set: MBE.options.setAttr
         }, {
+            label: 'Tab index',
+            type: 'number',
+            attr: 'tabindex',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
             label: 'Custom classes',
             type: 'text',
             get: MBE.options.getCustomClasses,

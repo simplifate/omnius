@@ -667,7 +667,7 @@ function RecalculatePanelDimensions(panel) {
     panel.height(panelHeight);
 }
 $(function () {
-    $(document).on("click", "[data-ajax='true']", function () {
+    $(document).on("click", ".mozaicForm [data-ajax='true']", function () {
         pageSpinner.show();
         $(document).one("ajaxComplete", function () {
             pageSpinner.hide();

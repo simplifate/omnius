@@ -1,42 +1,53 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css
 
-@using (Ajax.BeginForm("Update", "Css", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }))
+@using (Ajax.BeginForm("Update", "Css", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "form form-horizontal" }))
 {
-    <div>
-        <div>
-            <div style="margin-bottom:0.1em">
-                <label class="control-label" style="width:auto">
-                    Název:
-                </label>
-
-            </div>
-
-            <div style="margin-bottom:1em">
-                @Html.TextBoxFor(x => x.Name, new { @style = "width:50%; background-color:white", @id = "EditCssName", @onkeyup = "ValidateName()", @maxlength = 50 })
-            </div>
+    <div class="form-group">
+        <label for="EditCssName" class="control-label col-sm-2">Název:</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.Name, new { @id = "EditCssName", @onkeyup = "ValidateName()", @maxlength = 50, @class = "form-control" })
         </div>
     </div>
-
-    <div>
-        <div>
-            <label class="control-label">
-                Upravit soubor
-            </label>
-        </div>
-
-        <div onchange="">
-            @Html.TextAreaFor(x => x.Value, new { @rows = "15", @style = "width:100%; min-height:100px; margin-left:0px; margin-right:0px; resize:vertical", @name = "EditCssValue", @resize = "vertical" })
+    <div class="form-group">
+        <label for="Value" class="control-label col-sm-2">SCSS obsah:</label>
+        <div class="col-sm-10">
+            @Html.TextAreaFor(x => x.Value, new { @rows = "15", @style = "resize:vertical", @name = "EditCssValue", @resize = "vertical", @class = "form-control" })
         </div>
     </div>
-
-    <div>
+    <div class="form-group">
         <button type="submit" id="saveButton" class="btn btn-primary">Uložit</button>
         <button id="removeChild" class="btn btn-danger">Odebrat</button>
         @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
     </div>
     
     <!-- Input validation -->
+    <link href="~/Scripts/cm/lib/codemirror.css" rel="stylesheet" />
+    <link href="~/Scripts/cm/addon/hint/show-hint.css" rel="stylesheet" />
+
+    <script src="~/Scripts/cm/lib/codemirror.js"></script>
+
+    <script src="~/Scripts/cm/mode/css/css.js"></script>
+
+    <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+    <script src="~/Scripts/cm/addon/hint/css-hint.js"></script>
+    
+    <script src="~/Scripts/cm/addon/edit/closebrackets.js"></script>
+    <script src="~/Scripts/cm/addon/edit/matchbrackets.js"></script>
+    
     <script>
+        setTimeout(function() {
+            var editor = CodeMirror.fromTextArea(document.getElementById("Value"), {
+                lineNumbers: true,
+                lineWrapping: true,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                mode: "text/x-scss",
+                extraKeys: {
+                    "Ctrl-Space": "autocomplete"
+                }
+            });
+        }, 500);
+
         function ValidateName()
         {
             var name = document.getElementById("EditCssName").value;

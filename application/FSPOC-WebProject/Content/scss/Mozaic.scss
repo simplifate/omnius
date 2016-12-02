@@ -617,10 +617,24 @@ body.mozaicEditorModule {
     }
 }
 
-.mozaicBootstrapEditorModule {
+body.mozaicBootstrapEditorModule {
     
     #mozaicLeftBar {
         overflow-y: auto !important;
+        width: 250px !important;
+        &::-webkit-scrollbar {
+            height: 5px;
+            width: 5px;
+            background: #eee;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #393812;
+        }
+
+        &::-webkit-scrollbar-corner {
+            background: #000;
+        }
     }
 
     #lowerPanel.fullscreen {
@@ -658,13 +672,14 @@ body.mozaicEditorModule {
         -moz-user-select: none;      /* Firefox */
         -ms-user-select: none;       /* Internet Explorer/Edge */
         user-select: none;           /* Non-prefixed version, currently */
+        left: 250px;
         
         #mozaicPageTree {
             position: absolute;
             right: 0px;
             top: 0px;
             bottom: 0px;
-            width: 240px;
+            width: 340px;
             background: #e0e2e2;
 
             .leftBarHeader {
@@ -726,6 +741,7 @@ body.mozaicEditorModule {
                     .item-id {
                         display: inline-block;
                         margin-left: 8px;
+                        font-size: 0.8em;
                     }
                 }
                 .sub-tree {
@@ -752,7 +768,7 @@ body.mozaicEditorModule {
         #mozaicPageWorkspace {
             position: absolute;
             left: 12px;
-            right: 252px;
+            right: 355px;
             top: 95px;
             padding: 20px 20px 20px;
             bottom: 0px;
@@ -780,7 +796,7 @@ body.mozaicEditorModule {
         }
 
         #mozaicPageContext {
-            margin-right: 240px;
+            margin-right: 340px;
 
             .breadcrumb {
                 padding: 6px 15px;

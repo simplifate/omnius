@@ -1,12 +1,10 @@
 ﻿using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using NSass;
+using System;
 
 namespace FSS.Omnius.Controllers.Mozaic
 {
@@ -44,7 +42,7 @@ namespace FSS.Omnius.Controllers.Mozaic
             ViewBag.CssValue = css.Value;
             ViewBag.CssName = css.Name;
 
-            return View("Update", css);
+            return PartialView("Update", css);
         }
 
         // Save updates
@@ -62,6 +60,12 @@ namespace FSS.Omnius.Controllers.Mozaic
             e.Css.AddOrUpdate(model);
             e.SaveChanges();
 
+            SassCompiler compiler = new SassCompiler();
+            var cssText = compiler.Compile(model.Value, OutputStyle.Compressed, true);
+
+            string path = GetCssFilePath(model);
+            System.IO.File.WriteAllText(path, cssText);
+
             return View("BaseIndex", e.Css);
         }
         #endregion
@@ -71,8 +75,12 @@ namespace FSS.Omnius.Controllers.Mozaic
             DBEntities e = DBEntities.instance;
             Css css = e.Css.SingleOrDefault(x => x.Id == id);
 
+            System.IO.File.Delete(GetCssFilePath(css));
+
             e.Css.Remove(css);
             e.SaveChanges();
+
+            
 
             return RedirectToAction("Index");
         }
@@ -87,5 +95,15 @@ namespace FSS.Omnius.Controllers.Mozaic
 
             return SetUpdateCss(newCss);
         }
+
+        #region tools
+
+        private string GetCssFilePath(Css model)
+        {
+            string applicationCSSPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Content\\userCSS\\";
+            return applicationCSSPath + model.Name + ".css";
+        }
+
+        #endregion tools
     }
 }

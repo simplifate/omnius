@@ -33,6 +33,10 @@
         root.html('');
         
         self.buildSubNodes(MBE.workspace, root);
+
+        if (MBE.workspace.data('navstate') == 'collapsed') {
+            root.hide().prev().find('i.fa').toggleClass('fa-caret-down fa-caret-right');
+        }
     },
 
     buildSubNodes: function(node, target) 
@@ -63,6 +67,11 @@
                     label.addClass('active');
                 }
                 target.append(item);
+
+                if (subNode.data('navstate') == 'collapsed') {
+                    item.find('i.fa').toggleClass('fa-caret-down fa-caret-right');
+                    item.find('.sub-tree').hide();
+                }
             }
 
             MBE.navigator.buildSubNodes(subNode, subNode.is('[data-uic]') ? item.find('.sub-tree') : target);
@@ -75,6 +84,9 @@
         
         $(this).parent().next().slideToggle();
         $(this).toggleClass('fa-caret-right fa-caret-down');
+        $($(this).next().data('targetuic')).data('navstate', $(this).hasClass('fa-caret-down') ? 'expanded' : 'collapsed');
+
+        console.log($($(this).next().data('targetuic')));
     },
 
     selectNode: function(event)

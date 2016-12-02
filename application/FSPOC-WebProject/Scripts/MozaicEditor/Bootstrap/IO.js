@@ -1,18 +1,72 @@
 ﻿MBE.io = {
 
+    allComponents: null,
+
     convert: function(data)
     {
         if (!data.Id) {
             return;
         }
+        MBE.io.allComponents = new Array();
         MBE.workspace.html('');
         
         var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
 
+        var form = $(MBE.types.form.templates.form);
+        form.attr('data-uic', 'form|form').appendTo(container);
 
-        for (i = 0; i < data.Components.length; i++) {
-            MBE.io.convertComponent(container, data.Components[i]);
+        
+
+        for (var i = 0; i < data.Components.length; i++) {
+            MBE.io.convertComponent(form, data.Components[i]);
+        }
+
+        // Pokusíme se naskládat inputy ke správným labelům
+        console.log(MBE.io.allComponents);
+
+        for (var i = 0; i < MBE.io.allComponents.length; i++) {
+            var c1 = MBE.io.allComponents[i];
+            if (c1.item.is('[data-uic="form|label"]')) {
+                var mostLikelyInput = null;
+
+                c1.PositionX = parseInt(c1.PositionX);
+                c1.PositionY = parseInt(c1.PositionY);
+                c1.Width = parseInt(c1.Width);
+
+                for (var j = 0; j < MBE.io.allComponents.length; j++) 
+                {
+                    var c2 = MBE.io.allComponents[j];
+                    
+                    if (c2.item.is('input, textarea, select')) 
+                    {   
+                        c2.PositionX = parseInt(c2.PositionX);
+                        c2.PositionY = parseInt(c2.PositionY);
+
+                        if (c1.PositionY + 5 >= c2.PositionY && c1.PositionY - 5 <= c2.PositionY) {
+                            if (mostLikelyInput == null) {
+                                if (c2.PositionX > (c1.PositionX + c1.Width)) {
+                                    mostLikelyInput = c2;
+                                }
+                            }
+                            else {
+                                if (c2.PositionX < mostLikelyInput.PositionX && c2.PositionX > (c1.PositionX + c1.Width)) {
+                                    mostLikelyInput = c2;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                console.log(c1);
+                console.log(mostLikelyInput);
+
+                if(mostLikelyInput != null) 
+                {
+                    c1.item.next().append(mostLikelyInput.item);
+                    c1.item.attr('for', mostLikelyInput.Name);
+                }
+            }
         }
         
         $("#currentPageId").val(data.Id);
@@ -56,15 +110,17 @@
                     item = $(MBE.types.form.templates.label);
                     item
                         .html(c.Label)
-                        .attr('data-uic', 'form|label');
+                        .attr('data-uic', 'form|label')
+                        .addClass('col-sm-2');
+                    item.wrap('<div class="form-group" data-uic="form|form-group"></div>');
+                    item.after('<div class="col-sm-10" data-uic="grid|column"></div>');
                 }
                 break;
             case 'select':
                 item = $(MBE.types.form.templates.select);
                 item.attr({
                     'data-uic': 'form|select',
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 });
 
                 if (c.Properties.indexOf('defaultoption') !== -1)
@@ -85,8 +141,7 @@
                     item.attr('data-uic', 'form|input-file');
                 }
                 item.attr({
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 });
                 break;
             case 'textarea':
@@ -94,7 +149,6 @@
                 item.attr({
                     'data-uic': 'form|textarea',
                     'name': c.Name,
-                    'id': c.Name,
                     'rows': 5
                 });
                 break;
@@ -103,8 +157,7 @@
                 item.attr({
                     'data-uic': 'controls|button',
                     'type': 'submit',
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 }).html(c.Label).addClass('btn-primary');
 
                 if (c.Classes.indexOf('button-large') !== -1) {
@@ -122,8 +175,6 @@
                 break;
         }
 
-         
-
         if (item)
         {
             var systemClassesRegExp = new RegExp(systemClasses.join('|'), 'g');
@@ -133,12 +184,34 @@
             if (customClass.length) {
                 item.attr('data-custom-classes', customClass).addClass(customClass);
             }
-            if (c.Placeholder)
+            if (c.Placeholder) {
                 item.attr("placeholder", c.Placeholder);
-            if (c.TabIndex)
+            }
+            if (c.TabIndex) {
                 item.attr("tabindex", c.TabIndex);
+            }
+            if (c.Attributes) {
+                var customAttributes = [];
+                var fake = $('<span ' + c.Attributes + '></span>')[0];
 
-            item.appendTo(targetContainer)
+                for (var i = 0; i < fake.attributes.length; i++) {
+                    var attr = fake.attributes[i];
+                    customAttributes.push(attr.name);
+
+                    item.attr(attr.name, attr.value);
+                }
+
+                item.attr('data-custom-attributes', customAttributes.join(','));
+            }
+
+            item.attr('id', c.Name);
+
+            if (c.Classes.indexOf('control-label') != -1) {
+                item.parent().appendTo(targetContainer);
+            }
+            else {
+                item.appendTo(targetContainer);
+            }
         }
 
         if (c.ChildComponents) {
@@ -146,6 +219,9 @@
                 MBE.io.convertComponent(newTarget ? newTarget : item, c.ChildComponents[j]);
             }
         }
+
+        c.item = item;
+        MBE.io.allComponents.push(c);
 
 
         /*

@@ -4719,12 +4719,14 @@ $(function () {
             $("#mozaicLeftBar").hide();
             $("#mozaicLeftBarMinimized").show();
             $("#mozaicPageContainer").css("left", 32);
+            $("#mozaicPageContext").css('left', 225 + 32);
             RecalculateMozaicToolboxHeight();
         });
         $("#showMozaicTooboxIcon").on("click", function () {
             $("#mozaicLeftBar").show();
             $("#mozaicLeftBarMinimized").hide();
-            $("#mozaicPageContainer").css("left", 300);
+            $("#mozaicPageContainer").css("left", $('body').hasClass('mozaicBootstrapEditorModule') ? 250 : 300);
+            $("#mozaicPageContext").css('left', 225 + 250);
             RecalculateMozaicToolboxHeight();
         });
         $("#gridShowCheckbox").prop("checked", false);
@@ -4827,14 +4829,20 @@ $(function () {
             var lowerPanelTop = $("#lowerPanel").offset().top;
             var topBarHeight = $("#topBar").height() + $("#appNotificationArea").height();
             var overlay = $("#lowerPanelSpinnerOverlay");
+            var context = $("#mozaicPageContext");
+            var tree = $("#mozaicPageTree");
 
             overlay.css({ right: 0, width: 'auto' });
             if (scrollTop > lowerPanelTop - topBarHeight) {
                 leftBar.css({ top: topBarHeight, left: 225, position: "fixed" });
                 overlay.css({ top: topBarHeight, left: 225, position: "fixed" });
+                context.css({ top: topBarHeight, right: 0, left: $("#mozaicLeftBar").is(':visible') ? 475 : 225 + 32, position: "fixed", zIndex: 1 });
+                tree.css({ top: topBarHeight, right: 0, position: "fixed" });
             } else {
                 leftBar.css({ top: 0, left: 0, position: "absolute" });
                 overlay.css({ top: 0, left: 0, position: "absolute" });
+                context.css({ position: "static" });
+                tree.css({ top: 0, right: 0, position: "absolute" });
             }
             RecalculateMozaicToolboxHeight();
         });
@@ -8121,7 +8129,7 @@ var MBE = {
     sortableOptions: {},
 
     onInit: [],
-    onBeforeDelete: {},
+    onBeforeDelete: { '*': []},
 
     workspace: null,
     workspaceDoc: null,
@@ -8193,6 +8201,9 @@ var MBE = {
             if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
                 if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
                     MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
+                }
+                for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
+                    MBE.onBeforeDelete['*'][i].apply(target[0], []);
                 }
 
                 $('.mbe-active', MBE.workspace).remove();
@@ -8300,6 +8311,7 @@ MBE.DnD = {
     onDragLeave: [],
     onDragEnd: [],
     onDrop: [],
+    onBeforeDrop: [],
 
     isNavNodeDragging: false,
     isUICDragging: false,
@@ -8489,6 +8501,8 @@ MBE.DnD = {
             
         var self = MBE.DnD;
         var uic = self.getUIC();
+
+        self.callListeners('onBeforeDrop', uic[0], [self.placeholder.parent()]);
         self.placeholder.after(uic);
         self.callListeners('onDrop', uic[0], [self.placeholder.parent()]);
         self.domNeedUpdate = true;
@@ -8498,20 +8512,23 @@ MBE.DnD = {
     {
         event.stopImmediatePropagation();
 
-        var target = MBE.DnD.placeholder;
+        var self = MBE.DnD;
+        var target = self.placeholder;
         
-        var item = $(MBE.DnD.currentElement);
+        var item = $(self.currentElement);
         var uic;
 
         if (item.is('.node')) {
             uic = item.find('> .node-handle b').data('targetuic');
         }
         else if (!item.is('[data-uic]')) {
-            uic = MBE.DnD.createUIC(item);
+            uic = self.createUIC(item);
         }
         else {
             uic = item;
         }
+
+        self.callListeners('onBeforeDrop', $(uic)[0], [$(uic).parent()]);
 
         if (target.prev('.node').length) {
             $(target.prev('.node').find('> .node-handle b').data('targetuic')).after(uic);
@@ -8523,9 +8540,8 @@ MBE.DnD = {
             $(target.parents('.node').eq(0).find('> .node-handle b').data('targetuic')).append(uic);
         }
 
-        MBE.DnD.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
-
-        MBE.DnD.domNeedUpdate = true;
+        self.callListeners('onDrop', $(uic)[0], [$(uic).parent()]);
+        self.domNeedUpdate = true;
     },
 
     /*******************************************************/
@@ -8643,6 +8659,10 @@ MBE.navigator = {
         root.html('');
         
         self.buildSubNodes(MBE.workspace, root);
+
+        if (MBE.workspace.data('navstate') == 'collapsed') {
+            root.hide().prev().find('i.fa').toggleClass('fa-caret-down fa-caret-right');
+        }
     },
 
     buildSubNodes: function(node, target) 
@@ -8673,6 +8693,11 @@ MBE.navigator = {
                     label.addClass('active');
                 }
                 target.append(item);
+
+                if (subNode.data('navstate') == 'collapsed') {
+                    item.find('i.fa').toggleClass('fa-caret-down fa-caret-right');
+                    item.find('.sub-tree').hide();
+                }
             }
 
             MBE.navigator.buildSubNodes(subNode, subNode.is('[data-uic]') ? item.find('.sub-tree') : target);
@@ -8685,6 +8710,9 @@ MBE.navigator = {
         
         $(this).parent().next().slideToggle();
         $(this).toggleClass('fa-caret-right fa-caret-down');
+        $($(this).next().data('targetuic')).data('navstate', $(this).hasClass('fa-caret-down') ? 'expanded' : 'collapsed');
+
+        console.log($($(this).next().data('targetuic')));
     },
 
     selectNode: function(event)
@@ -9414,6 +9442,12 @@ MBE.options.common = {
             get: MBE.options.hasAttr,
             set: MBE.options.setAttr
         }, {
+            label: 'Tab index',
+            type: 'number',
+            attr: 'tabindex',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
+        }, {
             label: 'Custom classes',
             type: 'text',
             get: MBE.options.getCustomClasses,
@@ -9532,19 +9566,73 @@ MBE.toolbar = {
 MBE.onInit.push(MBE.toolbar.init);
 MBE.io = {
 
+    allComponents: null,
+
     convert: function(data)
     {
         if (!data.Id) {
             return;
         }
+        MBE.io.allComponents = new Array();
         MBE.workspace.html('');
         
         var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
 
+        var form = $(MBE.types.form.templates.form);
+        form.attr('data-uic', 'form|form').appendTo(container);
 
-        for (i = 0; i < data.Components.length; i++) {
-            MBE.io.convertComponent(container, data.Components[i]);
+        
+
+        for (var i = 0; i < data.Components.length; i++) {
+            MBE.io.convertComponent(form, data.Components[i]);
+        }
+
+        // Pokusíme se naskládat inputy ke správným labelům
+        console.log(MBE.io.allComponents);
+
+        for (var i = 0; i < MBE.io.allComponents.length; i++) {
+            var c1 = MBE.io.allComponents[i];
+            if (c1.item.is('[data-uic="form|label"]')) {
+                var mostLikelyInput = null;
+
+                c1.PositionX = parseInt(c1.PositionX);
+                c1.PositionY = parseInt(c1.PositionY);
+                c1.Width = parseInt(c1.Width);
+
+                for (var j = 0; j < MBE.io.allComponents.length; j++) 
+                {
+                    var c2 = MBE.io.allComponents[j];
+                    
+                    if (c2.item.is('input, textarea, select')) 
+                    {   
+                        c2.PositionX = parseInt(c2.PositionX);
+                        c2.PositionY = parseInt(c2.PositionY);
+
+                        if (c1.PositionY + 5 >= c2.PositionY && c1.PositionY - 5 <= c2.PositionY) {
+                            if (mostLikelyInput == null) {
+                                if (c2.PositionX > (c1.PositionX + c1.Width)) {
+                                    mostLikelyInput = c2;
+                                }
+                            }
+                            else {
+                                if (c2.PositionX < mostLikelyInput.PositionX && c2.PositionX > (c1.PositionX + c1.Width)) {
+                                    mostLikelyInput = c2;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                console.log(c1);
+                console.log(mostLikelyInput);
+
+                if(mostLikelyInput != null) 
+                {
+                    c1.item.next().append(mostLikelyInput.item);
+                    c1.item.attr('for', mostLikelyInput.Name);
+                }
+            }
         }
         
         $("#currentPageId").val(data.Id);
@@ -9588,15 +9676,17 @@ MBE.io = {
                     item = $(MBE.types.form.templates.label);
                     item
                         .html(c.Label)
-                        .attr('data-uic', 'form|label');
+                        .attr('data-uic', 'form|label')
+                        .addClass('col-sm-2');
+                    item.wrap('<div class="form-group" data-uic="form|form-group"></div>');
+                    item.after('<div class="col-sm-10" data-uic="grid|column"></div>');
                 }
                 break;
             case 'select':
                 item = $(MBE.types.form.templates.select);
                 item.attr({
                     'data-uic': 'form|select',
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 });
 
                 if (c.Properties.indexOf('defaultoption') !== -1)
@@ -9617,8 +9707,7 @@ MBE.io = {
                     item.attr('data-uic', 'form|input-file');
                 }
                 item.attr({
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 });
                 break;
             case 'textarea':
@@ -9626,7 +9715,6 @@ MBE.io = {
                 item.attr({
                     'data-uic': 'form|textarea',
                     'name': c.Name,
-                    'id': c.Name,
                     'rows': 5
                 });
                 break;
@@ -9635,8 +9723,7 @@ MBE.io = {
                 item.attr({
                     'data-uic': 'controls|button',
                     'type': 'submit',
-                    'name': c.Name,
-                    'id': c.Name
+                    'name': c.Name
                 }).html(c.Label).addClass('btn-primary');
 
                 if (c.Classes.indexOf('button-large') !== -1) {
@@ -9654,8 +9741,6 @@ MBE.io = {
                 break;
         }
 
-         
-
         if (item)
         {
             var systemClassesRegExp = new RegExp(systemClasses.join('|'), 'g');
@@ -9665,12 +9750,34 @@ MBE.io = {
             if (customClass.length) {
                 item.attr('data-custom-classes', customClass).addClass(customClass);
             }
-            if (c.Placeholder)
+            if (c.Placeholder) {
                 item.attr("placeholder", c.Placeholder);
-            if (c.TabIndex)
+            }
+            if (c.TabIndex) {
                 item.attr("tabindex", c.TabIndex);
+            }
+            if (c.Attributes) {
+                var customAttributes = [];
+                var fake = $('<span ' + c.Attributes + '></span>')[0];
 
-            item.appendTo(targetContainer)
+                for (var i = 0; i < fake.attributes.length; i++) {
+                    var attr = fake.attributes[i];
+                    customAttributes.push(attr.name);
+
+                    item.attr(attr.name, attr.value);
+                }
+
+                item.attr('data-custom-attributes', customAttributes.join(','));
+            }
+
+            item.attr('id', c.Name);
+
+            if (c.Classes.indexOf('control-label') != -1) {
+                item.parent().appendTo(targetContainer);
+            }
+            else {
+                item.appendTo(targetContainer);
+            }
         }
 
         if (c.ChildComponents) {
@@ -9678,6 +9785,9 @@ MBE.io = {
                 MBE.io.convertComponent(newTarget ? newTarget : item, c.ChildComponents[j]);
             }
         }
+
+        c.item = item;
+        MBE.io.allComponents.push(c);
 
 
         /*
@@ -9803,6 +9913,88 @@ MBE.io = {
         }
     }
 }
+MBE.history = {
+
+    undoStack: [],
+    redoStack: [],
+
+    btnUndo: null,
+    btnRedo: null,
+
+    init: function() 
+    {
+        var self = MBE.history;
+        self.btnUndo = $('[data-action="undo"]');
+        self.btnRedo = $('[data-action="redo"]');
+
+        MBE.DnD.onBeforeDrop.push(self._beforeAction);
+        MBE.onBeforeDelete['*'].push(self._beforeAction);
+
+        $(document)
+            .on('click', '[data-action="undo"]', self.undo)
+            .on('click', '[data-action="redo"]', self.redo)
+        ;
+
+        self.setButtonState();
+    },
+
+    _beforeAction: function()
+    {
+        var self = MBE.history;
+        self.redoStack = [];
+        self.undoStack.unshift(self.getCurrentDOM());
+
+        if (self.undoStack.length > 20) {
+            delete self.undoStack[20];
+        }
+
+        self.setButtonState();
+    },
+
+    getCurrentDOM: function() {
+        var dom = MBE.workspace.clone(true);
+        dom
+            .find('#drop-placeholder').remove().end()
+            .find('.drag-over').removeClass('drag-over');
+
+        return dom.contents();
+    },
+
+    setButtonState: function() {
+        var self = MBE.history;
+
+        self.btnUndo.attr('disabled', self.undoStack.length == 0);
+        self.btnRedo.attr('disabled', self.redoStack.length == 0);
+    },
+
+    undo: function () {
+        var self = MBE.history;
+        var dom = self.undoStack.shift();
+
+        self.redoStack.unshift(self.getCurrentDOM());
+
+        MBE.workspace.html('');
+        MBE.workspace.append(dom);
+
+        MBE.DnD.updateDOM();
+        self.setButtonState();
+    },
+
+    redo: function () {
+        var self = MBE.history;
+        var dom = self.redoStack.shift();
+
+        self.undoStack.unshift(self.getCurrentDOM());
+
+        MBE.workspace.html('');
+        MBE.workspace.append(dom);
+
+        MBE.DnD.updateDOM();
+        self.setButtonState();
+    }
+};
+
+MBE.onInit.push(MBE.history.init);
 MBE.types.containers = {
 
     templates: {

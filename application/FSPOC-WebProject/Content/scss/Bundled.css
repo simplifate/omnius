@@ -3420,10 +3420,19 @@ body.mozaicEditorModule {
   body.mozaicEditorModule #choose-page-dialog .spinner-2 {
     display: none; }
 
-.mozaicBootstrapEditorModule #mozaicLeftBar {
-  overflow-y: auto !important; }
+body.mozaicBootstrapEditorModule #mozaicLeftBar {
+  overflow-y: auto !important;
+  width: 250px !important; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+    background: #eee; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar-thumb {
+    background: #393812; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar-corner {
+    background: #000; }
 
-.mozaicBootstrapEditorModule #lowerPanel.fullscreen {
+body.mozaicBootstrapEditorModule #lowerPanel.fullscreen {
   position: fixed;
   left: 0px;
   right: 0px;
@@ -3432,20 +3441,20 @@ body.mozaicEditorModule {
   z-index: 100;
   background: #fff; }
 
-.mozaicBootstrapEditorModule ul.category {
+body.mozaicBootstrapEditorModule ul.category {
   margin: 0px;
   padding: 10px; }
-  .mozaicBootstrapEditorModule ul.category li {
+  body.mozaicBootstrapEditorModule ul.category li {
     font-weight: normal;
     list-style: none; }
-  .mozaicBootstrapEditorModule ul.category > li {
+  body.mozaicBootstrapEditorModule ul.category > li {
     font-weight: bold; }
-    .mozaicBootstrapEditorModule ul.category > li > ul {
+    body.mozaicBootstrapEditorModule ul.category > li > ul {
       padding: 0px 20px; }
-      .mozaicBootstrapEditorModule ul.category > li > ul li:hover {
+      body.mozaicBootstrapEditorModule ul.category > li > ul li:hover {
         background: #d0d2d2; }
 
-.mozaicBootstrapEditorModule #mozaicPageContainer {
+body.mozaicBootstrapEditorModule #mozaicPageContainer {
   -webkit-user-select: none;
   /* Chrome/Safari/Opera */
   -moz-user-select: none;
@@ -3453,197 +3462,199 @@ body.mozaicEditorModule {
   -ms-user-select: none;
   /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently */ }
-  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree {
+  /* Non-prefixed version, currently */
+  left: 250px; }
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree {
     position: absolute;
     right: 0px;
     top: 0px;
     bottom: 0px;
-    width: 240px;
+    width: 340px;
     background: #e0e2e2; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree .leftBarHeader {
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree .leftBarHeader {
       height: 32px;
       background-color: #bdbbbc;
       font-family: FatTec;
       font-size: 16px;
       padding: 8px 10px; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul {
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul {
       padding: 0px;
       margin: 0px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li {
         list-style: none;
         margin: 0px 0px 0px 15px; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li .fa {
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li .fa {
           margin-left: -15px;
           margin-top: 3px;
           float: left; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span {
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span {
           font-weight: bold;
           color: #000;
           display: block;
           padding: 1px 5px; }
-          .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.active, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.active {
+          body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.active, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.active {
             background: #fff;
             border: 1px solid blue;
             padding: 0px 4px; }
-          .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.drop-target, .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.drop-target {
+          body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.drop-target, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.drop-target {
             background: #fbffd4;
             border: 1px solid orange;
             padding: 0px 4px; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav {
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav {
       margin-top: 1em;
       padding: 0px 10px 0px 25px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav i.fa {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav i.fa {
         margin-left: -20px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle {
         display: block; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.active {
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.active {
           background: #fff;
           border: 1px solid blue;
           padding: 0px 4px; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.drop-target {
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.drop-target {
           background: #fbffd4;
           outline: 1px solid orange; }
-        .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle .item-id {
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle .item-id {
           display: inline-block;
-          margin-left: 8px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
+          margin-left: 8px;
+          font-size: 0.8em; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
         padding-left: 10px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged b {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged b {
         font-style: italic;
         color: #aaa; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged .sub-tree {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged .sub-tree {
         display: none; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav #drop-placeholder {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav #drop-placeholder {
         height: 0px;
         display: block !important;
         outline: 1px solid blue; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace {
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace {
     position: absolute;
     left: 12px;
-    right: 252px;
+    right: 355px;
     top: 95px;
     padding: 20px 20px 20px;
     bottom: 0px;
     background: #efefef;
     text-align: center; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe {
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe {
       width: 100%;
       height: 100%;
       margin: 0px auto;
       border: none; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.xs {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.xs {
         max-width: 500px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.sm {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.sm {
         max-width: 800px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.md {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.md {
         max-width: 1100px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.lg {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.lg {
         min-width: 1200px; }
-  .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext {
-    margin-right: 240px; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .breadcrumb {
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext {
+    margin-right: 340px; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .breadcrumb {
       padding: 6px 15px;
       margin-bottom: 0px;
       background: #bdbbbc;
       border-radius: 0px; }
-    .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar {
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar {
       background: #eee;
       border-radius: 0px;
       padding: 6px 0px;
       font-size: 12px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-text {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-text {
         float: none;
         display: inline-block;
         margin: 5px 15px; }
-      .mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-btn {
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-btn {
         font-size: 12px;
         padding: 4px 10px;
         margin: 4px 2px; }
 
-.mozaicBootstrapEditorModule .dialog-options {
+body.mozaicBootstrapEditorModule .dialog-options {
   height: 80% !important; }
-  .mozaicBootstrapEditorModule .dialog-options .ui-dialog-content {
+  body.mozaicBootstrapEditorModule .dialog-options .ui-dialog-content {
     position: absolute;
     left: 0px;
     right: 0px;
     top: 39px;
     bottom: 0px;
     overflow-y: auto; }
-  .mozaicBootstrapEditorModule .dialog-options fieldset {
+  body.mozaicBootstrapEditorModule .dialog-options fieldset {
     padding: 10px 10px;
     border-bottom: 1px solid #dedede; }
-  .mozaicBootstrapEditorModule .dialog-options legend {
+  body.mozaicBootstrapEditorModule .dialog-options legend {
     font-size: 0.9em;
     font-weight: bold;
     border: none;
     margin-bottom: -5px;
     margin-top: 10px; }
-  .mozaicBootstrapEditorModule .dialog-options .option-group {
+  body.mozaicBootstrapEditorModule .dialog-options .option-group {
     margin-bottom: 10px;
     float: left;
     width: 100%; }
-    .mozaicBootstrapEditorModule .dialog-options .option-group label {
+    body.mozaicBootstrapEditorModule .dialog-options .option-group label {
       font-weight: normal; }
-    .mozaicBootstrapEditorModule .dialog-options .option-group select {
+    body.mozaicBootstrapEditorModule .dialog-options .option-group select {
       min-width: 100px; }
-    .mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
+    body.mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
       margin-top: 15px; }
-  .mozaicBootstrapEditorModule .dialog-options .icon-list {
+  body.mozaicBootstrapEditorModule .dialog-options .icon-list {
     max-height: 280px;
     overflow: auto; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
       height: 5px;
       width: 5px;
       background: #eee; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
       background: #393812; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
       background: #000; }
-    .mozaicBootstrapEditorModule .dialog-options .icon-list a {
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list a {
       display: inline-block;
       vertical-align: top;
       width: 20%;
       height: 90px;
       text-align: center;
       padding: 10px; }
-      .mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, .mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, body.mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
         display: inline-block;
         width: 100%;
         font-size: 1.2em;
         margin-bottom: 8px; }
-      .mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
         display: inline-block;
         width: 100%;
         font-size: 0.7em; }
-      .mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
         background: #eef9fe; }
-      .mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
         background: #d9f2fe; }
 
-.mozaicBootstrapEditorModule .toolbar.pull-left .btn {
+body.mozaicBootstrapEditorModule .toolbar.pull-left .btn {
   text-transform: lowercase; }
 
-.mozaicBootstrapEditorModule .toolbar.pull-right .btn {
+body.mozaicBootstrapEditorModule .toolbar.pull-right .btn {
   height: 27px;
   padding-bottom: 0px !important;
   padding-top: 0px !important;
   line-height: 25px; }
-  .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa {
+  body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa {
     line-height: 25px !important; }
-    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-mobile {
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-mobile {
       font-size: 1.6em; }
-    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-tablet {
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-tablet {
       font-size: 1.6em;
       vertical-align: -4px; }
-    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-laptop {
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-laptop {
       font-size: 1.6em;
       vertical-align: -4px; }
-    .mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-desktop {
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-desktop {
       font-size: 1.3em;
       vertical-align: -2px; }
 
-.mozaicBootstrapEditorModule .drag-ghost {
+body.mozaicBootstrapEditorModule .drag-ghost {
   display: block;
   width: 20px;
   height: 20px;

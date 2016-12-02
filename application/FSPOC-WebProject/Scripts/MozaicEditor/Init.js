@@ -44,12 +44,14 @@ $(function () {
             $("#mozaicLeftBar").hide();
             $("#mozaicLeftBarMinimized").show();
             $("#mozaicPageContainer").css("left", 32);
+            $("#mozaicPageContext").css('left', 225 + 32);
             RecalculateMozaicToolboxHeight();
         });
         $("#showMozaicTooboxIcon").on("click", function () {
             $("#mozaicLeftBar").show();
             $("#mozaicLeftBarMinimized").hide();
-            $("#mozaicPageContainer").css("left", 300);
+            $("#mozaicPageContainer").css("left", $('body').hasClass('mozaicBootstrapEditorModule') ? 250 : 300);
+            $("#mozaicPageContext").css('left', 225 + 250);
             RecalculateMozaicToolboxHeight();
         });
         $("#gridShowCheckbox").prop("checked", false);
@@ -152,14 +154,20 @@ $(function () {
             var lowerPanelTop = $("#lowerPanel").offset().top;
             var topBarHeight = $("#topBar").height() + $("#appNotificationArea").height();
             var overlay = $("#lowerPanelSpinnerOverlay");
+            var context = $("#mozaicPageContext");
+            var tree = $("#mozaicPageTree");
 
             overlay.css({ right: 0, width: 'auto' });
             if (scrollTop > lowerPanelTop - topBarHeight) {
                 leftBar.css({ top: topBarHeight, left: 225, position: "fixed" });
                 overlay.css({ top: topBarHeight, left: 225, position: "fixed" });
+                context.css({ top: topBarHeight, right: 0, left: $("#mozaicLeftBar").is(':visible') ? 475 : 225 + 32, position: "fixed", zIndex: 1 });
+                tree.css({ top: topBarHeight, right: 0, position: "fixed" });
             } else {
                 leftBar.css({ top: 0, left: 0, position: "absolute" });
                 overlay.css({ top: 0, left: 0, position: "absolute" });
+                context.css({ position: "static" });
+                tree.css({ top: 0, right: 0, position: "absolute" });
             }
             RecalculateMozaicToolboxHeight();
         });
