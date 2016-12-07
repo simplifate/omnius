@@ -182,7 +182,9 @@ $(function () {
                 complete: function(){spinner.remove()},
                 success: function (data) {
                     $("#uic_occupation_select_dropdown option[value != '-1']").remove();
-                    $("#uic_occupation_select_dropdown").append('<option value="' + data.job[0].objid + '">' + data.job[0].stext + '</option>');
+                    if (data.user.length > 0) {
+                        $("#uic_occupation_select_dropdown").append('<option value="' + data.user[0].JobObjid + '">' + data.user[0].Job + '</option>');
+                    }
                 }
             });
         });
