@@ -107,7 +107,7 @@
                     label: 'Default option',
                     type: 'text',
                     get: function () {
-                        return $('option', this).length == 1 ? $('option', this).eq(0).text() : '';
+                        return $('option', MBE.options.target).length == 1 ? $('option', MBE.options.target).eq(0).text() : '';
                     },
                     set: function (opt) {
                         $('option', this).remove();
@@ -256,6 +256,23 @@
                     type: 'icon',
                     fontSets: { 'glyphicon': 'Glyphicons' },
                     set: MBE.options.setIcon
+                }]
+            }
+        },
+        'form-group': {
+            'formGroupOptions': {
+                name: 'Form group options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Size',
+                    type: 'select',
+                    options: {
+                        'null': 'Default',
+                        'form-group-lg': 'Large',
+                        'form-group-sm': 'Small'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
                 }]
             }
         },

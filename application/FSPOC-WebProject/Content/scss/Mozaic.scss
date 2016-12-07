@@ -1114,4 +1114,76 @@ body.mozaicEditorBody {
         border: 1px solid #ccc;
         background-color: #eee;
     }
+
+    .form-heading {
+        font-family: RweHeadlineRegular;
+        font-size: 28px;
+        color: #58585a;
+        white-space: nowrap;
+    }
+
+    .info-container {
+        color: #58585a;
+
+        .info-container-header {
+            font-size: 18px;
+            .fa {
+                margin-right: 6px;
+            }
+        }
+        .info-container-body {
+            padding-top: 5px;
+        }
+    }
+
+    .breadcrumb-navigation {
+        @include linear-gradient(#0086be, #0065a9);
+        color: white;
+        font-family: RweTextMedium;
+        padding: 12px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        height: 55px;
+
+        li {
+            font-family: RweHeadlineRegular;
+            font-size: 20px;
+            color: #fff;
+            white-space: nowrap;
+            &:before {
+                content: ">";
+                color: #fff;
+                position: relative;
+                top: -2px;
+            }
+            &:nth-child(2):before, &:first-child:before {
+                content: "";
+            }
+            > a {
+                color: #fff;
+            }
+        }
+
+        span.app-icon {
+            font-weight: 100;
+            width: 30px;
+            height: 30px;
+            padding-top: 3px;
+            border: 2px solid white;
+            border-radius: 100%;
+            font-size: 19px;
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+
+    label.detail-label {
+        color: #0066cc;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .visible-panel-pale-background {
+        background-color: #d4f0fe;
+    }
 }            

@@ -621,23 +621,23 @@
         MBE.types.containers.tabAdd.apply(this, ['end']);
     },
 
-    buildTabs: function () 
+    buildTabs: function (tabLabelArray)
     {
         var self = MBE.types.containers;
         var target = $(this);
         var items = $(self.templates['tab-items']);
         var content = $(self.templates['tab-content']);
         var tabIndex = $('[data-toggle="tab"]', MBE.workspace).length + 1;
-        var prefix = ['First', 'Second', 'Third'];
+        var prefix = typeof tabLabelArray == 'array' ? tabLabelArray : ['First tab', 'Second tab', 'Third tab'];
 
         target.append(items);
         target.append(content);
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < prefix.length; i++) {
             var tab = $(self.templates['tab']);
             var pane = $(self.templates['tab-pane']);
 
-            tab.find('a').attr('href', '#tab-' + tabIndex).html(prefix[i] + ' Tab').data('prevId', 'tab-' + tabIndex);
-            pane.find('p').html(prefix[i] + ' tab content');
+            tab.find('a').attr('href', '#tab-' + tabIndex).html(prefix[i]).data('prevId', 'tab-' + tabIndex);
+            pane.find('p').html(prefix[i] + ' content');
             pane.attr('id', 'tab-' + tabIndex);
 
             if (i == 0) {

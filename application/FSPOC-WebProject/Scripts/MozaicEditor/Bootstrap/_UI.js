@@ -19,14 +19,16 @@
                                 '<span class="countdown-period">Sekund</span>' +
                             '</span>' + 
                         '</span>' +
-                    '</div>'
+                    '</div>',
+        'wizzard': '<div class="wizard-phases-frame"></div>'
     },
 
     templatesName: {
         'horizontal-form-row': 'Horizontal form row',
         'nv-list': 'Name - Value list',
         'data-table': 'Data table',
-        'countdown': 'Countdown'
+        'countdown': 'Countdown',
+        'wizzard': 'Wizzard phases'
     },
 
     options: {
@@ -102,7 +104,7 @@
                                 return ui;
                             },
                             update: function () {
-                                MBE.types.ui.dataTableBuildActions();
+                                MBE.types.ui.dataTableBuildActions.apply(MBE.options.target, [false]);
                             }
                         });
 
@@ -166,6 +168,9 @@
                 MBE.types.ui.buildDataTable.apply(this, []);
             else
                 MBE.types.ui.updateDataTable.apply(this, []);
+        }
+        if ($(this).is('[data-uic="ui|wizzard"]:empty')) {
+            MBE.types.ui.buildWizzard.apply(this, []);
         }
     },
 
@@ -248,24 +253,28 @@
         head.appendTo(this);
         body.appendTo(this);
 
-        $(this).attr({
-            'data-dtpaging': '1',
-            'data-dtinfo': '1',
-            'data-dtfilter': '1',
-            'data-dtordering': '1',
-            'data-dtcolumnfilter': '0'
-        });
+        if (!$(this).is('[data-dtpaging]')) {
+            $(this).attr({
+                'data-dtpaging': '1',
+                'data-dtinfo': '1',
+                'data-dtfilter': '1',
+                'data-dtordering': '1',
+                'data-dtcolumnfilter': '0'
+            });
+        }
+        
+        MBE.types.ui.initDataTable.apply(this, []);
 
+        if ($(this).is('[data-actions]')) {
+            MBE.types.ui.dataTableBuildActions.apply(this, [true]);
+        }
+    },
+
+    updateDataTable: function() {
         MBE.types.ui.initDataTable.apply(this, []);
     },
 
-    updateDataTable: function()
-    {
-        MBE.types.ui.initDataTable.apply(this, []);
-    },
-
-    initDataTable: function()
-    {
+    initDataTable: function() {
         var settings = {
             'destroy': true,
             'paging': $(this).attr('data-dtpaging') == '1',
@@ -301,12 +310,9 @@
                 $('> thead', this).after(foot);
             }
         }
-
-        
     },
 
-    dataTableAddAction: function(event, action)
-    {
+    dataTableAddAction: function(event, action) {
         var list = $(this).parents('table').eq(0);
         var body = $('tbody', list);
 
@@ -338,14 +344,12 @@
         body.sortable('refresh');
     },
 
-    dataTableRemoveAction: function()
-    {
+    dataTableRemoveAction: function() {
         $(this).parents('tr').eq(0).remove();
-        MBE.types.ui.dataTableBuildActions();
+        MBE.types.ui.dataTableBuildActions.apply(MBE.options.target, [false]);
     },
 
-    dataTableOpenIconDialog: function()
-    {
+    dataTableOpenIconDialog: function() {
         var target      = $(this);
         var active      = '';
         var iconList    = {};
@@ -457,21 +461,29 @@
         });
     },
 
-    dataTableBuildActions: function()
-    {
-        var target = $(MBE.options.target);
+    dataTableBuildActions: function(rebuild) {
+        var target = $(this);
 
         var validActions = [];
-        $('tbody > tr', '.dt-action-list').each(function () {
-            var icon = $('td', this).eq(0).find('button > span').eq(0)[0].className;
-            var id = $('td', this).eq(1).find('input').val();
-            var title = $('td', this).eq(2).find('input').val();
 
-            if (icon && id && title) {
-                validActions.push({'icon': icon, 'action': id, 'title': title});
+        if (rebuild !== true) {
+            $('tbody > tr', '.dt-action-list').each(function () {
+                var icon = $('td', this).eq(0).find('button > span').eq(0)[0].className;
+                var id = $('td', this).eq(1).find('input').val();
+                var title = $('td', this).eq(2).find('input').val();
+
+                if (icon && id && title) {
+                    validActions.push({ 'icon': icon, 'action': id, 'title': title });
+                }
+            });
+        }
+        else {
+            var json = $(this).attr('data-actions').replace(/'/g, '"');
+            if (json && json.length) {
+                validActions = JSON.parse(json);
             }
-        });
-        
+        }
+
         if (validActions.length) {
             if (!$('tbody > tr > td.actionIcons', target).length) {
                 $('thead > tr', target).append('<th class="actionHeader">Akce</th>');
@@ -496,6 +508,30 @@
 
         target.attr('data-actions', JSON.stringify(validActions).replace(/"/g, "'"));
         
+    },
+
+    /********************************************************************/
+    /* WIZZARD CONTEXT METHODS                                          */
+    /********************************************************************/
+    buildWizzard: function() {
+        var self = MBE.types.ui;
+        var target = $(this);
+
+        var svg = '' + 
+'<svg class="phase-background" width="846px" height="84px"><defs>' +
+'<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#dceffa ;stop-opacity:1" />' +
+'<stop offset="100%" style="stop-color:#8dceed;stop-opacity:1" /></linearGradient><linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">' +
+'<stop offset="0%" style="stop-color:#0099cc;stop-opacity:1" /><stop offset="100%" style="stop-color:#0066aa;stop-opacity:1" />' +
+'</linearGradient></defs><path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" /><path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
+'<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" /></svg>';
+        
+        var phase = '' + 
+'<div class="phase phase1 phase-active">' +
+    '<div class="phase-icon-circle">' +
+        '<div class="phase-icon-number">1</div>' +
+    '</div>' +
+    '<div class="phase-label">Fáze 1</div>' + 
+'</div>';
     }
 };
 

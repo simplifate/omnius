@@ -3813,6 +3813,60 @@ body.mozaicEditorBody {
     height: 50px;
     border: 1px solid #ccc;
     background-color: #eee; }
+  body.mozaicEditorBody .form-heading {
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorBody .info-container {
+    color: #58585a; }
+    body.mozaicEditorBody .info-container .info-container-header {
+      font-size: 18px; }
+      body.mozaicEditorBody .info-container .info-container-header .fa {
+        margin-right: 6px; }
+    body.mozaicEditorBody .info-container .info-container-body {
+      padding-top: 5px; }
+  body.mozaicEditorBody .breadcrumb-navigation {
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    height: 55px; }
+    body.mozaicEditorBody .breadcrumb-navigation li {
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      color: #fff;
+      white-space: nowrap; }
+      body.mozaicEditorBody .breadcrumb-navigation li:before {
+        content: ">";
+        color: #fff;
+        position: relative;
+        top: -2px; }
+      body.mozaicEditorBody .breadcrumb-navigation li:nth-child(2):before, body.mozaicEditorBody .breadcrumb-navigation li:first-child:before {
+        content: ""; }
+      body.mozaicEditorBody .breadcrumb-navigation li > a {
+        color: #fff; }
+    body.mozaicEditorBody .breadcrumb-navigation span.app-icon {
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 100%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+  body.mozaicEditorBody label.detail-label {
+    color: #0066cc;
+    font-weight: bold;
+    text-align: right; }
+  body.mozaicEditorBody .visible-panel-pale-background {
+    background-color: #d4f0fe; }
 
 body.cortexModule #upperPanel {
   height: 295px; }

@@ -92,6 +92,7 @@
 
             ch.on('click', function () {
                 set.apply(MBE.options.target, [this]);
+                MBE.selection._update();
             });
 
             lb.append(ch)
@@ -128,6 +129,7 @@
 
         sel.on('change', function () {
             set.apply(MBE.options.target, [this]);
+            MBE.selection._update();
         });
 
         group.append(lb);
@@ -160,6 +162,7 @@
 
         inp.on('change', function () {
             set.apply(MBE.options.target, [this]);
+            MBE.selection._update();
         });
         if (typeof opt.change == 'function') {
             var onChange = opt.change;
@@ -197,6 +200,7 @@
             var onChange = opt.change;
             inp.on('change', function () {
                 onChange.apply(MBE.options.target, [this]);
+                MBE.selection._update();
             });
         }
 
@@ -273,6 +277,7 @@
             }
             list.on('click', 'a', function () {
                 set.apply(MBE.options.target, [this]);
+                MBE.selection._update();
                 return false;
             });
             iconList[f] = list;
@@ -592,6 +597,12 @@ MBE.options.common = {
             type: 'text',
             get: MBE.options.getCustomAttributes,
             set: MBE.options.setCustomAttributes
+        }, {
+            label: 'Build properties',
+            type: 'text',
+            attr: 'data-properties',
+            get: MBE.options.hasAttr,
+            set: MBE.options.setAttr
         }]
     },
     visibility: {
