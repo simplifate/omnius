@@ -20,7 +20,14 @@
                             '</span>' + 
                         '</span>' +
                     '</div>',
-        'wizzard': '<div class="wizard-phases-frame"></div>'
+        'wizzard': '<div class="wizard-phases wizard-phases-frame"></div>',
+        'wizzard-body': '<div class="wizzard-body" data-uic="ui|wizzard-body" locked></div>',
+        'wizzard-phase': '<div class="phase" data-uic="ui|wizzard-phase">' +
+                            '<div class="phase-icon-circle">' +
+                                '<div class="phase-icon-number">1</div>' +
+                            '</div>' +
+                            '<div class="phase-label">Fáze 1</div>' + 
+                        '</div>'
     },
 
     templatesName: {
@@ -28,7 +35,9 @@
         'nv-list': 'Name - Value list',
         'data-table': 'Data table',
         'countdown': 'Countdown',
-        'wizzard': 'Wizzard phases'
+        'wizzard': 'Wizzard phases',
+        'wizzard-body': 'Wizzard body#hide',
+        'wizzard-phase': 'Wizzard phase#hide'
     },
 
     options: {
@@ -135,12 +144,17 @@
     
         var items = $('<ul data-type="ui" style="display: none"></ul>');
         for(template in self.templatesName) {
+            var tmp = self.templatesName[template].split(/#/);
             var item = $('<li></li>');
             item
-                .html('<span class="fa fa-square fa-fw"></span>' + self.templatesName[template])
+                .html('<span class="fa fa-square fa-fw"></span>' + tmp[0])
                 .attr({ 'data-template': template, 'draggable': true })
                 .data('type', 'ui')
                 .appendTo(items);
+
+            if(tmp.length == 2) {
+                item.addClass(tmp[1]);
+            }
         }
         items.appendTo(group);
 
@@ -513,25 +527,42 @@
     /********************************************************************/
     /* WIZZARD CONTEXT METHODS                                          */
     /********************************************************************/
-    buildWizzard: function() {
+    buildWizzard: function(phasesList) {
         var self = MBE.types.ui;
         var target = $(this);
 
+        var phases = typeof phasesList == 'string' ? phasesList.split(';') : ['Fáze 1', 'Fáze 2', 'Fáze 3'];
+
         var svg = '' + 
-'<svg class="phase-background" width="846px" height="84px"><defs>' +
-'<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#dceffa ;stop-opacity:1" />' +
-'<stop offset="100%" style="stop-color:#8dceed;stop-opacity:1" /></linearGradient><linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">' +
-'<stop offset="0%" style="stop-color:#0099cc;stop-opacity:1" /><stop offset="100%" style="stop-color:#0066aa;stop-opacity:1" />' +
-'</linearGradient></defs><path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" /><path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
-'<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" /></svg>';
+'<svg class="phase-background" width="846px" height="84px">' +
+    '<defs>' +
+        '<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%">' +
+            '<stop offset="0%" style="stop-color:#dceffa ;stop-opacity:1" />' +
+            '<stop offset="100%" style="stop-color:#8dceed;stop-opacity:1" />' +
+        '</linearGradient>' + 
+        '<linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">' +
+            '<stop offset="0%" style="stop-color:#0099cc;stop-opacity:1" />' + 
+            '<stop offset="100%" style="stop-color:#0066aa;stop-opacity:1" />' +
+        '</linearGradient>' +
+    '</defs>' + 
+    '<path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" />' + 
+    '<path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
+    '<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" />' + 
+'</svg>';
         
-        var phase = '' + 
-'<div class="phase phase1 phase-active">' +
-    '<div class="phase-icon-circle">' +
-        '<div class="phase-icon-number">1</div>' +
-    '</div>' +
-    '<div class="phase-label">Fáze 1</div>' + 
-'</div>';
+        var body = $(self.templates['wizzard-body']);
+        var phase = $(self.templates['wizzard-phase']);
+        target
+            .append(svg)
+            .append(body);
+
+        for(var i = 0; i < phases.length; i++)
+        {
+            var p = phase.clone();
+            p.find('.phase-icon-number').html(i + 1).end()
+             .find('.phase-label').html(phases[i]).end()
+             .appendTo(body);
+        }
     }
 };
 

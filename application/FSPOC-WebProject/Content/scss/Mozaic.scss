@@ -1186,4 +1186,148 @@ body.mozaicEditorBody {
     .visible-panel-pale-background {
         background-color: #d4f0fe;
     }
+
+    .wizard-phases {
+        position: relative;
+        height: 88px;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &.wizard-phases-frame {
+          border-radius: 5px;
+          border: 2px solid #0066AA;
+          background: #dceffa;
+          background: -webkit-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+          background: -moz-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+          background: -ms-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+          background: linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+
+          svg {
+              display: none;
+          }
+        }
+
+        .wizzard-body {
+            display: table;
+            width: 100%;
+            height: 84px;
+
+            .phase {
+                display: table-cell;
+                text-align: left;
+                height: 100%;
+                white-space: nowrap;
+                line-height: 84px;
+                overflow: hidden;
+
+                .phase-icon-circle {
+                    display:inline-block;
+                    margin: 0px 22px;
+                    width: 44px;
+                    height: 44px;
+                    line-height: 44px;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: 1px solid #00548f;
+                    background-color: rgba(42,163,213,0.8);
+                    vertical-align: middle;
+                    position: relative;
+                    top: -3px;
+
+                    .phase-icon-number {
+                        font-size: 30px;
+                        font-family: RweHeadlineRegular;
+                        font-weight: bold;
+                        color: white;
+                    }
+                }
+
+                .phase-label {
+                    display: inline-block;
+                    font-family: RweHeadlineRegular;
+                    font-size: 20px;
+                    color: #0066aa;
+                }
+
+                &.phase-active, &.phase-done {
+                    background: #0099cc;
+                    background: -webkit-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                    background: -moz-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                    background: -ms-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                    background: linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+
+                    .phase-label {
+                        color: white;
+                    }
+                }
+
+                &.phase-active {
+                    position: relative;
+                    /*&:after, {
+                        content: "";
+                        display: block;
+                        float: right;
+                        width: 42px; 
+                        height: 84px; 
+                        background: -webkit-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: -moz-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: -ms-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        -webkit-clip-path: polygon(0 0, 0% 100%, 63% 48%);
+                        clip-path: polygon(0 0, 0% 100%, 63% 48%);
+                    }*/
+                    &:before, &:after {
+                        content: "";
+                        float: right;
+                        display: block;
+                        width: 60px;
+                        height: 60px;
+                        position: absolute;
+                        top: -29px;
+                        right: -30px;
+                        background: -webkit-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+                        background: -moz-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+                        background: -ms-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+                        background: linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+                        transform: rotate(45deg);
+                    }
+                    &:after {
+                        top: 56px;
+                        background: -webkit-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+                        background: -moz-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+                        background: -ms-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+                        background: linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+                    }
+                }
+                
+                 
+                &.phase-done {
+                    .phase-icon-circle {
+                        background-color: rgba(0,204,0,0.7);
+                    }
+                }
+            }
+        }
+
+        .phase-background {
+            position: absolute;
+            z-index: 40;
+            margin: 2px;
+            width: 100%;
+            height: 100%;
+        }
+        /*
+        .phase-icon-symbol {
+            width: 100%;
+            padding-left: 2px;
+            padding-top: 10px;
+            text-align: center;
+            font-size: 23px;
+            color: white;
+         }*/
+    }
+    .wizard-phases.toolboxItem {
+        width: 250px;
+        overflow: hidden;
+    }
 }            
