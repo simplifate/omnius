@@ -3,6 +3,7 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using OneLogin.Saml;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,18 +32,26 @@ namespace System.Web.Mvc
             CORE core = filterContext.HttpContext.GetCORE();
             User user = filterContext.HttpContext.GetLoggedUser();
 
-            // not logged
+            // not logged -> redirect
             if (user == null)
             {
+                // Otherwise, perform auth over IDS
+                //SAML Authentication
+                RequestBuilder builder = new RequestBuilder();
+                filterContext.Result = new RedirectResult(builder.GetAuthUrl());
+
+                /*
+                //OLD Authentication
                 filterContext.Result = new RedirectToRouteResult(
                     "Persona",
                     new Web.Routing.RouteValueDictionary(new
                     {
                         @controller = "Account",
                         @action = "Login",
-                        @returnUrl = filterContext.HttpContext.Request.Url.AbsolutePath
+                        @returnUrl = filterContext.HttpContext.Request.Url.PathAndQuery
                     })
                 );
+                */
                 return;
             }
 

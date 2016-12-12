@@ -16,6 +16,9 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using PagedList;
 using PagedList.Mvc;
+using OneLogin.Saml;
+using FSS.Omnius.Modules.Watchtower;
+
 namespace FSPOC_WebProject.Controllers.Persona
 {
     public class AccountController : Controller
@@ -63,6 +66,42 @@ namespace FSPOC_WebProject.Controllers.Persona
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult LoginSaml(string SAMLResponse)
+        {
+            if (string.IsNullOrEmpty(SAMLResponse))
+            {
+                return RedirectToAction("RedirectToDefaultApp", "Home");
+            }
+            // Load configs and encode response
+            AccountSettings accountSettings = new AccountSettings();
+            Response response = new Response(accountSettings);
+            response.LoadXmlFromBase64(SAMLResponse);
+
+            // If is valid
+            //if (response.IsValid())
+            //{
+            // Login user
+            CORE core = HttpContext.GetCORE();
+            core.User = core.Persona.GetUserByEmail(response.GetNameID());
+            // If user is not found, send error
+            if (core.User == null)
+            {
+                WatchtowerLogger.Instance.LogEvent("User with email " + response.GetNameID() + " not found.", 0);
+                throw new Exception("Uživatel nebyl nalezen.");
+            }
+            // Otherwise, login & redirect user home
+            SignInManager.SignIn(core.User, true, true);
+            return RedirectToAction("RedirectToDefaultApp", "Home");
+            /*}
+            else
+            {
+                WatchtowerLogger.Instance.LogEvent("Server recieved invalid response from saml endpoint.", 0);
+                throw new UnauthorizedAccessException();
+            }*/
         }
 
         //Overloading Login for system user 

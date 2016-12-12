@@ -47,6 +47,28 @@ namespace FSS.Omnius.Modules.Persona
 
             return user;
         }
+        
+        public User GetUserByEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+            
+            DBEntities context = _CORE.Entitron.GetStaticTables();
+
+            User user = context.Users.FirstOrDefault(u => u.Email == email);
+
+            // is in DB
+            if (user != null)
+            {
+                return user;
+            }
+            // not in db
+            else
+            {
+                return null;
+            }
+        }
+
         public void LogOff(string username)
         {
             User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
