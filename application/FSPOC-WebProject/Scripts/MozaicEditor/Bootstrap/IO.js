@@ -164,6 +164,7 @@
         }
         if (c.Classes.indexOf('wizard-phases') !== -1) {
             nc.item = $(MBE.types.ui.templates.wizzard);
+            nc.afterAppend = MBE.types.ui.buildWizzard;
         }
     },
 
