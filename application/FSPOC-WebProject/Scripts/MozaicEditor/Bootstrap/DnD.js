@@ -91,6 +91,7 @@
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'all';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     }, 
@@ -106,6 +107,7 @@
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     },
@@ -120,6 +122,7 @@
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     },
@@ -194,6 +197,7 @@
     _workSpaceDrop: function(event)
     {
         event.stopImmediatePropagation();
+        event.preventDefault();
             
         var self = MBE.DnD;
         var uic = self.getUIC();
@@ -207,6 +211,7 @@
     _navNodeDrop: function(event)
     {
         event.stopImmediatePropagation();
+        event.preventDefault();
 
         var self = MBE.DnD;
         var target = self.placeholder;

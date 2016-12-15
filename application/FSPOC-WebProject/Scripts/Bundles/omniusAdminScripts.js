@@ -8399,6 +8399,7 @@ MBE.DnD = {
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'all';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     }, 
@@ -8414,6 +8415,7 @@ MBE.DnD = {
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     },
@@ -8428,6 +8430,7 @@ MBE.DnD = {
         var ghost = MBE.DnD.createGhost();
         $('body').addClass('dragging');
 
+        e.dataTransfer.setData('text/plain', '...');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setDragImage(ghost, -12, -12);
     },
@@ -8502,6 +8505,7 @@ MBE.DnD = {
     _workSpaceDrop: function(event)
     {
         event.stopImmediatePropagation();
+        event.preventDefault();
             
         var self = MBE.DnD;
         var uic = self.getUIC();
@@ -8515,6 +8519,7 @@ MBE.DnD = {
     _navNodeDrop: function(event)
     {
         event.stopImmediatePropagation();
+        event.preventDefault();
 
         var self = MBE.DnD;
         var target = self.placeholder;
@@ -9701,8 +9706,6 @@ MBE.io = {
             nc.item.parent().wrap('<div class="checkbox" data-uic="form|checkbox-group"></div>');
             nc.item.parent().parent().wrap('<div class="col-sm-10 col-sm-push-2" data-uic="grid|column"></div>');
             nc.item.parent().parent().parent().wrap('<div class="form-group" data-uic="form|form-group"></div>');
-
-            console.log(nc.item.parent()[0]);
         }
         if (c.Classes.indexOf('radio-control') !== -1) {
             nc.item = $(MBE.types.form.templates['radio']);
@@ -9745,6 +9748,10 @@ MBE.io = {
         }
         if (c.Classes.indexOf('wizard-phases') !== -1) {
             nc.item = $(MBE.types.ui.templates.wizzard);
+            nc.item.attr({
+                'data-phases': c.Content,
+                'data-activephase': MBE.io.getProperty('ActivePhase', c.Properties)
+            });
             nc.afterAppend = MBE.types.ui.buildWizzard;
         }
     },
@@ -9984,23 +9991,6 @@ MBE.io = {
 
         c.item = item;
         self.allComponents.push(c);
-
-
-        /*
-        
-        newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + /'" class="uic ' + cData.Classes
-                    + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
-                    + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
-    newComponent.data("uicAttributes", cData.Attributes);
-
-    
-  
-
-    else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
-        newComponent.html(cData.Label);
-        newComponent.attr("contentTemplate", cData.Content);
-    }
-    */
     },
 
     getProperty: function(name, properties)
@@ -11417,7 +11407,10 @@ MBE.types.controls = {
                 { type: 'text', label: 'ADD TO MENU' },
                 { type: 'button', label: 'ITEM', callback: self.dropdownAddItem },
                 { type: 'button', label: 'HEADER', callback: self.dropdownAddHeader },
-                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider }
+                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider },
+                { type: 'text', label: 'MENU' },
+                { type: 'button', label: 'SHOW', callback: self.dropdownShowMenu, allowFor: self.dropdownIsMenuHidden },
+                { type: 'button', label: 'HIDE', callback: self.dropdownHideMenu, allowFor: self.dropdownIsMenuVisible },
             ]
         };
         menu['controls']['split-button'] = menu['controls']['button-dropdown'];
@@ -11549,6 +11542,35 @@ MBE.types.controls = {
         MBE.DnD.updateDOM();
 
         setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownIsMenuHidden: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+
+        return !target.find('ul.dropdown-menu').is(':visible');
+    },
+
+    dropdownIsMenuVisible: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+
+        return target.find('ul.dropdown-menu').is(':visible');
+    },
+
+    dropdownShowMenu: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        target.addClass('open');
+        MBE.toolbar._select.apply($('.mbe-active', MBE.workspace)[0], []);
+    },
+
+    dropdownHideMenu: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        target.removeClass('open');
+        MBE.toolbar._select.apply($('.mbe-active', MBE.workspace)[0], []);
     }
 }
 
@@ -12954,7 +12976,7 @@ MBE.types.ui = {
                     '</div>',
         'wizzard': '<div class="wizard-phases wizard-phases-frame"></div>',
         'wizzard-body': '<div class="wizzard-body" data-uic="ui|wizzard-body" locked></div>',
-        'wizzard-phase': '<div class="phase" data-uic="ui|wizzard-phase">' +
+        'wizzard-phase': '<div class="phase" data-uic="ui|wizzard-phase" locked>' +
                             '<div class="phase-icon-circle">' +
                                 '<div class="phase-icon-number">1</div>' +
                             '</div>' +
@@ -13062,6 +13084,31 @@ MBE.types.ui = {
                     },
                     get: function() {},
                     set: function() {}
+                }]
+            }
+        },
+        'wizzard': {
+            'wizzardOptions': {
+                name: 'Wizzard options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Phases',
+                    type: 'text',
+                    attr: 'data-phases',
+                    get: MBE.options.hasAttr,
+                    set: function(opt) {
+                        $(this).attr('data-phases', opt.value);
+                        MBE.types.ui.wizzardBuildPhases.apply(this, []);
+                    }
+                }, {
+                    label: 'Active phase',
+                    type: 'number',
+                    attr: 'data-activephase',
+                    get: MBE.options.hasAttr,
+                    set: function (opt) {
+                        $(this).attr('data-activephase', opt.value);
+                        MBE.types.ui.wizzardBuildPhases.apply(this, []);
+                    }
                 }]
             }
         }
@@ -13463,9 +13510,10 @@ MBE.types.ui = {
         var self = MBE.types.ui;
         var target = $(this);
 
-        var phases = typeof phasesList == 'string' ? phasesList.split(';') : ['Fáze 1', 'Fáze 2', 'Fáze 3'];
+        var phases = target.attr('data-phases') ? target.attr('data-phases') : 'Fáze 1,Fáze 2,Fáze 3';
+        var activePhase = target.attr('data-activephase') ? target.attr('data-activephase') : '1';
 
-        var svg = '' + 
+        var svg = '';/* +
 '<svg class="phase-background" width="846px" height="84px">' +
     '<defs>' +
         '<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%">' +
@@ -13480,21 +13528,48 @@ MBE.types.ui = {
     '<path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" />' + 
     '<path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
     '<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" />' + 
-'</svg>';
+'</svg>';*/
         
         var body = $(self.templates['wizzard-body']);
         var phase = $(self.templates['wizzard-phase']);
         target
             .append(svg)
-            .append(body);
+            .append(body)
+            .attr({
+                'data-phases': phases,
+                'data-activephase': activePhase
+            });
 
-        for(var i = 0; i < phases.length; i++)
-        {
-            var p = phase.clone();
-            p.find('.phase-icon-number').html(i + 1).end()
-             .find('.phase-label').html(phases[i]).end()
-             .appendTo(body);
+        self.wizzardBuildPhases.apply(this, []);
+    },
+
+    wizzardBuildPhases: function()
+    {
+        var self = MBE.types.ui;
+        var target = $(this);
+
+        var phases = target.attr('data-phases').split(';');
+        var activePhase = Number(target.attr('data-activephase')) - 1;
+
+        target.find('.phase').remove();
+
+        for (var i = 0; i < phases.length; i++) {
+            var phase = $(self.templates['wizzard-phase']);
+            phase.find('.phase-icon-number').html(i + 1).end()
+                 .find('.phase-label').html(phases[i]).end()
+                 .appendTo(target.find('.wizzard-body'));
+
+            if (i < activePhase) {
+                phase.addClass('phase-done')
+                     .find('.phase-icon-number')
+                        .addClass('fa fa-check phase-icon-symbol').removeClass('phase-icon-number').html('');
+            }
+            if (i == activePhase) {
+                phase.addClass('phase-active');
+            }
         }
+
+        MBE.DnD.updateDOM();
     }
 };
 

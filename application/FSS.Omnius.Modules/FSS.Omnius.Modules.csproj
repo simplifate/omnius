@@ -204,6 +204,11 @@
     <Compile Include="Entitron\Entity\IgnoreAttribute.cs" />
     <Compile Include="Entitron\Entity\Master\MasterAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Master\UsersApplications.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapAjaxPage.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapAjaxComponent.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapAjaxPageHeader.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapComponent.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapPage.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicCssTemplate.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
@@ -994,6 +999,10 @@
     <Compile Include="Migrations\201611231456099_addBlockBuildLink.Designer.cs">
       <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612141429553_MozaicBootstrapEditorModels.cs" />
+    <Compile Include="Migrations\201612141429553_MozaicBootstrapEditorModels.Designer.cs">
+      <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1623,6 +1632,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611231456099_addBlockBuildLink.resx">
       <DependentUpon>201611231456099_addBlockBuildLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612141429553_MozaicBootstrapEditorModels.resx">
+      <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

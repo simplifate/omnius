@@ -247,7 +247,10 @@
                 { type: 'text', label: 'ADD TO MENU' },
                 { type: 'button', label: 'ITEM', callback: self.dropdownAddItem },
                 { type: 'button', label: 'HEADER', callback: self.dropdownAddHeader },
-                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider }
+                { type: 'button', label: 'DIVIDER', callback: self.dropdownAddDivider },
+                { type: 'text', label: 'MENU' },
+                { type: 'button', label: 'SHOW', callback: self.dropdownShowMenu, allowFor: self.dropdownIsMenuHidden },
+                { type: 'button', label: 'HIDE', callback: self.dropdownHideMenu, allowFor: self.dropdownIsMenuVisible },
             ]
         };
         menu['controls']['split-button'] = menu['controls']['button-dropdown'];
@@ -379,6 +382,35 @@
         MBE.DnD.updateDOM();
 
         setTimeout(function () { target.addClass('open'); }, 1);
+    },
+
+    dropdownIsMenuHidden: function()
+    {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+
+        return !target.find('ul.dropdown-menu').is(':visible');
+    },
+
+    dropdownIsMenuVisible: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+
+        return target.find('ul.dropdown-menu').is(':visible');
+    },
+
+    dropdownShowMenu: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        target.addClass('open');
+        MBE.toolbar._select.apply($('.mbe-active', MBE.workspace)[0], []);
+    },
+
+    dropdownHideMenu: function () {
+        var self = MBE.types.controls;
+        var target = self.dropdownGetTarget.apply(this, []);
+        target.removeClass('open');
+        MBE.toolbar._select.apply($('.mbe-active', MBE.workspace)[0], []);
     }
 }
 

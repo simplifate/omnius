@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using Persona;
     using Newtonsoft.Json;
     using System.Linq;
-
+    using Mozaic.Bootstrap;
     [Table("Master_Applications")]
     public partial class Application : IEntity
     {
@@ -27,6 +27,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             DesignedBy = new HashSet<User>();
             UsersApplications = new HashSet<UsersApplications>();
             MozaicEditorPages = new List<MozaicEditorPage>();
+            MozaicBootstrapPages = new List<MozaicBootstrapPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
             DbSchemeLocked = false;
@@ -96,5 +97,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         
         // mozaic
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
+        public virtual ICollection<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
     }
 }

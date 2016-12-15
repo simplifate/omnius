@@ -249,6 +249,7 @@
     <Compile Include="Controllers\Mozaic\BootstrapController.cs" />
     <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\EditorController.cs" />
+    <Compile Include="Controllers\Mozaic\MozaicBootstrapApiController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicEditorApiController.cs" />
     <Compile Include="Controllers\Mozaic\PageController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
@@ -464,6 +465,7 @@
     </Content>
     <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\DnD.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\History.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\IO.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Main.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Navigator.js" />

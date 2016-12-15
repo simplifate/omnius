@@ -120,8 +120,6 @@
             nc.item.parent().wrap('<div class="checkbox" data-uic="form|checkbox-group"></div>');
             nc.item.parent().parent().wrap('<div class="col-sm-10 col-sm-push-2" data-uic="grid|column"></div>');
             nc.item.parent().parent().parent().wrap('<div class="form-group" data-uic="form|form-group"></div>');
-
-            console.log(nc.item.parent()[0]);
         }
         if (c.Classes.indexOf('radio-control') !== -1) {
             nc.item = $(MBE.types.form.templates['radio']);
@@ -164,6 +162,10 @@
         }
         if (c.Classes.indexOf('wizard-phases') !== -1) {
             nc.item = $(MBE.types.ui.templates.wizzard);
+            nc.item.attr({
+                'data-phases': c.Content,
+                'data-activephase': MBE.io.getProperty('ActivePhase', c.Properties)
+            });
             nc.afterAppend = MBE.types.ui.buildWizzard;
         }
     },
@@ -403,23 +405,6 @@
 
         c.item = item;
         self.allComponents.push(c);
-
-
-        /*
-        
-        newComponent = $('<' + cData.Tag + ' id="' + cData.Id + '" uicName="' + cData.Name + /*'" uicAttributes="' + (cData.Attributes || "") + /'" class="uic ' + cData.Classes
-                    + '" uicClasses="' + cData.Classes + '" uicStyles="' + cData.Styles + '" style="left: ' + cData.PositionX + '; top: ' + cData.PositionY + '; width: '
-                    + cData.Width + '; height: ' + cData.Height + '; ' + cData.Styles + '"></' + cData.Tag + '>');
-    newComponent.data("uicAttributes", cData.Attributes);
-
-    
-  
-
-    else if (newComponent.hasClass("form-heading") || newComponent.hasClass("control-label")) {
-        newComponent.html(cData.Label);
-        newComponent.attr("contentTemplate", cData.Content);
-    }
-    */
     },
 
     getProperty: function(name, properties)

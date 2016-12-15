@@ -22,7 +22,7 @@
                     '</div>',
         'wizzard': '<div class="wizard-phases wizard-phases-frame"></div>',
         'wizzard-body': '<div class="wizzard-body" data-uic="ui|wizzard-body" locked></div>',
-        'wizzard-phase': '<div class="phase" data-uic="ui|wizzard-phase">' +
+        'wizzard-phase': '<div class="phase" data-uic="ui|wizzard-phase" locked>' +
                             '<div class="phase-icon-circle">' +
                                 '<div class="phase-icon-number">1</div>' +
                             '</div>' +
@@ -130,6 +130,31 @@
                     },
                     get: function() {},
                     set: function() {}
+                }]
+            }
+        },
+        'wizzard': {
+            'wizzardOptions': {
+                name: 'Wizzard options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Phases',
+                    type: 'text',
+                    attr: 'data-phases',
+                    get: MBE.options.hasAttr,
+                    set: function(opt) {
+                        $(this).attr('data-phases', opt.value);
+                        MBE.types.ui.wizzardBuildPhases.apply(this, []);
+                    }
+                }, {
+                    label: 'Active phase',
+                    type: 'number',
+                    attr: 'data-activephase',
+                    get: MBE.options.hasAttr,
+                    set: function (opt) {
+                        $(this).attr('data-activephase', opt.value);
+                        MBE.types.ui.wizzardBuildPhases.apply(this, []);
+                    }
                 }]
             }
         }
@@ -531,9 +556,10 @@
         var self = MBE.types.ui;
         var target = $(this);
 
-        var phases = typeof phasesList == 'string' ? phasesList.split(';') : ['Fáze 1', 'Fáze 2', 'Fáze 3'];
+        var phases = target.attr('data-phases') ? target.attr('data-phases') : 'Fáze 1,Fáze 2,Fáze 3';
+        var activePhase = target.attr('data-activephase') ? target.attr('data-activephase') : '1';
 
-        var svg = '' + 
+        var svg = '';/* +
 '<svg class="phase-background" width="846px" height="84px">' +
     '<defs>' +
         '<linearGradient id="grad-light" x1="0%" y1="0%" x2="0%" y2="100%">' +
@@ -548,21 +574,48 @@
     '<path d="M0 0 L0 88 L 280 88 L324 44 L280 0 Z" fill="url(#grad-blue)" />' + 
     '<path d="M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z" fill="url(#grad-light)" />' +
     '<path d="M560 0 L604 44 L560 88 L850 88 L850 0 Z" fill="url(#grad-light)" />' + 
-'</svg>';
+'</svg>';*/
         
         var body = $(self.templates['wizzard-body']);
         var phase = $(self.templates['wizzard-phase']);
         target
             .append(svg)
-            .append(body);
+            .append(body)
+            .attr({
+                'data-phases': phases,
+                'data-activephase': activePhase
+            });
 
-        for(var i = 0; i < phases.length; i++)
-        {
-            var p = phase.clone();
-            p.find('.phase-icon-number').html(i + 1).end()
-             .find('.phase-label').html(phases[i]).end()
-             .appendTo(body);
+        self.wizzardBuildPhases.apply(this, []);
+    },
+
+    wizzardBuildPhases: function()
+    {
+        var self = MBE.types.ui;
+        var target = $(this);
+
+        var phases = target.attr('data-phases').split(';');
+        var activePhase = Number(target.attr('data-activephase')) - 1;
+
+        target.find('.phase').remove();
+
+        for (var i = 0; i < phases.length; i++) {
+            var phase = $(self.templates['wizzard-phase']);
+            phase.find('.phase-icon-number').html(i + 1).end()
+                 .find('.phase-label').html(phases[i]).end()
+                 .appendTo(target.find('.wizzard-body'));
+
+            if (i < activePhase) {
+                phase.addClass('phase-done')
+                     .find('.phase-icon-number')
+                        .addClass('fa fa-check phase-icon-symbol').removeClass('phase-icon-number').html('');
+            }
+            if (i == activePhase) {
+                phase.addClass('phase-active');
+            }
         }
+
+        MBE.DnD.updateDOM();
     }
 };
 

@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using System.Data.Common;
     using Service;
     using System.Threading;
-
+    using Mozaic.Bootstrap;
     //michal šebela:
     //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
     //TODO: doladit pøístup z vláken, které nejsou z Http request, dispose, log db
@@ -195,6 +195,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual DbSet<MozaicEditorComponent> MozaicEditorComponents { get; set; }
         public virtual DbSet<MozaicCssTemplate> CssTemplates { get; set; }
+        public virtual DbSet<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
+        public virtual DbSet<MozaicBootstrapComponent> MozaicBootstrapComponents { get; set; }
 
         // Nexus
         public virtual DbSet<ExtDB> ExtDBs { get; set; }
@@ -303,8 +305,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(e => e.ChildComponents)
                 .WithOptional(e => e.ParentComponent)
                 .HasForeignKey(e => e.ParentComponentId);
+
+            modelBuilder.Entity<MozaicBootstrapPage>()
+                .HasMany(e => e.Components)
+                .WithRequired(e => e.MozaicBootstrapPage);
+            modelBuilder.Entity<MozaicBootstrapComponent>()
+                .HasMany(e => e.ChildComponents)
+                .WithOptional(e => e.ParentComponent)
+                .HasForeignKey(e => e.ParentComponentId);
+            
             modelBuilder.Entity<Application>()
                 .HasMany(e => e.MozaicEditorPages)
+                .WithRequired(e => e.ParentApp);
+            modelBuilder.Entity<Application>()
+                .HasMany(e => e.MozaicBootstrapPages)
                 .WithRequired(e => e.ParentApp);
 
             /*modelBuilder.Entity<TapestryDesignerBlock>()
