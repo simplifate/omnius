@@ -34,6 +34,6 @@ wFe7jyii5uYtshm/o4jdTRr578FU8V4VzzLFB2Lr80vIzkM/92I/kJEGGUnQUpdnzpXDDjYghIK1
 fSR2W77iPqaOGhGhQwnUOtWObZTopCLSWkaHIDvy2KMEUxMrFjxxfTuBetSQIA==
 -----END CERTIFICATE-----";
 
-        public string idp_sso_target_url = "https://moje.innogy-gasstorage.cz/samlsso";
+        public string idp_sso_target_url = "https://wso2-ids.innogy.cz:9443/samlsso";
     }
 }
