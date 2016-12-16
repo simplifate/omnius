@@ -1,6 +1,6 @@
 ﻿var CurrentComponent, SaveRequested = false;
 $(function () {
-    if (CurrentModuleIs("mozaicEditorModule")) {
+    if (CurrentModuleIs("mozaicEditorModule") && !$('body').hasClass('mozaicBootstrapEditorModule')) {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
             autoOpen: false,
             width: 700,
@@ -289,7 +289,7 @@ $(function () {
                 })
             },
             open: function () {
-                newPageDialog.find("#new-page-name").val("");
+                newPageDialog.find('#new-page-name').val("");
             }
         });
         function newPageDialog_SubmitData() {
