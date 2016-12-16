@@ -37,10 +37,9 @@ namespace System.Web.Mvc
             {
                 // Otherwise, perform auth over IDS
                 //SAML Authentication
-                RequestBuilder builder = new RequestBuilder();
-                filterContext.Result = new RedirectResult(builder.GetAuthUrl());
+                //RequestBuilder builder = new RequestBuilder();
+                //filterContext.Result = new RedirectResult(builder.GetAuthUrl());
 
-                /*
                 //OLD Authentication
                 filterContext.Result = new RedirectToRouteResult(
                     "Persona",
@@ -51,7 +50,7 @@ namespace System.Web.Mvc
                         @returnUrl = filterContext.HttpContext.Request.Url.PathAndQuery
                     })
                 );
-                */
+
                 return;
             }
 
