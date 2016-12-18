@@ -468,6 +468,7 @@
       <DependentUpon>omniusAdminScripts.js</DependentUpon>
     </Content>
     <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
+    <Content Include="Scripts\MozaicEditor\Bootstrap\Dialogs.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\DnD.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\History.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\IO.js" />

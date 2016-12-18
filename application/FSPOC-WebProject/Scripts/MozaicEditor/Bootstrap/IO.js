@@ -2,13 +2,225 @@
 
     allComponents: null,
 
+    loadPageList: function()
+    {
+        $('#page-table tbody tr').remove();
+        $('#choose-page-dialog .spinner-2').show();
+        
+        var appId = $('#currentAppId').val();
+        $.ajax({
+            type: "GET",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
+            dataType: "json",
+            error: MBE.ajaxError,
+            success: function (data) {
+                var tbody = $('#page-table tbody');
+                for (i = 0; i < data.length; i++) {
+                    var row = $('<tr class="pageRow">');
+                    row.attr({
+                        'data-id': data[i].Id,
+                        'data-isbootstrap': data[i].IsBootstrap
+                    });
+                    row.append('<td width="95%">' + data[i].Name + '</td>');
+                    row.append('<td width="5%" align="center">' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
+                    row.appendTo(tbody);
+                }
+                
+                $('#choose-page-dialog .spinner-2').hide();
+            }
+        });
+    },
+
+    loadDeletedPageList: function()
+    {
+        $('#trash-page-table tbody tr').remove();
+        $('#trash-page-dialog .spinner-2').show();
+
+        var appId = $("#currentAppId").val();
+        $.ajax({
+            type: "GET",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/deletedPages",
+            dataType: "json",
+            error: MBE.ajaxError,
+            success: function (data) {
+                var tbody = $('#trash-page-table tbody');
+                for (i = 0; i < data.length; i++) {
+                    var row = $('<tr class="pageRow"></tr>');
+                    row.attr({
+                        'data-id': data[i].Id,
+                        'data-isbootstrap': data[i].IsBootstrap
+                    });
+                    row.append('<td width="95%">' + data[i].Name + '</td>');
+                    row.append('<td width="5%" align="center">' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
+                    row.appendTo(tbody);
+                }
+                $("#trash-page-dialog .spinner-2").hide();
+            }
+        });
+    },
+
+    loadPage: function()
+    {
+        var selected = $('#page-table tr.highlightedRow');
+        if (selected.length) {
+            $('#choose-page-dialog').dialog('close');
+            var pageId = selected.attr('data-id');
+            if (selected.attr('data-isbootstrap') == 'true') {
+                MBE.io.loadBootstrapPage(pageId);
+            }
+            else {
+                MBE.io.loadLegacyPage(pageId);
+            }
+        }
+        else {
+            alert('Please select a page');
+        }
+    },
+
+    loadDeletedPage: function () {
+        var selected = $('#trash-page-table tr.highlightedRow');
+        if (selected.length) {
+            $('#trash-page-dialog').dialog('close');
+            var pageId = selected.attr('data-id');
+            if (selected.attr('data-isbootstrap') == 'true') {
+                MBE.io.loadBootstrapPage(pageId);
+            }
+            else {
+                MBE.io.loadLegacyPage(pageId);
+            }
+        }
+        else {
+            alert('Please select a page');
+        }
+    },
+
+    reloadPage: function()
+    {
+        if ($('#currentPageVersion').val() == 'Legacy') {
+            MBE.io.loadLegacyPage('current');
+        }
+        else {
+            MBE.io.loadBootstrapPage('current');
+        }
+    },
+
+    loadLegacyPage: function(pageId) 
+    {
+        pageSpinner.show();
+        pageId = pageId == "current" ? $('#currentPageId').val() : pageId;
+
+        var appId = $('#currentAppId').val();
+        var url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            complete: function () { pageSpinner.hide() },
+            error: MBE.ajaxError,
+            success: function (data) { MBE.io.convert(data); }
+        });
+    },
+
+    createPage: function()
+    {
+        pageSpinner.show();
+        $('#new-page-dialog').dialog('close');
+
+        var appId = $('#currentAppId').val();
+        var newPageName = $('#new-page-name').val();
+        var postData = {
+            Name: newPageName,
+            Content: '',
+            IsDeleted: false,
+            Components: []
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
+            data: postData,
+            error: MBE.ajaxError,
+            success: function (data) {
+                $('#currentPageId').val(data);
+                $('#currentPageVersion').val('Bootstrap'); 
+                $('#headerPageName').text(newPageName == '' ? 'Nepojmenovaná stránka' : newPageName);
+                    
+                if (SaveRequested) {
+                    MBE.io.save();
+                }
+                else {
+                    pageSpinner.hide();
+                }
+            }
+        });
+    },
+
+    deletePage: function() 
+    {
+        var selected = $('#page-table tr.highlightedRow');
+        if (selected.length) 
+        {
+            if (confirm('Are you sure you want to delete this page?')) 
+            {
+                pageSpinner.show();
+                var appId = $('#currentAppId').val();
+                var pageId = selected.attr('data-id');
+                var api = selected.attr('data-isbootstrap') == 'true' ? 'mozaic-bootstrap' : 'mozaic-editor';
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/' + api + '/apps/' + appId + '/pages/' + pageId + '/delete',
+                    complete: function () {
+                        pageSpinner.hide();
+                    },
+                    success: function () {
+                        alert("OK. Page deleted.");
+                        $('#choose-page-dialog').dialog('close');
+                        // Clear workspace, but only when deleted page is currently opened
+                        if ($('#currentPageId').val() == pageId) {
+                            MBE.clearWorkspace();
+                            $('#headerPageName').html('');
+                            $('#currentPageId').val('');
+                        }
+                    },
+                    error: MBE.ajaxError
+                });
+            }
+        }
+        else {
+            alert('Please select a page to delete.');
+        }
+    },
+
+    rename: function () {
+        $('#headerPageName').text($(this).find('#page-name').val());
+        $('#rename-page-dialog').dialog('close');
+        MBE.changedSinceLastSave = true;
+    },
+
+    savePage: function()
+    {
+        var pageId = Number($('#currentPageId').val());
+        if (!pageId || isNaN(pageId)) {
+            MBE.saveRequested = true;
+            MBE.dialogs.createPage();
+        }
+        else {
+            MBE.io.doSave();
+        }
+    },
+
+    /*************************************************************/
+    /* CONVERSION METHODS                                        */
+    /*************************************************************/
     convert: function(data)
     {
         if (!data.Id) {
             return;
         }
         MBE.io.allComponents = new Array();
-        MBE.workspace.html('');
+        MBE.clearWorkspace();
         
         var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
@@ -65,8 +277,9 @@
             }
         }
         
-        $("#currentPageId").val(data.Id);
-        $("#headerPageName").text(data.Name);
+        $('#currentPageId').val(data.Id);
+        $('#currentPageVersion').val('Legacy');
+        $('#headerPageName').text(data.Name);
 
         MBE.DnD.updateDOM();
     },

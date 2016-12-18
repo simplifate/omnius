@@ -9,6 +9,8 @@
 
     workspace: null,
     workspaceDoc: null,
+    changedSinceLastSave: false,
+    saveRequested: false,
 
     // Inicializace
     preInit: function ()
@@ -46,6 +48,15 @@
             .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
             .on('click', '.device-button', MBE.setDevice)
             .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
+            .on('click', '#btnChoosePage', MBE.dialogs.choosePage)
+            .on('click', '#btnTrashPage', MBE.dialogs.trash)
+            .on('click', '#btnNewPage', MBE.dialogs.newPage)
+            .on('click', '#headerPageName', MBE.dialogs.rename)
+            .on('click', 'tr.pageRow', MBE.selectPage)
+            .on('click', '#btnClear', MBE.clearWorkspace)
+            .on('click', '#btnLoad', MBE.io.reloadPage)
+            .on('click', '#btnSave', MBE.io.savePage)
+        
         ;
         $(MBE.workspaceDoc)
             .on('keydown', MBE.onKeyDown)
@@ -54,13 +65,11 @@
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
-        
+
         $('ul.category > li ul').hide();
         $('ul.category > li').prepend('<span class="fa fa-caret-right fa-fw"></span>');
         $('ul.category > li > ul > li').prepend('<span class="fa fa-square fa-fw"></span>');
 
-        $('#mozaicPageContainer').droppable("destroy");
- 
         for (i = 0; i < MBE.onInit.length; i++) {
             var f = MBE.onInit[i];
             f();
@@ -172,6 +181,19 @@
         }
         if(testAPI)
             return -1;
+    },
+
+    selectPage: function () {
+        $(this).addClass('highlightedRow').siblings().removeClass('highlightedRow');
+    },
+
+    clearWorkspace: function () {
+        MBE.workspace.html('');
+        MBE.DnD.updateDOM();
+    },
+
+    ajaxError: function (request, status, error) {
+        alert(request.responseText);
     }
 }
 

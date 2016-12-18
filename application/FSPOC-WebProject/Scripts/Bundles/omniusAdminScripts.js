@@ -4676,7 +4676,7 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
 
 var GridResolution = 0;
 $(function () {
-    if (CurrentModuleIs("mozaicEditorModule")) {
+    if (CurrentModuleIs("mozaicEditorModule") && !$('body').hasClass('mozaicBootstrapEditorModule')) {
         RecalculateMozaicToolboxHeight();
         pageId = $("#currentPageId").val();
         if (pageId)
@@ -4875,7 +4875,7 @@ $(function () {
 
 var CurrentComponent, SaveRequested = false;
 $(function () {
-    if (CurrentModuleIs("mozaicEditorModule")) {
+    if (CurrentModuleIs("mozaicEditorModule") && !$('body').hasClass('mozaicBootstrapEditorModule')) {
         componentPropertiesDialog = $("#component-properties-dialog").dialog({
             autoOpen: false,
             width: 700,
@@ -5164,7 +5164,7 @@ $(function () {
                 })
             },
             open: function () {
-                newPageDialog.find("#new-page-name").val("");
+                newPageDialog.find('#new-page-name').val("");
             }
         });
         function newPageDialog_SubmitData() {
@@ -8137,6 +8137,8 @@ var MBE = {
 
     workspace: null,
     workspaceDoc: null,
+    changedSinceLastSave: false,
+    saveRequested: false,
 
     // Inicializace
     preInit: function ()
@@ -8174,6 +8176,15 @@ var MBE = {
             .on('click', '[data-action="fullscreen"]', MBE.toggleFullscreen)
             .on('click', '.device-button', MBE.setDevice)
             .on('webkitfullscreenchange mozfullscreenchange msfullscreenchange ofullscreenchange fullscreenchange', MBE.fullscreenResize)
+            .on('click', '#btnChoosePage', MBE.dialogs.choosePage)
+            .on('click', '#btnTrashPage', MBE.dialogs.trash)
+            .on('click', '#btnNewPage', MBE.dialogs.newPage)
+            .on('click', '#headerPageName', MBE.dialogs.rename)
+            .on('click', 'tr.pageRow', MBE.selectPage)
+            .on('click', '#btnClear', MBE.clearWorkspace)
+            .on('click', '#btnLoad', MBE.io.reloadPage)
+            .on('click', '#btnSave', MBE.io.savePage)
+        
         ;
         $(MBE.workspaceDoc)
             .on('keydown', MBE.onKeyDown)
@@ -8182,13 +8193,11 @@ var MBE = {
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
-        
+
         $('ul.category > li ul').hide();
         $('ul.category > li').prepend('<span class="fa fa-caret-right fa-fw"></span>');
         $('ul.category > li > ul > li').prepend('<span class="fa fa-square fa-fw"></span>');
 
-        $('#mozaicPageContainer').droppable("destroy");
- 
         for (i = 0; i < MBE.onInit.length; i++) {
             var f = MBE.onInit[i];
             f();
@@ -8300,6 +8309,19 @@ var MBE = {
         }
         if(testAPI)
             return -1;
+    },
+
+    selectPage: function () {
+        $(this).addClass('highlightedRow').siblings().removeClass('highlightedRow');
+    },
+
+    clearWorkspace: function () {
+        MBE.workspace.html('');
+        MBE.DnD.updateDOM();
+    },
+
+    ajaxError: function (request, status, error) {
+        alert(request.responseText);
     }
 }
 
@@ -9588,13 +9610,225 @@ MBE.io = {
 
     allComponents: null,
 
+    loadPageList: function()
+    {
+        $('#page-table tbody tr').remove();
+        $('#choose-page-dialog .spinner-2').show();
+        
+        var appId = $('#currentAppId').val();
+        $.ajax({
+            type: "GET",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
+            dataType: "json",
+            error: MBE.ajaxError,
+            success: function (data) {
+                var tbody = $('#page-table tbody');
+                for (i = 0; i < data.length; i++) {
+                    var row = $('<tr class="pageRow">');
+                    row.attr({
+                        'data-id': data[i].Id,
+                        'data-isbootstrap': data[i].IsBootstrap
+                    });
+                    row.append('<td width="95%">' + data[i].Name + '</td>');
+                    row.append('<td width="5%" align="center">' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
+                    row.appendTo(tbody);
+                }
+                
+                $('#choose-page-dialog .spinner-2').hide();
+            }
+        });
+    },
+
+    loadDeletedPageList: function()
+    {
+        $('#trash-page-table tbody tr').remove();
+        $('#trash-page-dialog .spinner-2').show();
+
+        var appId = $("#currentAppId").val();
+        $.ajax({
+            type: "GET",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/deletedPages",
+            dataType: "json",
+            error: MBE.ajaxError,
+            success: function (data) {
+                var tbody = $('#trash-page-table tbody');
+                for (i = 0; i < data.length; i++) {
+                    var row = $('<tr class="pageRow"></tr>');
+                    row.attr({
+                        'data-id': data[i].Id,
+                        'data-isbootstrap': data[i].IsBootstrap
+                    });
+                    row.append('<td width="95%">' + data[i].Name + '</td>');
+                    row.append('<td width="5%" align="center">' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
+                    row.appendTo(tbody);
+                }
+                $("#trash-page-dialog .spinner-2").hide();
+            }
+        });
+    },
+
+    loadPage: function()
+    {
+        var selected = $('#page-table tr.highlightedRow');
+        if (selected.length) {
+            $('#choose-page-dialog').dialog('close');
+            var pageId = selected.attr('data-id');
+            if (selected.attr('data-isbootstrap') == 'true') {
+                MBE.io.loadBootstrapPage(pageId);
+            }
+            else {
+                MBE.io.loadLegacyPage(pageId);
+            }
+        }
+        else {
+            alert('Please select a page');
+        }
+    },
+
+    loadDeletedPage: function () {
+        var selected = $('#trash-page-table tr.highlightedRow');
+        if (selected.length) {
+            $('#trash-page-dialog').dialog('close');
+            var pageId = selected.attr('data-id');
+            if (selected.attr('data-isbootstrap') == 'true') {
+                MBE.io.loadBootstrapPage(pageId);
+            }
+            else {
+                MBE.io.loadLegacyPage(pageId);
+            }
+        }
+        else {
+            alert('Please select a page');
+        }
+    },
+
+    reloadPage: function()
+    {
+        if ($('#currentPageVersion').val() == 'Legacy') {
+            MBE.io.loadLegacyPage('current');
+        }
+        else {
+            MBE.io.loadBootstrapPage('current');
+        }
+    },
+
+    loadLegacyPage: function(pageId) 
+    {
+        pageSpinner.show();
+        pageId = pageId == "current" ? $('#currentPageId').val() : pageId;
+
+        var appId = $('#currentAppId').val();
+        var url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            complete: function () { pageSpinner.hide() },
+            error: MBE.ajaxError,
+            success: function (data) { MBE.io.convert(data); }
+        });
+    },
+
+    createPage: function()
+    {
+        pageSpinner.show();
+        $('#new-page-dialog').dialog('close');
+
+        var appId = $('#currentAppId').val();
+        var newPageName = $('#new-page-name').val();
+        var postData = {
+            Name: newPageName,
+            Content: '',
+            IsDeleted: false,
+            Components: []
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
+            data: postData,
+            error: MBE.ajaxError,
+            success: function (data) {
+                $('#currentPageId').val(data);
+                $('#currentPageVersion').val('Bootstrap'); 
+                $('#headerPageName').text(newPageName == '' ? 'Nepojmenovaná stránka' : newPageName);
+                    
+                if (SaveRequested) {
+                    MBE.io.save();
+                }
+                else {
+                    pageSpinner.hide();
+                }
+            }
+        });
+    },
+
+    deletePage: function() 
+    {
+        var selected = $('#page-table tr.highlightedRow');
+        if (selected.length) 
+        {
+            if (confirm('Are you sure you want to delete this page?')) 
+            {
+                pageSpinner.show();
+                var appId = $('#currentAppId').val();
+                var pageId = selected.attr('data-id');
+                var api = selected.attr('data-isbootstrap') == 'true' ? 'mozaic-bootstrap' : 'mozaic-editor';
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/' + api + '/apps/' + appId + '/pages/' + pageId + '/delete',
+                    complete: function () {
+                        pageSpinner.hide();
+                    },
+                    success: function () {
+                        alert("OK. Page deleted.");
+                        $('#choose-page-dialog').dialog('close');
+                        // Clear workspace, but only when deleted page is currently opened
+                        if ($('#currentPageId').val() == pageId) {
+                            MBE.clearWorkspace();
+                            $('#headerPageName').html('');
+                            $('#currentPageId').val('');
+                        }
+                    },
+                    error: MBE.ajaxError
+                });
+            }
+        }
+        else {
+            alert('Please select a page to delete.');
+        }
+    },
+
+    rename: function () {
+        $('#headerPageName').text($(this).find('#page-name').val());
+        $('#rename-page-dialog').dialog('close');
+        MBE.changedSinceLastSave = true;
+    },
+
+    savePage: function()
+    {
+        var pageId = Number($('#currentPageId').val());
+        if (!pageId || isNaN(pageId)) {
+            MBE.saveRequested = true;
+            MBE.dialogs.createPage();
+        }
+        else {
+            MBE.io.doSave();
+        }
+    },
+
+    /*************************************************************/
+    /* CONVERSION METHODS                                        */
+    /*************************************************************/
     convert: function(data)
     {
         if (!data.Id) {
             return;
         }
         MBE.io.allComponents = new Array();
-        MBE.workspace.html('');
+        MBE.clearWorkspace();
         
         var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
@@ -9651,8 +9885,9 @@ MBE.io = {
             }
         }
         
-        $("#currentPageId").val(data.Id);
-        $("#headerPageName").text(data.Name);
+        $('#currentPageId').val(data.Id);
+        $('#currentPageVersion').val('Legacy');
+        $('#headerPageName').text(data.Name);
 
         MBE.DnD.updateDOM();
     },
@@ -10087,6 +10322,86 @@ MBE.history = {
 };
 
 MBE.onInit.push(MBE.history.init);
+MBE.dialogs = {
+
+    choosePage: function()
+    {
+        $('#choose-page-dialog').dialog({
+            autoOpen: true,
+            width: 700,
+            height: 540,
+            buttons: {
+                Open: MBE.io.loadPage,
+                Delete: MBE.io.deletePage,
+                Cancel: MBE.dialogs.close
+            },
+            open: MBE.io.loadPageList
+        });
+    },
+
+    trash: function()
+    {
+        $('#trash-page-dialog').dialog({
+            autoOpen: true,
+            width: 700,
+            height: 540,
+            buttons: {
+                Load: MBE.io.loadDeletedPage,
+                Cancel: MBE.dialogs.close
+            },
+            open: MBE.io.loadDeletedPageList
+        });
+    },
+
+    newPage: function()
+    {
+        $('#new-page-dialog').dialog({
+            autoOpen: true,
+            width: 400,
+            height: 170,
+            buttons: {
+                Save: MBE.io.createPage,
+                Cancel: MBE.dialogs.close
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        MBE.io.createPage;
+                        return false;
+                    }
+                })
+            },
+            open: function () { $('#new-page-name').val(''); }
+        });
+    },
+
+    rename: function() {
+        $('#rename-page-dialog').dialog({
+            autoOpen: true,
+            width: 400,
+            height: 190,
+            buttons: {
+                Save: MBE.io.rename,
+                Cancel: MBE.dialogs.close
+            },
+            create: function () {
+                $(this).keypress(function (e) {
+                    if (e.keyCode == $.ui.keyCode.ENTER) {
+                        MBE.io.rename.apply(document.getElementById('rename-page-dialog'), []);
+                        return false;
+                    }
+                })
+            },
+            open: function () {
+                $(this).find('#page-name').val($('#headerPageName').text());
+            }
+        });
+    },
+
+    close: function () {
+        $(this).dialog("close");
+    }
+};
 MBE.types.containers = {
 
     templates: {

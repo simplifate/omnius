@@ -1,6 +1,6 @@
 ﻿var GridResolution = 0;
 $(function () {
-    if (CurrentModuleIs("mozaicEditorModule")) {
+    if (CurrentModuleIs("mozaicEditorModule") && !$('body').hasClass('mozaicBootstrapEditorModule')) {
         RecalculateMozaicToolboxHeight();
         pageId = $("#currentPageId").val();
         if (pageId)
