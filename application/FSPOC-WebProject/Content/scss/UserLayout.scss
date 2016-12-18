@@ -1,10 +1,11 @@
 ﻿@import "Mixins.scss";
 @import "Fonts.scss";
+@import "InnogyMixins.scss";
 $color_error: #f15921;
 
 #userTopBar {
     @include no-select();
-    @include linear-gradient(#edf8fe, #ceeaf8);
+    background: $shade_st_zero;
     position: absolute;
     left: 0px;
     top: 0px;
@@ -19,11 +20,14 @@ $color_error: #f15921;
         padding-left: 10px;
         z-index: 50;
         font-size: 32px;
-        color: #0065a9;
+        color: black;
         cursor: pointer;
+        &:hover {
+            color: $second_color;
+        }
     }
     .activeIcon {
-        background-color: #edf8fe;
+        background-color: $shade_st_one;
         cursor: default;
     }
 
@@ -32,7 +36,7 @@ $color_error: #f15921;
     }
     .clientTitle {
         position: absolute;
-        font-family: RweHeadlineRegular;
+        font-family: Innogy-Medium;
         text-transform: uppercase;
         font-size: 20px;
         color: #59575c;
@@ -71,7 +75,7 @@ $color_error: #f15921;
             position: absolute;
             left: 65px;
             top: 6px;
-            font-family: RweTextMedium;
+            font-family: Innogy-Regular;
             font-size: 14px;
         }
         .commands {
@@ -79,7 +83,7 @@ $color_error: #f15921;
             left: 65px;
             top: 24px;
             color: #0065a9;
-            font-family: RweTextMedium;
+            font-family: Innogy-Regular;
             font-size: 14px;
         }
         .notificationIcon {
@@ -87,8 +91,8 @@ $color_error: #f15921;
             right: 30px;
             top: 8px;
             font-size: 30px;
-            color: #0065a9;
             cursor: pointer;
+            @include innogy-Action;
         }
 
     }
@@ -111,7 +115,7 @@ $color_error: #f15921;
             color: #a2b4cc;
             padding-left: 14px;
             padding-top: 4px;
-            font-family: RweTextMedium;
+            font-family: Innogy-Regular;
             font-size: 14px;
             border: none;
         }
@@ -120,21 +124,20 @@ $color_error: #f15921;
             right: 30px;
             top: 8px;
             font-size: 30px;
-            color: #0065a9;
             cursor: pointer;
+            @include innogy-Action;
         }
 
     }
 }
 #userLeftBar {
     @include no-select();
-    background-color: #edf8fe;
+    background-color: $shade_st_one;
     position: absolute;
     left: 0px;
     top: 50px;
     bottom: 0px;
     width: 310px;
-    border-right: 1px solid #f1f0ee;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 10;
@@ -144,10 +147,10 @@ $color_error: #f15921;
         
     .widgetLabel {
         position: absolute;
-        font-family: RweHeadlineRegular;
+        font-family: Innogy-Medium;
         text-transform: uppercase;
         font-size: 20px;
-        color: #0065a9;
+        color: black;
         padding: 0 30px;
         top: 30px;
         left: 0px;
@@ -175,8 +178,8 @@ $color_error: #f15921;
     #showMenuIcon, #hideMenuIcon {
         position: absolute;
         font-size: 28px;
-        color: #0065a9;
-        right: 12px;
+        color: $second_color;
+        right: 15px;
         top: 30px;
         cursor: pointer;            
     }
@@ -187,14 +190,14 @@ $color_error: #f15921;
         position: absolute;
         font-size: 17px;
         font-weight: 100;
-        color: #0065a9;
+        color: black;
         left: 0px;
         top: 75px;
         right: 0px;
         .appListItem {
             position: relative;
             height: 40px;
-            border-top: 1px solid #d6dfe6;
+            border-top: 1px solid $shade_st_three;
             cursor: pointer;
             .icon {
                 position: absolute;
@@ -211,7 +214,10 @@ $color_error: #f15921;
             }
         }
         .appListItem:hover{
-            background-color: #ceeaf8;
+            background-color: $second_color;
+            .appName, .icon {
+                color: white !important;
+            }
         }
     }
     .infoBox {
@@ -238,7 +244,7 @@ $color_error: #f15921;
         position: absolute;
         left: 0px;
         top: 75px;
-        font-family: MyriadPro;
+        font-family: Innogy-Medium;
         color: #58585a;
         font-size: 18px;
         padding-left: 0px;
@@ -267,19 +273,22 @@ $color_error: #f15921;
                     cursor: pointer;
                 }
                 li:hover{
-                    background-color: #ceeaf8;
+                    background-color: $second_color;
+                    a {
+                        color: white !important;
+                    }
                 }
             }
         }
         a {
-            color: #0065a9;
+            color: black;
             width: 100%;
             height: 100%;
             display: block;
         }
         a:hover {
             text-decoration: none;
-            color: #0065a9;
+            color: $second_color;
         }
     } 
 }
@@ -420,6 +429,7 @@ body.userLayout.leftBarHidden {
 }
 
 #userContentArea {
+    background-color: $darkness;
     position: absolute;
     left: 310px;
     top: 50px;
@@ -436,7 +446,7 @@ body.userLayout.leftBarHidden {
         position: absolute;
         left: 100px;
         top: 75px;
-        font-family: RweHeadlineRegular;
+        font-family: Innogy-Medium;
         text-transform: uppercase;
         font-size: 26px;
         color: #0065A9;
@@ -462,14 +472,17 @@ body.userLayout.leftBarHidden {
     }
     
     .button-simple {
-        background-color: #4b8ad1;
-        border: 1px solid #4b8ad1;
         color: white;
+        background-color: $second_color;
+        border: none;
 
+        @include innogy-input;
+    }
+    .button-simple:hover {
+        background-color: $second_color_bright;
     }
     .button-simple[disabled], .button-simple.looks-disabled {
-        background-color: #d5d2d2;
-        border: 1px solid #a0a0a0;
+        background-color: $shade_st_three;
         color: black;
     }
     .button-dropdown {
@@ -506,20 +519,24 @@ body.userLayout.leftBarHidden {
         height: 25px;
         border: 1px solid #b8b4ab;
         padding-left: 6px;
+
+        @include innogy-input;
     }
     .input-multiline {
         width: 260px;
         height: 75px;
-        border: 1px solid #b8b4ab;
-        padding-left: 6px;
+        padding: 6px !important;
         resize: none;
+        
+        @include innogy-input;
+        border-radius: 20px;
     }
-    .input-read-only {
+    .dropdown-select {
+        @include innogy-input;
+    }
+    .input-read-only, .input-single-line[readonly], .input-single-line[disabled], .input-multiline[readonly], .input-multiline[disabled], .dropdown-select[readonly], .dropdown-select[disabled] {
         background-color: #e0e0e0;
-    }
-    .uic.has-error {
-        border: 1px solid red;
-        box-shadow: 0px 0px 1px 0px rgba(255,0,0,1);
+        border-color: #939393;
     }
     .info-container {
         @include no-select();
@@ -547,7 +564,7 @@ body.userLayout.leftBarHidden {
         @include no-select();
         @include linear-gradient(#0086be, #0065a9);
         color: white;
-        font-family: RweTextMedium;
+        font-family: Innogy-Regular;
         padding: 12px 12px;
         border-radius: 4px;
         font-size: 11px;
@@ -569,7 +586,7 @@ body.userLayout.leftBarHidden {
         .nav-text {
             position: absolute;
             left: 54px;
-            font-family: RweHeadlineRegular;
+            font-family: Innogy-Medium;
             font-size: 20px;
             white-space: nowrap;
         }
@@ -588,7 +605,7 @@ body.userLayout.leftBarHidden {
     }
     .control-label {
         @include no-select();
-        font-family: MyriadPro;
+        font-family: Innogy-Medium;
         font-size: 14px;
         color: #58585a;
         white-space: nowrap;
@@ -607,7 +624,7 @@ body.userLayout.leftBarHidden {
     }
     .form-heading {
         @include no-select();
-        font-family: RweHeadlineRegular;
+        font-family: Innogy-Medium;
         font-size: 28px;
         color: #58585a;
         white-space: nowrap;
@@ -618,7 +635,7 @@ body.userLayout.leftBarHidden {
 
         .checkbox-label {
             margin-left: 6px;
-            font-family: MyriadPro;
+            font-family: Innogy-Medium;
             font-size: 14px;
             color: #58585a;
             white-space: nowrap;
@@ -630,7 +647,7 @@ body.userLayout.leftBarHidden {
 
         .radio-label {
             margin-left: 6px;
-            font-family: MyriadPro;
+            font-family: Innogy-Medium;
             font-size: 14px;
             color: #58585a;
             white-space: nowrap;
@@ -641,20 +658,33 @@ body.userLayout.leftBarHidden {
     }
     .data-table {
         width: 250px;
-        border: 1px solid #4b8ad1;
         height: auto !important;
+        background-color: $shade_st_two;
+        border: 1px solid white;
+
+        white-space: nowrap;
+
+        th:first-child, td:first-child {
+            display: none;
+        }
 
         tr {
-            th:first-child, td:first-child {
-                display: none;
+            background-color: $shade_st_two !important;
+            th, td {
+                    &.sorting_1 {
+                    background-color: $shade_st_three !important;
+                }
+            }
+
+            th, td {
+                border-bottom: 1px solid $third_color_bright;
             }
         }
+
         tfoot {
-            display: table-header-group;
+            display: none;
 
             th {
-                padding: 10px 18px 6px 10px;
-
                 input {
                     width: 53px;
                 }
@@ -663,26 +693,59 @@ body.userLayout.leftBarHidden {
                 }
             }
         }
+
+        thead tr {
+            background-color: $third_color_bright !important;
+            th {
+                color: white;
+                white-space: nowrap;
+            }
+        }
+        tbody tr {
+            background-color: #f7f7f7;
+            color: black;
+            &:hover  {
+                background-color: $shade_st_three !important;
+            }
+        }
+        
+        &#uic_table tfoot { 
+            display: table-header-group;
+        }
         .actionIcons {
             width: 60px;
 
             .fa {
                 font-size: 16px;
-                margin-right: 5px;
+                margin-right: 10px;
                 cursor: pointer;
-            }
-            .fa-edit, .fa-search, .fa-sign-in {
-                color: #0065a9;
+                color: $third_color_bright;
+
+                &:hover {
+                    color: $third_color;
+                }
             }
             .fa-remove {
-                color: #e3001b;
+                color: #f15921;
+
+                &:hover {
+                    color: #bc2e18;
+                }
             }
             .fa-sign-in {
                 font-size: 20px;
             }
         }
-        thead {
-            white-space: nowrap;
+        .colorRectangle {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+        input {
+            @include innogy-input;
         }
     }
     .data-table-simple-mode {
@@ -692,7 +755,7 @@ body.userLayout.leftBarHidden {
         }
     }
     .name-value-list {
-        font-family: MyriadPro;
+        font-family: Innogy-Medium;
         font-size: 14px;
 
         tr {
@@ -736,7 +799,8 @@ body.userLayout.leftBarHidden {
         background-color: #cce0f5;
     }
     .named-panel {
-        background-color: #cce0f5;
+        background-color: $shade_st_one;
+        color: black !important;
 
         .named-panel-header {
             position: absolute;
@@ -744,10 +808,10 @@ body.userLayout.leftBarHidden {
             top: 0px;
             right: 0px;
             min-height: 25px;
-            padding: 1px 6px;
-            background-color: #0066cc;
+            padding: 6px;
+            background-color: $second_color;
             color: white;
-            font-family: MyriadPro;
+            font-family: Innogy-Regular;
             font-size: 18px;
         }
     }
@@ -765,7 +829,7 @@ body.userLayout.leftBarHidden {
 }
 .app-alert {
     width: 100%;
-    font-family: MyriadPro;
+    font-family: Innogy-Medium;
     font-size: 18px;
     padding: 6px 20px;
     border-width: 1px;
@@ -775,34 +839,34 @@ body.userLayout.leftBarHidden {
         padding-right: 10px;
     }
     .closeAlertIcon {
-        color: #e3001b;
+        color: white;
         float: right;
         margin-top: 4px;
         cursor: pointer;
     }
 }
 .app-alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
+    color: white;
+    background-color: $color_success;
+    border: none;
 }
-.app-alert-success.app-alert-odd{
-    background-color: darken(#d6e9c6, 5%);
+.app-alert-success.app-alert-odd {
+    background-color: darken($color_success, 5%);
 }
 .app-alert-error {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
+    color: white;
+    background-color: $color_error;
+    border: none;
 }
-.app-alert-error.app-alert-odd{
-    background-color: darken(#f2dede, 5%);
+.app-alert-error.app-alert-odd {
+    background-color: darken($color_error, 5%);
 }
 .app-alert-warning {
     color: #8a6d3b;
     background-color: #fcf8e3;
     border-color: #faebcc;
 }
-.app-alert-warning.app-alert-odd{
+.app-alert-warning.app-alert-odd {
     background-color: darken(#fcf8e3, 5%);
 }
 .app-alert-info {
@@ -810,13 +874,14 @@ body.userLayout.leftBarHidden {
     background-color: #d9edf7;
     border-color: #bce8f1;
 }
-.app-alert-info.app-alert-odd{
+.app-alert-info.app-alert-odd {
     background-color: darken(#d9edf7, 5%);
 }
 .hiddenForm {
     display: none;
 }
 
+/*
 .dataTables_wrapper {
     input, select {
         border: 1px solid #4b8ad1;
@@ -858,7 +923,6 @@ body.userLayout.leftBarHidden {
         }
     }
 }
-
 table.dataTable {
     margin: 0 !important;
 
@@ -888,6 +952,98 @@ table.dataTable {
         
         &:last-child input {
             border-right: none !important;
+        }
+    }
+}*/
+
+.appPanel {
+    border-radius: 0 !important;
+    color: white !important;
+    &.appColor0 {
+        background: $mellow_yellow_bright !important;
+        &:hover {
+            background: $mellow_yellow_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor1 {
+        background: $pulsing_purple_bright !important;
+        &:hover {
+            background: $pulsing_purple_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor2 {
+        background: $fiery_fuchsia_bright !important;
+        &:hover {
+            background: $fiery_fuchsia_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor3 {
+        background: $radiant_red_bright !important;
+        &:hover {
+            background: $radiant_red_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor4 {
+        background: $galvanic_green_bright !important;
+        &:hover {
+            background: $galvanic_green_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor5 {
+        background: $blazing_blue_bright !important;
+        &:hover {
+            background: $blazing_blue_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor6 {
+        background: $iridescent_indigo_bright !important;
+        &:hover {
+            background: $iridescent_indigo_muted !important;
+            cursor: pointer;
+        }
+    }
+}
+
+a {
+    color: black;
+    &:hover {
+        color: $second_color;
+    }
+}
+
+input, select {
+    color: black;
+}
+
+
+input[type=text], input[type=search], select {
+    border: 1px solid #b8b4ab;
+    @include innogy-input;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    .paginate_button {
+        @include innogy-input;
+        padding: 1px;
+        text-align: center;
+        color: $heading_text_color !important;
+        border: none !important;
+        background: $shade_st_six !important;
+        &.current {
+            color: $heading_text_color !important;
+            border: none !important;
+            background: $second_color !important;
+        }
+        &.previous, &.next {
+            background: transparent !important;
+            color: $content_text_color !important;
+            padding: 0px 5px;
         }
     }
 }

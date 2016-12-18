@@ -1,4 +1,5 @@
-﻿@font-face {
+﻿@charset "UTF-8";
+@font-face {
   font-family: "RweHeadlineRegular";
   src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
 
@@ -18,6 +19,34 @@
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+
+@font-face {
+  font-family: Innogy-Light;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Light.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Light.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Light.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Light.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Light.svg#Innogy-Light?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Regular;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Regular.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Regular.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Regular.svg#Innogy-Regular?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Medium;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Medium.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Medium.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Medium.svg#Innogy-Medium?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Bold;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
 
 body.appManagerModule {
   position: fixed;
@@ -317,6 +346,34 @@ body.adminAppModule #validationResults {
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
 
+@font-face {
+  font-family: Innogy-Light;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Light.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Light.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Light.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Light.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Light.svg#Innogy-Light?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Regular;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Regular.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Regular.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Regular.svg#Innogy-Regular?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Medium;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Medium.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Medium.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Medium.svg#Innogy-Medium?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Bold;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
+
 #userTopBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -324,10 +381,7 @@ body.adminAppModule #validationResults {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
-  background: -webkit-linear-gradient(top, #edf8fe, #ceeaf8);
-  background: -o-linear-gradient(bottom, #edf8fe, #ceeaf8);
-  background: -moz-linear-gradient(bottom, #edf8fe, #ceeaf8);
-  background: linear-gradient(to bottom, #edf8fe, #ceeaf8);
+  background: #fff;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -341,16 +395,18 @@ body.adminAppModule #validationResults {
     padding-left: 10px;
     z-index: 50;
     font-size: 32px;
-    color: #0065a9;
+    color: black;
     cursor: pointer; }
+    #userTopBar .icon:hover {
+      color: #f3962c; }
   #userTopBar .activeIcon {
-    background-color: #edf8fe;
+    background-color: #f4f4f4;
     cursor: default; }
   #userTopBar #toggleMenuIcon {
     display: none; }
   #userTopBar .clientTitle {
     position: absolute;
-    font-family: RweHeadlineRegular;
+    font-family: Innogy-Medium;
     text-transform: uppercase;
     font-size: 20px;
     color: #59575c;
@@ -385,22 +441,24 @@ body.adminAppModule #validationResults {
       position: absolute;
       left: 65px;
       top: 6px;
-      font-family: RweTextMedium;
+      font-family: Innogy-Regular;
       font-size: 14px; }
     #userTopBar .userBox .commands, #userTopBar .userBoxMinimized .commands {
       position: absolute;
       left: 65px;
       top: 24px;
       color: #0065a9;
-      font-family: RweTextMedium;
+      font-family: Innogy-Regular;
       font-size: 14px; }
     #userTopBar .userBox .notificationIcon, #userTopBar .userBoxMinimized .notificationIcon {
       position: absolute;
       right: 30px;
       top: 8px;
       font-size: 30px;
-      color: #0065a9;
-      cursor: pointer; }
+      cursor: pointer;
+      color: black; }
+      #userTopBar .userBox .notificationIcon:hover, #userTopBar .userBoxMinimized .notificationIcon:hover {
+        color: #f3962c; }
   #userTopBar .searchBoxMinimised {
     display: none; }
   #userTopBar .searchBox, #userTopBar .searchBoxMinimized {
@@ -419,7 +477,7 @@ body.adminAppModule #validationResults {
       color: #a2b4cc;
       padding-left: 14px;
       padding-top: 4px;
-      font-family: RweTextMedium;
+      font-family: Innogy-Regular;
       font-size: 14px;
       border: none; }
     #userTopBar .searchBox .searchIcon, #userTopBar .searchBoxMinimized .searchIcon {
@@ -427,8 +485,10 @@ body.adminAppModule #validationResults {
       right: 30px;
       top: 8px;
       font-size: 30px;
-      color: #0065a9;
-      cursor: pointer; }
+      cursor: pointer;
+      color: black; }
+      #userTopBar .searchBox .searchIcon:hover, #userTopBar .searchBoxMinimized .searchIcon:hover {
+        color: #f3962c; }
 
 #userLeftBar {
   -webkit-touch-callout: none;
@@ -437,13 +497,12 @@ body.adminAppModule #validationResults {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
-  background-color: #edf8fe;
+  background-color: #f4f4f4;
   position: absolute;
   left: 0px;
   top: 50px;
   bottom: 0px;
   width: 310px;
-  border-right: 1px solid #f1f0ee;
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 10;
@@ -452,10 +511,10 @@ body.adminAppModule #validationResults {
     transition: 0.4s ease-out; }
   #userLeftBar .widgetLabel {
     position: absolute;
-    font-family: RweHeadlineRegular;
+    font-family: Innogy-Medium;
     text-transform: uppercase;
     font-size: 20px;
-    color: #0065a9;
+    color: black;
     padding: 0 30px;
     top: 30px;
     left: 0px;
@@ -478,8 +537,8 @@ body.adminAppModule #validationResults {
   #userLeftBar #showMenuIcon, #userLeftBar #hideMenuIcon {
     position: absolute;
     font-size: 28px;
-    color: #0065a9;
-    right: 12px;
+    color: #f3962c;
+    right: 15px;
     top: 30px;
     cursor: pointer; }
   #userLeftBar #showMenuIcon {
@@ -488,14 +547,14 @@ body.adminAppModule #validationResults {
     position: absolute;
     font-size: 17px;
     font-weight: 100;
-    color: #0065a9;
+    color: black;
     left: 0px;
     top: 75px;
     right: 0px; }
     #userLeftBar .appList .appListItem {
       position: relative;
       height: 40px;
-      border-top: 1px solid #d6dfe6;
+      border-top: 1px solid #d5d2d2;
       cursor: pointer; }
       #userLeftBar .appList .appListItem .icon {
         position: absolute;
@@ -509,7 +568,9 @@ body.adminAppModule #validationResults {
         white-space: nowrap;
         overflow: hidden; }
     #userLeftBar .appList .appListItem:hover {
-      background-color: #ceeaf8; }
+      background-color: #f3962c; }
+      #userLeftBar .appList .appListItem:hover .appName, #userLeftBar .appList .appListItem:hover .icon {
+        color: white !important; }
   #userLeftBar .infoBox {
     position: absolute;
     left: 0px;
@@ -531,7 +592,7 @@ body.adminAppModule #validationResults {
     position: absolute;
     left: 0px;
     top: 75px;
-    font-family: MyriadPro;
+    font-family: Innogy-Medium;
     color: #58585a;
     font-size: 18px;
     padding-left: 0px; }
@@ -556,15 +617,17 @@ body.adminAppModule #validationResults {
           height: 24px;
           cursor: pointer; }
         #userLeftBar #appMenu > li ul li:hover {
-          background-color: #ceeaf8; }
+          background-color: #f3962c; }
+          #userLeftBar #appMenu > li ul li:hover a {
+            color: white !important; }
     #userLeftBar #appMenu a {
-      color: #0065a9;
+      color: black;
       width: 100%;
       height: 100%;
       display: block; }
     #userLeftBar #appMenu a:hover {
       text-decoration: none;
-      color: #0065a9; }
+      color: #f3962c; }
 
 #appNotificationArea {
   position: fixed;
@@ -658,6 +721,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     display: none; } }
 
 #userContentArea {
+  background-color: #181717;
   position: absolute;
   left: 310px;
   top: 50px;
@@ -673,7 +737,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   position: absolute;
   left: 100px;
   top: 75px;
-  font-family: RweHeadlineRegular;
+  font-family: Innogy-Medium;
   text-transform: uppercase;
   font-size: 26px;
   color: #0065A9; }
@@ -695,12 +759,21 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .mozaicForm .uic {
     position: absolute; }
   .mozaicForm .button-simple {
-    background-color: #4b8ad1;
-    border: 1px solid #4b8ad1;
-    color: white; }
+    color: white;
+    background-color: #f3962c;
+    border: none;
+    padding: 0px 15px;
+    border-radius: 300px;
+    outline: none;
+    font-size: 85%; }
+    .mozaicForm .button-simple.has-error {
+      border: 1px solid #f15921; }
+    .mozaicForm .button-simple:focus {
+      border: 1px solid #ffc238; }
+  .mozaicForm .button-simple:hover {
+    background-color: #cd7c2b; }
   .mozaicForm .button-simple[disabled], .mozaicForm .button-simple.looks-disabled {
     background-color: #d5d2d2;
-    border: 1px solid #a0a0a0;
     color: black; }
   .mozaicForm .button-dropdown {
     background-color: white;
@@ -728,18 +801,41 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     width: 220px;
     height: 25px;
     border: 1px solid #b8b4ab;
-    padding-left: 6px; }
+    padding-left: 6px;
+    padding: 0px 15px;
+    border-radius: 300px;
+    outline: none;
+    font-size: 85%; }
+    .mozaicForm .input-single-line.has-error {
+      border: 1px solid #f15921; }
+    .mozaicForm .input-single-line:focus {
+      border: 1px solid #ffc238; }
   .mozaicForm .input-multiline {
     width: 260px;
     height: 75px;
-    border: 1px solid #b8b4ab;
-    padding-left: 6px;
-    resize: none; }
-  .mozaicForm .input-read-only {
-    background-color: #e0e0e0; }
-  .mozaicForm .uic.has-error {
-    border: 1px solid red;
-    box-shadow: 0px 0px 1px 0px red; }
+    padding: 6px !important;
+    resize: none;
+    padding: 0px 15px;
+    border-radius: 300px;
+    outline: none;
+    font-size: 85%;
+    border-radius: 20px; }
+    .mozaicForm .input-multiline.has-error {
+      border: 1px solid #f15921; }
+    .mozaicForm .input-multiline:focus {
+      border: 1px solid #ffc238; }
+  .mozaicForm .dropdown-select {
+    padding: 0px 15px;
+    border-radius: 300px;
+    outline: none;
+    font-size: 85%; }
+    .mozaicForm .dropdown-select.has-error {
+      border: 1px solid #f15921; }
+    .mozaicForm .dropdown-select:focus {
+      border: 1px solid #ffc238; }
+  .mozaicForm .input-read-only, .mozaicForm .input-single-line[readonly], .mozaicForm .input-single-line[disabled], .mozaicForm .input-multiline[readonly], .mozaicForm .input-multiline[disabled], .mozaicForm .dropdown-select[readonly], .mozaicForm .dropdown-select[disabled] {
+    background-color: #e0e0e0;
+    border-color: #939393; }
   .mozaicForm .info-container {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -774,7 +870,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     background: -moz-linear-gradient(bottom, #0086be, #0065a9);
     background: linear-gradient(to bottom, #0086be, #0065a9);
     color: white;
-    font-family: RweTextMedium;
+    font-family: Innogy-Regular;
     padding: 12px 12px;
     border-radius: 4px;
     font-size: 11px;
@@ -794,7 +890,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     .mozaicForm .breadcrumb-navigation .nav-text {
       position: absolute;
       left: 54px;
-      font-family: RweHeadlineRegular;
+      font-family: Innogy-Medium;
       font-size: 20px;
       white-space: nowrap; }
   .mozaicForm .tab-navigation {
@@ -816,7 +912,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    font-family: MyriadPro;
+    font-family: Innogy-Medium;
     font-size: 14px;
     color: #58585a;
     white-space: nowrap; }
@@ -835,7 +931,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    font-family: RweHeadlineRegular;
+    font-family: Innogy-Medium;
     font-size: 28px;
     color: #58585a;
     white-space: nowrap; }
@@ -844,7 +940,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     white-space: nowrap; }
     .mozaicForm .checkbox-control .checkbox-label {
       margin-left: 6px;
-      font-family: MyriadPro;
+      font-family: Innogy-Medium;
       font-size: 14px;
       color: #58585a;
       white-space: nowrap; }
@@ -853,7 +949,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     white-space: nowrap; }
     .mozaicForm .radio-control .radio-label {
       margin-left: 6px;
-      font-family: MyriadPro;
+      font-family: Innogy-Medium;
       font-size: 14px;
       color: #58585a;
       white-space: nowrap; }
@@ -861,38 +957,73 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     width: 100%; }
   .mozaicForm .data-table {
     width: 250px;
-    border: 1px solid #4b8ad1;
-    height: auto !important; }
-    .mozaicForm .data-table tr th:first-child, .mozaicForm .data-table tr td:first-child {
+    height: auto !important;
+    background-color: #e9e7e7;
+    border: 1px solid white;
+    white-space: nowrap; }
+    .mozaicForm .data-table th:first-child, .mozaicForm .data-table td:first-child {
       display: none; }
+    .mozaicForm .data-table tr {
+      background-color: #e9e7e7 !important; }
+      .mozaicForm .data-table tr th.sorting_1, .mozaicForm .data-table tr td.sorting_1 {
+        background-color: #d5d2d2 !important; }
+      .mozaicForm .data-table tr th, .mozaicForm .data-table tr td {
+        border-bottom: 1px solid #0d499a; }
     .mozaicForm .data-table tfoot {
+      display: none; }
+      .mozaicForm .data-table tfoot th input {
+        width: 53px; }
+      .mozaicForm .data-table tfoot th input:focus {
+        width: 180px; }
+    .mozaicForm .data-table thead tr {
+      background-color: #0d499a !important; }
+      .mozaicForm .data-table thead tr th {
+        color: white;
+        white-space: nowrap; }
+    .mozaicForm .data-table tbody tr {
+      background-color: #f7f7f7;
+      color: black; }
+      .mozaicForm .data-table tbody tr:hover {
+        background-color: #d5d2d2 !important; }
+    .mozaicForm .data-table#uic_table tfoot {
       display: table-header-group; }
-      .mozaicForm .data-table tfoot th {
-        padding: 10px 18px 6px 10px; }
-        .mozaicForm .data-table tfoot th input {
-          width: 53px; }
-        .mozaicForm .data-table tfoot th input:focus {
-          width: 180px; }
     .mozaicForm .data-table .actionIcons {
       width: 60px; }
       .mozaicForm .data-table .actionIcons .fa {
         font-size: 16px;
-        margin-right: 5px;
-        cursor: pointer; }
-      .mozaicForm .data-table .actionIcons .fa-edit, .mozaicForm .data-table .actionIcons .fa-search, .mozaicForm .data-table .actionIcons .fa-sign-in {
-        color: #0065a9; }
+        margin-right: 10px;
+        cursor: pointer;
+        color: #0d499a; }
+        .mozaicForm .data-table .actionIcons .fa:hover {
+          color: #00b2e6; }
       .mozaicForm .data-table .actionIcons .fa-remove {
-        color: #e3001b; }
+        color: #f15921; }
+        .mozaicForm .data-table .actionIcons .fa-remove:hover {
+          color: #bc2e18; }
       .mozaicForm .data-table .actionIcons .fa-sign-in {
         font-size: 20px; }
-    .mozaicForm .data-table thead {
-      white-space: nowrap; }
+    .mozaicForm .data-table .colorRectangle {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: middle; }
+    .mozaicForm .data-table input {
+      padding: 0px 15px;
+      border-radius: 300px;
+      outline: none;
+      font-size: 85%; }
+      .mozaicForm .data-table input.has-error {
+        border: 1px solid #f15921; }
+      .mozaicForm .data-table input:focus {
+        border: 1px solid #ffc238; }
   .mozaicForm .data-table-simple-mode {
     background-color: white; }
     .mozaicForm .data-table-simple-mode tfoot {
       display: none; }
   .mozaicForm .name-value-list {
-    font-family: MyriadPro;
+    font-family: Innogy-Medium;
     font-size: 14px; }
     .mozaicForm .name-value-list tr {
       border-top: 1px solid #01a1f7; }
@@ -922,17 +1053,18 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .mozaicForm .visible-panel-pale-background {
     background-color: #cce0f5; }
   .mozaicForm .named-panel {
-    background-color: #cce0f5; }
+    background-color: #f4f4f4;
+    color: black !important; }
     .mozaicForm .named-panel .named-panel-header {
       position: absolute;
       left: 0px;
       top: 0px;
       right: 0px;
       min-height: 25px;
-      padding: 1px 6px;
-      background-color: #0066cc;
+      padding: 6px;
+      background-color: #f3962c;
       color: white;
-      font-family: MyriadPro;
+      font-family: Innogy-Regular;
       font-size: 18px; }
   .mozaicForm .removePanelIcon {
     -webkit-touch-callout: none;
@@ -951,7 +1083,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
 
 .app-alert {
   width: 100%;
-  font-family: MyriadPro;
+  font-family: Innogy-Medium;
   font-size: 18px;
   padding: 6px 20px;
   border-width: 1px;
@@ -959,26 +1091,26 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .app-alert .alertSymbol {
     padding-right: 10px; }
   .app-alert .closeAlertIcon {
-    color: #e3001b;
+    color: white;
     float: right;
     margin-top: 4px;
     cursor: pointer; }
 
 .app-alert-success {
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6; }
+  color: white;
+  background-color: #60bb46;
+  border: none; }
 
 .app-alert-success.app-alert-odd {
-  background-color: #c9e2b4; }
+  background-color: #56a93e; }
 
 .app-alert-error {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1; }
+  color: white;
+  background-color: #f15921;
+  border: none; }
 
 .app-alert-error.app-alert-odd {
-  background-color: #ebcccc; }
+  background-color: #ea4a0f; }
 
 .app-alert-warning {
   color: #8a6d3b;
@@ -999,54 +1131,160 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
 .hiddenForm {
   display: none; }
 
-.dataTables_wrapper input, .dataTables_wrapper select {
-  border: 1px solid #4b8ad1;
-  height: 25px; }
+/*
+.dataTables_wrapper {
+    input, select {
+        border: 1px solid #4b8ad1;
+        height: 25px;
+    }
 
-.dataTables_wrapper .dataTables_paginate {
-  padding-top: 0.600em !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button {
-    background: #4fa7ff !important;
-    padding: 2px 8px !important;
-    border-radius: 0px !important;
-    border: none !important;
-    color: white !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-      color: white !important;
-      background: #519ae2 !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-      background-color: #0066cc !important;
-      color: white !important; }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-        color: white !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
-      background-color: transparent !important;
-      color: black !important; }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
-        color: #494d57 !important; }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled {
-        opacity: 0.4; }
-        .dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled:hover {
-          color: black !important; }
-
+    .dataTables_paginate {
+        padding-top: 0.600em !important;
+        .paginate_button {
+            background: #4fa7ff !important;
+            padding: 2px 8px !important;
+            border-radius: 0px !important;
+            border: none !important;
+            color: white !important;
+            &:hover {
+                color: white !important;
+                background: #519ae2 !important;
+            }
+            &.current {
+                background-color: #0066cc !important;
+                color: white !important;
+                &:hover {
+                    color: white !important;
+                }
+            }
+            &.previous, &.next {
+                background-color: transparent !important;
+                color: black !important;
+                &:hover {
+                    color: #494d57 !important;
+                }
+                &.disabled {
+                    opacity: 0.4;
+                    &:hover {
+                        color: black !important;
+                    }
+                }
+            }
+        }
+    }
+}
 table.dataTable {
-  margin: 0 !important; }
-  table.dataTable thead, table.dataTable tr th {
-    background-color: #f1f1f1; }
-  table.dataTable thead th {
-    border-bottom: 1px solid #4b8ad1; }
-  table.dataTable tfoot th {
-    border-bottom: 1px solid #beccdc;
-    border-top: none;
-    padding: 0 !important; }
-    table.dataTable tfoot th input {
-      width: 100% !important;
-      border: none !important;
-      border-right: 1px solid #beccdc !important;
-      padding: 0px 5px;
-      box-sizing: border-box; }
-    table.dataTable tfoot th:last-child input {
-      border-right: none !important; }
+    margin: 0 !important;
+
+    //mšebela - oprava nastavování width tabulek v mozaicu
+    //width: 100% !important;
+
+    thead, tr th {
+        background-color: #f1f1f1;
+    }
+
+    thead th {
+        border-bottom: 1px solid #4b8ad1;
+    }
+
+    tfoot th {
+        border-bottom: 1px solid #beccdc;
+        border-top: none;
+        padding: 0 !important;
+
+        input {
+            width: 100% !important;
+            border: none !important;
+            border-right: 1px solid #beccdc !important;
+            padding: 0px 5px;
+            box-sizing: border-box;
+        }
+        
+        &:last-child input {
+            border-right: none !important;
+        }
+    }
+}*/
+.appPanel {
+  border-radius: 0 !important;
+  color: white !important; }
+  .appPanel.appColor0 {
+    background: #f3962c !important; }
+    .appPanel.appColor0:hover {
+      background: #cd7c2b !important;
+      cursor: pointer; }
+  .appPanel.appColor1 {
+    background: #c23584 !important; }
+    .appPanel.appColor1:hover {
+      background: #662352 !important;
+      cursor: pointer; }
+  .appPanel.appColor2 {
+    background: #e52f5b !important; }
+    .appPanel.appColor2:hover {
+      background: #b02c48 !important;
+      cursor: pointer; }
+  .appPanel.appColor3 {
+    background: #e9592c !important; }
+    .appPanel.appColor3:hover {
+      background: #af3a27 !important;
+      cursor: pointer; }
+  .appPanel.appColor4 {
+    background: #68b03d !important; }
+    .appPanel.appColor4:hover {
+      background: #00845a !important;
+      cursor: pointer; }
+  .appPanel.appColor5 {
+    background: #009a97 !important; }
+    .appPanel.appColor5:hover {
+      background: #006a67 !important;
+      cursor: pointer; }
+  .appPanel.appColor6 {
+    background: #00a5d0 !important; }
+    .appPanel.appColor6:hover {
+      background: #363f7f !important;
+      cursor: pointer; }
+
+a {
+  color: black; }
+  a:hover {
+    color: #f3962c; }
+
+input, select {
+  color: black; }
+
+input[type=text], input[type=search], select {
+  border: 1px solid #b8b4ab;
+  padding: 0px 15px;
+  border-radius: 300px;
+  outline: none;
+  font-size: 85%; }
+  input[type=text].has-error, input[type=search].has-error, select.has-error {
+    border: 1px solid #f15921; }
+  input[type=text]:focus, input[type=search]:focus, select:focus {
+    border: 1px solid #ffc238; }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0px 15px;
+  border-radius: 300px;
+  outline: none;
+  font-size: 85%;
+  padding: 1px;
+  text-align: center;
+  color: white !important;
+  border: none !important;
+  background: #69615f !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.has-error {
+    border: 1px solid #f15921; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+    border: 1px solid #ffc238; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: white !important;
+    border: none !important;
+    background: #f3962c !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+    background: transparent !important;
+    color: black !important;
+    padding: 0px 5px; }
 
 body.tapestryModule .toolboxItem {
   min-width: 218px;
@@ -2146,6 +2384,34 @@ body.dbDesignerModule {
   font-family: 'Glyphicons Halflings';
   src: url("fonts/glyphicons-halflings-regular.eot");
   src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+
+@font-face {
+  font-family: Innogy-Light;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Light.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Light.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Light.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Light.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Light.svg#Innogy-Light?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Regular;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Regular.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Regular.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Regular.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Regular.svg#Innogy-Regular?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Medium;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Medium.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Medium.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Medium.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Medium.svg#Innogy-Medium?v=1.1.3) format("svg"); }
+
+@font-face {
+  font-family: Innogy-Bold;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot?v=1.1.3);
+  src: url(/Content/fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
 
 body.portalModule {
   background-color: #f2f2f3; }

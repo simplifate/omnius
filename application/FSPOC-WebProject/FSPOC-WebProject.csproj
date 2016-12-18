@@ -301,6 +301,10 @@
       <DependentUpon>bundle.css</DependentUpon>
     </Content>
     <Content Include="Content\css\ErrorCss.css" />
+    <Content Include="Content\fonts\innogy\Innogy-Bold.svg" />
+    <Content Include="Content\fonts\innogy\Innogy-Light.svg" />
+    <Content Include="Content\fonts\innogy\Innogy-Medium.svg" />
+    <Content Include="Content\fonts\innogy\Innogy-Regular.svg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\scss\Cortex.scss" />
     <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.css">
@@ -954,6 +958,19 @@
     <Content Include="Content\scss\Mozaic.scss" />
     <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.scss" />
     <Content Include="Content\scss\MozaicTemplates\PortalInternichAudituTemplate.scss" />
+    <Content Include="Content\scss\InnogyMixins.scss" />
+    <Content Include="Content\fonts\innogy\Innogy-Bold.eot" />
+    <Content Include="Content\fonts\innogy\Innogy-Bold.ttf" />
+    <Content Include="Content\fonts\innogy\Innogy-Bold.woff" />
+    <Content Include="Content\fonts\innogy\Innogy-Light.eot" />
+    <Content Include="Content\fonts\innogy\Innogy-Light.ttf" />
+    <Content Include="Content\fonts\innogy\Innogy-Light.woff" />
+    <Content Include="Content\fonts\innogy\Innogy-Medium.eot" />
+    <Content Include="Content\fonts\innogy\Innogy-Medium.ttf" />
+    <Content Include="Content\fonts\innogy\Innogy-Medium.woff" />
+    <Content Include="Content\fonts\innogy\Innogy-Regular.eot" />
+    <Content Include="Content\fonts\innogy\Innogy-Regular.ttf" />
+    <Content Include="Content\fonts\innogy\Innogy-Regular.woff" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
