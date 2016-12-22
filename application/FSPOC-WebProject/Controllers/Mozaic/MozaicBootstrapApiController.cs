@@ -136,6 +136,37 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
         }
 
+        [Route("api/mozaic-bootstrap/apps/{appId}/pages/{pageId}")]
+        [HttpPost]
+        public void ReplacePage(int appId, int pageId, MozaicBootstrapAjaxPage postData)
+        {
+            try {
+                using (var context = DBEntities.instance) 
+                {
+                    var app = context.Applications.Find(appId);
+                    app.MozaicChangedSinceLastBuild = true;
+                    app.TapestryChangedSinceLastBuild = true;
+
+                    var requestedPage = context.MozaicBootstrapPages.Find(pageId);
+                    deleteComponents(requestedPage, context);
+
+                    requestedPage.Name = postData.Name;
+                    requestedPage.Content = postData.Content;
+                    requestedPage.IsDeleted = postData.IsDeleted;
+
+                    //foreach (var ajaxComponent in postData.Components)
+                    //    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = $"Mozaic editor: error replacing page with id={pageId} (POST api/mozaic-bootstrap/apps/{appId}/pages/{pageId}) " +
+                    $"Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
         /*[Route("api/mozaic-editor/apps/{appId}/pages/{pageId}")]
         [HttpGet]
         public AjaxMozaicEditorPage GetPage(int appId, int pageId)
@@ -226,37 +257,6 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
         }
         
-        [Route("api/mozaic-editor/apps/{appId}/pages/{pageId}")]
-        [HttpPost]
-        public void ReplacePage(int appId, int pageId, AjaxMozaicEditorPage postData)
-        {
-            try
-            {
-                using (var context = DBEntities.instance)
-                {
-                    var app = context.Applications.Find(appId);
-                    app.MozaicChangedSinceLastBuild = true;
-                    app.TapestryChangedSinceLastBuild = true;
-                    var requestedPage = context.MozaicEditorPages.Find(pageId);
-                    deleteComponents(requestedPage, context);
-                    requestedPage.Name = postData.Name;
-                    requestedPage.IsModal = postData.IsModal;
-                    requestedPage.ModalWidth = postData.ModalWidth;
-                    requestedPage.ModalHeight = postData.ModalHeight;
-                    foreach (var ajaxComponent in postData.Components)
-                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
-                    requestedPage.IsDeleted = false;
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = $"Mozaic editor: error replacing page with id={pageId} (POST api/mozaic-editor/apps/{appId}/pages/{pageId}) " +
-                    $"Exception message: {ex.Message}";
-                throw GetHttpInternalServerErrorResponseException(errorMessage);
-            }
-        }
-        
         private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent,
             MozaicEditorPage page, MozaicEditorComponent parentComponent)
         {
@@ -287,29 +287,38 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
             return newComponent;
         }
-        private void deleteComponents(MozaicEditorPage page, DBEntities context)
+        */
+
+        private void deleteComponents(MozaicBootstrapPage page, DBEntities context)
         {
-            var componentList = new List<MozaicEditorComponent>();
-            foreach (var component in page.Components.Where(c => c.ParentComponent == null))
+            var componentList = new List<MozaicBootstrapComponent>();
+            var allComponents = new List<MozaicBootstrapComponent>();
+
+            foreach (var component in page.Components.Where(c => c.ParentComponent == null)) {
                 componentList.Add(component);
-            foreach (var component in componentList)
-            {
-                var childComponentList = new List<MozaicEditorComponent>();
-                if (component.ChildComponents != null)
-                {
-                    foreach (var childComponent in component.ChildComponents)
-                        childComponentList.Add(childComponent);
-                    foreach (var childComponent in childComponentList)
-                    {
-                        component.ChildComponents.Remove(childComponent);
-                        context.Entry(childComponent).State = EntityState.Deleted;
+            }
+
+            while(componentList.Count > 0) {
+                var component = componentList[0];
+
+                allComponents.Add(component);
+                context.Entry(component).State = EntityState.Deleted;
+
+                if(component.ChildComponents != null && component.ChildComponents.Count > 0) {
+                    foreach(var child in component.ChildComponents) {
+                        componentList.Add(child);
                     }
                 }
+
+                componentList.RemoveAt(0);
+            }
+
+            foreach(var component in allComponents) {
                 page.Components.Remove(component);
-                context.Entry(component).State = EntityState.Deleted;
             }
             context.SaveChanges();
-        }*/
+        }
+
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);

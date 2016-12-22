@@ -21,11 +21,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap
 
         [ImportExportIgnore(IsKey = true)]
         public int Id { get; set; }
+        public string ElmId { get; set; }
         public string Tag { get; set; }
         public string UIC { get; set; }
 
         [DataType(DataType.Text)]
         public string Attributes { get; set; }
+
+        [DataType(DataType.Text)]
+        public string Properties { get; set; }
 
         [DataType(DataType.Text)]
         public string Content { get; set; }

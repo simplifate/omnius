@@ -146,8 +146,8 @@
                 $('#currentPageVersion').val('Bootstrap'); 
                 $('#headerPageName').text(newPageName == '' ? 'Nepojmenovaná stránka' : newPageName);
                     
-                if (SaveRequested) {
-                    MBE.io.save();
+                if (MBE.saveRequested) {
+                    MBE.io.doSave();
                 }
                 else {
                     pageSpinner.hide();
@@ -209,6 +209,62 @@
         else {
             MBE.io.doSave();
         }
+    },
+
+    doSave: function()
+    {
+        pageSpinner.show();
+        MBE.saveRequested = false;
+        
+        var postData = {
+            Name: $('#headerPageName').text(),
+            Content: MBE.io.getPageDOM(),
+            IsDeleted: false,
+            Components: MBE.io.getComponentsArray(MBE.workspace)
+        };
+
+        var appId = $('#currentAppId').val();
+        var pageId = $('#currentPageId').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages/" + pageId,
+            data: postData,
+            complete: function () {
+                pageSpinner.hide();
+            },
+            success: function () { alert("OK") },
+            error: MBE.ajaxError
+        });
+    },
+
+    getPageDOM: function()
+    {
+        var dom = $(MBE.workspace).clone(true);
+        return dom.html();
+    },
+
+    getComponentsArray: function(parent)
+    {
+        var components = new Array();
+        var uicList = $(parent).find('> [data-uic]');
+
+        for (var i = 0; i < uicList.length; i++)
+        {
+            var node = uicList.eq(i);
+            var component = {
+                ElmId:              node.attr('id') ? node.attr('id') : '',
+                Tag:                node[0].tagName.toLowerCase(),
+                UIC:                node.attr('[data-uic]'),
+                Attributes:         MBE.io.filterAttrs(MBE.io.getAttrs(node[0])),
+                Properties:         node.attr('data-properties') ? node.attr('data-properties') : '',
+                Content:            MBE.io.filterUICContent(node),
+                ChildComponents:    MBE.io.getComponentsArray(node)
+            };
+            components.push(component);
+        }
+
+        return components;
     },
 
     /*************************************************************/
@@ -620,6 +676,9 @@
         self.allComponents.push(c);
     },
 
+    /************************************************/
+    /* TOOLS                                        */
+    /************************************************/
     getProperty: function(name, properties)
     {
         var propList = properties ? properties.split(/; */g) : [];
@@ -630,5 +689,27 @@
             }
         }
         return '';
+    },
+
+    getAttrs: function(el) {
+        return [].slice.call(el.attributes).map((attr) => {
+            return {
+                name: attr.name,
+                value: attr.value
+            }
+        });
+    },
+
+    filterAttrs: function(attrs) {
+        var finalAttrs = new Array();
+
+        for(var i = 0; i < attrs.length; i++) {
+            if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties']) != -1) {
+                continue;
+            }
+            finalAttrs.push(attr[i]);
+        }
+
+        return JSON.stringify(finalAttrs);
     }
 }
