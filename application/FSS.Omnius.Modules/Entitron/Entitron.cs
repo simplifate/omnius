@@ -108,5 +108,17 @@ namespace FSS.Omnius.Modules.Entitron
                 return false;
             }
         }
+
+        public bool TruncateTable(string tableName)
+        {
+            try {
+                var cmd = new SqlCommand($"TRUNCATE TABLE {tableName};", new SqlConnection(connectionString));
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
     }
 }

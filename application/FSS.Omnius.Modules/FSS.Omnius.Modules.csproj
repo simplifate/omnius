@@ -1035,6 +1035,7 @@
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\TruncateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCurrentTimeAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetDictionariesFromRowsAction.cs" />
