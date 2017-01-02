@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron
     using Entity.Master;
     using Service;
     using Table;
-
+    using System.Data.SqlClient;
     public class Entitron : IModule
     {
         public const string connectionString = "data source=omnius-develop.database.windows.net;initial catalog=Omnius_Dev;user id=fss;password=dLsvPd$3?Wh%_52F;MultipleActiveResultSets=True;App=EntityFramework;Min Pool Size=3;Load Balance Timeout=180;";
@@ -86,6 +86,27 @@ namespace FSS.Omnius.Modules.Entitron
                 return null;
 
             return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
+        }
+
+        public bool ExecSP(string procedureName, Dictionary<string, string> parameters)
+        {
+            string execParams = "";
+            List<string> execParamsList = new List<string>();
+            if(parameters.Count > 0) {
+                foreach(KeyValuePair<string,string> p in parameters) {
+                    execParamsList.Add($"@{p.Key} = '{p.Value}'");
+                }
+                execParams = " " + string.Join(", ", execParamsList);
+            }
+
+            try {
+                var cmd = new SqlCommand($"EXEC {procedureName}{execParams};", new SqlConnection(connectionString));
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch(Exception e) {
+                return false;
+            }
         }
     }
 }

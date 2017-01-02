@@ -278,6 +278,7 @@
     <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificDefault.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificIndex.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_Exec.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
@@ -1003,6 +1004,10 @@
     <Compile Include="Migrations\201612141429553_MozaicBootstrapEditorModels.Designer.cs">
       <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.cs" />
+    <Compile Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.Designer.cs">
+      <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1043,6 +1048,7 @@
     <Compile Include="Tapestry\Actions\Entitron\OpenUrlAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\OrderByColumnAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SearchInTableAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ExecAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectCountAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectFromViewAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectTopAction.cs" />
@@ -1635,6 +1641,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612141429553_MozaicBootstrapEditorModels.resx">
       <DependentUpon>201612141429553_MozaicBootstrapEditorModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.resx">
+      <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
