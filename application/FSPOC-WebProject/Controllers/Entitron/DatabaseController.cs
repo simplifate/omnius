@@ -213,6 +213,7 @@ namespace FSS.Omnius.Controllers.Entitron
                         });
                     }
                     requestedApp.DbSchemeLocked = dbSchemeLocked = false;
+                    commit.IsComplete = true;
                     context.SaveChanges();
                 }
             }

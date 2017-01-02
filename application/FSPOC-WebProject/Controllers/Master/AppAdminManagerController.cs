@@ -142,6 +142,8 @@ namespace FSS.Omnius.Controllers.Master
                             var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
                             if (dbSchemeCommit == null)
                                 dbSchemeCommit = new DbSchemeCommit();
+                            if (!dbSchemeCommit.IsComplete)
+                                throw new Exception("Pozor! Databázové schéma je špatně uložené, build nemůže pokračovat, protože by způsobil ztrádtu dat!");
                             new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core, x => Send(x));
                             app.DbSchemeLocked = false;
                             app.EntitronChangedSinceLastBuild = false;

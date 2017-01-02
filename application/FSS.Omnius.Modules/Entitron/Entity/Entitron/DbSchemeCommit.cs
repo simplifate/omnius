@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public int Id { get; set; }
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
+        public bool IsComplete { get; set; }
 
         public virtual ICollection<DbTable> Tables { get; set; }
         public virtual ICollection<DbRelation> Relations { get; set; }
@@ -22,6 +23,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
             Tables    = new List<DbTable>();
             Relations = new List<DbRelation>();
             Views     = new List<DbView>();
+            IsComplete = false;
         }
     }
 }

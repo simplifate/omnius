@@ -1008,6 +1008,10 @@
     <Compile Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.Designer.cs">
       <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.cs" />
+    <Compile Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.Designer.cs">
+      <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1644,6 +1648,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701021100138_MozaicBootstrapModelsUpdate.resx">
       <DependentUpon>201701021100138_MozaicBootstrapModelsUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.resx">
+      <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
