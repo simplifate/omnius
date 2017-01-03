@@ -2,11 +2,10 @@
 
     allComponents: null,
 
-    loadPageList: function()
-    {
+    loadPageList: function () {
         $('#page-table tbody tr').remove();
         $('#choose-page-dialog .spinner-2').show();
-        
+
         var appId = $('#currentAppId').val();
         $.ajax({
             type: "GET",
@@ -25,14 +24,13 @@
                     row.append('<td width="5%" align="center">' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
                     row.appendTo(tbody);
                 }
-                
+
                 $('#choose-page-dialog .spinner-2').hide();
             }
         });
     },
 
-    loadDeletedPageList: function()
-    {
+    loadDeletedPageList: function () {
         $('#trash-page-table tbody tr').remove();
         $('#trash-page-dialog .spinner-2').show();
 
@@ -59,8 +57,7 @@
         });
     },
 
-    loadPage: function()
-    {
+    loadPage: function () {
         var selected = $('#page-table tr.highlightedRow');
         if (selected.length) {
             $('#choose-page-dialog').dialog('close');
@@ -94,8 +91,7 @@
         }
     },
 
-    reloadPage: function()
-    {
+    reloadPage: function () {
         if ($('#currentPageVersion').val() == 'Legacy') {
             MBE.io.loadLegacyPage('current');
         }
@@ -104,8 +100,7 @@
         }
     },
 
-    loadLegacyPage: function(pageId) 
-    {
+    loadLegacyPage: function (pageId) {
         pageSpinner.show();
         pageId = pageId == "current" ? $('#currentPageId').val() : pageId;
 
@@ -122,8 +117,7 @@
         });
     },
 
-    createPage: function()
-    {
+    createPage: function () {
         pageSpinner.show();
         $('#new-page-dialog').dialog('close');
 
@@ -135,7 +129,7 @@
             IsDeleted: false,
             Components: []
         };
-        
+
         $.ajax({
             type: "POST",
             url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
@@ -143,9 +137,9 @@
             error: MBE.ajaxError,
             success: function (data) {
                 $('#currentPageId').val(data);
-                $('#currentPageVersion').val('Bootstrap'); 
+                $('#currentPageVersion').val('Bootstrap');
                 $('#headerPageName').text(newPageName == '' ? 'Nepojmenovaná stránka' : newPageName);
-                    
+
                 if (MBE.saveRequested) {
                     MBE.io.doSave();
                 }
@@ -156,13 +150,10 @@
         });
     },
 
-    deletePage: function() 
-    {
+    deletePage: function () {
         var selected = $('#page-table tr.highlightedRow');
-        if (selected.length) 
-        {
-            if (confirm('Are you sure you want to delete this page?')) 
-            {
+        if (selected.length) {
+            if (confirm('Are you sure you want to delete this page?')) {
                 pageSpinner.show();
                 var appId = $('#currentAppId').val();
                 var pageId = selected.attr('data-id');
@@ -199,8 +190,7 @@
         MBE.changedSinceLastSave = true;
     },
 
-    savePage: function()
-    {
+    savePage: function () {
         var pageId = Number($('#currentPageId').val());
         if (!pageId || isNaN(pageId)) {
             MBE.saveRequested = true;
@@ -211,11 +201,10 @@
         }
     },
 
-    doSave: function()
-    {
+    doSave: function () {
         pageSpinner.show();
         MBE.saveRequested = false;
-        
+
         var postData = {
             Name: $('#headerPageName').text(),
             Content: MBE.io.getPageDOM(),
@@ -238,28 +227,25 @@
         });
     },
 
-    getPageDOM: function()
-    {
+    getPageDOM: function () {
         var dom = $(MBE.workspace).clone(true);
         return dom.html();
     },
 
-    getComponentsArray: function(parent)
-    {
+    getComponentsArray: function (parent) {
         var components = new Array();
         var uicList = $(parent).find('> [data-uic]');
 
-        for (var i = 0; i < uicList.length; i++)
-        {
+        for (var i = 0; i < uicList.length; i++) {
             var node = uicList.eq(i);
             var component = {
-                ElmId:              node.attr('id') ? node.attr('id') : '',
-                Tag:                node[0].tagName.toLowerCase(),
-                UIC:                node.attr('[data-uic]'),
-                Attributes:         MBE.io.filterAttrs(MBE.io.getAttrs(node[0])),
-                Properties:         node.attr('data-properties') ? node.attr('data-properties') : '',
-                Content:            MBE.io.filterUICContent(node),
-                ChildComponents:    MBE.io.getComponentsArray(node)
+                ElmId: node.attr('id') ? node.attr('id') : '',
+                Tag: node[0].tagName.toLowerCase(),
+                UIC: node.attr('[data-uic]'),
+                Attributes: MBE.io.filterAttrs(MBE.io.getAttrs(node[0])),
+                Properties: node.attr('data-properties') ? node.attr('data-properties') : '',
+                Content: MBE.io.filterUICContent(node),
+                ChildComponents: MBE.io.getComponentsArray(node)
             };
             components.push(component);
         }
@@ -270,14 +256,13 @@
     /*************************************************************/
     /* CONVERSION METHODS                                        */
     /*************************************************************/
-    convert: function(data)
-    {
+    convert: function (data) {
         if (!data.Id) {
             return;
         }
         MBE.io.allComponents = new Array();
         MBE.clearWorkspace();
-        
+
         var container = $(MBE.types.containers.templates['container']);
         container.attr('data-uic', 'containers|container').appendTo(MBE.workspace);
 
@@ -289,7 +274,7 @@
         }
 
         // Pokusíme se naskládat inputy ke správným labelům
-        
+
         var boundInputs = [];
         for (var i = 0; i < MBE.io.allComponents.length; i++) {
             var c1 = MBE.io.allComponents[i];
@@ -300,12 +285,10 @@
                 c1.PositionY = parseInt(c1.PositionY);
                 c1.Width = parseInt(c1.Width);
 
-                for (var j = 0; j < MBE.io.allComponents.length; j++) 
-                {
+                for (var j = 0; j < MBE.io.allComponents.length; j++) {
                     var c2 = MBE.io.allComponents[j];
-                    
-                    if (c2.item.is('input:not([type=radio],[type=checkbox]), textarea, select, .form-control-static') && $.inArray(c2.Id, boundInputs) === -1) 
-                    {   
+
+                    if (c2.item.is('input:not([type=radio],[type=checkbox]), textarea, select, .form-control-static') && $.inArray(c2.Id, boundInputs) === -1) {
                         c2.PositionX = parseInt(c2.PositionX);
                         c2.PositionY = parseInt(c2.PositionY);
 
@@ -324,15 +307,14 @@
                     }
                 }
 
-                if(mostLikelyInput != null) 
-                {
+                if (mostLikelyInput != null) {
                     c1.item.next().append(mostLikelyInput.item);
                     c1.item.attr('for', mostLikelyInput.Name);
                     boundInputs.push(mostLikelyInput.Id);
                 }
             }
         }
-        
+
         $('#currentPageId').val(data.Id);
         $('#currentPageVersion').val('Legacy');
         $('#headerPageName').text(data.Name);
@@ -340,8 +322,7 @@
         MBE.DnD.updateDOM();
     },
 
-    convertDiv: function(nc, c)
-    {
+    convertDiv: function (nc, c) {
         if (c.Classes.indexOf('panel-component') !== -1) {
             nc.item = $(MBE.types.containers.templates.panel);
             nc.item
@@ -367,8 +348,7 @@
                     .html(c.Label)
                     .attr('data-uic', 'form|static-control');
             }
-            else
-            {
+            else {
                 nc.item = $(MBE.types.form.templates.label);
                 nc.item
                     .html(c.Label)
@@ -409,7 +389,7 @@
 
             nc.item = $(MBE.types.misc.templates.breadcrumbs);
             nc.item.attr('data-uic', 'misc|breadcrumbs');
-            
+
             var item = $(MBE.types.misc.templates['breadcrumbs-item']);
             var itemActive = $(MBE.types.misc.templates['breadcrumbs-active']);
             var itemInactive = $(MBE.types.misc.templates['breadcrumbs-inactive']);
@@ -439,7 +419,7 @@
         }
     },
 
-    convertSelect: function(nc, c) {
+    convertSelect: function (nc, c) {
         nc.item = $(MBE.types.form.templates.select);
         nc.item.attr({
             'data-uic': 'form|select',
@@ -455,9 +435,8 @@
         }
     },
 
-    convertInput: function(nc, c) {
-        if (c.Classes.indexOf('input-single-line') !== -1)
-        {
+    convertInput: function (nc, c) {
+        if (c.Classes.indexOf('input-single-line') !== -1) {
             nc.item = $(MBE.types.form.templates['input-text']);
             nc.item.attr('data-uic', 'form|input-text');
         }
@@ -472,11 +451,11 @@
                 'data-uic': 'form|input-color'
             });
         }
-        
+
         nc.item.attr({ name: c.Name });
     },
 
-    convertTextArea: function(nc, c) {
+    convertTextArea: function (nc, c) {
         nc.item = $(MBE.types.form.templates.textarea);
         nc.item.attr({
             'data-uic': 'form|textarea',
@@ -485,7 +464,7 @@
         });
     },
 
-    convertButton: function(nc, c) {
+    convertButton: function (nc, c) {
         nc.item = $(MBE.types.controls.templates.button);
         nc.item.attr({
             'data-uic': 'controls|button',
@@ -510,9 +489,8 @@
         }
     },
 
-    convertTable: function(nc, c) {
-        if (c.Classes.indexOf('data-table') !== -1) 
-        {
+    convertTable: function (nc, c) {
+        if (c.Classes.indexOf('data-table') !== -1) {
             nc.item = $(MBE.types.ui.templates['data-table']);
             nc.afterAppend = MBE.types.ui.buildDataTable;
 
@@ -531,13 +509,13 @@
 
                 var actionList = [];
                 for (var i = 0; i < actions.length; i++) {
-                    var a = null; 
+                    var a = null;
                     switch (actions[i]) {
-                        case 'edit'     : a = { icon: 'fa fa-edit', action: 'edit', title: 'upravit' }; break;
-                        case 'details'  : a = { icon: 'fa fa-search', action: 'details', title: 'detail' }; break;
-                        case 'delete'   : a = { icon: 'fa fa-remove', action: 'delete', title: 'smazat' }; break;
-                        case 'download' : a = { icon: 'fa fa-download', action: 'download', title: 'stáhnout' }; break;
-                        case 'enter'    : a = { icon: 'fa fa-sign-in', action: 'enter', title: 'vstoupit' }; break;
+                        case 'edit': a = { icon: 'fa fa-edit', action: 'edit', title: 'upravit' }; break;
+                        case 'details': a = { icon: 'fa fa-search', action: 'details', title: 'detail' }; break;
+                        case 'delete': a = { icon: 'fa fa-remove', action: 'delete', title: 'smazat' }; break;
+                        case 'download': a = { icon: 'fa fa-download', action: 'download', title: 'stáhnout' }; break;
+                        case 'enter': a = { icon: 'fa fa-sign-in', action: 'enter', title: 'vstoupit' }; break;
                     }
                     if (a !== null) {
                         actionList.push(a);
@@ -552,9 +530,8 @@
         }
     },
 
-    convertUL: function(nc, c) {
-        if (c.Classes.indexOf('tab-navigation') !== -1)
-        {
+    convertUL: function (nc, c) {
+        if (c.Classes.indexOf('tab-navigation') !== -1) {
             var tabLabelArray = c.Content.split(";");
             tabLabelArray.unshift('<span class="fa fa-home" data-uic="image|icon"></span>');
 
@@ -565,8 +542,7 @@
         }
     },
 
-    convertComponent: function (targetContainer, c)
-    {
+    convertComponent: function (targetContainer, c) {
         var self = MBE.io;
         var nc = {
             item: null,
@@ -578,8 +554,7 @@
             'input-multiline', 'uic', 'button-simple', 'button-large', 'button-small', 'button-extra-small', 'data-table'
         ];
 
-        switch(c.Tag.toLowerCase())
-        {
+        switch (c.Tag.toLowerCase()) {
             case 'div':
                 self.convertDiv(nc, c);
                 break;
@@ -606,8 +581,7 @@
         var item = nc.item;
         var newTarget = nc.newTarget;
 
-        if (item)
-        {
+        if (item) {
             var systemClassesRegExp = new RegExp('(' + systemClasses.join('( |$))|(') + '( |$))', 'g');
             var customClass = c.Classes.replace(systemClassesRegExp, '');
             customClass = customClass.replace(/ {2,}/, ' ').replace(/(^ )|( $)/g, '');
@@ -679,8 +653,7 @@
     /************************************************/
     /* TOOLS                                        */
     /************************************************/
-    getProperty: function(name, properties)
-    {
+    getProperty: function (name, properties) {
         var propList = properties ? properties.split(/; */g) : [];
         for (var i = 0; i < propList.length; i++) {
             var pair = propList[i].split(/=/);
@@ -691,19 +664,20 @@
         return '';
     },
 
-    getAttrs: function(el) {
-        return [].slice.call(el.attributes).map((attr) => {
-            return {
+    getAttrs: function (el) {
+        return [].slice.call(el.attributes).map(function(attr) {
+            var attrs = {
                 name: attr.name,
                 value: attr.value
-            }
+            };
+            return attrs;
         });
     },
 
-    filterAttrs: function(attrs) {
+    filterAttrs: function (attrs) {
         var finalAttrs = new Array();
 
-        for(var i = 0; i < attrs.length; i++) {
+        for (var i = 0; i < attrs.length; i++) {
             if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties']) != -1) {
                 continue;
             }
@@ -712,4 +686,4 @@
 
         return JSON.stringify(finalAttrs);
     }
-}
+};
