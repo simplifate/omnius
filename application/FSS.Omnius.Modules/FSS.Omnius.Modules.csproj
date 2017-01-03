@@ -278,7 +278,6 @@
     <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificDefault.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectSpecificIndex.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_SelectViews.cs" />
-    <Compile Include="Entitron\Sql\SqlQuery_Exec.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewAlter.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewCreate.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_ViewDrop.cs" />
@@ -1012,6 +1011,10 @@
     <Compile Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.Designer.cs">
       <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701031039386_checkContext.cs" />
+    <Compile Include="Migrations\201701031039386_checkContext.Designer.cs">
+      <DependentUpon>201701031039386_checkContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1039,6 +1042,7 @@
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\JSON2DbItemList.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TruncateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCurrentTimeAction.cs" />
@@ -1652,6 +1656,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701021412417_DbSchemeCommit - add IsComplete boolean.resx">
       <DependentUpon>201701021412417_DbSchemeCommit - add IsComplete boolean.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701031039386_checkContext.resx">
+      <DependentUpon>201701031039386_checkContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
