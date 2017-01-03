@@ -452,7 +452,9 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
                                 : blockCommit.AssociatedTableName.Split(',').ToList(),
                         AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
-                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList()
+                                : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList(),
+                        RoleWhitelist = string.IsNullOrEmpty(blockCommit.RoleWhitelist) ? new List<string>()
+                                : blockCommit.RoleWhitelist.Split(',').ToList()
                     };
                     LoadResourceRules(blockCommit, result);
                     LoadWorkflowRules(blockCommit, result);
