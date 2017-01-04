@@ -65,12 +65,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (vars.ContainsKey("ValueType") && (string)vars["ValueType"] == "string")
                 targetValue = (string)vars["Value"];
             else
-                targetValue = int.Parse((string)vars["Value"]);
+                targetValue = Convert.ToInt32(vars["Value"]);
             var idList = new List<object>();
             List<DBItem> results = null;
             if (vars.ContainsKey("TableData"))
             {
-                results = (List<DBItem>)vars["TableData"];
+                if (vars["TableData"] is DBItem)
+                {
+                    var rowList = new List<DBItem>();
+                    rowList.Add((DBItem)vars["TableData"]);
+                }
+                else
+                {
+                    results = (List<DBItem>)vars["TableData"];
+                }
             }
             else if (vars.ContainsKey("IdList"))
             {
