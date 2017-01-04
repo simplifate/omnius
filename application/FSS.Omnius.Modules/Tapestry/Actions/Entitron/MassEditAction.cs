@@ -74,6 +74,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 {
                     var rowList = new List<DBItem>();
                     rowList.Add((DBItem)vars["TableData"]);
+                    results = rowList;
                 }
                 else
                 {
