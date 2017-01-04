@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             ADgroup_Users = new HashSet<ADgroup_User>();
             UsersApplications = new HashSet<UsersApplications>();
+            SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7";
         }
         
         [Required]
