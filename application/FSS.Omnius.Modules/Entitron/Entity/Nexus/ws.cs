@@ -40,10 +40,8 @@
         [Display(Name = "SOAP endpoint")]
         public string SOAP_Endpoint { get; set; }
 
-        [Display(Name = "XMLNS SOAP")]
-        public string XML_NS_SOAP { get; set; }
-
-        [Display(Name = "XMLNS URN")]
-        public string XML_NS_URN { get; set; }
+        [Display(Name = "XMLNS List")]
+        [DataType(DataType.MultilineText)]
+        public string SOAP_XML_NS { get; set; }
     }
 }

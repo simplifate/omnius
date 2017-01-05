@@ -13,14 +13,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using System.Text;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
     public class WS
     {
         private static string _soapEnvelope = @"
-<soap:Envelope xmlns:soap='{0}'{1}>
-    <soap:Body>{2}</soap:Body>
+<soap:Envelope {0}>
+    <soap:Body>{1}</soap:Body>
 </soap:Envelope>
 ";
 
@@ -90,7 +91,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             // Set type to POST
             request.Method = "POST";
             request.ContentType = "application/xml";
-            request.Headers.Add("SOAPAction", string.Format("{0}{1}", row.XML_NS_URN != "" ? $"{row.XML_NS_URN}:" : "", methodName));
+            request.Headers.Add("SOAPAction", methodName);
 
             // Create the data we want to send
             byte[] byteData = Encoding.UTF8.GetBytes(data.ToString());
@@ -244,10 +245,10 @@ namespace FSS.Omnius.Modules.Nexus.Gate
         private string createSoapEnvelope(Entitron.Entity.Nexus.WS model, string jsonBody)
         {
             XmlDocument xmlBody = JsonConvert.DeserializeXmlNode(jsonBody);
-            
+            string[] xmlNsList = model.SOAP_XML_NS.Split('\n');
+
             return string.Format(_soapEnvelope,
-                    model.XML_NS_SOAP,
-                    string.IsNullOrEmpty(model.XML_NS_URN) ? "" : $" xmlns:urn=\"{model.XML_NS_URN}\"",
+                    string.Join(" ", xmlNsList),
                     xmlBody.OuterXml
                 );
         }

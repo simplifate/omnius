@@ -58,8 +58,7 @@ namespace FSS.Omnius.Controllers.Nexus
                     row.Auth_User = model.Auth_User;
                     row.Auth_Password = model.Auth_Password;
                     row.SOAP_Endpoint = model.SOAP_Endpoint;
-                    row.XML_NS_SOAP = model.XML_NS_SOAP;
-                    row.XML_NS_URN = model.XML_NS_URN;
+                    row.SOAP_XML_NS = model.SOAP_XML_NS;
 
                     if (model.WSDL_File != null) {
                         row.WSDL_File = model.WSDL_File;
