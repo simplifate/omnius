@@ -1,8 +1,11 @@
     <ul  id=appMenu>
-@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent,Administrator",26)){            <li>
                     <h4>Administrace</h4>
     <ul >
-@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent,Administrator",26)){            <li>
+                    <a href="/EvidencePeriodik/TestSoap">Test soap</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
                     <a href="/EvidencePeriodik/PrehledDodavatelu">Přehled dodavatelů</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>

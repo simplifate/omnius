@@ -18,6 +18,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
             return ws.CreateProxyForWS(model);
         }
 
+        public JToken CallWebService(string serviceName, string methodName, string jsonBody)
+        {
+            return ws.CallWebService(serviceName, methodName, jsonBody);
+        }
+
         public JToken CallWebService(string serviceName, string methodName, object[] args)
         {
             return ws.CallWebService(serviceName, methodName, args);

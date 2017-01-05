@@ -12,11 +12,18 @@ using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
+using System.Text;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
     public class WS
     {
+        private static string _soapEnvelope = @"
+<soap:Envelope xmlns:soap='{0}'{1}>
+    <soap:Body>{2}</soap:Body>
+</soap:Envelope>
+";
+
         [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
         public JToken CallWebService(string serviceName, string methodName, object[] args)
         {
@@ -60,6 +67,69 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             JToken json = JToken.Parse(jsonText);
 
             return json;
+        }
+
+        public JToken CallWebService(string serviceName, string methodName, string jsonBody)
+        {
+            string jsonText;
+
+            Entitron.Entity.Nexus.WS row = GetModel(serviceName);
+
+            if (row.Type != Entitron.Entity.Nexus.WSType.SOAP) {
+                throw new Exception("Neplatné SOAP volání webové služby. Webová služba je typu REST");
+            }
+            
+            string data = createSoapEnvelope(row, jsonBody);
+
+            HttpWebRequest request = WebRequest.Create(new Uri(row.SOAP_Endpoint)) as HttpWebRequest;
+
+            if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password)) {
+                request.Credentials = new NetworkCredential(row.Auth_User, row.Auth_Password);
+            }
+
+            // Set type to POST
+            request.Method = "POST";
+            request.ContentType = "application/xml";
+            request.Headers.Add("SOAPAction", string.Format("{0}{1}", row.XML_NS_URN != "" ? $"{row.XML_NS_URN}:" : "", methodName));
+
+            // Create the data we want to send
+            byte[] byteData = Encoding.UTF8.GetBytes(data.ToString());
+            request.ContentLength = byteData.Length; 
+
+            // Write data to request
+            using (Stream postStream = request.GetRequestStream()) {
+                postStream.Write(byteData, 0, byteData.Length);
+            }
+
+            // Get response and return it
+            string result;
+            XmlDocument xmlResult = new XmlDocument();
+            try {
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse) {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                    reader.Close();
+                }
+                xmlResult.LoadXml(result);
+            }
+            catch (WebException webException) {
+                if (webException.Response == null)
+                    throw webException;
+
+                using(WebResponse webResponse = webException.Response) {
+                    StreamReader reader = new StreamReader(webResponse.GetResponseStream());
+                    string errorMessage = reader.ReadToEnd();
+                    reader.Close();
+
+                    throw new Exception($"SOAP Exception: {errorMessage}");
+                }
+            }
+            catch (Exception e) {
+                throw e;
+            }
+
+            jsonText = JsonConvert.SerializeXmlNode(xmlResult);
+            return JToken.Parse(jsonText);
         }
 
         public JToken CallRestService(string serviceName, string methodName, NameValueCollection queryParams)
@@ -107,7 +177,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             }
             else
             {
-                throw new Exception("Chyba při ukládání webové služby. Nebyl zadán xml soubor s definicí ani URL definice.");
+                return true;
             }
 
             ServiceDescription description = ServiceDescription.Read(stream);
@@ -171,6 +241,17 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             return row;
         }
                
+        private string createSoapEnvelope(Entitron.Entity.Nexus.WS model, string jsonBody)
+        {
+            XmlDocument xmlBody = JsonConvert.DeserializeXmlNode(jsonBody);
+            
+            return string.Format(_soapEnvelope,
+                    model.XML_NS_SOAP,
+                    string.IsNullOrEmpty(model.XML_NS_URN) ? "" : $" xmlns:urn=\"{model.XML_NS_URN}\"",
+                    xmlBody.OuterXml
+                );
+        }
+
         #endregion
     }
 }

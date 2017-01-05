@@ -44,6 +44,28 @@
                     @Html.ValidationMessageFor(model => model.WSDL_File, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SOAP_Endpoint, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SOAP_Endpoint, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SOAP_Endpoint, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.XML_NS_SOAP, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.XML_NS_SOAP, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.XML_NS_SOAP, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.XML_NS_URN, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.XML_NS_URN, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.XML_NS_URN, "", new { @class = "text-danger" })
+                </div>
+            </div>
         </section>
         <section id="SectionREST">
             <div class="form-group">
@@ -90,7 +112,3 @@
     });
     /*]]>*/
 </script>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

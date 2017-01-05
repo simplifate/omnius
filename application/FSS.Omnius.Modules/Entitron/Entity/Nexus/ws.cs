@@ -36,5 +36,14 @@
 
         [Display(Name = "Heslo")]
         public string Auth_Password { get; set; }
+
+        [Display(Name = "SOAP endpoint")]
+        public string SOAP_Endpoint { get; set; }
+
+        [Display(Name = "XMLNS SOAP")]
+        public string XML_NS_SOAP { get; set; }
+
+        [Display(Name = "XMLNS URN")]
+        public string XML_NS_URN { get; set; }
     }
 }

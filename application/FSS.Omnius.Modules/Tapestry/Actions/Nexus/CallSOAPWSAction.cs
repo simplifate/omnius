@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         public override string[] InputVar
         {
             get {
-                return new string[] { "MethodName", "WSName" };
+                return new string[] { "MethodName", "WSName", "?JsonBody" };
             }
         }
         public override string[] OutputVar
@@ -52,18 +52,24 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             // init
             string serviceName = (string)vars["WSName"];
             string methodName = (string)vars["MethodName"];
-            
-            List<string> parameters = new List<string>();
-            IEnumerable<string> urlParams = vars.Keys.Where(k => k.StartsWith("Param[") && k.EndsWith("]"));
-            
-            foreach(string key in urlParams) {
-                parameters.Add((string)vars[key]);
-            }
-            object[] args = parameters.ToArray<object>();
-
             NexusWSService svc = new NexusWSService();
-            JToken data = svc.CallWebService(serviceName, methodName, args);
+            JToken data;
 
+            if (vars.ContainsKey("JsonBody")) {
+                data = svc.CallWebService(serviceName, methodName, (string)vars["JsonBody"]);
+            }
+            else 
+            {
+                List<string> parameters = new List<string>();
+                IEnumerable<string> urlParams = vars.Keys.Where(k => k.StartsWith("Param[") && k.EndsWith("]"));
+
+                foreach (string key in urlParams) {
+                    parameters.Add((string)vars[key]);
+                }
+                object[] args = parameters.ToArray<object>();
+                
+                data = svc.CallWebService(serviceName, methodName, args);
+            }
             outputVars["Data"] = data;
         }
     }
