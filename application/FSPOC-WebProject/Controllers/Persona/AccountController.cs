@@ -212,7 +212,8 @@ namespace FSPOC_WebProject.Controllers.Persona
                     localExpiresAt = DateTime.UtcNow,
                     LastLogin = DateTime.UtcNow,
                     LastLogout = DateTime.UtcNow,
-                    CurrentLogin = DateTime.UtcNow
+                    CurrentLogin = DateTime.UtcNow,
+                    SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7"
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
