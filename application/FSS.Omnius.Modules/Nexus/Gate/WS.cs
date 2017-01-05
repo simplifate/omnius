@@ -14,16 +14,14 @@ using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity;
 using System.Text;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Runtime.Serialization.Json;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
     public class WS
     {
-        private static string _soapEnvelope = @"
-<soap:Envelope {0}>
-    <soap:Body>{1}</soap:Body>
-</soap:Envelope>
-";
+        private string _soapEnvelope = @"<soap:Envelope {0}><soap:Body>{1}</soap:Body></soap:Envelope>";
 
         [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
         public JToken CallWebService(string serviceName, string methodName, object[] args)
@@ -90,9 +88,8 @@ namespace FSS.Omnius.Modules.Nexus.Gate
 
             // Set type to POST
             request.Method = "POST";
-            request.ContentType = "application/xml";
-            request.Headers.Add("SOAPAction", methodName);
-
+            request.ContentType = string.Format("application/soap+xml;charset=UTF-8;action=\"{0}\"", methodName);
+            
             // Create the data we want to send
             byte[] byteData = Encoding.UTF8.GetBytes(data.ToString());
             request.ContentLength = byteData.Length; 
@@ -245,11 +242,12 @@ namespace FSS.Omnius.Modules.Nexus.Gate
         private string createSoapEnvelope(Entitron.Entity.Nexus.WS model, string jsonBody)
         {
             XmlDocument xmlBody = JsonConvert.DeserializeXmlNode(jsonBody);
-            string[] xmlNsList = model.SOAP_XML_NS.Split('\n');
+            
+            string xmlNsList = model.SOAP_XML_NS.Replace("\r\n", " ");
 
             return string.Format(_soapEnvelope,
-                    string.Join(" ", xmlNsList),
-                    xmlBody.OuterXml
+                    xmlNsList,
+                    xmlBody.OuterXml.Replace("__", ":")
                 );
         }
 

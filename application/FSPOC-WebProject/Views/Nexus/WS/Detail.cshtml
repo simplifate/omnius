@@ -27,9 +27,16 @@
                     <div class="wsdlFileString">@(Model.WSDL_File != null ? HttpUtility.HtmlEncode(UTF8Encoding.UTF8.GetString(Model.WSDL_File)) : "")</div>
                 </td>
             </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.SOAP_Endpoint)</td>
+                <td>@Html.DisplayFor(model => model.SOAP_Endpoint)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.SOAP_XML_NS)</td>
+                <td>@Html.DisplayFor(model => model.SOAP_XML_NS)</td>
+            </tr>
         }
-        else
-        {
+        else {
             <tr>
                 <td>@Html.DisplayNameFor(model => model.REST_Base_Url)</td>
                 <td>@Html.DisplayFor(model => model.REST_Base_Url)</td>
