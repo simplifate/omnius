@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Sql;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 if( (string)vars["ValueType"] == "string")
                     targetValue = (string)vars["Value"];
                 if ((string)vars["ValueType"] == "datetime")
-                    targetValue = Convert.ToDateTime(vars["Value"]);
+                    targetValue = DateTime.ParseExact((string)vars["Value"], "dd.MM.yyyy",CultureInfo.InvariantCulture);
             }
             else
                 targetValue = Convert.ToInt32(vars["Value"]);
