@@ -3,14 +3,17 @@
 @import "InnogyMixins.scss";
 $color_error: #f15921;
 
+$bottom_content_pos: 100px;
+$topbar_height: 50px;
+
 #userTopBar {
     @include no-select();
     background: $shade_st_zero;
     position: absolute;
     left: 0px;
-    top: 0px;
+    top: $bottom_content_pos;
     right: 0px;
-    height: 50px;
+    height: $topbar_height;
 
     .icon {
         display: inline-block;
@@ -135,7 +138,7 @@ $color_error: #f15921;
     background-color: $shade_st_one;
     position: absolute;
     left: 0px;
-    top: 50px;
+    top: $bottom_content_pos + $topbar_height;
     bottom: 0px;
     width: 310px;
     overflow-x: hidden;
@@ -293,10 +296,19 @@ $color_error: #f15921;
     } 
 }
 
-#appNotificationArea {
+body.userLayout {
+    background-color: $shade_st_two !important;
+}
+
+body.userLayout #pageOverlay {
+    background-color: $shade_st_two !important;
+    top: $bottom_content_pos + $topbar_height !important;
+}
+
+#appNotificationArea.userLayout {
     position: fixed;
     left: 310px;
-    top: 50px;
+    top: $bottom_content_pos + $topbar_height;
     right: 0;
     z-index: 5;
     transition: left 0.4s ease-out;
@@ -353,7 +365,7 @@ body.userLayout.leftBarHidden {
         .userBox {
             display: none;
             background-color: #edf8fe;
-            top: 50px;
+            top: $bottom_content_pos + $topbar_height;
             right: 0;
             width: 150px;
             border: 1px solid #f1f0ee;
@@ -428,11 +440,26 @@ body.userLayout.leftBarHidden {
     }
 }
 
+body.userLayout #brandBar {
+    background-color: $third_color_bright;
+    height: $bottom_content_pos;
+    opacity: 1;
+
+    .logo {
+        padding: 20px;
+        height: 100%;
+        img {
+            height: 60px;
+            vertical-align: middle;
+        }
+    }
+}
+
 #userContentArea {
-    background-color: $darkness;
+    background-color: $shade_st_two;
     position: absolute;
     left: 310px;
-    top: 50px;
+    top: $bottom_content_pos + $topbar_height;
     right: 0px;
     bottom: 0px;
     overflow: auto;
@@ -618,7 +645,7 @@ body.userLayout.leftBarHidden {
         }
     }
     .detail-label {
-        color: #0066cc;
+        color: $darkness;
         font-weight: bold;
         text-align: right;
     }
@@ -796,7 +823,8 @@ body.userLayout.leftBarHidden {
         }
     }
     .visible-panel-pale-background {
-        background-color: #cce0f5;
+        background-color: $shade_st_three;
+        color: white;
     }
     .named-panel {
         background-color: $shade_st_one;
@@ -827,55 +855,58 @@ body.userLayout.leftBarHidden {
         color: #e3001b;
     }
 }
-.app-alert {
-    width: 100%;
-    font-family: Innogy-Medium;
-    font-size: 18px;
-    padding: 6px 20px;
-    border-width: 1px;
-    border-style: solid;
 
-    .alertSymbol {
-        padding-right: 10px;
+body.userLayout { 
+    .app-alert {
+        width: 100%;
+        font-family: Innogy-Medium;
+        font-size: 18px;
+        padding: 6px 20px;
+        border-width: 1px;
+        border-style: solid;
+
+        .alertSymbol {
+            padding-right: 10px;
+        }
+        .closeAlertIcon {
+            color: white;
+            float: right;
+            margin-top: 4px;
+            cursor: pointer;
+        }
     }
-    .closeAlertIcon {
+    .app-alert-success {
         color: white;
-        float: right;
-        margin-top: 4px;
-        cursor: pointer;
+        background-color: $color_success;
+        border: none;
     }
-}
-.app-alert-success {
-    color: white;
-    background-color: $color_success;
-    border: none;
-}
-.app-alert-success.app-alert-odd {
-    background-color: darken($color_success, 5%);
-}
-.app-alert-error {
-    color: white;
-    background-color: $color_error;
-    border: none;
-}
-.app-alert-error.app-alert-odd {
-    background-color: darken($color_error, 5%);
-}
-.app-alert-warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-}
-.app-alert-warning.app-alert-odd {
-    background-color: darken(#fcf8e3, 5%);
-}
-.app-alert-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.app-alert-info.app-alert-odd {
-    background-color: darken(#d9edf7, 5%);
+    .app-alert-success.app-alert-odd {
+        background-color: darken($color_success, 5%);
+    }
+    .app-alert-error {
+        color: white;
+        background-color: $color_error;
+        border: none;
+    }
+    .app-alert-error.app-alert-odd {
+        background-color: darken($color_error, 5%);
+    }
+    .app-alert-warning {
+        color: #8a6d3b;
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+    }
+    .app-alert-warning.app-alert-odd {
+        background-color: darken(#fcf8e3, 5%);
+    }
+    .app-alert-info {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+    .app-alert-info.app-alert-odd {
+        background-color: darken(#d9edf7, 5%);
+    }
 }
 .hiddenForm {
     display: none;
@@ -1010,40 +1041,42 @@ table.dataTable {
     }
 }
 
-a {
-    color: black;
-    &:hover {
-        color: $second_color;
+body.userLayout {
+    a {
+        color: black;
+        &:hover {
+            color: $second_color;
+        }
     }
-}
 
-input, select {
-    color: black;
-}
+    input, select {
+        color: black;
+    }
 
 
-input[type=text], input[type=search], select {
-    border: 1px solid #b8b4ab;
-    @include innogy-input;
-}
-
-.dataTables_wrapper .dataTables_paginate {
-    .paginate_button {
+    input[type=text], input[type=search], select {
+        border: 1px solid #b8b4ab;
         @include innogy-input;
-        padding: 1px;
-        text-align: center;
-        color: $heading_text_color !important;
-        border: none !important;
-        background: $shade_st_six !important;
-        &.current {
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        .paginate_button {
+            @include innogy-input;
+            padding: 1px;
+            text-align: center;
             color: $heading_text_color !important;
             border: none !important;
-            background: $second_color !important;
-        }
-        &.previous, &.next {
-            background: transparent !important;
-            color: $content_text_color !important;
-            padding: 0px 5px;
+            background: $shade_st_six !important;
+            &.current {
+                color: $heading_text_color !important;
+                border: none !important;
+                background: $second_color !important;
+            }
+            &.previous, &.next {
+                background: transparent !important;
+                color: $content_text_color !important;
+                padding: 0px 5px;
+            }
         }
     }
 }
