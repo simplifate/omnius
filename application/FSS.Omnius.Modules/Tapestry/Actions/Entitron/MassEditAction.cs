@@ -4,6 +4,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Sql;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,9 +62,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
             string targetColumnName = (string)vars["ColumnName"];
-            object targetValue;
-            if (vars.ContainsKey("ValueType") && (string)vars["ValueType"] == "string")
-                targetValue = (string)vars["Value"];
+            object targetValue = 0;
+            if (vars.ContainsKey("ValueType"))
+            {
+                if( (string)vars["ValueType"] == "string")
+                    targetValue = (string)vars["Value"];
+                if ((string)vars["ValueType"] == "datetime")
+                    targetValue = DateTime.ParseExact((string)vars["Value"], "dd.MM.yyyy",CultureInfo.InvariantCulture);
+            }
             else
                 targetValue = Convert.ToInt32(vars["Value"]);
             var idList = new List<object>();
