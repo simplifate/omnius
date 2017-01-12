@@ -292,6 +292,12 @@ function CheckRuleResizeLimits(rule, resourceRuleMode) {
     });
     return { horizontal: horizontalLimit, vertical: verticalLimit }
 }
+function GetIsBootstrap(item)
+{
+    var isBootstrap = item.attr('data-isbootstrap');
+    return isBootstrap && (isBootstrap == true || isBootstrap == 'true') ? true : false;
+}
+
 function GetItemTypeClass(item) {
     if (item.hasClass("actionItem")) {
         typeClass = "actionItem";
@@ -420,6 +426,7 @@ function SaveBlock(commitMessage) {
                 StateId: currentItem.attr("stateid"),
                 PageId: currentItem.attr("pageId"),
                 ComponentName: currentItem.attr("componentName"),
+                IsBootstrap: GetIsBootstrap(currentItem),
                 TableName: currentItem.attr("tableName"),
                 ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter"),
@@ -480,6 +487,7 @@ function SaveBlock(commitMessage) {
                     OutputVariables: currentItem.data("outputVariables"),
                     PageId: currentItem.attr("pageId"),
                     ComponentName: currentItem.attr("componentName"),
+                    IsBootstrap: GetIsBootstrap(currentItem),
                     isAjaxAction: currentItem.data("isAjaxAction"),
                     Condition: currentItem.data("condition"),
                     ConditionSets: currentItem.data("conditionSets"),
@@ -543,6 +551,7 @@ function SaveBlock(commitMessage) {
             ColumnName: toolboxItem.attr("ColumnName") ? toolboxItem.attr("ColumnName") : null,
             PageId: toolboxItem.attr("PageId"),
             ComponentName: toolboxItem.attr("ComponentName") ? toolboxItem.attr("ComponentName") : null,
+            IsBootstrap: GetIsBootstrap(toolboxItem),
             StateId: toolboxItem.attr("StateId"),
             TargetName: toolboxItem.attr("TargetName") ? toolboxItem.attr("TargetName") : null,
             TargetId: toolboxItem.attr("TargetId")
@@ -589,6 +598,7 @@ function SaveBlock(commitMessage) {
         ModelTableName: ModelTableName,
         AssociatedTableName: AssociatedTableName,
         AssociatedPageIds: AssociatedPageIds,
+        AssociatedBootstrapPageIds: AssociatedBootstrapPageIds,
         AssociatedTableIds: AssociatedTableIds,
         RoleWhitelist: RoleWhitelist,
         ToolboxState: toolboxState,
@@ -1493,6 +1503,10 @@ $(function () {
 var ZoomFactor = 1.0;
 var ChangedSinceLastSave = false, dragModeActive = false;
 var lastLibId = 1000;
+
+var AssociatedPageIds = [];
+var AssociatedBootstrapPageIds = [];
+
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
@@ -1613,9 +1627,6 @@ $(function () {
         });
         $("#blockHeaderDbResCount").on("click", function () {
             chooseTablesDialog.dialog("open");
-        });
-        $("#blockHeaderScreenCount").on("click", function () {
-            chooseScreensDialog.dialog("open");
         });
         $("#blockHeaderRolesCount").on("click", function () {
             chooseWhitelistRolesDialog.dialog("open");
@@ -1922,7 +1933,7 @@ $(function () {
                             newToolboxLi.hide();
                     }
                     else if (libType == "ui") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '" isBootstrap="' + currentLibraryItem.attr('isBootstrap') + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_UI").hasClass("hiddenCategory"))
@@ -2218,99 +2229,11 @@ $(function () {
             width: 450,
             height: 550,
             buttons: {
-                "Select": function () {
-                    chooseScreensDialog_SubmitData();
-                },
-                Cancel: function () {
-                    chooseScreensDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(document).on("click", "tr.actionRow", function (event) {
-                    $(this).toggleClass("highlightedRow");
-                });
-            },
-            open: function (event, ui) {
-                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
-                chooseScreensDialog.find(".spinner-2").show();
-                appId = $("#currentAppId").val();
-                $.ajax({
-                    type: "GET",
-                    url: "/api/mozaic-editor/apps/" + appId + "/pages",
-                    dataType: "json",
-                    success: function (data) {
-                        tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
-                        for (i = 0; i < data.length; i++) {
-                            newScreenRow = $('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>');
-                            if (AssociatedPageIds.indexOf(data[i].Id) != -1)
-                                newScreenRow.addClass("highlightedRow");
-                            tbody.append(newScreenRow);
-                        }
-                        $("#screen-table .screenRow").on("click", function () {
-                            $(this).toggleClass("highlightedRow");
-                        });
-                        chooseScreensDialog.find(".spinner-2").hide();
-                    }
-                });
+                "Select": TB.screen.selectScreen,
+                "Cancel": TB.screen.closeDialog
             }
         });
-        function chooseScreensDialog_SubmitData() {
-            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").hide();
-            chooseScreensDialog.find(".spinner-2").show();
-            somethingWasAdded = false;
-            pageCount = 0;
-            appId = $("#currentAppId").val();
-            AssociatedPageIds = [];
-            $("#libraryCategory-UI .libraryItem").remove();
-            setTimeout(function () {
-                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
-                    if ($(element).hasClass("highlightedRow")) {
-                        pageCount++;
-                        pageId = $(element).attr("pageId");
-                        AssociatedPageIds.push(parseInt(pageId));
-                        url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
-                        $.ajax({
-                            type: "GET",
-                            url: url,
-                            dataType: "json",
-                            async: false,
-                            success: function (data) {
-                                for (i = 0; i < data.Components.length; i++) {
-                                    if (i == 0) {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                            + data.Name + '</div>');
-                                    }
-                                    cData = data.Components[i];
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + data.Components[i].Name + '" libType="ui" class="libraryItem">'
-                                    + cData.Name + '</div>');
-                                    if (cData.Type == "data-table-with-actions") {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_EditAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_EditAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_DetailsAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_DetailsAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_DeleteAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_DeleteAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_A_Action" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_A_Action</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_B_Action" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_B_Action</div>');
-                                    }
-                                    if (cData.ChildComponents) {
-                                        for (j = 0; j < cData.ChildComponents.length; j++) {
-                                            $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
-                                            + cData.ChildComponents[j].Name + '</div>');
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-                $("#blockHeaderScreenCount").text(pageCount);
-                chooseScreensDialog.find(".spinner-2").hide();
-                chooseScreensDialog.dialog("close");
-            }, 4);
-        }
+        
         tableAttributePropertiesDialog = $("#table-attribute-properties-dialog").dialog({
             autoOpen: false,
             width: 450,
@@ -3227,6 +3150,258 @@ function FillConditionsForLogicTableRow(row) {
     }
 }
 
+var TB = {
+
+    onInit: [],
+
+    init: function () {
+        var self = TB;
+
+        for (var i = 0; i < self.onInit.length; i++) {
+            self.onInit[i]();
+        }
+    }
+};
+
+
+$(function () {
+    if (CurrentModuleIs("tapestryModule")) {
+        TB.init();
+    }
+});
+
+TB.screen = {
+
+    init: function()
+    {
+        var self = TB.screen;
+
+        $(document)
+            .on('click', '#blockHeaderScreenCount', self.openDialog)
+            .on('click', '#choose-screens-dialog tr.screenRow', self.toggleRow)
+        ;
+        
+    },
+
+    openDialog: function()
+    {
+        chooseScreensDialog.dialog('open');
+        chooseScreensDialog.find("#screen-table tbody tr").remove();
+        
+        TB.screen.toggleSpinner(true);
+
+        var appId = $("#currentAppId").val();
+        $.ajax({
+            type: "GET",
+            url: "/api/mozaic-bootstrap/apps/" + appId + "/pages",
+            dataType: "json",
+            success: TB.screen.setData
+        });
+    },
+
+    closeDialog: function()
+    {
+        chooseScreensDialog.dialog('close');
+    },
+
+    toggleRow: function() 
+    {
+        $(this).toggleClass("highlightedRow");
+    },
+
+    toggleSpinner: function(show) {
+        chooseScreensDialog.find(".spinner-2").toggle(show);
+    },
+
+    setData: function(data)
+    {
+        var tbody = chooseScreensDialog.find('#screen-table tbody');
+        for (i = 0; i < data.length; i++)
+        {
+            var row = $('<tr class="screenRow"></tr>');
+            row.attr({
+                'data-pageid': data[i].Id,
+                'data-isbootstrap': data[i].IsBootstrap
+            });
+
+            row.append('<td>' + data[i].Name + '</td>');
+            row.append('<td>' + (data[i].IsBootstrap ? 'yes' : 'no') + '</td>');
+
+            if (!data[i].IsBootstrap && AssociatedPageIds.indexOf(data[i].Id) != -1) {
+                row.addClass("highlightedRow");
+            }
+            if (data[i].IsBootstrap && AssociatedBootstrapPageIds.indexOf(data[i].Id) != -1) {
+                row.addClass("highlightedRow");
+            }
+            tbody.append(row);
+        }
+        
+        TB.screen.toggleSpinner(false);
+    },
+
+    selectScreen: function()
+    {
+        var self = TB.screen;
+        self.toggleSpinner(true);
+
+        var pageCount = $('#screen-table tbody tr.highlightedRow').length;
+        var appId = $("#currentAppId").val();
+
+        AssociatedPageIds = [];
+        AssociatedBootstrapPageIds = [];
+
+        $('#libraryCategory-UI .libraryItem').remove();
+        
+        $('#screen-table tbody tr.highlightedRow').each(function () {
+
+            var pageId = $(this).attr('data-pageid');
+            var isBootstrap = $(this).attr('data-isbootstrap') == 'true';
+            var api = isBootstrap ? '/api/mozaic-bootstrap/apps/' : '/api/mozaic-editor/apps/';
+            var callback = isBootstrap ? self.loadBootstrapComponents : self.loadLegacyComponents;
+
+            if (isBootstrap) {
+                AssociatedBootstrapPageIds.push(parseInt(pageId));
+            }
+            else {
+                AssociatedPageIds.push(parseInt(pageId));
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: api + appId + "/pages/" + pageId,
+                dataType: 'json',
+                async: false,
+                success: callback
+            });
+        });
+
+        $('#blockHeaderScreenCount').text(pageCount);
+        self.toggleSpinner(false);
+        chooseScreensDialog.dialog("close");
+    },
+
+    loadBootstrapComponents: function(data)
+    {
+        var list = $("#libraryCategory-UI");
+
+        for (i = 0; i < data.Components.length; i++) {
+            if (i == 0) {
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': data.Id,
+                    'isBootstrap': true,
+                    'libType': 'ui'
+                }).html('Screen: ' + data.Name).appendTo(list);
+            }
+
+            TB.screen.addComponent(data.Components[i], data.Id, list);
+        }
+    },
+
+    addComponent: function(c, pageId, list)
+    {
+        if (c.ElmId != "") {
+            var item = $('<div class="libraryItem" />');
+            item.attr({
+                'libId': ++lastLibId,
+                'pageId': pageId,
+                'componentName': c.ElmId,
+                'isBootstrap': true,
+                'libType': 'ui'
+            }).html(c.ElmId).appendTo(list);
+        }
+
+        if (c.UIC == 'ui|data-table')
+        {
+            var actionsText = TB.screen.getAttribute(c.Attributes, 'data-actions');
+            if (actionsText !== -1) {
+                var actions = JSON.parse(actionsText.replace(/'/g, '"'));
+                for (var a in actions) {
+                    var item = $('<div class="libraryItem" />');
+                    item.attr({
+                        'libId': ++lastLibId,
+                        'pageId': pageId,
+                        'componentName': c.ElmId + '_' + actions[a].action,
+                        'isBootstrap': true,
+                        'libType': 'ui'
+                    }).html(c.ElmId + '_' + actions[a].action).appendTo(list);
+                }
+            }
+        }
+
+        if (c.ChildComponents) {
+            for (var i = 0; i < c.ChildComponents.length; i++) {
+                TB.screen.addComponent(c.ChildComponents[i], pageId, list);
+            }
+        }
+    },
+
+    loadLegacyComponents: function(data)
+    {
+        var list = $("#libraryCategory-UI");
+
+        for (i = 0; i < data.Components.length; i++) {
+            if (i == 0) {
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': data.Id,
+                    'isBootstrap': false,
+                    'libType': 'ui'
+                }).html('Screen: ' + data.Name).appendTo(list);
+            }
+            
+            TB.screen.addLegacyComponent(data.Components[i], data.Id, list);
+        }
+    },
+
+    addLegacyComponent: function(c, pageId, list)
+    {
+        var item = $('<div class="libraryItem" />');
+        item.attr({
+            'libId': ++lastLibId,
+            'pageId': pageId,
+            'componentName': c.Name,
+            'isBootstrap': false,
+            'libType': 'ui'
+        }).html(c.Name).appendTo(list);
+
+        var actions = ['_EditAction', '_DetailsAction', '_DeleteAction', '_A_Action', '_B_Action'];
+        
+        if (c.Type == "data-table-with-actions") {
+            for(var a = 0; a < actions.length; a++) {
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': pageId,
+                    'componentName': c.Name + actions[a],
+                    'isBootstrap': false,
+                    'libType': 'ui'
+                }).html(c.Name + actions[a]).appendTo(list);
+            }
+        }
+
+        if (c.ChildComponents) {
+            for (var i = 0; i < c.ChildComponents.length; i++) {
+                TB.screen.addLegacyComponent(c.ChildComponents[i], pageId, list);
+            }
+        }
+    },
+
+    getAttribute: function(attrString, attrName)
+    {
+        var attrList = JSON.parse(attrString);
+        for (var k in attrList) {
+            if (attrList[k].name == attrName) {
+                return attrList[k].value;
+            }
+        }
+        return -1;
+    }
+};
+
+TB.onInit.push(TB.screen.init);
 function LoadModuleAdminScript() {
     $("#moduleAdminPanel .moduleSquare").on("click", function () {
         $("#moduleAdminPanel .moduleSquare").removeClass("selectedSquare");
@@ -9609,6 +9784,7 @@ MBE.onInit.push(MBE.toolbar.init);
 MBE.io = {
 
     allComponents: null,
+    onLoad: [],
 
     loadPageList: function () {
         $('#page-table tbody tr').remove();
@@ -9725,6 +9901,23 @@ MBE.io = {
         });
     },
 
+    loadBootstrapPage: function (pageId) {
+        pageSpinner.show();
+        pageId = pageId == "current" ? $('#currentPageId').val() : pageId;
+
+        var appId = $('#currentAppId').val();
+        var url = "/api/mozaic-bootstrap/apps/" + appId + "/pages/" + pageId;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            complete: function () { pageSpinner.hide() },
+            error: MBE.ajaxError,
+            success: MBE.io.drawBootstrapPage
+        });
+    },
+
     createPage: function () {
         pageSpinner.show();
         $('#new-page-dialog').dialog('close');
@@ -9802,7 +9995,7 @@ MBE.io = {
         var pageId = Number($('#currentPageId').val());
         if (!pageId || isNaN(pageId)) {
             MBE.saveRequested = true;
-            MBE.dialogs.createPage();
+            MBE.dialogs.newPage();
         }
         else {
             MBE.io.doSave();
@@ -9817,7 +10010,7 @@ MBE.io = {
             Name: $('#headerPageName').text(),
             Content: MBE.io.getPageDOM(),
             IsDeleted: false,
-            Components: MBE.io.getComponentsArray(MBE.workspace)
+            Components: MBE.io.getComponentsArray(MBE.workspace.clone(true))
         };
 
         var appId = $('#currentAppId').val();
@@ -9837,28 +10030,54 @@ MBE.io = {
 
     getPageDOM: function () {
         var dom = $(MBE.workspace).clone(true);
+
+        dom.find('.dataTables_wrapper').each(function () {
+            $(this).replaceWith($('table', this));
+        });
+
         return dom.html();
     },
 
     getComponentsArray: function (parent) {
         var components = new Array();
-        var uicList = $(parent).find('> [data-uic]');
+
+        parent.find('.dataTables_wrapper').each(function () {
+            $(this).replaceWith($('table', this));
+        });
+
+        var uicList = parent.find('> [data-uic]');
 
         for (var i = 0; i < uicList.length; i++) {
             var node = uicList.eq(i);
             var component = {
                 ElmId: node.attr('id') ? node.attr('id') : '',
                 Tag: node[0].tagName.toLowerCase(),
-                UIC: node.attr('[data-uic]'),
+                UIC: node.attr('data-uic'),
                 Attributes: MBE.io.filterAttrs(MBE.io.getAttrs(node[0])),
                 Properties: node.attr('data-properties') ? node.attr('data-properties') : '',
-                Content: MBE.io.filterUICContent(node),
+                Content: MBE.io.filterContent(node),
                 ChildComponents: MBE.io.getComponentsArray(node)
             };
             components.push(component);
         }
 
         return components;
+    },
+
+    drawBootstrapPage: function(data)
+    {
+        MBE.clearWorkspace();
+        MBE.workspace.append(data.Content);
+
+        for (var i = 0; i < MBE.io.onLoad.length; i++) {
+            MBE.io.onLoad[i]();
+        }
+
+        MBE.DnD.updateDOM();
+
+        $('#currentPageId').val(data.Id);
+        $('#currentPageVersion').val('Bootstrap');
+        $('#headerPageName').text(data.Name);
     },
 
     /*************************************************************/
@@ -10286,13 +10505,24 @@ MBE.io = {
         var finalAttrs = new Array();
 
         for (var i = 0; i < attrs.length; i++) {
-            if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties']) != -1) {
+            if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties', 'locked']) != -1) {
                 continue;
             }
-            finalAttrs.push(attr[i]);
+            finalAttrs.push(attrs[i]);
         }
 
         return JSON.stringify(finalAttrs);
+    },
+
+    filterContent: function (node) {
+        var tmpNode = node.clone(true);
+
+        tmpNode.find('span.mbe-text-node').each(function () {
+            $(this).replaceWith(this.innerHTML);
+        });
+        tmpNode.find('[data-uic]').remove();
+
+        return tmpNode.html();
     }
 };
 
@@ -13508,6 +13738,7 @@ MBE.types.ui = {
         }
         items.appendTo(group);
 
+        MBE.io.onLoad.push(MBE.types.ui._onLoad);
         MBE.DnD.onDrop.push(MBE.types.ui._drop);
         MBE.onBeforeDelete['ui|data-table'] = MBE.types.ui._beforeDelete;
 
@@ -13543,6 +13774,13 @@ MBE.types.ui = {
         if ($(this).is('[data-uic="ui|data-table"]')) {
             $(this).parents('.dataTables_wrapper').eq(0).replaceWith(this);
         }
+    },
+
+    _onLoad: function()
+    {
+        $('table.dataTable', MBE.workspace).each(function () {
+            MBE.types.ui.initDataTable.apply(this, []);
+        });
     },
 
     buildHorizontalFormRow: function()
@@ -13827,6 +14065,10 @@ MBE.types.ui = {
 
     dataTableBuildActions: function(rebuild) {
         var target = $(this);
+
+        if (!target.is('table')) {
+            target = $(MBE.options.target);
+        }
 
         var validActions = [];
 

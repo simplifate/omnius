@@ -227,99 +227,11 @@ $(function () {
             width: 450,
             height: 550,
             buttons: {
-                "Select": function () {
-                    chooseScreensDialog_SubmitData();
-                },
-                Cancel: function () {
-                    chooseScreensDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(document).on("click", "tr.actionRow", function (event) {
-                    $(this).toggleClass("highlightedRow");
-                });
-            },
-            open: function (event, ui) {
-                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").remove();
-                chooseScreensDialog.find(".spinner-2").show();
-                appId = $("#currentAppId").val();
-                $.ajax({
-                    type: "GET",
-                    url: "/api/mozaic-editor/apps/" + appId + "/pages",
-                    dataType: "json",
-                    success: function (data) {
-                        tbody = chooseScreensDialog.find("#screen-table tbody:nth-child(2)");
-                        for (i = 0; i < data.length; i++) {
-                            newScreenRow = $('<tr class="screenRow" pageId="' + data[i].Id + '"><td>' + data[i].Name + '</td></tr>');
-                            if (AssociatedPageIds.indexOf(data[i].Id) != -1)
-                                newScreenRow.addClass("highlightedRow");
-                            tbody.append(newScreenRow);
-                        }
-                        $("#screen-table .screenRow").on("click", function () {
-                            $(this).toggleClass("highlightedRow");
-                        });
-                        chooseScreensDialog.find(".spinner-2").hide();
-                    }
-                });
+                "Select": TB.screen.selectScreen,
+                "Cancel": TB.screen.closeDialog
             }
         });
-        function chooseScreensDialog_SubmitData() {
-            chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").hide();
-            chooseScreensDialog.find(".spinner-2").show();
-            somethingWasAdded = false;
-            pageCount = 0;
-            appId = $("#currentAppId").val();
-            AssociatedPageIds = [];
-            $("#libraryCategory-UI .libraryItem").remove();
-            setTimeout(function () {
-                chooseScreensDialog.find("#screen-table:first tbody:nth-child(2) tr").each(function (index, element) {
-                    if ($(element).hasClass("highlightedRow")) {
-                        pageCount++;
-                        pageId = $(element).attr("pageId");
-                        AssociatedPageIds.push(parseInt(pageId));
-                        url = "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId;
-                        $.ajax({
-                            type: "GET",
-                            url: url,
-                            dataType: "json",
-                            async: false,
-                            success: function (data) {
-                                for (i = 0; i < data.Components.length; i++) {
-                                    if (i == 0) {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" libType="ui" class="libraryItem">Screen: '
-                                            + data.Name + '</div>');
-                                    }
-                                    cData = data.Components[i];
-                                    $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + data.Components[i].Name + '" libType="ui" class="libraryItem">'
-                                    + cData.Name + '</div>');
-                                    if (cData.Type == "data-table-with-actions") {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_EditAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_EditAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_DetailsAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_DetailsAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_DeleteAction" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_DeleteAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_A_Action" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_A_Action</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.Name + '_B_Action" libType="ui" class="libraryItem">'
-                                            + cData.Name + '_B_Action</div>');
-                                    }
-                                    if (cData.ChildComponents) {
-                                        for (j = 0; j < cData.ChildComponents.length; j++) {
-                                            $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + data.Id + '" componentName="' + cData.ChildComponents[j].Name + '" libType="ui" class="libraryItem">'
-                                            + cData.ChildComponents[j].Name + '</div>');
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-                $("#blockHeaderScreenCount").text(pageCount);
-                chooseScreensDialog.find(".spinner-2").hide();
-                chooseScreensDialog.dialog("close");
-            }, 4);
-        }
+        
         tableAttributePropertiesDialog = $("#table-attribute-properties-dialog").dialog({
             autoOpen: false,
             width: 450,

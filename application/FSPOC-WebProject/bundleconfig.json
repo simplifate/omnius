@@ -33,6 +33,8 @@
       "Scripts/Tapestry/Dialogs.js",
       "Scripts/Tapestry/ContextMenu.js",
       "Scripts/Tapestry/Conditions.js",
+      "Scripts/Tapestry/Builder/TapestryBuilder.js",
+      "Scripts/Tapestry/Builder/_Screen.js",
       "Scripts/Portal/ModuleAdmin.js",
       "Scripts/Portal/Init.js",
       "Scripts/Persona/SaveModulePermissions.js",

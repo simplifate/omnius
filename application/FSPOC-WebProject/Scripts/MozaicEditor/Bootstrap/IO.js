@@ -1,6 +1,7 @@
 ﻿MBE.io = {
 
     allComponents: null,
+    onLoad: [],
 
     loadPageList: function () {
         $('#page-table tbody tr').remove();
@@ -117,6 +118,23 @@
         });
     },
 
+    loadBootstrapPage: function (pageId) {
+        pageSpinner.show();
+        pageId = pageId == "current" ? $('#currentPageId').val() : pageId;
+
+        var appId = $('#currentAppId').val();
+        var url = "/api/mozaic-bootstrap/apps/" + appId + "/pages/" + pageId;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            complete: function () { pageSpinner.hide() },
+            error: MBE.ajaxError,
+            success: MBE.io.drawBootstrapPage
+        });
+    },
+
     createPage: function () {
         pageSpinner.show();
         $('#new-page-dialog').dialog('close');
@@ -194,7 +212,7 @@
         var pageId = Number($('#currentPageId').val());
         if (!pageId || isNaN(pageId)) {
             MBE.saveRequested = true;
-            MBE.dialogs.createPage();
+            MBE.dialogs.newPage();
         }
         else {
             MBE.io.doSave();
@@ -209,7 +227,7 @@
             Name: $('#headerPageName').text(),
             Content: MBE.io.getPageDOM(),
             IsDeleted: false,
-            Components: MBE.io.getComponentsArray(MBE.workspace)
+            Components: MBE.io.getComponentsArray(MBE.workspace.clone(true))
         };
 
         var appId = $('#currentAppId').val();
@@ -229,28 +247,54 @@
 
     getPageDOM: function () {
         var dom = $(MBE.workspace).clone(true);
+
+        dom.find('.dataTables_wrapper').each(function () {
+            $(this).replaceWith($('table', this));
+        });
+
         return dom.html();
     },
 
     getComponentsArray: function (parent) {
         var components = new Array();
-        var uicList = $(parent).find('> [data-uic]');
+
+        parent.find('.dataTables_wrapper').each(function () {
+            $(this).replaceWith($('table', this));
+        });
+
+        var uicList = parent.find('> [data-uic]');
 
         for (var i = 0; i < uicList.length; i++) {
             var node = uicList.eq(i);
             var component = {
                 ElmId: node.attr('id') ? node.attr('id') : '',
                 Tag: node[0].tagName.toLowerCase(),
-                UIC: node.attr('[data-uic]'),
+                UIC: node.attr('data-uic'),
                 Attributes: MBE.io.filterAttrs(MBE.io.getAttrs(node[0])),
                 Properties: node.attr('data-properties') ? node.attr('data-properties') : '',
-                Content: MBE.io.filterUICContent(node),
+                Content: MBE.io.filterContent(node),
                 ChildComponents: MBE.io.getComponentsArray(node)
             };
             components.push(component);
         }
 
         return components;
+    },
+
+    drawBootstrapPage: function(data)
+    {
+        MBE.clearWorkspace();
+        MBE.workspace.append(data.Content);
+
+        for (var i = 0; i < MBE.io.onLoad.length; i++) {
+            MBE.io.onLoad[i]();
+        }
+
+        MBE.DnD.updateDOM();
+
+        $('#currentPageId').val(data.Id);
+        $('#currentPageVersion').val('Bootstrap');
+        $('#headerPageName').text(data.Name);
     },
 
     /*************************************************************/
@@ -678,12 +722,23 @@
         var finalAttrs = new Array();
 
         for (var i = 0; i < attrs.length; i++) {
-            if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties']) != -1) {
+            if ($.inArray(attrs[i].name, ['data-uic', 'data-custom-classes', 'data-custom-attributes', 'data-properties', 'locked']) != -1) {
                 continue;
             }
-            finalAttrs.push(attr[i]);
+            finalAttrs.push(attrs[i]);
         }
 
         return JSON.stringify(finalAttrs);
+    },
+
+    filterContent: function (node) {
+        var tmpNode = node.clone(true);
+
+        tmpNode.find('span.mbe-text-node').each(function () {
+            $(this).replaceWith(this.innerHTML);
+        });
+        tmpNode.find('[data-uic]').remove();
+
+        return tmpNode.html();
     }
 };

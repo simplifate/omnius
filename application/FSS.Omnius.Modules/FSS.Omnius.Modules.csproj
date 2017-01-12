@@ -1025,6 +1025,10 @@
     <Compile Include="Migrations\201701051042291_NexusWsModelUpdate2.Designer.cs">
       <DependentUpon>201701051042291_NexusWsModelUpdate2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.cs" />
+    <Compile Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.Designer.cs">
+      <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
     <Compile Include="Mozaic\Page.cs" />
@@ -1675,6 +1679,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701051042291_NexusWsModelUpdate2.resx">
       <DependentUpon>201701051042291_NexusWsModelUpdate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.resx">
+      <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

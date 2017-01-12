@@ -8,7 +8,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
     using Master;
     using Mozaic;
-
+    using Mozaic.Bootstrap;
     public enum ItemTypes
     {
         Attribute,
@@ -124,6 +124,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<TapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         [LinkToEntity(typeof(MozaicEditorPage), true)]
         public string AssociatedPageIds { get; set; }
+        [LinkToEntity(typeof(MozaicBootstrapPage), true)]
+        public string AssociatedBootstrapPageIds { get; set; }
         [LinkToEntity(typeof(DBTable), true)]
         public string AssociatedTableIds { get; set; }
         public string RoleWhitelist { get; set; }
@@ -225,6 +227,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [ImportExportIgnore(IsLink = true)]
         public virtual MozaicEditorPage Page { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
@@ -271,6 +274,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [LinkToEntity(typeof(Page))]
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
         [ImportExportIgnore(IsLinkKey = true)]
@@ -335,6 +339,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [LinkToEntity(typeof(Page))]
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public int? StateId { get; set; }
         public string TargetName { get; set; }
         public int? TargetId { get; set; }

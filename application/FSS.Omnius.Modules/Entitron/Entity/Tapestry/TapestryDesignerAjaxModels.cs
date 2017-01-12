@@ -89,6 +89,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
         public List<int> PortTargets { get; set; }
         public List<int> AssociatedPageIds { get; set; }
+        public List<int> AssociatedBootstrapPageIds { get; set; }
         public List<int> AssociatedTableIds { get; set; }
         public List<string> AssociatedTableName { get; set; }
         public string ModelTableName { get; set; }
@@ -101,6 +102,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             WorkflowRules = new List<AjaxTapestryDesignerWorkflowRule>();
             PortTargets = new List<int>();
             AssociatedPageIds = new List<int>();
+            AssociatedBootstrapPageIds = new List<int>();
             RoleWhitelist = new List<string>();
         }
     }
@@ -159,6 +161,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? StateId { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public List<string> ColumnFilter { get; set; }
@@ -187,6 +190,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string OutputVariables { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public bool? isAjaxAction { get; set; }
         public string Condition { get; set; }
         public string SymbolType { get; set; }
@@ -318,6 +322,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ColumnName { get; set; }
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
+        public bool? IsBootstrap { get; set; }
         public int? StateId { get; set; }
         public string TargetName { get; set; }
         public int? TargetId { get; set; }

@@ -183,6 +183,7 @@
         }
         items.appendTo(group);
 
+        MBE.io.onLoad.push(MBE.types.ui._onLoad);
         MBE.DnD.onDrop.push(MBE.types.ui._drop);
         MBE.onBeforeDelete['ui|data-table'] = MBE.types.ui._beforeDelete;
 
@@ -218,6 +219,13 @@
         if ($(this).is('[data-uic="ui|data-table"]')) {
             $(this).parents('.dataTables_wrapper').eq(0).replaceWith(this);
         }
+    },
+
+    _onLoad: function()
+    {
+        $('table.dataTable', MBE.workspace).each(function () {
+            MBE.types.ui.initDataTable.apply(this, []);
+        });
     },
 
     buildHorizontalFormRow: function()
@@ -502,6 +510,10 @@
 
     dataTableBuildActions: function(rebuild) {
         var target = $(this);
+
+        if (!target.is('table')) {
+            target = $(MBE.options.target);
+        }
 
         var validActions = [];
 

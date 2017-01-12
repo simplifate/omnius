@@ -1,6 +1,10 @@
 ﻿var ZoomFactor = 1.0;
 var ChangedSinceLastSave = false, dragModeActive = false;
 var lastLibId = 1000;
+
+var AssociatedPageIds = [];
+var AssociatedBootstrapPageIds = [];
+
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
@@ -121,9 +125,6 @@ $(function () {
         });
         $("#blockHeaderDbResCount").on("click", function () {
             chooseTablesDialog.dialog("open");
-        });
-        $("#blockHeaderScreenCount").on("click", function () {
-            chooseScreensDialog.dialog("open");
         });
         $("#blockHeaderRolesCount").on("click", function () {
             chooseWhitelistRolesDialog.dialog("open");
@@ -430,7 +431,7 @@ $(function () {
                             newToolboxLi.hide();
                     }
                     else if (libType == "ui") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '"><span class="itemLabel">'
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + currentLibraryItem.attr("pageId") + '" componentName="' + currentLibraryItem.attr("componentName") + '" isBootstrap="' + currentLibraryItem.attr('isBootstrap') + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_UI").hasClass("hiddenCategory"))

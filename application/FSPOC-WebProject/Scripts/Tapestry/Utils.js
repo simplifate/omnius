@@ -227,6 +227,12 @@ function CheckRuleResizeLimits(rule, resourceRuleMode) {
     });
     return { horizontal: horizontalLimit, vertical: verticalLimit }
 }
+function GetIsBootstrap(item)
+{
+    var isBootstrap = item.attr('data-isbootstrap');
+    return isBootstrap && (isBootstrap == true || isBootstrap == 'true') ? true : false;
+}
+
 function GetItemTypeClass(item) {
     if (item.hasClass("actionItem")) {
         typeClass = "actionItem";

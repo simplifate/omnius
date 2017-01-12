@@ -71,8 +71,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         IsDeleted = false,
                         Version = VersionEnum.Bootstrap
                     };
-                    /*foreach (var ajaxComponent in postData.Components)
-                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));*/
+                    foreach (var ajaxComponent in postData.Components) {
+                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));
+                    }
 
                     context.Applications.Find(appId).MozaicBootstrapPages.Add(newPage);
                     context.SaveChanges();
@@ -154,8 +155,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     requestedPage.Content = postData.Content;
                     requestedPage.IsDeleted = postData.IsDeleted;
 
-                    //foreach (var ajaxComponent in postData.Components)
-                    //    requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                    foreach (var ajaxComponent in postData.Components) {
+                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                    }
 
                     context.SaveChanges();
                 }
@@ -167,76 +169,30 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
         }
 
-        /*[Route("api/mozaic-editor/apps/{appId}/pages/{pageId}")]
+        [Route("api/mozaic-bootstrap/apps/{appId}/pages/{pageId}")]
         [HttpGet]
-        public AjaxMozaicEditorPage GetPage(int appId, int pageId)
+        public MozaicBootstrapAjaxPage GetPage(int appId, int pageId)
         {
             try
             {
                 using (var context = DBEntities.instance)
                 {
-                    var requestedPage = context.MozaicEditorPages.Find(pageId);
+                    var requestedPage = context.MozaicBootstrapPages.Find(pageId);
 
                     // TODO: replace with real error checking
                     if (requestedPage == null)
-                        return new AjaxMozaicEditorPage();
+                        return new MozaicBootstrapAjaxPage();
 
-                    var result = new AjaxMozaicEditorPage
+                    var result = new MozaicBootstrapAjaxPage
                     {
                         Id = requestedPage.Id,
                         Name = requestedPage.Name ?? "Nepojmenovaná stránka",
-                        IsModal = requestedPage.IsModal,
-                        ModalWidth = requestedPage.ModalWidth,
-                        ModalHeight = requestedPage.ModalHeight
+                        Content = requestedPage.Content,
+                        Components = new List<MozaicBootstrapAjaxComponent>()
                     };
-                    foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null))
-                    {
-                        var ajaxComponent = new AjaxMozaicEditorComponent
-                        {
-                            Id = component.Id,
-                            Name = component.Name ?? "",
-                            Type = component.Type,
-                            PositionX = component.PositionX,
-                            PositionY = component.PositionY,
-                            Width = component.Width,
-                            Height = component.Height,
-                            Tag = component.Tag,
-                            Attributes = component.Attributes,
-                            Classes = component.Classes ?? "",
-                            Styles = component.Styles ?? "",
-                            Content = component.Content,
-                            Label = component.Label,
-                            Placeholder = component.Placeholder,
-                            TabIndex = component.TabIndex,
-                            Properties = component.Properties ?? ""
-                        };
-                        if (component.ChildComponents.Count > 0)
-                        {
-                            ajaxComponent.ChildComponents = new List<AjaxMozaicEditorComponent>();
-                            foreach (var childComponent in component.ChildComponents)
-                            {
-                                ajaxComponent.ChildComponents.Add(new AjaxMozaicEditorComponent
-                                {
-                                    Id = childComponent.Id,
-                                    Name = childComponent.Name ?? "",
-                                    Type = childComponent.Type,
-                                    PositionX = childComponent.PositionX,
-                                    PositionY = childComponent.PositionY,
-                                    Width = childComponent.Width,
-                                    Height = childComponent.Height,
-                                    Tag = childComponent.Tag,
-                                    Attributes = childComponent.Attributes,
-                                    Classes = childComponent.Classes ?? "",
-                                    Styles = childComponent.Styles ?? "",
-                                    Content = childComponent.Content,
-                                    Label = childComponent.Label,
-                                    Placeholder = childComponent.Placeholder,
-                                    TabIndex = childComponent.TabIndex,
-                                    Properties = childComponent.Properties
-                                });
-                            }
-                        }
-                        result.Components.Add(ajaxComponent);
+
+                    foreach (var component in requestedPage.Components.Where(c => c.ParentComponent == null)) {
+                        result.Components.Add(convertComponentToAjaxFormat(component));
                     }
 
                     // Renew deleted page
@@ -251,43 +207,54 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             }
             catch (Exception ex)
             {
-                var errorMessage = $"Mozaic editor: error loading page with id={pageId} (GET api/mozaic-editor/apps/{appId}/pages/{pageId}) " +
+                var errorMessage = $"Mozaic bootstrap editor: error loading page with id={pageId} (GET api/mozaic-bootstrap/apps/{appId}/pages/{pageId}) " +
                     $"Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
-        
-        private MozaicEditorComponent convertAjaxComponentToDbFormat(AjaxMozaicEditorComponent ajaxComponent,
-            MozaicEditorPage page, MozaicEditorComponent parentComponent)
+
+        private MozaicBootstrapAjaxComponent convertComponentToAjaxFormat(MozaicBootstrapComponent c)
         {
-            var newComponent = new MozaicEditorComponent
+            var ajaxComponent = new MozaicBootstrapAjaxComponent
             {
-                Name = ajaxComponent.Name,
-                Type = ajaxComponent.Type,
-                PositionX = ajaxComponent.PositionX,
-                PositionY = ajaxComponent.PositionY,
-                Width = ajaxComponent.Width,
-                Height = ajaxComponent.Height,
-                Tag = ajaxComponent.Tag,
-                Attributes = ajaxComponent.Attributes,
-                Classes = ajaxComponent.Classes,
-                Styles = ajaxComponent.Styles,
-                Content = ajaxComponent.Content,
-                Label = ajaxComponent.Label,
-                Placeholder = ajaxComponent.Placeholder,
-                TabIndex = ajaxComponent.TabIndex,
-                Properties = ajaxComponent.Properties,
-                MozaicEditorPage = page
+                Id = c.Id,
+                ElmId = c.ElmId ?? "",
+                Tag = c.Tag,
+                UIC = c.UIC,
+                Attributes = c.Attributes ?? "",
+                Content = c.Content,
+                Properties = c.Properties ?? "",
+                ChildComponents = new List<MozaicBootstrapAjaxComponent>()
             };
-            if (ajaxComponent.ChildComponents != null && ajaxComponent.ChildComponents.Count > 0)
+            if(c.ChildComponents.Count > 0) {
+                foreach(var childComponent in c.ChildComponents) {
+                    ajaxComponent.ChildComponents.Add(convertComponentToAjaxFormat(childComponent));
+                }
+            }
+
+            return ajaxComponent;
+        }
+        
+        private MozaicBootstrapComponent convertAjaxComponentToDbFormat(MozaicBootstrapAjaxComponent c, MozaicBootstrapPage page, MozaicBootstrapComponent parentComponent)
+        {
+            var newComponent = new MozaicBootstrapComponent
             {
-                newComponent.ChildComponents = new List<MozaicEditorComponent>();
-                foreach (var ajaxChildComponent in ajaxComponent.ChildComponents)
+                ElmId = c.ElmId,
+                Content = c.Content,
+                Tag = c.Tag,
+                UIC = c.UIC,
+                Properties = c.Properties,
+                Attributes = c.Attributes,
+                MozaicBootstrapPage = page                
+            };
+            if (c.ChildComponents != null && c.ChildComponents.Count > 0)
+            {
+                newComponent.ChildComponents = new List<MozaicBootstrapComponent>();
+                foreach (var ajaxChildComponent in c.ChildComponents)
                     newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, page, newComponent));
             }
             return newComponent;
         }
-        */
 
         private void deleteComponents(MozaicBootstrapPage page, DBEntities context)
         {
@@ -302,14 +269,14 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 var component = componentList[0];
 
                 allComponents.Add(component);
-                context.Entry(component).State = EntityState.Deleted;
-
+                
                 if(component.ChildComponents != null && component.ChildComponents.Count > 0) {
                     foreach(var child in component.ChildComponents) {
                         componentList.Add(child);
                     }
                 }
 
+                context.Entry(component).State = EntityState.Deleted;
                 componentList.RemoveAt(0);
             }
 

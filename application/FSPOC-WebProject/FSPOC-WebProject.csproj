@@ -488,6 +488,8 @@
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Table.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Text.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_UI.js" />
+    <Content Include="Scripts\Tapestry\Builder\TapestryBuilder.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Screen.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\Spinner.js" />
