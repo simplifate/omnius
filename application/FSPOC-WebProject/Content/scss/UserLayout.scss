@@ -305,7 +305,7 @@ body.userLayout #pageOverlay {
     top: $bottom_content_pos + $topbar_height !important;
 }
 
-#appNotificationArea.userLayout {
+#appNotificationArea {
     position: fixed;
     left: 310px;
     top: $bottom_content_pos + $topbar_height;

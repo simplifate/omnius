@@ -2652,7 +2652,7 @@ body.userLayout #pageOverlay {
   background-color: #e9e7e7 !important;
   top: 150px !important; }
 
-#appNotificationArea.userLayout {
+#appNotificationArea {
   position: fixed;
   left: 310px;
   top: 150px;
