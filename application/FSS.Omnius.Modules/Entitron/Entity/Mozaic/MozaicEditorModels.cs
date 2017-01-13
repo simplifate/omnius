@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 {
     using Master;
+    using System;
     using Tapestry;
 
     [Table("MozaicEditor_Pages")]
@@ -51,6 +52,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         {
             foreach (MozaicEditorComponent c in ComponentList)
             {
+                Dictionary<string, string> properties = MozaicPropertiesParser.ParseMozaicPropertiesString(c.Properties);
+
                 if (c.Type == "info-container")
                 {
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" name=\"{c.Name}\" class=\"uic info-container {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
@@ -217,8 +220,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "data-table-read-only")
                 {
+                    string columnSearchClass = "";
+                    if(properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
+                    {
+                        columnSearchClass = " data-table-individual-columns-search";
+                    }
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
@@ -237,6 +245,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "data-table-with-actions")
                 {
+                    string columnSearchClass = "";
+                    if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
+                    {
+                        columnSearchClass = " data-table-individual-columns-search";
+                    }
+
                     string actionButtons = "edit-delete";
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -250,7 +264,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         }
                     }
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
@@ -399,6 +413,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
     }
 
     public enum VersionEnum { Absolute, Bootstrap };
+
+    public static class MozaicPropertiesParser
+    {
+        public static Dictionary<string, string> ParseMozaicPropertiesString(string propertiesString)
+        {
+            Dictionary<string, string> registry = new Dictionary<string, string>();
+            if (!string.IsNullOrEmpty(propertiesString))
+            {
+                foreach (string record in propertiesString.Split(';'))
+                {
+                    string[] splittedRecord = record.Split('=');
+                    if (splittedRecord.Count() == 2)
+                    {
+                        registry.Add(splittedRecord[0], splittedRecord[1]);
+                    }
+                }
+            }
+            return registry;
+        }
+    }
 
     [Table("MozaicEditor_Components")]
     public class MozaicEditorComponent : IEntity

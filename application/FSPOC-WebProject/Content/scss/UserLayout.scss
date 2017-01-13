@@ -589,11 +589,10 @@ body.userLayout #brandBar {
     }
     .breadcrumb-navigation {
         @include no-select();
-        @include linear-gradient(#0086be, #0065a9);
+        background-color: $main_color;
         color: white;
         font-family: Innogy-Regular;
         padding: 12px 12px;
-        border-radius: 4px;
         font-size: 11px;
         width: 200px;
         height: 55px;
@@ -736,7 +735,7 @@ body.userLayout #brandBar {
             }
         }
         
-        &#uic_table tfoot { 
+        &#uic_table tfoot, &.data-table-individual-columns-search tfoot { 
             display: table-header-group;
         }
         .actionIcons {

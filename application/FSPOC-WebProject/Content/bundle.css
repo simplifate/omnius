@@ -2899,14 +2899,10 @@ body.userLayout #brandBar {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    background: -webkit-linear-gradient(top, #0086be, #0065a9);
-    background: -o-linear-gradient(bottom, #0086be, #0065a9);
-    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
-    background: linear-gradient(to bottom, #0086be, #0065a9);
+    background-color: #0d499a;
     color: white;
     font-family: Innogy-Regular;
     padding: 12px 12px;
-    border-radius: 4px;
     font-size: 11px;
     width: 200px;
     height: 55px; }
@@ -3019,7 +3015,7 @@ body.userLayout #brandBar {
       color: black; }
       .mozaicForm .data-table tbody tr:hover {
         background-color: #d5d2d2 !important; }
-    .mozaicForm .data-table#uic_table tfoot {
+    .mozaicForm .data-table#uic_table tfoot, .mozaicForm .data-table.data-table-individual-columns-search tfoot {
       display: table-header-group; }
     .mozaicForm .data-table .actionIcons {
       width: 60px; }
