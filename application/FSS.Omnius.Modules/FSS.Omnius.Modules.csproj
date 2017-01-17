@@ -1121,6 +1121,8 @@
     <Compile Include="Tapestry\Actions\other\RegisterOneTimeTaskAction.cs" />
     <Compile Include="Tapestry\Actions\other\SendMailForEachAction.cs" />
     <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\PersonaIdToRweAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RweIdToPersonaAction.cs" />
     <Compile Include="Tapestry\Actions\Time\AddTimeSpanAction.cs" />
     <Compile Include="Tapestry\Actions\Time\TimeSpanAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
