@@ -618,11 +618,19 @@ function RecalculateMozaicFormHeight() {
     var mozaicFormHeight = mozaicForm.height();
 
     // For fixing panel overlapping when grown (sorting by dom-tree)
+    // Updated: now sorting by pos
     // First, find every panel in mozaic form
     var panels = mozaicForm.find("> .panel-component");
 
+    // Sort array of panels
+    panels.sort(function (a, b) {
+        // Key-value of sorting is top position of element
+        return $(a).position().top - $(b).position().top;
+    });
+
     // Variable for storing previous panel
     var lastUic = null;
+    var test = 0;
     // Foreach every panel
     panels.each(function (index, element) {
         var currentUic = $(element);
