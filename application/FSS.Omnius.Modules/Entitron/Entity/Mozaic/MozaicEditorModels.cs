@@ -189,8 +189,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "dropdown-select")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
+                    string sortMode = "key";
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
                         string[] tokenPairs = c.Properties.Split(';');
@@ -200,14 +201,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             if (nameValuePair.Length == 2)
                             {
                                 if (nameValuePair[0].ToLower() == "defaultoption")
-                                    stringBuilder.Append($"<option value=\"-1\">{nameValuePair[1]}</option>");
+                                    stringBuilder.Append($"<option value=\"-1\">@(t._(\"{nameValuePair[1]}\"))</option>");
+                                if (nameValuePair[0].ToLower() == "sortby" && nameValuePair[1].ToLower() == "value")
+                                    sortMode = "value";
                             }
                         }
                     }
-                    stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
-                    stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
-                    stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-                    stringBuilder.Append($"@(option.Value)</option>}}; }} }}</{c.Tag}>");
+                    if (sortMode == "value")
+                    {
+                        stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
+                        stringBuilder.Append($"{{ foreach(var option in ((Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"]).OrderBy(p => p.Value))");
+                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
+                        stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
+                    }
+                    else
+                    {
+                        stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
+                        stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
+                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
+                        stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
+                    }
+                    stringBuilder.Append($"</{c.Tag}>");
                 }
                 else if (c.Type == "multiple-select")
                 {
