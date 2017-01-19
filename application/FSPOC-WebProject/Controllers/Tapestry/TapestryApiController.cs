@@ -84,6 +84,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionX = requestedBlock.PositionX,
                                 PositionY = requestedBlock.PositionY,
                                 AssociatedPageIds = new List<int>(),
+                                AssociatedBootstrapPageIds = new List<int>(),
                                 AssociatedTableName = new List<string>(),
                                 AssociatedTableIds = new List<int>(),
                                 ResourceRules = new List<AjaxTapestryDesignerResourceRule>(),
@@ -103,6 +104,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 ModelTableName = blockCommit.ModelTableName,
                                 AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                     : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
+                                AssociatedBootstrapPageIds = string.IsNullOrEmpty(blockCommit.AssociatedBootstrapPageIds) ? new List<int>()
+                                    : blockCommit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList(),
                                 AssociatedTableName = string.IsNullOrEmpty(blockCommit.AssociatedTableName) ? new List<string>()
                                     : blockCommit.AssociatedTableName.Split(',').ToList(),
                                 AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
@@ -399,6 +402,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 ColumnName = item.ColumnName,
                 PageId = item.PageId,
                 ComponentName = item.ComponentName,
+                IsBootstrap = item.IsBootstrap,
                 StateId = item.StateId,
                 TargetName = item.TargetName,
                 TargetId = item.TargetId
@@ -795,6 +799,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     StateId = item.StateId,
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
+                    IsBootstrap = item.IsBootstrap,
                     TableName = item.TableName,
                     ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()
@@ -898,6 +903,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     StateId = item.StateId,
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
+                    IsBootstrap = item.IsBootstrap,
                     TargetId = item.TargetId,
                     isAjaxAction = item.isAjaxAction,
                     SymbolType = item.SymbolType

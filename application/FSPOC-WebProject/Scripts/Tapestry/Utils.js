@@ -229,7 +229,7 @@ function CheckRuleResizeLimits(rule, resourceRuleMode) {
 }
 function GetIsBootstrap(item)
 {
-    var isBootstrap = item.attr('data-isbootstrap');
+    var isBootstrap = item.attr('isbootstrap');
     return isBootstrap && (isBootstrap == true || isBootstrap == 'true') ? true : false;
 }
 

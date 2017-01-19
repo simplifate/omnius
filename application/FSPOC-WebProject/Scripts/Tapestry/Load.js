@@ -130,6 +130,9 @@
                     if (currentItemData.ConditionSets != null) {
                         newItem.data("conditionSets", currentItemData.ConditionSets);
                     }
+                    if (currentItemData.IsBootstrap != null) {
+                        newItem.attr('isBootstrap', currentItemData.IsBootstrap);
+                    }
                     newItem.addClass(currentItemData.TypeClass);
                     newRule.append(newItem);
                     AddToJsPlumb(newItem);
@@ -243,6 +246,10 @@
                         if (currentItemData.ConditionSets != null) {
                             newItem.data("conditionSets", currentItemData.ConditionSets);
                         }
+                        if (currentItemData.IsBootstrap != null) {
+                            newItem.attr('isBootstrap', currentItemData.IsBootstrap);
+                        }
+                        
                         targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
                         targetSwimlane.append(newItem);
                         AddToJsPlumb(newItem);
