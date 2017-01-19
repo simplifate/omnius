@@ -80,8 +80,8 @@ namespace FSS.Omnius.Modules.Tapestry
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                List<string> inputVarValues = invertedVar.Select(v => $"{v.Key} = {(v.Value == null ? "NULL" : v.Value.ToString())}").ToList();
-                LogError($"ActionName: {Name}\nInputVars: {string.Join(", ", inputVarValues)}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
+                List<string> varValues = vars.Select(v => $"{v.Key} = {(v.Value == null ? "NULL" : v.Value.ToString())}").ToList();
+                LogError($"ActionName: {Name}\nVars: {string.Join(", ", varValues)}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar, message);
