@@ -325,6 +325,53 @@ body.adminAppModule #validationResults {
     right: 312px !important;
     width: auto !important; } }
 
+body.adminLayout .app-alert {
+  width: 100%;
+  font-family: MyriadPro;
+  font-size: 18px;
+  padding: 6px 20px;
+  border-width: 1px;
+  border-style: solid; }
+  body.adminLayout .app-alert .alertSymbol {
+    padding-right: 10px; }
+  body.adminLayout .app-alert .closeAlertIcon {
+    color: #e3001b;
+    float: right;
+    margin-top: 4px;
+    cursor: pointer; }
+
+body.adminLayout .app-alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6; }
+
+body.adminLayout .app-alert-success.app-alert-odd {
+  background-color: #c9e2b4; }
+
+body.adminLayout .app-alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1; }
+
+body.adminLayout .app-alert-error.app-alert-odd {
+  background-color: #ebcccc; }
+
+body.adminLayout .app-alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc; }
+
+body.adminLayout .app-alert-warning.app-alert-odd {
+  background-color: #faf2cc; }
+
+body.adminLayout .app-alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1; }
+
+body.adminLayout .app-alert-info.app-alert-odd {
+  background-color: #c4e3f3; }
+
 @font-face {
   font-family: "RweHeadlineRegular";
   src: url(/Content/fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
@@ -384,7 +431,7 @@ body.adminAppModule #validationResults {
   background: #fff;
   position: absolute;
   left: 0px;
-  top: 0px;
+  top: 100px;
   right: 0px;
   height: 50px; }
   #userTopBar .icon {
@@ -500,7 +547,7 @@ body.adminAppModule #validationResults {
   background-color: #f4f4f4;
   position: absolute;
   left: 0px;
-  top: 50px;
+  top: 150px;
   bottom: 0px;
   width: 310px;
   overflow-x: hidden;
@@ -629,10 +676,17 @@ body.adminAppModule #validationResults {
       text-decoration: none;
       color: #f3962c; }
 
+body.userLayout {
+  background-color: #e9e7e7 !important; }
+
+body.userLayout #pageOverlay {
+  background-color: #e9e7e7 !important;
+  top: 150px !important; }
+
 #appNotificationArea {
   position: fixed;
   left: 310px;
-  top: 50px;
+  top: 150px;
   right: 0;
   z-index: 5;
   transition: left 0.4s ease-out; }
@@ -670,7 +724,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   #userTopBar .userBox {
     display: none;
     background-color: #edf8fe;
-    top: 50px;
+    top: 150px;
     right: 0;
     width: 150px;
     border: 1px solid #f1f0ee;
@@ -720,11 +774,22 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   #userTopBar .clientTitle {
     display: none; } }
 
+body.userLayout #brandBar {
+  background-color: #0d499a;
+  height: 100px;
+  opacity: 1; }
+  body.userLayout #brandBar .logo {
+    padding: 20px;
+    height: 100%; }
+    body.userLayout #brandBar .logo img {
+      height: 60px;
+      vertical-align: middle; }
+
 #userContentArea {
-  background-color: #181717;
+  background-color: #e9e7e7;
   position: absolute;
   left: 310px;
-  top: 50px;
+  top: 150px;
   right: 0px;
   bottom: 0px;
   overflow: auto;
@@ -865,14 +930,10 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    background: -webkit-linear-gradient(top, #0086be, #0065a9);
-    background: -o-linear-gradient(bottom, #0086be, #0065a9);
-    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
-    background: linear-gradient(to bottom, #0086be, #0065a9);
+    background-color: #0d499a;
     color: white;
     font-family: Innogy-Regular;
     padding: 12px 12px;
-    border-radius: 4px;
     font-size: 11px;
     width: 200px;
     height: 55px; }
@@ -921,7 +982,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     .mozaicForm .control-label u {
       color: #0065a9; }
   .mozaicForm .detail-label {
-    color: #0066cc;
+    color: #181717;
     font-weight: bold;
     text-align: right; }
   .mozaicForm .form-heading {
@@ -985,7 +1046,7 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
       color: black; }
       .mozaicForm .data-table tbody tr:hover {
         background-color: #d5d2d2 !important; }
-    .mozaicForm .data-table#uic_table tfoot {
+    .mozaicForm .data-table#uic_table tfoot, .mozaicForm .data-table.data-table-individual-columns-search tfoot {
       display: table-header-group; }
     .mozaicForm .data-table .actionIcons {
       width: 60px; }
@@ -1051,7 +1112,8 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .mozaicForm .name-value-list.toolboxItem .value-cell {
     min-width: 60px; }
   .mozaicForm .visible-panel-pale-background {
-    background-color: #cce0f5; }
+    background-color: #d5d2d2;
+    color: white; }
   .mozaicForm .named-panel {
     background-color: #f4f4f4;
     color: black !important; }
@@ -1081,51 +1143,51 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   .mozaicForm .removePanelIcon:hover {
     color: #e3001b; }
 
-.app-alert {
+body.userLayout .app-alert {
   width: 100%;
   font-family: Innogy-Medium;
   font-size: 18px;
   padding: 6px 20px;
   border-width: 1px;
   border-style: solid; }
-  .app-alert .alertSymbol {
+  body.userLayout .app-alert .alertSymbol {
     padding-right: 10px; }
-  .app-alert .closeAlertIcon {
+  body.userLayout .app-alert .closeAlertIcon {
     color: white;
     float: right;
     margin-top: 4px;
     cursor: pointer; }
 
-.app-alert-success {
+body.userLayout .app-alert-success {
   color: white;
   background-color: #60bb46;
   border: none; }
 
-.app-alert-success.app-alert-odd {
+body.userLayout .app-alert-success.app-alert-odd {
   background-color: #56a93e; }
 
-.app-alert-error {
+body.userLayout .app-alert-error {
   color: white;
   background-color: #f15921;
   border: none; }
 
-.app-alert-error.app-alert-odd {
+body.userLayout .app-alert-error.app-alert-odd {
   background-color: #ea4a0f; }
 
-.app-alert-warning {
+body.userLayout .app-alert-warning {
   color: #8a6d3b;
   background-color: #fcf8e3;
   border-color: #faebcc; }
 
-.app-alert-warning.app-alert-odd {
+body.userLayout .app-alert-warning.app-alert-odd {
   background-color: #faf2cc; }
 
-.app-alert-info {
+body.userLayout .app-alert-info {
   color: #31708f;
   background-color: #d9edf7;
   border-color: #bce8f1; }
 
-.app-alert-info.app-alert-odd {
+body.userLayout .app-alert-info.app-alert-odd {
   background-color: #c4e3f3; }
 
 .hiddenForm {
@@ -1244,26 +1306,26 @@ table.dataTable {
       background: #363f7f !important;
       cursor: pointer; }
 
-a {
+body.userLayout a {
   color: black; }
-  a:hover {
+  body.userLayout a:hover {
     color: #f3962c; }
 
-input, select {
+body.userLayout input, body.userLayout select {
   color: black; }
 
-input[type=text], input[type=search], select {
+body.userLayout input[type=text], body.userLayout input[type=search], body.userLayout select {
   border: 1px solid #b8b4ab;
   padding: 0px 15px;
   border-radius: 300px;
   outline: none;
   font-size: 85%; }
-  input[type=text].has-error, input[type=search].has-error, select.has-error {
+  body.userLayout input[type=text].has-error, body.userLayout input[type=search].has-error, body.userLayout select.has-error {
     border: 1px solid #f15921; }
-  input[type=text]:focus, input[type=search]:focus, select:focus {
+  body.userLayout input[type=text]:focus, body.userLayout input[type=search]:focus, body.userLayout select:focus {
     border: 1px solid #ffc238; }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
+body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button {
   padding: 0px 15px;
   border-radius: 300px;
   outline: none;
@@ -1273,15 +1335,15 @@ input[type=text], input[type=search], select {
   color: white !important;
   border: none !important;
   background: #69615f !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button.has-error {
+  body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.has-error {
     border: 1px solid #f15921; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
+  body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button:focus {
     border: 1px solid #ffc238; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     color: white !important;
     border: none !important;
     background: #f3962c !important; }
-  .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+  body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.previous, body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button.next {
     background: transparent !important;
     color: black !important;
     padding: 0px 5px; }

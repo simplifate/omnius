@@ -77,13 +77,6 @@ $(function () {
             $(".searchBox").slideToggle();
             $(".userBox").slideUp();
         });
-        $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
-        $(window).scroll(function () {
-            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
-        });
-        $(window).resize(function () {
-            $("#userLeftBar").css("height", $(window).height() + $(window).scrollTop() - 50);
-        });
         try {
             $(".uic.data-table").each(function (index, element) {
             var table = $(element);

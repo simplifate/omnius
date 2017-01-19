@@ -305,6 +305,7 @@
     <Content Include="Content\fonts\innogy\Innogy-Light.svg" />
     <Content Include="Content\fonts\innogy\Innogy-Medium.svg" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.svg" />
+    <Content Include="Content\images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\scss\Cortex.scss" />
     <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.css">

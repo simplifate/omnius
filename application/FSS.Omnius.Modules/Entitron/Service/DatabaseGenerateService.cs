@@ -6,6 +6,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Table;
 using FSS.Omnius.Modules.Entitron.Entity.CORE;
+using System;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
@@ -189,24 +190,30 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
-                bool viewExists = DBView.isInDb(e.Application, efView.Name);
+                try
+                {
+                    bool viewExists = DBView.isInDb(e.Application, efView.Name);
 
-                DBView newView = new DBView()
-                {
-                    Application = e.Application,
-                    dbViewName = efView.Name,
-                    sql = efView.Query
-                };
+                    DBView newView = new DBView()
+                    {
+                        Application = e.Application,
+                        dbViewName = efView.Name,
+                        sql = efView.Query
+                    };
 
-                if (!viewExists)
-                {
-                    newView.Create();
+                    if (!viewExists)
+                    {
+                        newView.Create();
+                    }
+                    else
+                    {
+                        newView.Alter();
+                    }
+                    e.Application.SaveChanges();
                 }
-                else
+                catch(Exception)
                 {
-                    newView.Alter();
                 }
-                e.Application.SaveChanges();
             }//end of foreach efViews
 
             //list of views, which are in database, but not in scheme

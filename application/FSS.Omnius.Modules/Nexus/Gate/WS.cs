@@ -81,6 +81,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             string data = createSoapEnvelope(row, jsonBody);
 
             HttpWebRequest request = WebRequest.Create(new Uri(row.SOAP_Endpoint)) as HttpWebRequest;
+            request.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => { return true; };
 
             if (!string.IsNullOrEmpty(row.Auth_User) && !string.IsNullOrEmpty(row.Auth_Password)) {
                 request.Credentials = new NetworkCredential(row.Auth_User, row.Auth_Password);
