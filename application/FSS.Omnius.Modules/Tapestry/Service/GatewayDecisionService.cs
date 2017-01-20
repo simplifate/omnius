@@ -32,38 +32,40 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         }
         private static bool matchCondition(TapestryDesignerCondition condition, Dictionary<string, object> vars)
         {
-            if (!vars.ContainsKey(condition.Variable))
-                return false;
+            object leftOperand = KeyValueString.ParseValue(condition.Variable, vars);
+            switch (condition.Operator)
+            {
+                case "is empty":
+                    return leftOperand == null || leftOperand.ToString().Length == 0;
+                case "is not empty":
+                    return leftOperand != null && leftOperand.ToString().Length > 0;
+            }
 
-            var leftOperand = vars[condition.Variable];
+            object value = KeyValueString.ParseValue(condition.Value, vars);
+            if (leftOperand == null || value == null)
+                return false;
             switch (condition.Operator)
             {
                 case "==":
                     if (leftOperand is bool)
-                        return ((bool)leftOperand ? "true" : "false") == condition.Value;
+                        return (bool)leftOperand == (bool)value;
                     else
-                        return leftOperand.ToString() == condition.Value.ToString();
+                        return leftOperand.ToString() == value.ToString();
                 case "!=":
                     if (leftOperand is bool)
-                        return ((bool)leftOperand ? "true" : "false") != condition.Value;
+                        return (bool)leftOperand != (bool)value;
                     else
-                        return leftOperand.ToString() == condition.Value.ToString();
+                        return leftOperand.ToString() != value.ToString();
                 case ">":
-                    return Convert.ToInt64(leftOperand) > Convert.ToInt64(condition.Value);
+                    return Convert.ToDecimal(leftOperand) > Convert.ToDecimal(value);
                 case ">=":
-                    return Convert.ToInt64(leftOperand) >= Convert.ToInt64(condition.Value);
+                    return Convert.ToDecimal(leftOperand) >= Convert.ToDecimal(value);
                 case "<":
-                    return Convert.ToInt64(leftOperand) < Convert.ToInt64(condition.Value);
+                    return Convert.ToDecimal(leftOperand) < Convert.ToDecimal(value);
                 case "<=":
-                    return Convert.ToInt64(leftOperand) <= Convert.ToInt64(condition.Value);
-                case "is empty":
-                    return string.IsNullOrEmpty((string)leftOperand);
-                case "is not empty":
-                    return !string.IsNullOrEmpty((string)leftOperand);
+                    return Convert.ToDecimal(leftOperand) <= Convert.ToDecimal(value);
                 case "contains":
-                    return ((string)leftOperand).Contains(condition.Value);
-                case "exists":
-                    return true;
+                    return ((string)leftOperand).Contains(value.ToString());
             }
             return true;
         }

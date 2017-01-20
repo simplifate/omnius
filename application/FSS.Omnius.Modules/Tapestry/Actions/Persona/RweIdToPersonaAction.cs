@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var rweUsersTable = core.Entitron.GetDynamicTable("Users");
             var context = DBEntities.instance;
-            int userId = (int)vars["Id"];
+            int userId = Convert.ToInt32(vars["Id"]);
 
             List<DBItem> results;
             
