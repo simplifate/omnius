@@ -126,8 +126,6 @@ namespace FSS.Omnius.Controllers.Master
                         return;
                     }
 
-                    app.DbSchemeLocked = true;
-                    context.SaveChanges();
 
                     // clear page cache
                     //if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
@@ -137,6 +135,12 @@ namespace FSS.Omnius.Controllers.Master
                     {
                         try
                         {
+                            app.DbSchemeLocked = true;
+                            context.SaveChanges();
+
+
+                            int i = 0;
+                            i = 5 / i;
                             Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
                             core.Entitron.AppId = app.Id;
                             var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
@@ -153,6 +157,12 @@ namespace FSS.Omnius.Controllers.Master
                         catch (Exception ex)
                         {
                             throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
+                            context.DiscardChanges();
+                        }
+                        finally
+                        {
+                            app.DbSchemeLocked = false;
+                            context.SaveChanges();
                         }
                     }
 
@@ -270,12 +280,6 @@ namespace FSS.Omnius.Controllers.Master
                 catch (Exception ex)
                 {
                     ErrorMessage(ex);
-                }
-                finally
-                {
-                    context.DiscardChanges();
-                    app.DbSchemeLocked = false;
-                    context.SaveChanges();
                 }
             }
         }
