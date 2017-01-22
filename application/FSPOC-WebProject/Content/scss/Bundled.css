@@ -1123,7 +1123,10 @@ body.userLayout #brandBar {
       top: 0px;
       right: 0px;
       min-height: 25px;
-      padding: 6px;
+      padding-top: 5px;
+      padding-bottom: 3px;
+      padding-left: 8px;
+      padding-right: 8px;
       background-color: #f3962c;
       color: white;
       font-family: Innogy-Regular;
