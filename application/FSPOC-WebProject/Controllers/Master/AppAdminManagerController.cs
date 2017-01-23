@@ -138,9 +138,6 @@ namespace FSS.Omnius.Controllers.Master
                             app.DbSchemeLocked = true;
                             context.SaveChanges();
 
-
-                            int i = 0;
-                            i = 5 / i;
                             Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
                             core.Entitron.AppId = app.Id;
                             var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
