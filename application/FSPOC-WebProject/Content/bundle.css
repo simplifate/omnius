@@ -2789,7 +2789,15 @@ body.userLayout #brandBar {
   display: none; }
 
 .mozaicForm {
-  position: relative; }
+  position: relative;
+  /*
+    .data-table-simple-mode {
+        background-color: white;
+        tfoot {
+            display: none;
+        }
+    }
+    */ }
   .mozaicForm .uic {
     position: absolute; }
   .mozaicForm .button-simple {
@@ -3048,10 +3056,6 @@ body.userLayout #brandBar {
         border: 1px solid #f15921; }
       .mozaicForm .data-table input:focus {
         border: 1px solid #ffc238; }
-  .mozaicForm .data-table-simple-mode {
-    background-color: white; }
-    .mozaicForm .data-table-simple-mode tfoot {
-      display: none; }
   .mozaicForm .name-value-list {
     font-family: Innogy-Medium;
     font-size: 14px; }

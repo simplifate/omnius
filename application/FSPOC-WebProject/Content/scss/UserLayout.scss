@@ -774,12 +774,14 @@ body.userLayout #brandBar {
             @include innogy-input;
         }
     }
+    /*
     .data-table-simple-mode {
         background-color: white;
         tfoot {
             display: none;
         }
     }
+    */
     .name-value-list {
         font-family: Innogy-Medium;
         font-size: 14px;
