@@ -11,8 +11,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 {
     public class TapestryGeneratorService
     {
-        private string[] _splitGateways = new string[] { "gateway-x" };
-
         private CORE.CORE _core;
         private DBEntities _context;
         private bool _rebuildInAction;
@@ -290,8 +288,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private void saveWFRule(TapestryDesignerWorkflowRule workflowRule, Block block, WorkFlow wf, Dictionary<int, string> stateColumnMapping)
         {
             HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
-            Dictionary<TapestryDesignerWorkflowItem, Block> BlockMapping = new Dictionary<TapestryDesignerWorkflowItem, Block>();
             Dictionary<Block, int> conditionMapping = new Dictionary<Block, int>();
+            Dictionary<TapestryDesignerWorkflowItem, Block> BlockMapping = new Dictionary<TapestryDesignerWorkflowItem, Block>();
             HashSet<Block> blockHasRights = new HashSet<Block> { block };
 
             // create virtual starting items
@@ -304,16 +302,22 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Source = virtualBeginItem,
                     Target = item
                 };
-
+                
                 todoConnections.Add(conn);
             }
 
             //
-            var splitItems = _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType));
-            var joinItems = _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1);
+            var splitItems = workflowRule.Connections.GroupBy(c => c.SourceId).Where(c => c.Count() > 1);
+            var joinItems = workflowRule.Connections.GroupBy(c => c.TargetId).Where(c => c.Count() > 1);
 
             foreach (var splitItem in splitItems)
             {
+                // todo connection
+                foreach (TapestryDesignerWorkflowConnection connection in splitItem)
+                {
+                    todoConnections.Add(connection);
+                }
+
                 // block mapping
                 int random = new Random().Next() % 1000000;
                 Block newBlock = new Block
@@ -324,35 +328,22 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);
-                BlockMapping.Add(splitItem, newBlock);
+                TapestryDesignerWorkflowItem it = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == splitItem.Key);
+                BlockMapping.Add(it, newBlock);
 
                 // conditions
-                if (splitItem.SymbolType == "gateway-x")
-                    conditionMapping.Add(newBlock, splitItem.Id);
-
+                if (it.SymbolType == "gateway-x")
+                {
+                    conditionMapping.Add(newBlock, it.Id);
+                }
                 // rights
                 if (checkBlockHasRights(splitItem))
                     blockHasRights.Add(newBlock);
-
-                // todo connection
-                int connectionCount = splitItem.SourceToConnection.Count;
-                if (connectionCount == 0) // wrong WF
-                    throw new Exception($"Workflow ends with gateway - {block.Name}: {workflowRule.Name}");
-                if (connectionCount == 1) // missing way - return to real Block
-                {
-                    TapestryDesignerWorkflowConnection connection = splitItem.SourceToConnection.FirstOrDefault();
-                    todoConnections.Add(connection);
-                    todoConnections.Add(new TapestryDesignerWorkflowConnection { SourceSlot = connection.SourceSlot == 0 ? 1 : 0, Source = splitItem });
-                }
-                else // OK
-                    foreach (TapestryDesignerWorkflowConnection connection in splitItem.SourceToConnection)
-                        todoConnections.Add(connection);
             }
-
             foreach (var joinItem in joinItems)
             {
-                if (BlockMapping.ContainsKey(joinItem)) // split item & join item are same
-                    continue;
+                // todo connection
+                todoConnections.Add(joinItem.FirstOrDefault());
 
                 // block mapping
                 int random = new Random().Next() % 1000000;
@@ -364,33 +355,37 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     IsVirtual = true
                 };
                 wf.Blocks.Add(newBlock);
-                BlockMapping.Add(joinItem, newBlock);
 
-                // todo connection
-                todoConnections.Add(new TapestryDesignerWorkflowConnection { Source = joinItem, Target = joinItem });
+                foreach (var ji in joinItem)
+                {
+
+                    TapestryDesignerWorkflowItem it = _context.TapestryDesignerWorkflowItems.SingleOrDefault(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && i.Id == ji.SourceId);
+                    BlockMapping.Add(it, newBlock);
+                }
             }
-
+            
             //// ACTIONS ////
-            foreach (TapestryDesignerWorkflowConnection connection in todoConnections)
-                createActionRule(workflowRule, block, BlockMapping[connection.Source], connection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
+            foreach (TapestryDesignerWorkflowConnection conection in todoConnections)
+            {
+                TapestryDesignerWorkflowItem it = conection.Source;
+                Block thisBlock = BlockMapping[it];
+                createActionRule(workflowRule, block, thisBlock, conection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
+            }
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block nonVirtualBlock, Block startBlock, TapestryDesignerWorkflowConnection connection,
             Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, int> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
         {
-            TapestryDesignerWorkflowItem item = connection.Target;
-            // is there a button name?
-            string init = item?.ComponentName;
+            string init = connection.Target.ComponentName;
             if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) // initial ActionRule
                 init = "INIT";
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
             {
                 Actor = _context.Actors.Single(a => a.Name == ActorName),
-                Name = $"{workflowRule.Name}: {startBlock.DisplayName} - {(new Random().Next() % 1000000).ToString()}",
+                Name = (new Random().Next() % 1000000).ToString(),
                 ExecutedBy = init
             };
-
             // condition
             if (conditionMapping.ContainsKey(startBlock))
             {
@@ -404,20 +399,16 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             startBlock.SourceTo_ActionRules.Add(rule);
             // rights
-            if (blockHasRights.Contains(startBlock) && item != null)
-                AddActionRuleRights(rule, item.ParentSwimlane);
-            
+            if (blockHasRights.Contains(startBlock))
+                AddActionRuleRights(rule, connection.Target.ParentSwimlane);
+
+            TapestryDesignerWorkflowItem item = connection.Target;
             TapestryDesignerWorkflowItem prevItem = null;
-            while (item != null // end WF
-                && (!blockMapping.ContainsKey(item) // split || join
-                    || (prevItem == null && connection.Source == connection.Target))) // split || join but starting action item
+            while (item != null && (prevItem == null || !blockMapping.ContainsKey(prevItem)))
             {
                 switch (item.TypeClass)
                 {
                     case "actionItem":
-                        if (item.ActionId == 181) // noAction
-                            break;
-
                         string generatedInputVariables = "";
                         if (item.ActionId == 2005) // Send mail
                         {
@@ -427,7 +418,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";Template=s$" + relatedConnections.Source.Label;
                             }
                         }
-
                         ActionRule_Action result = new ActionRule_Action
                         {
                             ActionId = item.ActionId.Value,
@@ -443,16 +433,15 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         break;
 
                     case "symbol":
-                        // No needed now
-                        //switch (item.SymbolType)
-                        //{
-                        //    case "gateway-x":
-                        //        Block splitBlock = blockMapping[item];
-                        //        // if not already in conditionMapping
-                        //        if (!conditionMapping.ContainsKey(splitBlock))
-                        //            conditionMapping.Add(splitBlock, item.Id);
-                        //        break;
-                        //}
+                        switch (item.SymbolType)
+                        {
+                            case "gateway-x":
+                                Block splitBlock = blockMapping[item];
+                                // if not already in conditionMapping
+                                if (!conditionMapping.ContainsKey(splitBlock))
+                                    conditionMapping.Add(splitBlock, item.Id);
+                                break;
+                        }
                         break;
                     case "circle-thick":
                         break;
@@ -479,7 +468,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     case "circle-single-dashed":
                         break;
                     case "uiItem":
-                        // DONE
                         break;
                     case "database":
                         break;
@@ -489,18 +477,16 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         break;
                 }
 
-                // next item
+                // next connection
+                connection = workflowRule.Connections.FirstOrDefault(c => c.SourceId == item.Id);
                 prevItem = item;
-                item = workflowRule.Connections.FirstOrDefault(c => c.SourceId == item.Id)?.Target;
+                item = connection != null ? connection.Target : null;
             }
 
-            // real block not set (TargetItem)
             if (rule.TargetBlock == null)
             {
-                // continue to next virtual Block
-                if (item != null && blockMapping.ContainsKey(item))
-                    rule.TargetBlock = blockMapping[item];
-                // return to origin real Block
+                if (blockMapping.ContainsKey(prevItem))
+                    rule.TargetBlock = blockMapping[prevItem];
                 else
                     rule.TargetBlock = nonVirtualBlock;
             }
@@ -508,16 +494,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return rule;
         }
 
-        private bool checkBlockHasRights(TapestryDesignerWorkflowItem item)
+        private bool checkBlockHasRights(IEnumerable<TapestryDesignerWorkflowConnection> connections)
         {
-            List<TapestryDesignerWorkflowConnection> connections = item.SourceToConnection.ToList();
-            if (connections.Count < 2)
+            if (connections.Count() < 2)
                 return false;
 
-            TapestryDesignerSwimlane originalSwimlane = item.ParentSwimlane;
+            TapestryDesignerSwimlane originalSwimlane = connections.First().Target.ParentSwimlane;
             foreach (var connection in connections)
+            {
                 if (connection.Target.ParentSwimlane != originalSwimlane)
                     return true;
+            }
 
             return false;
         }
@@ -536,5 +523,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 });
             }
         }
+    }
+
+    public class ConnectionTargetSource
+    {
+        public int Id { get; set; }
+        public int Type { get; set; }
     }
 }
