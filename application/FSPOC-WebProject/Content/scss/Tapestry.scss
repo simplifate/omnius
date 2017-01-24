@@ -39,7 +39,6 @@ body.tapestryModule {
             left: 600px;
             top: 39px;
         }
-
         #tapestryLibraryArea {
             position: absolute;
             left: 66px;
@@ -96,7 +95,32 @@ body.tapestryModule {
                 border-right: 5px solid #3a3a3a;
                 white-space: nowrap;
             }
-
+            .librarySearchToggler {
+                border: none;
+                float: right;
+                margin-top: -3px;
+                height: 30px;
+                background-color: #f2f2f3;
+            }
+            .librarySearch.hidden {
+                display: none;
+            }
+            .librarySearch.shown {
+                display: block;
+                width: 100%;
+                height: 30px;
+                border: none;
+                background-color: #d0d0d0;
+                font-family: MyriadPro;
+                font-size: 18px;
+                color: black;
+                padding-left: 8px;
+                padding-right: 8px;
+                margin-bottom: 3px;
+                border-left: 3px solid #3a3a3a;
+                border-right: 5px solid #3a3a3a;
+                white-space: nowrap;
+            }
             .libraryItem.highlighted {
                 background-color: #84c441;
                 color: #425b33;

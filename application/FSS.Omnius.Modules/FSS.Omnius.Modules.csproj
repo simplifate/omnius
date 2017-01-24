@@ -1056,6 +1056,7 @@
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\GenerateUniqueIdAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JSON2DbItemList.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TruncateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />

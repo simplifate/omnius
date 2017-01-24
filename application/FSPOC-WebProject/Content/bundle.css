@@ -2789,7 +2789,15 @@ body.userLayout #brandBar {
   display: none; }
 
 .mozaicForm {
-  position: relative; }
+  position: relative;
+  /*
+    .data-table-simple-mode {
+        background-color: white;
+        tfoot {
+            display: none;
+        }
+    }
+    */ }
   .mozaicForm .uic {
     position: absolute; }
   .mozaicForm .button-simple {
@@ -3048,10 +3056,6 @@ body.userLayout #brandBar {
         border: 1px solid #f15921; }
       .mozaicForm .data-table input:focus {
         border: 1px solid #ffc238; }
-  .mozaicForm .data-table-simple-mode {
-    background-color: white; }
-    .mozaicForm .data-table-simple-mode tfoot {
-      display: none; }
   .mozaicForm .name-value-list {
     font-family: Innogy-Medium;
     font-size: 14px; }
@@ -3092,7 +3096,10 @@ body.userLayout #brandBar {
       top: 0px;
       right: 0px;
       min-height: 25px;
-      padding: 6px;
+      padding-top: 5px;
+      padding-bottom: 3px;
+      padding-left: 8px;
+      padding-right: 8px;
       background-color: #f3962c;
       color: white;
       font-family: Innogy-Regular;
@@ -3387,6 +3394,29 @@ body.tapestryModule #upperPanel {
       padding-left: 8px;
       padding-right: 8px;
       padding-top: 3px;
+      margin-bottom: 3px;
+      border-left: 3px solid #3a3a3a;
+      border-right: 5px solid #3a3a3a;
+      white-space: nowrap; }
+    body.tapestryModule #upperPanel #tapestryLibraryArea .librarySearchToggler {
+      border: none;
+      float: right;
+      margin-top: -3px;
+      height: 30px;
+      background-color: #f2f2f3; }
+    body.tapestryModule #upperPanel #tapestryLibraryArea .librarySearch.hidden {
+      display: none; }
+    body.tapestryModule #upperPanel #tapestryLibraryArea .librarySearch.shown {
+      display: block;
+      width: 100%;
+      height: 30px;
+      border: none;
+      background-color: #d0d0d0;
+      font-family: MyriadPro;
+      font-size: 18px;
+      color: black;
+      padding-left: 8px;
+      padding-right: 8px;
       margin-bottom: 3px;
       border-left: 3px solid #3a3a3a;
       border-right: 5px solid #3a3a3a;
