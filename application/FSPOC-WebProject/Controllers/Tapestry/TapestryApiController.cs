@@ -163,7 +163,6 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         Name = postData.Name,
                         ModelTableName = postData.ModelTableName,
                         AssociatedPageIds = postData.AssociatedPageIds != null ? string.Join(",", postData.AssociatedPageIds) : "",
-                        AssociatedBootstrapPageIds = postData.AssociatedBootstrapPageIds != null ? string.Join(",", postData.AssociatedBootstrapPageIds) : "",
                         AssociatedTableName = postData.AssociatedTableName != null ? string.Join(",", postData.AssociatedTableName) : "",
                         AssociatedTableIds = postData.AssociatedTableIds != null ? string.Join(",", postData.AssociatedTableIds) : "",
                         RoleWhitelist = postData.RoleWhitelist != null ? string.Join(",", postData.RoleWhitelist) : "",
@@ -196,8 +195,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
                                 ColumnName = ajaxItem.ColumnName,
-                                ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray()),
-                                IsBootstrap = ajaxItem.IsBootstrap
+                                ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray())
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
@@ -277,8 +275,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                     PageId = ajaxItem.PageId,
                                     ComponentName = ajaxItem.ComponentName,
                                     isAjaxAction = ajaxItem.isAjaxAction,
-                                    SymbolType = ajaxItem.SymbolType,
-                                    IsBootstrap = ajaxItem.IsBootstrap
+                                    SymbolType = ajaxItem.SymbolType
                                 };
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
@@ -391,8 +388,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                 ComponentName = ajaxItem.ComponentName,
                 StateId = ajaxItem.StateId,
                 TargetName = ajaxItem.TargetName,
-                TargetId = ajaxItem.TargetId,
-                IsBootstrap = ajaxItem.IsBootstrap
+                TargetId = ajaxItem.TargetId
             };
         }
         private static AjaxToolboxItem convertToolboxItem(ToolboxItem item)
@@ -462,9 +458,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                         AssociatedTableIds = string.IsNullOrEmpty(blockCommit.AssociatedTableIds) ? new List<int>()
                                 : blockCommit.AssociatedTableIds.Split(',').Select(int.Parse).ToList(),
                         RoleWhitelist = string.IsNullOrEmpty(blockCommit.RoleWhitelist) ? new List<string>()
-                                : blockCommit.RoleWhitelist.Split(',').ToList(),
-                        AssociatedBootstrapPageIds = string.IsNullOrEmpty(blockCommit.AssociatedBootstrapPageIds) ? new List<int>()
-                                : blockCommit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList(),
+                                : blockCommit.RoleWhitelist.Split(',').ToList()
                     };
                     LoadResourceRules(blockCommit, result);
                     LoadWorkflowRules(blockCommit, result);

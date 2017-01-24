@@ -1517,7 +1517,7 @@ var AssociatedBootstrapPageIds = [];
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
-        TB.load.loadBlock();
+        LoadBlock();
 
         // Buttons and UI effects
         $("#btnClear").on("click", function () {
@@ -1534,7 +1534,7 @@ $(function () {
             else
                 confirmed = true;
             if (confirmed) {
-                TB.load.loadBlock();
+                LoadBlock();
             }
         });
         $("#btnHistory").on("click", function () {
@@ -2197,8 +2197,7 @@ $(function () {
                 else
                     confirmed = true;
                 if (confirmed) {
-                    TB.load.loadBlock(historyDialog.data("selectedCommitId"));
-                    //LoadBlock(historyDialog.data("selectedCommitId"));
+                    LoadBlock(historyDialog.data("selectedCommitId"));
                 }
             }
             else
@@ -3162,43 +3161,12 @@ var TB = {
 
     onInit: [],
 
-    changedSinceLastSave: false,
-
     init: function () {
         var self = TB;
 
         for (var i = 0; i < self.onInit.length; i++) {
             self.onInit[i]();
         }
-    },
-
-    checkRuleResizeLimits: function (rule, resourceRuleMode)
-    {
-        var horizontalLimit = 1000000;
-        var verticalLimit = 1000000;
-
-        var ruleLeft = rule.position().left;
-        var ruleRight = ruleLeft + rule.width();
-        var ruleTop = rule.position().top;
-        var ruleBottom = rule.position().top + rule.height();
-
-        $(resourceRuleMode ? "#resourceRulesPanel .resourceRule" : "#workflowRulesPanel .workflowRule").each(function (index, element) {
-            var otherRule = $(element);
-            if (otherRule.attr("id") != rule.attr("id")) {
-                var otherRuleLeft = otherRule.position().left;
-                var otherRuleRight = otherRuleLeft + otherRule.width();
-                var otherRuleTop = otherRule.position().top;
-                var otherRuleBottom = otherRule.position().top + otherRule.height();
-
-                if (otherRuleTop < ruleBottom && otherRuleBottom > ruleTop
-                    && otherRuleLeft + 30 > ruleRight && otherRuleLeft - ruleLeft < horizontalLimit)
-                    horizontalLimit = otherRuleLeft - ruleLeft;
-                if (otherRuleLeft < ruleRight && otherRuleRight > ruleLeft
-                    && otherRuleTop  + 20 > ruleBottom && otherRuleTop - ruleTop < verticalLimit)
-                    verticalLimit = otherRuleTop - ruleTop;
-            }
-        });
-        return { horizontal: horizontalLimit, vertical: verticalLimit };
     }
 };
 
@@ -3371,35 +3339,36 @@ TB.screen = {
         chooseScreensDialog.dialog("close");
     },
 
-    loadBootstrapComponents: function(data, state)
+    loadBootstrapComponents: function(data)
     {
+        var list = $("#libraryCategory-UI");
+
         for (i = 0; i < data.Components.length; i++) {
             if (i == 0) {
-                var label = 'Screen: ' + data.Name;
-                var params = { pageId: data.Id, isBootstrap: true };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
-
-                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-                if (isUsed) {
-                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-                }
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': data.Id,
+                    'isBootstrap': true,
+                    'libType': 'ui'
+                }).html('Screen: ' + data.Name).appendTo(list);
             }
 
-            TB.screen.addComponent(data.Components[i], data.Id, state);
+            TB.screen.addComponent(data.Components[i], data.Id, list);
         }
     },
 
-    addComponent: function(c, pageId, state)
+    addComponent: function(c, pageId, list)
     {
         if (c.ElmId != "") {
-            var label = c.ElmId;
-            var params = { pageId: pageId, componentName: label, isBootstrap: true };
-            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
-
-            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-            }
+            var item = $('<div class="libraryItem" />');
+            item.attr({
+                'libId': ++lastLibId,
+                'pageId': pageId,
+                'componentName': c.ElmId,
+                'isBootstrap': true,
+                'libType': 'ui'
+            }).html(c.ElmId).appendTo(list);
         }
 
         if (c.UIC == 'ui|data-table')
@@ -3408,72 +3377,73 @@ TB.screen = {
             if (actionsText !== -1) {
                 var actions = JSON.parse(actionsText.replace(/'/g, '"'));
                 for (var a in actions) {
-                    var label = c.ElmId + '_' + actions[a].action;
-                    var params = { pageId: pageId, componentName: label, isBootstrap: true };
-                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
-
-                    var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-                    if (isUsed) {
-                        TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-                    }
+                    var item = $('<div class="libraryItem" />');
+                    item.attr({
+                        'libId': ++lastLibId,
+                        'pageId': pageId,
+                        'componentName': c.ElmId + '_' + actions[a].action,
+                        'isBootstrap': true,
+                        'libType': 'ui'
+                    }).html(c.ElmId + '_' + actions[a].action).appendTo(list);
                 }
             }
         }
 
         if (c.ChildComponents) {
             for (var i = 0; i < c.ChildComponents.length; i++) {
-                TB.screen.addComponent(c.ChildComponents[i], pageId, state);
+                TB.screen.addComponent(c.ChildComponents[i], pageId, list);
             }
         }
     },
 
-    loadLegacyComponents: function(data, state)
+    loadLegacyComponents: function(data)
     {
+        var list = $("#libraryCategory-UI");
+
         for (i = 0; i < data.Components.length; i++) {
             if (i == 0) {
-                var label = 'Screen: ' + data.Name;
-                var params = { pageId: data.Id, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
-
-                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-                if (isUsed) {
-                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-                }
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': data.Id,
+                    'isBootstrap': false,
+                    'libType': 'ui'
+                }).html('Screen: ' + data.Name).appendTo(list);
             }
             
-            TB.screen.addLegacyComponent(data.Components[i], data.Id, state);
+            TB.screen.addLegacyComponent(data.Components[i], data.Id, list);
         }
     },
 
-    addLegacyComponent: function(c, pageId, state)
+    addLegacyComponent: function(c, pageId, list)
     {
-        var label = c.Name;
-        var params = { pageId: pageId, componentName: label, isBootstrap: false };
-        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
-
-        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-        if (isUsed) {
-            TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-        }
+        var item = $('<div class="libraryItem" />');
+        item.attr({
+            'libId': ++lastLibId,
+            'pageId': pageId,
+            'componentName': c.Name,
+            'isBootstrap': false,
+            'libType': 'ui'
+        }).html(c.Name).appendTo(list);
 
         var actions = ['_EditAction', '_DetailsAction', '_DeleteAction', '_A_Action', '_B_Action'];
         
         if (c.Type == "data-table-with-actions") {
-            for (var a = 0; a < actions.length; a++) {
-                var label = c.Name + actions[a];
-                var params = { pageId: pageId, componentName: label, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
-
-                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
-                if (isUsed) {
-                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
-                }
+            for(var a = 0; a < actions.length; a++) {
+                var item = $('<div class="libraryItem" />');
+                item.attr({
+                    'libId': ++lastLibId,
+                    'pageId': pageId,
+                    'componentName': c.Name + actions[a],
+                    'isBootstrap': false,
+                    'libType': 'ui'
+                }).html(c.Name + actions[a]).appendTo(list);
             }
         }
 
         if (c.ChildComponents) {
             for (var i = 0; i < c.ChildComponents.length; i++) {
-                TB.screen.addLegacyComponent(c.ChildComponents[i], pageId, state);
+                TB.screen.addLegacyComponent(c.ChildComponents[i], pageId, list);
             }
         }
     },
@@ -3491,888 +3461,6 @@ TB.screen = {
 };
 
 TB.onInit.push(TB.screen.init);
-TB.load = {
-
-    libraryLoadList: {
-        attributes: {
-            url: '/api/database/apps/{appId}/commits/latest',
-            success: 'librarySetAttributes',
-        },
-        actions: {
-            url: '/api/tapestry/actions',
-            success: 'librarySetActions'
-        },
-        roles: {
-            url: '/api/Persona/app-roles/{appId}',
-            success: 'librarySetRoles'
-        },
-        states: {
-            url: '/api/Persona/app-states/{appId}',
-            success: 'librarySetStates'
-        },
-        targets: {
-            url: '/api/Tapestry/apps/{appId}/blocks',
-            success: 'librarySetTargets'
-        },
-        templates: {
-            url: '/api/Hermes/{appId}/templates',
-            success: 'librarySetTemplates'
-        },
-        integrations: {
-            url: '/api/Nexus/{appId}/gateways',
-            success: 'librarySetIntegrations'
-        }
-    },
-    toolboxState: null,
-    data: null,
-
-    init: function () {
-
-    },
-
-    loadBlock: function (commitId) {
-        pageSpinner.show();
-
-        var appId = $('#currentAppId').val();
-        var blockId = $('#currentBlockId').val();
-
-        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + (commitId ? '/commits/' + commitId : '');
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'json',
-            complete: pageSpinner.hide,
-            success: TB.load.setData
-        });
-    },
-
-    setData: function (data)
-    {
-        var self = TB.load;
-
-        ChangedSinceLastSave = false; /// OBSOLATE
-        TB.changedSinceLastSave = false;
-
-        self.toolboxState = data.ToolboxState;
-        self.data = data;
-
-        self.clearBuilder();
-        self.setBlockName(data.Name);
-        self.setResourceRules(data.ResourceRules);
-        self.setWorkflowRules(data.WorkflowRules);
-        self.setRoleWhiteList(data.RoleWhitelist);
-        self.loadPages();
-        self.loadLibrary();
-    },
-
-    clearBuilder: function() {
-        $('#resourceRulesPanel .resourceRule').remove();
-        $('#workflowRulesPanel .workflowRule').remove();
-    },
-
-    setBlockName: function (name) {
-        $('#blockHeaderBlockName').text(name);
-    },
-
-    setResourceRules: function(rrList)
-    {
-        for (var i = 0; i < rrList.length; i++)
-        {
-            var rule = TB.rr.create(rrList[i]);
-
-            for (var j = 0; j < rrList[i].ResourceItems.length; j++) {
-                TB.rr.createItem(rrList[i].ResourceItems[j], rule);
-            }
-
-            var currentInstance = rule.data("jsPlumbInstance");
-            for (var c = 0; c < rrList[i].Connections.length; c++) {
-                var currentConnectionData = rrList[i].Connections[c];
-                currentInstance.connect({
-                    uuids: ["resItem" + currentConnectionData.SourceId + "RightMiddle"], target: "resItem" + currentConnectionData.TargetId
-                });
-            }
-        }
-    },
-
-    setWorkflowRules: function(wfrList) {
-        for (var i = 0; i < wfrList.length; i++) {
-            var rule = TB.wfr.create(wfrList[i]);
-
-            for (var j = 0; j < wfrList[i].Swimlanes.length; j++) {
-                TB.wfr.createSwimlane(wfrList[i].Swimlanes[j], wfrList[i].Swimlanes.length, rule);
-            }
-
-            var currentInstance = rule.data('jsPlumbInstance');
-            for (var c = 0; c < wfrList[i].Connections.length; c++) {
-                var currentConnectionData = wfrList[i].Connections[c];
-                var sourceId = "wfItem" + currentConnectionData.SourceId;
-                var targetId = "wfItem" + currentConnectionData.TargetId;
-                var sourceEndpointUuid;
-                if (currentConnectionData.SourceSlot == 1)
-                    sourceEndpointUuid = "BottomCenter";
-                else
-                    sourceEndpointUuid = "RightMiddle";
-                currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
-            }
-        }
-    },
-
-    setRoleWhiteList: function (whitelist) {
-        $('#blockHeaderRolesCount').text(whitelist.length);
-    },
-
-    loadLibrary: function()
-    {
-        pageSpinner.show();
-        var appId = $('#currentAppId').val();
-
-        // CLEAN
-        TB.library.clean();
-        TB.toolbox.clean();
-
-        // LOAD
-        for (var k in TB.load.libraryLoadList) {
-            var libraryType = TB.load.libraryLoadList[k];
-            
-            $.ajax({
-                type: 'GET',
-                url: libraryType.url.replace(/\{appId\}/, appId),
-                dataType: 'json',
-                success: TB.load[libraryType.success]
-            });
-        }
-        pageSpinner.hide();
-    },
-
-    loadPages: function()
-    {
-        var self = TB.load;
-
-        AssociatedPageIds = self.data.AssociatedPageIds;
-        AssociatedBootstrapPageIds = self.data.AssociatedBootstrapPageIds;
-
-        $("#blockHeaderScreenCount").text(AssociatedPageIds.length + AssociatedBootstrapPageIds.length);
-        
-        for (var i = 0; i < AssociatedPageIds.length; i++) {
-            var pageId = AssociatedPageIds[i];
-
-            self.libraryLoadList['page' + pageId] = {
-                url: '/api/mozaic-editor/apps/{appId}/pages/' + pageId,
-                success: 'librarySetPage'
-            };
-        }
-
-        for (var i = 0; i < AssociatedBootstrapPageIds.length; i++) {
-            var pageId = AssociatedBootstrapPageIds[i];
-
-            self.libraryLoadList['bootstrapPage' + pageId] = {
-                url: '/api/mozaic-bootstrap/apps/{appId}/pages/' + pageId,
-                success: 'librarySetBootstrapPage'
-            };
-        }
-    },
-
-    librarySetAttributes: function(data)
-    {
-        var self = TB.load;
-        var state = self.toolboxState ? self.toolboxState.Attributes : [];
-
-        AssociatedTableIds = self.data.AssociatedTableIds;
-        AssociatedTableName = self.data.AssociatedTableName;
-        ModelTableName = self.data.ModelTableName;
-        somethingWasAdded = false;
-        $("#blockHeaderDbResCount").text(self.data.AssociatedTableName.length);
-
-        for (var ti = 0; ti < data.Tables.length; ti++) 
-        {
-            var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Tables[ti].Name; }).length;
-            var params = { tableName: data.Tables[ti].Name };
-            var label = 'Table: ' + data.Tables[ti].Name;
-
-            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
-            }
-        }
-        for (var vi = 0; vi < data.Views.length; vi++)
-        {
-            var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Views[vi].Name; }).length;
-            var params = { tableName: data.Views[vi].Name };
-            var label = 'View: ' + data.Views[vi].Name;
-
-            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute', params, label);
-            }
-        }
-
-        for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++)
-        {
-            var currentTable = data.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
-            if (currentTable)
-            {
-                for (var ci = 0; ci < currentTable.Columns.length; ci++)
-                {
-                    var isUsed = state.filter(function (value) {
-                        return value.ColumnName == currentTable.Columns[ci].Name && value.TableName == currentTable.Name;
-                    }).length;
-                    var params = {tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name };
-                    var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
-
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
-                    if(isUsed) {
-                        TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
-                    }
-                }
-            }
-
-            var systemTable = SystemTables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
-            if (systemTable)
-            {
-                for (var i = 0; i < systemTable.Columns.length; i++)
-                {
-                    var isUsed = state.filter(function (value) {
-                        return value.ColumnName == systemTable.Columns[i].Name && value.TableName == systemTable.Name;
-                    }).length;
-                    var params = { tableName: systemTable.Name, columnName: systemTable.Columns[i].Name };
-                    var label = systemTable.Name + '.' + systemTable.Columns[i].Name;
-
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
-                    if (isUsed) {
-                        TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
-                    }
-                }
-            }
-        }
-    },
-
-    librarySetActions: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.Actions : [];
-
-        for (var i = 0; i < data.Items.length; i++)
-        {
-            var isUsed = state.filter(function (value) { return value.ActionId == data.Items[i].Id; }).length;
-            var params = {actionId: data.Items[i].Id };
-            var label = data.Items[i].Name;
-
-            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed);
-            if(isUsed) {
-                TB.toolbox.createItem(libId, 'Actions', 'actionItem', params, label);
-            }
-        }
-    },
-
-    librarySetRoles: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.Roles : [];
-
-        for (var i = 0; i < data.Roles.length; i++)
-        {
-            var isUsed = state.filter(function (value) { return value.Label == data.Roles[i].Name; }).length;
-            var params = {};
-            var label = data.Roles[i].Name;
-
-            var libId = TB.library.createItem('Roles', 'role', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Roles', 'roleItem', params, label);
-            }
-        }
-    },
-
-    librarySetStates: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.States : [];
-
-        for (var i = 0; i < data.States.length; i++)
-        {
-            var isUsed = state.filter(function (value) { return value.StateId == data.States[i].Id; }).length;
-            var params = {stateId: data.States[i].Id};
-            var label = data.States[i].Name;
-
-            var libId = TB.library.createItem('States', 'state', params, label, '', isUsed);
-            if(isUsed) {
-                TB.toolbox.createItem(libId, 'States', 'stateItem', params, label);
-            }
-        }
-    },
-
-    librarySetTargets: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.Targets : [];
-
-        for (var i = 0; i < data.ListItems.length; i++) {
-            var isUsed = state.filter(function (value) { return value.TargetId == data.ListItems[i].Id; }).length;
-            var params = { targetId: data.ListItems[i].Id };
-            var label = data.ListItems[i].Name;
-
-            var libId = TB.library.createItem('Targets', 'target', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Targets', 'targetItem', params, label);
-            }
-        }
-    },
-
-    librarySetTemplates: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.Templates : [];
-
-        for (var i = 0; i < data.length; i++) {
-            var isUsed = state.filter(function (value) { return value.Label == data[i].Name; }).length;
-            var params = {};
-            var label = data[i].Name;
-
-            var libId = TB.library.createItem('Templates', 'template', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Templates', 'templateItem', params, label);
-            }
-        }
-    },
-
-    librarySetIntegrations: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.Integrations : [];
-
-        // LDAP
-        for (var i = 0; i < data.Ldap.length; i++) {
-            var params = {};
-            var label = 'LDAP: ' + data.Ldap[i].Name;
-            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
-
-            var libId = TB.library.createItem('Integration', 'ldap', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
-            }
-        }
-
-        // WS
-        for (var i = 0; i < data.WS.length; i++) {
-            var params = { libSubType: data.WS[i].Type };
-            var label = 'WS: ' + data.WS[i].Name;
-            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
-            
-            var libId = TB.library.createItem('Integration', 'ws', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
-            }
-        }
-
-        // SMTP
-        for (var i = 0; i < data.SMTP.length; i++) {
-            var params = {};
-            var label = 'SMTP: ' + data.SMTP[i].Name;
-            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
-            
-            var libId = TB.library.createItem('Integration', 'smtp', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
-            }
-        }
-
-        // WebDAV
-        for (var i = 0; i < data.WebDAV.length; i++) {
-            var params = {};
-            var label = 'WebDAV: ' + data.WebDAV[i].Name;
-            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
-            
-            var libId = TB.library.createItem('Integration', 'WebDAV', params, label, '', isUsed);
-            if (isUsed) {
-                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
-            }
-        }
-    },
-
-    librarySetPage: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.UiComponents : [];
-        TB.screen.loadLegacyComponents(data, state);
-    },
-
-    librarySetBootstrapPage: function(data)
-    {
-        var state = TB.load.toolboxState ? TB.load.toolboxState.UiComponents : [];
-        TB.screen.loadBootstrapComponents(data, state);
-    }
-};
-
-TB.onInit.push(TB.load.init);
-TB.rr = {
-
-    templates: {
-        rule: '<div class="rule resourceRule"></div>',
-        item: '<div class="item"></div>'
-    },
-
-    create: function(rrData)
-    {
-        var self = TB.rr;
-
-        var rule = $(self.templates.rule);
-        rule.css({
-            width: rrData.Width,
-            height: rrData.Height,
-            left: rrData.PositionX,
-            top: rrData.PositionY
-        }).attr('id', AssingID()).appendTo('#resourceRulesPanel .scrollArea');
-
-        self.alive(rule);
-
-        return rule;
-    },
-
-    createItem: function(itemData, parentRule)
-    {
-        var self = TB.rr;
-
-        var item = $(self.templates.item);
-
-        var attrs = {};
-        attrs.id = 'resItem' + itemData.Id;
-
-        if (itemData.ActionId != null)      attrs.actionId = itemData.ActionId;
-        if (itemData.StateId != null)       attrs.stateId = itemData.StateId;
-        if (itemData.PageId != null)        attrs.pageId = itemData.PageId;
-        if (itemData.ComponentName != null) attrs.componentName = itemData.ComponentName;
-        if (itemData.ColumnName != null)    attrs.columnName = itemData.ColumnName;
-        if (itemData.IsBootstrap != null)   attrs.isBootstrap = itemData.IsBootstrap;
-
-        item
-            .attr(attrs)
-            .css({
-                left: itemData.PositionX,
-                top: itemData.PositionY
-            })
-            .html(itemData.Label)
-            .addClass(itemData.TypeClass)
-            .appendTo(parentRule);
-
-        if (itemData.ConditionSets != null) {
-            item.data('conditionSets', itemData.ConditionSets);
-        }
-        if (itemData.TableName != null) {
-            item.data('columnFilter', itemData.ColumnFilter);
-            item.attr('tableName', itemData.TableName);
-            if (itemData.Label.indexOf('View:') == 0)
-                item.addClass('viewAttribute');
-            else
-                item.addClass('tableAttribute');
-        }
-
-        AddToJsPlumb(item);
-    },
-
-    alive: function (rule) {
-        var self = TB.rr;
-        
-        rule.draggable({
-            containment: 'parent',
-            revert: self._draggableRevert,
-            stop: self._draggableStop
-        });
-
-        rule.resizable({
-            start: self._resizableStart,
-            stop: self._resizableStop
-        });
-
-        rule.droppable({
-            containment: '.resourceRule',
-            tolerance: 'touch',
-            accept: '.toolboxItem',
-            greedy: true,
-            drop: self._droppableDrop
-        });
-
-        CreateJsPlumbInstanceForRule(rule);
-    },
-
-    _draggableRevert: function(event, ui) {
-        return ($(this).collision('#resourceRulesPanel .resourceRule').length > 1);
-    },
-
-    _draggableStop: function(event, ui) {
-        ChangedSinceLastSave = true; /// OBSOLATE
-        TB.changedSinceLastSave = true;
-    },
-
-    _resizableStart: function(event, ui) {
-        var rule = $(this);
-        var minWidth = 120;
-        var minHeight = 40;
-
-        rule.find('.item').each(function (index, element) {
-            var $elm = $(element);
-            var rightEdge = $elm.position().left + $elm.width();
-            var bottomEdge = $elm.position().top + $elm.height();
-
-            minWidth = rightEdge > minWidth ? rightEdge : minWidth;
-            minHeight = bottomEdge > minHeight ? bottomEdge : minHeight;
-        });
-
-        var limits = TB.checkRuleResizeLimits(rule, true);
-
-        rule.css({
-            'min-width': minWidth + 40,
-            'min-height': minHeight + 20,
-            'max-width': limits.horizontal - 10,
-            'max-height': limits.vertical - 10
-        });
-    },
-
-    _resizableStop: function(event, ui) {
-        var instance = $(this).data("jsPlumbInstance");
-        instance.recalculateOffsets();
-        instance.repaintEverything();
-        ChangedSinceLastSave = true; /// OBSOLATE
-        TB.changedSinceLastSave = true;
-    },
-
-    _droppableDrop: function (event, ui) {
-        if (dragModeActive) {
-            dragModeActive = false;
-
-            var target = $(this);
-
-            var leftOffset = $("#tapestryWorkspace").offset().left - target.offset().left + 20;
-            var topOffset = $("#tapestryWorkspace").offset().top - target.offset().top;
-
-            var item = ui.helper.clone();
-            item.removeClass('toolboxItem')
-                .addClass('item')
-                .css({ width: '', height: '' })
-                .appendTo(target);
-
-            item.offset({
-                left: item.offset().left + leftOffset,
-                top: item.offset().top + topOffset
-            });
-            
-            ui.helper.remove();
-            AddToJsPlumb(item);
-
-            if (item.position().left + item.width() + 35 > target.width()) {
-                item.css("left", target.width() - item.width() - 40);
-                var instance = target.data("jsPlumbInstance");
-                instance.repaintEverything();
-            }
-            if (item.position().top + item.height() + 5 > target.height()) {
-                item.css("top", target.height() - item.height() - 15);
-                var instance = target.data("jsPlumbInstance");
-                instance.repaintEverything();
-            }
-            ChangedSinceLastSave = true; /// OBSOLATE
-            TB.changedSinceLastSave = true;
-        }
-    }
-};
-TB.wfr = {
-
-    templates: {
-        rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
-        swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-            + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
-        item: ''
-    },
-
-    init: function () {
-
-    },
-
-    create: function(ruleData)
-    {
-        var self = TB.wfr;
-
-        var rule = $(self.templates.rule);
-        rule.css({
-            width: ruleData.Width,
-            height: ruleData.Height,
-            left: ruleData.PositionX,
-            top: ruleData.PositionY
-        })
-        .find('.verticalLabel').html(ruleData.Name).end()
-        .attr('id', AssingID())
-        .appendTo("#workflowRulesPanel .scrollArea");
-        
-        self.aliveRule(rule);
-        return rule;
-    },
-
-    createSwimlane: function(swimlaneData, count, parentRule) {
-        var self = TB.wfr;
-        
-        var swimlane = $(self.templates.swimlane);
-        swimlane
-            .css('height', (100 / count) + '%')
-            .appendTo($('.swimlaneArea', parentRule));
-
-        if (swimlaneData.Roles.length > 0) {
-            swimlane.find('.swimlaneRolesArea .rolePlaceholder').remove();
-            for (var r = 0; r < swimlaneData.Roles.length; r++) {
-                swimlane.find('.swimlaneRolesArea .roleItemContainer').append('<div class="roleItem">' + swimlaneData.Roles[r] + '</div>');
-            }
-        }
-        for (var k = 0; k < swimlaneData.WorkflowItems.length; k++) {
-            self.createItem(swimlaneData.WorkflowItems[k], swimlane);
-        }
-
-        self.aliveSwimlane(swimlane);
-    },
-
-    createItem: function(itemData, parentSwimlane)
-    {
-        var item;
-        if (itemData.TypeClass === "symbol" && itemData.SymbolType === "comment") {
-            item = $('<div id="wfItem' + itemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + itemData.PositionX +
-            'px; top: ' + itemData.PositionY + 'px; width: 30px; padding: 3px; border: 2px solid grey; border-right: none; min-height: 60px;"> <span class="itemLabel">'
-            + itemData.Label + '</span></div>');
-        } else if (itemData.TypeClass == "symbol") {
-            item = $('<img id="wfItem' + itemData.Id + '" class="symbol" symbolType="' + itemData.SymbolType +
-            '" src="/Content/images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
-            + itemData.PositionY + 'px;" />');
-        } else {
-            item = $('<div id="wfItem' + itemData.Id + '" class="item" style="left: ' + itemData.PositionX + 'px; top: '
-            + itemData.PositionY + 'px;"><span class="itemLabel">' + itemData.Label + '</span></div>');
-        }
-        item.addClass(itemData.TypeClass);
-        if (itemData.ActionId != null)
-            item.attr('actionId', itemData.ActionId);
-        if (itemData.InputVariables != null)
-            item.data('inputVariables', itemData.InputVariables);
-        if (itemData.OutputVariables != null)
-            item.data('outputVariables', itemData.OutputVariables);
-        if (itemData.PageId != null)
-            item.attr("pageId", itemData.PageId);
-        if (itemData.ComponentName != null)
-            item.attr('componentName', itemData.ComponentName);
-        if (itemData.TargetId != null)
-            item.attr('targetId', itemData.TargetId);
-        if (itemData.StateId != null)
-            item.attr("stateId", itemData.StateId);
-        if (itemData.isAjaxAction != null)
-            item.data('isAjaxAction', itemData.isAjaxAction);
-        if (itemData.TypeClass == "circle-thick")
-            item.attr("endpoints", "final");
-        if (itemData.SymbolType && itemData.SymbolType.substr(0, 8) == "gateway-")
-            item.attr("endpoints", "gateway");
-        if (itemData.Condition != null)
-            item.data("condition", itemData.Condition);
-        if (itemData.ConditionSets != null) {
-            item.data("conditionSets", itemData.ConditionSets);
-        }
-        if (itemData.IsBootstrap != null) {
-            item.attr('isBootstrap', itemData.IsBootstrap);
-        }
-
-        item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
-        AddToJsPlumb(item);
-    },
-
-    aliveRule: function(rule)
-    {
-        var self = TB.wfr;
-
-        rule.draggable({
-            containment: 'parent',
-            handle: '.workflowRuleHeader',
-            revert: self._ruleDraggableRevert,
-            stop: self._ruleDraggableStop
-        });
-        rule.resizable({
-            start: self._ruleResizableStart,
-            resize: self._ruleResizableResize,
-            stop: self._ruleResizableStop
-        });
-        CreateJsPlumbInstanceForRule(rule);
-    },
-
-    aliveSwimlane: function (swimlane) {
-        var self = TB.wfr;
-
-        swimlane.find('.swimlaneRolesArea').droppable({
-            tolerance: 'touch',
-            accept: '.toolboxItem.roleItem',
-            greedy: true,
-            drop: self._swimlaneRoleDrop
-        });
-        swimlabe.find('.swimlaneContentArea').droppable({
-            containment: '.swimlaneContentArea',
-            tolerance: 'touch',
-            accept: '.toolboxSymbol, .toolboxItem',
-            greedy: false,
-            drop: self._swimlaneItemDrop
-        });
-    },
-
-    _ruleDraggableRevert: function(event, ui) {
-        return ($(this).collision('#workflowRulesPanel .workflowRule').length > 1);
-    },
-
-    _ruleDraggableStop: function (event, ui) {
-        ChangedSinceLastSave = true; /// OBSOLATE
-        TB.changedSinceLastSave = true;
-    },
-
-    _ruleResizableStart: function(event, ui) {
-        var rule = $(this);
-        var contentsWidth = 120;
-        var contentsHeight = 40;
-        var limits = TB.checkRuleResizeLimits(rule, false);
-
-        rule.find('.item').each(function (index, element) {
-            var rightEdge = $(element).position().left + $(element).width();
-            var bottomEdge = $(element).position().top + $(element).height();
-
-            contentsWidth = rightEdge > contentsWidth ? rightEdge : contentsWidth;
-            contentsHeight = bottomEdge > contentsHeight ? bottomEdge : contentsHeight;
-        });
-
-        rule.css({
-            'min-width': contentsWidth + 40, 'min-height': contentsHeight + 20,
-            'max-width': limits.horizontal - 10, 'max-height': limits.vertical - 10
-        });
-    },
-
-    _ruleResizableResize: function(event, ui) {
-        var rule = $(this);
-        var instance = rule.data("jsPlumbInstance");
-        var limits = TB.checkRuleResizeLimits(rule, false);
-
-        instance.recalculateOffsets();
-        instance.repaintEverything();
-
-        rule.css({'max-width': limits.horizontal - 10, 'max-height': limits.vertical - 10});
-    },
-
-    _ruleResizableStop: function (event, ui) {
-        ChangedSinceLastSave = true; /// OBSOLATE
-        TB.changedSinceLastSave = true;
-    },
-
-    _swimlaneRoleDrop: function(event, ui) {
-        if (dragModeActive)
-        {
-            dragModeActive = false;
-
-            var roleExists = false;
-            $(this).find('.roleItem').each(function (index, element) {
-                if ($(element).text() == ui.helper.text())
-                    roleExists = true;
-            });
-            if (!roleExists) {
-                var role = ui.helper.clone();
-
-                $(this).find('.rolePlaceholder').remove();
-                $(this).find('.roleItemContainer').append($('<div class="roleItem">' + role.text() + '</div>'));
-                ui.helper.remove();
-                ChangedSinceLastSave = true; /// OBSOLATE
-                TB.changedSinceLastSave = true;
-            }
-        }
-    },
-
-    _swimlaneItemDrop: function (event, ui) {
-        if (dragModeActive)
-        {
-            dragModeActive = false;
-            var leftOffset, topOffset;
-            var item = ui.helper.clone();
-
-            if (item.hasClass('roleItem')) {
-                ui.draggable.draggable('option', 'revert', true);
-                return false;
-            }
-            var ruleContent = $(this);
-            ruleContent.append(item);
-
-            if (item.hasClass('toolboxSymbol')) {
-                item.removeClass('toolboxSymbol ui-draggable ui-draggable-dragging');
-                item.addClass('symbol');
-                item.css({ height: '' });
-                leftOffset = $('#tapestryWorkspace').offset().left - ruleContent.offset().left;
-                topOffset = $('#tapestryWorkspace').offset().top - ruleContent.offset().top;
-            }
-            else {
-                item.removeClass('toolboxItem');
-                item.addClass('item');
-                item.css({ width: '', height: '' });
-                leftOffset = $('#tapestryWorkspace').offset().left - ruleContent.offset().left + 38;
-                topOffset = $('#tapestryWorkspace').offset().top - ruleContent.offset().top - 18;
-            }
-            item.offset({ left: item.offset().left + leftOffset, top: item.offset().top + topOffset });
-            ui.helper.remove();
-            AddToJsPlumb(item);
-            if (item.position().top + item.height() + 10 > ruleContent.height()) {
-                item.css('top', ruleContent.height() - item.height() - 20);
-                var instance = ruleContent.parents('.workflowRule').data('jsPlumbInstance');
-                instance.repaintEverything();
-            }
-            ChangedSinceLastSave = true; /// OBSOLATE
-            TB.changedSinceLastSave = true;
-        }
-    }
-}
-
-TB.onInit.push(TB.wfr.init);
-TB.library = {
-
-    clean: function () {
-        $('.libraryItem').remove();
-    },
-
-    createItem: function(target, type, params, name, className, highlighted)
-    {
-        var itemLibId = ++lastLibId;
-        params.libId = itemLibId;
-        params.libType = type;
-        
-        var item = $('<div class="libraryItem"></div>');
-        item.attr(params).html(name).appendTo($('#libraryCategory-'+target));
-        
-        if (className) { item.addClass(className); }
-        if (highlighted) { item.addClass('highlighted'); }
-        
-        return itemLibId;
-    }
-
-
-};
-
-TB.toolbox = {
-
-    clean: function () {
-        $('.tapestryToolbox .toolboxLi').remove();
-    },
-
-    createItem: function (libId, itemSuffix, divClass, divAttr, label) {
-        var item = $('<li class="toolboxLi"><div class="toolboxItem"><span class="itemLabel"></span></div></li>');
-        item.attr('libId', libId).addClass('toolboxLi_' + itemSuffix)
-            .find('> div').addClass(divClass).attr(divAttr)
-            .find('.itemLabel').html(label);
-
-        var items = $('.toolboxCategoryHeader_' + itemSuffix).nextAll('.toolboxLi');
-        var target = items.length ? items.last() : $('.toolboxCategoryHeader_' + itemSuffix);
-
-        target.after(item);
-        TB.toolbox.alive(item);
-    },
-
-    alive: function(item)
-    {
-        item.find('.toolboxItem').draggable({
-            helper: 'clone',
-            appendTo: '#tapestryWorkspace',
-            containment: 'window',
-            tolerance: 'fit',
-            revert: true,
-            scroll: true,
-            start: function () {
-                dragModeActive = true;
-            }
-        });
-    }
-};
-
 function LoadModuleAdminScript() {
     $("#moduleAdminPanel .moduleSquare").on("click", function () {
         $("#moduleAdminPanel .moduleSquare").removeClass("selectedSquare");
