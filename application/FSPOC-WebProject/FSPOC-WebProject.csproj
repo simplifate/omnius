@@ -490,7 +490,12 @@
     <Content Include="Scripts\MozaicEditor\Bootstrap\_Text.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\_UI.js" />
     <Content Include="Scripts\Tapestry\Builder\TapestryBuilder.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Toolbox.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Library.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Load.js" />
+    <Content Include="Scripts\Tapestry\Builder\_ResourceRules.js" />
     <Content Include="Scripts\Tapestry\Builder\_Screen.js" />
+    <Content Include="Scripts\Tapestry\Builder\_WorkflowRules.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\Spinner.js" />

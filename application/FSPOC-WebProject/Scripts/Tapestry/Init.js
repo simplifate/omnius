@@ -8,7 +8,7 @@ var AssociatedBootstrapPageIds = [];
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
         RecalculateToolboxHeight();
-        LoadBlock();
+        TB.load.loadBlock();
 
         // Buttons and UI effects
         $("#btnClear").on("click", function () {
@@ -25,7 +25,7 @@ $(function () {
             else
                 confirmed = true;
             if (confirmed) {
-                LoadBlock();
+                TB.load.loadBlock();
             }
         });
         $("#btnHistory").on("click", function () {

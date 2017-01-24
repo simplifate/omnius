@@ -188,7 +188,8 @@ $(function () {
                 else
                     confirmed = true;
                 if (confirmed) {
-                    LoadBlock(historyDialog.data("selectedCommitId"));
+                    TB.load.loadBlock(historyDialog.data("selectedCommitId"));
+                    //LoadBlock(historyDialog.data("selectedCommitId"));
                 }
             }
             else
