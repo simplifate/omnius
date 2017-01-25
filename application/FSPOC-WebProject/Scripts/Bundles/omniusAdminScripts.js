@@ -4195,7 +4195,7 @@ TB.wfr = {
             greedy: true,
             drop: self._swimlaneRoleDrop
         });
-        swimlabe.find('.swimlaneContentArea').droppable({
+        swimlane.find('.swimlaneContentArea').droppable({
             containment: '.swimlaneContentArea',
             tolerance: 'touch',
             accept: '.toolboxSymbol, .toolboxItem',
@@ -4350,7 +4350,7 @@ TB.toolbox = {
             .find('> div').addClass(divClass).attr(divAttr)
             .find('.itemLabel').html(label);
 
-        var items = $('.toolboxCategoryHeader_' + itemSuffix).nextAll('.toolboxLi');
+        var items = $('.toolboxCategoryHeader_' + itemSuffix).nextUntil('[class^=toolboxCategoryHeader]');
         var target = items.length ? items.last() : $('.toolboxCategoryHeader_' + itemSuffix);
 
         target.after(item);

@@ -10,7 +10,7 @@
             .find('> div').addClass(divClass).attr(divAttr)
             .find('.itemLabel').html(label);
 
-        var items = $('.toolboxCategoryHeader_' + itemSuffix).nextAll('.toolboxLi');
+        var items = $('.toolboxCategoryHeader_' + itemSuffix).nextUntil('[class^=toolboxCategoryHeader]');
         var target = items.length ? items.last() : $('.toolboxCategoryHeader_' + itemSuffix);
 
         target.after(item);

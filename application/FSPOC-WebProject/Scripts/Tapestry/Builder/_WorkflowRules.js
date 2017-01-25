@@ -127,7 +127,7 @@
             greedy: true,
             drop: self._swimlaneRoleDrop
         });
-        swimlabe.find('.swimlaneContentArea').droppable({
+        swimlane.find('.swimlaneContentArea').droppable({
             containment: '.swimlaneContentArea',
             tolerance: 'touch',
             accept: '.toolboxSymbol, .toolboxItem',
