@@ -108,36 +108,35 @@
         chooseScreensDialog.dialog("close");
     },
 
-    loadBootstrapComponents: function(data)
+    loadBootstrapComponents: function(data, state)
     {
-        var list = $("#libraryCategory-UI");
-
         for (i = 0; i < data.Components.length; i++) {
             if (i == 0) {
-                var item = $('<div class="libraryItem" />');
-                item.attr({
-                    'libId': ++lastLibId,
-                    'pageId': data.Id,
-                    'isBootstrap': true,
-                    'libType': 'ui'
-                }).html('Screen: ' + data.Name).appendTo(list);
+                var label = 'Screen: ' + data.Name;
+                var params = { pageId: data.Id, isBootstrap: true };
+                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+
+                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+                }
             }
 
-            TB.screen.addComponent(data.Components[i], data.Id, list);
+            TB.screen.addComponent(data.Components[i], data.Id, state);
         }
     },
 
-    addComponent: function(c, pageId, list)
+    addComponent: function(c, pageId, state)
     {
         if (c.ElmId != "") {
-            var item = $('<div class="libraryItem" />');
-            item.attr({
-                'libId': ++lastLibId,
-                'pageId': pageId,
-                'componentName': c.ElmId,
-                'isBootstrap': true,
-                'libType': 'ui'
-            }).html(c.ElmId).appendTo(list);
+            var label = c.ElmId;
+            var params = { pageId: pageId, componentName: label, isBootstrap: true };
+            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+
+            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+            if (isUsed) {
+                TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+            }
         }
 
         if (c.UIC == 'ui|data-table')
@@ -146,73 +145,72 @@
             if (actionsText !== -1) {
                 var actions = JSON.parse(actionsText.replace(/'/g, '"'));
                 for (var a in actions) {
-                    var item = $('<div class="libraryItem" />');
-                    item.attr({
-                        'libId': ++lastLibId,
-                        'pageId': pageId,
-                        'componentName': c.ElmId + '_' + actions[a].action,
-                        'isBootstrap': true,
-                        'libType': 'ui'
-                    }).html(c.ElmId + '_' + actions[a].action).appendTo(list);
+                    var label = c.ElmId + '_' + actions[a].action;
+                    var params = { pageId: pageId, componentName: label, isBootstrap: true };
+                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+
+                    var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+                    if (isUsed) {
+                        TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+                    }
                 }
             }
         }
 
         if (c.ChildComponents) {
             for (var i = 0; i < c.ChildComponents.length; i++) {
-                TB.screen.addComponent(c.ChildComponents[i], pageId, list);
+                TB.screen.addComponent(c.ChildComponents[i], pageId, state);
             }
         }
     },
 
-    loadLegacyComponents: function(data)
+    loadLegacyComponents: function(data, state)
     {
-        var list = $("#libraryCategory-UI");
-
         for (i = 0; i < data.Components.length; i++) {
             if (i == 0) {
-                var item = $('<div class="libraryItem" />');
-                item.attr({
-                    'libId': ++lastLibId,
-                    'pageId': data.Id,
-                    'isBootstrap': false,
-                    'libType': 'ui'
-                }).html('Screen: ' + data.Name).appendTo(list);
+                var label = 'Screen: ' + data.Name;
+                var params = { pageId: data.Id, isBootstrap: false };
+                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+
+                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+                }
             }
             
-            TB.screen.addLegacyComponent(data.Components[i], data.Id, list);
+            TB.screen.addLegacyComponent(data.Components[i], data.Id, state);
         }
     },
 
-    addLegacyComponent: function(c, pageId, list)
+    addLegacyComponent: function(c, pageId, state)
     {
-        var item = $('<div class="libraryItem" />');
-        item.attr({
-            'libId': ++lastLibId,
-            'pageId': pageId,
-            'componentName': c.Name,
-            'isBootstrap': false,
-            'libType': 'ui'
-        }).html(c.Name).appendTo(list);
+        var label = c.Name;
+        var params = { pageId: pageId, componentName: label, isBootstrap: false };
+        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+
+        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+        if (isUsed) {
+            TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+        }
 
         var actions = ['_EditAction', '_DetailsAction', '_DeleteAction', '_A_Action', '_B_Action'];
         
         if (c.Type == "data-table-with-actions") {
-            for(var a = 0; a < actions.length; a++) {
-                var item = $('<div class="libraryItem" />');
-                item.attr({
-                    'libId': ++lastLibId,
-                    'pageId': pageId,
-                    'componentName': c.Name + actions[a],
-                    'isBootstrap': false,
-                    'libType': 'ui'
-                }).html(c.Name + actions[a]).appendTo(list);
+            for (var a = 0; a < actions.length; a++) {
+                var label = c.Name + actions[a];
+                var params = { pageId: pageId, componentName: label, isBootstrap: false };
+                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+
+                var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
+                }
             }
         }
 
         if (c.ChildComponents) {
             for (var i = 0; i < c.ChildComponents.length; i++) {
-                TB.screen.addLegacyComponent(c.ChildComponents[i], pageId, list);
+                TB.screen.addLegacyComponent(c.ChildComponents[i], pageId, state);
             }
         }
     },
