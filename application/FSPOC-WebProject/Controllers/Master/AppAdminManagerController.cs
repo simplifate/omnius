@@ -154,7 +154,7 @@ namespace FSS.Omnius.Controllers.Master
                         catch (Exception ex)
                         {
                             throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
-                            context.DiscardChanges();
+                            //context.DiscardChanges();
                         }
                         finally
                         {

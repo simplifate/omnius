@@ -77,8 +77,6 @@ namespace OneLogin.Saml
 
         public bool IsValid()
         {
-            bool status = false;
-
             XmlNamespaceManager manager = new XmlNamespaceManager(xmlDoc.NameTable);
             manager.AddNamespace("ds", SignedXml.XmlDsigNamespaceUrl);
             XmlNodeList nodeList = xmlDoc.SelectNodes("//ds:Signature", manager);
