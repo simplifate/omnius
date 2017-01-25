@@ -233,6 +233,9 @@ namespace FSS.Omnius.Controllers.Master
                         }
                         catch (Exception ex)
                         {
+                            while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
+                                ex = ex.InnerException;
+
                             throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
                         }
 
@@ -265,6 +268,9 @@ namespace FSS.Omnius.Controllers.Master
                         }
                         catch (Exception ex)
                         {
+                            while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
+                                ex = ex.InnerException;
+
                             throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
                         }
                     }
