@@ -295,15 +295,18 @@ namespace FSS.Omnius.Controllers.Tapestry
                 else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
                     var dropdownDictionary = new Dictionary<int, string>();
-                    foreach (DataRow datarow in dataSource.Rows)
+                    if (dropdownDictionary.Count > 0)
                     {
-                        if (datarow["name"] != DBNull.Value)
+                        foreach (DataRow datarow in dataSource.Rows)
                         {
-                            dropdownDictionary.Add((int)datarow["hiddenId"], columnDisplayNameDictionary.ContainsKey("name")
-                                ? (string)datarow[columnDisplayNameDictionary["name"]] : (string)datarow["name"]);
+                            if (datarow["name"] != DBNull.Value)
+                            {
+                                dropdownDictionary.Add((int)datarow["hiddenId"], columnDisplayNameDictionary.ContainsKey("name")
+                                    ? (string)datarow[columnDisplayNameDictionary["name"]] : (string)datarow["name"]);
+                            }
                         }
+                        ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
-                    ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                 }
                 string targetType = resourceMappingPair.TargetType;
                 if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
