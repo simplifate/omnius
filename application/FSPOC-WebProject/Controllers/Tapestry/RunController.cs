@@ -307,6 +307,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
                     }
+                    else
+                        ViewData["dropdownData_" + resourceMappingPair.TargetName] = null;
                 }
                 string targetType = resourceMappingPair.TargetType;
                 if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
