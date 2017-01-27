@@ -61,42 +61,52 @@ $(function () {
     $(".librarySearch").on("keyup", function () {
         var category = $(this).parent();
         var items = category.find(".libraryItem");
-        var value = $(this).val();
+        var value = $(this).val().toLowerCase();
+        var words = value.split(" ");
         items.each(function () {
             $(this).detach();
         });
+        items.sort(CompareAlphabetical);
         items.sort(function (a, b) {
-            a = $(a).text();
-            b = $(b).text();
+            a = $(a).text().toLowerCase();
+            b = $(b).text().toLowerCase();
             if (value !== "") {
-                var aSim = similar(a, value);
-                var bSim = similar(b, value);
-                return aSim === bSim ? CompareAlphabetical(a, b) : aSim < bSim ? 1 : -1;
-            } else {
-                return CompareAlphabetical(a, b);
+                /*if (a === value) {
+                    return 1;
+                } else if(b === value) {
+                    return -1;
+                }*/
+                var aContains = contained(a, value);
+                var bContains = contained(b, value);
+                var aSplit = SplitedContainedCompare(a, words);
+                var bSplit = SplitedContainedCompare(b, words);
+                var containsScore = aContains > bContains ? -1 : 1;
+                var splittedContainsScore = aSplit > bSplit ? -1 : 1;
+                var alphabeticalScore = CompareAlphabetical(a, b);
+                var result = aContains === bContains ? splittedContainsScore : containsScore;
+                return aContains === bContains && aSplit === bSplit ? alphabeticalScore : result;
             }
         });
         items.each(function () {
             category.append($(this));
         });
     });
+    function SplitedContainedCompare(text, words) {
+        var funds = 0;
+        $.each(words, function (i) {
+            if (words[i] !== "") {
+                if (contained(text, words[i])) {
+                    funds++;
+                }
+            }
+        });
+        return funds;
+    }
     function CompareAlphabetical(a, b) {
         return a === b ? 0 : a < b ? -1 : 1;
     }
-    function similar(a, b) {
-        var lengthA = a.length;
-        var lengthB = b.length;
-        var equivalency = 0;
-        var minLength = (a.length > b.length) ? b.length : a.length;
-        var maxLength = (a.length < b.length) ? b.length : a.length;
-        for (var i = 0; i < minLength; i++) {
-            if (a[i] == b[i]) {
-                equivalency++;
-            }
-        }
-
-
-        var weight = equivalency / maxLength;
-        return (weight * 100);
+    function contained(a, b) {
+        var matched = a.indexOf(b) !== -1;
+        return matched ? 1 : 0;
     }
 });
