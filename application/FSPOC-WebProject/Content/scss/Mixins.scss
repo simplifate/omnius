@@ -12,12 +12,3 @@
     user-select: none;
     cursor: default;
 }
-
-// Mixin from bootstrap
-@mixin clearfix() {
-  &:after {
-    display: block;
-    content: "";
-    clear: both;
-  }
-}
