@@ -87,7 +87,7 @@
                         var body = $('<tbody />');
 
                         var row = $('<tr class="info" />');
-                        row.html('<th>Icon</th><th>Action ID</th><th>Action title</th><th class="text-center"><span data-action="dt-add-action" class="fa fa-plus-circle" style="cursor: pointer"></span></th>').appendTo(head);
+                        row.html('<th>Icon</th><th>Action ID</th><th>ID param</th><th>Action title</th><th class="text-center"><span data-action="dt-add-action" class="fa fa-plus-circle" style="cursor: pointer"></span></th>').appendTo(head);
 
                         head.appendTo(list);
                         body.appendTo(list);
@@ -365,11 +365,13 @@
 
         var iconClass = action ? action.icon : 'fa fa-pencil';
         var actionId = action ? action.action : '';
+        var actionIdParam = action ? action.idParam : 'modelId';
         var actionTitle = action ? action.title : '';
 
         var row = $('<tr />');
         var dd = $('<button type="button" class="btn btn-default" style="padding: 3px 10px" data-action="dt-select-icon"><span class="' + iconClass + '"></span> <span class="caret"></span></button>');
         var id = $('<input type="text" class="form-control input-sm" value="' + actionId + '" name="action_id" />');
+        var idParam = $('<input type="text" class="form-control input-sm" value="' + actionIdParam + '" name="action_idParam" />');
         var title = $('<input type="text" class="form-control input-sm" value="' + actionTitle + '" name="action_title" />');
         var move = $('<span class="fa fa-arrows-v fa-fw handle" style="margin-right: 5px; margin-top: 9px; cursor: pointer"></span>');
         var del = $('<span class="fa fa-times fa-fw" data-action="dt-remove" style="margin-top: 9px; cursor: pointer"></span>');
@@ -521,10 +523,11 @@
             $('tbody > tr', '.dt-action-list').each(function () {
                 var icon = $('td', this).eq(0).find('button > span').eq(0)[0].className;
                 var id = $('td', this).eq(1).find('input').val();
-                var title = $('td', this).eq(2).find('input').val();
+                var idParam = $('td', this).eq(2).find('input').val();
+                var title = $('td', this).eq(3).find('input').val();
 
-                if (icon && id && title) {
-                    validActions.push({ 'icon': icon, 'action': id, 'title': title });
+                if (icon && id && idParam && title) {
+                    validActions.push({ 'icon': icon, 'action': id, 'idParam': idParam, 'title': title });
                 }
             });
         }
@@ -544,7 +547,7 @@
             $('tbody > tr > td.actionIcons', target).html('');
             for (var i = 0; i < validActions.length; i++) {
                 $('tbody > tr > td.actionIcons', target).each(function () {
-                    $(this).append('<i class="' + validActions[i].icon + '" data-action="' + validActions[i].action + '" title="' + validActions[i].title + '"></i>');
+                    $(this).append('<i class="' + validActions[i].icon + '" data-action="' + validActions[i].action + '" data-idparam="' + validActions[i].idParam + '" title="' + validActions[i].title + '"></i>');
                 });
             }
         }

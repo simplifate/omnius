@@ -18,6 +18,7 @@ using Microsoft.Web.WebSockets;
 using RazorEngine;
 using RazorEngine.Templating;
 using System.Configuration;
+using FSS.Omnius.Modules.Mozaic.BootstrapEditor;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -208,6 +209,13 @@ namespace FSS.Omnius.Controllers.Master
 
                                 File.WriteAllText(fileName, editorPage.CompiledPartialView);
                             }
+
+                            Builder bootstrapBuilder = new Builder(context, applicationPageViewPath);
+                            foreach (var bootstrapPage in app.MozaicBootstrapPages) {
+                                bootstrapBuilder.BuildPage(bootstrapPage);
+                            }
+
+
                             app.MozaicChangedSinceLastBuild = false;
                             context.SaveChanges();
 

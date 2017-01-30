@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace FSS.Omnius.Modules.CORE
 {
@@ -38,6 +39,13 @@ namespace FSS.Omnius.Modules.CORE
                 default:
                     throw new KeyNotFoundException($"Cannot indentify data type '{type.ToString()}'");
             }
+        }
+
+        public static string StripTags(string input)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(input ?? "");
+            return doc.DocumentNode.InnerText;
         }
     }
 }

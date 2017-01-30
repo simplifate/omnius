@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using HtmlAgilityPack;
 
 namespace FSS.Omnius.Controllers.CORE
 {
@@ -26,6 +27,13 @@ namespace FSS.Omnius.Controllers.CORE
                 case 4: return two;
                 default: return five;
             }
+        }
+
+        public static string StripTags(string input)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(input ?? "");
+            return doc.DocumentNode.InnerText;
         }
     }
 }
