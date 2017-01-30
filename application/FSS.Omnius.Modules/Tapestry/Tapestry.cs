@@ -117,7 +117,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             Block resultBlock = actionRule.TargetBlock;
             // if stops on virtual block
-            if (actionRule.TargetBlock.IsVirtual)
+            if (actionRule.TargetBlock.IsVirtualForBlockId != null)
             {
                 actionRule = Rollback(prevActionRules);
                 resultBlock = actionRule.SourceBlock;
