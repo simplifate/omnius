@@ -295,7 +295,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
                     var dropdownDictionary = new Dictionary<int, string>();
-                    if (dropdownDictionary.Count > 0)
+                    if (dataSource.Rows.Count > 0)
                     {
                         foreach (DataRow datarow in dataSource.Rows)
                         {
