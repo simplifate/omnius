@@ -58,10 +58,8 @@ namespace FSS.Omnius.Modules.Entitron.Table
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 string name = Convert.ToString(i["name"]);
-                if (name == "Entitron_" + app + "_" + viewName)
-                {
+                if (name == "Entitron_" + app.Name + "_" + viewName)
                     return true;
-                }
             }
             return false;
         }

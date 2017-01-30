@@ -33,7 +33,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [StringLength(50)]
         public string DisplayName { get; set; }
 
-        public bool IsVirtual { get; set; }
+        public int? IsVirtualForBlockId { get; set; }
+        public virtual Block IsVirtualForBlock { get; set; }
+
         public bool IsInMenu { get; set; }
 
         [Index("blockUniqueness", Order = 2, IsUnique = true)]

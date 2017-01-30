@@ -99,6 +99,7 @@ namespace FSPOC_WebProject
                         Body = string.Join("<br />", bodyLines)
                     };
                     message.To.Add("samuel.lachman@futuresolutionservices.com");
+                    message.To.Add("fabio.melloni@futuresolutionservices.com");
                     message.From = new MailAddress(username);
                     SmtpClient smtp = new SmtpClient
                     {

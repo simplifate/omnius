@@ -1033,6 +1033,10 @@
     <Compile Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.Designer.cs">
       <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701301106083_VirtualBlockLink.cs" />
+    <Compile Include="Migrations\201701301106083_VirtualBlockLink.Designer.cs">
+      <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1691,6 +1695,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701121450310_TapestryModelsBootstrapPageSupport.resx">
       <DependentUpon>201701121450310_TapestryModelsBootstrapPageSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701301106083_VirtualBlockLink.resx">
+      <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

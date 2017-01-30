@@ -113,7 +113,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = childBlock.Name.RemoveDiacritics(),
                     DisplayName = childBlock.Name,
                     ModelName = modelName,
-                    IsVirtual = false,
                     WorkFlow = resultWF
                 };
                 resultWF.Blocks.Add(resultBlock);
@@ -351,7 +350,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"split_{block.Name}_{random}",
                     DisplayName = $"split[{block.Name}_{random}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true
+                    IsVirtualForBlockId = block.Id
                 };
                 wf.Blocks.Add(newBlock);
                 BlockMapping.Add(splitItem, newBlock);
@@ -391,7 +390,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     Name = $"join_{block.Name}_{random}",
                     DisplayName = $"join[{block.Name}_{random}]",
                     ModelName = block.ModelName,
-                    IsVirtual = true
+                    IsVirtualForBlockId = block.Id
                 };
                 wf.Blocks.Add(newBlock);
                 BlockMapping.Add(joinItem, newBlock);

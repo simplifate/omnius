@@ -104,7 +104,7 @@ namespace FSS.Omnius.Modules.Entitron
                 cmd.ExecuteNonQuery();
                 return true;
             }
-            catch(Exception e) {
+            catch(Exception) {
                 return false;
             }
         }
@@ -122,7 +122,7 @@ namespace FSS.Omnius.Modules.Entitron
                 }
                 return true;
             }
-            catch (Exception e) {
+            catch (Exception) {
                 return false;
             }
         }

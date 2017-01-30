@@ -1793,6 +1793,27 @@
     <Content Include="Views\Mozaic\Bootstrap\Workspace.cshtml" />
     <Content Include="Views\App\83\Page\1029.cshtml" />
     <Content Include="Views\App\2\Page\1.cshtml" />
+    <Content Include="Views\App\83\Page\1052.cshtml" />
+    <Content Include="Views\App\83\Page\1017.cshtml" />
+    <Content Include="Views\App\83\Page\1018.cshtml" />
+    <Content Include="Views\App\83\Page\1019.cshtml" />
+    <Content Include="Views\App\83\Page\1020.cshtml" />
+    <Content Include="Views\App\83\Page\1021.cshtml" />
+    <Content Include="Views\App\83\Page\1022.cshtml" />
+    <Content Include="Views\App\83\Page\1023.cshtml" />
+    <Content Include="Views\App\83\Page\1024.cshtml" />
+    <Content Include="Views\App\83\Page\1025.cshtml" />
+    <Content Include="Views\App\83\Page\1027.cshtml" />
+    <Content Include="Views\App\83\Page\1030.cshtml" />
+    <Content Include="Views\App\83\Page\1033.cshtml" />
+    <Content Include="Views\App\83\Page\1040.cshtml" />
+    <Content Include="Views\App\83\Page\1045.cshtml" />
+    <Content Include="Views\App\83\Page\1046.cshtml" />
+    <Content Include="Views\App\83\Page\1047.cshtml" />
+    <Content Include="Views\App\83\Page\1048.cshtml" />
+    <Content Include="Views\App\83\Page\1049.cshtml" />
+    <Content Include="Views\App\83\Page\1050.cshtml" />
+    <Content Include="Views\App\83\Page\1051.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
