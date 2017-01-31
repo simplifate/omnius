@@ -24,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap
         public string ElmId { get; set; }
         public string Tag { get; set; }
         public string UIC { get; set; }
+        public int NumOrder { get; set; }
 
         [DataType(DataType.Text)]
         public string Attributes { get; set; }

@@ -390,7 +390,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
             }
             string boostrapPath = block.BootstrapPageId != null ? $"Bootstrap\\" : "";
-            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{boostrapPath}{block.EditorPageId}.cshtml";
+            var pageId = block.BootstrapPageId ?? block.EditorPageId;
+            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{boostrapPath}{pageId}.cshtml";
 
             // show
             //return View(block.MozaicPage.ViewPath);

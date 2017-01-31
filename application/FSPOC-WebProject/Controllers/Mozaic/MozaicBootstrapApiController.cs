@@ -71,8 +71,10 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                         IsDeleted = false,
                         Version = VersionEnum.Bootstrap
                     };
+
+                    int numOrder = 0;
                     foreach (var ajaxComponent in postData.Components) {
-                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null));
+                        newPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, newPage, null, ++numOrder));
                     }
 
                     context.Applications.Find(appId).MozaicBootstrapPages.Add(newPage);
@@ -155,8 +157,9 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                     requestedPage.Content = postData.Content;
                     requestedPage.IsDeleted = postData.IsDeleted;
 
+                    int numOrder = 0;
                     foreach (var ajaxComponent in postData.Components) {
-                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null));
+                        requestedPage.Components.Add(convertAjaxComponentToDbFormat(ajaxComponent, requestedPage, null, ++numOrder));
                     }
 
                     context.SaveChanges();
@@ -235,7 +238,7 @@ namespace FSPOC_WebProject.Controllers.Mozaic
             return ajaxComponent;
         }
         
-        private MozaicBootstrapComponent convertAjaxComponentToDbFormat(MozaicBootstrapAjaxComponent c, MozaicBootstrapPage page, MozaicBootstrapComponent parentComponent)
+        private MozaicBootstrapComponent convertAjaxComponentToDbFormat(MozaicBootstrapAjaxComponent c, MozaicBootstrapPage page, MozaicBootstrapComponent parentComponent, int numOrder)
         {
             var newComponent = new MozaicBootstrapComponent
             {
@@ -245,13 +248,15 @@ namespace FSPOC_WebProject.Controllers.Mozaic
                 UIC = c.UIC,
                 Properties = c.Properties,
                 Attributes = c.Attributes,
-                MozaicBootstrapPage = page                
+                MozaicBootstrapPage = page,
+                NumOrder = numOrder          
             };
             if (c.ChildComponents != null && c.ChildComponents.Count > 0)
             {
+                int childNumOrder = 0;
                 newComponent.ChildComponents = new List<MozaicBootstrapComponent>();
                 foreach (var ajaxChildComponent in c.ChildComponents)
-                    newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, page, newComponent));
+                    newComponent.ChildComponents.Add(convertAjaxComponentToDbFormat(ajaxChildComponent, page, newComponent, ++childNumOrder));
             }
             return newComponent;
         }
