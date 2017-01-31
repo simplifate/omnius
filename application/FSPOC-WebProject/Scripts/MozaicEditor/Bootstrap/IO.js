@@ -737,7 +737,11 @@
         tmpNode.find('span.mbe-text-node').each(function () {
             $(this).replaceWith(this.innerHTML);
         });
-        tmpNode.find('[data-uic]').remove();
+        var uicNumOrder = 1;
+        tmpNode.find('> [data-uic]').each(function () {
+            $(this).replaceWith('__UIC_' + uicNumOrder + '__');
+            uicNumOrder++;
+        });
 
         return tmpNode.html();
     }

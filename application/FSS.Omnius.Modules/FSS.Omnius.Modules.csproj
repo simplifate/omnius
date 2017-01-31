@@ -1045,6 +1045,10 @@
     <Compile Include="Migrations\201701311034441_BootstrapComponentNumOrder.Designer.cs">
       <DependentUpon>201701311034441_BootstrapComponentNumOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701311449079_ResourceItemBootstrapPageId.cs" />
+    <Compile Include="Migrations\201701311449079_ResourceItemBootstrapPageId.Designer.cs">
+      <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1712,6 +1716,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701311034441_BootstrapComponentNumOrder.resx">
       <DependentUpon>201701311034441_BootstrapComponentNumOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701311449079_ResourceItemBootstrapPageId.resx">
+      <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

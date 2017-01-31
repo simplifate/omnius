@@ -259,22 +259,37 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                 if (!string.IsNullOrEmpty(target.ComponentName))
                 {
-                    var targetPage = target.Page;
-                    var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
-                    if (component == null)
-                    {
-                        foreach (var parentComponent in targetPage.Components)
-                        {
-                            if (parentComponent.ChildComponents.Count > 0)
-                                component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
-                            if (component != null)
-                                break;
+                    if (target.IsBootstrap == null || target.IsBootstrap == false) {
+                        var targetPage = target.Page;
+                        var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
+                        if (component == null) {
+                            foreach (var parentComponent in targetPage.Components) {
+                                if (parentComponent.ChildComponents.Count > 0)
+                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
+                                if (component != null)
+                                    break;
+                            }
+                        }
+                        if (component != null) {
+                            targetName = component.Name;
+                            targetType = component.Type;
                         }
                     }
-                    if (component != null)
-                    {
-                        targetName = component.Name;
-                        targetType = component.Type;
+                    else {
+                        var targetPage = target.BootstrapPage;
+                        var component = targetPage.Components.SingleOrDefault(c => c.ElmId == target.ComponentName);
+                        if (component == null) {
+                            foreach (var parentComponent in targetPage.Components) {
+                                if (parentComponent.ChildComponents.Count > 0)
+                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.ElmId == target.ComponentName);
+                                if (component != null)
+                                    break;
+                            }
+                        }
+                        if (component != null) {
+                            targetName = component.ElmId;
+                            targetType = component.UIC;
+                        }
                     }
                 }
                 if (!string.IsNullOrEmpty(source.ColumnName))

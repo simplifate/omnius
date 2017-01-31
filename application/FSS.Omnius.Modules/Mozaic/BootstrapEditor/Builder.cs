@@ -45,7 +45,13 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
         private string RenderComponents(ICollection<MozaicBootstrapComponent> componentList)
         {
-            StringBuilder sb = new StringBuilder();
+            return RenderComponents(componentList, "");
+        }
+
+        private string RenderComponents(ICollection<MozaicBootstrapComponent> componentList, string parentHtml)
+        {
+            bool isParentHtml = !string.IsNullOrEmpty(parentHtml);
+
             foreach (MozaicBootstrapComponent c in componentList) {
                 Dictionary<string, string> p = MozaicPropertiesParser.ParseMozaicPropertiesString(c.Properties);
                 
@@ -177,10 +183,18 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     default: html = RenderDefault(c, p); break; 
                 }
 
-                string children = c.ChildComponents.Count > 0 ? RenderComponents(c.ChildComponents.OrderBy(cc => cc.NumOrder).ToList()) : "";
-                html = html.Replace("__CHILDREN__", children);
+                if (c.ChildComponents.Count > 0) {
+                    html = RenderComponents(c.ChildComponents.OrderBy(cc => cc.NumOrder).ToList(), html);
+                }
 
-                sb.Append(html);
+                if (isParentHtml) {
+                    parentHtml = parentHtml.Replace($"__UIC_{c.NumOrder}__", html);
+                }
+                else {
+                    parentHtml += html;
+                }
+
+                
                 
                 /*else if (c.Type == "wizard-phases") {
                     var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
@@ -226,7 +240,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 }*/
             }
 
-            return sb.ToString();
+            return parentHtml;
         }
 
         private string BuildAttributes(MozaicBootstrapComponent c)
@@ -320,7 +334,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<{c.Tag} {attrs}>{c.Content}__CHILDREN__</{c.Tag}>");
+            html.Append($"<{c.Tag} {attrs}>{c.Content}</{c.Tag}>");
             return html.ToString();
         }
 
@@ -343,7 +357,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     }
                 }
             }
-            html.Append($"<{c.Tag} {attrs} {generatedAttributes}>{c.Content}__CHILDREN__</{c.Tag}>");
+            html.Append($"<{c.Tag} {attrs} {generatedAttributes}>{c.Content}</{c.Tag}>");
             return html.ToString();
         }
 
@@ -353,7 +367,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             string attrs = BuildAttributes(c);
 
             var wfItem = e.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.ElmId && i.IsBootstrap == true).OrderByDescending(i => i.Id).FirstOrDefault();
-            html.Append($"<{c.Tag} {attrs} {(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " data-ajax=\"true\"" : "")}>{c.Content}__CHILDREN__</{c.Tag}>");
+            html.Append($"<{c.Tag} {attrs} {(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " data-ajax=\"true\"" : "")}>{c.Content}</{c.Tag}>");
             
             return html.ToString();
         }
@@ -445,7 +459,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
-            string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.ElmId}\") ? \"{c.Content}\".Replace(\"{{var1}}\", ViewData[\"inputData_{c.ElmId}\"].ToString()) : \"{c.Content}\" )";
+            string labelText = !string.IsNullOrEmpty(c.ElmId) ? $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.ElmId}\") ? \"{c.Content}\".Replace(\"{{var1}}\", ViewData[\"inputData_{c.ElmId}\"].ToString()) : \"{c.Content}\" )" : c.Content;
 
             html.Append($"<{c.Tag} {attrs}>{labelText}</{c.Tag}>");
             

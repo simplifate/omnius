@@ -226,6 +226,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? PageId { get; set; }
         [ImportExportIgnore(IsLink = true)]
         public virtual MozaicEditorPage Page { get; set; }
+        [ImportExportIgnore(IsLinkKey = true)]
+        public int? BootstrapPageId { get; set; }
+        [ImportExportIgnore(IsLinkKey = true)]
+        public virtual MozaicBootstrapPage BootstrapPage { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
