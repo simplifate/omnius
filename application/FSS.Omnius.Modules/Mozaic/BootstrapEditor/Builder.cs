@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder sb = new StringBuilder();
 
             sb.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
-            sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).ToList()));
+            sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).OrderBy(c => c.Id).ToList()));
 
             currentPage.CompiledPartialView = sb.ToString();
             e.SaveChanges();
@@ -178,7 +178,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 }
 
                 string children = c.ChildComponents.Count > 0 ? RenderComponents(c.ChildComponents) : "";
-                html.Replace("__CHILDREN__", children);
+                html = html.Replace("__CHILDREN__", children);
 
                 sb.Append(html);
                 
@@ -293,7 +293,8 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 {
                     ViewName = currentPage.Name,
                     ViewPath = requestedPath,
-                    ViewContent = currentPage.CompiledPartialView
+                    ViewContent = currentPage.CompiledPartialView,
+                    IsBootstrap = true
                 };
                 e.Pages.Add(newPage);
                 e.SaveChanges();
@@ -302,6 +303,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             else {
                 oldPage.ViewName = currentPage.Name;
                 oldPage.ViewContent = currentPage.CompiledPartialView;
+                oldPage.IsBootstrap = true;
                 currentPage.CompiledPageId = oldPage.Id;
             }
 

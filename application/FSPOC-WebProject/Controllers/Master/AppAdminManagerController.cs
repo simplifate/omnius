@@ -193,7 +193,8 @@ namespace FSS.Omnius.Controllers.Master
                                     {
                                         ViewName = editorPage.Name,
                                         ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
-                                        ViewContent = editorPage.CompiledPartialView
+                                        ViewContent = editorPage.CompiledPartialView,
+                                        IsBootstrap = false
                                     };
                                     context.Pages.Add(newPage);
                                     context.SaveChanges();
@@ -203,6 +204,7 @@ namespace FSS.Omnius.Controllers.Master
                                 {
                                     oldPage.ViewName = editorPage.Name;
                                     oldPage.ViewContent = editorPage.CompiledPartialView;
+                                    oldPage.IsBootstrap = false;
                                     editorPage.CompiledPageId = oldPage.Id;
                                 }
                                 string fileName = applicationPageViewPath + $"\\{editorPage.Id}.cshtml";

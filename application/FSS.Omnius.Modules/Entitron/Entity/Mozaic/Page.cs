@@ -22,6 +22,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
         public string ViewContent { get; set; }
 
+        public bool IsBootstrap { get; set; }
+
         public virtual ICollection<Block> Blocks { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

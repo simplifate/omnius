@@ -1037,6 +1037,10 @@
     <Compile Include="Migrations\201701301106083_VirtualBlockLink.Designer.cs">
       <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701310858552_PageUpdate.cs" />
+    <Compile Include="Migrations\201701310858552_PageUpdate.Designer.cs">
+      <DependentUpon>201701310858552_PageUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1698,6 +1702,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701301106083_VirtualBlockLink.resx">
       <DependentUpon>201701301106083_VirtualBlockLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701310858552_PageUpdate.resx">
+      <DependentUpon>201701310858552_PageUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

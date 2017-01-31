@@ -229,6 +229,17 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
+            if (commit.AssociatedBootstrapPageIds != "") {
+                var pageIdList = commit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList();
+                Page mainPage = null;
+                foreach(int pageId in pageIdList) {
+                    var currentPage = _context.MozaicBootstrapPages.Find(pageId);
+                    mainPage = _context.Pages.Find(currentPage.CompiledPageId);
+                    break;
+                }
+                resultBlock.BootstrapPageId = pageIdList[0];
+                resultBlock.MozaicPage = mainPage;
+            }
             block.IsChanged = false;
         }
 
