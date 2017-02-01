@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             AttributeRules = new HashSet<AttributeRule>();
             InitForWorkFlow = new HashSet<WorkFlow>();
             ResourceMappingPairs = new HashSet<ResourceMappingPair>();
+            VirtualBlocks = new HashSet<Block>();
         }
 
         public int Id { get; set; }
@@ -46,7 +47,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int? EditorPageId { get; set; }
         public int? BootstrapPageId { get; set; }
-        
+
         public virtual ICollection<PreBlockAction> PreBlockActions { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -59,6 +60,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual ICollection<AttributeRule> AttributeRules { get; set; }
 
         public virtual ICollection<ResourceMappingPair> ResourceMappingPairs { get; set; }
+
+        public virtual ICollection<Block> VirtualBlocks { get; set; }
 
         public virtual WorkFlow WorkFlow { get; set; }
         

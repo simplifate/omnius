@@ -542,7 +542,8 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                             PositionX = ajaxBlock.PositionX,
                             PositionY = ajaxBlock.PositionY,
                             IsInitial = ajaxBlock.IsInitial,
-                            IsInMenu = ajaxBlock.IsInMenu
+                            IsInMenu = ajaxBlock.IsInMenu,
+                            IsChanged = true
                         };
                         targetMetablock.Blocks.Add(newBlock);
                         context.SaveChanges();
@@ -983,6 +984,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
             if (!blockToDelete.IsDeleted)
             {
                 blockToDelete.IsDeleted = true;
+                blockToDelete.IsChanged = true;
                 blockToDelete.Name = $"{blockToDelete.Name}-{DateTime.UtcNow.ToString()}";
             }
         }

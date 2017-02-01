@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private DBEntities _context;
         private bool _rebuildInAction;
         private Random _random;
+        private SendWS _sendWs;
 
         private Dictionary<TapestryDesignerBlock, Block> _blockMapping;
         private HashSet<TapestryDesignerBlock> _blocksToBuild;
@@ -35,6 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         public Dictionary<TapestryDesignerBlock, Block> GenerateTapestry(CORE.CORE core, SendWS sendWs)
         {
             _core = core;
+            _sendWs = sendWs;
 
             //_context = DBEntities.instance;
             Application app = core.Entitron.Application;
@@ -56,25 +58,26 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             return _blockMapping;
         }
 
-        private WorkFlow saveMetaBlock(TapestryDesignerMetablock block, bool init = false)
+        private WorkFlow saveMetaBlock(TapestryDesignerMetablock metaBlock, bool init = false)
         {
-            string metaBlockName = block.Name.RemoveDiacritics();
+            string metaBlockName = metaBlock.Name.RemoveDiacritics();
             WorkFlow resultWF = _core.Entitron.Application.WorkFlows.SingleOrDefault(w => w.Name == metaBlockName);
             if (resultWF == null)
             {
                 resultWF = new WorkFlow
                 {
                     ApplicationId = _core.Entitron.AppId,
-                    Name = block.Name.RemoveDiacritics(),
+                    Name = metaBlock.Name.RemoveDiacritics(),
                     IsTemp = false
                 };
                 _context.WorkFlows.Add(resultWF);
             }
+            resultWF.IsInMenu = metaBlock.IsInMenu;
             resultWF.Type = init ? _context.WorkFlowTypes.Single(t => t.Name == "Init") : _context.WorkFlowTypes.Single(t => t.Name == "Partial");
             _context.SaveChanges();
 
             // child meta block
-            foreach (TapestryDesignerMetablock childMetaBlock in block.Metablocks.Where(mb => !mb.IsDeleted))
+            foreach (TapestryDesignerMetablock childMetaBlock in metaBlock.Metablocks.Where(mb => !mb.IsDeleted))
             {
                 WorkFlow wf = saveMetaBlock(childMetaBlock);
                 wf.Parent = resultWF;
@@ -83,8 +86,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             // child block
             List<TapestryDesignerBlock> designerToBuild = _rebuildInAction
-                ? block.Blocks.Where(b => !b.IsDeleted).ToList()
-                : block.Blocks.Where(b => !b.IsDeleted && b.IsChanged).ToList();
+                ? metaBlock.Blocks.Where(b => !b.IsDeleted).ToList()
+                : metaBlock.Blocks.Where(b => !b.IsDeleted && b.IsChanged).ToList();
             foreach (TapestryDesignerBlock childBlock in designerToBuild)
             {
                 TapestryDesignerBlockCommit commit = childBlock.BlockCommits.OrderByDescending(c => c.Timestamp).FirstOrDefault();
@@ -98,58 +101,48 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         modelName = commit.AssociatedTableName.Split(',').First();
                 }
 
+                // find already builded
                 string blockName = childBlock.Name.RemoveDiacritics();
                 Block resultBlock = resultWF.Blocks.SingleOrDefault(b => b.Name == blockName);
-                // find already builded
-                if (resultBlock != null)
+                // create block
+                if (resultBlock == null)
                 {
-                    // remove
-                    _context.Blocks.Remove(resultBlock);
-                    _context.SaveChanges();
+                    resultBlock = new Block();
+                    resultWF.Blocks.Add(resultBlock);
                 }
-                // create new
-                resultBlock = new Block
+                else
                 {
-                    Name = childBlock.Name.RemoveDiacritics(),
-                    DisplayName = childBlock.Name,
-                    ModelName = modelName,
-                    WorkFlow = resultWF
-                };
-                resultWF.Blocks.Add(resultBlock);
+                    _context.AttributeRules.RemoveRange(resultBlock.AttributeRules);
+                    _context.ActionRules.RemoveRange(resultBlock.SourceTo_ActionRules);
+                    _context.ResourceMappingPairs.RemoveRange(resultBlock.ResourceMappingPairs);
+                    _context.Blocks.RemoveRange(resultBlock.VirtualBlocks);
+                    resultBlock.InitForWorkFlow.Clear();
+                }
+                // update
+                resultBlock.Name = childBlock.Name.RemoveDiacritics();
+                resultBlock.DisplayName = childBlock.Name;
+                resultBlock.ModelName = modelName;
+                resultBlock.WorkFlow = resultWF;
+                
+                // add init
                 if (childBlock.IsInitial)
                     resultBlock.InitForWorkFlow.Add(resultWF);
-
-                //if (resultBlock == null)
-                //{
-                //    resultBlock = new Block();
-                //    resultWF.Blocks.Add(resultBlock);
-                //}
-                //// update
-                //resultBlock.Name = childBlock.Name.RemoveDiacritics();
-                //resultBlock.DisplayName = childBlock.Name;
-                //resultBlock.ModelName = modelName;
-                //resultBlock.IsVirtual = false;
-                //resultBlock.WorkFlow = resultWF;
-                //// add
-                //if (childBlock.IsInitial)
-                //{
-                //    if (resultBlock.InitForWorkFlow.Count() < 1)
-                //        resultBlock.InitForWorkFlow.Add(resultWF);
-                //}
-                //// remove
-                //else
-                //    resultBlock.InitForWorkFlow.Clear();
 
                 _blockMapping.Add(childBlock, resultBlock);
                 _blocksToBuild.Add(childBlock);
             }
             _context.SaveChanges();
+            // remove deleted
+            var deletedBlocks = _context.Blocks.Where(b => b.WorkFlowId == resultWF.Id && b.IsVirtualForBlock == null
+                && !_context.TapestryDesignerBlocks.Where(db => db.ParentMetablock_Id == metaBlock.Id && !db.IsDeleted).Select(mb => mb.Name).Contains(b.DisplayName));
+            _context.Blocks.RemoveRange(deletedBlocks);
+
             // map rest
             if (!_rebuildInAction)
-                foreach(TapestryDesignerBlock childBlock in block.Blocks.Where(b => !b.IsDeleted && !b.IsChanged))
+                foreach(TapestryDesignerBlock childBlock in metaBlock.Blocks.Where(b => !b.IsDeleted && !b.IsChanged))
                 {
                     string blockName = childBlock.Name.RemoveDiacritics();
-                    _blockMapping[childBlock] = _context.Blocks.SingleOrDefault(b => b.Name == blockName);
+                    _blockMapping[childBlock] = _context.Blocks.SingleOrDefault(b => b.WorkFlowId == resultWF.Id && b.Name == blockName);
                 }
 
             // DONE :)
@@ -229,10 +222,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
-            if (commit.AssociatedBootstrapPageIds != "") {
+            if (commit.AssociatedBootstrapPageIds != null && commit.AssociatedBootstrapPageIds != "")
+            {
                 var pageIdList = commit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList();
                 Page mainPage = null;
-                foreach(int pageId in pageIdList) {
+                foreach (int pageId in pageIdList)
+                {
                     var currentPage = _context.MozaicBootstrapPages.Find(pageId);
                     mainPage = _context.Pages.Find(currentPage.CompiledPageId);
                     break;
@@ -259,34 +254,42 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                 if (!string.IsNullOrEmpty(target.ComponentName))
                 {
-                    if (target.IsBootstrap == null || target.IsBootstrap == false) {
+                    if (target.IsBootstrap == null || target.IsBootstrap == false)
+                    {
                         var targetPage = target.Page;
                         var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
-                        if (component == null) {
-                            foreach (var parentComponent in targetPage.Components) {
+                        if (component == null)
+                        {
+                            foreach (var parentComponent in targetPage.Components)
+                            {
                                 if (parentComponent.ChildComponents.Count > 0)
                                     component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
                                 if (component != null)
                                     break;
                             }
                         }
-                        if (component != null) {
+                        if (component != null)
+                        {
                             targetName = component.Name;
                             targetType = component.Type;
                         }
                     }
-                    else {
+                    else
+                    {
                         var targetPage = target.BootstrapPage;
                         var component = targetPage.Components.SingleOrDefault(c => c.ElmId == target.ComponentName);
-                        if (component == null) {
-                            foreach (var parentComponent in targetPage.Components) {
+                        if (component == null)
+                        {
+                            foreach (var parentComponent in targetPage.Components)
+                            {
                                 if (parentComponent.ChildComponents.Count > 0)
                                     component = parentComponent.ChildComponents.SingleOrDefault(c => c.ElmId == target.ComponentName);
                                 if (component != null)
                                     break;
                             }
                         }
-                        if (component != null) {
+                        if (component != null)
+                        {
                             targetName = component.ElmId;
                             targetType = component.UIC;
                         }
@@ -333,10 +336,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 _context.SaveChanges();
 
                 foreach (TapestryDesignerConditionSet cs in source.ConditionSets)
-                {
                     cs.ResourceMappingPair_Id = pair.Id;
 
-                }
                 return pair;
             }
             return null;
@@ -494,7 +495,16 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         break;
 
                     case "targetItem":
-                        rule.TargetBlock = _blockMapping[item.Target];
+                        if (_blockMapping.ContainsKey(item.Target))
+                            rule.TargetBlock = _blockMapping[item.Target];
+                        else
+#warning poslat warning přes WS
+                            _sendWs(Json.Encode(new
+                            {
+                                id = "tapestry",
+                                type = "error",
+                                message = $"Block [{item.Target.Name}] not found!"
+                            }));
                         break;
 
                     case "symbol":
