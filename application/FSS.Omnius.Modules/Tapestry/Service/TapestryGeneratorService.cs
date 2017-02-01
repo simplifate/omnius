@@ -229,7 +229,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.EditorPageId = pageIdList[0];
                 resultBlock.MozaicPage = mainPage;
             }
-            if (commit.AssociatedBootstrapPageIds != "") {
+            if (commit.AssociatedBootstrapPageIds != null && commit.AssociatedBootstrapPageIds != "") {
                 var pageIdList = commit.AssociatedBootstrapPageIds.Split(',').Select(int.Parse).ToList();
                 Page mainPage = null;
                 foreach(int pageId in pageIdList) {
