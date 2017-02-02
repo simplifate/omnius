@@ -1126,6 +1126,7 @@
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
+    <Compile Include="Tapestry\Actions\other\ColumnToListAction.cs" />
     <Compile Include="Tapestry\Actions\other\CopyVariableAction.cs" />
     <Compile Include="Tapestry\Actions\other\FormatDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\other\FormatStringAction.cs" />

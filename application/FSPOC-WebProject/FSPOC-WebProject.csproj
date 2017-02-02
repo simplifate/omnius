@@ -1814,6 +1814,9 @@
     <Content Include="Views\App\83\Page\1049.cshtml" />
     <Content Include="Views\App\83\Page\1050.cshtml" />
     <Content Include="Views\App\83\Page\1051.cshtml" />
+    <Content Include="Views\App\83\Page\1053.cshtml" />
+    <Content Include="Views\App\83\Page\1054.cshtml" />
+    <Content Include="Views\App\83\Page\1055.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

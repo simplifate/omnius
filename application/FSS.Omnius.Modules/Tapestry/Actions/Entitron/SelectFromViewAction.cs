@@ -1,13 +1,7 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Sql;
-using FSS.Omnius.Modules.Watchtower;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -60,6 +54,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 core.Entitron.AppName = "EvidencePeriodik";
 
             var view = core.Entitron.GetDynamicView((string)vars["ViewName"]);
+
+            if (vars.ContainsKey("ColumnName") && !(vars["Value"] is string) && vars["Value"] is IEnumerable && ((List<object>)vars["Value"]).Count == 0)
+            {
+                outputVars["Result"] = new List<DBItem>();
+                return;
+            }
+            if (vars.ContainsKey("ColumnName2") && !(vars["Value2"] is string) && vars["Value2"] is IEnumerable && ((List<object>)vars["Value2"]).Count == 0)
+            {
+                outputVars["Result"] = new List<DBItem>();
+
+                return;
+            }
+
             if (!vars.ContainsKey("ColumnName"))
             {
                 outputVars["Result"] = view.Select().ToList();
@@ -68,18 +75,43 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             {
                 string columnName = (string)vars["ColumnName"];
                 string columnName2 = (string)vars["ColumnName2"];
-                outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"]).and().column(columnName2).Equal(vars["Value2"])).ToList();
+                if ((vars["Value"] is IEnumerable && !(vars["Value"] is string)) && (vars["Value2"] is IEnumerable && !(vars["Value2"] is string)))
+                {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).In((List<object>)vars["Value"]).and().column(columnName2).In((List<object>)vars["Value2"])).ToList();
+                }
+                else if ((vars["Value"] is IEnumerable && !(vars["Value"] is string)) && !((vars["Value2"] is IEnumerable && !(vars["Value2"] is string))))
+                {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).In((List<object>)vars["Value"]).and().column(columnName2).Equal(vars["Value2"])).ToList();
+                }
+                else if (!((vars["Value"] is IEnumerable && !(vars["Value"] is string))) && (vars["Value2"] is IEnumerable && !(vars["Value2"] is string)))
+                {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"]).and().column(columnName2).In((List<object>)vars["Value2"])).ToList();
+                }
+                else
+                {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"]).and().column(columnName2).Equal(vars["Value2"])).ToList();
+                }
             }
             else
             {
                 string columnName = (string)vars["ColumnName"];
-                var varValue = vars["Value"];
-                if (varValue.ToString().Contains(",")){
-                    var x = vars["Value"].ToString().Split(',');
-                    outputVars["Result"] = view.Select().where(c => c.column(columnName).In((IEnumerable<object>)x)).ToList();
+                if (vars["Value"] is IEnumerable && !(vars["Value"] is string))
+                {
+                    outputVars["Result"] = view.Select().where(c => c.column(columnName).In((List<object>)vars["Value"])).ToList();
                 }
-                else {
+                else
+                {
                     outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+                    var varValue = vars["Value"];
+                    if (varValue.ToString().Contains(","))
+                    {
+                        var x = vars["Value"].ToString().Split(',');
+                        outputVars["Result"] = view.Select().where(c => c.column(columnName).In((IEnumerable<object>)x)).ToList();
+                    }
+                    else
+                    {
+                        outputVars["Result"] = view.Select().where(c => c.column(columnName).Equal(vars["Value"])).ToList();
+                    }
                 }
             }
         }
