@@ -21,7 +21,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         public static DateTime requestStart;
         public static DateTime startTime;
         public static DateTime prepareEnd;
-
+        
         [HttpGet]
         public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null, string registry = null)
         {
@@ -127,10 +127,16 @@ namespace FSS.Omnius.Controllers.Tapestry
                 DataTable dataSource = new DataTable();
                 List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
                 var columnDisplayNameDictionary = new Dictionary<string, string>();
+
+                string targetType = resourceMappingPair.TargetType;
+                string targetName = resourceMappingPair.TargetName;
+                string sourceColumnName = resourceMappingPair.SourceColumnName;
+                string sourceTableName = resourceMappingPair.SourceTableName;
+
+
                 if (!string.IsNullOrEmpty(resourceMappingPair.SourceTableName)
                     && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                 {
-                    string sourceTableName = resourceMappingPair.SourceTableName;
                     if (resourceMappingPair.relationType.StartsWith("V:"))
                     {
                         dataSource = new DataTable();
@@ -185,7 +191,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                     else
                     {
-                        bool disableColumnAlias = (resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select");
+                        bool disableColumnAlias = (resourceMappingPair.TargetType == "form|select" || resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select");
                         var entitronTable = core.Entitron.GetDynamicTable(resourceMappingPair.SourceTableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
@@ -287,12 +293,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                 }
-                if (resourceMappingPair.TargetType == "data-table-read-only" || resourceMappingPair.TargetType == "data-table-with-actions"
-                            || resourceMappingPair.TargetType == "name-value-list")
-                {
-                    ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
+                
+                if (ResourceMappingPairsTarget.IsTable(targetType)) {
+                    ViewData["tableData_" + targetName] = dataSource;
                 }
-                else if ((resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select") && string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
+                else if (ResourceMappingPairsTarget.IsSelect(targetType) && string.IsNullOrEmpty(sourceColumnName))
                 {
                     var dropdownDictionary = new Dictionary<int, string>();
                     if (dataSource.Rows.Count > 0 && dataSource.Columns.Contains("name"))
@@ -305,74 +310,78 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     ? (string)datarow[columnDisplayNameDictionary["name"]] : (string)datarow["name"]);
                             }
                         }
-                        ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
+                        ViewData["dropdownData_" + targetName] = dropdownDictionary;
                     }
                     else
-                        ViewData["dropdownData_" + resourceMappingPair.TargetName] = null;
+                        ViewData["dropdownData_" + targetName] = null;
                 }
-                string targetType = resourceMappingPair.TargetType;
-                if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
-                    && targetType == "checkbox")
-                {
-                    ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
+
+                // Máme model a mapujeme data do inputů
+                if(modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)) {
+                    switch(ResourceMappingPairsTarget.GetType(targetType)) {
+                        case ResourceMappingPairsTarget.CHECKBOX: {
+                                ViewData["checkboxData_" + targetName] = modelRow[sourceColumnName];
+                                break;
+                            }
+                        case ResourceMappingPairsTarget.RADIO: {
+                                ViewData["radioData_" + targetName] = modelRow[sourceColumnName];
+                                break;
+                            }
+                        case ResourceMappingPairsTarget.INPUT: {
+                                ViewData["inputData_" + targetName] = modelRow[sourceColumnName];
+                                break;
+                            }
+                        case ResourceMappingPairsTarget.SELECT: {
+                                ViewData["dropdownSelection_" + targetName] = modelRow[sourceColumnName];
+                                break;
+                            }
+                        
+                    }
                 }
-                else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
-                    && (targetType == "input-single-line" || targetType == "input-multiline"))
+                
+                if (!string.IsNullOrEmpty(sourceColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
+                    && ResourceMappingPairsTarget.IsInput(targetType))
                 {
-                    ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
-                }
-                else if (modelRow != null && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)
-                    && (targetType == "dropdown-select" || targetType == "multiple-select"))
-                {
-                    ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
-                }
-                if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnName) && resourceMappingPair.DataSourceParams == "currentUser"
-                    && (targetType == "input-single-line" || targetType == "input-multiline"))
-                {
-                    if (resourceMappingPair.SourceTableName == "Omnius::Users")
-                        switch (resourceMappingPair.SourceColumnName)
-                        {
+                    if (sourceTableName == "Omnius::Users") {
+                        switch (sourceColumnName) {
                             case "DisplayName":
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+                                ViewData["inputData_" + targetName] = core.User.DisplayName;
                                 break;
                             case "Company":
                                 var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                     .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                                if (epkUserRowList.Count > 0)
-                                {
+                                if (epkUserRowList.Count > 0) {
                                     var abkrsRowList = core.Entitron.GetDynamicTable("ABKRS").Select()
                                     .where(c => c.column("abkrs").Equal(epkUserRowList[0]["abkrs"])).ToList();
-                                    if (abkrsRowList.Count > 0)
-                                    {
+                                    if (abkrsRowList.Count > 0) {
                                         var companyRowList = core.Entitron.GetDynamicTable("Companies").Select()
                                                             .where(c => c.column("id_company").Equal(abkrsRowList[0]["id_company"])).ToList();
-                                        if (companyRowList.Count > 0)
-                                        {
-                                            ViewData["inputData_" + resourceMappingPair.TargetName] = companyRowList[0]["name"];
+                                        if (companyRowList.Count > 0) {
+                                            ViewData["inputData_" + targetName] = companyRowList[0]["name"];
                                         }
                                     }
                                 }
                                 break;
                             case "Job":
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+                                ViewData["inputData_" + targetName] = core.User.Job;
                                 break;
                             case "Email":
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+                                ViewData["inputData_" + targetName] = core.User.Email;
                                 break;
                             case "Address":
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+                                ViewData["inputData_" + targetName] = core.User.Address;
                                 break;
                         }
-                    else if (resourceMappingPair.SourceTableName == "Users")
-                    {
+                    }
+                    else if (sourceTableName == "Users") {
                         var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                     .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                         if (epkUserRowList.Count > 0)
-                            ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.SourceColumnName];
+                            ViewData["inputData_" + targetName] = epkUserRowList[0][sourceColumnName];
                     }
                 }
-                else if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnName) && resourceMappingPair.DataSourceParams == "superior"
-                    && (targetType == "input-single-line" || targetType == "input-multiline"))
+                else if (!string.IsNullOrEmpty(sourceColumnName) && resourceMappingPair.DataSourceParams == "superior"
+                    && ResourceMappingPairsTarget.IsInput(targetType))
                 {
                     var tableUsers = core.Entitron.GetDynamicTable("Users");
                     if (resourceMappingPair.SourceTableName == "Users")
@@ -384,7 +393,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                             var epkSuperiorRowList = tableUsers.Select()
                                     .where(c => c.column("pernr").Equal(superiorId)).ToList();
                             if (epkSuperiorRowList.Count > 0)
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][resourceMappingPair.SourceColumnName];
+                                ViewData["inputData_" + targetName] = epkSuperiorRowList[0][sourceColumnName];
                         }
                     }
                 }
@@ -448,6 +457,99 @@ namespace FSS.Omnius.Controllers.Tapestry
                     .Include(b => b.SourceTo_ActionRules)
                     .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
                 : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+        }
+    }
+
+    static class ResourceMappingPairsTarget
+    {
+        public const string TABLE = "TABLE";
+        public static List<string> Table = new List<string>()
+        {
+            // LEGACY
+            "data-table-read-only",         
+            "data-table-with-actions",      
+            "name-value-list",              
+            // BOOTSTRAP
+            "ui|data-table",                
+            "ui|nv-list"                    
+        };
+
+        public const string SELECT = "select";
+        public static List<string> Select = new List<string>()
+        {
+            // LEGACY
+            "dropdown-select",  
+            "multiple-select",  
+            // BOOTSTRAP
+            "form|select"
+        };
+
+        public const string CHECKBOX = "checkbox";
+        public static List<string> Checkbox = new List<string>()
+        {
+            // LEGACY
+            "checkbox",     
+            // BOOTSTRAP
+            "form|checkbox"
+        };
+
+        public const string RADIO = "radio";
+        public static List<string> Radio = new List<string>()
+        {
+            // BOOTSTRAP
+            "form|radio"
+        };
+
+        public const string INPUT = "input";
+        public static List<string> Input = new List<string>()
+        {
+            // LEGACY
+            "input-single-line",    
+            "input-multiline",      
+            // BOOTSTRAP
+            "form|input-text",
+            "form|input-email",
+            "form|input-color",
+            "form|input-tel",
+            "form|input-date",
+            "form|input-number",
+            "form|input-range",
+            "form|input-hidden",
+            "form|input-url",
+            "form|input-search",
+            "form|input-password",
+            "form|textarea"
+        };
+
+        public static string GetType(string targetType)
+        {
+            if(Table.Contains(targetType)) { return TABLE; }
+            if(Select.Contains(targetType)) { return SELECT; }
+            if(Checkbox.Contains(targetType)) { return CHECKBOX; }
+            if(Radio.Contains(targetType)) { return RADIO; }
+            if(Input.Contains(targetType)) { return INPUT; }
+
+            return "";
+        }
+
+        public static bool IsTable(string targetType) {
+            return Table.Contains(targetType);
+        }
+
+        public static bool IsSelect(string targetType) {
+            return Select.Contains(targetType);
+        }
+
+        public static bool IsCheckbox(string targetType) {
+            return Checkbox.Contains(targetType);
+        }
+
+        public static bool IsRadio(string targetType) {
+            return Radio.Contains(targetType);
+        }
+
+        public static bool IsInput(string targetType) {
+            return Input.Contains(targetType);
         }
     }
 }

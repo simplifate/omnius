@@ -1,17 +1,17 @@
     <ul  id=appMenu>
-@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/KeZpracovani">Ke zpracov&#225;n&#237;</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
                     <h4>Editace</h4>
     <ul >
-@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/NovyAudit">Nov&#253; audit</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
                     <a href="/PortalInternichAuditu2/EditaceAuditu">Editace auditů</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/NovyAuditBezWf">Nov&#253; audit bez WF</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
@@ -25,21 +25,21 @@
             </li>
 }    </ul>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("User,Admin,IA TG Coordinator,Local Coordinator,EY Auditor,Auditor RWE",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <h4>Přehled</h4>
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/NapravnaOpatreni">N&#225;pravn&#225; opatřen&#237;</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,IA TG Coordinator,Local Coordinator,EY Auditor,Auditor RWE",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/Audity">Audity</a>
             </li>
 }    </ul>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,User",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("User,Admin",83)){            <li>
                     <h4>Administrace</h4>
     <ul >
-@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/Spolecnosti">Společnosti</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
@@ -54,7 +54,7 @@
 }@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/UzivateleRwe">Uživatel&#233; RWE</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/Funkce">Funkce</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
@@ -65,6 +65,9 @@
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/Soubory">Soubory</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
+                    <a href="/PortalInternichAuditu2/ZmenaNadrizeneho">Změna nadř&#237;zen&#233;ho</a>
             </li>
 }    </ul>
             </li>

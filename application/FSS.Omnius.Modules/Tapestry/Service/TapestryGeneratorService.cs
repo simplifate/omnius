@@ -213,7 +213,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 saveWFRule(workflowRule, resultBlock, resultBlock.WorkFlow, stateColumnMapping);
             }
 
-            if (commit.AssociatedPageIds != "")
+            if (commit.AssociatedPageIds != null && commit.AssociatedPageIds != "")
             {
                 var pageIdList = commit.AssociatedPageIds.Split(',').Select(int.Parse).ToList();
                 Page mainPage = null;

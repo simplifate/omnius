@@ -3377,7 +3377,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: true };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed = state.filter && state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3394,7 +3394,7 @@ TB.screen = {
         if (c.ElmId != "") {
             var label = c.ElmId;
             var params = { pageId: pageId, componentName: label, isBootstrap: true };
-            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+            var isUsed = state.filter && state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
 
             var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
             if (isUsed) {
@@ -3410,7 +3410,7 @@ TB.screen = {
                 for (var a in actions) {
                     var label = c.ElmId + '_' + actions[a].action;
                     var params = { pageId: pageId, componentName: label, isBootstrap: true };
-                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                    var isUsed = state.filter && state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
 
                     var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                     if (isUsed) {
@@ -3433,7 +3433,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed = state.filter && state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3449,7 +3449,7 @@ TB.screen = {
     {
         var label = c.Name;
         var params = { pageId: pageId, componentName: label, isBootstrap: false };
-        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+        var isUsed = state.filter && state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
 
         var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
         if (isUsed) {
@@ -3462,7 +3462,7 @@ TB.screen = {
             for (var a = 0; a < actions.length; a++) {
                 var label = c.Name + actions[a];
                 var params = { pageId: pageId, componentName: label, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                var isUsed = state.filter && state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3930,12 +3930,13 @@ TB.rr = {
         var attrs = {};
         attrs.id = 'resItem' + itemData.Id;
 
-        if (itemData.ActionId != null)      attrs.actionId = itemData.ActionId;
-        if (itemData.StateId != null)       attrs.stateId = itemData.StateId;
-        if (itemData.PageId != null)        attrs.pageId = itemData.PageId;
-        if (itemData.ComponentName != null) attrs.componentName = itemData.ComponentName;
-        if (itemData.ColumnName != null)    attrs.columnName = itemData.ColumnName;
-        if (itemData.IsBootstrap != null)   attrs.isBootstrap = itemData.IsBootstrap;
+        if (itemData.ActionId != null)          attrs.actionId = itemData.ActionId;
+        if (itemData.StateId != null)           attrs.stateId = itemData.StateId;
+        if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
+        if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
+        if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
+        if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
 
         item
             .attr(attrs)

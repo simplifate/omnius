@@ -31,12 +31,13 @@
         var attrs = {};
         attrs.id = 'resItem' + itemData.Id;
 
-        if (itemData.ActionId != null)      attrs.actionId = itemData.ActionId;
-        if (itemData.StateId != null)       attrs.stateId = itemData.StateId;
-        if (itemData.PageId != null)        attrs.pageId = itemData.PageId;
-        if (itemData.ComponentName != null) attrs.componentName = itemData.ComponentName;
-        if (itemData.ColumnName != null)    attrs.columnName = itemData.ColumnName;
-        if (itemData.IsBootstrap != null)   attrs.isBootstrap = itemData.IsBootstrap;
+        if (itemData.ActionId != null)          attrs.actionId = itemData.ActionId;
+        if (itemData.StateId != null)           attrs.stateId = itemData.StateId;
+        if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
+        if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
+        if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
+        if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
 
         item
             .attr(attrs)

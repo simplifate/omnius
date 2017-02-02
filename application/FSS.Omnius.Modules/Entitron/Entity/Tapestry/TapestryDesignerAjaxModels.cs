@@ -160,6 +160,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string OutputVariables { get; set; }
         public int? StateId { get; set; }
         public int? PageId { get; set; }
+        public int? BootstrapPageId { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
