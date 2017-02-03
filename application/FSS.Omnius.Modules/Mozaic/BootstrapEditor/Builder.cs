@@ -534,9 +534,8 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
-            string value = GetAttribute(c.Attributes, "value");
 
-            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"radioData_{c.ElmId}\") && (string)ViewData[\"radioData_{c.ElmId}\"] == \"{value}\" ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (bool)ViewData[\"checkboxData_{c.ElmId}\"] ? \" checked\" : \"\") />");
 
             return html.ToString();
         }
