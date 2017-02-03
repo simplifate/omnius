@@ -312,6 +312,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         case "details-edit-delete":
                             stringBuilder.Append($"<i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"Editovat\" class=\"fa fa-edit rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
                             break;
+                        case "edit":
+                            stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i>");
+                            break;
                         case "edit-delete":
                         default:
                             stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i><i class=\"fa fa-remove rowDeleteAction\"></i>");
