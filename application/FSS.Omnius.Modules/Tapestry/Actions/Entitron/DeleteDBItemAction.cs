@@ -58,7 +58,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             var itemId = vars.ContainsKey("ItemId")
                 ? (int)vars["ItemId"]
-                : (vars.ContainsKey("deleteId") ? (int)vars["deleteId"] : (int)vars["__ModelId__"]);
+                : (vars.ContainsKey("deleteId") ? Convert.ToInt32(vars["deleteId"]) : (int)vars["__ModelId__"]);
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]
                 : (string)vars["__TableName__"];
