@@ -273,15 +273,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     string actionButtons = "edit-delete";
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
-                        string[] nameValuePair = c.Properties.Split('=');
-                        if (nameValuePair.Length == 2)
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
                         {
-                            if (nameValuePair[0].ToLower() == "actions")
+                            string[] nameValuePair = tokens.Split('=');
+                            if (nameValuePair.Length == 2)
                             {
-                                actionButtons = nameValuePair[1].ToLower();
+                                if (nameValuePair[0].ToLower() == "actions")
+                                {
+                                    actionButtons = nameValuePair[1].ToLower();
+                                }
                             }
                         }
                     }
+                    
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
