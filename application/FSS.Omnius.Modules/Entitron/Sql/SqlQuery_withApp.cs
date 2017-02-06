@@ -16,7 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         {
             get
             {
-                return application.connectionString;
+                return application.connectionString_data;
             }
         }
         

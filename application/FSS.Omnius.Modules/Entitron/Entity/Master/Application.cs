@@ -55,7 +55,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
 
-        public string connectionString { get; set; } // empty for default, database name or full connection string
+        // empty for default, database name or full connection string
+        public string connectionString_data { get; set; }
+        public string connectionString_schema { get; set; }
 
         public bool TapestryChangedSinceLastBuild { get; set; }
         public bool MozaicChangedSinceLastBuild { get; set; }

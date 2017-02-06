@@ -1049,6 +1049,10 @@
     <Compile Include="Migrations\201701311449079_ResourceItemBootstrapPageId.Designer.cs">
       <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702060918128_AppSchemeConnectionString.cs" />
+    <Compile Include="Migrations\201702060918128_AppSchemeConnectionString.Designer.cs">
+      <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1720,6 +1724,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701311449079_ResourceItemBootstrapPageId.resx">
       <DependentUpon>201701311449079_ResourceItemBootstrapPageId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702060918128_AppSchemeConnectionString.resx">
+      <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
