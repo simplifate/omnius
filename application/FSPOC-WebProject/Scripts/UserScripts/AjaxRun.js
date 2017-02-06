@@ -34,10 +34,10 @@ $(function () {
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || "VracenoKPrepracovaniNadrizenym") {
         $("[name=radio_agree]").on("change", function () {
             if ($(this).val() === "true") {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("disabled", true);
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
                 $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", false);
             } else {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("disabled", false);
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                 $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", true);
             }
         });
