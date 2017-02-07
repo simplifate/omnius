@@ -22,10 +22,13 @@
          
         [ImportExportIgnore(IsParent = true)]
         public virtual Application ParentApp { get; set; }
+
+        public virtual ICollection<Js> Js { get; set; }
         
         public MozaicBootstrapPage()
         {
             Components = new List<MozaicBootstrapComponent>();
+            Js = new List<Js>();
         }
     }
 }

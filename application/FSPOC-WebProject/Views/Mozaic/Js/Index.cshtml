@@ -1,5 +1,5 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
-@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Css>
+@model System.Data.Entity.DbSet<FSS.Omnius.Modules.Entitron.Entity.Mozaic.Js>
 @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 
 @{
@@ -22,10 +22,10 @@
         <path d="M507 357 L507 108 L472 74 L238 74" stroke="#457fa9" stroke-width="1" fill="none" />
     </svg>
     <div id="ldapMenuArea" style="text-align:center">
-        @Ajax.RouteLink("Nové CSS", "Mozaic", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+        @Ajax.RouteLink("Nový JS", "Mozaic", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
     </div>
     <div id="ContentContainer">
-        @Html.Partial("~/Views/Mozaic/Css/BaseIndex.cshtml")
+        @Html.Partial("~/Views/Mozaic/Js/BaseIndex.cshtml")
     </div>
 </div>
 

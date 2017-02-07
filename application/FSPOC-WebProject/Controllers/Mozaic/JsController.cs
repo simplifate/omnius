@@ -11,12 +11,12 @@ namespace FSS.Omnius.Controllers.Mozaic
     [PersonaAuthorize(NeedsAdmin = true, Module = "Mozaic")]
     public class JsController : Controller
     {
-        // GET: Css
+        // GET: Js
         public ActionResult Index()
         {
             DBEntities e = DBEntities.instance;
 
-            return View(e.Css);
+            return View(e.Js);
         }
 
         public ActionResult Detail(int id)

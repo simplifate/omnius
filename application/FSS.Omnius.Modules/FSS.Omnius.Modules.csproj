@@ -1058,6 +1058,10 @@
     <Compile Include="Migrations\201702070835205_JsEditor.Designer.cs">
       <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702070915546_JsModelUpdate.cs" />
+    <Compile Include="Migrations\201702070915546_JsModelUpdate.Designer.cs">
+      <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1735,6 +1739,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702070835205_JsEditor.resx">
       <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702070915546_JsModelUpdate.resx">
+      <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
