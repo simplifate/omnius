@@ -13,6 +13,7 @@ namespace FSS.Omnius.Modules.Entitron
 {
     public class DBTable : IToJson
     {
+
         #region static
         public static DBTable Create(string name)
         {
@@ -24,6 +25,7 @@ namespace FSS.Omnius.Modules.Entitron
 
         public string tableName { get; set; }
         public Application Application { get; set; }
+
         private DBColumns _columns;
         public DBColumns columns
         {
@@ -88,7 +90,7 @@ namespace FSS.Omnius.Modules.Entitron
             return output;
         }
 
-        public DBTable()
+        public DBTable(string prefix = null)
         {
             tableId = -1;
         }

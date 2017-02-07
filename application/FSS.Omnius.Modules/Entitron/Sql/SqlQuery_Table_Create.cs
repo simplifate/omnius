@@ -10,6 +10,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQuery_Table_Create : SqlQuery_withAppTable
     {
+        public string Prefix = null;
+
         private List<DBColumn> _columns = new List<DBColumn>();
 
         public SqlQuery_Table_Create AddColumn(DBColumn column)
@@ -77,11 +79,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             string parTableName = safeAddParam("tableName", table.tableName);
 
             string columnDefinition = string.Join(",", _columns.Select(c => c.getSqlDefinition()));
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
 
             sqlString =
-                $"CREATE TABLE [{realTableName}] ({columnDefinition});" +
-                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, @{parAppId} , ( SELECT object_id FROM sys.tables WHERE name='{realTableName}') );";
+                $"CREATE TABLE [{this.realTableName}] ({columnDefinition});" +
+                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, @{parAppId} , ( SELECT object_id FROM sys.tables WHERE name='{this.realTableName}') );";
             
             base.BaseExecution(transaction);
         }

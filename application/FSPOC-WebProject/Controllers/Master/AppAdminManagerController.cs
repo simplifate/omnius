@@ -19,18 +19,15 @@ using RazorEngine;
 using RazorEngine.Templating;
 using System.Configuration;
 using FSS.Omnius.Modules.Mozaic.BootstrapEditor;
+using FSS.Omnius.Utils.Builder;
+using FSS.Utils;
+using FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Controllers.Master
 {
     [PersonaAuthorize(NeedsAdmin = true, Module = "Master")]
     public class AppAdminManagerController : Controller
     {
-        private IDatabaseGenerateService DatabaseGenerateService { get; set; }
-
-        public AppAdminManagerController(IDatabaseGenerateService databaseGenerateService)
-        {
-            DatabaseGenerateService = databaseGenerateService; // Unity dependency injection
-        }
         public ActionResult Index()
         {
             var context = DBEntities.instance;
@@ -85,6 +82,25 @@ namespace FSS.Omnius.Controllers.Master
             _rebuildInAction = rebuilInAction;
         }
 
+        public void SendMessage(object sender, BasicDispatchArgs args)
+        {
+            string data;
+
+            if(args.Data.GetType() != typeof(string))
+            {
+                // If message isn't string encode it into JSON
+                data = Json.Encode(args.Data);
+            }
+            else
+            {
+                // Otherwise, convert it implicitly
+                data = (string)args.Data;
+            }
+
+            // Send it
+            Send(data);
+        }
+
         public override void OnOpen()
         {
             var core = new Modules.CORE.CORE();
@@ -101,6 +117,22 @@ namespace FSS.Omnius.Controllers.Master
 
                 try
                 {
+                    // If building shared tables app
+                    if (_AppId == SharedTables.AppId)
+                    {
+                        // Create instance of db builder
+                        SharedTableBuilder builder = new SharedTableBuilder(core, context, core.Entitron.Application);
+
+                        // Assign dispatcher 
+                        builder.OnDispatch += this.SendMessage;
+
+                        // Build tables
+                        builder.Build();
+
+                        // And skip standard building process.
+                        return;
+                    }
+
                     // Entitron Generate Database
                     if (app.EntitronChangedSinceLastBuild)
                         Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));

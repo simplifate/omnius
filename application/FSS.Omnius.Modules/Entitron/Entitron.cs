@@ -23,7 +23,7 @@ namespace FSS.Omnius.Modules.Entitron
             set
             {
                 if (value != null)
-                    Application = GetStaticTables().Applications.SingleOrDefault(a => a.Name == value);
+                    Application = this.GetAppSchemeByName(value);
             }
         }
         public int AppId
@@ -31,10 +31,20 @@ namespace FSS.Omnius.Modules.Entitron
             get { return Application.Id; }
             set
             {
-                Application = GetStaticTables().Applications.SingleOrDefault(a => a.Id == value);
+                Application = this.GetAppSchemeById(value);
             }
         }
         public IConditionalFilteringService filteringService { get; set; }
+
+        public Application GetAppSchemeById(int id)
+        {
+            return GetStaticTables().Applications.SingleOrDefault(app => app.Id == id);
+        }
+
+        public Application GetAppSchemeByName(string name)
+        {
+            return GetStaticTables().Applications.SingleOrDefault(app => app.Name == name);
+        }
 
         public Entitron(CORE core, string ApplicationName = null)
         {
@@ -64,28 +74,49 @@ namespace FSS.Omnius.Modules.Entitron
             return Application.GetTables();
         }
 
-        public DBTable GetDynamicTable(string tableName)
+        public DBTable GetDynamicTable(string tableName, bool shared = false)
         {
             if (Application == null)
                 throw new ArgumentNullException("Application");
 
-            return Application.GetTable(tableName);
+            if (!shared)
+            {
+                return Application.GetTable(tableName);
+            }
+            else
+            {
+                return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
+            }
         }
 
-        public DBView GetDynamicView(string viewName)
+        public DBView GetDynamicView(string viewName, bool shared = false)
         {
             if (Application == null)
                 throw new ArgumentNullException("Application");
 
-            return Application.GetView(viewName);
+            if (!shared)
+            {
+                return Application.GetView(viewName);
+            }
+            else
+            {
+                return this.GetAppSchemeById(SharedTables.AppId).GetView(viewName);
+            }
         }
 
-        public DBItem GetDynamicItem(string tableName, int modelId)
+        public DBItem GetDynamicItem(string tableName, int modelId, bool shared = false)
         {
             if (string.IsNullOrWhiteSpace(tableName) || modelId < 0)
                 return null;
 
-            return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
+            if (!shared)
+            {
+                return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
+            }
+            else
+            {
+                return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
+            }
         }
 
         public bool ExecSP(string procedureName, Dictionary<string, string> parameters)
@@ -111,7 +142,7 @@ namespace FSS.Omnius.Modules.Entitron
 
         public bool TruncateTable(string tableName)
         {
-            string realTableName = $"Entitron_{Application.Name}_{tableName}";
+            string realTableName = $"Entitron_{(Application.Id == SharedTables.AppId ? SharedTables.Prefix : Application.Name)}_{tableName}";
 
             try {
                 using (var connection = new SqlConnection(connectionString)) {

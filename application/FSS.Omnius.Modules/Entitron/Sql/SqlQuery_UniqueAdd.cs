@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string realTableName = $"Entitron_{application.Name}_{table.tableName}";
+            string realTableName = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{table.tableName}";
 
             //string parAppName = safeAddParam("applicationName", application.Name);
             //string parTableName = safeAddParam("tableName", table.tableName);

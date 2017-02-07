@@ -14,7 +14,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject connection)
         {
 
-            sqlString = $"ALTER VIEW Entitron_{application.Name}_{viewName} AS {sql};";
+            string realName = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{viewName}";
+            sqlString = $"ALTER VIEW {realName} AS {sql};";
 
             base.BaseExecution(connection);
         }

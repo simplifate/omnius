@@ -16,10 +16,15 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected string realTableName;
 
+        public string GetRealname(string tableName)
+        {
+            return $"Entitron_{(this.application.Id == SharedTables.AppId ? SharedTables.Prefix : this.application.Name)}_{tableName}";
+        }
+
         public override void PreExecution()
         {
             if (table != null)
-                realTableName = $"Entitron_{application.Name}_{table.tableName}";
+                realTableName = $"Entitron_{(this.application.Id == SharedTables.AppId ? SharedTables.Prefix : this.application.Name)}_{table.tableName}";
             else if (view != null)
                 realTableName = view.dbViewName;
         }

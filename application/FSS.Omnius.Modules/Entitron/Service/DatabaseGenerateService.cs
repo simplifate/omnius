@@ -7,11 +7,24 @@ using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Table;
 using FSS.Omnius.Modules.Entitron.Entity.CORE;
 using System;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {
     public class DatabaseGenerateService : IDatabaseGenerateService
     {
+        private string TablesPrefix = null;
+
+        public string GetTablesPrefix(Application app)
+        {
+            return this.TablesPrefix != null ? this.TablesPrefix : app.Name;
+        }
+
+        public DatabaseGenerateService(string tablesPrefix = null)
+        {
+            this.TablesPrefix = tablesPrefix;
+        }
+
         public delegate void SendWs(string str);
         /// <summary>
         /// </summary>
@@ -51,7 +64,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
                     message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
                 DBTable entitronTable = e.Application.GetTable(efTable.Name);
-                
+
                 //if table doesn't exist, create new one
                 if (entitronTable == null)
                 {
@@ -209,7 +222,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             //list of views, which are in database, but not in scheme
             List<string> deleteViews = e.Application.GetViewNames()
-                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + e.Application.Name + "_" + x.Name)).ToList();
+                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + this.GetTablesPrefix(e.Application) + "_" + x.Name)).ToList();
 
             //dropping views
             foreach (string viewName in deleteViews)
@@ -253,7 +266,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     DBColumn column = entitronTable.columns.SingleOrDefault(x => x.Name.ToLower() == columnName);
                     if(column.isUnique)
-                        entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{column.Name}");
+                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(e.Application)}_{entitronTable.tableName}_{column.Name}");
 
                     Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(column.Name);
                     if (defaultConstraint.Count!=0)
@@ -324,7 +337,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                     {
-                        entitronTable.DropConstraint($"UN_Entitron_{e.Application.Name}_{entitronTable.tableName}_{entitronColumn.Name}");
+                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(e.Application)}_{entitronTable.tableName}_{entitronColumn.Name}");
                     }
 
                     //set column default value
