@@ -15,7 +15,7 @@
     },
 
     options: {
-        'heading': {
+        'heading': { 
             'headingOptions': {
                 name: 'Heading options',
                 type: 'select',

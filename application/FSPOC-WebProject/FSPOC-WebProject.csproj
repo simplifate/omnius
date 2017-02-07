@@ -311,6 +311,7 @@
     <Content Include="Content\fonts\innogy\Innogy-Regular.svg" />
     <Content Include="Content\images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\scss\BootstrapUserLayout.scss" />
     <Content Include="Content\scss\Cortex.scss" />
     <Content Include="Content\scss\MozaicTemplates\DefaultMozaicTemplate.css">
       <DependentUpon>DefaultMozaicTemplate.scss</DependentUpon>
@@ -502,6 +503,7 @@
     <Content Include="Scripts\Tapestry\Builder\_WorkflowRules.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
+    <Content Include="Scripts\UserScripts\BootstrapUserInit.js" />
     <Content Include="Scripts\UserScripts\Spinner.js" />
     <Content Include="Scripts\UserScripts\UserInit.js" />
     <Content Include="Scripts\BlockViewModel.js" />

@@ -188,6 +188,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<UsersApplications> UsersApplications { get; set; }
 
         // Mozaic
+        public virtual DbSet<Js> Js { get; set; }
         public virtual DbSet<Css> Css { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Template> Templates { get; set; }
@@ -278,6 +279,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany<Block>(e => e.Blocks)
                 .WithOptional(e => e.MozaicPage)
                 .HasForeignKey(e => e.MozaicPageId);
+
+            modelBuilder.Entity<Js>()
+                .HasRequired(e => e.Application);
 
             modelBuilder.Entity<Css>()
                 .HasMany<Page>(e => e.Pages)

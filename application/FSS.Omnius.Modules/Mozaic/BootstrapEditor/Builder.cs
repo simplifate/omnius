@@ -37,7 +37,9 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder sb = new StringBuilder();
 
             sb.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
+            sb.Append(@"<div class=""mozaicBootstrapPage"">");
             sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).OrderBy(c => c.NumOrder).ToList()));
+            sb.Append("</div>");
 
             currentPage.CompiledPartialView = sb.ToString();
             e.SaveChanges();
@@ -402,7 +404,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 List<string> actionsIconsList = new List<string>();
                 JToken jActions = JToken.Parse(actions.Replace('\'', '"'));
                 foreach(JToken a in jActions) {
-                    actionsIconsList.Add($"<i title=\"{(string)a["title"]}\" class=\"{(string)a["icon"]}\" data-action=\"{(string)a["action"]}\" data-idparam=\"{(string)a["idParam"]}\"></i>");
+                    actionsIconsList.Add($"<i title=\"{(string)a["title"]}\" class=\"{(string)a["icon"]}\" data-action=\"{(string)a["action"]}\" data-idparam=\"{(string)a["idParam"]}\" data-confirm=\"{(string)a["confirm"]}\"></i>");
                 }
                 actionsIcons = "<td class=\"actionIcons\">" + string.Join(" ", actionsIconsList) + "</td>";
             }

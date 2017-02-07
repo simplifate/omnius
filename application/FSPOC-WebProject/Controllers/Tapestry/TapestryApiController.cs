@@ -192,12 +192,13 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                                 PositionY = ajaxItem.PositionY,
                                 ActionId = ajaxItem.ActionId,
                                 StateId = ajaxItem.StateId,
-                                PageId = ajaxItem.PageId,
+                                PageId = ajaxItem.IsBootstrap == true ? null : ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
                                 ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray()),
-                                IsBootstrap = ajaxItem.IsBootstrap
+                                IsBootstrap = ajaxItem.IsBootstrap,
+                                BootstrapPageId = ajaxItem.IsBootstrap == true ? ajaxItem.PageId : null
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
@@ -807,6 +808,7 @@ namespace FSPOC_WebProject.Controllers.Tapestry
                     PageId = item.PageId,
                     ComponentName = item.ComponentName,
                     IsBootstrap = item.IsBootstrap,
+                    BootstrapPageId = item.BootstrapPageId,
                     TableName = item.TableName,
                     ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()

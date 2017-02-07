@@ -162,6 +162,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int? PageId { get; set; }
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
+        public int? BootstrapPageId { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }
         public List<string> ColumnFilter { get; set; }

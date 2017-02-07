@@ -90,6 +90,18 @@
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
+                    label: 'Name',
+                    type: 'text',
+                    attr: 'name',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Value',
+                    type: 'text',
+                    attr: 'value',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
                     label: 'Style',
                     type: 'select',
                     options: {

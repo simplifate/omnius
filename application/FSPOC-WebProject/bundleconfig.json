@@ -98,6 +98,7 @@
       "Scripts/UserScripts/logout.js",
       "Scripts/UserScripts/Spinner.js",
       "Scripts/UserScripts/UserInit.js",
+      "Scripts/UserScripts/BootstrapUserInit.js",
       "Scripts/PlatformUtils.js"
     ]
   },

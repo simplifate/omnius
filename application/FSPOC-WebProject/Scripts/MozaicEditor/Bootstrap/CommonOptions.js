@@ -52,7 +52,7 @@
             closeOnEscape: true,
             draggable: false,
             resizable: false,
-            width: '40%',
+            width: '70%',
             title: 'Options',
             dialogClass: 'dialog-options',
             close: function () { $(this).remove(); }

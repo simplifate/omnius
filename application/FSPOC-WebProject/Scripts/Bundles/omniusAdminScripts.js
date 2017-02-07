@@ -424,9 +424,10 @@ function SaveBlock(commitMessage) {
                 PositionY: parseInt(currentItem.css("top")),
                 ActionId: currentItem.attr("actionid"),
                 StateId: currentItem.attr("stateid"),
-                PageId: currentItem.attr("pageId"),
+                PageId: GetIsBootstrap(currentItem) ? null : currentItem.attr("pageId"),
                 ComponentName: currentItem.attr("componentName"),
                 IsBootstrap: GetIsBootstrap(currentItem),
+                BootstrapPageId: GetIsBootstrap(currentItem) ? currentItem.attr("pageId") : null,
                 TableName: currentItem.attr("tableName"),
                 ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter"),
@@ -3619,7 +3620,8 @@ TB.load = {
     },
 
     setRoleWhiteList: function (whitelist) {
-        $('#blockHeaderRolesCount').text(whitelist.length);
+        $('#blockHeaderRolesCount').text(whitelist.length); 
+        RoleWhitelist = whitelist;
     },
 
     loadLibrary: function()
@@ -3930,12 +3932,13 @@ TB.rr = {
         var attrs = {};
         attrs.id = 'resItem' + itemData.Id;
 
-        if (itemData.ActionId != null)      attrs.actionId = itemData.ActionId;
-        if (itemData.StateId != null)       attrs.stateId = itemData.StateId;
-        if (itemData.PageId != null)        attrs.pageId = itemData.PageId;
-        if (itemData.ComponentName != null) attrs.componentName = itemData.ComponentName;
-        if (itemData.ColumnName != null)    attrs.columnName = itemData.ColumnName;
-        if (itemData.IsBootstrap != null)   attrs.isBootstrap = itemData.IsBootstrap;
+        if (itemData.ActionId != null)          attrs.actionId = itemData.ActionId;
+        if (itemData.StateId != null)           attrs.stateId = itemData.StateId;
+        if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
+        if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
+        if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
+        if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
 
         item
             .attr(attrs)
@@ -10094,7 +10097,7 @@ MBE.options = {
             closeOnEscape: true,
             draggable: false,
             resizable: false,
-            width: '40%',
+            width: '70%',
             title: 'Options',
             dialogClass: 'dialog-options',
             close: function () { $(this).remove(); }
@@ -12446,7 +12449,7 @@ MBE.types.text = {
     },
 
     options: {
-        'heading': {
+        'heading': { 
             'headingOptions': {
                 name: 'Heading options',
                 type: 'select',
@@ -12823,6 +12826,18 @@ MBE.types.controls = {
                         '_top': 'Top'
                     },
                     attr: 'target',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Name',
+                    type: 'text',
+                    attr: 'name',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Value',
+                    type: 'text',
+                    attr: 'value',
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
                 }, {
@@ -14720,8 +14735,10 @@ MBE.types.ui = {
         $(document)
             .on('click', 'span[data-action="dt-add-action"]', self.dataTableAddAction)
             .on('click', 'span[data-action="dt-remove"]', self.dataTableRemoveAction)
+            .on('click', 'span[data-action="dt-advanced"]', self.dataTableAdvancedAction)
             .on('click', '[data-action="dt-select-icon"]', self.dataTableOpenIconDialog)
-            .on('change', 'input[name=action_id], input[name=action_title]', self.dataTableBuildActions)
+            .on('change', 'input[name=action_id]', self.dataTableFillIdParam)
+            .on('change', 'input[name=action_id], input[name=action_title], input[name=action_idParam], input[name=action_confirm]', self.dataTableBuildActions)
         ;
     },
 
@@ -14895,16 +14912,23 @@ MBE.types.ui = {
 
         var iconClass = action ? action.icon : 'fa fa-pencil';
         var actionId = action ? action.action : '';
-        var actionIdParam = action ? action.idParam : 'modelId';
+        var actionIdParam = action && action.idParam ? action.idParam : 'modelId';
         var actionTitle = action ? action.title : '';
+        var actionConfirm = action && action.confirm ? action.confirm : '';
+
+        if (action && action.action == 'delete') {
+            actionIdParam = 'deleteId';
+        }
 
         var row = $('<tr />');
         var dd = $('<button type="button" class="btn btn-default" style="padding: 3px 10px" data-action="dt-select-icon"><span class="' + iconClass + '"></span> <span class="caret"></span></button>');
         var id = $('<input type="text" class="form-control input-sm" value="' + actionId + '" name="action_id" />');
         var idParam = $('<input type="text" class="form-control input-sm" value="' + actionIdParam + '" name="action_idParam" />');
         var title = $('<input type="text" class="form-control input-sm" value="' + actionTitle + '" name="action_title" />');
-        var move = $('<span class="fa fa-arrows-v fa-fw handle" style="margin-right: 5px; margin-top: 9px; cursor: pointer"></span>');
-        var del = $('<span class="fa fa-times fa-fw" data-action="dt-remove" style="margin-top: 9px; cursor: pointer"></span>');
+        var confirm = $('<input type="hidden" value="'+actionConfirm+'" name="action_confirm" />');
+        var move = $('<span class="fa fa-arrows-v fa-fw handle" title="move..." style="margin-right: 5px; margin-top: 9px; cursor: pointer"></span>');
+        var conf = $('<span class="fa fa-gear fa-fw" title="advanced..." data-action="dt-advanced" style="margin-right: 5px; margin-top: 9px; cursor: pointer"></span>"');
+        var del = $('<span class="fa fa-times fa-fw" title="remove..." data-action="dt-remove" style="margin-top: 9px; cursor: pointer"></span>');
 
         var cell1 = $('<td />');
         cell1.append(dd).appendTo(row);
@@ -14913,10 +14937,13 @@ MBE.types.ui = {
         cell2.append(id).appendTo(row);
 
         var cell3 = $('<td />');
-        cell3.append(title).appendTo(row);
+        cell3.append(idParam).appendTo(row);
 
         var cell4 = $('<td />');
-        cell4.append(move).append(del).appendTo(row);
+        cell4.append(title).append(confirm).appendTo(row);
+
+        var cell5 = $('<td />');
+        cell5.append(move).append(conf).append(del).appendTo(row);
 
         row.appendTo(body);
 
@@ -14926,6 +14953,39 @@ MBE.types.ui = {
     dataTableRemoveAction: function() {
         $(this).parents('tr').eq(0).remove();
         MBE.types.ui.dataTableBuildActions.apply(MBE.options.target, [false]);
+    },
+
+    dataTableAdvancedAction: function() {
+        var targetRow = $(this).parents('tr').eq(0);
+        var d = $('<div />');
+        var f = $('<fieldset />');
+        var group = $('<div class="option-group form-group"></div>');
+
+        f.append('<legend>Advanced action settings</legend>');
+
+        group.append('<label class="control-label col-xs-2">Confirm message</label>');
+        group.append('<div class="col-xs-10"><input type="text" value="" class="form-control input-sm"></div>');
+
+        group.find('input')
+            .val(targetRow.find('input[name="action_confirm"]').val())
+            .change(function () {
+                targetRow.find('input[name="action_confirm"]').val(this.value).change();
+            });
+
+        f.append(group).appendTo(d);
+
+        d.dialog({
+            appendTo: 'body',
+            modal: true,
+            closeOnEscape: true,
+            draggable: false,
+            resizable: false,
+            width: '40%',
+            maxHeight: '60%',
+            title: 'Properties...',
+            dialogClass: 'dialog-options',
+            close: function () { $(this).remove(); }
+        });
     },
 
     dataTableOpenIconDialog: function() {
@@ -15040,6 +15100,16 @@ MBE.types.ui = {
         });
     },
 
+    dataTableFillIdParam: function() {
+        var fieldIdParam = $(this).parent().next().find('input');
+        if (!fieldIdParam.val().length) {
+            fieldIdParam.val(this.value == 'delete' ? 'deleteId' : 'modelId');
+        }
+        else if (this.value == 'delete' && fieldIdParam.val() != 'deleteId') {
+            fieldIdParam.val('deleteId');
+        }
+    },
+
     dataTableBuildActions: function(rebuild) {
         var target = $(this);
 
@@ -15054,10 +15124,11 @@ MBE.types.ui = {
                 var icon = $('td', this).eq(0).find('button > span').eq(0)[0].className;
                 var id = $('td', this).eq(1).find('input').val();
                 var idParam = $('td', this).eq(2).find('input').val();
-                var title = $('td', this).eq(3).find('input').val();
+                var title = $('td', this).eq(3).find('input[type="text"]').val();
+                var confirm = $('td', this).eq(3).find('input[type="hidden"]').val();
 
                 if (icon && id && idParam && title) {
-                    validActions.push({ 'icon': icon, 'action': id, 'idParam': idParam, 'title': title });
+                    validActions.push({ 'icon': icon, 'action': id, 'idParam': idParam, 'title': title, 'confirm': confirm });
                 }
             });
         }
@@ -15077,7 +15148,7 @@ MBE.types.ui = {
             $('tbody > tr > td.actionIcons', target).html('');
             for (var i = 0; i < validActions.length; i++) {
                 $('tbody > tr > td.actionIcons', target).each(function () {
-                    $(this).append('<i class="' + validActions[i].icon + '" data-action="' + validActions[i].action + '" data-idparam="' + validActions[i].idParam + '" title="' + validActions[i].title + '"></i>');
+                    $(this).append('<i class="' + validActions[i].icon + '" data-action="' + validActions[i].action + '" data-idparam="' + validActions[i].idParam + '" data-confirm="' + validActions[i].confirm + '" title="' + validActions[i].title + '"></i>');
                 });
             }
         }

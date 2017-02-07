@@ -126,7 +126,8 @@
     },
 
     setRoleWhiteList: function (whitelist) {
-        $('#blockHeaderRolesCount').text(whitelist.length);
+        $('#blockHeaderRolesCount').text(whitelist.length); 
+        RoleWhitelist = whitelist;
     },
 
     loadLibrary: function()

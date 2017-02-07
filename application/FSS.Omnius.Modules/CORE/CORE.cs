@@ -14,6 +14,7 @@ namespace FSS.Omnius.Modules.CORE
         private Dictionary<string, IModule> _modules = new Dictionary<string, IModule>();
         
         public User User { get; set; }
+        public Dictionary<string, object> CrossBlockRegistry { get; set; }
 
         public CORE()
         {            
