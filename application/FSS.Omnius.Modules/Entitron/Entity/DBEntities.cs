@@ -281,7 +281,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.MozaicPageId);
 
             modelBuilder.Entity<Js>()
-                .HasRequired(e => e.Application);
+                .HasRequired(e => e.Application)
+                .WithMany(e => e.Js)
+                .HasForeignKey(e => e.ApplicationId);
+
+            modelBuilder.Entity<Js>()
+                .HasOptional(e => e.Page)
+                .WithMany(e => e.Js)
+                .HasForeignKey(e => e.PageId);
 
             modelBuilder.Entity<Css>()
                 .HasMany<Page>(e => e.Pages)

@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public int Id { get; set; }
 
         public int ApplicationId { get; set; }
+        public int? PageId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -21,5 +22,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public string Value { get; set; }
 
         public virtual Application Application { get; set; } 
+        public virtual Page Page { get; set; }
     }
 }

@@ -215,6 +215,7 @@
     <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapAjaxPageHeader.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapComponent.cs" />
     <Compile Include="Entitron\Entity\Mozaic\Bootstrap\MozaicBootstrapPage.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\Js.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicCssTemplate.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
@@ -1053,6 +1054,10 @@
     <Compile Include="Migrations\201702060918128_AppSchemeConnectionString.Designer.cs">
       <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702070835205_JsEditor.cs" />
+    <Compile Include="Migrations\201702070835205_JsEditor.Designer.cs">
+      <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1727,6 +1732,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702060918128_AppSchemeConnectionString.resx">
       <DependentUpon>201702060918128_AppSchemeConnectionString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702070835205_JsEditor.resx">
+      <DependentUpon>201702070835205_JsEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -251,6 +251,7 @@
     <Compile Include="Controllers\Master\AppAdminManagerController.cs" />
     <Compile Include="Controllers\Master\AppManagerApiController.cs" />
     <Compile Include="Controllers\Mozaic\BootstrapController.cs" />
+    <Compile Include="Controllers\Mozaic\JsController.cs" />
     <Compile Include="Controllers\Mozaic\CssController.cs" />
     <Compile Include="Controllers\Mozaic\EditorController.cs" />
     <Compile Include="Controllers\Mozaic\MozaicBootstrapApiController.cs" />
@@ -1819,11 +1820,16 @@
     <Content Include="Views\App\83\Page\1053.cshtml" />
     <Content Include="Views\App\83\Page\1054.cshtml" />
     <Content Include="Views\App\83\Page\1055.cshtml" />
+    <Content Include="Views\Mozaic\Js\BaseIndex.cshtml" />
+    <Content Include="Views\Mozaic\Js\Detail.cshtml" />
+    <Content Include="Views\Mozaic\Js\Index.cshtml" />
+    <Content Include="Views\Mozaic\Js\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\userCSS\" />
     <Folder Include="Scripts\CORE\" />
+    <Folder Include="Scripts\UserScripts\Application\" />
     <Folder Include="Views\App\25\Page\Bootstrap\" />
     <Folder Include="Views\App\2\Page\Bootstrap\" />
     <Folder Include="Views\Persona\Users\" />

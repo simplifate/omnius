@@ -100,5 +100,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         // mozaic
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual ICollection<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
+        public virtual ICollection<Js> Js { get; set; }
     }
 }
