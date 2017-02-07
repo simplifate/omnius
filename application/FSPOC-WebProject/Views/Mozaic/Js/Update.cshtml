@@ -1,22 +1,35 @@
 ﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Js
 
-@using (Ajax.BeginForm("Update", "Js", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "form form-horizontal" }))
+@using (Ajax.BeginRouteForm("Mozaic", new { Controller = "Js", Action = "Update" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "form form-horizontal" }))
 {
     <div class="form-group">
-        <label for="EditCssName" class="control-label col-sm-2">Název:</label>
+        <label for="JsAppName" class="control-label col-sm-2">Aplikace:</label>
         <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.Name, new { @id = "EditCssName", @onkeyup = "ValidateName()", @maxlength = 50, @class = "form-control" })
+            @Html.DropDownListFor(m => m.ApplicationId, (List<SelectListItem>)ViewData["appList"], "-- vyberte --", new { @id = "JsAppName", @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="JsPageName" class="control-label col-sm-2">Stránka:</label>
+        <div class="col-sm-10">
+            @Html.DropDownListFor(m => m.MozaicBootstrapPageId, (List<SelectListItem>)ViewData["pageList"], "-- nevybráno --", new { @id = "JsPageName", @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="JsName" class="control-label col-sm-2">Název:</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Name, new { @id = "JsName", @maxlength = 50, @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <label for="Value" class="control-label col-sm-2">SCSS obsah:</label>
+        <label for="JsValue" class="control-label col-sm-2">Js kód:</label>
         <div class="col-sm-10">
-            @Html.TextAreaFor(x => x.Value, new { @rows = "15", @style = "resize:vertical", @name = "EditCssValue", @resize = "vertical", @class = "form-control" })
+            @Html.TextAreaFor(m => m.Value, new { @rows = "30", @style = "resize:vertical", @id = "JsValue", @resize = "vertical", @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <button type="submit" id="saveButton" class="btn btn-primary">Uložit</button>
-        <button id="removeChild" class="btn btn-danger">Odebrat</button>
+        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Uložit</button>
         @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
     </div>
     
@@ -26,63 +39,60 @@
 
     <script src="~/Scripts/cm/lib/codemirror.js"></script>
 
-    <script src="~/Scripts/cm/mode/css/css.js"></script>
+    <script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
 
     <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
-    <script src="~/Scripts/cm/addon/hint/css-hint.js"></script>
+    <script src="~/Scripts/cm/addon/hint/javascript-hint.js"></script>
     
     <script src="~/Scripts/cm/addon/edit/closebrackets.js"></script>
     <script src="~/Scripts/cm/addon/edit/matchbrackets.js"></script>
     
     <script>
-        setTimeout(function() {
-            var editor = CodeMirror.fromTextArea(document.getElementById("Value"), {
-                lineNumbers: true,
-                lineWrapping: true,
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                mode: "text/x-scss",
-                extraKeys: {
-                    "Ctrl-Space": "autocomplete"
+        var JsEditor = {
+            
+            editor: null,
+
+            init: function () {
+                setTimeout(function () {
+                    JsEditor.editor = CodeMirror.fromTextArea(document.getElementById("JsValue"), {
+                        lineNumbers: true,
+                        lineWrapping: false,
+                        matchBrackets: true,
+                        autoCloseBrackets: true,
+                        mode: "text/javascript",
+                        extraKeys: {
+                            "Ctrl-Space": "autocomplete"
+                        }
+                    });
+                }, 500);
+
+                $(document).on('change', '#JsAppName', JsEditor.changeApp);
+            },
+
+            changeApp: function()
+            {
+                $('#JsPageName option:gt(0)').remove();
+                if (this.value.length) {
+                    $.ajax('/Mozaic/Js/GetPageList', {
+                        type: 'post',
+                        dataType: 'json',
+                        data: { appId: this.value },
+                        success: JsEditor.setPageList
+                    });
                 }
-            });
-        }, 500);
+            },
 
-        function ValidateName()
-        {
-            var name = document.getElementById("EditCssName").value;
-
-            if (name == "" || name == null)
+            setPageList: function(data)
             {
-                SetNameBadStyle();
-                SetSaveBadStyle();
+                for (i in data) {
+                    $('#JsPageName').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                }
             }
-            else
-            {
-                SetNameGoodStyle();
-                SetSaveGoodStyle();
-            }
-        }
 
-        function SetNameBadStyle() {
-            var element = document.getElementById("EditCssName");
-            element.style.backgroundColor = "Salmon";
-        }
+        };
 
-        function SetNameGoodStyle() {
-            var element = document.getElementById("EditCssName");
-            element.style.backgroundColor = "white";
-        }
+        $(JsEditor.init);
 
-        function SetSaveBadStyle() {
-            var element = document.getElementById("saveButton");
-            element.disabled = true;
-        }
-
-        function SetSaveGoodStyle() {
-            var element = document.getElementById("saveButton");
-            element.disabled = false;
-        }
     </script>
 }
 

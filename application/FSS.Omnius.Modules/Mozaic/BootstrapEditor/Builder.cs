@@ -41,6 +41,14 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).OrderBy(c => c.NumOrder).ToList()));
             sb.Append("</div>");
 
+            if(currentPage.ParentApp.Js.Count() > 0) {
+                foreach(Js js in currentPage.ParentApp.Js) {
+                    if(js.MozaicBootstrapPageId == null || js.MozaicBootstrapPageId == currentPage.Id) {
+                        sb.Append($@"<script type=""text/javascript"" src=""/Scripts/UserScripts/Application/{currentPage.ParentApp.Name}/{js.Name}.js""></script>");
+                    }
+                }
+            }
+
             currentPage.CompiledPartialView = sb.ToString();
             e.SaveChanges();
         }

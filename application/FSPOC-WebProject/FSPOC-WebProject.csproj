@@ -502,6 +502,7 @@
     <Content Include="Scripts\Tapestry\Builder\_ResourceRules.js" />
     <Content Include="Scripts\Tapestry\Builder\_Screen.js" />
     <Content Include="Scripts\Tapestry\Builder\_WorkflowRules.js" />
+    <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\BootstrapUserInit.js" />
@@ -1829,7 +1830,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\userCSS\" />
     <Folder Include="Scripts\CORE\" />
-    <Folder Include="Scripts\UserScripts\Application\" />
     <Folder Include="Views\App\25\Page\Bootstrap\" />
     <Folder Include="Views\App\2\Page\Bootstrap\" />
     <Folder Include="Views\Persona\Users\" />
