@@ -31,18 +31,7 @@ $('body').on('click', '.runAjax', function (e) {
 
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
-    if ($("#currentBlockName").val() == "VyjadreniKAuditu" || "VracenoKPrepracovaniNadrizenym") {
-        $("[name=radio_agree]").on("change", function () {
-            if ($(this).val() === "true") {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", false);
-            } else {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", true);
-            }
-        });
-    }
-    else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+    if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
         var userSelectDropdown = $("#uic_user_select_dropdown");

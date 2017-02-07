@@ -31,13 +31,13 @@ $('body').on('click', '.runAjax', function (e) {
 
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
-    if ($("#currentBlockName").val() == "VyjadreniKAuditu") {
+    if ($("#currentBlockName").val() == "VyjadreniKAuditu" || "VracenoKPrepracovaniNadrizenym") {
         $("[name=radio_agree]").on("change", function () {
             if ($(this).val() === "true") {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("disabled", true);
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
                 $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", false);
             } else {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("disabled", false);
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                 $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", true);
             }
         });
@@ -1238,7 +1238,7 @@ var BootstrapUserInit = {
                     filter: table.data('dtfilter') == '1' || table.data('dtcolumnfilter') == '1',
                     ordering: table.data('dtordering') == '1',
                     order: table.data('dtorder') ? eval(table.data('dtorder')) : [[0, 'desc']],
-                    language: { 
+                    language: {  
                         sEmptyTable: 'Tabulka neobsahuje žádná data',
                         sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',
                         sInfoEmpty: 'Zobrazuji 0 až 0 z 0 záznamů',
