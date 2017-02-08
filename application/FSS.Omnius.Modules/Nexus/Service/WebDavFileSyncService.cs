@@ -42,6 +42,14 @@ namespace FSS.Omnius.Modules.Nexus.Service
             }
         }
 
+        public void DeleteFile(FileMetadata file)
+        {
+            var context = DBEntities.instance;
+            HttpWebRequest httpWebRequest = this.CreateWebRequest(file, "DELETE");
+            context.FileMetadataRecords.Remove(file);
+            context.SaveChanges();
+            httpWebRequest.GetResponse();
+        }
 
         private void ProcessResponse(HttpWebResponse response, ref FileMetadata currentMetadataItem)
         {

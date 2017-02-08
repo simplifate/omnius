@@ -31,16 +31,27 @@ $('body').on('click', '.runAjax', function (e) {
 
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
-    if ($("#currentBlockName").val() == "VyjadreniKAuditu" || "VracenoKPrepracovaniNadrizenym") {
-        $("[name=radio_agree]").on("change", function () {
-            if ($(this).val() === "true") {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", false);
-            } else {
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
-                $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", true);
-            }
-        });
+    if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
+        if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym")
+        {
+            $("[name=radio_agree]").on("change", function () {
+                if ($(this).val() === "true") {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", false);
+                } else {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("required", true);
+                }
+            });
+        }
+        
+        setTimeout(function () {
+            $('input.input-with-datepicker').datetimepicker('setOptions', {
+                format: 'd.m.Y',
+                formatDate: 'Y-m-d',
+                allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
+            });
+        }, 100);
     }
     else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("#uic_begin_dtpicker").val("01.01.2017");
