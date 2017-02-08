@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "Input", "?AddMinutes", "?AddDays" };
+                return new string[] { "Input", "?AddMinutes", "?AddDays", "?SetToLastDayOfMonth" };
             }
         }
 
@@ -52,12 +52,25 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DateTime dateTime = (DateTime)vars["Input"];
+            DateTime dateTime;
+
+            try {
+                dateTime = (DateTime)vars["Input"];
+            }
+            catch(Exception e) {
+                dateTime = DateTime.Parse((string)vars["Input"]);
+            }
+            
             if (vars.ContainsKey("AddMinutes"))
                 dateTime = dateTime.AddMinutes((int)vars["AddMinutes"]);
 
             if (vars.ContainsKey("AddDays"))
                 dateTime = dateTime.AddDays((int)vars["AddDays"]);
+
+            if(vars.ContainsKey("SetToLastDayOfMonth") && (bool)vars["SetToLastDayOfMonth"] == true) {
+                DateTime newDate = new DateTime(dateTime.Year, dateTime.Month, DateTime.DaysInMonth(dateTime.Year, dateTime.Month));
+                dateTime = newDate;
+            }
 
             // TODO: Other modifications: add hours, days, etc. + add timespan
 
