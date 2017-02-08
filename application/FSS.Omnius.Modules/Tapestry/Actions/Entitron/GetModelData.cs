@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ColumnId" };
+                return new string[] { "ColumnId", "?SearchInShared" };
             }
         }
 
@@ -51,7 +51,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            DBItem model = (vars["__CORE__"] as CORE.CORE).Entitron.GetDynamicItem((string)vars["__TableName__"], (int)vars["__ModelId__"]);
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            DBItem model = (vars["__CORE__"] as CORE.CORE).Entitron.GetDynamicItem((string)vars["__TableName__"], (int)vars["__ModelId__"], searchInShared);
             if (vars.ContainsKey("ColumnId"))
                 outputVars["Data"] = model[(int)vars["ColumnId"]];
             else

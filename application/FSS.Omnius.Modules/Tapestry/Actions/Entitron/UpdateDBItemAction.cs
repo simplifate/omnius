@@ -34,7 +34,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "?TableName", "?Id" };
+                return new string[] { "?TableName", "?Id", "?SearchInShared" };
             }
         }
 
@@ -60,13 +60,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             Modules.Entitron.Entitron ent = core.Entitron;
             DBEntities e = new DBEntities();
 
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]
                 : (string)vars["__TableName__"];
             int itemId = vars.ContainsKey("Id")
                 ? (int)vars["Id"]
                 : (int)vars["__ModelId__"];
-            DBTable table = ent.GetDynamicTable(tableName);
+            DBTable table = ent.GetDynamicTable(tableName, searchInShared);
             if(table == null)
                 throw new Exception($"Požadovaná tabulka nebyla nalezena (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 

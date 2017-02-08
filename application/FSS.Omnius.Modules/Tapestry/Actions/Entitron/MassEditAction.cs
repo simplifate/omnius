@@ -35,7 +35,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData", "?ValueType" };
+                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData", "?ValueType", "?SearchInShared" };
             }
         }
 
@@ -60,7 +60,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             Modules.Entitron.Entitron ent = core.Entitron;
 
-            DBTable table = ent.GetDynamicTable((string)vars["TableName"]);
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            DBTable table = ent.GetDynamicTable((string)vars["TableName"], searchInShared);
             string targetColumnName = (string)vars["ColumnName"];
             object targetValue = 0;
             if (vars.ContainsKey("ValueType"))

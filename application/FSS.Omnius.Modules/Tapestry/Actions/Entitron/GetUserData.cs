@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[0];
+                return new string[] { "?SearchInShared" };
             }
         }
 
@@ -53,11 +53,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
             if (core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
             var user = core.User;
 
-            DBItem result = core.Entitron.GetDynamicTable("Users").Select()
+            DBItem result = core.Entitron.GetDynamicTable("Users", searchInShared).Select()
                                         .where(c => c.column("ad_email").Equal(user.Email)).FirstOrDefault();
 
             result.createProperty(1010, "RweId", result["id"]);

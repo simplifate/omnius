@@ -26,7 +26,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ViewName", "ColumnName", "Value", "?ColumnName2", "?Value2" };
+                return new string[] { "ViewName", "ColumnName", "Value", "?ColumnName2", "?Value2", "?SearchInShared" };
             }
         }
 
@@ -53,7 +53,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
 
-            var view = core.Entitron.GetDynamicView((string)vars["ViewName"]);
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            var view = core.Entitron.GetDynamicView((string)vars["ViewName"], searchInShared);
 
             if (vars.ContainsKey("ColumnName") && !(vars["Value"] is string) && vars["Value"] is IEnumerable && ((List<object>)vars["Value"]).Count == 0)
             {

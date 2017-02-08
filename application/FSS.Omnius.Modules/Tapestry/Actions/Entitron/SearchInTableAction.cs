@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "ColumnName", "Query", "?SearchMode" };
+                return new string[] { "TableName", "ColumnName", "Query", "?SearchMode", "?SearchInShared" };
             }
         }
 
@@ -55,6 +55,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
             if (core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
             string query = "";
@@ -77,7 +80,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else
                 query = (string)vars["Query"] + "%";
 
-            outputVars["Data"] = core.Entitron.GetDynamicTable((string)vars["TableName"]).Select()
+            outputVars["Data"] = core.Entitron.GetDynamicTable((string)vars["TableName"], searchInShared).Select()
                 .where(c => c.column((string)vars["ColumnName"]).LikeCaseInsensitive(query)).ToList();
         }
     }
