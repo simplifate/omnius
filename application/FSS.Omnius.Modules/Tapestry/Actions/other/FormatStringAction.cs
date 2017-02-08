@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Format" };
+                return new string[] { "Input", "?var0", "?var1", "?var2", "?var3", "?var4", "?var5", "?var6", "?var7", "?var8", "?var9" };
             }
         }
 
@@ -53,7 +53,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            outputVars["Result"] = "[not implemented]";
+            List<string> replace = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                string key = "var" + i.ToString();
+                if (vars.ContainsKey(key))
+                {
+                    replace.Add(vars[key].ToString());
+                }
+            }
+
+            outputVars["Result"] = string.Format((string)vars["Input"], replace.ToArray());
         }
     }
 }
