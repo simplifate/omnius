@@ -7,6 +7,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
     {
         void DownloadFile(FileMetadata file);
         void UploadFile(FileMetadata file);
+        void DeleteFile(FileMetadata file);
     }
 
     public delegate void FileSyncServiceDownloadedEventHandler(object sender, FileSyncServiceDownloadedEventArgs args);    

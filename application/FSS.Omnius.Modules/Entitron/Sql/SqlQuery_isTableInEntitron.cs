@@ -16,7 +16,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (string.IsNullOrEmpty(tableName))
                 throw new ArgumentNullException("tableName");
 
-            sqlString = $"SELECT Distinct TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Entitron_{application.Name}_{tableName}'";
+            string realName = $"Entitron_{(this.application.Id == SharedTables.AppId ? SharedTables.Prefix : this.application.Name)}_{tableName}";
+
+
+            sqlString = $"SELECT Distinct TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{realName}'";
 
             return base.BaseExecutionWithRead(connection);
         }

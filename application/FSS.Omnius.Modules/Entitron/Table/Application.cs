@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
                     Application = this
                 }).ToList();
         }
-        public DBTable GetTable(string tableName)
+        public DBTable GetTable(string tableName, string prefix = null)
         {
             if (string.IsNullOrWhiteSpace(tableName))
                 throw new ArgumentNullException("tableName");

@@ -12,7 +12,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public string columnName { get; set; }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parRealTableName = safeAddParam("realTableName", $"Entitron_{application.Name}_{table.tableName}");
+            string realTableName = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{table.tableName}";
+            string parRealTableName = safeAddParam("realTableName", $"{realTableName}");
             string parColumnName = safeAddParam("column", columnName);
 
             sqlString =

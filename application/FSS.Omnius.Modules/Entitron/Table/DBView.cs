@@ -58,7 +58,10 @@ namespace FSS.Omnius.Modules.Entitron.Table
             foreach (DBItem i in query.ExecuteWithRead())
             {
                 string name = Convert.ToString(i["name"]);
-                if (name == "Entitron_" + app.Name + "_" + viewName)
+
+                string realName = $"Entitron_{(app.Id == SharedTables.AppId ? SharedTables.Prefix : app.Name)}_{viewName}";
+
+                if (name == realName)
                     return true;
             }
             return false;

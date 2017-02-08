@@ -17,6 +17,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
+            string realTable2Name = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{table2.tableName}";
+
             string update = (onUpdate == "cascade")
                 ? " ON UPDATE CASCADE"
                 : (onUpdate == "null")
@@ -29,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     : (onDelete == "default") ?" ON DELETE SET DEFAULT" : "";
             
             sqlString =
-                $"ALTER TABLE [{realTableName}] ADD CONSTRAINT FK_{foreignName} FOREIGN KEY ({foreignKey}) REFERENCES [Entitron_{application.Name}_{table2.tableName}] ({primaryKey}) " +
+                $"ALTER TABLE [{realTableName}] ADD CONSTRAINT FK_{foreignName} FOREIGN KEY ({foreignKey}) REFERENCES [{realTable2Name}) " +
                 $" {delete} {update} ;";
             
             base.BaseExecution(transaction);

@@ -13,8 +13,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
+            string realName = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{viewName}";
 
-            sqlString = $"SELECT name FROM sys.views WHERE name = 'Entitron_{application.Name}_{viewName}' ;";
+            sqlString = $"SELECT name FROM sys.views WHERE name = '{realName}' ;";
 
             return base.BaseExecutionWithRead(connection);
         }
