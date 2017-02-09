@@ -41,8 +41,8 @@ $(function () {
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
                 } else {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
-                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
-                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
+                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
+                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
                 }
             });
         }
