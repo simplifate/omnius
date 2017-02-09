@@ -356,6 +356,7 @@
     <Compile Include="Entitron\Table\DBItem.cs" />
     <Compile Include="Entitron\Table\DBTable.cs" />
     <Compile Include="Hermes\HermesUtils.cs" />
+    <Compile Include="Hermes\IncomingEmailListener.cs" />
     <Compile Include="Hermes\Mailer.cs" />
     <Compile Include="Migrations\201511301834451_init.cs" />
     <Compile Include="Migrations\201511301834451_init.Designer.cs">
@@ -1073,6 +1074,10 @@
     <Compile Include="Migrations\201702091237139_IncomingEmail.Designer.cs">
       <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702091354293_IncomingEmail-UseSLL.cs" />
+    <Compile Include="Migrations\201702091354293_IncomingEmail-UseSLL.Designer.cs">
+      <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1757,6 +1762,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702091237139_IncomingEmail.resx">
       <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702091354293_IncomingEmail-UseSLL.resx">
+      <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

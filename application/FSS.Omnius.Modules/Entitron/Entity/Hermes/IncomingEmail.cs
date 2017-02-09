@@ -25,6 +25,9 @@
         [Display(Name = "Port")]
         public int? ImapPort { get; set; }
 
+        [Display(Name = "Použít SSL")]
+        public bool ImapUseSSL { get; set; }
+
         [Required]
         [Display(Name = "Uživatelské jméno (e-mail)")]
         public string UserName { get; set; }

@@ -51,7 +51,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 registry = (Dictionary<string, object>)vars["CrossBlockRegistry"];
             }*/
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            core.CrossBlockRegistry.Add((string)vars["Key"], vars["Value"]);
+
+            if (core.CrossBlockRegistry.ContainsKey((string)vars["Key"])) {
+                core.CrossBlockRegistry[(string)vars["Key"]] = vars["Value"];
+            }
+            else {
+                core.CrossBlockRegistry.Add((string)vars["Key"], vars["Value"]);
+            }
             
             outputVars["Result"] = core.CrossBlockRegistry;
         }
