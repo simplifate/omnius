@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "TableName", "?SearchInShared" };
             }
         }
 
@@ -52,7 +52,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"]);
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            DBTable table = core.Entitron.GetDynamicTable(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"], searchInShared);
 
             outputVars["columnNames"] = table.columns.Select(c => c.Name);
             outputVars["Data"] = table.Select().ToList();

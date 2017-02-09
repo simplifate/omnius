@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "Id" };
+                return new string[] { "TableName", "Id", "?SearchInShared" };
             }
         }
 
@@ -58,7 +58,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if(core.Entitron.Application == null)
                 core.Entitron.AppName = "EvidencePeriodik";
             int targetId = vars["Id"] is int ? (int)vars["Id"] : int.Parse((string)vars["Id"]);
-            outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], targetId);
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            outputVars["Data"] = core.Entitron.GetDynamicItem((string)vars["TableName"], targetId, searchInShared);
             if(outputVars["Data"] == null)
                 throw new Exception($"Položka nebyla nalezena (Tabulka: {vars["TableName"]}, Id: {vars["Id"]}, Akce: {Name} ({Id}))");
         }

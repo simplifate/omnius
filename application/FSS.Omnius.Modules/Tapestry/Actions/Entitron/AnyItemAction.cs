@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperation[index]" };
+                return new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperation[index]", "?SearchInShared" };
             }
         }
 
@@ -55,7 +55,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"]);
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            DBTable table = core.Entitron.GetDynamicTable((string)vars["TableName"], searchInShared);
 
             //
             var select = table.Select();

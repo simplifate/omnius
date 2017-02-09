@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "TableName", "ColumnName" };
+                return new string[] { "TableName", "ColumnName", "?SearchInShared" };
             }
         }
 
@@ -53,10 +53,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
             string tableName = (string)vars["TableName"];
             string columnName = (string)vars["ColumnName"];
 
-            var table = core.Entitron.GetDynamicTable(tableName);
+            var table = core.Entitron.GetDynamicTable(tableName, searchInShared);
             var results = table.Select().ToList();
             int prevoiusId = results.Count > 0 ? results.Select(c => (int)c[columnName]).Max() : 0;
             outputVars["Result"] = prevoiusId + 1;

@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "InputData", "KeyMapping" };
+                return new string[] { "TableName", "InputData", "KeyMapping", "?SearchInShared" };
             }
         }
 
@@ -69,7 +69,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
             }
 
-            var table = core.Entitron.GetDynamicTable(tableName);
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            var table = core.Entitron.GetDynamicTable(tableName, searchInShared);
             DateTime timestamp = DateTime.Now;
             foreach (var inputRow in inputData)
             {

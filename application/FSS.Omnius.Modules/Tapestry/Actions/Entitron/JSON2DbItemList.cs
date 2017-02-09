@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "BaseName", "Data", "?ItemName" };
+                return new string[] { "TableName", "BaseName", "Data", "?ItemName", "?SearchInShared" };
             }
         }
 
@@ -58,7 +58,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
-            if(!vars.ContainsKey("TableName")) {
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            if (!vars.ContainsKey("TableName")) {
                 throw new Exception("Tapestry action JSON 2 DBItemList: TableName is required");
             }
             if(!vars.ContainsKey("BaseName")) {
@@ -93,7 +95,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JToken data = JToken.Parse(jsonText);
             ****************************************************************************************/
 
-            var table = core.Entitron.GetDynamicTable(tableName);
+            var table = core.Entitron.GetDynamicTable(tableName, searchInShared);
 
             Dictionary<string, DBColumn> columnExists = new Dictionary<string, DBColumn>();
             Dictionary<string, DataType> columnType = new Dictionary<string, DataType>();

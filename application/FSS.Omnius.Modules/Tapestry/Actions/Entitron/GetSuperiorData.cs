@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "?Pernr" };
+                return new string[] { "?Pernr", "?SearchInShared" };
             }
         }
 
@@ -55,7 +55,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var tableUsers = core.Entitron.GetDynamicTable("Users");
+
+            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+            var tableUsers = core.Entitron.GetDynamicTable("Users", searchInShared);
             DBItem epkUser = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).FirstOrDefault();
             int userPernr;
             if(vars.ContainsKey("Pernr"))
@@ -65,15 +68,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else
                 throw new Exception("Váš účet není propojen s tabulkou Users");
 
-            DBView superiorView = core.Entitron.GetDynamicView("SuperiorMapping");
+            DBView superiorView = core.Entitron.GetDynamicView("SuperiorMapping", searchInShared);
             DBItem superiorMapping = superiorView.Select().where(c => c.column("pernr").Equal(userPernr)).FirstOrDefault();
             DBItem result;
-            DBView userView = core.Entitron.GetDynamicView("UserView");
+            DBView userView = core.Entitron.GetDynamicView("UserView", searchInShared);
             if (superiorMapping != null)
             {
                 outputVars["NoSuperior"] = false;
                 var superiorPernr = superiorMapping["superior_pernr"];
-                var assistantView = core.Entitron.GetDynamicView("AssistantMapping");
+                var assistantView = core.Entitron.GetDynamicView("AssistantMapping", searchInShared);
                 var assistantMapping = assistantView.Select().where(c => c.column("pernr").Equal(superiorPernr)).FirstOrDefault();
                 if (assistantMapping != null)
                 {
