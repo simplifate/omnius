@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-
+    using Hermes;
     [Table("Tapestry_WorkFlow")]
     public class WorkFlow : IEntity
     {

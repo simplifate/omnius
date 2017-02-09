@@ -116,6 +116,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="S22.Imap, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\S22.ImapWithUTF8.3.6.1\lib\net40\S22.Imap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -199,6 +203,8 @@
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbTable.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbView.cs" />
     <Compile Include="Entitron\Entity\Entitron\ColumnMetadata.cs" />
+    <Compile Include="Entitron\Entity\Hermes\IncomingEmailRule.cs" />
+    <Compile Include="Entitron\Entity\Hermes\IncomingEmail.cs" />
     <Compile Include="Entitron\Entity\IEntity.cs" />
     <Compile Include="Entitron\Entity\Hermes\HermesAjaxTransferEmailTemplate.cs" />
     <Compile Include="Entitron\Entity\Hermes\EmailPlaceholder.cs" />
@@ -1063,6 +1069,10 @@
     <Compile Include="Migrations\201702070915546_JsModelUpdate.Designer.cs">
       <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702091237139_IncomingEmail.cs" />
+    <Compile Include="Migrations\201702091237139_IncomingEmail.Designer.cs">
+      <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1744,6 +1754,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702070915546_JsModelUpdate.resx">
       <DependentUpon>201702070915546_JsModelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702091237139_IncomingEmail.resx">
+      <DependentUpon>201702091237139_IncomingEmail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using Newtonsoft.Json;
     using System.Linq;
     using Mozaic.Bootstrap;
+    using Hermes;
     [Table("Master_Applications")]
     public partial class Application : IEntity
     {
@@ -32,6 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
+            IncomingEmailRule = new List<IncomingEmailRule>();
         }
 
         [ImportExportIgnore(IsKey = true)]
@@ -101,5 +103,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
         public virtual ICollection<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
         public virtual ICollection<Js> Js { get; set; }
+
+        // hermes
+        public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
     }
 }

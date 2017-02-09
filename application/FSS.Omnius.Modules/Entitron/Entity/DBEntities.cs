@@ -180,6 +180,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<EmailTemplateContent> EmailContents { get; set; }
         public virtual DbSet<Smtp> SMTPs { get; set; }
 
+        public virtual DbSet<IncomingEmail> IncomingEmail { get; set; }
+        public virtual DbSet<IncomingEmailRule> IncomingEmailRule { get; set; }
+
         // Cortex
         public virtual DbSet<Task> Tasks { get; set; }
 
@@ -261,6 +264,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasMany(s => s.ContentList)
                 .WithOptional(s => s.Hermes_Email_Template)
                 .HasForeignKey(s => s.Hermes_Email_Template_Id);
+
+            modelBuilder.Entity<IncomingEmailRule>()
+                .HasRequired(r => r.Application)
+                .WithMany(a => a.IncomingEmailRule)
+                .HasForeignKey(r => r.ApplicationId);
+
+            modelBuilder.Entity<IncomingEmailRule>()
+                .HasRequired(r => r.IncomingEmail)
+                .WithMany(e => e.IncomingEmailRule)
+                .HasForeignKey(r => r.IncomingEmailId);
 
             // Cortex
             modelBuilder.Entity<Task>()
