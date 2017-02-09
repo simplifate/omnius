@@ -2,6 +2,7 @@
 using FSS.Omnius.Modules.Entitron;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -70,7 +71,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
                 {
                     if (column.type == "datetime")
-                        item.createProperty(column.ColumnId, column.Name, DateTime.ParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"], "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                    {
+                        DateTime parsedDateTime = new DateTime();
+                        bool parseSuccessful = DateTime.TryParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"],
+                            new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss" },
+                            CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDateTime);
+
+                        if (parseSuccessful)
+                            item.createProperty(column.ColumnId, column.Name, parsedDateTime);
+                    }
                     else
                         item.createProperty(column.ColumnId, column.Name, vars[$"__Model.{table.tableName}.{column.Name}"]);
                 }

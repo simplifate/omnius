@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -82,16 +83,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     row[column.Name] = vars.ContainsKey($"__Model.{tableName}.{column.Name}");
                 else if (vars.ContainsKey($"__Model.{tableName}.{column.Name}"))
                 {
-                    var val = vars[$"__Model.{tableName}.{column.Name}"];
-                    if (column.type == "datetime")
+                    var inputValue = vars[$"__Model.{tableName}.{column.Name}"];
+                    if (column.type == "datetime" && inputValue is string)
                     {
-                        row[column.Name] = Convert.ToDateTime(val);
+                        DateTime parsedDateTime = new DateTime();
+                        bool parseSuccessful = DateTime.TryParseExact((string)inputValue,
+                            new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss" },
+                            CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDateTime);
+
+                        if (parseSuccessful)
+                            row[column.Name] = parsedDateTime;
                     }
                     else
                     {
-                        row[column.Name] = val;
+                        row[column.Name] = inputValue;
                     }
-                    
                 }
             }
 
