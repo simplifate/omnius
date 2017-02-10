@@ -164,6 +164,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsBootstrap { get; set; }
         public int? BootstrapPageId { get; set; }
         public string TableName { get; set; }
+        public bool IsShared { get; set; }
         public string ColumnName { get; set; }
         public List<string> ColumnFilter { get; set; }
         public List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }

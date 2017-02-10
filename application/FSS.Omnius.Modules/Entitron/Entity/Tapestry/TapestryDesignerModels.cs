@@ -233,6 +233,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
+        public bool IsShared { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
