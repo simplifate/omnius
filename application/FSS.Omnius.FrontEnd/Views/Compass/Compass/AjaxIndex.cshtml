@@ -1,0 +1,48 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona
+    <table id="myTable">
+        @*<table class="table table-bordered table-striped table-omnius" id="dataTable">*@
+
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Soubor</th>
+                    <th>Adresář apl.</th>
+                    <th>Highlight</th>
+                    <th>Změněno</th>
+                    <th>Vytvořeno</th>
+                    <th>Verze</th>
+                </tr>
+            </thead>
+        </table>
+
+
+@* Load datatable css *@
+<link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+@* Load datatable js *@
+
+<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "ajax": {
+                    "url": "/Compass/Compass/loadData",
+                    "data": function( result ) {
+                        // Do stuff
+                        var newresult = {"search":"@ViewBag.Search", "appName":"@ViewBag.AppName"}
+                        return newresult;
+                    },
+                    "type" : "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                        { "data": "Id", "autoWidth": true },
+                        { "data": "FileName", "autoWidth": true },
+                        { "data": "AppFolderName", "autoWidth": true },
+                        { "data": "Highlights", "autoWidth": true },
+                        { "data": "TimeChanged", "autoWidth": true },
+                        { "data": "TimeCreated", "autoWidth": true },
+                        { "data": "Version", "autoWidth": true },
+                    ]
+            });
+        });
+</script>

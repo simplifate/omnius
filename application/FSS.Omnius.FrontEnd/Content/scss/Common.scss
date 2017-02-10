@@ -1,0 +1,568 @@
+﻿.ui-dialog {
+    position:fixed !important; //hack for jQueryUI setting position:absolute and mispositioning dialogs
+    padding: 0px 0px;
+    border: 1px solid black;
+    border-radius: 4px;
+
+    .ui-widget-header {
+        background-image: none;
+        background-color: #2d74b2;
+        color: white;
+    }
+    .ui-dialog-buttonpane {
+        padding: 3px;
+        border-radius: 4px;
+    }
+    .ui-dialog-buttonset button {
+        margin: 3px;
+    }
+    .ui-dialog-titlebar-close {
+        background: url("/Content/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+        border: medium none;
+    }
+    .ui-dialog-titlebar-close:hover {
+        background: url("/Content/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+    }
+}
+.lowerLeftDecoration {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -10;
+}
+.lowerLeftDecorationEditSymbol {
+    @include no-select();
+    position: absolute;
+    left: 22px;
+    top: 58px;
+    color: #F68D4D;
+    font-size: 22px;
+}
+.lowerRightDecoration {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: -10;
+}
+.table-omnius {
+    thead {
+        background-color: #457fa9;
+        color: white;
+    }
+    tbody td {
+        vertical-align: middle !important;
+    }
+    td.table-row-action {
+        white-space: nowrap;
+    }
+}
+.btn-omnius-blue {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #49c3f1;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome;
+}
+.btn-omnius-blue:hover {
+    background-color: #2ddef9;
+}
+.btn-omnius-red {
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    margin-right: 17px;
+    white-space: nowrap;
+    background-color: #d9534f;
+    color: white;
+    padding: 9px 12px;
+    font-size: 18px;
+    vertical-align: middle;
+    font-family: MyriadPro, FontAwesome;
+}
+.btn-omnius-red:hover {
+    background-color: #f06771;
+}
+.btn.fa:before {
+    margin-right: 10px;
+}
+.btn.fa.ico-only:before {
+    margin-right: 0px;
+}
+.btn-omnius-rectangular {
+    background-color: #49c3f1;
+    color: black;
+    width: 120px;
+    height: 40px;
+    border: none;
+    font-family: MyriadPro;
+    font-size: 16px;
+}
+.btn-omnius-rectangular:hover {
+    background-color: #2ddef9;
+}
+.btn-omnius-rectangular:disabled {
+    background-color: #a0a0a0;
+}
+.tileMenuArea {
+    position: absolute;
+    left: 80px;
+    top: 105px;
+    right: 0px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top;
+
+    .tileMenuItem {
+        position: relative;
+        display: inline-block;
+        width: 308px;
+        height: 147px;
+        margin-right: 17px;
+        white-space: nowrap;
+        background-color: #21a7b5;
+        color: white;
+        font-size: 38px;
+        text-align: center;
+        font-family: MyriadPro;
+        .fa{
+            position: absolute;
+            font-size: 90px;
+            color: black;
+            opacity: 0.1;
+            z-index: 0;
+            left: 0px;
+            right: 0px;
+        }
+        .fa-book {
+            font-size: 110px;
+            top: 18px;
+        }
+        .fa-globe {
+            font-size: 120px;
+            top: 8px;
+        }
+        .fa-database {
+            font-size: 100px;
+            top: 20px;
+        }
+        .fa-server {
+            font-size: 110px;
+            top: 18px;
+        }
+        .fa-folder {
+            font-size: 120px;
+            top: 8px;
+        }
+        .fa-envelope {
+            font-size: 110px;
+            top: 12px;
+        }
+        .fa-copy {
+            font-size: 100px;
+            top: 16px;
+        }
+        .fa-paint-brush {
+            font-size: 110px;
+            top: 18px;
+        }
+        .buttonLabel {
+            position: absolute;
+            top: 40px;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        .itemCount {
+            position: absolute;
+            right: 12px;
+            bottom: 0px;
+            font-size: 32px;
+        }
+    }
+    .tileMenuItem.highlighted {
+        background-color: #f68d4d !important;
+    }
+}
+body.adminLayout #appNotificationArea {
+    left: 225px;
+    top: 75px;
+    right: 0;
+}
+#upperPanel {
+    @include no-select();
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    background-color: #3a3a3a;
+
+    .panelLabel {
+        position: absolute;
+        left: 55px;
+        top: 22px;
+        font-size: 18px;
+        font-family: FatTec;
+        color: white;
+    }
+    .backgroundDecoration {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+    .decorationWatcheye {
+        position: absolute;
+        left: 19px;
+        top: 56px;
+        width: 24px;
+        height: 24px;
+    }
+}
+#minimizedUpperPanel {
+    @include no-select();
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+    height: 40px;
+    background-color: #3a3a3a;
+    display: none;
+    .panelLabel {
+        position: absolute;
+        left: 52px;
+        top: 10px;
+        font-size: 18px;
+        font-family: FatTec;
+        color: white;
+    }
+}
+#hideUpperPanelIcon, #showUpperPanelIcon {
+    position: absolute;
+    color: white;
+    top: 3px;
+    right: 37px;
+    font-size: 36px;
+    cursor: pointer;
+}
+#lowerPanel {
+    position: absolute;
+    left: 225px;
+    top: 75px;
+    right: 0px;
+}
+#lowerPanelContainer {
+    position: absolute;
+    left: 70px;
+    top: 120px;
+    right: 80px;
+
+    h4 {
+        font-family: FatTec;
+        font-size: 20px;
+        color: #457fa9;
+        margin-left: 25px;
+    }
+}
+#ContentContainer {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+    .form-horizontal, .details-list {
+        color: #455d73;
+    }
+    .form-horizontal .radio, .form-horizontal .checkbox {
+        margin-left: 20px;
+    }
+    .details-list {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        margin-left: 35px;
+        width: auto;
+        td:first-child {
+            width: 300px;
+        }
+        td:nth-child(2) {
+            width: 400px;
+        }
+    }
+    .nexusDetailsButtons {
+        margin-left: 35px;
+    }
+    .btn-omnius-blue, .btn-omnius-red {
+        padding-top: 4px;
+        margin-right: 14px;
+        height: 35px;
+    }
+}
+.moduleSubMenuArea {
+    @include no-select();
+    position: absolute;
+    left: 420px;
+    top: 49px;
+    white-space: nowrap;
+    vertical-align: top;
+    transform-origin: left top;
+}
+.modelErrorMessage {
+    margin-top: 40px;
+    color: #f06771;
+    font-family: Myriad-Pro;
+    font-size: 22px;
+}
+.hiddenOption {
+    display: none;
+}
+
+.spinner-2.largeSpinner {
+    width: 80px;
+    height: 80px;
+    margin: -40px;
+} 
+.ui-dialog .spinner-2 > div {
+    background-color: black;
+}
+
+#pageOverlay {
+    position: fixed;
+    left: 225px;
+    top: 75px;
+    right: 0;
+    bottom: 0;
+    background: #f2f2f3;
+    .spinner-2, .sk-folding-cube {
+        width: 80px;
+        height: 80px;
+        margin: -40px;
+    }
+    .spinner-2 > *{
+        background: #455d73;
+    }
+}
+
+body.userLayout #pageOverlay {
+    left: 310px;
+    top: 50px;
+    background: #ffffff;
+    position: absolute;
+}
+
+/*taken from http://tobiasahlin.com/spinkit/; spinner #2*/
+.spinner-2 {
+    width: 40px;
+    height: 40px;
+    margin: -20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: white;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+    }
+
+    .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes sk-bounce {
+        0%, 100% {
+            -webkit-transform: scale(0.0);
+        }
+
+        50% {
+            -webkit-transform: scale(1.0);
+        }
+    }
+
+    @keyframes sk-bounce {
+        0%, 100% {
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        }
+
+        50% {
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
+    }
+}
+
+.spinner-3 {
+  margin-top: 2px;
+  margin-left: 5px;
+  width: 30px;
+  height: 18px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner-3 > div {
+  background-color: #065a90;
+  height: 100%;
+  width: 3px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner-3 .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner-3 .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner-3 .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner-3 .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+
+.sk-folding-cube {
+  margin: -20px;
+  width: 40px;
+  height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  -webkit-transform: rotateZ(45deg);
+          transform: rotateZ(45deg);
+}
+
+.sk-folding-cube .sk-cube {
+  float: left;
+  width: 50%;
+  height: 50%;
+  position: relative;
+  -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+          transform: scale(1.1); 
+}
+.sk-folding-cube .sk-cube:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #065a90; 
+  -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+          animation: sk-foldCubeAngle 2.4s infinite linear both;
+  -webkit-transform-origin: 100% 100%;
+      -ms-transform-origin: 100% 100%;
+          transform-origin: 100% 100%;
+}
+.sk-folding-cube .sk-cube2 {
+  -webkit-transform: scale(1.1) rotateZ(90deg);
+          transform: scale(1.1) rotateZ(90deg);
+}
+.sk-folding-cube .sk-cube3 {
+  -webkit-transform: scale(1.1) rotateZ(180deg);
+          transform: scale(1.1) rotateZ(180deg);
+}
+.sk-folding-cube .sk-cube4 {
+  -webkit-transform: scale(1.1) rotateZ(270deg);
+          transform: scale(1.1) rotateZ(270deg);
+}
+.sk-folding-cube .sk-cube2:before {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s;
+}
+.sk-folding-cube .sk-cube3:before {
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s; 
+}
+.sk-folding-cube .sk-cube4:before {
+  -webkit-animation-delay: 0.9s;
+          animation-delay: 0.9s;
+}
+@-webkit-keyframes sk-foldCubeAngle {
+  0%, 10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+            transform: perspective(140px) rotateX(-180deg);
+    opacity: 0; 
+  } 25%, 75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+            transform: perspective(140px) rotateX(0deg);
+    opacity: 1; 
+  } 90%, 100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+            transform: perspective(140px) rotateY(180deg);
+    opacity: 0; 
+  } 
+}
+
+@keyframes sk-foldCubeAngle {
+  0%, 10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+            transform: perspective(140px) rotateX(-180deg);
+    opacity: 0; 
+  } 25%, 75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+            transform: perspective(140px) rotateX(0deg);
+    opacity: 1; 
+  } 90%, 100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+            transform: perspective(140px) rotateY(180deg);
+    opacity: 0; 
+  }
+}
+
+body.pageSpinnerShown > *{
+    opacity: 0;
+}
+
+body.pageSpinnerShown #pageOverlay{
+    display: block;
+    opacity: 1;
+}
+
+body.pageSpinnerShown{
+    #leftBar, #topBar, #userLeftBar, #userTopBar, #leftBarMinimized, #userLeftBarMinimized{
+        opacity: 1;
+    }
+}
+
+#pageOverlay {
+    display:none;
+}

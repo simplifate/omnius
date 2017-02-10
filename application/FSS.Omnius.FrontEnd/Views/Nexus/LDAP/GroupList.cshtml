@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
+    <h4>Seznam skupin v AD</h4>
+    <hr />
+
+    @using (Ajax.BeginRouteForm("Nexus", new { action = "Groups" }, new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }))
+    {
+        <div class="form-horizontal">
+            <div class="form-group has-feedback">
+                <label for="query" class="control-label col-md-2">CN:</label>
+                <div class="col-md-8">
+                    <input type="text" name="query" id="query" value="" class="form-control" />
+                    <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Hledat..." class="btn btn-omnius-blue" />
+                </div>
+            </div>
+        </div>
+     }
+
+     <pre>@ViewBag.Result</pre>
+  
+</div>

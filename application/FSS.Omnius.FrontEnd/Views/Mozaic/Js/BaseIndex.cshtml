@@ -1,0 +1,33 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@model System.Data.Entity.DbSet<Js>
+
+<table class="table table-bordered table-striped table-omnius">
+    <colgroup>
+        <col>
+        <col>
+        <col width="150">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Aplikace</th>
+            <th>Stránka</th>
+            <th>Název</th>
+            <th width="150">Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Js js in Model)
+        {
+            <tr>
+                <td>@js.Application.Name</td>
+                <td>@(js.Page != null ? js.Page.Name : "---")</td>
+                <td>@js.Name</td>
+                <td>
+                    @Ajax.RouteLink(" ", "Mozaic", new { @action = "Detail", @id = js.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default" })
+                    @Ajax.RouteLink(" ", "Mozaic", new { @action = "Update", @id = js.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
+                    @Html.RouteLink(" ", "Mozaic", new { @action = "Delete", @id = js.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,88 @@
+﻿@import "Mixins.scss";
+
+body.menuOrderModule {
+    background-color: #3a3a3a;
+
+    #overviewHeaderArea {
+        @include no-select();
+        position: absolute;
+        left: 10px;
+        top: 7px;
+        text-align: left;
+        font-size: 18px;
+        color: white;
+
+        #headerAppName, #headerMetablockName {
+            font-weight: bold;
+            color: #f1a57a;
+        }
+    }
+
+    #overviewPanel {
+        @include no-select();
+        position: absolute;
+        background-color: #c0c0c0;
+        left: 4px;
+        top: 65px;
+        right: 150px;
+        bottom: 0px;
+        overflow: scroll;
+
+        .scrollArea {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            transform-origin: 0px 0px;
+            min-width: 4500px;
+            min-height: 2500px;
+        }
+        
+        .sortable {
+            li.btn {
+                float: none;
+                display: block;
+                margin-bottom: 5px;
+                width: 300px;
+                text-align: left;
+                padding-top: 10px !important;
+
+                &:hover {
+                    cursor: ns-resize;
+                }
+
+                &.not-in-menu {
+                    font-style: italic;
+                    color: #666;
+                }
+
+                &.is-initial {
+                    font-weight: bold;
+                }
+            }
+        }
+
+    }
+    #overviewMenu {
+        @include no-select();
+        position: absolute;
+        right: 0px;
+        top: 65px;
+        bottom: 0px;
+        width: 150px;
+        background-color:#3a3a3a;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        button {
+            display: block;
+            margin-bottom: 15px;
+        }
+        hr {
+            border-color: #457fa9;
+            border-width: 2px;
+        }
+    }
+    #lowerPanel {
+        bottom: 0px;
+    }
+}

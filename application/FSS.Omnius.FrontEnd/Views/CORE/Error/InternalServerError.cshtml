@@ -1,0 +1,33 @@
+﻿@using FSS.Omnius.Modules.CORE
+
+@if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+    if (ViewData["exception"] != null)
+    {
+        @Html.Raw(ViewData["exception"]);
+    }
+    else
+    {
+        @Html.Raw("Nastala neznámá chyba");
+    }
+}
+else
+{
+    ViewBag.Title = ViewData["exception"];
+    Layout = "~/Views/Shared/_OmniusUserLayout.cshtml";
+
+    <link href="/Content/css/ErrorCss.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
+    <script>
+        @if (ViewData["exception"] != null)
+    {
+        @Html.Raw("ShowAppNotification(" + Json.Encode(ViewData["exception"]) + ", 'error');");
+    }
+    else
+    {
+        @Html.Raw("ShowAppNotification('Nastala neznámá chyba', 'error')");
+    }
+    </script>
+}

@@ -1,0 +1,19 @@
+    <ul  id=appMenu>
+@if (Context.GetLoggedUser().canUseBlock("Admin,User",24)){            <li>
+                    <h4>Administrace</h4>
+    <ul >
+@if (Context.GetLoggedUser().canUseBlock("Admin,User",24)){            <li>
+                    <a href="/App1/Test">Test</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",24)){            <li>
+                    <a href="/App1/Test2">Test2</a>
+            </li>
+}    </ul>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User,TestRole",24)){            <li>
+                    <a href="/App1/First">First</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User",24)){            <li>
+                    <a href="/App1/ReadOnlyTest">Read only test</a>
+            </li>
+}    </ul>

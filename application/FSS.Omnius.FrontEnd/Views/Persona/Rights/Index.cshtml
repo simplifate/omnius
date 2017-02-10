@@ -1,0 +1,62 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Persona;
+@using FSS.Omnius.Modules.Entitron.Entity.Master;
+@using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+@using FSS.Omnius.Modules.Entitron.Entity;
+@{
+    Page.Title = "Omnius Persona";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "personaModule";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Přístup k aplikacím</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Přístup k aplikacím</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+
+<div id="lowerPanel">
+    <svg class="rightsFormUpperDecoration" width="40px" height="240px">
+        <path d="M31 0 L31 235" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <table class="table table-bordered table-striped table-responsive table-omnius">
+        <thead>
+            <tr>
+                <th>Uživatel / Aplikace</th>
+                @foreach (ADgroup group in ViewBag.ADgroups)
+                {
+                    <td>@group.ToString() @Html.Raw(group.ApplicationId != null ? $"<a href=\"/Persona/Roles/App/{group.ApplicationId}\" class=\"fa fa-pencil editAppRolesIcon\"></a>" : "")</td>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{ int aduIndex = 0; }
+            @while(aduIndex < ViewBag.ADgroups_Users.Count)
+            {
+                <tr>
+                    <td>@ViewBag.ADgroups_Users[aduIndex].User.DisplayName</td>
+                    @foreach(ADgroup group in ViewBag.ADgroups)
+                    {
+                        if (aduIndex < ViewBag.ADgroups_Users.Count && group.Id == ViewBag.ADgroups_Users[aduIndex].ADgroupId)
+                        {
+                            aduIndex++;
+                            <td><i class="fa fa-check"></i></td>
+                        }
+                        else
+                        {
+                            <td><i class="fa fa-times"></i></td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

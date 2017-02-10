@@ -1,0 +1,195 @@
+﻿body.watchtowerModule {
+    #watchtowerFormResponiveArea {
+        position: absolute;
+        transform-origin: left top;
+    }
+    #watchtowerLogButtons {
+        position: absolute;
+        left: 300px;
+        top: 15px;
+    }
+    #upperPanel {
+        position: relative;
+        width: 100%;
+        background-color: #3a3a3a;
+        color: white;
+        margin-bottom: 30px;
+
+        label {
+            @include no-select();
+        }
+
+        .panelLabel {
+            @include no-select();
+            position: absolute;
+            left: 55px;
+            top: 22px;
+            font-size: 18px;
+            font-family: FatTec;
+        }
+        .backgroundDecoration {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+        .decorationWatcheye {
+            position: absolute;
+            left: 19px;
+            top: 56px;
+            width: 24px;
+            height: 24px;
+        }
+        #hideFilterIcon {
+            @include no-select();
+            position: absolute;
+            top: 3px;
+            right: 37px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+        #filterPanelLabel {
+            @include no-select();
+            position: absolute;
+            left: 175px;
+            top: 102px;
+            font-size: 20px;
+            font-family: FatTec;
+            color: #455D73;
+        }
+        #filterPanelDecoration {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            transform-origin: left top;
+        }
+        #filterLogForm {
+            position: absolute;
+            left: 150px;
+            top: 160px;
+            width: 1040px;
+
+            label {
+                white-space: nowrap;
+            }
+        }
+        #filterLogTable {
+            td {
+                padding-left: 1px;
+                padding-right: 30px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                vertical-align: middle;
+            }
+            select, input {
+                min-width: 220px;
+                color: black;
+            }
+        }
+        #formButtonArea {
+            position: absolute;
+            left: 840px;
+            top: 120px;
+            width: 280px;
+
+            button {
+                margin-right: 14px;
+            }
+            .btn-omnius-blue, .btn-omnius-red {
+                padding-top: 4px;
+                height: 35px;
+            }
+        }
+    }
+    #minimizedUpperPanel {
+        @include no-select();
+        position: relative;
+        width: 100%;
+        height: 40px;
+        background-color: #3a3a3a;
+        margin-bottom: 30px;
+        display: none;
+
+        .panelLabel {
+            position: absolute;
+            left: 52px;
+            top: 10px;
+            font-size: 18px;
+            font-family: FatTec;
+            color: white;
+        }
+        #showFilterIcon {
+            position: absolute;
+            color: white;
+            top: 3px;
+            right: 37px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+    }
+
+    #lowerPanel {
+        position: absolute;
+        left: 245px;
+        right: 20px;
+        top: 462px;
+
+        #watchtowerLogTable {
+            width: 100%;
+
+            thead {
+                background-color: #457fa9;
+                color: white;
+            }
+            tbody td {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .btn-watchtower {
+        background-color: #49c3f1;
+        color: black;
+        width: 120px;
+        height: 40px;
+        border: none;
+        font-family: MyriadPro;
+        font-size: 16px;
+        
+    }
+    .btn-watchtower:hover {
+        background-color: #2ddef9;
+    }
+    .logIsEmpty, .noSearchResults {
+        font-family: MyriadPro;
+        font-size: 16px;
+    }
+    @media only screen and (min-width: 1500px) {
+        #upperPanel {
+            height: 357px;
+        }
+    }
+    @media only screen and (max-width: 1500px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.9);
+        }
+        #upperPanel {
+            height: 321px;
+        }
+    }
+    @media only screen and (max-width: 1360px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.8);
+        }
+        #upperPanel {
+            height: 285px;
+        }
+    }
+    @media only screen and (max-width: 1240px) {
+        #watchtowerFormResponiveArea {
+            transform: scale(0.75);
+        }
+        #upperPanel {
+            height: 267px;
+        }
+    }
+}

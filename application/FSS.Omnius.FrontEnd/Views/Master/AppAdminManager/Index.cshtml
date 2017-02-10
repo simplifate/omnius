@@ -1,0 +1,219 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Master
+@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@using FSS.Omnius.Modules.Entitron
+@{
+    Page.Title = "Správa aplikací";
+    Page.ModuleClass = "adminAppModule";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Správa aplikací</div>
+    <svg class="backgroundDecoration" width="540px" height="135px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 135 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Správa aplikací</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="appManagerLowerDecoration" width="40px" height="320px">
+        <path d="M31 0 L31 320" stroke="#457fa9" stroke-width="1" fill="none"></path>
+    </svg>
+    <table class="adminAppTable table table-bordered table-striped table-omnius">
+        <thead>
+            <tr>
+                <th>Jméno aplikace</th>
+                <th>Tapestry</th>
+                <th>Entitron</th>
+                <th>Mozaic</th>
+                <th>Publikováno?</th>
+                <th>Povoleno?</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Application app in (List<Application>)ViewData["Apps"])
+            {
+                <tr appId="@app.Id" data-display-name="@app.DisplayName">
+                    <td>@app.DisplayName</td>
+                    @if (@app.Id != SharedTables.AppId)
+                    {
+                        <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
+                        <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
+                        <td><button class="btn btn-info btnOpenMozaic">Mozaic</button></td>
+                    }
+                    else
+                    {//sdílené tabulky
+                        <td></td>
+                        <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
+                        <td></td>
+                    }
+                    <td>@(app.IsPublished ? "Ano" : "Ne")</td>
+                    <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
+                    <td class="actions">
+                        @if (app.Id != SharedTables.AppId)//id 30 mají sdílené tabulky
+                        {
+                            if (app.IsPublished)
+                            {
+                                <button class="btn btn-primary btnValidate">Aktualizovat</button>
+                                <button class="btn btn-primary btnRebuild">Rebuild</button>
+                                if (app.IsEnabled)
+                                {
+                                    <button class="btn btn-danger btnToggleEnabled btnDisable">Zakázat</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success btnToggleEnabled btnEnable">Povolit</button>
+                                }
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary btnValidate">Vytvořit</button>
+                            }
+                            <button class="btn btn-default btnProperties">Vlastnosti</button>
+
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary btnValidate">Aktualizovat</button>
+                        }
+                        @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default", @target = "_blank" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button id="btnAddApp" class="btn btn-primary">Přidat aplikaci</button>
+    @Html.RouteLink("Import", "Master", new { @controller = "Service", @action = "RecoverApp" }, new { @class = "btn btn-default" })
+</div>
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="appId" />
+</form>
+<form id="openDbSchemeForm" method="post" action="/Entitron/DbDesigner">
+    <input type="hidden" name="appId" />
+</form>
+<form id="openMozaicForm" method="post" action="/Mozaic/Editor">
+    <input type="hidden" name="appId" />
+</form>
+<div id="app-properties-dialog" title="Vlastnosti aplikace">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><input type="text" name="app-name" id="app-name" value=""></td>
+                </tr>
+                <tr>
+                    <td><label for="template">Template</label></td>
+                    <td>
+                        <select name="template" id="template">
+                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
+                            {
+                                <option value="@template.Id">@template.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td>
+                        <select name="tile-width" id="tile-width">
+                            <option value="2" selected="selected">Výchozí (x2)</option>
+                            <option value="4">Široká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td>
+                        <select name="tile-height" id="tile-height">
+                            <option value="1" selected="selected">Nízká (x1)</option>
+                            <option value="2">Střední (x2)</option>
+                            <option value="4">Vysoká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td>
+                        <select name="bg-color" id="bg-color">
+                            <option value="0" selected="selected">Mellow Yellow</option>
+                            <option value="1">Pulsing Purple</option>
+                            <option value="2">Fiery Fuchsia</option>
+                            <option value="3">Radiant Red</option>
+                            <option value="4">Galvanic Green</option>
+                            <option value="5">Blazing Blue</option>
+                            <option value="6">Iridescent Indigo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><input type="text" name="icon-class" id="icon-class" value=""></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="new-app-dialog" title="Nová aplikace">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="app-name">Název aplikace</label></td>
+                    <td><input type="text" name="app-name" id="app-name" value=""></td>
+                </tr>
+                <tr>
+                    <td><label for="template">Template</label></td>
+                    <td>
+                        <select name="template" id="template">
+                            @foreach (MozaicCssTemplate template in (List<MozaicCssTemplate>)ViewData["Mozaic_CssTemplates"])
+                            {
+                                <option value="@template.Id">@template.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-width">Šířka dlaždice</label></td>
+                    <td>
+                        <select name="tile-width" id="tile-width">
+                            <option value="2" selected="selected">Výchozí (x2)</option>
+                            <option value="4">Široká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="tile-height">Výška dlaždice</label></td>
+                    <td>
+                        <select name="tile-height" id="tile-height">
+                            <option value="1" selected="selected">Nízká (x1)</option>
+                            <option value="2">Střední (x2)</option>
+                            <option value="4">Vysoká (x4)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bg-color">Barva pozadí</label></td>
+                    <td>
+                        <select name="bg-color" id="bg-color">
+                            <option value="0" selected="selected">Modrá</option>
+                            <option value="1">Sytě zelená</option>
+                            <option value="2">Světle zelená</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="icon-class">Ikona (font awesome)</label></td>
+                    <td><input type="text" name="icon-class" id="icon-class" value=""></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="app-build-dialog"></div>

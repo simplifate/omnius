@@ -1,0 +1,193 @@
+﻿@import "Mixins.scss";
+
+body.overviewModule {
+    background-color: #3a3a3a;
+
+    #overviewHeaderArea {
+        @include no-select();
+        position: absolute;
+        left: 10px;
+        top: 7px;
+        text-align: left;
+        font-size: 18px;
+        color: white;
+
+        #headerAppName, #headerMetablockName {
+            font-weight: bold;
+            color: #f1a57a;
+        }
+        #headerMetablockName:hover {
+            color: #2ddef9;
+            cursor: pointer;
+        }
+    }
+
+    #overviewPanel {
+        @include no-select();
+        position: absolute;
+        background-color: #c0c0c0;
+        left: 4px;
+        top: 65px;
+        right: 150px;
+        bottom: 0px;
+        overflow: scroll;
+
+        .scrollArea {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            transform-origin: 0px 0px;
+            min-width: 4500px;
+            min-height: 2500px;
+        }
+        .block {
+            position: absolute;
+            width: 160px;
+            height: 86px;
+            background-color: #467ea8;
+            color: white;
+            border: none;
+            font-size: 16px;
+            z-index: 100;
+
+            .blockName {
+                position: absolute;
+                top: 15px;
+                text-align: center;
+                width: 100%;
+                font-weight: bold;
+            }
+            .blockInfo {
+                position: absolute;
+                top: 50px;
+                text-align: center;
+                width: 100%;
+                color: #f1a57a;
+                font-weight: bold;
+             }
+        }
+        .metablock {
+            position: absolute;
+            width: 200px;
+            height: 95px;
+            background-color: #467ea8;
+            color: white;
+            border: none;
+            font-size: 16px;
+            z-index: 100;
+
+            .metablockName {
+                position: absolute;
+                top: 11px;
+                text-align: center;
+                width: 100%;
+                font-weight: bold;
+            }
+            .metablockSymbol {
+                position: absolute;
+                top: 39px;
+                width: 100%;
+                text-align: center;
+                font-size: 48px;
+                color: #49c3f1;
+            }
+            .metablockInfo {
+                position: absolute;
+                top: 11px;
+                right: 10px;
+                color: #f1a57a;
+                font-weight: bold;
+             }
+        }
+    }
+    #overviewMenu {
+        @include no-select();
+        position: absolute;
+        right: 0px;
+        top: 65px;
+        bottom: 0px;
+        width: 150px;
+        background-color:#3a3a3a;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        button {
+            display: block;
+            margin-bottom: 15px;
+        }
+        hr {
+            border-color: #457fa9;
+            border-width: 2px;
+        }
+    }
+    #zoomPanel {
+        @include no-select();
+        position: fixed;
+        right: 215px;
+        bottom: 55px;
+        text-align: center;
+        z-index: 2000;
+
+        button {
+            font-size: 12px;
+            background-color: #49c3f1;
+            color: black;
+            border: none;
+        }
+        button:hover {
+            background-color: #2ddef9;
+        }
+        #zoomLabel {
+            font-size: 20px;
+            color: black;
+            margin-bottom: -2px;
+        }
+    }
+    .jsplumb-drag {
+        z-index: 200 !important;
+        border: 1px solid #49c3f1;
+        box-shadow: 0px 0px 22px #49c3f1;
+    }
+    .ui-dialog {
+        padding: 0px 0px;
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+    .ui-widget-header {
+        background-image: none;
+        background-color: #2d74b2;
+        color: white;
+    }
+    .ui-dialog .ui-dialog-buttonpane {
+        padding: 3px;
+    }
+    .ui-dialog .ui-dialog-buttonset button {
+        margin: 3px;
+    }
+    .ui-dialog-content .formTable label {
+        margin-bottom: 0px;
+    }
+    .ui-dialog-content .formTable tr {
+        height: 32px;
+    }
+    .ui-dialog-content .formTable td {
+        vertical-align: middle;
+    }
+    .ui-dialog-content .formTable tr td:first-child {
+        width: 150px;
+    }
+    .highlightedBlockRow {
+        background-color: lightblue !important;
+    }
+    .btn-tapestry {
+        background-color: #49c3f1;
+        color: black;
+    }
+    .btn-tapestry:hover {
+        background-color: #2ddef9;
+        color: black;
+    }
+    #lowerPanel {
+        bottom: 0px;
+    }
+}

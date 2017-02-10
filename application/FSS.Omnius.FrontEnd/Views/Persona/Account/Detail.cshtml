@@ -1,0 +1,161 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Persona.User
+@{Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";}
+<h2>@Html.DisplayFor(x => x.DisplayName)</h2>
+<div>
+    
+    <div class="form-group col-md-6">
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Jméno
+                </label>
+            </div>
+            <div>
+                <p>@Model.DisplayName</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Uživatelské jméno
+                </label>
+            </div>
+            <div>
+                <p>@Model.UserName</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Firma
+                </label>
+            </div>
+            <div>
+                <p>@Model.Company</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Oddělení
+                </label>
+            </div>
+            <div>
+                <p>@Model.Department</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Tým
+                </label>
+            </div>
+            <div>
+                <p>@Model.Team</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Práce
+                </label>
+            </div>
+            <div>
+                <p>@Model.Job
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-md-6">
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Adresa
+                </label>
+            </div>
+            <div>
+                <p>@Model.Address</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Email
+                </label>
+            </div>
+            <div>
+                <p>@Model.Email</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Telefon
+                </label>
+            </div>
+            <div>
+                <p>@Model.MobilPhone</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Pracovní telefon
+                </label>
+            </div>
+            <div>
+                <p>@Model.WorkPhone</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    AD group users
+                </label>
+            </div>
+            <div>
+                <p>@string.Join(", ", Model.ADgroup_Users.Select(x => x.ADgroup))</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Poslední přihlášení
+                </label>
+            </div>
+            <div>
+                <p>@Model.LastLogin</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <label class="control-label">
+                    Lokální uživatel
+                </label>
+            </div>
+            <div>
+                @if (@Model.isLocalUser)
+                {
+                    <p>Ano</p>
+                }
+                else
+                {
+                    <p>Ne</p>
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,14 @@
+﻿@mixin linear-gradient ($color1, $color2) {
+    background: -webkit-linear-gradient(top, $color1, $color2);
+    background: -o-linear-gradient(bottom, $color1, $color2);
+    background: -moz-linear-gradient(bottom, $color1, $color2);
+    background: linear-gradient(to bottom, $color1, $color2);
+}
+@mixin no-select () {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}

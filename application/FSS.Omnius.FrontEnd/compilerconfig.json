@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Content/scss/Bundled.css",
+    "inputFile": "Content/scss/Bundled.scss"
+  },
+  {
+    "outputFile": "Scripts/jquery.validate.unobtrusive.es5.js",
+    "inputFile": "Scripts/jquery.validate.unobtrusive.js"
+  }
+]

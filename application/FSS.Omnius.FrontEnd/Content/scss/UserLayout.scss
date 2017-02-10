@@ -1,0 +1,1086 @@
+﻿@import "Mixins.scss";
+@import "Fonts.scss";
+@import "InnogyMixins.scss";
+$color_error: #f15921;
+
+$bottom_content_pos: 100px;
+$topbar_height: 50px;
+
+#userTopBar {
+    @include no-select();
+    background: $shade_st_zero;
+    position: absolute;
+    left: 0px;
+    top: $bottom_content_pos;
+    right: 0px;
+    height: $topbar_height;
+
+    .icon {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        padding-top: 5px;
+        padding-left: 10px;
+        z-index: 50;
+        font-size: 32px;
+        color: black;
+        cursor: pointer;
+        &:hover {
+            color: $second_color;
+        }
+    }
+    .activeIcon {
+        background-color: $shade_st_one;
+        cursor: default;
+    }
+
+    #toggleMenuIcon{
+        display: none;
+    }
+    .clientTitle {
+        position: absolute;
+        font-family: Innogy-Medium;
+        text-transform: uppercase;
+        font-size: 20px;
+        color: #59575c;
+        padding-top: 10px;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        text-align: center;
+    }
+    .clientTitleArea {
+        position: absolute;
+        left: 160px;
+        top: 0px;
+        right: 540px;
+        height: 50px;
+    }
+    .userBoxMinimized {
+        display: none;
+    }
+    .userBox, .userBoxMinimized {
+        position: absolute;
+        top: 0px;
+        right: 290px;
+        width: 250px;
+        height: 50px;
+        .avatar {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            background-image: url(/Content/images/avatar-generic.png);
+            background-size: 40px 40px;
+        }
+        .fullName {
+            position: absolute;
+            left: 65px;
+            top: 6px;
+            font-family: Innogy-Regular;
+            font-size: 14px;
+        }
+        .commands {
+            position: absolute;
+            left: 65px;
+            top: 24px;
+            color: #0065a9;
+            font-family: Innogy-Regular;
+            font-size: 14px;
+        }
+        .notificationIcon {
+            position: absolute;
+            right: 30px;
+            top: 8px;
+            font-size: 30px;
+            cursor: pointer;
+            @include innogy-Action;
+        }
+
+    }
+    .searchBoxMinimised {
+        display: none;
+    }
+    .searchBox, .searchBoxMinimized {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 310px;
+        height: 50px;
+        .searchInputField {
+            position: absolute;
+            bottom: 11px;
+            right: 85px;
+            width: 215px;
+            height: 28px;
+            background-color: white;
+            color: #a2b4cc;
+            padding-left: 14px;
+            padding-top: 4px;
+            font-family: Innogy-Regular;
+            font-size: 14px;
+            border: none;
+        }
+        .searchIcon {
+            position: absolute;
+            right: 30px;
+            top: 8px;
+            font-size: 30px;
+            cursor: pointer;
+            @include innogy-Action;
+        }
+
+    }
+}
+#userLeftBar {
+    @include no-select();
+    background-color: $shade_st_one;
+    position: absolute;
+    left: 0px;
+    top: $bottom_content_pos + $topbar_height;
+    bottom: 0px;
+    width: 310px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 10;
+    transition: 0.4s ease-out;
+
+    *{transition: 0.4s ease-out}
+        
+    .widgetLabel {
+        position: absolute;
+        font-family: Innogy-Medium;
+        text-transform: uppercase;
+        font-size: 20px;
+        color: black;
+        padding: 0 30px;
+        top: 30px;
+        left: 0px;
+        right: 30px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .circles {
+        position: absolute;
+        color: #0065a9;
+        left: 32px;
+        top: 65px;
+
+        .fa {
+            margin-right: 9px;
+        }
+    }
+    #switchMenuIcon {
+        position: absolute;
+        font-size: 18px;
+        color: #0065a9;
+        left: 260px;
+        top: 35px;
+    }
+    #showMenuIcon, #hideMenuIcon {
+        position: absolute;
+        font-size: 28px;
+        color: $second_color;
+        right: 15px;
+        top: 30px;
+        cursor: pointer;            
+    }
+    #showMenuIcon {
+        display: none;
+    }
+    .appList {
+        position: absolute;
+        font-size: 17px;
+        font-weight: 100;
+        color: black;
+        left: 0px;
+        top: 75px;
+        right: 0px;
+        .appListItem {
+            position: relative;
+            height: 40px;
+            border-top: 1px solid $shade_st_three;
+            cursor: pointer;
+            .icon {
+                position: absolute;
+                top: 10px;
+                left: 32px;
+            }
+            .appName {
+                position: absolute;
+                top: 8px;
+                left: 62px;
+                right: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+        .appListItem:hover{
+            background-color: $second_color;
+            .appName, .icon {
+                color: white !important;
+            }
+        }
+    }
+    .infoBox {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 310px;
+        height: 90px;
+        color: #919296;
+        .icon {
+            position: absolute;
+            left: 15px;
+            font-size: 60px;
+        }
+        .infoText {
+            position: absolute;
+            left: 85px;
+            top: 5px;
+            font-size: 12px;
+            opacity: inherit;
+        }
+    }
+    #appMenu {
+        position: absolute;
+        left: 0px;
+        top: 75px;
+        font-family: Innogy-Medium;
+        color: #58585a;
+        font-size: 18px;
+        padding-left: 0px;
+
+        > li > a {
+            padding-left: 40px;
+            font-size: 16px;
+        }
+        > li {
+            list-style: none;
+            h4 {
+                padding-left: 40px;
+            }
+            ul {
+                color: #0065a9;
+                font-size: 14px;
+                padding-left: 0px;
+                padding-bottom: 15px;
+                li {
+                    list-style: none;
+                    width: 250px;
+                    padding-left: 15px;
+                    padding-top: 3px;
+                    margin-left: 45px;
+                    height: 24px;
+                    cursor: pointer;
+                }
+                li:hover{
+                    background-color: $second_color;
+                    a {
+                        color: white !important;
+                    }
+                }
+            }
+        }
+        a {
+            color: black;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        a:hover {
+            text-decoration: none;
+            color: $second_color;
+        }
+    } 
+}
+
+body.userLayout {
+    background-color: $shade_st_two !important;
+}
+
+body.userLayout #pageOverlay {
+    background-color: $shade_st_two !important;
+    top: $bottom_content_pos + $topbar_height !important;
+}
+
+#appNotificationArea {
+    position: fixed;
+    left: 310px;
+    top: $bottom_content_pos + $topbar_height;
+    right: 0;
+    z-index: 5;
+    transition: left 0.4s ease-out;
+
+}
+
+body.userLayout.leftBarHidden {
+    #userLeftBar {
+        width: 50px;
+        overflow: hidden;
+
+        #hideMenuIcon {
+            display: none;
+        }
+        #showMenuIcon {
+            display: inline-block;
+        }
+        .widgetLabel{
+            padding: 0 0 0 20px;
+        }
+        .appListItem {
+            border-color: #edf8fe;
+        }
+        .appListItem .icon {
+            left: 18px;
+        }
+        #appMenu {
+            left: 20px;
+        }
+        .infoBox {
+            opacity: 0;
+            //transition: 0.4s ease-in;
+        }
+    }
+    #userContentArea, #helpContainer, #pageOverlay, #appNotificationArea{
+        left: 50px;
+    }
+}
+
+@media (max-width: 799px) {
+    body.userLayout.leftBarHidden #userLeftBar {
+        width: 0;
+    }
+    #userTopBar {
+        #toggleMenuIcon, > a {
+            display: block;
+            float: left;
+        }
+
+        .clientTitleArea {
+            left: 200px;
+            right: 140px;
+        }
+        .userBox {
+            display: none;
+            background-color: #edf8fe;
+            top: $bottom_content_pos + $topbar_height;
+            right: 0;
+            width: 150px;
+            border: 1px solid #f1f0ee;
+            z-index: 10;
+
+            .notificationIcon, .avatar {
+                display: none;
+            }
+            .fullName, .commands {
+                left: 15px;
+            }
+        }
+        .userBoxMinimized {
+            display: block;
+            width: 90px;
+            position: absolute;
+            right: 50px;
+            .notificationIcon {
+                right: 0px;
+            }
+        }
+        .searchBox {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 50px;
+            width: 100%;
+            background-color: #edf8fe;
+            z-index: 10;
+            .searchInputField {
+                left: 15px;
+                width: calc(100% - 70px);
+            }
+            .searchIcon {
+                position: absolute;
+                right: 15px;
+            }
+            .searchIcon::before {
+                content: "\f061";
+            }
+        }
+
+        .searchBoxMinimized {
+            display: block;
+            width: 50px;
+            .searchIcon {
+                right: 10px;
+            }
+        }
+    }
+    body.userLayout #userLeftBar, body.userLayout.leftBarHidden #userLeftBar {
+        #showMenuIcon, #hideMenuIcon {
+            display: none;
+        }
+    }
+    body.userLayout, body.userLayout.leftBarHidden {
+        #userContentArea, #helpContainer, #pageOverlay, #appNotificationArea {
+            left: 0px;
+        }
+    }
+}
+
+@media (min-width: 800px) {
+    .userBox, .searchBox {
+        display: block !important;
+    }
+}
+
+@media (max-width: 479px) {
+    #userTopBar .clientTitle { 
+        display: none;
+    }
+}
+
+body.userLayout #brandBar {
+    background-color: $third_color_bright;
+    height: $bottom_content_pos;
+    opacity: 1;
+
+    .logo {
+        padding: 20px;
+        height: 100%;
+        img {
+            height: 60px;
+            vertical-align: middle;
+        }
+    }
+}
+
+#userContentArea {
+    background-color: $shade_st_two;
+    position: absolute;
+    left: 310px;
+    top: $bottom_content_pos + $topbar_height;
+    right: 0px;
+    bottom: 0px;
+    overflow: auto;
+    transition: left 0.4s ease-out;
+}
+#helpContainer {
+    margin-left: 40px;
+}
+#detailsContainer {
+    .title {
+        position: absolute;
+        left: 100px;
+        top: 75px;
+        font-family: Innogy-Medium;
+        text-transform: uppercase;
+        font-size: 26px;
+        color: #0065A9;
+    }
+    .userDetailsTable {
+        position: absolute;
+        left: 100px;
+        top: 150px;
+        width: 75%;
+        font-size: 17px;
+        font-weight: 100;
+        color: #0065a9;
+    }
+}
+#modalRepository {
+    display: none;
+}
+.mozaicForm {
+    position: relative;
+
+    .uic {
+        position: absolute;
+    }
+    
+    .button-simple {
+        color: white;
+        background-color: $second_color;
+        border: none;
+
+        @include innogy-input;
+    }
+    .button-simple:hover {
+        background-color: $second_color_bright;
+    }
+    .button-simple[disabled], .button-simple.looks-disabled {
+        background-color: $shade_st_three;
+        color: black;
+    }
+    .button-dropdown {
+        background-color: white;
+        border: 1px solid #4b8ad1;
+        color: #4b8ad1;
+    }
+    .button-large {
+        width: 198px;
+        height: 31px;
+        font-size: 18px;
+        .fa-caret-down {
+            padding-left: 7px;
+        }
+    }
+    .button-small {
+        width: 112px;
+        height: 23px;
+        font-size: 14px;
+        .fa-caret-down {
+            padding-left: 5px;
+        }
+    }
+    .button-extra-small {
+        width: 78px;
+        height: 19px;
+        font-size: 11px;
+        .fa-caret-down {
+            padding-left: 3px;
+        }
+    }
+    .input-single-line {
+        width: 220px;
+        height: 25px;
+        border: 1px solid #b8b4ab;
+        padding-left: 6px;
+
+        @include innogy-input;
+    }
+    .input-multiline {
+        width: 260px;
+        height: 75px;
+        padding: 6px !important;
+        resize: none;
+        
+        @include innogy-input;
+        border-radius: 20px;
+    }
+    .dropdown-select {
+        @include innogy-input;
+    }
+    .input-read-only, .input-single-line[readonly], .input-single-line[disabled], .input-multiline[readonly], .input-multiline[disabled], .dropdown-select[readonly], .dropdown-select[disabled] {
+        background-color: #e0e0e0;
+        border-color: #939393;
+    }
+    .info-container {
+        @include no-select();
+        color: #58585a;
+        position: relative;
+        width: 260px;
+
+        .info-container-icon {
+            position: absolute;
+            left: 0px;
+            top: 4px;
+            font-size: 18px;
+        }
+        .info-container-header {
+            position: absolute;
+            left: 24px;
+            top: 0px;
+            font-size: 18px;
+        }
+        .info-container-body {
+            padding-top: 26px;
+        }
+    }
+    .breadcrumb-navigation {
+        @include no-select();
+        background-color: $main_color;
+        color: white;
+        font-family: Innogy-Regular;
+        padding: 12px 12px;
+        font-size: 11px;
+        width: 200px;
+        height: 55px;
+
+        .app-icon {
+            position: absolute;
+            font-weight: 100;
+            width: 30px;
+            height: 30px;
+            padding-top: 3px;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 19px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .nav-text {
+            position: absolute;
+            left: 54px;
+            font-family: Innogy-Medium;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+    }
+    .tab-navigation {
+        @include no-select();
+        white-space: nowrap;
+
+        li {
+            a.fa {
+                font-size: 20px;
+                height: 42px;
+                padding-top: 6px;
+            }
+        }
+    }
+    .control-label {
+        @include no-select();
+        font-family: Innogy-Medium;
+        font-size: 14px;
+        color: #58585a;
+        white-space: nowrap;
+
+        b {
+            font-size: 1.15em;
+        }
+        u {
+            color: #0065a9;
+        }
+    }
+    .detail-label {
+        color: $darkness;
+        font-weight: bold;
+        text-align: right;
+    }
+    .form-heading {
+        @include no-select();
+        font-family: Innogy-Medium;
+        font-size: 28px;
+        color: #58585a;
+        white-space: nowrap;
+    }
+    .checkbox-control {
+        width: auto;
+        white-space: nowrap;
+
+        .checkbox-label {
+            margin-left: 6px;
+            font-family: Innogy-Medium;
+            font-size: 14px;
+            color: #58585a;
+            white-space: nowrap;
+        }
+    }
+    .radio-control {
+        display: inline-block;
+        white-space: nowrap;
+
+        .radio-label {
+            margin-left: 6px;
+            font-family: Innogy-Medium;
+            font-size: 14px;
+            color: #58585a;
+            white-space: nowrap;
+        }
+    }
+    .dataTables_wrapper .inner_wrapper {
+        width: 100%;
+    }
+    .data-table {
+        width: 250px;
+        height: auto !important;
+        background-color: $shade_st_two;
+        border: 1px solid white;
+
+        white-space: nowrap;
+
+        th:first-child, td:first-child {
+            display: none;
+        }
+
+        tr {
+            background-color: $shade_st_two !important;
+            th, td {
+                    &.sorting_1 {
+                    background-color: $shade_st_three !important;
+                }
+            }
+
+            th, td {
+                border-bottom: 1px solid $third_color_bright;
+            }
+        }
+
+        tfoot {
+            display: none;
+
+            th {
+                input {
+                    width: 53px;
+                }
+                input:focus {
+                    width: 180px;
+                }
+            }
+        }
+
+        thead tr {
+            background-color: $third_color_bright !important;
+            th {
+                color: white;
+                white-space: nowrap;
+            }
+        }
+        tbody tr {
+            background-color: #f7f7f7;
+            color: black;
+            &:hover  {
+                background-color: $shade_st_three !important;
+            }
+        }
+        
+        &#uic_table tfoot, &.data-table-individual-columns-search tfoot { 
+            display: table-header-group;
+        }
+        .actionIcons {
+            width: 60px;
+
+            .fa {
+                font-size: 16px;
+                margin-right: 10px;
+                cursor: pointer;
+                color: $third_color_bright;
+
+                &:hover {
+                    color: $third_color;
+                }
+            }
+            .fa-remove {
+                color: #f15921;
+
+                &:hover {
+                    color: #bc2e18;
+                }
+            }
+            .fa-sign-in {
+                font-size: 20px;
+            }
+        }
+        .colorRectangle {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+        input {
+            @include innogy-input;
+        }
+    }
+    /*
+    .data-table-simple-mode {
+        background-color: white;
+        tfoot {
+            display: none;
+        }
+    }
+    */
+    .name-value-list {
+        font-family: Innogy-Medium;
+        font-size: 14px;
+
+        tr {
+            border-top: 1px solid #01a1f7;
+        }
+        tr:first-child {
+            display: none;
+        }
+        tr:nth-child(2) {
+            border-top: 2px solid #01a1f7;
+        }
+        tr:last-child {
+            border-bottom: 2px solid #01a1f7;
+        }
+        td {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        .name-cell {
+            min-width: 140px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-weight: bold;
+            background-color: #d4f0fe;
+        }
+        .value-cell {
+            min-width: 140px;
+            padding-left: 25px;
+            padding-right: 10px;
+        }
+    }
+    .name-value-list.toolboxItem {
+        .name-cell {
+            min-width: 110px;
+        }
+        .value-cell {
+            min-width: 60px;
+        }
+    }
+    .visible-panel-pale-background {
+        background-color: $shade_st_three;
+        color: white;
+    }
+    .named-panel {
+        background-color: $shade_st_one;
+        color: black !important;
+
+        .named-panel-header {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            min-height: 25px;
+            padding-top: 5px;
+            padding-bottom: 3px;
+            padding-left: 8px;
+            padding-right: 8px;
+            background-color: $second_color;
+            color: white;
+            font-family: Innogy-Regular;
+            font-size: 18px;
+        }
+    }
+    .removePanelIcon {
+        @include no-select();
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        font-size: 19px;
+        color: #58585a;
+    }
+    .removePanelIcon:hover {
+        color: #e3001b;
+    }
+}
+
+body.userLayout { 
+    .app-alert {
+        width: 100%;
+        font-family: Innogy-Medium;
+        font-size: 18px;
+        padding: 6px 20px;
+        border-width: 1px;
+        border-style: solid;
+
+        .alertSymbol {
+            padding-right: 10px;
+        }
+        .closeAlertIcon {
+            color: white;
+            float: right;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+    }
+    .app-alert-success {
+        color: white;
+        background-color: $color_success;
+        border: none;
+    }
+    .app-alert-success.app-alert-odd {
+        background-color: darken($color_success, 5%);
+    }
+    .app-alert-error {
+        color: white;
+        background-color: $color_error;
+        border: none;
+    }
+    .app-alert-error.app-alert-odd {
+        background-color: darken($color_error, 5%);
+    }
+    .app-alert-warning {
+        color: #8a6d3b;
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+    }
+    .app-alert-warning.app-alert-odd {
+        background-color: darken(#fcf8e3, 5%);
+    }
+    .app-alert-info {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+    .app-alert-info.app-alert-odd {
+        background-color: darken(#d9edf7, 5%);
+    }
+}
+.hiddenForm {
+    display: none;
+}
+
+/*
+.dataTables_wrapper {
+    input, select {
+        border: 1px solid #4b8ad1;
+        height: 25px;
+    }
+
+    .dataTables_paginate {
+        padding-top: 0.600em !important;
+        .paginate_button {
+            background: #4fa7ff !important;
+            padding: 2px 8px !important;
+            border-radius: 0px !important;
+            border: none !important;
+            color: white !important;
+            &:hover {
+                color: white !important;
+                background: #519ae2 !important;
+            }
+            &.current {
+                background-color: #0066cc !important;
+                color: white !important;
+                &:hover {
+                    color: white !important;
+                }
+            }
+            &.previous, &.next {
+                background-color: transparent !important;
+                color: black !important;
+                &:hover {
+                    color: #494d57 !important;
+                }
+                &.disabled {
+                    opacity: 0.4;
+                    &:hover {
+                        color: black !important;
+                    }
+                }
+            }
+        }
+    }
+}
+table.dataTable {
+    margin: 0 !important;
+
+    //mšebela - oprava nastavování width tabulek v mozaicu
+    //width: 100% !important;
+
+    thead, tr th {
+        background-color: #f1f1f1;
+    }
+
+    thead th {
+        border-bottom: 1px solid #4b8ad1;
+    }
+
+    tfoot th {
+        border-bottom: 1px solid #beccdc;
+        border-top: none;
+        padding: 0 !important;
+
+        input {
+            width: 100% !important;
+            border: none !important;
+            border-right: 1px solid #beccdc !important;
+            padding: 0px 5px;
+            box-sizing: border-box;
+        }
+        
+        &:last-child input {
+            border-right: none !important;
+        }
+    }
+}*/
+
+.appPanel {
+    border-radius: 0 !important;
+    color: white !important;
+    &.appColor0 {
+        background: $mellow_yellow_bright !important;
+        &:hover {
+            background: $mellow_yellow_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor1 {
+        background: $pulsing_purple_bright !important;
+        &:hover {
+            background: $pulsing_purple_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor2 {
+        background: $fiery_fuchsia_bright !important;
+        &:hover {
+            background: $fiery_fuchsia_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor3 {
+        background: $radiant_red_bright !important;
+        &:hover {
+            background: $radiant_red_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor4 {
+        background: $galvanic_green_bright !important;
+        &:hover {
+            background: $galvanic_green_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor5 {
+        background: $blazing_blue_bright !important;
+        &:hover {
+            background: $blazing_blue_muted !important;
+            cursor: pointer;
+        }
+    }
+    &.appColor6 {
+        background: $iridescent_indigo_bright !important;
+        &:hover {
+            background: $iridescent_indigo_muted !important;
+            cursor: pointer;
+        }
+    }
+}
+
+body.userLayout {
+    a {
+        color: black;
+        &:hover {
+            color: $second_color;
+        }
+    }
+
+    input, select {
+        color: black;
+    }
+
+
+    input[type=text], input[type=search], select {
+        border: 1px solid #b8b4ab;
+        @include innogy-input;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        .paginate_button {
+            @include innogy-input;
+            padding: 1px;
+            text-align: center;
+            color: $heading_text_color !important;
+            border: none !important;
+            background: $shade_st_six !important;
+            &.current {
+                color: $heading_text_color !important;
+                border: none !important;
+                background: $second_color !important;
+            }
+            &.previous, &.next {
+                background: transparent !important;
+                color: $content_text_color !important;
+                padding: 0px 5px;
+            }
+        }
+    }
+}

@@ -1,0 +1,341 @@
+﻿@{
+    Page.Title = "Omnius Tapestry";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "tapestryModule";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Tapestry</div>
+    <svg class="backgroundDecoration" width="540px" height="357px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+    <div id="upperPanelHistoryButton" class="tapestryUpperPanelButton">Výběr bloku</div>
+    <div id="upperPanelLibrariesButton" class="tapestryUpperPanelButton highlighted">Knihovny</div>
+    <div id="tapestryLibraryArea">
+        <div id="tapestryLibraryResponsiveArea">
+            <div id="libraryCategory-Actions" class="libraryCategory">
+                <div libId="1" libType="action" class="libraryCategoryHeader">Akce 
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-Attributes" class="libraryCategory">
+                <div libId="1" libType="action" class="libraryCategoryHeader">
+                    Atributy
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-UI" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    UI komponenty
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-Roles" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    Role
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-States" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    Stavy
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-Targets" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    Cíle
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-Templates" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    Šablony
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+            <div id="libraryCategory-Integration" class="libraryCategory">
+                <div class="libraryCategoryHeader">
+                    Integrace
+                    <button class="librarySearchToggler"><img class="searchIcon" height="15" src="/Content/images/SearchIcon.png"></button>
+                </div>
+                <input class="librarySearch hidden" type="text" placeholder="Hledat...">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Tapestry</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <div id="tapestryLeftBar">
+        <div class="leftBarHeader">Paleta</div>
+        <div id="hideTapestryTooboxIcon" class="fa fa-caret-left"></div>
+        <ul class="tapestryToolbox">
+            <li class="toolboxCategoryHeader_Symbols"><span class="toolboxCategoryLabel">Symboly</span></li>
+            <li class="symbolToolboxSpace">
+                <img class="toolboxSymbol" symbolType="circle-single" src="~/Content/images/TapestryIcons/circle-single.png" style="left: 14px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-double" src="~/Content/images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
+                <img class="toolboxSymbol" endpoints="final" symbolType="circle-thick" src="~/Content/images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
+                <img class="toolboxSymbol" symbolType="circle-single-dashed" src="~/Content/images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
+                <img class="toolboxSymbol" symbolType="circle-souble-dashed" src="~/Content/images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-plus" src="~/Content/images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-x" src="~/Content/images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-circle" src="~/Content/images/TapestryIcons/gateway-circle.png" style="left: 150px; top: 127px;" />
+                <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-pentagon" src="~/Content/images/TapestryIcons/gateway-pentagon.png" style="left: 6px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="page" src="~/Content/images/TapestryIcons/page.png" style="left: 86px; top: 200px;" />
+                <img class="toolboxSymbol" symbolType="database" src="~/Content/images/TapestryIcons/database.png" style="left: 159px; top: 198px;" />
+                <div class="toolboxSymbol" endpoints="final" symbolType="comment" style="left: 18px; top: 280px; width: 30px; padding: 3px; border: 2px solid grey; border-right: none; min-height: 60px;">
+                    <span class="itemLabel"></span>
+                </div>
+            </li>
+            <li class="toolboxCategoryHeader_Actions"><span class="toolboxCategoryLabel">Akce</span></li>
+            <li class="toolboxCategoryHeader_Attributes"><span class="toolboxCategoryLabel">Atributy</span></li>
+            <li class="toolboxCategoryHeader_UI"><span class="toolboxCategoryLabel">UI komponenty</span></li>
+            <li class="toolboxCategoryHeader_Roles"><span class="toolboxCategoryLabel">Role</span></li>
+            <li class="toolboxCategoryHeader_States"><span class="toolboxCategoryLabel">Stavy</span></li>
+            <li class="toolboxCategoryHeader_Targets"><span class="toolboxCategoryLabel">Cíle</span></li>
+            <li class="toolboxCategoryHeader_Templates"><span class="toolboxCategoryLabel">Šablony</span></li>
+            <li class="toolboxCategoryHeader_Integrations"><span class="toolboxCategoryLabel">Integrace</span></li>
+        </ul>
+    </div>
+    <div id="tapestryLeftBarMinimized">
+        <div id="showTapestryTooboxIcon" class="fa fa-caret-right"></div>
+        <div class="leftBarHeader">Paleta</div>
+    </div>
+    <div id="tapestryWorkspace">
+        <div id="blockHeaderPanel">
+            Blok <span id="blockHeaderBlockName">Vyplnění údajů</span> DB zdroje <span id="blockHeaderDbResCount">0</span>
+            Obrazovky <span id="blockHeaderScreenCount">0</span> Povolené role <span id="blockHeaderRolesCount">0</span>
+            <div id="controlButtonArea">
+                <button id="btnOverview" class="btn-omnius-rectangular">Overview</button>
+                <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
+                <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
+                <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+                <button id="btnHistory" class="btn-omnius-rectangular">Historie</button>
+            </div>
+        </div>
+        <div id="resourceRulesPanel">
+            <div class="panelHeader">
+                Přiřazení zdrojů<div id="btnAddResRule" class="plusButton fa fa-plus"></div>
+            </div>
+            <div class="scrollContainer">
+                <div class="scrollArea">
+                </div>
+            </div>
+        </div>
+        <div id="workflowRulesPanel">
+            <div class="panelHeader">
+                Pravidla bloku<div id="btnAddWfRule" class="plusButton fa fa-plus"></div>
+            </div>
+            <div class="scrollContainer">
+                <div class="scrollArea">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="currentAppId" value="@ViewData["appId"]" />
+<input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
+<input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
+<input type="hidden" id="associatedTableId" value="1" />
+<form id="openMetablockForm" method="post" action="/Tapestry/Overview">
+    <input type="hidden" name="metablockId" />
+</form>
+<div id="history-dialog" title="Load from history">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="commit-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width:240px;">Date created</th>
+                <th>Commit message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="save-dialog" title="Save block">
+    <form>
+        <fieldset>
+            <label for="message">Add a message (optional)</label>
+            <input type="text" name="message" id="message" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-rule-dialog" title="Rename rule">
+    <form>
+        <fieldset>
+            <label for="rule-name">Choose a new name</label>
+            <input type="text" name="rule-name" id="rule-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="rename-block-dialog" title="Rename block">
+    <form>
+        <fieldset>
+            <label for="block-name">Choose a new name</label>
+            <input type="text" name="block-name" id="block-name" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="choose-screens-dialog" title="Choose screens">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="screen-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Screen name</th>
+                <th>Bootstrap</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="table-attribute-properties-dialog" title="Table attribute properties">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <form>
+        <fieldset>
+            <table class="columnFilterTable">
+                <thead>
+                    <tr>
+                        <th>Column name</th>
+                        <th>Settings</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </fieldset>
+        <button id="btnOpenTableConditions" type="button" class="btn-omnius-rectangular">Filter by conditions</button>
+    </form>
+</div>
+<div id="choose-tables-dialog" title="Choose tables">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="table-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Table name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div id="action-properties-dialog" title="Action properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="input-variables">Input variables</label></td>
+                    <td><input class="wideInput" type="text" name="input-variables" id="input-variables" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+                <tr>
+                    <td><label for="output-variables">Output variables</label></td>
+                    <td><input class="wideInput" type="text" name="output-variables" id="output-variables" value="" class="text ui-widget-content ui-corner-all"></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="label-property-dialog" title="Item label">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="label-input">Item label</label></td>
+                    <td><textarea class="wideInput" type="text" name="label-input" id="label-input" value="" class="text ui-widget-content ui-corner-all"></textarea></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="gateway-x-properties-dialog" title="Condition properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="gateway-x-condition">Condition</label></td>
+                    <td><input type="text" name="gateway-x-condition" id="gateway-x-condition" value="" class="text ui-widget-content ui-corner-all" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="uiItem-properties-dialog" title="Condition properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="ajax-action">Ajax</label></td>
+                    <td><input type="checkbox" name="ajax-action" id="ajax-action" value="" class="text ui-widget-content ui-corner-all" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="conditions-dialog" title="Conditions">
+    <form>
+        <fieldset>
+            <div class="conditionSetToolbar">
+                <div class="conditionSetIcon addAndConditionSetIcon">Add AND group</div>
+                <div class="conditionSetIcon addOrConditionSetIcon">Add OR group</div>
+            </div>
+            <div class="conditionSetArea">
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="gateway-conditions-dialog" title="Conditions">
+    <form>
+        <fieldset>
+            <div class="conditionSetToolbar">
+                <div class="conditionSetIcon addAndConditionSetIcon">Add AND group</div>
+                <div class="conditionSetIcon addOrConditionSetIcon">Add OR group</div>
+            </div>
+            <div class="conditionSetArea">
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="choose-whitelist-roles-dialog" title="Choose roles">
+    <div class="spinner-2">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <table id="role-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Role name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
