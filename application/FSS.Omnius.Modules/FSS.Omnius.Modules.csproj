@@ -1078,6 +1078,10 @@
     <Compile Include="Migrations\201702091354293_IncomingEmail-UseSLL.Designer.cs">
       <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.cs" />
+    <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.Designer.cs">
+      <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1765,6 +1769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702091354293_IncomingEmail-UseSLL.resx">
       <DependentUpon>201702091354293_IncomingEmail-UseSLL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101119192_IncomingEmailRule-Name.resx">
+      <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

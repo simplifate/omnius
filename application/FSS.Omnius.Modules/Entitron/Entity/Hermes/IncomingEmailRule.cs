@@ -10,10 +10,21 @@
     {
         public int? Id { get; set; }
 
+        [Required]
         public int IncomingEmailId { get; set; }
+
+        [Required]
         public int ApplicationId { get; set; }
+
+        [Required]
         public string BlockName { get; set; }
+
+        [Required]
         public string WorkflowName { get; set; }
+        
+        [Required]
+        [Display(Name = "Název")]
+        public string Name { get; set; }
         
         [DataType(DataType.MultilineText)]
         public string Rule { get; set; }
