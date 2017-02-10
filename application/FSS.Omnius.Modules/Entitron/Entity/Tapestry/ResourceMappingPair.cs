@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string SourceComponentName { get; set; }
         [StringLength(100)]
         public string SourceTableName { get; set; }
+        public bool SourceIsShared { get; set; }
         [StringLength(100)]
         public string SourceColumnName { get; set; }
         public string SourceColumnFilter { get; set; }
@@ -23,6 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string TargetName { get; set; }
         [StringLength(100)]
         public string TargetTableName { get; set; }
+        public bool TargetIsShared { get; set; }
         [StringLength(100)]
         public string TargetColumnName { get; set; }
         
