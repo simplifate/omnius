@@ -36,6 +36,7 @@
         if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
         if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
         if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsShared != null)          attrs.shared = itemData.IsShared;
         if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
         if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
 

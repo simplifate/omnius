@@ -215,6 +215,50 @@
             }
         }
 
+        if(data.Shared != null) {
+            // Display shared tables
+            for (var ti = 0; ti < data.Shared.Tables.length; ti++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Tables[ti].Name; }).length;
+                var params = { tableName: data.Shared.Tables[ti].Name, shared: true };
+                var label = 'Shared table: ' + data.Shared.Tables[ti].Name;
+
+                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                }
+            }
+
+            // Display shared views
+            for (var vi = 0; vi < data.Shared.Views.length; vi++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Views[vi].Name; }).length;
+                var params = { tableName: data.Shared.Views[vi].Name, shared: true };
+                var label = 'Shared view: ' + data.Shared.Views[vi].Name;
+
+                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute sharedAttribute', params, label);
+                }
+            }
+
+            for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++) {
+                var currentTable = data.Shared.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
+                if (currentTable) {
+                    for (var ci = 0; ci < currentTable.Columns.length; ci++) {
+                        var isUsed = state.filter(function (value) {
+                            return value.ColumnName == currentTable.Columns[ci].Name && value.TableName == currentTable.Name;
+                        }).length;
+                        var params = { tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name, shared: true };
+                        var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
+
+                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed);
+                        if (isUsed) {
+                            TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                        }
+                    }
+                }
+            }
+        }
+
         for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++)
         {
             var currentTable = data.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];

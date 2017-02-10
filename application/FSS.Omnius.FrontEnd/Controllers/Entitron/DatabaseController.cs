@@ -12,6 +12,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Service;
 using Logger;
 using static System.String;
+using FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -346,6 +347,23 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 var result = new AjaxTransferDbScheme();
                 var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
+
+                if (commitId == -1) {
+                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
+
+                    AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
+
+                    SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
+                    SetAttributesRequestCommitRelations(sharedCommit, sharedScheme);
+                    SetAttributesRequestCommitViews(sharedCommit, sharedScheme);
+
+                    result.Shared = sharedScheme;
+                    if (requestedCommit == null)
+                    {
+                        return result;
+                    }
+                }
+
                 //Latest commit was requested, but there are no commits yet. Returning an empty commit.
                 if (requestedCommit == null)
                 {

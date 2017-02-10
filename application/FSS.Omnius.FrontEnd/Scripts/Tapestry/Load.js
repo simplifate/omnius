@@ -1,4 +1,6 @@
 ﻿function LoadBlock(commitId) {
+    console.log("LOADING BLOCKSS");
+
     pageSpinner.show();
 
     appId = $("#currentAppId").val();
@@ -21,7 +23,9 @@
             $("#resourceRulesPanel .resourceRule").remove();
             $("#workflowRulesPanel .workflowRule").remove();
             $("#blockHeaderBlockName").text(data.Name);
+            console.log("Obtained data from server.");
             for (i = 0; i < data.ResourceRules.length; i++) {
+            console.log("Iterating resource rule");
                 currentRuleData = data.ResourceRules[i];
                 newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
                     + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
@@ -104,6 +108,8 @@
                     }
                 });
                 for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
+                    console.log("Got item data:");
+                    console.log(currentItemData);
                     currentItemData = currentRuleData.ResourceItems[j];
                     newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                         + currentItemData.PositionY + 'px;">'
@@ -123,6 +129,9 @@
                             newItem.addClass("viewAttribute");
                         else
                             newItem.addClass("tableAttribute");
+                    }
+                    if (currentItemData.IsShared != null && currentItemData != false) {
+                        newItem.attr("shared", currentItemData.IsShared);
                     }
                     if (currentItemData.ColumnName != null) {
                         newItem.attr("columnName", currentItemData.ColumnName);
@@ -342,6 +351,8 @@
                     pageSpinner.hide()
                 },
                 success: function (tableData) {
+                    console.log("Got tables data:");
+                    console.log(tableData);
                     attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
                     $(".tapestryToolbox .toolboxLi_Attributes").remove();
                     for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {

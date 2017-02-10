@@ -319,12 +319,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     SourceComponentName = source.ComponentName,
                     SourceTableName = source.TableName,
+                    SourceIsShared = source.IsShared,
                     SourceColumnName = source.ColumnName,
                     SourceColumnFilter = source.ColumnFilter,
 
                     TargetType = targetType,
                     TargetName = targetName,
                     TargetTableName = target.TableName,
+                    TargetIsShared = target.IsShared,
                     TargetColumnName = target.ColumnName,
 
                     DataSourceParams = dataSourceParams,

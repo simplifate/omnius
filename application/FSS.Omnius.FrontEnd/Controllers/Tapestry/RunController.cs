@@ -137,7 +137,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     if (resourceMappingPair.relationType.StartsWith("V:")) {
                         dataSource = new DataTable();
                         columnDisplayNameDictionary = new Dictionary<string, string>();
-                        var entitronView = core.Entitron.GetDynamicView(sourceTableName);
+                        var entitronView = core.Entitron.GetDynamicView(sourceTableName, resourceMappingPair.SourceIsShared);
                         dataSource.Columns.Add("hiddenId", typeof(int));
                         var entitronRowList = entitronView.Select().ToList();
                         bool noConditions = conditionSets.Count == 0;
@@ -179,7 +179,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                     else {
                         bool disableColumnAlias = (resourceMappingPair.TargetType == "form|select" || resourceMappingPair.TargetType == "dropdown-select" || resourceMappingPair.TargetType == "multiple-select");
-                        var entitronTable = core.Entitron.GetDynamicTable(resourceMappingPair.SourceTableName);
+                        var entitronTable = core.Entitron.GetDynamicTable(resourceMappingPair.SourceTableName, resourceMappingPair.SourceIsShared);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
                         if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter)) {

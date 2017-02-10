@@ -1087,6 +1087,10 @@
     <Compile Include="Migrations\201702101332222_addedLocaleId.Designer.cs">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.cs" />
+    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.Designer.cs">
+      <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1780,6 +1784,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.resx">
+      <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -195,6 +195,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 PageId = ajaxItem.IsBootstrap == true ? null : ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
+                                IsShared = ajaxItem.IsShared,
                                 ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray()),
                                 IsBootstrap = ajaxItem.IsBootstrap,
@@ -810,6 +811,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     IsBootstrap = item.IsBootstrap,
                     BootstrapPageId = item.BootstrapPageId,
                     TableName = item.TableName,
+                    IsShared = item.IsShared,
                     ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()
                 };

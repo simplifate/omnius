@@ -435,6 +435,7 @@ function SaveBlock(commitMessage) {
                 IsBootstrap: GetIsBootstrap(currentItem),
                 BootstrapPageId: GetIsBootstrap(currentItem) ? currentItem.attr("pageId") : null,
                 TableName: currentItem.attr("tableName"),
+                IsShared: currentItem.attr("shared") === "true",
                 ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter"),
                 ConditionSets: currentItem.data("conditionSets")
@@ -555,6 +556,7 @@ function SaveBlock(commitMessage) {
             Label: toolboxItem.find(".itemLabel").text(),
             ActionId: toolboxItem.attr("ActionId"),
             TableName: toolboxItem.attr("TableName") ? toolboxItem.attr("TableName") : null,
+            IsShared: toolboxItem.attr("shared") === "true",
             ColumnName: toolboxItem.attr("ColumnName") ? toolboxItem.attr("ColumnName") : null,
             PageId: toolboxItem.attr("PageId"),
             ComponentName: toolboxItem.attr("ComponentName") ? toolboxItem.attr("ComponentName") : null,
@@ -628,6 +630,8 @@ function SaveBlock(commitMessage) {
 }
 
 function LoadBlock(commitId) {
+    console.log("LOADING BLOCKSS");
+
     pageSpinner.show();
 
     appId = $("#currentAppId").val();
@@ -650,7 +654,9 @@ function LoadBlock(commitId) {
             $("#resourceRulesPanel .resourceRule").remove();
             $("#workflowRulesPanel .workflowRule").remove();
             $("#blockHeaderBlockName").text(data.Name);
+            console.log("Obtained data from server.");
             for (i = 0; i < data.ResourceRules.length; i++) {
+            console.log("Iterating resource rule");
                 currentRuleData = data.ResourceRules[i];
                 newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
                     + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
@@ -733,6 +739,8 @@ function LoadBlock(commitId) {
                     }
                 });
                 for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
+                    console.log("Got item data:");
+                    console.log(currentItemData);
                     currentItemData = currentRuleData.ResourceItems[j];
                     newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                         + currentItemData.PositionY + 'px;">'
@@ -752,6 +760,9 @@ function LoadBlock(commitId) {
                             newItem.addClass("viewAttribute");
                         else
                             newItem.addClass("tableAttribute");
+                    }
+                    if (currentItemData.IsShared != null && currentItemData != false) {
+                        newItem.attr("shared", currentItemData.IsShared);
                     }
                     if (currentItemData.ColumnName != null) {
                         newItem.attr("columnName", currentItemData.ColumnName);
@@ -971,6 +982,8 @@ function LoadBlock(commitId) {
                     pageSpinner.hide()
                 },
                 success: function (tableData) {
+                    console.log("Got tables data:");
+                    console.log(tableData);
                     attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
                     $(".tapestryToolbox .toolboxLi_Attributes").remove();
                     for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {
@@ -1926,21 +1939,34 @@ $(function () {
                             newToolboxLi.hide();
                     }
                     else if (libType == "column-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("isShared") === "true") {
+                            isShared = 'isShared="true"';
+                        }
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" '+isShared+' columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
                     else if (libType == "table-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("shared") === "true") {
+                            isShared = 'shared="true"';
+                        }
+                        console.log("Transpiling: "+isShared);
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" '+isShared+'><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
                     else if (libType == "view-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("isShared") === "true") {
+                            isShared = 'isShared="true"';
+                        }
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" ' + isShared + '><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
@@ -2014,7 +2040,7 @@ $(function () {
     }
 });
 
-var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableName;
+var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableIsShared, ModelTableName;
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -2270,16 +2296,23 @@ $(function () {
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
                 tableName = CurrentItem.attr("tableName");
+                isShared = CurrentItem.attr("shared") === "true";
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: "json",
                     success: function (data) {
+                        var targetList = data.Tables;
+                        if (isShared) {
+                            targetList = data.Shared.Tables;
+                            console.log("Table is shared, targeting shared resources.");
+                        }
                         CurrentTableColumnArray = [];
                         columnFilter = CurrentItem.data("columnFilter");
                         if (columnFilter == undefined)
                             columnFilter = [];
-                        targetTable = data.Tables.filter(function (value, index, ar) {
+                        targetTable = targetList.filter(function (value, index, ar) {
+                            console.log(value.Name + " == " + tableName + " = " + (value.Name == tableName));
                             return value.Name == tableName;
                         })[0];
                         if (targetTable == undefined)
@@ -2365,6 +2398,14 @@ $(function () {
                                 newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
+                        for (i = 0; i < data.Shared.Tables.length; i++) {
+                            newTableRow = $('<tr class="tableRow" tableId="' + data.Shared.Tables[i].Id + '"><td><span class="tableName" shared="true">' + data.Shared.Tables[i].Name + '</span></td></tr>');
+                            if (AssociatedTableName.indexOf(data.Shared.Tables[i].Name) != -1)
+                                newTableRow.addClass("highlightedRow");
+                            if (data.Shared.Tables[i].Name == ModelTableName)
+                                newTableRow.find("td").append('<div class="modelMarker">Model</div>');
+                            tbody.append(newTableRow);
+                        }
                         for (i = 0; i < SystemTables.length; i++) {
                             newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td><span class="tableName">' + SystemTables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
@@ -2397,16 +2438,33 @@ $(function () {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
+                            isShared = $(element).find("td .tableName").attr("shared") === "true";
                             tableName = $(element).find('td .tableName').text();
                             AssociatedTableIds.push(parseInt(tableId));
                             AssociatedTableName.push(tableName);
-                            currentTable = data.Tables.filter(function (value) {
+                            var targetList = data.Tables;
+                            if (isShared) {
+                                targetList = data.Shared.Tables;
+                                console.log("Adding shared table columns");
+                            }
+
+                            console.log("Target:");
+                            console.log($(element));
+                            currentTable = targetList.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];
+                            console.log(currentTable);
+                            var sharedClass = "";
+                            var prefix = "";
+                            if (isShared) {
+                                sharedClass = 'shared="true"';
+                                prefix = "Shared: ";
+                            }
                             if (currentTable)
                                 for (i = 0; i < currentTable.Columns.length; i++) {
+                                    console.log("Adding column: " + currentTable.Columns[i].Name);
                                     $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '" '+sharedClass+'>'+ prefix + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
                                 }
                             systemTable = SystemTables.filter(function (value) {
                                 return value.Name == tableName;
@@ -2421,6 +2479,7 @@ $(function () {
                     modelMarker = chooseTablesDialog.find("#table-table:first tbody:nth-child(2) .modelMarker");
                     if (modelMarker.length) {
                         ModelTableName = modelMarker.parents("td").find(".tableName").text();
+                        ModelTableIsShared = modelMarker.parents("td").find(".tableName").attr("shared") === "true";
                     }
                     $("#blockHeaderDbResCount").text(tableCount);
                     chooseTablesDialog.dialog("close");
@@ -3743,6 +3802,50 @@ TB.load = {
             }
         }
 
+        if(data.Shared != null) {
+            // Display shared tables
+            for (var ti = 0; ti < data.Shared.Tables.length; ti++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Tables[ti].Name; }).length;
+                var params = { tableName: data.Shared.Tables[ti].Name, shared: true };
+                var label = 'Shared table: ' + data.Shared.Tables[ti].Name;
+
+                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                }
+            }
+
+            // Display shared views
+            for (var vi = 0; vi < data.Shared.Views.length; vi++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Views[vi].Name; }).length;
+                var params = { tableName: data.Shared.Views[vi].Name, shared: true };
+                var label = 'Shared view: ' + data.Shared.Views[vi].Name;
+
+                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute sharedAttribute', params, label);
+                }
+            }
+
+            for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++) {
+                var currentTable = data.Shared.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
+                if (currentTable) {
+                    for (var ci = 0; ci < currentTable.Columns.length; ci++) {
+                        var isUsed = state.filter(function (value) {
+                            return value.ColumnName == currentTable.Columns[ci].Name && value.TableName == currentTable.Name;
+                        }).length;
+                        var params = { tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name, shared: true };
+                        var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
+
+                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed);
+                        if (isUsed) {
+                            TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                        }
+                    }
+                }
+            }
+        }
+
         for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++)
         {
             var currentTable = data.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
@@ -3971,6 +4074,7 @@ TB.rr = {
         if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
         if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
         if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsShared != null)          attrs.shared = itemData.IsShared;
         if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
         if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
 
