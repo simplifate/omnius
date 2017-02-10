@@ -1,0 +1,29 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Hermes.IncomingEmail
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
+    <h4>Detail záznamu</h4>
+    <table class="details-list table table-striped">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ImapServer)</td>
+            <td>@Html.DisplayFor(model => model.ImapServer)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ImapPort)</td>
+            <td>@Html.DisplayFor(model => model.ImapPort)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.UserName)</td>
+            <td>@Html.DisplayFor(model => model.UserName)</td>
+        </tr>
+    </table>
+</div>
+<p class="nexusDetailsButtons">
+    @Ajax.RouteLink("Upravit", "Hermes", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue" })
+    @Html.RouteLink("Smazat", "Hermes", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-omnius-red" })
+</p>

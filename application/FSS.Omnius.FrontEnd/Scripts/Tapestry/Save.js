@@ -75,7 +75,7 @@ function SaveBlock(commitMessage) {
                 saveId++;
                 itemArray.push({
                     Id: currentItem.attr("saveId"),
-                    Label: currentItem.find(".itemLabel").text(),
+                    Label: currentItem.find(".itemLabel").length ? currentItem.find(".itemLabel").text() : currentItem.data("label"),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),

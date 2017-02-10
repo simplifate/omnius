@@ -6512,6 +6512,9 @@ body.cortexModule #lowerPanel {
     .tileMenuArea .tileMenuItem .fa-envelope {
       font-size: 110px;
       top: 12px; }
+    .tileMenuArea .tileMenuItem .fa-envelope-square {
+      font-size: 110px;
+      top: 12px; }
     .tileMenuArea .tileMenuItem .fa-copy {
       font-size: 100px;
       top: 16px; }
