@@ -23,7 +23,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         public static DateTime prepareEnd;
 
         [HttpGet]
-        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
+        public ActionResult Index(string appName, string locale = "", string blockIdentify = null, int modelId = -1, string message = null, string messageType = null)
         {
             C.CORE core = HttpContext.GetCORE();
             DBEntities context = core.Entitron.GetStaticTables();
@@ -103,6 +103,19 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["blockName"] = block.Name;
             ViewData["userName"] = core.User.DisplayName;
             ViewData["crossBlockRegistry"] = ""; /// !!!
+
+            ViewData["HttpContext"] = HttpContext;
+            string lastLocale = this.GetLocaleNameById(core.User.LocaleId);
+            if (locale == "")
+                locale = lastLocale;
+            ViewData["locale"] = locale;
+            if (locale == "cs")
+                core.User.LocaleId = 1;
+            else
+                core.User.LocaleId = 2;
+
+            context.SaveChanges();
+
 
             DBItem modelRow = null;
             if (modelId != -1 && !string.IsNullOrEmpty(block.ModelName)) {
@@ -386,6 +399,13 @@ namespace FSS.Omnius.Controllers.Tapestry
             return null;
         }
 
+        public string GetLocaleNameById(int? id)
+        {
+            if (id.HasValue && id == 1)
+                return "cs";
+            else return "en";
+
+        }
         private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)
         {
             return blockName != null

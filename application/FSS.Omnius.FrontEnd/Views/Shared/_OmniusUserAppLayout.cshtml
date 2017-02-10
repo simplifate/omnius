@@ -3,19 +3,27 @@
 @using FSS.Omnius.Modules.Entitron.Entity.Tapestry
 @using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 @using FSS.Omnius.Modules.CORE
+@using FSS.Omnius.FrontEnd.Utils
+@{
+    T t = new T((string)ViewData["locale"]);
+    int currentTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+    string jsTranslations = JsTranslationsCollection.GetJson(t);
+}
 <!DOCTYPE html>
-<html>
+<html lang="@ViewData["locale"]">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title innogy OSS</title>
+    <title>@(t._((string)ViewBag.Title)) innogy OSS</title>
     <link rel="stylesheet" href="@Services.GetFileVersion("/Content/bundle.css")" />
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script> 
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
     <style>
         @{
             int appId = Context.GetCORE().Entitron.AppId;
             var context = DBEntities.instance;
             var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == appId).First();
+
+
         }
         @{  /* @Html.Partial($"{applicationTemplate.CssTemplate.Url}") */
         }
@@ -24,7 +32,7 @@
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script> 
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>
     <div id="brandBar">
         <div class="logo">
             <img src="@Url.Content("~/Content/images/innogy_logo_H_n_4C_ly.svg")" alt="innogy" />

@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [StringLength(100)]
         public string Job { get; set; }
         public bool isLocalUser { get; set; }
-        
+        public int? LocaleId { get; set; }
         public DateTime CurrentLogin { get; set; }
         public DateTime LastLogin { get; set; }
         public DateTime? LastLogout { get; set; }

@@ -81,6 +81,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL">
+      <HintPath>..\packages\NGettext.0.6.2\lib\net45\NGettext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NSass.Core, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NSass.Core.0.0.3.0\lib\net40\NSass.Core.dll</HintPath>
       <Private>True</Private>
@@ -293,6 +297,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Builder\SharedTableBuilder.cs" />
+    <Compile Include="Utils\TranslationUtils.cs" />
     <Compile Include="Utils\IDispatchable.cs" />
     <Compile Include="Utils\SamlUtil.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />

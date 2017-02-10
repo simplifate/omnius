@@ -181,6 +181,7 @@
   <ItemGroup>
     <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
+    <Compile Include="CORE\ITranslator.cs" />
     <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\IModule.cs" />
@@ -1082,6 +1083,10 @@
     <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.Designer.cs">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702101332222_addedLocaleId.cs" />
+    <Compile Include="Migrations\201702101332222_addedLocaleId.Designer.cs">
+      <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1772,6 +1777,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702101119192_IncomingEmailRule-Name.resx">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
+      <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
