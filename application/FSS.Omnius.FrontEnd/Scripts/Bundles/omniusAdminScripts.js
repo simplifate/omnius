@@ -398,7 +398,13 @@ var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td c
     + '<input type="text"></input></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
-
+var HermesConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
+    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
+var HermesConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select class="form-control" style="width:auto"><option value="From">From</option><option value="CC">CC</option><option value="Subject">Subject</option><option value="Body">Body</option></select>'
+    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">obsahuje</option><option value="BeginWith">začíná</option><option value="EndWith">končí</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
+    + '<input type="text" value="" class="form-control" /></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+    + '</tr>';
 var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
@@ -2919,7 +2925,7 @@ $(function () {
     });
     function envelopeStartPropertiesDialog_SubmitData() {
         CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
-        envelopeStartPropertiesDialog_SubmitData.dialog("close");
+        envelopeStartPropertiesDialog.dialog("close");
         CurrentItem.removeClass("activeItem");
     }
 });
@@ -2958,7 +2964,7 @@ $(function () {
                         gatewayConditionsDialog.dialog("open");
                     }
                     else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
-                    {
+                    { 
                         CurrentItem = item;
                         envelopeStartPropertiesDialog.dialog("open");
                     }
@@ -4161,6 +4167,10 @@ TB.wfr = {
             item = $('<img id="wfItem' + itemData.Id + '" class="symbol" symbolType="' + itemData.SymbolType +
             '" src="/Content/images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
+
+            if (itemData.SymbolType == "envelope-start") {
+                item.data('label', itemData.Label);
+            }
         } else {
             item = $('<div id="wfItem' + itemData.Id + '" class="item" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;"><span class="itemLabel">' + itemData.Label + '</span></div>');
