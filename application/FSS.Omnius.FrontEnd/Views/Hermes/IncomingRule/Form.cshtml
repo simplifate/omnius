@@ -8,7 +8,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "�?prava pravidla" : "Nové pravidlo")</h4>
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava pravidla" : "Nové pravidlo")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -45,7 +45,23 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="control-label col-md-2">Podmínky</label>
+            <div class="col-md-10 conditions">
+                <div class="form-control" style="height: auto">
+                    <div class="conditionSetToolbar">
+                        <a class="conditionSetIcon addAndConditionSetIcon">Add AND group</a>
+                        <a class="conditionSetIcon addOrConditionSetIcon">Add OR group</a>
+                    </div>
+                    <div class="conditionSetArea"></div>
+                </div>
+            </div> 
+            @Html.EditorFor(m => m.Rule, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Rule, "", new { @class = "text-danger" })
+        </div>
 
+        <div class="clearfix"></div>
+        <div class="form-group"><br /><br /><br /><br /></div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -62,9 +78,20 @@
         init: function ()
         {
             var self = IncomingEmailRule;
+            var c = $('.conditions');
 
             $('#ApplicationId').change(self.loadBlockList);
             $('#BlockName').change(self.loadWorkflowList);
+
+            c.on('click', '.addAndConditionSetIcon', self.addAndConditionSet)
+             .on('click', '.addOrConditionSetIcon', self.addOrConditionSet)
+             .on('click', '.removeConditionSetIcon', self.removeConditionSet)
+             .on('click', '.addAndConditionIcon', self.addAndCondition)
+             .on('click', '.addOrConditionIcon', self.addOrCondition)
+             .on('click', '.removeConditionIcon', self.removeCondition)
+             .on('change', '.conditionOperatorCell select', self.changeOperator)
+             .on('change', 'input, select', self.buildRule);
+
         },
 
         loadBlockList: function()
@@ -72,12 +99,14 @@
             var self = IncomingEmailRule;
             self.clearBlockList();
 
-            $.ajax('/Hermes/IncomingRule/LoadBlockList', {
-                type: 'post',
-                dataType: 'json',
-                data: { appId: this.value },
-                success: self.setBlockList
-            });
+            if (this.value.length) {
+                $.ajax('/Hermes/IncomingRule/LoadBlockList', {
+                    type: 'post',
+                    dataType: 'json',
+                    data: { appId: this.value },
+                    success: self.setBlockList
+                });
+            }
         },
 
         clearBlockList: function()
@@ -108,12 +137,14 @@
             var self = IncomingEmailRule;
             self.clearWorkflowList();
 
-            $.ajax('/Hermes/IncomingRule/LoadWorkflowList', {
-                type: 'post',
-                dataType: 'json',
-                data: { blockId: this.value, appId: $('#ApplicationId').val() },
-                success: self.setWorkflowList
-            });
+            if (this.value.length) {
+                $.ajax('/Hermes/IncomingRule/LoadWorkflowList', {
+                    type: 'post',
+                    dataType: 'json',
+                    data: { blockName: this.value, appId: $('#ApplicationId').val() },
+                    success: self.setWorkflowList
+                });
+            }
         },
 
         clearWorkflowList: function () {
@@ -121,14 +152,119 @@
             $('#WorkflowName').append('<option value="">' + ($('#BlockName').val().length ? '-- vyberte --' : '-- vyberte blok --') + '</option>');
         },
 
-        setWorkflowList: function (item) {
-            var opt = $('<option></option>');
-            opt.html(item.Text);
-            opt.attr('value', item.Value);
+        setWorkflowList: function (data) {
+            for (var i in data) {
+                var item = data[i];
+                var opt = $('<option></option>');
+                opt.html(item.Text);
+                opt.attr('value', item.Value);
 
-            if (item.Selected) opt.attr('selected', true);
+                if (item.Selected) opt.attr('selected', true);
 
-            $('#WorkflowName').append(opt);
+                $('#WorkflowName').append(opt);
+            }
+        },
+
+        addAndConditionSet: function()
+        {
+            var set = $(HermesConditionSetTemplate);
+            $('.conditionSetArea').append(set);
+
+            set.find('.conditionSetPrefix').text(set.index() == 0 ? 'A' : 'AND a');
+            set.find('.conditionTable').append($(HermesConditionTemplate))
+        },
+
+        addOrConditionSet: function()
+        {
+            var set = $(HermesConditionSetTemplate);
+            $('.conditionSetArea').append(set);
+
+            set.find('.conditionSetPrefix').text(set.index() == 0 ? 'A' : 'OR a');
+            set.find('.conditionTable').append($(HermesConditionTemplate))
+        },
+
+        removeConditionSet: function()
+        {
+            var currentConditionSet = $(this).parents('.conditionSet');
+            if (currentConditionSet.index() == 0)
+                currentConditionSet.parents('.conditionSetArea').find('.conditionSet:eq(1)').find('.conditionSetPrefix').text('A');
+
+            currentConditionSet.remove();
+            IncomingEmailRule.buildRule();
+        },
+
+        addAndCondition: function()
+        {
+            var newCondition = $(HermesConditionTemplate);
+            newCondition.find('.conditionOperator').text('and');
+            $(this).parents('tr').after(newCondition);
+        },
+
+        addOrCondition: function()
+        {
+            var newCondition = $(HermesConditionTemplate);
+            newCondition.find('.conditionOperator').text('or');
+            $(this).parents('tr').after(newCondition);
+        },
+
+        removeCondition: function () {
+            var currentCondition = $(this).parents('tr');
+            if (currentCondition.index() == 0) {
+                currentCondition.parents('table').find('tr:eq(1)').find('.conditionOperator').text('');
+            }
+            if (currentCondition.parents('table').find('tr').length == 1) {
+                if (currentCondition.parents('.conditionSet').index() == 0) {
+                    currentCondition.parents('.conditionSetArea').find('.conditionSet:eq(1)').find('.conditionSetPrefix').text('A');
+                }
+                currentCondition.parents('.conditionSet').remove();
+            }
+            else {
+                currentCondition.remove();
+            }
+            IncomingEmailRule.buildRule();
+        },
+
+        changeOperator: function()
+        {
+            var currentCondition = $(this).parents('tr');
+            var optionSelected = $('option:selected', this);
+            var inputType = optionSelected.data('inputtype');
+            currentCondition.find('.conditionValueCell input').toggle(inputType !== 'none')
+        },
+
+        buildRule: function()
+        {
+            var rule = [];
+
+            $('.conditions .conditionSet').each(function (setIndex) {
+                var currentSet = $(this);
+                var conditionArray = [];
+                var setPrefix = currentSet.find('.conditionSetPrefix').text();
+                var setRelation = setPrefix == 'OR a' ? 'OR' : 'AND';
+
+                currentSet.find('.conditionTable tr').each(function (index) {
+                    var currentCondition = $(this);
+                    var relationCellValue = currentCondition.find('.conditionOperator').text();
+                    var relation = relationCellValue == '' ? 'AND' : relationCellValue.toUpperCase();
+                    var value = currentCondition.find('.conditionValueCell input').val();
+
+                    conditionArray.push({
+                        Index: index,
+                        Relation: relation,
+                        Variable: currentCondition.find('.conditionVariableCell select option:selected').val(),
+                        Operator: currentCondition.find('.conditionOperatorCell select option:selected').val(),
+                        Value: value
+                    });
+                });
+
+                rule.push({
+                    SetIndex: setIndex,
+                    SetRelation: setRelation,
+                    Conditions: conditionArray
+                });
+            });
+
+            $('#Rule').val(JSON.stringify(rule));
         }
     };
 

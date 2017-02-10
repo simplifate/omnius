@@ -13681,3 +13681,7 @@ Object reference not set to an instance of an object.
 [2017-02-06 13:32:15Z]	<br />Errors:<br />Message: Sequence contains no elements<br />Method: TSource First[TSource](System.Collections.Generic.IEnumerable`1[TSource])<br />Trace:    at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
    at FSS.Omnius.Modules.Tapestry.Actions.Entitron.SelectTopAction.InnerRun(Dictionary`2 vars, Dictionary`2 outputVars, Dictionary`2 InvertedInputVars, Message message) in C:\Users\Fabio\upstream\omnius2\application\FSS.Omnius.Modules\Tapestry\Actions\Entitron\SelectTopAction.cs:line 58
    at FSS.Omnius.Modules.Tapestry.Action.run(Dictionary`2 vars) in C:\Users\Fabio\upstream\omnius2\application\FSS.Omnius.Modules\Tapestry\Running\Action.cs:line 75<br /><br /> 
+[2017-02-10 14:57:04Z]	!Failed to log error!:
+Požadavek není v tomto kontextu k dispozici. 
+[2017-02-10 17:04:49Z]	!Failed to log error!:
+Požadavek není v tomto kontextu k dispozici. 

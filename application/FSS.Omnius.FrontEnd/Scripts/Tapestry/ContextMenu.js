@@ -32,7 +32,7 @@
                         gatewayConditionsDialog.dialog("open");
                     }
                     else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
-                    {
+                    { 
                         CurrentItem = item;
                         envelopeStartPropertiesDialog.dialog("open");
                     }

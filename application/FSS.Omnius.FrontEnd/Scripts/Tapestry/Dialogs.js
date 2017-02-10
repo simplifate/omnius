@@ -909,7 +909,7 @@ $(function () {
     });
     function envelopeStartPropertiesDialog_SubmitData() {
         CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
-        envelopeStartPropertiesDialog_SubmitData.dialog("close");
+        envelopeStartPropertiesDialog.dialog("close");
         CurrentItem.removeClass("activeItem");
     }
 });

@@ -62,6 +62,10 @@
             item = $('<img id="wfItem' + itemData.Id + '" class="symbol" symbolType="' + itemData.SymbolType +
             '" src="/Content/images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
+
+            if (itemData.SymbolType == "envelope-start") {
+                item.data('label', itemData.Label);
+            }
         } else {
             item = $('<div id="wfItem' + itemData.Id + '" class="item" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;"><span class="itemLabel">' + itemData.Label + '</span></div>');
