@@ -1,0 +1,107 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.Template
+
+<link rel="stylesheet" href="~/Scripts/cm/lib/codemirror.css" />
+<link rel="stylesheet" href="~/Scripts/cm/addon/hint/show-hint.css">
+<script src="~/Scripts/cm/lib/codemirror.js"></script>
+<script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/xml-hint.js"></script>
+<script src="~/Scripts/cm/addon/hint/html-hint.js"></script>
+<script src="~/Scripts/cm/mode/xml/xml.js"></script>
+<script src="~/Scripts/cm/mode/javascript/javascript.js"></script>
+<script src="~/Scripts/cm/mode/css/css.js"></script>
+<script src="~/Scripts/cm/mode/htmlmixed/htmlmixed.js"></script>
+
+<script>
+    $(function() {
+        var area = $('#selector');
+        var cm = CodeMirror.fromTextArea(area[0], {
+            lineNumbers: true,
+            mode: "htmlmixed",
+            extraKeys: { "Ctrl-Space": "autocomplete" }
+        });
+
+        cm.on('blur', function() {
+            cm.save();
+        });
+
+        // Pokud by byl nějaký přepínač html / wysiwyg
+        area.change(function() {
+            cm.setValue(this.value);
+        });
+        area.next().resizable({
+            resize: function() {
+                cm.setSize($(this).width(), $(this).height());
+            }
+        });
+    });
+    $(document).ready(function () {
+        $('#preview').click(function () {
+            document.getElementById('previewContent').setAttribute("style", "display:block");
+            var page = document.getElementById('selector').value;
+            document.getElementById('previewfield').innerHTML = page;
+        });
+
+        $('#closePreview').click(function () {
+            document.getElementById('previewContent').setAttribute("style", "display:none");
+        });
+    });
+
+</script>
+@using (Html.BeginRouteForm("Mozaic", new {@action = "Update"}, FormMethod.Post))
+{
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                Název
+            </label>
+        </div>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(x => x.Name)
+        </div>
+    </div>
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                Kategorie
+            </label>
+        </div>
+        <div class="col-sm-3">
+            @Html.DropDownList("cat", new SelectList(ViewBag.Categories, "Id", "Name"))
+        </div>
+    </div>
+    <div class="form-group col-sm-12">
+        <div>
+            <label class="control-label col-sm-2">
+                HTML
+            </label>
+        </div>
+        <div class="col-sm-7">
+            @Html.TextAreaFor(x => x.Html, new { @id= "selector" })
+        </div>
+    </div>
+
+    <div class="col-sm-11">
+        <button type="submit" class="btn btn-primary">Upravit šablonu</button>
+        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+    </div>
+}
+<div class="form-group col-sm-1">
+    <button id="preview" class="btn btn-default">
+        Náhled
+    </button>
+</div>
+
+<div class="bottom-panel" id="previewContent" style="display:none">
+    <div class="panelLabel">Náhled</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+
+    <div id="previewfield" class="col-sm-12" style="padding-top:20px">
+    </div>
+    <div class="col-sm-12" style="padding-top:20px">
+        <button class="btn btn-default" id="closePreview">Zavřít náhled</button>
+    </div>
+</div>

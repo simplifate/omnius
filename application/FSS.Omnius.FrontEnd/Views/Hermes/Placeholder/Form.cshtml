@@ -1,0 +1,42 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Hermes.EmailPlaceholder
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@using (Html.BeginRouteForm("HermesPlaceholders", new { @action = "Save", @emailId = ViewData["emailId"] }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava proměnné" : "Nová proměnná")</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Prop_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Prop_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Prop_Name, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+            </div>
+        </div>
+    </div>
+}
+
+

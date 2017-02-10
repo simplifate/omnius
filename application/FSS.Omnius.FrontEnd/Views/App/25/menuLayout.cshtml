@@ -1,0 +1,11 @@
+    <ul  id=appMenu>
+@if (Context.GetLoggedUser().canUseBlock("",25)){            <li>
+                    <h4>test</h4>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",25)){            <li>
+                    <a href="/App2/Druhyblok">druhyBlok</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",25)){            <li>
+                    <a href="/App2/Bootstraptest">BootstrapTest</a>
+            </li>
+}    </ul>

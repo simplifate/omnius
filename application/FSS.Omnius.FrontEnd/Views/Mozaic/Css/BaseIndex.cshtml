@@ -1,0 +1,29 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Mozaic
+@model System.Data.Entity.DbSet<Css>
+
+<table class="table table-bordered table-striped table-omnius">
+    <colgroup>
+        <col>
+        <col>
+        <col width="150">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th width="150">Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Css css in Model)
+        {
+            <tr>
+                <td>@css.Name</td>
+                <td>
+                    @Ajax.RouteLink(" ", "Mozaic", new { @action = "Detail", @id = css.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default" })
+                    @Ajax.RouteLink(" ", "Mozaic", new { @action = "Update", @id = css.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary" })
+                    @Html.RouteLink(" ", "Mozaic", new { @action = "Delete", @id = css.Id }, new { @class = "fa fa-trash ico-only btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

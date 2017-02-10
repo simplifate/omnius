@@ -1,0 +1,58 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
+@using System.Text;
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
+    <h4>Detial webové služby</h4>
+    <table class="details-list table table-striped">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Type)</td>
+            <td>@Html.DisplayFor(model => model.Type)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+        </tr>
+        @if (Model.Type == FSS.Omnius.Modules.Entitron.Entity.Nexus.WSType.SOAP)
+        {
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.WSDL_Url)</td>
+                <td>@Html.DisplayFor(model => model.WSDL_Url)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.WSDL_File)</td>
+                <td>
+                    <button id="btnShowWsdlFile" onclick="ShowWsdlButtonClick(this)">Náhled</button>
+                    <div class="wsdlFileString">@(Model.WSDL_File != null ? HttpUtility.HtmlEncode(UTF8Encoding.UTF8.GetString(Model.WSDL_File)) : "")</div>
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.SOAP_Endpoint)</td>
+                <td>@Html.DisplayFor(model => model.SOAP_Endpoint)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.SOAP_XML_NS)</td>
+                <td>@Html.DisplayFor(model => model.SOAP_XML_NS)</td>
+            </tr>
+        }
+        else {
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.REST_Base_Url)</td>
+                <td>@Html.DisplayFor(model => model.REST_Base_Url)</td>
+            </tr>
+        }
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Auth_User)</td>
+            <td>@Html.DisplayFor(model => model.Auth_User)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Auth_Password)</td>
+            <td>@(Model.Auth_Password != null ? "********" : "")</td>
+        </tr>
+    </table>
+</div>
+<p class="nexusDetailsButtons">
+    @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue" })
+    @Html.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-omnius-red" })
+</p>

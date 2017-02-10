@@ -1,0 +1,107 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WS
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+@using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "Úprava webové služby" : "Nová webová služba")</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <section id="SectionSOAP">
+            <div class="form-group">
+                @Html.LabelFor(model => model.WSDL_Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WSDL_Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WSDL_Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.WSDL_File, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" id="WSDL_File" name="upload" />
+                    @Html.ValidationMessageFor(model => model.WSDL_File, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SOAP_Endpoint, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SOAP_Endpoint, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SOAP_Endpoint, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SOAP_XML_NS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SOAP_XML_NS, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SOAP_XML_NS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </section>
+        <section id="SectionREST">
+            <div class="form-group">
+                @Html.LabelFor(model => model.REST_Base_Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.REST_Base_Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.REST_Base_Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </section>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Auth_User, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Auth_User, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Auth_User, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Auth_Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Auth_Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                @Html.ValidationMessageFor(model => model.Auth_Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+            </div>
+        </div>
+</div>
+}
+
+<script>
+    /*<![CDATA[*/
+    $(function () {
+        $('#Type').change(function () {
+            $('option', this).each(function () {
+                $('#Section' + this.innerHTML).toggle(this.selected);
+            });
+        }).change();
+    });
+    /*]]>*/
+</script>

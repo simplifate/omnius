@@ -1,0 +1,106 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Mozaic.TemplateCategory
+@{
+    Page.Title = "Omnius Mozaic";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicModule";
+}
+
+<script type="text/javascript">
+    $('#addChildren').onclick(function () {
+        $('#children').clone(true);
+    })
+</script>
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+
+@{
+    Page.Title = "Omnius Mozaic";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "mozaicComponentManagerModule";
+}
+<div id="upperPanel">
+    <div class="panelLabel">Mozaic</div>
+    <svg class="backgroundDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 295 L31 108 L65 74 L376 74" stroke="#49c4f1" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#49c4f1" stroke-width="1" fill="none" />
+    </svg>
+    <img class="decorationWatcheye" src="~/Content/images/watcheye_small.png" />
+    <div class="tileMenuArea">
+        <a href="/Mozaic/TemplateCategory">
+            <div id="mozaicMenuTemplates" class="tileMenuItem highlighted">
+                <div class="buttonLabel">Šablony</div>
+            </div>
+        </a>
+        <div id="mozaicMenuPages" class="tileMenuItem">
+            <div class="buttonLabel">Stránky</div>
+        </div>
+        <div id="mozaicMenuCss" class="tileMenuItem">
+            <div class="buttonLabel">CSS</div>
+        </div>
+    </div>
+    <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
+</div>
+<div id="minimizedUpperPanel">
+    <div class="panelLabel">Mozaic</div>
+    <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
+</div>
+<div id="lowerPanel">
+    <svg class="lowerLeftDecoration" width="540px" height="565px">
+        <path d="M31 0 L31 28 L65 62 L376 62 L402 36" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 357 L31 108 L65 74 L376 74 L402 100" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M31 47 L52 68 L31 89 L10 68 Z" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+    <div class="fa fa-edit lowerLeftDecorationEditSymbol"></div>
+    <svg class="lowerRightDecoration" width="535px" height="565px">
+        <path d="M507 28 L473 62 L220 62 L185 27 L185 0" stroke="#457fa9" stroke-width="1" fill="none" />
+        <path d="M507 357 L507 108 L472 74 L238 74" stroke="#457fa9" stroke-width="1" fill="none" />
+    </svg>
+    <div id="ldapMenuArea" class="moduleSubMenuArea">
+        @Html.ActionLink("Nová kategorie", "Create", "TemplateCategory", new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <h4 id="ContentContainer">
+        <h4>Nová kategorie</h4>
+        <div class="top-panel-content">
+            @using (Html.BeginForm("Create", "TemplateCategory", FormMethod.Post))
+            {
+                <div class="form-group col-sm-12" style="padding-top: 10px">
+                    <div class="labels">
+                        <label class="control-label col-sm-2">
+                            Název
+                        </label>
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(x => x.Name)
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="labels">
+                        <label class="control-label col-sm-2">
+                            Předek
+                        </label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(x => x.Parent, new SelectList(ViewBag.Categories, "Name"))
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="labels">
+                        <label class="control-label col-sm-2">
+                            Potomek(ci)
+                        </label>
+                    </div>
+                    <div id="children" class="col-sm-3">
+                        @Html.DropDownListFor(x => x.Children, new SelectList(ViewBag.Categories))
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Vytvořit kategorii</button>
+                </div>
+            }
+            <div class="col-sm-4">
+                <button id="addChildren" class="btn btn-success">Přidat potomka</button>
+                @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+</div>

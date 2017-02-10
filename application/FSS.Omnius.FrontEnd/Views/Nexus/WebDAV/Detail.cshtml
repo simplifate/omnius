@@ -1,0 +1,33 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.WebDavServer
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+<div>
+    <h4>Detail záznamu</h4>
+    <table class="details-list table table-striped">
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.UriBasePath)</td>
+            <td>@Html.DisplayFor(model => model.UriBasePath)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.AnonymousMode)</td>
+            <td>@(Model.AnonymousMode == true ? "ano" : "ne")</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.AuthUsername)</td>
+            <td>@Html.DisplayFor(model => model.AuthUsername)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.AuthPassword)</td>
+            <td>@(Model.AuthPassword.Length > 0 ? "********" : "")</td>
+        </tr>
+    </table>
+</div>
+<p class="nexusDetailsButtons">
+    @Ajax.RouteLink("Upravit", "Nexus", new { @action = "Edit", @id = Model.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue" })
+    @Html.RouteLink("Smazat", "Nexus", new { @action = "Delete", @id = Model.Id }, new { @class = "btn btn-omnius-red" })
+</p>

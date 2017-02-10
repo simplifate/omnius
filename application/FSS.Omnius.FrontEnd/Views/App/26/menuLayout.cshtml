@@ -1,0 +1,71 @@
+    <ul  id=appMenu>
+@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <h4>Administrace</h4>
+    <ul >
+@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledDodavatelu">Přehled dodavatelů</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledPeriodik">Přehled periodik</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledStavu">Přehled stavů</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledCetnostiPeriodik">Přehled četnost&#237; periodik</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledForemPeriodik">Přehled forem periodik</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledTypuPeriodik">Přehled typů periodik</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledObjednavek">Přehled objedn&#225;vek</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/PrehledHromadnychObjednavek">Přehled hromadn&#253;ch objedn&#225;vek</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/DynamickyFiltr">Dynamick&#253; filtr</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/Zastupci">Z&#225;stupci</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/HromadnaZmena">Hromadn&#225; změna</a>
+            </li>
+}    </ul>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent",26)){            <li>
+                    <h4>Objedn&#225;vka</h4>
+    <ul >
+@if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
+                    <a href="/EvidencePeriodik/ZadaniObjednavkyPeriodika">Zad&#225;n&#237; objedn&#225;vky periodika</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Asistent",26)){            <li>
+                    <a href="/EvidencePeriodik/HromadnaObjednavkaProAsistentky">Hromadn&#225; objedn&#225;vka pro asistentky</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
+                    <a href="/EvidencePeriodik/ZadaniObjednavkyAdministratorem">Zad&#225;n&#237; objedn&#225;vky administr&#225;torem</a>
+            </li>
+}    </ul>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent",26)){            <li>
+                    <h4>Reporty</h4>
+    <ul >
+@if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
+                    <a href="/EvidencePeriodik/ZakladniReport">Z&#225;kladn&#237; report</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Asistent",26)){            <li>
+                    <a href="/EvidencePeriodik/ReportProAsistentky">Report pro asistentky</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
+                    <a href="/EvidencePeriodik/ReportProVedouciPracovniky">Report pro vedouc&#237; pracovn&#237;ky</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",26)){            <li>
+                    <a href="/EvidencePeriodik/ReportHromadnychObjednavek">Report hromadn&#253;ch objedn&#225;vek</a>
+            </li>
+}    </ul>
+            </li>
+}    </ul>
