@@ -23,6 +23,7 @@ namespace FSS.Omnius.Controllers.Hermes
             ViewData["SMTPServersCount"] = e.SMTPs.Count();
             ViewData["EmailTemplatesCount"] = e.EmailTemplates.Count();
             ViewData["EmailQueueCount"] = e.EmailQueueItems.Count();
+            ViewData["IncomingEmailCount"] = e.IncomingEmail.Count();
             return View(e.EmailTemplates);
         }
 

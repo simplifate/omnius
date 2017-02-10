@@ -1,0 +1,67 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Hermes.IncomingEmail
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@using (Html.BeginRouteForm("Hermes", new { @action = "Save" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@(!object.ReferenceEquals(null, Model) && Model.Id > 0 ? "�?prava p�Tíchozí schránky" : "Nová p�Tíchozí schránka")</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, "Název:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImapServer, "IMAP server:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.ImapServer, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImapServer, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImapPort, "IMAP port:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ImapPort, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImapPort, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, "Uživatelské jméno (e-mail):", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, "Heslo:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 has-feedback">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                <span class="form-control-feedback glyphicon glyphicon-asterisk"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Uložit" class="btn btn-omnius-blue" />
+            </div>
+        </div>
+    </div>
+}
+

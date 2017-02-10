@@ -37,27 +37,29 @@ namespace FSS.Omnius.Modules.Hermes
 
         private static void onNewMessage(object sender, IdleMessageEventArgs e, string incomingMailboxName)
         {
-            DBEntities db = DBEntities.instance;
-            MailMessage mail = e.Client.GetMessage(e.MessageUID, FetchOptions.Normal);
+            using (DBEntities db = new DBEntities()) {
+                MailMessage mail = e.Client.GetMessage(e.MessageUID, FetchOptions.Normal);
 
-            foreach(IncomingEmailRule rule in db.IncomingEmail.SingleOrDefault(m => m.Name == incomingMailboxName).IncomingEmailRule) {
-                // LOGIC HERE
+                //foreach (IncomingEmailRule rule in db.IncomingEmail.SingleOrDefault(m => m.Name == incomingMailboxName).IncomingEmailRule) {
+                //    // LOGIC HERE
+                //}
             }
         }
 
         public static void Refresh()
         {
-            DBEntities e = DBEntities.instance;
+            using (DBEntities e = new DBEntities()) {
 
-            if(clients.Count > 0) {
-                foreach(KeyValuePair<string, ImapClient> client in clients) {
-                    client.Value.Dispose();
+                if (clients.Count > 0) {
+                    foreach (KeyValuePair<string, ImapClient> client in clients) {
+                        client.Value.Dispose();
+                    }
+                    clients.Clear();
                 }
-                clients.Clear();
-            }
 
-            foreach(IncomingEmail mail in e.IncomingEmail) {
-                AddListener(mail);
+                foreach (IncomingEmail mail in e.IncomingEmail) {
+                    AddListener(mail);
+                }
             }
         }
     }

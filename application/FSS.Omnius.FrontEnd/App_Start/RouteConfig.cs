@@ -89,6 +89,14 @@ namespace FSS.Omnius.FrontEnd
                 namespaces: new string[] { "FSS.Omnius.Controllers.Hermes" }
             );
 
+            // Hermes
+            routes.MapRoute(
+                name: "HermesIncomingRule",
+                url: "Hermes/IncomingRule/{action}/{mailboxId}/{id}",
+                defaults: new { controller = "IncomingRule", action = "Index", mailboxId = "", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Hermes" }
+            );
+
             routes.MapRoute(
                 name: "Hermes",
                 url: "Hermes/{controller}/{action}/{id}",

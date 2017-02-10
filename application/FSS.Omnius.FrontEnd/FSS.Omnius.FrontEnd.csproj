@@ -236,6 +236,8 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Compass\CompassController.cs" />
+    <Compile Include="Controllers\Hermes\IncomingController.cs" />
+    <Compile Include="Controllers\Hermes\IncomingRuleController.cs" />
     <Compile Include="Controllers\Master\ServiceController.cs" />
     <Compile Include="Controllers\CORE\InfoController.cs" />
     <Compile Include="Controllers\CORE\Utilities.cs" />
@@ -313,6 +315,7 @@
     <Content Include="Content\fonts\innogy\Innogy-Medium.svg" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.svg" />
     <Content Include="Content\images\innogy_logo_H_n_4C_ly.svg" />
+    <Content Include="Content\images\TapestryIcons\circle-envelope.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\scss\BootstrapUserLayout.scss" />
     <Content Include="Content\scss\Cortex.scss" />
@@ -1827,6 +1830,11 @@
     <Content Include="Views\Mozaic\Js\Detail.cshtml" />
     <Content Include="Views\Mozaic\Js\Index.cshtml" />
     <Content Include="Views\Mozaic\Js\Update.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Detail.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Form.cshtml" />
+    <Content Include="Views\Hermes\Incoming\Index.cshtml" />
+    <Content Include="Views\Hermes\IncomingRule\Form.cshtml" />
+    <Content Include="Views\Hermes\IncomingRule\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

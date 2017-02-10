@@ -889,4 +889,27 @@ $(function () {
         CurrentItem.data("conditionSets", setArray).removeClass("activeItem");
         gatewayConditionsDialog.dialog("close");
     }
+
+    envelopeStartPropertiesDialog = $("#envelopeStart-properties-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 180,
+        buttons: {
+            "Save": function () {
+                envelopeStartPropertiesDialog_SubmitData();
+            },
+            Cancel: function () {
+                envelopeStartPropertiesDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
+            }
+        },
+        open: function (event, ui) {
+            envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val(CurrentItem.data("label"));
+        }
+    });
+    function envelopeStartPropertiesDialog_SubmitData() {
+        CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
+        envelopeStartPropertiesDialog_SubmitData.dialog("close");
+        CurrentItem.removeClass("activeItem");
+    }
 });
