@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Hermes;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
@@ -52,6 +53,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             var listOfDBItems = new List<DBItem>();
             listOfDBItems = (List<DBItem>)vars["ListOfData"];
+            var context = DBEntities.instance;
 
             var urlDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
@@ -72,13 +74,27 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     foreach (var item in urlDictionary)
                     {
                         newDictionary.Add(item.Key, item.Value);
-                    }           
+                    }
                 }
-               
-                recipients.Add(newDictionary["__email"].ToString(), newDictionary["__email"].ToString());
 
-                Mailer mail = new Mailer("", (string)vars["Template"], newDictionary);
-                mail.To(recipients);
+                string emailAddress = newDictionary["__email"].ToString();
+                recipients.Add(emailAddress, emailAddress);
+
+                int selectedLocale = 1;
+                var user = context.Users.Where(u => u.Email == emailAddress).FirstOrDefault();
+                if (user != null && user.LocaleId == 2)
+                    selectedLocale = 2;
+
+                Mailer mail = new Mailer("", (string)vars["Template"], newDictionary, selectedLocale);
+
+                if (vars.ContainsKey("SendAsBCC") && (bool)vars["SendAsBCC"] == true)
+                {
+                    mail.BCC(recipients);
+                }
+                else {
+                    mail.To(recipients);
+                }
+
                 mail.SendMail();
             }         
         }
