@@ -48,7 +48,7 @@
         <a href="/Master/Home/Help"><div class="icon" id="helpIcon"><div class="fa fa-question-circle"></div></div></a>
 
         <div class="clientTitleArea">
-            <div class="clientTitle">Oss Portál</div>
+            <div class="clientTitle">@t._("Oss Portál")</div>
         </div>
 
         <div class="userBoxMinimized">
@@ -69,7 +69,7 @@
             {
                 @Html.AntiForgeryToken()
 
-                <input type="text" placeholder="Vyhledat v aplikaci" class="searchInputField" name="search" />
+                <input type="text" placeholder="@t._("Vyhledat v aplikaci")" class="searchInputField" name="search" />
                 <div class="searchIcon fa fa-search"></div>
             }
         </div>
@@ -97,8 +97,8 @@
             <div class="sk-cube3 sk-cube"></div>
         </div>
     </div>
-    <input type="hidden" id="currentAppName" value="@ViewData["appName"]" />
-    <input type="hidden" id="currentBlockName" value="@ViewData["blockName"]" />
+    <input type="hidden" id="currentAppName" value="@t._((string)ViewData["appName"])" />
+    <input type="hidden" id="currentBlockName" value="@t._((string)ViewData["blockName"])" />
     <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
     {
