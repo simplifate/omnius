@@ -355,7 +355,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // create virtual starting items
             TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
             BlockMapping.Add(virtualBeginItem, block);
-            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single")))
+            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start")))
             {
                 TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
                 {
@@ -439,8 +439,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem item = connection.Target;
             // is there a button name?
             string init = item?.ComponentName;
-            if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) // initial ActionRule
+            if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) { // initial ActionRule
                 init = "INIT";
+            }
+            if(item?.TypeClass == "symbol" && item?.SymbolType == "envelope-start") { // emailové workflow
+                init = item?.Label;
+            }
+
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
             {

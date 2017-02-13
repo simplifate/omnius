@@ -95,7 +95,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
             ViewData["mailboxId"] = mailboxId;
             ViewData["ApplicationList"] = appList;
-
+            
             return View("~/Views/Hermes/IncomingRule/Form.cshtml", rule);
         }
 
@@ -117,17 +117,17 @@ namespace FSS.Omnius.Controllers.Hermes
 
         #region tools
 
-        public ActionResult LoadBlockList(int appId)
+        public ActionResult LoadBlockList(int appId, string selectedBlockName)
         {
             DBEntities e = DBEntities.instance;
             TapestryDesignerMetablock root = e.TapestryDesignerMetablocks.Where(b => b.ParentAppId == appId && b.ParentMetablock_Id == null).FirstOrDefault();
 
-            BlockJsonResponse blockList = LoadFromMetablock(root, 0);   
+            BlockJsonResponse blockList = LoadFromMetablock(root, 0, selectedBlockName);   
             
             return Json(blockList);
         }
 
-        public ActionResult LoadWorkflowList(string blockName, int appId)
+        public ActionResult LoadWorkflowList(string blockName, int appId, string selectedWorkflowName)
         {
             DBEntities e = DBEntities.instance;
             List<SelectListItem> result = new List<SelectListItem>();
@@ -140,7 +140,8 @@ namespace FSS.Omnius.Controllers.Hermes
                             result.Add(new SelectListItem()
                             {
                                 Text = wf.Name,
-                                Value = wi.Label
+                                Value = wi.Label,
+                                Selected = wi.Label == selectedWorkflowName
                             });
                         }
                     }
@@ -150,7 +151,7 @@ namespace FSS.Omnius.Controllers.Hermes
             return Json(result.OrderBy(i => i.Text).ToList());
         }
 
-        private BlockJsonResponse LoadFromMetablock(TapestryDesignerMetablock parent, int level)
+        private BlockJsonResponse LoadFromMetablock(TapestryDesignerMetablock parent, int level, string selectedBlockName)
         {
             BlockJsonResponse item = new BlockJsonResponse()
             {
@@ -167,14 +168,14 @@ namespace FSS.Omnius.Controllers.Hermes
                 {
                     Name = block.Name,
                     Value = block.Name,
-                    Selected = false,
+                    Selected = block.Name == selectedBlockName,
                     IsMetablock = false,
                     Level = level + 1,
                     ChildBlocks = null
                 });
             }
             foreach(TapestryDesignerMetablock mBlock in parent.Metablocks.OrderBy(m => m.Name)) {
-                item.ChildBlocks.Add(LoadFromMetablock(mBlock, level + 1));
+                item.ChildBlocks.Add(LoadFromMetablock(mBlock, level + 1, selectedBlockName));
             }
             
             return item;

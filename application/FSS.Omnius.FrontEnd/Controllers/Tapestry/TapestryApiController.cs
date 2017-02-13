@@ -199,7 +199,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray()),
                                 IsBootstrap = ajaxItem.IsBootstrap,
-                                BootstrapPageId = ajaxItem.IsBootstrap == true ? ajaxItem.PageId : null
+                                BootstrapPageId = ajaxItem.IsBootstrap == true ? ajaxItem.BootstrapPageId : null
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();

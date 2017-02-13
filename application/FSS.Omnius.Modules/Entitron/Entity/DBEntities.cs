@@ -52,11 +52,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         }
 
         private static Dictionary<HttpRequest, DBEntities> _instances = new Dictionary<HttpRequest, DBEntities>();
+        private static DBEntities nullRequestInstance;
+
         public static DBEntities instance
         {
             get
             {
-                if (!_instances.ContainsKey(r) || _instances[r].isDisposed)
+                if(r == null) {
+                    if(nullRequestInstance == null || nullRequestInstance.isDisposed) {
+                        nullRequestInstance = new DBEntities();
+                    }
+                    return nullRequestInstance;
+                }
+                else if (!_instances.ContainsKey(r) || _instances[r].isDisposed)
                 {
                     if (_instances.ContainsKey(r))
                         _instances.Remove(r);

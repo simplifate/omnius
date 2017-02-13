@@ -72,21 +72,18 @@ namespace FSS.Omnius.Modules.Watchtower
         public void LogEvent(string message, int userId, LogEventType eventType = LogEventType.NotSpecified,
             LogLevel level = LogLevel.Info, bool isPlatormEvent = true, int? appId = null)
         {
-            using (var context = DBEntities.instance)
+            var logItem = new LogItem
             {
-                var logItem = new LogItem
-                {
-                    Timestamp = DateTime.UtcNow,
-                    LogEventType = (int)eventType,
-                    LogLevel = (int)level,
-                    UserId = userId,
-                    IsPlatformEvent = isPlatormEvent,
-                    AppId = appId,
-                    Message = message
-                };
-                context.LogItems.Add(logItem);
-                context.SaveChanges();
-            }
+                Timestamp = DateTime.UtcNow,
+                LogEventType = (int)eventType,
+                LogLevel = (int)level,
+                UserId = userId,
+                IsPlatformEvent = isPlatormEvent,
+                AppId = appId,
+                Message = message
+            };
+            context.LogItems.Add(logItem);
+            context.SaveChanges();
         }
         private static WatchtowerLogger instance;
         private WatchtowerLogger()
@@ -94,6 +91,12 @@ namespace FSS.Omnius.Modules.Watchtower
             EventTypeMap = new Dictionary<int, string>();
             LogLevelMap = new Dictionary<int, string>();
             context = DBEntities.instance;
+        }
+        public WatchtowerLogger(DBEntities db)
+        {
+            EventTypeMap = new Dictionary<int, string>();
+            LogLevelMap = new Dictionary<int, string>();
+            context = db;
         }
         public static WatchtowerLogger Instance
         {

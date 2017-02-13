@@ -56,7 +56,7 @@
                     <div class="conditionSetArea"></div>
                 </div>
             </div> 
-            @Html.EditorFor(m => m.Rule, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.Rule, new { htmlAttributes = new { @class = "form-control hide" } })
             @Html.ValidationMessageFor(m => m.Rule, "", new { @class = "text-danger" })
         </div>
 
@@ -75,6 +75,9 @@
 
     var IncomingEmailRule = {
 
+        selectedBlockName: '@(Model != null ? Model.BlockName : "")',
+        selectedWorkflowName: '@(Model != null ? Model.WorkflowName : "")',
+
         init: function ()
         {
             var self = IncomingEmailRule;
@@ -92,6 +95,37 @@
              .on('change', '.conditionOperatorCell select', self.changeOperator)
              .on('change', 'input, select', self.buildRule);
 
+            $('#ApplicationId').change();
+
+            var rule = $('#Rule').val();
+            if (rule.length) {
+                var data = JSON.parse(rule);
+                for (var i = 0; i < data.length; i++) {
+                    var set = data[i];
+                    var setItem = set.SetRelation == 'AND' ? self.addAndConditionSet() : self.addOrConditionSet();
+                    
+                    for (var j = 0; j < set.Conditions.length; j++) {
+                        var condition = set.Conditions[j];
+                        if (j > 0) {
+                            var actionList = setItem.find('.conditionTable tr:last-child .conditionActions');
+                            var relation = condition.Relation;
+                            var btn = actionList.find('.' + (relation == 'AND' ? 'addAndConditionIcon' : 'addOrConditionIcon'));
+                            
+                            if (relation == 'AND') {
+                                self.addAndCondition.apply(btn[0], []);
+                            }
+                            else {
+                                self.addOrCondition.apply(btn[0], []);
+                            }
+                        }
+
+                        var lastRow = setItem.find('.conditionTable tr:last-child');
+                        lastRow.find('.conditionVariableCell select').val(condition.Variable).end()
+                               .find('.conditionOperatorCell select').val(condition.Operator).end()
+                               .find('.conditionValueCell input').val(condition.Value);
+                    }
+                }
+            }
         },
 
         loadBlockList: function()
@@ -103,7 +137,7 @@
                 $.ajax('/Hermes/IncomingRule/LoadBlockList', {
                     type: 'post',
                     dataType: 'json',
-                    data: { appId: this.value },
+                    data: { appId: this.value, selectedBlockName: self.selectedBlockName },
                     success: self.setBlockList
                 });
             }
@@ -115,7 +149,14 @@
             $('#BlockName').append('<option value="">' + ($('#ApplicationId').val().length ? '-- vyberte --' : '-- vyberte aplikaci --') + '</option>');
         },
 
-        setBlockList: function(item)
+        setBlockList: function(data)
+        {
+            var self = IncomingEmailRule;
+            self.setBlockItem(data);
+            $('#BlockName').change();
+        },
+
+        setBlockItem: function(item)
         {
             var opt = $('<option></option>');
             opt.html("---------------------".substr(0, item.Level * 2) + (item.Level == 0 ? '' : ' ') + item.Name);
@@ -141,7 +182,7 @@
                 $.ajax('/Hermes/IncomingRule/LoadWorkflowList', {
                     type: 'post',
                     dataType: 'json',
-                    data: { blockName: this.value, appId: $('#ApplicationId').val() },
+                    data: { blockName: this.value, appId: $('#ApplicationId').val(), selectedWorkflowName: self.selectedWorkflowName },
                     success: self.setWorkflowList
                 });
             }
@@ -172,6 +213,8 @@
 
             set.find('.conditionSetPrefix').text(set.index() == 0 ? 'A' : 'AND a');
             set.find('.conditionTable').append($(HermesConditionTemplate))
+
+            return set;
         },
 
         addOrConditionSet: function()
@@ -181,6 +224,8 @@
 
             set.find('.conditionSetPrefix').text(set.index() == 0 ? 'A' : 'OR a');
             set.find('.conditionTable').append($(HermesConditionTemplate))
+
+            return set;
         },
 
         removeConditionSet: function()
