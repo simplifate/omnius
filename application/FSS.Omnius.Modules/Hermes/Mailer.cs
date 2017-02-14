@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Hermes
             Init(serverName);
         }
 
-        public Mailer(string serverName, string templateName, Object model, int language)
+        public Mailer(string serverName, string templateName, Object model, int language = 1)
         {
             mailerLanguage = language;
             Init(serverName);

@@ -1,0 +1,1717 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-01-06 10:39+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-08-15 11:11+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+
+#: 7-Zadávání poptávky:1
+msgid " které jsou umístěny na internetových stránkách www.rwe-gs.cz"
+msgstr "placed on www.rwe-gs.cz website"
+
+#: 29-Vložení finanční jistoty:1
+msgid "--- zvolte aukci ---"
+msgstr "--- select an auction ---"
+
+msgid "--- zvolte číselník ---"
+msgstr "--- select a dial ---"
+
+#: 21-Vložení poptávky:1
+msgid "&nbsp;&nbsp;Byla překročena maximální hodnota provozního objemu"
+msgstr "&nbsp;&nbsp;Maximum value of operational capacity has been exceeded"
+
+#: 21-Vložení poptávky:1
+msgid "&nbsp;&nbsp;Byla překročena maximální hodnota těžebního výkonu"
+msgstr "&nbsp;&nbsp;Maximum value of mining performance has been exceeded"
+
+#: 21-Vložení poptávky:1
+msgid "&nbsp;&nbsp;Byla překročena maximální hodnota vtláčecího výkonu"
+msgstr "&nbsp;&nbsp;Maximum value of injection rate has been exceeded"
+
+#: 21-Vložení poptávky:1
+msgid ""
+"&nbsp;&nbsp;Minimální období musí být menší nebo rovno maximálnímu období"
+msgstr ""
+"&nbsp;&nbsp;Minimal period has to be less than or equal to maximal period"
+
+#: 21-Vložení poptávky:1
+msgid "({var1})"
+msgstr "({var1})"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "* Pole označená hvězdičkou jsou povinná"
+msgstr "* Fields marked with an asterisk are required"
+
+#: 20-Ověření organizace:1 22-Shrnutí poptávky:1
+msgid "{var1}"
+msgstr "{var1}"
+
+#: 20-Ověření organizace:1 21-Vložení poptávky:1 22-Shrnutí
+msgid "<b>{var1}</b>"
+msgstr "<b>{var1}</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Čtenář:</b> Má přístup ke čtení"
+msgstr "<b>Reader:</b> Has access to reading"
+
+#: 21-Vložení poptávky:1
+msgid "<b>Detaily aukce</b>"
+msgstr "<b>Auction detail</b>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Druh</b>"
+msgstr "<b>Type</b>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Email / Login</b>"
+msgstr "<b>Email / Login</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Email:</b> gs.aukce@innogy.com"
+msgstr "<b>Email:</b> gs.aukce@innogy.com"
+
+#: 11-Nápověda:1
+msgid "<b>Fax:</b> <u>+420 26 797 6906</u>, případně <u>+420 26 797 6903</u>"
+msgstr ""
+"<b>Fax:</b> <u>+420 26 797 6906</u>, or when needed <u>+420 26 797 6903</u>"
+
+#: 21-Vložení poptávky:1
+msgid "<b>Jednotek</b>"
+msgstr "<b>Units</b>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Jméno, příjmení, datum narození</b>"
+msgstr "<b>First name, surname, birthdate</b>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Jméno</b>"
+msgstr "<b>Name</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Kontaktní informace</b>"
+msgstr "<b>Contact information</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Oprávnění</b>"
+msgstr "<b>Authorization</b>"
+
+#: 30-Editace číselníků:1
+msgid "<b>Přidání hodnoty</b>"
+msgstr "<b>Add value</b>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Příjmení</b>"
+msgstr "<b>Surname</b>"
+
+#: 21-Vložení poptávky:1
+msgid "<b>Procent</b>"
+msgstr "<b>Percent</b>"
+
+#: 30-Editace číselníků:1
+msgid "<b>Smazání hodnoty</b>"
+msgstr "<b>Delete value</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Společnost:</b> innogy Gas Storage, s.r.o"
+msgstr "<b>Company:</b> innogy Gas Storage, s.r.o"
+
+#: 11-Nápověda:1
+msgid ""
+"<b>Telefon:</b> <u>+420 26 797 4444</u>, případně <u>+420 26 797 4576</u>"
+msgstr ""
+"<b>Phone number:</b> <u>+420 26 797 4444</u>, or when needed <u>+420 26 797 "
+"4576</u>"
+
+#: 16-Nový obchodník:1
+msgid "<b>Telefon</b>"
+msgstr "<b>Phone</b>"
+
+#: 22-Shrnutí poptávky:1
+msgid "<b>Vaše poptávka:</b>"
+msgstr "<b>Your demand:</b>"
+
+#: 21-Vložení poptávky:1
+msgid "<b>Výběr období</b>"
+msgstr "<b>Period selection</b>"
+
+#: 11-Nápověda:1
+msgid "<b>Zabezpečení</b>"
+msgstr "<b>Security</b>"
+
+#: 21-Vložení poptávky:1
+msgid "<b>Zadejte množství</b>"
+msgstr "<b>Enter the amount</b>"
+
+#: 60-Nápověda 2:1
+msgid ""
+"<div style=\"color:rgb(245, 155, 0);\"> \t<h2>Kontaktní informace</h2> "
+"\t<ul> \t   <li>Společnost: innogy Gas Storage, s.r.o.</li> \t   "
+"<li>Telefon: +420 26 797 4444</li> \t   <li>E-mail: gs.aukce@innogy.com</li> "
+"\t   <li>Fax: +420 26 797 6906, případně +420 26 797 6903</li> \t</ul> </"
+"div> <div class=\"line-separator\"></div> <h2>Pravidla a činnosti</h2> "
+"<h3>Ke každé organizaci může být přiřazeno více zástupců</h3> <ul>    "
+"<li>každý zástupce má stejná práva (viz dále)</li>    <li>lze zadat pouze "
+"jednu poptávku za organizaci během aukčního kola v případě rostoucích aukcí "
+"(akceptuje se tedy první zadaná poptávka)</li>    <li>lze zadat neomezený "
+"počet poptávek za organizaci v případě klesajících aukcí (akceptují se tedy "
+"všechny zadané poptávky).</li> </ul> <h3>Pro účast na aukci musí organizace</"
+"h3> <ul>    <li>složit před začátkem aukce finanční jistotu v souladu se "
+"zveřejněnými podmínkami aukce</li>    <li>dát souhlas s podmínkami aukce, "
+"což může udělat kterýkoliv zástupce organizace před začátkem aukce (souhlas "
+"se dává za každou organizace pouze jednou pro celou aukci zaškrtnutím "
+"políčka „Souhlasím“ po otevření aukce)</li> </ul> <h3>Pro zadání poptávky v "
+"aukci</h3> <ul>    <li>najděte požadovanou aukci na hlavní stránce (domeček "
+"vlevo nahoře <i class=\"fa fa-home\"></i>) v seznamu Aktuálních aukcí</"
+"li>    <li>klikněte na šipku <i class=\"fa fa-sign-in\"></i> s popiskem "
+"„Vstoupit“ na řádku úplně vpravo</li>    <li>počkejte na začátek aukce a "
+"klikněte na tlačítko „Pokračovat“</li>    <li>zadejte svoji poptávku a "
+"odešlete tlačítkem „Vložit poptávku“ (pokud Vaše poptávka neodpovídá "
+"pravidlům nebo složené jistotě, bude tlačítko neaktivní)</li>    <li>v "
+"případě klesajících aukcí je možné zadat více poptávek v jednom kole</li> </"
+"ul> <h3>Zástupce organizace může</h3> <ul>    <li>požádat administrátory o "
+"vložení finanční jistoty, pokud ji organizace složila, ale systém hlásí opak "
+"(kliknutí na tlačítko „Požádat o vložení“ na stránce, kde se zadává "
+"poptávka)</li>    <li>vložit poptávku v průběhu aukčního kola (ostatní "
+"účastníci Vaši poptávku nevidí, proto ji prosím zadávejte co nejdříve)</"
+"li>    <li>souhlasit nebo nesouhlasit se zkrácením aukčního kola "
+"(zaškrtávací pole „Urychlení kola“)</li>    <li>zobrazit si svou předchozí "
+"poptávku</li>    <li>prohlížet poptávky, a po skončení aukce také "
+"vyhodnocení (vždy jen za svojí organizaci)</li> </ul> Pokud by Vám některá z "
+"těchto činností nefungovala, prosím obraťte se na nás.  <br>  <br>   <h3>Jak "
+"prohlížet výsledky aukce</h3> <ul>    <li>Na hlavní stránce si najděte "
+"požadovanou aukci v Historii aukcí nebo v Aktuálních aukcích</li>    "
+"<li>Klikněte u ní na ikonu se symbolem lupy <i class=\"fa fa-search\"></i> a "
+"popiskem „Detail“</li> </ul> <h3>Změna hesla pro vstup do aplikace</h3> "
+"<ul>    <li>Změna hesla se provádí v Zákaznické zóně prostřednictvím funkce "
+"<a href=\"https://www.innogy-gasstorage.cz/cs/zapomenute-heslo/\" target="
+"\"_blank\">Zapomenuté heslo</a>, tento postup je stejný i pro Nominační "
+"portál</li> </ul> <h3>Zabezpečení</h3> <ul>    <li>Komunikace s těmito "
+"webovými stránkami je zabezpečena protokolem SSL prostřednictvím serverového "
+"certifikátu.</li> </ul> Další dokumenty naleznete na našich <a href=\"http://"
+"www.innogy-gasstorage.cz/cs/dokumenty/\">internetových stránkách</a>."
+msgstr ""
+"<div style=\"color:rgb(245, 155, 0);\"> \t<h2>Contact information</h2> "
+"\t<ul> \t   <li>Company: innogy Gas Storage, s.r.o.</li> \t   <li>Phone "
+"number: +420 26 797 4444</li> \t   <li>E-mail: gs.aukce@innogy.com</li> \t   "
+"<li>Fax: +420 26 797 6906, or when needed +420 26 797 6903</li> \t</ul> </"
+"div> <div class=\"line-separator\"></div> <h2>Rules and activities</h2> "
+"<h3>More representatives can be added to each organization</h3> <ul>    "
+"<li>Each representative has the same rights (see below)</li>    <li>Only one "
+"demand can be assigned on behalf of an organization during the auction round "
+"in case of growing auctions (the first demand is therefore accepted)</li>    "
+"<li>an infinite number of demands can be assigned on behalf of one "
+"organization in the case of declining auction (all assigned demands are "
+"accepted).</li> </ul> <h3>In order to participate on auction, the </h3> "
+"<ul>    <li> company must fold a principal amount before the beginning of "
+"the auction. It is consistent with public terms of auction</li>    <li>agree "
+"with the terms of auction, which can be done by every representative of the "
+"organization by checkmark of the field \"I Agree\" after opening the "
+"auction)</li> </ul> <h3>To assign the demand in auction</h3> <ul>    "
+"<li>find the requested auction on the main site (little house in the upper "
+"left corner)<i class=\"fa fa-home\"></i>) in the list of current auctions</"
+"li>    <li>click the arrow<i class=\"fa fa-sign-in\"></i> labeled \"Enter\" "
+"on the right end of the line</li>    <li>wait for the beginning of the "
+"auction and click on \"Continue\" button</li>    <li>enter your demand and "
+"send using the button \"Enter demand\" (if your demand does not correspond "
+"with rules or folded principal, the button will be inactive)</li>    <li>in "
+"the case of declining auctions it is possible to add more demands in one "
+"round</li> </ul> <h3>Representative od the organization can </h3> <ul>    "
+"<li>ask admins to add their principal if it is folded by the organization, "
+"but the system claims the opposite (click on the \"Ask for adding\" button "
+"on the site, where the demand is usually assigned)</li>    <li> to assign "
+"demand during the auction round (other participants cannot see your demand, "
+"therefore please enter it as soon as possible)</li>    <li>to agree or not "
+"agree with with shortening of the auction round (checkmark of \"Round speed-"
+"up\")</li>    <li>to see one's previous demand</li>    <li>to see demands "
+"and after the end of auction an evaluation (only on behalf of own "
+"organization)</li> </ul>If one of this actions would not work, please "
+"contact us.  <br>  <br>   <h3>How to see the auction results</h3> <ul>    "
+"<li>See the required Auction history or current auction on the main site </"
+"li>    <li>Click on the magnifier icon by the auction<i class=\"fa fa-search"
+"\"></i> and label \"Detail“</li> </ul> <h3>To change the password for "
+"entering the application</h3> <ul>    <li>The change of password is done in "
+"Customer zone using the function <a href=\"https://www.innogy-gasstorage.cz/"
+"cs/zapomenute-heslo/\" target=\"_blank\">forgotten password</a>, this "
+"procedure is the same even for the nomination portal</li> </ul> "
+"<h3>Security</h3> <ul>    <li>Communication with those websites is secured "
+"using the SSL protocol using the server certificate</li> </ul> More "
+"documents on our <a href=\"http://www.innogy-gasstorage.cz/cs/dokumenty/"
+"\">website</a>."
+
+#: 43-Static html container test:1
+msgid ""
+"<h3>Static HTML container</h3><ul><li>Can contain <i>arbitrary</i> HTML "
+"content</li><li>Allows you to use static content in Mozaic pages</"
+"li><li>Example: Auction system help page</li></ul>"
+msgstr ""
+"<h3>Static HTML container</h3><ul><li>Can contain <i>arbitrary</i> HTML "
+"content</li><li>Allows you to use static content in Mozaic pages</"
+"li><li>Example: Auction system help page</li></ul>"
+
+#: 7-Zadávání poptávky:1
+msgid "005d 18h 14m 37s"
+msgstr "005d 18h 14m 37s"
+
+#: 7-Zadávání poptávky:1
+msgid "a "
+msgstr "and"
+
+#: 14-Údržba osobních dat:1 38-Detail organizace:1
+msgid "Adresa"
+msgstr "Address"
+
+#: 16-Nový obchodník:1
+msgid "Adresa pro doručování"
+msgstr "Delivery address"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Adresa trvalého bydliště"
+msgstr "address of permanent residence"
+
+#: 2-Seznam aukcí:1 4-Historie 6-Informace:1 8-Dokumenty:1 9-Nastavení
+#: finanční jistoty:1 10-Souhlas s podmínkami aukce:1 13-Přehled
+#: aktuálních 17-Protokol činností:1 18-Log fatálních chyb:1 27-Editace
+#: rolí:1 28-Editace rolí - uživatel:1 30-Editace číselníků:1 31-Seznam
+#: organizací:1 32-Správa 35-Správa finančních jistot:1 36-Správa jistot
+#: organizace:1 40-Správa 45-Správa zástupců:1 46-Správa zástupců 2:1
+#: 49-Správa
+msgid "Akce"
+msgstr "Actions"
+
+#: 2-Seznam aukcí:1
+msgid "Aktuální aukce"
+msgstr "Current auctions"
+
+#: 11-Nápověda:1
+msgid "Aktuálních informací"
+msgstr "Current informations"
+
+#: 7-Zadávání poptávky:1
+msgid "Ano"
+msgstr "Yes"
+
+#: 29-Vložení finanční jistoty:1
+msgid "Aukce"
+msgstr "Auction"
+
+#: 12-Nastavení:1
+msgid "Automat"
+msgstr "Automat"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1 33-Editace organizace:1
+#: 34-Nová 38-Detail
+msgid "Bankovní spojení"
+msgstr "Bank details"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Barva"
+msgstr "Color"
+
+#: 7-Zadávání poptávky:1
+msgid "Čas zbývající do začátku aukce:"
+msgstr "Remaining time until the start of the auction:"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Částka"
+msgstr "Amount"
+
+#: 7-Zadávání poptávky:1
+msgid "Čekání na spuštění kola"
+msgstr "Waiting for the round inicalization"
+
+#: 15-Výsledek aukce:1
+msgid "Cena"
+msgstr "Price"
+
+#: 15-Výsledek aukce:1
+msgid "Cena celkem"
+msgstr "Total price"
+
+#: 30-Editace číselníků:1
+msgid "Číselník"
+msgstr "Dial"
+
+#: 12-Nastavení:1
+msgid "Číselníky"
+msgstr "Dials"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Číslo licence"
+msgstr "License number"
+
+#: 41-Datetime picker test:1
+msgid "Combined"
+msgstr "Combined"
+
+#: 25-Cortex task test:1
+msgid "Cortex task test"
+msgstr "Cortex task test"
+
+#: 41-Datetime picker test:1
+msgid "Date only"
+msgstr "Date only"
+
+#: 41-Datetime picker test:1
+msgid "Datetime picker test"
+msgstr "Datetime picker test"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum do (celkový)"
+msgstr "Date to (in total)"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum od (celkový)"
+msgstr "Date from (in total)"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum odhlášení"
+msgstr "logout date"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum přihlášení"
+msgstr "Login date"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum prvního přihlášení"
+msgstr "First login date"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum registrace"
+msgstr "Registration date"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum schválení"
+msgstr "Date of approval"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum spuštění"
+msgstr "Launch date"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Datum startování:"
+msgstr "Date of start:"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum ukončení"
+msgstr "Date of end"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum vyhodnocení"
+msgstr "Evaluation date"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 14-Údržba
+#: osobních dat:1 15-Výsledek
+msgid "Datum založení"
+msgstr "Date of establishment"
+
+#: 14-Údržba osobních dat:1
+msgid "Datum zamítnutí"
+msgstr "Date of rejection"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 14-Údržba
+#: osobních dat:1 15-Výsledek
+msgid "Datum změny"
+msgstr "Date of change"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Datum zrušení"
+msgstr "Date of cancellation"
+
+#: 5-Nová aukce:1 7-Zadávání poptávky:1 10-Souhlas s podmínkami
+#: 15-Výsledek 50-Editace aukce 2:1 51-Detail
+msgid "Délka kola"
+msgstr "Round length"
+
+#: 5-Nová aukce:1
+msgid "Délka kola (v min.)"
+msgstr "Round length (in mins)"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Délka pauzy"
+msgstr "Pause length"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Délka prodlevy mezi koly"
+msgstr "The length of the delay between rounds"
+
+#: 5-Nová aukce:1
+msgid "Délka prodlevy mezi koly (v min.)"
+msgstr "The length of the delay between rounds (in mins)"
+
+#: 51-Detail aukce:1
+msgid "Detail aukce"
+msgstr "Auction detail"
+
+#: 51-Detail aukce:1
+msgid "Detail aukce (administrátor)"
+msgstr "Auction detail (Admin)"
+
+#: 38-Detail organizace:1
+msgid "Detail organizace"
+msgstr "Organization detail"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1 33-Editace organizace:1
+#: 34-Nová 38-Detail
+msgid "DIČ"
+msgstr "TAX ID"
+
+#: 21-Vložení poptávky:1
+msgid "Do"
+msgstr "Until"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 14-Údržba
+#: osobních dat:1 15-Výsledek
+msgid "Druh"
+msgstr "Type"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Druh aukce"
+msgstr "Auction type"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Druh kapacity"
+msgstr "Capacity type"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Druh období"
+msgstr "Period type"
+
+#: 38-Detail organizace:1
+msgid "Druh organizace"
+msgstr "Organization type"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Druh organizace*"
+msgstr "Organization type*"
+
+#: 50-Editace aukce 2:1
+msgid "Editace aukce"
+msgstr "Auction edit"
+
+#: 1-Aukcnisystem layout:46 30-Editace číselníků:1
+msgid "Editace číselníků"
+msgstr "Dial edit"
+
+#: 37-Editace finanční jistoty:1
+msgid "Editace finanční jistoty"
+msgstr "Financial deposit edit"
+
+#: 33-Editace organizace:1
+msgid "Editace organizace"
+msgstr "Organization edit"
+
+#: 27-Editace rolí:1 28-Editace rolí - uživatel:1
+msgid "Editace uživatelských rolí"
+msgstr "User role edit"
+
+msgid "Editace uživatelů"
+msgstr "Edit users"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1 33-Editace organizace:1
+#: 34-Nová 38-Detail
+msgid "EIC kód"
+msgstr "EIC code"
+
+#: 38-Detail organizace:1
+msgid "Email"
+msgstr "E-mail"
+
+#: 14-Údržba osobních dat:1
+msgid "Email / Login"
+msgstr "E-mail / Login"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Emailová notifikace"
+msgstr "E-mail notification"
+
+#: 51-Detail aukce:1
+msgid "Export do XLSX"
+msgstr "XLSX export"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1 33-Editace organizace:1
+#: 34-Nová 38-Detail
+msgid "Fax"
+msgstr "Fax"
+
+# Phases
+msgid "Fáze 1"
+msgstr "Phase 1"
+
+msgid "Fáze 2"
+msgstr "Phase 2"
+
+msgid "Fáze 3"
+msgstr "Phase 3"
+
+#: 50-Editace aukce 2:1
+msgid "Finanční jistoty"
+msgstr "Financial deposits"
+
+#: 1-Aukcnisystem layout:15 2-Seznam aukcí:1 4-Historie
+msgid "Historie aukcí"
+msgstr "Auctions history"
+
+#: 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Hlavička aukce"
+msgstr "Auction header"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Hlavní položka"
+msgstr "Main item"
+
+#: 9-Nastavení finanční jistoty:1
+msgid "Hodnota"
+msgstr "Value"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1 33-Editace organizace:1
+#: 34-Nová 38-Detail
+msgid "IČ"
+msgstr "Company Registration Number"
+
+#: 52-TestTranslationPage:1
+msgid "Info container"
+msgstr "Info container"
+
+#: 9-Nastavení finanční jistoty:1
+msgid "Inicializovat"
+msgstr "Initialize"
+
+#: 14-Údržba osobních dat:1
+msgid "Jazyk"
+msgstr "Language"
+
+#: 14-Údržba osobních dat:1
+msgid "Jméno"
+msgstr "First name"
+
+#: 14-Údržba osobních dat:1
+msgid "Jméno, příjmení, datum narození"
+msgstr "First name, surname, birthdate"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Kapacita"
+msgstr "Capacity"
+
+#: 15-Výsledek aukce:1
+msgid "Kapacita doplněná"
+msgstr "Capacity added"
+
+#: 15-Výsledek aukce:1
+msgid "Kapacita neuspokojená"
+msgstr "Unmet capacity"
+
+#: 15-Výsledek aukce:1
+msgid "Kapacita poptaná"
+msgstr "Demanded capacity"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Kč"
+msgstr "CZK"
+
+#: 30-Editace číselníků:1
+msgid "Kliknutím na červený křížek označíte hodnotu jako smazanou"
+msgstr "Click on the red cross to mark the value as deleted"
+
+#: 35-Správa finančních jistot:1
+msgid ""
+"Kliknutím na šipku u organizace otevřete stránku pro vložení nebo editaci "
+"její finanční jistoty."
+msgstr ""
+"Click the arrow on the organization to open the page for inserting or "
+"editing its financial assurance."
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 14-Údržba
+#: osobních dat:1 15-Výsledek
+msgid "Kód"
+msgstr "Code"
+
+#: 6-Informace:1
+msgid "Kód aukce"
+msgstr "Auction code"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Koeficient jistoty"
+msgstr "Coefficient of certainty"
+
+#: 7-Zadávání poptávky:1
+msgid "Kolo: 1"
+msgstr "Round: 1"
+
+#: 11-Nápověda:1
+msgid ""
+"Komunikace s těmito webovými stránkami je zabezpečena protokolem SSL "
+"prostřednictvím serverového certifikátu."
+msgstr ""
+"Communication with this website is secured through SSL server certificate."
+
+#: 38-Detail organizace:1
+msgid "Komunikační jazyk"
+msgstr "Communication language"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Komunikační jazyk*"
+msgstr "Communication language*"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Konečná cena"
+msgstr "Final price"
+
+#: 12-Nastavení:1
+msgid "Konfigurace"
+msgstr "Configuration"
+
+#: 1-Aukcnisystem layout:3
+msgid "Konfigurace-12/30/2016 11:03:36 AM"
+msgstr "Configuration-12/30/2016 11:03:36 AM"
+
+#: 14-Údržba osobních dat:1
+msgid "Kontaktní jméno"
+msgstr "Contact name"
+
+#: 38-Detail organizace:1
+msgid "Kontaktní osoba"
+msgstr "Contact person"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Kontaktní osoba*"
+msgstr "Contact person*"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Kontaktní údaje"
+msgstr "Contact informations"
+
+#: 14-Údržba osobních dat:1
+msgid "Kontrola hesla"
+msgstr "Password check"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Licence"
+msgstr "License"
+
+#: 18-Log fatálních chyb:1
+msgid "Log fatalních chyb"
+msgstr "Fatal errors log"
+
+#: 1-Aukcnisystem layout:52 48-Log fatálních chyb 2:1
+msgid "Log fatálních chyb"
+msgstr "Fatal errors log"
+
+#: 52-TestTranslationPage:1
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+"tempor incididunt ut labore et dolore magna aliqua."
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+"tempor incididunt ut labore et dolore magna aliqua."
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Maximální období"
+msgstr "Maximal period"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Měna"
+msgstr "Currency"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Měrná jednotka provozního objemu"
+msgstr "Measure unit of operational capacity"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Měrná jednotka vtláčecího/těžebního výkonu"
+msgstr "Measure unit of injection/mining output"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Min. přípustný limit celkově poptávané hodnoty"
+msgstr "Minimal permissable limit of the demanded value"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Minimální období"
+msgstr "Minimal period"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Mobil"
+msgstr "Cell phone"
+
+#: 2-Seznam aukcí:1
+msgid "Momentálně neprobíhá žádná aukce"
+msgstr "No auction is currently taking place"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Nabízený provozní objem"
+msgstr "Offered operational capacity"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Nabízený těžební výkon"
+msgstr "Offered mining output"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Nabízený vtláčecí výkon"
+msgstr "Offered injection output"
+
+#: 1-Aukcnisystem layout:24 11-Nápověda:1
+msgid "Nápověda"
+msgstr "Help"
+
+#: 1-Aukcnisystem layout:21 12-Nastavení:1
+msgid "Nastavení"
+msgstr "Settings"
+
+#: 14-Údržba osobních dat:1
+msgid "Nastavení prostředí"
+msgstr "Environment settings"
+
+#: 38-Detail organizace:1
+msgid "Název"
+msgstr "Name"
+
+#: 6-Informace:1 8-Dokumenty:1
+msgid "Název anglicky"
+msgstr "English name"
+
+#: 20-Ověření organizace:1
+msgid "Název aukce"
+msgstr "Auction name"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Název aukce - anglicky"
+msgstr "Auction name - english"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Název aukce - česky"
+msgstr "Auction name - czech"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Název aukce:"
+msgstr "Auction name:"
+
+#: 6-Informace:1 8-Dokumenty:1
+msgid "Název česky"
+msgstr "Czech name"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Název*"
+msgstr "Name*"
+
+#: 7-Zadávání poptávky:1
+msgid "Ne"
+msgstr "No"
+
+#: 7-Zadávání poptávky:1
+msgid "Nesložil jste finanční jistotu, nebo jste se vzdal účasti"
+msgstr ""
+"You have not lodged financial deposit or you have renounced participation"
+
+#: 20-Ověření organizace:1
+msgid "Nevložili jste finanční jistotu"
+msgstr "You have not inserted the financial deposit"
+
+#: 14-Údržba osobních dat:1
+msgid "Notifikace"
+msgstr "Notifications"
+
+#: 1-Aukcnisystem layout:9 5-Nová aukce:1
+msgid "Nová aukce"
+msgstr "New auction"
+
+#: 30-Editace číselníků:1
+msgid "Nová hodnota"
+msgstr "New value"
+
+#: 1-Aukcnisystem layout:35 32-Správa organizací:1 34-Nová organizace:1
+msgid "Nová organizace"
+msgstr "New organization"
+
+#: 14-Údržba osobních dat:1
+msgid "Nové heslo"
+msgstr "New password"
+
+msgid "Nový uživatel"
+msgstr "New user"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Obchodní údaje"
+msgstr "Trade data"
+
+#: 6-Informace:1 9-Nastavení finanční jistoty:1 17-Protokol činností:1
+msgid "Obchodník"
+msgstr "Trader"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Období"
+msgstr "Period"
+
+#: 21-Vložení poptávky:1
+msgid "Od"
+msgstr "From"
+
+#: 28-Editace rolí - uživatel:1
+msgid "Odebrat roli"
+msgstr "Remove role"
+
+#: 8-Dokumenty:1
+msgid "Odkaz"
+msgstr "Link"
+
+#: 8-Dokumenty:1
+msgid "Odkaz v angličtině"
+msgstr "Link in english"
+
+#: 29-Vložení finanční jistoty:1 33-Editace organizace:1 34-Nová
+#: 37-Editace
+msgid "OK"
+msgstr "OK"
+
+#: 14-Údržba osobních dat:1
+msgid "Oprávnění"
+msgstr "Authorization"
+
+#: 26-Optimized table metadata test:1
+msgid "Optimized table metadata test"
+msgstr "Optimized table metadata test"
+
+#: 1-Aukcnisystem layout:18 49-Správa finančních jistot aukce:1
+msgid "Organizace"
+msgstr "Organizations"
+
+#: 20-Ověření organizace:1 21-Vložení poptávky:1 22-Shrnutí
+msgid "Ověření organizace"
+msgstr "Organization verification"
+
+#: 23-Ovládací panel:1
+msgid "Ovládací panel aukcí"
+msgstr "Control panel of auctions"
+
+msgid "Oznámení o vložení finanční jistoty"
+msgstr "Financial deposit notification"
+
+#: 24-System table test:1
+msgid "Persona App Roles"
+msgstr "Persona App Roles"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Počáteční cena"
+msgstr "Stating price"
+
+#: 20-Ověření organizace:1
+msgid "Pokračovat"
+msgstr "Continue"
+
+#: 51-Detail aukce:1
+msgid "Poptávky zadané v jednotlivých kolech"
+msgstr "Demands added in individual rounds"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Povolena"
+msgstr "Enabled"
+
+#: 20-Ověření organizace:1
+msgid "Požádat o vložení"
+msgstr "Ask for deposit"
+
+#: 7-Zadávání poptávky:1
+msgid "Pozastavit kolo"
+msgstr "Pause the round"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Poznámka"
+msgstr "Note"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Poznámka&nbsp;"
+msgstr "Note&nbsp;"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Pozorovatel"
+msgstr "Observer"
+
+#: 38-Detail organizace:1
+msgid "Právní forma"
+msgstr "Legal form"
+
+# Organisation legal forms
+msgid "Právní forma nespecifikována"
+msgstr "Legal form not specified"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Právní forma*"
+msgstr "Legal form*"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Předmět"
+msgstr "Subject"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Předmět podnikání"
+msgstr "Scope of business"
+
+#: 1-Aukcnisystem layout:12 13-Přehled aktuálních aukcí:1
+msgid "Přehled aktuálních aukcí"
+msgstr "Overview of current auctions"
+
+msgid "Přehled poptávek"
+msgstr "Demand overview"
+
+#: 53-PrehledKol:1
+msgid "Přehled poptávek v aukci \"{var1}\""
+msgstr "Demands overview in the auction \"{var1}\""
+
+#: 12-Nastavení:1
+msgid "Překlad"
+msgstr "Translation"
+
+#: 30-Editace číselníků:1 45-Správa zástupců:1
+msgid "Přidat"
+msgstr "Add"
+
+#: 28-Editace rolí - uživatel:1
+msgid "Přidělit"
+msgstr "Assign"
+
+#: 28-Editace rolí - uživatel:1
+msgid "Přidělit roli"
+msgstr "Assign role"
+
+msgid "Přihlášení uživatelé"
+msgstr "Logged users"
+
+msgid "Přijetí poptávky"
+msgstr "Demand acceptance"
+
+msgid "Prijmeni"
+msgstr "Surname"
+
+#: 14-Údržba osobních dat:1
+msgid "Příjmení"
+msgstr "Surname"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Přírůstek"
+msgstr "Increase"
+
+#: 15-Výsledek aukce:1
+msgid "Procento"
+msgstr "Percentage"
+
+#: 15-Výsledek aukce:1
+msgid "Procento doplněné"
+msgstr "Percantage added"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Procento min."
+msgstr "Percentage min."
+
+#: 15-Výsledek aukce:1
+msgid "Procento neuspokojené"
+msgstr "Unmet percentage"
+
+#: 15-Výsledek aukce:1
+msgid "Procento poptáné"
+msgstr "Percentage demanded"
+
+#: 7-Zadávání poptávky:1
+msgid "Prohlašuji, že jsem se seznámil a souhlasím s podmínkami této aukce"
+msgstr "I confirm that I have read and agreed on the terms of this auction"
+
+#: 20-Ověření organizace:1
+msgid ""
+"Prohlašuji, že jsem se seznámil a souhlasím s podmínkami této aukce<br>a "
+msgstr ""
+"I confirm that I have read and agreed on the terms of this auction<br>a "
+
+#: 12-Nastavení:1
+msgid "Protokol činnosti"
+msgstr "Activity protocol"
+
+#: 1-Aukcnisystem layout:49 17-Protokol činností:1 47-Protokol
+msgid "Protokol činností"
+msgstr "Activities protocol"
+
+#: 21-Vložení poptávky:1
+msgid "Provozní objem ({var1})"
+msgstr "Operational capacity ({var1})"
+
+#: 53-PrehledKol:1
+msgid "Prozatím nebyla vložena žádná poptávka"
+msgstr "No demand has been added yet"
+
+#: 25-Cortex task test:1
+msgid "Register task"
+msgstr "Register task"
+
+#: 8-Dokumenty:1
+msgid "Reset"
+msgstr "Reset"
+
+#: 44-Test gateway var chaining:1
+msgid "Run test"
+msgstr "Run test"
+
+#: 8-Dokumenty:1
+msgid "Sekce"
+msgstr "Section"
+
+#: 8-Dokumenty:1
+msgid "Seznam dokumentů"
+msgstr "Documents list"
+
+#: 6-Informace:1
+msgid "Seznam informací"
+msgstr "Information list"
+
+#: 12-Nastavení:1
+msgid "Seznam obchodníků"
+msgstr "Traders list"
+
+#: 31-Seznam organizací:1 32-Správa
+msgid "Seznam organizací"
+msgstr "Oganizations list"
+
+#: 15-Výsledek aukce:1
+msgid "Seznam poptaných kapacit"
+msgstr "List of capacities demanded"
+
+#: 15-Výsledek aukce:1
+msgid "Seznam poptaných procent"
+msgstr "List of percentage demanded"
+
+#: 10-Souhlas s podmínkami aukce:1
+msgid "Seznam společností, které odsouhlasily podmínky aukce"
+msgstr "List of companies which agreed on the auction conditions"
+
+#: 9-Nastavení finanční jistoty:1
+msgid "Seznam zadaných finančních jistot"
+msgstr "List of input financial deposits"
+
+#: 11-Nápověda:1
+msgid "Seznamu aktuálních aukcí"
+msgstr "List of current auctions"
+
+#: 20-Ověření organizace:1 21-Vložení poptávky:1 22-Shrnutí
+msgid "Shrnutí poptávky"
+msgstr "Demand summary"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Sídlo"
+msgstr "Residency"
+
+#: 6-Informace:1 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Skupina"
+msgstr "Group"
+
+#: 14-Údržba osobních dat:1
+msgid "Skupina RWE"
+msgstr "RWE group"
+
+#: 12-Nastavení:1
+msgid "Skupiny obchodníků"
+msgstr "Traders groups"
+
+#: 61-Konfigurace:1
+msgid "Smazání aukce"
+msgstr "Deleting of auction"
+
+#: 9-Nastavení finanční jistoty:1
+msgid "Smazat"
+msgstr "Delete"
+
+#: 8-Dokumenty:1
+msgid "Soubor"
+msgstr "File"
+
+#: 14-Údržba osobních dat:1
+msgid "Souhlas"
+msgstr "Agreement"
+
+#: 20-Ověření organizace:1
+msgid "Souhlasím"
+msgstr "I agree"
+
+#: 21-Vložení poptávky:1
+msgid "Souhlasím s urychlením kola"
+msgstr "I agree with the speed-up of the round"
+
+#: 2-Seznam aukcí:1 40-Správa
+msgid "Správa aukcí"
+msgstr "Auction management"
+
+#: 1-Aukcnisystem layout:38 35-Správa finančních jistot:1
+msgid "Správa finančních jistot"
+msgstr "Financial deposits management"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Správa finančních jistot aukce"
+msgstr "Financial deposits of auction management"
+
+#: 36-Správa finančních jistot organizace:1
+msgid "Správa finančních jistot organizace"
+msgstr "Financial deposits of organization management"
+
+#: 1-Aukcnisystem layout:32
+msgid "Správa organizací"
+msgstr "Organizations management"
+
+#: 1-Aukcnisystem layout:29 45-Správa zástupců:1 46-Správa zástupců 2:1
+msgid "Správa zástupců"
+msgstr "Representatives management"
+
+#: 39-Systémový blok:1
+msgid "Spustit"
+msgstr "Start"
+
+#: 23-Ovládací panel:1
+msgid "Spustit kolo"
+msgstr "Start round"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Startovací cena"
+msgstr "Starting price"
+
+#: 33-Editace organizace:1 34-Nová 38-Detail
+msgid "Statutární orgán společnosti"
+msgstr "Statutory authority of the company"
+
+#: 7-Zadávání poptávky:1 10-Souhlas s podmínkami aukce:1 14-Údržba
+#: osobních dat:1 15-Výsledek
+msgid "Stav"
+msgstr "State"
+
+msgid "Stornování aukce"
+msgstr "Auction cancel"
+
+#: 3-Neexistující stránka:1
+msgid "Stránka neexistuje"
+msgstr "Page non-existant"
+
+#: 14-Údržba osobních dat:1
+msgid "Stránkování"
+msgstr "Pagination"
+
+#: 12-Nastavení:1
+msgid "Svátky"
+msgstr "Holiday"
+
+#: 39-Systémový blok:1
+msgid "Systémový blok"
+msgstr "System block"
+
+#: 3-Neexistující stránka:1
+msgid "Tato obrazovka ještě nebyla vytvořena"
+msgstr "This screen has not been created yet"
+
+#: 14-Údržba osobních dat:1 38-Detail organizace:1
+msgid "Telefon"
+msgstr "Phone"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Telefon*"
+msgstr "Phone*"
+
+#: 39-Systémový blok:1
+msgid ""
+"Tento blok je spouštěn jen systémovým procesem,<br>nemá žádné uživatelské "
+"rozhraní."
+msgstr ""
+"This blog can be runned only by system process,<br>it has no user interface."
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Termín notifikace na složení jistoty  (d.m.rrrr)"
+msgstr "Term of deposit lodge notification (d.m.rrrr)"
+
+#: 10-Souhlas s podmínkami aukce:1 15-Výsledek
+msgid "Text"
+msgstr "Text"
+
+#: 6-Informace:1
+msgid "Text anglicky"
+msgstr "English text"
+
+#: 7-Zadávání poptávky:1
+msgid "Text aukce"
+msgstr "Auction text"
+
+#: 6-Informace:1
+msgid "Text česky"
+msgstr "Czech text"
+
+#: 21-Vložení poptávky:1
+msgid "Těžební výkon ({var1})"
+msgstr "Mining output ({var1})"
+
+#: 41-Datetime picker test:1
+msgid "Time only"
+msgstr "Time only"
+
+#: 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Titul"
+msgstr "Title"
+
+#: 51-Detail aukce:1
+msgid "Události"
+msgstr "Events"
+
+#: 14-Údržba osobních dat:1
+msgid "Údržba osobních dat"
+msgstr "Maintenance of personal data"
+
+#: 9-Nastavení finanční jistoty:1
+msgid "Údržba záznamu finanční jistoty"
+msgstr "Financial deposit log maintenance"
+
+#: 8-Dokumenty:1 14-Údržba osobních dat:1 16-Nový obchodník:1
+msgid "Uložit"
+msgstr "Save"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1
+msgid "Uložit aukci"
+msgstr "Save auction"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Umožnit zadat vyšší poptávku"
+msgstr "Enable inserting higher demand"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Umožnit zadat vyšší poptávku v následujícím kole"
+msgstr "Enable inserting higher demand in the next round"
+
+msgid "Upozornění na nesloženou finanční jistotu"
+msgstr "No financial deposit notification"
+
+msgid "Upozornění na začátek aukce"
+msgstr "Auction start notification"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Upozornit"
+msgstr "Notificate"
+
+#: 5-Nová aukce:1
+msgid "Upozornit účastníky se složenou fin. jistotou <br>  na začátek aukce"
+msgstr ""
+"Notificate the participants with fin. deposit lodged <br> on the auction "
+"start"
+
+msgid "Upozornit účastníky se složenou fin. jistotou <br> na začátek aukce"
+msgstr ""
+"Notificate the participants with fin. deposit lodged <br>  on the auction "
+"start"
+
+#: 20-Ověření organizace:1
+msgid ""
+"Vaše organizace se vzdala účasti na této aukci, nemůže již vkládat poptávky."
+msgstr "Your organization has given up the participation on this auction"
+
+#: 29-Vložení finanční jistoty:1
+msgid "Vložení finanční jistoty"
+msgstr "Insertion of financial assurance"
+
+#: 6-Informace:1
+msgid "Vložení nové informace"
+msgstr "Insert new information"
+
+#: 20-Ověření organizace:1 21-Vložení poptávky:1 22-Shrnutí
+msgid "Vložení poptávky"
+msgstr "Insert of demnad"
+
+#: 6-Informace:1 8-Dokumenty:1 9-Nastavení finanční jistoty:1
+msgid "Vložit"
+msgstr "Insert"
+
+#: 8-Dokumenty:1
+msgid "Vložit dokument"
+msgstr "Insert document"
+
+#: 36-Správa finančních jistot organizace:1 49-Správa aukce:1
+msgid "Vložit jistotu"
+msgstr "Insert financial deposit"
+
+#: 21-Vložení poptávky:1
+msgid "Vložit poptávku"
+msgstr "Insert demand"
+
+#: 11-Nápověda:1
+msgid "Všech dokumentů publikovaných v aplikaci"
+msgstr "of all documents published in application"
+
+#: 21-Vložení poptávky:1
+msgid "Vtláčecí výkon ({var1})"
+msgstr "Injection output ({var1})"
+
+#: 20-Ověření organizace:1
+msgid "Výběr organizace pro vložení poptávky"
+msgstr "Selection of organization fot demand input"
+
+#: 27-Editace rolí:1
+msgid ""
+"Vyberte z následující tabulky uživatele, kterému chcete přidělit nebo "
+"odebrat roli"
+msgstr ""
+"Select user, to whom you want to add or remove role, from the table below"
+
+msgid "Vyhodnocení aukce"
+msgstr "Auction evaulation"
+
+#: 23-Ovládací panel:1
+msgid "Vyhodnotit kolo"
+msgstr "Evaluate the round"
+
+#: 29-Vložení finanční jistoty:1 37-Editace
+msgid "Výše finanční jistoty"
+msgstr "The amount of financial assurance"
+
+#: 51-Detail aukce:1
+msgid "Výsledky vyhodnocení"
+msgstr "Results of the evaluation"
+
+#: 15-Výsledek aukce:1
+msgid "Výsledné hodnocení"
+msgstr "The final evaluation"
+
+#: 20-Ověření organizace:1
+msgid "Vzdát aukci"
+msgstr "Give up auction"
+
+#: 24-System table test:1
+msgid "Watchtower Log Items"
+msgstr "Watchtower Log Items"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Začátek aukce (d.m.rrrr h:mm:ss)"
+msgstr "Auction start (d.m.yyyy h:mm:ss)"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Začátek skladovacího období  (d.m.rrrr)"
+msgstr "Start of the storing period  (d.m.rrrr)"
+
+#: 7-Zadávání poptávky:1
+msgid "Zadávání poptávky"
+msgstr "Demand input"
+
+msgid "Žádost o vložení finanční jistoty"
+msgstr "Financial deposit request"
+
+msgid "Změna aukce"
+msgstr "Auction change"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Změna ceny"
+msgstr "Price edit"
+
+#: 12-Nastavení:1
+msgid "Změna registrace"
+msgstr "Registration edit"
+
+#: 20-Ověření organizace:1
+msgid "Zobrazit předchozí poptávku"
+msgstr "Show previous demand"
+
+#: 22-Shrnutí poptávky:1
+msgid "Zpět na aukce"
+msgstr "Back to auctions"
+
+#: 49-Správa finančních jistot aukce:1
+msgid "Zpět na editaci aukce"
+msgstr "Back to auction edit"
+
+#: 21-Vložení poptávky:1 22-Shrnutí
+msgid "Zpět na ověření organizace"
+msgstr "back to organization verification"
+
+#: 38-Detail organizace:1
+msgid "Zpět na seznam"
+msgstr "Back to list"
+
+#: 28-Editace rolí - uživatel:1
+msgid "Zpět na seznam uživatelů"
+msgstr "Back to users list"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Způsob jistoty"
+msgstr "Way of the deposit"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Způsob zadávání"
+msgstr "Means of input"
+
+#: 29-Vložení finanční jistoty:1 33-Editace organizace:1 34-Nová
+#: 37-Editace
+msgid "Zrušit"
+msgstr "Cancel"
+
+#: 7-Zadávání poptávky:1
+msgid "Zrušit aukci"
+msgstr "Cancel auction"
+
+#: 6-Informace:1 9-Nastavení finanční jistoty:1 14-Údržba osobních dat:1
+#: 16-Nový obchodník:1
+msgid "Zrušit změny"
+msgstr "Discard changes"
+
+# Actions
+msgid "Zveřejnit aukci"
+msgstr "Publish auction"
+
+#: 11-Nápověda:1
+msgid "<b>Email:</b> aukce@rwe.cz"
+msgstr "<b>Email:</b> aukce@rwe.cz"
+
+#: 11-Nápověda:1
+msgid "<b>Společnost:</b> RWE Gas Storage, s.r.o"
+msgstr "<b>Company:</b> RWE Gas Storage, s.r.o"
+
+#: 7-Zadávání poptávky:1
+msgid "a Řádem provozovatele PZP společnosti RWE Gas Storage, s.r.o.,"
+msgstr "and by the rules of PZP operator of RWE Gas Storage, s.r.o,"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Adresa*"
+msgstr "Address*"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Čas ukončení aukce (h:mm:ss)"
+msgstr "Auction end time (h:mm:ss)"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Čas začátku - další dny  (h:mm:ss)"
+msgstr "Start time - next days (h:mm:ss)"
+
+#: 33-Editace organizace:1 34-Nová
+msgid "Email*"
+msgstr "E-mail*"
+
+#: 20-Ověření organizace:1
+msgid ""
+"Prohlašuji, že jsem se seznámil a souhlasím s podmínkami této aukce<br>a "
+"Řádem provozovatele PZP společnosti RWE Gas Storage, s.r.o., které<br>jsou "
+"umístěny na internetových stránkách www.rwe-gs.cz"
+msgstr ""
+"I confirm that I have read and agreed on the terms of the auction<br>and the "
+"order of the PZP operator of RWE Gas Storage, s.r.o., which<br>can be found "
+"on the website www.rwe-gs.cz"
+
+#: 1-Aukcnisystem layout:43
+msgid "Správa rolí"
+msgstr "Role management"
+
+#: 20-Ověření organizace:1
+msgid "Tato organizace se nevzdala aukce"
+msgstr "This organization has not given up auction"
+
+#: 5-Nová aukce:1 50-Editace aukce 2:1 51-Detail
+msgid "Upozornit účastníky se složenou fin. jistotou na začátek aukce"
+msgstr ""
+"Notificate the participants with fin. deposit lodged on the auction start"
+
+msgid "Uživatel"
+msgstr "User"
+
+msgid "Název organizace"
+msgstr "Organization name"
+
+msgid "Smazáno"
+msgstr "Deleted"
+
+msgid "Přidělená kapacita"
+msgstr "Capacity assigned"
+
+msgid "Přidělená kapacita v procentech"
+msgstr "Capacity assigned in percent"
+
+msgid "Poptávaná kapacita v procentech"
+msgstr "Capacity demanded in percent"
+
+msgid "Poptávaná kapacita"
+msgstr "Capacity demanded"
+
+msgid "Výsledná cena"
+msgstr "Final price"
+
+msgid "Startovací­ cena"
+msgstr "Starting price"
+
+msgid "Stav aukce"
+msgstr "Auction status"
+
+msgid "Datum konání"
+msgstr "Start date"
+
+msgid "Aukční systém"
+msgstr "Auction system"
+
+msgid "Aukční Systém"
+msgstr "Auction System"
+
+msgid "Hlavní stránka"
+msgstr "Main page"
+
+msgid "Datum"
+msgstr "Date"
+
+# Alerts
+msgid "Není dovoleno měnit nastavení aukce, která již začala"
+msgstr "Editing of already started auction is forbidden"
+
+msgid "Aukce byla úspěšně vytvořena"
+msgstr "Auction created successfully"
+
+msgid "Aukce byla úspěšně smazána"
+msgstr "Auction successfully removed"
+
+msgid "Nelze smazat aukci, která již proběhla"
+msgstr "Elapsed auction cannot be deleted"
+
+msgid "Změny byly úspěšně uloženy"
+msgstr "Changes saved successfully"
+
+# Auction States
+msgid "Nezveřejněná"
+msgstr "Not published"
+
+msgid "Vyhodnocena"
+msgstr "Evaulated"
+
+msgid "Zrušena"
+msgstr "Canceled"
+
+msgid "Založena"
+msgstr "Created"
+
+msgid "Smazána"
+msgstr "Removed"
+
+msgid "Nastala neznámá chyba"
+msgstr "Unknown error"
+
+# Means of input
+msgid "absolutní"
+msgstr "absolute"
+
+msgid "procentuální"
+msgstr "percentual"
+
+# capacity type
+#, fuzzy
+msgid "skladovací"
+msgstr "storage"
+
+#, fuzzy
+msgid "nová"
+msgstr "new"
+
+# Period type
+msgid "v letech"
+msgstr "in years"
+
+msgid "v měsících"
+msgstr "in months"
+
+#
+msgid "koeficient"
+msgstr "coefficient"
+
+# SpravaZastupcu-State
+msgid "Neaktivní"
+msgstr "Inactive"
+
+msgid "Registrováno"
+msgstr "Registered"
+
+# Communication language
+msgid "čeština"
+msgstr "czech"
+
+msgid "angličtina"
+msgstr "english"
+
+# SpravaZastupcu-Group
+msgid "Standardni"
+msgstr "Standard"
+
+msgid "innogy subjekt"
+msgstr "innogy subject"
+
+# Organisation types
+msgid "Firma"
+msgstr "Company"
+
+msgid "Spol. s r.o."
+msgstr "spol. Ltd."
+
+msgid "Druh poptávky"
+msgstr "Demand type"
+
+msgid "Měrná jednotka"
+msgstr "Measure unit"
+
+msgid "Právní forma organizace"
+msgstr "Company legal type"
+
+msgid "Jednotka objemu"
+msgstr "Unit of operational capacity"
+
+#, fuzzy
+msgid "Jednotka výkonu"
+msgstr "Unit of power"
+
+msgid "Skupina organizací"
+msgstr "Organization group"
+
+msgid "provozní objem"
+msgstr "operational capacity"
+
+msgid "vtláčecí výkon"
+msgstr "injection rate"
+
+msgid "těžební výkon"
+msgstr "mining performance"
+
+msgid "variabilní"
+msgstr "variable"
+
+msgid "fixní"
+msgstr "fixed"
+
+msgid "klesající"
+msgstr "decending"
+
+msgid "rostoucí"
+msgstr "growing"
+
+msgid "Událost"
+msgstr "Event"
+
+# DataTable Actions
+msgid "Vstoupit"
+msgstr "Enter"
+
+msgid "Detail"
+msgstr "Detail"
+
+msgid "Spustit aukci"
+msgstr "Start auction"
+
+msgid "Zastavit aukci"
+msgstr "Stop auction"
+
+msgid "Editovat"
+msgstr "Edit"
+
+msgid "Nový audit"
+msgstr "New Audit"
+
+msgid "Audity"
+msgstr "Audits"
+
+msgid "Uložit a pokračovat"
+msgstr "Save and continue"
