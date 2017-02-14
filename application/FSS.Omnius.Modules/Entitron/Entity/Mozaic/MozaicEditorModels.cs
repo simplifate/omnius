@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public int? ModalHeight { get; set; }
         public string CompiledPartialView { get; set; }
         public int CompiledPageId { get; set; }
-        public VersionEnum Version {get; set; }
+        public VersionEnum Version { get; set; }
         public bool IsDeleted { get; set; }
         public virtual ICollection<MozaicEditorComponent> Components { get; set; }
 
@@ -34,18 +34,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         public void Recompile()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("@using FSS.Omnius.FrontEnd.Utils");
-
             if (IsModal)
-            {
-                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_PartialViewAjaxLayout.cshtml\"; }");
-            }
-            else {
+            else
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
-                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
-            }
-
 
             //Michal Šebela - 11.10. Přidáno enctype
             stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\" enctype = \"multipart/form-data\">");
@@ -67,8 +59,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" name=\"{c.Name}\" class=\"uic info-container {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<div class=\"fa fa-info-circle info-container-icon\"></div>");
-                    stringBuilder.Append($"<div class=\"info-container-header\">@(t._(\"{c.Label}\"))</div>");
-                    stringBuilder.Append($"<div class=\"info-container-body\">@(t._(\"{c.Content}\"))</div></div>");
+                    stringBuilder.Append($"<div class=\"info-container-header\">{c.Label}</div>");
+                    stringBuilder.Append($"<div class=\"info-container-body\">{c.Content}</div></div>");
                 }
                 else if (c.Type == "button-simple")
                 {
@@ -93,23 +85,23 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     using (DBEntities context = DBEntities.instance)
                     {
                         var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">{c.Label}</{c.Tag}>");
                     }
                 }
                 else if (c.Type == "button-dropdown")
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">@(t._(\"{c.Label}\"))<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}<i class=\"fa fa-caret-down\"></i></{c.Tag}>");
                 }
                 else if (c.Type == "button-browse")
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" type=\"file\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Label}</{c.Tag}>");
                 }
                 else if (c.Type == "input-single-line")
                 {
-                    stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"@(t._(\"{c.Placeholder}\"))\" tabindex=\"{c.TabIndex}\" ");
+                    stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"{c.Placeholder}\" tabindex=\"{c.TabIndex}\" ");
                     stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
@@ -133,7 +125,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "input-multiline")
                 {
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} placeholder=\"@(t._(\"{c.Placeholder}\"))\" tabindex=\"{c.TabIndex}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} placeholder=\"{c.Placeholder}\" tabindex=\"{c.TabIndex}\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -157,9 +149,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "label")
                 {
-                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? \"@(t._(\"{c.Label}\"))\".Replace(\"{{var1}}\", ViewData[\"inputData_{c.Name}\"].ToString()) : \"@(t._(\"{c.Label}\"))\" )";
+                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? \"{c.Label}\".Replace(\"{{var1}}\", ViewData[\"inputData_{c.Name}\"].ToString()) : \"{c.Label}\" )";
 
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"@(t._(\"{c.Content}\")\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"{c.Content}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{labelText}</{c.Tag}>");
                 }
                 else if (c.Type == "breadcrumb")
@@ -173,7 +165,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">@(t._(\"{c.Label}\"))</span></div>");
+                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "radio")
                 {
@@ -193,7 +185,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     }
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" value=\"{value}\" /><span class=\"radio-label\">@(t._(\"{c.Label}\"))</span></div>");
+                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" value=\"{value}\" /><span class=\"radio-label\">{c.Label}</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {
@@ -220,14 +212,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                         stringBuilder.Append($"{{ foreach(var option in ((Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"]).OrderBy(p => p.Value))");
                         stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-                        stringBuilder.Append($"@t._(option.Value)</option>}}; }} }}");
+                        stringBuilder.Append($"@(option.Value)</option>}}; }} }}");
                     }
                     else
                     {
                         stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                         stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
                         stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-                        stringBuilder.Append($"@t._(option.Value)</option>}}; }} }}");
+                        stringBuilder.Append($"@(option.Value)</option>}}; }} }}");
                     }
                     stringBuilder.Append($"</{c.Tag}>");
                 }
@@ -238,12 +230,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                     stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
                     stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-                    stringBuilder.Append($"@t._(option.Value)</option>}}; }} }}</{c.Tag}>");
+                    stringBuilder.Append($"@(option.Value)</option>}}; }} }}</{c.Tag}>");
                 }
                 else if (c.Type == "data-table-read-only")
                 {
                     string columnSearchClass = "";
-                    if(properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
+                    if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
                     {
                         columnSearchClass = " data-table-individual-columns-search";
                     }
@@ -253,7 +245,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
                     stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-                    if (properties.ContainsKey("allowHtml")) {
+                    if (properties.ContainsKey("allowHtml"))
+                    {
                         stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@Html.Raw(cell.ToString())</td>}}</tr>}}</tbody></{c.Tag}>}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">Tabulka neobsahuje žádná data</div> }} }}");
                     }
                     else {
@@ -294,7 +287,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             }
                         }
                     }
-                    
+
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
@@ -305,25 +298,25 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     switch (actionButtons)
                     {
                         case "download":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i>");
                             break;
                         case "download-delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Stáhnout\" class=\"fa fa-download rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
                             break;
                         case "enter":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i>");
                             break;
                         case "enter-details":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Vstoupit\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i>");
                             break;
                         case "delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
                             break;
                         case "details":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i>");
                             break;
                         case "details-edit-delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                            stringBuilder.Append($"<i title=\"Detail\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"Editovat\" class=\"fa fa-edit rowEditAction\"></i><i title=\"Smazat\" class=\"fa fa-remove rowDeleteAction\"></i>");
                             break;
                         case "edit":
                             stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i>");
@@ -365,34 +358,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<div class=\"wizard-phases-frame\"></div><svg class=\"phase-background\" width=\"846px\" height=\"84px\">");
-                    /*stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
+                    stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
                     stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#dceffa ;stop-opacity:1\" /><stop offset=\"100%\"");
                     stringBuilder.Append($"style =\"stop-color:#8dceed;stop-opacity:1\" /></linearGradient>");
                     stringBuilder.Append($"<linearGradient id=\"grad-blue\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
                     stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#0099cc;stop-opacity:1\" />");
-                    stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");*/
-
-                    string color_dark = "#143C8C";
-                    string color_light = "#00AAE1";
+                    stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");
 
                     stringBuilder.Append($"<path d=\"M0 0 L0 88 L 280 88 L324 44 L280 0 Z\"");
-                    stringBuilder.Append($"fill =\"{(activePhase == 1 ? color_dark : color_light)}\" />");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 1 ? "#grad-blue" : "#grad-light")})\" />");
                     stringBuilder.Append($"<path d=\"M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z\"");
-                    stringBuilder.Append($"fill =\"{(activePhase == 2 ? color_dark : color_light)}\" />");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 2 ? "#grad-blue" : "#grad-light")})\" />");
                     stringBuilder.Append($"<path d=\"M560 0 L604 44 L560 88 L850 88 L850 0 Z\"");
-                    stringBuilder.Append($"fill =\"{(activePhase == 3 ? color_dark : color_light)}\" /></svg>");
+                    stringBuilder.Append($"fill =\"url({(activePhase == 3 ? "#grad-blue" : "#grad-light")})\" /></svg>");
 
                     stringBuilder.Append($"<div class=\"phase phase1 {(activePhase == 1 ? "phase-active" : "")} {(activePhase > 1 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
                     stringBuilder.Append($"{(activePhase > 1 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">1</div>")}</div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}\"))</div></div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}</div></div>");
 
                     stringBuilder.Append($"<div class=\"phase phase2 {(activePhase == 2 ? "phase-active" : "")} {(activePhase > 2 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
                     stringBuilder.Append($"{(activePhase > 2 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">2</div>")}</div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}\"))</div></div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}</div></div>");
 
                     stringBuilder.Append($"<div class=\"phase phase3 {(activePhase == 3 ? "phase-active" : "")}\"><div class=\"phase-icon-circle\">");
                     stringBuilder.Append($"<div class=\"phase-icon-number\">3</div></div>");
-                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}\"))</div></div>");
+                    stringBuilder.Append($"<div class=\"phase-label\">{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}</div></div>");
 
                     stringBuilder.Append($"</{c.Tag}>");
                 }
@@ -400,7 +390,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" countdownTarget=\"@(ViewData.ContainsKey(\"countdownTargetData_{c.Name}\")");
-                    stringBuilder.Append($" ? @ViewData[\"countdownTargetData_{c.Name}\"] : \"\")\">@(t._(\"{c.Content}\")</{c.Tag}>");
+                    stringBuilder.Append($" ? @ViewData[\"countdownTargetData_{c.Name}\"] : \"\")\">{c.Content}</{c.Tag}>");
                 }
                 else if (c.Type == "panel" && allowNesting)
                 {
@@ -429,9 +419,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" {generatedAttributes} style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\"");
                     stringBuilder.Append($">");
-                    if(c.Classes.Contains("named-panel"))
+                    if (c.Classes.Contains("named-panel"))
                     {
-                        stringBuilder.Append($"<div class=\"named-panel-header\">@(t._(\"{c.Label}\"))</div>");
+                        stringBuilder.Append($"<div class=\"named-panel-header\">{c.Label}</div>");
                     }
                     RenderComponentList(c.ChildComponents, stringBuilder, false);
                     stringBuilder.Append($"</{c.Tag}>");
@@ -439,7 +429,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else
                 {
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">@(t._(\"{c.Content}\")</{c.Tag}>");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{c.Content}</{c.Tag}>");
                 }
             }
         }
@@ -512,7 +502,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
         [ImportExportIgnore(IsParent = true)]
         public virtual MozaicEditorPage MozaicEditorPage { get; set; }
     }
-    
+
     public class MozaicModalMetadataItem : IEntity
     {
         public int Id { get; set; }
