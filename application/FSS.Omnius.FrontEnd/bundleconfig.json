@@ -2,22 +2,21 @@
   {
     "outputFileName": "Scripts/Bundles/jquery.js",
     "inputFiles": [
-      "Scripts/moment-with-locales.min.js",
-      "Scripts/jquery-2.2.3.js",
-      "Scripts/jquery-ui.js",
-      "Scripts/jquery.validate.js",
-      "Scripts/jquery.validate.messages_cs.js",
-      "Scripts/jquery.contextMenu.js",
-      "Scripts/jquery-collision.min.js",
-      "Scripts/jquery.dataTables.min.js",
-      "Scripts/jquery.dataTables.datetime-moment.js",
-      "Scripts/jquery.datetimepicker.js",
-      "Scripts/jquery.plugin.min.js",
-      "Scripts/jquery-sortable.js",
-      "Scripts/spectrum.js",
-      "Scripts/bootstrap.js",
-      "Scripts/jquery.countdown.min.js",
-      "Scripts/jquery.countdown-cs.js"
+      "Scripts/CommonLibraries/Other/moment-with-locales.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery-2.2.3.js",
+      "Scripts/CommonLibraries/jQuery/jquery-ui.js",
+      "Scripts/CommonLibraries/jQuery/jquery.validate.js",
+      "Scripts/CommonLibraries/jQuery/jquery.validate.messages_cs.js",
+      "Scripts/CommonLibraries/jQuery/jquery.contextMenu.js",
+      "Scripts/CommonLibraries/jQuery/jquery-collision.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery.dataTables.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery.dataTables.datetime-moment.js",
+      "Scripts/CommonLibraries/jQuery/jquery.datetimepicker.js",
+      "Scripts/CommonLibraries/jQuery/jquery.plugin.min.js",
+      "Scripts/CommonLibraries/Other/spectrum.js",
+      "Scripts/CommonLibraries/Other/bootstrap.js",
+      "Scripts/CommonLibraries/jQuery/jquery.countdown.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery.countdown-cs.js"
     ]
   },
   {
@@ -99,7 +98,7 @@
       "Scripts/UserScripts/Spinner.js",
       "Scripts/UserScripts/UserInit.js",
       "Scripts/UserScripts/BootstrapUserInit.js",
-      "Scripts/PlatformUtils.js"
+      "Scripts/UserScripts/PlatformUtils.js"
     ]
   },
   {
@@ -119,27 +118,26 @@
   {
     "outputFileName": "Scripts/Bundles/commonLibraries.js",
     "inputFiles": [
-      "Scripts/CommonLibraries/dom.jsPlumb-1.7.6-min.js",
-      "Scripts/CommonLibraries/jquery-collision.min.js",
-      "Scripts/CommonLibraries/jquery.contextMenu.js",
-      "Scripts/CommonLibraries/ModuleSwitcher.js"
+      "Scripts/CommonLibraries/Other/dom.jsPlumb-1.7.6-min.js",
+      "Scripts/CommonLibraries/Other/jquery-collision.min.js",
+      "Scripts/CommonLibraries/Other/jquery.contextMenu.js"
     ]
   },
   {
     "outputFileName": "Scripts/Bundles/modernizr.js",
     "inputFiles": [
-      "Scripts/modernizr-2.8.3.js",
-      "Scripts/respond.js",
-      "Scripts/respond.matchmedia.addListener.js"
+      "Scripts/CommonLibraries/Other/modernizr-2.8.3.js",
+      "Scripts/CommonLibraries/Other/respond.js",
+      "Scripts/CommonLibraries/Other/respond.matchmedia.addListener.js"
     ]
   },
   {
     "outputFileName": "Scripts/Bundles/knockout.js",
     "inputFiles": [
-      "Scripts/RuleDetailViewModel.js",
-      "Scripts/RuleListViewModel.js",
-      "Scripts/knockout-3.3.0.debug.js",
-      "Scripts/BlockViewModel.js"
+      "Scripts/CommonLibraries/Other/RuleDetailViewModel.js",
+      "Scripts/CommonLibraries/Other/RuleListViewModel.js",
+      "Scripts/CommonLibraries/Other//knockout-3.3.0.debug.js",
+      "Scripts/CommonLibraries/Other/BlockViewModel.js"
     ]
   }
 ]
