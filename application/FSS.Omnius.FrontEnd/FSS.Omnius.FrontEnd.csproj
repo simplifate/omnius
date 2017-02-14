@@ -999,7 +999,7 @@
     <Content Include="Content\fonts\innogy\Innogy-Regular.eot" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.ttf" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.woff" />
-    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.po" />
+    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
