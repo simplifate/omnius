@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "Message", "Type" };
+                return new string[] { "s$Message", "s$Type[Success|Warning|Error|Info]" };
             }
         }
 

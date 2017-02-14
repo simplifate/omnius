@@ -309,7 +309,7 @@
             var params = {actionId: data.Items[i].Id };
             var label = data.Items[i].Name;
 
-            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed);
+            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed, data.Items[i]);
             if(isUsed) {
                 TB.toolbox.createItem(libId, 'Actions', 'actionItem', params, label);
             }

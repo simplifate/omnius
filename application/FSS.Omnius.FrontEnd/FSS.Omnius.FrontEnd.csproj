@@ -512,6 +512,7 @@
     <Content Include="Scripts\Tapestry\Builder\_Load.js" />
     <Content Include="Scripts\Tapestry\Builder\_ResourceRules.js" />
     <Content Include="Scripts\Tapestry\Builder\_Screen.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Wizard.js" />
     <Content Include="Scripts\Tapestry\Builder\_WorkflowRules.js" />
     <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />

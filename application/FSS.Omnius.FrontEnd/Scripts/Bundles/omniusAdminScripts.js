@@ -3293,6 +3293,12 @@ var TB = {
             }
         });
         return { horizontal: horizontalLimit, vertical: verticalLimit };
+    },
+
+    callHooks(hooks, context, params) {
+        for (var i = 0; i < hooks.length; i++) {
+            hooks[i].apply(context, params);
+        }
     }
 };
 
@@ -3896,7 +3902,7 @@ TB.load = {
             var params = {actionId: data.Items[i].Id };
             var label = data.Items[i].Name;
 
-            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed);
+            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed, data.Items[i]);
             if(isUsed) {
                 TB.toolbox.createItem(libId, 'Actions', 'actionItem', params, label);
             }
@@ -4461,11 +4467,16 @@ TB.wfr = {
 TB.onInit.push(TB.wfr.init);
 TB.library = {
 
+    onCreate: [],
+    onClean: [],
+
     clean: function () {
         $('.libraryItem').remove();
+
+        TB.callHooks(TB.library.onClean, null, []);
     },
 
-    createItem: function(target, type, params, name, className, highlighted)
+    createItem: function(target, type, params, name, className, highlighted, originalItem)
     {
         var itemLibId = ++lastLibId;
         params.libId = itemLibId;
@@ -4476,6 +4487,8 @@ TB.library = {
         
         if (className) { item.addClass(className); }
         if (highlighted) { item.addClass('highlighted'); }
+
+        TB.callHooks(TB.library.onCreate, originalItem, [type]);
         
         return itemLibId;
     }
