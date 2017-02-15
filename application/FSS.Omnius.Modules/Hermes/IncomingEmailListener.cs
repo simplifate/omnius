@@ -79,7 +79,7 @@ namespace FSS.Omnius.Modules.Hermes
                                     { "MailBody", mail.Body },
                                 });
                                 
-                                var runResult = core.Tapestry.run(core.User, block, rule.WorkflowName, -1, fc);
+                                var runResult = core.Tapestry.run(core.User, block, rule.WorkflowName, -1, fc, 0);
 
                                 logger.LogEvent($"Konec zpraconání mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}.",
                                     core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, rule.ApplicationId);
