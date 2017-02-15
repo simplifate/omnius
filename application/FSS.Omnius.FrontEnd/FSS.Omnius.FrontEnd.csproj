@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -297,10 +297,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Builder\SharedTableBuilder.cs" />
-    <Compile Include="Utils\JsTranslationsCollection.cs" />
-    <Compile Include="Utils\TranslationUtils.cs" />
+    <Compile Include="Utils\Translation\JsTranslationsCollection.cs" />
+    <Compile Include="Utils\Translation\TranslationUtils.cs" />
     <Compile Include="Utils\IDispatchable.cs" />
-    <Compile Include="Utils\SamlUtil.cs" />
+    <Compile Include="Utils\Auth\SamlUtil.cs" />
     <Compile Include="Views\MyRazorViewEngine.cs" />
     <Compile Include="Views\MyVirtualFile.cs" />
     <Compile Include="Views\MyVirtualPathProvider.cs" />
@@ -485,6 +485,38 @@
     <Content Include="Scripts\Bundles\omniusAdminScripts.min.js">
       <DependentUpon>omniusAdminScripts.js</DependentUpon>
     </Content>
+    <None Include="Scripts\CommonLibraries\jQuery\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery-2.2.3.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery-collision.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery-ui.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.ba-throttle-debounce.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.contextMenu.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.countdown-cs.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.countdown.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.dataTables.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.datetimepicker.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.plugin.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\CommonLibraries\jQuery\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.unobtrusive.es5.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.unobtrusive.es5.min.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\CommonLibraries\Other\BlockViewModel.js" />
+    <Content Include="Scripts\CommonLibraries\Other\bootstrap.js" />
+    <Content Include="Scripts\CommonLibraries\Other\dom.jsPlumb-1.7.6-min.js" />
+    <Content Include="Scripts\CommonLibraries\Other\knockout-3.4.0.debug.js" />
+    <Content Include="Scripts\CommonLibraries\Other\knockout-3.4.0.js" />
+    <Content Include="Scripts\CommonLibraries\Other\modernizr-2.8.3.js" />
+    <Content Include="Scripts\CommonLibraries\Other\respond.js" />
+    <Content Include="Scripts\CommonLibraries\Other\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\CommonLibraries\Other\respond.min.js" />
+    <Content Include="Scripts\CommonLibraries\Other\RuleDetailViewModel.js" />
+    <Content Include="Scripts\CommonLibraries\Other\RuleListViewModel.js" />
+    <Content Include="Scripts\CommonLibraries\Other\spectrum.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Dialogs.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\DnD.js" />
@@ -518,10 +550,9 @@
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\BootstrapUserInit.js" />
+    <Content Include="Scripts\UserScripts\PlatformUtils.js" />
     <Content Include="Scripts\UserScripts\Spinner.js" />
     <Content Include="Scripts\UserScripts\UserInit.js" />
-    <Content Include="Scripts\BlockViewModel.js" />
-    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -1000,8 +1031,7 @@
     <Content Include="Content\fonts\innogy\Innogy-Regular.eot" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.ttf" />
     <Content Include="Content\fonts\innogy\Innogy-Regular.woff" />
-    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.po" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
     <Content Include="Scripts\cm\addon\dialog\dialog.css" />
@@ -1448,16 +1478,8 @@
     <Content Include="Scripts\cm\theme\xq-light.css" />
     <Content Include="Scripts\cm\theme\yeti.css" />
     <Content Include="Scripts\cm\theme\zenburn.css" />
-    <Content Include="Scripts\CommonLibraries\dom.jsPlumb-1.7.6-min.js" />
-    <Content Include="Scripts\CommonLibraries\jquery-collision.min.js" />
-    <Content Include="Scripts\CommonLibraries\jquery.contextMenu.js" />
     <Content Include="Scripts\UserScripts\logout.js" />
     <Content Include="Scripts\Hermes\Init.js" />
-    <Content Include="Scripts\jquery-2.2.3.js" />
-    <Content Include="Scripts\jquery-ui.js" />
-    <Content Include="Scripts\jquery.ba-throttle-debounce.min.js" />
-    <Content Include="Scripts\jquery.contextMenu.js" />
-    <Content Include="Scripts\CommonLibraries\ModuleSwitcher.js" />
     <Content Include="Scripts\DatabaseDesigner\DbDialogs.js" />
     <Content Include="Scripts\DatabaseDesigner\DbInit.js" />
     <Content Include="Scripts\DatabaseDesigner\DbLoad.js" />
@@ -1465,28 +1487,6 @@
     <Content Include="Scripts\DatabaseDesigner\DbSqlServerDef.js" />
     <Content Include="Scripts\DatabaseDesigner\DbUtils.js" />
     <Content Include="Scripts\DatabaseDesigner\DbVisualConfiguration.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery-collision.min.js" />
-    <Content Include="Scripts\jquery.countdown-cs.js" />
-    <Content Include="Scripts\jquery.countdown.min.js" />
-    <Content Include="Scripts\jquery.dataTables.min.js" />
-    <Content Include="Scripts\jquery.datetimepicker.js" />
-    <Content Include="Scripts\jquery.plugin.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.es5.js">
-      <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.validate.unobtrusive.es5.min.js">
-      <DependentUpon>jquery.validate.unobtrusive.es5.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-3.4.0.debug.js" />
-    <Content Include="Scripts\knockout-3.4.0.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\MozaicEditor\Dialogs.js" />
     <Content Include="Scripts\MozaicEditor\Init.js" />
     <Content Include="Scripts\MozaicEditor\Load.js" />
@@ -1502,15 +1502,8 @@
     <Content Include="Scripts\Overview\VisualConfiguration.js" />
     <Content Include="Scripts\Persona\Init.js" />
     <Content Include="Scripts\Persona\SaveModulePermissions.js" />
-    <Content Include="Scripts\PlatformUtils.js" />
     <Content Include="Scripts\Portal\Init.js" />
     <Content Include="Scripts\Portal\ModuleAdmin.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\RuleDetailViewModel.js" />
-    <Content Include="Scripts\RuleListViewModel.js" />
-    <Content Include="Scripts\spectrum.js" />
     <Content Include="Scripts\UserScripts\AjaxRun.js" />
     <Content Include="Scripts\Tapestry\Conditions.js" />
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
@@ -1522,7 +1515,6 @@
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />
     <Content Include="Scripts\Watchtower\Init.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Views\App\83\menuLayout.cshtml" />
     <Content Include="Views\App\83\Page\932.cshtml" />
     <Content Include="Views\App\83\Page\938.cshtml" />
@@ -1847,10 +1839,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\userCSS\" />
-    <Folder Include="Scripts\CORE\" />
     <Folder Include="Views\App\25\Page\Bootstrap\" />
     <Folder Include="Views\App\2\Page\Bootstrap\" />
-    <Folder Include="Views\Persona\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

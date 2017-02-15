@@ -16,10 +16,12 @@ namespace FSS.Omnius.FrontEnd.Utils
         public T(string cultureInfo)
         {
             this.cultureInfo = cultureInfo;
+
             if (!catalog.ContainsKey(cultureInfo))
             {
                 catalog.Add(cultureInfo, new Catalog("Omnius", System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Locale"), new CultureInfo(cultureInfo)));
             }
+
         }
 
         public string _(string sourceString)
