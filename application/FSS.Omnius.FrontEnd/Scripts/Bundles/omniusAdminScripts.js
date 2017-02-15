@@ -2991,230 +2991,6 @@ $(function () {
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
-        $.contextMenu({
-            selector: '.item, .symbol',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
-                    currentInstance.removeAllEndpoints(item, true);
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "properties") {
-                    item.addClass("activeItem processedItem");
-                    if (item.hasClass("tableAttribute")) {
-                        CurrentItem = item;
-                        tableAttributePropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("viewAttribute")) {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        actionPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
-                    {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
-                    { 
-                        CurrentItem = item;
-                        envelopeStartPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("uiItem")) {
-                        CurrentItem = item;
-                        uiitemPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
-                        CurrentItem = item;
-                        labelPropertyDialog.dialog("open");
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
-                }
-            },
-            items: {
-                "properties": { name: "Properties", icon: "edit" },
-                "delete": { name: "Delete", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.resourceRule',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "delete": { name: "Delete rule", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.swimlaneRolesArea .roleItem',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    swimlaneRolesArea = item.parents(".swimlaneRolesArea");
-                    item.remove();
-                    if (swimlaneRolesArea.find(".roleItem").length == 0)
-                        swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
-                            + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "delete": { name: "Remove role", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.workflowRule',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "rename") {
-                    CurrentRule = options.$trigger;
-                    renameRuleDialog.dialog("open");
-                }
-                else if (key == "delete") {
-                    options.$trigger.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "add-swimlane") {
-                    rule = options.$trigger;
-                    newSwimlane = $('<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                        + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
-                    newSwimlane.find(".swimlaneRolesArea").droppable({
-                        containment: ".swimlaneContentArea",
-                        tolerance: "touch",
-                        accept: ".toolboxItem.roleItem",
-                        greedy: true,
-                        drop: function (e, ui) {
-                            if (dragModeActive) {
-                                dragModeActive = false;
-                                roleExists = false;
-                                $(this).find(".roleItem").each(function (index, element) {
-                                    if ($(element).text() == ui.helper.text())
-                                        roleExists = true;
-                                });
-                                if (!roleExists) {
-                                    droppedElement = ui.helper.clone();
-                                    $(this).find(".rolePlaceholder").remove();
-                                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                                    ui.helper.remove();
-                                    ChangedSinceLastSave = true;
-                                }
-                            }
-                        }
-                    });
-                    newSwimlane.find(".swimlaneContentArea").droppable({
-                        containment: ".swimlaneContentArea",
-                        tolerance: "touch",
-                        accept: ".toolboxSymbol, .toolboxItem",
-                        greedy: false,
-                        drop: function (e, ui) {
-                            if (dragModeActive) {
-                                dragModeActive = false;
-                                droppedElement = ui.helper.clone();
-                                if (droppedElement.hasClass("roleItem")) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    return false;
-                                }
-                                $(this).append(droppedElement);
-                                ruleContent = $(this);
-                                if (droppedElement.hasClass("toolboxSymbol")) {
-                                    droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                                    droppedElement.addClass("symbol");
-                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                                }
-                                else {
-                                    droppedElement.removeClass("toolboxItem");
-                                    droppedElement.addClass("item");
-                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                                }
-                                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                                ui.helper.remove();
-                                AddToJsPlumb(droppedElement);
-                                ChangedSinceLastSave = true;
-                            }
-                        }
-                    });
-                    rule.find(".swimlaneArea").append(newSwimlane);
-                    newHeight = (100 / rule.find(".swimlane").length);
-                    rule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
-                        $(swimlaneDiv).css("height", newHeight + "%");
-                    });
-                    instance = options.$trigger.data("jsPlumbInstance");
-                    instance.recalculateOffsets();
-                    instance.repaintEverything();
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "add-swimlane": { name: "Add swimlane", icon: "add" },
-                "rename": { name: "Rename rule", icon: "edit" },
-                "delete": { name: "Delete rule", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.swimlane',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "remove-swimlane") {
-                    rule = options.$trigger.parents(".workflowRule");
-                    swimlaneCount = rule.find(".swimlane").length;
-                    if (swimlaneCount > 1) {
-                        instance = rule.data("jsPlumbInstance");
-                        instance.removeAllEndpoints(options.$trigger, true);
-                        options.$trigger.remove();
-                        newHeight = 100 / (swimlaneCount - 1);
-                        rule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
-                            $(swimlaneDiv).css("height", newHeight + "%");
-                        });
-                        instance.recalculateOffsets();
-                        instance.repaintEverything();
-                        ChangedSinceLastSave = true;
-                    }
-                    else
-                        alert("Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.");
-                }
-            },
-            items: {
-                "remove-swimlane": { name: "Remove swimlane", icon: "delete" },
-            }
-        });
-        $.contextMenu({
-            selector: '.tableRow',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "model") {
-                    tableRow = options.$trigger;
-                    tableRow.addClass("highlightedRow");
-                    tableRow.parents("table").find(".modelMarker").remove();
-                    tableRow.find("td:first").append('<div class="modelMarker">Model</div>');
-                }
-            },
-            items: {
-                "model": { name: "Set as model", icon: "edit" }
-            }
-        });
     }
 });
 
@@ -3295,7 +3071,7 @@ var TB = {
         return { horizontal: horizontalLimit, vertical: verticalLimit };
     },
 
-    callHooks(hooks, context, params) {
+    callHooks: function(hooks, context, params) {
         for (var i = 0; i < hooks.length; i++) {
             hooks[i].apply(context, params);
         }
@@ -4049,6 +3825,10 @@ TB.rr = {
         item: '<div class="item"></div>'
     },
 
+    contextItems: {
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
     create: function(rrData)
     {
         var self = TB.rr;
@@ -4211,6 +3991,15 @@ TB.rr = {
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
+    },
+
+    _contextAction: function (key, options) {
+        var item = options.$trigger;
+        if (key == "delete") {
+            item.remove();
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
     }
 };
 TB.wfr = {
@@ -4220,6 +4009,16 @@ TB.wfr = {
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
             + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
         item: ''
+    },
+    
+    contextItems: {
+        'add-swimlane': { name: 'Add swimlane', icon: 'add' },
+        'rename': { name: 'Rename rule', icon: 'edit' },
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
+    swimlaneContextItems: {
+        'remove-swimlane': { name: 'Remove swimlane', icon: 'delete' },
     },
 
     init: function () {
@@ -4245,6 +4044,29 @@ TB.wfr = {
         return rule;
     },
 
+    remove: function() {
+        this.remove();
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
+    rename: function() {
+        CurrentRule = this;
+        renameRuleDialog.dialog('open');
+    },
+
+    addSwimlane: function() {
+        var count = this.find('.swimlane').length + 1;
+        TB.wfr.createSwimlane({Roles: [], WorkflowItems: []}, count, this);
+
+        this.find('.swimlane').css('height', (100 / count) + '%');
+        this.data("jsPlumbInstance").recalculateOffsets();
+        this.data("jsPlumbInstance").repaintEverything();
+
+        ChangedSinceLastSave = true /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
     createSwimlane: function(swimlaneData, count, parentRule) {
         var self = TB.wfr;
         
@@ -4264,6 +4086,27 @@ TB.wfr = {
         }
 
         self.aliveSwimlane(swimlane);
+    },
+
+    removeSwimlane: function () {
+        // this = options.$trigger
+
+        var rule = this.parents('.workflowRule');
+        var swimlaneCount = rule.find('.swimlane').length;
+        if (swimlaneCount > 1) {
+            rule.data('jsPlumbInstance').removeAllEndpoints(this, true);
+            this.remove();
+            
+            rule.find('.swimlane').css('height', (100 / (swimlaneCount - 1)) + '%');
+            rule.data('jsPlumbInstance').recalculateOffsets();
+            rule.data('jsPlumbInstance').repaintEverything();
+
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+        else {
+            alert('Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.');
+        }
     },
 
     createItem: function(itemData, parentSwimlane)
@@ -4461,6 +4304,21 @@ TB.wfr = {
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
+    },
+
+    _contextAction: function (key, options) {
+        var self = TB.wfr;
+        switch (key) {
+            case 'delete': self.remove.apply(options.$trigger, []); break;
+            case 'rename': self.rename.apply(options.$trigger, []); break;
+            case 'add-swimlane': self.addSwimlane.apply(options.$trigger, []); break;
+        }
+    },
+    
+    _swimlaneContextAction: function (key, options) {
+        if (key == 'remove-swimlane') {
+            TB.wfr.removeSwimlane.apply(options.$trigger, []);
+        }
     }
 }
 
@@ -4531,6 +4389,323 @@ TB.toolbox = {
     }
 };
 
+TB.wizard = {
+
+    actions: {},
+    dataTypeList: {
+        's$': 'string',
+        'b$': 'boolean',
+        'i$': 'integer',
+        'f$': 'float',
+        'd$': 'datetime',
+        '_var_': 'variable'
+    },
+
+    init: function () 
+    {
+        var self = TB.wizard;
+
+        TB.library.onClean.push(self._libraryClean);
+        TB.library.onCreate.push(self._libraryCreateItem);
+    },
+
+    open: function()
+    {
+        var self = TB.wizard;
+        var target = $(this);
+        var action = self.actions[target.attr('actionId')];
+        var form = $('<form class="form-horizontal" onsubmit="return false"></form>');
+
+        if (action.inputVars.length || action.outputVars.length) 
+        {
+            var iSet = $('<fieldset><legend>Input vars</legend></fieldset>');
+            var oSet = $('<fieldset><legend>Output vars</legend></fieldset>');
+
+            if (action.inputVars.length) {
+                for (var i = 0; i < action.inputVars.length; i++) {
+                    self.createInputVar(action.inputVars[i], iSet);
+                }
+            }
+            else {
+                iSet.append('<div class="form-group"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní parametry</p></div></div>');
+            }
+
+            if (action.outputVars.length) {
+                for (var i = 0; i < action.outputVars.length; i++) {
+                    self.createOutputVar(action.outputVars[i], oSet);
+                }
+            }
+            else {
+                oSet.append('<div class="form-group"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné výstupní parametry</p></div></div>');
+            }
+
+            iSet.appendTo(form);
+            oSet.appendTo(form);
+        }
+        else {
+            form.html('<div class="form-group"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní ani výstupní parametry</p></div></div>');
+        }
+
+        var d = $('<div title="Průvodce parametry akce \'{action_name}\'"></div>');
+        d.attr('title', d.attr('title').replace(/\{action_name\}/, action.name));
+        d.append(form);
+
+        d.dialog({
+            autoOpen: true,
+            width: '50%',
+            draggable: true,
+            resizable: true,
+            appendTo: 'body',
+            dialogClass: 'dialog-wizard',
+            buttons: [{
+                text: 'Použít',
+                click: TB.wizard.apply
+            }], 
+            create: function() {
+                var btn = $(this).parents('.ui-dialog').find('.ui-dialog-buttonset button');
+                btn.addClass('btn btn-primary').prepend('<span class="fa fa-check"></span> ');
+            }
+        });
+    },
+
+    /******************************************************/
+    /* TOOLS                                              */
+    /******************************************************/
+    parseVars: function(source) {
+        var vars = [];
+        if (source) {
+            for (var i = 0; i < source.length; i++) {
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[([^\]]*)\])?$/i);
+                // 1 = ?    = volitelná?
+                // 2 = s$   = typ
+                // 3 = název
+                // 4 = pole nebo enum
+                // 5 = enum items
+
+                vars.push({
+                    required: m[1] == '?' ? false : true,
+                    type: m[2],
+                    name: m[3],
+                    isArray: m[4] && !m[5] ? true : false,
+                    isEnum: m[4] && m[5] ? true : false,
+                    enumItems: m[5] ? m[5].split('|') : []
+                });
+            }
+        }
+        return vars;
+    },
+
+    createInputVar: function(inputVar, target) {
+        var group = $('<div class="form-group form-group-sm" />');
+        var typeWrapper = $('<div class="col-md-2 col-sm-6" />');
+        var valueWrapper = $('<div class="col-md-7 col-sm-6" />');
+        var label = $('<label class="control-label col-md-3" data-invar="' + inputVar.name + '">' + inputVar.name + ' =</label>');
+        var type = $('<select name="var_type" class="form-control"></select>');
+        var value = $('<input type="text" name="var_value" class="form-control" />');
+        var enumValue = $('<select name="var_value" class="form-control"></select>');
+
+        label.appendTo(group);
+        typeWrapper.appendTo(group);
+        valueWrapper.appendTo(group);
+
+        type.appendTo(typeWrapper);
+        value.appendTo(valueWrapper);
+
+        group.appendTo(target);
+
+        if (inputVar.isEnum) {
+            valueWrapper.append(enumValue);
+            for (var i = 0; i < inputVar.enumItems.length; i++) {
+                enumValue.append('<option value="' + inputVar.enumItems[i] + '">' + inputVar.enumItems[i] + '</option>');
+            }
+
+            value.attr('disabled', true).hide();
+            type.change(function () {
+                $(this).parents('.form-group')
+                    .find('input[name=var_value]').attr('disabled', this.value != '_var_').toggle(this.value == '_var_').end()
+                    .find('select[name=var_value]').attr('disabled', this.value == '_var_').toggle(this.value != '_var_');
+            });
+        }
+
+        for (var k in TB.wizard.dataTypeList) {
+            var opt = $('<option value="' + k + '">' + TB.wizard.dataTypeList[k] + '</option>');
+            opt.attr('disabled', inputVar.type && k != inputVar.type && k != '_var_');
+            
+            type.append(opt);
+        }
+    },
+
+    createOutputVar: function (outputVar, target) {
+        var group = $('<div class="form-group form-group-sm" />');
+        var wrapper = $('<div class="col-xs-12"></div>');
+        var valueWrapper = $('<div class="input-group" />');
+        var value = $('<input type="text" name="out_value" class="form-control text-right" />');
+        var addOn = $('<div class="input-group-addon" data-outvar="' + outputVar.name + '">= ' + outputVar.name + '</div>');
+
+        wrapper.appendTo(group);
+        valueWrapper.appendTo(wrapper);
+        value.appendTo(valueWrapper);
+        addOn.appendTo(valueWrapper);
+
+        group.appendTo(target);
+    },
+
+
+    /******************************************************/
+    /* EVENT CALLBACKS                                    */
+    /******************************************************/
+    _libraryClean: function () {
+        TB.wizard.actions = {};
+    },
+
+    _libraryCreateItem: function (type) {
+        if (type == 'action') {
+            var self = TB.wizard;
+            self.actions[this.Id] = {
+                name: this.Name,
+                inputVars: self.parseVars(this.InputVars),
+                outputVars: self.parseVars(this.OutputVars)
+            }
+        }
+    }
+
+};
+
+TB.onInit.push(TB.wizard.init);
+TB.context = {
+
+    defaultSettings: {
+        trigger: 'right',
+        zIndex: 300
+    },
+
+    init: function()
+    {
+        var ds = TB.context.defaultSettings; 
+
+        $.contextMenu($.extend(ds, {
+            selector: '.resourceRule',
+            callback: TB.rr._contextAction,
+            items: TB.rr.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.swimlane',
+            callback: TB.wfr._swimlaneContextAction,
+            items: TB.wfr.swimlaneContextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.workflowRule',
+            callback: TB.wfr._contextAction,
+            items: TB.wfr.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.tableRow',
+            callback: function (key, options) {
+                if (key == "model") {
+                    var tableRow = options.$trigger;
+                    tableRow.addClass("highlightedRow");
+                    tableRow.parents("table").find(".modelMarker").remove();
+                    tableRow.find("td:first").append('<div class="modelMarker">Model</div>');
+                }
+            },
+            items: {
+                "model": { name: "Set as model", icon: "edit" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.swimlaneRolesArea .roleItem',
+            callback: function (key, options) {
+                var item = options.$trigger;
+                if (key == "delete") {
+                    var swimlaneRolesArea = item.parents(".swimlaneRolesArea");
+                    item.remove();
+                    if (swimlaneRolesArea.find(".roleItem").length == 0)
+                        swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
+                            + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+                    ChangedSinceLastSave = true; /// OBSOLATE
+                    TB.changedSinceLastSave = true;
+                }
+            },
+            items: {
+                "delete": { name: "Remove role", icon: "delete" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item, .symbol',
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                    currentInstance.removeAllEndpoints(item, true);
+                    item.remove();
+                    ChangedSinceLastSave = true;
+                }
+                else if (key == "wizard") {
+                    item.addClass("activeItem processedItem");
+
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        TB.wizard.open.apply(item, []);
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+                else if (key == "properties") {
+                    item.addClass("activeItem processedItem");
+                    if (item.hasClass("tableAttribute")) {
+                        CurrentItem = item;
+                        tableAttributePropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("viewAttribute")) {
+                        CurrentItem = item;
+                        gatewayConditionsDialog.dialog("open");
+                    }
+                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
+                    {
+                        CurrentItem = item;
+                        gatewayConditionsDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
+                    { 
+                        CurrentItem = item;
+                        envelopeStartPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("uiItem")) {
+                        CurrentItem = item;
+                        uiitemPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
+                        CurrentItem = item;
+                        labelPropertyDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+            },
+            items: {
+                "wizard": { name: "Wizard", icon: "fa-magic" },
+                "properties": { name: "Properties", icon: "edit" },
+                "delete": { name: "Delete", icon: "delete" }
+            }
+        }));
+    }
+
+};
+
+TB.onInit.push(TB.context.init);
 function LoadModuleAdminScript() {
     $("#moduleAdminPanel .moduleSquare").on("click", function () {
         $("#moduleAdminPanel .moduleSquare").removeClass("selectedSquare");

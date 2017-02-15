@@ -896,7 +896,7 @@ $(function () {
                 if (confirm('Jste si jistí?')) {
                     var rowId = parseInt($(this).parents("tr").find("td:first").text());
                     var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="deleteId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
+                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
                 }
             });
             table.on("click", ".row_A_Action", function () {

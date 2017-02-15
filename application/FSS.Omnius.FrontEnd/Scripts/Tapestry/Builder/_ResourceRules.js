@@ -5,6 +5,10 @@
         item: '<div class="item"></div>'
     },
 
+    contextItems: {
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
     create: function(rrData)
     {
         var self = TB.rr;
@@ -164,6 +168,15 @@
                 var instance = target.data("jsPlumbInstance");
                 instance.repaintEverything();
             }
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+    },
+
+    _contextAction: function (key, options) {
+        var item = options.$trigger;
+        if (key == "delete") {
+            item.remove();
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }

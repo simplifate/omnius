@@ -1965,6 +1965,19 @@ body.tapestryModule .modelMarker {
   font-weight: bold;
   color: blue; }
 
+body.tapestryModule .dialog-wizard fieldset {
+  padding: 10px;
+  border-bottom: 1px solid #dedede; }
+  body.tapestryModule .dialog-wizard fieldset legend {
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    margin-bottom: 0em;
+    padding-top: 0.5em; }
+  body.tapestryModule .dialog-wizard fieldset p.alert {
+    margin-bottom: 0px;
+    padding: 5px 15px; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryResponsiveArea {
     transform: scale(0.9);

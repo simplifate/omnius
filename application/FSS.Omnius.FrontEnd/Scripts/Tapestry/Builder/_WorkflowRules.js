@@ -6,6 +6,16 @@
             + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
         item: ''
     },
+    
+    contextItems: {
+        'add-swimlane': { name: 'Add swimlane', icon: 'add' },
+        'rename': { name: 'Rename rule', icon: 'edit' },
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
+    swimlaneContextItems: {
+        'remove-swimlane': { name: 'Remove swimlane', icon: 'delete' },
+    },
 
     init: function () {
 
@@ -30,6 +40,29 @@
         return rule;
     },
 
+    remove: function() {
+        this.remove();
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
+    rename: function() {
+        CurrentRule = this;
+        renameRuleDialog.dialog('open');
+    },
+
+    addSwimlane: function() {
+        var count = this.find('.swimlane').length + 1;
+        TB.wfr.createSwimlane({Roles: [], WorkflowItems: []}, count, this);
+
+        this.find('.swimlane').css('height', (100 / count) + '%');
+        this.data("jsPlumbInstance").recalculateOffsets();
+        this.data("jsPlumbInstance").repaintEverything();
+
+        ChangedSinceLastSave = true /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
     createSwimlane: function(swimlaneData, count, parentRule) {
         var self = TB.wfr;
         
@@ -49,6 +82,27 @@
         }
 
         self.aliveSwimlane(swimlane);
+    },
+
+    removeSwimlane: function () {
+        // this = options.$trigger
+
+        var rule = this.parents('.workflowRule');
+        var swimlaneCount = rule.find('.swimlane').length;
+        if (swimlaneCount > 1) {
+            rule.data('jsPlumbInstance').removeAllEndpoints(this, true);
+            this.remove();
+            
+            rule.find('.swimlane').css('height', (100 / (swimlaneCount - 1)) + '%');
+            rule.data('jsPlumbInstance').recalculateOffsets();
+            rule.data('jsPlumbInstance').repaintEverything();
+
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+        else {
+            alert('Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.');
+        }
     },
 
     createItem: function(itemData, parentSwimlane)
@@ -245,6 +299,21 @@
             }
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
+        }
+    },
+
+    _contextAction: function (key, options) {
+        var self = TB.wfr;
+        switch (key) {
+            case 'delete': self.remove.apply(options.$trigger, []); break;
+            case 'rename': self.rename.apply(options.$trigger, []); break;
+            case 'add-swimlane': self.addSwimlane.apply(options.$trigger, []); break;
+        }
+    },
+    
+    _swimlaneContextAction: function (key, options) {
+        if (key == 'remove-swimlane') {
+            TB.wfr.removeSwimlane.apply(options.$trigger, []);
         }
     }
 }

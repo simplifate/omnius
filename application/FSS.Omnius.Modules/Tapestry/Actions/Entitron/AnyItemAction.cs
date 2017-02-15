@@ -47,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Any?" };
+                return new string[] { "Result" };
             }
         }
 
@@ -96,7 +96,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
 
             // return
-            outputVars["Any?"] = (select.where(i => outCondition).Count() > 0);
+            outputVars["Result"] = (select.where(i => outCondition).Count() > 0);
         }
     }
 }

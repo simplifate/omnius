@@ -41,7 +41,7 @@
         return { horizontal: horizontalLimit, vertical: verticalLimit };
     },
 
-    callHooks(hooks, context, params) {
+    callHooks: function(hooks, context, params) {
         for (var i = 0; i < hooks.length; i++) {
             hooks[i].apply(context, params);
         }

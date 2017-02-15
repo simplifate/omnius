@@ -813,6 +813,26 @@ body.tapestryModule {
         color: blue;
     }
 
+    .dialog-wizard {
+        fieldset {
+            padding: 10px;
+            border-bottom: 1px solid rgb(222, 222, 222);
+
+            legend {
+                font-size: 0.9em;
+                font-weight: bold;
+                border: none;
+                margin-bottom: 0em;
+                padding-top: 0.5em;
+            }
+
+            p.alert {
+                margin-bottom: 0px;
+                padding: 5px 15px;
+            }
+        }
+    }
+
     @media only screen and (max-width: 1855px) {
         #tapestryLibraryResponsiveArea {
             transform: scale(0.9);
