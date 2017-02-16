@@ -52,6 +52,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             RenderComponentList(Components.Where(c => c.ParentComponent == null).ToList(), stringBuilder, true);
 
             stringBuilder.Append("<input type=\"hidden\" name=\"registry\" value=\"@ViewData[\"crossBlockRegistry\"]\" />");
+
+            // Secure forms with anti cross-site forgery token
+            stringBuilder.Append("@Html.AntiForgeryToken()");
+
             stringBuilder.Append("</form>");
             CompiledPartialView = stringBuilder.ToString();
         }
