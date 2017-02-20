@@ -110,17 +110,19 @@ namespace FSS.Omnius.Modules.Entitron
         }
         public DBTable GetDynamicTable(string tableName, bool shared = false)
         {
-            if (Application == null)
-                throw new ArgumentNullException("Application");
+         
+                if (Application == null)
+                    throw new ArgumentNullException("Application");
 
-            if (!shared)
-            {
-                return Application.GetTable(tableName);
-            }
-            else
-            {
-                return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
-            }
+                if (!shared)
+                {
+                    return Application.GetTable(tableName);
+                }
+                else
+                {
+                    return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
+                }
+            
         }
 
         public DBView GetDynamicView(string viewName, bool shared = false)
