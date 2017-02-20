@@ -13,7 +13,7 @@
     public class Cortex
     {
         private HttpRequestBase Request;
-       
+
         public Cortex()
         {
 
@@ -25,11 +25,16 @@
 
         private ICortexAPI GetAPI()
         {
-            string APIType = WebConfigurationManager.AppSettings["CortexAPI"];
-            switch (APIType) {
+#if DEBUG
+            string APIType = WebConfigurationManager.AppSettings["CortexAPI_DEBUG"];
+#else
+            string APIType = WebConfigurationManager.AppSettings["CortexAPI_RELEASE"];
+#endif
+            switch (APIType)
+            {
                 case "AzureScheduler":
                     return new CortexAzureScheduler(Request);
-                case "Schtaks":
+                case "Schtasks":
                     return new CortexSchtasks(Request);
                 default:
                     throw new Exception("Not implemented schedule task api");
@@ -73,19 +78,21 @@
 
             ICortexAPI api = GetAPI();
 
-            if (model.Id.Equals(null)) {
+            if (model.Id.Equals(null))
+            {
                 e.Tasks.Add(row);
                 e.SaveChanges();
                 api.Create(row);
             }
-            else {
+            else
+            {
                 api.Change(row, original);
             }
 
             e.SaveChanges();
             return row.Id;
         }
-        
+
         public void Delete(int taskId)
         {
             DBEntities e = DBEntities.instance;
@@ -97,15 +104,59 @@
             e.Tasks.Remove(row);
             e.SaveChanges();
         }
-       
+
+        public void Delete(string taskName)
+        {
+            ICortexAPI api = GetAPI();
+            api.Delete(taskName);
+        }
+
+        public void ClearObsolateOneTimeTasks()
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime oldDate = now.AddMinutes(-10);
+            TimeSpan oldTime = new TimeSpan(oldDate.Hour, oldDate.Minute, oldDate.Second);
+
+            oldDate = oldDate.AddHours(-oldDate.Hour);
+            oldDate = oldDate.AddMinutes(-oldDate.Minute);
+            oldDate = oldDate.AddSeconds(-oldDate.Second);
+
+            ICortexAPI api = GetAPI();
+            List<Task> taskList = DBEntities.instance.Tasks.Where(t => t.Type == ScheduleType.ONCE).ToList();
+
+            List<Task> taskForDelete = new List<Task>();
+            foreach (Task t in taskList)
+            {
+                if (t.Start_Date < oldDate)
+                {
+                    taskForDelete.Add(t);
+                }
+                if (t.Start_Date == oldDate && t.Start_Time <= oldTime)
+                {
+                    taskForDelete.Add(t);
+                }
+            }
+
+            if (taskForDelete.Count > 0)
+            {
+                foreach (Task t in taskForDelete)
+                {
+                    api.Delete(t);
+                }
+                DBEntities.instance.Tasks.RemoveRange(taskForDelete);
+            }
+        }
+
         #region TOOLS
-        
+
         private int GetDaysFlags(string formKey)
         {
             int flag = 0;
-            if (!String.IsNullOrEmpty((string)Request.Form[formKey])) {
+            if (Request != null && !String.IsNullOrEmpty((string)Request.Form[formKey]))
+            {
                 List<string> selected = ((string)Request.Form[formKey]).Split(',').ToList();
-                foreach (Days day in Enums<Days>()) {
+                foreach (Days day in Enums<Days>())
+                {
                     if (selected.Contains(day.ToString())) flag = flag | (int)day;
                 }
             }
@@ -115,9 +166,11 @@
         private int GetModifierFlags()
         {
             int flag = 0;
-            if (!String.IsNullOrEmpty((string)Request.Form["Monthly_In_Modifiers[]"])) {
+            if (Request != null && !String.IsNullOrEmpty((string)Request.Form["Monthly_In_Modifiers[]"]))
+            {
                 List<string> selected = ((string)Request.Form["Monthly_In_Modifiers[]"]).Split(',').ToList();
-                foreach (InModifiers mod in Enums<InModifiers>()) {
+                foreach (InModifiers mod in Enums<InModifiers>())
+                {
                     if (selected.Contains(mod.ToString())) flag = flag | (int)mod;
                 }
             }
@@ -127,9 +180,11 @@
         private int GetMonthsFlags()
         {
             int flag = 0;
-            if (!String.IsNullOrEmpty((string)Request.Form["Monthly_Months[]"])) {
+            if (Request != null && !String.IsNullOrEmpty((string)Request.Form["Monthly_Months[]"]))
+            {
                 List<string> selected = ((string)Request.Form["Monthly_Months[]"]).Split(',').ToList();
-                foreach (Months month in Enums<Months>()) {
+                foreach (Months month in Enums<Months>())
+                {
                     if (selected.Contains(month.ToString())) flag = flag | (int)month;
                 }
             }
@@ -139,9 +194,11 @@
         private Int64 GetDaysInMonthFlags()
         {
             Int64 flag = 0;
-            if (!String.IsNullOrEmpty((string)Request.Form["Monthly_Days[]"])) {
+            if (Request != null && !String.IsNullOrEmpty((string)Request.Form["Monthly_Days[]"]))
+            {
                 List<string> selected = ((string)Request.Form["Monthly_Days[]"]).Split(',').ToList();
-                foreach (DaysInMonth day in Enums<DaysInMonth>()) {
+                foreach (DaysInMonth day in Enums<DaysInMonth>())
+                {
                     if (selected.Contains(day.ToString())) flag = flag | (Int64)day;
                 }
             }

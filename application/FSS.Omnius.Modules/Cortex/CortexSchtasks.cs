@@ -11,13 +11,19 @@
     using System.Web;
     using System.Web.Configuration;
     using System.Xml;
-
+    using Watchtower;
     public class CortexSchtasks : ICortexAPI
     {
         private XmlDocument xml;
         private string xmlPath;
 
         private HttpRequestBase Request;
+
+        private List<string> outputs = new List<string>();
+        private List<string> errors = new List<string>();
+        private int? appId = null;
+
+        private WatchtowerLogger logger = WatchtowerLogger.Instance;
 
         public CortexSchtasks(HttpRequestBase request)
         {
@@ -31,9 +37,9 @@
 
         public void Create(Task t)
         {
+            appId = t.AppId;
             string cmd = BuildTaskXML(t);
             Execute(cmd);
-            CleanUp();
         }
 
         public void Change(Task t, Task original)
@@ -44,7 +50,15 @@
 
         public void Delete(Task t)
         {
-            string cmd = "Schtasks /delete /tn \"" + t.Name + "\"";
+            appId = t.AppId;
+            string taskName = GetJobId(t);
+            string cmd = "Schtasks /delete /tn \"" + taskName + "\"";
+            Execute(cmd);
+        }
+
+        public void Delete(string taskName)
+        {
+            string cmd = "Schtasks /delete /tn \"" + taskName + "\"";
             Execute(cmd);
         }
 
@@ -54,17 +68,24 @@
             string run = string.Empty;
             string runAttr = string.Empty;
 
-            ConfigurationSection loggerConfig = (ConfigurationSection)WebConfigurationManager.GetSection("logger");
-            string logPath = loggerConfig.ElementInformation.Properties["rootDir"].Value.ToString();
+            //ConfigurationSection loggerConfig = (ConfigurationSection)WebConfigurationManager.GetSection("logger");
+            //string logPath = loggerConfig.ElementInformation.Properties["rootDir"].Value.ToString();
 
+            string logPath = WebConfigurationManager.AppSettings["CortexLogPath"];
             string cortexUserName = WebConfigurationManager.AppSettings["CortexUserName"];
             string cortexUserPassword = WebConfigurationManager.AppSettings["CortexUserPassword"];
 
-            logPath += "\\Cortex\\" + model.Name + ".html";
-            run = "wget";
-            runAttr = "-O \\\"" + logPath + "\\\" http://" + Request.Url.Host + model.Url;
+            string taskName = GetJobId(model);
 
-            cmd += "Schtasks /create /ru " + cortexUserName + " /rp " + cortexUserPassword + " /TN \"" + model.Name + "\" /XML ";
+            logPath += taskName + ".html";
+            run = "wget";
+            if (Request == null)
+                // runAttr = "-O \"" + logPath + "\" \"" + model.Url + "\"";
+                runAttr = "\"" + model.Url + "\"";
+            else
+                runAttr = "-O \"" + logPath + "\" \"http://" + Request.Url.Host + model.Url + "\"";
+
+            cmd += "Schtasks /create /ru " + cortexUserName + " /rp " + cortexUserPassword + " /F /TN \"" + taskName + "\" /XML ";
 
             xml = new XmlDocument();
             XmlNode n = xml.CreateXmlDeclaration("1.0", "UTF-16", null);
@@ -73,7 +94,8 @@
             XmlNode task = createNode("Task", new { version = "1.2", xmlns = "http://schemas.microsoft.com/windows/2004/02/mit/task" });
 
             string triggerName = "";
-            switch (model.Type) {
+            switch (model.Type)
+            {
                 case ScheduleType.ONCE:
                     triggerName = "TimeTrigger";
                     break;
@@ -91,12 +113,13 @@
             // Počátek platnosti
             string startDateTime = string.Format("{0}T{1}",
                     (model.Start_Date != null ? (DateTime)model.Start_Date : DateTime.Now).ToString("yyyy-MM-dd"),
-                    ((TimeSpan)model.Start_Time).ToString(@"hh\:mm") + ":00"
+                    ((TimeSpan)model.Start_Time).ToString(@"hh\:mm\:ss")
                 );
             trigger.AppendChild(createNode("StartBoundary", startDateTime));
 
             // Konec platnosti
-            if (model.End_Time != null || model.End_Date != null) {
+            if (model.End_Time != null || model.End_Date != null)
+            {
                 string endDateTime = string.Format("{0}T{1}",
                         (model.End_Date != null ? (DateTime)model.End_Date : DateTime.Now).ToString("yyyy-MM-dd"),
                         model.End_Time != null ? ((TimeSpan)model.End_Time).ToString(@"hh\:mm") + ":00" : "00:00:00"
@@ -108,22 +131,27 @@
             trigger.AppendChild(createNode("Enabled", "true"));
 
 
-            switch (model.Type) {
-                case ScheduleType.MONTHLY: {
+            switch (model.Type)
+            {
+                case ScheduleType.MONTHLY:
+                    {
                         trigger.AppendChild(createMonthlyTrigger(model));
                         break;
                     }
-                case ScheduleType.WEEKLY: {
+                case ScheduleType.WEEKLY:
+                    {
                         trigger.AppendChild(createWeeklyTrigger(model));
                         break;
                     }
-                case ScheduleType.DAILY: {
+                case ScheduleType.DAILY:
+                    {
                         trigger.AppendChild(createDaylyTrigger(model));
                         break;
                     }
             }
 
-            if (model.Repeat) {
+            if (model.Repeat)
+            {
                 trigger.AppendChild(createRepetition(model));
             }
 
@@ -135,7 +163,8 @@
             idleSettings.AppendChild(createNode("StopOnIdleEnd", "true"));
             idleSettings.AppendChild(createNode("RestartOnIdle", "false"));
 
-            if (model.Type == ScheduleType.ONIDLE) {
+            if (model.Type == ScheduleType.ONIDLE)
+            {
                 idleSettings.AppendChild(createNode("Duration", "PT" + model.Idle_Time + "M"));
                 idleSettings.AppendChild(createNode("WaitTimeout", "PT1H"));
             }
@@ -185,7 +214,7 @@
             xml.AppendChild(task);
 
             // Uložení XML
-            xmlPath = @"C:\\Temp\\Task_" + model.Name + ".xml";
+            xmlPath = @"C:\Temp\Task_" + taskName + ".xml";
 
             xml.Save(xmlPath);
             cmd += "\"" + xmlPath + "\"";
@@ -195,23 +224,89 @@
 
         private void Execute(string cmdText)
         {
-            using (Process process = new Process()) {
+            outputs.Clear();
+            errors.Clear();
+
+            try
+            {
+                Process process = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = "/K " + cmdText;
-                //startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                startInfo.Arguments = "/c " + cmdText;
+                startInfo.CreateNoWindow = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
                 process.StartInfo = startInfo;
+                process.EnableRaisingEvents = true;
+                /*process.Exited += OnExecuteDone;
+                process.OutputDataReceived += OnOutput;
+                process.ErrorDataReceived += OnError;*/
                 process.Start();
+
+                /*process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();*/
             }
+            catch (Exception e)
+            {
+                logger.LogEvent(
+                        e.Message + "(" + e.StackTrace + ")",
+                        0,
+                        LogEventType.CortexSchedule,
+                        LogLevel.Error,
+                        appId == null ? true : false,
+                        appId
+                    );
+            }
+        }
+
+        private void OnExecuteDone(object sender, EventArgs e)
+        {
+            if (outputs.Count > 0)
+            {
+                logger.LogEvent(
+                            "Cortex: " + string.Join("<br>", outputs),
+                            0,
+                            LogEventType.CortexSchedule,
+                            LogLevel.Info,
+                            appId == null ? true : false,
+                            appId
+                        );
+            }
+            if (errors.Count > 0)
+            {
+                logger.LogEvent(
+                            "Cortex: " + string.Join("<br>", errors),
+                            0,
+                            LogEventType.CortexSchedule,
+                            LogLevel.Error,
+                            appId == null ? true : false,
+                            appId
+                        );
+            }
+
+            CleanUp();
+        }
+
+        private void OnOutput(object sender, DataReceivedEventArgs e)
+        {
+            outputs.Add(e.Data);
+        }
+
+        private void OnError(object sender, DataReceivedEventArgs e)
+        {
+            errors.Add(e.Data);
         }
 
         private void CleanUp()
         {
-            if (!string.IsNullOrEmpty(xmlPath)) {
+            /*if (!string.IsNullOrEmpty(xmlPath))
+            {
                 File.Delete(xmlPath);
-            }
+            }*/
         }
 
         #region tools
@@ -220,13 +315,15 @@
         {
             XmlNode node = xml.CreateElement(nodeName);
 
-            foreach (var prop in attributes.GetType().GetProperties()) {
+            foreach (var prop in attributes.GetType().GetProperties())
+            {
                 XmlAttribute attr = xml.CreateAttribute(prop.Name);
                 attr.Value = prop.GetValue(attributes).ToString();
                 node.Attributes.Append(attr);
             }
 
-            if (!String.IsNullOrEmpty(content)) {
+            if (!String.IsNullOrEmpty(content))
+            {
                 node.AppendChild(xml.CreateTextNode(content));
             }
             return node;
@@ -247,15 +344,19 @@
         private XmlNode createMonthlyTrigger(Task model)
         {
             XmlNode trigger;
-            if (model.Monthly_Type == MonthlyType.DAYS) {
+            if (model.Monthly_Type == MonthlyType.DAYS)
+            {
                 trigger = createNode("ScheduleByMonth");
                 List<string> daysOfMonth = new List<string>();
-                foreach (DaysInMonth day in Enums<DaysInMonth>()) {
+                foreach (DaysInMonth day in Enums<DaysInMonth>())
+                {
                     if (((DaysInMonth)model.Monthly_Days).HasFlag(day)) daysOfMonth.Add(day.ToString().Replace("_", ""));
                 }
-                if (daysOfMonth.Count > 0) {
+                if (daysOfMonth.Count > 0)
+                {
                     XmlNode daysOfMonthNode = createNode("DaysOfMonth");
-                    foreach (string day in daysOfMonth) {
+                    foreach (string day in daysOfMonth)
+                    {
                         daysOfMonthNode.AppendChild(createNode("Day", day));
                     }
                     trigger.AppendChild(daysOfMonthNode);
@@ -266,25 +367,31 @@
                 trigger = createNode("ScheduleByMonthDayOfWeek");
                 List<string> weeks = new List<string>();
                 int i = 1;
-                foreach (InModifiers mod in Enums<InModifiers>()) {
+                foreach (InModifiers mod in Enums<InModifiers>())
+                {
                     if (((InModifiers)model.Monthly_In_Modifiers).HasFlag(mod)) weeks.Add(i <= 4 ? i.ToString() : "Last");
                     i++;
                 }
-                if (weeks.Count > 0) {
+                if (weeks.Count > 0)
+                {
                     XmlNode weeksNode = createNode("Weeks");
-                    foreach (string week in weeks) {
+                    foreach (string week in weeks)
+                    {
                         weeksNode.AppendChild(createNode("Week", week));
                     }
                     trigger.AppendChild(weeksNode);
                 }
 
                 List<string> daysOfWeek = new List<string>();
-                foreach (Days day in Enums<Days>()) {
+                foreach (Days day in Enums<Days>())
+                {
                     if (((Days)model.Monthly_In_Days).HasFlag(day)) daysOfWeek.Add(day.ToString());
                 }
-                if (daysOfWeek.Count > 0) {
+                if (daysOfWeek.Count > 0)
+                {
                     XmlNode daysOfWeekNode = createNode("DaysOfWeek");
-                    foreach (string day in daysOfWeek) {
+                    foreach (string day in daysOfWeek)
+                    {
                         daysOfWeekNode.AppendChild(createNode(day));
                     }
                     trigger.AppendChild(daysOfWeekNode);
@@ -292,12 +399,15 @@
             }
 
             List<string> months = new List<string>();
-            foreach (Months month in Enums<Months>()) {
+            foreach (Months month in Enums<Months>())
+            {
                 if (((Months)model.Monthly_Months).HasFlag(month)) months.Add(month.ToString());
             }
-            if (months.Count > 0) {
+            if (months.Count > 0)
+            {
                 XmlNode monthsNode = createNode("Months");
-                foreach (string month in months) {
+                foreach (string month in months)
+                {
                     monthsNode.AppendChild(createNode(month));
                 }
                 trigger.AppendChild(monthsNode);
@@ -310,12 +420,15 @@
             XmlNode trigger = createNode("ScheduleByWeek");
 
             List<string> daysOfWeek = new List<string>();
-            foreach (Days day in Enums<Days>()) {
+            foreach (Days day in Enums<Days>())
+            {
                 if (((Days)model.Weekly_Days).HasFlag(day)) daysOfWeek.Add(day.ToString());
             }
-            if (daysOfWeek.Count > 0) {
+            if (daysOfWeek.Count > 0)
+            {
                 XmlNode daysOfWeekNode = createNode("DaysOfWeek");
-                foreach (string day in daysOfWeek) {
+                foreach (string day in daysOfWeek)
+                {
                     daysOfWeekNode.AppendChild(createNode(day));
                 }
                 trigger.AppendChild(daysOfWeekNode);
@@ -340,6 +453,30 @@
             repetition.AppendChild(createNode("StopAtDurationEnd", "true"));
 
             return repetition;
+        }
+
+        private string GetJobId(Task model)
+        {
+            string jobId;
+            if (Request == null)
+                jobId = GetJobIdFromUrl(model.Url);
+            else
+                jobId = ExtendMethods.URLSafeString($"{model.Id}_{model.Name}");
+            return jobId;
+        }
+        private string GetJobIdFromUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            string[] appMethod = uri.AbsolutePath.Split('/');
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            string hostname = ExtendMethods.URLSafeString(uri.Host);
+            string app = appMethod[1];
+            string method = appMethod[2];
+            string button = query["button"];
+            string modelId = query["modelId"];
+
+            return $"{hostname}_{app}_{method}_{button}_{modelId}";
         }
 
         private IEnumerable Enums<T>()

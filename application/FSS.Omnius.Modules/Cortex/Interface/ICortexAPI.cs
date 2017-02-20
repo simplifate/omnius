@@ -7,6 +7,7 @@ namespace FSS.Omnius.Modules.Cortex.Interface
         void Create(Task t);
         void Change(Task t, Task original);
         void Delete(Task t);
+        void Delete(string taskName);
         string List();
     }
 }
