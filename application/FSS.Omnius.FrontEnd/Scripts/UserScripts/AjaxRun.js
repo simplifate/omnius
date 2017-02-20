@@ -32,7 +32,15 @@ $('body').on('click', '.runAjax', function (e) {
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
-        if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
+        setTimeout(function () {
+                $('input.input-with-datepicker').datetimepicker('setOptions', {
+                    format: 'd.m.Y',
+                    formatDate: 'Y-m-d',
+                    allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
+                });
+        }, 100);
+    }
+        if $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
         {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
@@ -43,6 +51,19 @@ $(function () {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+                }
+            });
+        }
+        if ($("#currentBlockName").val() == "VyjadreniKAuditu"  {
+            $("[name=radio_agree]").on("change", function () {
+                if ($(this).val() === "true") {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
+                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
+                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+                } else {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
+                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
+                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
                 }
             });
         }
@@ -57,14 +78,8 @@ $(function () {
                 }
             });
         }
-        setTimeout(function () {
-            $('input.input-with-datepicker').datetimepicker('setOptions', {
-                format: 'd.m.Y',
-                formatDate: 'Y-m-d',
-                allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
-            });
-        }, 100);
-    }
+       
+    
     else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
