@@ -1185,6 +1185,11 @@
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\CreateUserAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RefreshUserFromADAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RemoveUserFromGroupAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\UserHasRoleAction.cs" />
     <Compile Include="Tapestry\Actions\Scheduler\RegisterOneTimeTaskAction.cs" />
     <Compile Include="Tapestry\Actions\Hermes\SendMailForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ShowMessageAction.cs" />

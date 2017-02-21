@@ -223,6 +223,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
+        public virtual DbSet<User_Role> UserRoles { get; set; }
+
         //public virtual DbSet<PersonaAppRole> Roles { get; set; }
 
         // Tapestry
