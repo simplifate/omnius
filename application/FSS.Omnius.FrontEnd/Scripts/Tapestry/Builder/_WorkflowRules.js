@@ -114,7 +114,7 @@
             + itemData.Label + '</span></div>');
         } else if (itemData.TypeClass == "symbol") {
             item = $('<img id="wfItem' + itemData.Id + '" class="symbol" symbolType="' + itemData.SymbolType +
-            '" src="/Content/images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
+            '" src="/Content/Images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
 
             if (itemData.SymbolType == "envelope-start") {

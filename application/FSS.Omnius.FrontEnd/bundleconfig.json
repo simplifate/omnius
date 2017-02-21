@@ -39,8 +39,6 @@
       "Scripts/Tapestry/Builder/_WorkflowRules.js",
       "Scripts/Tapestry/Builder/_Library.js",
       "Scripts/Tapestry/Builder/_Toolbox.js",
-      "Scripts/Tapestry/Builder/_Wizard.js",
-      "Scripts/Tapestry/Builder/_Context.js",
       "Scripts/Portal/ModuleAdmin.js",
       "Scripts/Portal/Init.js",
       "Scripts/Persona/SaveModulePermissions.js",
@@ -104,25 +102,16 @@
     ]
   },
   {
-    "outputFileName": "Content/bundle.css",
+    "outputFileName": "Content/CssLibs/Bundle.css",
     "inputFiles": [
-      "Content/bootstrap.min.css",
-      "Content/jquery-ui.css",
-      "Content/jquery.contextMenu.css",
-      "Content/css/jquery.countdown.css",
-      "Content/css/jquery.datetimepicker.css",
-      "Content/css/jquery.dataTables.min.css",
-      "Content/css/font-awesome.min.css",
-      "Content/scss/Bundled.css",
-      "Content/spectrum.css"
-    ]
-  },
-  {
-    "outputFileName": "Scripts/Bundles/commonLibraries.js",
-    "inputFiles": [
-      "Scripts/CommonLibraries/Other/dom.jsPlumb-1.7.6-min.js",
-      "Scripts/CommonLibraries/Other/jquery-collision.min.js",
-      "Scripts/CommonLibraries/Other/jquery.contextMenu.js"
+      "Content/CssLibs/bootstrap.min.css",
+      "Content/CssLibs/jquery-ui.css",
+      "Content/CssLibs/jquery.contextMenu.css",
+      "Content/CssLibs/jquery.countdown.css",
+      "Content/CssLibs/jquery.datetimepicker.css",
+      "Content/CssLibs/jquery.dataTables.min.css",
+      "Content/CssLibs/font-awesome.min.css",
+      "Content/CssLibs/spectrum.css"
     ]
   },
   {
