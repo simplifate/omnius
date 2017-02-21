@@ -1480,3 +1480,9 @@ body.adminLayout #appNotificationArea {
 .hiddenOption {
   display: none; }
 
+.CodeMirror pre {
+  height: 15px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word; }
+

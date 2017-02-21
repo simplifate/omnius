@@ -16,7 +16,8 @@
       "Scripts/CommonLibraries/Other/spectrum.js",
       "Scripts/CommonLibraries/Other/bootstrap.js",
       "Scripts/CommonLibraries/jQuery/jquery.countdown.min.js",
-      "Scripts/CommonLibraries/jQuery/jquery.countdown-cs.js"
+      "Scripts/CommonLibraries/jQuery/jquery.countdown-cs.js",
+      "Scripts/CommonLibraries/jQuery/jquery.unobtrusive-ajax.js"
     ]
   },
   {
@@ -127,7 +128,16 @@
     "inputFiles": [
       "Scripts/CommonLibraries/Other/RuleDetailViewModel.js",
       "Scripts/CommonLibraries/Other/RuleListViewModel.js",
-      "Scripts/CommonLibraries/Other//knockout-3.3.0.debug.js",
+      "Scripts/CommonLibraries/Other/knockout-3.3.0.debug.js",
+      "Scripts/CommonLibraries/Other/BlockViewModel.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Bundles/knockout.js",
+    "inputFiles": [
+      "Scripts/CommonLibraries/Other/RuleDetailViewModel.js",
+      "Scripts/CommonLibraries/Other/RuleListViewModel.js",
+      "Scripts/CommonLibraries/Other/knockout-3.3.0.debug.js",
       "Scripts/CommonLibraries/Other/BlockViewModel.js"
     ]
   }
