@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FSS.Omnius.FrontEnd.Models;
+using FSS.Omnius.Modules;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
@@ -18,6 +19,9 @@ using PagedList;
 using PagedList.Mvc;
 using OneLogin.Saml;
 using FSS.Omnius.Modules.Watchtower;
+using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Nexus.Service;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {
@@ -661,6 +665,92 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             e.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SyncFromAD()
+        {
+            var core = new CORE();
+            var db = core.Entitron.GetStaticTables();
+
+            NexusWSService webService = new NexusWSService();
+            object[] parameters = new[] { "Auction_User" };
+            JToken results = webService.CallWebService("RWE_WSO_SOAP", "getUserListOfRole", parameters);
+            var x = results.Children().First().Value<String>();
+
+            //get the list of users names and add it to the list.
+            IEnumerable<String> usersNames = results.Children().Values().Select(y => y.Value<String>());
+
+            List<User> listUsers = new List<User>();
+
+            //iterate list of usersNames and make USerObject
+            foreach (string userName in usersNames)
+            {
+                object[] param = new[] { userName, null };
+                JToken userClaim = webService.CallWebService("RWE_WSO_SOAP", "getUserClaimValues", param);
+                User newUser = new User();
+                newUser.isLocalUser = false;
+                newUser.localExpiresAt = DateTime.Today;//for test
+                newUser.LastLogin = DateTime.Today;
+                newUser.CurrentLogin = DateTime.Today;
+                newUser.EmailConfirmed = false;
+                newUser.PhoneNumberConfirmed = false;
+                newUser.TwoFactorEnabled = false;
+                newUser.LockoutEnabled = false;
+                newUser.AccessFailedCount = 0;
+                newUser.isActive = true;
+                foreach (JToken property in userClaim.Children())
+                {
+                    var a = (property.Children().Single(c => (c as JProperty).Name == "claimUri") as JProperty).Value.ToString();
+
+                    switch (a)
+                    {
+                        case "email":
+                            var email = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
+                            newUser.Email = email;
+                            newUser.UserName = email;
+                            break;
+
+                        case "http://wso2.org/claims/mobile":
+                            var mobile = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
+                            newUser.MobilPhone = mobile;
+                            break;
+
+                        case "http://wso2.org/claims/organization":
+                            var organization = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
+                            newUser.Company = organization;
+                            break;
+
+                        case "fullname":
+                            var fullname = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString();
+                            newUser.DisplayName = fullname;
+                            break;
+                        //SET ROLES FOR this newly created USER
+                        case "http://wso2.org/claims/role":
+                            var roles = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0, 8) == "Auction_").Select(e => e.Remove(0, 8));
+                            foreach (string role in roles)
+                            {
+                                PersonaAppRole approle = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
+                                if (approle == null)
+                                {
+                                    db.Roles.Add(new PersonaAppRole() { Name = role, Application = core.Entitron.Application, Priority = 0 });
+                                    db.SaveChanges();
+                                }
+                                //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
+                                if (approle != null && !newUser.Roles.Contains(new User_Role { AppRole = approle, User = newUser }))
+                                {
+                                    newUser.Roles.Add(new User_Role { AppRole = approle, User = newUser });
+                                }
+                            }
+                            break;
+                    }
+                }
+                listUsers.Add(newUser);
+            }
+
+            //Now we can cal the resfresh method from persona
+            Modules.Persona.Persona.RefreshUsersFromWSO(listUsers, core);
+
+            return new HttpStatusCodeResult(200);
         }
     }
 }
