@@ -530,7 +530,7 @@
                 }
             }
         });
-    },
+    }, 
 
     sort: function (a, b) {
         var sortKeyA = a.category + '_' + a.label;

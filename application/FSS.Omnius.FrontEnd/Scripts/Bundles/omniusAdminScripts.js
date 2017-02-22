@@ -3253,7 +3253,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: true };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3270,9 +3270,9 @@ TB.screen = {
         if (c.ElmId != "") {
             var label = c.ElmId;
             var params = { pageId: pageId, componentName: label, isBootstrap: true };
-            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+            var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
             }
@@ -3286,7 +3286,7 @@ TB.screen = {
                 for (var a in actions) {
                     var label = c.ElmId + '_' + actions[a].action;
                     var params = { pageId: pageId, componentName: label, isBootstrap: true };
-                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                    var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                     var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                     if (isUsed) {
@@ -3309,7 +3309,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed =  state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3325,9 +3325,9 @@ TB.screen = {
     {
         var label = c.Name;
         var params = { pageId: pageId, componentName: label, isBootstrap: false };
-        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+        var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
         if (isUsed) {
             TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
         }
@@ -3338,7 +3338,7 @@ TB.screen = {
             for (var a = 0; a < actions.length; a++) {
                 var label = c.Name + actions[a];
                 var params = { pageId: pageId, componentName: label, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3401,6 +3401,8 @@ TB.load = {
     },
     toolboxState: null,
     data: null,
+
+    onAttributesLoad: [],
 
     init: function () {
 
@@ -3567,7 +3569,7 @@ TB.load = {
             var params = { tableName: data.Tables[ti].Name };
             var label = 'Table: ' + data.Tables[ti].Name;
 
-            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed, data.Tables[ti]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
             }
@@ -3578,7 +3580,7 @@ TB.load = {
             var params = { tableName: data.Views[vi].Name };
             var label = 'View: ' + data.Views[vi].Name;
 
-            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed, data.Views[vi]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute', params, label);
             }
@@ -3591,7 +3593,7 @@ TB.load = {
                 var params = { tableName: data.Shared.Tables[ti].Name, shared: true };
                 var label = 'Shared table: ' + data.Shared.Tables[ti].Name;
 
-                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed);
+                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed, data.Shared.Tables[ti]);
                 if (isUsed) {
                     TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
                 }
@@ -3603,7 +3605,7 @@ TB.load = {
                 var params = { tableName: data.Shared.Views[vi].Name, shared: true };
                 var label = 'Shared view: ' + data.Shared.Views[vi].Name;
 
-                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed);
+                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed, data.Shared.Views[vi]);
                 if (isUsed) {
                     TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute sharedAttribute', params, label);
                 }
@@ -3619,7 +3621,7 @@ TB.load = {
                         var params = { tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name, shared: true };
                         var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
 
-                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed);
+                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed, { Name: label });
                         if (isUsed) {
                             TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
                         }
@@ -3641,7 +3643,7 @@ TB.load = {
                     var params = {tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name };
                     var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if(isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
@@ -3659,13 +3661,15 @@ TB.load = {
                     var params = { tableName: systemTable.Name, columnName: systemTable.Columns[i].Name };
                     var label = systemTable.Name + '.' + systemTable.Columns[i].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if (isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
                 }
             }
         }
+
+        TB.callHooks(self.onAttributesLoad, null, [data]);
     },
 
     librarySetActions: function(data)
@@ -4004,6 +4008,8 @@ TB.rr = {
 };
 TB.wfr = {
 
+    onCreateItem: [],
+
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
@@ -4160,6 +4166,8 @@ TB.wfr = {
 
         item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
         AddToJsPlumb(item);
+
+        TB.callHooks(TB.wfr.onCreateItem, item, []);
     },
 
     aliveRule: function(rule)
