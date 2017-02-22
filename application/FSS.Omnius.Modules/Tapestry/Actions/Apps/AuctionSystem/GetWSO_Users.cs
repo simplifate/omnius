@@ -133,7 +133,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
             }
 
             //Now we can cal the resfresh method from persona
-            Persona.Persona.RefreshUsersFromWSO(listUsers,core);
+            Modules.Persona.Persona.RefreshUsersFromWSO(listUsers, core);
         }
     }
 }

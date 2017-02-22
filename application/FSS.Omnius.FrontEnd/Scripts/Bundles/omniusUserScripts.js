@@ -867,6 +867,28 @@ $(function () {
             $(".userBox").slideUp();
         });
         try {
+            var mozaicForm = $(".mozaicForm");
+
+            var csrfTokenInput = null;
+
+            if (mozaicForm.length > 0) {
+                mozaicForm = mozaicForm.first();
+                csrfTokenInput = mozaicForm.find("[name=__RequestVerificationToken]").clone();
+            }
+
+            function submitActionByForm(tableName, rowId, action) {
+                // Create
+                var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + action + '" /></form>');
+                
+                // "protect"
+                if (csrfTokenInput !== null) {
+                    form.append(csrfTokenInput);
+                }
+                
+                // Append
+                form.appendTo('body').submit();
+            }
+
             $(".uic.data-table").each(function (index, element) {
             var table = $(element);
             var tableWidth = parseInt(table.attr("uicWidth"));
@@ -875,7 +897,8 @@ $(function () {
             wrapper.css("position", "absolute");
             wrapper.css("left", table.css("left"));
             wrapper.css("top", table.css("top"));
-            wrapper.css("width", tableWidth + 8);
+            wrapper.css("width", tableWidth);
+            table.css("max-width", tableWidth);
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
@@ -885,29 +908,34 @@ $(function () {
                     var tableName = table.attr("name");
                     if ($(this).hasClass("fa-download"))
                         window.ignoreUnload = true;
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_EditAction" /></form>').appendTo('body').submit();
+
+                    submitActionByForm(tableName, rowId, "EditAction");
             });
             table.on("click", ".rowDetailsAction", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DetailsAction" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "DetailsAction");
             });
             table.on("click", ".rowDeleteAction", function () {
                 if (confirm('Jste si jistí?')) {
                     var rowId = parseInt($(this).parents("tr").find("td:first").text());
                     var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
+
+                    submitActionByForm(tableName, rowId, "DeleteAction");
                 }
             });
             table.on("click", ".row_A_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_A_Action" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "A_Action");
             });
             table.on("click", ".row_B_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_B_Action" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "B_Action");
             });
             table.DataTable().on("draw", function () {
                 var t = $(this);

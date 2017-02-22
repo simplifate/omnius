@@ -25,52 +25,83 @@ namespace FSS.Omnius.Modules.Tapestry
             _results = new ActionResult();
         }
 
-        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId, blockDependencies);
             var CrossBlockRegistry = result.Item1.OutputData.ContainsKey("CrossBlockRegistry")
                 ? (Dictionary<string, object>)result.Item1.OutputData["CrossBlockRegistry"] : new Dictionary<string, object>();
             return new Tuple<Message, Block, Dictionary<string, object>>(result.Item1.Message, result.Item2, CrossBlockRegistry);
         }
-        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
+        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId = -1)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId);
             JObject output = new JObject();
-            foreach(KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
+            foreach (KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
             {
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
                 if (pair.Value is string)
                     output.Add(key, (string)pair.Value);
+                else if (pair.Value is bool)
+                    output.Add(key, (bool)pair.Value);
+                else if (pair.Value is int)
+                    output.Add(key, (int)pair.Value);
+                else if (pair.Value is double)
+                    output.Add(key, (double)pair.Value);
                 else
                     output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
             }
             return output;
         }
-        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc)
+
+        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null)
         {
             // __CORE__
             // __Result[uicName]__
             // __ModelId__
             // __Model.{TableName}.{columnName}
             // __TableName__
-            // __UserId__
 
             // init action
             _CORE.User = user;
-            _results.OutputData.Add("__CORE__", _CORE);
-            _results.OutputData.Add("__UserId__", user.Id);
+            if (!_results.OutputData.ContainsKey("__CORE__"))
+                _results.OutputData.Add("__CORE__", _CORE);
             if (!string.IsNullOrWhiteSpace(block.ModelName))
-                _results.OutputData.Add("__TableName__", block.ModelName);
+            {
+                if (!_results.OutputData.ContainsKey("__TableName__"))
+                    _results.OutputData.Add("__TableName__", block.ModelName);
+                else
+                    _results.OutputData["__TableName__"] = block.ModelName;
+            }
             if (modelId >= 0)
-                _results.OutputData.Add("__ModelId__", modelId);
+            {
+                if (!_results.OutputData.ContainsKey("__ModelId__"))
+                    _results.OutputData.Add("__ModelId__", modelId);
+                else
+                    _results.OutputData["__ModelId__"] = modelId;
+            }
+            if (deleteId >= 0)
+            {
+                if (!_results.OutputData.ContainsKey("__DeleteId__"))
+                    _results.OutputData.Add("__DeleteId__", deleteId);
+                else
+                    _results.OutputData["__DeleteId__"] = deleteId;
+            }
+
+            if (blockDependencies != null)
+            {
+                foreach (KeyValuePair<string, object> dependency in blockDependencies)
+                {
+                    _results.OutputData.Add("__Dependency_" + dependency.Key + "__", dependency.Value);
+                }
+            }
 
             // get actionRule
             ActionRule actionRule = null;
             ActionRule nextRule = GetActionRule(block, _results, buttonId);
             if (nextRule == null)
                 return new Tuple<ActionResult, Block>(_results, block);
-            
+
             // get inputs
             if (fc != null)
             {
@@ -109,7 +140,8 @@ namespace FSS.Omnius.Modules.Tapestry
 
                 if (_results.Type == ActionResultType.Error)
                 {
-                    return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
+                    return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
+                    //return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }
 
                 nextRule = GetActionRule(actionRule.TargetBlock, _results);
@@ -117,16 +149,15 @@ namespace FSS.Omnius.Modules.Tapestry
 
             Block resultBlock = actionRule.TargetBlock;
             // if stops on virtual block
-            if (actionRule.TargetBlock.IsVirtualForBlockId != null)
-            {
-                actionRule = Rollback(prevActionRules);
-                resultBlock = actionRule.SourceBlock;
-            }
+            //if (actionRule.TargetBlock.IsVirtual)
+            //{
+            //    actionRule = Rollback(prevActionRules);
+            //    resultBlock = actionRule.SourceBlock;
+            //}
 
             // target Block
             return new Tuple<ActionResult, Block>(_results, resultBlock);
         }
-
         private ActionRule Rollback(List<ActionRule> prevActionRules)
         {
             prevActionRules.Reverse();

@@ -1,533 +1,829 @@
-﻿//using System.Collections.Generic;
-//using System.ComponentModel.DataAnnotations.Schema;
-//using System.Text;
-
-//using FSS.Omnius.Modules.Entitron.Entity.Master;
-//using System.Linq;
+﻿//using FSS.Omnius.Modules.Entitron.Entity.Persona;
 //using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+//using FSS.Omnius.Modules.Tapestry.Service;
 //using System;
-//using System.ComponentModel.DataAnnotations;
+//using System.Web.Mvc;
+//using System.Linq;
+//using System.Text.RegularExpressions;
+//using FSS.Omnius.Modules.Entitron;
+//using FSS.Omnius.Modules.Entitron.Entity;
+//using C = FSS.Omnius.Modules.CORE;
+//using System.Collections.Generic;
+//using System.Data;
+//using Newtonsoft.Json.Linq;
 //using Newtonsoft.Json;
+//using FSS.Omnius.Modules.Entitron.Entity.Entitron;
+//using FSS.Omnius.Modules.Watchtower;
+//using System.Data.Entity;
+//using FSPOC_WebProject;
+//using System.Web;
+//using Microsoft.AspNet.Identity.Owin;
+//using System.Configuration;
+//using FSS.Omnius.Utils;
+//using FSS.Omnius.Modules;
 
-//namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
+//namespace FSS.Omnius.Controllers.Tapestry
 //{
-//    [Table("MozaicEditor_Pages")]
-//    public class MozaicEditorPage
+//    [PersonaAuthorize]
+//    public class RunController : Controller
 //    {
-//        public int Id { get; set; }
-//        public string Name { get; set; }
-//        public bool IsModal { get; set; }
-//        public int? ModalWidth { get; set; }
-//        public int? ModalHeight { get; set; }
-//        public string CompiledPartialView { get; set; }
-//        public int CompiledPageId { get; set; }
-//        public virtual ICollection<MozaicEditorComponent> Components { get; set; }
+//        public static DateTime requestStart;
+//        public static DateTime startTime;
+//        public static DateTime prepareEnd;
 
-//        [JsonIgnore]
-//        public virtual ICollection<TapestryDesignerResourceItem> ResourceItems { get; set; }
-
-//        public virtual Application ParentApp { get; set; }
-
-//        public void Recompile()
+//        [HttpGet]
+//        public ActionResult Index(string appName, string blockIdentify = null, int modelId = -1, string locale = "", string message = null, string messageType = null, string registry = null)
 //        {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            stringBuilder.Append("@using FSS.Omnius.Utils");
-//            if (IsModal)
-//            {
-//                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
-//                stringBuilder.Append("@{ Layout = \"~/Views/Shared/_PartialViewAjaxLayout.cshtml\"; }");
+//            Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
 
+//            RunController.startTime = DateTime.Now;
+
+//            var context = DBEntities.instance;
+//            // init
+//            C.CORE core = HttpContext.GetCORE();
+//            if (!string.IsNullOrEmpty(appName))
+//                core.Entitron.AppName = appName;
+//            core.User = User.GetLogged(core);
+
+//            // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
+//            //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+
+//            Block block = getBlockWithResource(core, context, appName, blockIdentify);
+//            if (block == null)
+//                return new HttpStatusCodeResult(404);
+
+//            // Check if user has one of allowed roles, otherwise return 403
+//            if (!String.IsNullOrEmpty(block.RoleWhitelist))
+//            {
+//                User user = core.User;
+//                bool userIsAllowed = false;
+//                foreach (var role in block.RoleWhitelist.Split(',').ToList())
+//                {
+//                    if (user.HasRole(role))
+//                        userIsAllowed = true;
+//                }
+//                if (!userIsAllowed)
+//                    return new HttpStatusCodeResult(403);
 //            }
+
+//            try
+//            {
+//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+//            }
+//            catch (NullReferenceException)
+//            {
+//                return new HttpStatusCodeResult(404);
+//            }
+
+//            var crossBlockRegistry = new Dictionary<string, object>();
+//            var fc = new FormCollection();
+//            if (!string.IsNullOrEmpty(registry))
+//                crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(registry);
+//            foreach (var pair in crossBlockRegistry)
+//            {
+//                fc.Add(pair.Key, pair.Value.ToString());
+//            }
+
+//            blockDependencies.Add("Translator", this.GetTranslator());
+//            var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, fc, -1, blockDependencies);
+//            if (result.Item2.Id != block.Id)
+//                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = this.PrepareAlert(result.Item1.Message), messageType = result.Item1.Message.Type.ToString() });
+
+//            Dictionary<string, object> tapestryVars = result.Item1.OutputData;
+
+//            foreach (var pair in crossBlockRegistry)
+//            {
+//                if (!tapestryVars.ContainsKey(pair.Key))
+//                    tapestryVars.Add(pair.Key, pair.Value.ToString());
+//            }
+
+//            if (tapestryVars.ContainsKey("__ModelId__") && Convert.ToInt32(tapestryVars["__ModelId__"]) != modelId)
+//                modelId = Convert.ToInt32(tapestryVars["__ModelId__"]);
+
+//            // fill data
+//            ViewData["appName"] = core.Entitron.Application.DisplayName;
+//            ViewData["appIcon"] = core.Entitron.Application.Icon;
+//            ViewData["pageName"] = block.DisplayName;
+//            ViewData["UserEmail"] = core.User.Email;
+//            ViewData["blockName"] = block.Name;
+//            ViewData["crossBlockRegistry"] = registry;
+//            ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));
+//            ViewData["HttpContext"] = HttpContext;
+//            string lastLocale = this.GetLocaleNameById(core.User.LocaleId);
+//            if (locale == "")
+//                locale = lastLocale;
+//            ViewData["locale"] = locale;
+//            if (locale == "cs")
+//                core.User.LocaleId = 1;
 //            else
+//                core.User.LocaleId = 2;
+
+//            context.SaveChanges();
+//            DBItem modelRow = null;
+//            bool modelLoaded = false;
+//            if (modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
 //            {
-//                stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
-//                stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
+//                modelRow = core.Entitron.GetDynamicTable(block.ModelName).GetById(modelId);
+//                modelLoaded = true;
 //            }
-//            stringBuilder.Append("<form class=\"mozaicForm\" method=\"post\">");
-
-//            RenderComponentList(Components.Where(c => c.ParentComponent == null).ToList(), stringBuilder, true);
-
-//            stringBuilder.Append("<input type=\"hidden\" name=\"registry\" value=\"@ViewData[\"crossBlockRegistry\"]\" />");
-//            stringBuilder.Append("</form>");
-//            CompiledPartialView = stringBuilder.ToString();
-//        }
-//        private void RenderComponentList(ICollection<MozaicEditorComponent> ComponentList, StringBuilder stringBuilder, bool allowNesting)
-//        {
-//            foreach (MozaicEditorComponent c in ComponentList)
+//            var columnMetadataResultCache = new Dictionary<string, List<ColumnMetadata>>();
+//            var tableQueryResultCache = new Dictionary<string, List<DBItem>>();
+//            var viewQueryResultCache = new Dictionary<string, List<DBItem>>();
+//            foreach (var resourceMappingPair in block.ResourceMappingPairs)
 //            {
-//                if (c.Type == "info-container")
+//                DataTable dataSource = null;
+//                List<string> columnNameList = null;
+//                Dictionary<string, string> columnDisplayNameDictionary = null;
+//                List<DBItem> entitronRowList = null;
+//                var source = resourceMappingPair.Source;
+//                var target = resourceMappingPair.Target;
+//                string sourceTableName = source.TableName;
+//                bool sourceIsColumnAttribute = false;
+//                bool noConditions = true;
+//                bool idAvailable = true;
+//                switch (source.TypeClass)
 //                {
-//                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" name=\"{c.Name}\" class=\"uic info-container {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"<div class=\"fa fa-info-circle info-container-icon\"></div>");
-//                    stringBuilder.Append($"<div class=\"info-container-header\">@(t._(\"{c.Label}\"))</div>");
-//                    stringBuilder.Append($"<div class=\"info-container-body\">@(t._(\"{c.Content}\"))</div></div>");
-//                }
-//                else if (c.Type == "button-simple")
-//                {
-//                    bool invisible = false;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
+//                    case "viewAttribute":
+//                        dataSource = new DataTable();
+//                        columnDisplayNameDictionary = new Dictionary<string, string>();
+//                        var entitronView = core.Entitron.GetDynamicView(sourceTableName);
+//                        dataSource.Columns.Add("hiddenId", typeof(int));
+//                        if (viewQueryResultCache.ContainsKey(sourceTableName))
+//                            entitronRowList = viewQueryResultCache[sourceTableName];
+//                        else {
+//                            entitronRowList = entitronView.Select().ToList();
+//                            viewQueryResultCache.Add(sourceTableName, entitronRowList);
+//                        }
+//                        noConditions = source.ConditionSets.Count == 0;
+//                        if (entitronRowList.Count > 0)
 //                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
+//                            columnNameList = entitronRowList[0].getColumnNames();
+//                            idAvailable = columnNameList.Contains("id");
+//                        }
+//                        else {
+//                            continue;
+//                        }
+//                        foreach (var columnName in columnNameList)
+//                        {
+//                            dataSource.Columns.Add(columnName);
+//                            columnDisplayNameDictionary.Add(columnName, columnName);
+//                        }
+//                        foreach (var entitronRow in entitronRowList)
+//                        {
+//                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(source.ConditionSets, entitronRow, tapestryVars))
 //                            {
-//                                // No settings yet
-//                            }
-//                            else
-//                            {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
+//                                var newRow = dataSource.NewRow();
+//                                newRow["hiddenId"] = idAvailable ? entitronRow["id"] : 0;
+//                                foreach (var columnName in columnNameList)
+//                                {
+//                                    var currentCell = entitronRow[columnName];
+//                                    if (currentCell is bool)
+//                                    {
+//                                        if ((bool)currentCell == true)
+//                                            newRow[columnName] = "Ano";
+//                                        else
+//                                            newRow[columnName] = "Ne";
+//                                    }
+//                                    else if (currentCell is DateTime)
+//                                    {
+//                                        newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
+//                                    }
+//                                    else
+//                                        newRow[columnName] = currentCell;
+//                                }
+//                                dataSource.Rows.Add(newRow);
 //                            }
 //                        }
-//                    }
-//                    DBEntities context = DBEntities.instance;
+//                        break;
+//                    case "tableAttribute":
+//                        if (sourceTableName.StartsWith("Omnius::"))
+//                        {
+//                            dataSource = new DataTable();
+//                            columnDisplayNameDictionary = new Dictionary<string, string>();
+//                            var systemTable = core.Entitron.GetSystemTable(sourceTableName);
+//                            columnNameList = systemTable.Item1;
+//                            var rowList = systemTable.Item2;
+//                            List<string> columnFilter = null;
+//                            bool getAllColumns = true;
+//                            noConditions = source.ConditionSets.Count == 0;
+//                            if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
+//                            {
+//                                columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
+//                                if (columnFilter.Count > 0)
+//                                    getAllColumns = false;
+//                            }
+//                            dataSource.Columns.Add("hiddenId", typeof(int));
+//                            foreach (string columnName in columnNameList)
+//                            {
+//                                dataSource.Columns.Add(columnName);
+//                                columnDisplayNameDictionary.Add(columnName, columnName);
+//                            }
+//                            idAvailable = false;
+//                            string idProperty = "";
+//                            if (columnNameList.Contains("id"))
+//                            {
+//                                idProperty = "id";
+//                                idAvailable = true;
+//                            }
+//                            else if (columnNameList.Contains("Id"))
+//                            {
+//                                idProperty = "Id";
+//                                idAvailable = true;
+//                            }
+//                            foreach (var entitronRow in rowList)
+//                            {
+//                                if (noConditions || core.Entitron.filteringService.MatchConditionSets(source.ConditionSets, entitronRow, tapestryVars))
+//                                {
+//                                    var newRow = dataSource.NewRow();
+//                                    newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
+//                                    foreach (string columnName in columnNameList)
+//                                    {
+//                                        if (getAllColumns || columnFilter.Contains(columnName))
+//                                        {
+//                                            var currentCell = entitronRow[columnName];
+//                                            if (currentCell is bool)
+//                                            {
+//                                                if ((bool)currentCell == true)
+//                                                    newRow[columnName] = "Ano";
+//                                                else
+//                                                    newRow[columnName] = "Ne";
+//                                            }
+//                                            else if (currentCell is DateTime)
+//                                            {
+//                                                newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
+//                                            }
+//                                            else
+//                                                newRow[columnName] = currentCell;
+//                                        }
+//                                    }
+//                                    dataSource.Rows.Add(newRow);
+//                                }
+//                            }
+//                        }
+//                        else {
+//                            dataSource = new DataTable();
+//                            columnDisplayNameDictionary = new Dictionary<string, string>();
+//                            var entitronTable = core.Entitron.GetDynamicTable(sourceTableName);
+//                            List<string> columnFilter = null;
+//                            bool getAllColumns = true;
+//                            if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
+//                            {
+//                                columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
+//                                if (columnFilter.Count > 0)
+//                                    getAllColumns = false;
+//                            }
+//                            noConditions = source.ConditionSets.Count == 0;
+//                            if (tableQueryResultCache.ContainsKey(sourceTableName))
+//                                entitronRowList = tableQueryResultCache[sourceTableName];
+//                            else {
+//                                entitronRowList = entitronTable.Select().ToList();
+//                                tableQueryResultCache.Add(sourceTableName, entitronRowList);
+//                            }
+//                            idAvailable = false;
+//                            string idProperty = "";
+//                            if (entitronRowList.Count > 0)
+//                            {
+//                                columnNameList = entitronRowList[0].getColumnNames();
+//                                if (columnNameList.Contains("id"))
+//                                {
+//                                    idProperty = "id";
+//                                    idAvailable = true;
+//                                }
+//                                else if (columnNameList.Contains("Id"))
+//                                {
+//                                    idProperty = "Id";
+//                                    idAvailable = true;
+//                                }
+//                                dataSource.Columns.Add("hiddenId", typeof(int));
+//                                List<ColumnMetadata> columnMetadataList = null;
+//                                if (columnMetadataResultCache.ContainsKey(sourceTableName))
+//                                    columnMetadataList = columnMetadataResultCache[sourceTableName];
+//                                else {
+//                                    columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == sourceTableName).ToList();
+//                                    columnMetadataResultCache.Add(sourceTableName, columnMetadataList);
+//                                }
+//                                foreach (string columnName in columnNameList)
+//                                {
+//                                    if (getAllColumns || columnFilter.Contains(columnName))
+//                                    {
+//                                        var columnMetadata = columnMetadataList.FirstOrDefault(c => c.ColumnName == columnName);
+//                                        if (columnMetadata != null && !string.IsNullOrEmpty(columnMetadata.ColumnDisplayName))
+//                                        {
+//                                            var newColumn = new DataColumn(columnName);
+//                                            newColumn.Caption = columnMetadata.ColumnDisplayName;
+//                                            dataSource.Columns.Add(newColumn);
+//                                            columnDisplayNameDictionary.Add(columnName, columnMetadata.ColumnDisplayName);
+//                                        }
+//                                        else {
+//                                            dataSource.Columns.Add(columnName);
+//                                            columnDisplayNameDictionary.Add(columnName, columnName);
+//                                        }
+//                                    }
+//                                }
+//                                foreach (var entitronRow in entitronRowList)
+//                                {
+//                                    if (noConditions || core.Entitron.filteringService.MatchConditionSets(source.ConditionSets, entitronRow, tapestryVars))
+//                                    {
+//                                        var newRow = dataSource.NewRow();
+//                                        newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
+//                                        foreach (string columnName in columnNameList)
+//                                        {
+//                                            if (getAllColumns || columnFilter.Contains(columnName))
+//                                            {
+//                                                var currentCell = entitronRow[columnName];
+//                                                if (currentCell is bool)
+//                                                {
+//                                                    if ((bool)currentCell == true)
+//                                                        newRow[columnName] = "Ano";
+//                                                    else
+//                                                        newRow[columnName] = "Ne";
+//                                                }
+//                                                else if (currentCell is DateTime)
+//                                                {
+//                                                    newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
+//                                                }
+//                                                else
+//                                                    newRow[columnName] = currentCell;
+//                                            }
+//                                        }
+//                                        dataSource.Rows.Add(newRow);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        break;
+//                    case "columnAttribute":
+//                        sourceIsColumnAttribute = true;
+//                        break;
+//                    case "uiItem":
+//                        break;
+//                }
+//                switch (target.TypeClass)
+//                {
+//                    case "uiItem":
+//                        switch (resourceMappingPair.TargetType)
+//                        {
+//                            case "data-table-read-only":
+//                            case "data-table-with-actions":
+//                            case "name-value-list":
+//                                ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
+//                                break;
+//                            case "dropdown-select":
+//                                if (sourceIsColumnAttribute && modelLoaded)
+//                                {
+//                                    ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
+//                                }
+//                                else {
+//                                    var dropdownDictionary = new Dictionary<int, string>();
+//                                    if (columnDisplayNameDictionary.ContainsKey("name"))
+//                                    {
+//                                        foreach (DataRow datarow in dataSource.Rows)
+//                                        {
+//                                            int id = (int)datarow["hiddenId"];
+//                                            if (!dropdownDictionary.ContainsKey(id))
+//                                                dropdownDictionary.Add(id, (string)datarow["name"]);
+//                                        }
+//                                    }
+//                                    else if (columnDisplayNameDictionary.ContainsKey("code"))
+//                                    {
+//                                        foreach (DataRow datarow in dataSource.Rows)
+//                                        {
+//                                            int id = (int)datarow["hiddenId"];
+//                                            if (!dropdownDictionary.ContainsKey(id))
+//                                                dropdownDictionary.Add(id, (string)datarow["code"]);
+//                                        }
+//                                    }
+//                                    ViewData["dropdownData_" + resourceMappingPair.TargetName] = dropdownDictionary;
+//                                }
+//                                break;
+//                            case "checkbox":
+//                                if (modelLoaded)
+//                                    ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
+//                                break;
+//                            case "input-single-line":
+//                            case "input-multiline":
+//                            case "color-picker":
+//                            case "label":
+//                                if (modelLoaded)
+//                                {
+//                                    if (resourceMappingPair.DataSourceParams == "currentUser")
+//                                    {
+//                                        if (sourceTableName == "Omnius::Users")
+//                                        {
+//                                            switch (source.ColumnName)
+//                                            {
+//                                                case "DisplayName":
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
+//                                                    break;
+//                                                case "Company":
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Company;
+//                                                    break;
+//                                                case "Job":
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Job;
+//                                                    break;
+//                                                case "Email":
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Email;
+//                                                    break;
+//                                                case "Address":
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.Address;
+//                                                    break;
+//                                            }
+//                                        }
+//                                        else if (sourceTableName == "Users")
+//                                        {
+//                                            var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
+//                                                        .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+//                                            if (epkUserRowList.Count > 0)
+//                                                ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][source.ColumnName];
+//                                        }
+//                                    }
+//                                    else if (resourceMappingPair.DataSourceParams == "superior")
+//                                    {
+//                                        var tableUsers = core.Entitron.GetDynamicTable("Users");
+//                                        if (sourceTableName == "Users")
+//                                        {
+//                                            var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
+//                                            if (epkUserRowList.Count > 0)
+//                                            {
+//                                                int superiorId = (int)epkUserRowList[0]["h_pernr"];
+//                                                var epkSuperiorRowList = tableUsers.Select()
+//                                                        .where(c => c.column("pernr").Equal(superiorId)).ToList();
+//                                                if (epkSuperiorRowList.Count > 0)
+//                                                    ViewData["inputData_" + resourceMappingPair.TargetName] = epkSuperiorRowList[0][source.ColumnName];
+//                                            }
+//                                        }
+//                                    }
+//                                    else if (modelRow[source.ColumnName] is DateTime)
+//                                    {
+//                                        if (!string.IsNullOrEmpty(resourceMappingPair.TargetClasses))
+//                                        {
+//                                            var sourceDateTime = (DateTime)modelRow[source.ColumnName];
+//                                            var classList = resourceMappingPair.TargetClasses.Split(' ').ToList();
+//                                            if (classList.Contains("input-with-datepicker"))
+//                                                ViewData["inputData_" + resourceMappingPair.TargetName] = sourceDateTime.ToString("d.M.yyyy");
+//                                            else if (classList.Contains("input-with-timepicker"))
+//                                                ViewData["inputData_" + resourceMappingPair.TargetName] = sourceDateTime.ToString("H:mm:ss");
+//                                            else
+//                                                ViewData["inputData_" + resourceMappingPair.TargetName] = sourceDateTime.ToString("d.M.yyyy H:mm:ss");
+//                                        }
+//                                        else
+//                                            ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
+//                                    }
+//                                    else
+//                                        ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[source.ColumnName];
+//                                }
+//                                break;
+//                            case "countdown":
+//                                if (modelLoaded)
+//                                    if (modelRow[source.ColumnName] == DBNull.Value)
+//                                        ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = null;
+//                                    else {
+//                                        ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = TimeZoneInfo.ConvertTimeToUtc(
+//                                                DateTime.SpecifyKind((DateTime)modelRow[source.ColumnName], DateTimeKind.Unspecified),
+//                                                TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time")
+//                                            ).ToString("yyyy'-'MM'-'dd HH':'mm':'ss'Z'");
+//                                    }
+//                                break;
+//                        }
+//                        break;
+//                }
+//            }
+//            foreach (var pair in tapestryVars)
+//            {
+//                if (pair.Key.StartsWith("_uic_"))
+//                {
+//                    if (pair.Value is DateTime && pair.Key.Contains("#"))
+//                    {
+//                        string key = pair.Key;
+//                        string keyWithoutSuffix = key.Substring(0, key.LastIndexOf('#'));
 
-//                    var wfItem = context.TapestryDesignerWorkflowItems.Where(i => i.ComponentName == c.Name).OrderByDescending(i => i.Id).FirstOrDefault();
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"button\" value=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}{(wfItem != null && wfItem.isAjaxAction != null && wfItem.isAjaxAction.Value ? " runAjax" : "")}\" buttonName=\"{c.Name}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
-//                }
-//                else if (c.Type == "dropdown-select")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    string sortMode = "key";
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
-//                            {
-//                                if (nameValuePair[0].ToLower() == "defaultoption")
-//                                    stringBuilder.Append($"<option value=\"-1\">@(t._(\"{nameValuePair[1]}\"))</option>");
-//                                if (nameValuePair[0].ToLower() == "sortby" && nameValuePair[1].ToLower() == "value")
-//                                    sortMode = "value";
-//                            }
-//                        }
+//                        if (key.EndsWith("#date"))
+//                            ViewData[keyWithoutSuffix.Substring(5)] = ((DateTime)pair.Value).ToString("d.M.yyyy");
+//                        else if (key.EndsWith("#time"))
+//                            ViewData[keyWithoutSuffix.Substring(5)] = ((DateTime)pair.Value).ToString("H:mm:ss");
+//                        else
+//                            ViewData[keyWithoutSuffix.Substring(5)] = ((DateTime)pair.Value).ToString("d.M.yyyy H:mm:ss");
 //                    }
-//                    if (sortMode == "value")
+//                    else
+//                        ViewData[pair.Key.Substring(5)] = pair.Value;
+//                }
+//                else if (pair.Key.StartsWith("_uictable_"))
+//                {
+//                    List<DBItem> entitronRowList;
+//                    if (pair.Value is DBItem)
 //                    {
-//                        stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
-//                        stringBuilder.Append($"{{ foreach(var option in ((Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"]).OrderBy(p => p.Value))");
-//                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-//                        stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
+//                        entitronRowList = new List<DBItem>();
+//                        entitronRowList.Add((DBItem)pair.Value);
 //                    }
 //                    else
 //                    {
-//                        stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
-//                        stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
-//                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-//                        stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
+//                        entitronRowList = (List<DBItem>)pair.Value;
 //                    }
-//                    stringBuilder.Append($"</{c.Tag}>");
-//                }
-//                else if (c.Type == "input-single-line")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} placeholder=\"@(t._(\"{c.Placeholder}\"))\" ");
-//                    stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
-//                    if (!string.IsNullOrEmpty(c.Properties))
+//                    bool columnsCreated = false;
+//                    DataTable dataSource = new DataTable();
+//                    dataSource.Columns.Add("hiddenId", typeof(int));
+//                    foreach (var entitronRow in entitronRowList)
 //                    {
-//                        string[] nameValuePair = c.Properties.Split('=');
-//                        if (nameValuePair.Length == 2)
+//                        var newRow = dataSource.NewRow();
+//                        var columnNames = entitronRow.getColumnNames();
+//                        newRow["hiddenId"] = columnNames.Contains("id") ? entitronRow["id"] : -1;
+//                        foreach (var columnName in columnNames)
 //                        {
-//                            if (nameValuePair[0].ToLower() == "autosum")
-//                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
-//                        }
-//                    }
-//                    if (c.Classes.Contains("input-read-only"))
-//                        stringBuilder.Append($" readonly ");
-//                    stringBuilder.Append($"/>");
-//                }
-//                else if (c.Type == "input-multiline")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} placeholder=\"@(t._(\"{c.Placeholder}\"))\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] nameValuePair = c.Properties.Split('=');
-//                        if (nameValuePair.Length == 2)
-//                        {
-//                            if (nameValuePair[0].ToLower() == "autosum")
-//                                stringBuilder.Append($" writeSumInto=\"{nameValuePair[1]}\"");
-//                        }
-//                    }
-//                    if (c.Classes.Contains("input-read-only"))
-//                        stringBuilder.Append($" readonly ");
-//                    stringBuilder.Append($">@ViewData[\"inputData_{c.Name}\"]</{c.Tag}>");
-//                }
-//                else if (c.Type == "label")
-//                {
-//                    bool invisible = false;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
+//                            if (!columnsCreated)
+//                                dataSource.Columns.Add(columnName);
+//                            if (entitronRow[columnName] is bool)
 //                            {
-//                                // No settings yet
+//                                if ((bool)entitronRow[columnName] == true)
+//                                    newRow[columnName] = "Ano";
+//                                else
+//                                    newRow[columnName] = "Ne";
+//                            }
+//                            else if (entitronRow[columnName] is DateTime)
+//                            {
+//                                newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
 //                            }
 //                            else
-//                            {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
-//                            }
+//                                newRow[columnName] = entitronRow[columnName];
 //                        }
+//                        columnsCreated = true;
+//                        dataSource.Rows.Add(newRow);
 //                    }
-//                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? t._(\"{c.Label.Replace("\"", "\\\"")}\").Replace(\"{{var1}}\", t._(ViewData[\"inputData_{c.Name}\"].ToString())) : t._(\"{c.Label.Replace("\"", "\\\"")}\") )";
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"{c.Content}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">");
-//                    stringBuilder.Append($"{labelText}</{c.Tag}>");
+//                    ViewData[pair.Key.Substring(10)] = dataSource;
 //                }
-//                else if (c.Type == "breadcrumb")
-//                {
-//                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" name=\"{c.Name}\" class=\"uic breadcrumb-navigation {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"<div class=\"app-icon fa @ViewData[\"appIcon\"]\"></div>");
-//                    stringBuilder.Append($"<div class=\"nav-text\">@ViewData[\"appName\"] &gt; @ViewData[\"pageName\"]</div></div>");
-//                }
-//                else if (c.Type == "checkbox")
-//                {
-//                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && ViewData[\"checkboxData_{c.Name}\"] is bool && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">@(t._(\"{c.Label}\"))</span></div>");
-//                }
-//                else if (c.Type == "radio")
-//                {
-//                    stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" /><span class=\"radio-label\">@(t._(\"{c.Label}\"))</span></div>");
-//                }
-//                else if (c.Type == "dropdown-select")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
-//                    stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
-//                    stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
-//                    stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}</{c.Tag}>");
-//                }
-//                else if (c.Type == "data-table-read-only")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
-//                    stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
-//                    stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-//                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-//                    stringBuilder.Append($"{{<th>@col.Caption</th>}}</tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-//                    stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@t._(cell.ToString())</td>}}</tr>}}</tbody>}} }}</{c.Tag}>");
-//                }
-//                else if (c.Type == "name-value-list")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{ var tableData = (System.Data.DataTable)ViewData[\"tableData_{c.Name}\"];");
-//                    stringBuilder.Append($"foreach (System.Data.DataColumn col in tableData.Columns) {{ if (!col.Caption.StartsWith(\"hidden__\")){{<tr><td class=\"name-cell\">@(t._(col.Caption))</td>");
-//                    stringBuilder.Append($"<td class=\"value-cell\">@(tableData.Rows.Count>0?tableData.Rows[0][col.ColumnName]:\"no data\")</td></tr>");
-//                    stringBuilder.Append($"}} }} }} }}</{c.Tag}>");
-//                }
-//                else if (c.Type == "data-table-with-actions")
-//                {
-//                    string actionButtons = "edit-delete";
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] nameValuePair = c.Properties.Split('=');
-//                        if (nameValuePair.Length == 2)
-//                        {
-//                            if (nameValuePair[0].ToLower() == "actions")
-//                            {
-//                                actionButtons = nameValuePair[1].ToLower();
-//                            }
-//                        }
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
-//                    stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\")) {{");
-//                    stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-//                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}<th>@(t._(\"Akce\"))</th></tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-//                    stringBuilder.Append($"{{<th>@col.Caption</th>}}<th>Akce</th></tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-//                    stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@t._(cell.ToString())</td>}}<td class=\"actionIcons\">");
-//                    switch (actionButtons)
-//                    {
-//                        case "enter":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i>");
-//                            break;
-//                        case "enter-details":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
-//                            break;
-//                        case "delete":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-//                            break;
-//                        case "details":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
-//                            break;
-//                        case "details-edit-delete":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-//                            break;
-//                        case "start-stop-edit-delete":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Spustit aukci\"))\" class=\"fa fa-play rowDetailsAction\"></i><i title=\"@(t._(\"Zastavit aukci\"))\" class=\"fa fa-pause row_A_Action\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction \"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-//                            break;
-//                        case "start-stop-edit-delete-details":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Spustit aukci\"))\" class=\"fa fa-play rowDetailsAction\"></i><i title=\"@(t._(\"Zastavit aukci\"))\" class=\"fa fa-pause row_A_Action\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction \"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i><i title=\"@(t._(\"Přehled poptávek\"))\" class=\"fa fa-clock-o row_B_Action\"></i>");
-//                            break;
-//                        case "details-edit-delete-role-restriction":
-//                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>" +
-//                            "@if(((HttpContextBase)ViewData[\"HttpContext\"]).GetLoggedUser().HasRole(\"Superadmin\") || ((HttpContextBase)ViewData[\"HttpContext\"]).GetLoggedUser().HasRole(\"Coordinator\")) {{" +
-//                            "<i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i> }}");
-//                            break;
-//                        case "edit-delete":
-//                        default:
-//                            stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i><i class=\"fa fa-remove rowDeleteAction\"></i>");
-//                            break;
-//                    }
-//                    stringBuilder.Append($"</td></tr>}}</tbody>}} }}</{c.Tag}>");
-//                }
-//                else if (c.Type == "tab-navigation")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"><li class=\"active\"><a class=\"fa fa-home\"></a></li>");
-//                    var tabLabelArray = c.Content.Split(';').ToList();
-//                    foreach (string tabLabel in tabLabelArray)
-//                    {
-//                        if (tabLabel.Length > 0)
-//                            stringBuilder.Append($"<li><a>{tabLabel}</a></li>");
-//                    }
-//                    stringBuilder.Append($"</{c.Tag}>");
-//                }
-//                else if (c.Type == "wizard-phases")
-//                {
-//                    var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
-//                    int labelCount = phaseLabelArray.Count;
-//                    int activePhase = 1;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] nameValuePair = c.Properties.Split('=');
-//                        if (nameValuePair.Length == 2)
-//                        {
-//                            if (nameValuePair[0].ToLower() == "activephase")
-//                                activePhase = int.Parse(nameValuePair[1]);
-//                        }
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-//                    stringBuilder.Append($"<div class=\"wizard-phases-frame\"></div><svg class=\"phase-background\" width=\"846px\" height=\"84px\">");
-//                    /*stringBuilder.Append($"<defs><linearGradient id=\"grad-light\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
-//                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#dceffa ;stop-opacity:1\" /><stop offset=\"100%\"");
-//                    stringBuilder.Append($"style =\"stop-color:#8dceed;stop-opacity:1\" /></linearGradient>");
-//                    stringBuilder.Append($"<linearGradient id=\"grad-blue\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">");
-//                    stringBuilder.Append($"<stop offset=\"0%\" style=\"stop-color:#0099cc;stop-opacity:1\" />");
-//                    stringBuilder.Append($"<stop offset=\"100%\" style=\"stop-color:#0066aa;stop-opacity:1\" /></linearGradient></defs>");*/
+//            }
+//            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{block.EditorPageId}.cshtml";
 
-//                    string color_dark = "#143C8C";
-//                    string color_light = "#00AAE1";
+//            prepareEnd = DateTime.Now;
+//            // show
+//            //return View(block.MozaicPage.ViewPath);
 
-//                    stringBuilder.Append($"<path d=\"M0 0 L0 88 L 280 88 L324 44 L280 0 Z\"");
-//                    stringBuilder.Append($"fill =\"{(activePhase == 1 ? color_dark : color_light)}\" />");
-//                    stringBuilder.Append($"<path d=\"M280 88 L324 44 L280 0 L560 0 L604 44 L560 88 Z\"");
-//                    stringBuilder.Append($"fill =\"{(activePhase == 2 ? color_dark : color_light)}\" />");
-//                    stringBuilder.Append($"<path d=\"M560 0 L604 44 L560 88 L850 88 L850 0 Z\"");
-//                    stringBuilder.Append($"fill =\"{(activePhase == 3 ? color_dark : color_light)}\" /></svg>");
+//            // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-//                    stringBuilder.Append($"<div class=\"phase phase1 {(activePhase == 1 ? "phase-active" : "")} {(activePhase > 1 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
-//                    stringBuilder.Append($"{(activePhase > 1 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">1</div>")}</div>");
-//                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 1 ? phaseLabelArray[0] : "Fáze 1")}\"))</div></div>");
+//            return View(viewPath);
+//        }
+//        [HttpPost]
+//        public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
+//        {
+//            C.CORE core = HttpContext.GetCORE();
+//            core.Entitron.Application = DBEntities.instance.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
 
-//                    stringBuilder.Append($"<div class=\"phase phase2 {(activePhase == 2 ? "phase-active" : "")} {(activePhase > 2 ? "phase-done" : "")}\"><div class=\"phase-icon-circle\">");
-//                    stringBuilder.Append($"{(activePhase > 2 ? "<div class=\"fa fa-check phase-icon-symbol\"></div>" : "<div class=\"phase-icon-number\">2</div>")}</div>");
-//                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 2 ? phaseLabelArray[1] : "Fáze 2")}\"))</div></div>");
+//            // WatchtowerLogger.Instance.LogEvent($"Začátek WF: POST {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-//                    stringBuilder.Append($"<div class=\"phase phase3 {(activePhase == 3 ? "phase-active" : "")}\"><div class=\"phase-icon-circle\">");
-//                    stringBuilder.Append($"<div class=\"phase-icon-number\">3</div></div>");
-//                    stringBuilder.Append($"<div class=\"phase-label\">@(t._(\"{(labelCount >= 3 ? phaseLabelArray[2] : "Fáze 3")}\"))</div></div>");
+//            DBEntities context = DBEntities.instance;
+//            // get block
+//            Block block = null;
+//            try
+//            {
+//                int blockId = Convert.ToInt32(blockIdentify);
+//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Id == blockId && !b.WorkFlow.IsTemp);
+//            }
+//            catch (FormatException)
+//            {
+//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify && !b.WorkFlow.IsTemp);
+//            }
 
-//                    stringBuilder.Append($"</{c.Tag}>");
-//                }
-//                else if (c.Type == "countdown")
+//            try
+//            {
+//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+//            }
+//            catch (NullReferenceException)
+//            {
+//                return new HttpStatusCodeResult(404);
+//            }
+//            var crossBlockRegistry = new Dictionary<string, object>();
+//            if (!string.IsNullOrEmpty(fc["registry"]))
+//                crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(fc["registry"]);
+//            foreach (var pair in crossBlockRegistry)
+//            {
+//                fc.Add(pair.Key, pair.Value.ToString());
+//            }
+//            // run
+//            var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc, deleteId);
+
+//            // WatchtowerLogger.Instance.LogEvent($"Konec WF: POST {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+
+//            // redirect
+//            if (Response.ContentType.IndexOf("application/") == -1)
+//            {
+//                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = this.PrepareAlert(result.Item1), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
+//            }
+//            return null;
+//        }
+//        private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)
+//        {
+//            return blockName != null
+//                ? context.Blocks
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+//                    .Include(b => b.SourceTo_ActionRules)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName && !b.WorkFlow.IsTemp)
+//                : context.Blocks
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+//                    .Include(b => b.SourceTo_ActionRules)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id && !b.WorkFlow.IsTemp);
+//        }
+//        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+//        {
+//            return blockName != null
+//                ? context.Blocks
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+//                    .Include(b => b.SourceTo_ActionRules)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName && !b.WorkFlow.IsTemp)
+//                : context.Blocks
+//                    .Include(b => b.ResourceMappingPairs)
+//                    .Include(b => b.SourceTo_ActionRules)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id && b.WorkFlow.IsTemp);
+//        }
+
+//        public static string GetRunTime()
+//        {
+//            double dbTime = 0;
+//            int dbCount = 0;
+//            Regex rx = new Regex("Completed in ([0-9]+) ms");
+
+//            foreach (string m in DBEntities.messages)
+//            {
+//                if (rx.IsMatch(m))
 //                {
-//                    bool invisible = false;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
-//                            {
-//                                // No settings yet
-//                            }
-//                            else
-//                            {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
-//                            }
-//                        }
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\" countdownTarget=\"@(ViewData.ContainsKey(\"countdownTargetData_{c.Name}\")");
-//                    stringBuilder.Append($" ? @ViewData[\"countdownTargetData_{c.Name}\"] : \"\")\">@(t._(\"{c.Content}\"))</{c.Tag}>");
+//                    Match result = rx.Match(m);
+//                    dbTime += float.Parse(result.Groups[1].ToString());
+//                    dbCount++;
 //                }
-//                else if (c.Type == "color-picker")
-//                {
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" tabindex=\"{c.TabIndex}\" {c.Attributes} type=\"text\" placeholder=\"@(t._(\"{c.Placeholder}\"))\" ");
-//                    stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"rgb(255, 0, 0)\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" />");
-//                }
-//                else if (c.Type == "static-html")
-//                {
-//                    bool invisible = false;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
-//                            {
-//                                // No settings yet
-//                            }
-//                            else
-//                            {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
-//                            }
-//                        }
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@Html.Raw(t._(\"{((c.Content ?? "").Replace("\"", "\\\""))}\"))</{c.Tag}>");
-//                }
-//                else if (c.Type == "panel" && allowNesting)
-//                {
-//                    bool invisible = false;
-//                    string panelAfter = "";
-//                    string conditionVariable = "";
+//            }
 
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
-//                            {
-//                                if (nameValuePair[0].ToLower() == "hiddenby")
-//                                {
-//                                    stringBuilder.Append($" panelHiddenBy=\"{nameValuePair[1]}\"");
-//                                }
-//                                else if (nameValuePair[0].ToLower() == "clone")
-//                                {
-//                                    stringBuilder.Append($" panelClonedBy=\"{nameValuePair[1]}\"");
-//                                }
-//                                else if (nameValuePair[0].ToLower() == "roles")
-//                                {
-//                                    var roles = nameValuePair[1].Split(',');
-//                                    List<string> conditions = new List<string>();
-//                                    foreach (string role in roles)
-//                                    {
-//                                        conditions.Add($"((HttpContextBase)ViewData[\"HttpContext\"]).GetLoggedUser().HasRole(\"{role}\")");
-//                                    }
-//                                    stringBuilder.Append("@if(" + string.Join(" || ", conditions) + ") {");
-//                                    panelAfter = "}";
-//                                }
-//                                else if (nameValuePair[0].ToLower() == "showconditionvariable")
-//                                {
-//                                    conditionVariable = nameValuePair[1];
-//                                }
-//                            }
-//                            else
-//                            {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
-//                            }
-//                        }
-//                    }
-//                    if (conditionVariable != "")
-//                    {
-//                        stringBuilder.Append($"@if(ViewData[\"{conditionVariable}\"] is bool && (bool)ViewData[\"{conditionVariable}\"]==true){{");
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\"");
-//                    stringBuilder.Append($">");
-//                    RenderComponentList(c.ChildComponents, stringBuilder, false);
-//                    stringBuilder.Append($"</{c.Tag}>");
-//                    stringBuilder.Append(panelAfter);
-//                    if (conditionVariable != "")
-//                    {
-//                        stringBuilder.Append($"}}");
-//                    }
-//                }
-//                else
-//                {
-//                    bool invisible = false;
-//                    if (!string.IsNullOrEmpty(c.Properties))
-//                    {
-//                        string[] tokenPairs = c.Properties.Split(';');
-//                        foreach (string tokens in tokenPairs)
-//                        {
-//                            string[] nameValuePair = tokens.Split('=');
-//                            if (nameValuePair.Length == 2)
-//                            {
-//                                // No settings yet
-//                            }
-//                            else {
-//                                if (tokens == "hidden")
-//                                    invisible = true;
-//                            }
-//                        }
-//                    }
-//                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes} {(invisible ? "hidden" : "")}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-//                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">@(t._(\"{c.Content}\"))</{c.Tag}>");
-//                }
+//            double totalRunTime = (DateTime.Now - requestStart).TotalMilliseconds;
+//            double dataRunTime = (prepareEnd - startTime).TotalMilliseconds;
+//            double viewRunTime = (DateTime.Now - prepareEnd).TotalMilliseconds;
+
+//            string str = string.Format("<p>Total run time: {0}s (Data: {3}s, View: {4}s); SQL time: {1}s ({2}×)</p>",
+//                                        Math.Round(totalRunTime / 1000, 3).ToString(),
+//                                        Math.Round(dbTime / 1000, 3).ToString(),
+//                                        dbCount,
+//                                        Math.Round(dataRunTime / 1000, 3).ToString(),
+//                                        Math.Round(viewRunTime / 1000, 3).ToString()
+//                                      );
+//            str += "<div id=\"SQLLog\">" + string.Join("<br>", DBEntities.messages) + "</div>";
+//            return str;
+//        }
+
+//        public string PrepareAlert(C.Message message)
+//        {
+//            // Never write same code multiple times!
+//            List<string> messageCollection;
+
+//            // Select most important type - limitation of transfer style
+//            if (message.Errors.Count > 0)
+//            {
+//                messageCollection = message.Errors;
+//            }
+//            else if (message.Success.Count > 0)
+//            {
+//                messageCollection = message.Success;
+//            }
+//            else if (message.Warnings.Count > 0)
+//            {
+//                messageCollection = message.Warnings;
+//            }
+//            else
+//            {
+//                messageCollection = message.Info;
+//            }
+
+//            // Translate messages
+//            ITranslator t = this.GetTranslator();
+//            messageCollection = messageCollection.Select(x => t._(x)).ToList();
+
+//            // Merge them together
+//            return string.Join("<br/>", messageCollection);
+//        }
+
+//        public string GetLocaleNameById(int? id)
+//        {
+//            if (id.HasValue && id == 1)
+//                return "cs";
+//            else return "en";
+
+//        }
+
+//        public ITranslator GetTranslator()
+//        {
+//            return new T(this.GetLocaleNameById(HttpContext.GetCORE().User.LocaleId));
+//        }
+//    }
+
+//    // Used for Cortex AzureScheduler testing
+//    // Insecure - bypasses Persona authentication for the System account
+//    // TODO: Enable proper authentication once the issues with Persona login are resolved
+//    [AllowAnonymous]
+//    public class UnauthorizedRunController : Controller
+//    {
+//        private ApplicationUserManager _userManager;
+//        private ApplicationSignInManager _signInManager;
+
+//        public ApplicationUserManager UserManager
+//        {
+//            get
+//            {
+//                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+//            }
+//            private set
+//            {
+//                _userManager = value;
 //            }
 //        }
 
-//        public MozaicEditorPage()
+//        public ApplicationSignInManager SignInManager
 //        {
-//            Components = new List<MozaicEditorComponent>();
+//            get
+//            {
+//                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+//            }
+//            private set
+//            {
+//                _signInManager = value;
+//            }
 //        }
-//    }
-//    [Table("MozaicEditor_Components")]
-//    public class MozaicEditorComponent
-//    {
-//        public int Id { get; set; }
-//        public string Name { get; set; }
-//        public string Type { get; set; }
-//        public string PositionX { get; set; }
-//        public string PositionY { get; set; }
-//        public string Width { get; set; }
-//        public string Height { get; set; }
 
-//        public string Tag { get; set; }
-//        public string Attributes { get; set; }
-//        public string Classes { get; set; }
-//        public string Styles { get; set; }
-//        public string Content { get; set; }
+//        private string userName;
 
-//        public string Label { get; set; }
-//        public string Placeholder { get; set; }
-//        public string TabIndex { get; set; }
-//        public string Properties { get; set; }
+//        public ActionResult Get(string appName, string button, string blockIdentify = null, int modelId = -1)
+//        {
+//            Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
 
-//        [JsonIgnore]
-//        public virtual ICollection<MozaicEditorComponent> ChildComponents { get; set; }
-//        public int? ParentComponentId { get; set; }
-//        [JsonIgnore]
-//        public virtual MozaicEditorComponent ParentComponent { get; set; }
-//        public int MozaicEditorPageId { get; set; }
-//        public virtual MozaicEditorPage MozaicEditorPage { get; set; }
-//    }
+//            bool isAuthorized = Authorize();
+//            if (!isAuthorized)
+//                return new Http403Result();
 
-//    public class MozaicModalMetadataItem
-//    {
-//        public int Id { get; set; }
-//        public string Title { get; set; }
-//        public string PartialViewPath { get; set; }
-//        public int Width { get; set; }
-//        public int Height { get; set; }
+//            C.CORE core = HttpContext.GetCORE();
+
+//            if (core.User == null)
+//            {
+//                core.User = core.Persona.AuthenticateUser(userName);
+//            }
+
+//            DBEntities context = DBEntities.instance;
+//            core.Entitron.Application = context.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+
+//            WatchtowerLogger.Instance.LogEvent($"Začátek WF: Cortex Get {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
+//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+
+//            // get block
+//            Block block = getBlockWithWF(core, context, appName, blockIdentify);
+//            if (block == null)
+//                return new HttpStatusCodeResult(404);
+//            var crossBlockRegistry = new Dictionary<string, object>();
+
+//            blockDependencies.Add("Translator", this.GetTranslator());
+//            // run
+//            var result = core.Tapestry.run(core.User, block, button, modelId, new FormCollection(), -1, blockDependencies);
+
+//            WatchtowerLogger.Instance.LogEvent($"Konec WF: Cortex Get {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
+//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+
+//            // redirect
+//            return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
+//        }
+
+//        private bool Authorize()
+//        {
+//            userName = HttpContext.Request.QueryString["User"];
+//            string password = HttpContext.Request.QueryString["Password"];
+
+//            var result = SignInManager.PasswordSignIn(userName, password, false, shouldLockout: false);
+//            if (result == SignInStatus.Success)
+//            {
+//                return true;
+//            }
+//            return false;
+//        }
+
+//        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+//        {
+//            return blockName != null
+//                ? context.Blocks
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
+//                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
+//                    .Include(b => b.SourceTo_ActionRules)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+//                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+//        }
+
+//        public string GetLocaleNameById(int? id)
+//        {
+//            if (id.HasValue && id == 1)
+//                return "cs";
+//            else return "en";
+
+//        }
+
+//        public ITranslator GetTranslator()
+//        {
+//            return new T(this.GetLocaleNameById(HttpContext.GetCORE().User.LocaleId));
+//        }
 //    }
 //}
