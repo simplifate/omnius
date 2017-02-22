@@ -104,7 +104,6 @@
                     var li;
                     if (requestedCategory == '*' ||
                         requestedCategory == this.category ||
-                        requestedCategory.indexOf(this.category) !== -1 ||
                         (requestedCategory.indexOf('Workflow') !== -1 && this.category.indexOf('Workflow') !== -1) ||
                         (requestedCategory == 'Column' && ((this.category == 'Tables' && requestedTable) || (this.category == 'Views' && requestedView)))
                        ) {

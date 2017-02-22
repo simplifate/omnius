@@ -40,6 +40,8 @@
       "Scripts/Tapestry/Builder/_WorkflowRules.js",
       "Scripts/Tapestry/Builder/_Library.js",
       "Scripts/Tapestry/Builder/_Toolbox.js",
+      "Scripts/Tapestry/Builder/_Context.js",
+      "Scripts/Tapestry/Builder/_Wizard.js",
       "Scripts/Portal/ModuleAdmin.js",
       "Scripts/Portal/Init.js",
       "Scripts/Persona/SaveModulePermissions.js",
