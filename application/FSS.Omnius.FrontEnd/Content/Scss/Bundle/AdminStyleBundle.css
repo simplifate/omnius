@@ -904,6 +904,8 @@ body.tapestryModule .dialog-wizard fieldset {
   body.tapestryModule .dialog-wizard fieldset .input-group-addon span.fa-times {
     color: red;
     cursor: pointer; }
+  body.tapestryModule .dialog-wizard fieldset .input-group-addon span.fa-plus {
+    cursor: pointer; }
 
 body.tapestryModule .ui-autocomplete.ui-widget.ui-menu {
   z-index: 10000 !important;

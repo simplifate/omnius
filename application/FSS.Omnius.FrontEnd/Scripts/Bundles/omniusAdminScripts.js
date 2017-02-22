@@ -4461,7 +4461,7 @@ TB.context = {
         }));
 
         $.contextMenu($.extend(ds, {
-            selector: '.item, .symbol',
+            selector: '.item:not(.actionItem), .symbol',
             callback: function (key, options) {
                 item = options.$trigger;
                 if (key == "delete") {
@@ -4469,18 +4469,6 @@ TB.context = {
                     currentInstance.removeAllEndpoints(item, true);
                     item.remove();
                     ChangedSinceLastSave = true;
-                }
-                else if (key == "wizard") {
-                    item.addClass("activeItem processedItem");
-
-                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        TB.wizard.open.apply(item, []);
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
                 }
                 else if (key == "properties") {
                     item.addClass("activeItem processedItem");
@@ -4513,6 +4501,46 @@ TB.context = {
                     else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
                         CurrentItem = item;
                         labelPropertyDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+            },
+            items: {
+                "properties": { name: "Properties", icon: "edit" },
+                "delete": { name: "Delete", icon: "delete" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item.actionItem',
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                    currentInstance.removeAllEndpoints(item, true);
+                    item.remove();
+                    ChangedSinceLastSave = true;
+                }
+                else if (key == "wizard") {
+                    item.addClass("activeItem processedItem");
+
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        TB.wizard.open.apply(item, []);
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+                else if (key == "properties") {
+                    item.addClass("activeItem processedItem");
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
                     }
                     else {
                         alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
@@ -4631,12 +4659,11 @@ TB.wizard = {
                     requestedView = w.getRequestedView.apply(this.element, []);
                 }
 
-                console.log(requestedCategory);
-
                 $.each(items, function () {
                     var li;
                     if (requestedCategory == '*' ||
                         requestedCategory == this.category ||
+                        requestedCategory.indexOf(this.category) !== -1 ||
                         (requestedCategory.indexOf('Workflow') !== -1 && this.category.indexOf('Workflow') !== -1) ||
                         (requestedCategory == 'Column' && ((this.category == 'Tables' && requestedTable) || (this.category == 'Views' && requestedView)))
                        ) {
@@ -4679,7 +4706,7 @@ TB.wizard = {
         d.append(form);
 
         d.dialog({
-            autoOpen: true,
+            autoOpen: false,
             width: '50%',
             draggable: true,
             resizable: true,
@@ -4706,10 +4733,31 @@ TB.wizard = {
             iSet.appendTo(form);
             oSet.appendTo(form);
 
+            console.log(inputVarsValues);
+
             if (action.inputVars.length || inputVarsValues.length) {
                 for (var i = 0; i < action.inputVars.length; i++) {
-                    self.createInputVar(action.inputVars[i], iSet, inputVarsValues.items);
-                    knownInputVars.push(action.inputVars[i].name);
+                    var inputVar = action.inputVars[i];
+                    if (!inputVar.isArray) {
+                        self.createInputVar(inputVar, iSet, inputVarsValues.items);
+                        knownInputVars.push(inputVar.name);
+                    }
+                    else {
+                        var matchFound = false;
+                        var rx = new RegExp('^' + inputVar.name + '\\[(\\d+)\\]$');
+                        for (k in inputVarsValues.items) {
+                            if (m = k.match(rx)) {
+                                self.createInputVar(inputVar, iSet, inputVarsValues.items, m[1]);
+                                knownInputVars.push(m[0]);
+                                matchFound = true;
+                            }
+                        }
+
+                        if (!matchFound) {
+                            self.createInputVar(inputVar, iSet, inputVarsValues.items, 0);
+                            knownInputVars.push(inputVar.name + '[0]');
+                        }
+                    }
                 }
 
                 for (k in inputVarsValues.items) {
@@ -4757,6 +4805,8 @@ TB.wizard = {
         else {
             form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní ani výstupní parametry</p></div></div>');
         }
+
+        d.dialog('open');
     },
 
     validate: function()
@@ -4769,6 +4819,18 @@ TB.wizard = {
                 var value = $(this).find('input[name=var_value], select[name=var_value]').not(':disabled').val();
                 isValid = isValid && value.length > 0;
             }
+
+            /*if ($(this).find('select[name=var_type]').val() == '_var_') {
+                var value = $(this).find('input[name=var_value]').val();
+                if (value.length) {
+                    var exists = false;
+                    var requestedWorkflow = TB.wizard.getRequestedWorkflow();
+
+                    $.each(TB.wizard.variableList, function () {
+
+                    });
+                }
+            }*/
         });
 
         if (isValid) {
@@ -4821,11 +4883,12 @@ TB.wizard = {
 
         d.find('fieldset.inputVars > .form-group:not(.no-vars)').each(function () {
             var variable = $(this).find('.control-label').data('invar');
+            var index = $(this).find('.control-label').data('index');
             var dataType = $(this).find('select[name=var_type]').val();
             var value = $(this).find('input[name=var_value], select[name=var_value]').not(':disabled').val();
 
             if (value.length) {
-                inputVars.push(variable + '=' + (dataType == '_var_' ? '' : dataType) + value);
+                inputVars.push(variable + (typeof index != 'undefined' ? '[' + index + ']' : '') + '=' + (dataType == '_var_' ? '' : dataType) + value);
             }
         });
         d.find('fieldset.outputVars > .form-group:not(.no-vars)').each(function () {
@@ -4839,10 +4902,39 @@ TB.wizard = {
 
         TB.wizard.target.data('inputVariables', inputVars.join(';'));
         TB.wizard.target.data('outputVariables', outputVars.join(';'));
-        
-        d.dialog('close');
-
+        TB.wizard.rebuildWorkflowVars();
         TB.wizard.target = null;
+
+        d.dialog('close');
+    },
+
+    rebuildWorkflowVars: function()
+    {
+        var self = TB.wizard;
+        var workflowName = self.getRequestedWorkflow();
+
+        var newVars = [];
+        $.each(self.variableList, function () {
+            if (this.category != 'Workflow: ' + workflowName) {
+                newVars.push(this);
+            }
+        });
+
+        self.target.parents('.swimlaneArea').find('.actionItem').each(function () {
+            var outputVars = self.parseOutputValue($(this));
+            if (outputVars.length > 0) {
+                for(var k in outputVars.items) {
+                    newVars.push({
+                        label: outputVars.items[k],
+                        category: 'Workflow: ' + workflowName
+                    });
+                }
+            }
+
+        });
+
+        self.variableList = newVars;
+        self.variableList.sort(self.sort);
     },
 
     /******************************************************/
@@ -4916,12 +5008,12 @@ TB.wizard = {
         return values;
     },
 
-    createInputVar: function(inputVar, target, values) {
+    createInputVar: function(inputVar, target, values, index) {
         var group = $('<div class="form-group form-group-sm" />');
         var typeWrapper = $('<div class="col-md-2 col-sm-6" />');
         var valueWrapper = $('<div class="col-md-7 col-sm-6" />');
         var valueInputGroup = $('<div class="input-group" />');
-        var label = $('<label class="control-label col-md-3" data-invar="' + inputVar.name + '">' + inputVar.name + ' =</label>');
+        var label = $('<label class="control-label col-md-3" data-invar="' + inputVar.name + '">' + inputVar.name + (inputVar.isArray ? '[' + index + ']' : '') + ' =</label>');
         var type = $('<select name="var_type" class="form-control"></select>');
         var value = $('<input type="text" name="var_value" class="form-control" />');
         var enumValue = $('<select name="var_value" class="form-control enum-value"></select>');
@@ -4955,6 +5047,21 @@ TB.wizard = {
             value.attr('disabled', true).hide();
         }
 
+        if (inputVar.isArray) {
+            var addOn2 = $('<div class="input-group-addon"></div>');
+            var add = $('<span class="fa fa-plus fa-fw"></span>');
+            var del = $('<span class="fa fa-times fa-fw"></span>');
+
+            addOn2.appendTo(valueInputGroup);
+            add.appendTo(addOn2);
+            del.appendTo(addOn2);
+
+            add.click(TB.wizard._addArrayItem);
+            del.click(TB.wizard._deleteArrayItem);
+
+            label.attr('data-index', index);
+        }
+
         if (inputVar.required) {
             addOn.append('<span class="fa fa-asterisk fa-fw"></span>');
         }
@@ -4985,8 +5092,9 @@ TB.wizard = {
             type.append(opt);
         }
 
-        if (values[inputVar.name]) {
-            var v = values[inputVar.name];
+        var key = inputVar.isArray ? inputVar.name + '[' + index + ']' : inputVar.name;
+        if (values[key]) {
+            var v = values[key];
 
             type.val(v.dataType ? v.dataType : '_var_');
             if (inputVar.isEnum && type.val() != '_var_') {
@@ -5006,12 +5114,9 @@ TB.wizard = {
 
         booleanValue.attr('disabled', type.val() != 'b$').toggle(type.val() == 'b$');
 
-        value.catcomplete({
-            delay: 0,
-            source: TB.wizard.variableList,
-            search: TB.wizard._autocompleteSearch,
-            select: TB.wizard._autocompleteSelect
-        });
+        TB.wizard.setInputVarAutocomplete(value);
+
+        type.change();
     },
 
     createOutputVar: function (outputVar, target, values) {
@@ -5080,7 +5185,7 @@ TB.wizard = {
                 case 'TableName': return 'Tables';
                 case 'ViewName': return 'Views';
             }
-            if (param.indexOf('Column') !== -1) return 'Column';
+            if (inVar.indexOf('Column') !== -1) return 'Column';
         }
         if (outVar) {
             return 'System|Workflow|UI input data';
@@ -5110,6 +5215,15 @@ TB.wizard = {
         return '';
     },
 
+    setInputVarAutocomplete: function(target) {
+        target.catcomplete({
+            delay: 0,
+            source: TB.wizard.variableList,
+            search: TB.wizard._autocompleteSearch,
+            select: TB.wizard._autocompleteSelect
+        });
+    },
+
     /******************************************************/
     /* EVENT CALLBACKS                                    */
     /******************************************************/
@@ -5129,12 +5243,10 @@ TB.wizard = {
                 }
                 break;
             case 'ui':
-                console.log(this);
-
                 if(typeof this.ElmId != 'undefined' || typeof this.ComponentName != 'undefined') {
                     self.variableList.push({
                         label: typeof this.ElmId != 'undefined' ? this.ElmId : this.ComponentName,
-                        category: 'UI'
+                        category: 'UI elements'
                     });
 
                     if (typeof this.UIC != 'undefined' && typeof self.dataPrefixList[this.UIC] != 'undefined') {
@@ -5254,10 +5366,10 @@ TB.wizard = {
             .find('select.boolean-value').attr('disabled', this.value != 'b$').toggle(this.value == 'b$');
 
         if (this.value == 'f$' || this.value == 'i$') {
-            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'number').addClass('text-right');
+            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'number');
         }
         else {
-            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'text').removeClass('text-right');
+            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'text');
         }
     },
 
@@ -5287,6 +5399,40 @@ TB.wizard = {
             this.value = ui.item.value.replace(/^[^\.]+\./, '');
             return false;
         }
+    },
+
+    _addArrayItem: function () {
+        var group = $(this).parents('.form-group');
+        var label = group.find('.control-label');
+        var inputVar = label.data('invar');
+
+        var lastGroup = $('.control-label[data-invar=' + inputVar + ']').last().parents('.form-group');
+        var lastIndex = Number(lastGroup.find('.control-label').data('index'));
+
+        lastGroup.find('input[name=var_value]').catcomplete('destroy');
+
+        var newIndex = lastIndex + 1;
+        var newGroup = lastGroup.clone(true);
+        var newLabel = newGroup.find('.control-label')
+        
+        newLabel.attr('data-index', newIndex).html(newLabel.html().replace(/\[\d+\]/, '[' + newIndex + ']'));
+        newGroup.find('[name=var_value]').val('');
+        newGroup.insertAfter(lastGroup);
+
+        TB.wizard.setInputVarAutocomplete(newGroup.find('input[name=var_value]'));
+        TB.wizard.setInputVarAutocomplete(lastGroup.find('input[name=var_value]'));
+    },
+
+    _deleteArrayItem: function () {
+        var group = $(this).parents('.form-group');
+        var label = group.find('.control-label');
+        var inputVar = label.data('invar');
+
+        group.remove();
+
+        $('.control-label[data-invar=' + inputVar + ']').each(function (index) {
+            $(this).attr('data-index', index).html(this.innerHTML.replace(/\[\d+\]/, '[' + index + ']'));
+        });
     }
 };
 
