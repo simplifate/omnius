@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperation[index]", "?SearchInShared" };
+                return new string[] { "TableName", "CondColumn[index]", "CondValue[index]", "?CondOperator[index]", "?SearchInShared" };
             }
         }
 

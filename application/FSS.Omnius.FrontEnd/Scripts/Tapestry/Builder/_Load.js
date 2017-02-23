@@ -33,6 +33,8 @@
     toolboxState: null,
     data: null,
 
+    onAttributesLoad: [],
+
     init: function () {
 
     },
@@ -198,7 +200,7 @@
             var params = { tableName: data.Tables[ti].Name };
             var label = 'Table: ' + data.Tables[ti].Name;
 
-            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed, data.Tables[ti]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
             }
@@ -209,7 +211,7 @@
             var params = { tableName: data.Views[vi].Name };
             var label = 'View: ' + data.Views[vi].Name;
 
-            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed, data.Views[vi]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute', params, label);
             }
@@ -222,7 +224,7 @@
                 var params = { tableName: data.Shared.Tables[ti].Name, shared: true };
                 var label = 'Shared table: ' + data.Shared.Tables[ti].Name;
 
-                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed);
+                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed, data.Shared.Tables[ti]);
                 if (isUsed) {
                     TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
                 }
@@ -234,7 +236,7 @@
                 var params = { tableName: data.Shared.Views[vi].Name, shared: true };
                 var label = 'Shared view: ' + data.Shared.Views[vi].Name;
 
-                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed);
+                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed, data.Shared.Views[vi]);
                 if (isUsed) {
                     TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute sharedAttribute', params, label);
                 }
@@ -250,7 +252,7 @@
                         var params = { tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name, shared: true };
                         var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
 
-                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed);
+                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed, { Name: label });
                         if (isUsed) {
                             TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
                         }
@@ -272,7 +274,7 @@
                     var params = {tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name };
                     var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if(isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
@@ -290,13 +292,15 @@
                     var params = { tableName: systemTable.Name, columnName: systemTable.Columns[i].Name };
                     var label = systemTable.Name + '.' + systemTable.Columns[i].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if (isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
                 }
             }
         }
+
+        TB.callHooks(self.onAttributesLoad, null, [data]);
     },
 
     librarySetActions: function(data)

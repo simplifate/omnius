@@ -830,6 +830,34 @@ body.tapestryModule {
                 margin-bottom: 0px;
                 padding: 5px 15px;
             }
+
+            .input-group-addon {
+                span.fa-times {
+                    color: red;
+                    cursor: pointer;
+                }
+                span.fa-plus {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .ui-autocomplete.ui-widget.ui-menu {
+        z-index: 10000 !important;
+        font-size: 0.9em;
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        .ui-autocomplete-category {
+            font-weight: bold;
+            padding: 2px 5px;
+        }
+        .ui-menu-item {
+            padding: 1px 15px;
+            &.ui-state-focus {
+                padding: 0px 14px;
+            }
         }
     }
 

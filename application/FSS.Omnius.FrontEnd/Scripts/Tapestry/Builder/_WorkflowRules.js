@@ -1,5 +1,7 @@
 ﻿TB.wfr = {
 
+    onCreateItem: [],
+
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
@@ -156,6 +158,8 @@
 
         item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
         AddToJsPlumb(item);
+
+        TB.callHooks(TB.wfr.onCreateItem, item, []);
     },
 
     aliveRule: function(rule)
