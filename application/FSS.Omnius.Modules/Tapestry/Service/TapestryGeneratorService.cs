@@ -482,12 +482,20 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             break;
 
                         string generatedInputVariables = "";
-                        if (item.ActionId == 2005) // Send mail
+                        if (item.ActionId == 2005 || item.ActionId == 193) // Send mail, Send mail for each
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {
                                 if (relatedConnections.Source.TypeClass == "templateItem")
                                     generatedInputVariables = ";Template=s$" + relatedConnections.Source.Label;
+                            }
+                        }
+                        if (item.ActionId == 3001 || item.ActionId == 3002) // Call SOAP, Call REST
+                        {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
+                            {
+                                if (relatedConnections.Source.TypeClass == "integrationItem" && relatedConnections.Source.Label.StartsWith("WS: "))
+                                    generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
 
