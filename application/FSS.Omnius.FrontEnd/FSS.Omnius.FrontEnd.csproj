@@ -325,6 +325,10 @@
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
+    <Content Include="Content\Fonts\context-menu-icons.eot" />
+    <Content Include="Content\Fonts\context-menu-icons.ttf" />
+    <Content Include="Content\Fonts\context-menu-icons.woff" />
+    <Content Include="Content\Fonts\context-menu-icons.woff2" />
     <None Include="Content\Scss\AppTiles.scss" />
     <Content Include="Content\Scss\BootstrapUserLayout.scss" />
     <None Include="Content\Scss\Bundle\AdminStyleBundle.scss" />

@@ -62,7 +62,7 @@
         }));
 
         $.contextMenu($.extend(ds, {
-            selector: '.item, .symbol',
+            selector: '.item:not(.actionItem), .symbol',
             callback: function (key, options) {
                 item = options.$trigger;
                 if (key == "delete") {
@@ -70,18 +70,6 @@
                     currentInstance.removeAllEndpoints(item, true);
                     item.remove();
                     ChangedSinceLastSave = true;
-                }
-                else if (key == "wizard") {
-                    item.addClass("activeItem processedItem");
-
-                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        TB.wizard.open.apply(item, []);
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
                 }
                 else if (key == "properties") {
                     item.addClass("activeItem processedItem");
@@ -114,6 +102,46 @@
                     else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
                         CurrentItem = item;
                         labelPropertyDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+            },
+            items: {
+                "properties": { name: "Properties", icon: "edit" },
+                "delete": { name: "Delete", icon: "delete" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item.actionItem',
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                    currentInstance.removeAllEndpoints(item, true);
+                    item.remove();
+                    ChangedSinceLastSave = true;
+                }
+                else if (key == "wizard") {
+                    item.addClass("activeItem processedItem");
+
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        TB.wizard.open.apply(item, []);
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+                else if (key == "properties") {
+                    item.addClass("activeItem processedItem");
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
                     }
                     else {
                         alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
