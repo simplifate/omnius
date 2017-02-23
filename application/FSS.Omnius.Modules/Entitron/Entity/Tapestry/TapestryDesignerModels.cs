@@ -87,7 +87,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsDeleted { get; set; }
         public bool IsChanged { get; set; }
         public int? BuiltBlockId { get; set; } // feel free to remove
-
+        public int? LockedForUserId { get; set; }
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
 

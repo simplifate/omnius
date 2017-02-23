@@ -65,7 +65,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsNew { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
-
+        public int? LockedForUserId { get; set; }
         public List<AjaxTapestryDesignerBlockCommit> BlockCommits { get; set; }
 
         public AjaxTapestryDesignerBlock()
