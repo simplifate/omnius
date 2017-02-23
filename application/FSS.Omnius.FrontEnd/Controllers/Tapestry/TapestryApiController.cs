@@ -267,6 +267,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 TapestryDesignerWorkflowItem item = new TapestryDesignerWorkflowItem
                                 {
                                     Label = ajaxItem.Label,
+                                    Name = ajaxItem.Name,
+                                    Comment = ajaxItem.Comment,
                                     TypeClass = ajaxItem.TypeClass,
                                     DialogType = ajaxItem.DialogType,
                                     PositionX = ajaxItem.PositionX,
@@ -904,6 +906,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 {
                     Id = item.Id,
                     Label = item.Label,
+                    Name = item.Name,
+                    Comment = item.Comment,
                     TypeClass = item.TypeClass,
                     DialogType = item.DialogType,
                     PositionX = item.PositionX,

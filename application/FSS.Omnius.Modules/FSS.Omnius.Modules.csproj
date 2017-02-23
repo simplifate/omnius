@@ -1096,6 +1096,10 @@
     <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.Designer.cs">
       <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.cs" />
+    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.Designer.cs">
+      <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1800,6 +1804,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702231120106_addedLockedForUserIdColumn.resx">
       <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.resx">
+      <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

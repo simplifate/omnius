@@ -179,6 +179,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Label { get; set; }
+        public string Name { get; set; }
+        public string Comment { get; set; }
         public string TypeClass { get; set; }
         public string DialogType { get; set; }
         public int SwimlaneIndex { get; set; }
