@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             Message.Join(actionResult.Message);
 
-            OutputData.AddRange(actionResult.OutputData);
+            OutputData.AddOrUpdateRange(actionResult.OutputData);
             ReverseInputData.AddRange(actionResult.ReverseInputData);
         }
 
