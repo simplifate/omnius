@@ -28,6 +28,7 @@ function SaveBlock(commitMessage) {
                 IsBootstrap: GetIsBootstrap(currentItem),
                 BootstrapPageId: GetIsBootstrap(currentItem) ? currentItem.attr("pageId") : null,
                 TableName: currentItem.attr("tableName"),
+                IsShared: currentItem.attr("shared") === "true",
                 ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter"),
                 ConditionSets: currentItem.data("conditionSets")
@@ -75,7 +76,7 @@ function SaveBlock(commitMessage) {
                 saveId++;
                 itemArray.push({
                     Id: currentItem.attr("saveId"),
-                    Label: currentItem.find(".itemLabel").text(),
+                    Label: currentItem.find(".itemLabel").length ? currentItem.find(".itemLabel").text() : currentItem.data("label"),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),
@@ -148,6 +149,7 @@ function SaveBlock(commitMessage) {
             Label: toolboxItem.find(".itemLabel").text(),
             ActionId: toolboxItem.attr("ActionId"),
             TableName: toolboxItem.attr("TableName") ? toolboxItem.attr("TableName") : null,
+            IsShared: toolboxItem.attr("shared") === "true",
             ColumnName: toolboxItem.attr("ColumnName") ? toolboxItem.attr("ColumnName") : null,
             PageId: toolboxItem.attr("PageId"),
             ComponentName: toolboxItem.attr("ComponentName") ? toolboxItem.attr("ComponentName") : null,

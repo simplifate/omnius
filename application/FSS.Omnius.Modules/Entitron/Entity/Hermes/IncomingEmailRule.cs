@@ -14,12 +14,15 @@
         public int IncomingEmailId { get; set; }
 
         [Required]
+        [Display(Name = "Aplikace")]
         public int ApplicationId { get; set; }
 
         [Required]
+        [Display(Name = "Blok")]
         public string BlockName { get; set; }
 
         [Required]
+        [Display(Name = "Workflow")]
         public string WorkflowName { get; set; }
         
         [Required]

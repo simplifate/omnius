@@ -1965,6 +1965,19 @@ body.tapestryModule .modelMarker {
   font-weight: bold;
   color: blue; }
 
+body.tapestryModule .dialog-wizard fieldset {
+  padding: 10px;
+  border-bottom: 1px solid #dedede; }
+  body.tapestryModule .dialog-wizard fieldset legend {
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    margin-bottom: 0em;
+    padding-top: 0.5em; }
+  body.tapestryModule .dialog-wizard fieldset p.alert {
+    margin-bottom: 0px;
+    padding: 5px 15px; }
+
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryResponsiveArea {
     transform: scale(0.9);
@@ -3283,6 +3296,71 @@ body.hermesModule #NumOrderList .ui-sortable-helper {
 body.hermesModule #numOrderArea {
   margin-bottom: 100px; }
 
+body.hermesModule .conditions .conditionSetIcon {
+  display: inline-block;
+  background-color: #49c3f1;
+  color: black;
+  font-family: MyriadPro;
+  margin: 3px;
+  padding: 2px 10px;
+  cursor: pointer; }
+
+body.hermesModule .conditions .conditionSetIcon:hover {
+  background-color: #2ddef9; }
+
+body.hermesModule .conditions .conditionSet {
+  position: relative;
+  border-top: 1px solid black;
+  padding-top: 7px;
+  margin-top: 15px; }
+
+body.hermesModule .conditions .removeConditionSetIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: #d9534f;
+  color: white;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin: 3px;
+  text-align: center;
+  cursor: pointer; }
+
+body.hermesModule .conditions .removeConditionSetIcon:hover {
+  background-color: #f06771; }
+
+body.hermesModule .conditions .conditionSetHeading {
+  margin-bottom: 6px; }
+
+body.hermesModule .conditions .conditionTable td {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 3px; }
+
+body.hermesModule .conditions .conditionTable td.conditionOperator {
+  width: 40px; }
+
+body.hermesModule .conditions .conditionTable .conditionActions {
+  width: 100px; }
+  body.hermesModule .conditions .conditionTable .conditionActions .conditionActionIcon {
+    display: inline-block;
+    background-color: #49c3f1;
+    color: black;
+    width: 24px;
+    height: 24px;
+    margin: 3px;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer; }
+  body.hermesModule .conditions .conditionTable .conditionActions .conditionActionIcon:hover {
+    background-color: #2ddef9; }
+  body.hermesModule .conditions .conditionTable .conditionActions .removeConditionIcon {
+    background-color: #d9534f;
+    color: white; }
+  body.hermesModule .conditions .conditionTable .conditionActions .removeConditionIcon:hover {
+    background-color: #f06771; }
+
 @media only screen and (max-width: 1460px) {
   body.hermesModule .lowerRightDecoration {
     display: none; } }
@@ -4541,6 +4619,9 @@ body.cortexModule #lowerPanel {
       font-size: 120px;
       top: 8px; }
     .tileMenuArea .tileMenuItem .fa-envelope {
+      font-size: 110px;
+      top: 12px; }
+    .tileMenuArea .tileMenuItem .fa-envelope-square {
       font-size: 110px;
       top: 12px; }
     .tileMenuArea .tileMenuItem .fa-copy {

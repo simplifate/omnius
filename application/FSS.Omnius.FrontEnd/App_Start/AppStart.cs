@@ -2,6 +2,7 @@
 using System.Reflection;
 using FSS.Omnius.FrontEnd.Views;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Hermes;
 
 namespace FSS.Omnius.FrontEnd.App_Start
 {
@@ -29,6 +30,9 @@ namespace FSS.Omnius.FrontEnd.App_Start
             // finally we invoke RegisterVirtualPathProviderInternal method with one argument which
             // is the instance of our own VirtualPathProvider.
             mi.Invoke(hostingEnvironmentInstance, new object[] { (VirtualPathProvider)providerInstance });
+
+            // Start Incoming e-mail listeners if any
+            IncomingEmailListener.Refresh();
         }
     }
 }

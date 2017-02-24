@@ -32,7 +32,15 @@ $('body').on('click', '.runAjax', function (e) {
 $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
-        if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
+        setTimeout(function () {
+                $('input.input-with-datepicker').datetimepicker('setOptions', {
+                    format: 'd.m.Y',
+                    formatDate: 'Y-m-d',
+                    allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
+                });
+        }, 100);
+    }
+        if ($("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
         {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
@@ -43,6 +51,20 @@ $(function () {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+                }
+            });
+        }
+
+        if ($("#currentBlockName").val() == "VyjadreniKAuditu") {
+            $("[name=radio_agree]").on("change", function () {
+                if ($(this).val() === "true") {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
+                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
+                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+                } else {
+                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
+                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
+                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
                 }
             });
         }
@@ -57,14 +79,8 @@ $(function () {
                 }
             });
         }
-        setTimeout(function () {
-            $('input.input-with-datepicker').datetimepicker('setOptions', {
-                format: 'd.m.Y',
-                formatDate: 'Y-m-d',
-                allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
-            });
-        }, 100);
-    }
+       
+    
     else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
@@ -867,6 +883,28 @@ $(function () {
             $(".userBox").slideUp();
         });
         try {
+            var mozaicForm = $(".mozaicForm");
+
+            var csrfTokenInput = null;
+
+            if (mozaicForm.length > 0) {
+                mozaicForm = mozaicForm.first();
+                csrfTokenInput = mozaicForm.find("[name=__RequestVerificationToken]").clone();
+            }
+
+            function submitActionByForm(tableName, rowId, action) {
+                // Create
+                var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + action + '" /></form>');
+                
+                // "protect"
+                if (csrfTokenInput !== null) {
+                    form.append(csrfTokenInput);
+                }
+                
+                // Append
+                form.appendTo('body').submit();
+            }
+
             $(".uic.data-table").each(function (index, element) {
             var table = $(element);
             var tableWidth = parseInt(table.attr("uicWidth"));
@@ -875,7 +913,8 @@ $(function () {
             wrapper.css("position", "absolute");
             wrapper.css("left", table.css("left"));
             wrapper.css("top", table.css("top"));
-            wrapper.css("width", tableWidth + 8);
+            wrapper.css("width", tableWidth);
+            table.css("max-width", tableWidth);
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
@@ -885,29 +924,34 @@ $(function () {
                     var tableName = table.attr("name");
                     if ($(this).hasClass("fa-download"))
                         window.ignoreUnload = true;
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_EditAction" /></form>').appendTo('body').submit();
+
+                    submitActionByForm(tableName, rowId, "EditAction");
             });
             table.on("click", ".rowDetailsAction", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DetailsAction" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "DetailsAction");
             });
             table.on("click", ".rowDeleteAction", function () {
                 if (confirm('Jste si jistí?')) {
                     var rowId = parseInt($(this).parents("tr").find("td:first").text());
                     var tableName = table.attr("name");
-                    $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="deleteId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_DeleteAction" /></form>').appendTo('body').submit();
+
+                    submitActionByForm(tableName, rowId, "DeleteAction");
                 }
             });
             table.on("click", ".row_A_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_A_Action" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "A_Action");
             });
             table.on("click", ".row_B_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
                 var tableName = table.attr("name");
-                $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_B_Action" /></form>').appendTo('body').submit();
+
+                submitActionByForm(tableName, rowId, "B_Action");
             });
             table.DataTable().on("draw", function () {
                 var t = $(this);

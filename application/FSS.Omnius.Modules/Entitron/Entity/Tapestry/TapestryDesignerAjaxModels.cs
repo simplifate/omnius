@@ -65,7 +65,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsNew { get; set; }
         public bool IsInitial { get; set; }
         public bool IsInMenu { get; set; }
-
+        public int? LockedForUserId { get; set; }
         public List<AjaxTapestryDesignerBlockCommit> BlockCommits { get; set; }
 
         public AjaxTapestryDesignerBlock()
@@ -164,6 +164,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsBootstrap { get; set; }
         public int? BootstrapPageId { get; set; }
         public string TableName { get; set; }
+        public bool? IsShared { get; set; }
         public string ColumnName { get; set; }
         public List<string> ColumnFilter { get; set; }
         public List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }
@@ -178,6 +179,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
     {
         public int Id { get; set; }
         public string Label { get; set; }
+        public string Name { get; set; }
+        public string Comment { get; set; }
         public string TypeClass { get; set; }
         public string DialogType { get; set; }
         public int SwimlaneIndex { get; set; }

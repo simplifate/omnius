@@ -10,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron
     using Service;
     using Table;
     using System.Data.SqlClient;
+    using System.Data.Entity;
     public class Entitron : IModule
     {
         public const string connectionString = "data source=osqlsrv001-iason.database.windows.net;initial catalog=omniuswork-db;user id=osqlsrv001_master@osqlsrv001-iason.database.windows.net;password=39Am%frV;MultipleActiveResultSets=True;App=EntityFramework;";
@@ -65,7 +66,20 @@ namespace FSS.Omnius.Modules.Entitron
             if (entities != null)
                 entities.Dispose();
         }
-
+        public Tuple<List<string>, List<DBItem>> GetSystemTable(string tableName)
+        {
+            switch (tableName)
+            {
+                case "Omnius::AppRoles":
+                    return DBSetToTable(entities.Roles);
+                case "Omnius::Users":
+                    return DBSetToTable(entities.Users);
+                case "Omnius::LogItems":
+                    return DBSetToTable(entities.LogItems);
+                default:
+                    throw new InvalidOperationException($"System table {tableName} not found");
+            }
+        }
         public IEnumerable<DBTable> GetDynamicTables()
         {
             if (Application == null)
@@ -73,20 +87,42 @@ namespace FSS.Omnius.Modules.Entitron
 
             return Application.GetTables();
         }
-
+        public Tuple<List<string>, List<DBItem>> DBSetToTable<T>(IDbSet<T> dbset) where T : class
+        {
+            List<T> inputList = dbset.ToList();
+            List<DBItem> rowList = new List<DBItem>();
+            var propertyList = typeof(T).GetProperties().Where(c => c.PropertyType.IsValueType)
+                .GroupBy(c => c.Name).Select(c => c.First());
+            foreach (var entity in inputList)
+            {
+                var newRow = new DBItem();
+                int columnId = 0;
+                foreach (var property in propertyList)
+                {
+                    object value = property.GetValue(entity, null);
+                    newRow.createProperty(columnId, property.Name, value);
+                    columnId++;
+                }
+                rowList.Add(newRow);
+            }
+            var columnList = propertyList.Select(c => c.Name).ToList();
+            return new Tuple<List<string>, List<DBItem>>(columnList, rowList);
+        }
         public DBTable GetDynamicTable(string tableName, bool shared = false)
         {
-            if (Application == null)
-                throw new ArgumentNullException("Application");
+         
+                if (Application == null)
+                    throw new ArgumentNullException("Application");
 
-            if (!shared)
-            {
-                return Application.GetTable(tableName);
-            }
-            else
-            {
-                return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
-            }
+                if (!shared)
+                {
+                    return Application.GetTable(tableName);
+                }
+                else
+                {
+                    return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
+                }
+            
         }
 
         public DBView GetDynamicView(string viewName, bool shared = false)

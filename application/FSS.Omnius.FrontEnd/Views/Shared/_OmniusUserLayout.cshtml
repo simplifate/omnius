@@ -9,7 +9,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title innogy OSS</title>
-    <link rel="stylesheet" href="@Services.GetFileVersion("/Content/bundle.css")" />
+    <link rel="stylesheet" href="@Services.GetFileVersion("/Content/CssLibs/Bundle.min.css")" />
+    <link rel="stylesheet" href="@Services.GetFileVersion("/Content/Scss/Bundle/UserStyleBundle.min.css")" />
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script> 
     @RenderSection("Styles", false)
 </head>
@@ -18,7 +19,7 @@
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>  
     <div id="brandBar">
         <div class="logo">
-            <img src="@Url.Content("~/Content/images/innogy_logo_H_n_4C_ly.svg")" alt="innogy" />
+            <img src="@Url.Content("~/Content/Images/innogy_logo_H_n_4C_ly.svg")" alt="innogy" />
         </div>
     </div>
     <div id="userTopBar">

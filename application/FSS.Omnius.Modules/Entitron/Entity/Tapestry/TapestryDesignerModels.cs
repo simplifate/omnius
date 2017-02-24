@@ -87,7 +87,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool IsDeleted { get; set; }
         public bool IsChanged { get; set; }
         public int? BuiltBlockId { get; set; } // feel free to remove
-
+        public int? LockedForUserId { get; set; }
         public virtual ICollection<TapestryDesignerBlockCommit> BlockCommits { get; set; }
         public virtual TapestryDesignerToolboxState ToolboxState { get; set; }
 
@@ -233,6 +233,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public string TableName { get; set; }
+        public bool? IsShared { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
@@ -270,6 +271,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerSwimlane ParentSwimlane { get; set; }
 
         public string Label { get; set; }
+        public string Name { get; set; }
+        public string Comment { get; set; }
         public int? ActionId { get; set; }
         public string InputVariables { get; set; }
         public string OutputVariables { get; set; }

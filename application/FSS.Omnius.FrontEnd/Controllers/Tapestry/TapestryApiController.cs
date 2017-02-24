@@ -195,10 +195,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 PageId = ajaxItem.IsBootstrap == true ? null : ajaxItem.PageId,
                                 ComponentName = ajaxItem.ComponentName,
                                 TableName = ajaxItem.TableName,
+                                IsShared = ajaxItem.IsShared,
                                 ColumnName = ajaxItem.ColumnName,
                                 ColumnFilter = string.Join(",", ajaxItem.ColumnFilter.ToArray()),
                                 IsBootstrap = ajaxItem.IsBootstrap,
-                                BootstrapPageId = ajaxItem.IsBootstrap == true ? ajaxItem.PageId : null
+                                BootstrapPageId = ajaxItem.IsBootstrap == true ? ajaxItem.BootstrapPageId : null
                             };
                             rule.ResourceItems.Add(item);
                             context.SaveChanges();
@@ -266,6 +267,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 TapestryDesignerWorkflowItem item = new TapestryDesignerWorkflowItem
                                 {
                                     Label = ajaxItem.Label,
+                                    Name = ajaxItem.Name,
+                                    Comment = ajaxItem.Comment,
                                     TypeClass = ajaxItem.TypeClass,
                                     DialogType = ajaxItem.DialogType,
                                     PositionX = ajaxItem.PositionX,
@@ -810,6 +813,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     IsBootstrap = item.IsBootstrap,
                     BootstrapPageId = item.BootstrapPageId,
                     TableName = item.TableName,
+                    IsShared = item.IsShared,
                     ColumnName = item.ColumnName,
                     ColumnFilter = string.IsNullOrEmpty(item.ColumnFilter) ? new List<string>() : item.ColumnFilter.Split(',').ToList()
                 };
@@ -902,6 +906,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 {
                     Id = item.Id,
                     Label = item.Label,
+                    Name = item.Name,
+                    Comment = item.Comment,
                     TypeClass = item.TypeClass,
                     DialogType = item.DialogType,
                     PositionX = item.PositionX,

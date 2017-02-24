@@ -319,12 +319,14 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                     SourceComponentName = source.ComponentName,
                     SourceTableName = source.TableName,
+                    SourceIsShared = source.IsShared,
                     SourceColumnName = source.ColumnName,
                     SourceColumnFilter = source.ColumnFilter,
 
                     TargetType = targetType,
                     TargetName = targetName,
                     TargetTableName = target.TableName,
+                    TargetIsShared = target.IsShared,
                     TargetColumnName = target.ColumnName,
 
                     DataSourceParams = dataSourceParams,
@@ -353,7 +355,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // create virtual starting items
             TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
             BlockMapping.Add(virtualBeginItem, block);
-            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single")))
+            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start")))
             {
                 TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
                 {
@@ -437,8 +439,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             TapestryDesignerWorkflowItem item = connection.Target;
             // is there a button name?
             string init = item?.ComponentName;
-            if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) // initial ActionRule
+            if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) { // initial ActionRule
                 init = "INIT";
+            }
+            if(item?.TypeClass == "symbol" && item?.SymbolType == "envelope-start") { // emailové workflow
+                init = item?.Label;
+            }
+
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule
             {
@@ -475,12 +482,20 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             break;
 
                         string generatedInputVariables = "";
-                        if (item.ActionId == 2005) // Send mail
+                        if (item.ActionId == 2005 || item.ActionId == 193) // Send mail, Send mail for each
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {
                                 if (relatedConnections.Source.TypeClass == "templateItem")
                                     generatedInputVariables = ";Template=s$" + relatedConnections.Source.Label;
+                            }
+                        }
+                        if (item.ActionId == 3001 || item.ActionId == 3002) // Call SOAP, Call REST
+                        {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
+                            {
+                                if (relatedConnections.Source.TypeClass == "integrationItem" && relatedConnections.Source.Label.StartsWith("WS: "))
+                                    generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
 

@@ -114,7 +114,7 @@
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: true };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -131,9 +131,9 @@
         if (c.ElmId != "") {
             var label = c.ElmId;
             var params = { pageId: pageId, componentName: label, isBootstrap: true };
-            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+            var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
             }
@@ -147,7 +147,7 @@
                 for (var a in actions) {
                     var label = c.ElmId + '_' + actions[a].action;
                     var params = { pageId: pageId, componentName: label, isBootstrap: true };
-                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                    var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                     var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                     if (isUsed) {
@@ -170,7 +170,7 @@
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed =  state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -186,9 +186,9 @@
     {
         var label = c.Name;
         var params = { pageId: pageId, componentName: label, isBootstrap: false };
-        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+        var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
         if (isUsed) {
             TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
         }
@@ -199,7 +199,7 @@
             for (var a = 0; a < actions.length; a++) {
                 var label = c.Name + actions[a];
                 var params = { pageId: pageId, componentName: label, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {

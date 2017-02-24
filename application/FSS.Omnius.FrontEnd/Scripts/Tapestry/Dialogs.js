@@ -1,4 +1,4 @@
-﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableName;
+﻿var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableIsShared, ModelTableName;
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -254,16 +254,23 @@ $(function () {
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
                 tableName = CurrentItem.attr("tableName");
+                isShared = CurrentItem.attr("shared") === "true";
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: "json",
                     success: function (data) {
+                        var targetList = data.Tables;
+                        if (isShared) {
+                            targetList = data.Shared.Tables;
+                            console.log("Table is shared, targeting shared resources.");
+                        }
                         CurrentTableColumnArray = [];
                         columnFilter = CurrentItem.data("columnFilter");
                         if (columnFilter == undefined)
                             columnFilter = [];
-                        targetTable = data.Tables.filter(function (value, index, ar) {
+                        targetTable = targetList.filter(function (value, index, ar) {
+                            console.log(value.Name + " == " + tableName + " = " + (value.Name == tableName));
                             return value.Name == tableName;
                         })[0];
                         if (targetTable == undefined)
@@ -349,6 +356,14 @@ $(function () {
                                 newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
+                        for (i = 0; i < data.Shared.Tables.length; i++) {
+                            newTableRow = $('<tr class="tableRow" tableId="' + data.Shared.Tables[i].Id + '"><td><span class="tableName" shared="true">' + data.Shared.Tables[i].Name + '</span></td></tr>');
+                            if (AssociatedTableName.indexOf(data.Shared.Tables[i].Name) != -1)
+                                newTableRow.addClass("highlightedRow");
+                            if (data.Shared.Tables[i].Name == ModelTableName)
+                                newTableRow.find("td").append('<div class="modelMarker">Model</div>');
+                            tbody.append(newTableRow);
+                        }
                         for (i = 0; i < SystemTables.length; i++) {
                             newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td><span class="tableName">' + SystemTables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
@@ -381,16 +396,33 @@ $(function () {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
+                            isShared = $(element).find("td .tableName").attr("shared") === "true";
                             tableName = $(element).find('td .tableName').text();
                             AssociatedTableIds.push(parseInt(tableId));
                             AssociatedTableName.push(tableName);
-                            currentTable = data.Tables.filter(function (value) {
+                            var targetList = data.Tables;
+                            if (isShared) {
+                                targetList = data.Shared.Tables;
+                                console.log("Adding shared table columns");
+                            }
+
+                            console.log("Target:");
+                            console.log($(element));
+                            currentTable = targetList.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];
+                            console.log(currentTable);
+                            var sharedClass = "";
+                            var prefix = "";
+                            if (isShared) {
+                                sharedClass = 'shared="true"';
+                                prefix = "Shared: ";
+                            }
                             if (currentTable)
                                 for (i = 0; i < currentTable.Columns.length; i++) {
+                                    console.log("Adding column: " + currentTable.Columns[i].Name);
                                     $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '" '+sharedClass+'>'+ prefix + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
                                 }
                             systemTable = SystemTables.filter(function (value) {
                                 return value.Name == tableName;
@@ -405,6 +437,7 @@ $(function () {
                     modelMarker = chooseTablesDialog.find("#table-table:first tbody:nth-child(2) .modelMarker");
                     if (modelMarker.length) {
                         ModelTableName = modelMarker.parents("td").find(".tableName").text();
+                        ModelTableIsShared = modelMarker.parents("td").find(".tableName").attr("shared") === "true";
                     }
                     $("#blockHeaderDbResCount").text(tableCount);
                     chooseTablesDialog.dialog("close");
@@ -888,5 +921,28 @@ $(function () {
         });
         CurrentItem.data("conditionSets", setArray).removeClass("activeItem");
         gatewayConditionsDialog.dialog("close");
+    }
+
+    envelopeStartPropertiesDialog = $("#envelopeStart-properties-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 180,
+        buttons: {
+            "Save": function () {
+                envelopeStartPropertiesDialog_SubmitData();
+            },
+            Cancel: function () {
+                envelopeStartPropertiesDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
+            }
+        },
+        open: function (event, ui) {
+            envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val(CurrentItem.data("label"));
+        }
+    });
+    function envelopeStartPropertiesDialog_SubmitData() {
+        CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
+        envelopeStartPropertiesDialog.dialog("close");
+        CurrentItem.removeClass("activeItem");
     }
 });

@@ -12,6 +12,8 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Service;
 using Logger;
 using static System.String;
+using FSS.Omnius.Modules.Entitron;
+using System.Data.SqlClient;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -108,7 +110,31 @@ namespace FSS.Omnius.Controllers.Entitron
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
-        
+
+        [Route("api/database/apps/{appId}/viewscheme/{viewName}")]
+        [HttpPost]
+        public AjaxTransferViewColumnList GetViewScheme(int appId, string viewName)
+        {
+            string appName = DBEntities.instance.Applications.FirstOrDefault(a => a.Id == appId).Name;
+
+            AjaxTransferViewColumnList list = new AjaxTransferViewColumnList();
+
+            using (SqlConnection connection = new SqlConnection(Modules.Entitron.Entitron.connectionString)) {
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = 'Entitron_{appName}_{viewName}'", connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows) {
+                    while(reader.Read()) {
+                        list.Columns.Add(reader.GetString(0));
+                    }
+                }
+            }
+
+            return list;
+        }
+
         [Route("api/database/apps/{appId}/commits")]
         [HttpPost]
         public void SaveScheme(int appId, AjaxTransferDbScheme postData)
@@ -346,6 +372,23 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 var result = new AjaxTransferDbScheme();
                 var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
+
+                if (commitId == -1) {
+                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
+
+                    AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
+
+                    SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
+                    SetAttributesRequestCommitRelations(sharedCommit, sharedScheme);
+                    SetAttributesRequestCommitViews(sharedCommit, sharedScheme);
+
+                    result.Shared = sharedScheme;
+                    if (requestedCommit == null)
+                    {
+                        return result;
+                    }
+                }
+
                 //Latest commit was requested, but there are no commits yet. Returning an empty commit.
                 if (requestedCommit == null)
                 {

@@ -44,6 +44,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             }
             return false;
         }
+        public bool HasRole(string roleName)
+        {
+            return Roles.Any(r => r.AppRole.Name == roleName);
+        }
         public bool HasRole(string roleName, DBEntities context)
         {
             return Roles.Any(r => r.AppRole.Name == roleName);
@@ -55,6 +59,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public bool canUseModule(string moduleName)
         {
             return ModuleAccessPermission == null || ModuleAccessPermission.hasAccess(moduleName);
+        }
+
+        public List<string> GetAppRoles(int appId)
+        {
+            return Roles.Where(r => r.AppRole.ApplicationId == appId).Select(r => r.AppRole.Name).ToList();
         }
     }
 }

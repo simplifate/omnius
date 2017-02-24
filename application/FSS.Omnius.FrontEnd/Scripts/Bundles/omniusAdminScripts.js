@@ -398,7 +398,13 @@ var ManualInputConditionTemplate = '<tr><td class="conditionOperator"></td><td c
     + '<input type="text"></input></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
     + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
     + '</tr>';
-
+var HermesConditionSetTemplate = '<div class="conditionSet"><div class="conditionSetHeading"><span class="conditionSetPrefix"> a</span>ll of these conditions must be met</div>'
+    + '<div class="removeConditionSetIcon">X</div><table class="conditionTable"></table></div>';
+var HermesConditionTemplate = '<tr><td class="conditionOperator"></td><td class="conditionVariableCell"><select class="form-control" style="width:auto"><option value="From">From</option><option value="CC">CC</option><option value="Subject">Subject</option><option value="Body">Body</option></select>'
+    + '</td><td class="conditionOperatorCell"><select class="form-control" style="width:auto"><option value="contains" selected="selected">obsahuje</option><option value="BeginWith">začíná</option><option value="EndWith">končí</option><option value="IsEmpty" data-inputType="none">is empty</option><option value="IsNotEmpty" data-inputType="none">is not empty</option></select></td><td class="conditionValueCell">'
+    + '<input type="text" value="" class="form-control" /></td><td class="conditionActions"><div class="conditionActionIcon addAndConditionIcon">&</div>'
+    + '<div class="conditionActionIcon addOrConditionIcon">|</div><div class="conditionActionIcon removeConditionIcon">X</div></td>'
+    + '</tr>';
 var AssociatedPageIds = [];
 
 function SaveBlock(commitMessage) {
@@ -429,6 +435,7 @@ function SaveBlock(commitMessage) {
                 IsBootstrap: GetIsBootstrap(currentItem),
                 BootstrapPageId: GetIsBootstrap(currentItem) ? currentItem.attr("pageId") : null,
                 TableName: currentItem.attr("tableName"),
+                IsShared: currentItem.attr("shared") === "true",
                 ColumnName: currentItem.attr("columnName"),
                 ColumnFilter: currentItem.data("columnFilter"),
                 ConditionSets: currentItem.data("conditionSets")
@@ -476,7 +483,7 @@ function SaveBlock(commitMessage) {
                 saveId++;
                 itemArray.push({
                     Id: currentItem.attr("saveId"),
-                    Label: currentItem.find(".itemLabel").text(),
+                    Label: currentItem.find(".itemLabel").length ? currentItem.find(".itemLabel").text() : currentItem.data("label"),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),
@@ -549,6 +556,7 @@ function SaveBlock(commitMessage) {
             Label: toolboxItem.find(".itemLabel").text(),
             ActionId: toolboxItem.attr("ActionId"),
             TableName: toolboxItem.attr("TableName") ? toolboxItem.attr("TableName") : null,
+            IsShared: toolboxItem.attr("shared") === "true",
             ColumnName: toolboxItem.attr("ColumnName") ? toolboxItem.attr("ColumnName") : null,
             PageId: toolboxItem.attr("PageId"),
             ComponentName: toolboxItem.attr("ComponentName") ? toolboxItem.attr("ComponentName") : null,
@@ -622,6 +630,8 @@ function SaveBlock(commitMessage) {
 }
 
 function LoadBlock(commitId) {
+    console.log("LOADING BLOCKSS");
+
     pageSpinner.show();
 
     appId = $("#currentAppId").val();
@@ -644,7 +654,9 @@ function LoadBlock(commitId) {
             $("#resourceRulesPanel .resourceRule").remove();
             $("#workflowRulesPanel .workflowRule").remove();
             $("#blockHeaderBlockName").text(data.Name);
+            console.log("Obtained data from server.");
             for (i = 0; i < data.ResourceRules.length; i++) {
+            console.log("Iterating resource rule");
                 currentRuleData = data.ResourceRules[i];
                 newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
                     + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
@@ -727,6 +739,8 @@ function LoadBlock(commitId) {
                     }
                 });
                 for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
+                    console.log("Got item data:");
+                    console.log(currentItemData);
                     currentItemData = currentRuleData.ResourceItems[j];
                     newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
                         + currentItemData.PositionY + 'px;">'
@@ -746,6 +760,9 @@ function LoadBlock(commitId) {
                             newItem.addClass("viewAttribute");
                         else
                             newItem.addClass("tableAttribute");
+                    }
+                    if (currentItemData.IsShared != null && currentItemData != false) {
+                        newItem.attr("shared", currentItemData.IsShared);
                     }
                     if (currentItemData.ColumnName != null) {
                         newItem.attr("columnName", currentItemData.ColumnName);
@@ -965,6 +982,8 @@ function LoadBlock(commitId) {
                     pageSpinner.hide()
                 },
                 success: function (tableData) {
+                    console.log("Got tables data:");
+                    console.log(tableData);
                     attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
                     $(".tapestryToolbox .toolboxLi_Attributes").remove();
                     for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {
@@ -1920,21 +1939,34 @@ $(function () {
                             newToolboxLi.hide();
                     }
                     else if (libType == "column-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("isShared") === "true") {
+                            isShared = 'isShared="true"';
+                        }
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" '+isShared+' columnName="' + currentLibraryItem.attr("columnName") + '"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
                     else if (libType == "table-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("shared") === "true") {
+                            isShared = 'shared="true"';
+                        }
+                        console.log("Transpiling: "+isShared);
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" '+isShared+'><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
                     else if (libType == "view-attribute") {
-                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + currentLibraryItem.attr("tableName") + '"><span class="itemLabel">'
+                        var isShared = "";
+                        if (currentLibraryItem.attr("isShared") === "true") {
+                            isShared = 'isShared="true"';
+                        }
+                        newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + currentLibraryItem.attr("tableName") + '" ' + isShared + '><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>');
                         $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLi);
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Attributes").hasClass("hiddenCategory"))
@@ -2008,7 +2040,7 @@ $(function () {
     }
 });
 
-var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableName;
+var CurrentRule, CurrentItem, AssociatedPageIds = [], AssociatedTableName = [], AssociatedTableIds = [], CurrentTableColumnArray = [], RoleWhitelist = [], ModelTableIsShared, ModelTableName;
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
@@ -2264,16 +2296,23 @@ $(function () {
                 appId = $("#currentAppId").val();
                 url = "/api/database/apps/" + appId + "/commits/latest",
                 tableName = CurrentItem.attr("tableName");
+                isShared = CurrentItem.attr("shared") === "true";
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: "json",
                     success: function (data) {
+                        var targetList = data.Tables;
+                        if (isShared) {
+                            targetList = data.Shared.Tables;
+                            console.log("Table is shared, targeting shared resources.");
+                        }
                         CurrentTableColumnArray = [];
                         columnFilter = CurrentItem.data("columnFilter");
                         if (columnFilter == undefined)
                             columnFilter = [];
-                        targetTable = data.Tables.filter(function (value, index, ar) {
+                        targetTable = targetList.filter(function (value, index, ar) {
+                            console.log(value.Name + " == " + tableName + " = " + (value.Name == tableName));
                             return value.Name == tableName;
                         })[0];
                         if (targetTable == undefined)
@@ -2359,6 +2398,14 @@ $(function () {
                                 newTableRow.find("td").append('<div class="modelMarker">Model</div>');
                             tbody.append(newTableRow);
                         }
+                        for (i = 0; i < data.Shared.Tables.length; i++) {
+                            newTableRow = $('<tr class="tableRow" tableId="' + data.Shared.Tables[i].Id + '"><td><span class="tableName" shared="true">' + data.Shared.Tables[i].Name + '</span></td></tr>');
+                            if (AssociatedTableName.indexOf(data.Shared.Tables[i].Name) != -1)
+                                newTableRow.addClass("highlightedRow");
+                            if (data.Shared.Tables[i].Name == ModelTableName)
+                                newTableRow.find("td").append('<div class="modelMarker">Model</div>');
+                            tbody.append(newTableRow);
+                        }
                         for (i = 0; i < SystemTables.length; i++) {
                             newTableRow = $('<tr class="tableRow" tableId="' + SystemTables[i].Name + '"><td><span class="tableName">' + SystemTables[i].Name + '</span></td></tr>');
                             if (AssociatedTableName.indexOf(SystemTables[i].Name) != -1)
@@ -2391,16 +2438,33 @@ $(function () {
                         if ($(element).hasClass("highlightedRow")) {
                             tableCount++;
                             tableId = $(element).attr("tableId");
+                            isShared = $(element).find("td .tableName").attr("shared") === "true";
                             tableName = $(element).find('td .tableName').text();
                             AssociatedTableIds.push(parseInt(tableId));
                             AssociatedTableName.push(tableName);
-                            currentTable = data.Tables.filter(function (value) {
+                            var targetList = data.Tables;
+                            if (isShared) {
+                                targetList = data.Shared.Tables;
+                                console.log("Adding shared table columns");
+                            }
+
+                            console.log("Target:");
+                            console.log($(element));
+                            currentTable = targetList.filter(function (value) {
                                 return value.Id == tableId;
                             })[0];
+                            console.log(currentTable);
+                            var sharedClass = "";
+                            var prefix = "";
+                            if (isShared) {
+                                sharedClass = 'shared="true"';
+                                prefix = "Shared: ";
+                            }
                             if (currentTable)
                                 for (i = 0; i < currentTable.Columns.length; i++) {
+                                    console.log("Adding column: " + currentTable.Columns[i].Name);
                                     $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '">' + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
+                                        + currentTable.Name + '" columnName="' + currentTable.Columns[i].Name + '" '+sharedClass+'>'+ prefix + currentTable.Name + '.' + currentTable.Columns[i].Name + '</div>'));
                                 }
                             systemTable = SystemTables.filter(function (value) {
                                 return value.Name == tableName;
@@ -2415,6 +2479,7 @@ $(function () {
                     modelMarker = chooseTablesDialog.find("#table-table:first tbody:nth-child(2) .modelMarker");
                     if (modelMarker.length) {
                         ModelTableName = modelMarker.parents("td").find(".tableName").text();
+                        ModelTableIsShared = modelMarker.parents("td").find(".tableName").attr("shared") === "true";
                     }
                     $("#blockHeaderDbResCount").text(tableCount);
                     chooseTablesDialog.dialog("close");
@@ -2899,229 +2964,33 @@ $(function () {
         CurrentItem.data("conditionSets", setArray).removeClass("activeItem");
         gatewayConditionsDialog.dialog("close");
     }
+
+    envelopeStartPropertiesDialog = $("#envelopeStart-properties-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 180,
+        buttons: {
+            "Save": function () {
+                envelopeStartPropertiesDialog_SubmitData();
+            },
+            Cancel: function () {
+                envelopeStartPropertiesDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
+            }
+        },
+        open: function (event, ui) {
+            envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val(CurrentItem.data("label"));
+        }
+    });
+    function envelopeStartPropertiesDialog_SubmitData() {
+        CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
+        envelopeStartPropertiesDialog.dialog("close");
+        CurrentItem.removeClass("activeItem");
+    }
 });
 
 $(function () {
     if (CurrentModuleIs("tapestryModule")) {
-        $.contextMenu({
-            selector: '.item, .symbol',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
-                    currentInstance.removeAllEndpoints(item, true);
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "properties") {
-                    item.addClass("activeItem processedItem");
-                    if (item.hasClass("tableAttribute")) {
-                        CurrentItem = item;
-                        tableAttributePropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("viewAttribute")) {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        actionPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
-                    {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("uiItem")) {
-                        CurrentItem = item;
-                        uiitemPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
-                        CurrentItem = item;
-                        labelPropertyDialog.dialog("open");
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
-                }
-            },
-            items: {
-                "properties": { name: "Properties", icon: "edit" },
-                "delete": { name: "Delete", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.resourceRule',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "delete": { name: "Delete rule", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.swimlaneRolesArea .roleItem',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    swimlaneRolesArea = item.parents(".swimlaneRolesArea");
-                    item.remove();
-                    if (swimlaneRolesArea.find(".roleItem").length == 0)
-                        swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
-                            + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "delete": { name: "Remove role", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.workflowRule',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "rename") {
-                    CurrentRule = options.$trigger;
-                    renameRuleDialog.dialog("open");
-                }
-                else if (key == "delete") {
-                    options.$trigger.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "add-swimlane") {
-                    rule = options.$trigger;
-                    newSwimlane = $('<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                        + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
-                    newSwimlane.find(".swimlaneRolesArea").droppable({
-                        containment: ".swimlaneContentArea",
-                        tolerance: "touch",
-                        accept: ".toolboxItem.roleItem",
-                        greedy: true,
-                        drop: function (e, ui) {
-                            if (dragModeActive) {
-                                dragModeActive = false;
-                                roleExists = false;
-                                $(this).find(".roleItem").each(function (index, element) {
-                                    if ($(element).text() == ui.helper.text())
-                                        roleExists = true;
-                                });
-                                if (!roleExists) {
-                                    droppedElement = ui.helper.clone();
-                                    $(this).find(".rolePlaceholder").remove();
-                                    $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                                    ui.helper.remove();
-                                    ChangedSinceLastSave = true;
-                                }
-                            }
-                        }
-                    });
-                    newSwimlane.find(".swimlaneContentArea").droppable({
-                        containment: ".swimlaneContentArea",
-                        tolerance: "touch",
-                        accept: ".toolboxSymbol, .toolboxItem",
-                        greedy: false,
-                        drop: function (e, ui) {
-                            if (dragModeActive) {
-                                dragModeActive = false;
-                                droppedElement = ui.helper.clone();
-                                if (droppedElement.hasClass("roleItem")) {
-                                    ui.draggable.draggable("option", "revert", true);
-                                    return false;
-                                }
-                                $(this).append(droppedElement);
-                                ruleContent = $(this);
-                                if (droppedElement.hasClass("toolboxSymbol")) {
-                                    droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                                    droppedElement.addClass("symbol");
-                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                                }
-                                else {
-                                    droppedElement.removeClass("toolboxItem");
-                                    droppedElement.addClass("item");
-                                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                                }
-                                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                                ui.helper.remove();
-                                AddToJsPlumb(droppedElement);
-                                ChangedSinceLastSave = true;
-                            }
-                        }
-                    });
-                    rule.find(".swimlaneArea").append(newSwimlane);
-                    newHeight = (100 / rule.find(".swimlane").length);
-                    rule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
-                        $(swimlaneDiv).css("height", newHeight + "%");
-                    });
-                    instance = options.$trigger.data("jsPlumbInstance");
-                    instance.recalculateOffsets();
-                    instance.repaintEverything();
-                    ChangedSinceLastSave = true;
-                }
-            },
-            items: {
-                "add-swimlane": { name: "Add swimlane", icon: "add" },
-                "rename": { name: "Rename rule", icon: "edit" },
-                "delete": { name: "Delete rule", icon: "delete" }
-            }
-        });
-        $.contextMenu({
-            selector: '.swimlane',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "remove-swimlane") {
-                    rule = options.$trigger.parents(".workflowRule");
-                    swimlaneCount = rule.find(".swimlane").length;
-                    if (swimlaneCount > 1) {
-                        instance = rule.data("jsPlumbInstance");
-                        instance.removeAllEndpoints(options.$trigger, true);
-                        options.$trigger.remove();
-                        newHeight = 100 / (swimlaneCount - 1);
-                        rule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
-                            $(swimlaneDiv).css("height", newHeight + "%");
-                        });
-                        instance.recalculateOffsets();
-                        instance.repaintEverything();
-                        ChangedSinceLastSave = true;
-                    }
-                    else
-                        alert("Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.");
-                }
-            },
-            items: {
-                "remove-swimlane": { name: "Remove swimlane", icon: "delete" },
-            }
-        });
-        $.contextMenu({
-            selector: '.tableRow',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                if (key == "model") {
-                    tableRow = options.$trigger;
-                    tableRow.addClass("highlightedRow");
-                    tableRow.parents("table").find(".modelMarker").remove();
-                    tableRow.find("td:first").append('<div class="modelMarker">Model</div>');
-                }
-            },
-            items: {
-                "model": { name: "Set as model", icon: "edit" }
-            }
-        });
     }
 });
 
@@ -3200,6 +3069,12 @@ var TB = {
             }
         });
         return { horizontal: horizontalLimit, vertical: verticalLimit };
+    },
+
+    callHooks: function(hooks, context, params) {
+        for (var i = 0; i < hooks.length; i++) {
+            hooks[i].apply(context, params);
+        }
     }
 };
 
@@ -3378,7 +3253,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: true };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3395,9 +3270,9 @@ TB.screen = {
         if (c.ElmId != "") {
             var label = c.ElmId;
             var params = { pageId: pageId, componentName: label, isBootstrap: true };
-            var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+            var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+            var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
             }
@@ -3411,7 +3286,7 @@ TB.screen = {
                 for (var a in actions) {
                     var label = c.ElmId + '_' + actions[a].action;
                     var params = { pageId: pageId, componentName: label, isBootstrap: true };
-                    var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                    var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                     var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                     if (isUsed) {
@@ -3434,7 +3309,7 @@ TB.screen = {
             if (i == 0) {
                 var label = 'Screen: ' + data.Name;
                 var params = { pageId: data.Id, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length;
+                var isUsed =  state.filter ? state.filter(function (value) { return value.PageId == data.Id && (!value.ComponentName || value.ComponentName == "undefined") }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3450,9 +3325,9 @@ TB.screen = {
     {
         var label = c.Name;
         var params = { pageId: pageId, componentName: label, isBootstrap: false };
-        var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+        var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
-        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
+        var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed, c);
         if (isUsed) {
             TB.toolbox.createItem(libId, 'UI', 'uiItem', params, label);
         }
@@ -3463,7 +3338,7 @@ TB.screen = {
             for (var a = 0; a < actions.length; a++) {
                 var label = c.Name + actions[a];
                 var params = { pageId: pageId, componentName: label, isBootstrap: false };
-                var isUsed = state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length;
+                var isUsed = state.filter ? state.filter(function (value) { return value.PageId == pageId && value.ComponentName == label; }).length : false;
 
                 var libId = TB.library.createItem('UI', 'ui', params, label, '', isUsed);
                 if (isUsed) {
@@ -3526,6 +3401,8 @@ TB.load = {
     },
     toolboxState: null,
     data: null,
+
+    onAttributesLoad: [],
 
     init: function () {
 
@@ -3692,7 +3569,7 @@ TB.load = {
             var params = { tableName: data.Tables[ti].Name };
             var label = 'Table: ' + data.Tables[ti].Name;
 
-            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute', isUsed, data.Tables[ti]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
             }
@@ -3703,9 +3580,53 @@ TB.load = {
             var params = { tableName: data.Views[vi].Name };
             var label = 'View: ' + data.Views[vi].Name;
 
-            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed);
+            var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute', isUsed, data.Views[vi]);
             if (isUsed) {
                 TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute', params, label);
+            }
+        }
+
+        if(data.Shared != null) {
+            // Display shared tables
+            for (var ti = 0; ti < data.Shared.Tables.length; ti++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Tables[ti].Name; }).length;
+                var params = { tableName: data.Shared.Tables[ti].Name, shared: true };
+                var label = 'Shared table: ' + data.Shared.Tables[ti].Name;
+
+                var libId = TB.library.createItem('Attributes', 'table-attribute', params, label, 'tableAttribute sharedAttribute', isUsed, data.Shared.Tables[ti]);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                }
+            }
+
+            // Display shared views
+            for (var vi = 0; vi < data.Shared.Views.length; vi++) {
+                var isUsed = state.filter(function (value) { return !value.ColumnName && value.TableName == data.Shared.Views[vi].Name; }).length;
+                var params = { tableName: data.Shared.Views[vi].Name, shared: true };
+                var label = 'Shared view: ' + data.Shared.Views[vi].Name;
+
+                var libId = TB.library.createItem('Attributes', 'view-attribute', params, label, 'viewAttribute sharedAttribute', isUsed, data.Shared.Views[vi]);
+                if (isUsed) {
+                    TB.toolbox.createItem(libId, 'Attributes', 'attributeItem viewAttribute sharedAttribute', params, label);
+                }
+            }
+
+            for (var ti = 0; ti < self.data.AssociatedTableName.length; ti++) {
+                var currentTable = data.Shared.Tables.filter(function (value) { return value.Name == self.data.AssociatedTableName[ti]; })[0];
+                if (currentTable) {
+                    for (var ci = 0; ci < currentTable.Columns.length; ci++) {
+                        var isUsed = state.filter(function (value) {
+                            return value.ColumnName == currentTable.Columns[ci].Name && value.TableName == currentTable.Name;
+                        }).length;
+                        var params = { tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name, shared: true };
+                        var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
+
+                        var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute sharedAttribute', isUsed, { Name: label });
+                        if (isUsed) {
+                            TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute sharedAttribute', params, label);
+                        }
+                    }
+                }
             }
         }
 
@@ -3722,7 +3643,7 @@ TB.load = {
                     var params = {tableName: currentTable.Name, columnName: currentTable.Columns[ci].Name };
                     var label = currentTable.Name + '.' + currentTable.Columns[ci].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if(isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
@@ -3740,13 +3661,15 @@ TB.load = {
                     var params = { tableName: systemTable.Name, columnName: systemTable.Columns[i].Name };
                     var label = systemTable.Name + '.' + systemTable.Columns[i].Name;
 
-                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed);
+                    var libId = TB.library.createItem('Attributes', 'column-attribute', params, label, 'columnAttribute', isUsed, { Name: label });
                     if (isUsed) {
                         TB.toolbox.createItem(libId, 'Attributes', 'attributeItem tableAttribute', params, label);
                     }
                 }
             }
         }
+
+        TB.callHooks(self.onAttributesLoad, null, [data]);
     },
 
     librarySetActions: function(data)
@@ -3759,7 +3682,7 @@ TB.load = {
             var params = {actionId: data.Items[i].Id };
             var label = data.Items[i].Name;
 
-            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed);
+            var libId = TB.library.createItem('Actions', 'action', params, label, '', isUsed, data.Items[i]);
             if(isUsed) {
                 TB.toolbox.createItem(libId, 'Actions', 'actionItem', params, label);
             }
@@ -3906,6 +3829,10 @@ TB.rr = {
         item: '<div class="item"></div>'
     },
 
+    contextItems: {
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
     create: function(rrData)
     {
         var self = TB.rr;
@@ -3937,6 +3864,7 @@ TB.rr = {
         if (itemData.PageId != null)            attrs.pageId = itemData.PageId;
         if (itemData.ComponentName != null)     attrs.componentName = itemData.ComponentName;
         if (itemData.ColumnName != null)        attrs.columnName = itemData.ColumnName;
+        if (itemData.IsShared != null)          attrs.shared = itemData.IsShared;
         if (itemData.IsBootstrap != null)       attrs.isBootstrap = itemData.IsBootstrap;
         if (itemData.BootstrapPageId != null)   attrs.pageId = itemData.BootstrapPageId;
 
@@ -4067,15 +3995,36 @@ TB.rr = {
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
+    },
+
+    _contextAction: function (key, options) {
+        var item = options.$trigger;
+        if (key == "delete") {
+            item.remove();
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
     }
 };
 TB.wfr = {
+
+    onCreateItem: [],
 
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
         swimlane: '<div class="swimlane"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
             + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>',
         item: ''
+    },
+    
+    contextItems: {
+        'add-swimlane': { name: 'Add swimlane', icon: 'add' },
+        'rename': { name: 'Rename rule', icon: 'edit' },
+        'delete': { name: 'Delete rule', icon: 'delete' }
+    },
+
+    swimlaneContextItems: {
+        'remove-swimlane': { name: 'Remove swimlane', icon: 'delete' },
     },
 
     init: function () {
@@ -4101,6 +4050,29 @@ TB.wfr = {
         return rule;
     },
 
+    remove: function() {
+        this.remove();
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
+    rename: function() {
+        CurrentRule = this;
+        renameRuleDialog.dialog('open');
+    },
+
+    addSwimlane: function() {
+        var count = this.find('.swimlane').length + 1;
+        TB.wfr.createSwimlane({Roles: [], WorkflowItems: []}, count, this);
+
+        this.find('.swimlane').css('height', (100 / count) + '%');
+        this.data("jsPlumbInstance").recalculateOffsets();
+        this.data("jsPlumbInstance").repaintEverything();
+
+        ChangedSinceLastSave = true /// OBSOLATE
+        TB.changedSinceLastSave = true;
+    },
+
     createSwimlane: function(swimlaneData, count, parentRule) {
         var self = TB.wfr;
         
@@ -4122,6 +4094,27 @@ TB.wfr = {
         self.aliveSwimlane(swimlane);
     },
 
+    removeSwimlane: function () {
+        // this = options.$trigger
+
+        var rule = this.parents('.workflowRule');
+        var swimlaneCount = rule.find('.swimlane').length;
+        if (swimlaneCount > 1) {
+            rule.data('jsPlumbInstance').removeAllEndpoints(this, true);
+            this.remove();
+            
+            rule.find('.swimlane').css('height', (100 / (swimlaneCount - 1)) + '%');
+            rule.data('jsPlumbInstance').recalculateOffsets();
+            rule.data('jsPlumbInstance').repaintEverything();
+
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+        else {
+            alert('Pravidlo musí mít alspoň jednu swimlane, nelze smazat všechny.');
+        }
+    },
+
     createItem: function(itemData, parentSwimlane)
     {
         var item;
@@ -4131,8 +4124,12 @@ TB.wfr = {
             + itemData.Label + '</span></div>');
         } else if (itemData.TypeClass == "symbol") {
             item = $('<img id="wfItem' + itemData.Id + '" class="symbol" symbolType="' + itemData.SymbolType +
-            '" src="/Content/images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
+            '" src="/Content/Images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
+
+            if (itemData.SymbolType == "envelope-start") {
+                item.data('label', itemData.Label);
+            }
         } else {
             item = $('<div id="wfItem' + itemData.Id + '" class="item" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;"><span class="itemLabel">' + itemData.Label + '</span></div>');
@@ -4169,6 +4166,8 @@ TB.wfr = {
 
         item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
         AddToJsPlumb(item);
+
+        TB.callHooks(TB.wfr.onCreateItem, item, []);
     },
 
     aliveRule: function(rule)
@@ -4313,17 +4312,37 @@ TB.wfr = {
             ChangedSinceLastSave = true; /// OBSOLATE
             TB.changedSinceLastSave = true;
         }
+    },
+
+    _contextAction: function (key, options) {
+        var self = TB.wfr;
+        switch (key) {
+            case 'delete': self.remove.apply(options.$trigger, []); break;
+            case 'rename': self.rename.apply(options.$trigger, []); break;
+            case 'add-swimlane': self.addSwimlane.apply(options.$trigger, []); break;
+        }
+    },
+    
+    _swimlaneContextAction: function (key, options) {
+        if (key == 'remove-swimlane') {
+            TB.wfr.removeSwimlane.apply(options.$trigger, []);
+        }
     }
 }
 
 TB.onInit.push(TB.wfr.init);
 TB.library = {
 
+    onCreate: [],
+    onClean: [],
+
     clean: function () {
         $('.libraryItem').remove();
+
+        TB.callHooks(TB.library.onClean, null, []);
     },
 
-    createItem: function(target, type, params, name, className, highlighted)
+    createItem: function(target, type, params, name, className, highlighted, originalItem)
     {
         var itemLibId = ++lastLibId;
         params.libId = itemLibId;
@@ -4334,6 +4353,8 @@ TB.library = {
         
         if (className) { item.addClass(className); }
         if (highlighted) { item.addClass('highlighted'); }
+
+        TB.callHooks(TB.library.onCreate, originalItem, [type]);
         
         return itemLibId;
     }
@@ -4376,6 +4397,1046 @@ TB.toolbox = {
     }
 };
 
+TB.context = {
+
+    defaultSettings: {
+        trigger: 'right',
+        zIndex: 300
+    },
+
+    init: function()
+    {
+        var ds = TB.context.defaultSettings; 
+
+        $.contextMenu($.extend(ds, {
+            selector: '.resourceRule',
+            callback: TB.rr._contextAction,
+            items: TB.rr.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.swimlane',
+            callback: TB.wfr._swimlaneContextAction,
+            items: TB.wfr.swimlaneContextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.workflowRule',
+            callback: TB.wfr._contextAction,
+            items: TB.wfr.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.tableRow',
+            callback: function (key, options) {
+                if (key == "model") {
+                    var tableRow = options.$trigger;
+                    tableRow.addClass("highlightedRow");
+                    tableRow.parents("table").find(".modelMarker").remove();
+                    tableRow.find("td:first").append('<div class="modelMarker">Model</div>');
+                }
+            },
+            items: {
+                "model": { name: "Set as model", icon: "edit" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.swimlaneRolesArea .roleItem',
+            callback: function (key, options) {
+                var item = options.$trigger;
+                if (key == "delete") {
+                    var swimlaneRolesArea = item.parents(".swimlaneRolesArea");
+                    item.remove();
+                    if (swimlaneRolesArea.find(".roleItem").length == 0)
+                        swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
+                            + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+                    ChangedSinceLastSave = true; /// OBSOLATE
+                    TB.changedSinceLastSave = true;
+                }
+            },
+            items: {
+                "delete": { name: "Remove role", icon: "delete" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item:not(.actionItem), .symbol',
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                    currentInstance.removeAllEndpoints(item, true);
+                    item.remove();
+                    ChangedSinceLastSave = true;
+                }
+                else if (key == "properties") {
+                    item.addClass("activeItem processedItem");
+                    if (item.hasClass("tableAttribute")) {
+                        CurrentItem = item;
+                        tableAttributePropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("viewAttribute")) {
+                        CurrentItem = item;
+                        gatewayConditionsDialog.dialog("open");
+                    }
+                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
+                    {
+                        CurrentItem = item;
+                        gatewayConditionsDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
+                    { 
+                        CurrentItem = item;
+                        envelopeStartPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("uiItem")) {
+                        CurrentItem = item;
+                        uiitemPropertiesDialog.dialog("open");
+                    }
+                    else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
+                        CurrentItem = item;
+                        labelPropertyDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+            },
+            items: {
+                "properties": { name: "Properties", icon: "edit" },
+                "delete": { name: "Delete", icon: "delete" }
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item.actionItem',
+            callback: function (key, options) {
+                item = options.$trigger;
+                if (key == "delete") {
+                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                    currentInstance.removeAllEndpoints(item, true);
+                    item.remove();
+                    ChangedSinceLastSave = true;
+                }
+                else if (key == "wizard") {
+                    item.addClass("activeItem processedItem");
+
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        TB.wizard.open.apply(item, []);
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+                else if (key == "properties") {
+                    item.addClass("activeItem processedItem");
+                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                        CurrentItem = item;
+                        actionPropertiesDialog.dialog("open");
+                    }
+                    else {
+                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                        item.removeClass("activeItem");
+                    }
+                }
+            },
+            items: {
+                "wizard": { name: "Wizard", icon: "fa-magic" },
+                "properties": { name: "Properties", icon: "edit" },
+                "delete": { name: "Delete", icon: "delete" }
+            }
+        }));
+    }
+
+};
+
+TB.onInit.push(TB.context.init);
+TB.wizard = {
+
+    actions: {},
+    dataTypeList: {
+        's$': 'string',
+        'b$': 'boolean',
+        'i$': 'integer',
+        'f$': 'float',
+        'd$': 'datetime',
+        '_var_': 'variable'
+    },
+
+    variableList: [
+        { label: '__Model__', category: 'System' },
+        { label: '__ModelId__', category: 'System' },
+        { label: '__TableName__', category: 'System' },
+        { label: '__CORE__', category: 'System' },
+        { label: '__User__', category: 'System' },
+    ],
+
+    dataPrefixList: {
+        // BOOTSTRAP COMPONENTS
+        'ui|nv-list':           ['tableData'],
+        'ui|data-table':        ['tableData'],
+        'ui|countdown':         ['countdownTargetData'],
+        'form|label':           ['inputData'],
+        'form|input-text':      ['inputData'],
+        'form|input-email':     ['inputData'],
+        'form|input-color':     ['inputData'],
+        'form|input-tel':       ['inputData'],
+        'form|input-date':      ['inputData'],
+        'form|input-number':    ['inputData'],
+        'form|input-range':     ['inputData'],
+        'form|input-hidden':    ['inputData'],
+        'form|input-url':       ['inputData'],
+        'form|input-search':    ['inputData'],
+        'form|input-password':  ['inputData'],
+        'form|input-file':      ['inputData'],
+        'form|textarea':        ['inputData'],
+        'form|checkbox':        ['checkboxData'],
+        'form|radio':           ['checkboxData'],
+        'form|select':          ['dropdownData', 'dropdownSelection'],
+        // LEGACY COMPONENTS
+        'checkbox':                 ['checkboxData'],
+        'countdown':                ['countdownTargetData'],
+        'data-table-read-only':     ['tableData'],
+        'data-table-with-actions':  ['tableData'],
+        'dropdown-select':          ['dropdownData', 'dropdownSelection'],
+        'input-single-line':        ['inputData'],
+        'input-multiline':          ['inputData'],
+        'label':                    ['inputData'],
+        'multiple-select':          ['dropdownData', 'dropdownSelection'],
+        'name-value-list':          ['tableData']
+    },
+
+    uiTypeList: {},
+
+    target: null,
+
+    init: function () 
+    {
+        var self = TB.wizard;
+
+        TB.load.onAttributesLoad.push(self._attributesLoad);
+        TB.library.onClean.push(self._libraryClean);
+        TB.library.onCreate.push(self._libraryCreateItem);
+        TB.wfr.onCreateItem.push(self._workflowCreateItem);
+
+        $.widget('custom.catcomplete', $.ui.autocomplete, {
+            _create: function () {
+                this._super();
+                this.widget().menu('option', 'items', '> :not(.ui-autocomplete-category)');
+            },
+            _renderMenu: function (ul, items) {
+                var self = this;
+                var w = TB.wizard;
+                var currentCategory = '';
+                var requestedCategory;
+                var requestedTable;
+                var requestedView;
+                var requestedWorkflow = w.getRequestedWorkflow();
+                
+                var type = $(this.element).parents('.form-group').find('select[name=var_type]').val();
+
+                if (type) {
+                    switch (type) {
+                        case '_var_': requestedCategory = '*'; break;
+                        case 's$': requestedCategory = w.getRequestedCategory.apply(this.element, []); break;
+                        default: requestedCategory = ''; break;
+                    }
+                }
+                else {
+                    requestedCategory = w.getRequestedCategory.apply(this.element, []);
+                }
+
+                if (requestedCategory == 'Column') {
+                    requestedTable = w.getRequestedTable.apply(this.element, []);
+                    requestedView = w.getRequestedView.apply(this.element, []);
+                }
+
+                $.each(items, function () {
+                    var li;
+                    if (requestedCategory == '*' ||
+                        requestedCategory == this.category ||
+                        requestedCategory.indexOf(this.category) !== -1 ||
+                        (requestedCategory.indexOf('Workflow') !== -1 && this.category.indexOf('Workflow') !== -1) ||
+                        (requestedCategory == 'Column' && ((this.category == 'Tables' && requestedTable) || (this.category == 'Views' && requestedView)))
+                       ) {
+
+                        if (this.category != currentCategory &&
+                            (this.category.indexOf('Workflow') === -1 || this.category == 'Workflow: ' + requestedWorkflow) &&
+                            (requestedCategory != 'Column' || (this.category == 'Tables' && requestedTable) || (this.category == 'Views' && requestedView))
+                           ) {
+                            ul.append('<li class="ui-autocomplete-category bg-info">' + this.category + '</li>');
+                            currentCategory = this.category;
+                        }
+
+                        if (requestedCategory == 'Tables' && this.label.indexOf('.') !== -1) return;
+                        if (requestedCategory == 'Column' && this.category == 'Tables' && (!requestedTable || this.label.indexOf(requestedTable + '.') === -1)) return;
+                        if (requestedCategory == 'Column' && this.category == 'Views' && (!requestedView || this.label.indexOf(requestedView + '.') === -1)) return;
+                        if (this.category.indexOf('Workflow') !== -1 && this.category != 'Workflow: ' + requestedWorkflow) return;
+
+                        li = self._renderItemData(ul, this);
+                    }
+                });
+            }
+        });
+    },
+
+    open: function()
+    {
+        var self = TB.wizard;
+        var target = $(this);
+        var action = self.actions[target.attr('actionId')];
+        var form = $('<form class="form-horizontal" onsubmit="return false"></form>');
+        var inputVarsValues = self.parseInputValue(target);
+        var outputVarsValues = self.parseOutputValue(target);
+        var knownInputVars = [];
+        var knownOutputVars = [];
+
+        self.target = target;
+
+        var d = $('<div title="Průvodce parametry akce \'{action_name}\'"></div>');
+        d.attr('title', d.attr('title').replace(/\{action_name\}/, action.name));
+        d.append(form);
+
+        d.dialog({
+            autoOpen: false,
+            width: '50%',
+            draggable: true,
+            resizable: true,
+            appendTo: 'body',
+            dialogClass: 'dialog-wizard',
+            buttons: [{
+                text: 'Použít',
+                click: TB.wizard.validate
+            }],
+            create: function () {
+                var btn = $(this).parents('.ui-dialog').find('.ui-dialog-buttonset button');
+                btn.addClass('btn btn-primary').prepend('<span class="fa fa-check"></span> ');
+            },
+            close: function () {
+                $(this).remove();
+            }
+        });
+
+        if (action.inputVars.length || action.outputVars.length || inputVarsValues.length || outputVarsValues.length) 
+        {
+            var iSet = $('<fieldset class="inputVars"><legend>Input vars</legend></fieldset>');
+            var oSet = $('<fieldset class="outputVars"><legend>Output vars</legend></fieldset>');
+
+            iSet.appendTo(form);
+            oSet.appendTo(form);
+
+            console.log(inputVarsValues);
+
+            if (action.inputVars.length || inputVarsValues.length) {
+                for (var i = 0; i < action.inputVars.length; i++) {
+                    var inputVar = action.inputVars[i];
+                    if (!inputVar.isArray) {
+                        self.createInputVar(inputVar, iSet, inputVarsValues.items);
+                        knownInputVars.push(inputVar.name);
+                    }
+                    else {
+                        var matchFound = false;
+                        var rx = new RegExp('^' + inputVar.name + '\\[(\\d+)\\]$');
+                        for (k in inputVarsValues.items) {
+                            if (m = k.match(rx)) {
+                                self.createInputVar(inputVar, iSet, inputVarsValues.items, m[1]);
+                                knownInputVars.push(m[0]);
+                                matchFound = true;
+                            }
+                        }
+
+                        if (!matchFound) {
+                            self.createInputVar(inputVar, iSet, inputVarsValues.items, 0);
+                            knownInputVars.push(inputVar.name + '[0]');
+                        }
+                    }
+                }
+
+                for (k in inputVarsValues.items) {
+                    if ($.inArray(k, knownInputVars) == -1) {
+                        self.createInputVar({
+                            required: false,
+                            type: null,
+                            name: k,
+                            isArray: false,
+                            isEnum: false,
+                            enumItems: [],
+                            unknown: true
+                        }, iSet, inputVarsValues.items);
+                    }
+                }
+            }
+            else {
+                iSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní parametry</p></div></div>');
+            }
+
+            if (action.outputVars.length || outputVarsValues.length) {
+                for (var i = 0; i < action.outputVars.length; i++) {
+                    self.createOutputVar(action.outputVars[i], oSet, outputVarsValues.items);
+                    knownOutputVars.push(action.outputVars[i].name);
+                }
+
+                for (k in outputVarsValues.items) {
+                    if ($.inArray(k, knownOutputVars) == -1) {
+                        self.createOutputVar({
+                            required: false,
+                            type: null,
+                            name: k,
+                            isArray: false,
+                            isEnum: false,
+                            enumItems: [],
+                            unknown: true
+                        }, oSet, outputVarsValues.items);
+                    }
+                }
+            }
+            else {
+                oSet.append('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné výstupní parametry</p></div></div>');
+            }
+        }
+        else {
+            form.html('<div class="form-group no-vars"><div class="col-xs-12"><p class="alert alert-info">Tato akce nemá žádné vstupní ani výstupní parametry</p></div></div>');
+        }
+
+        d.dialog('open');
+    },
+
+    validate: function()
+    {
+        var d = $(this);
+        var isValid = true;
+
+        d.find('fieldset.inputVars > .form-group:not(.no-vars)').each(function () {
+            if ($(this).data('required') == 'true') {
+                var value = $(this).find('input[name=var_value], select[name=var_value]').not(':disabled').val();
+                isValid = isValid && value.length > 0;
+            }
+
+            /*if ($(this).find('select[name=var_type]').val() == '_var_') {
+                var value = $(this).find('input[name=var_value]').val();
+                if (value.length) {
+                    var exists = false;
+                    var requestedWorkflow = TB.wizard.getRequestedWorkflow();
+
+                    $.each(TB.wizard.variableList, function () {
+
+                    });
+                }
+            }*/
+        });
+
+        if (isValid) {
+            TB.wizard.build.apply(this, []);
+        }
+        else {
+            var confirm = $('<div title="Jste si jistí?"><p class="text-nowrap">Nemáte vyplněné všechny povinné proměnné.<br><b>Opravdu chcete parametry uložit?</b></p></div>');
+            var context = this;
+
+            confirm.dialog({
+                autoOpen: true,
+                width: 450,
+                draggable: false,
+                resizable: false,
+                modal: true,
+                appendTo: 'body',
+                dialogClass: 'dialog-wizard-confirm',
+                buttons: [{
+                    text: 'Ano',
+                    click: function () {
+                        TB.wizard.build.apply(context);
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: 'Ne',
+                    click: function() {
+                        $(this).dialog('close');
+                    }
+                }],
+                create: function () {
+                    var buttons = $(this).parents('.ui-dialog').find('.ui-dialog-buttonset button');
+                    buttons.eq(0).addClass('btn btn-success pull-right').prepend('<span class="fa fa-check"></span> ');
+                    buttons.eq(1).addClass('btn btn-default').prepend('<span class="fa fa-times"></span> ');
+
+                    $(this).parents('.ui-dialog').find('.ui-dialog-buttonset').css('float', 'none');
+                },
+                close: function () {
+                    $(this).remove();
+                }
+            });
+        }
+    },
+
+    build: function()
+    {
+        var d = $(this);
+
+        var inputVars = [];
+        var outputVars = [];
+
+        d.find('fieldset.inputVars > .form-group:not(.no-vars)').each(function () {
+            var variable = $(this).find('.control-label').data('invar');
+            var index = $(this).find('.control-label').data('index');
+            var dataType = $(this).find('select[name=var_type]').val();
+            var value = $(this).find('input[name=var_value], select[name=var_value]').not(':disabled').val();
+
+            if (value.length) {
+                inputVars.push(variable + (typeof index != 'undefined' ? '[' + index + ']' : '') + '=' + (dataType == '_var_' ? '' : dataType) + value);
+            }
+        });
+        d.find('fieldset.outputVars > .form-group:not(.no-vars)').each(function () {
+            var variable = $(this).find('.input-group-addon:last-child').data('outvar');
+            var value = $(this).find('input[name=out_value]').val();
+
+            if (value.length) {
+                outputVars.push(value + '=' + variable);
+            }
+        });
+
+        TB.wizard.target.data('inputVariables', inputVars.join(';'));
+        TB.wizard.target.data('outputVariables', outputVars.join(';'));
+        TB.wizard.rebuildWorkflowVars();
+        TB.wizard.target = null;
+
+        d.dialog('close');
+    },
+
+    rebuildWorkflowVars: function()
+    {
+        var self = TB.wizard;
+        var workflowName = self.getRequestedWorkflow();
+
+        var newVars = [];
+        $.each(self.variableList, function () {
+            if (this.category != 'Workflow: ' + workflowName) {
+                newVars.push(this);
+            }
+        });
+
+        self.target.parents('.swimlaneArea').find('.actionItem').each(function () {
+            var outputVars = self.parseOutputValue($(this));
+            if (outputVars.length > 0) {
+                for(var k in outputVars.items) {
+                    newVars.push({
+                        label: outputVars.items[k],
+                        category: 'Workflow: ' + workflowName
+                    });
+                }
+            }
+
+        });
+
+        self.variableList = newVars;
+        self.variableList.sort(self.sort);
+    },
+
+    /******************************************************/
+    /* TOOLS                                              */
+    /******************************************************/
+    parseVars: function(source) {
+        var vars = [];
+        if (source) {
+            for (var i = 0; i < source.length; i++) {
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[([^\]]*)\])?$/i);
+                // 1 = ?    = volitelná?
+                // 2 = s$   = typ
+                // 3 = název
+                // 4 = pole nebo enum
+                // 5 = enum items
+
+                vars.push({
+                    required: m[1] == '?' ? false : true,
+                    type: m[2],
+                    name: m[3],
+                    isArray: m[4] && (!m[5] || m[5] == 'index') ? true : false,
+                    isEnum: m[4] && (m[5] && m[5] != 'index') ? true : false,
+                    enumItems: (m[5] && m[5] != 'index') ? m[5].split('|') : [],
+                    unknown: false
+                });
+            }
+        }
+        return vars;
+    },
+
+    parseInputValue: function(target) {
+        var data = target.data('inputVariables');
+        var values = {
+            length: 0,
+            items: {}
+        };
+
+        if (data) {
+            var list = data.split(/;/);
+            for (var i = 0; i < list.length; i++) {
+                var pair = list[i].split(/=/);
+                var m = pair[1].match(/^([a-z]\$)?(.+)/);
+
+                values.length++;
+                values.items[pair[0]] = {
+                    dataType: m[1],
+                    value: m[2]
+                };
+            }
+        }
+
+        return values;
+    },
+
+    parseOutputValue: function(target) {
+        var data = target.data('outputVariables');
+        var values = {
+            length: 0,
+            items: {}
+        };
+        
+        if (data) {
+            var list = data.split(/;/);
+            for (var i = 0; i < list.length; i++) {
+                var pair = list[i].split(/=/);
+                values.length++;
+                values.items[pair[1]] = pair[0];
+            }
+        }
+
+        return values;
+    },
+
+    createInputVar: function(inputVar, target, values, index) {
+        var group = $('<div class="form-group form-group-sm" />');
+        var typeWrapper = $('<div class="col-md-2 col-sm-6" />');
+        var valueWrapper = $('<div class="col-md-7 col-sm-6" />');
+        var valueInputGroup = $('<div class="input-group" />');
+        var label = $('<label class="control-label col-md-3" data-invar="' + inputVar.name + '">' + inputVar.name + (inputVar.isArray ? '[' + index + ']' : '') + ' =</label>');
+        var type = $('<select name="var_type" class="form-control"></select>');
+        var value = $('<input type="text" name="var_value" class="form-control" />');
+        var enumValue = $('<select name="var_value" class="form-control enum-value"></select>');
+        var booleanValue = $('<select name="var_value" class="form-control boolean-value"></select>');
+        var addOn = $('<div class="input-group-addon"></div>');
+
+        group.data('required', inputVar.required ? 'true' : 'false');
+
+        label.appendTo(group);
+        typeWrapper.appendTo(group);
+        valueWrapper.appendTo(group);
+
+        type.appendTo(typeWrapper);
+
+        valueInputGroup.appendTo(valueWrapper);
+        addOn.appendTo(valueInputGroup);
+        value.appendTo(valueInputGroup);
+        booleanValue.appendTo(valueInputGroup);
+
+        group.appendTo(target);
+
+        booleanValue.append('<option value="True">True</option>');
+        booleanValue.append('<option value="False">False</option>');
+
+        if (inputVar.isEnum) {
+            valueInputGroup.append(enumValue);
+            for (var i = 0; i < inputVar.enumItems.length; i++) {
+                enumValue.append('<option value="' + inputVar.enumItems[i] + '">' + inputVar.enumItems[i] + '</option>');
+            }
+
+            value.attr('disabled', true).hide();
+        }
+
+        if (inputVar.isArray) {
+            var addOn2 = $('<div class="input-group-addon"></div>');
+            var add = $('<span class="fa fa-plus fa-fw"></span>');
+            var del = $('<span class="fa fa-times fa-fw"></span>');
+
+            addOn2.appendTo(valueInputGroup);
+            add.appendTo(addOn2);
+            del.appendTo(addOn2);
+
+            add.click(TB.wizard._addArrayItem);
+            del.click(TB.wizard._deleteArrayItem);
+
+            label.attr('data-index', index);
+        }
+
+        if (inputVar.required) {
+            addOn.append('<span class="fa fa-asterisk fa-fw"></span>');
+        }
+        else {
+            if (inputVar.unknown) {
+                addOn.append('<span class="fa fa-warning fa-fw" title="Neočekávaná vstupní proměnná"></span>');
+
+                var addOn2 = $('<div class="input-group-addon"></div>');
+                var del = $('<span class="fa fa-times fa-fw"></span>');
+
+                addOn2.appendTo(valueInputGroup);
+                del.appendTo(addOn2);
+
+                del.click(TB.wizard._deleteUnexpectedVar);
+            }
+            else {
+                addOn.append('<span class="fa fa-question fa-fw"></span>');
+            }
+        }
+
+        type.data('hasEnum', inputVar.isEnum);
+        type.change(TB.wizard._changeType); 
+
+        for (var k in TB.wizard.dataTypeList) {
+            var opt = $('<option value="' + k + '">' + TB.wizard.dataTypeList[k] + '</option>');
+            opt.attr('disabled', inputVar.type && k != inputVar.type && k != '_var_');
+            
+            type.append(opt);
+        }
+
+        var key = inputVar.isArray ? inputVar.name + '[' + index + ']' : inputVar.name;
+        if (values[key]) {
+            var v = values[key];
+
+            type.val(v.dataType ? v.dataType : '_var_');
+            if (inputVar.isEnum && type.val() != '_var_') {
+                enumValue.val(v.value);
+            }
+            else {
+                if (type.val() == 'b$') {
+                    var b = v.value.toLowerCase() == 'true' ? 'True' : 'False';
+                    booleanValue.val(b);
+                    value.attr('disabled', true).hide();
+                }
+                else {
+                    value.val(v.value);
+                }
+            }
+        }
+
+        booleanValue.attr('disabled', type.val() != 'b$').toggle(type.val() == 'b$');
+
+        TB.wizard.setInputVarAutocomplete(value);
+
+        type.change();
+    },
+
+    createOutputVar: function (outputVar, target, values) {
+        var group = $('<div class="form-group form-group-sm" />');
+        var wrapper = $('<div class="col-xs-12"></div>');
+        var valueWrapper = $('<div class="input-group" />');
+        var value = $('<input type="text" name="out_value" class="form-control text-right" />');
+        var addOn = $('<div class="input-group-addon" data-outvar="' + outputVar.name + '">= ' + outputVar.name + '</div>');
+
+        wrapper.appendTo(group);
+        valueWrapper.appendTo(wrapper);
+        value.appendTo(valueWrapper);
+        addOn.appendTo(valueWrapper);
+
+        if (values[outputVar.name]) {
+            value.val(values[outputVar.name]);
+        }
+
+        if (outputVar.unknown) {
+            var del = $('<span class="fa fa-times fa-fw" style="margin-left: 7px" title="Smazat"></span>');
+
+            valueWrapper.prepend('<div class="input-group-addon"><span class="fa fa-warning fa-fw" title="Neočekávaná výstupní proměnná"></span></div>');
+            addOn.append(del);
+            del.click(TB.wizard._deleteUnexpectedVar);
+        }
+
+        group.appendTo(target);
+
+        value.catcomplete({
+            delay: 0,
+            source: TB.wizard.variableList
+        });
+    },
+
+    loadViewColumns: function(viewName) {
+        $.ajax({
+            url: '/api/database/apps/' + $('#currentAppId').val() + '/viewscheme/' + viewName,
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                var self = TB.wizard;
+
+                for (var i = 0; i < data.Columns.length; i++) {
+                    self.variableList.push({
+                        label: viewName + '.[' + data.Columns[i] + ']',
+                        category: 'Views'
+                    });
+                }
+            }
+        });
+    }, 
+
+    sort: function (a, b) {
+        var sortKeyA = a.category + '_' + a.label;
+        var sortKeyB = b.category + '_' + b.label;
+        return sortKeyA.localeCompare(sortKeyB);
+    },
+
+    getRequestedCategory: function()
+    {
+        var inVar = $(this).parents('.form-group').find('.control-label').data('invar');
+        var outVar = $(this).parents('.form-group').find('.input-group-addon:last-child').data('outvar');
+
+        if (inVar) {
+            switch (inVar) {
+                case 'TableName': return 'Tables';
+                case 'ViewName': return 'Views';
+            }
+            if (inVar.indexOf('Column') !== -1) return 'Column';
+        }
+        if (outVar) {
+            return 'System|Workflow|UI input data';
+        }
+        
+        return '';
+    },
+
+    getRequestedWorkflow: function()
+    {
+        return TB.wizard.target.parents('.workflowRule').find('.workflowRuleHeader .verticalLabel').text();
+    },
+
+    getRequestedTable: function() {
+        var tableRow = $(this).parents('.inputVars').find('.control-label[data-invar=TableName]').parent();
+        if(tableRow.find('select[name=var_type]').val() == 's$') {
+            return tableRow.find('input[name=var_value]').val();
+        }
+        return '';
+    },
+
+    getRequestedView: function() {
+        var viewRow = $(this).parents('.inputVars').find('.control-label[data-invar=ViewName]').parent();
+        if(viewRow.find('select[name=var_type]').val() == 's$') {
+            return viewRow.find('input[name=var_value]').val();
+        }
+        return '';
+    },
+
+    setInputVarAutocomplete: function(target) {
+        target.catcomplete({
+            delay: 0,
+            source: TB.wizard.variableList,
+            search: TB.wizard._autocompleteSearch,
+            select: TB.wizard._autocompleteSelect
+        });
+    },
+
+    /******************************************************/
+    /* EVENT CALLBACKS                                    */
+    /******************************************************/
+    _libraryClean: function () {
+        TB.wizard.actions = {};
+    },
+
+    _libraryCreateItem: function (type) {
+        var self = TB.wizard;
+
+        switch(type) {
+            case 'action':
+                self.actions[this.Id] = {
+                    name: this.Name,
+                    inputVars: self.parseVars(this.InputVars),
+                    outputVars: self.parseVars(this.OutputVars)
+                }
+                break;
+            case 'ui':
+                if(typeof this.ElmId != 'undefined' || typeof this.ComponentName != 'undefined') {
+                    self.variableList.push({
+                        label: typeof this.ElmId != 'undefined' ? this.ElmId : this.ComponentName,
+                        category: 'UI elements'
+                    });
+
+                    if (typeof this.UIC != 'undefined' && typeof self.dataPrefixList[this.UIC] != 'undefined') {
+                        for (var i = 0; i < self.dataPrefixList[this.UIC].length; i++) {
+                            self.variableList.push({
+                                label: '_uic_' + self.dataPrefixList[this.UIC][i] + '_' + this.ElmId,
+                                category: 'UI input data'
+                            });
+                        }
+                    }
+                    if (typeof this.ComponentName != 'undefined' && typeof self.dataPrefixList[this.Type] != 'undefined') {
+                        for (var i = 0; i < self.dataPrefixList[this.Type].length; i++) {
+                            self.variableList.push({
+                                label: '_uic_' + self.dataPrefixList[this.Type][i] + '_' + this.ComponentName,
+                                category: 'UI input data'
+                            });
+                        }
+                    }
+
+                    self.variableList.sort(self.sort);
+                }
+                break;
+        }
+    },
+
+    _attributesLoad: function(data) {
+        var self = TB.wizard;
+
+        for (var ti = 0; ti < data.Tables.length; ti++) {
+            self.variableList.push({
+                label: data.Tables[ti].Name,
+                category: 'Tables'
+            });
+            self.variableList.push({
+                label: '__Model.' + data.Tables[ti].Name,
+                category: 'System'
+            });
+
+            if (data.Tables[ti].Columns.length) {
+                for (var ci = 0; ci < data.Tables[ti].Columns.length; ci++) {
+                    self.variableList.push({
+                        label: data.Tables[ti].Name + '.' + data.Tables[ti].Columns[ci].Name,
+                        category: 'Tables'
+                    });
+                    self.variableList.push({
+                        label: '__Model.' + data.Tables[ti].Name + '.' + data.Tables[ti].Columns[ci].Name,
+                        category: 'System'
+                    });
+                }
+            }
+        }
+        for (var vi = 0; vi < data.Views.length; vi++) {
+            self.variableList.push({
+                label: data.Views[vi].Name,
+                category: 'Views'
+            });
+            self.loadViewColumns(data.Views[vi].Name);
+        }
+        
+        // Shared tables & views
+        if (data.Shared != null) {
+            for (var ti = 0; ti < data.Shared.Tables.length; ti++) {
+                self.variableList.push({
+                    label: data.Shared.Tables[ti].Name,
+                    category: 'Tables'
+                });
+                self.variableList.push({
+                    label: '__Model.' + data.Shared.Tables[ti].Name,
+                    category: 'System'
+                });
+
+                if (data.Shared.Tables[ti].Columns.length) {
+                    for (var ci = 0; ci < data.Shared.Tables[ti].Columns.length; ci++) {
+                        self.variableList.push({
+                            label: data.Shared.Tables[ti].Name + '.' + data.Shared.Tables[ti].Columns[ci].Name,
+                            category: 'Tables'
+                        });
+                        self.variableList.push({
+                            label: '__Model.' + data.Shared.Tables[ti].Name + '.' + data.Shared.Tables[ti].Columns[ci].Name,
+                            category: 'System'
+                        });
+                    }
+                }
+            }
+
+            for (var vi = 0; vi < data.Shared.Views.length; vi++) {
+                self.variableList.push({
+                    label: data.Shared.Views[vi].Name,
+                    category: 'Views'
+                });
+            }
+        }
+    },
+
+    _workflowCreateItem: function() {
+        var self = TB.wizard;
+        if (this.attr('actionId') && this.attr('actionId').length && this.data('outputVariables')) {
+            var values = TB.wizard.parseOutputValue(this);
+            if (values.length) {
+                for (var k in values.items) {
+                    self.variableList.push({
+                        label: values.items[k],
+                        category: 'Workflow: ' + this.parents('.workflowRule').find('.workflowRuleHeader .verticalLabel').text()
+                    });
+                }
+                self.variableList.sort(self.sort);
+            }
+        }
+    },
+
+    _changeType: function () {
+        var hasEnum = $(this).data('hasEnum');
+
+        $(this).parents('.form-group')
+            .find('input[name=var_value]').attr('disabled', (this.value != '_var_' && hasEnum) || this.value == 'b$').toggle((this.value == '_var_' || !hasEnum) && this.value != 'b$').end()
+            .find('select.enum-value').attr('disabled', this.value == '_var_' || !hasEnum).toggle(this.value != '_var_' && hasEnum).end()
+            .find('select.boolean-value').attr('disabled', this.value != 'b$').toggle(this.value == 'b$');
+
+        if (this.value == 'f$' || this.value == 'i$') {
+            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'number');
+        }
+        else {
+            $(this).parents('.form-group').find('input[name=var_value]').attr('type', 'text');
+        }
+    },
+
+    _deleteUnexpectedVar: function () {
+        $(this).parents('.form-group').remove();
+    },
+
+    _autocompleteSearch: function (event, ui) {
+        var requestedCategory;
+        var type = $(this).parents('.form-group').find('select[name=var_type]').val();
+
+        switch (type) {
+            case '_var_': requestedCategory = '*'; break;
+            case 's$': requestedCategory = TB.wizard.getRequestedCategory.apply(this, []); break;
+            default: requestedCategory = ''; break;
+        }
+
+        if (requestedCategory == '') {
+            return false;
+        }
+    },
+
+    _autocompleteSelect: function (event, ui) {
+        var requestedCategory = TB.wizard.getRequestedCategory.apply(this, []);
+        
+        if (requestedCategory == 'Column') {
+            this.value = ui.item.value.replace(/^[^\.]+\./, '');
+            return false;
+        }
+    },
+
+    _addArrayItem: function () {
+        var group = $(this).parents('.form-group');
+        var label = group.find('.control-label');
+        var inputVar = label.data('invar');
+
+        var lastGroup = $('.control-label[data-invar=' + inputVar + ']').last().parents('.form-group');
+        var lastIndex = Number(lastGroup.find('.control-label').data('index'));
+
+        lastGroup.find('input[name=var_value]').catcomplete('destroy');
+
+        var newIndex = lastIndex + 1;
+        var newGroup = lastGroup.clone(true);
+        var newLabel = newGroup.find('.control-label')
+        
+        newLabel.attr('data-index', newIndex).html(newLabel.html().replace(/\[\d+\]/, '[' + newIndex + ']'));
+        newGroup.find('[name=var_value]').val('');
+        newGroup.insertAfter(lastGroup);
+
+        TB.wizard.setInputVarAutocomplete(newGroup.find('input[name=var_value]'));
+        TB.wizard.setInputVarAutocomplete(lastGroup.find('input[name=var_value]'));
+    },
+
+    _deleteArrayItem: function () {
+        var group = $(this).parents('.form-group');
+        var label = group.find('.control-label');
+        var inputVar = label.data('invar');
+
+        group.remove();
+
+        $('.control-label[data-invar=' + inputVar + ']').each(function (index) {
+            $(this).attr('data-index', index).html(this.innerHTML.replace(/\[\d+\]/, '[' + index + ']'));
+        });
+    }
+};
+
+TB.onInit.push(TB.wizard.init);
 function LoadModuleAdminScript() {
     $("#moduleAdminPanel .moduleSquare").on("click", function () {
         $("#moduleAdminPanel .moduleSquare").removeClass("selectedSquare");

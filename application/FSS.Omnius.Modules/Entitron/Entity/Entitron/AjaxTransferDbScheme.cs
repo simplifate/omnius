@@ -8,12 +8,23 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public List<AjaxTransferDbTable> Tables { get; set; }
         public List<AjaxTransferDbRelation> Relations { get; set; }
         public List<AjaxTransferDbView> Views { get; set; }
+        public object Shared = null;
 
         public AjaxTransferDbScheme()
         {
             Tables    = new List<AjaxTransferDbTable>();
             Relations = new List<AjaxTransferDbRelation>();
             Views     = new List<AjaxTransferDbView>();
+        }
+    }
+
+    public class AjaxTransferViewColumnList: IEntity
+    {
+        public List<string> Columns { get; set; }
+
+        public AjaxTransferViewColumnList()
+        {
+            Columns = new List<string>();
         }
     }
 }

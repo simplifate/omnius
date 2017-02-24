@@ -15,6 +15,8 @@ namespace FSS.Omnius.Modules.Persona
     public class Persona : IModule
     {
         private TimeSpan _expirationTime;
+        private TimeSpan _autoLogoffAfter;
+
         private CORE _CORE;
 
         private const string _AdGroupContainer = "OU=OSS";
@@ -26,6 +28,7 @@ namespace FSS.Omnius.Modules.Persona
 
             ConfigPair pair = _CORE.Entitron.GetStaticTables().ConfigPairs.SingleOrDefault(c => c.Key == "UserCacheExpirationHours");
             _expirationTime = TimeSpan.FromHours(pair != null ? Convert.ToInt32(pair.Value) : 24); // default 24h
+            _autoLogoffAfter = TimeSpan.FromHours(10);
         }
 
         public int GetLoggedCount()
@@ -68,7 +71,21 @@ namespace FSS.Omnius.Modules.Persona
                 return null;
             }
         }
+        public void LogOff(User user)
+        {
+            DBEntities context = DBEntities.instance;
+            if (user == null)
+                return;
 
+            user.LastLogout = DateTime.UtcNow;
+            context.SaveChanges();
+
+            // Log to activity protocol
+            var app = context.Applications.Where(a => a.Name == "Aukcnisystem");
+            var currentApp = _CORE.Entitron.Application;
+
+           
+        }
         public void LogOff(string username)
         {
             User user = _CORE.Entitron.GetStaticTables().Users.Single(u => u.UserName == username);
@@ -277,6 +294,45 @@ namespace FSS.Omnius.Modules.Persona
                 }
             }
             db.SaveChanges();       
+        }
+
+        public void AutoLogOff()
+        {
+            DBEntities context = DBEntities.instance;
+            DateTime acceptedActionTime = DateTime.UtcNow - _autoLogoffAfter;
+
+            // 20h since last action
+            foreach (User user in context.Users.Where(u => u.LastLogout == null && u.CurrentLogin != null && (u.LastAction == null || u.LastAction < acceptedActionTime)).ToList())
+            {
+                LogOff(user);
+                user.LastAction = null;
+            }
+
+            context.SaveChanges();
+        }
+
+        public User RefreshUser(User user)
+        {
+            // is local-only
+            if (user.isLocalUser || user.localExpiresAt == null)
+                return user;
+
+            // is from AD
+            else
+            {
+                if (user.localExpiresAt < DateTime.UtcNow)
+                {
+                    var userWithGroups = GetUserFromAD(user.UserName);
+                    // user not found - was deleted in AD
+                    if (userWithGroups == null)
+                        return null;
+                    // user found in AD
+                    SaveToDB(userWithGroups.Item1, userWithGroups.Item2);
+                    user = userWithGroups.Item1;
+                }
+
+                return user;
+            }
         }
 
         private string getUserServer(string identify)

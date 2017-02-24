@@ -8,7 +8,7 @@ namespace FSS.Omnius.Modules.Watchtower
 {
     public enum LogEventType
     {
-        NotSpecified, NormalUserAction, AccessDenied, EmailSent, Tapestry
+        NotSpecified, NormalUserAction, AccessDenied, EmailSent, Tapestry, ActivityProtocolRecord, CortexSchedule, DebugEvent
     }
     public enum LogLevel
     {
@@ -19,6 +19,9 @@ namespace FSS.Omnius.Modules.Watchtower
         private Dictionary<int, string> EventTypeMap;
         private Dictionary<int, string> LogLevelMap;
         private DBEntities context;
+
+
+        
 
         public string GetEventTypeString(int id)
         {
@@ -60,8 +63,11 @@ namespace FSS.Omnius.Modules.Watchtower
             EventTypeMap.Add((int)LogEventType.NotSpecified, "Neznámá akce");
             EventTypeMap.Add((int)LogEventType.NormalUserAction, "Akce uživatele");
             EventTypeMap.Add((int)LogEventType.AccessDenied, "Přístup odepřen");
+            EventTypeMap.Add((int)LogEventType.ActivityProtocolRecord, "Záznam do protokolu činností");
             EventTypeMap.Add((int)LogEventType.EmailSent, "Odeslání e-mailu");
             EventTypeMap.Add((int)LogEventType.Tapestry, "Akce tapestry");
+            EventTypeMap.Add((int)LogEventType.CortexSchedule, "Cortex");
+            EventTypeMap.Add((int)LogEventType.DebugEvent, "Debug event");
 
             LogLevelMap.Add((int)LogLevel.Info, "Informace");
             LogLevelMap.Add((int)LogLevel.Warning, "Varování");
@@ -72,21 +78,22 @@ namespace FSS.Omnius.Modules.Watchtower
         public void LogEvent(string message, int userId, LogEventType eventType = LogEventType.NotSpecified,
             LogLevel level = LogLevel.Info, bool isPlatormEvent = true, int? appId = null)
         {
-            using (var context = DBEntities.instance)
+            var context = DBEntities.instance;
+
+            var logItem = new LogItem
             {
-                var logItem = new LogItem
-                {
-                    Timestamp = DateTime.UtcNow,
-                    LogEventType = (int)eventType,
-                    LogLevel = (int)level,
-                    UserId = userId,
-                    IsPlatformEvent = isPlatormEvent,
-                    AppId = appId,
-                    Message = message
-                };
-                context.LogItems.Add(logItem);
-                context.SaveChanges();
-            }
+
+                Timestamp = TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(DateTime.Now.ToUniversalTime(), DateTimeKind.Unspecified),
+                        TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time")),
+                LogEventType = (int)eventType,
+                LogLevel = (int)level,
+                UserId = userId,
+                IsPlatformEvent = isPlatormEvent,
+                AppId = appId,
+                Message = message
+            };
+            context.LogItems.Add(logItem);
+            context.SaveChanges();
         }
         private static WatchtowerLogger instance;
         private WatchtowerLogger()
@@ -94,6 +101,12 @@ namespace FSS.Omnius.Modules.Watchtower
             EventTypeMap = new Dictionary<int, string>();
             LogLevelMap = new Dictionary<int, string>();
             context = DBEntities.instance;
+        }
+        public WatchtowerLogger(DBEntities db)
+        {
+            EventTypeMap = new Dictionary<int, string>();
+            LogLevelMap = new Dictionary<int, string>();
+            context = db;
         }
         public static WatchtowerLogger Instance
         {

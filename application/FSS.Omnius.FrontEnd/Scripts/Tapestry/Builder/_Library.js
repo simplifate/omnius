@@ -1,10 +1,15 @@
 ﻿TB.library = {
 
+    onCreate: [],
+    onClean: [],
+
     clean: function () {
         $('.libraryItem').remove();
+
+        TB.callHooks(TB.library.onClean, null, []);
     },
 
-    createItem: function(target, type, params, name, className, highlighted)
+    createItem: function(target, type, params, name, className, highlighted, originalItem)
     {
         var itemLibId = ++lastLibId;
         params.libId = itemLibId;
@@ -15,6 +20,8 @@
         
         if (className) { item.addClass(className); }
         if (highlighted) { item.addClass('highlighted'); }
+
+        TB.callHooks(TB.library.onCreate, originalItem, [type]);
         
         return itemLibId;
     }

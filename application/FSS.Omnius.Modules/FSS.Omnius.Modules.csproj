@@ -181,6 +181,7 @@
   <ItemGroup>
     <Compile Include="CORE\Convertor.cs" />
     <Compile Include="CORE\CORE.cs" />
+    <Compile Include="CORE\ITranslator.cs" />
     <Compile Include="CORE\ListJson.cs" />
     <Compile Include="CORE\Message.cs" />
     <Compile Include="CORE\IModule.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Entitron\Entity\Mozaic\MozaicCssTemplate.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
+    <Compile Include="Entitron\Entity\Mozaic\sdfsfs.cs" />
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
@@ -1082,6 +1084,26 @@
     <Compile Include="Migrations\201702101119192_IncomingEmailRule-Name.Designer.cs">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702101332222_addedLocaleId.cs" />
+    <Compile Include="Migrations\201702101332222_addedLocaleId.Designer.cs">
+      <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.cs" />
+    <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.Designer.cs">
+      <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.cs" />
+    <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.Designer.cs">
+      <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.cs" />
+    <Compile Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.Designer.cs">
+      <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702240918341_Fix IsShared problem.cs" />
+    <Compile Include="Migrations\201702240918341_Fix IsShared problem.Designer.cs">
+      <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1106,7 +1128,7 @@
     <Compile Include="Persona\Persona.cs" />
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tapestry\Actions\AuctionSystem\GetWSO_Users.cs" />
+    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
@@ -1133,7 +1155,7 @@
     <Compile Include="Tapestry\Actions\Entitron\SetStateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\UpdateDBItemWithoutFormAction.cs" />
-    <Compile Include="Tapestry\Actions\EPK\FillOrderAction.cs" />
+    <Compile Include="Tapestry\Actions\Apps\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddInVectorAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ColumnAutosumAction.cs" />
@@ -1155,34 +1177,40 @@
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\MozaicRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
-    <Compile Include="Tapestry\Actions\Mozaic\SendMailAction.cs" />
+    <Compile Include="Tapestry\Actions\Hermes\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\CallRestAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
-    <Compile Include="Tapestry\Actions\other\ColumnToListAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
     <Compile Include="Tapestry\Actions\other\CopyVariableAction.cs" />
-    <Compile Include="Tapestry\Actions\other\FormatDatetimeAction.cs" />
+    <Compile Include="Tapestry\Actions\DateTime\FormatDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\other\FormatStringAction.cs" />
     <Compile Include="Tapestry\Actions\other\GatherStringsAction.cs" />
-    <Compile Include="Tapestry\Actions\other\GenerateAuctionEvaluationsAction.cs" />
-    <Compile Include="Tapestry\Actions\other\LogToActivityProtocolAction.cs" />
-    <Compile Include="Tapestry\Actions\other\MergeDatetimeAction.cs" />
-    <Compile Include="Tapestry\Actions\other\ModifyDatetimeAction.cs" />
-    <Compile Include="Tapestry\Actions\other\WebDavDeleteAction.cs" />
-    <Compile Include="Tapestry\Actions\other\WebDavDownloadAction.cs" />
-    <Compile Include="Tapestry\Actions\other\WebDavEntityUploadAction.cs" />
-    <Compile Include="Tapestry\Actions\other\WebDavUploadAction.cs" />
+    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GenerateAuctionEvaluationsAction.cs" />
+    <Compile Include="Tapestry\Actions\Apps\AuctionSystem\LogToActivityProtocolAction.cs" />
+    <Compile Include="Tapestry\Actions\DateTime\MergeDatetimeAction.cs" />
+    <Compile Include="Tapestry\Actions\DateTime\ModifyDatetimeAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\WebDavDeleteAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\WebDavDownloadAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\WebDavEntityUploadAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\WebDavUploadAction.cs" />
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
-    <Compile Include="Tapestry\Actions\other\RegisterOneTimeTaskAction.cs" />
-    <Compile Include="Tapestry\Actions\other\SendMailForEachAction.cs" />
-    <Compile Include="Tapestry\Actions\other\ShowMessageAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\CreateUserAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RefreshUserFromADAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RemoveUserFromGroupAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\UserHasRoleAction.cs" />
+    <Compile Include="Tapestry\Actions\Scheduler\RegisterOneTimeTaskAction.cs" />
+    <Compile Include="Tapestry\Actions\Hermes\SendMailForEachAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\ShowMessageAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\PersonaIdToRweAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\RweIdToPersonaAction.cs" />
-    <Compile Include="Tapestry\Actions\PIA\LogChangesAction.cs" />
-    <Compile Include="Tapestry\Actions\Time\AddTimeSpanAction.cs" />
-    <Compile Include="Tapestry\Actions\Time\TimeSpanAction.cs" />
+    <Compile Include="Tapestry\Actions\Apps\PIA\LogChangesAction.cs" />
+    <Compile Include="Tapestry\Actions\DateTime\AddTimeSpanAction.cs" />
+    <Compile Include="Tapestry\Actions\DateTime\TimeSpanAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
     <Compile Include="Tapestry\Running\ActionRuleBase.cs" />
@@ -1772,6 +1800,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702101119192_IncomingEmailRule-Name.resx">
       <DependentUpon>201702101119192_IncomingEmailRule-Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
+      <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.resx">
+      <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702231120106_addedLockedForUserIdColumn.resx">
+      <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702231414120_TapestryWorkflowItems-Name-and-Comments.resx">
+      <DependentUpon>201702231414120_TapestryWorkflowItems-Name-and-Comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702240918341_Fix IsShared problem.resx">
+      <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

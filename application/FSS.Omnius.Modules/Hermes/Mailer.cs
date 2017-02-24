@@ -28,6 +28,7 @@ namespace FSS.Omnius.Modules.Hermes
         private SmtpClient client;
         private JArray attachmentList = new JArray();
         private static Dictionary<int, string> queuStatusNames = new Dictionary<int, string>();
+        private int mailerLanguage;
 
         public MailMessage mail;
 
@@ -36,11 +37,13 @@ namespace FSS.Omnius.Modules.Hermes
             Init(serverName);
         }
 
-        public Mailer(string serverName, string templateName, Object model)
+        public Mailer(string serverName, string templateName, Object model, int language = 1)
         {
+            mailerLanguage = language;
             Init(serverName);
             Prepare(templateName, model);
         }
+
 
         private void Init(string serverName = "")
         {
