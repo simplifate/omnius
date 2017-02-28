@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -1897,6 +1897,9 @@
     <Content Include="Views\Hermes\Incoming\Index.cshtml" />
     <Content Include="Views\Hermes\IncomingRule\Form.cshtml" />
     <Content Include="Views\Hermes\IncomingRule\Index.cshtml" />
+    <Content Include="Views\App\92\Page\1065.cshtml" />
+    <Content Include="Views\App\92\Page\1071.cshtml" />
+    <Content Include="Views\App\89\Page\1041.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
