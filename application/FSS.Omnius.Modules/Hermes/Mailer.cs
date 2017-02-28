@@ -147,6 +147,10 @@ namespace FSS.Omnius.Modules.Hermes
 
         public bool SendMail(int? applicationId = null, bool disposeClient = true)
         {
+            if (mail.To.Count + mail.Bcc.Count == 0)
+            {
+                return true;
+            }
             bool result;
             string smtpError = "";
 
