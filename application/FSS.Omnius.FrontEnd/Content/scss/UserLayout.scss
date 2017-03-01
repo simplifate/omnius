@@ -441,15 +441,15 @@ body.userLayout.leftBarHidden {
 }
 
 body.userLayout #brandBar {
-    background-color: $third_color_bright;
+    background-color: white;
     height: $bottom_content_pos;
     opacity: 1;
 
     .logo {
-        padding: 20px;
+        padding: 0px;
         height: 100%;
         img {
-            height: 60px;
+            height: 100%;
             vertical-align: middle;
         }
     }

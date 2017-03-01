@@ -322,6 +322,7 @@
     <Content Include="Content\Fonts\innogy\Innogy-Light.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Medium.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.svg" />
+    <Content Include="Content\Images\csob_logo.jpg" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
