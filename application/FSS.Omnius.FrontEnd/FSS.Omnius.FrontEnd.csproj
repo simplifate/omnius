@@ -1901,11 +1901,17 @@
     <Content Include="Views\App\92\Page\1065.cshtml" />
     <Content Include="Views\App\92\Page\1071.cshtml" />
     <Content Include="Views\App\89\Page\1041.cshtml" />
+    <Content Include="Views\App\96\menuLayout.cshtml" />
+    <Content Include="Views\App\97\menuLayout.cshtml" />
+    <Content Include="Views\App\97\Page\1062.cshtml" />
+    <Content Include="Views\App\97\Page\1069.cshtml" />
+    <Content Include="Views\App\97\Page\1072.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\App\25\Page\Bootstrap\" />
     <Folder Include="Views\App\2\Page\Bootstrap\" />
+    <Folder Include="Views\App\96\Page\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
