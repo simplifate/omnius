@@ -109,10 +109,10 @@ namespace FSS.Omnius.Controllers.Tapestry
             if (locale == "")
                 locale = lastLocale;
             ViewData["locale"] = locale;
-            if (locale == "cs")
-                core.User.LocaleId = 1;
-            else
+            if (locale == "en")
                 core.User.LocaleId = 2;
+            else
+                core.User.LocaleId = 1;
 
             context.SaveChanges();
             DBItem modelRow = null;
