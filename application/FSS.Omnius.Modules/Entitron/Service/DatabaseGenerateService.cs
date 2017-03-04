@@ -75,7 +75,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
-                    entitronTable.Application = _entitron.Application;
+                    entitronTable.Application = _app;
 
                     foreach (DbColumn column in efTable.Columns)
                     {
@@ -184,8 +184,8 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 DbColumn leftColumn = efRelation.LeftColumn;
 
                 DBForeignKey entitronFK = new DBForeignKey();
-                entitronFK.sourceTable = _entitron.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == rightTable.Name.ToLower());
-                entitronFK.targetTable = _entitron.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == leftTable.Name.ToLower());
+                entitronFK.sourceTable = _entitron.Application.GetTable(rightTable.Name);
+                entitronFK.targetTable = _entitron.Application.GetTable(leftTable.Name);
                 entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.Name.ToLower() == rightColumn.Name.ToLower()).Name;
                 entitronFK.targetColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.Name.ToLower() == leftColumn.Name.ToLower()).Name;
                 entitronFK.name = efRelation.Name;
@@ -223,7 +223,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     else
                         newView.Alter();
 
-                    e.Application.SaveChanges();
+                    _entitron.Application.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -344,7 +344,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                     {
-                        entitronTable.DropConstraint($"UN_Entitron_{GetTablesPrefix(_entitron.Application)}_{entitronTable.tableName}_{entitronColumn.Name}");
+                        entitronTable.DropConstraint($"UN_Entitron_{GetTablesPrefix(_app)}_{entitronTable.tableName}_{entitronColumn.Name}");
                     }
 
                     //set column default value
