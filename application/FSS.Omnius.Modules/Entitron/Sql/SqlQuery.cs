@@ -13,8 +13,8 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     public abstract class SqlQuery
     {
-        public const string DB_MasterApplication = "dbo.Master_Applications";
-        public const string DB_EntitronMeta = "dbo.Entitron___META";
+        public const string DB_MasterApplication = "Master_Applications";
+        public const string DB_EntitronMeta = "Entitron___META";
 
         public abstract string connectionString { get; }
 
@@ -90,7 +90,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             }
             catch(SqlException e)
             {
-                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'"))
+                if (e.Message.Contains("Invalid object name 'Entitron___META'."))
                 {
                     new SqlInitScript(connectionString).Execute(connection);
                     cmd.ExecuteNonQuery();
@@ -109,7 +109,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             }
             catch (SqlException e)
             {
-                if (e.Message.Contains("Could not find stored procedure 'getTableRealName'") || e.Message.Contains("Could not find stored procedure 'getTableRealNameWithMeta'"))
+                if (e.Message.Contains("Invalid object name 'Entitron___META'."))
                 {
                     // declare procedure
                     new SqlInitScript(connectionString).Execute(connection);
