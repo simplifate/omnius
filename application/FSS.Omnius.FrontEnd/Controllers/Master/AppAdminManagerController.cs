@@ -105,232 +105,260 @@ namespace FSS.Omnius.Controllers.Master
         {
             var core = new Modules.CORE.CORE();
             core.Entitron.AppId = _AppId;
-            var app = core.Entitron.Application;
-            using (DBEntities context = DBEntities.instance)
-            {
+            Application masterApp = core.Entitron.Application;
+            DBEntities masterContext = DBEntities.instance;
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
 
-                if (app.DbSchemeLocked)
+            if (masterApp.DbSchemeLocked)
+            {
+                Send(Json.Encode(new { type = "error", message = "This application's database scheme is locked because another process is currently working with it.", abort = true }));
+                return;
+            }
+
+            // copy application to new DB
+            Application app;
+            if (context != masterContext)
+            {
+                app = context.Applications.SingleOrDefault(a => a.Name == core.Entitron.AppName);
+                if (app == null)
                 {
-                    Send(Json.Encode(new { type = "error", message = "This application's database scheme is locked because another process is currently working with it.", abort = true }));
+                    app = new Application
+                    {
+                        Name = masterApp.Name
+                    };
+                    context.Applications.Add(app);
+                }
+
+                app.DisplayName = masterApp.DisplayName;
+                app.Icon = masterApp.Icon;
+                app.TitleFontSize = masterApp.TitleFontSize;
+                app.Color = masterApp.Color;
+                app.InnerHTML = masterApp.InnerHTML;
+                app.LaunchCommand = masterApp.LaunchCommand;
+                app.TileWidth = masterApp.TileWidth;
+                app.TileHeight = masterApp.TileHeight;
+
+                app.IsPublished = masterApp.IsPublished;
+                app.IsEnabled = masterApp.IsEnabled;
+                app.IsSystem = masterApp.IsSystem;
+
+                app.connectionString_data = masterApp.connectionString_data;
+                app.connectionString_schema = masterApp.connectionString_schema;
+                
+                context.SaveChanges();
+            }
+            else
+                app = masterApp;
+
+            try
+            {
+                // If building shared tables app
+                if (_AppId == SharedTables.AppId)
+                {
+                    // Create instance of db builder
+                    SharedTableBuilder builder = new SharedTableBuilder(core, context, app);
+
+                    // Assign dispatcher 
+                    builder.OnDispatch += this.SendMessage;
+
+                    // Build tables
+                    builder.Build();
+
+                    // And skip standard building process.
                     return;
                 }
 
-                try
+                // Entitron Generate Database
+                if (app.EntitronChangedSinceLastBuild)
+                    Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
+                else
+                    Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
+
+                if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
+                    Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
+                else
+                    Send(Json.Encode(new { id = "mozaic", type = "success", message = "uživatelské rozhraní není potřeba aktualizovat" }));
+                if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
                 {
-                    // If building shared tables app
-                    if (_AppId == SharedTables.AppId)
+                    Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
+                    Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
+                }
+                else
+                {
+                    Send(Json.Encode(new { id = "tapestry", type = "success", message = "workflow není potřeba aktualizovat" }));
+                    Send(Json.Encode(new { id = "menu", type = "success", message = "menu není potřeba aktualizovat" }));
+                }
+                if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild && !_rebuildInAction)
+                {
+                    Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
+                    return;
+                }
+
+
+                // clear page cache
+                //if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
+                //    FSS.Omnius.FrontEnd.Views.MyVirtualPathProvider.ClearAllCache();
+
+                if (app.EntitronChangedSinceLastBuild)
+                {
+                    try
                     {
-                        // Create instance of db builder
-                        SharedTableBuilder builder = new SharedTableBuilder(core, context, core.Entitron.Application);
+                        masterApp.DbSchemeLocked = true;
+                        context.SaveChanges();
 
-                        // Assign dispatcher 
-                        builder.OnDispatch += this.SendMessage;
-
-                        // Build tables
-                        builder.Build();
-
-                        // And skip standard building process.
-                        return;
+                        Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
+                        var dbSchemeCommit = masterApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
+                        if (dbSchemeCommit == null)
+                            dbSchemeCommit = new DbSchemeCommit();
+                        if (!dbSchemeCommit.IsComplete)
+                            throw new Exception("Pozor! Databázové schéma je špatně uložené, build nemůže pokračovat, protože by způsobil ztrádtu dat!");
+                        new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core, x => Send(x));
+                        masterApp.DbSchemeLocked = false;
+                        masterApp.EntitronChangedSinceLastBuild = false;
+                        context.SaveChanges();
+                        Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
                     }
-
-                    // Entitron Generate Database
-                    if (app.EntitronChangedSinceLastBuild)
-                        Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
-                    else
-                        Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
-
-                    if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
-                        Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
-                    else
-                        Send(Json.Encode(new { id = "mozaic", type = "success", message = "uživatelské rozhraní není potřeba aktualizovat" }));
-                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
+                    catch (Exception ex)
                     {
-                        Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
-                        Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
+                        throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
+                        //context.DiscardChanges();
                     }
-                    else
+                    finally
                     {
-                        Send(Json.Encode(new { id = "tapestry", type = "success", message = "workflow není potřeba aktualizovat" }));
-                        Send(Json.Encode(new { id = "menu", type = "success", message = "menu není potřeba aktualizovat" }));
+                        masterApp.DbSchemeLocked = false;
+                        context.SaveChanges();
                     }
-                    if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild && !_rebuildInAction)
+                }
+
+                string applicationViewPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Views\\App\\{_AppId}";
+                string applicationPageViewPath = applicationViewPath + "\\Page";
+                if (!Directory.Exists(applicationViewPath))
+                {
+                    Directory.CreateDirectory(applicationViewPath);
+                }
+                if (!Directory.Exists(applicationPageViewPath))
+                {
+                    Directory.CreateDirectory(applicationPageViewPath);
+                }
+
+                // Mozaic pages
+                if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
+                {
+                    try
                     {
-                        Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
-                        return;
-                    }
+                        Send(Json.Encode(new { id = "mozaic", type = "info", message = "probíhá aktualizace uživatelského rozhraní" }));
 
-
-                    // clear page cache
-                    //if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
-                    //    FSS.Omnius.FrontEnd.Views.MyVirtualPathProvider.ClearAllCache();
-
-                    if (app.EntitronChangedSinceLastBuild)
-                    {
-                        try
+                        foreach (var editorPage in masterApp.MozaicEditorPages)
                         {
-                            app.DbSchemeLocked = true;
-                            context.SaveChanges();
-
-                            Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
-                            core.Entitron.AppId = app.Id;
-                            var dbSchemeCommit = app.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
-                            if (dbSchemeCommit == null)
-                                dbSchemeCommit = new DbSchemeCommit();
-                            if (!dbSchemeCommit.IsComplete)
-                                throw new Exception("Pozor! Databázové schéma je špatně uložené, build nemůže pokračovat, protože by způsobil ztrádtu dat!");
-                            new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core, x => Send(x));
-                            app.DbSchemeLocked = false;
-                            app.EntitronChangedSinceLastBuild = false;
-                            context.SaveChanges();
-                            Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(Json.Encode(new { id = "entitron", type = "error", message = ex.Message, abort = true }));
-                            //context.DiscardChanges();
-                        }
-                        finally
-                        {
-                            app.DbSchemeLocked = false;
-                            context.SaveChanges();
-                        }
-                    }
-
-                    string applicationViewPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Views\\App\\{_AppId}";
-                    string applicationPageViewPath = applicationViewPath + "\\Page";
-                    string applicationBootstrapPageViewPath = applicationPageViewPath + "\\Bootstrap";
-                    if (!Directory.Exists(applicationViewPath))
-                    {
-                        Directory.CreateDirectory(applicationViewPath);
-                    }
-                    if (!Directory.Exists(applicationPageViewPath))
-                    {
-                        Directory.CreateDirectory(applicationPageViewPath);
-                    }
-                    if (!Directory.Exists(applicationBootstrapPageViewPath))
-                    {
-                        Directory.CreateDirectory(applicationBootstrapPageViewPath);
-                    }
-
-                    // Mozaic pages
-                    if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
-                    {
-                        try
-                        {
-                            Send(Json.Encode(new { id = "mozaic", type = "info", message = "probíhá aktualizace uživatelského rozhraní" }));
-
-                            foreach (var editorPage in app.MozaicEditorPages)
+                            editorPage.Recompile();
+                            string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
+                            var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
+                            if (oldPage == null)
                             {
-                                editorPage.Recompile();
-                                string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
-                                var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
-                                if (oldPage == null)
+                                var newPage = new Page
                                 {
-                                    var newPage = new Page
-                                    {
-                                        ViewName = editorPage.Name,
-                                        ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
-                                        ViewContent = editorPage.CompiledPartialView,
-                                        IsBootstrap = false
-                                    };
-                                    context.Pages.Add(newPage);
-                                    context.SaveChanges();
-                                    editorPage.CompiledPageId = newPage.Id;
-                                }
-                                else
-                                {
-                                    oldPage.ViewName = editorPage.Name;
-                                    oldPage.ViewContent = editorPage.CompiledPartialView;
-                                    oldPage.IsBootstrap = false;
-                                    editorPage.CompiledPageId = oldPage.Id;
-                                }
-                                string fileName = applicationPageViewPath + $"\\{editorPage.Id}.cshtml";
-
-                                File.WriteAllText(fileName, editorPage.CompiledPartialView);
-                            }
-
-                            Builder bootstrapBuilder = new Builder(context, applicationPageViewPath);
-                            foreach (var bootstrapPage in app.MozaicBootstrapPages) {
-                                bootstrapBuilder.BuildPage(bootstrapPage);
-                            }
-
-
-                            app.MozaicChangedSinceLastBuild = false;
-                            context.SaveChanges();
-
-                            Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
-                        }
-                    }
-
-                    if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
-                    {
-                        // Tapestry
-                        Dictionary<TapestryDesignerBlock, Block> blockMapping = null;
-                        try
-                        {
-                            Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
-                            var service = new TapestryGeneratorService(context, _rebuildInAction);
-                            blockMapping = service.GenerateTapestry(core, x => Send(x));
-                            app.TapestryChangedSinceLastBuild = false;
-                            Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
-                        }
-                        catch (Exception ex)
-                        {
-                            while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
-                                ex = ex.InnerException;
-
-                            throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
-                        }
-
-                        // TODO Repair building menu - RazorEngine with $ problem
-                        // menu layout
-                        try
-                        {
-                            Send(Json.Encode(new { id = "menu", type = "info", message = "probíhá aktualizace menu" }));
-                            string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
-                            var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
-                            if (menuLayout == null)
-                            {
-                                menuLayout = new Page
-                                {
-                                    ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
+                                    ViewName = editorPage.Name,
+                                    ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
+                                    ViewContent = editorPage.CompiledPartialView,
+                                    IsBootstrap = false
                                 };
-                                context.Pages.Add(menuLayout);
+                                context.Pages.Add(newPage);
+                                context.SaveChanges();
+                                editorPage.CompiledPageId = newPage.Id;
                             }
-                            menuLayout.ViewName = $"{app.Name} layout";
-                            menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
+                            else
+                            {
+                                oldPage.ViewName = editorPage.Name;
+                                oldPage.ViewContent = editorPage.CompiledPartialView;
+                                oldPage.IsBootstrap = false;
+                                editorPage.CompiledPageId = oldPage.Id;
+                            }
+                            string fileName = applicationPageViewPath + $"\\{editorPage.Id}.cshtml";
 
-                            app.IsPublished = true;
-                            app.MenuChangedSinceLastBuild = false;
-                            context.SaveChanges();
-
-                            string fileName = applicationViewPath + $"\\menuLayout.cshtml";
-                            File.WriteAllText(fileName, menuLayout.ViewContent);
-
-                            Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
+                            File.WriteAllText(fileName, editorPage.CompiledPartialView);
                         }
-                        catch (Exception ex)
-                        {
-                            while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
-                                ex = ex.InnerException;
 
-                            throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
+                        Builder bootstrapBuilder = new Builder(context, applicationPageViewPath);
+                        foreach (var bootstrapPage in masterApp.MozaicBootstrapPages) {
+                            bootstrapBuilder.BuildPage(bootstrapPage);
                         }
+
+
+                        masterApp.MozaicChangedSinceLastBuild = false;
+                        context.SaveChanges();
+
+                        Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(Json.Encode(new { id = "mozaic", type = "error", message = ex.Message, abort = true }));
+                    }
+                }
+
+                if (app.TapestryChangedSinceLastBuild || masterApp.MenuChangedSinceLastBuild || _rebuildInAction)
+                {
+                    // Tapestry
+                    Dictionary<TapestryDesignerBlock, Block> blockMapping = null;
+                    try
+                    {
+                        Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
+                        var service = new TapestryGeneratorService(context, _rebuildInAction);
+                        blockMapping = service.GenerateTapestry(core, x => Send(x));
+                        masterApp.TapestryChangedSinceLastBuild = false;
+                        Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
+                    }
+                    catch (Exception ex)
+                    {
+                        while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
+                            ex = ex.InnerException;
+
+                        throw new Exception(Json.Encode(new { id = "tapestry", type = "error", message = ex.Message, abort = true }));
                     }
 
-                    // DONE
-                    Send(Json.Encode(new { message = "aktualizace proběhla úspěšně", type = "success", done = true }));
-                    app.DbSchemeLocked = false;
-                    context.SaveChanges();
+                    // TODO Repair building menu - RazorEngine with $ problem
+                    // menu layout
+                    try
+                    {
+                        Send(Json.Encode(new { id = "menu", type = "info", message = "probíhá aktualizace menu" }));
+                        string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
+                        var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
+                        if (menuLayout == null)
+                        {
+                            menuLayout = new Page
+                            {
+                                ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
+                            };
+                            context.Pages.Add(menuLayout);
+                        }
+                        menuLayout.ViewName = $"{app.Name} layout";
+                        menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
+
+                        app.IsPublished = true;
+                        app.MenuChangedSinceLastBuild = false;
+                        context.SaveChanges();
+
+                        string fileName = applicationViewPath + $"\\menuLayout.cshtml";
+                        File.WriteAllText(fileName, menuLayout.ViewContent);
+
+                        Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
+                    }
+                    catch (Exception ex)
+                    {
+                        while (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details."))
+                            ex = ex.InnerException;
+
+                        throw new Exception(Json.Encode(new { id = "menu", type = "error", message = ex.Message, abort = true }));
+                    }
                 }
-                catch (Exception ex)
-                {
-                    ErrorMessage(ex);
-                }
+
+                // DONE
+                Send(Json.Encode(new { message = "aktualizace proběhla úspěšně", type = "success", done = true }));
+                masterApp.DbSchemeLocked = false;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage(ex);
             }
         }
 

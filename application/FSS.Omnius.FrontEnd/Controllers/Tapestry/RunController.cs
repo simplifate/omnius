@@ -32,13 +32,14 @@ namespace FSS.Omnius.Controllers.Tapestry
             Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
 
             RunController.startTime = DateTime.Now;
-
-            var context = DBEntities.instance;
+            
             // init
             C.CORE core = HttpContext.GetCORE();
             if (!string.IsNullOrEmpty(appName))
+                #warning appName nesmí být null!
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
 
             // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);

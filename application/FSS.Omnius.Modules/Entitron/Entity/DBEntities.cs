@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
     {
         private bool isDisposed = false;
-
+        
         private HttpRequest _r;
         private static HttpRequest r
         {
@@ -40,9 +40,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             {
                 try
                 {
-                    if (HttpContext.Current == null)
-                        return null;    //pro pøístup z jiného vlákna - viz. WebDavFileSyncService
-                    return HttpContext.Current.Request;
+                    return HttpContext.Current?.Request; // null - pro pøístup z jiného vlákna - viz. WebDavFileSyncService
                 }
                 catch (HttpException)
                 {
@@ -53,13 +51,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         private static Dictionary<HttpRequest, DBEntities> _instances = new Dictionary<HttpRequest, DBEntities>();
         private static DBEntities nullRequestInstance;
-
         public static DBEntities instance
         {
             get
             {
-                if(r == null) {
-                    if(nullRequestInstance == null || nullRequestInstance.isDisposed) {
+                if (r == null)
+                {
+                    if (nullRequestInstance == null || nullRequestInstance.isDisposed)
+                    {
                         nullRequestInstance = new DBEntities();
                     }
                     return nullRequestInstance;
@@ -107,10 +106,47 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 }
             }
         }
+        
+        private static Dictionary<HttpRequest, DBEntities> _appInstances = new Dictionary<HttpRequest, DBEntities>();
+        public static DBEntities appInstance(Application app)
+        {
+            // empty connection string - return usual entities
+            if (app.connectionString_schema == null)
+                return instance;
+            
+            if (!_appInstances.ContainsKey(r) || _appInstances[r].isDisposed)
+            {
+                if (_appInstances.ContainsKey(r))
+                    _appInstances.Remove(r);
+
+                Create(app);
+            }
+
+            return _appInstances[r];
+        }
+        private static object _appConnectionsLock = new object();
+        private static Dictionary<HttpRequest, DbConnection> _appConnections = new Dictionary<HttpRequest, DbConnection>();
+        private static DbConnection appConnection(string connectionString)
+        {
+            lock (_appConnectionsLock)
+            {
+                if (!_appConnections.ContainsKey(r))
+                {
+                    SqlConnectionFactory f = new SqlConnectionFactory(connectionString);
+                    _appConnections.Add(r, f.CreateConnection(connectionString));
+                    _appConnections[r].Open();
+                }
+                return _appConnections[r];
+            }
+        }
 
         public static void Create()
         {
             _instances.Add(r, new DBEntities(r));
+        }
+        public static void Create(Application app)
+        {
+            _appInstances.Add(r, new DBEntities(r, app.connectionString_schema));
         }
 
         public static void Destroy()
@@ -150,11 +186,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             _r = req;
             Database.Log = s => Log(s);
         }
+        public DBEntities(HttpRequest req, string connectionString) : base(appConnection(connectionString), false)
+        {
+            _r = req;
+            Database.Log = s => Log(s);
+        }
 
         public DBEntities() : base(FSS.Omnius.Modules.Entitron.Entitron.connectionString)
         {
         }
-
+        
         public void Log(string message)
         {
             lock (_messagesLock)
