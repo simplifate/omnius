@@ -125,7 +125,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             var columnMetadataResultCache = new Dictionary<string, List<ColumnMetadata>>();
             var tableQueryResultCache = new Dictionary<string, List<DBItem>>();
             var viewQueryResultCache = new Dictionary<string, List<DBItem>>();
-            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r=> r.SourceTableName != null).ToList())
+            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r=> r.SourceTableName != null && r.SourceColumnName == null).ToList())
             {
                 DataTable dataSource = null;
                 List<string> columnNameList = null;
