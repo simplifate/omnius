@@ -15,6 +15,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private CORE.CORE _core;
         private DBEntities _context;
+        private DBEntities _masterContext;
+        private Application _app;
         private bool _rebuildInAction;
         private Random _random;
         private SendWS _sendWs;
@@ -24,10 +26,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         public delegate void SendWS(string str);
 
-        public TapestryGeneratorService(DBEntities context, bool rebuildInAction)
+        public TapestryGeneratorService(DBEntities masterContext, DBEntities context, bool rebuildInAction)
         {
             _blockMapping = new Dictionary<TapestryDesignerBlock, Block>();
             _blocksToBuild = new HashSet<TapestryDesignerBlock>();
+            _masterContext = masterContext;
             _context = context;
             _rebuildInAction = rebuildInAction;
             _random = new Random();
@@ -40,6 +43,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             //_context = DBEntities.instance;
             Application app = core.Entitron.Application;
+            _app = app.similarApp;
 
             try
             {
@@ -61,12 +65,12 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         private WorkFlow saveMetaBlock(TapestryDesignerMetablock metaBlock, bool init = false)
         {
             string metaBlockName = metaBlock.Name.RemoveDiacritics();
-            WorkFlow resultWF = _core.Entitron.Application.WorkFlows.SingleOrDefault(w => w.Name == metaBlockName);
+            WorkFlow resultWF = _app.WorkFlows.SingleOrDefault(w => w.Name == metaBlockName);
             if (resultWF == null)
             {
                 resultWF = new WorkFlow
                 {
-                    ApplicationId = _core.Entitron.AppId,
+                    ApplicationId = _app.Id,
                     Name = metaBlock.Name.RemoveDiacritics(),
                     IsTemp = false
                 };
@@ -212,7 +216,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Page mainPage = null;
                 foreach (int pageId in pageIdList)
                 {
-                    var currentPage = _context.MozaicEditorPages.Find(pageId);
+                    var currentPage = _masterContext.MozaicEditorPages.Find(pageId);
                     if (!currentPage.IsModal)
                     {
                         mainPage = _context.Pages.Find(currentPage.CompiledPageId);
@@ -228,7 +232,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 Page mainPage = null;
                 foreach (int pageId in pageIdList)
                 {
-                    var currentPage = _context.MozaicBootstrapPages.Find(pageId);
+                    var currentPage = _masterContext.MozaicBootstrapPages.Find(pageId);
                     mainPage = _context.Pages.Find(currentPage.CompiledPageId);
                     break;
                 }
