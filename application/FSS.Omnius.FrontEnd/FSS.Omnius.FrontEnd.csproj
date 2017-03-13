@@ -1912,12 +1912,25 @@
     <Content Include="Views\App\98\Page\1076.cshtml" />
     <Content Include="Views\App\99\menuLayout.cshtml" />
     <Content Include="Views\App\99\Page\1077.cshtml" />
+    <Content Include="Views\App\96\Page\1081.cshtml" />
+    <Content Include="Views\App\96\Page\1085.cshtml" />
+    <Content Include="Views\App\96\Page\1089.cshtml" />
+    <Content Include="Views\App\93\Page\1064.cshtml" />
+    <Content Include="Views\App\93\Page\1070.cshtml" />
+    <Content Include="Views\App\93\Page\1073.cshtml" />
+    <Content Include="Views\App\93\Page\1074.cshtml" />
+    <Content Include="Views\App\93\Page\1075.cshtml" />
+    <Content Include="Views\App\93\Page\1083.cshtml" />
+    <Content Include="Views\App\93\Page\1088.cshtml" />
+    <Content Include="Views\App\92\Page\1086.cshtml" />
+    <Content Include="Views\App\92\Page\1090.cshtml" />
+    <Content Include="Views\App\91\Page\1061.cshtml" />
+    <Content Include="Views\App\91\Page\1068.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\App\25\Page\Bootstrap\" />
     <Folder Include="Views\App\2\Page\Bootstrap\" />
-    <Folder Include="Views\App\96\Page\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
