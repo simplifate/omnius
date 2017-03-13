@@ -1,6 +1,18 @@
 @{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
     <ul  id=appMenu>
 @if (Context.GetLoggedUser().canUseBlock("User",92)){            <li>
+                    <h4>@(t._("Mass mail"))</h4>
+
+    <ul >
+@if (Context.GetLoggedUser().canUseBlock("User",92)){            <li>
+                    <a href="/TestOndra/Recepients">@(t._("Recepients"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",92)){            <li>
+                    <a href="/TestOndra/SendMessage">@(t._("send_message"))</a>
+            </li>
+}    </ul>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",92)){            <li>
                     <a href="/TestOndra/Prehled">@(t._("Přehled"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User",92)){            <li>
