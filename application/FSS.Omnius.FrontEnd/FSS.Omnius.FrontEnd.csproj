@@ -1906,6 +1906,12 @@
     <Content Include="Views\App\97\Page\1062.cshtml" />
     <Content Include="Views\App\97\Page\1069.cshtml" />
     <Content Include="Views\App\97\Page\1072.cshtml" />
+    <Content Include="Views\App\94\menuLayout.cshtml" />
+    <Content Include="Views\App\94\Page\1066.cshtml" />
+    <Content Include="Views\App\98\menuLayout.cshtml" />
+    <Content Include="Views\App\98\Page\1076.cshtml" />
+    <Content Include="Views\App\99\menuLayout.cshtml" />
+    <Content Include="Views\App\99\Page\1077.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
