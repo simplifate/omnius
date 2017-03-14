@@ -40,7 +40,7 @@ $(function () {
                 });
         }, 100);
     }
-        if ($("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
+        if $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
         {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
@@ -54,8 +54,7 @@ $(function () {
                 }
             });
         }
-
-        if ($("#currentBlockName").val() == "VyjadreniKAuditu") {
+        if ($("#currentBlockName").val() == "VyjadreniKAuditu"  {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
