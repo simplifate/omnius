@@ -275,3 +275,13 @@ $(function () {
         });
     });
 });
+function GetColumnSearchElementFor(title) {
+    if ($("#currentAppName").val() == "EvidencePeriodik") {
+        if (title = "Forma periodika") {
+            return '<select><option>--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';
+        }
+        else {
+            return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
+        }
+    }
+}
