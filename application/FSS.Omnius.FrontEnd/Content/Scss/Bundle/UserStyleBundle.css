@@ -451,14 +451,14 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
     display: none; } }
 
 body.userLayout #brandBar {
-  background-color: white;
+  background-color: #0d499a;
   height: 100px;
   opacity: 1; }
   body.userLayout #brandBar .logo {
-    padding: 0px;
+    padding: 20px;
     height: 100%; }
     body.userLayout #brandBar .logo img {
-      height: 100%;
+      height: 60px;
       vertical-align: middle; }
 
 #userContentArea {
