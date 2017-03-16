@@ -16,7 +16,7 @@
 </head>
 <body class="@Page.ModuleClass userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.min.js")"></script>  
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>  
     <div id="brandBar">
         <div class="logo">
             <img src="@Url.Content("~/Content/Images/innogy_logo_H_n_4C_ly.svg")" alt="innogy" />
@@ -111,7 +111,7 @@
             }
         </div>
     }
-    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.min.js")"></script>
+    <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/omniusUserScripts.js")"></script>
     @RenderSection("scripts", required: false)
 
 </body>
