@@ -276,24 +276,27 @@ $(function () {
     });
 });
 function GetColumnSearchElementFor(title) {
+
     if ($("#currentAppName").val() == "EvidencePeriodik") {
-        if (title = "Forma periodika") {
+        alert('yea');
+
+        if (title == "Forma periodika") {
             return '<select><option>--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';
         }
-        if (title = "Typ periodika") {
+        else if (title == "Typ periodika") {
             return '<select><option>--vyberte--</option><option>tuzemské</option><option>zahraniční</option></select>';
         }
-        if (title = "Četnost periodika") {
+        else if (title == "Četnost periodika") {
             return '<select><option>--vyberte--</option><option>1x týdně</option><option>5x týdně</option><option>10x ročně</option><option>1x měsíčně</option><option>6x ročně</option><option>2x ročně</option><option>denně</option><option>4x ročně</option><option>2x měsíčně</option><option>nepravidelně</option><option>1x ročně</option><option>6x týdně</option><option>22x ročně</option><option>312x ročně</option><option>6x ročně + 4x ročně bulletin</option><option>12x ročně</option><option>2x týdně</option><option>254x ročně</option></select>';
         }
-        if (title = "Stav objednávky") {
+        else if (title == "Stav objednávky") {
             return '<select><option>--vyberte--</option><option>nový</option><option>rozpracováno</option><option>vyřízeno</option><option>zrušeno</option><option>nevyfakturováno</option><option>změna</option></select>';
         }
-        if (title = "Schválení objednávky") {
+        else if (title == "Schválení objednávky") {
             return '<select><option>--vyberte--</option>schváleno</option><option>zamítnuto</option><option>čeká na schválení</option></select>';
         }
-        else {
-            return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
-        }
+      
+    } else {
+        return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
     }
 }

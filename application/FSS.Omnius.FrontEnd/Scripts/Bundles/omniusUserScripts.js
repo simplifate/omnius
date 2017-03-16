@@ -733,7 +733,31 @@ $(function () {
         });
     });
 });
+function GetColumnSearchElementFor(title) {
 
+    if ($("#currentAppName").val() == "EvidencePeriodik") {
+        alert('yea');
+
+        if (title == "Forma periodika") {
+            return '<select><option>--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';
+        }
+        else if (title == "Typ periodika") {
+            return '<select><option>--vyberte--</option><option>tuzemské</option><option>zahraniční</option></select>';
+        }
+        else if (title == "Četnost periodika") {
+            return '<select><option>--vyberte--</option><option>1x týdně</option><option>5x týdně</option><option>10x ročně</option><option>1x měsíčně</option><option>6x ročně</option><option>2x ročně</option><option>denně</option><option>4x ročně</option><option>2x měsíčně</option><option>nepravidelně</option><option>1x ročně</option><option>6x týdně</option><option>22x ročně</option><option>312x ročně</option><option>6x ročně + 4x ročně bulletin</option><option>12x ročně</option><option>2x týdně</option><option>254x ročně</option></select>';
+        }
+        else if (title == "Stav objednávky") {
+            return '<select><option>--vyberte--</option><option>nový</option><option>rozpracováno</option><option>vyřízeno</option><option>zrušeno</option><option>nevyfakturováno</option><option>změna</option></select>';
+        }
+        else if (title == "Schválení objednávky") {
+            return '<select><option>--vyberte--</option>schváleno</option><option>zamítnuto</option><option>čeká na schválení</option></select>';
+        }
+      
+    } else {
+        return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';
+    }
+}
 $(document).ready(function () {
     //var logOutFlag = true;
     //$('a, input[type=submit], button').click(function () {
@@ -953,6 +977,7 @@ $(function () {
                 submitActionByForm(tableName, rowId, "B_Action");
             });
             table.DataTable().on("draw", function () {
+                alert('lol');
                 var t = $(this);
                 t.find("thead th").each(function (index, element) {
                     if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
@@ -961,11 +986,14 @@ $(function () {
                 });
             });
             table.DataTable().draw();
-            if (!table.hasClass("data-table-simple-mode")) {
+
+            if(!table.hasClass("data-table-simple-mode")) {
+
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
+
                     if (title != "Akce")
-                        $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                        $(this).html(GetColumnSearchElementFor(title));
                     else
                         $(this).html("");
                 });
