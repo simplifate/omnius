@@ -70,7 +70,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             }
             else
             {
-                outputVars["Result"] = null;
+                outputVars["Result"] = 0;
             }
         }
     }
