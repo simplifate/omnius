@@ -14,6 +14,7 @@ using System.Data.Entity;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.CORE;
+using System.Text.RegularExpressions;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -411,9 +412,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             {
                 // Cells must be in sequential order according to CellReference. Determine where to insert the new cell.
                 Cell refCell = null;
+                string lettersOnly = Regex.Replace(cellReference, "[\\d]", "");
                 foreach (Cell cell in row.Elements<Cell>())
                 {
-                    if (string.Compare(cell.CellReference.Value, cellReference, true) > 0)
+                    string oldCellRefLettersOnly = Regex.Replace(cell.CellReference.Value, "[\\d]", "");
+                    if (oldCellRefLettersOnly.Length == lettersOnly.Length && string.Compare(cell.CellReference.Value, cellReference, true) > 0)
                     {
                         refCell = cell;
                         break;
