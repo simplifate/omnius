@@ -674,7 +674,8 @@ namespace FSS.Omnius.Controllers.Tapestry
             var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc, deleteId);
             Session["CrossBlockRegistry"] = core.CrossBlockRegistry;
 
-            if (Response.StatusCode != 202) {
+            if (Response.ContentType.IndexOf("application/") == -1)
+            {
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
             }
             return null;
