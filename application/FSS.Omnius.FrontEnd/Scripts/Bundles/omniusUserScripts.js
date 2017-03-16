@@ -40,7 +40,7 @@ $(function () {
                 });
         }, 100);
     }
-        if $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
+        if ($("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
         {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
@@ -54,7 +54,7 @@ $(function () {
                 }
             });
         }
-        if ($("#currentBlockName").val() == "VyjadreniKAuditu"  {
+        if ($("#currentBlockName").val() == "VyjadreniKAuditu")  {
             $("[name=radio_agree]").on("change", function () {
                 if ($(this).val() === "true") {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
@@ -735,8 +735,7 @@ $(function () {
 });
 function GetColumnSearchElementFor(title) {
 
-    if ($("#currentAppName").val() == "EvidencePeriodik") {
-        alert('yea');
+    if ($("#currentAppName").val() == "Evidence Periodik") {
 
         if (title == "Forma periodika") {
             return '<select><option>--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';
@@ -977,7 +976,6 @@ $(function () {
                 submitActionByForm(tableName, rowId, "B_Action");
             });
             table.DataTable().on("draw", function () {
-                alert('lol');
                 var t = $(this);
                 t.find("thead th").each(function (index, element) {
                     if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
@@ -991,7 +989,6 @@ $(function () {
 
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
-
                     if (title != "Akce")
                         $(this).html(GetColumnSearchElementFor(title));
                     else
@@ -999,7 +996,7 @@ $(function () {
                 });
                 dataTable = table.DataTable();
                 dataTable.columns().eq(0).each(function (colIdx) {
-                    $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
+                    $("input, select", dataTable.column(colIdx).footer()).on("keyup change", function () {
                         dataTable
                             .column(colIdx)
                             .search(this.value)

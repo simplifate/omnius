@@ -277,8 +277,7 @@ $(function () {
 });
 function GetColumnSearchElementFor(title) {
 
-    if ($("#currentAppName").val() == "EvidencePeriodik") {
-        alert('yea');
+    if ($("#currentAppName").val() == "Evidence Periodik") {
 
         if (title == "Forma periodika") {
             return '<select><option>--vyberte--</option><option>Elektronické</option><option>Papírové</option></select>';

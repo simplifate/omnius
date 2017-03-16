@@ -149,7 +149,6 @@ $(function () {
                 submitActionByForm(tableName, rowId, "B_Action");
             });
             table.DataTable().on("draw", function () {
-                alert('lol');
                 var t = $(this);
                 t.find("thead th").each(function (index, element) {
                     if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
@@ -163,7 +162,6 @@ $(function () {
 
                 table.find("tfoot th").each(function () {
                     var title = $(this).text();
-
                     if (title != "Akce")
                         $(this).html(GetColumnSearchElementFor(title));
                     else
@@ -171,7 +169,7 @@ $(function () {
                 });
                 dataTable = table.DataTable();
                 dataTable.columns().eq(0).each(function (colIdx) {
-                    $("input", dataTable.column(colIdx).footer()).on("keyup change", function () {
+                    $("input, select", dataTable.column(colIdx).footer()).on("keyup change", function () {
                         dataTable
                             .column(colIdx)
                             .search(this.value)
