@@ -93,6 +93,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
                         if (parseSuccessful)
                             row[column.Name] = parsedDateTime;
+                        else
+                            row[column.Name] = DBNull.Value;
                     }
                     else
                     {
