@@ -7,6 +7,7 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Nexus.Service;
 using Newtonsoft.Json.Linq;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
 {
@@ -55,7 +56,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var db = core.Entitron.GetStaticTables();
+            DBEntities db = DBEntities.appInstance(core.Entitron.Application);
 
             NexusWSService webService = new NexusWSService();
             object[] parameters = new[] { "Auction_User" };

@@ -55,10 +55,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
             var rweUsersTable = core.Entitron.GetDynamicTable("Users");
-            var context = DBEntities.instance;
-           
-
 
             List<DBItem> results;
             if (vars.ContainsKey("id"))

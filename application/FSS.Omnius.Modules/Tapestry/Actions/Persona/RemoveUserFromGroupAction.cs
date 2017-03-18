@@ -54,7 +54,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var context = DBEntities.instance;
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
 
             int userId, groupId;
             if (vars.ContainsKey("RecordId"))

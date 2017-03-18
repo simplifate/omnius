@@ -45,7 +45,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var context = DBEntities.instance;
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
             var dataDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Data"))
                 dataDictionary = (Dictionary<string, object>)vars["Data"];

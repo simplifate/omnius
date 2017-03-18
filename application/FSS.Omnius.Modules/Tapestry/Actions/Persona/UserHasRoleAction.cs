@@ -54,7 +54,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Persona
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var context = DBEntities.instance;
+            var context = DBEntities.appInstance(core.Entitron.Application);
             string role, role2, role3;
             bool result;
 

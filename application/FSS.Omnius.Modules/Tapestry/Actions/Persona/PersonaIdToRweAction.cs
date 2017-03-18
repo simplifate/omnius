@@ -55,7 +55,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var rweUsersTable = core.Entitron.GetDynamicTable("Users");
-            var context = DBEntities.instance;
+            var context = DBEntities.appInstance(core.Entitron.Application);
             int userId = (int)vars["UserId"];
 
             var user = context.Users.Find(userId);

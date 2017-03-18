@@ -102,59 +102,57 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 newId = Convert.ToInt32(vars["NewId"]);
             else
                 newId = Convert.ToInt32(vars["__ModelId__"]);
-
-            using (var entities = DBEntities.instance)
+            
+            var entities = DBEntities.appInstance(core.Entitron.Application);
+            foreach (string fileName in files)
             {
-                foreach (string fileName in files)
-                {
-                    HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
+                HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
-                    if (file.ContentLength == 0 || !(inputNames == null || inputNames.Contains(fileName)))  //prázdný soubor, nebo bez filtru na inputy (mohou být dvě akce pro jinou entitu), nebo splňuje filtr na input name
-                        continue;
+                if (file.ContentLength == 0 || !(inputNames == null || inputNames.Contains(fileName)))  //prázdný soubor, nebo bez filtru na inputy (mohou být dvě akce pro jinou entitu), nebo splňuje filtr na input name
+                    continue;
                     
-                    FileMetadata fmd = new FileMetadata();
-                    fmd.AppFolderName = core.Entitron.AppName;
-                    fmd.CachedCopy = new FileSyncCache();
+                FileMetadata fmd = new FileMetadata();
+                fmd.AppFolderName = core.Entitron.AppName;
+                fmd.CachedCopy = new FileSyncCache();
 
-                    byte[] streamBytes = new byte[file.ContentLength];
-                    file.InputStream.Read(streamBytes, 0, file.ContentLength);
-                    fmd.CachedCopy.Blob = streamBytes;
+                byte[] streamBytes = new byte[file.ContentLength];
+                file.InputStream.Read(streamBytes, 0, file.ContentLength);
+                fmd.CachedCopy.Blob = streamBytes;
 
-                    fmd.Filename = Path.GetFileName(file.FileName);
-                    fmd.TimeChanged = DateTime.Now;
-                    fmd.TimeCreated = DateTime.Now;
-                    fmd.Version = 0;
+                fmd.Filename = Path.GetFileName(file.FileName);
+                fmd.TimeChanged = DateTime.Now;
+                fmd.TimeCreated = DateTime.Now;
+                fmd.Version = 0;
 
-                    string name = vars.ContainsKey(InputVar[2]) ? vars[InputVar[2]].ToString() : string.Empty;
-                    if (!string.IsNullOrWhiteSpace(name))
-                    {
-                        fmd.WebDavServer = entities.WebDavServers.Single(a => a.Name == name);
-                    }
-                    else
-                        fmd.WebDavServer = entities.WebDavServers.First();
-
-                    if (descriptionInputs != null && descriptionInputs.Length > 0)
-                    {
-                        int inputIndex = Array.IndexOf(inputNames, fileName);
-                        string descInp = descriptionInputs[inputIndex];
-
-                        fmd.Description = vars[descInp].ToString();
-                    }
-                    else if (vars.ContainsKey(fileName + "_description"))
-                    {
-                        fmd.Description = vars[fileName + "_description"].ToString();
-                    }
-
-                    fmd.ModelEntityId = newId;
-                    fmd.ModelEntityName = modelEntityName;
-                    fmd.Tag = fileName; //TODO: český čitelný název (systémová tabulka s klíčema a hodnotama?)
-
-                    entities.FileMetadataRecords.Add(fmd);
-                    entities.SaveChanges(); //ukládat po jednom souboru
-
-                    IFileSyncService service = new WebDavFileSyncService();
-                    service.UploadFile(fmd);
+                string name = vars.ContainsKey(InputVar[2]) ? vars[InputVar[2]].ToString() : string.Empty;
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    fmd.WebDavServer = entities.WebDavServers.Single(a => a.Name == name);
                 }
+                else
+                    fmd.WebDavServer = entities.WebDavServers.First();
+
+                if (descriptionInputs != null && descriptionInputs.Length > 0)
+                {
+                    int inputIndex = Array.IndexOf(inputNames, fileName);
+                    string descInp = descriptionInputs[inputIndex];
+
+                    fmd.Description = vars[descInp].ToString();
+                }
+                else if (vars.ContainsKey(fileName + "_description"))
+                {
+                    fmd.Description = vars[fileName + "_description"].ToString();
+                }
+
+                fmd.ModelEntityId = newId;
+                fmd.ModelEntityName = modelEntityName;
+                fmd.Tag = fileName; //TODO: český čitelný název (systémová tabulka s klíčema a hodnotama?)
+
+                entities.FileMetadataRecords.Add(fmd);
+                entities.SaveChanges(); //ukládat po jednom souboru
+
+                IFileSyncService service = new WebDavFileSyncService();
+                service.UploadFile(fmd);
             }
         }
     }

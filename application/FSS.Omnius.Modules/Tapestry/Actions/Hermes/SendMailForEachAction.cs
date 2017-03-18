@@ -53,7 +53,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             var listOfDBItems = new List<DBItem>();
             listOfDBItems = (List<DBItem>)vars["ListOfData"];
-            var context = DBEntities.instance;
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
 
             var urlDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
