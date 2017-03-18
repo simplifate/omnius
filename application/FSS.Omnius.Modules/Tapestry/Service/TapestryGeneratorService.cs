@@ -137,9 +137,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
             _context.SaveChanges();
             // remove deleted
+            List<string> currentDesignerBlockNames = _masterContext.TapestryDesignerBlocks.Where(db => db.ParentMetablock_Id == metaBlock.Id && !db.IsDeleted).Select(b => b.Name).ToList();
             var deletedBlocks = _context.Blocks.Where(b => b.WorkFlowId == resultWF.Id && b.IsVirtualForBlock == null
-                && !_context.TapestryDesignerBlocks.Where(db => db.ParentMetablock_Id == metaBlock.Id && !db.IsDeleted).Select(mb => mb.Name).Contains(b.DisplayName));
+                && !currentDesignerBlockNames.Contains(b.DisplayName));
             _context.Blocks.RemoveRange(deletedBlocks);
+            _context.SaveChanges();
 
             // map rest
             if (!_rebuildInAction)

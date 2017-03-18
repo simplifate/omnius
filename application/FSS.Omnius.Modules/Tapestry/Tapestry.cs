@@ -170,7 +170,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
         private ActionRule GetActionRule(Block block, ActionResult results, string buttonId = null)
         {
-            DBEntities context = _CORE.Entitron.GetStaticTables();
+            DBEntities context = DBEntities.appInstance(_CORE.Entitron.Application);
             IQueryable<ActionRule> ARs;
             if (buttonId != null)
             {
@@ -189,7 +189,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // authorize
-            PersonaAppRole role = _CORE.Entitron.GetStaticTables().Roles.Where(r => r.Users.Any(u => u.UserId == _CORE.User.Id) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
+            PersonaAppRole role = context.Roles.Where(r => r.Users.Any(u => u.UserId == _CORE.User.Id) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
             bool hasAnonnymousAccess = role == null && ARs.Any(ar => !ar.ActionRuleRights.Any());
             if (role == null && !hasAnonnymousAccess)
             {
