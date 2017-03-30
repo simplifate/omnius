@@ -340,7 +340,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 };
 
                 resultBlock.ResourceMappingPairs.Add(pair);
-
+                
                 _context.SaveChanges();
 
                 foreach (TapestryDesignerConditionSet cs in source.ConditionSets)
@@ -361,7 +361,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // create virtual starting items
             TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
             BlockMapping.Add(virtualBeginItem, block);
-            foreach (TapestryDesignerWorkflowItem item in _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start")))
+            foreach (TapestryDesignerWorkflowItem item in _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start")))
             {
                 TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
                 {
@@ -373,8 +373,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             //
-            var splitItems = _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType));
-            var joinItems = _context.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1);
+            var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType));
+            var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1);
 
             foreach (var splitItem in splitItems)
             {

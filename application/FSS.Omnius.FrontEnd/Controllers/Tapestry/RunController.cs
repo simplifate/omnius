@@ -40,11 +40,12 @@ namespace FSS.Omnius.Controllers.Tapestry
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
             DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            Application app = core.Entitron.Application.similarApp;
 
             // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-            Block block = getBlockWithResource(core, context, appName, blockIdentify);
+            Block block = getBlockWithResource(context, app.Id, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -64,7 +65,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             try
             {
-                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == app.Id && w.InitBlockId != null && !w.IsTemp).InitBlock;
             }
             catch (NullReferenceException)
             {
@@ -1111,11 +1112,12 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
-            DBEntities context = core.Entitron.GetStaticTables();
             core.Entitron.AppName = appName;
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            Application app = core.Entitron.Application.similarApp;
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
 
-            Block block = getBlockWithWF(core, context, appName, blockIdentify);
+            Block block = getBlockWithWF(context, app.Id, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -1149,23 +1151,23 @@ namespace FSS.Omnius.Controllers.Tapestry
             else return "en";
 
         }
-        private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)
+        private Block getBlockWithResource(DBEntities context, int appId, string blockName)
         {
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name == blockName)
                 : context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
         }
-        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+        private Block getBlockWithWF(DBEntities context, int appId, string blockName)
         {
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
-                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name == blockName)
+                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
         }
 
     }

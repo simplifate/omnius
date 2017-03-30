@@ -169,16 +169,16 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // Entitron Generate Database
-                if (app.EntitronChangedSinceLastBuild)
+                if (masterApp.EntitronChangedSinceLastBuild)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 else
                     Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
 
-                if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
+                if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
                     Send(Json.Encode(new { id = "mozaic", type = "info", message = "proběhne aktualizace uživatelského rozhraní" }));
                 else
                     Send(Json.Encode(new { id = "mozaic", type = "success", message = "uživatelské rozhraní není potřeba aktualizovat" }));
-                if (app.TapestryChangedSinceLastBuild || app.MenuChangedSinceLastBuild || _rebuildInAction)
+                if (masterApp.TapestryChangedSinceLastBuild || masterApp.MenuChangedSinceLastBuild || _rebuildInAction)
                 {
                     Send(Json.Encode(new { id = "tapestry", type = "info", message = "proběhne aktualizace workflow" }));
                     Send(Json.Encode(new { id = "menu", type = "info", message = "proběhne aktualizace menu" }));
@@ -188,7 +188,7 @@ namespace FSS.Omnius.Controllers.Master
                     Send(Json.Encode(new { id = "tapestry", type = "success", message = "workflow není potřeba aktualizovat" }));
                     Send(Json.Encode(new { id = "menu", type = "success", message = "menu není potřeba aktualizovat" }));
                 }
-                if (!app.EntitronChangedSinceLastBuild && !app.MozaicChangedSinceLastBuild && !app.TapestryChangedSinceLastBuild && !app.MenuChangedSinceLastBuild && !_rebuildInAction)
+                if (!masterApp.EntitronChangedSinceLastBuild && !masterApp.MozaicChangedSinceLastBuild && !masterApp.TapestryChangedSinceLastBuild && !masterApp.MenuChangedSinceLastBuild && !_rebuildInAction)
                 {
                     Send(Json.Encode(new { type = "success", message = "od poslední aktualizace neproběhly žádné změny", done = true }));
                     return;
@@ -199,12 +199,12 @@ namespace FSS.Omnius.Controllers.Master
                 //if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
                 //    FSS.Omnius.FrontEnd.Views.MyVirtualPathProvider.ClearAllCache();
 
-                if (app.EntitronChangedSinceLastBuild)
+                if (masterApp.EntitronChangedSinceLastBuild)
                 {
                     try
                     {
                         masterApp.DbSchemeLocked = true;
-                        context.SaveChanges();
+                        masterContext.SaveChanges();
 
                         Send(Json.Encode(new { id = "entitron", type = "info", message = "probíhá aktualizace databáze" }));
                         var dbSchemeCommit = masterApp.DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault();
@@ -213,9 +213,11 @@ namespace FSS.Omnius.Controllers.Master
                         if (!dbSchemeCommit.IsComplete)
                             throw new Exception("Pozor! Databázové schéma je špatně uložené, build nemůže pokračovat, protože by způsobil ztrádtu dat!");
                         new DatabaseGenerateService().GenerateDatabase(dbSchemeCommit, core, x => Send(x));
+
                         masterApp.DbSchemeLocked = false;
                         masterApp.EntitronChangedSinceLastBuild = false;
-                        context.SaveChanges();
+                        masterContext.SaveChanges();
+
                         Send(Json.Encode(new { id = "entitron", type = "success", message = "proběhla aktualizace databáze" }));
                     }
                     catch (Exception ex)
@@ -226,7 +228,7 @@ namespace FSS.Omnius.Controllers.Master
                     finally
                     {
                         masterApp.DbSchemeLocked = false;
-                        context.SaveChanges();
+                        masterContext.SaveChanges();
                     }
                 }
 
@@ -242,7 +244,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // Mozaic pages
-                if (app.MozaicChangedSinceLastBuild || _rebuildInAction)
+                if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
                 {
                     try
                     {
@@ -285,7 +287,7 @@ namespace FSS.Omnius.Controllers.Master
 
 
                         masterApp.MozaicChangedSinceLastBuild = false;
-                        context.SaveChanges();
+                        masterContext.SaveChanges();
 
                         Send(Json.Encode(new { id = "mozaic", type = "success", message = "proběhla aktualizace uživatelského rozhraní" }));
                     }
@@ -295,7 +297,7 @@ namespace FSS.Omnius.Controllers.Master
                     }
                 }
 
-                if (app.TapestryChangedSinceLastBuild || masterApp.MenuChangedSinceLastBuild || _rebuildInAction)
+                if (masterApp.TapestryChangedSinceLastBuild || masterApp.MenuChangedSinceLastBuild || _rebuildInAction)
                 {
                     // Tapestry
                     Dictionary<TapestryDesignerBlock, Block> blockMapping = null;
@@ -304,7 +306,10 @@ namespace FSS.Omnius.Controllers.Master
                         Send(Json.Encode(new { id = "tapestry", type = "info", message = "probíhá aktualizace workflow" }));
                         var service = new TapestryGeneratorService(masterContext, context, _rebuildInAction);
                         blockMapping = service.GenerateTapestry(core, x => Send(x));
+
                         masterApp.TapestryChangedSinceLastBuild = false;
+                        masterContext.SaveChanges();
+
                         Send(Json.Encode(new { id = "tapestry", type = "success", message = "proběhla aktualizace workflow" }));
                     }
                     catch (Exception ex)
@@ -333,9 +338,9 @@ namespace FSS.Omnius.Controllers.Master
                         menuLayout.ViewName = $"{app.Name} layout";
                         menuLayout.ViewContent = GetApplicationMenu(core, blockMapping).Item1;
 
-                        app.IsPublished = true;
-                        app.MenuChangedSinceLastBuild = false;
-                        context.SaveChanges();
+                        masterApp.IsPublished = true;
+                        masterApp.MenuChangedSinceLastBuild = false;
+                        masterContext.SaveChanges();
 
                         string fileName = applicationViewPath + $"\\menuLayout.cshtml";
                         File.WriteAllText(fileName, menuLayout.ViewContent);
@@ -352,9 +357,11 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // DONE
+                context.SaveChanges();
+
                 Send(Json.Encode(new { message = "aktualizace proběhla úspěšně", type = "success", done = true }));
                 masterApp.DbSchemeLocked = false;
-                context.SaveChanges();
+                masterContext.SaveChanges();
             }
             catch (Exception ex)
             {
