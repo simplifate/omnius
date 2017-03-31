@@ -136,10 +136,9 @@ namespace FSS.Omnius.Controllers.Tapestry
 
 
                 string sourceTableName = resourceMappingPair.SourceTableName;
-                bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
-                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
                 if (resourceMappingPair.relationType.StartsWith("V:"))
                 {
                     dataSource = new DataTable();
@@ -573,7 +572,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
-                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
 
                 if (resourceMappingPair.relationType.StartsWith("V:"))
                 {

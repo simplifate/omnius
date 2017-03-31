@@ -212,9 +212,8 @@ namespace FSS.Omnius.Modules.Tapestry
                 }
 
                 rule.PreRun(results);
-                if (rule.ItemWithConditionId == null || GatewayDecisionService.MatchConditionSets(
-                        context.TapestryDesignerConditionSets.Where(cs => cs.TapestryDesignerWorkflowItem.Id == rule.ItemWithConditionId).ToList(),
-                        results.OutputData))
+                if (rule.ConditionGroup == null 
+                    || GatewayDecisionService.MatchConditionSets(rule.ConditionGroup.ConditionSets.ToList(), results.OutputData))
                     return rule;
             }
 

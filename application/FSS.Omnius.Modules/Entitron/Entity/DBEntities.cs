@@ -287,6 +287,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
         public virtual DbSet<TapestryDesignerResourceRule> TapestryDesignerResourceRules { get; set; }
         public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
+        public virtual DbSet<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
         public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
 
