@@ -465,7 +465,48 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 // branch true
                 if (connection.SourceSlot == 0)
+                {
                     rule.ItemWithConditionId = conditionMapping[startBlock];
+
+                    // copy condition to new db
+                    if (_masterContext != _context)
+                    {
+                        IQueryable<TapestryDesignerConditionSet> conditionSetsQ = _masterContext.TapestryDesignerConditionSets.Where(cs => cs.TapestryDesignerWorkflowItem.Id == rule.ItemWithConditionId);
+                        List<TapestryDesignerCondition> conditions = _masterContext.TapestryDesignerConditions.Where(c => conditionSetsQ.Contains(c.TapestryDesignerConditionSet)).ToList();
+
+                        // conditionSets
+                        Dictionary<TapestryDesignerConditionSet, TapestryDesignerConditionSet> conditionSetIdMapping = new Dictionary<TapestryDesignerConditionSet, TapestryDesignerConditionSet>();
+                        foreach(TapestryDesignerConditionSet set in conditionSetsQ)
+                        {
+                            TapestryDesignerConditionSet newSet = new TapestryDesignerConditionSet
+                            {
+                                ResourceMappingPair_Id = set.ResourceMappingPair_Id,
+                                SetIndex = set.SetIndex,
+                                SetRelation = set.SetRelation,
+                                TapestryDesignerWorkflowItem_Id = set.TapestryDesignerWorkflowItem_Id
+                            };
+
+                            _context.TapestryDesignerConditionSets.Add(newSet);
+                            conditionSetIdMapping.Add(set, newSet);
+                        }
+                        _context.SaveChanges();
+                        // conditions
+                        foreach(TapestryDesignerCondition condition in conditions)
+                        {
+                            TapestryDesignerCondition newCondition = new TapestryDesignerCondition
+                            {
+                                Index = condition.Index,
+                                Operator = condition.Operator,
+                                Relation = condition.Relation,
+                                Value = condition.Value,
+                                Variable = condition.Variable,
+                                TapestryDesignerConditionSet = conditionSetIdMapping[condition.TapestryDesignerConditionSet]
+                            };
+                            _context.TapestryDesignerConditions.Add(newCondition);
+                        }
+                        _context.SaveChanges();
+                    }
+                }
 
                 // branch false
                 else

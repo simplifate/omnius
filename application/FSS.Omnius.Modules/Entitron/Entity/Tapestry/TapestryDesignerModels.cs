@@ -414,8 +414,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [Index]
         [ImportExportIgnore(IsParentKey = true)]
         public virtual int? ResourceMappingPair_Id { get; set; }
+
+        [ForeignKey("TapestryDesignerResourceItem")]
+        [ImportExportIgnore(IsParentKey = true)]
+        public int? TapestryDesignerResourceItem_Id { get; set; }
         [ImportExportIgnore(IsParent = true)]
         public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
+        [ForeignKey("TapestryDesignerWorkflowItem")]
+        [ImportExportIgnore(IsParentKey = true)]
+        public int? TapestryDesignerWorkflowItem_Id { get; set; }
         [ImportExportIgnore(IsParent = true)]
         public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
         public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
