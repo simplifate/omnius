@@ -247,24 +247,125 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "data-table-read-only")
                 {
+                    bool allowHtml = properties.ContainsKey("allowHtml") && Convert.ToBoolean(properties["allowHtml"]) == true;
+                    bool itemSelection = properties.ContainsKey("itemSelection") && Convert.ToBoolean(properties["itemSelection"]) == true;
+                    bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
+
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
                     {
                         columnSearchClass = " data-table-individual-columns-search";
                     }
+
+                    // On empty condition
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
-                    stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}</tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}</tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-                    if (properties.ContainsKey("allowHtml"))
-                    {
-                        stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@Html.Raw(@t._(cell.ToString()))</td>}}</tr>}}</tbody></{c.Tag}>}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">Tabulka neobsahuje žádná data</div> }} }}");
-                    }
-                    else {
-                        stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@t._(cell.ToString())</td>}}</tr>}}</tbody></{c.Tag}>}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">Tabulka neobsahuje žádná data</div> }} }}");
-                    }
+
+                        // Opening tag
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" "+(rowSelect ? "data-select-mode=\"row\"" : "")+$" { c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
+
+                            // Open heading
+                            stringBuilder.Append($"<thead><tr>");
+
+                                // Item selection (all)
+                                if(itemSelection)
+                                {
+                                    stringBuilder.Append($"<th><input title=\"@t._(\"Vybrat vše\")\" type=\"checkbox\" data-item-selection=\"*\"></th>");
+                                }
+
+                                // Headers loop #start
+                                stringBuilder.Append($"@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns) {{");
+
+                                    // Headers iteration
+                                    stringBuilder.Append($"<th>@(t._(col.Caption))</th>");
+
+                                // Headers loop #end
+                                stringBuilder.Append($"}}");
+
+                            // Close heading
+                            stringBuilder.Append("</tr></thead>");
+
+                            // Open footer
+                            stringBuilder.Append($"<tfoot><tr>");
+
+                                if (itemSelection)
+                                {
+                                    stringBuilder.Append($"<th></th>");
+                                }
+
+                                // Footers loop #start
+                                stringBuilder.Append($"@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns) {{");
+
+                                    // Footers iteration
+                                    stringBuilder.Append($"<th>@(t._(col.Caption))</th>");
+
+                                // Footers loop #end
+                                stringBuilder.Append($"}}");
+
+                            // Close footer
+                            stringBuilder.Append("</tr></tfoot>");
+
+                            // Open body
+                            stringBuilder.Append($"<tbody>");
+
+                                // Row loop #start
+                                stringBuilder.Append($"@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows) {{");
+
+                                    // Row iteration #start
+                                    stringBuilder.Append($"<tr>");
+
+                                        if (itemSelection)
+                                        {
+                                            stringBuilder.Append($"<th><input title=\"@t._(\"Vybrat\")\" type=\"checkbox\" data-item-selection=\"row\"></th>");
+                                        }
+
+                                        // Column loop #start
+                                        stringBuilder.Append($"@foreach (var cell in row.ItemArray) {{");
+
+                                            // Column iteration #start
+                                            stringBuilder.Append($"<td>");
+
+                                                // Wrap with Html.Raw if required
+                                                if(allowHtml)
+                                                {
+                                                    stringBuilder.Append($"@Html.Raw(");
+                                                }
+                                                else
+                                                {
+                                                    stringBuilder.Append($"@");
+                                                }
+                                
+                                                // Column iteration
+                                                stringBuilder.Append($"t._(cell.ToString())");
+
+                                                // Wrap with Html.Raw if required
+                                                if (allowHtml)
+                                                {
+                                                    stringBuilder.Append($")");
+                                                }
+
+                                            // Column iteration #end
+                                            stringBuilder.Append($"</td>");
+
+                                        // Column loop #end
+                                        stringBuilder.Append($"}}");
+
+                                    // Row iteration #end
+                                    stringBuilder.Append($"</tr>");
+
+                                // Row loop #end
+                                stringBuilder.Append($"}}");
+
+                            // Close body
+                            stringBuilder.Append("</tbody>");
+
+                        // Closing tag
+                        stringBuilder.Append($"</{c.Tag}>");
+
+                    // End of on empty condition
+                    stringBuilder.Append($"}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">@t._(\"Tabulka neobsahuje žádná data\")</div> }} }}");
+  
+                    // IDK
                     stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
                 }
                 else if (c.Type == "name-value-list")
@@ -278,6 +379,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "data-table-with-actions")
                 {
+                    bool allowHtml = properties.ContainsKey("allowHtml") && Convert.ToBoolean(properties["allowHtml"]) == true;
+                    bool itemSelection = properties.ContainsKey("itemSelection") && Convert.ToBoolean(properties["itemSelection"]) == true;
+                    bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
+
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
                     {
@@ -301,45 +406,154 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                         }
                     }
 
+
+                    // On empty condition
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
-                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
-                    stringBuilder.Append($"<thead><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}<th>@(t._(\"Akce\"))</th></tr></thead><tfoot><tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns)");
-                    stringBuilder.Append($"{{<th>@(t._(col.Caption))</th>}}<th>@(t._(\"Akce\"))</th></tr></tfoot><tbody>@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows)");
-                    stringBuilder.Append($"{{<tr>@foreach (var cell in row.ItemArray){{<td>@cell.ToString()</td>}}<td class=\"actionIcons\">");
-                    switch (actionButtons)
-                    {
-                        case "download":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i>");
-                            break;
-                        case "download-delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-                            break;
-                        case "enter":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i>");
-                            break;
-                        case "enter-details":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
-                            break;
-                        case "delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-                            break;
-                        case "details":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
-                            break;
-                        case "details-edit-delete":
-                            stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
-                            break;
-                        case "edit":
-                            stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i>");
-                            break;
-                        case "edit-delete":
-                        default:
-                            stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i><i class=\"fa fa-remove rowDeleteAction\"></i>");
-                            break;
-                    }
-                    stringBuilder.Append($"</td></tr>}}</tbody></{c.Tag}>}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">Tabulka neobsahuje žádná data</div> }} }}");
+
+                        // Opening tag
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (rowSelect ? "data-select-mode=\"row\"" : "") + $" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
+
+                            // Open heading
+                            stringBuilder.Append($"<thead><tr>");
+
+                                    // Item selection (all)
+                                    if (itemSelection)
+                                    {
+                                        stringBuilder.Append($"<th class=\"text-center\"><input title=\"@t._(\"Vybrat vše\")\" type=\"checkbox\" data-item-selection=\"*\"></th>");
+                                    }
+
+                                    // Headers loop #start
+                                    stringBuilder.Append($"@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns) {{");
+
+                                    // Headers iteration
+                                    stringBuilder.Append($"<th>@(t._(col.Caption))</th>");
+
+                                // Headers loop #end
+                                stringBuilder.Append($"}} <th>@(t._(\"Akce\"))</th>");
+
+                            // Close heading
+                            stringBuilder.Append("</tr></thead>");
+
+                            // Open footer
+                            stringBuilder.Append($"<tfoot><tr>");
+
+                                    // 
+                                    if (itemSelection)
+                                    {
+                                        stringBuilder.Append($"<th></th>");
+                                    }
+
+                                    // Footers loop #start
+                                    stringBuilder.Append($"@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns) {{");
+
+                                    // Footers iteration
+                                    stringBuilder.Append($"<th>@(t._(col.Caption))</th>");
+
+                                // Footers loop #end
+                                stringBuilder.Append($"}} <th>@(t._(\"Akce\"))</th>");
+
+                            // Close footer
+                            stringBuilder.Append("</tr></tfoot>");
+
+                            // Open body
+                            stringBuilder.Append($"<tbody>");
+
+                                // Row loop #start
+                                stringBuilder.Append($"@foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows) {{");
+
+                                    // Row iteration #start
+                                    stringBuilder.Append($"<tr>");
+
+                                    if (itemSelection)
+                                    {
+                                        stringBuilder.Append($"<th class=\"text-center\"><input title=\"@t._(\"Vybrat\")\" type=\"checkbox\" data-item-selection=\"row\"></th>");
+                                    }
+
+                                    // Column loop #start
+                                    stringBuilder.Append($"@foreach (var cell in row.ItemArray) {{");
+
+                                            // Column iteration #start
+                                            stringBuilder.Append($"<td>");
+
+                                                // Wrap with Html.Raw if required
+                                                if (allowHtml)
+                                                {
+                                                    stringBuilder.Append($"@Html.Raw(");
+                                                }
+                                                else
+                                                {
+                                                    stringBuilder.Append($"@");
+                                                }
+
+                                                // Column iteration
+                                                stringBuilder.Append($"t._(cell.ToString())");
+
+                                                // Wrap with Html.Raw if required
+                                                if (allowHtml)
+                                                {
+                                                    stringBuilder.Append($")");
+                                                }
+
+                                            // Column iteration #end
+                                            stringBuilder.Append($"</td>");
+
+                                        // Column loop #end
+                                        stringBuilder.Append($"}}");
+
+                                            // Actions #start
+                                            stringBuilder.Append("<td class=\"actionIcons\">");
+                    
+                                                switch (actionButtons)
+                                                {
+                                                    case "download":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i>");
+                                                        break;
+                                                    case "download-delete":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Stáhnout\"))\" class=\"fa fa-download rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                                                        break;
+                                                    case "enter":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i>");
+                                                        break;
+                                                    case "enter-details":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Vstoupit\"))\" class=\"fa fa-sign-in rowEditAction\"></i><i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
+                                                        break;
+                                                    case "delete":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                                                        break;
+                                                    case "details":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i>");
+                                                        break;
+                                                    case "details-edit-delete":
+                                                        stringBuilder.Append($"<i title=\"@(t._(\"Detail\"))\" class=\"fa fa-search rowDetailsAction\"></i><i title=\"@(t._(\"Editovat\"))\" class=\"fa fa-edit rowEditAction\"></i><i title=\"@(t._(\"Smazat\"))\" class=\"fa fa-remove rowDeleteAction\"></i>");
+                                                        break;
+                                                    case "edit":
+                                                        stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i>");
+                                                        break;
+                                                    case "edit-delete":
+                                                    default:
+                                                        stringBuilder.Append($"<i class=\"fa fa-edit rowEditAction\"></i><i class=\"fa fa-remove rowDeleteAction\"></i>");
+                                                        break;
+                                                }
+
+                                            // Actions #end
+                                            stringBuilder.Append("</td>");
+
+                                        // Row iteration #end
+                                        stringBuilder.Append($"</tr>");
+
+                                // Row loop #end
+                                stringBuilder.Append($"}}");
+
+                            // Close body
+                            stringBuilder.Append("</tbody>");
+
+                        // Closing tag
+                        stringBuilder.Append($"</{c.Tag}>");
+
+                    // End of on empty condition
+                    stringBuilder.Append($"}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">@t._(\"Tabulka neobsahuje žádná data\")</div> }} }}");
+
                     stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
                 }
                 else if (c.Type == "tab-navigation")

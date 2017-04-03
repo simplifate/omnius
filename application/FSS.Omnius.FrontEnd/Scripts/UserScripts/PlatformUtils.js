@@ -20,7 +20,8 @@ function CurrentModuleIs(moduleClass) {
 }
 function CreateCzechDataTable(element, simpleMode) {
     featureSwitch = !simpleMode;
-    element.DataTable({
+
+    var config = {
         "paging": featureSwitch,
         "pageLength": 50,
         "lengthMenu": [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, "Vše"]],
@@ -28,29 +29,108 @@ function CreateCzechDataTable(element, simpleMode) {
         "filter": featureSwitch,
         "order": [[0, "desc"]],
         "language": {
-            "sEmptyTable":     "Tabulka neobsahuje žádná data",
-            "sInfo":           "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
-            "sInfoEmpty":      "Zobrazuji 0 až 0 z 0 záznamů",
-            "sInfoFiltered":   "(filtrováno z celkem _MAX_ záznamů)",
-            "sInfoPostFix":    "",
-            "sInfoThousands":  " ",
-            "sLengthMenu":     "Zobraz záznamů _MENU_",
+            "sEmptyTable": "Tabulka neobsahuje žádná data",
+            "sInfo": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
+            "sInfoEmpty": "Zobrazuji 0 až 0 z 0 záznamů",
+            "sInfoFiltered": "(filtrováno z celkem _MAX_ záznamů)",
+            "sInfoPostFix": "",
+            "sInfoThousands": " ",
+            "sLengthMenu": "Zobraz záznamů _MENU_",
             "sLoadingRecords": "Načítám...",
-            "sProcessing":     "Provádím...",
-            "sSearch":         "Hledat:",
-            "sZeroRecords":    "Žádné záznamy nebyly nalezeny",
+            "sProcessing": "Provádím...",
+            "sSearch": "Hledat:",
+            "sZeroRecords": "Žádné záznamy nebyly nalezeny",
             "oPaginate": {
-                "sFirst":    "První",
-                "sLast":     "Poslední",
-                "sNext":     "Další",
+                "sFirst": "První",
+                "sLast": "Poslední",
+                "sNext": "Další",
                 "sPrevious": "Předchozí"
             },
             "oAria": {
-                "sSortAscending":  ": aktivujte pro řazení sloupce vzestupně",
+                "sSortAscending": ": aktivujte pro řazení sloupce vzestupně",
                 "sSortDescending": ": aktivujte pro řazení sloupce sestupně"
             }
         }
-    });
+    };
+
+    // Main checkbox (all)
+    var selection = element.find("[data-item-selection='\*']");
+
+    // If checkbox found
+    if (selection.length == 1) {
+
+        var main = $(selection[0]);
+
+        // Child checkboxes
+        var checkes = element.find("[data-item-selection=\'row\']");
+
+        // When clicked on main
+        main.on("change", function () {
+            // Titles depending on state
+            if (main.is(":checked")) {
+                main.attr("title", "Odoznačit vše");
+            } else {
+                main.attr("title", "Označit vše");
+            }
+
+            // Iterate all row checkboxes
+            checkes.each(function () {
+                // Change them to value of main
+                $(this).prop("checked", main.is(":checked"));
+
+                // Trigger change event
+                $(this).trigger("change");
+            });
+        });
+
+        // When any of row checks changes
+        checkes.on("change", function () {
+            // If it's checked
+            if ($(this).is(":checked")) {
+                // Add attr to row
+                $(this).parent().parent().attr("data-row-selected", true);
+            } else {
+                // Remove attr from row
+                $(this).parent().parent().removeAttr("data-row-selected");
+            }
+            // If main isn't checked but row is, then check main !WITHOUT triggering EVENT!
+            if (!main.is(":checked") && $(this).is(":checked")) {
+                main.prop("checked", true);
+                main.attr("title", "Odoznačit vše");
+            }
+        });
+
+        // If row select mode is enabled (selecting by clicking on rows)
+        if (element.attr("data-select-mode") === "row") {
+
+            // Find all rows and bind event to them
+            element.find("tbody tr").on("click", function (e) {
+                if (!$(e.target).is("[data-item-selection=\'row\']")) {
+                    // Get coresp. checkbox
+                    var check = $(this).find("[data-item-selection=\'row\']");
+
+                    // Change it & trigger event
+                    check.prop("checked", !check.is(":checked"));
+                    check.trigger("change");
+                }
+            });
+        }
+
+        // Find column of checkboxes
+        var selectionColumnId = selection.parent().index();
+
+        // Disable sorting for them
+        config.columnDefs = [{
+            orderable: false,
+            targets: selectionColumnId
+        }];
+
+        // Change default order to another column
+        config.order = [[selectionColumnId + 1, "desc"]];
+    }
+
+    // Create instance of datatable
+    var dtb = element.DataTable(config);
 }
 jQuery(function ($) {
     $.datepicker.regional['cs'] = {

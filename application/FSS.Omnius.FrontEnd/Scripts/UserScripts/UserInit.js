@@ -1,4 +1,4 @@
-﻿var ModalDialogArray = [];
+var ModalDialogArray = [];
 var mozaicFormValidator;
 
 $(function () {
@@ -151,7 +151,7 @@ $(function () {
             table.DataTable().on("draw", function () {
                 var t = $(this);
                 t.find("thead th").each(function (index, element) {
-                    if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
+                    if ($(element).text() == "id" || $(element).text().indexOf == "hidden" || $(element).text().indexOf("hidden__") == 0) {
                         t.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
                     }
                 });
@@ -277,12 +277,22 @@ $(function () {
 
         $(".uic.button-simple, .uic.button-dropdown").on("click", function () {
             $(".uic.data-table").each(function (tableIndex, tableElement) {
+                console.warn("Iterating over tables");
                 var visibleRowList = "";
                 var dataTable = $(tableElement).DataTable();
-                dataTable.rows({ search: 'applied' }).data().each(function (value, index) {
-                    if (index > 0)
-                        visibleRowList += ",";
-                    visibleRowList += value[0];
+                dataTable.rows({ search: 'applied' }).nodes().each(function (row, index) {
+                    var checkbox = $(row).find("th:first-child input[type=checkbox]");
+                    if (checkbox.length > 0) {
+                        if (checkbox.is(":checked")) {
+                            if (visibleRowList !== "")
+                                visibleRowList += ",";
+                            visibleRowList += $(row).children()[1].innerText;
+                        }
+                    } else {
+                        if (visibleRowList !== "")
+                            visibleRowList += ",";
+                        visibleRowList += $(row).children()[0].innerText;
+                    }
                 });
                 tableName = $(tableElement).attr("name");
                 $('input[name="' + tableName + '"').val(visibleRowList);

@@ -1,70 +1,74 @@
+@{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
     <ul  id=appMenu>
 @if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <h4>Administrace</h4>
+                    <h4>@(t._("Administrace"))</h4>
+
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledDodavatelu">Přehled dodavatelů</a>
+                    <a href="/EvidencePeriodik/PrehledDodavatelu">@(t._("Přehled dodavatelů"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledPeriodik">Přehled periodik</a>
+                    <a href="/EvidencePeriodik/PrehledPeriodik">@(t._("Přehled periodik"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledStavu">Přehled stavů</a>
+                    <a href="/EvidencePeriodik/PrehledStavu">@(t._("Přehled stavů"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledCetnostiPeriodik">Přehled četnost&#237; periodik</a>
+                    <a href="/EvidencePeriodik/PrehledCetnostiPeriodik">@(t._("Přehled četností periodik"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledForemPeriodik">Přehled forem periodik</a>
+                    <a href="/EvidencePeriodik/PrehledForemPeriodik">@(t._("Přehled forem periodik"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledTypuPeriodik">Přehled typů periodik</a>
+                    <a href="/EvidencePeriodik/PrehledTypuPeriodik">@(t._("Přehled typů periodik"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledObjednavek">Přehled objedn&#225;vek</a>
+                    <a href="/EvidencePeriodik/PrehledObjednavek">@(t._("Přehled objednávek"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/PrehledHromadnychObjednavek">Přehled hromadn&#253;ch objedn&#225;vek</a>
+                    <a href="/EvidencePeriodik/PrehledHromadnychObjednavek">@(t._("Přehled hromadných objednávek"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/DynamickyFiltr">Dynamick&#253; filtr</a>
+                    <a href="/EvidencePeriodik/DynamickyFiltr">@(t._("Dynamický filtr"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/Zastupci">Z&#225;stupci</a>
+                    <a href="/EvidencePeriodik/Zastupci">@(t._("Zástupci"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/HromadnaZmena">Hromadn&#225; změna</a>
+                    <a href="/EvidencePeriodik/HromadnaZmena">@(t._("Hromadná změna"))</a>
             </li>
 }    </ul>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent",26)){            <li>
-                    <h4>Objedn&#225;vka</h4>
+                    <h4>@(t._("Objednávka"))</h4>
+
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
-                    <a href="/EvidencePeriodik/ZadaniObjednavkyPeriodika">Zad&#225;n&#237; objedn&#225;vky periodika</a>
+                    <a href="/EvidencePeriodik/ZadaniObjednavkyPeriodika">@(t._("Zadání objednávky periodika"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Asistent",26)){            <li>
-                    <a href="/EvidencePeriodik/HromadnaObjednavkaProAsistentky">Hromadn&#225; objedn&#225;vka pro asistentky</a>
+                    <a href="/EvidencePeriodik/HromadnaObjednavkaProAsistentky">@(t._("Hromadná objednávka pro asistentky"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",26)){            <li>
-                    <a href="/EvidencePeriodik/ZadaniObjednavkyAdministratorem">Zad&#225;n&#237; objedn&#225;vky administr&#225;torem</a>
+                    <a href="/EvidencePeriodik/ZadaniObjednavkyAdministratorem">@(t._("Zadání objednávky administrátorem"))</a>
             </li>
 }    </ul>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,User,Asistent",26)){            <li>
-                    <h4>Reporty</h4>
+                    <h4>@(t._("Reporty"))</h4>
+
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
-                    <a href="/EvidencePeriodik/ZakladniReport">Z&#225;kladn&#237; report</a>
+                    <a href="/EvidencePeriodik/ZakladniReport">@(t._("Základní report"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Asistent",26)){            <li>
-                    <a href="/EvidencePeriodik/ReportProAsistentky">Report pro asistentky</a>
+                    <a href="/EvidencePeriodik/ReportProAsistentky">@(t._("Report pro asistentky"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,User",26)){            <li>
-                    <a href="/EvidencePeriodik/ReportProVedouciPracovniky">Report pro vedouc&#237; pracovn&#237;ky</a>
+                    <a href="/EvidencePeriodik/ReportProVedouciPracovniky">@(t._("Report pro vedoucí pracovníky"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("User",26)){            <li>
-                    <a href="/EvidencePeriodik/ReportHromadnychObjednavek">Report hromadn&#253;ch objedn&#225;vek</a>
+                    <a href="/EvidencePeriodik/ReportHromadnychObjednavek">@(t._("Report hromadných objednávek"))</a>
             </li>
 }    </ul>
             </li>
