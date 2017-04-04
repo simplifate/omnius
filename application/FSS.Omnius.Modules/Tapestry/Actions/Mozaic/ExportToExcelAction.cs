@@ -42,7 +42,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "?TableName", "?ViewName", "?Filter" };
+                return new string[] { "?TableName", "?ViewName", "?Filter", "?Columns" };
             }
         }
 
