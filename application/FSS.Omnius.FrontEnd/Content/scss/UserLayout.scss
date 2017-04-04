@@ -740,6 +740,11 @@ body.userLayout #brandBar {
             th {
                 color: white;
                 white-space: nowrap;
+
+                .column-filter-check {
+                    margin-right: 5px;
+                    vertical-align: middle;
+                }
             }
         }
         tbody tr {

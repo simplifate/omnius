@@ -53,6 +53,18 @@ function CreateCzechDataTable(element, simpleMode) {
         }
     };
 
+    if (element.attr("data-column-filter") !== undefined) {
+        element.find("thead th:visible").each(function () {
+            var wrapper = $("<span class='column-filter-check'></span>");
+            var check = $("<input type='checkbox' data-select-column=\'this\' checked>");
+            $(this).prepend(wrapper);
+            wrapper.append(check);
+            check.on("click", function (e) {
+                e.stopPropagation();
+            });
+        });
+    }
+
     // Main checkbox (all)
     var selection = element.find("[data-item-selection='\*']");
 

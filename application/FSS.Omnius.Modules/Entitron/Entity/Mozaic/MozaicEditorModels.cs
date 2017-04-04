@@ -250,6 +250,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     bool allowHtml = properties.ContainsKey("allowHtml") && Convert.ToBoolean(properties["allowHtml"]) == true;
                     bool itemSelection = properties.ContainsKey("itemSelection") && Convert.ToBoolean(properties["itemSelection"]) == true;
                     bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
+                    bool columnFilter = properties.ContainsKey("columnFilter") && Convert.ToBoolean(properties["columnFilter"]) == true;
 
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
@@ -261,7 +262,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
 
                         // Opening tag
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" "+(rowSelect ? "data-select-mode=\"row\"" : "")+$" { c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "")+$" { c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
 
                             // Open heading
@@ -277,7 +278,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                 stringBuilder.Append($"@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Columns) {{");
 
                                     // Headers iteration
-                                    stringBuilder.Append($"<th>@(t._(col.Caption))</th>");
+                                    stringBuilder.Append($"<th data-column-name='@(col.ColumnName)'>@(t._(col.Caption))</th>");
 
                                 // Headers loop #end
                                 stringBuilder.Append($"}}");
@@ -364,9 +365,15 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
                     // End of on empty condition
                     stringBuilder.Append($"}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">@t._(\"Tabulka neobsahuje žádná data\")</div> }} }}");
-  
-                    // IDK
+
+                    // Input that will be filled with row ids
                     stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
+
+                    // Input that will be filled with selected column names
+                    if (columnFilter)
+                    {
+                        stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}-column-filters\" />");
+                    }
                 }
                 else if (c.Type == "name-value-list")
                 {
@@ -382,6 +389,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     bool allowHtml = properties.ContainsKey("allowHtml") && Convert.ToBoolean(properties["allowHtml"]) == true;
                     bool itemSelection = properties.ContainsKey("itemSelection") && Convert.ToBoolean(properties["itemSelection"]) == true;
                     bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
+                    bool columnFilter = properties.ContainsKey("columnFilter") && Convert.ToBoolean(properties["columnFilter"]) == true;
 
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
@@ -411,7 +419,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
 
                         // Opening tag
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (rowSelect ? "data-select-mode=\"row\"" : "") + $" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "") + $" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
 
                             // Open heading
@@ -554,7 +562,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     // End of on empty condition
                     stringBuilder.Append($"}} else {{ <div class=\"uic control-label empty-table-label\" style=\"left: {c.PositionX}; top: {c.PositionY};\">@t._(\"Tabulka neobsahuje žádná data\")</div> }} }}");
 
+                    // Input that will be filled with row ids
                     stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}\" />");
+
+                    // Input that will be filled with selected column names
+                    if (columnFilter)
+                    {
+                        stringBuilder.Append($"<input type=\"hidden\" name=\"{c.Name}-column-filters\" />");
+                    }
                 }
                 else if (c.Type == "tab-navigation")
                 {

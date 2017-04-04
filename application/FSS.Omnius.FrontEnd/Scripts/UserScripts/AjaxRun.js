@@ -1,6 +1,6 @@
 ﻿function AjaxRunAndReplace(url, uic_name, modelId)
 {
-    $.ajax({
+     $.ajax({
         type: "POST",
         url: "/api/run" + url + '?button=' + uic_name,
         data: { 'modelId': modelId },

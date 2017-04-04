@@ -281,6 +281,7 @@ $(function () {
                 var visibleRowList = "";
                 var dataTable = $(tableElement).DataTable();
                 dataTable.rows({ search: 'applied' }).nodes().each(function (row, index) {
+                    // Export selection
                     var checkbox = $(row).find("th:first-child input[type=checkbox]");
                     if (checkbox.length > 0) {
                         if (checkbox.is(":checked")) {
@@ -296,6 +297,15 @@ $(function () {
                 });
                 tableName = $(tableElement).attr("name");
                 $('input[name="' + tableName + '"').val(visibleRowList);
+                var visibleColumnList = "";
+                $(tableElement).find("thead th:visible").each(function () {
+                    var header = $(this);
+                    var checked = header.find("input[type=\'checkbox\']").is("checked");
+                    if (visibleColumnList !== "")
+                        visibleColumnList += ",";
+                    visibleColumnList += header.attr("data-column-name");
+                });
+                $('input[name="' + tableName + '-column-filters').val(visibleColumnList);
             });
             if (this.value.indexOf('export') !== -1) {
                 window.ignoreUnload = true;
