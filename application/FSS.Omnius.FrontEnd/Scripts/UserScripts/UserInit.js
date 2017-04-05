@@ -300,10 +300,13 @@ $(function () {
                 var visibleColumnList = "";
                 $(tableElement).find("thead th:visible").each(function () {
                     var header = $(this);
-                    var checked = header.find("input[type=\'checkbox\']").is("checked");
-                    if (visibleColumnList !== "")
-                        visibleColumnList += ",";
-                    visibleColumnList += header.attr("data-column-name");
+                    var checked = header.find("input[type=\'checkbox\']").is(":checked");
+                    console.log(header.attr("data-column-name"), checked, header.find("input[type=\'checkbox\']"));
+                    if (checked) {
+                        if (visibleColumnList !== "")
+                            visibleColumnList += ";";
+                        visibleColumnList += header.attr("data-column-name");
+                    }
                 });
                 $('input[name="' + tableName + '-column-filters').val(visibleColumnList);
             });

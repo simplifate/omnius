@@ -706,8 +706,14 @@ body.userLayout #brandBar {
     background-color: #e9e7e7;
     border: 1px solid white;
     white-space: nowrap; }
-    .mozaicForm .data-table th:first-child, .mozaicForm .data-table td:first-child {
+    .mozaicForm .data-table.hideFirst th:first-child, .mozaicForm .data-table.hideFirst td:first-child {
       display: none; }
+    .mozaicForm .data-table.hideSecond th:nth-child(2), .mozaicForm .data-table.hideSecond td:nth-child(2) {
+      display: none; }
+    .mozaicForm .data-table[data-select-mode=row] tbody tr {
+      cursor: pointer; }
+    .mozaicForm .data-table tbody tr[data-row-selected] {
+      background-color: #c3c3c3 !important; }
     .mozaicForm .data-table tr {
       background-color: #e9e7e7 !important; }
       .mozaicForm .data-table tr th.sorting_1, .mozaicForm .data-table tr td.sorting_1 {
@@ -725,6 +731,9 @@ body.userLayout #brandBar {
       .mozaicForm .data-table thead tr th {
         color: white;
         white-space: nowrap; }
+        .mozaicForm .data-table thead tr th .column-filter-check {
+          margin-right: 5px;
+          vertical-align: middle; }
     .mozaicForm .data-table tbody tr {
       background-color: #f7f7f7;
       color: black; }
