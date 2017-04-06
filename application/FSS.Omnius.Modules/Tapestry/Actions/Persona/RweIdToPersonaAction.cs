@@ -66,7 +66,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             {
                 string ad_email = (string)results[0]["ad_email"];
                 var userObject = context.Users.SingleOrDefault(u => u.Email == ad_email);
-                outputVars["Result"] = userObject == null ? (int?)null : userObject.Id;
+                outputVars["Result"] = userObject == null ? 0 : userObject.Id;
             }
             else
             {
