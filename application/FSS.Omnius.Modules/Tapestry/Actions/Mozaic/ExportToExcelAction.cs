@@ -86,7 +86,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 }
             }
 
-            string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"];
+            string tableName = vars.ContainsKey("TableName") ? (string)vars["TableName"] : (vars.ContainsKey("__TableName__") ? (string)vars["__TableName__"] : "");
             string viewName = vars.ContainsKey("ViewName") ? (string)vars["ViewName"] : "";
 
             if (vars.ContainsKey("ViewName"))
