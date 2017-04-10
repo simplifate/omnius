@@ -1198,6 +1198,7 @@
     <Compile Include="Tapestry\Actions\other\NoAction.cs" />
     <Compile Include="Tapestry\Actions\other\OtherRepository.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\AddUserToGroupAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\CreateUserAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\RefreshUserFromADAction.cs" />

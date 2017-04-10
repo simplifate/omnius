@@ -39,11 +39,17 @@
             </li>
 }    </ul>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,User",83)){            <li>
                     <h4>@(t._("Administrace"))</h4>
 
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+                    <a href="/PortalInternichAuditu2/ZmenaSpolecnosti">@(t._("Změna společnosti"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
+                    <a href="/PortalInternichAuditu2/Role">@(t._("Role"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
                     <a href="/PortalInternichAuditu2/Procesy">@(t._("Procesy"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
@@ -57,9 +63,6 @@
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
                     <a href="/PortalInternichAuditu2/NeaktivniUzivatele">@(t._("Neaktivní uživatelé"))</a>
-            </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
-                    <a href="/PortalInternichAuditu2/NeaktivniPoziceNo">@(t._("Neaktivní pozice / NO"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
                     <a href="/PortalInternichAuditu2/ZmenaNadrizeneho">@(t._("Změna nadřízeného"))</a>
