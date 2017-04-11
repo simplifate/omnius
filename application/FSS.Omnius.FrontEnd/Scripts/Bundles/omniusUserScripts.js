@@ -750,7 +750,7 @@ function GetColumnSearchElementFor(title) {
             return '<select><option value="">--vyberte--</option><option>nový</option><option>rozpracováno</option><option>vyřízeno</option><option>zrušeno</option><option>nevyfakturováno</option><option>změna</option></select>';
         }
         else if (title == "Stav schválení") {
-            return '<select><option value="">--vyberte--</option>schváleno</option><option>zamítnuto</option><option>čeká na schválení</option></select>';
+            return '<select><option value="">--vyberte--</option><option>schváleno</option><option>zamítnuto</option><option>čeká na schválení</option></select>';
         }
         else {
             return '<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />';

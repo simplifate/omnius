@@ -1929,6 +1929,20 @@
     <Content Include="Views\App\98\Page\1078.cshtml" />
     <Content Include="Views\App\98\Page\1079.cshtml" />
     <Content Include="Views\App\98\Page\1080.cshtml" />
+    <Content Include="Views\App\83\Page\1057.cshtml" />
+    <Content Include="Views\App\83\Page\1058.cshtml" />
+    <Content Include="Views\App\83\Page\1059.cshtml" />
+    <Content Include="Views\App\83\Page\1060.cshtml" />
+    <Content Include="Views\App\83\Page\1061.cshtml" />
+    <Content Include="Views\App\83\Page\1062.cshtml" />
+    <Content Include="Views\App\83\Page\1063.cshtml" />
+    <Content Include="Views\App\83\Page\1064.cshtml" />
+    <Content Include="Views\App\83\Page\1065.cshtml" />
+    <Content Include="Views\App\83\Page\1068.cshtml" />
+    <Content Include="Views\App\83\Page\1070.cshtml" />
+    <Content Include="Views\App\83\Page\1082.cshtml" />
+    <Content Include="Views\App\83\Page\1092.cshtml" />
+    <Content Include="Views\App\83\Page\1093.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
