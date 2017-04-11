@@ -10,7 +10,7 @@ $(function () {
     });
     $("#toggleMenuIcon").on("click", function () {
         $(".userBox").slideUp();
-        $(".searchBox").slideUp();
+        $(".searchBox").slideUp(); 
         $(document.body).toggleClass("leftBarHidden");
     });
 
