@@ -97,7 +97,6 @@
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot?v=1.1.3);
   src: url(/Content/Fonts/innogy/Innogy-Bold.eot#iefix?v=1.1.3) format("embedded-opentype"), url(/Content/Fonts/innogy/Innogy-Bold.woff?v=1.1.3) format("woff"), url(/Content/Fonts/innogy/Innogy-Bold.ttf?v=1.1.3) format("truetype"), url(/Content/Fonts/innogy/Innogy-Bold.svg#Innogy-Bold?v=1.1.3) format("svg"); }
 
-sea
 #userTopBar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -111,8 +110,7 @@ sea
   top: 100px;
   right: 0px;
   height: 50px; }
-  sea
-#userTopBar .icon {
+  #userTopBar .icon {
     display: inline-block;
     width: 50px;
     height: 50px;
@@ -122,18 +120,14 @@ sea
     font-size: 32px;
     color: black;
     cursor: pointer; }
-    sea
-#userTopBar .icon:hover {
+    #userTopBar .icon:hover {
       color: #f3962c; }
-  sea
-#userTopBar .activeIcon {
+  #userTopBar .activeIcon {
     background-color: #f4f4f4;
     cursor: default; }
-  sea
-#userTopBar #toggleMenuIcon {
+  #userTopBar #toggleMenuIcon {
     display: none; }
-  sea
-#userTopBar .clientTitle {
+  #userTopBar .clientTitle {
     position: absolute;
     font-family: Innogy-Medium;
     text-transform: uppercase;
@@ -144,27 +138,21 @@ sea
     left: 0px;
     right: 0px;
     text-align: center; }
-  sea
-#userTopBar .clientTitleArea {
+  #userTopBar .clientTitleArea {
     position: absolute;
     left: 160px;
     top: 0px;
     right: 540px;
     height: 50px; }
-  sea
-#userTopBar .userBoxMinimized {
+  #userTopBar .userBoxMinimized {
     display: none; }
-  sea
-#userTopBar .userBox, sea
-#userTopBar .userBoxMinimized {
+  #userTopBar .userBox, #userTopBar .userBoxMinimized {
     position: absolute;
     top: 0px;
     right: 290px;
     width: 250px;
     height: 50px; }
-    sea
-#userTopBar .userBox .avatar, sea
-#userTopBar .userBoxMinimized .avatar {
+    #userTopBar .userBox .avatar, #userTopBar .userBoxMinimized .avatar {
       position: absolute;
       left: 5px;
       top: 5px;
@@ -172,50 +160,37 @@ sea
       height: 40px;
       background-image: url(/Content/Images/avatar-generic.png);
       background-size: 40px 40px; }
-    sea
-#userTopBar .userBox .fullName, sea
-#userTopBar .userBoxMinimized .fullName {
+    #userTopBar .userBox .fullName, #userTopBar .userBoxMinimized .fullName {
       position: absolute;
       left: 65px;
       top: 6px;
       font-family: Innogy-Regular;
       font-size: 14px; }
-    sea
-#userTopBar .userBox .commands, sea
-#userTopBar .userBoxMinimized .commands {
+    #userTopBar .userBox .commands, #userTopBar .userBoxMinimized .commands {
       position: absolute;
       left: 65px;
       top: 24px;
       color: #0065a9;
       font-family: Innogy-Regular;
       font-size: 14px; }
-    sea
-#userTopBar .userBox .notificationIcon, sea
-#userTopBar .userBoxMinimized .notificationIcon {
+    #userTopBar .userBox .notificationIcon, #userTopBar .userBoxMinimized .notificationIcon {
       position: absolute;
       right: 30px;
       top: 8px;
       font-size: 30px;
       cursor: pointer;
       color: black; }
-      sea
-#userTopBar .userBox .notificationIcon:hover, sea
-#userTopBar .userBoxMinimized .notificationIcon:hover {
+      #userTopBar .userBox .notificationIcon:hover, #userTopBar .userBoxMinimized .notificationIcon:hover {
         color: #f3962c; }
-  sea
-#userTopBar .searchBoxMinimised {
+  #userTopBar .searchBoxMinimised {
     display: none; }
-  sea
-#userTopBar .searchBox, sea
-#userTopBar .searchBoxMinimized {
+  #userTopBar .searchBox, #userTopBar .searchBoxMinimized {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 310px;
     height: 50px; }
-    sea
-#userTopBar .searchBox .searchInputField, sea
-#userTopBar .searchBoxMinimized .searchInputField {
+    #userTopBar .searchBox .searchInputField, #userTopBar .searchBoxMinimized .searchInputField {
       position: absolute;
       bottom: 11px;
       right: 85px;
@@ -228,18 +203,14 @@ sea
       font-family: Innogy-Regular;
       font-size: 14px;
       border: none; }
-    sea
-#userTopBar .searchBox .searchIcon, sea
-#userTopBar .searchBoxMinimized .searchIcon {
+    #userTopBar .searchBox .searchIcon, #userTopBar .searchBoxMinimized .searchIcon {
       position: absolute;
       right: 30px;
       top: 8px;
       font-size: 30px;
       cursor: pointer;
       color: black; }
-      sea
-#userTopBar .searchBox .searchIcon:hover, sea
-#userTopBar .searchBoxMinimized .searchIcon:hover {
+      #userTopBar .searchBox .searchIcon:hover, #userTopBar .searchBoxMinimized .searchIcon:hover {
         color: #f3962c; }
 
 #userLeftBar {
