@@ -15,6 +15,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             DBEntities context = DBEntities.instance;
 
             ViewBag.ADgroups = context.ADgroups.OrderBy(ad => ad.Name).ToList();
+            ViewBag.APPS = context.Applications.OrderBy(app => app.Id).ToList();
             ViewBag.ADgroups_Users = context.ADgroup_Users.OrderBy(adu => new { adu.User.DisplayName, adu.ADgroup.Name }).ToList();
 
             return View();
