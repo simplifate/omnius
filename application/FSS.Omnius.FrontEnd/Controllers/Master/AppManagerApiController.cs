@@ -32,7 +32,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         TileWidth = app.TileWidth,
                         TileHeight = app.TileHeight,
                         Color = app.Color,
-                        Icon = app.Icon
+                        Icon = app.Icon,
+                        IsAllowedForAll = app.IsAllowedForAll
                     };
                     return result;
                 }
@@ -58,6 +59,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
                     app.Icon = postData.Icon;
+                    app.IsAllowedForAll = postData.IsAllowedForAll;
                     context.SaveChanges();
                 }
             }
