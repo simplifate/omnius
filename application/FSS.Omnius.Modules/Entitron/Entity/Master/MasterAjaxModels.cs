@@ -9,6 +9,7 @@
         public int Color { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
+        public bool IsAllowedForAll { get; set; }
     }
     public class AjaxAppState : IEntity
     {

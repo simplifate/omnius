@@ -43,7 +43,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 #endregion
 
                 #region Rows headers
-               
+
                    //find ad_group =>
                    ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
                     foreach (ADgroup_User adgu in adg.ADgroup_Users) {
