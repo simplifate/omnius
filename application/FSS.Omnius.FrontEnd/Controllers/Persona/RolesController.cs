@@ -43,13 +43,22 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 #endregion
 
                 #region Rows headers
-
-                   //find ad_group =>
-                   ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
-                    foreach (ADgroup_User adgu in adg.ADgroup_Users) {
+                if (app.IsAllowedForAll = true)
+                {
+                    foreach (var User in context.Users)
+                    {
+                        rowHeaders.Add(new RowHeaderAppRolesForTable(User.Id, User.DisplayName));
+                    }
+                }
+                else
+                {
+                    //find ad_group =>
+                    ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
+                    foreach (ADgroup_User adgu in adg.ADgroup_Users)
+                    {
                         rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
-
-                   }
+                    }
+                }
                 #endregion
 
                 #region Column headers + data
@@ -316,8 +325,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         private ActionResult addColumn(AjaxPersonaAppRolesForTable model)
         {
+            var context = DBEntities.instance;
             #region ColHeader
-            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role",0);
+            var priority = context.Roles.Where(r => r.ApplicationId == model.AppID).DefaultIfEmpty().Max(r => r.Priority) + 1;
+            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role",priority);
 
             if (model.ColHeaders == null)
             {
@@ -325,6 +336,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             }
 
             model.ColHeaders.Add(newColHeader);
+            context.Roles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority });
             #endregion
 
             #region Data
