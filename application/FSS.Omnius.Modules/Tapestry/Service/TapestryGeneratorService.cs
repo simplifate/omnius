@@ -340,7 +340,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 };
 
                 resultBlock.ResourceMappingPairs.Add(pair);
-                
+
                 _context.SaveChanges();
 
                 foreach (TapestryDesignerConditionGroup cg in source.ConditionGroups)
@@ -469,41 +469,45 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     // copy condition to new db
                     if (_masterContext != _context)
                     {
-                        foreach (TapestryDesignerConditionGroup cGroup in _masterContext.TapestryDesignerConditionGroups.Where(cg => cg.Id == rule.ConditionGroup.Id))
+                        TapestryDesignerConditionGroup originConditionGroup = conditionMapping[startBlock];
+                        // new conditionGroup
+                        TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
                         {
-                            TapestryDesignerConditionGroup newGroup = new TapestryDesignerConditionGroup ();
-                            rule.ConditionGroup = newGroup;
+                            ResourceMappingPairId = originConditionGroup.ResourceMappingPairId
+                        };
+                        rule.ConditionGroup = conditionGroup;
 
-                            foreach (TapestryDesignerConditionSet cSet in cGroup.ConditionSets)
+                        // new conditionSet
+                        foreach (TapestryDesignerConditionSet originConditionSet in originConditionGroup.ConditionSets)
+                        {
+                            TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
                             {
-                                TapestryDesignerConditionSet newSet = new TapestryDesignerConditionSet
-                                {
-                                    SetIndex = cSet.SetIndex,
-                                    SetRelation = cSet.SetRelation
-                                };
-                                newGroup.ConditionSets.Add(newSet);
+                                SetIndex = originConditionSet.SetIndex,
+                                SetRelation = originConditionSet.SetRelation
+                            };
+                            conditionGroup.ConditionSets.Add(conditionSet);
 
-                                foreach (TapestryDesignerCondition condition in cSet.Conditions)
+                            // new condition
+                            foreach (TapestryDesignerCondition originCondition in originConditionSet.Conditions)
+                            {
+                                TapestryDesignerCondition condition = new TapestryDesignerCondition
                                 {
-                                    TapestryDesignerCondition newCondition = new TapestryDesignerCondition
-                                    {
-                                        Index = condition.Index,
-                                        Operator = condition.Operator,
-                                        Relation = condition.Relation,
-                                        Value = condition.Value,
-                                        Variable = condition.Variable
-                                    };
-                                    newSet.Conditions.Add(newCondition);
-                                }
+                                    Index = originCondition.Index,
+                                    Operator = originCondition.Operator,
+                                    Relation = originCondition.Relation,
+                                    Value = originCondition.Value,
+                                    Variable = originCondition.Variable,
+                                };
+                                conditionSet.Conditions.Add(condition);
                             }
                         }
+
+                        _context.TapestryDesignerConditionGroups.Add(conditionGroup);
                         _context.SaveChanges();
                     }
-                    // edit existing
+                    // same DB
                     else
-                    {
                         rule.ConditionGroup = conditionMapping[startBlock];
-                    }
                 }
 
                 // branch false
@@ -539,7 +543,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {
-                                if (relatedConnections.Source.TypeClass == "integrationItem" && relatedConnections.Source.Label.StartsWith("WS: "))
+                                if (relatedConnections.Source.Label.StartsWith("WS: "))
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
