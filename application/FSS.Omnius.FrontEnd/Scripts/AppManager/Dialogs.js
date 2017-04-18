@@ -24,6 +24,7 @@ $(function () {
         },
         open: function () {
             appPropertiesDialog.find("#app-name").val("");
+            appPropertiesDialog.find("#cbAllowAll").val("");
             appPropertiesDialog.find("#template").val(1);
             appPropertiesDialog.find("#tile-width").val(2);
             appPropertiesDialog.find("#tile-height").val(1);
@@ -34,6 +35,12 @@ $(function () {
                 url: "/api/master/apps/" + CurrentAppId + "/properties",
                 dataType: "json",
                 success: function (data) {
+                    if (data.IsAllowedForAll) { //set if application is allowed for all users.
+                        $('#cbAllowAll').prop('checked',true);
+                    } else {
+                        $('#cbAllowAll').prop('checked', false);
+
+                    }
                     appPropertiesDialog.find("#app-name").val(data.DisplayName);
                     appPropertiesDialog.find("#template").val(data.CSSTemplateId);
                     appPropertiesDialog.find("#tile-width").val(data.TileWidth);
@@ -45,6 +52,7 @@ $(function () {
         }
     });
     function appPropertiesDialog_SubmitData() {
+
         appPropertiesDialog.dialog("close");
         postData = {
             DisplayName: appPropertiesDialog.find("#app-name").val(),
@@ -52,7 +60,9 @@ $(function () {
             TileWidth: appPropertiesDialog.find("#tile-width").val(),
             TileHeight: appPropertiesDialog.find("#tile-height").val(),
             Color: appPropertiesDialog.find("#bg-color").val(),
-            Icon: appPropertiesDialog.find("#icon-class").val()
+            Icon: appPropertiesDialog.find("#icon-class").val(),
+                
+            IsAllowedForAll: $('#cbAllowAll').is(':checked') == true ? true : false
         }
         $.ajax({
             type: "POST",

@@ -1104,6 +1104,10 @@
     <Compile Include="Migrations\201702240918341_Fix IsShared problem.Designer.cs">
       <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704131111235_add isAllowedForAll.cs" />
+    <Compile Include="Migrations\201704131111235_add isAllowedForAll.Designer.cs">
+      <DependentUpon>201704131111235_add isAllowedForAll.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1816,6 +1820,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702240918341_Fix IsShared problem.resx">
       <DependentUpon>201702240918341_Fix IsShared problem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704131111235_add isAllowedForAll.resx">
+      <DependentUpon>201704131111235_add isAllowedForAll.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

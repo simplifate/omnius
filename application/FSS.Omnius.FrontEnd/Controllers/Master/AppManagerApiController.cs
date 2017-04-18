@@ -23,16 +23,17 @@ namespace FSS.Omnius.Controllers.Tapestry
             {
                 using (var context = DBEntities.instance)
                 {
-                    Application app = context.Applications.Include("CSSTemplate").First(a => a.Id == appId);
+                    Application app = context.Applications.Include("CSSTemplate").FirstOrDefault(a => a.Id == appId);
                     AjaxAppProperties result = new AjaxAppProperties
                     {
                         Id = app.Id,
                         DisplayName = app.DisplayName,
-                        CSSTemplateId = app.CssTemplate.Id,
+                        CSSTemplateId = app.CssTemplate == null ? 0 : app.CssTemplate.Id,
                         TileWidth = app.TileWidth,
                         TileHeight = app.TileHeight,
                         Color = app.Color,
-                        Icon = app.Icon
+                        Icon = app.Icon,
+                        IsAllowedForAll = app.IsAllowedForAll
                     };
                     return result;
                 }
@@ -58,6 +59,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     app.TileHeight = postData.TileHeight;
                     app.Color = postData.Color;
                     app.Icon = postData.Icon;
+                    app.IsAllowedForAll = postData.IsAllowedForAll;
                     context.SaveChanges();
                 }
             }

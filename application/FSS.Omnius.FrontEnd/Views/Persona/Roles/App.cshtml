@@ -192,7 +192,7 @@ else
                             {
                                 if (Model.DeletedCols == null || (!Model.DeletedCols.Contains(x)))
                                 {
-                                    <td align="center">@Html.CheckBoxFor(a => a.Data[x][y], new { @class = "localCheckbox", @style = "width:100%; height:100%" })</td>
+                                    <td align="center">@Html.CheckBoxFor(a => a.Data[x][y], new { @class = "localCheckbox"})</td>
                                 }
                                 else
                                 {
