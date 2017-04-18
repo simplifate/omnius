@@ -34,6 +34,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TapestryDesignerConditionGroups = new HashSet<TapestryDesignerConditionGroup>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
+            EmailTemplates = new HashSet<EmailTemplate>();
             IncomingEmailRule = new List<IncomingEmailRule>();
         }
 
@@ -108,6 +109,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<Js> Js { get; set; }
 
         // hermes
+        public virtual ICollection<EmailTemplate> EmailTemplates { get; set; }
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
     }
 }
