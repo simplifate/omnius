@@ -157,6 +157,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveBlocks(SendWS sendWs)
         {
+            // remove old conditions
+            _context.TapestryDesignerConditionGroups.RemoveRange(_app.TapestryDesignerConditionGroups);
+
             int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;
             foreach(TapestryDesignerBlock block in _blocksToBuild)
@@ -473,6 +476,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         // new conditionGroup
                         TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
                         {
+                            Application = _app,
                             ResourceMappingPairId = originConditionGroup.ResourceMappingPairId
                         };
                         rule.ConditionGroup = conditionGroup;
