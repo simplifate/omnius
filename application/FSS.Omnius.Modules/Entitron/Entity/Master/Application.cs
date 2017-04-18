@@ -31,6 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             MozaicBootstrapPages = new List<MozaicBootstrapPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
+            TapestryDesignerConditionGroups = new HashSet<TapestryDesignerConditionGroup>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
             IncomingEmailRule = new List<IncomingEmailRule>();
@@ -82,6 +83,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         {
             get { return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null); }
         }
+        public virtual ICollection<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
 
         // persona
         [ImportExportIgnore]

@@ -440,6 +440,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
         public virtual ICollection<ActionRule> ActionRules { get; set; }
 
+        public int? ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
+
         public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public TapestryDesignerConditionGroup()

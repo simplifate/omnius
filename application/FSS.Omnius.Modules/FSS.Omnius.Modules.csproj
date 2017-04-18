@@ -1112,6 +1112,10 @@
     <Compile Include="Migrations\201703311219253_addConditionGroup.Designer.cs">
       <DependentUpon>201703311219253_addConditionGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704180855491_addAppIdToConditionGroup.cs" />
+    <Compile Include="Migrations\201704180855491_addAppIdToConditionGroup.Designer.cs">
+      <DependentUpon>201704180855491_addAppIdToConditionGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1830,6 +1834,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703311219253_addConditionGroup.resx">
       <DependentUpon>201703311219253_addConditionGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704180855491_addAppIdToConditionGroup.resx">
+      <DependentUpon>201704180855491_addAppIdToConditionGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
