@@ -968,8 +968,9 @@ $(function () {
             table.on("click", ".rowDeleteAction", function () {
                 if (confirm('Jste si jistí?')) {
                     rowId = parseInt($(this).parents("tr").find("td:first").text());
-                    var modelId = GetUrlParameter("modelId", Sanitizers.RealNumberSanitizer);
-                    submitActionByForm("datatable", rowId, "delete", [$('<input type="hidden" name="deleteId" value="' + rowId + '" />')]);
+                    var modelId = GetUrlParameter("modelId");
+                    var tableName = table.attr("name");
+                    submitActionByForm(tableName, modelId, "DeleteAction", [$('<input type="hidden" name="deleteId" value="' + rowId + '" />')]);
                 }
             });
             table.on("click", ".row_A_Action", function () {
