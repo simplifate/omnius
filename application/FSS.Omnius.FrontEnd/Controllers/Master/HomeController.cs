@@ -21,7 +21,7 @@ namespace FSS.Omnius.Controllers.Master
                 return core.Entitron.GetStaticTables().Applications.Where(a =>
                     a.IsPublished
                     && a.IsEnabled
-                    && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id)
+                    && (a.IsAllowedForAll||a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id))
                 ).ToList();
             }
             catch (Exception ex)

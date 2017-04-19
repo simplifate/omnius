@@ -203,21 +203,28 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
-                bool viewExists = DBView.isInDb(e.Application, efView.Name);
-
-                DBView newView = new DBView()
+                try
                 {
-                    Application = e.Application,
-                    dbViewName = efView.Name,
-                    sql = efView.Query
-                };
+                    bool viewExists = DBView.isInDb(e.Application, efView.Name);
 
-                if (!viewExists)
-                    newView.Create();
-                else
-                    newView.Alter();
+                    DBView newView = new DBView()
+                    {
+                        Application = e.Application,
+                        dbViewName = efView.Name,
+                        sql = efView.Query
+                    };
 
-                e.Application.SaveChanges();
+                    if (!viewExists)
+                        newView.Create();
+                    else
+                        newView.Alter();
+
+                    e.Application.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message + " view name: " + efView.Name);
+                }
             }//end of foreach efViews
 
             //list of views, which are in database, but not in scheme

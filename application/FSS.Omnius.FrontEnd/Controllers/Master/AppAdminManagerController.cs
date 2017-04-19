@@ -198,6 +198,7 @@ namespace FSS.Omnius.Controllers.Master
 
                     string applicationViewPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Views\\App\\{_AppId}";
                     string applicationPageViewPath = applicationViewPath + "\\Page";
+                    string applicationBootstrapPageViewPath = applicationPageViewPath + "\\Bootstrap";
                     if (!Directory.Exists(applicationViewPath))
                     {
                         Directory.CreateDirectory(applicationViewPath);
@@ -205,6 +206,10 @@ namespace FSS.Omnius.Controllers.Master
                     if (!Directory.Exists(applicationPageViewPath))
                     {
                         Directory.CreateDirectory(applicationPageViewPath);
+                    }
+                    if (!Directory.Exists(applicationBootstrapPageViewPath))
+                    {
+                        Directory.CreateDirectory(applicationBootstrapPageViewPath);
                     }
 
                     // Mozaic pages
