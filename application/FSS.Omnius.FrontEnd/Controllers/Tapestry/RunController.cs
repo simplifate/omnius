@@ -136,7 +136,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
-                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
 
                 if (resourceMappingPair.relationType.StartsWith("V:"))
                 {
@@ -615,7 +615,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-            return View(viewPath, Application.GetByName(core, appName).GetLayout());
+            return View(viewPath);
 
         }
 
