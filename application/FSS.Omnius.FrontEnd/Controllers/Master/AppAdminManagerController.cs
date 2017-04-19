@@ -358,40 +358,49 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // Hermes
-                foreach(EmailTemplate template in masterApp.EmailTemplates)
+                if (context != masterContext)
                 {
-                    EmailTemplate newTemplate = new EmailTemplate
-                    {
-                        Application = app,
-                        Is_HTML = template.Is_HTML,
-                        Name = template.Name
-                    };
+                    // remove old
+                    context.EmailPlaceholders.RemoveRange(context.EmailPlaceholders.Where(ep => ep.Hermes_Email_Template.AppId == app.Id));
+                    context.EmailContents.RemoveRange(context.EmailContents.Where(ec => ec.Hermes_Email_Template.AppId == app.Id));
+                    context.EmailTemplates.RemoveRange(app.EmailTemplates);
 
-                    foreach (EmailPlaceholder placeholder in template.PlaceholderList)
+                    // add new
+                    foreach (EmailTemplate template in masterApp.EmailTemplates)
                     {
-                        EmailPlaceholder newPlaceholder = new EmailPlaceholder
+                        EmailTemplate newTemplate = new EmailTemplate
                         {
-                            Description = placeholder.Description,
-                            Num_Order = placeholder.Num_Order,
-                            Prop_Name = placeholder.Prop_Name
+                            Application = app,
+                            Is_HTML = template.Is_HTML,
+                            Name = template.Name
                         };
-                        newTemplate.PlaceholderList.Add(newPlaceholder);
-                    }
-                    foreach (EmailTemplateContent content in template.ContentList)
-                    {
-                        EmailTemplateContent newContent = new EmailTemplateContent
-                        {
-                            Content = content.Content,
-                            Content_Plain = content.Content_Plain,
-                            From_Email = content.From_Email,
-                            From_Name = content.From_Name,
-                            LanguageId = content.LanguageId,
-                            Subject = content.Subject
-                        };
-                        newTemplate.ContentList.Add(newContent);
-                    }
 
-                    context.EmailTemplates.Add(newTemplate);
+                        foreach (EmailPlaceholder placeholder in template.PlaceholderList)
+                        {
+                            EmailPlaceholder newPlaceholder = new EmailPlaceholder
+                            {
+                                Description = placeholder.Description,
+                                Num_Order = placeholder.Num_Order,
+                                Prop_Name = placeholder.Prop_Name
+                            };
+                            newTemplate.PlaceholderList.Add(newPlaceholder);
+                        }
+                        foreach (EmailTemplateContent content in template.ContentList)
+                        {
+                            EmailTemplateContent newContent = new EmailTemplateContent
+                            {
+                                Content = content.Content,
+                                Content_Plain = content.Content_Plain,
+                                From_Email = content.From_Email,
+                                From_Name = content.From_Name,
+                                LanguageId = content.LanguageId,
+                                Subject = content.Subject
+                            };
+                            newTemplate.ContentList.Add(newContent);
+                        }
+
+                        context.EmailTemplates.Add(newTemplate);
+                    }
                 }
 
                 // DONE
