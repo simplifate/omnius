@@ -327,8 +327,16 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             var context = DBEntities.instance;
             #region ColHeader
-            var priority = context.Roles.Where(r => r.ApplicationId == model.AppID).DefaultIfEmpty().Max(r => r.Priority) + 1;
-            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role",priority);
+            int priority;
+            if (context.Roles.Count(r => r.ApplicationId == model.AppID) > 0)
+            {
+                priority = context.Roles.Where(r => r.ApplicationId == model.AppID).Max(r => r.Priority) + 1;
+            }
+            else
+            {
+                priority = 1;
+            }
+            ColumnHeaderAppRolesForTable newColHeader = new ColumnHeaderAppRolesForTable(-1, "Nová role", priority);
 
             if (model.ColHeaders == null)
             {
@@ -336,7 +344,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             }
 
             model.ColHeaders.Add(newColHeader);
-            context.Roles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority });
+            context.Roles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
+            /*context.SaveChanges();*/
             #endregion
 
             #region Data
