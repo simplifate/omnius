@@ -917,10 +917,17 @@ $(function () {
                 csrfTokenInput = mozaicForm.find("[name=__RequestVerificationToken]").clone();
             }
 
-            function submitActionByForm(tableName, rowId, action) {
+            function submitActionByForm(tableName, rowId, action, addons) {
                 // Create
                 var form = $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="modelId" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + action + '" /></form>');
                 
+                // Add aditional inputs
+                if (Array.isArray(addons)) {
+                    $.each(addons, function (index, addon) {
+                        form.append(addon);
+                    });
+                }
+
                 // "protect"
                 if (csrfTokenInput !== null) {
                     form.append(csrfTokenInput);
