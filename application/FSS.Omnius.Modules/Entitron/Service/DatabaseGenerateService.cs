@@ -209,11 +209,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 try
                 {
-                    bool viewExists = DBView.isInDb(e.Application, efView.Name);
+                    bool viewExists = DBView.isInDb(_entitron.Application, efView.Name);
 
                     DBView newView = new DBView()
                     {
-                        Application = e.Application,
+                        Application = _entitron.Application,
                         dbViewName = efView.Name,
                         sql = efView.Query
                     };
@@ -223,7 +223,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     else
                         newView.Alter();
 
-                    e.Application.SaveChanges();
+                    _entitron.Application.SaveChanges();
                 }
                 catch (Exception ex)
                 {

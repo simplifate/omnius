@@ -233,16 +233,12 @@ namespace FSS.Omnius.Controllers.Master
                     }
                 }
 
-                string applicationViewPath = AppDomain.CurrentDomain.BaseDirectory + $"\\Views\\App\\{_AppId}";
-                string applicationPageViewPath = applicationViewPath + "\\Page";
-                if (!Directory.Exists(applicationViewPath))
-                {
-                    Directory.CreateDirectory(applicationViewPath);
-                }
-                if (!Directory.Exists(applicationPageViewPath))
-                {
-                    Directory.CreateDirectory(applicationPageViewPath);
-                }
+                    string applicationViewPath = $"{AppDomain.CurrentDomain.BaseDirectory}\\Views\\App\\{_AppId}";
+                    string applicationPageViewPath = $"{applicationViewPath}\\Page";
+                    if (!Directory.Exists(applicationViewPath))
+                        Directory.CreateDirectory(applicationViewPath);
+                    if (!Directory.Exists(applicationPageViewPath))
+                        Directory.CreateDirectory(applicationPageViewPath);
 
                 // Mozaic pages
                 if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
@@ -343,8 +339,8 @@ namespace FSS.Omnius.Controllers.Master
                         masterApp.MenuChangedSinceLastBuild = false;
                         masterContext.SaveChanges();
 
-                        string fileName = applicationViewPath + $"\\menuLayout.cshtml";
-                        File.WriteAllText(fileName, menuLayout.ViewContent);
+                            string fileName = $"{applicationViewPath}\\menuLayout.cshtml";
+                            File.WriteAllText(fileName, menuLayout.ViewContent);
 
                         Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
                     }
