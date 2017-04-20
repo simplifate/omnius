@@ -395,7 +395,16 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                 // conditions
                 if (splitItem.SymbolType == "gateway-x")
-                    conditionMapping.Add(newBlock, splitItem.ConditionGroups.Single());
+                {
+                    try
+                    {
+                        conditionMapping.Add(newBlock, splitItem.ConditionGroups.Single());
+                    }
+                    catch(InvalidOperationException ex)
+                    {
+                        throw new Exception("Gateway has no condition!", ex);
+                    }
+                }
 
                 // rights
                 if (checkBlockHasRights(splitItem))
