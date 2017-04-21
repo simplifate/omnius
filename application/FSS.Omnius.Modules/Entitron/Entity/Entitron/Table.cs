@@ -13,11 +13,10 @@
         [Index("UNIQUE_Entitron___META_Name", IsUnique = true, Order = 2)]
         public string Name { get; set; }
 
+        [StringLength(50)]
         [Index("UNIQUE_Entitron___META_Name", IsUnique = true, Order = 1)]
-        public int? ApplicationId { get; set; }
+        public string ApplicationName { get; set; }
 
         public int tableId { get; set; }
-
-        public Application Application { get; set; }
     }
 }

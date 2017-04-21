@@ -75,14 +75,14 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppId = safeAddParam("AppId", application.Id);
+            string parAppName = safeAddParam("AppId", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
 
             string columnDefinition = string.Join(",", _columns.Select(c => c.getSqlDefinition()));
 
             sqlString =
                 $"CREATE TABLE [{this.realTableName}] ({columnDefinition});" +
-                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationId, tableId) VALUES ( @{parTableName}, @{parAppId} , ( SELECT object_id FROM sys.tables WHERE name='{this.realTableName}') );";
+                $"INSERT INTO {DB_EntitronMeta} ( Name, ApplicationName, tableId) VALUES ( @{parTableName}, @{parAppName} , ( SELECT object_id FROM sys.tables WHERE name='{this.realTableName}') );";
             
             base.BaseExecution(transaction);
         }

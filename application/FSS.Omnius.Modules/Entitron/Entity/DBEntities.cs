@@ -301,10 +301,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // CORE
 
             // Entitron
-            modelBuilder.Entity<Application>()
-                .HasMany<Table>(e => e.Tables)
-                .WithOptional(e => e.Application)
-                .HasForeignKey(e => e.ApplicationId);
 
             // Hermes
             modelBuilder.Entity<EmailTemplate>()

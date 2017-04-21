@@ -15,12 +15,12 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         {
             string newRealTableName = $"Entitron_{(application.Id == SharedTables.AppId ? SharedTables.Prefix : application.Name)}_{newName}";
 
-            string parAppId = safeAddParam("ApplicationId", application.Id);
+            string parAppName = safeAddParam("ApplicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             string parNewName = safeAddParam("newName", newName);
 
             sqlString =
-                $"UPDATE {DB_EntitronMeta} SET Name = @{parNewName} WHERE Name = @{parTableName} AND ApplicationId = @{parAppId};" +
+                $"UPDATE {DB_EntitronMeta} SET Name = @{parNewName} WHERE Name = @{parTableName} AND ApplicationName = @{parAppName};" +
                 $"sp_rename '{realTableName}', '{newRealTableName}';";
 
                 //string.Format(

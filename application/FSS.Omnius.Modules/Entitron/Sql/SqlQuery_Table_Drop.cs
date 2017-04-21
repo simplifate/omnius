@@ -11,11 +11,11 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
-            string parAppId = safeAddParam("applicationId", application.Id);
+            string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
 
             sqlString =
-                $"DELETE FROM {DB_EntitronMeta} WHERE Name = @{parTableName} AND ApplicationId = @{parAppId};" +
+                $"DELETE FROM {DB_EntitronMeta} WHERE Name = @{parTableName} AND ApplicationName = @{parAppName};" +
                 $"DROP TABLE [{realTableName}];";
 
 

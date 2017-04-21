@@ -23,7 +23,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TitleFontSize = 20;
 
             WorkFlows = new HashSet<WorkFlow>();
-            Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
             DesignedBy = new HashSet<User>();
             UsersApplications = new HashSet<UsersApplications>();
@@ -96,8 +95,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<UsersApplications> UsersApplications { get; set; }
 
         // entitron
-        [ImportExportIgnore]
-        public virtual ICollection<Table> Tables { get; set; }
         [ImportExportIgnore]
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         // entitron - designer

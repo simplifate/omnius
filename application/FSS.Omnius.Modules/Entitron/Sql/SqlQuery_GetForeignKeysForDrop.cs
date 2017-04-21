@@ -11,20 +11,29 @@ namespace FSS.Omnius.Modules.Entitron.Sql
     {
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppId = safeAddParam("applicationId", application.Id);
+            string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
 
-            sqlString = string.Format(
-                "SELECT fk.name name,sourceT.Name sourceTable,sourceC.name sourceColumn,targetT.Name targetTable,targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
-                "INNER JOIN sys.foreign_keys fk ON fk.object_id=fkc.constraint_object_id " +
-                "INNER JOIN {1} sourceT ON sourceT.tableId=fkc.parent_object_id " +
-                "INNER JOIN {1} targetT ON targetT.tableId=fkc.referenced_object_id " +
-                "INNER JOIN sys.columns sourceC ON sourceC.column_id=fkc.parent_column_id AND fkc.parent_object_id=sourceC.object_id " +
-                "INNER JOIN sys.columns targetC ON targetC.column_id=fkc.referenced_column_id AND fkc.referenced_object_id=targetC.object_id " +
-                "WHERE (sourceT.Name=@{3} AND sourceT.ApplicationId=@{2});",
-                DB_MasterApplication,
-                DB_EntitronMeta,
-                parAppId, parTableName);
+            sqlString =
+                $"SELECT fk.name name,sourceT.Name sourceTable,sourceC.name sourceColumn,targetT.Name targetTable,targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
+                $"INNER JOIN sys.foreign_keys fk ON fk.object_id=fkc.constraint_object_id " +
+                $"INNER JOIN {DB_EntitronMeta} sourceT ON sourceT.tableId=fkc.parent_object_id " +
+                $"INNER JOIN {DB_EntitronMeta} targetT ON targetT.tableId=fkc.referenced_object_id " +
+                $"INNER JOIN sys.columns sourceC ON sourceC.column_id=fkc.parent_column_id AND fkc.parent_object_id=sourceC.object_id " +
+                $"INNER JOIN sys.columns targetC ON targetC.column_id=fkc.referenced_column_id AND fkc.referenced_object_id=targetC.object_id " +
+                $"WHERE (sourceT.Name=@{parTableName} AND sourceT.ApplicationName=@{parAppName});";
+
+            //sqlString = string.Format(
+            //    "SELECT fk.name name,sourceT.Name sourceTable,sourceC.name sourceColumn,targetT.Name targetTable,targetC.name targetColumn FROM sys.foreign_key_columns fkc " +
+            //    "INNER JOIN sys.foreign_keys fk ON fk.object_id=fkc.constraint_object_id " +
+            //    "INNER JOIN {1} sourceT ON sourceT.tableId=fkc.parent_object_id " +
+            //    "INNER JOIN {1} targetT ON targetT.tableId=fkc.referenced_object_id " +
+            //    "INNER JOIN sys.columns sourceC ON sourceC.column_id=fkc.parent_column_id AND fkc.parent_object_id=sourceC.object_id " +
+            //    "INNER JOIN sys.columns targetC ON targetC.column_id=fkc.referenced_column_id AND fkc.referenced_object_id=targetC.object_id " +
+            //    "WHERE (sourceT.Name=@{3} AND sourceT.ApplicationId=@{2});",
+            //    DB_MasterApplication,
+            //    DB_EntitronMeta,
+            //    parAppId, parTableName);
 
             return base.BaseExecutionWithRead(connection);
         }
