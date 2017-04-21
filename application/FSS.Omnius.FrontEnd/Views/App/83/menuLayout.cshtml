@@ -50,6 +50,9 @@
                     <a href="/PortalInternichAuditu2/Role">@(t._("Role"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+                    <a href="/PortalInternichAuditu2/NovyExterniUzivatel">@(t._("Nový externí uživatel"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
                     <a href="/PortalInternichAuditu2/Procesy">@(t._("Procesy"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
