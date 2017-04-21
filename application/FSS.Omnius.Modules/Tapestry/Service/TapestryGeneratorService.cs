@@ -673,7 +673,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             {
                 rule.ActionRuleRights.Add(new Entitron.Entity.Persona.ActionRuleRight
                 {
-                    AppRole = _context.Roles.Single(r => r.ApplicationId == _core.Entitron.AppId && r.Name == roleName),
+                    AppRole = _app.Roles.Single(r => r.Name == roleName),
                     Executable = true
                 });
             }

@@ -23,6 +23,7 @@ using FSS.Omnius.Utils.Builder;
 using FSS.Utils;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Controllers.Master
 {
@@ -150,7 +151,7 @@ namespace FSS.Omnius.Controllers.Master
             }
             else
                 app = masterApp;
-
+            
             try
             {
                 // If building shared tables app
@@ -200,6 +201,32 @@ namespace FSS.Omnius.Controllers.Master
                 //if (app.MozaicChangedSinceLastBuild || app.MenuChangedSinceLastBuild)
                 //    FSS.Omnius.FrontEnd.Views.MyVirtualPathProvider.ClearAllCache();
 
+                #region Persona
+                if (masterContext != context)
+                {
+                    // copy Persona_AppRoles
+                    foreach (PersonaAppRole role in masterApp.Roles)
+                    {
+                        PersonaAppRole newRole = context.Roles.SingleOrDefault(r => r.ApplicationId == app.Id && r.Name == role.Name);
+                        if (newRole == null)
+                        {
+                            newRole = new PersonaAppRole
+                            {
+                                Name = role.Name,
+                                Priority = role.Priority
+                            };
+                            app.Roles.Add(newRole);
+                        }
+                        else
+                        {
+                            newRole.Priority = role.Priority;
+                        }
+                    }
+                    context.SaveChanges();
+                }
+                #endregion
+
+                // entitron
                 if (masterApp.EntitronChangedSinceLastBuild)
                 {
                     try
