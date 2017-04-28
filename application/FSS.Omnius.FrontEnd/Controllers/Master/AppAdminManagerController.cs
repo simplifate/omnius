@@ -207,7 +207,7 @@ namespace FSS.Omnius.Controllers.Master
                     // copy Persona_AppRoles
                     foreach (PersonaAppRole role in masterApp.Roles)
                     {
-                        PersonaAppRole newRole = context.Roles.SingleOrDefault(r => r.ApplicationId == app.Id && r.Name == role.Name);
+                        PersonaAppRole newRole = context.AppRoles.SingleOrDefault(r => r.ApplicationId == app.Id && r.Name == role.Name);
                         if (newRole == null)
                         {
                             newRole = new PersonaAppRole

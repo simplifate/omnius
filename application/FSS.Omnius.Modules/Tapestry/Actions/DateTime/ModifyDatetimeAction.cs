@@ -57,7 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             try {
                 dateTime = (DateTime)vars["Input"];
             }
-            catch(Exception e) {
+            catch(Exception) {
                 dateTime = DateTime.Parse((string)vars["Input"]);
             }
             

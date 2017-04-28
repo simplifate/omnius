@@ -236,6 +236,8 @@
     <Compile Include="Entitron\Entity\Persona\ADgroup_User.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxPersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\AjaxUsers.cs" />
+    <Compile Include="Entitron\Entity\Persona\Iden_Role.cs" />
+    <Compile Include="Entitron\Entity\Persona\Iden_User_Role.cs" />
     <Compile Include="Entitron\Entity\Persona\ModuleAccessPermission.cs" />
     <Compile Include="Entitron\Entity\Persona\PersonaAppRoles.cs" />
     <Compile Include="Entitron\Entity\Persona\UserClaim.cs" />
@@ -1120,6 +1122,10 @@
     <Compile Include="Migrations\201704211146487_EntitronMeta_applicationName.Designer.cs">
       <DependentUpon>201704211146487_EntitronMeta_applicationName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704261339174_DontUseIdentityRoles.cs" />
+    <Compile Include="Migrations\201704261339174_DontUseIdentityRoles.Designer.cs">
+      <DependentUpon>201704261339174_DontUseIdentityRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1844,6 +1850,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704211146487_EntitronMeta_applicationName.resx">
       <DependentUpon>201704211146487_EntitronMeta_applicationName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704261339174_DontUseIdentityRoles.resx">
+      <DependentUpon>201704261339174_DontUseIdentityRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

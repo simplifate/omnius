@@ -57,21 +57,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var context = DBEntities.appInstance(core.Entitron.Application);
 
-            int userId, groupId;
-            if (vars.ContainsKey("RecordId"))
+            int userId = Convert.ToInt32(vars["UserId"]);
+            int groupId = Convert.ToInt32(vars["GroupId"]);
+
+            PersonaAppRole role = context.AppRoles.Find(groupId);
+            if (context.Users_Roles.Any(c => c.UserId == userId && c.RoleName == role.Name))
             {
-                int recordId = Convert.ToInt32(vars["RecordId"]);
-                userId = recordId % 10000;
-                groupId = recordId / 10000;
-            }
-            else
-            {
-                userId = Convert.ToInt32(vars["UserId"]);
-                groupId = Convert.ToInt32(vars["GroupId"]);
-            }
-            if (context.UserRoles.Any(c => c.UserId == userId && c.RoleId == groupId))
-            {
-                context.UserRoles.Remove(context.UserRoles.SingleOrDefault(c => c.UserId == userId && c.RoleId == groupId));
+                context.Users_Roles.Remove(context.Users_Roles.SingleOrDefault(c => c.UserId == userId && c.RoleName == role.Name));
                 context.SaveChanges();
             }
 

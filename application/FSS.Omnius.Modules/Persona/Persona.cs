@@ -268,9 +268,9 @@ namespace FSS.Omnius.Modules.Persona
                     databaseUser.Email = user.Email;
                     //Refresh ROLES
                     databaseUser.Roles.Clear();
-                    foreach (var role in user.Roles)
+                    foreach (User_Role role in user.Users_Roles)
                     {
-                        databaseUser.Roles.Add(new User_Role { AppRole = role.AppRole, User = databaseUser });
+                        databaseUser.Users_Roles.Add(new User_Role { RoleName = role.RoleName, Application = role.Application, User = databaseUser });
                     }
                     //end refresh roles
                     databaseUser.isActive = true;

@@ -62,7 +62,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 #endregion
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ApplicationId == app.Id).Include("Users");
+                IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
 
                 int x = 0;
                 foreach (PersonaAppRole role in roles)
@@ -77,7 +77,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                     colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name,role.Priority));
 
                     #region Data
-                    List<int> MemberList = role.Users.Select(u => u.UserId).ToList();
+                    List<int> MemberList = role.getUsers_roles(context).Select(u => u.UserId).ToList();
 
                     for (int y = 0; y < MemberList.Count; y++)
                     {
@@ -188,7 +188,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 Application app = context.Applications.Find(model.AppID);
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ApplicationId == app.Id);
+                IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
 
                 #region Save columns
                 int x = 0;
@@ -226,11 +226,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                                 }
                                 #endregion
 
-                                realRole.Users.Clear();
+                                context.Users_Roles.RemoveRange(context.Users_Roles.Where(r => r.RoleName == realRole.Name && r.ApplicationId == realRole.ApplicationId));
 
                                 foreach (int id in NewUsersIDsList)
                                 {
-                                    realRole.Users.Add(new User_Role() { AppRole = realRole, RoleId = realRole.Id, UserId = id, User = context.Users.FirstOrDefault(a => a.Id == id) });
+                                    context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
                                 }
 
                                 context.SaveChanges();
@@ -253,11 +253,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             #region Fill realRole with users
                             foreach (int id in NewUsersIDsList)
                             {
-                                realRole.Users.Add(new User_Role() { AppRole = realRole, UserId = id, User = context.Users.FirstOrDefault(a => a.Id == id) });
+                                context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
                             }
                             #endregion
 
-                            realRole = context.Roles.Add(realRole);
+                            realRole = context.AppRoles.Add(realRole);
 
                             try
                             {
@@ -287,9 +287,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                         #region Delete column (role)
                         if (colHeader.Id != -1)
                         {
-                            PersonaAppRole role = context.Roles.First(a => a.Id == colHeader.Id);
+                            PersonaAppRole role = context.AppRoles.First(a => a.Id == colHeader.Id);
 
-                            context.Roles.Remove(role);
+                            context.AppRoles.Remove(role);
                             context.SaveChanges();
                         }
                         #endregion
@@ -328,9 +328,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             var context = DBEntities.instance;
             #region ColHeader
             int priority;
-            if (context.Roles.Count(r => r.ApplicationId == model.AppID) > 0)
+            if (context.AppRoles.Count(r => r.ApplicationId == model.AppID) > 0)
             {
-                priority = context.Roles.Where(r => r.ApplicationId == model.AppID).Max(r => r.Priority) + 1;
+                priority = context.AppRoles.Where(r => r.ApplicationId == model.AppID).Max(r => r.Priority) + 1;
             }
             else
             {
@@ -344,7 +344,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             }
 
             model.ColHeaders.Add(newColHeader);
-            context.Roles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
+            context.AppRoles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
             /*context.SaveChanges();*/
             #endregion
 

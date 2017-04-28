@@ -117,7 +117,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     reader = cmd.ExecuteReader();
                 }
                 else
-                    throw;
+                    throw e;
             }
 
             return Read(reader);

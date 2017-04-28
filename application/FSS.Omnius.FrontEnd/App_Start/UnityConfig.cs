@@ -28,7 +28,7 @@ namespace FSS.Omnius.FrontEnd
             // it is NOT necessary to register your controllers
 
             //container.RegisterType<DbContext, DBEntities>();
-            container.RegisterType<IUserStore<User, int>, UserStore<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>>();
+            container.RegisterType<IUserStore<User, int>, UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>>();
             container.RegisterType<UserManager<User, int>>(new HierarchicalLifetimeManager());
             container.RegisterType<IOwinContext>(new InjectionFactory(c => c.Resolve<HttpContextBase>().GetOwinContext()));
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => c.Resolve<IOwinContext>().Authentication));

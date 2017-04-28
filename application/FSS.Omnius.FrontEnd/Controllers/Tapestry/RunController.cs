@@ -56,7 +56,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool userIsAllowed = false;
                 foreach (var role in block.RoleWhitelist.Split(',').ToList())
                 {
-                    if (user.HasRole(role))
+                    if (user.HasRole(role, core.Entitron.AppId))
                         userIsAllowed = true;
                 }
                 if (!userIsAllowed)
@@ -569,7 +569,6 @@ namespace FSS.Omnius.Controllers.Tapestry
 
 
                 string sourceTableName = resourceMappingPair.SourceTableName;
-                bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
                 List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();

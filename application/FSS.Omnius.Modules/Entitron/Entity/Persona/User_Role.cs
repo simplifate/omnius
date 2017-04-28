@@ -1,20 +1,29 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     [Table("Persona_User_Role")]
-    public partial class User_Role : IdentityUserRole<int>, IEntity
+    public partial class User_Role : IEntity
     {
-        [Key]
-        [Column(Order = 1)]
-        public new virtual int UserId { get; set; }
-        [Key]
-        [Column(Order = 2)]
-        public new virtual int RoleId { get; set; }
+        public int Id { get; set; }
+        [Index]
+        public int UserId { get; set; }
+        [Index]
+        [Required]
+        [StringLength(50)]
+        public string RoleName { get; set; }
+        public int ApplicationId { get; set; }
 
         public virtual User User { get; set; }
-        public virtual PersonaAppRole AppRole { get; set; }
+        public virtual Application Application { get; set; }
+        public PersonaAppRole getAppRole(DBEntities e = null)
+        {
+            e = e ?? DBEntities.instance;
+            return e.AppRoles.SingleOrDefault(r => r.Name == RoleName);
+        }
     }
 }

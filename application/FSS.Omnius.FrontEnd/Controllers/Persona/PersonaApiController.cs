@@ -93,7 +93,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 using (var context = DBEntities.instance) {
                     AjaxPersonaAppRoles result = new AjaxPersonaAppRoles();
 
-                    result.Roles = context.Roles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
+                    result.Roles = context.AppRoles.Where(r => r.ApplicationId == appId).Select(r => new AjaxPersonaAppRoles_Role()
                     {
                         Id = r.Id,
                         Name = r.Name

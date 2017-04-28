@@ -115,16 +115,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.AuctionSystem
                             var roles  = (property.Children().Single(c => (c as JProperty).Name == "value") as JProperty).Value.ToString().Split(',').Where(r => r.Substring(0,8) == "Auction_").Select(e => e.Remove(0,8));
                             foreach (string role in roles)
                             {
-                                    PersonaAppRole approle = db.Roles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
+                                    PersonaAppRole approle = db.AppRoles.SingleOrDefault(r => r.Name == role && r.ApplicationId == core.Entitron.AppId);
                                     if (approle == null)
                                     {
-                                        db.Roles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
+                                        db.AppRoles.Add(new PersonaAppRole() { Name = role,Application = core.Entitron.Application,Priority = 0 });
                                         db.SaveChanges();
                                     }
                                     //User_Role userRole = newUser.Roles.SingleOrDefault(ur => ur.AppRole == approle && ur.User == newUser);
-                                    if (approle != null && !newUser.Roles.Contains(new User_Role { AppRole = approle, User = newUser }))
+                                    if (approle != null && !newUser.Users_Roles.Contains(new User_Role { RoleName = approle.Name, User = newUser }))
                                     {
-                                        newUser.Roles.Add(new User_Role { AppRole = approle, User = newUser });
+                                        newUser.Users_Roles.Add(new User_Role { RoleName = approle.Name, User = newUser });
                                     }
                             }
                             break;

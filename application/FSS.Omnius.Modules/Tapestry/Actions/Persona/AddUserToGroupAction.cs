@@ -54,16 +54,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
+            var core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
+
             int userId = Convert.ToInt32(vars["UserId"]);
-            int groupId = Convert.ToInt32(vars["GroupId"]);
-            var context = DBEntities.instance;
+            int roleId = Convert.ToInt32(vars["GroupId"]);
             
-            if (!context.UserRoles.Any(c => c.UserId == userId && c.RoleId == groupId))
+            var role = context.AppRoles.SingleOrDefault(ar => ar.Id == roleId);
+            
+            if (!context.Users_Roles.Any(c => c.UserId == userId && c.RoleName == role.Name && c.ApplicationId == role.ApplicationId))
             {
-                context.UserRoles.Add(new User_Role
+                context.Users_Roles.Add(new User_Role
                 {
                     UserId = userId,
-                    RoleId = groupId
+                    RoleName = role.Name,
+                    ApplicationId = role.ApplicationId
                 });
                 context.SaveChanges();
             }

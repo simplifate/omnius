@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Persona
 {
@@ -55,6 +56,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Persona
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var context = DBEntities.appInstance(core.Entitron.Application);
+            int appId = core.Entitron.AppId;
             string role, role2, role3;
             bool result;
 
@@ -74,18 +76,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Persona
                 role = (string)vars["Role"];
                 role2 = (string)vars["Role2"];
                 role3 = (string)vars["Role3"];
-                result = user.HasRole(role) || user.HasRole(role2) || user.HasRole(role3);
+                result = user.HasRole(role, appId) || user.HasRole(role2, appId) || user.HasRole(role3, appId);
             }
             else if (vars.ContainsKey("Role2"))
             {
                 role = (string)vars["Role"];
                 role2 = (string)vars["Role2"];
-                result = user.HasRole(role) || user.HasRole(role2);
+                result = user.HasRole(role, appId) || user.HasRole(role2, appId);
             }
             else
             {
                 role = (string)vars["Role"];
-                result = user.HasRole(role);
+                result = user.HasRole(role, appId);
             }
 
             outputVars["Result"] = result;

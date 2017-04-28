@@ -7,19 +7,19 @@ using Newtonsoft.Json;
 namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 {
     using Master;
+    using System.Linq;
 
     [Table("Persona_AppRoles")]
-    public class PersonaAppRole : IdentityRole<int, User_Role>, IEntity
+    public class PersonaAppRole : IEntity
     {
         public PersonaAppRole()
         {
             ActionRuleRights = new HashSet<ActionRuleRight>();
-            Users = new HashSet<User_Role>();
         }
 
         [ImportExportIgnore(IsKey = true)]
-        public new int Id { get; set; }
-        public new string Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         [ImportExportIgnore(IsParentKey = true)]
         public int ApplicationId { get; set; }
@@ -27,8 +27,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public virtual Application Application { get; set; }
         [Required]
         public int Priority { get; set; }
-        [ImportExportIgnore]
-        public new virtual ICollection<User_Role> Users { get; set; }
+        public IQueryable<User_Role> getUsers_roles(DBEntities e = null)
+        {
+            e = e ?? DBEntities.instance;
+            return e.Users_Roles.Where(r => r.RoleName == Name);
+        }
 
         [ImportExportIgnore]
         public virtual ICollection<ActionRuleRight> ActionRuleRights { get; set; }

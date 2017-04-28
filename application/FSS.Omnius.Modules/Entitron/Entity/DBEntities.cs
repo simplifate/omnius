@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
     //TODO: doladit pøístup z vláken, které nejsou z Http request, dispose, log db
 
-    public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
+    public partial class DBEntities : IdentityDbContext<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>
     {
         private bool isDisposed = false;
         
@@ -264,9 +264,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        public virtual DbSet<User_Role> UserRoles { get; set; }
-
-        //public virtual DbSet<PersonaAppRole> Roles { get; set; }
+        public virtual DbSet<User_Role> Users_Roles { get; set; }
+        public virtual DbSet<PersonaAppRole> AppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -437,14 +436,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<User>()
-                .HasMany<User_Role>(e => e.Roles)
+                .HasMany<User_Role>(e => e.Users_Roles)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserId);
-
-            modelBuilder.Entity<PersonaAppRole>()
-                .HasMany<User_Role>(e => e.Users)
-                .WithRequired(e => e.AppRole)
-                .HasForeignKey(e => e.RoleId);
 
             modelBuilder.Entity<Application>()
                 .HasMany<User>(e => e.DesignedBy)

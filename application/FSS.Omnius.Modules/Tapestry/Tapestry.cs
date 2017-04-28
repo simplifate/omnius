@@ -189,7 +189,8 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // authorize
-            PersonaAppRole role = context.Roles.Where(r => r.Users.Any(u => u.UserId == _CORE.User.Id) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
+            List<string> userRoles = _CORE.User.Users_Roles.Select(r => r.RoleName).ToList();
+            PersonaAppRole role = context.AppRoles.Where(r => userRoles.Contains(r.Name) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
             bool hasAnonnymousAccess = role == null && ARs.Any(ar => !ar.ActionRuleRights.Any());
             if (role == null && !hasAnonnymousAccess)
             {

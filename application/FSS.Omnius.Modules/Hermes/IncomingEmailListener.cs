@@ -13,6 +13,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Watchtower;
 using Newtonsoft.Json.Linq;
 using S22.Imap;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -62,10 +63,10 @@ namespace FSS.Omnius.Modules.Hermes
                                 core.Entitron.Application = rule.Application;
 
                                 try {
-                                    core.User = db.Roles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == rule.ApplicationId).Users.FirstOrDefault().User;
+                                    PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == rule.ApplicationId);
+                                    core.User = db.Users.FirstOrDefault(u => u.Users_Roles.Any(r => r.RoleName == role.Name && r.ApplicationId == role.ApplicationId));
                                 }
-                                catch (Exception ex) {
-                                    var a = 1;
+                                catch (Exception) {
                                 }
 
                                 logger.LogEvent($"Začátek zpracování mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}.",
