@@ -130,7 +130,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.PIA
             }
             else if (vars.ContainsKey($"__Model.{tableName}.{column.Name}")) {
                 var val = vars[$"__Model.{tableName}.{column.Name}"];
-                if (column.type == "datetime") {
+                if (column.type == "datetime" && val != null) {
                     return Convert.ToDateTime(val);
                 }
                 else {
