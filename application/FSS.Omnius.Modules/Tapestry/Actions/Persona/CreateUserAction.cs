@@ -68,7 +68,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     Email = userEmail,
                     UserName = userEmail,
                     DisplayName = name + " " + surname,
-                    SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7"
+                    SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7",
+                    localExpiresAt = DateTime.Now.AddYears(1)
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
