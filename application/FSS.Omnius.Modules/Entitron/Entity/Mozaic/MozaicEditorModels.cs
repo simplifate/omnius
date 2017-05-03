@@ -252,6 +252,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
                     bool columnFilter = properties.ContainsKey("columnFilter") && Convert.ToBoolean(properties["columnFilter"]) == true;
 
+                    string itemPopulation = null;
+                    if (properties.ContainsKey("itemPopulation"))
+                    {
+                        itemPopulation = properties[itemPopulation];
+                    }
+
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
                     {
@@ -262,7 +268,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
 
                         // Opening tag
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "")+$" { c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (itemPopulation != null ? "data-item-population-target=\"" + itemPopulation + "\"" : "") + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "")+$" { c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
 
                             // Open heading
@@ -272,6 +278,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                 if(itemSelection)
                                 {
                                     stringBuilder.Append($"<th><input title=\"@t._(\"Vybrat vše\")\" type=\"checkbox\" data-item-selection=\"*\"></th>");
+                                }
+
+                                // Item population
+                                if (itemPopulation != null)
+                                {
+                                    stringBuilder.Append($"<th></th>");
                                 }
 
                                 // Headers loop #start
@@ -290,6 +302,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                             stringBuilder.Append($"<tfoot><tr>");
 
                                 if (itemSelection)
+                                {
+                                    stringBuilder.Append($"<th></th>");
+                                }
+                                // Item population
+                                if (itemPopulation != null)
                                 {
                                     stringBuilder.Append($"<th></th>");
                                 }
@@ -318,6 +335,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                         if (itemSelection)
                                         {
                                             stringBuilder.Append($"<th><input title=\"@t._(\"Vybrat\")\" type=\"checkbox\" data-item-selection=\"row\"></th>");
+                                        }
+                                        // Item population
+                                        if (itemPopulation != null)
+                                        {
+                                            stringBuilder.Append($"<th><button data-item-populator=true>@t._(\"Vybrat\")</button></th>");
                                         }
 
                                         // Column loop #start
@@ -391,6 +413,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     bool rowSelect = properties.ContainsKey("selectByRow") && Convert.ToBoolean(properties["selectByRow"]) == true;
                     bool columnFilter = properties.ContainsKey("columnFilter") && Convert.ToBoolean(properties["columnFilter"]) == true;
 
+                    string itemPopulation = null;
+                    if (properties.ContainsKey("itemPopulation"))
+                    {
+                        itemPopulation = properties[itemPopulation];
+                    }
+
                     string columnSearchClass = "";
                     if (properties.ContainsKey("searchInIndividualColumns") && Convert.ToBoolean(properties["searchInIndividualColumns"]) == true)
                     {
@@ -419,7 +447,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     stringBuilder.Append($"@{{ if(ViewData.ContainsKey(\"tableData_{c.Name}\") && ((System.Data.DataTable)(ViewData[\"tableData_{c.Name}\"])).Rows.Count > 0) {{");
 
                         // Opening tag
-                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "") + $" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                        stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" " + (itemPopulation != null ? "data-item-population-target=\""+itemPopulation+"\"" : "") + (columnFilter ? "data-column-filter" : "true") + (rowSelect ? "data-select-mode=\"row\"" : "") + $" {c.Attributes} class=\"uic {c.Classes}{columnSearchClass}" + (itemSelection ? " hideSecond" : " hideFirst") + $"\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                         stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\" uicWidth=\"{c.Width}\">");
 
                             // Open heading
@@ -429,6 +457,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                     if (itemSelection)
                                     {
                                         stringBuilder.Append($"<th class=\"text-center\"><input title=\"@t._(\"Vybrat vše\")\" type=\"checkbox\" data-item-selection=\"*\"></th>");
+                                    }
+                                    // Item population
+                                    if (itemPopulation != null)
+                                    {
+                                        stringBuilder.Append($"<th></th>");
                                     }
 
                                     // Headers loop #start
@@ -448,6 +481,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
 
                                     // 
                                     if (itemSelection)
+                                    {
+                                        stringBuilder.Append($"<th></th>");
+                                    }
+                                    // Item population
+                                    if (itemPopulation != null)
                                     {
                                         stringBuilder.Append($"<th></th>");
                                     }
@@ -476,6 +514,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                                     if (itemSelection)
                                     {
                                         stringBuilder.Append($"<th class=\"text-center\"><input title=\"@t._(\"Vybrat\")\" type=\"checkbox\" data-item-selection=\"row\"></th>");
+                                    }
+                                    // Item population
+                                    if (itemPopulation != null)
+                                    {
+                                        stringBuilder.Append($"<th><button data-item-populator=true>@t._(\"Vybrat\")</button></th>");
                                     }
 
                                     // Column loop #start

@@ -968,6 +968,16 @@ $(function () {
             table.css("position", "relative");
             table.css("left", "0px");
             table.css("top", "0px");
+            if (table.attr("data-item-population-target") !== undefined) {
+                var target = $(table.attr("data-item-population-target"));
+                $(table.find("[data-item-populator]")).on("click", function (e) {
+                    var id = $(this).parent().parent().find("td:first-child").text();
+                    console.log("Selected row with id " + id);
+                    target.val(id);
+                    e.preventDefault();
+                    target.get(0).scrollIntoView();
+                });
+            }
             table.wrap("<div class='inner_wrapper'>");
                 table.on("click", ".rowEditAction", function () {
                     var rowId = parseInt($(this).parents("tr").find("td:first").text());
