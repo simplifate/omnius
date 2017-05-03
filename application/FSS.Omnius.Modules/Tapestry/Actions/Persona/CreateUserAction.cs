@@ -69,12 +69,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     UserName = userEmail,
                     DisplayName = name + " " + surname,
                     SecurityStamp = "b532ea85-8d2e-4ffb-8c64-86e8bfe363d7",
-                    localExpiresAt = DateTime.Now.AddYears(1)
+                    localExpiresAt = DateTime.Now.AddYears(1),
+                    CurrentLogin = DateTime.Now,
+                    LastLogin = DateTime.Now,
+                    LastLogout = DateTime.Now,
+                    LastAction = DateTime.Now
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
                 // TODO: Remove hardcoded 1 when merging to Develop
-                context.UserRoles.Add(new User_Role { UserId = user.Id, RoleId = 1 });
+                context.UserRoles.Add(new User_Role { UserId = user.Id, RoleId = 342 });
                 context.SaveChanges();
             }
         }
