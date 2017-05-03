@@ -81,10 +81,18 @@ $(function () {
                     $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", true);
                     $("[name=NT_REALIZACE_date]").prop("readonly", true);
                     $("[name=NT_REALIZACE_date]").prop("disabled", true);
-                } else {
+                    $("[name=NT_REALIZACE_date]").attr("required", false);
+                } else if ($(this).val() === "posunout_termin") {
                     $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
                     $("[name=NT_REALIZACE_date").prop("readonly", false);
                     $("[name=NT_REALIZACE_date]").prop("disabled", false);
+                    $("[name=NT_REALIZACE_date]").attr("required", true);
+                }
+                else {
+                    $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
+                    $("[name=NT_REALIZACE_date]").prop("readonly", true);
+                    $("[name=NT_REALIZACE_date]").prop("disabled", true);
+                    $("[name=NT_REALIZACE_date]").attr("required", false);
                 }
             });
         }
