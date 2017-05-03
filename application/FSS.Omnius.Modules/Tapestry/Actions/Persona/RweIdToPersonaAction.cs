@@ -57,11 +57,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             var rweUsersTable = core.Entitron.GetDynamicTable("Users");
             var context = DBEntities.instance;
-            int userId = Convert.ToInt32(vars["Id"]);
+           
+
 
             List<DBItem> results;
-            
-            results = rweUsersTable.Select().where(c => c.column("id").Equal(userId)).ToList();
+            if (vars.ContainsKey("id"))
+            {
+                int userId = Convert.ToInt32(vars["Id"]);
+                results = rweUsersTable.Select().where(c => c.column("id").Equal(userId)).ToList();
+            }
+            else {
+                results = rweUsersTable.Select().where(c => c.column("pernr").Equal((string)vars["Pernr"])).ToList();
+
+            }
             if (results.Count > 0)
             {
                 string ad_email = (string)results[0]["ad_email"];
