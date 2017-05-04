@@ -65,7 +65,7 @@
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         <div class="widgetLabel">Všechny aplikace</div>
         <div class="appList">
-            @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name)) {
+            @foreach (Application app in (List<Application>)ViewData["Apps"]) {
                 <a href="/@app.Name">
                     <div class="appListItem">
                         <div class="icon fa @(app.Icon)"></div>
