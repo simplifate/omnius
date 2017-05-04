@@ -100,7 +100,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "controls|dropdown-menu-divider":      html = RenderDefault(c, p); break;
                     case "controls|link":                       html = RenderDefault(c, p); break;
                     /***** FORM *****/
-                    case "form|form":                           html = RenderDefault(c, p); break;
+                    case "form|form":                           html = RenderForm(c, p); break;
                     case "form|form-group":                     html = RenderDefault(c, p); break;
                     case "form|label":                          html = RenderLabel(c, p); break;
                     case "form|input-text":                     html = RenderInput(c, p); break;
@@ -345,6 +345,15 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             string attrs = BuildAttributes(c);
 
             html.Append($"<{c.Tag} {attrs}>{c.Content}</{c.Tag}>");
+            return html.ToString();
+        }
+
+        private string RenderForm(MozaicBootstrapComponent c, Dictionary<string, string> properties)
+        {
+            StringBuilder html = new StringBuilder();
+            string attrs = BuildAttributes(c);
+
+            html.Append($"<{c.Tag} {attrs}>{c.Content}@Html.AntiForgeryToken()</{c.Tag}>");
             return html.ToString();
         }
 
