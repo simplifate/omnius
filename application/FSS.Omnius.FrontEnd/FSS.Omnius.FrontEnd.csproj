@@ -1943,6 +1943,11 @@
     <Content Include="Views\App\83\Page\1082.cshtml" />
     <Content Include="Views\App\83\Page\1092.cshtml" />
     <Content Include="Views\App\83\Page\1093.cshtml" />
+    <Content Include="Views\App\83\Page\1094.cshtml" />
+    <Content Include="Views\App\83\Page\1095.cshtml" />
+    <Content Include="Views\App\83\Page\1099.cshtml" />
+    <Content Include="Views\App\83\Page\1100.cshtml" />
+    <Content Include="Views\App\83\Page\1101.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
