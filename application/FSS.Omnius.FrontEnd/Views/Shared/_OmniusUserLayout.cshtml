@@ -67,7 +67,7 @@
         <div class="appList">
             @if (ViewData.ContainsKey("Apps"))
             {
-                @foreach (Application app in (List<Application>)ViewData["Apps"])
+                foreach (Application app in (List<Application>)ViewData["Apps"])
                 {
                     <a href="/@app.Name">
                         <div class="appListItem">
