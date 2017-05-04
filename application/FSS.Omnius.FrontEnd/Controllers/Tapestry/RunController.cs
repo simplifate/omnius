@@ -1056,7 +1056,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
             string boostrapPath = block.BootstrapPageId != null ? $"Bootstrap\\" : "";
             var pageId = block.BootstrapPageId ?? block.EditorPageId;
-            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{boostrapPath}{pageId}.cshtml";
+            string viewPath = $"{core.Entitron.Application.Name}\\Page\\{boostrapPath}{pageId}.cshtml";
 
             prepareEnd = DateTime.Now;
             // show

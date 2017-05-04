@@ -260,14 +260,14 @@ namespace FSS.Omnius.Controllers.Master
                     }
                 }
 
-                    string applicationViewPath = $"{AppDomain.CurrentDomain.BaseDirectory}\\Views\\App\\{_AppId}";
-                    string applicationPageViewPath = $"{applicationViewPath}\\Page";
-                    if (!Directory.Exists(applicationViewPath))
-                        Directory.CreateDirectory(applicationViewPath);
-                    if (!Directory.Exists(applicationPageViewPath))
-                        Directory.CreateDirectory(applicationPageViewPath);
-
                 // Mozaic pages
+                string applicationViewPath = $"{AppDomain.CurrentDomain.BaseDirectory}Views\\App\\{app.Name}";
+                string applicationPageViewPath = $"{applicationViewPath}\\Page";
+                if (!Directory.Exists(applicationViewPath))
+                    Directory.CreateDirectory(applicationViewPath);
+                if (!Directory.Exists(applicationPageViewPath))
+                    Directory.CreateDirectory(applicationPageViewPath);
+
                 if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
                 {
                     try
@@ -277,14 +277,14 @@ namespace FSS.Omnius.Controllers.Master
                         foreach (var editorPage in masterApp.MozaicEditorPages)
                         {
                             editorPage.Recompile();
-                            string requestedPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml";
+                            string requestedPath = $"{applicationPageViewPath}\\{editorPage.Id}.cshtml";
                             var oldPage = context.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
                             if (oldPage == null)
                             {
                                 var newPage = new Page
                                 {
                                     ViewName = editorPage.Name,
-                                    ViewPath = $"/Views/App/{_AppId}/Page/{editorPage.Id}.cshtml",
+                                    ViewPath = requestedPath,
                                     ViewContent = editorPage.CompiledPartialView,
                                     IsBootstrap = false
                                 };
@@ -299,9 +299,8 @@ namespace FSS.Omnius.Controllers.Master
                                 oldPage.IsBootstrap = false;
                                 editorPage.CompiledPageId = oldPage.Id;
                             }
-                            string fileName = applicationPageViewPath + $"\\{editorPage.Id}.cshtml";
 
-                            File.WriteAllText(fileName, editorPage.CompiledPartialView);
+                            File.WriteAllText(requestedPath, editorPage.CompiledPartialView);
                         }
 
                         Builder bootstrapBuilder = new Builder(context, applicationPageViewPath);
@@ -349,13 +348,13 @@ namespace FSS.Omnius.Controllers.Master
                     try
                     {
                         Send(Json.Encode(new { id = "menu", type = "info", message = "probíhá aktualizace menu" }));
-                        string path = $"/Views/App/{_AppId}/menuLayout.cshtml";
+                        string path = $"{applicationViewPath}\\menuLayout.cshtml";
                         var menuLayout = context.Pages.FirstOrDefault(c => c.ViewPath == path);
                         if (menuLayout == null)
                         {
                             menuLayout = new Page
                             {
-                                ViewPath = $"/Views/App/{_AppId}/menuLayout.cshtml"
+                                ViewPath = path
                             };
                             context.Pages.Add(menuLayout);
                         }
@@ -365,9 +364,8 @@ namespace FSS.Omnius.Controllers.Master
                         masterApp.IsPublished = true;
                         masterApp.MenuChangedSinceLastBuild = false;
                         masterContext.SaveChanges();
-
-                            string fileName = $"{applicationViewPath}\\menuLayout.cshtml";
-                            File.WriteAllText(fileName, menuLayout.ViewContent);
+                        
+                        File.WriteAllText(path, menuLayout.ViewContent);
 
                         Send(Json.Encode(new { id = "menu", type = "success", message = "proběhla aktualizace menu" }));
                     }
