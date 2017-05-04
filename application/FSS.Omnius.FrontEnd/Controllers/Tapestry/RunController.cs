@@ -473,6 +473,18 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "input-multiline":
                     case "color-picker":
                     case "label":
+                    case "form|input-text":
+                    case "form|input-email":
+                    case "form|input-color":
+                    case "form|input-tel":
+                    case "form|input-date":
+                    case "form|input-number":
+                    case "form|input-range":
+                    case "form|input-hidden":
+                    case "form|input-url":
+                    case "form|input-search":
+                    case "form|input-password":
+                    case "form|textarea":
                         if (modelLoaded)
                         {
                             if (resourceMappingPair.DataSourceParams == "currentUser")
