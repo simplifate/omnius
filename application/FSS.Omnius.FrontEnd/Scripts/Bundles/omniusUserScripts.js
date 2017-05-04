@@ -47,14 +47,10 @@ $(function () {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
-                    $("[name=TERMIN_REALIZACE_date]").prop("disabled", true);
-
                 } else {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
-                    $("[name=TERMIN_REALIZACE_date]").prop("disabled", false);
-
                 }
             });
         }
@@ -64,14 +60,10 @@ $(function () {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
-                    $("[name=TERMIN_REALIZACE_date]").prop("disabled", false);
-
                 } else {
                     $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
                     $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
                     $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
-                    $("[name=TERMIN_REALIZACE_date]").prop("disabled", true);
-
                 }
             });
         }
@@ -80,18 +72,15 @@ $(function () {
                 if ($(this).val() === "realizovano") {
                     $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", true);
                     $("[name=NT_REALIZACE_date]").prop("readonly", true);
-                    $("[name=NT_REALIZACE_date]").prop("disabled", true);
                     $("[name=NT_REALIZACE_date]").attr("required", false);
                 } else if ($(this).val() === "posunout_termin") {
                     $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
                     $("[name=NT_REALIZACE_date").prop("readonly", false);
-                    $("[name=NT_REALIZACE_date]").prop("disabled", false);
                     $("[name=NT_REALIZACE_date]").attr("required", true);
                 }
                 else {
                     $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
                     $("[name=NT_REALIZACE_date]").prop("readonly", true);
-                    $("[name=NT_REALIZACE_date]").prop("disabled", true);
                     $("[name=NT_REALIZACE_date]").attr("required", false);
                 }
             });
@@ -1000,6 +989,7 @@ $(function () {
                     var tableName = table.attr("name");
                     submitActionByForm(tableName, modelId, "DeleteAction", [$('<input type="hidden" name="deleteId" value="' + rowId + '" />')]);
                 }
+
             });
             table.on("click", ".row_A_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
