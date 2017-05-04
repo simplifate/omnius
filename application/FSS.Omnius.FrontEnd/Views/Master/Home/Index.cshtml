@@ -10,7 +10,7 @@
 }
 
 <div class="appWorkspace">
-    @foreach (Application app in Application.getAllowed(Context.GetCORE(), User.Identity.Name).Include("UsersApplications").ToList())
+    @foreach (Application app in (List<Application>)ViewData["Apps"])
     {
         var positionX = 10;
         var positionY = 10;
