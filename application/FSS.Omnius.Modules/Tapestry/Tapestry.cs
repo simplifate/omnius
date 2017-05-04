@@ -170,12 +170,13 @@ namespace FSS.Omnius.Modules.Tapestry
 
         private ActionRule GetActionRule(Block block, ActionResult results, string buttonId = null)
         {
+            DBEntities masterContext = DBEntities.instance;
             DBEntities context = DBEntities.appInstance(_CORE.Entitron.Application);
-            IQueryable<ActionRule> ARs;
+
+            // filter by executor
             if (buttonId != null)
             {
-                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.ExecutedBy == buttonId);
-                if (!ARs.Any())
+                if (!context.ActionRules.Any(ar => ar.SourceBlockId == block.Id && ar.ExecutedBy == buttonId))
                 {
                     results.Message.Errors.Add($"Block [{block.Name}] with Executor[{buttonId}] cannot be found");
                     return null;
@@ -183,27 +184,22 @@ namespace FSS.Omnius.Modules.Tapestry
             }
             else
             {
-                ARs = context.ActionRules.Where(ar => ar.SourceBlockId == block.Id && ar.Actor.Name == "Auto");
-                if (!ARs.Any())
+                if (!context.ActionRules.Any(ar => ar.SourceBlockId == block.Id && ar.Actor.Name == "Auto"))
                     return null;
             }
 
-            // authorize
-            List<string> userRoles = _CORE.User.Users_Roles.Select(r => r.RoleName).ToList();
-            PersonaAppRole role = context.AppRoles.Where(r => userRoles.Contains(r.Name) && r.ActionRuleRights.Any(arr => ARs.Contains(arr.ActionRule))).OrderByDescending(r => r.Priority).FirstOrDefault();
-            bool hasAnonnymousAccess = role == null && ARs.Any(ar => !ar.ActionRuleRights.Any());
-            if (role == null && !hasAnonnymousAccess)
+            // filter by rights
+            List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == _CORE.User.Id && ur.ApplicationId == _CORE.Entitron.AppId).Select(ur => ur.RoleName).ToList();
+            List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, ISNULL(appr.Priority, 999) as [Prior] FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
+            if (!ARs.Any())
             {
                 results.Message.Errors.Add($"You are not authorized to Block [{block.Name}] with Executor[{buttonId}]");
                 return null;
             }
-
-            // check
-            var swimlaneARs = hasAnonnymousAccess
-                ? ARs.Where(ar => !ar.ActionRuleRights.Any()).ToList()
-                : ARs.Where(ar => ar.ActionRuleRights.Any(arr => arr.AppRoleId == role.Id)).ToList();
+            
+            // filter by conditions
             ActionRule defaultRule = null;
-            foreach (ActionRule rule in swimlaneARs)
+            foreach (ActionRule rule in ARs)
             {
                 // this is default rule (false branch)
                 if (rule.isDefault)
