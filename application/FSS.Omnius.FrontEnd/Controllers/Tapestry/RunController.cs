@@ -432,6 +432,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "data-table-read-only":
                     case "data-table-with-actions":
                     case "name-value-list":
+                    case "ui|data-table":
+                    case "ui|nv-list":
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                         break;
                     case "dropdown-select":
