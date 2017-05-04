@@ -1028,7 +1028,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                     ViewData[pair.Key.Substring(10)] = dataSource;
                 }
             }
-            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{block.EditorPageId}.cshtml";
+            string boostrapPath = block.BootstrapPageId != null ? $"Bootstrap\\" : "";
+            var pageId = block.BootstrapPageId ?? block.EditorPageId;
+            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{boostrapPath}{pageId}.cshtml";
 
             prepareEnd = DateTime.Now;
             // show
