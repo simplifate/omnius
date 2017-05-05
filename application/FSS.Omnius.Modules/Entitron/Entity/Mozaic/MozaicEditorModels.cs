@@ -416,7 +416,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     string itemPopulation = null;
                     if (properties.ContainsKey("itemPopulation"))
                     {
-                        itemPopulation = properties[itemPopulation];
+                        itemPopulation = properties["itemPopulation"];
                     }
 
                     string columnSearchClass = "";
