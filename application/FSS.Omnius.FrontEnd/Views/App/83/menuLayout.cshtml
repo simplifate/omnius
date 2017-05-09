@@ -44,6 +44,9 @@
 
     <ul >
 @if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
+                    <a href="/PortalInternichAuditu2/Hesla">@(t._("Hesla"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
                     <a href="/PortalInternichAuditu2/NovyExterniUzivatel">@(t._("Nový externí uživatel"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",83)){            <li>
