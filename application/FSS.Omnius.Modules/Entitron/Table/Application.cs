@@ -31,6 +31,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             }
         }
 
+        public string GetLayout()
+        {
+            return this.CssTemplate.Url;
+        }
+
         internal SqlQueue queries = new SqlQueue();
 
         public IEnumerable<DBTable> GetTables()

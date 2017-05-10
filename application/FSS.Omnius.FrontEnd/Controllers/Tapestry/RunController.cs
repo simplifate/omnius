@@ -560,7 +560,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
             }
             #endregion
-            #region foreachSourceTableName && COlumnName
+            #region foreachSourceTableName && ColumnName
             foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && r.SourceColumnName != null).ToList())
             {
                 DataTable dataSource = null;
@@ -1065,8 +1065,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
-
-            return View(viewPath);
+            return View(viewPath, app.GetLayout());
 
         }
 

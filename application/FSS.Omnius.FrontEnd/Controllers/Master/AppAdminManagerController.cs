@@ -270,6 +270,15 @@ namespace FSS.Omnius.Controllers.Master
 
                 if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
                 {
+                    if (masterContext != context)
+                    {
+                        app.CssTemplate = new MozaicCssTemplate
+                        {
+                            Name = masterApp.CssTemplate.Name,
+                            Url = masterApp.CssTemplate.Url
+                        };
+                    }
+
                     try
                     {
                         Send(Json.Encode(new { id = "mozaic", type = "info", message = "probíhá aktualizace uživatelského rozhraní" }));
