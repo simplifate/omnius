@@ -99,6 +99,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // fill data
             ViewData["appName"] = core.Entitron.Application.DisplayName;
+            ViewData["appSystemName"] = core.Entitron.Application.Name;
             ViewData["appIcon"] = core.Entitron.Application.Icon;
             ViewData["pageName"] = block.DisplayName;
             ViewData["UserEmail"] = core.User.Email;
@@ -1054,9 +1055,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                     ViewData[pair.Key.Substring(10)] = dataSource;
                 }
             }
-            string boostrapPath = block.BootstrapPageId != null ? $"Bootstrap\\" : "";
-            var pageId = block.BootstrapPageId ?? block.EditorPageId;
-            string viewPath = $"{core.Entitron.Application.Name}\\Page\\{boostrapPath}{pageId}.cshtml";
+            string viewPath = (block.BootstrapPageId != null) 
+                ? $"{core.Entitron.Application.Name}\\Page\\Bootstrap\\{block.BootstrapPageId}.cshtml" 
+                : $"{core.Entitron.Application.Name}\\Page\\{block.EditorPageId}.cshtml";
 
             prepareEnd = DateTime.Now;
             // show
