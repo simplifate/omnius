@@ -867,6 +867,9 @@ body.userLayout #brandBar {
             font-size: 18px;
         }
     }
+    .named-panel.disabled {
+        top: -9999px !important;
+    }
     .removePanelIcon {
         @include no-select();
         position: absolute;

@@ -85,6 +85,11 @@ $(function () {
                 }
             });
         }
+        if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
+            $("#uic_doporuc_button").click(function () {
+                $("#uic_panel20").toggleClass('disabled');
+            });
+        }
        
     
     else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
