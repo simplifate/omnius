@@ -57,8 +57,6 @@ namespace FSS.Omnius.Modules.Hermes
                             Block block = GetBlockWithWF(db, rule.ApplicationId, rule.BlockName.RemoveDiacritics());
                             if (block != null) 
                             {
-                                WatchtowerLogger logger = new WatchtowerLogger(db);
-                                
                                 var core = new CORE.CORE();
                                 core.Entitron.Application = rule.Application;
 
@@ -69,9 +67,8 @@ namespace FSS.Omnius.Modules.Hermes
                                 catch (Exception) {
                                 }
 
-                                logger.LogEvent($"Začátek zpracování mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}.",
-                                    core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, rule.ApplicationId);
-
+                                OmniusInfo.Log($"Začátek zpracování mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
+                                
                                 FormCollection fc = new FormCollection(new NameValueCollection()
                                 {
                                     { "MailFrom", mail.From.Address },
@@ -82,8 +79,7 @@ namespace FSS.Omnius.Modules.Hermes
                                 
                                 var runResult = core.Tapestry.run(core.User, block, rule.WorkflowName, -1, fc, 0);
 
-                                logger.LogEvent($"Konec zpraconání mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}.",
-                                    core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, rule.ApplicationId);
+                                OmniusInfo.Log($"Konec zpraconání mailu: {email.Name} / Pravidlo {rule.Name} / Blok {rule.BlockName} / Button {rule.WorkflowName}", OmniusLogSource.Hermes, rule.Application, core.User);
                             }
                         }
                     }

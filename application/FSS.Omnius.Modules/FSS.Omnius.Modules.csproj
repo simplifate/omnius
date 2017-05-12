@@ -1117,6 +1117,10 @@
     <Compile Include="Migrations\201706120733572_ApplicationDB.Designer.cs">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705121141371_WatchtowerLogItems.cs" />
+    <Compile Include="Migrations\201705121141371_WatchtowerLogItems.Designer.cs">
+      <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1243,19 +1247,17 @@
     <Compile Include="Tapestry\Actions\Entitron\GetTableAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AnyItemAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\SelectAction.cs" />
-    <Compile Include="Tapestry\Running\ActionSequence.cs" />
     <Compile Include="Tapestry\Running\ActionRule_ActionBase.cs" />
-    <Compile Include="Tapestry\Running\ActionSequence_Action.cs" />
-    <Compile Include="Tapestry\Running\Block.cs" />
     <Compile Include="Tapestry\Helpers\KeyValueString.cs" />
     <Compile Include="Tapestry\Helpers\NotAllowedExcetption.cs" />
-    <Compile Include="Tapestry\Running\PreBlockAction.cs" />
+    <Compile Include="Tapestry\Running\ActionSequence.cs" />
+    <Compile Include="Tapestry\Running\ActionSequence_Action.cs" />
     <Compile Include="Tapestry\Running\WFitem.cs" />
     <Compile Include="Tapestry\Service\GatewayDecisionService.cs" />
     <Compile Include="Tapestry\Service\TapestryGeneratorService.cs" />
     <Compile Include="Tapestry\Tapestry.cs" />
     <Compile Include="Tapestry\TapestryUtils.cs" />
-    <Compile Include="Watchtower\WatchtowerLogger.cs" />
+    <Compile Include="Watchtower\OmniusLogException.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -1842,6 +1844,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706120733572_ApplicationDB.resx">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705121141371_WatchtowerLogItems.resx">
+      <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

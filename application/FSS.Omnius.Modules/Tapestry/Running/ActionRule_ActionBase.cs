@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace FSS.Omnius.Modules.Tapestry
 {
     public interface IActionRule_Action
     {
+        int ActionRuleId { get; set; }
+        ActionRule ActionRule { get; set; }
         int ActionId { get; set; }
         int Order { get; set; }
         string InputVariablesMapping { get; set; }

@@ -53,32 +53,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            WatchtowerLogger logger = WatchtowerLogger.Instance;
 
             string msg = vars.ContainsKey("Message") ? (string)vars["Message"] : string.Empty;
-            int level = vars.ContainsKey("Level") ? (int)vars["Level"] : (int)LogLevel.Info;
+            OmniusLogLevel level = vars.ContainsKey("Level") ? (OmniusLogLevel)vars["Level"] : OmniusLogLevel.Info;
 
-            if(string.IsNullOrEmpty(msg))
-            {
-                logger.LogEvent(
-                        string.Format("Zpráva nebyla předána (Akce: {0} ({1}))", Name, Id),
-                        core.User.Id,
-                        LogEventType.Tapestry,
-                        LogLevel.Error,
-                        false,
-                        core.Entitron.AppId
-                    );
-                throw new Exception("Zpráva k zalogování nebyla předána");
-            }
-
-            logger.LogEvent(
-                    msg,
-                    core.User.Id,
-                    LogEventType.NormalUserAction,
-                    (LogLevel)level,
-                    false,
-                    core.Entitron.AppId
-                );
+            OmniusLog.Log(msg, level, OmniusLogSource.User, core.Entitron.Application, core.User);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Tapestry
         int Id { get; }
         string[] InputVar { get; }
         string[] OutputVar { get; }
-        ActionResult run(Dictionary<string, object> vars);
+        ActionResult run(Dictionary<string, object> vars, IActionRule_Action actionRule_action);
         void ReverseRun(Dictionary<string, object> vars);
     }
 }

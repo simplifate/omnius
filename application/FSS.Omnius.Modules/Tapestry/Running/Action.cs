@@ -1,5 +1,7 @@
 ﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Tapestry.Actions;
+using FSS.Omnius.Modules.Watchtower;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -39,11 +41,11 @@ namespace FSS.Omnius.Modules.Tapestry
 
             return _actions.SingleOrDefault(a => a.Value.Name == name).Key;
         }
-        public static ActionResult RunAction(int id, Dictionary<string, object> vars)
+        public static ActionResult RunAction(int id, Dictionary<string, object> vars, IActionRule_Action actionRule_action)
         {
             Action action = All[id];
 
-            return action.run(vars);
+            return action.run(vars, actionRule_action);
         }
         public static void INIT()
         {
@@ -63,7 +65,7 @@ namespace FSS.Omnius.Modules.Tapestry
         public abstract int? ReverseActionId { get; }
         public abstract string Name { get; }
         
-        public virtual ActionResult run(Dictionary<string, object> vars)
+        public virtual ActionResult run(Dictionary<string, object> vars, IActionRule_Action actionRule_action)
         {
             Dictionary<string, object> outputVars = new Dictionary<string, object>();
             ActionResultType outputStatus = ActionResultType.Success;
@@ -80,8 +82,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 message.Errors.Add(ex.Message);
                 Logger.Log.Error(ex);
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                List<string> varValues = vars.Select(v => $"{v.Key} = {(v.Value == null ? "NULL" : v.Value.ToString())}").ToList();
-                LogError($"ActionName: {Name}\nVars: {string.Join(", ", varValues)}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}", core.User.Id, core.Entitron.AppId);
+                OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, core.Entitron.Application, actionRule_action.ActionRule.SourceBlock, actionRule_action, vars, core.User);
             }
 
             return new ActionResult(outputStatus, outputVars, invertedVar, message);
@@ -93,18 +94,5 @@ namespace FSS.Omnius.Modules.Tapestry
             //    RunAction(ReverseActionId.Value, vars);
         }
         public abstract void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string,object> InvertedInputVars, Message message);
-
-        public void LogError(string message, int userId, int appId)
-        {
-            Watchtower.WatchtowerLogger logger = Watchtower.WatchtowerLogger.Instance;
-            logger.LogEvent(
-                    message,
-                    userId,
-                    Watchtower.LogEventType.Tapestry,
-                    Watchtower.LogLevel.Error,
-                    false,
-                    appId
-                );
-        }
     }
 }

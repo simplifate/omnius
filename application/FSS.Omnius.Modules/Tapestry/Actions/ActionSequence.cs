@@ -15,12 +15,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions
             _sequence = new List<Action>();
         }
 
-        public override ActionResult run(Dictionary<string, object> vars)
+        public override ActionResult run(Dictionary<string, object> vars, IActionRule_Action actionRule_action)
         {
             ActionResult results = new ActionResult();
             foreach(Action action in _sequence)
             {
-                results.Join(action.run(vars));
+                results.Join(action.run(vars, actionRule_action));
             }
 
             return results;

@@ -27,9 +27,9 @@
 
         [DataType(DataType.Text)]
         public string AttachmentList { get; set; }
-
-        [LinkToEntity(typeof(Application))]
-        public int? Application_Id { get; set; }
+        
+        public int ApplicationId { get; set; }
+        public Application Application { get; set; }
 
         public EmailQueueStatus Status { get; set; }
     }

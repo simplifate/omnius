@@ -70,20 +70,18 @@ namespace FSS.Omnius.Modules.Cortex
                 }
                 catch (Hyak.Common.CloudException e)
                 {
-                    string error = e.Message;
-                    WatchtowerLogger.Instance.LogEvent(error, 0, LogEventType.NotSpecified, Watchtower.LogLevel.Error);
+                    OmniusException.Log(e, OmniusLogSource.Cortex);
                     errorOccured = true;
                 }
             }
             catch (Hyak.Common.CloudException e)
             {
-                string error = e.Message;
-                WatchtowerLogger.Instance.LogEvent(error, 0, LogEventType.NotSpecified, Watchtower.LogLevel.Error);
+                OmniusException.Log(e, OmniusLogSource.Cortex);
                 errorOccured = true;
             }
             if (!errorOccured)
             {
-                WatchtowerLogger.Instance.LogEvent($"Cortex: succesfully created task to open {model.Url} at {model.Start_Date.ToString()}", 0, LogEventType.NotSpecified, Watchtower.LogLevel.Info);
+                OmniusInfo.Log($"Succesfully created task to open {model.Url} at {model.Start_Date.ToString()}", OmniusLogSource.Cortex);
             }
         }
 

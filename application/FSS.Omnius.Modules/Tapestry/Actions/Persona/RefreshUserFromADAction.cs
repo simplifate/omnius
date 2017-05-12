@@ -66,14 +66,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             }
             else
             {
-                WatchtowerLogger.Instance.LogEvent(
-                        $"Refresh z AD - uživatel s emailem \"{userEmail}\" neexistuje",
-                        core.User.Id,
-                        LogEventType.Tapestry,
-                        LogLevel.Warning,
-                        false,
-                        core.Entitron.AppId
-                    );
+                OmniusWarning.Log($"Refresh z AD - uživatel s emailem \"{userEmail}\" neexistuje", OmniusLogSource.Tapestry, core.Entitron.Application, core.User);
             }
         }
     }

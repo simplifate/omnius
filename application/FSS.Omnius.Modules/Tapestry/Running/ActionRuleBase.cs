@@ -22,7 +22,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 var remapedParams = actionMap.getInputVariables(results.OutputData);
 
                 // Action
-                var result = Action.RunAction(actionMap.ActionId, remapedParams);
+                var result = Action.RunAction(actionMap.ActionId, remapedParams, actionMap);
 
                 // errory
                 if (result.Type == ActionResultType.Error)

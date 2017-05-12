@@ -34,13 +34,13 @@ namespace FSS.Omnius.Modules.Tapestry
             OutputVar = tempOutput.ToArray();
         }
 
-        public ActionResult run(Dictionary<string, object> vars)
+        public ActionResult run(Dictionary<string, object> vars, IActionRule_Action actionRule_action)
         {
             ActionResult result = new ActionResult();
 
             foreach(Action act in _actions)
             {
-                result.Join(act.run(vars));
+                result.Join(act.run(vars, actionRule_action));
             }
             
             return result;

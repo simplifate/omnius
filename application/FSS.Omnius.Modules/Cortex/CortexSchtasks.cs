@@ -2,6 +2,7 @@
 {
     using FSS.Omnius.Modules.Cortex.Interface;
     using FSS.Omnius.Modules.Entitron.Entity.Cortex;
+    using FSS.Omnius.Modules.Entitron.Entity.Master;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -21,9 +22,7 @@
 
         private List<string> outputs = new List<string>();
         private List<string> errors = new List<string>();
-        private int? appId = null;
-
-        private WatchtowerLogger logger = WatchtowerLogger.Instance;
+        private Application app;
 
         public CortexSchtasks(HttpRequestBase request)
         {
@@ -37,7 +36,7 @@
 
         public void Create(Task t)
         {
-            appId = t.AppId;
+            app = t.Application;
             string cmd = BuildTaskXML(t);
             Execute(cmd);
         }
@@ -50,7 +49,7 @@
 
         public void Delete(Task t)
         {
-            appId = t.AppId;
+            app = t.Application;
             string taskName = GetJobId(t);
             string cmd = "Schtasks /delete /tn \"" + taskName + "\"";
             Execute(cmd);
@@ -252,41 +251,17 @@
             }
             catch (Exception e)
             {
-                logger.LogEvent(
-                        e.Message + "(" + e.StackTrace + ")",
-                        0,
-                        LogEventType.CortexSchedule,
-                        LogLevel.Error,
-                        appId == null ? true : false,
-                        appId
-                    );
+                OmniusException.Log(e, OmniusLogSource.Cortex, app);
             }
         }
 
         private void OnExecuteDone(object sender, EventArgs e)
         {
             if (outputs.Count > 0)
-            {
-                logger.LogEvent(
-                            "Cortex: " + string.Join("<br>", outputs),
-                            0,
-                            LogEventType.CortexSchedule,
-                            LogLevel.Info,
-                            appId == null ? true : false,
-                            appId
-                        );
-            }
+                OmniusInfo.Log($"Outputs: {string.Join(";", outputs)}", OmniusLogSource.Cortex, app);
+
             if (errors.Count > 0)
-            {
-                logger.LogEvent(
-                            "Cortex: " + string.Join("<br>", errors),
-                            0,
-                            LogEventType.CortexSchedule,
-                            LogLevel.Error,
-                            appId == null ? true : false,
-                            appId
-                        );
-            }
+                OmniusInfo.Log($"Errors: {string.Join(";", errors)}", OmniusLogSource.Cortex, app);
 
             CleanUp();
         }

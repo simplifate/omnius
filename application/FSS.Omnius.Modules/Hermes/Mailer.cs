@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Mime;
 using System.IO;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Hermes
 {
@@ -132,7 +133,7 @@ namespace FSS.Omnius.Modules.Hermes
         public bool SendBySender(int? applicationId = null, DateTime? sendAfter = null)
         {
             EmailQueue item = new EmailQueue();
-            item.Application_Id = applicationId;
+            item.ApplicationId = applicationId ?? e.Applications.Single(a => a.IsSystem).Id;
             item.Message = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
             item.Date_Send_After = sendAfter == null ? DateTime.UtcNow : (DateTime)sendAfter;
             item.Date_Inserted = DateTime.UtcNow;
@@ -145,7 +146,7 @@ namespace FSS.Omnius.Modules.Hermes
             return true;
         }
 
-        public bool SendMail(int? applicationId = null, bool disposeClient = true)
+        public bool SendMail(Application application = null, bool disposeClient = true)
         {
             if (mail.To.Count + mail.Bcc.Count == 0)
             {
@@ -169,16 +170,9 @@ namespace FSS.Omnius.Modules.Hermes
 
                             att = new Attachment(fileContent, fileInfo.Filename);
                         }
-                        catch(NullReferenceException)
+                        catch(NullReferenceException e)
                         {
-                            WatchtowerLogger.Instance.LogEvent(
-                                String.Format("Odeslání e-mailu se nezdařilo - příloha <b>{0}</b> nebyla nalezena", attachmentList[i]["Value"].ToString()),
-                                1, /* !!! */
-                                LogEventType.EmailSent,
-                                LogLevel.Error,
-                                applicationId == null ? true : false,
-                                applicationId
-                            );
+                            OmniusException.Log($"Odeslání e-mailu se nezdařilo - příloha <b>{attachmentList[i]["Value"].ToString()}</b> nebyla nalezena", OmniusLogSource.Hermes, e, application);
                             return false;
                         }
                     }
@@ -209,17 +203,9 @@ namespace FSS.Omnius.Modules.Hermes
             log.SMTP_Error = smtpError;
 
             e.EmailLogItems.Add(log);
-            e.SaveChanges(); 
+            e.SaveChanges();
 
-            WatchtowerLogger logger = WatchtowerLogger.Instance;
-            logger.LogEvent(
-                string.Format("Odeslání e-mailu \"{0}\" (<a href=\"{1}\" title=\"Detail e-mailu\">detail e-mailu</a>)", mail.Subject, "/Hermes/Log/Detail/" + log.Id + "/"),
-                1, // !!! POZOR !!!
-                LogEventType.EmailSent,
-                result ? LogLevel.Info : LogLevel.Error,
-                applicationId == null ? true : false,
-                applicationId
-            );
+            OmniusLog.Log($"Odeslání e-mailu \"{mail.Subject}\" (<a href=\"/Hermes/Log/Detail/{log.Id}\" title=\"Detail e-mailu\">detail e-mailu</a>)", (result ? OmniusLogLevel.Info : OmniusLogLevel.Error), OmniusLogSource.Hermes, application);
 
             if (disposeClient) {
                 client.Dispose();
@@ -269,7 +255,7 @@ namespace FSS.Omnius.Modules.Hermes
 
                 attachmentList = JArray.Parse(row.AttachmentList);
 
-                bool sent = SendMail(row.Application_Id, false);
+                bool sent = SendMail(row.Application, false);
                 if(sent) {
                     e.EmailQueueItems.Remove(row);
                 }

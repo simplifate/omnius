@@ -94,8 +94,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             // If user is not found, send error
             if (core.User == null)
             {
-                WatchtowerLogger.Instance.LogEvent("User with email " + response.GetNameID() + " not found.", 0);
-                throw new Exception("Uživatel nebyl nalezen.");
+                var ex = new OmniusException($"User with email {response.GetNameID()} not found.")
+                {
+                    SourceModule = OmniusLogSource.Persona
+                };
+                ex.Save();
+                throw ex;
             }
             // Otherwise, login & redirect user home
             SignInManager.SignIn(core.User, true, true);

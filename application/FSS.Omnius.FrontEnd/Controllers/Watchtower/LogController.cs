@@ -30,10 +30,10 @@ namespace FSS.Omnius.Controllers.Watchtower
                     int typeValue = filterByType ? Convert.ToInt32(formParams["type"]) : 0;
                     bool filterBySource = formParams["source"] != "all";
                     bool filterPlatformOnly = formParams["source"] == "platform";
-                    bool filterByAppId = filterBySource && !filterPlatformOnly;
-                    int appIdValue = filterByAppId ? Convert.ToInt32(formParams["source"]) : 0;
-                    bool filterByUserId = formParams["user"] != "all";
-                    int userIdValue = filterByUserId ? Convert.ToInt32(formParams["user"]) : 0;
+                    bool filterByAppName = filterBySource && !filterPlatformOnly;
+                    string appNameValue = filterByAppName ? Convert.ToString(formParams["source"]) : "";
+                    bool filterByUsername = formParams["user"] != "all";
+                    string userNameValue = filterByUsername ? Convert.ToString(formParams["user"]) : "";
                     bool searchMessage = formParams["message"] != "";
                     string messageValue = formParams["message"];
 
@@ -48,7 +48,7 @@ namespace FSS.Omnius.Controllers.Watchtower
                     if (!timeFromOK || !timeToOK)
                         ViewData["timeFormatError"] = true;
 
-                    ViewData["filter"] = filterByLevel || filterByType || filterBySource || filterPlatformOnly || filterByAppId || filterByUserId
+                    ViewData["filter"] = filterByLevel || filterByType || filterBySource || filterPlatformOnly || filterByAppName || filterByUsername
                         || searchMessage || limitByTimeFrom || limitByTimeTo;
                     ViewData["level"] = formParams["level"];
                     ViewData["type"] = formParams["type"];
@@ -60,10 +60,9 @@ namespace FSS.Omnius.Controllers.Watchtower
 
                     searchResults = context.LogItems.Where(c =>
                         c.LogLevel == (filterByLevel ? levelValue : c.LogLevel)
-                        && c.LogEventType == (filterByType ? typeValue : c.LogEventType)
-                        && c.IsPlatformEvent == (filterPlatformOnly ? true : c.IsPlatformEvent)
-                        && c.AppId == (filterByAppId ? appIdValue : c.AppId)
-                        && c.UserId == (filterByUserId ? userIdValue : c.UserId)
+                        && c.Source == (filterByType ? typeValue : c.Source)
+                        && c.Application == (filterByAppName ? appNameValue : c.Application)
+                        && c.UserName == (filterByUsername ? userNameValue : c.UserName)
                         && c.Timestamp >= (limitByTimeFrom ? timeFrom : c.Timestamp)
                         && c.Timestamp <= (limitByTimeTo ? timeTo : c.Timestamp)
                         && c.Message.Contains((searchMessage ? messageValue : c.Message)
@@ -89,13 +88,16 @@ namespace FSS.Omnius.Controllers.Watchtower
                 {
                     model.Add(new AjaxLogItem
                     {
-                        Id = r.Id,
                         Timestamp = r.Timestamp,
-                        LogEventType = r.LogEventType,
-                        LogLevel = r.LogLevel,
-                        IsPlatformEvent = r.IsPlatformEvent,
-                        AppId = r.AppId,
-                        UserId = r.UserId,
+                        Source = r.Source,
+                        Level = r.LogLevel,
+                        ActionName = r.ActionName,
+                        UserName = r.UserName,
+                        ApplicationName = r.Application,
+                        BlockName = r.BlockName,
+                        Server = r.Server,
+                        StackTrace = r.StackTrace,
+                        Vars = r.Vars,
                         Message = r.Message
                     });
                 }
