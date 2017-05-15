@@ -1,4 +1,35 @@
-﻿.ui-dialog {
+﻿.mytooltip {
+    position: relative;
+    border-bottom: 1px dotted black;
+}
+.mytooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 720px;
+    background-color: #444;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0%;
+
+    th {
+        padding-right: 5px;
+        text-align: right;
+    }
+
+    td {
+        text-align: left;
+    }
+}
+.mytooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.ui-dialog {
     position:fixed !important; //hack for jQueryUI setting position:absolute and mispositioning dialogs
     padding: 0px 0px;
     border: 1px solid black;

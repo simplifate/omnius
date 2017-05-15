@@ -1,13 +1,13 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity.Watchtower;
 @using FSS.Omnius.Modules.Entitron.Entity.Persona;
 @using FSS.Omnius.Modules.Entitron.Entity.Master;
+@using FSS.Omnius.FrontEnd.Models;
 
-@model List<AjaxLogItem>
+@model LogFilter
 @{
     Page.Title = "Omnius Watchtower - Log";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "watchtowerModule";
-
 }
 <div id="upperPanel">
     <div id="watchtowerFormResponiveArea">
@@ -23,75 +23,51 @@
         <form id="filterLogForm" method="post" action="/Watchtower">
             <table id="filterLogTable">
                 <tr>
-                    <td><label for="type">Typ události</label></td>
+                    <td><label for="level">Level</label></td>
                     <td>
-                        <select id="filterSelectType" name="type">
-                            <option value="all">Vše</option>
-                            <option value="1">Akce uživatele</option>
-                            <option value="2">Přístup odepřen</option>
-                            <option value="0">Nespecifikovaná akce</option>
-                        </select>
+                        @Html.DropDownListFor(f => f.LevelId, new SelectList(Model.Levels, "Value", "Text", "Selected"))
                     </td>
-                    <td><label for="user">Uživatel</label></td>
+                    <td><label for="source">Server</label></td>
                     <td>
-                        <select id="filterSelectUser" name="user">
-                            <option value="all">Všichni</option>
-                            @foreach (User user in (List<User>)ViewData["users"])
-                            {
-                                if ((ViewData["user"]).ToString() != "all" && user.Id == Convert.ToInt32(ViewData["user"]))
-                                {
-                                  <option value="@user.Id" selected>@user.DisplayName</option>
-                                }
-                                else {
-                                <option value="@user.Id">@user.DisplayName</option>
-                                }
-                            }
-
-                        </select>
-                    </td>
-                    <td><label for="message">Zpráva</label></td>
-                    <td>
-                        <input id="filterSearchMessage" name="message" type="text" />
+                        @Html.DropDownListFor(f => f.Server, new SelectList(Model.Servers))
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="level">Úroveň</label></td>
+                    <td><label for="user">User</label></td>
                     <td>
-                        <select id="filterSelectLevel" name="level">
-                            <option value="all">Vše</option>
-                            <option value="0">Informace</option>
-                            <option value="1">Varování</option>
-                            <option value="2">Chyba</option>
-                            <option value="3">Fatální chyba</option>
-                        </select>
+                        @Html.DropDownListFor(f => f.UserName, new SelectList(Model.Users, "UserName", "UserName"))
                     </td>
-                    <td><label for="time-from">Čas (od)</label></td>
+                    <td><label for="type">Source</label></td>
                     <td>
-                        <input id="filterSearchTimeFrom" name="time-from" type="text" />
+                        @Html.DropDownListFor(f => f.SourceId, new SelectList(Model.Sources, "Value", "Text", "Selected"))
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="source">Zdroj</label></td>
+                    <td><label for="time-from">Since</label></td>
                     <td>
-
-                        <select id="filterSelectSource" name="source">
-                            <option value="all">Vše</option>
-                            @foreach (Application app in (List<Application>)ViewData["apps"])
-                            {
-
-                                if ((ViewData["source"]).ToString() != "all" && app.Id == Convert.ToInt32(ViewData["source"]))
-                                {
-                                    <option value="@app.Id" selected>@app.Name</option>
-                                }
-                                else {
-                                    <option value="@app.Id">@app.Name</option>
-                                }
-                            }
-                        </select>
+                        @Html.TextBoxFor(f => f.TimeSince, Model.TimeSince.ToString("dd.MM.yyyy HH:mm"))
                     </td>
-                    <td><label for="time-to">Čas (do)</label></td>
+                    <td><label for="source">Application</label></td>
                     <td>
-                        <input id="filterSearchTimeTo" name="time-to" type="text" />
+                        @Html.DropDownListFor(f => f.ApplicationName, new SelectList(Model.Applications, "Name", "DisplayName"))
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="time-to">To</label></td>
+                    <td>
+                        @Html.TextBoxFor(f => f.TimeTo, Model.TimeTo.ToString("dd.MM.yyyy HH:mm"))
+                    </td>
+                    <td><label for="source">Block</label></td>
+                    <td>
+                        @Html.DropDownListFor(f => f.BlockName, new SelectList(Model.Blocks, "Name", "DisplayName"))
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><label for="source">Action</label></td>
+                    <td>
+                        @Html.DropDownListFor(f => f.ActionName, new SelectList(Model.Actions))
                     </td>
                 </tr>
             </table>
@@ -102,54 +78,57 @@
         </form>
     </div>
     <div id="hideUpperPanelIcon" class="fa fa-caret-up"></div>
-    <input id="previousSearchType" type="hidden" value="@ViewData["type"]" />
-    <input id="previousSearchSource" type="hidden" value="@ViewData["source"]" />
-    <input id="previousSearchLevel" type="hidden" value="@ViewData["level"]" />
-    <input id="previousSearchUser" type="hidden" value="@ViewData["user"]" />
-    <input id="previousSearchMessage" type="hidden" value="@ViewData["message"]" />
-    <input id="previousSearchTimeFrom" type="hidden" value="@ViewData["time-from"]" />
-    <input id="previousSearchTimeTo" type="hidden" value="@ViewData["time-to"]" />
 </div>
 <div id="minimizedUpperPanel">
     <div class="panelLabel">Watchtower</div>
     <div id="showUpperPanelIcon" class="fa fa-caret-down"></div>
 </div>
 <div id="lowerPanel">
-    @if (Model.Count() > 0)
+    @if (Model.ResultItems.Count() > 0)
     {
         <table id="watchtowerLogTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Čas</th>
-                    <th>Typ události</th>
-                    <th>Úroveň</th>
-                    <th>Uživatel</th>
-                    <th>Zdroj</th>
-                    <th>Zpráva</th>
+                    <th>Time</th>
+                    <th>Level</th>
+                    <th>User</th>
+                    <th>Server</th>
+                    <th>Source</th>
+                    <th>Application</th>
+                    <th>Block</th>
+                    <th>Action</th>
+                    <th>Message</th>
+                    <th>Variables</th>
+                    <th>Stack Trace</th>
                 </tr>
             </thead>
-            @foreach (AjaxLogItem item in Model)
-        {
+            @foreach (LogItem item in Model.ResultItems)
+            {
                 <tr>
                     <td>@item.TimeString</td>
-                    <td>@item.LogEventTypeString</td>
                     <td>@item.LogLevelString</td>
                     <td>@item.UserName</td>
-                    <td>@item.LogEventSourceString</td>
-                    <td>@Html.Raw(item.Message)</td>
+                    <td>@item.Server</td>
+                    <td>@item.LogSourceString</td>
+                    <td>@item.Application</td>
+                    <td>@item.BlockName</td>
+                    <td>@item.ActionName</td>
+                    <td>@item.Message</td>
+                    <td class="mytooltip">
+                        Count: @item.VarsCount()
+                        <div class="tooltiptext">@Html.Raw(item.VarHtmlTable())
+                        </div>
+                    </td>
+                    <td class="mytooltip">
+                        @item.StackTrace.FirstLine()
+                        <div class="tooltiptext">@Html.Raw(item.StackTrace.Replace(Environment.NewLine, "<br/><br/>"))</div>
+                    </td>
                 </tr>
             }
         </table>
     }
     else
     {
-        if ((bool)ViewData["filter"])
-        {
-            <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
-        }
-        else
-        {
-            <div class="logIsEmpty">Log zatím neobsahuje žádné záznamy</div>
-        }
+        <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
     }
 </div>

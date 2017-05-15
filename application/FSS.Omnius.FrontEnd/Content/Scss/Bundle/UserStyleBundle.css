@@ -1183,6 +1183,32 @@ body.appManagerModule {
     right: 0px;
     bottom: 0px; }
 
+.mytooltip {
+  position: relative;
+  border-bottom: 1px dotted black; }
+
+.mytooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 720px;
+  background-color: #444;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0%; }
+  .mytooltip .tooltiptext th {
+    padding-right: 5px;
+    text-align: right; }
+  .mytooltip .tooltiptext td {
+    text-align: left; }
+
+.mytooltip:hover .tooltiptext {
+  visibility: visible; }
+
 .ui-dialog {
   position: fixed !important;
   padding: 0px 0px;

@@ -202,7 +202,7 @@ namespace FSS.Omnius.Modules.Watchtower
         protected override LogItem toLogItem()
         {
             LogItem result = base.toLogItem();
-            result.StackTrace = StackTrace;
+            result.StackTrace = InnerException.StackTrace;
             return result;
         }
     }
@@ -256,7 +256,7 @@ namespace FSS.Omnius.Modules.Watchtower
             LogItem result = base.toLogItem();
             result.BlockName = Block?.Name;
             result.ActionName = ActionRuleAction != null ? Tapestry.Action.All[ActionRuleAction.ActionId].Name : null;
-            result.Vars = string.Join(Environment.NewLine, Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString()}"));
+            result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString()}"));
             return result;
         }
     }

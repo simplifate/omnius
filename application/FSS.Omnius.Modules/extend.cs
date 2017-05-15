@@ -84,7 +84,11 @@ namespace System
 
             return (char)i;
         }
-
+        
+        public static string FirstLine(this string str)
+        {
+            return str.Split(Environment.NewLine.ToArray()).First();
+        }
         public static string Random(this string str, int length, string chars = "abcdefghijklmnopqrstuvwxyz")
         {
             var random = new Random();

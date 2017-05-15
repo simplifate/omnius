@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using FSS.Omnius.Modules.Watchtower;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
 {
@@ -32,26 +33,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
         public string Message { get; set; }
         public string Vars { get; set; }
         public string StackTrace { get; set; }
-    }
-    public class AjaxLogItem : IEntity
-    {
-        public DateTime Timestamp { get; set; }
-        public int Level { get; set; }
-        public string UserName { get; set; }
 
-        public string Server { get; set; }
-        public int Source { get; set; }
-        public string ApplicationName { get; set; }
-        public string BlockName { get; set; }
-        public string ActionName { get; set; }
-
-        public string Message { get; set; }
-        public string Vars { get; set; }
-        public string StackTrace { get; set; }
-
+        [NotMapped]
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
-        public string LogEventTypeString => OmniusLog.toHumanString[(OmniusLogSource)Source];
-        public string LogLevelString => ((OmniusLogLevel)Level).ToString();
-        public string LogEventSourceString => ApplicationName ?? "Platforma Omnius";
+        [NotMapped]
+        public string LogSourceString => OmniusLog.toHumanString[(OmniusLogSource)Source];
+        [NotMapped]
+        public string LogLevelString => ((OmniusLogLevel)LogLevel).ToString();
+        [NotMapped]
+        public string LogEventSourceString => Application ?? "Platforma Omnius";
+
+        public int VarsCount()
+        {
+            return Vars.Split('\n').Length;
+        }
+        public string VarHtmlTable()
+        {
+            string result = "<table>";
+            foreach(string line in Vars.Split('\n'))
+            {
+                string[] pair = line.Split(new string[] { "=>" }, StringSplitOptions.None);
+
+                result += $"<tr><th>{pair[0]}</th><td>{pair[1]}</td></tr>";
+            }
+
+            return result + "</table>";
+        }
     }
 }
