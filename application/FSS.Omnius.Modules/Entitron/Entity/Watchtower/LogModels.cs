@@ -45,10 +45,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
 
         public int VarsCount()
         {
+            if (Vars == null)
+                return 0;
+
             return Vars.Split('\n').Length;
         }
         public string VarHtmlTable()
         {
+            if (Vars == null)
+                return "";
+
             string result = "<table>";
             foreach(string line in Vars.Split('\n'))
             {
@@ -61,6 +67,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
             }
 
             return result + "</table>";
+        }
+        public string StackTraceHtml()
+        {
+            if (StackTrace == null)
+                return null;
+
+            return StackTrace.Replace(Environment.NewLine, "<br/><br/>");
         }
     }
 }

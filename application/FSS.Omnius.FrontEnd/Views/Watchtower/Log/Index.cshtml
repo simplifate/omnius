@@ -121,7 +121,7 @@
                     </td>
                     <td class="mytooltip">
                         @item.StackTrace.FirstLine()
-                        <div class="tooltiptext">@Html.Raw(item.StackTrace.Replace(Environment.NewLine, "<br/><br/>"))</div>
+                        <div class="tooltiptext">@Html.Raw(item.StackTraceHtml())</div>
                     </td>
                 </tr>
             }
