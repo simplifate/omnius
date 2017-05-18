@@ -54,7 +54,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
             {
                 string[] pair = line.Split(new string[] { "=>" }, StringSplitOptions.None);
 
-                result += $"<tr><th>{pair[0]}</th><td>{pair[1]}</td></tr>";
+                if (pair.Length == 2)
+                    result += $"<tr><th>{pair[0]}</th><td>{pair[1]}</td></tr>";
+                else
+                    result += $"<tr><td>{line}</td></tr>";
             }
 
             return result + "</table>";
