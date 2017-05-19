@@ -2008,7 +2008,8 @@ body.watchtowerModule #lowerPanel {
   position: absolute;
   left: 245px;
   right: 20px;
-  top: 462px; }
+  top: 462px;
+  /* Watchtower tooltip */ }
   body.watchtowerModule #lowerPanel #watchtowerLogTable {
     width: 100%; }
     body.watchtowerModule #lowerPanel #watchtowerLogTable thead {
@@ -2016,6 +2017,32 @@ body.watchtowerModule #lowerPanel {
       color: white; }
     body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td {
       vertical-align: middle; }
+  body.watchtowerModule #lowerPanel .getJsonRow {
+    cursor: pointer;
+    text-decoration: underline; }
+  body.watchtowerModule #lowerPanel .mytooltip {
+    position: relative;
+    border-bottom: 1px dotted black; }
+  body.watchtowerModule #lowerPanel .mytooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 720px;
+    background-color: #444;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    right: 0%; }
+    body.watchtowerModule #lowerPanel .mytooltip .tooltiptext th {
+      padding-right: 5px;
+      text-align: right; }
+    body.watchtowerModule #lowerPanel .mytooltip .tooltiptext td {
+      text-align: left; }
+  body.watchtowerModule #lowerPanel .mytooltip:hover .tooltiptext {
+    visibility: visible; }
 
 body.watchtowerModule .btn-watchtower {
   background-color: #49c3f1;
@@ -3409,32 +3436,6 @@ body.cortexModule #lowerPanel {
     display: none; }
   body.cortexModule .moduleSubMenuArea {
     transform: scale(0.75); } }
-
-.mytooltip {
-  position: relative;
-  border-bottom: 1px dotted black; }
-
-.mytooltip .tooltiptext {
-  visibility: hidden;
-  min-width: 720px;
-  background-color: #444;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  top: 100%;
-  left: 0%; }
-  .mytooltip .tooltiptext th {
-    padding-right: 5px;
-    text-align: right; }
-  .mytooltip .tooltiptext td {
-    text-align: left; }
-
-.mytooltip:hover .tooltiptext {
-  visibility: visible; }
 
 .ui-dialog {
   position: fixed !important;

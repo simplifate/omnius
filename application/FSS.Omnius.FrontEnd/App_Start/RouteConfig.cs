@@ -107,7 +107,7 @@ namespace FSS.Omnius.FrontEnd
             // Watchtower
             routes.MapRoute(
                 name: "Watchtower",
-                url: "Watchtower/{controller}/{action}",
+                url: "Watchtower/{controller}/{action}/{id}",
                 defaults: new { controller = "Log", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Watchtower" }
             );

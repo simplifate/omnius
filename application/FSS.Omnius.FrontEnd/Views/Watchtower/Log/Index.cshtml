@@ -104,7 +104,7 @@
             </thead>
             @foreach (LogItem item in Model.ResultItems)
             {
-                <tr>
+                <tr data-id="@item.Id">
                     <td>@item.TimeString</td>
                     <td>@item.LogLevelString</td>
                     <td>@item.UserName</td>
@@ -114,15 +114,8 @@
                     <td>@item.BlockName</td>
                     <td>@item.ActionName</td>
                     <td>@item.Message</td>
-                    <td class="mytooltip">
-                        Count: @item.VarsCount()
-                        <div class="tooltiptext">@Html.Raw(item.VarHtmlTable())
-                        </div>
-                    </td>
-                    <td class="mytooltip">
-                        @item.StackTrace.FirstLine()
-                        <div class="tooltiptext">@Html.Raw(item.StackTraceHtml())</div>
-                    </td>
+                    <td class="getJsonRow" data-data="Vars">Load this item</td>
+                    <td class="getJsonRow" data-data="StackTrace">Load this item</td>
                 </tr>
             }
         </table>

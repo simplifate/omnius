@@ -17,7 +17,7 @@ namespace FSS.Omnius.Controllers.Watchtower
             // INIT
             DBEntities context = DBEntities.instance;
             filter.Fill(context);
-            
+
             filter.ResultItems = context.LogItems.Where(
                 i =>
                    (filter.LevelId == -1 || i.LogLevel == filter.LevelId)
@@ -28,9 +28,42 @@ namespace FSS.Omnius.Controllers.Watchtower
                 && (filter.BlockName == "All" || i.BlockName == filter.BlockName)
                 && (filter.ActionName == "All" || i.ActionName == filter.ActionName)
                 && (i.Timestamp > filter.TimeSince && i.Timestamp < filter.TimeTo)
-            ).OrderByDescending(i => i.Timestamp).Take(100).ToList();
-            
+            ).OrderByDescending(i => i.Timestamp).Take(100).Select(i =>
+                new
+                {
+                    Id = i.Id,
+                    Timestamp = i.Timestamp,
+                    UserName = i.UserName,
+                    Server = i.Server,
+                    Source = i.Source,
+                    Application = i.Application,
+                    BlockName = i.BlockName,
+                    ActionName = i.ActionName,
+                    Message = i.Message
+                }
+            ).ToList().Select(i =>
+                new LogItem
+                {
+                    Id = i.Id,
+                    Timestamp = i.Timestamp,
+                    UserName = i.UserName,
+                    Server = i.Server,
+                    Source = i.Source,
+                    Application = i.Application,
+                    BlockName = i.BlockName,
+                    ActionName = i.ActionName,
+                    Message = i.Message
+                }).ToList();
+
             return View(filter);
+        }
+
+        public JsonResult GetRow(int id)
+        {
+            DBEntities context = DBEntities.instance;
+            LogItem item = context.LogItems.Find(id);
+
+            return Json(new { Vars = item.VarHtmlTable(), StackTrace = item.StackTraceHtml() }, JsonRequestBehavior.AllowGet);
         }
     }
 }
