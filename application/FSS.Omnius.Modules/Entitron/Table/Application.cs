@@ -25,6 +25,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         {
             get
             {
+                if (connectionString_schema == null)
+                    return this;
+
                 if (_similarApp == null)
                     _similarApp = DBEntities.appInstance(this).Applications.SingleOrDefault(a => a.Name == Name);
                 return _similarApp;
