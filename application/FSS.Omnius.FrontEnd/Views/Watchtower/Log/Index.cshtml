@@ -113,7 +113,7 @@
                     <td>@item.Application</td>
                     <td>@item.BlockName</td>
                     <td>@item.ActionName</td>
-                    <td>@item.Message</td>
+                    <td>@Html.Raw(item.Message)</td>
                     <td class="getJsonRow" data-data="Vars">Load this item</td>
                     <td class="getJsonRow" data-data="StackTrace">Load this item</td>
                 </tr>
