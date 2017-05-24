@@ -92,6 +92,13 @@ namespace System
 
             return str.Split(Environment.NewLine.ToArray()).First();
         }
+        public static string Truncate(this string str, int length)
+        {
+            if (length >= str.Length)
+                return str;
+
+            return str.Substring(0, length);
+        }
         public static string Random(this string str, int length, string chars = "abcdefghijklmnopqrstuvwxyz")
         {
             var random = new Random();
