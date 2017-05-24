@@ -256,7 +256,7 @@ namespace FSS.Omnius.Modules.Watchtower
             LogItem result = base.toLogItem();
             result.BlockName = Block?.Name;
             result.ActionName = ActionRuleAction != null ? Tapestry.Action.All[ActionRuleAction.ActionId].Name : null;
-            result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString()}"));
+            result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString().Substring(0, 1000)}"));
             return result;
         }
     }
