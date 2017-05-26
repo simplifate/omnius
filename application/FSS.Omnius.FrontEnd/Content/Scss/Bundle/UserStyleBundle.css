@@ -820,6 +820,8 @@ body.userLayout #brandBar {
       color: white;
       font-family: Innogy-Regular;
       font-size: 18px; }
+  .mozaicForm .named-panel.disabled {
+    top: -9999px !important; }
   .mozaicForm .removePanelIcon {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
