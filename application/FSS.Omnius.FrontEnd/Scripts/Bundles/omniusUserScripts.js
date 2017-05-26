@@ -989,7 +989,6 @@ $(function () {
                     var tableName = table.attr("name");
                     submitActionByForm(tableName, modelId, "DeleteAction", [$('<input type="hidden" name="deleteId" value="' + rowId + '" />')]);
                 }
-
             });
             table.on("click", ".row_A_Action", function () {
                 var rowId = parseInt($(this).parents("tr").find("td:first").text());
