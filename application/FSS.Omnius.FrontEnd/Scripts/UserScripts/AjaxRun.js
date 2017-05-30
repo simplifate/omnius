@@ -92,7 +92,15 @@ $(function () {
         }
        
     
-    else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+        else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+            
+        $("#uic_address_dropdown").change(function () {
+            var dropdownText = $("#uic_address_dropdown :selected");
+            $("#uic_ship_to_textbox").val(dropdownText.text());
+        });
+
+
+
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
         var userSelectDropdown = $("#uic_user_select_dropdown");
