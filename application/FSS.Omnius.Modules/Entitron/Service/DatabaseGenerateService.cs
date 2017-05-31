@@ -209,11 +209,11 @@ namespace FSS.Omnius.Modules.Entitron.Service
             {
                 try
                 {
-                    bool viewExists = DBView.isInDb(e.Application, efView.Name);
+                    bool viewExists = DBView.isInDb(_entitron.Application, efView.Name);
 
                     DBView newView = new DBView()
                     {
-                        Application = e.Application,
+                        Application = _app,
                         dbViewName = efView.Name,
                         sql = efView.Query
                     };
