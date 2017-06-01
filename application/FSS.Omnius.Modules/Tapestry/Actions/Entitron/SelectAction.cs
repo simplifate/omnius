@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 return new string[] { "Data" };
             }
         }
-        
+
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             // init
@@ -58,7 +58,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             DBTable table = core.Entitron.GetDynamicTable(vars.ContainsKey("TableName") ? (string)vars["TableName"] : (string)vars["__TableName__"], searchInShared);
             DBEntities e = new DBEntities();
-            
+
             //
             var select = table.Select();
             int CondCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
@@ -68,7 +68,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // setConditions
             for (int i = 0; i < CondCount; i++)
             {
-                string condOperator = (string)vars[$"CondOperator[{i}]"];
+                string condOperator = vars.ContainsKey($"CondOperator[{i}]") ? (string)vars[$"CondOperator[{i}]"] : "Equal";
                 string condColumn = (string)vars[$"CondColumn[{i}]"];
                 object condValue = vars[$"CondValue[{i}]"];
 
@@ -88,6 +88,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         break;
                     case "GreaterOrEqual":
                         outCondition = condition.column(condColumn).GreaterOrEqual(value);
+                        break;
+                    case "Equal":
+                        outCondition = condition.column(condColumn).Equal(value);
                         break;
                     default: // ==
                         outCondition = condition.column(condColumn).Equal(value);
