@@ -1153,7 +1153,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name.ToLower() == blockName.ToLower())
                 : context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
                     .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
@@ -1163,7 +1163,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name.ToLower() == blockName.ToLower())
                 : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
         }
 
