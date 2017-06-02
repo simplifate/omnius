@@ -7,6 +7,9 @@ namespace FSS.Omnius.Modules.Migrations
     {
         public override void Up()
         {
+            // delete condition with no parent
+            Sql("DELETE FROM[dbo].[TapestryDesigner_ConditionSets] WHERE[TapestryDesignerResourceItem_Id] IS NULL AND[TapestryDesignerWorkflowItem_Id] IS NULL");
+
             DropForeignKey("dbo.TapestryDesigner_ConditionSets", "TapestryDesignerResourceItem_Id", "dbo.TapestryDesigner_ResourceItems");
             DropForeignKey("dbo.TapestryDesigner_ConditionSets", "TapestryDesignerWorkflowItem_Id", "dbo.TapestryDesigner_WorkflowItems");
             DropIndex("dbo.TapestryDesigner_ConditionSets", new[] { "ResourceMappingPair_Id" });
@@ -29,7 +32,7 @@ namespace FSS.Omnius.Modules.Migrations
                 .Index(t => t.TapestryDesignerWorkflowItemId);
             
             AddColumn("dbo.Tapestry_ActionRule", "ConditionGroupId", c => c.Int());
-            AddColumn("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", c => c.Int(nullable: false));
+            AddColumn("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", c => c.Int());
 
             Sql(@"DECLARE @id int;
 
@@ -60,6 +63,7 @@ namespace FSS.Omnius.Modules.Migrations
 
                 UPDATE ar SET ar.ConditionGroupId = g.Id FROM Tapestry_ActionRule ar
                 JOIN TapestryDesigner_ConditionGroups g ON ar.ItemWithConditionId = g.TapestryDesignerWorkflowItemId;");
+            AlterColumn("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId", c => c.Int(nullable: false));
 
             CreateIndex("dbo.Tapestry_ActionRule", "ConditionGroupId");
             CreateIndex("dbo.TapestryDesigner_ConditionSets", "ConditionGroupId");
