@@ -3,7 +3,7 @@
 @if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
                     <a href="/PortalInternichAuditu2/KeZpracovani">@(t._("Ke zpracování"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE,User",83)){            <li>
                     <h4>@(t._("Editace"))</h4>
 
     <ul >
@@ -24,6 +24,9 @@
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin,IA TG Coordinator,Local Coordinator,IA TG,EY Auditor,Auditor RWE",83)){            <li>
                     <a href="/PortalInternichAuditu2/EditaceDoporuceni">@(t._("Editace doporučení"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",83)){            <li>
+                    <a href="/PortalInternichAuditu2/DetailOpatreni">@(t._("Detail opatření"))</a>
             </li>
 }    </ul>
             </li>
