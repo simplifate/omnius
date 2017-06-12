@@ -29,10 +29,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
     //TODO: doladit pøístup z vláken, které nejsou z Http request, dispose, log db
 
-    public partial class DBEntities : IdentityDbContext<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>
+    public partial class DBEntities : IdentityDbContext<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>
     {
         private bool isDisposed = false;
-
+        
         private HttpRequest _r;
         private static HttpRequest r
         {
@@ -40,9 +40,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             {
                 try
                 {
-                    if (HttpContext.Current == null)
-                        return null;    //pro pøístup z jiného vlákna - viz. WebDavFileSyncService
-                    return HttpContext.Current.Request;
+                    return HttpContext.Current?.Request; // null - pro pøístup z jiného vlákna - viz. WebDavFileSyncService
                 }
                 catch (HttpException)
                 {
@@ -53,13 +51,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         private static Dictionary<HttpRequest, DBEntities> _instances = new Dictionary<HttpRequest, DBEntities>();
         private static DBEntities nullRequestInstance;
-
         public static DBEntities instance
         {
             get
             {
-                if(r == null) {
-                    if(nullRequestInstance == null || nullRequestInstance.isDisposed) {
+                if (r == null)
+                {
+                    if (nullRequestInstance == null || nullRequestInstance.isDisposed)
+                    {
                         nullRequestInstance = new DBEntities();
                     }
                     return nullRequestInstance;
@@ -107,10 +106,47 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 }
             }
         }
+        
+        private static Dictionary<HttpRequest, DBEntities> _appInstances = new Dictionary<HttpRequest, DBEntities>();
+        public static DBEntities appInstance(Application app)
+        {
+            // empty connection string - return usual entities
+            if (app.connectionString_schema == null)
+                return instance;
+            
+            if (!_appInstances.ContainsKey(r) || _appInstances[r].isDisposed)
+            {
+                if (_appInstances.ContainsKey(r))
+                    _appInstances.Remove(r);
+
+                Create(app);
+            }
+
+            return _appInstances[r];
+        }
+        private static object _appConnectionsLock = new object();
+        private static Dictionary<HttpRequest, DbConnection> _appConnections = new Dictionary<HttpRequest, DbConnection>();
+        private static DbConnection appConnection(string connectionString)
+        {
+            lock (_appConnectionsLock)
+            {
+                if (!_appConnections.ContainsKey(r))
+                {
+                    SqlConnectionFactory f = new SqlConnectionFactory(connectionString);
+                    _appConnections.Add(r, f.CreateConnection(connectionString));
+                    _appConnections[r].Open();
+                }
+                return _appConnections[r];
+            }
+        }
 
         public static void Create()
         {
             _instances.Add(r, new DBEntities(r));
+        }
+        public static void Create(Application app)
+        {
+            _appInstances.Add(r, new DBEntities(r, app.connectionString_schema));
         }
 
         public static void Destroy()
@@ -150,11 +186,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             _r = req;
             Database.Log = s => Log(s);
         }
+        public DBEntities(HttpRequest req, string connectionString) : base(appConnection(connectionString), false)
+        {
+            _r = req;
+            Database.Log = s => Log(s);
+        }
 
         public DBEntities() : base(FSS.Omnius.Modules.Entitron.Entitron.connectionString)
         {
         }
-
+        
         public void Log(string message)
         {
             lock (_messagesLock)
@@ -223,9 +264,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<ADgroup> ADgroups { get; set; }
         public virtual DbSet<ADgroup_User> ADgroup_Users { get; set; }
         public virtual DbSet<ModuleAccessPermission> ModuleAccessPermissions { get; set; }
-        public virtual DbSet<User_Role> UserRoles { get; set; }
-
-        //public virtual DbSet<PersonaAppRole> Roles { get; set; }
+        public virtual DbSet<User_Role> Users_Roles { get; set; }
+        public virtual DbSet<PersonaAppRole> AppRoles { get; set; }
 
         // Tapestry
         public virtual DbSet<ActionRule> ActionRules { get; set; }
@@ -246,6 +286,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerWorkflowItem> TapestryDesignerWorkflowItems { get; set; }
         public virtual DbSet<TapestryDesignerResourceRule> TapestryDesignerResourceRules { get; set; }
         public virtual DbSet<TapestryDesignerResourceItem> TapestryDesignerResourceItems { get; set; }
+        public virtual DbSet<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
         public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
 
@@ -259,10 +300,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // CORE
 
             // Entitron
-            modelBuilder.Entity<Application>()
-                .HasMany<Table>(e => e.Tables)
-                .WithOptional(e => e.Application)
-                .HasForeignKey(e => e.ApplicationId);
 
             // Hermes
             modelBuilder.Entity<EmailTemplate>()
@@ -399,14 +436,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<User>()
-                .HasMany<User_Role>(e => e.Roles)
+                .HasMany<User_Role>(e => e.Users_Roles)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserId);
-
-            modelBuilder.Entity<PersonaAppRole>()
-                .HasMany<User_Role>(e => e.Users)
-                .WithRequired(e => e.AppRole)
-                .HasForeignKey(e => e.RoleId);
 
             modelBuilder.Entity<Application>()
                 .HasMany<User>(e => e.DesignedBy)

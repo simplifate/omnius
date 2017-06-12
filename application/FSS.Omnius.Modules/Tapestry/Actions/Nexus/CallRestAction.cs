@@ -103,7 +103,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     }
                 }
 
-                var context = DBEntities.instance;
+                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+                var context = DBEntities.appInstance(core.Entitron.Application);
                 string queryString = "";
                 var service = context.WSs.First(c => c.Name == wsName);
 

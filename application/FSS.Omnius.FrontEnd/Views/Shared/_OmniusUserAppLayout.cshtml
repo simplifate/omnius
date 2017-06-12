@@ -79,7 +79,7 @@
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         <div class="widgetLabel">Menu</div>
-        @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppId}/menuLayout.cshtml")
+        @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppName}/menuLayout.cshtml")
     </div>
     <script>
         if (window.innerWidth < 1280) {
@@ -98,7 +98,7 @@
             <div class="sk-cube3 sk-cube"></div>
         </div>
     </div>
-    <input type="hidden" id="currentAppName" value="@t._((string)ViewData["appName"])" />
+    <input type="hidden" id="currentAppName" value="@t._((string)ViewData["appSystemName"])" />
     <input type="hidden" id="currentBlockName" value="@t._((string)ViewData["blockName"])" />
     <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)

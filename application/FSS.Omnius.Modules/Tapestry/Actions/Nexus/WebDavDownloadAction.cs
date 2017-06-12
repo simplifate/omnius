@@ -64,25 +64,24 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
             int fileId = Convert.ToInt32(vars[InputVar[0]]);
 
-            using (var entities = DBEntities.instance)
-            {
-                FileMetadata fmd = entities.FileMetadataRecords.Find(fileId);
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var entities = DBEntities.appInstance(core.Entitron.Application);
+            FileMetadata fmd = entities.FileMetadataRecords.Find(fileId);
 
-                IFileSyncService serviceFileSync = new WebDavFileSyncService();
-                serviceFileSync.DownloadFile(fmd);
+            IFileSyncService serviceFileSync = new WebDavFileSyncService();
+            serviceFileSync.DownloadFile(fmd);
 
-                HttpContext context = HttpContext.Current;
-                HttpResponse response = context.Response;
+            HttpContext context = HttpContext.Current;
+            HttpResponse response = context.Response;
 
-                response.Clear();
-                response.StatusCode = 202;
-                response.ContentType = "application/octet-stream";
-                response.AddHeader("content-disposition", $"attachment; filename={fmd.Filename}");
-                response.BinaryWrite(fmd.CachedCopy.Blob);
-                response.Flush();
-                response.Close();
-                response.End();
-            }
+            response.Clear();
+            response.StatusCode = 202;
+            response.ContentType = "application/octet-stream";
+            response.AddHeader("content-disposition", $"attachment; filename={fmd.Filename}");
+            response.BinaryWrite(fmd.CachedCopy.Blob);
+            response.Flush();
+            response.Close();
+            response.End();
         }
     }
 }

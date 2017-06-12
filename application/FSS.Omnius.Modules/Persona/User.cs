@@ -23,15 +23,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             return ADgroup_Users.Any(adu => adu.ADgroup.Application != null && adu.ADgroup.Application.IsSystem);
         }
-        public bool canUseAction(int actionId, DBEntities context)
-        {
-            int count = context.ActionRuleRights.Count(a => a.ActionRuleId == actionId);
-            if (count == 0)
-                return true;
-
-            return Roles.Any(r => r.AppRole.ActionRuleRights.Any(arr => arr.ActionRuleId == actionId));
-        }
-        public bool canUseBlock(string rights,int appId)
+        public bool canUseBlock(string rights, int appId)
         {
             if (string.IsNullOrEmpty(rights))
                 return false;
@@ -39,18 +31,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             string[] roles = rights.Split(',');
             foreach (string role in roles)
             {
-                if (Roles.Any(r => r.AppRole.ApplicationId == appId && r.AppRole.Name == role))
+                if (Users_Roles.Any(r => r.ApplicationId == appId && r.RoleName == role))
                     return true;
             }
             return false;
         }
-        public bool HasRole(string roleName)
+        public bool HasRole(string roleName, int appId)
         {
-            return Roles.Any(r => r.AppRole.Name == roleName);
-        }
-        public bool HasRole(string roleName, DBEntities context)
-        {
-            return Roles.Any(r => r.AppRole.Name == roleName);
+            return Users_Roles.Any(r => r.RoleName == roleName && r.ApplicationId == appId);
         }
         public bool IsInGroup(string groupName)
         {
@@ -63,7 +51,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
 
         public List<string> GetAppRoles(int appId)
         {
-            return Roles.Where(r => r.AppRole.ApplicationId == appId).Select(r => r.AppRole.Name).ToList();
+            return Users_Roles.Where(r => r.ApplicationId == appId).Select(r => r.RoleName).ToList();
         }
     }
 }

@@ -32,18 +32,20 @@ namespace FSS.Omnius.Controllers.Tapestry
             Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
 
             RunController.startTime = DateTime.Now;
-
-            var context = DBEntities.instance;
+            
             // init
             C.CORE core = HttpContext.GetCORE();
             if (!string.IsNullOrEmpty(appName))
+                #warning appName nesmí být null!
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            Application app = core.Entitron.Application.similarApp;
 
             // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-            Block block = getBlockWithResource(core, context, appName, blockIdentify);
+            Block block = getBlockWithResource(context, app.Id, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -54,7 +56,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool userIsAllowed = false;
                 foreach (var role in block.RoleWhitelist.Split(',').ToList())
                 {
-                    if (user.HasRole(role))
+                    if (user.HasRole(role, core.Entitron.AppId))
                         userIsAllowed = true;
                 }
                 if (!userIsAllowed)
@@ -63,7 +65,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             try
             {
-                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == app.Id && w.InitBlockId != null && !w.IsTemp).InitBlock;
             }
             catch (NullReferenceException)
             {
@@ -97,6 +99,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // fill data
             ViewData["appName"] = core.Entitron.Application.DisplayName;
+            ViewData["appSystemName"] = core.Entitron.Application.Name;
             ViewData["appIcon"] = core.Entitron.Application.Icon;
             ViewData["pageName"] = block.DisplayName;
             ViewData["UserEmail"] = core.User.Email;
@@ -134,10 +137,9 @@ namespace FSS.Omnius.Controllers.Tapestry
 
 
                 string sourceTableName = resourceMappingPair.SourceTableName;
-                bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
-                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
                 if (resourceMappingPair.relationType.StartsWith("V:"))
                 {
                     dataSource = new DataTable();
@@ -558,7 +560,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
             }
             #endregion
-            #region foreachSourceTableName && COlumnName
+            #region foreachSourceTableName && ColumnName
             foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && r.SourceColumnName != null).ToList())
             {
                 DataTable dataSource = null;
@@ -568,10 +570,9 @@ namespace FSS.Omnius.Controllers.Tapestry
 
 
                 string sourceTableName = resourceMappingPair.SourceTableName;
-                bool sourceIsColumnAttribute = false;
                 bool noConditions = true;
                 bool idAvailable = true;
-                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionSets.Where(cs => cs.ResourceMappingPair_Id == resourceMappingPair.Id).ToList();
+                List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
 
                 if (resourceMappingPair.relationType.StartsWith("V:"))
                 {
@@ -1054,9 +1055,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                     ViewData[pair.Key.Substring(10)] = dataSource;
                 }
             }
-            string boostrapPath = block.BootstrapPageId != null ? $"Bootstrap\\" : "";
-            var pageId = block.BootstrapPageId ?? block.EditorPageId;
-            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{boostrapPath}{pageId}.cshtml";
+            string viewPath = (block.BootstrapPageId != null) 
+                ? $"{core.Entitron.Application.Name}\\Page\\Bootstrap\\{block.BootstrapPageId}.cshtml" 
+                : $"{core.Entitron.Application.Name}\\Page\\{block.EditorPageId}.cshtml";
 
             prepareEnd = DateTime.Now;
             // show
@@ -1064,7 +1065,6 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
-
             return View(viewPath);
 
         }
@@ -1110,11 +1110,12 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
         {
             C.CORE core = HttpContext.GetCORE();
-            DBEntities context = core.Entitron.GetStaticTables();
             core.Entitron.AppName = appName;
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+            Application app = core.Entitron.Application.similarApp;
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
 
-            Block block = getBlockWithWF(core, context, appName, blockIdentify);
+            Block block = getBlockWithWF(context, app.Id, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -1148,23 +1149,23 @@ namespace FSS.Omnius.Controllers.Tapestry
             else return "en";
 
         }
-        private Block getBlockWithResource(C.CORE core, DBEntities context, string appName, string blockName)
+        private Block getBlockWithResource(DBEntities context, int appId, string blockName)
         {
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name.ToLower() == blockName.ToLower())
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower())
                 : context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
         }
-        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+        private Block getBlockWithWF(DBEntities context, int appId, string blockName)
         {
             return blockName != null
                 ? context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name.ToLower() == blockName.ToLower())
-                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower())
+                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
         }
 
     }

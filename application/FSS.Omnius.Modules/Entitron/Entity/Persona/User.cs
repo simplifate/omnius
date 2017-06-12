@@ -9,7 +9,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
     using Master;
 
     [Table("Persona_Users")]
-    public partial class User : IdentityUser<int, UserLogin, User_Role, UserClaim>, IEntity
+    public partial class User : IdentityUser<int, UserLogin, Iden_User_Role, UserClaim>, IEntity
     {
         public User()
         {
@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public virtual ICollection<UsersApplications> UsersApplications { get; set; }
         public virtual ModuleAccessPermission ModuleAccessPermission { get; set; }
         public virtual Application DesignApp { get; set; }
-        
+        public virtual ICollection<User_Role> Users_Roles { get; set; }
 
         public void Update(User updateFrom)
         {
@@ -98,7 +98,5 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             //if (updateFrom.isActive != null)
             //    isActive = updateFrom.isActive;
         }
-
-     
     }
 }

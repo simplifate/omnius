@@ -309,7 +309,11 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
         private void Save()
         {
-            string requestedPath = $"/Views/App/{currentPage.ParentApp.Id}/Page/Bootstrap/{currentPage.Id}.cshtml";
+            string requestedDirectory = $"{destination}\\Bootstrap";
+            if (!Directory.Exists(requestedDirectory))
+                Directory.CreateDirectory(requestedDirectory);
+
+            string requestedPath = $"{requestedDirectory}\\{currentPage.Id}.cshtml";
             var oldPage = e.Pages.FirstOrDefault(c => c.ViewPath == requestedPath);
 
             if (oldPage == null) {
@@ -330,10 +334,8 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 oldPage.IsBootstrap = true;
                 currentPage.CompiledPageId = oldPage.Id;
             }
-
-            string fileName = destination + $"\\Bootstrap\\{currentPage.Id}.cshtml";
-
-            File.WriteAllText(fileName, currentPage.CompiledPartialView);
+            
+            File.WriteAllText(requestedPath, currentPage.CompiledPartialView);
         }
 
 

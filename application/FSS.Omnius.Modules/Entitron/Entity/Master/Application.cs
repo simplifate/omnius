@@ -23,7 +23,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TitleFontSize = 20;
 
             WorkFlows = new HashSet<WorkFlow>();
-            Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
             DesignedBy = new HashSet<User>();
             UsersApplications = new HashSet<UsersApplications>();
@@ -31,8 +30,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             MozaicBootstrapPages = new List<MozaicBootstrapPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
+            TapestryDesignerConditionGroups = new HashSet<TapestryDesignerConditionGroup>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
+            EmailTemplates = new HashSet<EmailTemplate>();
             IncomingEmailRule = new List<IncomingEmailRule>();
         }
 
@@ -82,6 +83,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         {
             get { return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null); }
         }
+        public virtual ICollection<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
 
         // persona
         [ImportExportIgnore]
@@ -94,8 +96,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
         // entitron
         [ImportExportIgnore]
-        public virtual ICollection<Table> Tables { get; set; }
-        [ImportExportIgnore]
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         // entitron - designer
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
@@ -106,6 +106,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public virtual ICollection<Js> Js { get; set; }
 
         // hermes
+        public virtual ICollection<EmailTemplate> EmailTemplates { get; set; }
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
     }
 }

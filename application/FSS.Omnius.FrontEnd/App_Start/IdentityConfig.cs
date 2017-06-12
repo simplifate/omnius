@@ -44,7 +44,7 @@ namespace FSS.Omnius.FrontEnd
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<User, PersonaAppRole, int, UserLogin, User_Role, UserClaim>(context.Get<DBEntities>()));
+            var manager = new ApplicationUserManager(new UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>(context.Get<DBEntities>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User, int>(manager)
             {

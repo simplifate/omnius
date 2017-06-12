@@ -20,8 +20,13 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (_conditions.isCheck)
                 _conditions._concat = _conditions._concat.Replace("WHERE", "");
 
-            string parValue = _conditions._query.safeAddParam("value", value);
-            _conditions._sql += $"{_conditions._concat} ([{_conditions._columnName}]=@{parValue})";
+            if (value != null)
+            {
+                string parValue = _conditions._query.safeAddParam("value", value);
+                _conditions._sql += $"{_conditions._concat} ([{_conditions._columnName}]=@{parValue})";
+            }
+            else
+                _conditions._sql += $"{_conditions._concat} ([{_conditions._columnName}] IS NULL)";
 
             return new Condition_concat(_conditions);
         }

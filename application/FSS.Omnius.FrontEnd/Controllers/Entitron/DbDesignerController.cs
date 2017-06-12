@@ -11,30 +11,28 @@ namespace FSS.Omnius.Controllers.Entitron
         // GET: DbDesigner
         public ActionResult Index(FormCollection formParams)
         {
-            using (var context = DBEntities.instance)
+            DBEntities context = DBEntities.instance;
+            int appId = 0;
+            string appName = "";
+            if (formParams["appId"] != null)
             {
-                int appId = 0;
-                string appName = "";
-                if (formParams["appId"] != null)
-                {
-                    appId = int.Parse(formParams["appId"]);
-                    HttpContext.GetLoggedUser().DesignAppId = appId;
-                    HttpContext.GetCORE().Entitron.GetStaticTables().SaveChanges();
-                    appName = context.Applications.Find(appId).DisplayName;
-                }
-                else
-                {
-                    var userApp = HttpContext.GetLoggedUser().DesignApp;
-                    if (userApp == null)
-                        userApp = context.Applications.First();
-                    appId = userApp.Id;
-                    appName = userApp.DisplayName;
-                }
-                ViewData["appId"] = appId;
-                ViewData["appName"] = appName;
-
-                return View();
+                appId = int.Parse(formParams["appId"]);
+                HttpContext.GetLoggedUser().DesignAppId = appId;
+                context.SaveChanges();
+                appName = context.Applications.Find(appId).DisplayName;
             }
+            else
+            {
+                var userApp = HttpContext.GetLoggedUser().DesignApp;
+                if (userApp == null)
+                    userApp = context.Applications.First();
+                appId = userApp.Id;
+                appName = userApp.DisplayName;
+            }
+            ViewData["appId"] = appId;
+            ViewData["appName"] = appName;
+
+            return View();
         }
     }
 }

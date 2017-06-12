@@ -64,13 +64,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
             int fileId = Convert.ToInt32(vars["FileId"]);
 
-            using (var entities = DBEntities.instance)
-            {
-                FileMetadata fmd = entities.FileMetadataRecords.Find(fileId);
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
+            FileMetadata fmd = context.FileMetadataRecords.Find(fileId);
 
-                IFileSyncService serviceFileSync = new WebDavFileSyncService();
-                serviceFileSync.DeleteFile(fmd);
-            }
+            IFileSyncService serviceFileSync = new WebDavFileSyncService();
+            serviceFileSync.DeleteFile(fmd);
         }
     }
 }

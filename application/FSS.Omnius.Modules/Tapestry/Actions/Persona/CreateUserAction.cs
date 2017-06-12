@@ -54,7 +54,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var context = DBEntities.instance;
+            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            var context = DBEntities.appInstance(core.Entitron.Application);
             string userEmail = (string)vars["Email"];
             string name = (string)vars["Name"];
             string surname = (string)vars["Surname"];
@@ -76,9 +77,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     LastAction = DateTime.Now
                 };
                 context.Users.Add(user);
-                context.SaveChanges();
-                // TODO: Remove hardcoded 1 when merging to Develop
-                context.UserRoles.Add(new User_Role { UserId = user.Id, RoleId = 342 });
                 context.SaveChanges();
             }
         }

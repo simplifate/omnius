@@ -139,7 +139,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             try
             {
                 Modules.CORE.CORE core = new Modules.CORE.CORE();
-                DBEntities db = core.Entitron.GetStaticTables();
+                DBEntities db = DBEntities.instance;
                 User currentUser = User.GetLogged(core);
                 var app = db.Applications.SingleOrDefault(a => a.Name == appName);
                 if (app != null) {

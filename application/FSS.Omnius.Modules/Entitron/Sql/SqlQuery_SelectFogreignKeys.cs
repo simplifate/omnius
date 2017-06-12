@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public bool? isForDrop { get; set; }
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
-            string parAppId = safeAddParam("applicationId", application.Id);
+            string parAppName = safeAddParam("applicationName", application.Name);
             string parTableName = safeAddParam("tableName", table.tableName);
             
             if (isForDrop==true)
@@ -24,7 +24,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                    $"INNER JOIN {DB_EntitronMeta} targetT ON targetT.tableId=fkc.referenced_object_id " +
                    $"INNER JOIN sys.columns sourceC ON sourceC.column_id=fkc.parent_column_id AND fkc.parent_object_id=sourceC.object_id " +
                    $"INNER JOIN sys.columns targetC ON targetC.column_id=fkc.referenced_column_id AND fkc.referenced_object_id=targetC.object_id " +
-                   $"WHERE sourceT.Name=@{parTableName} AND sourceT.ApplicationId=@{parAppId};";
+                   $"WHERE sourceT.Name=@{parTableName} AND sourceT.ApplicationName=@{parAppName};";
 
 
                 //    string.Format(
@@ -49,7 +49,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                     $"INNER JOIN {DB_EntitronMeta} targetT ON targetT.tableId=fkc.referenced_object_id " +
                     $"INNER JOIN sys.columns sourceC ON sourceC.column_id=fkc.parent_column_id AND fkc.parent_object_id=sourceC.object_id " +
                     $"INNER JOIN sys.columns targetC ON targetC.column_id=fkc.referenced_column_id AND fkc.referenced_object_id=targetC.object_id " +
-                    $"WHERE (sourceT.Name= @{parTableName} AND sourceT.ApplicationId=@{parAppId}) OR (targetT.Name=@{parTableName} AND targetT.ApplicationId=@{parAppId});";
+                    $"WHERE (sourceT.Name= @{parTableName} AND sourceT.ApplicationName=@{parAppName}) OR (targetT.Name=@{parTableName} AND targetT.ApplicationName=@{parAppName});";
 
 
                //     string.Format(

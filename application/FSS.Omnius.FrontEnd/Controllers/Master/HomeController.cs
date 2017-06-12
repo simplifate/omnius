@@ -14,11 +14,10 @@ namespace FSS.Omnius.Controllers.Master
     {
         private List<Application> getAppList()
         {
-            Modules.CORE.CORE core = HttpContext.GetCORE();
             User currentUser = HttpContext.GetLoggedUser();
             try
             {
-                return core.Entitron.GetStaticTables().Applications.Where(a =>
+                return DBEntities.instance.Applications.Where(a =>
                     a.IsPublished
                     && a.IsEnabled
                     && (a.IsAllowedForAll||a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.UserId == currentUser.Id))

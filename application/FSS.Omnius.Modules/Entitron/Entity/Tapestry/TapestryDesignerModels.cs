@@ -236,7 +236,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public bool? IsShared { get; set; }
         public string ColumnName { get; set; }
         public string ColumnFilter { get; set; }
-        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
+        public virtual ICollection<TapestryDesignerConditionGroup> ConditionGroups { get; set; }
 
         [ImportExportIgnore(IsParentKey = true)]
         public int ParentRuleId { get; set; }
@@ -250,7 +250,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public TapestryDesignerResourceItem()
         {
-            ConditionSets = new List<TapestryDesignerConditionSet>();
+            ConditionGroups = new List<TapestryDesignerConditionGroup>();
             SourceToConnection = new HashSet<TapestryDesignerResourceConnection>();
             TargetToConnection = new HashSet<TapestryDesignerResourceConnection>();
         }
@@ -287,7 +287,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         [ImportExportIgnore(IsLinkKey = true)]
         public int? TargetId { get; set; }
         public string SymbolType { get; set; }
-        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
+        public virtual ICollection<TapestryDesignerConditionGroup> ConditionGroups { get; set; }
 
         [ImportExportIgnore]
         public TapestryDesignerBlock Target { get; set; }
@@ -301,7 +301,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         {
             SourceToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
             TargetToConnection = new HashSet<TapestryDesignerWorkflowConnection>();
-            ConditionSets = new HashSet<TapestryDesignerConditionSet>();
+            ConditionGroups = new HashSet<TapestryDesignerConditionGroup>();
         }
     }
     [Table("TapestryDesigner_ToolboxStates")]
@@ -411,18 +411,43 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int SetIndex { get; set; }
         public string SetRelation { get; set; }
 
-        [Index]
-        [ImportExportIgnore(IsParentKey = true)]
-        public virtual int? ResourceMappingPair_Id { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
-        [ImportExportIgnore(IsParent = true)]
-        public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
+        public int ConditionGroupId { get; set; }
+        public virtual TapestryDesignerConditionGroup ConditionGroup { get; set; }
         public virtual ICollection<TapestryDesignerCondition> Conditions { get; set; }
 
         public TapestryDesignerConditionSet()
         {
             Conditions = new List<TapestryDesignerCondition>();
+        }
+    }
+    [Table("TapestryDesigner_ConditionGroups")]
+    public class TapestryDesignerConditionGroup
+    {
+        public int Id { get; set; }
+
+        [Index]
+        [ImportExportIgnore(IsParentKey = true)]
+        public virtual int? ResourceMappingPairId { get; set; }
+
+        [ImportExportIgnore(IsParentKey = true)]
+        public int? TapestryDesignerResourceItemId { get; set; }
+        [ImportExportIgnore(IsParent = true)]
+        public virtual TapestryDesignerResourceItem TapestryDesignerResourceItem { get; set; }
+
+        [ImportExportIgnore(IsParentKey = true)]
+        public int? TapestryDesignerWorkflowItemId { get; set; }
+        [ImportExportIgnore(IsParent = true)]
+        public virtual TapestryDesignerWorkflowItem TapestryDesignerWorkflowItem { get; set; }
+        public virtual ICollection<ActionRule> ActionRules { get; set; }
+
+        public int? ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
+
+        public virtual ICollection<TapestryDesignerConditionSet> ConditionSets { get; set; }
+
+        public TapestryDesignerConditionGroup()
+        {
+            ConditionSets = new List<TapestryDesignerConditionSet>();
         }
     }
     public class TapestryDesignerMenuItem : IEntity

@@ -46,7 +46,7 @@ namespace FSS.Omnius.Controllers.Master
             string result = Encoding.UTF8.GetString(binData);
 
             // transfer to object
-            var context = HttpContext.GetCORE().Entitron.GetStaticTables();
+            var context = DBEntities.instance;
             var service = new RecoveryService();
             
             try

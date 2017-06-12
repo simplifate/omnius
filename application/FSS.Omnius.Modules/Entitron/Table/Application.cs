@@ -19,12 +19,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
                     && !a.IsSystem
                     && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
         }
+        // return app from application DB
+        private Application _similarApp;
+        public Application similarApp
+        {
+            get
+            {
+                if (connectionString_schema == null)
+                    return this;
+
+                if (_similarApp == null)
+                    _similarApp = DBEntities.appInstance(this).Applications.SingleOrDefault(a => a.Name == Name);
+                return _similarApp;
+            }
+        }
+
+        public string GetLayout()
+        {
+            return this.CssTemplate.Url;
+        }
 
         internal SqlQueue queries = new SqlQueue();
 
         public IEnumerable<DBTable> GetTables()
         {
-            List<DBItem> items = (new SqlQuery_Select_TableList() { application = this }).ExecuteWithRead();
+            List<DBItem> items = (new SqlQuery_Select_TableList() { application = similarApp }).ExecuteWithRead();
 
             return items.Select(i =>
                 new DBTable((int)i["tableId"])
@@ -40,7 +59,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
 
             SqlQuery_Table_exists query = new SqlQuery_Table_exists()
             {
-                application = this,
+                application = similarApp,
                 tableName = tableName
             };
 

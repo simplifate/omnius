@@ -16,10 +16,10 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             if (string.IsNullOrWhiteSpace(tableName))
                 throw new ArgumentNullException("tableName");
 
-            string parAppId = safeAddParam("appName", application.Id);
+            string parAppName = safeAddParam("appName", application.Name);
             string parTableName = safeAddParam("tableName", tableName);
 
-            sqlString = $"SELECT Name, tableId FROM {DB_EntitronMeta} WHERE Name=@{parTableName} AND ApplicationId=@{parAppId};";
+            sqlString = $"SELECT Name, tableId FROM {DB_EntitronMeta} WHERE Name=@{parTableName} AND ApplicationName=@{parAppName};";
                 
                 //string.Format(
                 //"SELECT e.Name,e.tableId,a.Name AppName FROM {1} e " +

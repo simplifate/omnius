@@ -27,5 +27,11 @@
 
         public virtual ICollection<EmailPlaceholder> PlaceholderList { get; set; }
         public virtual ICollection<EmailTemplateContent> ContentList { get; set; }
+
+        public EmailTemplate()
+        {
+            PlaceholderList = new HashSet<EmailPlaceholder>();
+            ContentList = new HashSet<EmailTemplateContent>();
+        }
     }
 }

@@ -25,6 +25,10 @@ namespace FSS.Omnius.Modules.Entitron.Service
             this.TablesPrefix = tablesPrefix;
         }
 
+        private Entitron _entitron;
+        private DBEntities _ent;
+        private Application _app;
+
         public delegate void SendWs(string str);
         /// <summary>
         /// </summary>
@@ -33,14 +37,17 @@ namespace FSS.Omnius.Modules.Entitron.Service
         {
             if (dbSchemeCommit != null)
             {
-                Entitron e = core.Entitron;
-                GenerateTables(e, dbSchemeCommit, sendWs);
+                _entitron = core.Entitron;
+                _ent = DBEntities.appInstance(_entitron.Application);
+                _app = _ent.Applications.SingleOrDefault(a => a.Name == _entitron.Application.Name);
+
+                GenerateTables(dbSchemeCommit, sendWs);
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace tabulek", id = "entitron-gentables" }));
-                GenerateRelation(e, dbSchemeCommit);
+                GenerateRelation(dbSchemeCommit);
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace relací" }));
-                GenerateView(e, dbSchemeCommit);
+                GenerateView(dbSchemeCommit);
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "proběhla aktualizace pohledů" }));
-                DroppingOldTables(e, dbSchemeCommit, sendWs);
+                DroppingOldTables(dbSchemeCommit, sendWs);
                 sendWs(Json.Encode(new { childOf = "entitron", type = "success", message = "staré tabulky byly smazány", id = "entitron-deltables" }));
             }
         }
@@ -50,12 +57,10 @@ namespace FSS.Omnius.Modules.Entitron.Service
             GenerateDatabase(dbSchemeCommit, core, _ => { });
         }
 
-        private void GenerateTables(Entitron e, DbSchemeCommit dbSchemeCommit, SendWs sendWs)
+        private void GenerateTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
-            DBEntities ent = DBEntities.instance;
-            var app = ent.Applications.Find(e.AppId);
-            ent.ColumnMetadata.RemoveRange(app.ColumnMetadata);
-            ent.SaveChanges();
+            _ent.ColumnMetadata.RemoveRange(_app.ColumnMetadata);
+            _ent.SaveChanges();
 
             int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
             foreach (DbTable efTable in dbSchemeCommit.Tables)
@@ -63,14 +68,14 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 progress++;
                 sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-gentables", type = "info",
                     message = $"probíhá aktualizace tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
-                DBTable entitronTable = e.Application.GetTable(efTable.Name);
+                DBTable entitronTable = _entitron.Application.GetTable(efTable.Name);
 
                 //if table doesn't exist, create new one
                 if (entitronTable == null)
                 {
                     entitronTable = new DBTable();
                     entitronTable.tableName = efTable.Name;
-                    entitronTable.Application = e.Application;
+                    entitronTable.Application = _app;
 
                     foreach (DbColumn column in efTable.Columns)
                     {
@@ -83,7 +88,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                             type = DataType.ByDBColumnTypeName(column.Type).SqlName
                         };
                         entitronTable.columns.Add(col);
-                        app.ColumnMetadata.Add(new ColumnMetadata
+                        _app.ColumnMetadata.Add(new ColumnMetadata
                         {
                             TableName = efTable.Name,
                             ColumnName = column.Name,
@@ -91,7 +96,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         });
                     }
                     entitronTable.Create();
-                    e.Application.SaveChanges();
+                    _entitron.Application.SaveChanges();
                     //set default values and unique constraints for new tables
                     foreach (DbColumn defColumn in efTable.Columns)
                     {
@@ -107,9 +112,9 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }//end of table==null
                 else
                 {//if table exists, update columns
-                    UpdateColumns(entitronTable,efTable,e);
+                    UpdateColumns(entitronTable,efTable);
                 }//end updating table columns
-                e.Application.SaveChanges();
+                _entitron.Application.SaveChanges();
 
                 //set indeces
 
@@ -129,7 +134,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                         }
                     }
                 }
-                e.Application.SaveChanges();
+                _entitron.Application.SaveChanges();
 
                 //list of index names, which are in database, but not in scheme
                 List<string> deletedIndeces = entitronTable.indices.Select(x => x.indexName.ToLower())
@@ -141,18 +146,18 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     entitronTable.indices.DropFromDB(indexName);
                 }
-                e.Application.SaveChanges();
+                _entitron.Application.SaveChanges();
             } //end foreach efTable
-            ent.SaveChanges();
+            _ent.SaveChanges();
         }
 
-        private void GenerateRelation(Entitron e, DbSchemeCommit dbSchemeCommit)
+        private void GenerateRelation(DbSchemeCommit dbSchemeCommit)
         {
             List<string> entitronsFKsNames = new List<string>();
             List<DBForeignKey> entitronFKs = new List<DBForeignKey>();
 
             //getting FKs for dropping, FK names are for list of new FKs and oldFks
-            foreach (DBTable table in e.Application.GetTables())
+            foreach (DBTable table in _entitron.Application.GetTables())
             {
                 foreach (DBForeignKey key in table.foreignKeys)
                 {
@@ -179,15 +184,15 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 DbColumn leftColumn = efRelation.LeftColumn;
 
                 DBForeignKey entitronFK = new DBForeignKey();
-                entitronFK.sourceTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == rightTable.Name.ToLower());
-                entitronFK.targetTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == leftTable.Name.ToLower());
+                entitronFK.sourceTable = _entitron.Application.GetTable(rightTable.Name);
+                entitronFK.targetTable = _entitron.Application.GetTable(leftTable.Name);
                 entitronFK.sourceColumn = entitronFK.sourceTable.columns.SingleOrDefault(c => c.Name.ToLower() == rightColumn.Name.ToLower()).Name;
                 entitronFK.targetColumn = entitronFK.targetTable.columns.SingleOrDefault(c => c.Name.ToLower() == leftColumn.Name.ToLower()).Name;
                 entitronFK.name = efRelation.Name;
 
                 entitronFK.sourceTable.foreignKeys.AddToDB(entitronFK);
             }
-            e.Application.SaveChanges();
+            _entitron.Application.SaveChanges();
 
             //dropping old FKs
             foreach (string fkey in deletedFK)
@@ -195,21 +200,20 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 DBForeignKey foreignKeyForDrop = entitronFKs.SingleOrDefault(x => x.name.ToLower() == fkey);
                 foreignKeyForDrop.sourceTable.DropConstraint(foreignKeyForDrop.name);
             }
-            e.Application.SaveChanges();
-
+            _entitron.Application.SaveChanges();
         }
 
-        private void GenerateView(Entitron e, DbSchemeCommit dbSchemeCommit)
+        private void GenerateView(DbSchemeCommit dbSchemeCommit)
         {
             foreach (DbView efView in dbSchemeCommit.Views)
             {
                 try
                 {
-                    bool viewExists = DBView.isInDb(e.Application, efView.Name);
+                    bool viewExists = DBView.isInDb(_entitron.Application, efView.Name);
 
                     DBView newView = new DBView()
                     {
-                        Application = e.Application,
+                        Application = _entitron.Application,
                         dbViewName = efView.Name,
                         sql = efView.Query
                     };
@@ -219,39 +223,39 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     else
                         newView.Alter();
 
-                    e.Application.SaveChanges();
+                    _entitron.Application.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message + " view name: " + efView.Name);
+                    throw new Exception($"{efView.Name} - {ex.Message}", ex);
                 }
             }//end of foreach efViews
 
             //list of views, which are in database, but not in scheme
-            List<string> deleteViews = e.Application.GetViewNames()
-                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + this.GetTablesPrefix(e.Application) + "_" + x.Name)).ToList();
+            List<string> deleteViews = _entitron.Application.GetViewNames()
+                .Except(dbSchemeCommit.Views.Select(x => "Entitron_" + this.GetTablesPrefix(_entitron.Application) + "_" + x.Name)).ToList();
 
             //dropping views
             foreach (string viewName in deleteViews)
             {
-                DBView.Drop(e.Application, viewName);
+                DBView.Drop(_app, viewName);
             }
-            e.Application.SaveChanges();
+            _entitron.Application.SaveChanges();
         }
 
-        private void DroppingOldTables(Entitron e, DbSchemeCommit dbSchemeCommit, SendWs sendWs)
+        private void DroppingOldTables(DbSchemeCommit dbSchemeCommit, SendWs sendWs)
         {
             //list of tables, which are in database, but not in scheme
-            List<string> deletedTables = e.Application.GetTables().Select(x => x.tableName.ToLower())
+            List<string> deletedTables = _entitron.Application.GetTables().Select(x => x.tableName.ToLower())
                                 .Except(dbSchemeCommit.Tables.Select(x => x.Name.ToLower())).ToList();
 
             //dropping old tables(must be here, after dropping all constraints)
             foreach (string deleteTable in deletedTables)
             {
-                DBTable dropTable = e.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == deleteTable);
-                e.Application.GetTable(dropTable.tableName).Drop();
+                DBTable dropTable = _entitron.Application.GetTables().SingleOrDefault(x => x.tableName.ToLower() == deleteTable);
+                _entitron.Application.GetTable(dropTable.tableName).Drop();
             }
-            e.Application.SaveChanges();
+            _entitron.Application.SaveChanges();
 
             int progress = 0, progressMax = dbSchemeCommit.Tables.Count;
 
@@ -261,7 +265,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 progress++;
                 sendWs(Json.Encode(new { childOf = "entitron", id = "entitron-deltables", type = "info",
                     message = $"probíhá odstranění starých tabulek <span class='build-progress'>{progress}/{progressMax} <progress value={progress} max={progressMax}>({100.0 * progress / progressMax}%)</progress></span>" }));
-                DBTable entitronTable = e.Application.GetTables()
+                DBTable entitronTable = _entitron.Application.GetTables()
                     .SingleOrDefault(x => x.tableName.ToLower() == schemeTable.Name.ToLower());
 
                 //list of column names, which are in database,but not in scheme
@@ -273,7 +277,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 {
                     DBColumn column = entitronTable.columns.SingleOrDefault(x => x.Name.ToLower() == columnName);
                     if(column.isUnique)
-                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(e.Application)}_{entitronTable.tableName}_{column.Name}");
+                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(_entitron.Application)}_{entitronTable.tableName}_{column.Name}");
 
                     Dictionary<string, string> defaultConstraint = entitronTable.columns.GetSpecificDefault(column.Name);
                     if (defaultConstraint.Count!=0)
@@ -291,23 +295,19 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
                     entitronTable.columns.DropFromDB(column.Name);
                 }
-                e.Application.SaveChanges();
+                _entitron.Application.SaveChanges();
             }//end of foreach schemeTable for dropping old columns
 
         }
 
-        private void UpdateColumns(DBTable entitronTable, DbTable schemeTable, Entitron e)
+        private void UpdateColumns(DBTable entitronTable, DbTable schemeTable)
         {
-            DBEntities ent = DBEntities.instance;
-            var app = ent.Applications.Find(e.AppId);
-            ent.SaveChanges();
-
             foreach (DbColumn efColumn in schemeTable.Columns)
             {
                 DBColumn entitronColumn = entitronTable.columns
                     .SingleOrDefault(x => x.Name.ToLower() == efColumn.Name.ToLower());
 
-                app.ColumnMetadata.Add(new ColumnMetadata
+                _app.ColumnMetadata.Add(new ColumnMetadata
                 {
                     TableName = schemeTable.Name,
                     ColumnName = efColumn.Name,
@@ -329,7 +329,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     {
                         entitronTable.columns.AddUniqueValue(efColumn.Name);
                     }
-                    e.Application.SaveChanges();
+                    _entitron.Application.SaveChanges();
                 }//end column==null
                 else
                 {//updating existing column
@@ -344,7 +344,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                     }
                     else if (entitronColumn.isUnique != efColumn.Unique && entitronColumn.isUnique)
                     {
-                        entitronTable.DropConstraint($"UN_Entitron_{this.GetTablesPrefix(e.Application)}_{entitronTable.tableName}_{entitronColumn.Name}");
+                        entitronTable.DropConstraint($"UN_Entitron_{GetTablesPrefix(_app)}_{entitronTable.tableName}_{entitronColumn.Name}");
                     }
 
                     //set column default value
@@ -371,7 +371,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
 
             }//end foreach efColumn
-            ent.SaveChanges();
+            _ent.SaveChanges();
         }
         private static string GetConnectionString()
         {

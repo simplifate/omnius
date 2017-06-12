@@ -22,95 +22,85 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             ViewBag.Saved = false;
 
-            using (var context = HttpContext.GetCORE().Entitron.GetStaticTables())
+            DBEntities masterContext = DBEntities.instance;
+            Application masterApp = Id != null
+                ? masterContext.Applications.Find(Id)
+                : masterContext.Applications.First();
+            DBEntities context = DBEntities.appInstance(masterApp);
+            Application app = masterApp.similarApp;
+
+            #region Basic variables declaration
+            List<ColumnHeaderAppRolesForTable> colHeaders = new List<ColumnHeaderAppRolesForTable>();
+            List<RowHeaderAppRolesForTable> rowHeaders = new List<RowHeaderAppRolesForTable>();
+            List<bool[]> data = new List<bool[]>(); //bool[] jsou sloupce, List jsou radky 
+            #endregion
+
+            #region Rows headers
+            if (masterApp.IsAllowedForAll)
             {
-                #region Getting app
-                Application app;
-                if (Id != null)
-                {
-                    app = context.Applications.Find(Id);
+                foreach (User u in masterContext.Users) {
+                    rowHeaders.Add(new RowHeaderAppRolesForTable(u.Id, u.DisplayName));
                 }
-                else
-                {
-                    app = context.Applications.First();
-                }
-                #endregion
-
-                #region Basic variables declaration
-                List<ColumnHeaderAppRolesForTable> colHeaders = new List<ColumnHeaderAppRolesForTable>();
-                List<RowHeaderAppRolesForTable> rowHeaders = new List<RowHeaderAppRolesForTable>();
-                List<bool[]> data = new List<bool[]>(); //bool[] jsou sloupce, List jsou radky 
-                #endregion
-
-                #region Rows headers
-                if (app.IsAllowedForAll = true)
-                {
-                    foreach (var User in context.Users)
-                    {
-                        rowHeaders.Add(new RowHeaderAppRolesForTable(User.Id, User.DisplayName));
-                    }
-                }
-                else
-                {
-                    //find ad_group =>
-                    ADgroup adg = context.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
-                    foreach (ADgroup_User adgu in adg.ADgroup_Users)
-                    {
-                        rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
-                    }
-                }
-                #endregion
-
-                #region Column headers + data
-                var roles = context.Roles.Where(c => c.ApplicationId == app.Id).Include("Users");
-
-                int x = 0;
-                foreach (PersonaAppRole role in roles)
-                {
-                    #region Data column prepare
-                    //Creating a column length of rowHeaders.Count
-                    bool[] boolColumn = new bool[rowHeaders.Count];
-                    
-                    data.Add(boolColumn);
-                    #endregion
-
-                    colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name,role.Priority));
-
-                    #region Data
-                    List<int> MemberList = role.Users.Select(u => u.UserId).ToList();
-
-                    for (int y = 0; y < MemberList.Count; y++)
-                    {
-                        int currID = MemberList[y];
-
-                        int index = 0;
-                        for (; index < rowHeaders.Count; index++)
-                        {
-                            if (currID == rowHeaders[index].Id)
-                                break;
-
-                            if (index == rowHeaders.Count + 1)
-                            {
-                                throw new IndexOutOfRangeException("There is no user with this ID");
-                            }
-                        }
-                        if(index == rowHeaders.Count)
-                            data[x][index-1] = true;
-                        else
-                            data[x][index] = true;
-                    }
-                    #endregion
-
-                    x++;
-                }
-                #endregion
-
-                AjaxPersonaAppRolesForTable model = new AjaxPersonaAppRolesForTable(colHeaders, rowHeaders, data);
-                model.AppName = app.DisplayName;
-                model.AppID = app.Id;
-
-                return View("App", model);
             }
+            else {
+                //find ad_group =>
+                ADgroup adg = masterContext.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
+                foreach (ADgroup_User adgu in adg.ADgroup_Users)
+                {
+                    rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
+                }
+            }
+            #endregion
+
+            #region Column headers + data
+            IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
+
+            int x = 0;
+            foreach (PersonaAppRole role in roles)
+            {
+                #region Data column prepare
+                //Creating a column length of rowHeaders.Count
+                bool[] boolColumn = new bool[rowHeaders.Count];
+                    
+                data.Add(boolColumn);
+                #endregion
+
+                colHeaders.Add(new ColumnHeaderAppRolesForTable(role.Id, role.Name,role.Priority));
+
+                #region Data
+                List<int> MemberList = role.getUsers_roles(masterContext).Select(u => u.UserId).ToList();
+
+                for (int y = 0; y < MemberList.Count; y++)
+                {
+                    int currID = MemberList[y];
+
+                    int index = 0;
+                    for (; index < rowHeaders.Count; index++)
+                    {
+                        if (currID == rowHeaders[index].Id)
+                            break;
+
+                        if (index == rowHeaders.Count + 1)
+                        {
+                            throw new IndexOutOfRangeException("There is no user with this ID");
+                        }
+                    }
+                    if(index == rowHeaders.Count)
+                        data[x][index-1] = true;
+                    else
+                        data[x][index] = true;
+                }
+                #endregion
+
+                x++;
+            }
+            #endregion
+
+            AjaxPersonaAppRolesForTable model = new AjaxPersonaAppRolesForTable(colHeaders, rowHeaders, data);
+            model.AppName = app.DisplayName;
+            model.AppID = app.Id;
+
+            return View("App", model);
         }
 
         [HttpPost]
@@ -188,7 +178,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                 Application app = context.Applications.Find(model.AppID);
 
                 #region Column headers + data
-                var roles = context.Roles.Where(c => c.ApplicationId == app.Id);
+                IQueryable<PersonaAppRole> roles = context.AppRoles.Where(c => c.ApplicationId == app.Id);
 
                 #region Save columns
                 int x = 0;
@@ -226,11 +216,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                                 }
                                 #endregion
 
-                                realRole.Users.Clear();
+                                context.Users_Roles.RemoveRange(context.Users_Roles.Where(r => r.RoleName == realRole.Name && r.ApplicationId == realRole.ApplicationId));
 
                                 foreach (int id in NewUsersIDsList)
                                 {
-                                    realRole.Users.Add(new User_Role() { AppRole = realRole, RoleId = realRole.Id, UserId = id, User = context.Users.FirstOrDefault(a => a.Id == id) });
+                                    context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
                                 }
 
                                 context.SaveChanges();
@@ -253,11 +243,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                             #region Fill realRole with users
                             foreach (int id in NewUsersIDsList)
                             {
-                                realRole.Users.Add(new User_Role() { AppRole = realRole, UserId = id, User = context.Users.FirstOrDefault(a => a.Id == id) });
+                                context.Users_Roles.Add(new User_Role() { RoleName = realRole.Name, Application = realRole.Application, UserId = id });
                             }
                             #endregion
 
-                            realRole = context.Roles.Add(realRole);
+                            realRole = context.AppRoles.Add(realRole);
 
                             try
                             {
@@ -287,9 +277,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                         #region Delete column (role)
                         if (colHeader.Id != -1)
                         {
-                            PersonaAppRole role = context.Roles.First(a => a.Id == colHeader.Id);
+                            PersonaAppRole role = context.AppRoles.First(a => a.Id == colHeader.Id);
 
-                            context.Roles.Remove(role);
+                            context.AppRoles.Remove(role);
                             context.SaveChanges();
                         }
                         #endregion
@@ -328,9 +318,9 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             var context = DBEntities.instance;
             #region ColHeader
             int priority;
-            if (context.Roles.Count(r => r.ApplicationId == model.AppID) > 0)
+            if (context.AppRoles.Count(r => r.ApplicationId == model.AppID) > 0)
             {
-                priority = context.Roles.Where(r => r.ApplicationId == model.AppID).Max(r => r.Priority) + 1;
+                priority = context.AppRoles.Where(r => r.ApplicationId == model.AppID).Max(r => r.Priority) + 1;
             }
             else
             {
@@ -344,7 +334,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             }
 
             model.ColHeaders.Add(newColHeader);
-            context.Roles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
+            context.AppRoles.Add(new PersonaAppRole { Name = "Nová role", Priority = priority, ApplicationId = model.AppID });
             /*context.SaveChanges();*/
             #endregion
 
