@@ -1091,17 +1091,9 @@
     <Compile Include="Migrations\201702101332222_addedLocaleId.Designer.cs">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201702101553507_IsSharedTable.cs" />
-    <Compile Include="Migrations\201702101553507_IsSharedTable.Designer.cs">
-      <DependentUpon>201702101553507_IsSharedTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.cs" />
     <Compile Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.Designer.cs">
       <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702211247252_addedColumnToUser.cs" />
-    <Compile Include="Migrations\201702211247252_addedColumnToUser.Designer.cs">
-      <DependentUpon>201702211247252_addedColumnToUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.cs" />
     <Compile Include="Migrations\201702231120106_addedLockedForUserIdColumn.Designer.cs">
@@ -1829,14 +1821,8 @@
     <EmbeddedResource Include="Migrations\201702101332222_addedLocaleId.resx">
       <DependentUpon>201702101332222_addedLocaleId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702101553507_IsSharedTable.resx">
-      <DependentUpon>201702101553507_IsSharedTable.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702101634102_SharedResourcesInResourcesPairs.resx">
       <DependentUpon>201702101634102_SharedResourcesInResourcesPairs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702211247252_addedColumnToUser.resx">
-      <DependentUpon>201702211247252_addedColumnToUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702231120106_addedLockedForUserIdColumn.resx">
       <DependentUpon>201702231120106_addedLockedForUserIdColumn.cs</DependentUpon>
