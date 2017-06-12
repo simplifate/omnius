@@ -1065,7 +1065,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
-            return View(viewPath, app.GetLayout());
+            return View(viewPath);
 
         }
 
