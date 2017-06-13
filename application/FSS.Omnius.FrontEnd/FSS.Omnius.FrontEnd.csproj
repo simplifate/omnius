@@ -1947,6 +1947,7 @@
     <Content Include="Views\App\83\Page\1099.cshtml" />
     <Content Include="Views\App\83\Page\1100.cshtml" />
     <Content Include="Views\App\83\Page\1101.cshtml" />
+    <Content Include="Views\App\103\menuLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
