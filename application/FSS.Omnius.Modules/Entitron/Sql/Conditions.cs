@@ -13,7 +13,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         internal string _columnName = null;
         public bool isCheck = false;
         internal string _sql = "";
-        internal string _concat = "WHERE ";
+        internal string _concat = "";
 
         public Conditions(SqlQuery query)
         {
@@ -29,7 +29,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public override string ToString()
         {
-            return _sql;
+            return (isCheck)
+                ? _sql
+                : $"WHERE {_sql}";
         }
     }
 }

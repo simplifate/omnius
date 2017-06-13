@@ -17,9 +17,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
         public Condition_concat Equal(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             if (value != null)
             {
                 string parValue = _conditions._query.safeAddParam("value", value);
@@ -32,9 +29,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat NotEqual(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}]<>@{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -42,9 +36,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Greater(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}]>@{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -52,9 +43,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat GreaterOrEqual(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}]>=@{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -62,9 +50,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Less(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat= _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}]<@{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -72,9 +57,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat LessOrEqual(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}]<=@{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -82,9 +64,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Between(object value, object value2)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             string parValue2 = _conditions._query.safeAddParam("value", value2);
             _conditions._sql += string.Format("{0}([{1}] BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
@@ -93,9 +72,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat NotBetween(object value, object value2)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             string parValue2 = _conditions._query.safeAddParam("value", value2);
             _conditions._sql += string.Format("{0}([{1}] NOT BETWEEN @{2} AND @{3})", _conditions._concat, _conditions._columnName, parValue, parValue2);
@@ -104,9 +80,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Contains(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", $"%{value}%");
             _conditions._sql += string.Format("{0}([{1}] LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -114,9 +87,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat ContainsCaseInsensitive(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", $"%{value}%");
             _conditions._sql += string.Format("{0}(LOWER([{1}]) LIKE LOWER(@{2}))", _conditions._concat, _conditions._columnName, parValue);
 
@@ -124,9 +94,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Like(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}] LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -134,9 +101,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat LikeCaseInsensitive(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}(LOWER([{1}]) LIKE LOWER(@{2}))", _conditions._concat, _conditions._columnName, parValue);
 
@@ -144,9 +108,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat NotLike(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}([{1}] NOT LIKE @{2})", _conditions._concat, _conditions._columnName, parValue);
 
@@ -154,9 +115,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat NotLikeCaseInsensitive(object value)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
             string parValue = _conditions._query.safeAddParam("value", value);
             _conditions._sql += string.Format("{0}(LOWER([{1}]) NOT LIKE LOWER(@{2}))", _conditions._concat, _conditions._columnName, parValue);
 
@@ -164,40 +122,35 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         }
         public Condition_concat Null()
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-            
             _conditions._sql += string.Format("{0}([{1}] IS NULL)", _conditions._concat, _conditions._columnName);
 
             return new Condition_concat(_conditions);
         }
         public Condition_concat NotNull()
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-            
             _conditions._sql += string.Format("{0}([{1}] IS NOT NULL)", _conditions._concat, _conditions._columnName);
 
             return new Condition_concat(_conditions);
         }
         public Condition_concat In(IEnumerable<object> values)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-
-            if (values.Count() <= 0)
-                _conditions._sql += " WHERE 0 = 1";
-            else
-                _conditions._sql += string.Format(" WHERE [{0}] IN ({1})", _conditions._columnName, string.Join(", ", values.Select(v => v.ToString())));
+            List<string> list = new List<string>();
+            foreach(object value in values)
+            {
+                list.Add($"@{_conditions._query.safeAddParam("value", value)}");
+            }
+            _conditions._sql += string.Format("[{0}] IN ({1})", _conditions._columnName, string.Join(", ", list));
 
             return new Condition_concat(_conditions);
         }
         public Condition_concat NotIn(List<object> values)
         {
-            if (_conditions.isCheck)
-                _conditions._concat = _conditions._concat.Replace("WHERE", "");
-            
-            _conditions._sql += string.Format(" [{0}] NOT IN ({1})", _conditions._columnName, string.Join(", ", values));
+            List<string> list = new List<string>();
+            foreach (object value in values)
+            {
+                list.Add($"@{_conditions._query.safeAddParam("value", value)}");
+            }
+            _conditions._sql += string.Format("[{0}] NOT IN ({1})", _conditions._columnName, string.Join(", ", list));
 
             return new Condition_concat(_conditions);
         }

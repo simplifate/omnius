@@ -15,7 +15,9 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         
         public T where(Func<Conditions, Condition_concat> conditions)
         {
-            _where = conditions(new Conditions(this));
+            _where = (_where != null)
+                ? _where = _where.and(conditions(new Conditions(this)))
+                : _where = conditions(new Conditions(this));
 
             return (T)this;
         }
