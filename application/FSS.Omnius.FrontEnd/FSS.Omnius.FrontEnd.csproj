@@ -1948,6 +1948,8 @@
     <Content Include="Views\App\83\Page\1100.cshtml" />
     <Content Include="Views\App\83\Page\1101.cshtml" />
     <Content Include="Views\App\103\menuLayout.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\menuLayout.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\22.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
