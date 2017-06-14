@@ -27,7 +27,8 @@ namespace FSS.Omnius.Modules.Watchtower
             { OmniusLogSource.Hermes, "odeslání e-mailu" },
             { OmniusLogSource.Master, "vytváření a správa aplikace" },
             { OmniusLogSource.Nexus, "integrace" },
-            { OmniusLogSource.Watchtower, "záznam do protokolu činností" }
+            { OmniusLogSource.Watchtower, "záznam do protokolu činností" },
+            { OmniusLogSource.User, "uživatel" }
         };
         public static void Log(string Message, OmniusLogLevel level, OmniusLogSource source = OmniusLogSource.none, Application application = null, User user = null)
         {
