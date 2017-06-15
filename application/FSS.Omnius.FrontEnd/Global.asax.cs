@@ -14,6 +14,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Controllers.Tapestry;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -39,84 +40,12 @@ namespace FSS.Omnius.FrontEnd
         {
             try
             {
-                List<string> bodyLines = new List<string>();
-                bodyLines.Add($"URL: {Request.Url.AbsoluteUri}");
-                bodyLines.Add($"Method: {Request.HttpMethod}");
-                bodyLines.Add($"Current User: {Context.User?.Identity?.Name}");
-            
-                bodyLines.Add("POST data:");
-                NameValueCollection form = Request.Unvalidated.Form;
-                foreach (string key in form.AllKeys)
+                foreach (Exception error in Context.AllErrors)
                 {
-                    bodyLines.Add($"{key} => {Server.HtmlEncode(form[key])}");
-                }
-                    
-                bodyLines.Add("");
-                bodyLines.Add("Errors:");
-                foreach (var error in Context.AllErrors)
-                {
-                    var curError = error;
-                    while (curError != null)
-                    {
-                        bodyLines.Add($"Message: {curError.Message}");
-                        bodyLines.Add($"Method: {curError.TargetSite.ToString()}");
-                        bodyLines.Add($"Error type: {curError.GetType()}");
-                        bodyLines.Add($"Trace: {curError.StackTrace}");
-
-                        // validation error
-                        if (curError?.GetType() == typeof(DbEntityValidationException))
-                        {
-                            bodyLines.Add($"Validation errors:");
-                            foreach (DbEntityValidationResult valE in (curError as DbEntityValidationException).EntityValidationErrors)
-                            {
-                                foreach (var validationMessage in valE.ValidationErrors)
-                                {
-                                    bodyLines.Add($" -> {validationMessage.PropertyName}: {validationMessage.ErrorMessage}");
-                                }
-                            }
-                        }
-
-                        bodyLines.Add("");
-                        // inner error
-                        curError = curError.InnerException;
-                    }
-                }
-
-                Logger.Log.Fatal(string.Join(Environment.NewLine, bodyLines));
-
-                try
-                {
-                    string username = "Helpdesk@futurespoc.com";
-                    string password = "pwd4FSPOCmail";
-
-                    int port = 587;
-                    string host = "imap.smtp.cz";
-
-                    MailMessage message = new MailMessage()
-                    {
-                        Subject = $"Error message from {Request.Url.Authority} [{DateTime.UtcNow.ToString()}]",
-                        IsBodyHtml = true,
-                        Body = string.Join("<br />", bodyLines)
-                    };
-                    message.To.Add("samuel.lachman@futuresolutionservices.com");
-                    message.To.Add("fabio.melloni@futuresolutionservices.com");
-                    message.From = new MailAddress(username);
-                    SmtpClient smtp = new SmtpClient
-                    {
-                        Host = host,
-                        Port = port,
-                        UseDefaultCredentials = false,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        Credentials = new NetworkCredential(username, password),
-                        EnableSsl = true,
-                        Timeout = 10000
-                    };
-
-                    smtp.Send(message);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Log.Error($"Failed to send Error mail: {exc.Message}");
+                    Omnius.Modules.Watchtower.OmniusException.Log(
+                        $"Global: {Request?.HttpMethod} {Request?.Url.AbsoluteUri}",
+                        Omnius.Modules.Watchtower.OmniusLogSource.CORE,
+                        innerException: error);
                 }
             }
             catch (Exception exc)

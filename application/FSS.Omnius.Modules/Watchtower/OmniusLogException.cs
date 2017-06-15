@@ -187,6 +187,16 @@ namespace FSS.Omnius.Modules.Watchtower
     {
         public static void Log(string Message, OmniusLogSource source = OmniusLogSource.none, Exception innerException = null, Application application = null, User user = null)
         {
+            if (user == null)
+            {
+                try
+                {
+                    user = DBEntities.instance.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
+                }
+                catch (Exception)
+                { }
+            }
+
             new OmniusException(Message, innerException)
             {
                 Application = application,
@@ -196,6 +206,15 @@ namespace FSS.Omnius.Modules.Watchtower
         }
         public static void Log(Exception innerException, OmniusLogSource source = OmniusLogSource.none, Application application = null, User user = null)
         {
+            if (user == null)
+            {
+                try
+                {
+                    user = DBEntities.instance.Users.SingleOrDefault(u => u.UserName == HttpContext.Current.User.Identity.Name);
+                }
+                catch (Exception)
+                { }
+            }
             new OmniusException(innerException)
             {
                 Application = application,
