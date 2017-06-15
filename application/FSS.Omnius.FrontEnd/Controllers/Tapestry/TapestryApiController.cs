@@ -316,6 +316,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                             };
                                             conditionSet.Conditions.Add(condition);
                                         }
+                                        conditionGroup.ConditionSets.Add(conditionSet);
                                     }
                                 }
                             }
