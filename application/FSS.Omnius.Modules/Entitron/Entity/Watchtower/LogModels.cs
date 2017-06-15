@@ -9,6 +9,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
     [Table("Watchtower_LogItems")]
     public class LogItem : IEntity
     {
+        public LogItem()
+        {
+            ChildLogItems = new HashSet<LogItem>();
+        }
+
         public int Id { get; set; }
         [Index]
         public DateTime Timestamp { get; set; }
@@ -33,6 +38,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
         public string Message { get; set; }
         public string Vars { get; set; }
         public string StackTrace { get; set; }
+        
+        public int? ParentLogItemId { get; set; }
+        public virtual LogItem ParentLogItem { get; set; }
+        public virtual ICollection<LogItem> ChildLogItems { get; set; }
 
         [NotMapped]
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");

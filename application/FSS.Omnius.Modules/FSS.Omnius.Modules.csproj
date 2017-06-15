@@ -1121,6 +1121,10 @@
     <Compile Include="Migrations\201705121141371_WatchtowerLogItems.Designer.cs">
       <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706150917516_watchtowerInner.cs" />
+    <Compile Include="Migrations\201706150917516_watchtowerInner.Designer.cs">
+      <DependentUpon>201706150917516_watchtowerInner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1847,6 +1851,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705121141371_WatchtowerLogItems.resx">
       <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706150917516_watchtowerInner.resx">
+      <DependentUpon>201706150917516_watchtowerInner.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

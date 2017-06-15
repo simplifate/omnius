@@ -24,6 +24,29 @@
             StackTraceCell.html(
                 'Show' +
                 '<div class="tooltiptext" >' + data.StackTrace + '</div>');
+
+            // Inner
+            var inner = data.Inner;
+            var parentRow = row;
+            while (inner != null)
+            {
+                var htmlRow =
+                    '<tr data-id="' + inner.Id + '"><td>Inner</td>' +
+                    '<td>' + inner.LogLevelString + '</td>' +
+                    '<td>' + inner.UserName + '</td>' +
+                    '<td>' + inner.Server + '</td>' +
+                    '<td>' + inner.LogSourceString + '</td>' +
+                    '<td>' + inner.Application + '</td>' +
+                    '<td>' + inner.BlockName + '</td>' +
+                    '<td>' + inner.ActionName + '</td>' +
+                    '<td>' + inner.Message + '</td>' +
+                    '<td class="mytooltip">Show<div class="tooltiptext">' + inner.Vars + '</div></td>' +
+                    '<td class="mytooltip">Show<div class="tooltiptext">' + inner.StackTrace + '</div></td></tr>';
+                parentRow.after(htmlRow);
+
+                inner = inner.ChildLogItems[0];
+                parentRow = parentRow.next();
+            }
         });
     });
 });

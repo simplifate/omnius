@@ -73,7 +73,12 @@ namespace FSS.Omnius.Modules.Watchtower
         {
             Timestamp = DateTime.UtcNow;
             Level = level;
-            Server = HttpContext.Current?.Request.Url.Authority;
+            try
+            {
+                Server = HttpContext.Current.Request.Url.Authority;
+            }
+            catch(Exception)
+            { }
         }
 
         //public static string ToString(Exception ex)
@@ -116,9 +121,12 @@ namespace FSS.Omnius.Modules.Watchtower
             context.SaveChanges();
             Send();
         }
-        protected virtual LogItem toLogItem()
+        protected virtual LogItem toLogItem(Exception ex = null)
         {
-            return new LogItem
+            if (ex == null)
+                ex = this;
+
+            LogItem newLog = new LogItem
             {
                 Timestamp = Timestamp,
                 LogLevel = (int)Level,
@@ -126,8 +134,14 @@ namespace FSS.Omnius.Modules.Watchtower
                 Server = Server,
                 Source = (int)SourceModule,
                 Application = Application?.Name,
-                Message = Message
+                Message = ex.Message,
             };
+            if (ex.InnerException != null)
+            {
+                newLog.ChildLogItems.Add(toLogItem(ex.InnerException));
+            }
+
+            return newLog;
         }
         protected virtual void Send()
         {
@@ -200,10 +214,13 @@ namespace FSS.Omnius.Modules.Watchtower
         {
         }
 
-        protected override LogItem toLogItem()
+        protected override LogItem toLogItem(Exception ex = null)
         {
-            LogItem result = base.toLogItem();
-            result.StackTrace = InnerException.StackTrace;
+            if (ex == null)
+                ex = this;
+
+            LogItem result = base.toLogItem(ex);
+            result.StackTrace = ex.StackTrace ?? ex.InnerException?.StackTrace;
             return result;
         }
     }
@@ -252,9 +269,12 @@ namespace FSS.Omnius.Modules.Watchtower
             Vars = new Dictionary<string, object>();
         }
 
-        protected override LogItem toLogItem()
+        protected override LogItem toLogItem(Exception ex = null)
         {
-            LogItem result = base.toLogItem();
+            if (ex == null)
+                ex = this;
+
+            LogItem result = base.toLogItem(ex);
             result.BlockName = Block?.Name;
             result.ActionName = ActionRuleAction != null ? Tapestry.Action.All[ActionRuleAction.ActionId].Name : null;
             result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString().Truncate(1000)}"));

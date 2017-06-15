@@ -20,7 +20,8 @@ namespace FSS.Omnius.Controllers.Watchtower
 
             filter.ResultItems = context.LogItems.Where(
                 i =>
-                   (filter.LevelId == -1 || i.LogLevel == filter.LevelId)
+                   i.ParentLogItemId == null
+                && (filter.LevelId == -1 || i.LogLevel == filter.LevelId)
                 && (filter.UserName == "All" || i.UserName == filter.UserName)
                 && (filter.Server == "All" || i.Server == filter.Server)
                 && (filter.SourceId == -1 || i.Source == filter.SourceId)
@@ -63,7 +64,15 @@ namespace FSS.Omnius.Controllers.Watchtower
             DBEntities context = DBEntities.instance;
             LogItem item = context.LogItems.Find(id);
 
-            return Json(new { Vars = item.VarHtmlTable(), StackTrace = item.StackTraceHtml() }, JsonRequestBehavior.AllowGet);
+            LogItem current = item;
+            while (current != null)
+            {
+                current.ParentLogItem = null;
+
+                current = current.ChildLogItems.FirstOrDefault();
+            }
+
+            return Json(new { Vars = item.VarHtmlTable(), StackTrace = item.StackTraceHtml(), Inner = item.ChildLogItems.FirstOrDefault() }, JsonRequestBehavior.AllowGet);
         }
     }
 }
