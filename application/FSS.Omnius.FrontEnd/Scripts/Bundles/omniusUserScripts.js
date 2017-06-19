@@ -473,7 +473,12 @@ $(function () {
                 }
             });
         });
-    }
+    }   
+    $("tr").on("click", function (event) {
+        if(!$(event.target).is(".rowEditAction")){ //to stop event propagation resulting in a recursion
+            $(this).find(".rowEditAction").trigger("click");
+        }
+    });
 });
 
 function ShowAppNotification(text, type) {
