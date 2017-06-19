@@ -190,7 +190,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             {
                 string errorMsg = e.Message;
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                WatchtowerLogger.Instance.LogEvent(errorMsg,core.User.Id);
+                OmniusException.Log(e, OmniusLogSource.Nexus, core.Entitron.Application, core.User);
                 outputVars["Result"] = String.Empty;
                 outputVars["Error"] = true;
             }

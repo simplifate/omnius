@@ -1117,13 +1117,9 @@
     <Compile Include="Migrations\201706120733572_ApplicationDB.Designer.cs">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705121141371_WatchtowerLogItems.cs" />
-    <Compile Include="Migrations\201705121141371_WatchtowerLogItems.Designer.cs">
-      <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706150917516_watchtowerInner.cs" />
-    <Compile Include="Migrations\201706150917516_watchtowerInner.Designer.cs">
-      <DependentUpon>201706150917516_watchtowerInner.cs</DependentUpon>
+    <Compile Include="Migrations\201706191130508_WatchtowerException.cs" />
+    <Compile Include="Migrations\201706191130508_WatchtowerException.Designer.cs">
+      <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
@@ -1849,11 +1845,8 @@
     <EmbeddedResource Include="Migrations\201706120733572_ApplicationDB.resx">
       <DependentUpon>201706120733572_ApplicationDB.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705121141371_WatchtowerLogItems.resx">
-      <DependentUpon>201705121141371_WatchtowerLogItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706150917516_watchtowerInner.resx">
-      <DependentUpon>201706150917516_watchtowerInner.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706191130508_WatchtowerException.resx">
+      <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
