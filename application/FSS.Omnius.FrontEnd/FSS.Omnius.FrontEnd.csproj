@@ -1950,6 +1950,10 @@
     <Content Include="Views\App\103\menuLayout.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\menuLayout.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\22.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\23.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\24.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\25.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\26.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
