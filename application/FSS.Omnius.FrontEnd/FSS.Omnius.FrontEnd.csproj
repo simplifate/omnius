@@ -1875,6 +1875,7 @@
     <Content Include="Views\App\PortalInternichAuditu2\Page\997.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\998.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\999.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\27.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
