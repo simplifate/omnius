@@ -70,7 +70,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     item.createProperty(column.ColumnId, column.Name, vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"));
                 else if (vars.ContainsKey($"__Model.{table.tableName}.{column.Name}"))
                 {
-                    if (column.type == "datetime")
+                    if (column.type == "datetime" && vars[$"__Model.{table.tableName}.{column.Name}"] is string)
                     {
                         DateTime parsedDateTime = new DateTime();
                         bool parseSuccessful = DateTime.TryParseExact((string)vars[$"__Model.{table.tableName}.{column.Name}"],
