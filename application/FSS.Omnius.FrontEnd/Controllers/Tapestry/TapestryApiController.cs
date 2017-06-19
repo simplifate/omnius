@@ -216,6 +216,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                         SetRelation = ajaxConditionSet.SetRelation,
                                         ConditionGroup = conditionGroup
                                     };
+                                    conditionGroup.ConditionSets.Add(conditionSet);
+
                                     foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
                                     {
                                         TapestryDesignerCondition condition = new TapestryDesignerCondition

@@ -1,12 +1,11 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.Persona;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Security;
+using FSS.Omnius.Modules.Entitron.Entity.Persona;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using User = FSS.Omnius.Modules.Entitron.Entity.Persona.User;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
@@ -64,11 +63,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
             if (userExists)
             {
-                MembershipUser mu = Membership.GetUser(username);
-                string resetedPassword = mu.ResetPassword();
-                mu.ChangePassword(resetedPassword, newPassword);
+                User targetUser = context.Users.SingleOrDefault(c => c.UserName == username);
+                var userId = targetUser.GetId();
 
-                context.SaveChanges();
+                UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim> store = new UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>(context);
+                UserManager<User, int> userManager = new UserManager<User, int>(store);
+
+                userManager.RemovePassword(userId);
+                userManager.AddPassword(userId, newPassword);
             }
         }
     }
