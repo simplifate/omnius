@@ -358,9 +358,50 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 resultBlock.ResourceMappingPairs.Add(pair);
 
                 _context.SaveChanges();
-
+                
                 foreach (TapestryDesignerConditionGroup cg in source.ConditionGroups)
-                    cg.ResourceMappingPairId = pair.Id;
+                {
+                    // copy
+                    if (_context != _masterContext)
+                    {
+                        // new conditionGroup
+                        TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
+                        {
+                            Application = _app,
+                            ResourceMappingPairId = pair.Id
+                        };
+
+                        // new conditionSet
+                        foreach (TapestryDesignerConditionSet originConditionSet in cg.ConditionSets)
+                        {
+                            TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
+                            {
+                                SetIndex = originConditionSet.SetIndex,
+                                SetRelation = originConditionSet.SetRelation
+                            };
+                            conditionGroup.ConditionSets.Add(conditionSet);
+
+                            // new condition
+                            foreach (TapestryDesignerCondition originCondition in originConditionSet.Conditions)
+                            {
+                                TapestryDesignerCondition condition = new TapestryDesignerCondition
+                                {
+                                    Index = originCondition.Index,
+                                    Operator = originCondition.Operator,
+                                    Relation = originCondition.Relation,
+                                    Value = originCondition.Value,
+                                    Variable = originCondition.Variable,
+                                };
+                                conditionSet.Conditions.Add(condition);
+                            }
+                        }
+
+                        _context.TapestryDesignerConditionGroups.Add(conditionGroup);
+                        _context.SaveChanges();
+                    }
+                    else
+                        cg.ResourceMappingPairId = pair.Id;
+                }
 
                 return pair;
             }
