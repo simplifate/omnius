@@ -45,9 +45,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             else {
                 //find ad_group =>
                 ADgroup adg = masterContext.ADgroups.SingleOrDefault(i => i.ApplicationId == Id);
-                foreach (ADgroup_User adgu in adg.ADgroup_Users)
+                if (adg != null)
                 {
-                    rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
+                    foreach (ADgroup_User adgu in adg.ADgroup_Users)
+                    {
+                        rowHeaders.Add(new RowHeaderAppRolesForTable(adgu.User.Id, adgu.User.DisplayName));
+                    }
                 }
             }
             #endregion
