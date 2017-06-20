@@ -41,6 +41,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         public DateTime LastLogin { get; set; }
         public DateTime? LastLogout { get; set; }
         public DateTime? LastAction { get; set; }
+        public DateTime? DeletedBySync { get; set; }
 
         [Required]
         public DateTime? localExpiresAt { get; set; }
