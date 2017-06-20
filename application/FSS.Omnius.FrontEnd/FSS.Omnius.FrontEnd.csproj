@@ -1875,6 +1875,11 @@
     <Content Include="Views\App\PortalInternichAuditu2\Page\997.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\998.cshtml" />
     <Content Include="Views\App\PortalInternichAuditu2\Page\999.cshtml" />
+    <Content Include="Views\App\MailingEngine\menuLayout.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1114.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1115.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\1116.cshtml" />
+    <Content Include="Views\App\MailingEngine\Page\Bootstrap\28.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
