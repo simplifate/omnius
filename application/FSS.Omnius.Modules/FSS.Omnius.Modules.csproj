@@ -1121,6 +1121,10 @@
     <Compile Include="Migrations\201706191130508_WatchtowerException.Designer.cs">
       <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.cs" />
+    <Compile Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.Designer.cs">
+      <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1848,6 +1852,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706191130508_WatchtowerException.resx">
       <DependentUpon>201706191130508_WatchtowerException.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.resx">
+      <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
