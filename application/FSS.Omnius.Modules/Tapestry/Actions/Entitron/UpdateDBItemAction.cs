@@ -88,7 +88,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     {
                         DateTime parsedDateTime = new DateTime();
                         bool parseSuccessful = DateTime.TryParseExact((string)inputValue,
-                            new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss" },
+                        new string[] { "d.M.yyyy H:mm:ss", "d.M.yyyy", "H:mm:ss", "yyyy-MM-dd H:mm:ss", "yyyy-MM-dd"},
                             CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDateTime);
 
                         if (parseSuccessful)

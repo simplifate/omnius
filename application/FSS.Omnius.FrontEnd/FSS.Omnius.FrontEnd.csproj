@@ -1881,6 +1881,8 @@
     <Content Include="Views\App\MailingEngine\Page\1116.cshtml" />
     <Content Include="Views\App\MailingEngine\Page\Bootstrap\28.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\27.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\29.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\30.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

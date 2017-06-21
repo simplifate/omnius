@@ -66,18 +66,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             // Table of new users in AD
             List<DBItem> newData = (List<DBItem>)vars["NewData"];
 
-            foreach (DBItem oldUser in oldData)
+            // List of newly removed users from AD
+            List<DBItem> removedUsers = new List<DBItem>();
+
+            for (int i = 0; i < oldData.Count; i++)
             {
-                string sapid1 = (string) oldUser["sapid1"];
+                DBItem oldUser = oldData[i];
+                string sapid1 = (string)oldUser["sapid1"];
 
                 // Remove old active users, so oldData contains only deleted users in the end
-                if (!(newData.Any(c => (string) c["sapid1"] == sapid1)))
-                    oldData.Remove(oldUser);
+                if (!(newData.Any(c => (string)c["sapid1"] == sapid1)))
+                    removedUsers.Add(oldUser);
             }
 
-            foreach (DBItem deletedUser in oldData)
+            foreach (DBItem removedUser in removedUsers)
             {
-                string sapid1 = (string) deletedUser["sapid1"];
+                string sapid1 = (string)removedUser["sapid1"];
                 var user = DBEntities.instance.Users.SingleOrDefault(c => c.UserName == sapid1 && c.DeletedBySync == null);
 
                 if (user != null)
@@ -85,7 +89,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             }
 
             DBEntities.instance.SaveChanges();
-
             outputVars["Result"] = oldData;
         }
     }

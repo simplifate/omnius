@@ -108,7 +108,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "form|input-color":                    html = RenderInput(c, p); break;
                     case "form|select":                         html = RenderSelect(c, p); break;
                     case "form|input-tel":                      html = RenderInput(c, p); break;
-                    case "form|input-date":                     html = RenderInput(c, p); break; /// !!!
+                    case "form|input-date":                     html = RenderDateInput(c, p); break;
                     case "form|input-number":                   html = RenderInput(c, p); break;
                     case "form|input-range":                    html = RenderInput(c, p); break;
                     case "form|input-hidden":                   html = RenderInput(c, p); break;
@@ -498,6 +498,29 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
             html.Append($"<{c.Tag} {attrs} />");
                 
+            return html.ToString();
+        }
+
+        private string RenderDateInput(MozaicBootstrapComponent c, Dictionary<string, string> properties)
+        {
+            StringBuilder html = new StringBuilder();
+            string type = GetAttribute(c.Attributes, "type");
+            string format = "";
+
+            Dictionary<string, string> mergeAttrs = new Dictionary<string, string>();
+
+            switch(type) {
+                case "date": format = "yyyy-MM-dd"; break;
+                case "time": format = "HH:mm"; break;
+                case "datetime-local": format = "yyyy-MM-dd HH:mm:ss"; break;
+                case "month": format = "yyyy-MM"; break;
+            }
+            mergeAttrs.Add("value", $"@(ViewData.ContainsKey(\"inputData_{c.ElmId}\") ? ((DateTime)ViewData[\"inputData_{c.ElmId}\"]).ToString(\"{format}\") : \"\")");
+
+            string attrs = BuildAttributes(c, new List<string>(), mergeAttrs);
+
+            html.Append($"<{c.Tag} {attrs} />");
+
             return html.ToString();
         }
 
