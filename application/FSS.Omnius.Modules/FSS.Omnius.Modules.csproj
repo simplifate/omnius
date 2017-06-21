@@ -1225,6 +1225,7 @@
     <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\ChangeUserPasswordAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\CreateUserAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\RecordDatesDeletedUsers.cs" />
     <Compile Include="Tapestry\Actions\Persona\RefreshUserFromADAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\RemoveUserFromGroupAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\UserHasRoleAction.cs" />

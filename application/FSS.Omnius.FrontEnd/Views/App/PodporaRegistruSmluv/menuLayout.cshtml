@@ -9,7 +9,7 @@
 }@if (Context.GetLoggedUser().canUseBlock("Editor,Export",109)){            <li>
                     <a href="/PodporaRegistruSmluv/PrehledSubjektu">@(t._("Přehled subjektů"))</a>
             </li>
-}@if (Context.GetLoggedUser().canUseBlock("User",109)){            <li>
+}@if (Context.GetLoggedUser().canUseBlock("Editor,Export",109)){            <li>
                     <a href="/PodporaRegistruSmluv/ImportSubjektu">@(t._("Import subjektů"))</a>
             </li>
 }    </ul>
