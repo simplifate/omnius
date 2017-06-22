@@ -270,7 +270,7 @@ namespace FSS.Omnius.Controllers.Master
 
                 if (masterApp.MozaicChangedSinceLastBuild || _rebuildInAction)
                 {
-                    if (masterContext != context)
+                    if (masterContext != context && masterApp.CssTemplate != null)
                     {
                         app.CssTemplate = new MozaicCssTemplate
                         {
