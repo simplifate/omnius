@@ -90,6 +90,9 @@ $(function () {
                 $("#uic_panel20").toggleClass('disabled');
             });
         }
+        if $("#zobrazit").on("click", function () {
+            $("#recommandation_formulation_panel").show();
+        });
        
     
         else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
