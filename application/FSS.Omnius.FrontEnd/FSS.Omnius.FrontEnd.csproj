@@ -1883,6 +1883,7 @@
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\27.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\29.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\30.cshtml" />
+    <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\31.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
