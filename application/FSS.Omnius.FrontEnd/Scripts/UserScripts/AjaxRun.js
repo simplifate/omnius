@@ -90,8 +90,6 @@ $(function () {
                 $("#uic_panel20").toggleClass('disabled');
             });
         }
-       
-    
         else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
             
         $("#uic_address_dropdown").change(function () {
@@ -99,7 +97,9 @@ $(function () {
             $("#uic_ship_to_textbox").val(dropdownText.text());
         });
 
-
+        if ($("#zobrazit").on("click", function () {
+            $("#recommandation_formulation_panel").show();
+        }));
 
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");

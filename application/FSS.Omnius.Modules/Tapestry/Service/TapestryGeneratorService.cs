@@ -170,8 +170,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveBlocks(SendWS sendWs)
         {
-            // remove old conditions
-            _context.TapestryDesignerConditionGroups.RemoveRange(_app.TapestryDesignerConditionGroups);
+            /// remove old conditions
+            if (_context != _masterContext)
+                _context.TapestryDesignerConditionGroups.RemoveRange(_app.TapestryDesignerConditionGroups);
 
             int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;

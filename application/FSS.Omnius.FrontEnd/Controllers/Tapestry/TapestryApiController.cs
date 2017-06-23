@@ -206,7 +206,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                             resourceIdMapping.Add(ajaxItem.Id, item.Id);
                             if (ajaxItem.ConditionSets.Count > 0)
                             {
-                                TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup();
+                                TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
+                                {
+                                    ApplicationId = appId
+                                };
                                 item.ConditionGroups.Add(conditionGroup);
                                 foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
                                 {
@@ -296,7 +299,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
                                 if (ajaxItem.ConditionSets.Count > 0)
                                 {
-                                    TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup();
+                                    TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
+                                    {
+                                        ApplicationId = appId
+                                    };
                                     item.ConditionGroups.Add(conditionGroup);
                                     foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
                                     {
@@ -1102,7 +1108,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                         {
                             TapestryDesignerConditionGroup newCg = new TapestryDesignerConditionGroup
                             {
-                                TapestryDesignerResourceItem = newRI
+                                TapestryDesignerResourceItem = newRI,
+                                ApplicationId = block.ParentMetablock.ParentAppId
                             };
                             foreach (TapestryDesignerConditionSet cs in cg.ConditionSets)
                             {
@@ -1210,7 +1217,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     {
                         TapestryDesignerConditionGroup newcg = new TapestryDesignerConditionGroup
                         {
-                            TapestryDesignerWorkflowItem = newWI
+                            TapestryDesignerWorkflowItem = newWI,
+                            ApplicationId = block.ParentMetablock.ParentAppId
                         };
                         foreach (TapestryDesignerConditionSet cs in cg.ConditionSets)
                         {
