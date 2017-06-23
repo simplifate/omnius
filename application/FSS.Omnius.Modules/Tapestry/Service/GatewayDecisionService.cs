@@ -36,9 +36,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             switch (condition.Operator)
             {
                 case "is empty":
-                    return leftOperand == null || leftOperand.ToString().Length == 0;
+                    return leftOperand == null || leftOperand == DBNull.Value || leftOperand.ToString().Length == 0;
                 case "is not empty":
-                    return leftOperand != null && leftOperand.ToString().Length > 0;
+                    return leftOperand != null && leftOperand != DBNull.Value && leftOperand.ToString().Length > 0;
             }
 
             object value = KeyValueString.ParseValue(condition.Value, vars);
