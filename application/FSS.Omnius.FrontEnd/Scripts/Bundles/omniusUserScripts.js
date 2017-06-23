@@ -595,7 +595,6 @@ $(function () {
     }
     else if ($("#currentBlockName").val() == "NovyAudit") {
         // Selection of a company will fill coordinator dropdown by data wich it receives from server.
-        
         $('#uic_company_dropdown').on("change",
             function () {
                 $.ajax({
@@ -606,7 +605,7 @@ $(function () {
                     success: function (data) {
                         $("#uic_ia_coordinator_dropdown option[value != '-1']").remove();
                         for (i = 0; i < data.Coordinators.length; i++) {
-                            coordinator = data.Coordinators[i];
+                            var coordinator = data.Coordinators[i];
                             $("#uic_ia_coordinator_dropdown").append('<option value="' + coordinator.id + '">' + coordinator.name + '</option>');
                         }
                     }
@@ -1753,38 +1752,77 @@ function CurrentModuleIs(moduleClass) {
 }
 function CreateCzechDataTable(element, simpleMode) {
     featureSwitch = !simpleMode;
-
-    var config = {
-        "paging": featureSwitch,
-        "pageLength": 50,
-        "lengthMenu": [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, "Vše"]],
-        "info": featureSwitch,
-        "filter": featureSwitch,
-        "order": [[0, "desc"]],
-        "language": {
-            "sEmptyTable": "Tabulka neobsahuje žádná data",
-            "sInfo": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
-            "sInfoEmpty": "Zobrazuji 0 až 0 z 0 záznamů",
-            "sInfoFiltered": "(filtrováno z celkem _MAX_ záznamů)",
-            "sInfoPostFix": "",
-            "sInfoThousands": " ",
-            "sLengthMenu": "Zobraz záznamů _MENU_",
-            "sLoadingRecords": "Načítám...",
-            "sProcessing": "Provádím...",
-            "sSearch": "Hledat:",
-            "sZeroRecords": "Žádné záznamy nebyly nalezeny",
-            "oPaginate": {
-                "sFirst": "První",
-                "sLast": "Poslední",
-                "sNext": "Další",
-                "sPrevious": "Předchozí"
-            },
-            "oAria": {
-                "sSortAscending": ": aktivujte pro řazení sloupce vzestupně",
-                "sSortDescending": ": aktivujte pro řazení sloupce sestupně"
+    var config = {};
+    var locale = $('input#currentLocale').val();
+    if (locale == "") {
+        locale = "cs";
+    }
+    if (locale == "en") {
+        config = {
+            "paging": featureSwitch,
+            "pageLength": 50,
+            "lengthMenu": [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, "Vše"]],
+            "info": featureSwitch,
+            "filter": featureSwitch,
+            "order": [[0, "desc"]],
+            "language": {
+                "decimal": "",
+                "emptyTable": "No data available in table",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "Showing 0 to 0 of 0 entries",
+                "infoFiltered": "(filtered from _MAX_ total entries)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Show _MENU_ entries",
+                "loadingRecords": "Loading...",
+                "processing": "Processing...",
+                "search": "Search:",
+                "zeroRecords": "No matching records found",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                },
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                }
             }
-        }
-    };
+        };
+    } else {
+        config = {
+            "paging": featureSwitch,
+            "pageLength": 50,
+            "lengthMenu": [[10, 20, 50, 100, 200, 500, 1000, -1], [10, 20, 50, 100, 200, 500, 1000, "Vše"]],
+            "info": featureSwitch,
+            "filter": featureSwitch,
+            "order": [[0, "desc"]],
+            "language": {
+                "sEmptyTable": "Tabulka neobsahuje žádná data",
+                "sInfo": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
+                "sInfoEmpty": "Zobrazuji 0 až 0 z 0 záznamů",
+                "sInfoFiltered": "(filtrováno z celkem _MAX_ záznamů)",
+                "sInfoPostFix": "",
+                "sInfoThousands": " ",
+                "sLengthMenu": "Zobraz záznamů _MENU_",
+                "sLoadingRecords": "Načítám...",
+                "sProcessing": "Provádím...",
+                "sSearch": "Hledat:",
+                "sZeroRecords": "Žádné záznamy nebyly nalezeny",
+                "oPaginate": {
+                    "sFirst": "První",
+                    "sLast": "Poslední",
+                    "sNext": "Další",
+                    "sPrevious": "Předchozí"
+                },
+                "oAria": {
+                    "sSortAscending": ": aktivujte pro řazení sloupce vzestupně",
+                    "sSortDescending": ": aktivujte pro řazení sloupce sestupně"
+                }
+            }
+        };
+    }
 
     if (element.attr("data-column-filter") !== undefined) {
         element.find("thead th:visible").each(function () {

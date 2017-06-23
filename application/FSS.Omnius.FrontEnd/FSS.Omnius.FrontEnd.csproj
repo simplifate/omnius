@@ -335,6 +335,7 @@
     <Content Include="Content\Fonts\context-menu-icons.ttf" />
     <Content Include="Content\Fonts\context-menu-icons.woff" />
     <Content Include="Content\Fonts\context-menu-icons.woff2" />
+    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
     <None Include="Content\Scss\AppTiles.scss" />
     <Content Include="Content\Scss\BootstrapUserLayout.scss" />
     <None Include="Content\Scss\Bundle\AdminStyleBundle.scss" />
@@ -1054,7 +1055,6 @@
     <Content Include="Content\Fonts\innogy\Innogy-Regular.eot" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.ttf" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.woff" />
-    <Content Include="Content\Locale\en\LC_MESSAGES\Omnius.mo" />
     <Content Include="Scripts\cm\addon\comment\comment.js" />
     <Content Include="Scripts\cm\addon\comment\continuecomment.js" />
     <Content Include="Scripts\cm\addon\dialog\dialog.css" />

@@ -99,6 +99,7 @@
         </div>
     </div>
     <input type="hidden" id="currentAppName" value="@t._((string)ViewData["appSystemName"])" />
+    <input type="hidden" id="currentLocale" value="@((string)ViewData["locale"])" />
     <input type="hidden" id="currentBlockName" value="@t._((string)ViewData["blockName"])" />
     <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
