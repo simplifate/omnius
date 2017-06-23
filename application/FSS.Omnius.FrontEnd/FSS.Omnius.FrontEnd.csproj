@@ -1884,6 +1884,16 @@
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\29.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\30.cshtml" />
     <Content Include="Views\App\PodporaRegistruSmluv\Page\Bootstrap\31.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\menuLayout.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\22.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\23.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\24.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\25.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\26.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\27.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\29.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\30.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\31.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

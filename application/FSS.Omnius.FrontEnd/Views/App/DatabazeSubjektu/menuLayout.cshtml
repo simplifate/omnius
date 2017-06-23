@@ -1,0 +1,15 @@
+@{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
+    <ul  id=appMenu>
+@if (Context.GetLoggedUser().canUseBlock("Editor",109)){            <li>
+                    <a href="/DatabazeSubjektu/NovySubjekt">@(t._("Nový Subjekt"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User,Editor,Export",109)){            <li>
+                    <a href="/DatabazeSubjektu/Vyhledavani">@(t._("Vyhledávání"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Editor,Export",109)){            <li>
+                    <a href="/DatabazeSubjektu/PrehledSubjektu">@(t._("Přehled subjektů"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Editor",109)){            <li>
+                    <a href="/DatabazeSubjektu/ImportSubjektu">@(t._("Import subjektů"))</a>
+            </li>
+}    </ul>
