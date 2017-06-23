@@ -281,11 +281,21 @@ $(function () {
             unhighlight: function (element) {
                 $(".uic[ignoredonvalidation]").addClass("cancel");
                 $(element).removeClass("has-error");
+                
+                // Element validator
+                var elementValidator = '#' + element.id + "_validator";
+                $(elementValidator)[0].style.display = 'none';
+
                 if (this.numberOfInvalids() === 0) $(".uic.button-simple:not([ignoredonvalidation])").removeClass("looks-disabled");
             },
             highlight: function (element) {
                 $(".uic[ignoredonvalidation]").addClass("cancel");
                 $(element).addClass("has-error");
+                
+                // Element validator
+                var elementValidator = "#" + element.id + "_validator";
+                $(elementValidator)[0].style.display = 'inline';
+
                 $(".uic.button-simple:not([ignoredonvalidation])").addClass("looks-disabled");
             }
         });
