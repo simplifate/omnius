@@ -62,6 +62,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
+            int countAdded = 0;
             string inputName = (string)vars["InputName"];
             string tableName = (string)vars["TableName"];
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
@@ -124,8 +125,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             foreach (string value in fields)
                             {
                                 // Neznámé sloupce ignorujeme
-                                if (!columnsMap.ContainsKey(i))
-                                {
+                                if (!columnsMap.ContainsKey(i)) {
+                                    i++;
+                                    continue;
+                                }
+
+                                // Prázdné hodnoty vynecháme
+                                if(string.IsNullOrEmpty(value)) {
+                                    i++;
                                     continue;
                                 }
 
@@ -243,13 +250,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     j++;
                                 }
                                 table.Add(item);
+                                countAdded++;
                             }
                         }
                     }
                 }
             }
 
-            core.Entitron.Application.SaveChanges();
+            if (countAdded > 0) {
+                core.Entitron.Application.SaveChanges();
+            }
 
             outputVars["Success"] = messages.Count() == 0;
             outputVars["Message"] = string.Join("<br>", messages);
