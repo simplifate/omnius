@@ -569,7 +569,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (bool)ViewData[\"checkboxData_{c.ElmId}\"] ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true) ? \" checked\" : \"\") />");
 
             return html.ToString();
         }
@@ -579,7 +579,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (bool)ViewData[\"checkboxData_{c.ElmId}\"] ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true) ? \" checked\" : \"\") />");
 
             return html.ToString();
         }
