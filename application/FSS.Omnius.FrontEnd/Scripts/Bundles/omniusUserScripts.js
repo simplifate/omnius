@@ -68,7 +68,8 @@ $(function () {
             });
         }
 
-        if ($("#currentBlockName").val() == "EditaceAuditu") {
+        if ($("#currentBlockName").val() == "EditaceAuditu" || 
+            $("#currentBlockName").val() == "EditaceAudituBezWf") {
 
             var selMonthFrom = $("#uic_dropMonthFrom");
             var selMonthTo = $("#uic_dropMonthTo");
