@@ -1075,6 +1075,11 @@ $(function () {
                         .draw();
                     table.find("tfoot th:nth-child(5) input").val(currentUser);
                 }
+                else if ($("#currentBlockName").val() == "NeaktivniUzivatele") {
+                    dataTable
+                        .order([3, 'desc'])
+                        .draw();
+                }
                 table.find("thead th").each(function (index, element) {
                     if ($(element).text() == "id" || $(element).text().indexOf("hidden__") == 0) {
                         table.find("td:nth-child(" + (index + 1) + "), th:nth-child(" + (index + 1) + ")").hide();
