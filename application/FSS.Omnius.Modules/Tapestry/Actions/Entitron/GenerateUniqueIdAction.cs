@@ -78,7 +78,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     case "C":
                     case "E":
                     case "P":
-                        previousId = notNullResults.Count > 0 ? notNullResults.Max() : 999;
+                        previousId = notNullResults.Count > 0 ? notNullResults.Where(c => c < 6000).Max() : 999;
                         previousId = previousId < 999 ? 999 : previousId;
                         break;
                     case "B": //8000+
@@ -87,11 +87,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         previousId = previousId < 7999 ? 7999 : previousId;
                         break;
                     case "F": //6000+
-                        previousId = notNullResults.Count > 0 ? notNullResults.Max() : 5999;
+                        previousId = notNullResults.Count > 0 ? notNullResults.Where(c => c < 7000).Max() : 5999;
                         previousId = previousId < 5999 ? 5999 : previousId;
                         break;
                     case "S": //7000+
-                        previousId = notNullResults.Count > 0 ? notNullResults.Max() : 6999;
+                        previousId = notNullResults.Count > 0 ? notNullResults.Where(c => c < 8000).Max() : 6999;
                         previousId = previousId < 6999 ? 6999 : previousId;
                         break;
                     default:
