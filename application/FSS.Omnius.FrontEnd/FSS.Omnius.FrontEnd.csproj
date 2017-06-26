@@ -528,6 +528,7 @@
     <Content Include="Scripts\CommonLibraries\Other\knockout-3.4.0.debug.js" />
     <Content Include="Scripts\CommonLibraries\Other\knockout-3.4.0.js" />
     <Content Include="Scripts\CommonLibraries\Other\modernizr-2.8.3.js" />
+    <Content Include="Scripts\CommonLibraries\Other\moment-with-locales.min.js" />
     <Content Include="Scripts\CommonLibraries\Other\respond.js" />
     <Content Include="Scripts\CommonLibraries\Other\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\CommonLibraries\Other\respond.min.js" />

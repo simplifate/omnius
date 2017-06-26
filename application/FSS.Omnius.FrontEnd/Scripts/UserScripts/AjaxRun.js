@@ -67,6 +67,55 @@ $(function () {
                 }
             });
         }
+
+        if ($("#currentBlockName").val() == "EditaceAuditu") {
+
+            var selMonthFrom = $("#uic_dropMonthFrom");
+            var selMonthTo = $("#uic_dropMonthTo");
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+
+                    // Do not filter dates on page load (value is not setted to -1 at first)
+                    if (selMonthFrom.val() == null && selMonthTo.val() == null)
+                        return true;
+
+                    // Do not filter dates
+                    if (selMonthFrom.val() == -1 && selMonthTo.val() == -1) {
+                        return true;
+                    }
+
+                    var parsedDate = moment(data[7], 'D.M.YYYY');
+
+                    // Allow dates between 2 chosen months
+                    if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
+                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate
+                        && parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
+                    }
+
+                    // Allow dates from chosen month
+                    if (selMonthFrom.val() != -1 && selMonthTo.val() == -1) {
+                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate;
+                    }
+
+                    // Allow dates before chosen month
+                    if (selMonthFrom.val() == -1 && selMonthTo.val() != -1) {
+                        return parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
+                    }
+
+                    return false;
+                }
+            );
+
+            $(document).on("change", "#uic_dropMonthFrom", function () {
+                $(".data-table").DataTable().draw();
+            });
+
+            $(document).on("change", "#uic_dropMonthTo", function () {
+                $(".data-table").DataTable().draw();
+            });
+        }
+
         if ($("#currentBlockName").val() == "EditaceOpatreniVReseni") {
             $("[name=STATUS_radio]").on("change", function () {
                 if ($(this).val() === "realizovano") {

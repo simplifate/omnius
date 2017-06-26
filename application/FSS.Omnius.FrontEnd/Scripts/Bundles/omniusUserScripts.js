@@ -67,6 +67,55 @@ $(function () {
                 }
             });
         }
+
+        if ($("#currentBlockName").val() == "EditaceAuditu") {
+
+            var selMonthFrom = $("#uic_dropMonthFrom");
+            var selMonthTo = $("#uic_dropMonthTo");
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+
+                    // Do not filter dates on page load (value is not setted to -1 at first)
+                    if (selMonthFrom.val() == null && selMonthTo.val() == null)
+                        return true;
+
+                    // Do not filter dates
+                    if (selMonthFrom.val() == -1 && selMonthTo.val() == -1) {
+                        return true;
+                    }
+
+                    var parsedDate = moment(data[7], 'D.M.YYYY');
+
+                    // Allow dates between 2 chosen months
+                    if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
+                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate
+                        && parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
+                    }
+
+                    // Allow dates from chosen month
+                    if (selMonthFrom.val() != -1 && selMonthTo.val() == -1) {
+                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate;
+                    }
+
+                    // Allow dates before chosen month
+                    if (selMonthFrom.val() == -1 && selMonthTo.val() != -1) {
+                        return parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
+                    }
+
+                    return false;
+                }
+            );
+
+            $(document).on("change", "#uic_dropMonthFrom", function () {
+                $(".data-table").DataTable().draw();
+            });
+
+            $(document).on("change", "#uic_dropMonthTo", function () {
+                $(".data-table").DataTable().draw();
+            });
+        }
+
         if ($("#currentBlockName").val() == "EditaceOpatreniVReseni") {
             $("[name=STATUS_radio]").on("change", function () {
                 if ($(this).val() === "realizovano") {
@@ -1028,7 +1077,62 @@ $(function () {
                     }
                 });
             });
+
             table.DataTable().draw();
+
+            var selMonthFrom = $("#uic_dropMonthFrom");
+            var selMonthTo = $("#uic_dropMonthTo");
+
+            function getMonthName(month) {
+                switch (m) {
+                case 1:
+                    return "leden";
+                case 2:
+                    return "únor";
+                case 3:
+                    return "březen";
+                case 4:
+                    return "duben";
+                case 5:
+                    return "květen";
+                case 6:
+                    return "červen";
+                case 7:
+                    return "červenec";
+                case 8:
+                    return "srpen";
+                case 9:
+                    return "září";
+                case 10:
+                    return "říjen";
+                case 11:
+                    return "listopad";
+                case 12:
+                    return "prosinec";
+                default:
+                    return "nedefinováno";
+                }
+            }
+
+            // Set value of undefined date to -1
+            selMonthFrom.append('<option value="' + "-1" + '" selected></option>');
+            selMonthTo.append('<option value="' + "-1" + '" selected></option>');
+
+            // Generate months to select lists
+            for (var y = 2017; y >= 2010; y--) {
+                for (var m = 12; m >= 1; m--) {
+                    var customDateFrom = 1 + "." + m + "." + y;
+                    selMonthFrom.append('<option value="' + customDateFrom + '">' + y + " " + getMonthName(m) + '</option>');
+
+                    // For 1.12.2017 compare with 1.1.2018 and so on
+                    if (m == 12)
+                        var customDateTo = 1 + ".1." + (y + 1);
+                    else 
+                        var customDateTo = 1 + "." + (m + 1) + "." + y;
+                        
+                    selMonthTo.append('<option value="' + customDateTo + '">' + y + " " + getMonthName(m) + '</option>');
+                }       
+            }
 
             if(!table.hasClass("data-table-simple-mode")) {
 
