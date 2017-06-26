@@ -45,7 +45,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
 
-            Block block = getBlockWithResource(context, app.Id, blockIdentify);
+            Block block = getBlockWithResource(context, app, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -1115,7 +1115,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             Application app = core.Entitron.Application.similarApp;
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
 
-            Block block = getBlockWithWF(context, app.Id, blockIdentify);
+            Block block = getBlockWithWF(context, app, blockIdentify);
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
@@ -1149,23 +1149,29 @@ namespace FSS.Omnius.Controllers.Tapestry
             else return "en";
 
         }
-        private Block getBlockWithResource(DBEntities context, int appId, string blockName)
+        private Block getBlockWithResource(DBEntities context, Application app, string blockName)
         {
-            return blockName != null
-                ? context.Blocks
+            if (blockName != null)
+                return context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower())
-                : context.Blocks
-                    .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == app.Id && b.Name.ToLower() == blockName.ToLower());
+
+            int initBlockId = app.WorkFlows.First(w => w.InitBlockId != null).InitBlockId.Value;
+            return context.Blocks
+                .Include(b => b.SourceTo_ActionRules)
+                .Single(b => b.Id == initBlockId);
         }
-        private Block getBlockWithWF(DBEntities context, int appId, string blockName)
+        private Block getBlockWithWF(DBEntities context, Application app, string blockName)
         {
-            return blockName != null
-                ? context.Blocks
+            if (blockName != null)
+                return context.Blocks
                     .Include(b => b.SourceTo_ActionRules)
-                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.Name.ToLower() == blockName.ToLower())
-                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == appId && b.WorkFlow.InitBlockId == b.Id);
+                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == app.Id && b.Name.ToLower() == blockName.ToLower());
+
+            int initBlockId = app.WorkFlows.First(w => w.InitBlockId != null).InitBlockId.Value;
+            return context.Blocks
+                .Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules)
+                .Single(b => b.Id == initBlockId);
         }
 
     }
