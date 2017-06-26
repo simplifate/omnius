@@ -120,11 +120,18 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                         }
                         else
                         {
+                            IQueryable<int?> cgsToRemove = null;
+                            if (_context != _masterContext)
+                                cgsToRemove = _context.ActionRules.Where(ar => (ar.SourceBlock.IsVirtualForBlockId == resultBlock.Id || ar.SourceBlockId == resultBlock.Id) && ar.ConditionGroup != null).Select(ar => ar.ConditionGroupId);
+
                             _context.AttributeRules.RemoveRange(_context.AttributeRules.Where(ar => ar.BlockId == resultBlock.Id));
                             _context.ActionRules.RemoveRange(_context.ActionRules.Where(ar => ar.SourceBlockId == resultBlock.Id));
                             _context.ResourceMappingPairs.RemoveRange(_context.ResourceMappingPairs.Where(mp => mp.BlockId == resultBlock.Id));
                             _context.Blocks.RemoveRange(_context.Blocks.Where(b => b.IsVirtualForBlockId == resultBlock.Id));
                             resultBlock.InitForWorkFlow.Clear();
+
+                            if (_context != _masterContext)
+                                _context.TapestryDesignerConditionGroups.RemoveRange(_context.TapestryDesignerConditionGroups.Where(cg => cgsToRemove.Contains(cg.Id)));
                         }
                         // update
                         resultBlock.Name = childBlock.Name.RemoveDiacritics();
@@ -170,10 +177,6 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveBlocks(SendWS sendWs)
         {
-            /// remove old conditions
-            if (_context != _masterContext)
-                _context.TapestryDesignerConditionGroups.RemoveRange(_app.TapestryDesignerConditionGroups);
-
             int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;
             foreach(TapestryDesignerBlock block in _blocksToBuild)
