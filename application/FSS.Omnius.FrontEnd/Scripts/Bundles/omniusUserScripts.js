@@ -527,9 +527,10 @@ $(function () {
             $(this).find(".rowEditAction").trigger("click");
         }
         });
-    if ($("#uic_zobrazit").on("click", function () {
-        $("#uic_recommandation_formulation_panel").show();
-    }));
+    $("#uic_zobrazit").on("click", function () {
+        $("#uic_panel20").show();
+        alert("ok");
+    });
 });
 
 function ShowAppNotification(text, type) {
