@@ -529,7 +529,6 @@ $(function () {
         });
     $("#uic_zobrazit").on("click", function () {
         $("#uic_panel20").show();
-        $("#uic_panel20").style("top", "auto");
         alert("ok");
     });
 });
