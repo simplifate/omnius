@@ -147,9 +147,7 @@ $(function () {
             $("#uic_ship_to_textbox").val(dropdownText.text());
         });
 
-        if ($("#uic_zobrazit").on("click", function () {
-            $("#uic_recommandation_formulation_panel").show();
-        }));
+        
 
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
@@ -528,7 +526,10 @@ $(function () {
         if(!$(event.target).is(".rowEditAction")){ //to stop event propagation resulting in a recursion
             $(this).find(".rowEditAction").trigger("click");
         }
-    });
+        });
+    if ($("#uic_zobrazit").on("click", function () {
+        $("#uic_recommandation_formulation_panel").show();
+    }));
 });
 
 function ShowAppNotification(text, type) {
