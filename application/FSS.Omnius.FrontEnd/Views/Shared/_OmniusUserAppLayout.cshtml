@@ -60,7 +60,7 @@
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
             <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
-            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+            <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">{t._("Odhlásit se")}</a> | " : "")<a href="/Master/Home/Details">@t._("Detail")</a></div>
         </div>
         <div class="searchBoxMinimized">
             <div class="searchIcon fa fa-search"></div>
