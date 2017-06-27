@@ -147,8 +147,8 @@ $(function () {
             $("#uic_ship_to_textbox").val(dropdownText.text());
         });
 
-        if ($("#zobrazit").on("click", function () {
-            $("#recommandation_formulation_panel").show();
+        if ($("#uic_zobrazit").on("click", function () {
+            $("#uic_recommandation_formulation_panel").show();
         }));
 
         $("#uic_begin_dtpicker").val("01.01.2017");
