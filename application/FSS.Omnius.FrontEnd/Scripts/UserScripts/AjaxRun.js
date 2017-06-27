@@ -72,6 +72,7 @@ $(function () {
             $("#currentBlockName").val() == "EditaceAudituBezWf" ||
             $("#currentBlockName").val() == "FollowUp") {
 
+            // Implementation for filtering by months in DataTables
             var selMonthFrom = $("#uic_dropMonthFrom");
             var selMonthTo = $("#uic_dropMonthTo");
 
@@ -138,7 +139,16 @@ $(function () {
                         return true;
                     }
 
-                    var parsedDate = moment(data[7], 'D.M.YYYY');
+                    var parsedDate;
+
+                    // Get dates from 7th column (with hidden columns -1)
+                    if ($("#currentBlockName").val() == "EditaceAuditu" ||
+                        $("#currentBlockName").val() == "EditaceAudituBezWf")
+                        parsedDate = moment(data[7], 'D.M.YYYY');
+
+                    // Get dates from 11th column (with hidden columns -1)
+                    if ($("#currentBlockName").val() == "FollowUp")
+                        parsedDate = moment(data[11], 'D. M. YYYY H:mm:ss');
 
                     // Allow dates between 2 chosen months
                     if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
