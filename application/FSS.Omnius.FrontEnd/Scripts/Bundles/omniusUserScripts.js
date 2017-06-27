@@ -1249,8 +1249,7 @@ $(function () {
                 $(element).removeClass("has-error");
                 
                 // Element validator
-                var elementValidator = '#' + element.id + "_validator";
-                $(elementValidator)[0].style.display = 'none';
+                $('#' + element.id + '_validator').hide();
 
                 if (this.numberOfInvalids() === 0) $(".uic.button-simple:not([ignoredonvalidation])").removeClass("looks-disabled");
             },
@@ -1259,8 +1258,7 @@ $(function () {
                 $(element).addClass("has-error");
                 
                 // Element validator
-                var elementValidator = "#" + element.id + "_validator";
-                $(elementValidator)[0].style.display = 'inline';
+                $('#' + element.id + '_validator').show();
 
                 $(".uic.button-simple:not([ignoredonvalidation])").addClass("looks-disabled");
             }
