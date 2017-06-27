@@ -120,6 +120,14 @@ namespace FSS.Omnius.FrontEnd
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );
 
+            // REST API
+            routes.MapRoute(
+                name: "Rest",
+                url: "rest/{*path}",
+                defaults: new { controller = "Rest", action = "Index"},
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+            );
+
             // Start
             routes.MapRoute(
                 name: "Default",

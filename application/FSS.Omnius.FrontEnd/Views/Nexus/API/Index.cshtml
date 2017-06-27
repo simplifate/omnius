@@ -1,0 +1,54 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Nexus
+@model System.Data.Entity.DbSet<API>
+@{
+    Page.Title = "Omnius Nexus";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "nexusModule";
+}
+@Html.Partial("~/Views/Nexus/Nexus/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Nexus/Nexus/Decoration.cshtml")
+    <div id="apiMenuArea" class="moduleSubMenuArea">
+        @Ajax.RouteLink("Přidat API", "Nexus", new { @action = "Create" }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <div id="lowerPanelContainer">
+        <table id="webServicesTable" class="table table-bordered table-striped table-responsive table-omnius">
+            <colgroup>
+                <col width="50" />
+                <col />
+                <col width="60" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Název</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (API a in Model)
+                    {
+                        <tr>
+                            <td>@a.Id</td>
+                            <td>@a.Name</td>
+                            <td class="table-row-action">
+                                @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = a.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
+                                @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = a.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Nexus", new { @action = "Delete", @id = a.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">Nemáte nakonfigurovánu žádnou definici API</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

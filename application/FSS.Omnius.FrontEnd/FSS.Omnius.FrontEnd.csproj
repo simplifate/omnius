@@ -171,6 +171,9 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="YamlDotNet, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.4.2.1\lib\net35\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Formatting">
@@ -268,6 +271,7 @@
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
     <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
+    <Compile Include="Controllers\Nexus\APIController.cs" />
     <Compile Include="Controllers\Nexus\WSController.cs" />
     <Compile Include="Controllers\PersonaAuthorize.cs" />
     <Compile Include="Controllers\Persona\ModulesController.cs" />
@@ -278,6 +282,7 @@
     <Compile Include="Controllers\Persona\AccountController.cs" />
     <Compile Include="Controllers\CORE\PortalController.cs" />
     <Compile Include="Controllers\Tapestry\RunApiController.cs" />
+    <Compile Include="Controllers\Tapestry\RestController.cs" />
     <Compile Include="Controllers\Tapestry\TapestryApiController.cs" />
     <Compile Include="Controllers\Tapestry\BuilderController.cs" />
     <Compile Include="Controllers\Tapestry\RunController.cs" />
@@ -1895,6 +1900,9 @@
     <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\29.cshtml" />
     <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\30.cshtml" />
     <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\31.cshtml" />
+    <Content Include="Views\Nexus\API\Detail.cshtml" />
+    <Content Include="Views\Nexus\API\Form.cshtml" />
+    <Content Include="Views\Nexus\API\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

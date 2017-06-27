@@ -55,6 +55,9 @@
         background: url("/Content/Images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
     }
 }
+.ui-widget {
+    font-size: 1em !important;
+}
 .lowerLeftDecoration {
     position: absolute;
     left: 0px;
@@ -205,6 +208,10 @@
         .fa-paint-brush {
             font-size: 110px;
             top: 18px;
+        }
+        .fa-cloud-upload {
+            font-size: 110px;
+            top: 22px;
         }
         .buttonLabel {
             position: absolute;
@@ -408,7 +415,7 @@ body.adminLayout #appNotificationArea {
     display: none;
 }
 .CodeMirror pre {
-    height:15px;
+    line-height: 1.25 !important;
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;

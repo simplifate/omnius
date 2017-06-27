@@ -521,6 +521,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             if(item?.TypeClass == "symbol" && item?.SymbolType == "envelope-start") { // emailové workflow
                 init = item?.Label;
             }
+            if(item?.TypeClass == "symbol" && item?.SymbolType == "circle-single" && workflowRule.Name != "INIT") { // REST ENDPOINT
+                init = workflowRule.Name;
+            }
 
             string ActorName = (init != null ? "Manual" : "Auto");
             ActionRule rule = new ActionRule

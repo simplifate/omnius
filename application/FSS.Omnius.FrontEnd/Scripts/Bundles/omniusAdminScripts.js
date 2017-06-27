@@ -11723,6 +11723,7 @@ MBE.options.common = {
             label: 'ID',
             type: 'text',
             attr: 'id',
+            id: 'AttrID',
             get: MBE.options.hasAttr,
             set: MBE.options.setAttr
         }, {
@@ -13845,7 +13846,7 @@ MBE.types.image = {
 MBE.types.controls = {
 
     templates: {
-        'button': '<button type="button" class="btn btn-default">Button</button>',
+        'button': '<button type="button" class="btn btn-default" name="button">Button</button>',
         'button-group': '<div class="btn-group" role="group">'
                             + '<button type="button" class="btn btn-default" data-uic="controls|button">Left</button>'
                             + '<button type="button" class="btn btn-default" data-uic="controls|button">Middle</button>'
@@ -13943,8 +13944,12 @@ MBE.types.controls = {
                     label: 'Value',
                     type: 'text',
                     attr: 'value',
+                    id: 'AttrButtonValue',
                     get: MBE.options.hasAttr,
-                    set: MBE.options.setAttr
+                    set: MBE.options.setAttr,
+                    change: function (opt) {
+                        $('#AttrID input').val(opt.value).change();
+                    }
                 }, {
                     label: 'Style',
                     type: 'select',
@@ -14706,7 +14711,7 @@ MBE.onInit.push(MBE.types.table.init);
 MBE.types.form = {
 
     templates: {
-        'form': '<form class="form-horizontal"></form>',
+        'form': '<form class="form-horizontal" method="post"></form>',
         'form-group': '<div class="form-group"></div>',
         'label': '<label for="">Label</label>',
         'input-text': '<input type="text" name="" value="" class="form-control">',
@@ -14994,8 +14999,19 @@ MBE.types.form = {
                     label: 'Name',
                     type: 'text',
                     attr: 'name',
+                    id: 'AttrName',
                     get: MBE.options.hasAttr,
-                    set: MBE.options.setAttr
+                    set: MBE.options.setAttr,
+                    change: function (opt) {
+                        if ($(this).is('[type=radio]')) {
+                            if (opt.value.length && $('#AttrValue input').val().length) {
+                                $('#AttrID input').val(opt.value + '_' + $('#AttrValue input').val());
+                            }
+                        }
+                        else {
+                            $('#AttrID input').val(opt.value).change();
+                        }
+                    }
                 }, {
                     label: 'Rows',
                     allowFor: ['textarea'],
@@ -15056,6 +15072,21 @@ MBE.types.form = {
                     },
                     get: MBE.options.hasAttr,
                     set: MBE.options.setAttr
+                }, {
+                    label: 'Value',
+                    allowFor: ['radio'],
+                    type: 'text',
+                    attr: 'value',
+                    id: 'AttrValue',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr,
+                    change: function (opt) {
+                        if ($(this).is('[type=radio]')) {
+                            if (opt.value.length && $('#AttrName input').val().length) {
+                                $('#AttrID input').val($('#AttrName input').val() + '_' + opt.value);
+                            }
+                        }
+                    }
                 }, {
                     label: 'Checked',
                     allowFor: ['checkbox', 'radio'],

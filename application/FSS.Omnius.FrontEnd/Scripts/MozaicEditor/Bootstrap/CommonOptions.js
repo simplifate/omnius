@@ -573,6 +573,7 @@ MBE.options.common = {
             label: 'ID',
             type: 'text',
             attr: 'id',
+            id: 'AttrID',
             get: MBE.options.hasAttr,
             set: MBE.options.setAttr
         }, {

@@ -229,6 +229,7 @@
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
+    <Compile Include="Entitron\Entity\Nexus\api.cs" />
     <Compile Include="Entitron\Entity\Nexus\ws.cs" />
     <Compile Include="Entitron\Entity\Persona\ActionRuleRight.cs" />
     <Compile Include="Entitron\Entity\Persona\ADgroup.cs" />
@@ -1133,6 +1134,10 @@
     <Compile Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.Designer.cs">
       <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706271059315_omnius-api-models.cs" />
+    <Compile Include="Migrations\201706271059315_omnius-api-models.Designer.cs">
+      <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1871,6 +1876,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706201036161_Add DeletedBySync column to Persona_Users.resx">
       <DependentUpon>201706201036161_Add DeletedBySync column to Persona_Users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706271059315_omnius-api-models.resx">
+      <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

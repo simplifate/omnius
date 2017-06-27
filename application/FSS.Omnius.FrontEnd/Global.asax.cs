@@ -63,7 +63,7 @@ namespace FSS.Omnius.FrontEnd
         protected void Application_EndRequest()
         {
             // error
-            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode))
+            if (new int[] { 403, 404, 500 }.Contains(Context.Response.StatusCode) && !Request.Url.AbsolutePath.StartsWith("/rest/"))
             {
                 Response.Clear();
 

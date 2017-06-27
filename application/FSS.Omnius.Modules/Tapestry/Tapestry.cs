@@ -32,25 +32,38 @@ namespace FSS.Omnius.Modules.Tapestry
                 ? (Dictionary<string, object>)result.Item1.OutputData["CrossBlockRegistry"] : new Dictionary<string, object>();
             return new Tuple<Message, Block, Dictionary<string, object>>(result.Item1.Message, result.Item2, CrossBlockRegistry);
         }
+
         public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId = -1)
         {
+            Message message = new Message();
+            return jsonRun(user, block, buttonId, modelId, fc, out message, deleteId);
+        }
+
+        public JToken jsonRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, out Message message, int deleteId = -1)
+        {
             Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId);
-            JObject output = new JObject();
+            JToken output = new JObject();
             foreach (KeyValuePair<string, object> pair in result.Item1.OutputData.Where(d => d.Key.StartsWith("__Result[")))
             {
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
-                if (pair.Value is string)
-                    output.Add(key, (string)pair.Value);
-                else if (pair.Value is bool)
-                    output.Add(key, (bool)pair.Value);
-                else if (pair.Value is int)
-                    output.Add(key, (int)pair.Value);
-                else if (pair.Value is double)
-                    output.Add(key, (double)pair.Value);
-                else
-                    output.Add(key, pair.Value != null ? (pair.Value as IToJson).ToJson() : null);
+                if (key.Length == 0) {
+                    output = (pair.Value as IToJson).ToJson();
+                }
+                else {
+                    if (pair.Value is string)
+                        output[key] = (string)pair.Value;
+                    else if (pair.Value is bool)
+                        output[key] = (bool)pair.Value;
+                    else if (pair.Value is int)
+                        output[key] = (int)pair.Value;
+                    else if (pair.Value is double)
+                        output[key] = (double)pair.Value;
+                    else
+                        output[key] = pair.Value != null ? (pair.Value as IToJson).ToJson() : null;
+                }
             }
+            message = result.Item1.Message;
             return output;
         }
 

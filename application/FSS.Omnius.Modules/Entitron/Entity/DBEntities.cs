@@ -258,6 +258,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<FileSyncCache> CachedFiles { get; set; }
         public virtual DbSet<Ldap> Ldaps { get; set; }
         public virtual DbSet<WS> WSs { get; set; }
+        public virtual DbSet<API> APIs { get; set; }
 
         // Persona
         public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }

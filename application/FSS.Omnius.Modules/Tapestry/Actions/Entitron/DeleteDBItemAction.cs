@@ -59,7 +59,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
             var itemId = vars.ContainsKey("ItemId")
-                ? (int)vars["ItemId"]
+                ? (vars["ItemId"] is int ? (int)vars["ItemId"] : Convert.ToInt32(vars["ItemId"]))
                 : (vars.ContainsKey("deleteId") ? Convert.ToInt32(vars["deleteId"]) : (int)vars["__ModelId__"]);
             string tableName = vars.ContainsKey("TableName")
                 ? (string)vars["TableName"]

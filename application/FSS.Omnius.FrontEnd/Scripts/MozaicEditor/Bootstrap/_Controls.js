@@ -1,7 +1,7 @@
 ﻿MBE.types.controls = {
 
     templates: {
-        'button': '<button type="button" class="btn btn-default">Button</button>',
+        'button': '<button type="button" class="btn btn-default" name="button">Button</button>',
         'button-group': '<div class="btn-group" role="group">'
                             + '<button type="button" class="btn btn-default" data-uic="controls|button">Left</button>'
                             + '<button type="button" class="btn btn-default" data-uic="controls|button">Middle</button>'
@@ -99,8 +99,12 @@
                     label: 'Value',
                     type: 'text',
                     attr: 'value',
+                    id: 'AttrButtonValue',
                     get: MBE.options.hasAttr,
-                    set: MBE.options.setAttr
+                    set: MBE.options.setAttr,
+                    change: function (opt) {
+                        $('#AttrID input').val(opt.value).change();
+                    }
                 }, {
                     label: 'Style',
                     type: 'select',

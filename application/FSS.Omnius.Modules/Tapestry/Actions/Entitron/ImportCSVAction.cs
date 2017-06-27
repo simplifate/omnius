@@ -71,8 +71,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             List<string> uniqueColumns = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
 
             DBTable table = core.Entitron.GetDynamicTable(tableName, false);
-            if (table == null)
-            {
+            if (table == null) {
                 throw new Exception(string.Format("{0}: Cílová tabulka nebyla nalezena ({1})", Name, tableName));
             }
 
@@ -85,45 +84,37 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             List<string> messages = new List<string>();
 
-            foreach (string fileName in files)
-            {
+            foreach (string fileName in files) {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
                 if (file.ContentLength == 0 || fileName != inputName)
                     continue;
 
-                using (TextFieldParser parser = new TextFieldParser(file.InputStream))
-                {
+                using (TextFieldParser parser = new TextFieldParser(file.InputStream)) {
                     parser.TextFieldType = FieldType.Delimited;
                     parser.SetDelimiters(delimiter);
                     parser.HasFieldsEnclosedInQuotes = enclosed;
                     parser.TrimWhiteSpace = true;
 
-                    while (!parser.EndOfData)
-                    {
+                    while (!parser.EndOfData) {
                         long line = parser.LineNumber;
                         string[] fields = parser.ReadFields();
 
-                        if (line == 1)
-                        {
+                        if (line == 1) {
                             int i = 0;
-                            foreach (string field in fields)
-                            {
-                                if (columns.Where(c => c.Name == field).Count() > 0)
-                                {
+                            foreach (string field in fields) {
+                                if (columns.Where(c => c.Name == field).Count() > 0) {
                                     columnsMap.Add(i, columns.Where(c => c.Name == field).First());
                                 }
                                 i++;
                             }
                         }
-                        else
-                        {
+                        else {
                             int i = 0;
                             Dictionary<string, object> data = new Dictionary<string, object>();
                             bool isValid = true;
 
-                            foreach (string value in fields)
-                            {
+                            foreach (string value in fields) {
                                 // Neznámé sloupce ignorujeme
                                 if (!columnsMap.ContainsKey(i)) {
                                     i++;
@@ -147,22 +138,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     case "boolean":
                                     case "bit":
                                         bool parsedBool;
-                                        if (bool.TryParse(value, out parsedBool))
-                                        {
+                                        if (bool.TryParse(value, out parsedBool)) {
                                             data.Add(col.Name, parsedBool);
                                         }
-                                        else
-                                        {
-                                            if (value == "0")
-                                            {
+                                        else {
+                                            if (value == "0") {
                                                 data.Add(col.Name, false);
                                             }
-                                            else if (value == "1")
-                                            {
+                                            else if (value == "1") {
                                                 data.Add(col.Name, true);
                                             }
-                                            else
-                                            {
+                                            else {
                                                 isValid = false;
                                                 messages.Add(string.Format(typeError, line, col.Name, "logická hodnota"));
                                             }
@@ -171,24 +157,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     case "int":
                                     case "integer":
                                         int parsedInt;
-                                        if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt))
-                                        {
+                                        if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt)) {
                                             data.Add(col.Name, parsedInt);
                                         }
-                                        else
-                                        {
+                                        else {
                                             isValid = false;
                                             messages.Add(string.Format(typeError, line, col.Name, "celé číslo"));
                                         }
                                         break;
                                     case "float":
                                         double parsedDouble;
-                                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble))
-                                        {
+                                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble)) {
                                             data.Add(col.Name, parsedDouble);
                                         }
-                                        else
-                                        {
+                                        else {
                                             isValid = false;
                                             messages.Add(string.Format(typeError, line, col.Name, "celé nebo desetinní číslo"));
                                         }
@@ -197,12 +179,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     case "date":
                                     case "time":
                                         DateTime parsedDateTime;
-                                        if (DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out parsedDateTime))
-                                        {
+                                        if (DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out parsedDateTime)) {
                                             data.Add(col.Name, parsedDateTime);
                                         }
-                                        else
-                                        {
+                                        else {
                                             isValid = false;
                                             messages.Add(string.Format(typeError, line, col.Name, "platné datum"));
                                         }
@@ -211,20 +191,17 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                 i++;
                             }
 
-                            if (!isValid)
-                            {
+                            if (!isValid) {
                                 continue;
                             }
 
-                            if (uniqueColumns.Count > 0)
-                            {
+                            if (uniqueColumns.Count > 0) {
                                 var select = table.Select();
                                 Conditions condition = new Conditions(select);
                                 Condition_concat outCondition = null;
 
                                 // setConditions
-                                foreach (string colName in uniqueColumns)
-                                {
+                                foreach (string colName in uniqueColumns) {
                                     object condValue = data[colName];
                                     DBColumn column = columns.Single(c => c.Name == colName);
 
@@ -233,19 +210,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                 }
 
                                 // check if row already exists
-                                if (select.where(c => outCondition).ToList().Count > 0)
-                                {
+                                if (select.where(c => outCondition).ToList().Count > 0) {
                                     isValid = false;
                                     messages.Add(string.Format(uniqueError, line));
                                 }
                             }
 
-                            if (isValid)
-                            {
+                            if (isValid) {
                                 DBItem item = new DBItem();
                                 int j = 0;
-                                foreach (KeyValuePair<string, object> kv in data)
-                                {
+                                foreach (KeyValuePair<string, object> kv in data) {
                                     item.createProperty(j, kv.Key, kv.Value);
                                     j++;
                                 }

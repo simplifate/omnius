@@ -1,0 +1,57 @@
+﻿@model FSS.Omnius.Modules.Entitron.Entity.Nexus.API
+@{
+    Layout = "~/Views/Shared/_PartialViewAjaxLayout.cshtml";
+}
+
+@using (Html.BeginRouteForm("Nexus", new { @action = "Save" }, FormMethod.Post, new { @class = "form form-horizontal", enctype = "multipart/form-data" })) { 
+    @Html.HiddenFor(m => m.Id);
+    <div class="form-group">
+        <label for="APIName" class="control-label col-sm-2">Název:</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Name, new { @id = "APIName", @maxlength = 50, @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="APIDefinition" class="control-label">Definice:</label>
+        @Html.TextAreaFor(m => m.Definition, new { @id = "APIDefinition", @class = "form-control", @style = "height:800px" })
+    </div>
+    <div class="form-group">
+        <button type="submit" id="saveButton" class="btn btn-primary pull-right">Uložit</button>
+        @Html.ActionLink("Zpět", "Index", new { }, new { @class = "btn btn-default" })
+    </div>
+
+    <link href="~/Scripts/cm/lib/codemirror.css" rel="stylesheet" />
+    <link href="~/Scripts/cm/addon/hint/show-hint.css" rel="stylesheet" />
+
+    <script src="~/Scripts/cm/lib/codemirror.js"></script>
+
+    <script src="~/Scripts/cm/mode/yaml/yaml.js"></script>
+
+    <script src="~/Scripts/cm/addon/hint/show-hint.js"></script>
+    <script src="~/Scripts/cm/addon/hint/anyword-hint.js"></script>
+    
+    <script>
+        var ApiEditor = {
+
+            editor: null,
+
+            init: function () {
+                setTimeout(function () {
+                    ApiEditor.editor = CodeMirror.fromTextArea(document.getElementById("APIDefinition"), {
+                        lineNumbers: true,
+                        lineWrapping: false,
+                        mode: "text/x-yaml",
+                        extraKeys: {
+                            "Ctrl-Space": "autocomplete"
+                        }
+                    });
+
+                    ApiEditor.editor.setSize(null, 600);
+                }, 500);
+            }
+        };
+
+        $(ApiEditor.init);
+
+    </script>
+}
