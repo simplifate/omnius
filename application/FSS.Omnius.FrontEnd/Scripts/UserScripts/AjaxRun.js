@@ -33,51 +33,50 @@ $(function () {
     var inlineSpinnerTemplate = '<div class="spinner-3"> <div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div> </div>';
     if ($("#currentBlockName").val() == "VyjadreniKAuditu" || $("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "EditaceOpatreniVReseni" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
         setTimeout(function () {
-                $('input.input-with-datepicker').datetimepicker('setOptions', {
-                    format: 'd.m.Y',
-                    formatDate: 'Y-m-d',
-                    allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
-                });
+            $('input.input-with-datepicker').datetimepicker('setOptions', {
+                format: 'd.m.Y',
+                formatDate: 'Y-m-d',
+                allowDateRe: '^[0-9]{4}-(01|02|04|05|07|08|10|11)'
+            });
         }, 100);
     }
-        if ($("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem")
-        {
-            $("[name=radio_agree]").on("change", function () {
-                if ($(this).val() === "true") {
-                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
-                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
-                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
-                } else {
-                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
-                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
-                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
-                }
-            });
-        }
-        if ($("#currentBlockName").val() == "VyjadreniKAuditu")  {
-            $("[name=radio_agree]").on("change", function () {
-                if ($(this).val() === "true") {
-                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
-                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
-                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
-                } else {
-                    $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
-                    $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
-                    $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
-                }
-            });
-        }
+    if ($("#currentBlockName").val() == "VracenoKPrepracovaniNadrizenym" || $("#currentBlockName").val() == "VracenoKPrepracovaniAuditorem") {
+        $("[name=radio_agree]").on("change", function () {
+            if ($(this).val() === "true") {
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
+                $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
+                $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
+            } else {
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
+                $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
+                $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+            }
+        });
+    }
+    if ($("#currentBlockName").val() == "VyjadreniKAuditu") {
+        $("[name=radio_agree]").on("change", function () {
+            if ($(this).val() === "true") {
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", true);
+                $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", false);
+                $("[name=TERMIN_REALIZACE_date]").prop("readonly", false);
+            } else {
+                $("[name=DUVOD_NESOUHLASU_textbox]").prop("readonly", false);
+                $("[name=NAPRAVNE_OPATRENI_textbox]").prop("readonly", true);
+                $("[name=TERMIN_REALIZACE_date]").prop("readonly", true);
+            }
+        });
+    }
 
-        if ($("#currentBlockName").val() == "EditaceAuditu" || 
-            $("#currentBlockName").val() == "EditaceAudituBezWf" ||
-            $("#currentBlockName").val() == "FollowUp") {
+    if ($("#currentBlockName").val() == "EditaceAuditu" ||
+        $("#currentBlockName").val() == "EditaceAudituBezWf" ||
+        $("#currentBlockName").val() == "FollowUp") {
 
-            // Implementation for filtering by months in DataTables
-            var selMonthFrom = $("#uic_dropMonthFrom");
-            var selMonthTo = $("#uic_dropMonthTo");
+        // Implementation for filtering by months in DataTables
+        var selMonthFrom = $("#uic_dropMonthFrom");
+        var selMonthTo = $("#uic_dropMonthTo");
 
-            function getMonthName(month) {
-                switch (m) {
+        function getMonthName(month) {
+            switch (m) {
                 case 1:
                     return "leden";
                 case 2:
@@ -104,112 +103,112 @@ $(function () {
                     return "prosinec";
                 default:
                     return "nedefinováno";
-                }
             }
+        }
 
-            // Set value of undefined date to -1
-            selMonthFrom.append('<option value="' + "-1" + '" selected></option>');
-            selMonthTo.append('<option value="' + "-1" + '" selected></option>');
+        // Set value of undefined date to -1
+        selMonthFrom.append('<option value="' + "-1" + '" selected></option>');
+        selMonthTo.append('<option value="' + "-1" + '" selected></option>');
 
-            // Generate months to select lists
-            for (var y = 2017; y >= 2010; y--) {
-                for (var m = 12; m >= 1; m--) {
-                    var customDateFrom = 1 + "." + m + "." + y;
-                    selMonthFrom.append('<option value="' + customDateFrom + '">' + y + " " + getMonthName(m) + '</option>');
+        // Generate months to select lists
+        for (var y = 2017; y >= 2010; y--) {
+            for (var m = 12; m >= 1; m--) {
+                var customDateFrom = 1 + "." + m + "." + y;
+                selMonthFrom.append('<option value="' + customDateFrom + '">' + y + " " + getMonthName(m) + '</option>');
 
-                    // For 1.12.2017 compare with 1.1.2018 and so on
-                    if (m == 12)
-                        var customDateTo = 1 + ".1." + (y + 1);
-                    else
-                        var customDateTo = 1 + "." + (m + 1) + "." + y;
+                // For 1.12.2017 compare with 1.1.2018 and so on
+                if (m == 12)
+                    var customDateTo = 1 + ".1." + (y + 1);
+                else
+                    var customDateTo = 1 + "." + (m + 1) + "." + y;
 
-                    selMonthTo.append('<option value="' + customDateTo + '">' + y + " " + getMonthName(m) + '</option>');
-                }
+                selMonthTo.append('<option value="' + customDateTo + '">' + y + " " + getMonthName(m) + '</option>');
             }
+        }
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
 
-                    // Do not filter dates on page load (value is not setted to -1 at first)
-                    if (selMonthFrom.val() == null && selMonthTo.val() == null)
-                        return true;
+                // Do not filter dates on page load (value is not setted to -1 at first)
+                if (selMonthFrom.val() == null && selMonthTo.val() == null)
+                    return true;
 
-                    // Do not filter dates
-                    if (selMonthFrom.val() == -1 && selMonthTo.val() == -1) {
-                        return true;
-                    }
+                // Do not filter dates
+                if (selMonthFrom.val() == -1 && selMonthTo.val() == -1) {
+                    return true;
+                }
 
-                    var parsedDate;
+                var parsedDate;
 
-                    // Get dates from 7th column (with hidden columns -1)
-                    if ($("#currentBlockName").val() == "EditaceAuditu" ||
-                        $("#currentBlockName").val() == "EditaceAudituBezWf")
-                        parsedDate = moment(data[7], 'D.M.YYYY');
+                // Get dates from 7th column (with hidden columns -1)
+                if ($("#currentBlockName").val() == "EditaceAuditu" ||
+                    $("#currentBlockName").val() == "EditaceAudituBezWf")
+                    parsedDate = moment(data[7], 'D.M.YYYY');
 
-                    // Get dates from 11th column (with hidden columns -1)
-                    if ($("#currentBlockName").val() == "FollowUp")
-                        parsedDate = moment(data[11], 'D. M. YYYY H:mm:ss');
+                // Get dates from 11th column (with hidden columns -1)
+                if ($("#currentBlockName").val() == "FollowUp")
+                    parsedDate = moment(data[11], 'D. M. YYYY H:mm:ss');
 
-                    // Allow dates between 2 chosen months
-                    if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
-                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate
+                // Allow dates between 2 chosen months
+                if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
+                    return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate
                         && parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
-                    }
-
-                    // Allow dates from chosen month
-                    if (selMonthFrom.val() != -1 && selMonthTo.val() == -1) {
-                        return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate;
-                    }
-
-                    // Allow dates before chosen month
-                    if (selMonthFrom.val() == -1 && selMonthTo.val() != -1) {
-                        return parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
-                    }
-
-                    return false;
                 }
-            );
 
-            $(document).on("change", "#uic_dropMonthFrom", function () {
-                $(".data-table").DataTable().draw();
-            });
-
-            $(document).on("change", "#uic_dropMonthTo", function () {
-                $(".data-table").DataTable().draw();
-            });
-        }
-
-        if ($("#currentBlockName").val() == "EditaceOpatreniVReseni") {
-            $("[name=STATUS_radio]").on("change", function () {
-                if ($(this).val() === "realizovano") {
-                    $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", true);
-                    $("[name=NT_REALIZACE_date]").prop("readonly", true);
-                    $("[name=NT_REALIZACE_date]").attr("required", false);
-                } else if ($(this).val() === "posunout_termin") {
-                    $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
-                    $("[name=NT_REALIZACE_date").prop("readonly", false);
-                    $("[name=NT_REALIZACE_date]").attr("required", true);
+                // Allow dates from chosen month
+                if (selMonthFrom.val() != -1 && selMonthTo.val() == -1) {
+                    return moment(selMonthFrom.val(), 'D.M.YYYY') < parsedDate;
                 }
-                else {
-                    $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
-                    $("[name=NT_REALIZACE_date]").prop("readonly", true);
-                    $("[name=NT_REALIZACE_date]").attr("required", false);
+
+                // Allow dates before chosen month
+                if (selMonthFrom.val() == -1 && selMonthTo.val() != -1) {
+                    return parsedDate < moment(selMonthTo.val(), 'D.M.YYYY');
                 }
-            });
-        }
-        if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
-            $("#uic_doporuc_button").click(function () {
-                $("#uic_panel20").toggle('disabled');
-            });
-        }
-        else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
-            
+
+                return false;
+            }
+        );
+
+        $(document).on("change", "#uic_dropMonthFrom", function () {
+            $(".data-table").DataTable().draw();
+        });
+
+        $(document).on("change", "#uic_dropMonthTo", function () {
+            $(".data-table").DataTable().draw();
+        });
+    }
+
+    if ($("#currentBlockName").val() == "EditaceOpatreniVReseni") {
+        $("[name=STATUS_radio]").on("change", function () {
+            if ($(this).val() === "realizovano") {
+                $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", true);
+                $("[name=NT_REALIZACE_date]").prop("readonly", true);
+                $("[name=NT_REALIZACE_date]").attr("required", false);
+            } else if ($(this).val() === "posunout_termin") {
+                $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
+                $("[name=NT_REALIZACE_date").prop("readonly", false);
+                $("[name=NT_REALIZACE_date]").attr("required", true);
+            }
+            else {
+                $("[name=DUVOD_POSUNUTI_textbox]").prop("readonly", false);
+                $("[name=NT_REALIZACE_date]").prop("readonly", true);
+                $("[name=NT_REALIZACE_date]").attr("required", false);
+            }
+        });
+    }
+    if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
+        $("#uic_doporuc_button").click(function () {
+            $("#uic_panel20").toggle('disabled');
+        });
+    }
+    else if ($("#currentBlockName").val() == "ZadaniObjednavkyPeriodika") {
+
         $("#uic_address_dropdown").change(function () {
             var dropdownText = $("#uic_address_dropdown :selected");
             $("#uic_ship_to_textbox").val(dropdownText.text());
         });
 
-        
+
 
         $("#uic_begin_dtpicker").val("01.01.2017");
         $("#uic_end_dtpicker").val("31.12.2017");
@@ -251,7 +250,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val() },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_subscriber_textbox").val(data.user[0].full_name);
                     $("#uic_ns_textbox").val(data.user[0].kostl);
@@ -276,7 +275,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { 'targetId': $(this).val(), 'userId': $("#uic_user_select_dropdown").val() ? $("#uic_user_select_dropdown").val() : 0 },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_interval_dropdown option").each(function (index, element) {
                         option = $(element);
@@ -333,7 +332,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_approver_select_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
@@ -358,7 +357,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + $(this).attr("name"),
                 data: { "targetId": $(this).val() },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_occupation_select_dropdown option[value != '-1']").remove();
                     if (data.user.length > 0) {
@@ -387,10 +386,10 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=" + dropdownName,
                     data: {
                         'targetId': $(this).val(), 'userId': panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val()
-                       ? panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val() : 0
+                            ? panel.find('[originalId="uic_subscriber_name_select_dropdown"]').val() : 0
                     },
                     error: console.error.bind(console),
-                    complete: function(){spinner.remove()},
+                    complete: function () { spinner.remove() },
                     success: function (data) {
                         panel.find('[originalId="uic_interval_dropdown"] option').each(function (index, element) {
                             option = $(element);
@@ -446,7 +445,7 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_select_dropdown",
                     data: { "targetId": $(this).val() },
                     error: console.error.bind(console),
-                    complete: function(){spinner.remove()},
+                    complete: function () { spinner.remove() },
                     success: function (data) {
                         var currentUser = data.user[0];
                         panel.find('.uic[originalId="uic_subscriber_occupation_select_dropdown"]').append('<option value="' + currentUser.Job + '">' + currentUser.Job + '</option>');
@@ -460,7 +459,7 @@ $(function () {
             }
         });
 
-        $("#uic_reciever_textbox").trackInputDone(function() {
+        $("#uic_reciever_textbox").trackInputDone(function () {
             if ($(this).attr("originalId") == "uic_reciever_textbox") {
                 var spinner = $(inlineSpinnerTemplate)
                     .attr({ id: "approver_select_dropdown_spinner" })
@@ -480,7 +479,7 @@ $(function () {
                     url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=approver_textbox",
                     data: { "SearchQuery": $(this).val() },
                     error: console.error.bind(console),
-                    complete: function(){spinner.remove()},
+                    complete: function () { spinner.remove() },
                     success: function (data) {
                         targetDropdown = panel.find('.uic[originalId="uic_subscriber_name_select_dropdown"]');
                         targetDropdown.find("option[value != '-1']").remove();
@@ -548,7 +547,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_select_user_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
@@ -573,7 +572,7 @@ $(function () {
                 url: "/api/run/" + $("#currentAppName").val() + "/" + $("#currentBlockName").val() + "/?button=user_textbox",
                 data: { "SearchQuery": $(this).val() },
                 error: console.error.bind(console),
-                complete: function(){spinner.remove()},
+                complete: function () { spinner.remove() },
                 success: function (data) {
                     $("#uic_select_deputy_dropdown option[value != '-1']").remove();
                     for (i = 0; i < data.UserList.length; i++) {
@@ -583,14 +582,16 @@ $(function () {
                 }
             });
         });
-    }   
+    }
     $("tr").on("click", function (event) {
-        if(!$(event.target).is(".rowEditAction")){ //to stop event propagation resulting in a recursion
+        if (!$(event.target).is(".rowEditAction")) { //to stop event propagation resulting in a recursion
             $(this).find(".rowEditAction").trigger("click");
         }
-        });
-    $("#uic_zobrazit").on("click", function () {
-        $("#uic_panel20").prop("hidden",false);
-        alert("ok");
     });
+    if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
+        $("#uic_zobrazit").on("click", function () {
+            $("#uic_panel20").show();
+            alert("ok");
+        })
+    }
 });
