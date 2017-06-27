@@ -98,6 +98,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         if (diff <= maxAge)
                         {
                             outputVars["Result"] = item.data;
+                            outputVars["Error"] = false;
                             return;
                         }
                     }
