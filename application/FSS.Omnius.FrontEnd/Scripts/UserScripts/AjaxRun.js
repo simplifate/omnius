@@ -69,14 +69,15 @@ $(function () {
 
     if ($("#currentBlockName").val() == "EditaceAuditu" ||
         $("#currentBlockName").val() == "EditaceAudituBezWf" ||
-        $("#currentBlockName").val() == "FollowUp") {
+        $("#currentBlockName").val() == "FollowUp" ||
+        $("#currentBlockName").val() == "NapravnaOpatreni") {
 
         // Implementation for filtering by months in DataTables
         var selMonthFrom = $("#uic_dropMonthFrom");
         var selMonthTo = $("#uic_dropMonthTo");
 
         function getMonthName(month) {
-            switch (m) {
+            switch (month) {
                 case 1:
                     return "leden";
                 case 2:
@@ -148,6 +149,10 @@ $(function () {
                 // Get dates from 11th column (with hidden columns -1)
                 if ($("#currentBlockName").val() == "FollowUp")
                     parsedDate = moment(data[11], 'D. M. YYYY H:mm:ss');
+
+                // Get dates from 12th column (with hidden columns -1)
+                if ($("#currentBlockName").val() == "NapravnaOpatreni")
+                    parsedDate = moment(data[12], 'D. M. YYYY H:mm:ss');
 
                 // Allow dates between 2 chosen months
                 if (selMonthFrom.val() != -1 && selMonthTo.val() != -1) {
