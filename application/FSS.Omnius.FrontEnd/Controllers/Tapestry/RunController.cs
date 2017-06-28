@@ -82,9 +82,19 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
 
             blockDependencies.Add("Translator", this.GetTranslator());
+
+            string lastLocale = this.GetLocaleNameById(core.User.LocaleId);
+            if (locale == "")
+                locale = lastLocale;
+            ViewData["locale"] = locale;
+            if (locale == "en")
+                core.User.LocaleId = 2;
+            else
+                core.User.LocaleId = 1;
+            T t = new T(locale);
             var result = core.Tapestry.innerRun(HttpContext.GetLoggedUser(), block, "INIT", modelId, fc, -1, blockDependencies);
             if (result.Item2.Id != block.Id)
-                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = this.PrepareAlert(result.Item1.Message), messageType = result.Item1.Message.Type.ToString() });
+                return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = t._(this.PrepareAlert(result.Item1.Message)), messageType = result.Item1.Message.Type.ToString() });
 
             Dictionary<string, object> tapestryVars = result.Item1.OutputData;
 
@@ -107,15 +117,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["crossBlockRegistry"] = registry;
             ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));
             ViewData["HttpContext"] = HttpContext;
-            string lastLocale = this.GetLocaleNameById(core.User.LocaleId);
-            if (locale == "")
-                locale = lastLocale;
-            ViewData["locale"] = locale;
-            if (locale == "en")
-                core.User.LocaleId = 2;
-            else
-                core.User.LocaleId = 1;
-
+            
             context.SaveChanges();
             DBItem modelRow = null;
             bool modelLoaded = false;
