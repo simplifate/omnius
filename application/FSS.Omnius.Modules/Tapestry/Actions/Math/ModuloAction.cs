@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "A", "B" };
+                return new string[] { "A", "B", "?AsInteger" };
             }
         }
 
@@ -54,10 +54,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             var operandA = vars["A"];
             var operandB = vars["B"];
-            if (operandA is int && operandB is int)
-                outputVars["Result"] = (int)operandA % (int)operandB;
-            else
-                outputVars["Result"] = Convert.ToDouble(operandA) % Convert.ToDouble(operandB);
+            bool asInt = vars.ContainsKey("AsInteger") ? (bool)vars["AsInteger"] : false;
+
+            outputVars["Result"] = (asInt == false) ? (Convert.ToDouble(operandA) % Convert.ToDouble(operandB)) : (Convert.ToInt64(operandA) % Convert.ToInt64(operandB));
         }
     }
 }
