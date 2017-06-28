@@ -227,7 +227,7 @@ namespace FSS.Omnius.Controllers.Master
                 #endregion
 
                 // entitron
-                if (masterApp.EntitronChangedSinceLastBuild)
+                if (masterApp.EntitronChangedSinceLastBuild || _rebuildInAction)
                 {
                     try
                     {
