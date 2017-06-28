@@ -32,7 +32,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "TableName", "ColumnName", "Length", "?PaddingChar", "?SearchInShared" };
+                return new string[] { "s$TableName", "s$ColumnName", "i$Length", "?s$PaddingChar", "?SearchInShared" };
             }
         }
 
