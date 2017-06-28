@@ -171,7 +171,7 @@ namespace FSS.Omnius.Controllers.Master
                 }
 
                 // Entitron Generate Database
-                if (masterApp.EntitronChangedSinceLastBuild)
+                if (masterApp.EntitronChangedSinceLastBuild || _rebuildInAction)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 else
                     Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));

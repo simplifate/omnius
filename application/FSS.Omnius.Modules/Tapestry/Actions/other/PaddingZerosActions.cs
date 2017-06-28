@@ -16,27 +16,42 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     public class PaddingZeroAction : Action
     {
-        public override int Id => 216;
+        public override int Id
+        {
+            get { return 216; }
+        }
 
         /// <summary>
         /// Id of the action which revereses consequences of this action.
         /// </summary>
-        public override int? ReverseActionId => null;
+        public override int? ReverseActionId
+        {
+            get { return null; }
+        }
 
         /// <summary>
         /// Shows which parameters user can insert in UI.
         /// </summary>
-        public override string[] InputVar => new string[] { "s$InputString", "i$Length" };
+        public override string[] InputVar
+        {
+            get { return new string[] {"s$InputString", "i$Length"}; }
+        }
 
         /// <summary>
         /// Header in tapestry
         /// </summary>
-        public override string Name => "Pad by zeros";
-        
+        public override string Name
+        {
+            get { return "Pad by zeros"; }
+        }
+
         /// <summary>
         /// Specifies where the action should store its results.
         /// </summary>
-        public override string[] OutputVar => new string[] { "Result" };
+        public override string[] OutputVar
+        {
+            get { return new string[] {"Result"}; }
+        }
 
         /// <summary>
         /// Kód co se spustí, když dojde k dané akci.
