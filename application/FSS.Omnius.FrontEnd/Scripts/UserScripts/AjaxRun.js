@@ -618,7 +618,11 @@ $(function () {
     if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
         $("#uic_zobrazit").on("click", function () {
             $("#uic_panel20").show();
-            alert("ok");
+        })
+    }
+    if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
+        $("#uic_zavrit").on("click", function () {
+            $("#uic_panel20").hide();
         })
     }
 });
