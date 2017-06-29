@@ -221,5 +221,10 @@ namespace System
 
             return safe;
         }
+
+        public static string EscapeVerbatim(this string input)
+        {
+            return input.Replace("\"", "\"\"");
+        }
     }
 }
