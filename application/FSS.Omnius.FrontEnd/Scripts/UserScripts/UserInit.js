@@ -254,7 +254,7 @@ $(function () {
         });
         $.extend($.validator.methods, {
             auditNumberNoWF: function (value, element, attr) {
-                return value.match(/^[0-9]{4} [BCEQ] [0-9]{2,3}$/);
+                return value.match(/^[0-9]{4} [BCEFSZ] [0-9]{2,3}$/);
             }
         });
         $.extend($.validator.methods, {
