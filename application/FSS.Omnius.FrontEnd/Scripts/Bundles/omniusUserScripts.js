@@ -69,7 +69,7 @@ $(function () {
 
     // Implement datePicker by jQuery because of IE 11
     if ($("#currentBlockName").val() == "NovySubjekt") {
-        $("input[type=date]").datepicker();
+        $("#Date_input").datepicker();
     }
     
     if ($("#currentBlockName").val() == "EditaceAuditu" ||
