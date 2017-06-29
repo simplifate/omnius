@@ -1,1 +1,33 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }<div class="mozaicBootstrapPage"><div class="container"><div class="row"><div class="col-xs-12"><h1 class="">Vyhledávání</h1><form class="form-horizontal empty-element">@Html.AntiForgeryToken()</form></div></div><div class="row"><div class="col-xs-12 col-md-12"><form class="form-horizontal" method="post"><div class="form-group"><label for="name_search" class="col-xs-2">Dle jména:</label><div class="input-group col-xs-9"><input id="name_search" type="search" name="name_search" value="@(ViewData.ContainsKey("inputData_name_search") ? @ViewData["inputData_name_search"] : "")" class="form-control" placeholder="Jméno" id="name_search" /></div></div><button id="nameSearch_button" type="submit" class="btn btn-primary" name="button" id="nameSearch_button" value="nameSearch_button" style="margin-top: -10px" >Vyhledat jméno<br></button><label id="warning1_label" class="" style="margin-left: 26px" id="warning1_label">@Html.Raw(ViewData.ContainsKey("inputData_warning1_label") ? "{var1}".Replace("{var1}", ViewData["inputData_warning1_label"].ToString()) : "{var1}" )</label>@Html.AntiForgeryToken()</form></div><div class="col-xs-12 col-md-12" style="margin-top: 50px"><form class="form-horizontal" method="post"><div class="form-group"><label for="Ico_search" class="col-xs-2">Dle IČO:</label><div class="input-group col-xs-9"><input id="Ico_search" type="search" name="Ico_search" value="@(ViewData.ContainsKey("inputData_Ico_search") ? @ViewData["inputData_Ico_search"] : "")" class="form-control" id="Ico_search" placeholder="IČO" /></div></div><button id="IcoSearch_button" type="submit" class="btn btn-primary" name="button" value="IcoSearch_button" id="IcoSearch_button" style="margin-top: -10px" >Vyhledat IČO</button><label id="warning2_label" for="" class="mbe-active" style="margin-left: 40px" id="warning2_label">@Html.Raw(ViewData.ContainsKey("inputData_warning2_label") ? "{var1}".Replace("{var1}", ViewData["inputData_warning2_label"].ToString()) : "{var1}" )</label>@Html.AntiForgeryToken()</form></div></div></div></div>
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }<div class="mozaicBootstrapPage"><div class="container"><div class="row"><div class="col-xs-12"><h1 class="mbe-active">Vyhledávání</h1><form class="form-horizontal empty-element">@Html.AntiForgeryToken()</form></div></div><div class="row"><div class="col-xs-12 col-md-12"><form class="form-horizontal" method="post"><div class="form-group"><label for="name_search" class="col-xs-2">Dle jména:</label><div class="input-group col-xs-9"><input id="name_search" type="search" name="name_search" value="@(ViewData.ContainsKey("inputData_name_search") ? @ViewData["inputData_name_search"] : "")" class="form-control" placeholder="Jméno" id="name_search" /></div></div><button id="nameSearch_button" type="submit" class="btn btn-primary" name="button" id="nameSearch_button" value="nameSearch_button" style="margin-top: -10px" >Vyhledat jméno<br></button><label id="warning1_label" class="" style="margin-left: 13px" id="warning1_label">@Html.Raw(ViewData.ContainsKey("inputData_warning1_label") ? "<div style="mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+margin-left:36.0pt;margin-right:0cm">
+
+<p class="MsoListParagraph" style="margin-left:0cm;mso-add-space:auto;border:
+none;mso-border-alt:solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt">Záznam
+nebyl nalezen v&nbsp;databázi subjektů<span lang="EN-US">. </span>Prosím kontaktuje <a href="mailto:registr@innogy.com">registr@innogy.com</a><o:p></o:p></p>
+
+</div>".Replace("{var1}", ViewData["inputData_warning1_label"].ToString()) : "<div style="mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+margin-left:36.0pt;margin-right:0cm">
+
+<p class="MsoListParagraph" style="margin-left:0cm;mso-add-space:auto;border:
+none;mso-border-alt:solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt">Záznam
+nebyl nalezen v&nbsp;databázi subjektů<span lang="EN-US">. </span>Prosím kontaktuje <a href="mailto:registr@innogy.com">registr@innogy.com</a><o:p></o:p></p>
+
+</div>" )</label>@Html.AntiForgeryToken()</form></div><div class="col-xs-12 col-md-12" style="margin-top: 50px"><form class="form-horizontal" method="post"><div class="form-group"><label for="Ico_search" class="col-xs-2">Dle IČO:</label><div class="input-group col-xs-9"><input id="Ico_search" type="search" name="Ico_search" value="@(ViewData.ContainsKey("inputData_Ico_search") ? @ViewData["inputData_Ico_search"] : "")" class="form-control" id="Ico_search" placeholder="IČO" /></div></div><button id="IcoSearch_button" type="submit" class="btn btn-primary" name="button" value="IcoSearch_button" id="IcoSearch_button" style="margin-top: -10px" >Vyhledat IČO</button><label id="warning2_label" for="" class="" style="margin-left: 25px" id="warning2_label">@Html.Raw(ViewData.ContainsKey("inputData_warning2_label") ? "<div style="mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+margin-left:36.0pt;margin-right:0cm">
+
+<p class="MsoListParagraph" style="margin-left:0cm;mso-add-space:auto;border:
+none;mso-border-alt:solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt">Záznam
+nebyl nalezen v&nbsp;databázi subjektů<span lang="EN-US">. </span>Prosím kontaktuje <a href="mailto:registr@innogy.com">registr@innogy.com</a><o:p></o:p></p>
+
+</div>".Replace("{var1}", ViewData["inputData_warning2_label"].ToString()) : "<div style="mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+margin-left:36.0pt;margin-right:0cm">
+
+<p class="MsoListParagraph" style="margin-left:0cm;mso-add-space:auto;border:
+none;mso-border-alt:solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt">Záznam
+nebyl nalezen v&nbsp;databázi subjektů<span lang="EN-US">. </span>Prosím kontaktuje <a href="mailto:registr@innogy.com">registr@innogy.com</a><o:p></o:p></p>
+
+</div>" )</label>@Html.AntiForgeryToken()</form></div></div></div></div>
