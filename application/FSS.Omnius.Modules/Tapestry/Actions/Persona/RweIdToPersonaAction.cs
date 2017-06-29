@@ -59,7 +59,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             var rweUsersTable = core.Entitron.GetDynamicTable("Users");
 
             List<DBItem> results;
-            if (vars.ContainsKey("id"))
+            if (vars.ContainsKey("Id"))
             {
                 int userId = Convert.ToInt32(vars["Id"]);
                 results = rweUsersTable.Select().where(c => c.column("id").Equal(userId)).ToList();
