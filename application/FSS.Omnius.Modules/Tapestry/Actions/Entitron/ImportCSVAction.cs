@@ -202,7 +202,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
                                 // setConditions
                                 foreach (string colName in uniqueColumns) {
-                                    object condValue = data[colName];
+                                    object condValue = data[colName].ToString().PadLeft(12,'0') ;
                                     DBColumn column = columns.Single(c => c.Name == colName);
 
                                     outCondition = condition.column(colName).Equal(condValue);
