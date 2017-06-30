@@ -595,7 +595,6 @@ $(function () {
     }
     else if ($("#currentBlockName").val() == "NovyAudit") {
         // Selection of a company will fill coordinator dropdown by data wich it receives from server.
-        
         $('#uic_company_dropdown').on("change",
             function () {
                 $.ajax({
@@ -606,7 +605,7 @@ $(function () {
                     success: function (data) {
                         $("#uic_ia_coordinator_dropdown option[value != '-1']").remove();
                         for (i = 0; i < data.Coordinators.length; i++) {
-                            coordinator = data.Coordinators[i];
+                            var coordinator = data.Coordinators[i];
                             $("#uic_ia_coordinator_dropdown").append('<option value="' + coordinator.id + '">' + coordinator.name + '</option>');
                         }
                     }
