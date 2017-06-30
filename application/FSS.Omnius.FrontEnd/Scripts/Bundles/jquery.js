@@ -29629,10 +29629,10 @@ var DateFormatter;
             },
             cs: { // ÄŚeĹˇtina
                 months: [
-					"Leden", "Ăšnor", "BĹ™ezen", "Duben", "KvÄ›ten", "ÄŚerven", "ÄŚervenec", "Srpen", "ZĂˇĹ™Ă­", "ĹĂ­jen", "Listopad", "Prosinec"
+					"Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září­", "Říjen", "Listopad", "Prosinec"
                 ],
                 dayOfWeekShort: [
-					"Ne", "Po", "Ăšt", "St", "ÄŚt", "PĂˇ", "So"
+					"Ne", "Po", "Út", "St", "Čt", "Páˇ", "So"
                 ]
             },
             hu: { // Hungarian
