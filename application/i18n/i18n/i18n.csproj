@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E7A9BBA3-8A95-492C-8806-4DE63C1DBA06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>i18n</RootNamespace>
+    <AssemblyName>i18n</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\i18n.XML</DocumentationFile>
+    <NoWarn>1591 1573</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1591 1573</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\ITranslateSvc.cs" />
+    <Compile Include="Abstract\IRootServices.cs" />
+    <Compile Include="Concrete\EarlyUrlLocalizer.cs" />
+    <Compile Include="Abstract\IEarlyUrlLocalizer.cs" />
+    <Compile Include="Abstract\INuggetLocalizer.cs" />
+    <Compile Include="Abstract\IUrlLocalizer.cs" />
+    <Compile Include="Concrete\TranslateSvc.cs" />
+    <Compile Include="Helpers\DebugHelpers.cs" />
+    <Compile Include="Helpers\HttpContextExtensions.cs" />
+    <Compile Include="Abstract\ITextLocalizer.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\LanguageHelpers.cs" />
+    <Compile Include="Helpers\LanguageItem.cs" />
+    <Compile Include="Helpers\TextLocalizerExtensions.cs" />
+    <Compile Include="Pipeline\LocalizingModule.cs" />
+    <Compile Include="Concrete\NuggetLocalizer.cs" />
+    <Compile Include="Helpers\PostbackParser.cs" />
+    <Compile Include="Pipeline\ResponseFilter.cs" />
+    <Compile Include="Helpers\ParseHelpers.cs" />
+    <Compile Include="LocalizedApplication.cs" />
+    <Compile Include="Helpers\LanguageMatching.cs" />
+    <Compile Include="Concrete\TextLocalizer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Concrete\UrlLocalizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="i18n.nuspec" />
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\i18n.Domain\i18n.Domain.csproj">
+      <Project>{bc2104ab-dc34-45b3-ab4d-3035f11fbdb8}</Project>
+      <Name>i18n.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
