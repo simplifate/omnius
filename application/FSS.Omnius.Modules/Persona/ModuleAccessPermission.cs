@@ -20,6 +20,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
                     return Tapestry;
                 case "Entitron":
                     return Entitron;
+                case "Babylon":
+                    return Babylon;
                 case "Mozaic":
                     return Mozaic;
                 case "Persona":
