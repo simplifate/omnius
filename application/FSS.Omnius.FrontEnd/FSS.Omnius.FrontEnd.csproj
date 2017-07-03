@@ -56,11 +56,13 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="i18n">
-      <HintPath>..\..\..\..\..\Desktop\New folder\i18n.dll</HintPath>
+    <Reference Include="i18n, Version=2.1.8.0, Culture=neutral, PublicKeyToken=b54a7283d4bad1bb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\i18n.dll</HintPath>
     </Reference>
-    <Reference Include="i18n.Domain">
-      <HintPath>..\..\..\..\..\Desktop\New folder\i18n.Domain.dll</HintPath>
+    <Reference Include="i18n.Domain, Version=2.1.8.0, Culture=neutral, PublicKeyToken=b54a7283d4bad1bb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\i18n.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -319,6 +321,8 @@
     <Compile Include="Views\MyVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assemblies\i18n.dll" />
+    <Content Include="Assemblies\i18n.Domain.dll" />
     <Content Include="bundleconfig.json" />
     <Content Include="Content\CssLibs\bootstrap-theme.css" />
     <Content Include="Content\CssLibs\bootstrap-theme.min.css" />
@@ -1910,6 +1914,9 @@
     <Content Include="Views\Nexus\API\Detail.cshtml" />
     <Content Include="Views\Nexus\API\Form.cshtml" />
     <Content Include="Views\Nexus\API\Index.cshtml" />
+    <Content Include="Views\Babylon\Babylon\Decoration.cshtml" />
+    <Content Include="Views\Babylon\Babylon\Header.cshtml" />
+    <Content Include="Views\Babylon\Texts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

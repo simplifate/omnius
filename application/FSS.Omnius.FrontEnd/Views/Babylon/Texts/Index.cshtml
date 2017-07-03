@@ -1,0 +1,13 @@
+﻿@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+@{
+    Page.Title = "Omnius Babylon";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "babylonModule";
+}
+@Html.Partial("~/Views/Babylon/Babylon/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Babylon/Babylon/Decoration.cshtml")
+    <div id="babylonTextsMenuArea" class="moduleSubMenuArea">
+        @Html.RouteLink("Najít texty", "Babylon", new { @action = "Generate" }, new { @target = "_blank", @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+</div>
