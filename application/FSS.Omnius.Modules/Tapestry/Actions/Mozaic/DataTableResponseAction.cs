@@ -93,12 +93,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         }
                     }
                 }
-                
+
+                List<string> displayNames = new List<string>();
+                List<string> columnsNames = data[0].getColumnNames();
+                try {
+                    displayNames = data[0].getColumnDisplayNames();
+                }
+                catch (NullReferenceException) {
+                    displayNames = columnsNames;
+                }
+                 
                 foreach (DBItem row in data) {
                     DBItem newRow = new DBItem();
                     int i = 0;
-                    var displayNames = row.getColumnDisplayNames();
-                    var columnsNames = row.getColumnNames();
+                    
                     foreach (string prop in columnsNames) {
                         var value = row[prop];
                         var displayName = displayNames[columnsNames.IndexOf(prop)];
