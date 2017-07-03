@@ -56,14 +56,6 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="i18n, Version=2.1.8.0, Culture=neutral, PublicKeyToken=b54a7283d4bad1bb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assemblies\i18n.dll</HintPath>
-    </Reference>
-    <Reference Include="i18n.Domain, Version=2.1.8.0, Culture=neutral, PublicKeyToken=b54a7283d4bad1bb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assemblies\i18n.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -1931,6 +1923,14 @@
     <ProjectReference Include="..\FSS.Omnius.Modules\FSS.Omnius.Modules.csproj">
       <Project>{d3f13b6a-a0d7-4f4f-8026-296ff8b34713}</Project>
       <Name>FSS.Omnius.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\i18n\i18n.Domain\i18n.Domain.csproj">
+      <Project>{bc2104ab-dc34-45b3-ab4d-3035f11fbdb8}</Project>
+      <Name>i18n.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\i18n\i18n\i18n.csproj">
+      <Project>{e7a9bba3-8a95-492c-8806-4de63c1dba06}</Project>
+      <Name>i18n</Name>
     </ProjectReference>
     <ProjectReference Include="..\ND.Logger\ND.Logger.csproj">
       <Project>{b2dcda47-f205-491e-a588-ba598feb69c0}</Project>
