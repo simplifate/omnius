@@ -17,6 +17,14 @@ namespace FSS.Omnius.FrontEnd
                 namespaces: new string[] { "FSS.Omnius.Controllers.CORE" }
             );
 
+            // Babylon
+            routes.MapRoute(
+                name: "Babylon",
+                url: "Babylon/{controller}/{action}",
+                defaults: new { controller = "Texts", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Babylon" }
+            );
+
             // Compass
             routes.MapRoute(
                 name: "Compass",

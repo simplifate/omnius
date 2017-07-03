@@ -1138,6 +1138,10 @@
     <Compile Include="Migrations\201706271059315_omnius-api-models.Designer.cs">
       <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707030938552_babylon.cs" />
+    <Compile Include="Migrations\201707030938552_babylon.Designer.cs">
+      <DependentUpon>201707030938552_babylon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1880,6 +1884,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706271059315_omnius-api-models.resx">
       <DependentUpon>201706271059315_omnius-api-models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707030938552_babylon.resx">
+      <DependentUpon>201707030938552_babylon.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
