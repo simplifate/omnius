@@ -20,7 +20,7 @@ namespace FSS.Omnius.FrontEnd
             // Babylon
             routes.MapRoute(
                 name: "Babylon",
-                url: "Babylon/{controller}/{action}",
+                url: "Babylon/{controller}/{action}/{id}",
                 defaults: new { controller = "Texts", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "FSS.Omnius.Controllers.Babylon" }
             );
