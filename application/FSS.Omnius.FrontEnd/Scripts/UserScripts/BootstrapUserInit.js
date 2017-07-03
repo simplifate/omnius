@@ -9,7 +9,7 @@
 
         $(self.context)
             .on('keyup change', '.data-table > tfoot input', self.DataTable.filter)
-            .on('click', '.data-table .actionIcons i.fa', self.DataTable.onAction)
+            .on('click', '.data-table i.fa[data-action]', self.DataTable.onAction)
         ;
 
         self.DataTable.init();
@@ -63,7 +63,11 @@
 
             $('.data-table', self.context).each(function () {
                 var table = $(this);
-
+                var columns = [];
+                table.find('tr:eq(0) th').each(function () {
+                    columns.push({ data: $(this).text() });
+                });
+               
                 table.DataTable({
                     paging: table.data('dtpaging') == '1',
                     pageLength: 50,
@@ -72,6 +76,10 @@
                     filter: table.data('dtfilter') == '1' || table.data('dtcolumnfilter') == '1',
                     ordering: table.data('dtordering') == '1',
                     order: table.data('dtorder') ? eval(table.data('dtorder')) : [[0, 'desc']],
+                    processing: table.data('dtserverside') == '1',
+                    serverSide: table.data('dtserverside') == '1',
+                    ajax: table.data('dtserverside') == '1' ? { url: "/api/run" + location.pathname + '?button=' + table.attr('id'), type: 'POST' } : null,
+                    columns: columns,
                     language: {  
                         sEmptyTable: 'Tabulka neobsahuje žádná data',
                         sInfo: 'Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů',

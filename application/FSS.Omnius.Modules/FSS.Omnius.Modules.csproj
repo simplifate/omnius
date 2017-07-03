@@ -1163,11 +1163,11 @@
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\ImportCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GenerateUniqueIdAction.cs" />
-    <Compile Include="Tapestry\Actions\Entitron\ImportCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JSON2DbItemList.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TruncateAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetCellFromRowAction.cs" />
@@ -1207,6 +1207,7 @@
     <Compile Include="Tapestry\Actions\Math\SubtractAction.cs" />
     <Compile Include="Tapestry\Actions\Math\SubtractInVectorAction.cs" />
     <Compile Include="Tapestry\Actions\Math\VectorUnionAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\DataTableResponseAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToExcelAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ExportToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\LogAction.cs" />

@@ -53,7 +53,8 @@
                         'data-dtinfo': 'Show informations',
                         'data-dtfilter': 'Show filter',
                         'data-dtcolumnfilter': 'Show column filter',
-                        'data-dtordering': 'Enable ordering'
+                        'data-dtordering': 'Enable ordering',
+                        'data-dtserverside': 'Server-side proccessing'
                     },
                     get: function (value) {
                         return $(this).attr(value) == '1';
@@ -308,7 +309,8 @@
                 'data-dtinfo': '1',
                 'data-dtfilter': '1',
                 'data-dtordering': '1',
-                'data-dtcolumnfilter': '0'
+                'data-dtcolumnfilter': '0',
+                'data-dtserverside': '0'
             });
         }
         

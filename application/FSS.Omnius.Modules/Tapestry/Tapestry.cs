@@ -48,7 +48,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
                 if (key.Length == 0) {
-                    output = (pair.Value as IToJson).ToJson();
+                    output = pair.Value is JToken ? (JToken)pair.Value : (pair.Value as IToJson).ToJson();
                 }
                 else {
                     if (pair.Value is string)
@@ -108,6 +108,7 @@ namespace FSS.Omnius.Modules.Tapestry
                     _results.OutputData.Add("__Dependency_" + dependency.Key + "__", dependency.Value);
                 }
             }
+            _results.OutputData.Add("__Button__", buttonId);
 
             // get actionRule
             ActionRule actionRule = null;

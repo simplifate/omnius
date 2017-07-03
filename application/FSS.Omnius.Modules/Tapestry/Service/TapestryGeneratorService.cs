@@ -621,6 +621,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
+                        if (item.ActionId == 2007) // DataTable Response action
+                        {
+                            generatedInputVariables = ";BootstrapPageId=i$" + startBlock.BootstrapPageId;
+                        }
 
                         ActionRule_Action result = new ActionRule_Action
                         {

@@ -63,7 +63,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 ? (string)vars["TableName"]
                 : (string)vars["__TableName__"];
             int itemId = vars.ContainsKey("Id")
-                ? (int)vars["Id"]
+                ? (vars["Id"] is int ? (int)vars["Id"] : Convert.ToInt32(vars["Id"]))
                 : (int)vars["__ModelId__"];
             DBTable table = ent.GetDynamicTable(tableName, searchInShared);
             if (table == null)
