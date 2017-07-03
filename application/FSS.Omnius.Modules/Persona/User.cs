@@ -36,6 +36,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             }
             return false;
         }
+        public bool canUseBlock(string rights, string appName)
+        {
+            if (string.IsNullOrEmpty(rights))
+                return false;
+
+            string[] roles = rights.Split(',');
+            foreach (string role in roles)
+            {
+                if (Users_Roles.Any(r => r.Application.Name == appName && r.RoleName == role))
+                    return true;
+            }
+            return false;
+        }
         public bool HasRole(string roleName, int appId)
         {
             return Users_Roles.Any(r => r.RoleName == roleName && r.ApplicationId == appId);
