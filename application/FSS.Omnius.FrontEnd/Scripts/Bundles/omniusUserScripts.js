@@ -629,9 +629,6 @@ $(function () {
             $("#uic_panel20").hide();
         })
     }
-    if ($("uic_panel40").mouseover(function () {
-        $("uic_panel40").show();
-    }))
 });
 function ShowAppNotification(text, type) {
     var type = type.toLowerCase() || "info";
