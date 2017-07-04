@@ -52,6 +52,7 @@ namespace FSS.Omnius.Controllers.Babylon
             Dictionary<string, string> data = new Dictionary<string, string>();
             foreach (Page row in db.Pages)
             {
+                if ((row.ViewPath.Contains(appName + "\\Page")) || (row.ViewPath.Contains(appName + "\\menuLayout.cshtml")) || (row.ViewPath.ToString().StartsWith("/Views/App/") && Convert.ToInt32(row.ViewPath.ToString().Split('/')[3]) == id))
                     data.Add(row.Id.ToString() + "-" + row.ViewName, row.ViewContent);
             }
 
