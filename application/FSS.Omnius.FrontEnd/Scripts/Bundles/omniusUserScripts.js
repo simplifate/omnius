@@ -629,9 +629,11 @@ $(function () {
             $("#uic_panel20").hide();
         })
     }
-    if ($("#info").mouseover(function () {
-        $("#uic_panel40").alert("ok");
-    }));
+    if ($("#currentBlockName").val() == "ZadaniAuditu") {
+        $("#uic_info").mouseover(function () {
+            $("#uic_panel40").show();
+        })
+    }
 });
 function ShowAppNotification(text, type) {
     var type = type.toLowerCase() || "info";
