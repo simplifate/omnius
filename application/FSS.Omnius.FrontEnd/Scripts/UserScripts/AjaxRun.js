@@ -629,4 +629,7 @@ $(function () {
             $("#uic_panel20").hide();
         })
     }
+    if ($("#info").mouseover(function () {
+        $("#uic_panel40").alert("ok");
+    }));
 });
