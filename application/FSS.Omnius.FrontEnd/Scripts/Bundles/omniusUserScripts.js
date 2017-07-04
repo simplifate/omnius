@@ -639,6 +639,16 @@ $(function () {
             $("#uic_panel40").hide();
         })
     }
+    if ($("#currentBlockName").val() == "NovyAuditBezWF") {
+        $("#uic_info2").mouseover(function () {
+            $("#uic_panel23").show();
+        })
+    }
+    if ($("#currentBlockName").val() == "NovyAuditBezWF") {
+        $("#uic_info2").mouseleave(function () {
+            $("#uic_panel23").hide();
+        })
+    }
 });
 function ShowAppNotification(text, type) {
     var type = type.toLowerCase() || "info";
