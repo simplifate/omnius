@@ -160,7 +160,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 }
                 else if (c.Type == "label")
                 {
-                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? \"{c.Label}\".Replace(\"{{var1}}\", (ViewData[\"inputData_{c.Name}\"] ?? \"\").ToString()) : \"{c.Label}\" )";
+                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? \"{c.Label}\".Replace(\"{{var1}}\", (ViewData[\"inputData_{c.Name}\"] ?? \"\").ToString()) : t._(\"{c.Label}\") )";
 
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"{c.Content}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{labelText}</{c.Tag}>");
