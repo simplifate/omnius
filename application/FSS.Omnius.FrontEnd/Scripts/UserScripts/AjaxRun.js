@@ -629,9 +629,14 @@ $(function () {
             $("#uic_panel20").hide();
         })
     }
-    if ($("#currentBlockName").val() == "ZadaniAuditu") {
+    if ($("#currentBlockName").val() == "NovyAudit") {
         $("#uic_info").mouseover(function () {
             $("#uic_panel40").show();
+        })
+    }
+    if ($("#currentBlockName").val() == "NovyAudit") {
+        $("#uic_info").mouseleave(function () {
+            $("#uic_panel40").hide();
         })
     }
 });
