@@ -629,8 +629,8 @@ $(function () {
             $("#uic_panel20").hide();
         })
     }
-    if ($("panel40").mouseover(function () {
-        $("panel40").show();
+    if ($("uic_panel40").mouseover(function () {
+        $("uic_panel40").show();
     }))
 });
 function ShowAppNotification(text, type) {
