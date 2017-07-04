@@ -47,13 +47,12 @@ namespace FSS.Omnius.Controllers.Babylon
         public ActionResult GeneratePot(int id)
         {
             string fileName = "messages.pot";
-
             DBEntities db = DBEntities.instance;
+            string appName = db.Applications.SingleOrDefault(a => a.Id == id).Name;
             Dictionary<string, string> data = new Dictionary<string, string>();
             foreach (Page row in db.Pages)
             {
-                if(row.ViewPath.ToString().StartsWith("/Views/App/") && Convert.ToInt32(row.ViewPath.ToString().Split('/')[3]) == id)
-                data.Add(row.Id.ToString() + "-" + row.ViewName, row.ViewContent);
+                    data.Add(row.Id.ToString() + "-" + row.ViewName, row.ViewContent);
             }
 
             var settings = new i18nSettings(new WebConfigSettingService());
