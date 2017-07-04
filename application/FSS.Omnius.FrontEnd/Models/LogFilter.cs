@@ -32,6 +32,7 @@ namespace FSS.Omnius.FrontEnd.Models
             ActionName = "All";
             TimeSince = new DateTime(2000, 1, 1);
             TimeTo = DateTime.UtcNow;
+            Message = "";
 
             ResultItems = new List<LogItem>();
         }
@@ -52,6 +53,7 @@ namespace FSS.Omnius.FrontEnd.Models
         public string ActionName { get; set; }
         public DateTime TimeSince { get; set; }
         public DateTime TimeTo { get; set; }
+        public string Message { get; set; }
 
         public List<LogItem> ResultItems { get; set; }
 

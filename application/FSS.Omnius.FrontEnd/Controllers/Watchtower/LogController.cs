@@ -18,7 +18,13 @@ namespace FSS.Omnius.Controllers.Watchtower
             DBEntities context = DBEntities.instance;
             filter.Fill(context);
 
-            filter.ResultItems = context.LogItems.Where(
+            int perPage = 20;
+            int page = Request.Form.AllKeys.Contains("page") ? Convert.ToInt32(Request.Form["page"]) - 1 : 0;
+            page = page >= 0 ? page : 0;
+
+            
+
+            var allItems = context.LogItems.Where(
                 i =>
                    i.ParentLogItemId == null
                 && (filter.LevelId == -1 || i.LogLevel == filter.LevelId)
@@ -29,11 +35,12 @@ namespace FSS.Omnius.Controllers.Watchtower
                 && (filter.BlockName == "All" || i.BlockName == filter.BlockName)
                 && (filter.ActionName == "All" || i.ActionName == filter.ActionName)
                 && (i.Timestamp > filter.TimeSince && i.Timestamp < filter.TimeTo)
+                && (string.IsNullOrEmpty(filter.Message) || i.Message.ToLower().Contains(filter.Message.ToLower()))
             ).OrderByDescending(i => i.Timestamp).Take(100).Select(i =>
-                new
-                {
+                new {
                     Id = i.Id,
                     Timestamp = i.Timestamp,
+                    LogLevel = i.LogLevel,
                     UserName = i.UserName,
                     Server = i.Server,
                     Source = i.Source,
@@ -42,11 +49,18 @@ namespace FSS.Omnius.Controllers.Watchtower
                     ActionName = i.ActionName,
                     Message = i.Message
                 }
-            ).ToList().Select(i =>
+            );
+
+            ViewData["perPage"] = perPage;
+            ViewData["page"] = page + 1;
+            ViewData["total"] = allItems.Count();
+            
+            filter.ResultItems = allItems.Skip(page * perPage).Take(perPage).ToList().Select(i =>
                 new LogItem
                 {
                     Id = i.Id,
                     Timestamp = i.Timestamp,
+                    LogLevel = i.LogLevel,
                     UserName = i.UserName,
                     Server = i.Server,
                     Source = i.Source,
@@ -72,7 +86,19 @@ namespace FSS.Omnius.Controllers.Watchtower
                 current = current.ChildLogItems.FirstOrDefault();
             }
 
-            return Json(new { Vars = item.VarHtmlTable(), StackTrace = item.StackTraceHtml(), Inner = item.ChildLogItems.FirstOrDefault() }, JsonRequestBehavior.AllowGet);
+            return Json(new {
+                Time = item.TimeString,
+                Level = item.LogLevelString,
+                User = item.UserName,
+                Server = item.Server,
+                Source = item.LogSourceString,
+                Application = item.Application,
+                Block = item.BlockName,
+                Action = item.ActionName,
+                Message = item.Message,
+                Vars = item.VarHtmlTable(),
+                StackTrace = item.StackTraceHtml(),
+                Inner = item.ChildLogItems.FirstOrDefault() }, JsonRequestBehavior.AllowGet);
         }
     }
 }

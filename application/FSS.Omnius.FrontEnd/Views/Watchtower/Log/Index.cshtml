@@ -8,6 +8,14 @@
     Page.Title = "Omnius Watchtower - Log";
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "watchtowerModule";
+
+    int page = (int)ViewData["page"];
+    int perPage = (int)ViewData["perPage"];
+    int total = (int)ViewData["total"];
+    int pageCount = (int)Math.Ceiling((double)total / (double)perPage);
+
+    bool dotsBefore = page > 6;
+    bool dotsAfter = page + 6 < pageCount;
 }
 <div id="upperPanel">
     <div id="watchtowerFormResponiveArea">
@@ -63,8 +71,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td><label for="message">Message</label></td>
+                    <td>
+                        @Html.TextBoxFor(f => f.Message)
+                    </td>
                     <td><label for="source">Action</label></td>
                     <td>
                         @Html.DropDownListFor(f => f.ActionName, new SelectList(Model.Actions))
@@ -72,6 +82,7 @@
                 </tr>
             </table>
             <div id="formButtonArea">
+                <input type="hidden" name="page" value="1" id="PageNumber" />
                 <button id="resetSearchForm" type="reset" class="btn-omnius-rectangular">Zrušit</button>
                 <button id="submitSearchForm" type="submit" class="btn-omnius-rectangular">Hledat</button>
             </div>
@@ -86,7 +97,19 @@
 <div id="lowerPanel">
     @if (Model.ResultItems.Count() > 0)
     {
-        <table id="watchtowerLogTable" class="table table-bordered table-striped">
+        <table id="watchtowerLogTable" class="table table-bordered table-striped" style="width:100%">
+            <colgroup>
+                <col width="145" />
+                <col width="50" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col  />
+                <col width="30" />
+            </colgroup>
             <thead>
                 <tr>
                     <th>Time</th>
@@ -98,30 +121,110 @@
                     <th>Block</th>
                     <th>Action</th>
                     <th>Message</th>
-                    <th>Variables</th>
-                    <th>Stack Trace</th>
+                    <th>Akce</th>
                 </tr>
             </thead>
-            @foreach (LogItem item in Model.ResultItems)
-            {
-                <tr data-id="@item.Id">
-                    <td>@item.TimeString</td>
-                    <td>@item.LogLevelString</td>
-                    <td>@item.UserName</td>
-                    <td>@item.Server</td>
-                    <td>@item.LogSourceString</td>
-                    <td>@item.Application</td>
-                    <td>@item.BlockName</td>
-                    <td>@item.ActionName</td>
-                    <td>@Html.Raw(item.Message)</td>
-                    <td class="getJsonRow" data-data="Vars">Load this item</td>
-                    <td class="getJsonRow" data-data="StackTrace">Load this item</td>
-                </tr>
-            }
+            <tbody style="font-size:0.9em"> 
+                @foreach (LogItem item in Model.ResultItems) {
+                    <tr data-id="@item.Id">
+                        <td class="text-nowrap">@item.TimeString</td>
+                        <td class="text-nowrap text-center">@Html.Raw(item.LogLevelIcon)</td>
+                        <td class="text-nowrap">@item.UserName</td>
+                        <td class="text-nowrap">@item.Server</td>
+                        <td class="text-nowrap">@item.LogSourceString</td>
+                        <td class="text-nowrap">@item.Application</td>
+                        <td class="text-nowrap">@item.BlockName</td>
+                        <td class="text-nowrap">@item.ActionName</td>
+                        <td class="truncate-base"><span class="truncate">@Html.Raw(item.Message)</span></td>
+                        <td class="actions text-center"><a href="#" class="fa fa-search" title="View details"></a></td>
+                    </tr>
+                }
+            </tbody>
         </table>
+
+        <nav class="text-left" style="margin-bottom:50px">
+            <ul class="pagination" style="margin-bottom: 0px">
+                @if(page > 1) {
+                    <li><a href="#" data-page="@(page - 1)" title="Previous"><span>&laquo;</span></a></li>
+                }
+                @for(int i = 1; i <= pageCount; i++) {
+                    if ((dotsBefore && i > 1 && i < (page - 5)) || (dotsAfter && (i - page > 5) && i != pageCount)) {
+                        if (dotsAfter && i == (pageCount - 1)) {
+                            <li class="disabled"><a href="#">...</a></li>
+                        }
+
+                        if (dotsBefore && i == 2) {
+                            <li class="disabled"><a href="#">...</a></li>
+                        }
+                        continue;
+                    }
+
+                    <li class="@(i == page ? "active" : "")"><a href="#" data-page="@i" title="Page @i">@i</a></li>
+                }
+                @if(page < pageCount) {
+                    <li><a href="#" data-page="@(page + 1)" title="Next"><span>&raquo;</span></a></li>
+                }
+            </ul>
+            <div class="clearfix"></div>
+            <small>Showing items from @((page * perPage - perPage + 1).ToString()) to @((page * perPage > total ? total : page * perPage).ToString()) from @(total.ToString()) results</small>
+        </nav>
     }
     else
     {
         <div class="noSearchResults">Tomuto požadavku neodpovídají žádné záznamy</div>
     }
+</div>
+<div class="hide" id="detail">
+    <form onsubmit="return false" class="form form-horizontal">
+        <div class="col-xs-12">
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Time:</label>
+                <div class="col-sm-10"><p class="form-control-static">{time}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Level:</label>
+                <div class="col-sm-10"><p class="form-control-static">{level}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">User:</label>
+                <div class="col-sm-10"><p class="form-control-static">{user}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Server:</label>
+                <div class="col-sm-10"><p class="form-control-static">{server}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Source:</label>
+                <div class="col-sm-10"><p class="form-control-static">{source}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Application:</label>
+                <div class="col-sm-10"><p class="form-control-static">{application}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Block:</label>
+                <div class="col-sm-10"><p class="form-control-static">{block}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Action:</label>
+                <div class="col-sm-10"><p class="form-control-static">{action}</p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Message:</label>
+                <div class="col-sm-10"><p class="form-control-static">{message}</p></div>
+            </div>
+            <div class="form-group row-innerex" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Inner exception:</label>
+                <div class="col-sm-10"><p class="form-control-static"><a href="#" data-innerid="{innerId}">see details</a></p></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">Vars:</label>
+                <div class="col-sm-10"><pre style="margin-top:7px">{vars}</pre></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label class="control-label col-sm-2">StackTrace:</label>
+                <div class="col-sm-10"><pre style="margin-top:7px">{st}</pre></div>
+            </div>
+        </div>
+    </form>
 </div>

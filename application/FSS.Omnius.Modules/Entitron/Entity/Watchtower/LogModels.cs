@@ -44,13 +44,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Watchtower
         public virtual ICollection<LogItem> ChildLogItems { get; set; }
 
         [NotMapped]
-        public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
+        public string TimeString => Timestamp.ToString("dd. MM. yyyy HH:mm:ss");
         [NotMapped]
         public string LogSourceString => OmniusLog.toHumanString[(OmniusLogSource)Source];
         [NotMapped]
         public string LogLevelString => ((OmniusLogLevel)LogLevel).ToString();
         [NotMapped]
         public string LogEventSourceString => Application ?? "Platforma Omnius";
+        [NotMapped]
+        public string LogLevelIcon
+        {
+            get {
+                string cls = "";
+                switch((OmniusLogLevel)LogLevel) {
+                    case OmniusLogLevel.Info: cls = "fa-info-circle text-info"; break;
+                    case OmniusLogLevel.Warning: cls = "fa-exclamation-triangle text-warning"; break;
+                    case OmniusLogLevel.Error: cls = "fa-exclamation-circle text-danger"; break;
+                    case OmniusLogLevel.FatalError: cls = "fa-ban text-danger"; break;
+                }
+
+                return $"<i class=\"fa {cls}\" title=\"{LogLevelString}\"></i>";
+            }
+        }
 
         public int VarsCount()
         {

@@ -134,7 +134,7 @@ namespace FSS.Omnius.Modules.Watchtower
                 Server = Server,
                 Source = (int)SourceModule,
                 Application = Application?.Name,
-                Message = ex.Message,
+                Message = ex.Message
             };
             if (ex.InnerException != null)
             {
@@ -296,7 +296,7 @@ namespace FSS.Omnius.Modules.Watchtower
             LogItem result = base.toLogItem(ex);
             result.BlockName = Block?.Name;
             result.ActionName = ActionRuleAction != null ? Tapestry.Action.All[ActionRuleAction.ActionId].Name : null;
-            result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{pair.Value.ToString().Truncate(1000)}"));
+            result.Vars = string.Join("\n", Vars.Select(pair => $"{pair.Key}=>{(pair.Value == null ? "NULL" : pair.Value.ToString().Truncate(1000))}"));
             return result;
         }
     }

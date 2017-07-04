@@ -1909,9 +1909,11 @@
     <Content Include="Views\Babylon\Babylon\Decoration.cshtml" />
     <Content Include="Views\Babylon\Babylon\Header.cshtml" />
     <Content Include="Views\Babylon\Texts\Index.cshtml" />
+    <Content Include="Views\App\App2\menuLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\App\App2\Page\" />
     <Folder Include="Views\App\PortalInternichAuditu2\Page\Bootstrap\" />
   </ItemGroup>
   <ItemGroup>

@@ -73,7 +73,7 @@
         #filterLogForm {
             position: absolute;
             left: 150px;
-            top: 160px;
+            top: 135px;
             width: 1040px;
 
             label {
@@ -149,6 +149,8 @@
 
         #watchtowerLogTable {
             width: 100%;
+            max-width: 100%;
+            //table-layout: fixed;
 
             thead {
                 background-color: #457fa9;
@@ -157,6 +159,20 @@
 
             tbody td {
                 vertical-align: middle;
+                &.truncate-base {
+                    max-width: 1px;
+                    min-width: 100000px;
+                    .truncate {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                        width: 100%;
+                    }
+                }
+                a {
+                    text-decoration: none;
+                }
             }
         }
 
