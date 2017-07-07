@@ -24,6 +24,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             typeof(DateTime?)
         };
 
+        public static void CopyPropertiesFrom<T>(this T thisEntity, T from, IEnumerable<string> skip = null) where T : IEntity
+        {
+            Type t = thisEntity.GetType();
+            foreach(PropertyInfo property in t.GetProperties())
+            {
+                if (_basicType.Contains(property.PropertyType) && (skip == null || skip.Contains(property.Name)))
+                    property.SetValue(thisEntity, property.GetValue(from));
+            }
+        }
+
         public static int GetId(this IEntity thisEntity)
         {
             return (int)thisEntity.GetType().GetProperties().FirstOrDefault(p => p.Name == "Id").GetValue(thisEntity);

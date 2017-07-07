@@ -29,6 +29,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             DBEntities context = DBEntities.appInstance(masterApp);
             Application app = masterApp.similarApp;
 
+            if (app == null)
+            {
+                app = new Application();
+                app.CopyPropertiesFrom(masterApp);
+                context.Applications.Add(app);
+                context.SaveChanges();
+            }
+
             #region Basic variables declaration
             List<ColumnHeaderAppRolesForTable> colHeaders = new List<ColumnHeaderAppRolesForTable>();
             List<RowHeaderAppRolesForTable> rowHeaders = new List<RowHeaderAppRolesForTable>();

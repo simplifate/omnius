@@ -124,29 +124,11 @@ namespace FSS.Omnius.Controllers.Master
                 app = context.Applications.SingleOrDefault(a => a.Name == core.Entitron.AppName);
                 if (app == null)
                 {
-                    app = new Application
-                    {
-                        Name = masterApp.Name
-                    };
+                    app = new Application();
                     context.Applications.Add(app);
                 }
 
-                app.DisplayName = masterApp.DisplayName;
-                app.Icon = masterApp.Icon;
-                app.TitleFontSize = masterApp.TitleFontSize;
-                app.Color = masterApp.Color;
-                app.InnerHTML = masterApp.InnerHTML;
-                app.LaunchCommand = masterApp.LaunchCommand;
-                app.TileWidth = masterApp.TileWidth;
-                app.TileHeight = masterApp.TileHeight;
-
-                app.IsPublished = masterApp.IsPublished;
-                app.IsEnabled = masterApp.IsEnabled;
-                app.IsSystem = masterApp.IsSystem;
-
-                app.connectionString_data = masterApp.connectionString_data;
-                app.connectionString_schema = masterApp.connectionString_schema;
-                
+                app.CopyPropertiesFrom(masterApp);
                 context.SaveChanges();
             }
             else
