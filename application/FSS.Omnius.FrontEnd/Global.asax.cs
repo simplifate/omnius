@@ -32,6 +32,7 @@ namespace FSS.Omnius.FrontEnd
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
+            MvcHandler.DisableMvcResponseHeader = true;
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");
         }
