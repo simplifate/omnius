@@ -15,6 +15,7 @@ using FSS.Omnius.Controllers.Tapestry;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -57,6 +58,13 @@ namespace FSS.Omnius.FrontEnd
 
         protected void Application_BeginRequest()
         {
+            // SECURE: Ensure any request is returned over SSL/TLS in production
+            if (!Request.IsLocal && !Context.Request.IsSecureConnection)
+            {
+                var redirect = Context.Request.Url.ToString().ToLower(CultureInfo.CurrentCulture).Replace("http:", "https:");
+                Response.Redirect(redirect);
+            }
+
             RunController.requestStart = DateTime.Now;
             DBEntities.Create();
         }

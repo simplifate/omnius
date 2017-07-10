@@ -151,20 +151,28 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         public static void Destroy()
         {
-            lock (_connectionsLock)
+            if (_connections.ContainsKey(r))
             {
-                _connections[r].Close();
-                _connections[r].Dispose();
-                _connections.Remove(r);
+                lock (_connectionsLock)
+                {
+                    _connections[r].Close();
+                    _connections[r].Dispose();
+                    _connections.Remove(r);
+                }
             }
 
-            _instances[r].Dispose();
-
-            _instances.Remove(r);
-
-            lock (_messagesLock)
+            if (_instances.ContainsKey(r))
             {
-                _messages.Remove(r);
+                _instances[r].Dispose();
+                _instances.Remove(r);
+            }
+
+            if (_messages.ContainsKey(r))
+            {
+                lock (_messagesLock)
+                {
+                    _messages.Remove(r);
+                }
             }
         }
 
