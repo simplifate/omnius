@@ -128,7 +128,7 @@ namespace FSS.Omnius.Controllers.Master
                     context.Applications.Add(app);
                 }
 
-                app.CopyPropertiesFrom(masterApp);
+                app.CopyPropertiesFrom(masterApp, skip: new string[] { "Id" });
                 context.SaveChanges();
             }
             else

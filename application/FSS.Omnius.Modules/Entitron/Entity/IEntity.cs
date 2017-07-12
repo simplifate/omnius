@@ -29,7 +29,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             Type t = thisEntity.GetType();
             foreach(PropertyInfo property in t.GetProperties())
             {
-                if (_basicType.Contains(property.PropertyType) && (skip == null || skip.Contains(property.Name)))
+                if (_basicType.Contains(property.PropertyType) && (skip == null || !skip.Contains(property.Name)))
                     property.SetValue(thisEntity, property.GetValue(from));
             }
         }

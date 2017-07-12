@@ -32,7 +32,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
             if (app == null)
             {
                 app = new Application();
-                app.CopyPropertiesFrom(masterApp);
+                app.CopyPropertiesFrom(masterApp, skip: new string[] { "Id" });
                 context.Applications.Add(app);
                 context.SaveChanges();
             }
