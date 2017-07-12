@@ -1221,6 +1221,7 @@
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallRestAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\Json2Dict.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
     <Compile Include="Tapestry\Actions\other\CopyVariableAction.cs" />
