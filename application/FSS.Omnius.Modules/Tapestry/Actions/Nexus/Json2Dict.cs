@@ -58,6 +58,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 var key = property.Value.ToString();
                 dict.Add(key, value.ToString());
             }
+
             vars["Result"] = dict;
             
         }
