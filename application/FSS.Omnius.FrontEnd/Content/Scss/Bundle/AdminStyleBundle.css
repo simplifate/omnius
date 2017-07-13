@@ -1952,7 +1952,7 @@ body.watchtowerModule #upperPanel {
   body.watchtowerModule #upperPanel #filterLogForm {
     position: absolute;
     left: 150px;
-    top: 160px;
+    top: 135px;
     width: 1040px; }
     body.watchtowerModule #upperPanel #filterLogForm label {
       white-space: nowrap; }
@@ -2011,12 +2011,24 @@ body.watchtowerModule #lowerPanel {
   top: 462px;
   /* Watchtower tooltip */ }
   body.watchtowerModule #lowerPanel #watchtowerLogTable {
-    width: 100%; }
+    width: 100%;
+    max-width: 100%; }
     body.watchtowerModule #lowerPanel #watchtowerLogTable thead {
       background-color: #457fa9;
       color: white; }
     body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td {
       vertical-align: middle; }
+      body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td.truncate-base {
+        max-width: 1px;
+        min-width: 100000px; }
+        body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td.truncate-base .truncate {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+          width: 100%; }
+      body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td a {
+        text-decoration: none; }
   body.watchtowerModule #lowerPanel .getJsonRow {
     cursor: pointer;
     text-decoration: underline; }
@@ -3437,6 +3449,32 @@ body.cortexModule #lowerPanel {
   body.cortexModule .moduleSubMenuArea {
     transform: scale(0.75); } }
 
+.mytooltip {
+  position: relative;
+  border-bottom: 1px dotted black; }
+
+.mytooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 720px;
+  background-color: #444;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0%; }
+  .mytooltip .tooltiptext th {
+    padding-right: 5px;
+    text-align: right; }
+  .mytooltip .tooltiptext td {
+    text-align: left; }
+
+.mytooltip:hover .tooltiptext {
+  visibility: visible; }
+
 .ui-dialog {
   position: fixed !important;
   padding: 0px 0px;
@@ -3456,6 +3494,9 @@ body.cortexModule #lowerPanel {
     border: medium none; }
   .ui-dialog .ui-dialog-titlebar-close:hover {
     background: url("/Content/Images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
+
+.ui-widget {
+  font-size: 1em !important; }
 
 .lowerLeftDecoration {
   position: absolute;
@@ -3600,6 +3641,9 @@ body.cortexModule #lowerPanel {
     .tileMenuArea .tileMenuItem .fa-paint-brush {
       font-size: 110px;
       top: 18px; }
+    .tileMenuArea .tileMenuItem .fa-cloud-upload {
+      font-size: 110px;
+      top: 22px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -3785,7 +3829,7 @@ body.adminLayout #appNotificationArea {
   display: none; }
 
 .CodeMirror pre {
-  height: 15px;
+  line-height: 1.25 !important;
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word; }
