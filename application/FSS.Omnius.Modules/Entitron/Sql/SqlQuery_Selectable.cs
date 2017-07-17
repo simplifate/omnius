@@ -45,9 +45,18 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return (T)this;
         }
+ 
         public T order(string columnName)
         {
-            _order = string.Format(" ORDER BY {0}", columnName);
+            if (!string.IsNullOrWhiteSpace(columnName))
+                _order = string.Format(" ORDER BY {0}", columnName);
+
+            return (T)this;
+        }
+        public T orderDesc(string columnName)
+        {
+            if (!string.IsNullOrWhiteSpace(columnName))
+                _order = string.Format(" ORDER BY {0} DESC", columnName);
 
             return (T)this;
         }
