@@ -30,7 +30,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "ViewName", "?SearchInShared", "?ColumnName", "?Value", "?ColumnName2", "?Value2", "?ColumnName3", "?Value3" };
+                return new string[] { "ViewName", "?SearchInShared", "?OrderBy", "?Descending", "?ColumnName", "?Value", "?ColumnName2", "?Value2", "?ColumnName3", "?Value3" };
             }
         }
 
@@ -54,11 +54,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            if (core.Entitron.Application == null)
-                core.Entitron.AppName = "EvidencePeriodik";
 
             // get view
+            string orderBy = vars.ContainsKey("OrderBy") ? (string)vars["OrderBy"] : null;
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+            bool isDescending = vars.ContainsKey("Descending") ? (bool)vars["Descending"] : false;
+
             var view = core.Entitron.GetDynamicView((string)vars["ViewName"], searchInShared);
 
             var result = view.Select();
@@ -97,12 +98,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 // condition is object
                 else
                     result = result.where(c => c.column(columnName).Equal(value));
-                
+
                 conditionIndex++;
             }
 
             // result
-            outputVars["Result"] = result.ToList();
+            if (isDescending)
+            {
+                outputVars["Result"] = result.orderDesc(orderBy).ToList();
+            }
+            else
+                outputVars["Result"] = result.order(orderBy).ToList();
+
         }
     }
 }
