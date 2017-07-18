@@ -645,6 +645,13 @@ $(function () {
                 // Toggle for every click
                 $("#uic_panel20").toggle();
             });
+
+        // On click on row fill value of hiddenId to input "nadr_doporuc_label"
+        $('#uic_nadraz_doporuceni_table').find('tr').click(function () {
+            // For selected row return value of td for first column (hiddenId)
+            var row = $(this).find('td:first').text();
+            $("#uic_nadr_doporuc_label").val(row);
+        });
     }
     if ($("#currentBlockName").val() == "NovyAudit") {
         $("#uic_info").mouseover(function() {
