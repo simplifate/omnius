@@ -129,6 +129,9 @@ $(function () {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
                 CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
             }
+            else if (CurrentComponent.hasClass("static-html")) {
+                CurrentComponent.html(componentPropertiesDialog.find("#component-content").val());
+            }
             else if (CurrentComponent.hasClass("named-panel")) {
                 CurrentComponent.find(".named-panel-header").text(componentPropertiesDialog.find("#component-label").val());
             }
