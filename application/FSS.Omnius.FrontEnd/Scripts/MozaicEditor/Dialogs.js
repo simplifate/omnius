@@ -44,6 +44,9 @@ $(function () {
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                     componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
+                else if (CurrentComponent.hasClass("static-html")) {
+                    componentPropertiesDialog.find("#component-content").val(CurrentComponent.html());
+                }
                 else if (CurrentComponent.hasClass("named-panel")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".named-panel-header").text());
                 }
@@ -125,6 +128,9 @@ $(function () {
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
                 CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
+            }
+            else if (CurrentComponent.hasClass("static-html")) {
+                CurrentComponent.html(componentPropertiesDialog.find("#component-content").val());
             }
             else if (CurrentComponent.hasClass("named-panel")) {
                 CurrentComponent.find(".named-panel-header").text(componentPropertiesDialog.find("#component-label").val());

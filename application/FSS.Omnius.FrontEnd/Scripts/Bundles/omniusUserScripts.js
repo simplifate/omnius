@@ -620,34 +620,51 @@ $(function () {
         }
     });
     if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
-        $("#uic_zobrazit").on("click", function () {
-            $("#uic_panel20").show();
-        })
+        $("#uic_zobrazit").on("click",
+            function () {
+                $("#uic_panel20").show();
+            });
     }
     if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
-        $("#uic_zavrit").on("click", function () {
-            $("#uic_panel20").hide();
-        })
+        $("#uic_zavrit").on("click",
+            function () {
+                $("#uic_panel20").hide();
+            });
+    }
+    if ($("#currentBlockName").val() == "FormulaceDoporuceni") {
+        var btnVybratDoporuceniToggled = false;
+        // Toggle panel with the table "Nadrazena doporuceni"
+        $("#uic_btnVybratDoporuceni").on("click",
+            function () {
+                // Toggle one more time for the first time, because panel is initialy set to opacity:0
+                if (btnVybratDoporuceniToggled == false) {
+                    $("#uic_panel20").css({ "opacity": "100" });
+                    $("#uic_panel20").toggle();
+                    btnVybratDoporuceniToggled = true;
+                }
+                // Toggle for every click
+                $("#uic_panel20").toggle();
+            });
     }
     if ($("#currentBlockName").val() == "NovyAudit") {
-        $("#uic_info").mouseover(function () {
+        $("#uic_info").mouseover(function() {
             $("#uic_panel40").show();
-        })
+        });
     }
     if ($("#currentBlockName").val() == "NovyAudit") {
-        $("#uic_info").mouseleave(function () {
+        $("#uic_info").mouseleave(function() {
             $("#uic_panel40").hide();
-        })
+        });
     }
     if ($("#currentBlockName").val() == "NovyAuditBezWf") {
-        $("#uic_info2").mouseover(function () {
+        $("#uic_info2").mouseover(function() {
             $("#uic_panel23").show();
-        })
+        });
     }
     if ($("#currentBlockName").val() == "NovyAuditBezWf") {
-        $("#uic_info2").mouseleave(function () {
+        $("#uic_info2").mouseleave(function() {
             $("#uic_panel23").hide();
-        })
+        });
     }
 });
 function ShowAppNotification(text, type) {

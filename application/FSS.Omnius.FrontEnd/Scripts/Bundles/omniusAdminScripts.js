@@ -6641,6 +6641,9 @@ function GetMozaicContainerComponentArray(container, nested) {
             label = currentUic.find(".info-container-header").text();
             content = currentUic.find(".info-container-body").text();
         }
+        else if (currentUic.hasClass("static-html")) {
+            content = currentUic.html();
+        }
         if (currentUic.hasClass("info-container"))
             type = "info-container";
         else if (currentUic.hasClass("breadcrumb-navigation"))
@@ -6830,6 +6833,9 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
             + '<div class="info-container-body"></div>'));
         newComponent.find(".info-container-header").text(cData.Label);
         newComponent.find(".info-container-body").text(cData.Content);
+    }
+    else if (newComponent.hasClass("static-html")) {
+        newComponent.html(cData.Content);
     }
     else if (newComponent.hasClass("named-panel")) {
         newComponent.append($('<div class="named-panel-header"></div>'));
@@ -7179,6 +7185,9 @@ $(function () {
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                     componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
+                else if (CurrentComponent.hasClass("static-html")) {
+                    componentPropertiesDialog.find("#component-content").val(CurrentComponent.html());
+                }
                 else if (CurrentComponent.hasClass("named-panel")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".named-panel-header").text());
                 }
@@ -7260,6 +7269,9 @@ $(function () {
             else if (CurrentComponent.hasClass("info-container")) {
                 CurrentComponent.find(".info-container-header").text(componentPropertiesDialog.find("#component-label").val());
                 CurrentComponent.find(".info-container-body").text(componentPropertiesDialog.find("#component-content").val());
+            }
+            else if (CurrentComponent.hasClass("static-html")) {
+                CurrentComponent.html(componentPropertiesDialog.find("#component-content").val());
             }
             else if (CurrentComponent.hasClass("named-panel")) {
                 CurrentComponent.find(".named-panel-header").text(componentPropertiesDialog.find("#component-label").val());
