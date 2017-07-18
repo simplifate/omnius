@@ -655,22 +655,22 @@ $(function () {
     }
     if ($("#currentBlockName").val() == "NovyAudit") {
         $("#uic_info").mouseover(function() {
-            $("#uic_panel40").show();
+            $("#uic_panel40 > div").show();
         });
     }
     if ($("#currentBlockName").val() == "NovyAudit") {
         $("#uic_info").mouseleave(function() {
-            $("#uic_panel40").hide();
+            $("#uic_panel40 > div").hide();
         });
     }
     if ($("#currentBlockName").val() == "NovyAuditBezWf") {
         $("#uic_info2").mouseover(function() {
-            $("#uic_panel23").show();
+            $("#uic_panel23 > div").show();
         });
     }
     if ($("#currentBlockName").val() == "NovyAuditBezWf") {
         $("#uic_info2").mouseleave(function() {
-            $("#uic_panel23").hide();
+            $("#uic_panel23 > div").hide();
         });
     }
 });
