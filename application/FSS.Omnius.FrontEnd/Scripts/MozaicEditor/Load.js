@@ -77,6 +77,9 @@ function LoadMozaicEditorComponents(targetContainer, cData) {
         newComponent.find(".info-container-header").text(cData.Label);
         newComponent.find(".info-container-body").text(cData.Content);
     }
+    else if (newComponent.hasClass("static-html")) {
+        newComponent.html(cData.Content);
+    }
     else if (newComponent.hasClass("named-panel")) {
         newComponent.append($('<div class="named-panel-header"></div>'));
         newComponent.find(".named-panel-header").text(cData.Label);

@@ -44,6 +44,9 @@ $(function () {
                     componentPropertiesDialog.find("#component-placeholder").parents('tr').hide();
                     componentPropertiesDialog.find("#component-tabindex").parents('tr').hide();
                 }
+                else if (CurrentComponent.hasClass("static-html")) {
+                    componentPropertiesDialog.find("#component-content").val(CurrentComponent.html());
+                }
                 else if (CurrentComponent.hasClass("named-panel")) {
                     componentPropertiesDialog.find("#component-label").val(CurrentComponent.find(".named-panel-header").text());
                 }

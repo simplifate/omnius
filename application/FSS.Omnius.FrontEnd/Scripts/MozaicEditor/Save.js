@@ -43,6 +43,9 @@ function GetMozaicContainerComponentArray(container, nested) {
             label = currentUic.find(".info-container-header").text();
             content = currentUic.find(".info-container-body").text();
         }
+        else if (currentUic.hasClass("static-html")) {
+            content = currentUic.html();
+        }
         if (currentUic.hasClass("info-container"))
             type = "info-container";
         else if (currentUic.hasClass("breadcrumb-navigation"))

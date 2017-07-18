@@ -626,6 +626,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     }
                     stringBuilder.Append($"</{c.Tag}>");
                 }
+                else if (c.Type == "static-html")
+                {
+                    bool invisible = false;
+                    if (!string.IsNullOrEmpty(c.Properties))
+                    {
+                        string[] tokenPairs = c.Properties.Split(';');
+                        foreach (string tokens in tokenPairs)
+                        {
+                            string[] nameValuePair = tokens.Split('=');
+                            if (nameValuePair.Length == 2)
+                            {
+                                // No settings yet
+                            }
+                            else
+                            {
+                                if (tokens == "hidden")
+                                    invisible = true;
+                            }
+                        }
+                    }
+                    stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {(invisible ? "display:none;" : "")} {c.Styles}\">@Html.Raw(t._(\"{((c.Content ?? "").Replace("\"", "\\\""))}\"))</{c.Tag}>");
+                }
                 else if (c.Type == "wizard-phases")
                 {
                     var phaseLabelArray = !string.IsNullOrEmpty(c.Content) ? c.Content.Split(';').ToList() : new List<string>();
