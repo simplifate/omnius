@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     /// <summary>
-    /// Akce prijima vstupni string v escapovanem tvaru (zaescapovana odradkovani, tabulatory, ...).
+    /// Akce prijima vstupni string v escapovanem tvaru (zaescapovana odradkovani, tabulatory, ...) 
+    /// napr. "This is indented:\r\n\tHello World".
     /// Na vystupu vrati odescapovany string puvodniho vstupniho stringu.
     /// </summary>
     [OtherRepository]
@@ -43,7 +44,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "UnescapedString" };
+                return new string[] { "Result" };
             }
         }
 
@@ -70,7 +71,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 }
             });
 
-            outputVars["UnescapedString"] = output;
+            outputVars["Result"] = output;
         }
     }
 }
