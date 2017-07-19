@@ -71,6 +71,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
             context = DBEntities.appInstance(core.Entitron.Application);
+            var masterContext = DBEntities.instance;
 
             if(core.User == null && !TryBasicAuth()) {
                 Response.StatusCode = 401;
@@ -80,7 +81,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
 
             // Zkusme najít vyhovující api
-            API api = context.APIs.Where(a => a.Name == apiName).FirstOrDefault();
+            API api = masterContext.APIs.Where(a => a.Name == apiName).FirstOrDefault();
             if(api == null) {
                 Response.StatusCode = 404;
                 return new EmptyResult();
