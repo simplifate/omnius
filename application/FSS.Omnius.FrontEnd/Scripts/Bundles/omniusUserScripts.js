@@ -68,8 +68,12 @@ $(function () {
     }
 
     // Implement datePicker by jQuery because of IE 11
-    if ($("#currentBlockName").val() == "NovySubjekt") {
-        $("#Date_input").datepicker();
+    if ($("#currentBlockName").val() == "NovySubjekt" || $("#currentBlockName").val() == "EditaceSubjektu") {
+        $("#Date_input").datetimepicker({
+            datepicker: true,
+            timepicker: false,
+            format: "d.m.Y"
+        });
     }
     
     if ($("#currentBlockName").val() == "EditaceAuditu" ||
