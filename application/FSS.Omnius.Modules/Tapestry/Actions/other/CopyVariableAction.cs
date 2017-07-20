@@ -53,7 +53,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            outputVars["Result"] = vars["From"];
+            if (vars["From"] is string)
+            {
+                outputVars["Result"] = ((string)vars["From"]).Replace("\\n", "\n");
+            }
+            else
+            {
+                outputVars["Result"] = vars["From"];
+            }
         }
     }
 }
