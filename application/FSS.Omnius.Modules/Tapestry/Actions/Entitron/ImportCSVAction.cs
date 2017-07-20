@@ -219,6 +219,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             if (isValid) {
                                 data.Add("Datum_vlozeni",DateTime.Now);
                                 data.Add("Cas_editace", DateTime.Now);
+                                data.Add("Editoval", core.User.Id);
                                 DBItem item = new DBItem();
                                 int j = 0;
                                 foreach (KeyValuePair<string, object> kv in data) {
