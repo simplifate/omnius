@@ -1168,6 +1168,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
     <Compile Include="Tapestry\Actions\Apps\SmartCoaster\ParseCoasterValues.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\JTokenToString.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ConvertJsonStringToJToken.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ImportCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
