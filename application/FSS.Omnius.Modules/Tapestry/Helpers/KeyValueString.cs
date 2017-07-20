@@ -211,6 +211,9 @@ namespace FSS.Omnius.Modules.Tapestry
             if (o is DBItem && ((DBItem)o).getColumnNames().Contains(calling))
                 return ((DBItem)o)[calling];
 
+            if (o is JObject)
+                return ((JObject)o)[calling];
+
             PropertyInfo property = o.GetType().GetProperty(calling);
 
             if (property == null)
