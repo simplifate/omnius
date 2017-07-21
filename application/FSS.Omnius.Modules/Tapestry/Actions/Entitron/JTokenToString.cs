@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -55,8 +56,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
             {
-                JObject neco = ((JToken)vars["Jtoken"]).Value<JObject>();
-                outputVars["Result"] = neco;
+                outputVars["Result"] = ((JValue)vars["value"]).ToObject<string>(); ;
             }
         }
     }
