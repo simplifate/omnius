@@ -59,7 +59,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 dict.Add(key, value);
             }
 
-            vars["Result"] = dict;
+            outputVars["Result"] = dict;
             
         }
     }

@@ -56,7 +56,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
             {
-                outputVars["Result"] = ((JValue)vars["value"]).ToObject<string>(); ;
+                outputVars["Result"] = ((JValue)vars["value"]).ToObject<string>();
             }
         }
     }
