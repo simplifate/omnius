@@ -54,9 +54,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             JObject data = (JObject)vars["JsonObject"];
             Dictionary<string, string> dict = new Dictionary<string, string>();
             foreach (JProperty property in data.Properties()) {
-                var value = data.GetValue(property.Value.ToString());
-                var key = property.Value.ToString();
-                dict.Add(key, value.ToString());
+                var value = property.Value.ToString();
+                var key = property.Name;
+                dict.Add(key, value);
             }
 
             vars["Result"] = dict;
