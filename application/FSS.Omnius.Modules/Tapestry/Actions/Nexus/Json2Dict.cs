@@ -52,7 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             JObject data = (JObject)vars["JsonObject"];
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
             foreach (JProperty property in data.Properties()) {
                 var value = property.Value.ToString();
                 var key = property.Name;
