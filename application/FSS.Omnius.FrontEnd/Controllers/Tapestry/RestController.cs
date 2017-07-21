@@ -132,15 +132,15 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
 
             // Zpracujeme body
-            if (Request.ContentType.ToLower() == "application/json")
-            {
+           
                 Stream req = Request.InputStream;
                 req.Seek(0, System.IO.SeekOrigin.Begin);
                 string jsonString = new StreamReader(req).ReadToEnd();
                 fc.Add("__RequestBody__", jsonString);
-            }
-
-            string wfName = Request.HttpMethod.ToUpper();
+            
+          
+            
+             string wfName = Request.HttpMethod.ToUpper();
 
             Application app = core.Entitron.Application.similarApp;
             Block block = getBlockWithResource(app.Id, apiName);
