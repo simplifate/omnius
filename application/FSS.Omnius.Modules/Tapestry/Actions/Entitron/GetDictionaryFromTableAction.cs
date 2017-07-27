@@ -55,8 +55,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             var result = new Dictionary<string, string>();
             if(vars.ContainsKey("StaticKey") && vars.ContainsKey("StaticValue"))
             {
-                string key = (string)vars["StaticKey"];
-                string value = (string)vars["StaticValue"];
+                string key = vars["StaticKey"].ToString();
+                string value = vars["StaticValue"].ToString();
                 if (result.ContainsKey(key))
                     result[key] = value;
                 else
