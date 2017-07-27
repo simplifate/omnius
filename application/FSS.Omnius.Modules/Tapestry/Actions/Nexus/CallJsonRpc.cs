@@ -38,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			get
 			{
-				return 3002;
+				return 3012;
 			}
 		}
 
