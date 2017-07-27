@@ -1910,6 +1910,8 @@
     <Content Include="Views\Babylon\Babylon\Header.cshtml" />
     <Content Include="Views\Babylon\Texts\Index.cshtml" />
     <Content Include="Views\App\App2\menuLayout.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\32.cshtml" />
+    <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\33.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
