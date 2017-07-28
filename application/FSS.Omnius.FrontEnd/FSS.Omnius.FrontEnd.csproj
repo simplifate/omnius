@@ -331,6 +331,11 @@
     <Content Include="Content\Fonts\innogy\Innogy-Light.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Medium.svg" />
     <Content Include="Content\Fonts\innogy\Innogy-Regular.svg" />
+    <Content Include="Content\Images\Icons\bitcoin_black.png" />
+    <Content Include="Content\Images\Icons\ether_black.png" />
+    <Content Include="Content\Images\Icons\LTC_dark2.png" />
+    <Content Include="Content\Images\Icons\monero_black.png" />
+    <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
