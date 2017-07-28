@@ -10,6 +10,7 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap;
 using Newtonsoft.Json.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
+using FSS.Omnius.Modules.Entitron.Entity.Athena;
 
 namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 {
@@ -31,7 +32,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         public void BuildPage(MozaicBootstrapPage page)
         {
             currentPage = page;
-
+ 
             Compile();
             Save();
             
@@ -160,6 +161,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "misc|breadcrumbs-item":               html = RenderDefault(c, p); break;
                     case "misc|breadcrumbs-active":             html = RenderDefault(c, p); break;
                     case "misc|breadcrumbs-inactive":           html = RenderDefault(c, p); break;
+                    case "misc|embed": 							html = RenderEmbed(c, p); 	break;
                     /***** PAGE *****/
                     case "page|page-header":                    html = RenderDefault(c, p); break;
                     case "page|header":                         html = RenderDefault(c, p); break;
@@ -194,8 +196,19 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "ui|wizzard":                          html = RenderDefault(c, p); break;
                     case "ui|wizzard-body":                     html = RenderDefault(c, p); break;
                     case "ui|wizzard-phase":                    html = RenderDefault(c, p); break;
+                    /***** FUNCTIONS *****/
+                    case "functions|foreach": 					html = RenderForeach(c, p); break;
+                    case "functions|if": 						html = RenderIf(c, p); 		break;
                     /***** DEFAULT *****/
-                    default: html = RenderDefault(c, p); break; 
+                    default: {
+                            if (c.UIC.StartsWith("athena")) {
+                                html = RenderAthena(c, p);
+                            }
+                            else {
+                                html = RenderDefault(c, p);
+                            }
+                            break;
+                        }
                 }
 
                 if (c.ChildComponents.Count > 0) {
@@ -272,27 +285,22 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             JToken jAttrs = JToken.Parse(c.Attributes);
             List<string> attrList = new List<string>();
-
-            foreach (JToken t in jAttrs)
-            {
-                if (ignoreAttrs.Contains((string)t["name"]))
-                {
+            
+            foreach(JToken t in jAttrs) {
+                if(ignoreAttrs.Contains((string)t["name"])) {
                     continue;
                 }
                 string value = (string)t["value"];
-                if (value.StartsWith("@row"))
-                {
-                    value = $"@((string){value.TrimStart('@').Replace('\'', '"')})";
+                if (value.StartsWith("@row")) {
+                    value = $"@(Convert.ToString({value.TrimStart('@').Replace('\'', '"')}))";
                 }
 
-                if (mergeAttrs.ContainsKey((string)t["name"]))
-                {
+                if (mergeAttrs.ContainsKey((string)t["name"])) {
                     value = mergeAttrs[(string)t["name"]];
                     mergeAttrs.Remove((string)t["name"]);
                 }
 
-                if (value.IndexOf("{var") != -1)
-                {
+                if(value.IndexOf("{var") != -1) {
                     value = $"@(@\"{value}\"";
                     value = GetVariableReplace(c, value);
                     value += ")";
@@ -301,10 +309,8 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 attrList.Add($"{(string)t["name"]}=\"{value}\"");
             }
 
-            if (mergeAttrs.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> kp in mergeAttrs)
-                {
+            if(mergeAttrs.Count > 0) {
+                foreach(KeyValuePair<string, string> kp in mergeAttrs) {
                     attrList.Add($"{kp.Key}=\"{kp.Value}\"");
                 }
             }
@@ -316,10 +322,8 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             JToken jAttrs = JToken.Parse(attrs);
 
-            foreach (JToken t in jAttrs)
-            {
-                if ((string)t["name"] == attrName)
-                {
+            foreach(JToken t in jAttrs) {
+                if((string)t["name"] == attrName) {
                     return (string)t["value"];
                 }
             }
@@ -365,13 +369,11 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
-
-            if (properties.ContainsKey("raw") && properties["raw"].ToLower() == "true")
-            {
+            
+            if (properties.ContainsKey("raw") && properties["raw"].ToLower() == "true") {
                 html.Append($"<{c.Tag} {attrs}>{GetContent(c, properties)}</{c.Tag}>");
             }
-            else
-            {
+            else {
                 html.Append($"<{c.Tag} {attrs}>{(HttpUtility.HtmlDecode(GetContent(c, properties)))}</{c.Tag}>");
             }
             return html.ToString();
@@ -654,6 +656,30 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             return html.ToString();
         }
 
+        private string RenderAthena(MozaicBootstrapComponent c, Dictionary<string, string> properties)
+        {
+            StringBuilder html = new StringBuilder();
+            string attrs = BuildAttributes(c);
+            properties["raw"] = "true";
+            
+            string[] kv = c.UIC.Split('|');
+            string graphId = kv[1];
+
+            Graph graph = DBEntities.instance.Graph.FirstOrDefault(g => g.Ident == graphId);
+            string gHtml = graph.Html.Replace("{ident}", c.ElmId + "_graph");
+            string js = "<script>" + graph.Js.Replace("{data}", "{var1}").Replace("{ident}", c.ElmId + "_graph") + "</script>";
+            string css = !string.IsNullOrEmpty(graph.Css) ? "<style type=\"text/css\" rel=\"stylesheet\">" + graph.Css.Replace("{ident}", c.ElmId + "_graph") + "</style>" : "";
+
+            Dictionary<string, string> replace = new Dictionary<string, string>();
+            replace.Add("__AthenaHTML__", gHtml);
+            replace.Add("__AthenaCSS__", css);
+            replace.Add("__AthenaJS__", js);
+            
+            html.Append($"<{c.Tag} {attrs}>{GetContent(c, properties, replace)}</{c.Tag}>");
+
+            return html.ToString();
+        }
+
         private string GetContent(MozaicBootstrapComponent c, Dictionary<string, string> properties)
         {
             return GetContent(c, properties, new Dictionary<string, string>());
@@ -661,43 +687,34 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
 
         private string GetContent(MozaicBootstrapComponent c, Dictionary<string, string> properties, Dictionary<string, string> replace)
         {
-            if (string.IsNullOrEmpty(c.Content))
-            {
+            if(string.IsNullOrEmpty(c.Content)) {
                 return "";
             }
 
             string html = c.Content;
-            if (replace.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> kv in replace)
-                {
+            if(replace.Count > 0) {
+                foreach(KeyValuePair<string, string> kv in replace) {
                     html = html.Replace(kv.Key, kv.Value);
                 }
-            }
+            } 
 
             MatchCollection uicMatches = uics.Matches(html);
-            if (uicMatches.Count > 0)
-            {
-                for (int i = 0; i < uicMatches.Count; i++)
-                {
+            if(uicMatches.Count > 0) {
+                for(int i = 0; i < uicMatches.Count; i++) {
                     Match m = uicMatches[i];
                     int startIndex = m.Index + m.Length;
                     int endIndex = i + 1 < uicMatches.Count ? uicMatches[i + 1].Index : html.Length;
 
-                    if (startIndex < endIndex)
-                    {
+                    if (startIndex < endIndex) {
                         string subStr = html.Substring(startIndex, endIndex - startIndex);
 
-                        if (subStr.StartsWith("@row"))
-                        {
+                        if (subStr.StartsWith("@row")) {
                             subStr = $"@({subStr.TrimStart('@')}.ToString())";
                         }
-                        else if (properties.ContainsKey("razer") && properties["razer"].ToLower() == "true")
-                        {
+                        else if (properties.ContainsKey("razer") && properties["razer"].ToLower() == "true") {
                             // do nothing
                         }
-                        else
-                        {
+                        else {
                             subStr = $"@{(properties.ContainsKey("raw") && properties["raw"].ToLower() == "true" ? "Html.Raw" : "")}(@\"" + subStr.EscapeVerbatim() + "\"";
                             subStr = GetVariableReplace(c, subStr);
                             subStr += ")";
@@ -708,37 +725,30 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     }
                 }
             }
-            else
-            {
-                if (c.Content.StartsWith("@row"))
-                {
+            else {
+                if (c.Content.StartsWith("@row")) {
                     html = $"@({c.Content.TrimStart('@')}.ToString())";
                 }
-                else if (properties.ContainsKey("razer") && properties["razer"].ToLower() == "true")
-                {
+                else if(properties.ContainsKey("razer") && properties["razer"].ToLower() == "true") {
                     // do nothing
                 }
-                else
-                {
+                else {
                     html = $"@{(properties.ContainsKey("raw") && properties["raw"].ToLower() == "true" ? "Html.Raw" : "")}(@\"" + html.EscapeVerbatim() + "\"";
                     html = GetVariableReplace(c, html);
                     html += ")";
                 }
             }
-
+            
             return html;
         }
 
         private string GetVariableReplace(MozaicBootstrapComponent c, string html)
         {
 
-            if (!string.IsNullOrEmpty(c.ElmId))
-            {
+            if (!string.IsNullOrEmpty(c.ElmId)) {
                 MatchCollection inputVars = vars.Matches(html);
-                if (inputVars.Count > 0)
-                {
-                    foreach (Match var in inputVars)
-                    {
+                if (inputVars.Count > 0) {
+                    foreach (Match var in inputVars) {
                         string index = var.Groups[1].Value;
                         string suffix = index == "1" ? "" : $"_{index}";
 
@@ -746,7 +756,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     }
                 }
             }
-
+            
             return html;
         }
 

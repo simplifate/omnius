@@ -300,8 +300,8 @@
         $('[data-uic]', MBE.workspace).removeClass('empty-element');
         $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
-        MBE.workspace.find('*').contents().filter(function () {
-            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
+        MBE.workspace.find('*:not(iframe, script, style, svg, svg *)').contents().filter(function () {
+            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node') && !$(this).parents('[data-uic="misc|custom-code"]').length;
         }).wrap('<span class="mbe-text-node" />');
 
         MBE.workspace.find('.has-feedback').each(function() {

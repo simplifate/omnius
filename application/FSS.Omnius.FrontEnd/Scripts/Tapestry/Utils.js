@@ -258,8 +258,12 @@ function GetItemTypeClass(item) {
     else if (item.hasClass("symbol")) {
         typeClass = "symbol";
     }
+    else if (item.hasClass("integrationItem")) {
+        typeClass = "integrationItem";
+    }
     else
         typeClass = "";
+         
     return typeClass;
 }
 function RecalculateToolboxHeight() {

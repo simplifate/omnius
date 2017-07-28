@@ -1,0 +1,59 @@
+﻿@using FSS.Omnius.Modules.Entitron.Entity.Athena
+@model System.Data.Entity.DbSet<Graph>
+@{
+    Page.Title = "Omnius Athena";
+    Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
+    Page.ModuleClass = "athenaModule";
+}
+@Html.Partial("~/Views/Athena/Athena/Header.cshtml")
+<div id="lowerPanel">
+    @Html.Partial("~/Views/Athena/Athena/Decoration.cshtml")
+    <div id="taskMenuArea" class="moduleSubMenuArea">
+        @Html.RouteLink("Přidat graf", "Athena", new { @action = "Create" }, new { @class = "btn btn-omnius-blue fa fa-plus" })
+    </div>
+    <div id="lowerPanelContainer">
+        <table id="athenaTable" class="table table-bordered table-striped table-responsive table-omnius">
+            <colgroup>
+                <col width="50">
+                <col>
+                <col>
+                <col width="60">
+                <col width="60">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Název</th>
+                    <th>Identifikátor</th>
+                    <th>Aktivní</th>
+                    <th>Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (Graph g in Model)
+                    {
+                        <tr>
+                            <td>@g.Id</td>
+                            <td>@g.Name</td>
+                            <td>@g.Ident</td>
+                            <td class="text-center">@(g.Active == true ? "ano" : "ne")</td>
+                            <td class="table-row-action">
+                                @Html.RouteLink(" ", "Athena", new { @action = "Edit", @id = g.Id }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })
+                                @Html.RouteLink(" ", "Athena", new { @action = "Delete", @id = g.Id }, new { @class = "fa fa-times ico-only btn btn-danger", @title = "Smazat", @onclick = "return confirm('Opravdu chcete záznam smazat?')" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Nemáte nakonfigurovaný žádný graf</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="ContentContainer"></div>
+    </div>
+</div>

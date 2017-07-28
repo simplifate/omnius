@@ -193,6 +193,7 @@
     <Compile Include="Entitron\DAL\DefaultEFRepository.cs" />
     <Compile Include="Entitron\DAL\IRepository.cs" />
     <Compile Include="Entitron\Entitron.cs" />
+    <Compile Include="Entitron\Entity\Athena\Graph.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
     <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Cortex\Task.cs" />
@@ -1142,6 +1143,10 @@
     <Compile Include="Migrations\201707030938552_babylon.Designer.cs">
       <DependentUpon>201707030938552_babylon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707281231548_athena.cs" />
+    <Compile Include="Migrations\201707281231548_athena.Designer.cs">
+      <DependentUpon>201707281231548_athena.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1171,6 +1176,8 @@
     <Compile Include="Tapestry\Actions\Entitron\JTokenToString.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ConvertJsonStringToJToken.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ImportCSVAction.cs" />
+    <Compile Include="Tapestry\Actions\Athena\CalibrateChartData.cs" />
+    <Compile Include="Tapestry\Actions\Athena\CreateStaticCsvAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToDictionaryAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemForEachAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\CreateDBItemsForRowsAction.cs" />
@@ -1894,6 +1901,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707030938552_babylon.resx">
       <DependentUpon>201707030938552_babylon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707281231548_athena.resx">
+      <DependentUpon>201707281231548_athena.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

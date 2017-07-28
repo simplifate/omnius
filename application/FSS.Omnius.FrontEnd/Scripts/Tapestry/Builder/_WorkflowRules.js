@@ -20,7 +20,11 @@
     },
 
     init: function () {
-
+        var self = TB.wfr;
+        $(document)
+            .on('keydown', $.proxy(self._keyDown, self))
+            .on('click', 'button#Search', $.proxy(self.searchItems, self))
+            .on('click', '#SearchBox .close', $.proxy(self.closeSearch, self));
     },
 
     create: function(ruleData)
@@ -149,13 +153,13 @@
             item.attr("endpoints", "gateway");
         if (itemData.Condition != null)
             item.data("condition", itemData.Condition);
-        if (itemData.ConditionSets != null) {
+        if (itemData.ConditionSets != null)
             item.data("conditionSets", itemData.ConditionSets);
-        }
-        if (itemData.IsBootstrap != null) {
+        if (itemData.IsBootstrap != null)
             item.attr('isBootstrap', itemData.IsBootstrap);
-        }
-
+        if (itemData.TypeClass == "integrationItem")
+            item.addClass('integrationItem');
+        
         item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
         AddToJsPlumb(item);
 
@@ -319,6 +323,69 @@
         if (key == 'remove-swimlane') {
             TB.wfr.removeSwimlane.apply(options.$trigger, []);
         }
+    },
+
+    /*************************************************/
+    /* SEARCH IN WORKFLOW's                          */
+    /*************************************************/
+
+    _keyDown: function (e) {
+        if (e.ctrlKey || e.metaKey) {
+            if (String.fromCharCode(e.which).toLowerCase() == 'f') {
+                e.preventDefault();
+
+                var $box = $('<div></div>');
+                $box.css({
+                    position: 'fixed',
+                    right: 0,
+                    top: 75,
+                    border: '2px solid #457fa9',
+                    background: '#49c3f1',
+                    width: '20%',
+                    padding: '10px'
+                }).attr('id', 'SearchBox').appendTo('body');
+
+                var $c = $('<button type="button" class="close" aria-label="Close" style="opacity:1"><span aria-hidden="true" style="color:#fff">&times;</span></button>');
+                $c.appendTo($box);
+
+                $box.append('<label class="control-label">Search in variables:</label>');
+
+                var $g = $('<div class="from-group"></div>');
+                $g.appendTo($box);
+                
+                var $ig = $('<div class="input-group input-group-sm"></div>');
+                $ig.appendTo($g);
+
+                var $f = $('<input type="text" id="SearchTerm" class="form-control" value="">');
+                $f.appendTo($ig);
+
+                var $b = $('<span class="input-group-btn"><button type="button" id="Search" class="btn btn-default"><span class="fa fa-search"></span></button></span>');
+                $b.appendTo($ig);
+            }
+        }  
+    },
+
+    searchItems: function () {
+        var term = $('#SearchTerm').val();
+        $('.swimlaneContentArea .item')
+            .removeClass('isMatch')
+            .each(function () {
+                if (!term.length) {
+                    return false;
+                }
+                var inputVars = $(this).data('inputVariables');
+                var outputVars = $(this).data('outputVariables');
+
+                if ((inputVars && inputVars.indexOf(term) !== -1) || (outputVars && outputVars.indexOf(term) !== -1)) {
+                    $(this).addClass('isMatch');
+                }
+            });
+
+    },
+
+    closeSearch: function () {
+        $('#SearchBox').remove();
+        $('.swimlaneContentArea .item').removeClass('isMatch')
     }
 }
 

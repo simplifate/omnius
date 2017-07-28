@@ -1183,6 +1183,32 @@ body.appManagerModule {
     right: 0px;
     bottom: 0px; }
 
+.mytooltip {
+  position: relative;
+  border-bottom: 1px dotted black; }
+
+.mytooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 720px;
+  background-color: #444;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0%; }
+  .mytooltip .tooltiptext th {
+    padding-right: 5px;
+    text-align: right; }
+  .mytooltip .tooltiptext td {
+    text-align: left; }
+
+.mytooltip:hover .tooltiptext {
+  visibility: visible; }
+
 .ui-dialog {
   position: fixed !important;
   padding: 0px 0px;
@@ -1202,6 +1228,9 @@ body.appManagerModule {
     border: medium none; }
   .ui-dialog .ui-dialog-titlebar-close:hover {
     background: url("/Content/Images/ui-icons_222222_256x240.png") repeat scroll -93px -128px transparent; }
+
+.ui-widget {
+  font-size: 1em !important; }
 
 .lowerLeftDecoration {
   position: absolute;
@@ -1346,6 +1375,9 @@ body.appManagerModule {
     .tileMenuArea .tileMenuItem .fa-paint-brush {
       font-size: 110px;
       top: 18px; }
+    .tileMenuArea .tileMenuItem .fa-cloud-upload {
+      font-size: 110px;
+      top: 22px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -1535,4 +1567,1056 @@ body.adminLayout #appNotificationArea {
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word; }
+
+body.mozaicComponentManagerModule {
+  background-color: #f2f2f3; }
+  body.mozaicComponentManagerModule #upperPanel {
+    height: 295px; }
+  body.mozaicComponentManagerModule #lowerPanel {
+    top: 360px;
+    padding: 50px; }
+  body.mozaicComponentManagerModule #lowerPanelSpinnerOverlay {
+    position: absolute;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1100;
+    display: none; }
+
+body.mozaicEditorModule {
+  background-color: #f2f2f3; }
+  body.mozaicEditorModule #upperPanel {
+    height: 295px; }
+    body.mozaicEditorModule #upperPanel #controlButtonArea {
+      position: absolute;
+      left: 100px;
+      top: 100px; }
+    body.mozaicEditorModule #upperPanel #appInfoPanel {
+      position: absolute;
+      left: 440px;
+      top: 27px;
+      text-align: left;
+      font-size: 18px;
+      color: white;
+      font-family: MyriadPro; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerAppName, body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName {
+        font-weight: bold;
+        color: #f1a57a; }
+      body.mozaicEditorModule #upperPanel #appInfoPanel #headerPageName:hover {
+        color: #2ddef9;
+        cursor: pointer; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel label {
+      color: white; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel #gridResolutionDropdown {
+      margin-left: 8px;
+      margin-right: 14px; }
+    body.mozaicEditorModule #upperPanel #gridControlPanel #gridShowCheckbox {
+      margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel label {
+      color: white; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #currentPageIsModal {
+      margin-left: 6px;
+      margin-right: 18px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput, body.mozaicEditorModule #upperPanel #modalControlPanel #modalHeightInput {
+      width: 60px;
+      height: 18px;
+      margin-left: 6px; }
+    body.mozaicEditorModule #upperPanel #modalControlPanel #modalWidthInput {
+      margin-right: 18px; }
+    body.mozaicEditorModule #upperPanel #btnToBootstrap {
+      display: none; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #gridControlPanel {
+    position: absolute;
+    left: 100px;
+    top: 200px; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #modalControlPanel {
+    position: absolute;
+    left: 440px;
+    top: 200px; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #btnToBootstrap {
+    display: initial; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorAbsolute #btnPreview {
+    display: none; }
+  body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap {
+    height: 205px; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #gridControlPanel {
+      display: none; }
+    body.mozaicEditorModule #upperPanel.mozaicEditorBootstrap #modalControlPanel {
+      display: none; }
+  body.mozaicEditorModule #lowerPanel {
+    top: 370px;
+    padding: 0px; }
+    body.mozaicEditorModule #lowerPanel #lowerPanelSpinnerOverlay {
+      position: absolute;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1100;
+      display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .bootstrap-editor-cat,
+  body.mozaicEditorModule #lowerPanel.mozaicEditorAbsolute .toolboxItem.bootstrap-row {
+    display: none; }
+  body.mozaicEditorModule #lowerPanel.mozaicEditorBootstrap {
+    top: 280px; }
+  body.mozaicEditorModule #mozaicContainer {
+    height: 2000px;
+    font-family: MyriadPro; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBar {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 300px;
+      height: 500px;
+      overflow-y: scroll;
+      background-color: #e0e2e2; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxItem {
+        position: relative;
+        margin: 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar div.toolboxItem {
+        margin-bottom: 20px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryLabel {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-family: FatTec;
+        font-size: 16px;
+        text-align: center; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .toolboxCategoryHr {
+        width: 80%;
+        border-color: #606060; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar .leftBarHeader {
+        width: 100%;
+        height: 32px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        padding: 8px 10px; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBar #hideMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+    body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: default;
+      position: absolute;
+      width: 32px;
+      height: 600px;
+      background-color: #bdbbbc;
+      display: none; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized #showMozaicTooboxIcon {
+        position: absolute;
+        font-size: 30px;
+        color: #3a3a3a;
+        right: 10px;
+        top: 2px;
+        cursor: pointer; }
+      body.mozaicEditorModule #mozaicContainer #mozaicLeftBarMinimized .leftBarHeader {
+        position: absolute;
+        left: 18px;
+        top: 95px;
+        background-color: #bdbbbc;
+        font-family: FatTec;
+        font-size: 16px;
+        transform: translateX(-50%) translateY(-50%) rotate(-90deg); }
+  body.mozaicEditorModule #mozaicPageContainer {
+    position: absolute;
+    left: 300px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: white; }
+    body.mozaicEditorModule #mozaicPageContainer #modalSizeVisualization {
+      position: absolute;
+      width: 400px;
+      height: 300px;
+      display: none;
+      border-right: 2px solid red;
+      border-bottom: 2px solid red;
+      z-index: 10; }
+  body.mozaicEditorModule #mozaicPageContainer.showGrid {
+    background-image: url(/Content/Images/MozaicGrid.png);
+    background-repeat: repeat; }
+  body.mozaicEditorModule .toolboxItem, body.mozaicEditorModule .uic {
+    cursor: default; }
+  body.mozaicEditorModule .uic {
+    position: absolute;
+    z-index: 20; }
+  body.mozaicEditorModule .button-simple {
+    background-color: #4b8ad1;
+    border: 1px solid #4b8ad1;
+    color: white; }
+  body.mozaicEditorModule .button-dropdown {
+    background-color: white;
+    border: 1px solid #4b8ad1;
+    color: #4b8ad1; }
+  body.mozaicEditorModule .button-large {
+    width: 198px;
+    height: 31px;
+    font-size: 18px; }
+    body.mozaicEditorModule .button-large .fa-caret-down {
+      padding-left: 7px; }
+  body.mozaicEditorModule .button-small {
+    width: 112px;
+    height: 23px;
+    font-size: 14px; }
+    body.mozaicEditorModule .button-small .fa-caret-down {
+      padding-left: 5px; }
+  body.mozaicEditorModule .button-extra-small {
+    width: 78px;
+    height: 19px;
+    font-size: 11px; }
+    body.mozaicEditorModule .button-extra-small .fa-caret-down {
+      padding-left: 3px; }
+  body.mozaicEditorModule .input-single-line {
+    width: 220px;
+    height: 25px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .input-multiline {
+    width: 260px;
+    height: 75px;
+    border: 1px solid #b8b4ab;
+    padding-left: 6px; }
+  body.mozaicEditorModule .input-read-only {
+    background-color: #e0e0e0; }
+  body.mozaicEditorModule .info-container {
+    color: #58585a;
+    position: relative;
+    width: 260px; }
+    body.mozaicEditorModule .info-container .info-container-icon {
+      position: absolute;
+      left: 0px;
+      top: 4px;
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-header {
+      position: absolute;
+      left: 24px;
+      top: 0px;
+      font-size: 18px; }
+    body.mozaicEditorModule .info-container .info-container-body {
+      padding-top: 26px; }
+  body.mozaicEditorModule .info-container.ui-draggable-dragging, body.mozaicEditorModule .form-heading.ui-draggable-dragging, body.mozaicEditorModule .control-label.ui-draggable-dragging {
+    border: 1px solid #00d000; }
+  body.mozaicEditorModule .breadcrumb-navigation {
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 200px;
+    height: 55px; }
+    body.mozaicEditorModule .breadcrumb-navigation .app-icon {
+      position: absolute;
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 50%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+    body.mozaicEditorModule .breadcrumb-navigation .nav-text {
+      position: absolute;
+      left: 54px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      white-space: nowrap; }
+  body.mozaicEditorModule .tab-navigation {
+    white-space: nowrap; }
+    body.mozaicEditorModule .tab-navigation li a.fa {
+      font-size: 20px;
+      height: 42px;
+      padding-top: 6px; }
+  body.mozaicEditorModule .tab-navigation.toolboxItem {
+    width: 250px;
+    background-color: white; }
+  body.mozaicEditorModule .wizard-phases {
+    position: relative;
+    width: 850px;
+    height: 88px;
+    white-space: nowrap;
+    overflow: hidden; }
+    body.mozaicEditorModule .wizard-phases .wizard-phases-frame {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      border-radius: 5px;
+      border: 2px solid #0066AA; }
+    body.mozaicEditorModule .wizard-phases .phase-background {
+      position: absolute;
+      z-index: 40;
+      margin: 2px; }
+    body.mozaicEditorModule .wizard-phases .phase {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+      z-index: 45; }
+    body.mozaicEditorModule .wizard-phases .phase1 {
+      width: 316px; }
+    body.mozaicEditorModule .wizard-phases .phase2 {
+      width: 277px; }
+    body.mozaicEditorModule .wizard-phases .phase3 {
+      width: 255px; }
+    body.mozaicEditorModule .wizard-phases .phase-label {
+      position: absolute;
+      left: 82px;
+      top: 31px;
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      color: #0066aa; }
+    body.mozaicEditorModule .wizard-phases .phase-active .phase-label {
+      color: white; }
+    body.mozaicEditorModule .wizard-phases .phase-icon-circle {
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #00548f;
+      background-color: rgba(42, 163, 213, 0.8); }
+    body.mozaicEditorModule .wizard-phases .phase-done .phase-icon-circle {
+      background-color: rgba(0, 204, 0, 0.7); }
+    body.mozaicEditorModule .wizard-phases .phase-icon-number {
+      width: 100%;
+      padding-left: 2px;
+      padding-top: 1px;
+      text-align: center;
+      font-size: 30px;
+      font-family: RweHeadlineRegular;
+      font-weight: bold;
+      color: white; }
+    body.mozaicEditorModule .wizard-phases .phase-icon-symbol {
+      width: 100%;
+      padding-left: 2px;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 23px;
+      color: white; }
+  body.mozaicEditorModule .wizard-phases.toolboxItem {
+    width: 250px;
+    overflow: hidden; }
+  body.mozaicEditorModule .control-label {
+    font-family: MyriadPro;
+    font-size: 14px;
+    color: #58585a;
+    white-space: nowrap; }
+    body.mozaicEditorModule .control-label b {
+      font-size: 1.15em; }
+    body.mozaicEditorModule .control-label u {
+      color: #0065a9; }
+  body.mozaicEditorModule .detail-label {
+    color: #0066cc;
+    font-weight: bold;
+    text-align: right; }
+  body.mozaicEditorModule .form-heading {
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorModule .checkbox-control {
+    display: inline-block;
+    white-space: nowrap; }
+    body.mozaicEditorModule .checkbox-control .checkbox-label {
+      margin-left: 6px;
+      font-family: MyriadPro;
+      font-size: 14px;
+      color: #58585a;
+      white-space: nowrap; }
+  body.mozaicEditorModule .radio-control {
+    display: inline-block;
+    white-space: nowrap; }
+    body.mozaicEditorModule .radio-control .radio-label {
+      margin-left: 6px;
+      font-family: MyriadPro;
+      font-size: 14px;
+      color: #58585a;
+      white-space: nowrap; }
+  body.mozaicEditorModule .color-picker.toolboxItem {
+    color: red;
+    width: 90px; }
+  body.mozaicEditorModule .countdown-component {
+    width: 260px;
+    height: 50px;
+    border: 1px solid #ccc;
+    background-color: #eee; }
+  body.mozaicEditorModule .panel-component {
+    min-width: 260px;
+    min-height: 60px;
+    border: 1px dashed #0080ff; }
+  body.mozaicEditorModule .visible-panel-pale-background {
+    background-color: #d4f0fe; }
+  body.mozaicEditorModule .named-panel {
+    background-color: #cce0f5; }
+    body.mozaicEditorModule .named-panel .named-panel-header {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      min-height: 25px;
+      padding: 1px 6px;
+      background-color: #0066cc;
+      color: white;
+      font-family: MyriadPro;
+      font-size: 18px; }
+  body.mozaicEditorModule .data-table {
+    width: 250px;
+    border: 1px solid #4b8ad1; }
+    body.mozaicEditorModule .data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 5px; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-edit, body.mozaicEditorModule .data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    body.mozaicEditorModule .data-table .actionIcons .fa-remove {
+      color: #e3001b; }
+  body.mozaicEditorModule .data-table-simple-mode {
+    background-color: white; }
+  body.mozaicEditorModule .name-value-list {
+    font-family: MyriadPro;
+    font-size: 14px; }
+    body.mozaicEditorModule .name-value-list tr {
+      border-top: 1px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list tr:first-child {
+      border-top: 2px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list tr:last-child {
+      border-bottom: 2px solid #01a1f7; }
+    body.mozaicEditorModule .name-value-list td {
+      padding-top: 3px;
+      padding-bottom: 3px; }
+    body.mozaicEditorModule .name-value-list .name-cell {
+      min-width: 140px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-weight: bold;
+      background-color: #d4f0fe; }
+    body.mozaicEditorModule .name-value-list .value-cell {
+      min-width: 140px;
+      padding-left: 25px;
+      padding-right: 10px; }
+  body.mozaicEditorModule .name-value-list.toolboxItem .name-cell {
+    min-width: 110px; }
+  body.mozaicEditorModule .name-value-list.toolboxItem .value-cell {
+    min-width: 60px; }
+  body.mozaicEditorModule .uic.ui-draggable-dragging, body.mozaicEditorModule .toolboxItem.ui-draggable-dragging {
+    z-index: 500; }
+  body.mozaicEditorModule .ui-dialog {
+    z-index: 600; }
+    body.mozaicEditorModule .ui-dialog .formTable {
+      width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable label {
+        margin-bottom: 0px; }
+      body.mozaicEditorModule .ui-dialog .formTable tr {
+        height: 32px; }
+      body.mozaicEditorModule .ui-dialog .formTable td {
+        vertical-align: middle; }
+      body.mozaicEditorModule .ui-dialog .formTable input {
+        width: 100%; }
+      body.mozaicEditorModule .ui-dialog .formTable td:first-child {
+        width: 110px; }
+      body.mozaicEditorModule .ui-dialog .formTable #component-width, body.mozaicEditorModule .ui-dialog .formTable #component-height {
+        width: 100px; }
+  body.mozaicEditorModule .highlightedRow {
+    background-color: #49c3f1 !important;
+    color: white !important; }
+  body.mozaicEditorModule .ui-dialog {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    z-index: 2000; }
+  body.mozaicEditorModule #choose-page-dialog .spinner-2 {
+    display: none; }
+
+body.mozaicBootstrapEditorModule #mozaicLeftBar {
+  overflow-y: auto !important;
+  width: 250px !important; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+    background: #eee; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar-thumb {
+    background: #393812; }
+  body.mozaicBootstrapEditorModule #mozaicLeftBar::-webkit-scrollbar-corner {
+    background: #000; }
+
+body.mozaicBootstrapEditorModule #lowerPanel.fullscreen {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 100;
+  background: #fff; }
+
+body.mozaicBootstrapEditorModule ul.category {
+  margin: 0px;
+  padding: 10px; }
+  body.mozaicBootstrapEditorModule ul.category li {
+    font-weight: normal;
+    list-style: none; }
+  body.mozaicBootstrapEditorModule ul.category > li {
+    font-weight: bold; }
+    body.mozaicBootstrapEditorModule ul.category > li > ul {
+      padding: 0px 20px; }
+      body.mozaicBootstrapEditorModule ul.category > li > ul li:hover {
+        background: #d0d2d2; }
+
+body.mozaicBootstrapEditorModule #mozaicPageContainer {
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently */
+  left: 250px; }
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 340px;
+    background: #e0e2e2; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree .leftBarHeader {
+      height: 32px;
+      background-color: #bdbbbc;
+      font-family: FatTec;
+      font-size: 16px;
+      padding: 8px 10px; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul {
+      padding: 0px;
+      margin: 0px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li {
+        list-style: none;
+        margin: 0px 0px 0px 15px; }
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li .fa {
+          margin-left: -15px;
+          margin-top: 3px;
+          float: left; }
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span {
+          font-weight: bold;
+          color: #000;
+          display: block;
+          padding: 1px 5px; }
+          body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.active, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.active {
+            background: #fff;
+            border: 1px solid blue;
+            padding: 0px 4px; }
+          body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li a.drop-target, body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree ul li span.drop-target {
+            background: #fbffd4;
+            border: 1px solid orange;
+            padding: 0px 4px; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav {
+      margin-top: 1em;
+      padding: 0px 10px 0px 25px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav i.fa {
+        margin-left: -20px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle {
+        display: block; }
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.active {
+          background: #fff;
+          border: 1px solid blue;
+          padding: 0px 4px; }
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle b.drop-target {
+          background: #fbffd4;
+          outline: 1px solid orange; }
+        body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav span.node-handle .item-id {
+          display: inline-block;
+          margin-left: 8px;
+          font-size: 0.8em; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .sub-tree {
+        padding-left: 10px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged b {
+        font-style: italic;
+        color: #aaa; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav .node.dragged .sub-tree {
+        display: none; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageTree div.tree-nav #drop-placeholder {
+        height: 0px;
+        display: block !important;
+        outline: 1px solid blue; }
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace {
+    position: absolute;
+    left: 12px;
+    right: 355px;
+    top: 95px;
+    padding: 20px 20px 20px;
+    bottom: 0px;
+    background: #efefef;
+    text-align: center; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0px auto;
+      border: none; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.xs {
+        max-width: 500px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.sm {
+        max-width: 800px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.md {
+        max-width: 1100px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageWorkspace > iframe.lg {
+        min-width: 1200px; }
+  body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext {
+    margin-right: 340px; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .breadcrumb {
+      padding: 6px 15px;
+      margin-bottom: 0px;
+      background: #bdbbbc;
+      border-radius: 0px; }
+    body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar {
+      background: #eee;
+      border-radius: 0px;
+      padding: 6px 0px;
+      font-size: 12px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-text {
+        float: none;
+        display: inline-block;
+        margin: 5px 15px; }
+      body.mozaicBootstrapEditorModule #mozaicPageContainer #mozaicPageContext .navbar .navbar-btn {
+        font-size: 12px;
+        padding: 4px 10px;
+        margin: 4px 2px; }
+
+body.mozaicBootstrapEditorModule .dialog-options {
+  height: 80% !important; }
+  body.mozaicBootstrapEditorModule .dialog-options .ui-dialog-content {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 39px;
+    bottom: 0px;
+    overflow-y: auto; }
+  body.mozaicBootstrapEditorModule .dialog-options fieldset {
+    padding: 10px 10px;
+    border-bottom: 1px solid #dedede; }
+  body.mozaicBootstrapEditorModule .dialog-options legend {
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    margin-bottom: -5px;
+    margin-top: 10px; }
+  body.mozaicBootstrapEditorModule .dialog-options .option-group {
+    margin-bottom: 10px;
+    float: left;
+    width: 100%; }
+    body.mozaicBootstrapEditorModule .dialog-options .option-group label {
+      font-weight: normal; }
+    body.mozaicBootstrapEditorModule .dialog-options .option-group select {
+      min-width: 100px; }
+    body.mozaicBootstrapEditorModule .dialog-options .option-group .icon-list {
+      margin-top: 15px; }
+  body.mozaicBootstrapEditorModule .dialog-options .icon-list {
+    max-height: 280px;
+    overflow: auto; }
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar {
+      height: 5px;
+      width: 5px;
+      background: #eee; }
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-thumb {
+      background: #393812; }
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list::-webkit-scrollbar-corner {
+      background: #000; }
+    body.mozaicBootstrapEditorModule .dialog-options .icon-list a {
+      display: inline-block;
+      vertical-align: top;
+      width: 20%;
+      height: 90px;
+      text-align: center;
+      padding: 10px; }
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a .fa, body.mozaicBootstrapEditorModule .dialog-options .icon-list a .glyphicon {
+        display: inline-block;
+        width: 100%;
+        font-size: 1.2em;
+        margin-bottom: 8px; }
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a .icon-name {
+        display: inline-block;
+        width: 100%;
+        font-size: 0.7em; }
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a:hover {
+        background: #eef9fe; }
+      body.mozaicBootstrapEditorModule .dialog-options .icon-list a.active {
+        background: #d9f2fe; }
+
+body.mozaicBootstrapEditorModule .toolbar.pull-left .btn {
+  text-transform: lowercase; }
+
+body.mozaicBootstrapEditorModule .toolbar.pull-right .btn {
+  height: 27px;
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+  line-height: 25px; }
+  body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa {
+    line-height: 25px !important; }
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-mobile {
+      font-size: 1.6em; }
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-tablet {
+      font-size: 1.6em;
+      vertical-align: -4px; }
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-laptop {
+      font-size: 1.6em;
+      vertical-align: -4px; }
+    body.mozaicBootstrapEditorModule .toolbar.pull-right .btn .fa.fa-desktop {
+      font-size: 1.3em;
+      vertical-align: -2px; }
+
+body.mozaicBootstrapEditorModule .drag-ghost {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.75); }
+
+#drop-placeholder {
+  display: none;
+  height: 0px;
+  outline: 1px solid blue; }
+
+body.mozaicEditorBody {
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently */
+  box-sizing: border-box;
+  padding: 5px; }
+  body.mozaicEditorBody #drop-placeholder {
+    display: block; }
+  body.mozaicEditorBody .drag-over {
+    outline: 2px dashed #aaa; }
+  body.mozaicEditorBody .mbe-drag-handle {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    background: blue;
+    border-radius: 100%;
+    cursor: move; }
+  body.mozaicEditorBody .embed-responsive iframe {
+    background: #eee; }
+  body.mozaicEditorBody .mbe-active {
+    outline: 1px solid blue; }
+  body.mozaicEditorBody .empty-element:before {
+    display: block;
+    background: #efefef;
+    color: #ccc;
+    padding: 5px 10px;
+    content: "empty item"; }
+  body.mozaicEditorBody .container.empty-element:before {
+    content: "empty container"; }
+  body.mozaicEditorBody .container-fluid.empty-element:before {
+    content: "empty-container"; }
+  body.mozaicEditorBody .row.empty-element:before {
+    content: "empty row"; }
+  body.mozaicEditorBody div[class*="col-"].empty-element:before {
+    content: "empty column"; }
+  body.mozaicEditorBody header.empty-element:before {
+    content: "empty header"; }
+  body.mozaicEditorBody footer.empty-element:before {
+    content: "empty footer"; }
+  body.mozaicEditorBody hgroup.empty-element:before {
+    content: "empty hgroup"; }
+  body.mozaicEditorBody section.empty-element:before {
+    content: "empty section"; }
+  body.mozaicEditorBody article.empty-element:before {
+    content: "empty article"; }
+  body.mozaicEditorBody aside.empty-element:before {
+    content: "empty aside"; }
+  body.mozaicEditorBody .clearfix.empty-element:before {
+    content: "empty clearfix"; }
+  body.mozaicEditorBody form.empty-element:before {
+    content: "empty form"; }
+  body.mozaicEditorBody .form-group.empty-element:before {
+    content: "empty form group"; }
+  body.mozaicEditorBody figure.empty-element:before {
+    content: "empty figure"; }
+  body.mozaicEditorBody .input-group-addon.empty-element:before {
+    content: "empty addon"; }
+  body.mozaicEditorBody .input-group-btn.empty-element:before {
+    content: "empty addon"; }
+  body.mozaicEditorBody .checkbox.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .checkbox-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .radio.empty-element:before {
+    content: "empty radio group"; }
+  body.mozaicEditorBody .radio-inline.empty-element:before {
+    content: "empty checkbox group"; }
+  body.mozaicEditorBody .panel-heading.empty-element:before {
+    content: "empty panel heading"; }
+  body.mozaicEditorBody .panel-body.empty-element:before {
+    content: "empty panel body"; }
+  body.mozaicEditorBody .panel-footer.empty-element:before {
+    content: "empty panel footer"; }
+  body.mozaicEditorBody [data-uic="containers|div"].empty-element:before {
+    content: "empty div"; }
+  body.mozaicEditorBody .well.empty-element:before {
+    content: "empty well"; }
+  body.mozaicEditorBody tr.empty-element:before {
+    content: "empty table row"; }
+  body.mozaicEditorBody td.empty-element:before {
+    content: "empty cell"; }
+  body.mozaicEditorBody th.empty-element:before {
+    content: "empty cell"; }
+  body.mozaicEditorBody [data-uic="misc|custom-code"].empty-element:before {
+    content: "empty custom code"; }
+  body.mozaicEditorBody .list-group.empty-element:before {
+    content: "empty list group"; }
+  body.mozaicEditorBody .list-group-item.empty-element:before {
+    content: "empty list group item"; }
+  body.mozaicEditorBody [data-uic="functions|foreach"].empty-element:before {
+    content: "empty foreach"; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:empty:before {
+    display: block;
+    background: #efefef;
+    color: #ccc;
+    padding: 5px 10px;
+    content: "empty embed code"; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:not(:empty) {
+    display: none; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .uic-embed-preview {
+    border: 1px solid #d39212; }
+    body.mozaicEditorBody div[data-uic="misc|embed"] .uic-embed-preview:before {
+      display: block;
+      font-size: 0.8em;
+      content: "Embed preview";
+      color: #d39212;
+      background: #fcffca;
+      padding: 5px 10px; }
+  body.mozaicEditorBody table div[data-uic="functions|foreach"] {
+    display: table-row-group;
+    width: 100%; }
+  body.mozaicEditorBody .input-group-addon.empty-element:before, body.mozaicEditorBody .input-group-btn.empty-element:before {
+    padding: 0px; }
+  body.mozaicEditorBody div.clearfix.empty-element:before {
+    font-size: 6px;
+    padding: 1px 10px; }
+  body.mozaicEditorBody .dragged[data-uic] {
+    opacity: 0.5; }
+  body.mozaicEditorBody .table.data-table .actionIcons {
+    white-space: nowrap; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa {
+      font-size: 16px;
+      margin-right: 8px; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa-edit, body.mozaicEditorBody .table.data-table .actionIcons .fa-search {
+      color: #0065a9; }
+    body.mozaicEditorBody .table.data-table .actionIcons .fa-remove {
+      color: #e3001b; }
+  body.mozaicEditorBody .table.data-table tfoot {
+    display: table-header-group; }
+    body.mozaicEditorBody .table.data-table tfoot th {
+      padding: 3px 10px !important; }
+      body.mozaicEditorBody .table.data-table tfoot th input {
+        border: 1px solid #fff !important; }
+  body.mozaicEditorBody .table.name-value-list {
+    font-family: MyriadPro;
+    font-size: 14px; }
+    body.mozaicEditorBody .table.name-value-list tr {
+      border-top: 1px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list tr:first-child {
+      border-top: 2px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list tr:last-child {
+      border-bottom: 2px solid #01a1f7; }
+    body.mozaicEditorBody .table.name-value-list td {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      border: none; }
+    body.mozaicEditorBody .table.name-value-list .name-cell {
+      min-width: 140px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-weight: bold;
+      background-color: #d4f0fe; }
+    body.mozaicEditorBody .table.name-value-list .value-cell {
+      min-width: 140px;
+      padding-left: 25px;
+      padding-right: 10px; }
+  body.mozaicEditorBody .countdown-component {
+    width: 260px;
+    height: 50px;
+    border: 1px solid #ccc;
+    background-color: #eee; }
+  body.mozaicEditorBody .form-heading {
+    font-family: RweHeadlineRegular;
+    font-size: 28px;
+    color: #58585a;
+    white-space: nowrap; }
+  body.mozaicEditorBody .info-container {
+    color: #58585a; }
+    body.mozaicEditorBody .info-container .info-container-header {
+      font-size: 18px; }
+      body.mozaicEditorBody .info-container .info-container-header .fa {
+        margin-right: 6px; }
+    body.mozaicEditorBody .info-container .info-container-body {
+      padding-top: 5px; }
+  body.mozaicEditorBody .breadcrumb-navigation {
+    background: -webkit-linear-gradient(top, #0086be, #0065a9);
+    background: -o-linear-gradient(bottom, #0086be, #0065a9);
+    background: -moz-linear-gradient(bottom, #0086be, #0065a9);
+    background: linear-gradient(to bottom, #0086be, #0065a9);
+    color: white;
+    font-family: RweTextMedium;
+    padding: 12px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    height: 55px; }
+    body.mozaicEditorBody .breadcrumb-navigation li {
+      font-family: RweHeadlineRegular;
+      font-size: 20px;
+      color: #fff;
+      white-space: nowrap; }
+      body.mozaicEditorBody .breadcrumb-navigation li:before {
+        content: ">";
+        color: #fff;
+        position: relative;
+        top: -2px; }
+      body.mozaicEditorBody .breadcrumb-navigation li:nth-child(2):before, body.mozaicEditorBody .breadcrumb-navigation li:first-child:before {
+        content: ""; }
+      body.mozaicEditorBody .breadcrumb-navigation li > a {
+        color: #fff; }
+    body.mozaicEditorBody .breadcrumb-navigation span.app-icon {
+      font-weight: 100;
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      border: 2px solid white;
+      border-radius: 100%;
+      font-size: 19px;
+      text-align: center;
+      vertical-align: middle; }
+  body.mozaicEditorBody label.detail-label {
+    color: #0066cc;
+    font-weight: bold;
+    text-align: right; }
+  body.mozaicEditorBody .visible-panel-pale-background {
+    background-color: #d4f0fe; }
+  body.mozaicEditorBody .wizard-phases {
+    position: relative;
+    height: 88px;
+    white-space: nowrap;
+    overflow: hidden; }
+    body.mozaicEditorBody .wizard-phases.wizard-phases-frame {
+      border-radius: 5px;
+      border: 2px solid #0066AA;
+      background: #dceffa;
+      background: -webkit-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+      background: -moz-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+      background: -ms-linear-gradient(to bottom, #dceffa 0%, #8dceed 100%);
+      background: linear-gradient(to bottom, #dceffa 0%, #8dceed 100%); }
+      body.mozaicEditorBody .wizard-phases.wizard-phases-frame svg {
+        display: none; }
+    body.mozaicEditorBody .wizard-phases .wizzard-body {
+      display: table;
+      width: 100%;
+      height: 84px; }
+      body.mozaicEditorBody .wizard-phases .wizzard-body .phase {
+        display: table-cell;
+        text-align: left;
+        height: 100%;
+        white-space: nowrap;
+        line-height: 84px;
+        overflow: hidden; }
+        body.mozaicEditorBody .wizard-phases .wizzard-body .phase .phase-icon-circle {
+          display: inline-block;
+          margin: 0px 22px;
+          width: 44px;
+          height: 44px;
+          line-height: 44px;
+          text-align: center;
+          border-radius: 50%;
+          border: 1px solid #00548f;
+          background-color: rgba(42, 163, 213, 0.8);
+          vertical-align: middle;
+          position: relative;
+          top: -3px; }
+          body.mozaicEditorBody .wizard-phases .wizzard-body .phase .phase-icon-circle .phase-icon-number {
+            font-size: 30px;
+            font-family: RweHeadlineRegular;
+            font-weight: bold;
+            color: white; }
+        body.mozaicEditorBody .wizard-phases .wizzard-body .phase .phase-label {
+          display: inline-block;
+          font-family: RweHeadlineRegular;
+          font-size: 20px;
+          color: #0066aa; }
+        body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active, body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-done {
+          background: #0099cc;
+          background: -webkit-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+          background: -moz-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+          background: -ms-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+          background: linear-gradient(to bottom, #0099cc 0%, #0066aa 100%); }
+          body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active .phase-label, body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-done .phase-label {
+            color: white; }
+        body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active {
+          position: relative;
+          /*&:after, {
+                        content: "";
+                        display: block;
+                        float: right;
+                        width: 42px; 
+                        height: 84px; 
+                        background: -webkit-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: -moz-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: -ms-linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        background: linear-gradient(to bottom, #0099cc 0%, #0066aa 100%);
+                        -webkit-clip-path: polygon(0 0, 0% 100%, 63% 48%);
+                        clip-path: polygon(0 0, 0% 100%, 63% 48%);
+                    }*/ }
+          body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active:before, body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active:after {
+            content: "";
+            float: right;
+            display: block;
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            top: -29px;
+            right: -30px;
+            background: -webkit-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+            background: -moz-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+            background: -ms-linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+            background: linear-gradient(135deg, #dceffa 50%, #8dceed 150%);
+            transform: rotate(45deg); }
+          body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-active:after {
+            top: 56px;
+            background: -webkit-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+            background: -moz-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+            background: -ms-linear-gradient(135deg, #dceffa -50%, #8dceed 50%);
+            background: linear-gradient(135deg, #dceffa -50%, #8dceed 50%); }
+        body.mozaicEditorBody .wizard-phases .wizzard-body .phase.phase-done .phase-icon-circle {
+          background-color: rgba(0, 204, 0, 0.7); }
+    body.mozaicEditorBody .wizard-phases .phase-background {
+      position: absolute;
+      z-index: 40;
+      margin: 2px;
+      width: 100%;
+      height: 100%; }
+    body.mozaicEditorBody .wizard-phases .phase-icon-symbol {
+      padding-top: 10px;
+      text-align: center;
+      font-size: 23px;
+      color: white; }
+  body.mozaicEditorBody .wizard-phases.toolboxItem {
+    width: 250px;
+    overflow: hidden; }
 

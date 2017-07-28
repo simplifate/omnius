@@ -1033,6 +1033,39 @@ body.mozaicEditorBody {
     @include empty('[data-uic="misc|custom-code"]', 'empty custom code');
     @include empty('.list-group', 'empty list group');
     @include empty('.list-group-item', 'empty list group item');
+    @include empty('[data-uic="functions|foreach"]', 'empty foreach');
+
+    div[data-uic="misc|embed"] {
+        .embed-code:empty:before {
+            display: block;
+            background: #efefef;
+            color: #ccc;
+            padding: 5px 10px;
+            content: "empty embed code";
+        }
+
+        .embed-code:not(:empty) {
+            display: none;
+        }
+
+        .uic-embed-preview {
+            border: 1px solid #d39212;
+
+            &:before {
+                display: block;
+                font-size: 0.8em;
+                content: "Embed preview";
+                color: #d39212;
+                background: #fcffca;
+                padding: 5px 10px;
+            }
+        }
+    }
+
+    table div[data-uic="functions|foreach"] {
+        display: table-row-group;
+        width: 100%;
+    }
 
     .input-group-addon, .input-group-btn {
         &.empty-element:before {

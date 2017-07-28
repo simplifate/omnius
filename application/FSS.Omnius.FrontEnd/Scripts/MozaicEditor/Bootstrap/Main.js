@@ -5,8 +5,10 @@
     sortableOptions: {},
 
     onInit: [],
+    onBeforeInit: [],
     onBeforeDelete: { '*': []},
 
+    win: null,
     workspace: null,
     workspaceDoc: null,
     changedSinceLastSave: false,
@@ -16,8 +18,8 @@
     preInit: function ()
     {
         setTimeout(function () {
-            var win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
-            MBE.workspaceDoc = win.document ? win.document : win.contentDocument;
+            MBE.win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
+            MBE.workspaceDoc = MBE.win.document ? MBE.win.document : MBE.win.contentDocument;
 
             MBE.workspace = $('body', MBE.workspaceDoc);
             MBE.workspace
@@ -38,6 +40,10 @@
 
     init: function()
     {
+        for (i = 0; i < MBE.onBeforeInit.length; i++) {
+            MBE.onBeforeInit[i]();
+        }
+
         $(document)
             .on('click', 'ul.category li', MBE.toggleCategory)
             .on('dblclick', '.mbe-text-node', MBE.editText)
@@ -65,14 +71,13 @@
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
-
+        
         $('ul.category > li ul').hide();
         $('ul.category > li').prepend('<span class="fa fa-caret-right fa-fw"></span>');
         $('ul.category > li > ul > li').prepend('<span class="fa fa-square fa-fw"></span>');
 
         for (i = 0; i < MBE.onInit.length; i++) {
-            var f = MBE.onInit[i];
-            f();
+            MBE.onInit[i]();
         }
     },
 
@@ -82,20 +87,24 @@
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            var target = $('.mbe-active', MBE.workspace);
-            if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
-                if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
-                    MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
-                }
-                for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
-                    MBE.onBeforeDelete['*'][i].apply(target[0], []);
-                }
+            MBE.deleteItem();   
+        }
+    },
 
-                $('.mbe-active', MBE.workspace).remove();
-                $('.mbe-drag-handle', MBE.workspace).remove();
-                MBE.path.update.apply(MBE.workspace, []);
-                MBE.DnD.updateDOM();
+    deleteItem: function () {
+        var target = $('.mbe-active', MBE.workspace);
+        if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
+            if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
+                MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
             }
+            for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
+                MBE.onBeforeDelete['*'][i].apply(target[0], []);
+            }
+
+            $('.mbe-active', MBE.workspace).remove();
+            $('.mbe-drag-handle', MBE.workspace).remove();
+            MBE.path.update.apply(MBE.workspace, []);
+            MBE.DnD.updateDOM();
         }
     },
 

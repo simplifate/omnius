@@ -120,6 +120,14 @@ namespace FSS.Omnius.FrontEnd
                 namespaces: new string[] { "FSS.Omnius.Controllers.Watchtower" }
             );
 
+            // Athena
+            routes.MapRoute(
+                name: "Athena",
+                url: "Athena/{action}/{id}",
+                defaults: new { controller = "Athena", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Athena" }
+            );
+
             // RUN
             routes.MapRoute(
                 name: "Run",

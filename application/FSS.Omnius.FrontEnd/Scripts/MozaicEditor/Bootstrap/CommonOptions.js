@@ -13,7 +13,8 @@
     
     openDialog: function(event)
     {
-        event.stopImmediatePropagation();
+        if(event.stopImmediatePropagation)
+            event.stopImmediatePropagation();
 
         var self = MBE.options;
         self.target = this;

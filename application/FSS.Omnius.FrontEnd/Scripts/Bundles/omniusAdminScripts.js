@@ -373,8 +373,12 @@ function GetItemTypeClass(item) {
     else if (item.hasClass("symbol")) {
         typeClass = "symbol";
     }
+    else if (item.hasClass("integrationItem")) {
+        typeClass = "integrationItem";
+    }
     else
         typeClass = "";
+         
     return typeClass;
 }
 function RecalculateToolboxHeight() {
@@ -4078,7 +4082,11 @@ TB.wfr = {
     },
 
     init: function () {
-
+        var self = TB.wfr;
+        $(document)
+            .on('keydown', $.proxy(self._keyDown, self))
+            .on('click', 'button#Search', $.proxy(self.searchItems, self))
+            .on('click', '#SearchBox .close', $.proxy(self.closeSearch, self));
     },
 
     create: function(ruleData)
@@ -4207,13 +4215,13 @@ TB.wfr = {
             item.attr("endpoints", "gateway");
         if (itemData.Condition != null)
             item.data("condition", itemData.Condition);
-        if (itemData.ConditionSets != null) {
+        if (itemData.ConditionSets != null)
             item.data("conditionSets", itemData.ConditionSets);
-        }
-        if (itemData.IsBootstrap != null) {
+        if (itemData.IsBootstrap != null)
             item.attr('isBootstrap', itemData.IsBootstrap);
-        }
-
+        if (itemData.TypeClass == "integrationItem")
+            item.addClass('integrationItem');
+        
         item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
         AddToJsPlumb(item);
 
@@ -4377,6 +4385,69 @@ TB.wfr = {
         if (key == 'remove-swimlane') {
             TB.wfr.removeSwimlane.apply(options.$trigger, []);
         }
+    },
+
+    /*************************************************/
+    /* SEARCH IN WORKFLOW's                          */
+    /*************************************************/
+
+    _keyDown: function (e) {
+        if (e.ctrlKey || e.metaKey) {
+            if (String.fromCharCode(e.which).toLowerCase() == 'f') {
+                e.preventDefault();
+
+                var $box = $('<div></div>');
+                $box.css({
+                    position: 'fixed',
+                    right: 0,
+                    top: 75,
+                    border: '2px solid #457fa9',
+                    background: '#49c3f1',
+                    width: '20%',
+                    padding: '10px'
+                }).attr('id', 'SearchBox').appendTo('body');
+
+                var $c = $('<button type="button" class="close" aria-label="Close" style="opacity:1"><span aria-hidden="true" style="color:#fff">&times;</span></button>');
+                $c.appendTo($box);
+
+                $box.append('<label class="control-label">Search in variables:</label>');
+
+                var $g = $('<div class="from-group"></div>');
+                $g.appendTo($box);
+                
+                var $ig = $('<div class="input-group input-group-sm"></div>');
+                $ig.appendTo($g);
+
+                var $f = $('<input type="text" id="SearchTerm" class="form-control" value="">');
+                $f.appendTo($ig);
+
+                var $b = $('<span class="input-group-btn"><button type="button" id="Search" class="btn btn-default"><span class="fa fa-search"></span></button></span>');
+                $b.appendTo($ig);
+            }
+        }  
+    },
+
+    searchItems: function () {
+        var term = $('#SearchTerm').val();
+        $('.swimlaneContentArea .item')
+            .removeClass('isMatch')
+            .each(function () {
+                if (!term.length) {
+                    return false;
+                }
+                var inputVars = $(this).data('inputVariables');
+                var outputVars = $(this).data('outputVariables');
+
+                if ((inputVars && inputVars.indexOf(term) !== -1) || (outputVars && outputVars.indexOf(term) !== -1)) {
+                    $(this).addClass('isMatch');
+                }
+            });
+
+    },
+
+    closeSearch: function () {
+        $('#SearchBox').remove();
+        $('.swimlaneContentArea .item').removeClass('isMatch')
     }
 }
 
@@ -10415,8 +10486,10 @@ var MBE = {
     sortableOptions: {},
 
     onInit: [],
+    onBeforeInit: [],
     onBeforeDelete: { '*': []},
 
+    win: null,
     workspace: null,
     workspaceDoc: null,
     changedSinceLastSave: false,
@@ -10426,8 +10499,8 @@ var MBE = {
     preInit: function ()
     {
         setTimeout(function () {
-            var win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
-            MBE.workspaceDoc = win.document ? win.document : win.contentDocument;
+            MBE.win = $('#mozaicPageWorkspace > iframe')[0].contentWindow;
+            MBE.workspaceDoc = MBE.win.document ? MBE.win.document : MBE.win.contentDocument;
 
             MBE.workspace = $('body', MBE.workspaceDoc);
             MBE.workspace
@@ -10448,6 +10521,10 @@ var MBE = {
 
     init: function()
     {
+        for (i = 0; i < MBE.onBeforeInit.length; i++) {
+            MBE.onBeforeInit[i]();
+        }
+
         $(document)
             .on('click', 'ul.category li', MBE.toggleCategory)
             .on('dblclick', '.mbe-text-node', MBE.editText)
@@ -10475,14 +10552,13 @@ var MBE = {
             .on('click', '[data-uic]', MBE.onClick)
             .on('dblclick', '[data-uic]', MBE.options.openDialog)
         ;
-
+        
         $('ul.category > li ul').hide();
         $('ul.category > li').prepend('<span class="fa fa-caret-right fa-fw"></span>');
         $('ul.category > li > ul > li').prepend('<span class="fa fa-square fa-fw"></span>');
 
         for (i = 0; i < MBE.onInit.length; i++) {
-            var f = MBE.onInit[i];
-            f();
+            MBE.onInit[i]();
         }
     },
 
@@ -10492,20 +10568,24 @@ var MBE = {
 
     onKeyDown: function(event) {
         if (event.which == 46) {
-            var target = $('.mbe-active', MBE.workspace);
-            if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
-                if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
-                    MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
-                }
-                for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
-                    MBE.onBeforeDelete['*'][i].apply(target[0], []);
-                }
+            MBE.deleteItem();   
+        }
+    },
 
-                $('.mbe-active', MBE.workspace).remove();
-                $('.mbe-drag-handle', MBE.workspace).remove();
-                MBE.path.update.apply(MBE.workspace, []);
-                MBE.DnD.updateDOM();
+    deleteItem: function () {
+        var target = $('.mbe-active', MBE.workspace);
+        if (target.length && !target.is('[locked]') && !target.is('[contenteditable=true]') && !target.find('[contenteditable=true]').length) {
+            if (typeof MBE.onBeforeDelete[target.data('uic')] == 'function') {
+                MBE.onBeforeDelete[target.data('uic')].apply(target[0], []);
             }
+            for (var i = 0; i < MBE.onBeforeDelete['*'].length; i++) {
+                MBE.onBeforeDelete['*'][i].apply(target[0], []);
+            }
+
+            $('.mbe-active', MBE.workspace).remove();
+            $('.mbe-drag-handle', MBE.workspace).remove();
+            MBE.path.update.apply(MBE.workspace, []);
+            MBE.DnD.updateDOM();
         }
     },
 
@@ -10912,8 +10992,8 @@ MBE.DnD = {
         $('[data-uic]', MBE.workspace).removeClass('empty-element');
         $('[data-uic]:not(input, select, hr, img, .caret, li.divider, .fa, .glyphicon):empty', MBE.workspace).addClass('empty-element');
 
-        MBE.workspace.find('*').contents().filter(function () {
-            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node');
+        MBE.workspace.find('*:not(iframe, script, style, svg, svg *)').contents().filter(function () {
+            return this.nodeType == Node.TEXT_NODE && !$(this).parent().hasClass('mbe-text-node') && !$(this).parents('[data-uic="misc|custom-code"]').length;
         }).wrap('<span class="mbe-text-node" />');
 
         MBE.workspace.find('.has-feedback').each(function() {
@@ -11030,7 +11110,9 @@ MBE.navigator = {
 
     selectNode: function(event)
     {
-        event.stopImmediatePropagation();
+        if (event.stopImmediatePropagation) {
+            event.stopImmediatePropagation();
+        }
         MBE.selection.select.apply($(this).data('targetuic'), [event]);
     },
 
@@ -11072,9 +11154,54 @@ MBE.navigator = {
 };
 
 MBE.onInit.push(MBE.navigator.init);
+MBE.clipboard = {
+
+    init: function () {
+
+    },
+
+    isEmpty: function () {
+        var data = $.sessionStorage.get('MBEClipboard');
+        return data == null || data.length == 0;
+    },
+
+    copy: function () {
+        var target = $('.mbe-active', MBE.workspace);
+        var tmp = $('<div />');
+        var clone = target.clone();
+        clone.removeClass('mbe-active context-menu-active');
+
+        tmp.append(clone);
+
+        $.sessionStorage.set('MBEClipboard', tmp.html());
+    },
+
+    cut: function () {
+        this.copy();
+        $('.mbe-active', MBE.workspace).remove();
+        MBE.selection.select.apply(MBE.workspace, []);
+        MBE.DnD.updateDOM();
+    },
+
+    paste: function () {
+        var data = $.sessionStorage.get('MBEClipboard');
+        $('.mbe-active', MBE.workspace).append(data);
+        MBE.DnD.updateDOM();
+    }
+};
+
+MBE.onInit.push(MBE.clipboard.init);
 MBE.selection = {
     
     onSelect: [],
+
+    contextItems: {
+        copy: { name: 'Copy', icon: 'fa-files-o' },
+        cut: { name: 'Cut', icon: 'fa-cut' },
+        paste: { name: 'Paste', icon: 'fa-clipboard', disabled: MBE.clipboard.isEmpty },
+        properties: { name: 'Properties...', icon: 'fa-cog' },
+        delete: { name: 'Delete', icon: 'fa-trash' }
+    },
 
     init: function()
     {
@@ -11087,7 +11214,7 @@ MBE.selection = {
 
     select: function(event)
     {
-        if(typeof event != 'undefined') {
+        if (typeof event != 'undefined' && event.stopImmediatePropagation) {
             event.stopImmediatePropagation();
         }
 
@@ -11123,6 +11250,16 @@ MBE.selection = {
                 top: elm.offset().top - 4,
                 left: elm.offset().left - 4
             });
+        }
+    },
+
+    _contextAction: function(key, options) {
+        switch (key) {
+            case 'copy': MBE.clipboard.copy(); break;
+            case 'cut': MBE.clipboard.cut(); break;
+            case 'paste': MBE.clipboard.paste(); break;
+            case 'properties': MBE.options.openDialog.apply($('.mbe-active', MBE.workspace)[0], [{}]); break;
+            case 'delete': MBE.deleteItem(); break;
         }
     }
 };
@@ -11191,7 +11328,8 @@ MBE.options = {
     
     openDialog: function(event)
     {
-        event.stopImmediatePropagation();
+        if(event.stopImmediatePropagation)
+            event.stopImmediatePropagation();
 
         var self = MBE.options;
         self.target = this;
@@ -12634,6 +12772,15 @@ MBE.io = {
             uicNumOrder++;
         });
 
+        if (tmpNode.is('[data-uic^=athena]')) {
+            tmpNode.html('');
+            tmpNode.append('__AthenaHTML____AthenaCSS____AthenaJS__');
+        }
+        tmpNode.find('> .uic-embed-preview').remove();
+        tmpNode.find('> .embed-code').each(function () {
+            $(this).replaceWith($(this).text());
+        });
+
         return tmpNode.html();
     }
 };
@@ -12800,6 +12947,43 @@ MBE.dialogs = {
         $(this).dialog("close");
     }
 };
+MBE.context = {
+
+    defaultSettings: {
+        trigger: 'right',
+        zIndex: 300
+    },
+
+    init: function () {
+
+        var ds = this.defaultSettings;
+
+        MBE.workspace.contextMenu($.extend(ds, {
+            selector: '.mbe-active', 
+            callback: MBE.selection._contextAction, 
+            items: MBE.selection.contextItems,
+            position: function (opt, x, y) {
+                opt.$menu.css({
+                    top: y + $('#mozaicPageWorkspace > iframe').offset().top,
+                    left: x + $('#mozaicPageWorkspace > iframe').offset().left
+                }); 
+            }
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.tree-nav .node-handle b',
+            callback: MBE.selection._contextAction,
+            items: MBE.selection.contextItems,
+            events: {
+                show: function (options) {
+                    MBE.navigator.selectNode.apply(this, [{}]);
+                }
+            }
+        }));
+    }
+};
+
+MBE.onInit.push(MBE.context.init);
 MBE.types.containers = {
 
     templates: {
@@ -12832,7 +13016,10 @@ MBE.types.containers = {
         'list-group-div': '<div class="list-group"></div>',
         'list-group-item':  '<li class="list-group-item" data-uic="containers|list-group-item">List Group Item</li>',
         'list-group-item-link': '<a class="list-group-item" data-uic="containers|list-group-item-link">List Group Item</a>',
-        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>'
+        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>',
+        'dl-dl': '<dl></dl>',
+        'dl-dt': '<dt data-uic="containers|dl-dt">item</dt>',
+        'dl-dd': '<dd data-uic="containers|dl-dd">definition</dd>'
     },
     
     options: {
@@ -13133,6 +13320,22 @@ MBE.types.containers = {
                     set: MBE.options.toggleClass
                 }]
             }
+        },
+        'dl-dl': {
+            'definitionListOptions': {
+                name: 'Definition list options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'null': 'default',
+                        'dl-horizontal': 'horizontal'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
         }
     },
 
@@ -13222,27 +13425,51 @@ MBE.types.containers = {
         menu['containers']['list-group-item-link'] = menu['containers']['list-group'];
         menu['containers']['list-group-item-button'] = menu['containers']['list-group'];
 
+        menu['containers']['dl-dl'] = {
+            items: [
+                { type: 'text', label: 'ADD DEFINITION' },
+                { type: 'button', label: 'BEFORE', callback: self.dlAddBefore, allowFor: self.dlIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.dlAddAfter, allowFor: self.dlIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.dlAddToBegin },
+                { type: 'button', label: 'END', callback: self.dlAddToEnd },
+                { type: 'text', label: 'ITEM' },
+                { type: 'button', label: 'DELETE', callback: self.dlDeleteItem, allowFor: self.dlIsItemSelected },
+            ]
+        }
+        menu['containers']['dl-dt'] = menu['containers']['dl-dl'];
+        menu['containers']['dl-dd'] = menu['containers']['dl-dl'];
+
         MBE.onBeforeDelete['containers|tab'] = self._tabDelete;
-        
+        MBE.onBeforeDelete['containers|dl-dt'] = self._dtDelete;
+        MBE.onBeforeDelete['containers|dl-dd'] = self._ddDelete;
     },
 
     _drop: function(target)
     {
-        if (target.is('.panel-heading') && $(this).is('[data-uic="text|heading"]')) {
-            $(this).addClass('panel-title');
+        var elm = $(this);
+        if (target.is('.panel-heading') && elm.is('[data-uic="text|heading"]')) {
+            elm.addClass('panel-title');
         }
 
-        if ($(this).is('[data-uic="containers|tabs"]') && $(this).is(':empty')) {
-            MBE.types.containers.buildTabs.apply(this, []);
+        if(elm.is(':empty')) {
+            if (elm.is('[data-uic="containers|tabs"]')) {
+                MBE.types.containers.buildTabs.apply(this, []);
+            }
+
+            if (elm.is('[data-uic="containers|accordion"]')) {
+                MBE.types.containers.buildAccordion.apply(this, []);
+            }
+
+            if (elm.is('.list-group')) {
+                MBE.types.containers.buildListGroup.apply(this, []);
+            }
+            if (elm.is('dl')) {
+                MBE.types.containers.buildDL.apply(this, []);
+            }
         }
 
-        if ($(this).is('[data-uic="containers|accordion"]') && $(this).is(':empty')) {
-            MBE.types.containers.buildAccordion.apply(this, []);
-        }
-
-        if ($(this).is('.list-group') && $(this).is(':empty')) {
-            MBE.types.containers.buildListGroup.apply(this, []);
-        }
+        if (elm.is('dt')) { MBE.types.containers._dtDrop.apply(this, []); }
+        if (elm.is('dd')) { MBE.types.containers._ddDrop.apply(this, []); }
     },
 
     /******************************************************************/
@@ -13562,6 +13789,91 @@ MBE.types.containers = {
             return true;
         }
         return false;
+    },
+
+    /******************************************************************/
+    /* LIST GROUP CONTEXT METHODS                                     */
+    /******************************************************************/
+    buildDL: function () {
+        for (var i = 1; i <= 3; i++) {
+            var dt = $(MBE.types.containers.templates['dl-dt']);
+            var dd = $(MBE.types.containers.templates['dl-dd']);
+            dt.html(dt.html() + ' ' + i).appendTo(this);
+            dd.html(dd.html() + ' ' + i).appendTo(this);
+        }
+    },
+
+    dlIsItemSelected: function () {
+        return $(this).is('dt') || $(this).is('dd');
+    },
+
+    dlDeleteItem: function () {
+        var elm = $(this);
+        if (elm.is('dt')) { elm.next().remove(); }
+        if (elm.is('dd')) { elm.prev().remove(); }
+
+        elm.remove();
+
+        $('.mbe-drag-handle', MBE.workspaceDoc).remove();
+        MBE.DnD.updateDOM();
+        MBE.selection.select.apply(MBE.workspaceDoc.body, []);
+    },
+
+    dlAdd: function (pos) {
+        var self = MBE.types.containers;
+        var dt = $(self.templates['dl-dt']);
+        var dd = $(self.templates['dl-dd']);
+        var target;
+
+        if (pos == 'before' || pos == 'after') {
+            if ($(this).is('dt')) {
+                target = pos == 'before' ? $(this) : $(this).next();
+            }
+            if ($(this).is('dd')) {
+                target = pos == 'before' ? $(this).prev() : $(this);
+            }
+        }
+        else {
+            target = $(this).is('dl') ? $(this) : $(this).parent();
+        }
+
+
+        switch (pos) {
+            case 'before': target.before(dt); target.before(dd); break;
+            case 'after': target.after(dd); target.after(dt); break;
+            case 'begin': target.prepend(dd); target.prepend(dt); break;
+            case 'end': target.append(dt); target.append(dd); break;
+        }
+
+        MBE.DnD.updateDOM();
+    },
+
+    dlAddAfter: function () { MBE.types.containers.dlAdd.apply(this, ['after']); },
+    dlAddBefore: function () { MBE.types.containers.dlAdd.apply(this, ['before']); },
+    dlAddToBegin: function () { MBE.types.containers.dlAdd.apply(this, ['begin']); },
+    dlAddToEnd: function () { MBE.types.containers.dlAdd.apply(this, ['end']); },
+
+    _dtDelete: function () { $(this).next().remove(); },
+    _ddDelete: function () { $(this).prev().remove(); },
+
+    _dtDrop: function () {
+        var elm = $(this);
+        elm.parent().find('dd').each(function () {
+            if (!$(this).prev().is('dt')) {
+                elm.after(this);
+                return false;
+            }
+        });
+    },
+
+    _ddDrop: function () {
+        var elm = $(this);
+        elm.parent().find('dt').each(function () {
+            if (!$(this).next().is('dd')) {
+                elm.before(this);
+                return false;
+            }
+        });
     }
 };
 
@@ -15274,6 +15586,8 @@ MBE.types.misc = {
     templates: {
         'custom-code': '<div></div>',
         'modal': '<div class="modal fade" tabindex="-1" role="dialog"></div>',
+        'modal-dialog': '<div class="modal-dialog" data-uic="misc|modal-dialog" locked role="document"></div>',
+        'modal-content': '<div class="modal-content" data-uic="misc|modal-content" locked></div>',
         'modal-header': '<div class="modal-header" data-uic="misc|modal-header" locked></div>',
         'modal-body': '<div class="modal-body" data-uic="misc|modal-body" locked></div>',
         'modal-footer': '<div class="modal-footer" data-uic="misc|modal-footer" locked></div>',
@@ -15289,7 +15603,8 @@ MBE.types.misc = {
         'breadcrumbs': '<ol class="breadcrumb"></ol>',
         'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
         'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
-        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>'
+        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>',
+        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>'
     },
 
     options: {
@@ -15503,7 +15818,27 @@ MBE.types.misc = {
             }
         },
         'breadcrumbs-inactive': MBE.types.controls.options.link,
-        'breadcrumbs-active': MBE.types.text.options.common
+        'breadcrumbs-active': MBE.types.text.options.common,
+        'embed': {
+            'embedOptions': {
+                name: 'Embed options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Code',
+                    type: 'cm',
+                    get: function () { return $(this).find('.embed-code').text(); },
+                    set: function (opt) {
+                        $(this).find('.embed-code').text(opt.value);
+                        if (opt.value.indexOf('<script') === -1) { // preview of script embed is buggy
+                            var preview = $(this).find('.uic-embed-preview');
+                            preview[0].innerHTML = opt.value; 
+                        }
+                        
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
     },
 
     init: function() 
@@ -15561,11 +15896,9 @@ MBE.types.misc = {
     {
         var self = MBE.types.misc;
         var modal = $(this);
-        var dialog = $('<div class="modal-dialog" role="document"></div>');
-        var content = $('<div class="modal-content"></div>')
+        var dialog = $(self.templates['modal-dialog']);
+        var content = $(self.templates['modal-content']);
         var body = $(self.templates['modal-body']);
-        
-        
         
         self.modalCreateHeader().appendTo(content);
 
@@ -15707,6 +16040,79 @@ MBE.types.misc = {
 }
 
 MBE.onInit.push(MBE.types.misc.init);
+MBE.types.functions = {
+
+    templates: {
+        'foreach': '<div></div>',
+        'if': '<div></div>',
+    },
+
+    options: {
+        'foreach': {
+            'foreachOptions': {
+                name: 'Foreach options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Wrapper tag',
+                    type: 'select',
+                    options: {
+                        'tr': 'tr',
+                        'div': 'div',
+                        'li': 'list item'
+                    },
+                    get: MBE.options.is,
+                    set: MBE.options.toggleTagName
+                }, {
+                    label: 'Input variable name',
+                    type: 'text',
+                    attr: 'data-varname',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }, {
+                    label: 'Data type',
+                    type: 'select',
+                    options: {
+                        'null': '-- chose one --',
+                        'jtoken': 'JToken',
+                        'dbitem': 'DbItem'
+                    },
+                    attr: 'data-type',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }]
+            }
+        },
+        'if': {
+            'ifOptions': {
+                name: 'IF options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Wrapper tag',
+                    type: 'select',
+                    options: {
+                        'tr': 'tr',
+                        'div': 'div',
+                        'li': 'list item'
+                    },
+                    get: MBE.options.is,
+                    set: MBE.options.toggleTagName
+                }, {
+                    label: 'Variable name',
+                    type: 'text',
+                    attr: 'data-varname',
+                    get: MBE.options.hasAttr,
+                    set: MBE.options.setAttr
+                }]
+            }
+        }
+    },
+
+    init: function () {
+
+    }
+};
+
+MBE.onInit.push(MBE.types.functions.init);
 MBE.types.ui = {
 
     templates: {
@@ -15875,14 +16281,14 @@ MBE.types.ui = {
         var self = MBE.types.ui;
 
         var group = $('<li></li>');
-        group.html('<span class="fa fa-caret-right fa-fw"></span>UI').prependTo('ul.category');
+        group.html('UI').prependTo('ul.category');
     
         var items = $('<ul data-type="ui" style="display: none"></ul>');
         for(template in self.templatesName) {
             var tmp = self.templatesName[template].split(/#/);
             var item = $('<li></li>');
             item
-                .html('<span class="fa fa-square fa-fw"></span>' + tmp[0])
+                .html(tmp[0])
                 .attr({ 'data-template': template, 'draggable': true })
                 .data('type', 'ui')
                 .appendTo(items);
@@ -16401,4 +16807,275 @@ MBE.types.ui = {
     }
 };
 
-MBE.onInit.push(MBE.types.ui.init);
+MBE.onBeforeInit.push(MBE.types.ui.init);
+
+MBE.types.athena = {
+
+    data: {},
+
+    templates: {},
+
+    options: {},
+
+    init: function () {
+        this.loadGraphList();
+
+        MBE.DnD.onDrop.push(this._onDrop);
+        MBE.io.onLoad.push($.proxy(this._onLoad, this));
+    },
+
+    loadGraphList: function () {
+        var url = '/api/athena/getGraphList';
+        $.ajax(url, {
+            dataType: 'json',
+            async: false,
+            success: $.proxy(this.setGraphList, this)
+        });
+    },
+
+    setGraphList: function (data) {
+        var target = $('ul[data-type="athena"]');
+
+        for (var i = 0; i < data.length; i++) {
+            var item = $('<li />');
+            item.attr('data-template', data[i].Ident).html(data[i].Name);
+            item.appendTo(target);
+
+            this.templates[data[i].Ident] = '<div />';
+            this.data[data[i].Ident] = data[i];
+        }
+    },
+
+    build: function (code, id, data) {
+        return code.replace(/\{ident\}/g, id).replace(/\{data\}/g, data.split(/\r?\n/).join('\\n'));
+    },
+
+    /*************************************************/
+    /* EVENTS                                        */
+    /*************************************************/
+    _onDrop: function () {
+        var elm = $(this); 
+
+        if (elm.is('[data-uic^=athena]') && elm.is(':empty')) {
+            var self = MBE.types.athena;
+            var kv = elm.data('uic').split('|');
+            var type = kv[1];
+            var data = self.data[type];
+            var css = data.Css ? '<style type="text/css" rel="stylesheet">' + self.build(data.Css, data.Ident + '_graph', '') + '</style>' : "";
+
+            elm.css('height', 300).addClass('graphWrapper').attr('id', data.Ident);
+            elm.append(self.build(data.Html, data.Ident + '_graph', ''));
+            elm.append(css);
+
+            var run = self.build(data.Js, data.Ident + '_graph', data.DemoData);
+            MBE.win.eval.apply(MBE.win, [run]);
+        }
+    },
+
+    _onLoad: function () {
+        $('[data-uic^=athena]', MBE.workspace).each($.proxy(function (index, element) {
+            var elm = $(element);
+            var elmId = elm.attr('id');
+            var kv = elm.data('uic').split('|');
+            var type = kv[1];
+            var data = this.data[type];
+            var style = data.Css ? '<style type="text/css" rel="stylesheet">' + this.build(data.Css, elmId + '_graph', '') + '</style>' : '';
+
+            elm.html('');
+            elm.append(this.build(data.Html, elmId + '_graph', ''));
+            elm.append(style);
+
+            var run = this.build(data.Js, elmId + '_graph', data.DemoData);
+            MBE.win.eval.apply(MBE.win, [run]);
+        }, this));
+    }
+};
+
+MBE.onBeforeInit.push($.proxy(MBE.types.athena.init, MBE.types.athena));
+var Athena = {
+
+    onInit: [],
+    gallery: null,
+    svg: null,
+    js: null,
+    css: null,
+    html: null,
+    ident: null,
+    preview: null,
+    data: null,
+    dataSource: null,
+
+    jsEditor: null,
+    cssEditor: null,
+    htmlEditor: null,
+
+    init: function () {
+
+        this.gallery = $('#GalleryItems');
+        this.svg = $('.graphPreview');
+        this.js = $('.workspace .js textarea');
+        this.css = $('.workspace .css textarea');
+        this.data = $('.workspace .data textarea');
+        this.html = $('.workspace .html textarea');
+        this.preview = $('.workspace .preview .wrapper');
+
+        this.ident = $('#Ident');
+        
+        $(document)
+            .on('click', '#GalleryItems .item', this._definitionSelect)
+            .on('blur', '#Name', this.makeIdent)
+            .on('keyup', '#Name', this.sanitizeName)
+            .on('blur', '.workspace .js textarea', $.proxy(this.render, this))
+            .on('blur', '.workspace .data textarea', $.proxy(this.render, this))
+            .on('blur', '.workspace .html textarea', $.proxy(this.render, this))
+            .on('blur', '.workspace .css textarea', $.proxy(this.renderCss, this))
+            .on('change', '#Library', $.proxy(this.changeLibrary, this));
+
+        setTimeout($.proxy(this.initEditors, this), 250);
+        
+        this.changeLibrary();
+        this.callHooks(this.onInit);
+
+        this.render();
+        this.renderCss();
+    },
+
+    initEditors: function () {
+
+        this.jsEditor = CodeMirror.fromTextArea(this.js[0], {
+            lineNumbers: true,
+            lineWrapping: false,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            mode: "text/javascript",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            extraKeys: {
+                "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); },
+                "Ctrl-Space": "autocomplete"
+            }
+        });
+        this.jsEditor.setSize(null, this.js.parent().height());
+    },
+
+    callHooks: function (hooks, context, params) {
+        context = context || this;
+        for (var i = 0; i < hooks.length; i++) {
+            hooks[i].apply(context, params);
+        }
+    },
+
+    /*****************************************************/
+    /* METHODS                                           */
+    /*****************************************************/
+    reset: function () {
+        var varName = this.ident.val() + '_chart';
+        if (typeof window[varName] != 'undefined' && typeof window[varName].destroy != 'undefined') {
+            window[varName].destroy();
+            delete window[varName];
+        }
+
+        this.preview.html(this.build(this.html.val()));
+    },
+
+    changeLibrary: function () {
+        $('#BtnWizzard').attr('disabled', $('#Library').val() == 'd3');
+        this.loadDefinitions();
+    },
+
+    renderDefault: function (definitionId) {
+        this.js.val($('#' + definitionId).find('.jsSource').html());
+        this.css.val($('#' + definitionId).find('.cssSource').html());
+        this.data.val($('#' + definitionId).find('.dataSource').text());
+        this.html.val($('#' + definitionId).find('.htmlSource').html());
+        this.preview.html($('#' + definitionId).find('.htmlSource').html());
+        this.jsEditor.setValue(this.js.val());
+
+        this.render();
+        this.renderCss();
+    },
+
+    loadDefinitions: function () {
+        var lib = $('#Library').val();
+        this.gallery.html('');
+
+        $('#GraphDefinition #'+lib+' .item').each($.proxy(function (index, element) {
+            var name = $(element).data('name');
+            var icon = $(element).data('icon');
+            var item = $('<a class="item" />');
+
+            item.attr('data-id', $(element).attr('id'))
+                .append('<span class="fa ' + icon + '"></span>')
+                .append('<span class="label">' + name + '</span>')
+                .appendTo(this.gallery);
+        }, this));
+    },
+
+    render: function () {
+        this.reset();
+        if (this.jsEditor) {
+            this.jsEditor.save();
+        }
+        try {
+            eval.apply(window, [this.setData(this.build(this.js.val()))]);
+        }
+        catch (e) {
+            var error = $('<span class="label label-danger" style="position:absolute;left:100px;top:8px"></span>');
+            error.html(e.message);
+            $('.workspace .js').append(error);
+
+            setTimeout(function () {
+                error.fadeOut('slow', function () { error.remove() });
+            }, 2000);
+        }
+    },
+
+    renderCss: function () {
+        $('style#cssPreview').remove();
+        if (this.css.val().length) {
+            var style = $('<style type="text/css" rel="stylesheet" id="cssPreview"></style>');
+            style.html(this.build(this.css.val()));
+            style.appendTo('body'); 
+        }
+    },
+
+    makeIdent: function () {
+        var self = Athena;
+        var name = this.value;
+        name = RemoveDiacritics(name);
+        name = name.replace(/ /g, '-');
+        name = name.replace(/-{2,}/g, '-');
+
+        self.preview.find('> *').eq(0).attr('id', name.toLowerCase());
+        self.ident.val(name.toLowerCase());
+        self.render();
+        self.renderCss();
+    },
+
+    sanitizeName: function (e) {
+        if (e.which == 32) {
+            this.value = this.value.replace(/ /g, '_');
+        }
+    },
+
+    build: function (code) {
+        return code.replace(/\{ident\}/g, this.ident.val());
+    },
+
+    setData: function (code) {
+        return code.replace(/\{data\}/g, this.data.val().split(/\n/).join('\\n'));  
+    },
+
+    /*****************************************************/
+    /* EVENTS                                            */
+    /*****************************************************/
+    _definitionSelect: function () {
+        var self = Athena;
+        var definitionId = $(this).data('id');
+        self.renderDefault(definitionId);
+    }
+};
+
+if ($('body').hasClass('athenaForm')) {
+    $($.proxy(Athena.init, Athena));
+}

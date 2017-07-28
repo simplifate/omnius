@@ -559,6 +559,8 @@ body.tapestryModule #lowerPanel {
       box-shadow: 0 0 0 2px black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .activeItem {
       box-shadow: 0 0 0 2px green; }
+    body.tapestryModule #lowerPanel #tapestryWorkspace .isMatch {
+      box-shadow: 0 0 0 3px #c2b52b !important; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
@@ -3192,6 +3194,28 @@ body.mozaicEditorBody {
     content: "empty list group"; }
   body.mozaicEditorBody .list-group-item.empty-element:before {
     content: "empty list group item"; }
+  body.mozaicEditorBody [data-uic="functions|foreach"].empty-element:before {
+    content: "empty foreach"; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:empty:before {
+    display: block;
+    background: #efefef;
+    color: #ccc;
+    padding: 5px 10px;
+    content: "empty embed code"; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .embed-code:not(:empty) {
+    display: none; }
+  body.mozaicEditorBody div[data-uic="misc|embed"] .uic-embed-preview {
+    border: 1px solid #d39212; }
+    body.mozaicEditorBody div[data-uic="misc|embed"] .uic-embed-preview:before {
+      display: block;
+      font-size: 0.8em;
+      content: "Embed preview";
+      color: #d39212;
+      background: #fcffca;
+      padding: 5px 10px; }
+  body.mozaicEditorBody table div[data-uic="functions|foreach"] {
+    display: table-row-group;
+    width: 100%; }
   body.mozaicEditorBody .input-group-addon.empty-element:before, body.mozaicEditorBody .input-group-btn.empty-element:before {
     padding: 0px; }
   body.mozaicEditorBody div.clearfix.empty-element:before {
@@ -3447,6 +3471,184 @@ body.cortexModule #lowerPanel {
   body.cortexModule .lowerRightDecoration {
     display: none; }
   body.cortexModule .moduleSubMenuArea {
+    transform: scale(0.75); } }
+
+body.athenaModule #upperPanel {
+  height: 295px; }
+
+body.athenaModule #lowerPanel {
+  top: 370px; }
+
+body.athenaModule.athenaForm #lowerPanelContainer {
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  min-height: 875px; }
+
+body.athenaModule.athenaForm #graphFormMenuArea {
+  position: static;
+  padding: 5px;
+  margin-left: 300px;
+  background: #efefef; }
+  body.athenaModule.athenaForm #graphFormMenuArea .btn {
+    line-height: 34px;
+    height: 34px;
+    padding: 0px; }
+  body.athenaModule.athenaForm #graphFormMenuArea .checkbox {
+    margin-top: 7px;
+    margin-bottom: 7px; }
+
+body.athenaModule.athenaForm .workspace {
+  position: absolute;
+  left: 300px;
+  top: 44px;
+  right: 0px;
+  bottom: 0px; }
+  body.athenaModule.athenaForm .workspace .js, body.athenaModule.athenaForm .workspace .css, body.athenaModule.athenaForm .workspace .data, body.athenaModule.athenaForm .workspace .preview, body.athenaModule.athenaForm .workspace .html {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    box-sizing: border-box;
+    padding: 0px 10px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 0px;
+    font-size: 0.8em; }
+    body.athenaModule.athenaForm .workspace .js:before, body.athenaModule.athenaForm .workspace .css:before, body.athenaModule.athenaForm .workspace .data:before, body.athenaModule.athenaForm .workspace .preview:before, body.athenaModule.athenaForm .workspace .html:before {
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 14px;
+      display: block;
+      margin: 0px -10px 10px -10px;
+      background: #efefef;
+      padding: 5px 10px;
+      font-weight: bold; }
+    body.athenaModule.athenaForm .workspace .js .wrapper, body.athenaModule.athenaForm .workspace .css .wrapper, body.athenaModule.athenaForm .workspace .data .wrapper, body.athenaModule.athenaForm .workspace .preview .wrapper, body.athenaModule.athenaForm .workspace .html .wrapper {
+      position: absolute;
+      top: 40px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px; }
+    body.athenaModule.athenaForm .workspace .js textarea, body.athenaModule.athenaForm .workspace .css textarea, body.athenaModule.athenaForm .workspace .data textarea, body.athenaModule.athenaForm .workspace .preview textarea, body.athenaModule.athenaForm .workspace .html textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      font-family: monospace; }
+  body.athenaModule.athenaForm .workspace .css, body.athenaModule.athenaForm .workspace .data {
+    width: 33%; }
+  body.athenaModule.athenaForm .workspace .html {
+    width: 34%; }
+  body.athenaModule.athenaForm .workspace .js {
+    left: 0px;
+    top: 0px; }
+    body.athenaModule.athenaForm .workspace .js:before {
+      content: "JavaScript"; }
+  body.athenaModule.athenaForm .workspace .data {
+    left: 67%;
+    top: 50%; }
+    body.athenaModule.athenaForm .workspace .data:before {
+      content: "Demo data "; }
+  body.athenaModule.athenaForm .workspace .html {
+    left: 33%;
+    top: 50%; }
+    body.athenaModule.athenaForm .workspace .html:before {
+      content: "HTML"; }
+  body.athenaModule.athenaForm .workspace .css {
+    left: 0%;
+    top: 50%; }
+    body.athenaModule.athenaForm .workspace .css:before {
+      content: "CSS"; }
+  body.athenaModule.athenaForm .workspace .preview {
+    left: 50%;
+    top: 0px; }
+    body.athenaModule.athenaForm .workspace .preview:before {
+      content: "Preview"; }
+    body.athenaModule.athenaForm .workspace .preview .wrapper > * {
+      width: 100%;
+      height: 100%; }
+
+body.athenaModule.athenaForm .gallery {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 300px;
+  background: #e0e2e2; }
+  body.athenaModule.athenaForm .gallery .gallery-header {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #bdbbbc;
+    font-family: FatTec;
+    font-size: 16px;
+    padding: 0px 10px; }
+  body.athenaModule.athenaForm .gallery #GalleryItems {
+    margin: 8px 8px; }
+  body.athenaModule.athenaForm .gallery a.item {
+    display: block;
+    float: left;
+    width: 126px;
+    height: 95px;
+    margin: 8px 8px;
+    box-sizing: border-box;
+    background: #21a7b5;
+    position: relative;
+    padding: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #21a7b5; }
+    body.athenaModule.athenaForm .gallery a.item:hover {
+      background: #446782;
+      border-color: #446782; }
+    body.athenaModule.athenaForm .gallery a.item.active {
+      border-color: #59c9e7; }
+    body.athenaModule.athenaForm .gallery a.item .fa {
+      display: block;
+      text-align: center;
+      color: #fff;
+      font-size: 50px; }
+    body.athenaModule.athenaForm .gallery a.item .label {
+      display: block;
+      width: 100%;
+      position: absolute;
+      bottom: 10px;
+      left: 0px; }
+
+@media only screen and (max-width: 1630px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1490px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.8); }
+  body.athenaModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1360px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.7); }
+  body.athenaModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1230px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.athenaModule .lowerRightDecoration {
+    display: none; } }
+
+@media only screen and (max-width: 1130px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.6); }
+  body.athenaModule .lowerRightDecoration {
+    display: none; }
+  body.athenaModule .moduleSubMenuArea {
+    transform: scale(0.9); } }
+
+@media only screen and (max-width: 1090px) {
+  body.athenaModule .tileMenuArea {
+    transform: scale(0.55); }
+  body.athenaModule .lowerRightDecoration {
+    display: none; }
+  body.athenaModule .moduleSubMenuArea {
     transform: scale(0.75); } }
 
 .mytooltip {
@@ -3829,7 +4031,7 @@ body.adminLayout #appNotificationArea {
   display: none; }
 
 .CodeMirror pre {
-  line-height: 1.25 !important;
+  height: 15px;
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word; }

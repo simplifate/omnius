@@ -20,6 +20,8 @@ MBE.types.misc = {
     templates: {
         'custom-code': '<div></div>',
         'modal': '<div class="modal fade" tabindex="-1" role="dialog"></div>',
+        'modal-dialog': '<div class="modal-dialog" data-uic="misc|modal-dialog" locked role="document"></div>',
+        'modal-content': '<div class="modal-content" data-uic="misc|modal-content" locked></div>',
         'modal-header': '<div class="modal-header" data-uic="misc|modal-header" locked></div>',
         'modal-body': '<div class="modal-body" data-uic="misc|modal-body" locked></div>',
         'modal-footer': '<div class="modal-footer" data-uic="misc|modal-footer" locked></div>',
@@ -35,7 +37,8 @@ MBE.types.misc = {
         'breadcrumbs': '<ol class="breadcrumb"></ol>',
         'breadcrumbs-item': '<li data-uic="misc|breadcrumbs-item"></li>',
         'breadcrumbs-active': '<span data-uic="misc|breadcrumbs-active" locked></span>',
-        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>'
+        'breadcrumbs-inactive': '<a data-uic="misc|breadcrumbs-inactive" locked></a>',
+        'embed': '<div><div class="embed-code"></div><div class="uic-embed-preview"></div></div>'
     },
 
     options: {
@@ -249,7 +252,27 @@ MBE.types.misc = {
             }
         },
         'breadcrumbs-inactive': MBE.types.controls.options.link,
-        'breadcrumbs-active': MBE.types.text.options.common
+        'breadcrumbs-active': MBE.types.text.options.common,
+        'embed': {
+            'embedOptions': {
+                name: 'Embed options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Code',
+                    type: 'cm',
+                    get: function () { return $(this).find('.embed-code').text(); },
+                    set: function (opt) {
+                        $(this).find('.embed-code').text(opt.value);
+                        if (opt.value.indexOf('<script') === -1) { // preview of script embed is buggy
+                            var preview = $(this).find('.uic-embed-preview');
+                            preview[0].innerHTML = opt.value; 
+                        }
+                        
+                        MBE.DnD.updateDOM();
+                    }
+                }]
+            }
+        },
     },
 
     init: function() 
@@ -307,11 +330,9 @@ MBE.types.misc = {
     {
         var self = MBE.types.misc;
         var modal = $(this);
-        var dialog = $('<div class="modal-dialog" role="document"></div>');
-        var content = $('<div class="modal-content"></div>')
+        var dialog = $(self.templates['modal-dialog']);
+        var content = $(self.templates['modal-content']);
         var body = $(self.templates['modal-body']);
-        
-        
         
         self.modalCreateHeader().appendTo(content);
 

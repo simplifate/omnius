@@ -357,6 +357,10 @@ body.tapestryModule {
                 box-shadow: 0 0 0 2px green;
             }
 
+            .isMatch {
+                box-shadow: 0 0 0 3px #c2b52b !important;
+            }
+
             .rule.ui-draggable-dragging, .item.ui-draggable-dragging, .symbol.ui-draggable-dragging {
                 z-index: 1000;
             }

@@ -49,29 +49,6 @@
     <div id="appInfoPanel">
         App: <span id="headerAppName">@ViewData["appName"]</span><br /> Page: <span id="headerPageName"></span>
     </div>
-    <div id="gridControlPanel">
-        <label for="gridResolution">Mřížka:</label>
-        <select id="gridResolutionDropdown" name="gridResolution">
-            <option selected="selected" value="off">Žádná</option>
-            <option value="5">5px</option>
-            <option value="10">10px</option>
-            <option value="15">15px</option>
-            <option value="20">20px</option>
-            <option value="25">25px</option>
-            <option value="30">30px</option>
-            <option value="35">35px</option>
-            <option value="40">40px</option>
-            <option value="45">45px</option>
-            <option value="50">50px</option>
-        </select>
-        <label for="gridShow">Zobrazit:</label>
-        <input type="checkbox" id="gridShowCheckbox" name="gridShow" />
-    </div>
-    <div id="modalControlPanel">
-        <label>Uložit jako modal:</label><input type="checkbox" id="currentPageIsModal" />
-        <label>Šířka:</label><input type="text" id="modalWidthInput" value="400" />
-        <label>Výška:</label><input type="text" id="modalHeightInput" value="300" />
-    </div>
 </div>
 <div id="minimizedUpperPanel">
     <div class="panelLabel">Mozaic bootstrap visual editor</div>
@@ -151,6 +128,9 @@
                             <li data-template="list-group-item" class="hide">List group item</li>
                             <li data-template="list-group-item-link" class="hide">List group item</li>
                             <li data-template="list-group-item-button" class="hide">List group item</li>
+                            <li data-template="dl-dl">Definition list</li>
+                            <li data-template="dl-dt" class="hide">Term</li>
+                            <li data-template="dl-dd" class="hide">Definition</li>
                             <!--li>Collapse</li>
                             <li>Media</li>
                             <li>Jumbotron</li>
@@ -191,6 +171,7 @@
                             <li data-template="tbody" class="hide">Table body</li>
                             <li data-template="tfoot" class="hide">Table footer</li>
                             <li data-template="caption" class="hide">Caption</li>
+                            <li data-template="table-responsive" class="hide">Table responsive wrapper</li>
                         </ul>
                     </li>
                     <li>Form
@@ -234,6 +215,8 @@
                             <!--li>Video</li-->
                             <li data-template="custom-code">Custom code</li>
                             <li data-template="modal">Modal</li>
+                            <li data-template="modal-dialog" class="hide">Modal dialog</li>
+                            <li data-template="modal-content" class="hide">Modal content</li>
                             <li data-template="modal-header" class="hide">Modal header</li>
                             <li data-template="modal-body" class="hide">Modal body</li>
                             <li data-template="modal-footer" class="hide">Modal footer</li>
@@ -247,8 +230,18 @@
                             <li data-template="breadcrumbs-inactive" class="hide">Link</li>
                             <li data-template="hr">Hr</li>
                             <li data-template="responsive-embed">Responsive embed</li>
+                            <li data-template="embed">Embed code</li>
                             <li data-template="progressBar">Progress bar</li>
                         </ul>
+                    </li>
+                    <li>Functions
+                        <ul data-type="functions">
+                            <li data-template="foreach">Foreach</li>
+                            <li data-template="if">IF</li>
+                        </ul>
+                    </li>
+                    <li>Athena
+                        <ul data-type="athena"></ul>
                     </li>
                 </ul>
             </div>

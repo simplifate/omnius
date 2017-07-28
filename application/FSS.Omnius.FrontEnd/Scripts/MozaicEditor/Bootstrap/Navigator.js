@@ -91,7 +91,9 @@
 
     selectNode: function(event)
     {
-        event.stopImmediatePropagation();
+        if (event.stopImmediatePropagation) {
+            event.stopImmediatePropagation();
+        }
         MBE.selection.select.apply($(this).data('targetuic'), [event]);
     },
 

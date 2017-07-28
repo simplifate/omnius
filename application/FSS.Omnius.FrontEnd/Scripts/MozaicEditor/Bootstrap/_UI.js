@@ -166,14 +166,14 @@
         var self = MBE.types.ui;
 
         var group = $('<li></li>');
-        group.html('<span class="fa fa-caret-right fa-fw"></span>UI').prependTo('ul.category');
+        group.html('UI').prependTo('ul.category');
     
         var items = $('<ul data-type="ui" style="display: none"></ul>');
         for(template in self.templatesName) {
             var tmp = self.templatesName[template].split(/#/);
             var item = $('<li></li>');
             item
-                .html('<span class="fa fa-square fa-fw"></span>' + tmp[0])
+                .html(tmp[0])
                 .attr({ 'data-template': template, 'draggable': true })
                 .data('type', 'ui')
                 .appendTo(items);
@@ -692,4 +692,4 @@
     }
 };
 
-MBE.onInit.push(MBE.types.ui.init);
+MBE.onBeforeInit.push(MBE.types.ui.init);

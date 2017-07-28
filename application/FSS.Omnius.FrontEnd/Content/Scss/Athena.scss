@@ -1,0 +1,267 @@
+﻿body.athenaModule {
+    #upperPanel {
+        height: 295px;
+    }
+
+    #lowerPanel {
+        top: 370px;
+    }
+
+    &.athenaForm {
+        #lowerPanelContainer {
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            min-height: 875px;
+        }
+
+        #graphFormMenuArea {
+            position: static;
+            padding: 5px;
+            margin-left: 300px;
+            background: #efefef;
+
+            .btn {
+                line-height: 34px;
+                height: 34px;
+                padding: 0px;
+            }
+
+            .checkbox {
+                margin-top: 7px;
+                margin-bottom: 7px;
+            }
+        }
+
+        .workspace {
+            position: absolute;
+            left: 300px;
+            top: 44px;
+            right: 0px;
+            bottom: 0px;
+
+            .js, .css, .data, .preview, .html {
+                position: absolute;
+                width: 50%;
+                height: 50%;
+                box-sizing: border-box;
+                padding: 0px 10px 10px;
+                border: 1px solid #ccc;
+                background: #fff;
+                border-radius: 0px;
+                font-size: 0.8em;
+
+
+                &:before {
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    font-size: 14px;
+                    display: block;
+                    margin: 0px -10px 10px -10px;
+                    background: #efefef;
+                    padding: 5px 10px;
+                    font-weight: bold;
+                }
+
+                .wrapper {
+                    position: absolute;
+                    top: 40px;
+                    left: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                }
+
+                textarea {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    font-family: monospace;
+                }
+            }
+
+            .css, .data {
+                width: 33%;
+            }
+
+            .html {
+                width: 34%;
+            }
+
+            .js {
+                left: 0px;
+                top: 0px;
+
+                &:before {
+                    content: "JavaScript";
+                }
+            }
+
+            .data {
+                left: 67%;
+                top: 50%;
+
+                &:before {
+                    content: "Demo data ";
+                }
+            }
+
+            .html {
+                left: 33%;
+                top: 50%;
+
+                &:before {
+                    content: "HTML";
+                }
+            }
+
+            .css {
+                left: 0%;
+                top: 50%;
+
+                &:before {
+                    content: "CSS";
+                }
+            }
+
+            .preview {
+                left: 50%;
+                top: 0px;
+
+                &:before {
+                    content: "Preview";
+                }
+                 
+                .wrapper > * {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .gallery {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            width: 300px;
+            background: #e0e2e2;
+
+            .gallery-header {
+                width: 100%;
+                height: 44px;
+                line-height: 44px;
+                background-color: #bdbbbc;
+                font-family: FatTec;
+                font-size: 16px;
+                padding: 0px 10px;
+            }
+
+            #GalleryItems {
+                margin: 8px 8px;
+            }
+
+            a.item {
+                display: block;
+                float: left;
+                width: 126px;
+                height: 95px;
+                margin: 8px 8px;
+                box-sizing: border-box;
+                background: #21a7b5;
+                position: relative;
+                padding: 10px;
+                text-decoration: none;
+                cursor: pointer;
+                border: 2px solid #21a7b5;
+
+                &:hover {
+                    background: #446782;
+                    border-color: #446782;
+                }
+
+                &.active {
+                    border-color: #59c9e7;
+                }
+
+                .fa {
+                    display: block;
+                    text-align: center;
+                    color: #fff;
+                    font-size: 50px;
+                }
+
+                .label {
+                    display: block;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 10px;
+                    left: 0px;
+                }
+            }
+        }
+    }
+
+
+    @media only screen and (max-width: 1630px) {
+        .tileMenuArea {
+            transform: scale(0.9);
+        }
+    }
+
+    @media only screen and (max-width: 1490px) {
+        .tileMenuArea {
+            transform: scale(0.8);
+        }
+
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-width: 1360px) {
+        .tileMenuArea {
+            transform: scale(0.7);
+        }
+
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-width: 1230px) {
+        .tileMenuArea {
+            transform: scale(0.6);
+        }
+
+        .lowerRightDecoration {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-width: 1130px) {
+        .tileMenuArea {
+            transform: scale(0.6);
+        }
+
+        .lowerRightDecoration {
+            display: none;
+        }
+
+        .moduleSubMenuArea {
+            transform: scale(0.9);
+        }
+    }
+
+    @media only screen and (max-width: 1090px) {
+        .tileMenuArea {
+            transform: scale(0.55);
+        }
+
+        .lowerRightDecoration {
+            display: none;
+        }
+
+        .moduleSubMenuArea {
+            transform: scale(0.75);
+        }
+    }
+}

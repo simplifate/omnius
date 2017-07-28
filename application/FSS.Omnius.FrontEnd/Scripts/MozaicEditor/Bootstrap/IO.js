@@ -743,6 +743,15 @@
             uicNumOrder++;
         });
 
+        if (tmpNode.is('[data-uic^=athena]')) {
+            tmpNode.html('');
+            tmpNode.append('__AthenaHTML____AthenaCSS____AthenaJS__');
+        }
+        tmpNode.find('> .uic-embed-preview').remove();
+        tmpNode.find('> .embed-code').each(function () {
+            $(this).replaceWith($(this).text());
+        });
+
         return tmpNode.html();
     }
 };

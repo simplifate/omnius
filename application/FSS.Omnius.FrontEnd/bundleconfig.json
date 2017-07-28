@@ -11,13 +11,25 @@
       "Scripts/CommonLibraries/jQuery/jquery-collision.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.dataTables.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.dataTables.datetime-moment.js",
+      "Scripts/CommonLibraries/jQuery/dataTables.select.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.datetimepicker.js",
       "Scripts/CommonLibraries/jQuery/jquery.plugin.min.js",
       "Scripts/CommonLibraries/Other/spectrum.js",
       "Scripts/CommonLibraries/Other/bootstrap.js",
       "Scripts/CommonLibraries/jQuery/jquery.countdown.min.js",
       "Scripts/CommonLibraries/jQuery/jquery.countdown-cs.js",
-      "Scripts/CommonLibraries/jQuery/jquery.unobtrusive-ajax.js"
+      "Scripts/CommonLibraries/jQuery/jquery.unobtrusive-ajax.js",
+      "Scripts/CommonLibraries/Other/d3.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery.storageapi.min.js",
+      "Scripts/CommonLibraries/jQuery/jquery.cookie.js",
+
+      // highcharts
+      "Scripts/CommonLibraries/Highcharts/highstock.js",
+      "Scripts/CommonLibraries/Highcharts/highcharts-3d.js",
+      "Scripts/CommonLibraries/Highcharts/highcharts-more.js",
+      "Scripts/CommonLibraries/Highcharts/modules/solid-gauge.js",
+      "Scripts/CommonLibraries/Highcharts/modules/data.js",
+      "Scripts/CommonLibraries/Highcharts/themes/omnius.js"
     ]
   },
   {
@@ -73,6 +85,7 @@
       "Scripts/MozaicEditor/Bootstrap/Main.js",
       "Scripts/MozaicEditor/Bootstrap/DnD.js",
       "Scripts/MozaicEditor/Bootstrap/Navigator.js",
+      "Scripts/MozaicEditor/Bootstrap/Clipboard.js",
       "Scripts/MozaicEditor/Bootstrap/Selection.js",
       "Scripts/MozaicEditor/Bootstrap/Path.js",
       "Scripts/MozaicEditor/Bootstrap/CommonOptions.js",
@@ -80,6 +93,7 @@
       "Scripts/MozaicEditor/Bootstrap/IO.js",
       "Scripts/MozaicEditor/Bootstrap/History.js",
       "Scripts/MozaicEditor/Bootstrap/Dialogs.js",
+      "Scripts/MozaicEditor/Bootstrap/Context.js",
       "Scripts/MozaicEditor/Bootstrap/_Containers.js",
       "Scripts/MozaicEditor/Bootstrap/_Text.js",
       "Scripts/MozaicEditor/Bootstrap/_Image.js",
@@ -89,7 +103,10 @@
       "Scripts/MozaicEditor/Bootstrap/_Table.js",
       "Scripts/MozaicEditor/Bootstrap/_Form.js",
       "Scripts/MozaicEditor/Bootstrap/_Misc.js",
-      "Scripts/MozaicEditor/Bootstrap/_UI.js"
+      "Scripts/MozaicEditor/Bootstrap/_Functions.js",
+      "Scripts/MozaicEditor/Bootstrap/_UI.js",
+      "Scripts/MozaicEditor/Bootstrap/_Athena.js",
+      "Scripts/Athena/Main.js"
     ]
   },
   {
@@ -114,7 +131,8 @@
       "Content/CssLibs/jquery.datetimepicker.css",
       "Content/CssLibs/jquery.dataTables.min.css",
       "Content/CssLibs/font-awesome.min.css",
-      "Content/CssLibs/spectrum.css"
+      "Content/CssLibs/spectrum.css",
+      "Content/CssLibs/select.dataTables.min.css"
     ]
   },
   {

@@ -30,7 +30,10 @@
         'list-group-div': '<div class="list-group"></div>',
         'list-group-item':  '<li class="list-group-item" data-uic="containers|list-group-item">List Group Item</li>',
         'list-group-item-link': '<a class="list-group-item" data-uic="containers|list-group-item-link">List Group Item</a>',
-        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>'
+        'list-group-item-button': '<button type="button" class="list-group-item" data-uic="containers|list-group-item-button">List Group Item</button>',
+        'dl-dl': '<dl></dl>',
+        'dl-dt': '<dt data-uic="containers|dl-dt">item</dt>',
+        'dl-dd': '<dd data-uic="containers|dl-dd">definition</dd>'
     },
     
     options: {
@@ -331,6 +334,22 @@
                     set: MBE.options.toggleClass
                 }]
             }
+        },
+        'dl-dl': {
+            'definitionListOptions': {
+                name: 'Definition list options',
+                type: 'group',
+                groupItems: [{
+                    label: 'Type',
+                    type: 'select',
+                    options: {
+                        'null': 'default',
+                        'dl-horizontal': 'horizontal'
+                    },
+                    get: MBE.options.hasClass,
+                    set: MBE.options.toggleClass
+                }]
+            }
         }
     },
 
@@ -420,27 +439,51 @@
         menu['containers']['list-group-item-link'] = menu['containers']['list-group'];
         menu['containers']['list-group-item-button'] = menu['containers']['list-group'];
 
+        menu['containers']['dl-dl'] = {
+            items: [
+                { type: 'text', label: 'ADD DEFINITION' },
+                { type: 'button', label: 'BEFORE', callback: self.dlAddBefore, allowFor: self.dlIsItemSelected },
+                { type: 'button', label: 'AFTER', callback: self.dlAddAfter, allowFor: self.dlIsItemSelected },
+                { type: 'button', label: 'BEGIN', callback: self.dlAddToBegin },
+                { type: 'button', label: 'END', callback: self.dlAddToEnd },
+                { type: 'text', label: 'ITEM' },
+                { type: 'button', label: 'DELETE', callback: self.dlDeleteItem, allowFor: self.dlIsItemSelected },
+            ]
+        }
+        menu['containers']['dl-dt'] = menu['containers']['dl-dl'];
+        menu['containers']['dl-dd'] = menu['containers']['dl-dl'];
+
         MBE.onBeforeDelete['containers|tab'] = self._tabDelete;
-        
+        MBE.onBeforeDelete['containers|dl-dt'] = self._dtDelete;
+        MBE.onBeforeDelete['containers|dl-dd'] = self._ddDelete;
     },
 
     _drop: function(target)
     {
-        if (target.is('.panel-heading') && $(this).is('[data-uic="text|heading"]')) {
-            $(this).addClass('panel-title');
+        var elm = $(this);
+        if (target.is('.panel-heading') && elm.is('[data-uic="text|heading"]')) {
+            elm.addClass('panel-title');
         }
 
-        if ($(this).is('[data-uic="containers|tabs"]') && $(this).is(':empty')) {
-            MBE.types.containers.buildTabs.apply(this, []);
+        if(elm.is(':empty')) {
+            if (elm.is('[data-uic="containers|tabs"]')) {
+                MBE.types.containers.buildTabs.apply(this, []);
+            }
+
+            if (elm.is('[data-uic="containers|accordion"]')) {
+                MBE.types.containers.buildAccordion.apply(this, []);
+            }
+
+            if (elm.is('.list-group')) {
+                MBE.types.containers.buildListGroup.apply(this, []);
+            }
+            if (elm.is('dl')) {
+                MBE.types.containers.buildDL.apply(this, []);
+            }
         }
 
-        if ($(this).is('[data-uic="containers|accordion"]') && $(this).is(':empty')) {
-            MBE.types.containers.buildAccordion.apply(this, []);
-        }
-
-        if ($(this).is('.list-group') && $(this).is(':empty')) {
-            MBE.types.containers.buildListGroup.apply(this, []);
-        }
+        if (elm.is('dt')) { MBE.types.containers._dtDrop.apply(this, []); }
+        if (elm.is('dd')) { MBE.types.containers._ddDrop.apply(this, []); }
     },
 
     /******************************************************************/
@@ -760,6 +803,91 @@
             return true;
         }
         return false;
+    },
+
+    /******************************************************************/
+    /* LIST GROUP CONTEXT METHODS                                     */
+    /******************************************************************/
+    buildDL: function () {
+        for (var i = 1; i <= 3; i++) {
+            var dt = $(MBE.types.containers.templates['dl-dt']);
+            var dd = $(MBE.types.containers.templates['dl-dd']);
+            dt.html(dt.html() + ' ' + i).appendTo(this);
+            dd.html(dd.html() + ' ' + i).appendTo(this);
+        }
+    },
+
+    dlIsItemSelected: function () {
+        return $(this).is('dt') || $(this).is('dd');
+    },
+
+    dlDeleteItem: function () {
+        var elm = $(this);
+        if (elm.is('dt')) { elm.next().remove(); }
+        if (elm.is('dd')) { elm.prev().remove(); }
+
+        elm.remove();
+
+        $('.mbe-drag-handle', MBE.workspaceDoc).remove();
+        MBE.DnD.updateDOM();
+        MBE.selection.select.apply(MBE.workspaceDoc.body, []);
+    },
+
+    dlAdd: function (pos) {
+        var self = MBE.types.containers;
+        var dt = $(self.templates['dl-dt']);
+        var dd = $(self.templates['dl-dd']);
+        var target;
+
+        if (pos == 'before' || pos == 'after') {
+            if ($(this).is('dt')) {
+                target = pos == 'before' ? $(this) : $(this).next();
+            }
+            if ($(this).is('dd')) {
+                target = pos == 'before' ? $(this).prev() : $(this);
+            }
+        }
+        else {
+            target = $(this).is('dl') ? $(this) : $(this).parent();
+        }
+
+
+        switch (pos) {
+            case 'before': target.before(dt); target.before(dd); break;
+            case 'after': target.after(dd); target.after(dt); break;
+            case 'begin': target.prepend(dd); target.prepend(dt); break;
+            case 'end': target.append(dt); target.append(dd); break;
+        }
+
+        MBE.DnD.updateDOM();
+    },
+
+    dlAddAfter: function () { MBE.types.containers.dlAdd.apply(this, ['after']); },
+    dlAddBefore: function () { MBE.types.containers.dlAdd.apply(this, ['before']); },
+    dlAddToBegin: function () { MBE.types.containers.dlAdd.apply(this, ['begin']); },
+    dlAddToEnd: function () { MBE.types.containers.dlAdd.apply(this, ['end']); },
+
+    _dtDelete: function () { $(this).next().remove(); },
+    _ddDelete: function () { $(this).prev().remove(); },
+
+    _dtDrop: function () {
+        var elm = $(this);
+        elm.parent().find('dd').each(function () {
+            if (!$(this).prev().is('dt')) {
+                elm.after(this);
+                return false;
+            }
+        });
+    },
+
+    _ddDrop: function () {
+        var elm = $(this);
+        elm.parent().find('dt').each(function () {
+            if (!$(this).next().is('dd')) {
+                elm.before(this);
+                return false;
+            }
+        });
     }
 };
 

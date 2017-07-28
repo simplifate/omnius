@@ -2,6 +2,14 @@
     
     onSelect: [],
 
+    contextItems: {
+        copy: { name: 'Copy', icon: 'fa-files-o' },
+        cut: { name: 'Cut', icon: 'fa-cut' },
+        paste: { name: 'Paste', icon: 'fa-clipboard', disabled: MBE.clipboard.isEmpty },
+        properties: { name: 'Properties...', icon: 'fa-cog' },
+        delete: { name: 'Delete', icon: 'fa-trash' }
+    },
+
     init: function()
     {
         $(MBE.workspaceDoc)
@@ -13,7 +21,7 @@
 
     select: function(event)
     {
-        if(typeof event != 'undefined') {
+        if (typeof event != 'undefined' && event.stopImmediatePropagation) {
             event.stopImmediatePropagation();
         }
 
@@ -49,6 +57,16 @@
                 top: elm.offset().top - 4,
                 left: elm.offset().left - 4
             });
+        }
+    },
+
+    _contextAction: function(key, options) {
+        switch (key) {
+            case 'copy': MBE.clipboard.copy(); break;
+            case 'cut': MBE.clipboard.cut(); break;
+            case 'paste': MBE.clipboard.paste(); break;
+            case 'properties': MBE.options.openDialog.apply($('.mbe-active', MBE.workspace)[0], [{}]); break;
+            case 'delete': MBE.deleteItem(); break;
         }
     }
 };

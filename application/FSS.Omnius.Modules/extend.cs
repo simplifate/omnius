@@ -226,5 +226,47 @@ namespace System
         {
             return input.Replace("\"", "\"\"");
         }
+
+        /// <summary>
+        /// Returns a string with backslashes before characters that need to be quoted
+        /// </summary>
+        /// <param name="InputTxt">Text string need to be escape with slashes</param>
+        public static string AddSlashes(this string input)
+        {
+            // List of characters handled:
+            // \000 null
+            // \010 backspace
+            // \011 horizontal tab
+            // \012 new line
+            // \015 carriage return
+            // \032 substitute
+            // \042 double quote
+            // \047 single quote
+            // \134 backslash
+            // \140 grave accent
+
+            return Regex.Replace(input, @"[\000\010\011\012\015\032\042\047\134\140]", "\\$0");
+        }
+
+        /// <summary>
+        /// Un-quotes a quoted string
+        /// </summary>
+        /// <param name="InputTxt">Text string need to be escape with slashes</param>
+        public static string StripSlashes(this string input)
+        {
+            // List of characters handled:
+            // \000 null
+            // \010 backspace
+            // \011 horizontal tab
+            // \012 new line
+            // \015 carriage return
+            // \032 substitute
+            // \042 double quote
+            // \047 single quote
+            // \134 backslash
+            // \140 grave accent
+
+            return System.Text.RegularExpressions.Regex.Replace(input, @"(\\)([\000\010\011\012\015\032\042\047\134\140])", "$2");
+        }
     }
 }

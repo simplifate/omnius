@@ -25,6 +25,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     using Service;
     using System.Threading;
     using Mozaic.Bootstrap;
+    using FSS.Omnius.Modules.Entitron.Entity.Athena;
+
     //michal šebela:
     //TODO: doladit zámky, bude jich potøeba víc i na jiných místech..
     //TODO: doladit pøístup z vláken, které nejsou z Http request, dispose, log db
@@ -302,6 +304,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
 
+        // Athena
+        public virtual DbSet<Graph> Graph { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

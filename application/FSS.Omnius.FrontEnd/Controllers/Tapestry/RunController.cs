@@ -440,6 +440,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "ui|nv-list":
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                         break;
+                    case "form|select":
+
                     case "dropdown-select":
                         if (modelLoaded && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
                         {
@@ -920,6 +922,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "form|input-url":
                     case "form|input-search":
                     case "form|input-password":
+                    case "text|span":
                     case "form|textarea":
                         if (modelLoaded)
                         {
