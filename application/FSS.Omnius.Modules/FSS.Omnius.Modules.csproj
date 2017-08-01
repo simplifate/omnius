@@ -1178,7 +1178,6 @@
     <Compile Include="Nexus\Service\IFileSyncService.cs" />
     <Compile Include="Nexus\Service\NexusExtDBBaseService.cs" />
     <Compile Include="Nexus\Service\NexusExtDBRethingService.cs" />
-    <Compile Include="Nexus\Service\TCPSocketListenerService.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
     <Compile Include="Nexus\Service\INexusExtDBService.cs" />
     <Compile Include="Nexus\Service\INexusWSService.cs" />
@@ -1275,8 +1274,10 @@
     <Compile Include="Tapestry\Actions\other\PaddingZerosActions.cs" />
     <Compile Include="Tapestry\Actions\other\PadLeftTableColumnAction.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
+    <Compile Include="Tapestry\Actions\other\RigPlacementEditSaveAction.cs" />
     <Compile Include="Tapestry\Actions\other\SubstringAction.cs" />
     <Compile Include="Tapestry\Actions\other\UnescapeStringAction.cs" />
+    <Compile Include="Tapestry\Actions\other\ValidateInput.cs" />
     <Compile Include="Tapestry\Actions\Persona\AddUserToGroupAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\ChangeUserPasswordAction.cs" />
