@@ -13,8 +13,9 @@ namespace FSS.Omnius.Modules.Entitron
 	using Table;
 	public class Entitron : IModule
 	{
-		public const string connectionString = "data source=osqlsrv001-iason.database.windows.net;initial catalog=omniuswork-db;user id=osqlsrv001_master@osqlsrv001-iason.database.windows.net;password=39Am%frV;MultipleActiveResultSets=True;App=EntityFramework;";
-		private CORE _CORE;
+        public const string connectionString = "data source=osqlsrv001-iason.database.windows.net;initial catalog=omniuswork-db;user id=osqlsrv001_master@osqlsrv001-iason.database.windows.net;password=39Am%frV;MultipleActiveResultSets=True;App=EntityFramework;";
+        
+        private CORE _CORE;
 		private DBEntities entities = null;
 
 		public Application Application { get; set; }

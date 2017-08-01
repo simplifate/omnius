@@ -163,10 +163,23 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 }
             }
 
+            if (_appConnections.ContainsKey(r)) {
+                lock (_appConnectionsLock) {
+                    _appConnections[r].Close();
+                    _appConnections[r].Dispose();
+                    _appConnections.Remove(r);
+                }
+            }
+
             if (_instances.ContainsKey(r))
             {
                 _instances[r].Dispose();
                 _instances.Remove(r);
+            }
+
+            if (_appInstances.ContainsKey(r)) {
+                _appInstances[r].Dispose();
+                _appInstances.Remove(r);
             }
 
             if (_messages.ContainsKey(r))
@@ -182,7 +195,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
             if (r != null)
             {
-                _instances[r].isDisposed = true;
+                if (_instances.ContainsKey(r)) {
+                    _instances[r].isDisposed = true;
+                }
+                if (_appInstances.ContainsKey(r)) {
+                    _appInstances[r].isDisposed = true;
+                }
             }
         }
 
