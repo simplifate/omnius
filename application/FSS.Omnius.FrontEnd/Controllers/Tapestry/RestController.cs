@@ -132,22 +132,46 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
 
             // Zpracujeme body
-           
-                Stream req = Request.InputStream;
-                req.Seek(0, System.IO.SeekOrigin.Begin);
-                string jsonString = new StreamReader(req).ReadToEnd();
-                fc.Add("__RequestBody__", jsonString);
+            Stream req = Request.InputStream;
+            req.Seek(0, System.IO.SeekOrigin.Begin);
+            string jsonString = new StreamReader(req).ReadToEnd();
+            fc.Add("__RequestBody__", jsonString);
+
+            // JSON-RPC?
+            bool isJsonRpc = false;
+            JToken rpc = null;
+            if (!string.IsNullOrEmpty(jsonString)) {
+                try {
+                    rpc = JToken.Parse(jsonString);
+                    if(rpc is JToken && rpc != null && !string.IsNullOrEmpty((string)rpc["jsonrpc"])) {
+                        isJsonRpc = true;
+                    }
+                }
+                catch(Exception) {}
+            }
             
-          
-            
-             string wfName = Request.HttpMethod.ToUpper();
+            string wfName = Request.HttpMethod.ToUpper();
+            if(isJsonRpc) {
+                wfName += $"_{(string)rpc["method"]}";
+            }
 
             Application app = core.Entitron.Application.similarApp;
             Block block = getBlockWithResource(app.Id, apiName);
 
             if(block == null) {
                 Response.StatusCode = 404;
-                return new EmptyResult();
+                if (isJsonRpc) {
+                    response["jsonrpc"] = (string)rpc["jsonrpc"];
+                    response["error"] = new JObject();
+                    response["error"]["code"] = -32601;
+                    response["error"]["message"] = "Method not found";
+                    response["id"] = (string)rpc["id"];
+
+                    return Content(response.ToString(), "application/json");
+                }
+                else {
+                    return new EmptyResult();
+                }
             }
 
             // Check if user has one of allowed roles, otherwise return 403
@@ -159,15 +183,33 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
                 if (!userIsAllowed) {
                     Response.StatusCode = 403;
-                    response["status"] = "failed";
-                    response["message"] = new JArray("You are not allowed to use this endpoint");
+                    if (isJsonRpc) {
+                        response["jsonrpc"] = (string)rpc["jsonrpc"];
+                        response["error"] = new JObject();
+                        response["error"]["code"] = -32600;
+                        response["error"]["message"] = "You are not allowed to use this endpoint and method";
+                        response["id"] = (string)rpc["id"];
+                    }
+                    else {
+                        response["status"] = "failed";
+                        response["message"] = new JArray("You are not allowed to use this endpoint");
+                    }
                 }
             }
 
             if(block.SourceTo_ActionRules.Where(r => r.ExecutedBy == wfName).Count() == 0) { // Neimplementovaná metoda
                 Response.StatusCode = 405;
-                response["status"] = "failed";
-                response["message"] = new JArray("Method not allowed");
+                if (isJsonRpc) {
+                    response["jsonrpc"] = (string)rpc["jsonrpc"];
+                    response["error"] = new JObject();
+                    response["error"]["code"] = -32601;
+                    response["error"]["message"] = "Method not found";
+                    response["id"] = (string)rpc["id"];
+                }
+                else {
+                    response["status"] = "failed";
+                    response["message"] = new JArray("Method not allowed");
+                }
             }
 
             if (Response.StatusCode == 200) {
@@ -175,11 +217,27 @@ namespace FSS.Omnius.Controllers.Tapestry
                 var result = core.Tapestry.jsonRun(core.User, block, wfName, -1, fc, out message);
                 if(message.Type == Modules.Tapestry.ActionResultType.Error) {
                     Response.StatusCode = 500;
-                    response["status"] = "failed";
-                    response["message"] = JArray.FromObject(message.Errors);
+                    if (isJsonRpc) {
+                        response["jsonrpc"] = (string)rpc["jsonrpc"];
+                        response["error"] = new JObject();
+                        response["error"]["code"] = -32603;
+                        response["error"]["message"] = string.Join(" ", message.Errors);
+                        response["id"] = (string)rpc["id"];
+                    }
+                    else {
+                        response["status"] = "failed";
+                        response["message"] = JArray.FromObject(message.Errors);
+                    }
                 }
                 else {
-                    response = result;
+                    if (isJsonRpc) {
+                        response["jsonrpc"] = (string)rpc["jsonrpc"];
+                        response["result"] = result;
+                        response["id"] = (string)rpc["id"];
+                    }
+                    else {
+                        response = result;
+                    }
                 }
             }
 
