@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DbExtensions, Version=5.1.0.0, Culture=neutral, PublicKeyToken=6b3b4f54da52bca4, processorArchitecture=MSIL">
       <HintPath>..\packages\DbExtensions.5.1.0\lib\net40\DbExtensions.dll</HintPath>
       <Private>True</Private>
@@ -114,11 +120,24 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ReactiveSockets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveSockets.0.2.6\lib\net40\ReactiveSockets.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="RethinkDb.Driver, Version=2.3.19.0, Culture=neutral, PublicKeyToken=289e75d5145ae4e6, processorArchitecture=MSIL">
+      <HintPath>..\packages\RethinkDb.Driver.2.3.19\lib\net45\RethinkDb.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="RethinkDb.Driver.Linq, Version=2.3.19.0, Culture=neutral, PublicKeyToken=289e75d5145ae4e6, processorArchitecture=MSIL">
+      <HintPath>..\packages\RethinkDb.Driver.Linq.2.3.19\lib\net45\RethinkDb.Driver.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="S22.Imap, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\S22.ImapWithUTF8.3.6.1\lib\net40\S22.Imap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -1157,6 +1176,8 @@
     <Compile Include="Nexus\Gate\WS.cs" />
     <Compile Include="Compass\Service\IElasticService.cs" />
     <Compile Include="Nexus\Service\IFileSyncService.cs" />
+    <Compile Include="Nexus\Service\NexusExtDBBaseService.cs" />
+    <Compile Include="Nexus\Service\NexusExtDBRethingService.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
     <Compile Include="Nexus\Service\INexusExtDBService.cs" />
     <Compile Include="Nexus\Service\INexusWSService.cs" />
@@ -1229,6 +1250,7 @@
     <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Hermes\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\ExtDBSelect.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallJsonRpc.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallRestAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
@@ -1252,8 +1274,10 @@
     <Compile Include="Tapestry\Actions\other\PaddingZerosActions.cs" />
     <Compile Include="Tapestry\Actions\other\PadLeftTableColumnAction.cs" />
     <Compile Include="Tapestry\Actions\other\PassVariableAction.cs" />
+    <Compile Include="Tapestry\Actions\other\RigPlacementEditSaveAction.cs" />
     <Compile Include="Tapestry\Actions\other\SubstringAction.cs" />
     <Compile Include="Tapestry\Actions\other\UnescapeStringAction.cs" />
+    <Compile Include="Tapestry\Actions\other\ValidateInput.cs" />
     <Compile Include="Tapestry\Actions\Persona\AddUserToGroupAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\ChangeUserPasswordAction.cs" />

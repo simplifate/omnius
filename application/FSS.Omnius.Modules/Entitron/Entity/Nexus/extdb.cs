@@ -6,7 +6,8 @@
     public enum ExtDBType
     {
         MySQL,
-        MSSQL
+        MSSQL,
+        RethinkDB
     }
     
     [Table("Nexus_Ext_DB")]

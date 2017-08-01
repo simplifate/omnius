@@ -52,6 +52,7 @@ namespace FSS.Omnius.Modules.Tapestry
             _repositories = Assembly.GetAssembly(typeof(ActionRepositoryAttribute)).GetTypes().Where(t => t.IsSubclassOf(typeof(ActionRepositoryAttribute)));
             _actions = new Dictionary<int, Action>();
             
+             
             foreach (Type type in Assembly.GetAssembly(typeof(Action)).GetTypes().Where(t => t.IsSubclassOf(typeof(Action)) && !t.IsAbstract))
             {
                 Action action = (Action)Activator.CreateInstance(type);

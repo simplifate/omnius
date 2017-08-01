@@ -383,20 +383,21 @@
         var vars = [];
         if (source) {
             for (var i = 0; i < source.length; i++) {
-                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[([^\]]*)\])?$/i);
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
                 // 1 = ?    = volitelná?
                 // 2 = s$   = typ
                 // 3 = název
-                // 4 = pole nebo enum
-                // 5 = enum items
+                // 4 = pole
+                // 6 = enum
+                // 7 = enum items
 
                 vars.push({
                     required: m[1] == '?' ? false : true,
                     type: m[2],
                     name: m[3],
-                    isArray: m[4] && (!m[5] || m[5] == 'index') ? true : false,
-                    isEnum: m[4] && (m[5] && m[5] != 'index') ? true : false,
-                    enumItems: (m[5] && m[5] != 'index') ? m[5].split('|') : [],
+                    isArray: m[4] ? true : false,
+                    isEnum: m[6] && (m[7] && m[7] != 'index') ? true : false,
+                    enumItems: (m[7] && m[7] != 'index') ? m[7].split('|') : [],
                     unknown: false
                 });
             }

@@ -63,7 +63,7 @@ namespace FSS.Omnius.Controllers.Nexus
             }
             else
             {
-                return View("~/Views/Nexus/WS/Form.cshtml", model);
+                return View("~/Views/Nexus/ExtDB/Form.cshtml", model);
             }
         }
 

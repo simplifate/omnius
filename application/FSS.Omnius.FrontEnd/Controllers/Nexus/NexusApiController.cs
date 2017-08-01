@@ -56,6 +56,13 @@ namespace FSS.Omnius.FrontEnd.Controllers.Nexus
                             Name = item.Name
                         });
                     }
+                    foreach(ExtDB item in context.ExtDBs.OrderBy(d => d.DB_Name)) {
+                        result.ExtDB.Add(new AjaxTransferNexusExtDB()
+                        {
+                            Id = item.Id,
+                            Name = item.DB_Name
+                        });
+                    }
 
                     return result;
                 }

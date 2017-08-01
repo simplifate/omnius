@@ -113,7 +113,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public static DBEntities appInstance(Application app)
         {
             // empty connection string - return usual entities
-            if (app.connectionString_schema == null)
+            if (app == null || app.connectionString_schema == null)
                 return instance;
             
             if (!_appInstances.ContainsKey(r) || _appInstances[r].isDisposed)
