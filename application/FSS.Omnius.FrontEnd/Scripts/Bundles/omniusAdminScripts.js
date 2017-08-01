@@ -2068,7 +2068,7 @@ $(function () {
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Templates").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
-                    else if (["ldap", "ws", "smtp", "webdav"].indexOf(libType) != -1) {
+                    else if (["ldap", "ws", "smtp", "webdav", "ExtDB"].indexOf(libType) != -1) {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);
@@ -3860,6 +3860,18 @@ TB.load = {
                 TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
             }
         }
+
+        // ExtDB
+        for (var i = 0; i < data.ExtDB.length; i++) {
+            var params = {};
+            var label = 'ExtDB: ' + data.ExtDB[i].Name;
+            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
+
+            var libId = TB.library.createItem('Integration', 'ExtDB', params, label, '', isUsed);
+            if (isUsed) {
+                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
+            }
+        }
     },
 
     librarySetPage: function(data)
@@ -5065,20 +5077,21 @@ TB.wizard = {
         var vars = [];
         if (source) {
             for (var i = 0; i < source.length; i++) {
-                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[([^\]]*)\])?$/i);
+                var m = source[i].match(/^(\?)?([a-z]\$)?([a-z0-9]+)(\[(index)?\])?(\[([^\]]*)\])?$/i);
                 // 1 = ?    = volitelná?
                 // 2 = s$   = typ
                 // 3 = název
-                // 4 = pole nebo enum
-                // 5 = enum items
+                // 4 = pole
+                // 6 = enum
+                // 7 = enum items
 
                 vars.push({
                     required: m[1] == '?' ? false : true,
                     type: m[2],
                     name: m[3],
-                    isArray: m[4] && (!m[5] || m[5] == 'index') ? true : false,
-                    isEnum: m[4] && (m[5] && m[5] != 'index') ? true : false,
-                    enumItems: (m[5] && m[5] != 'index') ? m[5].split('|') : [],
+                    isArray: m[4] ? true : false,
+                    isEnum: m[6] && (m[7] && m[7] != 'index') ? true : false,
+                    enumItems: (m[7] && m[7] != 'index') ? m[7].split('|') : [],
                     unknown: false
                 });
             }
