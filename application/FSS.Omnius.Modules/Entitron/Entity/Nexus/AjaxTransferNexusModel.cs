@@ -8,6 +8,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
         public List<AjaxTrasferNexuWS> WS { get; set; }
         public List<AjaxTransferHermesSMTP> SMTP { get; set; }
         public List<AjaxTransferNexusWebDAV> WebDAV { get; set; }
+        public List<AjaxTransferNexusExtDB> ExtDB { get; set; }
 
         public AjaxTransferNexusModel()
         {
@@ -15,6 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
             WS = new List<AjaxTrasferNexuWS>();
             SMTP = new List<AjaxTransferHermesSMTP>();
             WebDAV = new List<AjaxTransferNexusWebDAV>();
+            ExtDB = new List<AjaxTransferNexusExtDB>();
         }
     }
 
@@ -34,6 +36,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
     public class AjaxTransferNexusWebDAV : IEntity
     {
         public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class AjaxTransferNexusExtDB : IEntity
+    {
+        public int? Id { get; set; }
         public string Name { get; set; }
     }
 

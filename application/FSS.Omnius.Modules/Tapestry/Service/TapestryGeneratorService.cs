@@ -621,6 +621,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";WSName=s$" + relatedConnections.Source.Label.Substring(4);
                             }
                         }
+                        if (item.ActionId == 3004) // ExtDBSelect
+                        {
+                            foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id)) {
+                                if (relatedConnections.Source.Label?.StartsWith("ExtDB: ") ?? false)
+                                    generatedInputVariables = ";dbName=s$" + relatedConnections.Source.Label.Substring(7);
+                            }
+                        }
                         if (item.ActionId == 2007) // DataTable Response action
                         {
                             generatedInputVariables = ";BootstrapPageId=i$" + startBlock.BootstrapPageId;

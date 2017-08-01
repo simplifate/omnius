@@ -485,7 +485,7 @@ $(function () {
                         if ($(".tapestryToolbox .toolboxCategoryHeader_Templates").hasClass("hiddenCategory"))
                             newToolboxLi.hide();
                     }
-                    else if (["ldap", "ws", "smtp", "webdav"].indexOf(libType) != -1) {
+                    else if (["ldap", "ws", "smtp", "webdav", "ExtDB"].indexOf(libType) != -1) {
                         newToolboxLi = $('<li libId="' + libId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
                             + currentLibraryItem.text() + '</span></div></li>')
                         $(".tapestryToolbox").append(newToolboxLi);

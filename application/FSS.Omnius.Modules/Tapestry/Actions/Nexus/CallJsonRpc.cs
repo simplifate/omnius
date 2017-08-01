@@ -1,17 +1,13 @@
-﻿using System;
+﻿using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Watchtower;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
-using FSS.Omnius.Modules.Watchtower;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
@@ -81,20 +77,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			try
 			{
-				string wsName = (string) vars[WsName];
-				string method = (string) vars[Method];
-				string parameters = (string) vars[Params];
-				string endpoint = (string) vars[Endpoint];
+				string wsName = (string)vars[WsName];
+				string method = (string)vars[Method];
+				string parameters = (string)vars[Params];
+				string endpoint = (string)vars[Endpoint];
 
 				// vezmu uri
-				CORE.CORE core = (CORE.CORE) vars["__CORE__"];
+				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 				var context = DBEntities.appInstance(core.Entitron.Application);
 				var service = context.WSs.First(c => c.Name == wsName);
 
 				string endpointPath = string.Format("{0}/{1}?{2}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
 
 				// Create request
-				var httpWebRequest = (HttpWebRequest) WebRequest.Create(endpointPath);
+				var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
 				httpWebRequest.Method = method.ToUpper();
 				httpWebRequest.ContentType = "application/json";
 				httpWebRequest.Accept = "application/json";
@@ -114,7 +110,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 				StreamReader responseReader = new StreamReader(responseStream);
 				string outputJsonString = responseReader.ReadToEnd();
 
-				var outputJToken = (JObject) JToken.Parse(outputJsonString);
+				var outputJToken = (JObject)JToken.Parse(outputJsonString);
 				outputVars["Result"] = outputJToken["result"];
 
 				outputVars["Error"] = outputJToken["Error"];

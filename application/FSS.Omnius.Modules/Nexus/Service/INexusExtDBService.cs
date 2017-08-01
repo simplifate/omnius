@@ -7,10 +7,9 @@ using System.Collections.Specialized;
 
 namespace FSS.Omnius.Modules.Nexus.Service
 {
-    public interface INexusExtDBService
+    public interface INexusExtDBService<T> where T: NexusExtDBBaseService
     {
-        NexusExtDBService NewQuery(string sql = "");
-        ExtDBSubquery NewSubquery();
+        T NewQuery(string sql = "");
 
         JToken FetchAll();
         JToken FetchOne();
@@ -22,61 +21,62 @@ namespace FSS.Omnius.Modules.Nexus.Service
         
         #region SqlBuilderProxy
 
-        NexusExtDBService _(string body);
-        NexusExtDBService _(string body, params Object[] args);
+        T _(string body);
+        T _(string body, params Object[] args);
+        T _(JArray body);
 
-        NexusExtDBService From(string table);
-        NexusExtDBService From(string table, params Object[] args);
-        NexusExtDBService From(ExtDBSubquery query, string alias);
+        T From(string table);
+        T From(string table, params Object[] args);
+        T From(ExtDBSubquery query, string alias);
 
-        NexusExtDBService GroupBy();
-        NexusExtDBService GroupBy(string body);
-        NexusExtDBService GroupBy(string body, params Object[] args);
+        T GroupBy();
+        T GroupBy(string body);
+        T GroupBy(string body, params Object[] args);
 
-        NexusExtDBService Having();
-        NexusExtDBService Having(string body);
-        NexusExtDBService Having(string body, params Object[] args);
+        T Having();
+        T Having(string body);
+        T Having(string body, params Object[] args);
 
-        NexusExtDBService InnerJoin(string table);
-        NexusExtDBService InnerJoin(string table, params Object[] args);
+        T InnerJoin(string table);
+        T InnerJoin(string table, params Object[] args);
 
-        NexusExtDBService Join();
-        NexusExtDBService Join(string table);
-        NexusExtDBService Join(string table, params Object[] args);
+        T Join();
+        T Join(string table);
+        T Join(string table, params Object[] args);
 
-        NexusExtDBService LeftJoin(string table);
-        NexusExtDBService LeftJoin(string table, params Object[] args);
+        T LeftJoin(string table);
+        T LeftJoin(string table, params Object[] args);
 
-        NexusExtDBService Limit();
-        NexusExtDBService Limit(Int32 limit);
-        NexusExtDBService Limit(string limit);
-        NexusExtDBService Limit(string body, params Object[] args);
+        T Limit();
+        T Limit(Int32 limit);
+        T Limit(string limit);
+        T Limit(string body, params Object[] args);
 
-        NexusExtDBService Offset();
-        NexusExtDBService Offset(Int32 offset);
-        NexusExtDBService Offset(string offset);
-        NexusExtDBService Offset(string body, params Object[] args);
+        T Offset();
+        T Offset(Int32 offset);
+        T Offset(string offset);
+        T Offset(string body, params Object[] args);
 
-        NexusExtDBService OrderBy();
-        NexusExtDBService OrderBy(string body);
-        NexusExtDBService OrderBy(string body, params Object[] args);
+        T OrderBy();
+        T OrderBy(string body);
+        T OrderBy(string body, params Object[] args);
 
-        NexusExtDBService RightJoin(string table);
-        NexusExtDBService RightJoin(string table, params Object[] args);
+        T RightJoin(string table);
+        T RightJoin(string table, params Object[] args);
 
-        NexusExtDBService Select();
-        NexusExtDBService Select(string columns);
-        NexusExtDBService Select(string columns, params Object[] args);
+        T Select();
+        T Select(string columns);
+        T Select(string columns, params Object[] args);
 
-        NexusExtDBService Union();
+        T Union();
 
-        NexusExtDBService Where();
-        NexusExtDBService Where(string condition);
-        NexusExtDBService Where(string format, params Object[] args);
+        T Where();
+        T Where(string condition);
+        T Where(string format, params Object[] args);
 
-        NexusExtDBService With(string body);
-        NexusExtDBService With(string format, params Object[] args);
-        NexusExtDBService With(ExtDBSubquery query, string alias);
+        T With(string body);
+        T With(string format, params Object[] args);
+        T With(ExtDBSubquery query, string alias);
 
         #endregion   
     }

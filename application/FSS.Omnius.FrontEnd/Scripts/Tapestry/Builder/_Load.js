@@ -437,6 +437,18 @@
                 TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
             }
         }
+
+        // ExtDB
+        for (var i = 0; i < data.ExtDB.length; i++) {
+            var params = {};
+            var label = 'ExtDB: ' + data.ExtDB[i].Name;
+            var isUsed = state.filter(function (value) { return value.Label == label; }).length;
+
+            var libId = TB.library.createItem('Integration', 'ExtDB', params, label, '', isUsed);
+            if (isUsed) {
+                TB.toolbox.createItem(libId, 'Integrations', 'integrationItem', params, label);
+            }
+        }
     },
 
     librarySetPage: function(data)
