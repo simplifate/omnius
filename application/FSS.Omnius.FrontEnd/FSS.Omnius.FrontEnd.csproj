@@ -2127,6 +2127,11 @@
     <Content Include="Views\Athena\Detail.cshtml" />
     <Content Include="Views\Athena\Form.cshtml" />
     <Content Include="Views\Athena\Index.cshtml" />
+    <Content Include="Views\App\Xmu\menuLayout.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\34.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\35.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\36.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\37.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
