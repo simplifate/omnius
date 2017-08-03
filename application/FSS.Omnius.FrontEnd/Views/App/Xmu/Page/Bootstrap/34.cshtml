@@ -1,4 +1,4 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row mbe-active">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
@@ -334,4 +334,4 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Support_request_table" />
-</div></div></div></div></div>
+</div></div></div></div><div class="modal fade" tabindex="-1" role="dialog" id="modalProfile" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header" style="height: 35px">@(@"<button type=""button"" class=""close"" data-dismiss=""modal"" aria-label=""Close""><span aria-hidden=""true"">×</span></button>")</div><div class="modal-body" style="padding: 0px"><div class="empty-element" id="ModalForProfileDiv"></div></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" >@(@"Close")</button></div></div></div></div></div>
