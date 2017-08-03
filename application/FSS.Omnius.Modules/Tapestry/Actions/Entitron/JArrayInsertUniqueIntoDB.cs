@@ -25,7 +25,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "JArray", "UniqueCol", "?TableName", "?SearchInShared" };
+                return new string[] { "JArray", "?UniqueCol", "?TableName", "?SearchInShared" };
             }
         }
 
@@ -67,22 +67,33 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (table == null)
                 throw new Exception($"Queried table not found! (Table: {tableName}, Action: {Name} ({Id}))");
 
-            string uniqueCol = (string)vars["UniqueCol"];
-            if (!table.columns.Exists(c => c.Name == uniqueCol))
-                throw new Exception($"Table column named '{uniqueCol}' not found!");
+            string uniqueCol;
+            string uniqueExtCol; //basicly foreign key
+            if (vars.ContainsKey("UniqueCol"))
+            {
+                uniqueCol = (string)vars["UniqueCol"];
+                uniqueExtCol = uniqueCol;
+            }
+            else
+            {
+                uniqueCol = "ext_id";
+                uniqueExtCol = "id";
+            }
+            if (!table.columns.Exists(c => c.Name == uniqueExtCol))
+                throw new Exception($"Table column named '{uniqueExtCol}' not found!");
 
             JArray jarray = (JArray)vars["JArray"];
             foreach (JObject jo in jarray)
             {
                 //Skip if an item already exists in the table
-                if (table.Select().ToList().Any(c => (string)c[uniqueCol] == jo.GetValue(uniqueCol).ToString()))
+                if (table.Select().ToList().Any(c => (string)c[uniqueCol] == jo.GetValue(uniqueExtCol).ToString()))
                     continue;
                 DBItem insertedRow = new DBItem();
                 int colId = 0;
                 foreach (JProperty prop in jo.Properties())
                 {
-                    if (prop.Name != "id")
-                        insertedRow.createProperty(colId++, prop.Name, jo.GetValue(prop.Name).ToObject<object>());
+                    string property = (prop.Name == "id") ? "ext_id" : prop.Name;
+                    insertedRow.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
                 }
                 table.Add(insertedRow);
             }

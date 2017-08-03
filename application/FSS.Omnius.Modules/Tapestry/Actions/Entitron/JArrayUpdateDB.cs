@@ -25,7 +25,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "JArray", "UniqueCol", "?TableName", "?SearchInShared" };
+                return new string[] { "JArray", "?UniqueCol", "?TableName", "?SearchInShared" };
             }
         }
 
@@ -67,18 +67,29 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (table == null)
                 throw new Exception($"Queried table not found (Tabulka: {tableName}, Akce: {Name} ({Id}))");
 
-            string uniqueCol = (string)vars["UniqueCol"];
+            string uniqueCol;
+            string uniqueExtCol; //basicly foreign key
+            if (vars.ContainsKey("UniqueCol"))
+            {
+                uniqueCol = (string)vars["UniqueCol"];
+                uniqueExtCol = uniqueCol;
+            }
+            else
+            {
+                uniqueCol = "ext_id";
+                uniqueExtCol = "id";
+            }   
             if (!table.columns.Exists(c => c.Name == uniqueCol))
                 throw new Exception($"Table column named '{uniqueCol}' not found!");      
 
             JArray jarray = (JArray)vars["JArray"];
             foreach (JObject jo in jarray)
             {
-                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(jo.GetValue(uniqueCol).ToObject<object>())).First();
+                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(jo.GetValue(uniqueExtCol).ToObject<object>())).First();
                 foreach (JProperty prop in jo.Properties())
                 {
                     if (prop.Name != "id" && prop.Name != uniqueCol)
-                        updatedRow[prop.Name] = prop.Value.ToObject<object>();
+                    updatedRow[prop.Name] = prop.Value.ToObject<object>();
                 }
                 table.Update(updatedRow, (int)updatedRow["id"]);
             }

@@ -67,16 +67,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             if (table == null)
                 throw new Exception($"Queried table not found! (Table: {tableName}, Action: {Name} ({Id}))");
+            if (!vars.ContainsKey("JArray"))
+                throw new Exception("JArray parameter not passed!");
 
             JArray jarray = (JArray)vars["JArray"];
+                
             foreach (JObject jo in jarray)
             {
                 DBItem item = new DBItem();
                 int colId = 0;
                 foreach (JProperty prop in jo.Properties())
                 {
-                    if(prop.Name != "id")
-                        item.createProperty(colId++, prop.Name, jo.GetValue(prop.Name).ToObject<object>());
+                    string property = (prop.Name == "id") ? "ext_id" : prop.Name;
+                    item.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
                 }
                 table.Add(item);              
             }
