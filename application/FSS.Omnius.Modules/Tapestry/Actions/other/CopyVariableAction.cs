@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return 1278;
+                return 185;
             }
         }
         public override int? ReverseActionId
