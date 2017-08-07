@@ -84,7 +84,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 table.Add(item);              
             }
             core.Entitron.Application.SaveChanges();
-
+            outputVars["Result"] = "Successful";
         }
     }
 }
