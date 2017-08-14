@@ -83,7 +83,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                         service = new NexusExtDBRethingService(dbInfo);
                         break;
                     default:
-                        service = new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Name);
+                        service = (new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Name)).NewQuery("").Select("*");
                         break;
                 }
 

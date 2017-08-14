@@ -85,16 +85,30 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JArray jarray = (JArray)vars["JArray"];
             foreach (JObject jo in jarray)
             {
-                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(jo.GetValue(uniqueExtCol).ToObject<object>())).First();
-                foreach (JProperty prop in jo.Properties())
+                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(jo.GetValue(uniqueExtCol).ToObject<object>())).FirstOrDefault();
+                if (updatedRow != null)
                 {
-                    if (prop.Name != "id" && prop.Name != uniqueCol)
-                    updatedRow[prop.Name] = prop.Value.ToObject<object>();
+                    foreach (JProperty prop in jo.Properties())
+                    {
+                        if (prop.Name != "id" && prop.Name != uniqueCol)
+                            updatedRow[prop.Name] = prop.Value.ToObject<object>();
+                    }
+                    table.Update(updatedRow, (int)updatedRow["id"]);
                 }
-                table.Update(updatedRow, (int)updatedRow["id"]);
+                else // insert row if it does not exist
+                {
+                    DBItem item = new DBItem();
+                    int colId = 0;
+                    foreach (JProperty prop in jo.Properties())
+                    {
+                        string property = (prop.Name == "id") ? "ext_id" : prop.Name;
+                        item.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
+                    }
+                    table.Add(item);
+                }        
             }
             core.Entitron.Application.SaveChanges();
-
+            outputVars["Result"] = "Successful";
         }
     }
 }

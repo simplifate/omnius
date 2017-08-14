@@ -25,9 +25,10 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             }
 
             DbConnection conn = GetConnection(row);
+            conn.Open();
             db = new Database(conn);
         }
-
+        
         public ExtDB NewQuery(string sqlText = "")
         {
             sql = new SqlBuilder(sqlText);
