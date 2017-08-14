@@ -1183,10 +1183,14 @@
     <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.cs" />
     <Compile Include="Migrations\201708141059461_Dev_Grid_Work_Merge.Designer.cs">
       <DependentUpon>201708141059461_Dev_Grid_Work_Merge.cs</DependentUpon>
-    </Compile> 
+    </Compile>
     <Compile Include="Migrations\201708140808177_Alias for External DBs.cs" />
     <Compile Include="Migrations\201708140808177_Alias for External DBs.Designer.cs">
       <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708141312346_Merge.cs" />
+    <Compile Include="Migrations\201708141312346_Merge.Designer.cs">
+      <DependentUpon>201708141312346_Merge.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
@@ -1960,6 +1964,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708140808177_Alias for External DBs.resx">
       <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708141312346_Merge.resx">
+      <DependentUpon>201708141312346_Merge.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
