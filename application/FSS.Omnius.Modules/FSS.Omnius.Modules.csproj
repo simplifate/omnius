@@ -1166,6 +1166,10 @@
     <Compile Include="Migrations\201707281231548_athena.Designer.cs">
       <DependentUpon>201707281231548_athena.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708140808177_Alias for External DBs.cs" />
+    <Compile Include="Migrations\201708140808177_Alias for External DBs.Designer.cs">
+      <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1931,6 +1935,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707281231548_athena.resx">
       <DependentUpon>201707281231548_athena.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708140808177_Alias for External DBs.resx">
+      <DependentUpon>201708140808177_Alias for External DBs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

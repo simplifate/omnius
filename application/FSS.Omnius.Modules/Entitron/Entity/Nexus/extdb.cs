@@ -9,7 +9,7 @@
         MSSQL,
         RethinkDB
     }
-    
+
     [Table("Nexus_Ext_DB")]
     public partial class ExtDB : IEntity
     {
@@ -43,5 +43,10 @@
         [StringLength(255)]
         [Display(Name = "Heslo")]
         public string DB_Password { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        [Display(Name = "Alias")]
+        public string DB_Alias { get; set; }
     }
 }
