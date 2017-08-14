@@ -20,10 +20,15 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 // namapovaní InputVars
                 var remapedParams = actionMap.getInputVariables(results.OutputData);
+                ActionResult result;
 
-                // Action
-                var result = Action.RunAction(actionMap.ActionId, remapedParams, actionMap);
-
+                if(actionMap.ActionId == -1 && actionMap.VirtualAction == "foreach") { // foreach
+                    result = Action.RunForeach(remapedParams, actionMap);
+                }
+                else { // Action
+                    result = Action.RunAction(actionMap.ActionId, remapedParams, actionMap);
+                }
+                
                 // errory
                 if (result.Type == ActionResultType.Error)
                 {

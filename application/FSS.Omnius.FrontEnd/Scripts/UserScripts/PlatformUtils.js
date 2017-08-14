@@ -14,7 +14,75 @@ if (!window.jQuery) {
 
     document.body.innerHTML = "<div>" + message + "</div><style> " + style + "</style>";
 }
+// Gets collisions of spec. element with elements meeting selector
+function getCollisions(jqueryEl, selector) { //jqueryEl => target el, selector => list of colliders
+    // To collect elements
+    var collisions = [];
+    // Search all the elements (collider)
+    jqueryEl.parent().find(selector).each(function () {
+        // If collider isn't target & they're colliding
+        if (!$(this).is(jqueryEl) && areColliding($(this), jqueryEl)) {
+            // Push it into array
+            collisions.push($(this)[0]);
+        }
+    });
+    // Return all colliders
+    return collisions;
+}
 
+// Checks if two elements are colliding or not (boundary)
+function areColliding(el1, el2) {
+    // EL1 Props
+    var el1top = el1.position().top;
+    var el1left = el1.position().left;
+    var el1width = el1.width();
+    var el1height = el1.height();
+
+    // EL2 Props
+    var el2top = el2.position().top;
+    var el2left = el2.position().left;
+    var el2width = el2.width();
+    var el2height = el2.height();
+
+    // If left of element is inside other one
+    var isInBoundX = Math.abs(el2left - el1left) <= el1width;
+    // If top of element is inside other one
+    var isInBoundY = Math.abs(el2top - el1top) <= el1height;
+
+    // Checkout both of them (so it's inside it)
+    return isInBoundX && isInBoundY;
+}
+
+function handleCollisions() {
+    // Checkout all the panels
+    $(".appPanel").each(function () {
+        // Get panels colliding with the one that we are checking
+        var collision = getCollisions($(this), ".appPanel");
+
+        // Save info about what element we are actually checking
+        var currentlyCheckedElement = this;
+
+        // Search all elements that are colliding with our el.
+        $.each(collision, function (i, value) {
+            // Save info about element that collides with our el.
+            var collidenElement = value;
+
+            // If it's still colliding (it's changing while foreaching the loop)
+            if (areColliding($(collidenElement), $(currentlyCheckedElement))) {
+
+                // If they are at same high then move second one right
+                if ($(collidenElement).position().top == $(currentlyCheckedElement).position().top) {
+                    $(collidenElement).css("left", parseInt($(currentlyCheckedElement).css("left")) + $(currentlyCheckedElement).width() + 40);
+                }
+
+                // If they are at same "left" then move second one down
+                if ($(collidenElement).position().left == $(currentlyCheckedElement).position().left) {
+                    $(collidenElement).css("top", parseInt($(currentlyCheckedElement).css("top")) + $(currentlyCheckedElement).height() + 40);
+                }
+            }
+        });
+    });
+}
 function CurrentModuleIs(moduleClass) {
     return $("body").hasClass(moduleClass) ? true : false;
 }

@@ -5,9 +5,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
     public class AjaxTransferDbScheme : IEntity
     {
         public string CommitMessage { get; set; }
+        public int? SchemeLockedForUserId { get; set; }
+        public string SchemeLockedForUserName { get; set; }
+        public int? CurrentSchemeCommitId { get; set; }
         public List<AjaxTransferDbTable> Tables { get; set; }
         public List<AjaxTransferDbRelation> Relations { get; set; }
         public List<AjaxTransferDbView> Views { get; set; }
+
         public object Shared = null;
 
         public AjaxTransferDbScheme()
@@ -17,7 +21,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
             Views     = new List<AjaxTransferDbView>();
         }
     }
-
+    public class AjaxSchemeLockingStatus
+    {
+        public int lockStatusId { get; set; }
+        public string lockedForUserName { get; set; }
+    }
     public class AjaxTransferViewColumnList: IEntity
     {
         public List<string> Columns { get; set; }

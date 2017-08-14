@@ -16,9 +16,7 @@ $(function () {
             $("#workflowRulesPanel .workflowRule").remove();
             ChangedSinceLastSave = true;
         });
-        $("#btnSave").on("click", function () {
-            saveDialog.dialog("open");
-        });
+
         $("#btnLoad").on("click", function () {
             if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
@@ -28,6 +26,7 @@ $(function () {
                 TB.load.loadBlock();
             }
         });
+        $("#btnLock").on("click",TB.lock._btnLockClick);
         $("#btnHistory").on("click", function () {
             historyDialog.dialog("open");
         });

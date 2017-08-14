@@ -4,14 +4,17 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Newtonsoft.Json;
 
     [Table("Hermes_Email_Template")]
     public partial class EmailTemplate : IEntity
     {
+        [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
 
         [Index(IsClustered = false, IsUnique = false)]
         [ForeignKey("Application")]
+        [ImportExportIgnore(IsParentKey = true)]
         public int? AppId { get; set; }
 
         [Required]
@@ -23,6 +26,7 @@
         [Display(Name = "HTML e-mail")]
         public bool Is_HTML { get; set; }
 
+        [ImportExportIgnore(IsParent = true)]
         public virtual Application Application { get; set; }
 
         public virtual ICollection<EmailPlaceholder> PlaceholderList { get; set; }

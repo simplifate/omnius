@@ -2,6 +2,9 @@
 using System.Web.Mvc;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using System;
+using Newtonsoft.Json.Linq;
+using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -10,6 +13,8 @@ namespace FSS.Omnius.Controllers.Tapestry
     {
         public ActionResult Index(FormCollection formParams)
         {
+            JArray blockTree = JArray.Parse("[]");
+
             if (Request.HttpMethod == "POST")
             {
                 using (var context = DBEntities.instance)
@@ -37,15 +42,52 @@ namespace FSS.Omnius.Controllers.Tapestry
 
                     ViewData["appId"] = app != null ? app.Id : appId;
                     //ViewData["screenCount"] = context.TapestryDesignerBlocks.Find(blockId).Pages.Count();
+
+                    ViewData["currentUserId"] = HttpContext.GetCORE().User.Id;
+                    
+                    GetBlockTree(context.TapestryDesignerMetablocks.FirstOrDefault(m => m.Id == rootMetablockId), ref blockTree, 0);
                 }
             }
             else // TODO: remove after switching to real IDs
             {
-                ViewData["appId"] = 1;
-                ViewData["blockId"] = 1;
-                ViewData["parentMetablockId"] = 1;
+                using (var context = DBEntities.instance) {
+                    ViewData["appId"] = 1;
+                    ViewData["blockId"] = 1;
+                    ViewData["parentMetablockId"] = 1;
+                    ViewData["currentUserId"] = HttpContext.GetCORE().User.Id;
+
+                    GetBlockTree(context.TapestryDesignerMetablocks.FirstOrDefault(m => m.Id == 1), ref blockTree, 0);
+                }
             }
+
+            ViewData["blockTree"] = blockTree;
             return View();
+        }
+
+        private void GetBlockTree(TapestryDesignerMetablock metablock, ref JArray blockTree, int level)
+        {
+            JObject item = new JObject();
+            item["Id"] = "";
+            item["Name"] = metablock.Name;
+            item["IsMetablock"] = true;
+            item["Level"] = level;
+            item["Items"] = JArray.Parse("[]");
+
+            blockTree.Add(item);
+
+            foreach(TapestryDesignerBlock block in metablock.Blocks) {
+                JObject bi = new JObject();
+                bi["Id"] = block.Id;
+                bi["Name"] = block.Name;
+                bi["IsMetablock"] = false;
+                bi["Level"] = level;
+
+                ((JArray)item["Items"]).Add(bi);
+            }
+
+            foreach(TapestryDesignerMetablock mb in metablock.Metablocks) {
+                GetBlockTree(mb, ref blockTree, level + 1);
+            }
         }
     }
 }

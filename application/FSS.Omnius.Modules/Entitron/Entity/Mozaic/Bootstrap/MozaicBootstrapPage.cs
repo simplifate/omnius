@@ -23,6 +23,7 @@
         [ImportExportIgnore(IsParent = true)]
         public virtual Application ParentApp { get; set; }
 
+        [ImportExportIgnore]
         public virtual ICollection<Js> Js { get; set; }
         
         public MozaicBootstrapPage()

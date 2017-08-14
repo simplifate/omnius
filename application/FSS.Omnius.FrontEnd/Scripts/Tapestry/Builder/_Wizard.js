@@ -172,8 +172,6 @@
             iSet.appendTo(form);
             oSet.appendTo(form);
 
-            console.log(inputVarsValues);
-
             if (action.inputVars.length || inputVarsValues.length) {
                 for (var i = 0; i < action.inputVars.length; i++) {
                     var inputVar = action.inputVars[i];
@@ -779,6 +777,8 @@
                 });
             }
         }
+
+        self.variableList.sort(self.sort);
     },
 
     _workflowCreateItem: function() {

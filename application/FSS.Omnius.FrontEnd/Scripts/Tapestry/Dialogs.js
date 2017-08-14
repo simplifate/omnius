@@ -195,34 +195,7 @@ $(function () {
             else
                 alert("Please select a commit");
         }
-        saveDialog = $("#save-dialog").dialog({
-            autoOpen: false,
-            width: 400,
-            height: 190,
-            buttons: {
-                "Save": function () {
-                    saveDialog_SubmitData();
-                },
-                Cancel: function () {
-                    saveDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        saveDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
-            open: function () {
-                saveDialog.find("#message").val("");
-            }
-        });
-        function saveDialog_SubmitData() {
-            saveDialog.dialog("close");
-            SaveBlock(saveDialog.find("#message").val());
-        }
+        
         chooseScreensDialog = $("#choose-screens-dialog").dialog({
             autoOpen: false,
             width: 450,
@@ -943,6 +916,29 @@ $(function () {
     function envelopeStartPropertiesDialog_SubmitData() {
         CurrentItem.data("label", envelopeStartPropertiesDialog.find("#envelopeStartButtonName").val());
         envelopeStartPropertiesDialog.dialog("close");
+        CurrentItem.removeClass("activeItem");
+    }
+
+    circleEventPropertiesDialog = $("#circleEvent-properties-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 180,
+        buttons: {
+            "Save": function () {
+                circleEventPropertiesDialog_SubmitData();
+            },
+            Cancel: function () {
+                circleEventPropertiesDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
+            }
+        },
+        open: function (event, ui) {
+            circleEventPropertiesDialog.find("#circleEventButtonName").val(CurrentItem.data("label"));
+        }
+    });
+    function circleEventPropertiesDialog_SubmitData() {
+        CurrentItem.data("label", circleEventPropertiesDialog.find("#circleEventButtonName").val());
+        circleEventPropertiesDialog.dialog("close");
         CurrentItem.removeClass("activeItem");
     }
 });

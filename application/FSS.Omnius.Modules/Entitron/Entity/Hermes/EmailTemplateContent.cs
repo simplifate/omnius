@@ -3,15 +3,18 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web.Mvc;
+    using Newtonsoft.Json;
 
     [Table("Hermes_Email_Template_Content")]
     [MetadataType(typeof(Hermes_Email_Template_Content_Metadata))]
     public partial class EmailTemplateContent : IEntity
     {
+        [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
 
         [Index(IsClustered = false, IsUnique = false)]
         [ForeignKey("Hermes_Email_Template")]
+        [ImportExportIgnore(IsParentKey = true)]
         public int? Hermes_Email_Template_Id { get; set; }
 
         [Index(IsClustered = false, IsUnique = false)]
@@ -38,6 +41,7 @@
         [DataType(DataType.Text)]
         public string Content_Plain { get; set; }
 
+        [ImportExportIgnore(IsParent = true)]
         public EmailTemplate Hermes_Email_Template { get; set; }
     }
 

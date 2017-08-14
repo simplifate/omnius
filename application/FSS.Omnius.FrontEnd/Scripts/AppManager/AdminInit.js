@@ -182,5 +182,11 @@
         $("#btnAddApp").on("click", function () {
             addAppDialog.dialog("open");
         });
+        $('.btn-export').on("click", function () {
+            CurrentExportUrl = this.href;
+            exportAppDialog.dialog('open');
+
+            return false;
+        });
     }
 });

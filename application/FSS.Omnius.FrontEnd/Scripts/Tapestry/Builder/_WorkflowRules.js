@@ -1,6 +1,7 @@
 ﻿TB.wfr = {
 
     onCreateItem: [],
+    onCreateRule: [],
 
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
@@ -10,14 +11,49 @@
     },
     
     contextItems: {
-        'add-swimlane': { name: 'Add swimlane', icon: 'add' },
-        'rename': { name: 'Rename rule', icon: 'edit' },
-        'delete': { name: 'Delete rule', icon: 'delete' }
+        'add-swimlane': { name: 'Add swimlane', icon: 'fa-plus' },
+        'rename': { name: 'Rename rule...', icon: 'fa-edit' },
+        'copy': { name: 'Copy rule...', icon: 'fa-clone' },
+        'delete': { name: 'Delete rule', icon: 'fa-trash' }
     },
 
     swimlaneContextItems: {
-        'remove-swimlane': { name: 'Remove swimlane', icon: 'delete' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'remove-swimlane': { name: 'Remove swimlane', icon: 'fa-trash' },
     },
+
+    roleContextItems: {
+        'delete': { name: 'Remove role', icon: 'fa-trash' }
+    },
+
+    itemContextItems: {
+        'properties': { name: 'Properties...', icon: 'fa-edit' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'sep1': '---------',
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
+        'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'sep2': '---------',
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+    actionItemContextItems: {
+        'wizard': { name: 'Wizard...', icon: 'fa-magic' },
+        'properties': { name: 'Properties...', icon: 'fa-edit' },
+        'name': { name: 'Name...', icon: 'fa-tag' },
+        'comment': { name: 'Comment...', icon: 'fa-comment' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'sep1': '---------',
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
+        'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'sep2': '---------',
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+
+    currentRule: null,
 
     init: function () {
         var self = TB.wfr;
@@ -39,10 +75,12 @@
             top: ruleData.PositionY
         })
         .find('.verticalLabel').html(ruleData.Name).end()
-        .attr('id', AssingID())
+        .attr({ 'id': AssingID(), 'data-id': ruleData.Id })
         .appendTo("#workflowRulesPanel .scrollArea");
         
         self.aliveRule(rule);
+        TB.callHooks(self.onCreateRule, rule, []);
+
         return rule;
     },
 
@@ -83,6 +121,23 @@
                 swimlane.find('.swimlaneRolesArea .roleItemContainer').append('<div class="roleItem">' + swimlaneData.Roles[r] + '</div>');
             }
         }
+
+        // Připravíme mapování foreach id => virtual action id
+        for (var k = 0; k < swimlaneData.WorkflowItems.length; k++) {
+            var item = swimlaneData.WorkflowItems[k];
+            if (item.TypeClass == 'virtualAction' && item.SymbolType == 'foreach' && item.ParentForeachId) {
+                TB.foreach.id2VirtualId[item.ParentForeachId] = item.Id;
+            }
+        }
+
+        for (var k = 0; k < swimlaneData.Subflow.length; k++) {
+            TB.subflow.createSubflow(swimlaneData.Subflow[k], swimlane);
+        }
+
+        for (var k = 0; k < swimlaneData.Foreach.length; k++) {
+            TB.foreach.createForeach(swimlaneData.Foreach[k], swimlane, null, true);
+        }
+
         for (var k = 0; k < swimlaneData.WorkflowItems.length; k++) {
             self.createItem(swimlaneData.WorkflowItems[k], swimlane);
         }
@@ -113,6 +168,9 @@
 
     createItem: function(itemData, parentSwimlane)
     {
+        if (itemData.TypeClass == 'virtualAction') // Pouze virtuální akce
+            return;
+
         var item;
         if (itemData.TypeClass === "symbol" && itemData.SymbolType === "comment") {
             item = $('<div id="wfItem' + itemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + itemData.PositionX +
@@ -123,7 +181,7 @@
             '" src="/Content/Images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
 
-            if (itemData.SymbolType == "envelope-start") {
+            if (itemData.SymbolType == "envelope-start" || itemData.SymbolType == "circle-event") {
                 item.data('label', itemData.Label);
             }
         } else {
@@ -157,10 +215,31 @@
             item.data("conditionSets", itemData.ConditionSets);
         if (itemData.IsBootstrap != null)
             item.attr('isBootstrap', itemData.IsBootstrap);
-        if (itemData.TypeClass == "integrationItem")
-            item.addClass('integrationItem');
+        if (itemData.IsForeachStart)
+            item.append('<span class="fa fa-play"></span>');
+        if (itemData.IsForeachEnd)
+            item.append('<span class="fa fa-stop"></span>');
+       
+        if (itemData.TypeClass == 'actionItem') {
+            if (itemData.Name) item.append('<span class="itemName">' + itemData.Name + '</span>');
+            if (itemData.Comment) item.append('<span class="itemComment">' + itemData.Comment + '</span>');
+            if (itemData.CommentBottom) item.find('.itemComment').addClass('bottom');
+        }
+
+        var target;
+        switch (true) {
+            case itemData.ParentForeachId && itemData.ParentForeachId > 0:
+                target = parentSwimlane.find('.foreach[data-foreachid=' + itemData.ParentForeachId + ']');
+                break;
+            case itemData.ParentSubflowId && itemData.ParentSubflowId > 0:
+                target = parentSwimlane.find('.subflow[data-subflowid=' + itemData.ParentSubflowId + ']');
+                break;
+            default:
+                target = parentSwimlane.find('.swimlaneContentArea');
+                break;
+        }
         
-        item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
+        item.appendTo(target);
         AddToJsPlumb(item);
 
         TB.callHooks(TB.wfr.onCreateItem, item, []);
@@ -202,6 +281,10 @@
         });
     },
 
+    /******************************************************************/
+    /* WORKFLOW RULE EVENTS                                           */
+    /******************************************************************/
+
     _ruleDraggableRevert: function(event, ui) {
         return ($(this).collision('#workflowRulesPanel .workflowRule').length > 1);
     },
@@ -242,6 +325,43 @@
         rule.css({'max-width': limits.horizontal - 10, 'max-height': limits.vertical - 10});
     },
 
+    _ruleCopy: function () {
+        var d = this;
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var wfrId = TB.wfr.currentRule.attr('data-id');
+        var targetBlockId = $('#wr-copy-target').val();
+
+        if (!targetBlockId) {
+            alert('Vyberte cílový blok.');
+        }
+        else {
+            var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '/copyWorkflow/' + wfrId + /target/ + targetBlockId;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {},
+                success: function (data) {
+                    if (data) {
+                        alert('Workflow bylo úspěšně zkopírováno.');
+                        TB.dialog.close.apply(d);
+                    }
+                    else {
+                        alert('Workflow se nepodařilo zkopírovat.');
+                    }
+                }
+            })
+        }
+    },
+
+    _ruleCopyOpen: function() {
+        $('#wr-copy-source').html(TB.wfr.currentRule.find('.verticalLabel').text());
+        $('#wr-copy-target').val('');
+    },
+
+    /******************************************************************/
+    /* SWIMLANE EVENTS                                                */
+    /******************************************************************/
     _ruleResizableStop: function (event, ui) {
         ChangedSinceLastSave = true; /// OBSOLATE
         TB.changedSinceLastSave = true;
@@ -310,11 +430,18 @@
         }
     },
 
+    /******************************************************************/
+    /* CONTEXT MENU ACTIONS                                           */
+    /******************************************************************/
     _contextAction: function (key, options) {
         var self = TB.wfr;
         switch (key) {
             case 'delete': self.remove.apply(options.$trigger, []); break;
             case 'rename': self.rename.apply(options.$trigger, []); break;
+            case 'copy':
+                self.currentRule = options.$trigger;
+                TB.dialog.open('workflowCopy');
+                break;
             case 'add-swimlane': self.addSwimlane.apply(options.$trigger, []); break;
         }
     },
@@ -323,14 +450,181 @@
         if (key == 'remove-swimlane') {
             TB.wfr.removeSwimlane.apply(options.$trigger, []);
         }
+        else if (key == 'group-to-subflow') {
+            TB.subflow.groupToSubflow.apply(options.$trigger, []);
+        }
+        else if (key == 'group-to-foreach') {
+            TB.foreach.groupToForeach.apply(options.$trigger, []);
+        }
     },
 
+    _roleContextAction: function (key, options) {
+        var item = options.$trigger;
+        if (key == "delete") {
+            var swimlaneRolesArea = item.parents(".swimlaneRolesArea");
+            item.remove();
+            if (swimlaneRolesArea.find(".roleItem").length == 0)
+                swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
+                    + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+    },
+
+    _itemContextAction: function (key, options) {
+        item = options.$trigger;
+        switch (key) {
+            case "delete": {
+                currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                currentInstance.removeAllEndpoints(item, true);
+                item.remove();
+                ChangedSinceLastSave = true;
+                break;
+            }
+            case "wizard": {
+                item.addClass("activeItem processedItem");
+
+                if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                    CurrentItem = item;
+                    TB.wizard.open.apply(item, []);
+                }
+                else {
+                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    item.removeClass("activeItem");
+                }
+                break;
+            }
+            case "properties": {
+                item.addClass("activeItem processedItem");
+                if (item.hasClass("tableAttribute")) {
+                    CurrentItem = item;
+                    tableAttributePropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("viewAttribute")) {
+                    CurrentItem = item;
+                    gatewayConditionsDialog.dialog("open");
+                }
+                else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                    CurrentItem = item;
+                    actionPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x") {
+                    CurrentItem = item;
+                    gatewayConditionsDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start") {
+                    CurrentItem = item;
+                    envelopeStartPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start") {
+                    CurrentItem = item;
+                    envelopeStartPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "circle-event") {
+                    CurrentItem = item;
+                    circleEventPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("uiItem")) {
+                    CurrentItem = item;
+                    uiitemPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
+                    CurrentItem = item;
+                    labelPropertyDialog.dialog("open");
+                }
+                else {
+                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    item.removeClass("activeItem");
+                }
+                break;
+            }
+            case 'name': {
+                CurrentItem = item;
+                TB.dialog.open('actionItemName');
+                break;
+            }
+            case 'comment': {
+                CurrentItem = item;
+                TB.dialog.open('actionItemComment');
+                break;
+            }
+            case 'group-to-subflow': {
+                TB.subflow.groupToSubflow.apply(options.$trigger, []);
+                break;
+            }
+            case 'group-to-foreach': {
+                TB.foreach.groupToForeach.apply(options.$trigger, []);
+                break;
+            }
+            case 'set-as-fe-start': {
+                TB.foreach.setStart.apply(options.$trigger, []);
+                break;
+            }
+            case 'set-as-fe-end': {
+                TB.foreach.setEnd.apply(options.$trigger, []);
+                break;
+            }
+        }
+    },
+
+    /*******************************************************************/
+    /* DIALOG ACTIONS                                                  */
+    /*******************************************************************/
+    _actionItemSetNameOpen: function() {
+        $(this).find('#ActionName').val($(CurrentItem).find('.itemName').text());
+    },
+
+    _actionItemSetName: function () {
+        var name = $(this).find('#ActionName').val();
+        var item = $(CurrentItem);
+
+        if (name.length) {
+            if (!item.find('.itemName').length) {
+                item.append('<span class="itemName" />');
+            }
+            item.find('.itemName').html(name);
+        }
+        else {
+            item.find('.itemName').remove();
+        }
+        
+        CurrentItem = null;
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+        TB.dialog.close.apply(this);
+    },
+
+    _actionItemSetCommentOpen: function() {
+        $(this).find('#ActionComment').val($(CurrentItem).find('.itemComment').text());
+        $(this).find('#ActionCommentBottom').prop('checked', $(CurrentItem).find('.itemComment').hasClass('bottom'));
+    },
+
+    _actionItemSetComment: function () {
+        var comment = $(this).find('#ActionComment').val();
+        var item = $(CurrentItem);
+
+        if (name.length) {
+            if (!item.find('.itemComment').length) {
+                item.append('<span class="itemComment" />');
+            }
+            item.find('.itemComment').toggleClass('bottom', $('#ActionCommentBottom').is(':checked')).html(comment);
+        }
+        else {
+            item.find('.itemComment').remove();
+        }
+
+        CurrentItem = null;
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+        TB.dialog.close.apply(this);
+    },
+    
     /*************************************************/
     /* SEARCH IN WORKFLOW's                          */
     /*************************************************/
 
     _keyDown: function (e) {
-        if (e.ctrlKey || e.metaKey) {
+        if ((e.ctrlKey && e.shiftKey) || e.metaKey) {
             if (String.fromCharCode(e.which).toLowerCase() == 'f') {
                 e.preventDefault();
 

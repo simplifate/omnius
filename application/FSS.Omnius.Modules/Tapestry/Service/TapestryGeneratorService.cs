@@ -126,7 +126,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
                             _context.AttributeRules.RemoveRange(_context.AttributeRules.Where(ar => ar.BlockId == resultBlock.Id));
                             _context.ActionRules.RemoveRange(_context.ActionRules.Where(ar => ar.SourceBlockId == resultBlock.Id));
+                            _context.ActionRules.RemoveRange(_context.ActionRules.Where(ar => ar.TargetBlockId == resultBlock.Id || ar.TargetBlock.IsVirtualForBlockId == resultBlock.Id));
                             _context.ResourceMappingPairs.RemoveRange(_context.ResourceMappingPairs.Where(mp => mp.BlockId == resultBlock.Id));
+                            _context.SaveChanges();
+
                             _context.Blocks.RemoveRange(_context.Blocks.Where(b => b.IsVirtualForBlockId == resultBlock.Id));
                             resultBlock.InitForWorkFlow.Clear();
 
@@ -177,6 +180,9 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
         private void saveBlocks(SendWS sendWs)
         {
+            // remove old conditions
+            _context.TapestryDesignerConditionGroups.RemoveRange(_app.TapestryDesignerConditionGroups);
+
             int progress = 0, progressMax = _blocksToBuild.Count();
             bool abort = false;
             foreach(TapestryDesignerBlock block in _blocksToBuild)
@@ -422,7 +428,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             // create virtual starting items
             TapestryDesignerWorkflowItem virtualBeginItem = new TapestryDesignerWorkflowItem();
             BlockMapping.Add(virtualBeginItem, block);
-            foreach (TapestryDesignerWorkflowItem item in _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start")))
+            foreach (TapestryDesignerWorkflowItem item in _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule.Id == workflowRule.Id && (i.TypeClass == "uiItem" || i.SymbolType == "circle-single" || i.SymbolType == "envelope-start" || i.SymbolType == "circle-event")))
             {
                 TapestryDesignerWorkflowConnection conn = new TapestryDesignerWorkflowConnection
                 {
@@ -434,8 +440,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
             }
 
             //
-            var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType));
-            var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1);
+            var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && i.ParentForeach == null);
+            var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TargetToConnection.Count() > 1 && i.ParentForeach == null);
 
             foreach (var splitItem in splitItems)
             {
@@ -506,19 +512,21 @@ namespace FSS.Omnius.Modules.Tapestry.Service
 
             //// ACTIONS ////
             foreach (TapestryDesignerWorkflowConnection connection in todoConnections)
-                createActionRule(workflowRule, block, BlockMapping[connection.Source], connection, BlockMapping, conditionMapping, stateColumnMapping, blockHasRights);
+                createActionRule(workflowRule, block, BlockMapping[connection.Source], connection, ref BlockMapping, conditionMapping, stateColumnMapping, blockHasRights, ref wf);
         }
 
         private ActionRule createActionRule(TapestryDesignerWorkflowRule workflowRule, Block nonVirtualBlock, Block startBlock, TapestryDesignerWorkflowConnection connection,
-            Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, TapestryDesignerConditionGroup> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights)
+            ref Dictionary<TapestryDesignerWorkflowItem, Block> blockMapping, Dictionary<Block, TapestryDesignerConditionGroup> conditionMapping, Dictionary<int, string> stateColumnMapping, HashSet<Block> blockHasRights,
+            ref WorkFlow wf)
         {
             TapestryDesignerWorkflowItem item = connection.Target;
+
             // is there a button name?
             string init = item?.ComponentName;
             if (workflowRule.Name == "INIT" && nonVirtualBlock == startBlock) { // initial ActionRule
                 init = "INIT";
             }
-            if(item?.TypeClass == "symbol" && item?.SymbolType == "envelope-start") { // emailové workflow
+            if(item?.TypeClass == "symbol" && (item?.SymbolType == "envelope-start" || item?.SymbolType == "circle-event")) { // emailové workflow nebo socket listener
                 init = item?.Label;
             }
             if(item?.TypeClass == "symbol" && item?.SymbolType == "circle-single" && workflowRule.Name != "INIT") { // REST ENDPOINT
@@ -638,7 +646,10 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                             ActionId = item.ActionId.Value,
                             Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
                             InputVariablesMapping = item.InputVariables + generatedInputVariables,
-                            OutputVariablesMapping = item.OutputVariables
+                            OutputVariablesMapping = item.OutputVariables,
+                            VirtualParentId = item.ParentForeachId.HasValue ? item.ParentForeachId : null,
+                            IsForeachStart = item.IsForeachStart,
+                            IsForeachEnd = item.IsForeachEnd
                         };
                         rule.ActionRule_Actions.Add(result);
                         break;
@@ -698,6 +709,96 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     case "database":
                         break;
                     case "comment":
+                        break;
+                    case "virtualAction":
+                        switch(item.SymbolType) {
+                            case "foreach":
+                                HashSet<TapestryDesignerWorkflowConnection> todoConnections = new HashSet<TapestryDesignerWorkflowConnection>();
+
+                                ActionRule_Action feResult = new ActionRule_Action
+                                {
+                                    ActionId = -1,
+                                    Order = rule.ActionRule_Actions.Any() ? rule.ActionRule_Actions.Max(aar => aar.Order) + 1 : 1,
+                                    InputVariablesMapping = item.InputVariables,
+                                    OutputVariablesMapping = item.OutputVariables,
+                                    VirtualAction = "foreach",
+                                    VirtualItemId = item.ParentForeachId
+                                };
+                                rule.ActionRule_Actions.Add(feResult);
+
+                                // Uložíme akce uvnitř cyklu
+                                var splitItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && i.TypeClass == "symbol" && _splitGateways.Contains(i.SymbolType) && i.ParentForeachId == item.ParentForeachId);
+                                var joinItems = _masterContext.TapestryDesignerWorkflowItems.Where(i => i.ParentSwimlane.ParentWorkflowRule_Id == workflowRule.Id && (i.TargetToConnection.Count() > 1 || i.IsForeachStart == true) && i.ParentForeachId == item.ParentForeachId);
+
+                                foreach (var splitItem in splitItems) {
+                                    // block mapping
+                                    int random = _random.Next() % 1000000;
+                                    Block newBlock = new Block
+                                    {
+                                        Name = $"split_{nonVirtualBlock.Name}_{random}",
+                                        DisplayName = $"split[{nonVirtualBlock.Name}_{random}]",
+                                        ModelName = nonVirtualBlock.ModelName,
+                                        IsVirtualForBlockId = nonVirtualBlock.Id
+                                    };
+                                    wf.Blocks.Add(newBlock);
+                                    blockMapping.Add(splitItem, newBlock);
+
+                                    // conditions
+                                    if (splitItem.SymbolType == "gateway-x") {
+                                        try {
+                                            conditionMapping.Add(newBlock, splitItem.ConditionGroups.Single());
+                                        }
+                                        catch (InvalidOperationException ex) {
+                                            throw new Exception("Gateway has no condition!", ex);
+                                        }
+                                    }
+
+                                    // rights
+                                    if (checkBlockHasRights(splitItem))
+                                        blockHasRights.Add(newBlock);
+
+                                    // todo connection
+                                    int connectionCount = splitItem.SourceToConnection.Count;
+                                    if (connectionCount == 0) // wrong WF
+                                        throw new Exception($"Workflow ends with gateway - {nonVirtualBlock.Name}: {workflowRule.Name}");
+                                    if (connectionCount == 1) // missing way - return to real Block
+                                    {
+                                        TapestryDesignerWorkflowConnection conn = splitItem.SourceToConnection.FirstOrDefault();
+                                        todoConnections.Add(conn);
+                                        todoConnections.Add(new TapestryDesignerWorkflowConnection { SourceSlot = conn.SourceSlot == 0 ? 1 : 0, Source = splitItem });
+                                    }
+                                    else // OK
+                                        foreach (TapestryDesignerWorkflowConnection conn in splitItem.SourceToConnection)
+                                            todoConnections.Add(conn);
+                                }
+
+                                foreach (var joinItem in joinItems) {
+                                    if (blockMapping.ContainsKey(joinItem)) // split item & join item are same
+                                        continue;
+
+                                    // block mapping
+                                    int random = _random.Next() % 1000000;
+                                    Block newBlock = new Block
+                                    {
+                                        Name = $"join_{nonVirtualBlock.Name}_{random}",
+                                        DisplayName = $"join[{nonVirtualBlock.Name}_{random}]",
+                                        ModelName = nonVirtualBlock.ModelName,
+                                        IsVirtualForBlockId = nonVirtualBlock.Id
+                                    };
+                                    wf.Blocks.Add(newBlock);
+                                    blockMapping.Add(joinItem, newBlock);
+
+                                    // todo connection
+                                    todoConnections.Add(new TapestryDesignerWorkflowConnection { Source = joinItem, Target = joinItem });
+                                }
+
+                                foreach (TapestryDesignerWorkflowConnection conn in todoConnections)
+                                    createActionRule(workflowRule, nonVirtualBlock, blockMapping[conn.Source], conn, ref blockMapping, conditionMapping, stateColumnMapping, blockHasRights, ref wf);
+
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                     default:
                         break;

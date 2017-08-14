@@ -11,6 +11,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using System.Linq;
     using Mozaic.Bootstrap;
     using Hermes;
+    using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+
     [Table("Master_Applications")]
     public partial class Application : IEntity
     {
@@ -35,6 +37,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             ColumnMetadata = new HashSet<ColumnMetadata>();
             EmailTemplates = new HashSet<EmailTemplate>();
             IncomingEmailRule = new List<IncomingEmailRule>();
+            TCPListeners = new List<TCPSocketListener>();
         }
 
         [ImportExportIgnore(IsKey = true)]
@@ -53,11 +56,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public string LaunchCommand { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
-
+        
+        public bool IsAllowedForAll { get; set; }
         public bool IsPublished { get; set; }
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
-        public bool IsAllowedForAll { get; set; }
 
         // empty for default, database name or full connection string
         public string connectionString_data { get; set; }
@@ -68,6 +71,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public bool EntitronChangedSinceLastBuild { get; set; }
         public bool MenuChangedSinceLastBuild { get; set; }
         public bool DbSchemeLocked { get; set; }
+        public int? SchemeLockedForUserId { get; set; }
 
         [ImportExportIgnore]
         public virtual MozaicCssTemplate CssTemplate { get; set; }
@@ -108,5 +112,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         // hermes
         public virtual ICollection<EmailTemplate> EmailTemplates { get; set; }
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
+
+        // Nexus
+        public virtual ICollection<TCPSocketListener> TCPListeners { get; set; }
     }
 }

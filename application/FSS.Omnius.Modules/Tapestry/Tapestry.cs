@@ -25,9 +25,9 @@ namespace FSS.Omnius.Modules.Tapestry
             _results = new ActionResult();
         }
 
-        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null)
+        public Tuple<Message, Block, Dictionary<string, object>> run(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
         {
-            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId, blockDependencies);
+            Tuple<ActionResult, Block> result = innerRun(user, block, buttonId, modelId, fc, deleteId, blockDependencies, mergeVars);
             var CrossBlockRegistry = result.Item1.OutputData.ContainsKey("CrossBlockRegistry")
                 ? (Dictionary<string, object>)result.Item1.OutputData["CrossBlockRegistry"] : new Dictionary<string, object>();
             return new Tuple<Message, Block, Dictionary<string, object>>(result.Item1.Message, result.Item2, CrossBlockRegistry);
@@ -67,7 +67,7 @@ namespace FSS.Omnius.Modules.Tapestry
             return output;
         }
 
-        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null)
+        public Tuple<ActionResult, Block> innerRun(User user, Block block, string buttonId, int modelId, NameValueCollection fc, int deleteId, Dictionary<string, object> blockDependencies = null, Dictionary<string, object> mergeVars = null)
         {
             // __CORE__
             // __Result[uicName]__
@@ -108,6 +108,18 @@ namespace FSS.Omnius.Modules.Tapestry
                     _results.OutputData.Add("__Dependency_" + dependency.Key + "__", dependency.Value);
                 }
             }
+
+            if (mergeVars != null) {
+                foreach (KeyValuePair<string, object> var in mergeVars) {
+                    if (!_results.OutputData.ContainsKey(var.Key)) {
+                        _results.OutputData.Add(var.Key, var.Value);
+                    }
+                    else {
+                        _results.OutputData[var.Key] = var.Value;
+                    }
+                }
+            }
+
             _results.OutputData.Add("__Button__", buttonId);
 
             // get actionRule
@@ -184,8 +196,13 @@ namespace FSS.Omnius.Modules.Tapestry
 
         private ActionRule GetActionRule(Block block, ActionResult results, string buttonId = null)
         {
+            return GetActionRule(_CORE, block, results, buttonId);
+        }
+
+        public static ActionRule GetActionRule(CORE core, Block block, ActionResult results, string buttonId = null)
+        {
             DBEntities masterContext = DBEntities.instance;
-            DBEntities context = DBEntities.appInstance(_CORE.Entitron.Application);
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
 
             // filter by executor
             if (buttonId != null)
@@ -203,7 +220,7 @@ namespace FSS.Omnius.Modules.Tapestry
             }
 
             // filter by rights
-            List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == _CORE.User.Id && ur.ApplicationId == _CORE.Entitron.AppId).Select(ur => ur.RoleName).ToList();
+            List<string> roles = masterContext.Users_Roles.Where(ur => ur.UserId == core.User.Id && ur.ApplicationId == core.Entitron.AppId).Select(ur => ur.RoleName).ToList();
             List<ActionRule> ARs = context.ActionRules.SqlQuery($"SELECT *, ISNULL(appr.Priority, 999) as [Prior] FROM Tapestry_ActionRule ar LEFT JOIN Persona_ActionRuleRights arr ON arr.ActionRuleId = ar.Id Left JOIN Persona_AppRoles appr ON appr.Id = arr.AppRoleId WHERE SourceBlockId = @p0 AND ExecutedBy {(buttonId == null ? "IS NULL" : "= @p1")} AND(arr.AppRoleId IS NULL OR appr.Name IN ({(roles.Any() ? string.Join(", ", roles.Select(s => $"N'{s}'")) : "''")})) ORDER BY Prior", block.Id, buttonId).ToList();
             if (!ARs.Any())
             {

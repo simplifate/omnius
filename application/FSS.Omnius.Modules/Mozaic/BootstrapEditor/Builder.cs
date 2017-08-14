@@ -43,6 +43,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder sb = new StringBuilder();
 
             sb.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
+            sb.Append("@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData[\"formState\"]; }");
             sb.Append(@"<div class=""mozaicBootstrapPage"">");
             sb.Append(RenderComponents(currentPage.Components.Where(c => c.ParentComponent == null).OrderBy(c => c.NumOrder).ToList()));
             sb.Append("</div>");
@@ -520,7 +521,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
 
             Dictionary<string, string> mergeAttrs = new Dictionary<string, string>();
-            mergeAttrs.Add("value", $"@(ViewData.ContainsKey(\"inputData_{c.ElmId}\") ? @ViewData[\"inputData_{c.ElmId}\"] : \"\")");
+            mergeAttrs.Add("value", $"@(formState.ContainsKey(\"{c.ElmId}\") ? formState[\"{c.ElmId}\"] : (ViewData.ContainsKey(\"inputData_{c.ElmId}\") ? @ViewData[\"inputData_{c.ElmId}\"] : \"\"))");
 
             string attrs = BuildAttributes(c, new List<string>(), mergeAttrs);
 
@@ -543,7 +544,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 case "datetime-local": format = "yyyy-MM-dd HH:mm:ss"; break;
                 case "month": format = "yyyy-MM"; break;
             }
-            mergeAttrs.Add("value", $"@((ViewData.ContainsKey(\"inputData_{c.ElmId}\") && ViewData[\"inputData_{c.ElmId}\"] is DateTime) ? ((DateTime)ViewData[\"inputData_{c.ElmId}\"]).ToString(\"{format}\") : \"\")");
+            mergeAttrs.Add("value", $"@(formState.ContainsKey(\"{c.ElmId}\") ? formState[\"{c.ElmId}\"] : ((ViewData.ContainsKey(\"inputData_{c.ElmId}\") && ViewData[\"inputData_{c.ElmId}\"] is DateTime) ? ((DateTime)ViewData[\"inputData_{c.ElmId}\"]).ToString(\"{format}\") : \"\")");
 
             string attrs = BuildAttributes(c, new List<string>(), mergeAttrs);
 
@@ -571,7 +572,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
     {GetContent(c, properties)}
     @{{ if(ViewData[""dropdownData_{c.ElmId}""] != null) {{
             foreach(var option in ((Dictionary<int, string>)ViewData[""dropdownData_{c.ElmId}""]){sort}) {{
-                <option value=""@(option.Key)"" @(ViewData.ContainsKey(""dropdownSelection_{ c.ElmId}"") && ViewData[""dropdownSelection_{c.ElmId}""] is int && (int)ViewData[""dropdownSelection_{c.ElmId}""] == option.Key ? ""selected"" : """")>
+                <option value=""@(option.Key)"" @((formState.ContainsKey(""{c.ElmId}"") && Convert.ToInt32(formState[""{c.ElmId}""]) == option.Key) || (ViewData.ContainsKey(""dropdownSelection_{ c.ElmId}"") && ViewData[""dropdownSelection_{c.ElmId}""] is int && (int)ViewData[""dropdownSelection_{c.ElmId}""] == option.Key) ? ""selected"" : """")>
                     @(option.Value)
                 </option>
             }}
@@ -587,7 +588,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<{c.Tag} {attrs}>@ViewData[\"inputData_{c.ElmId}\"]</{c.Tag}>");
+            html.Append($"<{c.Tag} {attrs}>@(formState.ContainsKey(\"{c.ElmId}\") ? formState[\"{c.ElmId}\"] : ViewData[\"inputData_{c.ElmId}\"])</{c.Tag}>");
             
             return html.ToString();
         }
@@ -597,7 +598,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true) ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @(formState.ContainsKey(\"{c.ElmId}\") && formState[\"{c.ElmId}\"] == \"on\") || (ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true)) ? \" checked\" : \"\") />");
 
             return html.ToString();
         }
@@ -606,8 +607,9 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
         {
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
+            string value = GetAttribute(c.Attributes, "value");
 
-            html.Append($"<input {attrs} @(ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true) ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @((formState.ContainsKey(\"{c.ElmId}\") && formState[\"{c.ElmId}\"] == \"{value}\") || (ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true)) ? \" checked\" : \"\") />");
 
             return html.ToString();
         }

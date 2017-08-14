@@ -7,11 +7,16 @@ $(function () {
         $("#btnAddView").on("click", function () {
             addViewDialog.dialog("open");
         });
+        $("#btnLockScheme").on("click", function () {
+            console.log(DD);
+            DD.lock._lockSchemeClick();
+        });
+
         $("#switchToWorkflow").on("click", function () {
             window.location = "/workflow";
         });
         $("#btnSaveScheme").on("click", function () {
-            saveDialog.dialog("open");
+            DD.lock._save();
         });
         $("#btnLoadScheme").on("click", function () {
             LoadDbScheme("latest");

@@ -3,6 +3,7 @@ using System.Reflection;
 using FSS.Omnius.FrontEnd.Views;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Hermes;
+using FSS.Omnius.Modules.Nexus.Service;
 
 namespace FSS.Omnius.FrontEnd.App_Start
 {
@@ -33,6 +34,9 @@ namespace FSS.Omnius.FrontEnd.App_Start
 
             // Start Incoming e-mail listeners if any
             IncomingEmailListener.Refresh();
+
+            // Start TCP socket listeners if any
+            TCPSocketListenerService.Refresh();
         }
     }
 }

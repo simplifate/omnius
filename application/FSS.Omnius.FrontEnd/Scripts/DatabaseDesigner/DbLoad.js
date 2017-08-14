@@ -1,6 +1,8 @@
 ﻿function LoadDbScheme(commitId) {
     pageSpinner.show();
     appId = $("#currentAppId").val();
+    currentUserId = $("#currentUserId").val();
+
     $.ajax({
         type: "GET",
         url: "/api/database/apps/" + appId + "/commits/" + commitId,
@@ -9,6 +11,7 @@
             pageSpinner.hide()
         },
         success: function (data) {
+          
             ClearDbScheme();
             for (i = 0; i < data.Tables.length; i++) {
                 newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'

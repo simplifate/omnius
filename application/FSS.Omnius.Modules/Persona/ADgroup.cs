@@ -47,6 +47,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             List<ADgroup_User> rightsLdap = new List<ADgroup_User>();
             foreach (ADgroup group in context.ADgroups.ToList())
             {
+                // For ADGroup with added RoleForApplication remove UserRoles
+                if (!string.IsNullOrEmpty(group.RoleForApplication))
+                {
+                    foreach (User_Role userRole in context.Users_Roles.ToList())
+                    {
+                        if (userRole.ApplicationId == group.ApplicationId && userRole.RoleName == group.RoleForApplication)
+                            context.Users_Roles.Remove(userRole);
+                    }
+                }
+
                 var ADapps = ldap.GetGroups(group.Name);
                 if (ADapps.Count() == 0)
                     continue;
@@ -56,7 +66,18 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
                     foreach (JToken member in ADapp["member"])
                     {
                         // save user with groups
-                        core.Persona.GetUser(identify: (string)member);
+                        User user = core.Persona.GetUser(identify: (string)member);
+
+                        // Add UserRole according to ADGroup
+                        if (!string.IsNullOrEmpty(group.RoleForApplication))
+                        {
+                            User_Role newUserRole = new User_Role();
+                            newUserRole.UserId = user.Id;
+                            newUserRole.RoleName = group.RoleForApplication;
+                            newUserRole.ApplicationId = group.ApplicationId??0;
+                            newUserRole.ApplicationName = context.Applications.Find(group.ApplicationId??0).Name;
+                            context.Users_Roles.Add(newUserRole);
+                        }
                     }
                 }
             }

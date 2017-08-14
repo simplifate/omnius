@@ -557,32 +557,54 @@ body.tapestryModule #lowerPanel {
       z-index: 20; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .processedItem {
       box-shadow: 0 0 0 2px black; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace .processedItem.activeItem {
+        box-shadow: 0 0 0px 2px green; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .activeItem {
-      box-shadow: 0 0 0 2px green; }
+      box-shadow: 0 0 0px 2px green; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .isMatch {
       box-shadow: 0 0 0 3px #c2b52b !important; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .rule.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .item.ui-draggable-dragging, body.tapestryModule #lowerPanel #tapestryWorkspace .symbol.ui-draggable-dragging {
       z-index: 1000; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem {
       background-color: #5bb3e4;
-      color: black; }
+      color: black;
+      border: 2px solid #5bb3e4; }
+      body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem .itemComment {
+        font-style: italic;
+        color: #888;
+        position: absolute;
+        left: 5px;
+        bottom: 100%;
+        padding-bottom: 3px;
+        text-align: left; }
+        body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem .itemComment:before {
+          content: "// ";
+          font-style: normal; }
+        body.tapestryModule #lowerPanel #tapestryWorkspace .actionItem .itemComment.bottom {
+          top: 100%;
+          margin-top: 3px; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .attributeItem {
       background-color: #8e67ad;
+      border: 2px solid #8e67ad;
       color: white; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .uiItem {
       background-color: #f4e80b;
+      border: 2px solid #f4e80b;
       color: black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .roleItem {
       background-color: #db4c91;
       color: white; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .stateItem {
       background-color: #4d77db;
+      border: 2px solid #4d77db;
       color: white; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .targetItem {
       background-color: #f26822;
+      border: 2px solid #f26822;
       color: black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .templateItem {
       background-color: #58bf8f;
+      border: 2px solid #58bf8f;
       color: black; }
     body.tapestryModule #lowerPanel #tapestryWorkspace .integrationItem {
       background-color: #e1f5ff;
@@ -693,6 +715,8 @@ body.tapestryModule #lowerPanel {
           width: 100%;
           height: 50%;
           border-bottom: 2px solid #bcbbbc; }
+          body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .dragHover {
+            outline: 1px solid #f98e4b; }
           body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneRolesArea {
             position: absolute;
             left: 0px;
@@ -762,6 +786,16 @@ body.tapestryModule #lowerPanel {
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem {
               background-color: #5bb3e4;
               color: black; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem .itemLabel {
+                color: #fff;
+                position: absolute;
+                left: 5px;
+                bottom: 0px; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem .fa-play, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .actionItem .fa-stop {
+                position: absolute;
+                color: #c7e7fa;
+                left: 3px;
+                top: 3px; }
             body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .templateItem {
               background-color: #58bf8f;
               color: black; }
@@ -769,6 +803,44 @@ body.tapestryModule #lowerPanel {
               background-color: #e1f5ff;
               border: 2px solid #91d9ff;
               color: #316177; }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach {
+              position: absolute;
+              border: 1px solid #ccc;
+              background: #efefef; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .subflowName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .foreachName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .subflowName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachName {
+                position: absolute;
+                top: -23px;
+                left: -1px;
+                right: -1px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0px 10px;
+                background: #ccc;
+                font-weight: bold;
+                font-size: 0.8em; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .subflowComment, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .foreachComment, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .subflowComment, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachComment {
+                font-style: italic;
+                color: #888;
+                position: absolute;
+                left: 5px;
+                bottom: 100%;
+                padding-bottom: 3px;
+                text-align: left; }
+                body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .subflowComment:before, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .foreachComment:before, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .subflowComment:before, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachComment:before {
+                  content: "// ";
+                  font-style: normal; }
+                body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .subflowComment.withName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .foreachComment.withName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .subflowComment.withName, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachComment.withName {
+                  margin-bottom: 20px; }
+                body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .subflowComment.bottom, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .subflow .foreachComment.bottom, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .subflowComment.bottom, body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachComment.bottom {
+                  top: 100%;
+                  margin-top: 3px; }
+            body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach {
+              border-color: #5bb3e4;
+              background: #c7e7fa; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .foreachName {
+                background: #5bb3e4; }
+              body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane .swimlaneContentArea .foreach .fa-repeat {
+                margin: 5px; }
         body.tapestryModule #lowerPanel #tapestryWorkspace #workflowRulesPanel .workflowRule .swimlane:last-child {
           border-bottom: none; }
 
@@ -922,6 +994,13 @@ body.tapestryModule .ui-autocomplete.ui-widget.ui-menu {
     padding: 1px 15px; }
     body.tapestryModule .ui-autocomplete.ui-widget.ui-menu .ui-menu-item.ui-state-focus {
       padding: 0px 14px; }
+
+body.tapestryModule .nu-selection-box {
+  border: 1px dotted #BBB;
+  background: rgba(0, 0, 0, 0.04); }
+
+body.tapestryModule .nu-selected {
+  border: 2px dashed #000 !important; }
 
 @media only screen and (max-width: 1855px) {
   body.tapestryModule #tapestryLibraryResponsiveArea {
@@ -3846,6 +3925,9 @@ body.athenaModule.athenaForm .gallery {
     .tileMenuArea .tileMenuItem .fa-cloud-upload {
       font-size: 110px;
       top: 22px; }
+    .tileMenuArea .tileMenuItem .fa-play-circle-o {
+      font-size: 110px;
+      top: 22px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -3969,6 +4051,10 @@ body.adminLayout #appNotificationArea {
   left: 225px;
   top: 75px;
   right: 0px; }
+
+.lowerPanelNoOverlap {
+  width: calc(100% - 225px);
+  overflow: auto; }
 
 #lowerPanelContainer {
   position: absolute;

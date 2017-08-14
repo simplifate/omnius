@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "overviewModule";
 }
+@using Newtonsoft.Json.Linq;
+
 <div id="lowerPanel">
     <div id="overviewHeaderArea">
         App: <span id="headerAppName">@ViewData["appName"]</span><br /> Metablock: <span id="headerMetablockName"></span>
@@ -163,4 +165,28 @@
             <tr></tr>
         </tbody>
     </table>
+</div>
+
+<div id="copy-block-dialog" title="Copy / move block">
+    <form class="form-horizontal">
+        <fieldset>
+            <div class="form-group form-group-sm">
+                <label for="c-block-name" class="control-label col-sm-3">Block name:</label>
+                <div class="col-sm-9">
+                    <span class="form-control-static" id="c-block-name"></span>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="c-target-name" class="control-label col-sm-3">Target metablock:</label>
+                <div class="col-sm-9">
+                    <select name="c_target_name" id="c-target-name" class="form-control">
+                        <option value="">-- select one --</option>
+                        @foreach(JToken item in (JArray)ViewData["metablockList"]) {
+                            <option value="@((string)item["Id"])">@("-----------------------".Substring(0, (int)item["Level"] * 2) + " " + (string)item["Name"])</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 </div>

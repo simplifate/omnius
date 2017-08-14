@@ -12,7 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override void BaseExecution(MarshalByRefObject transaction)
         {
             sqlString =
-                $"ALTER TABLE [{realTableName}] DROP CONSTRAINT IF EXISTS [{constraintName}];";
+                $"IF(OBJECT_ID('{constraintName}') IS NOT NULL) BEGIN ALTER TABLE [{realTableName}] DROP CONSTRAINT [{constraintName}] END";
             
             base.BaseExecution(transaction);
         }

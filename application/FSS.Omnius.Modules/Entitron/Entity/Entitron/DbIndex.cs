@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 
         [ImportExportIgnore(IsParentKey = true)]
         public int DbTableId { get; set; }
+
         [ImportExportIgnore(IsParent = true)]
         public virtual DbTable DbTable { get; set; }
     }

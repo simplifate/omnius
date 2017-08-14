@@ -85,7 +85,8 @@
             pageSpinner.hide();
         },
         success: function () {
-            alert("OK");
+            alert("The database scheme has been successfully saved!");
+            $('#btnLockScheme').html('Lock scheme');
         }
     });
 }

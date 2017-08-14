@@ -24,6 +24,7 @@ namespace FSS.Omnius.Controllers.Nexus
             ViewData["ExtDatabasesCount"] = e.ExtDBs.Count();
             ViewData["WebDavServersCount"] = e.WebDavServers.Count();
             ViewData["APICount"] = e.APIs.Count();
+            ViewData["TCPSocketCount"] = e.TCPListeners.Count();
             return View(e.ExtDBs);
         }
 

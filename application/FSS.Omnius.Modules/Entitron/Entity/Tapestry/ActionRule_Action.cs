@@ -12,6 +12,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 
         public int Order { get; set; }
 
+        public string VirtualAction { get; set; }
+        public int? VirtualItemId { get; set; }
+        public int? VirtualParentId { get; set; }
+        public bool? IsForeachStart { get; set; }
+        public bool? IsForeachEnd { get; set; }
+
         /// <summary>
         /// Target1=source1;target2=source2
         /// pro vstup dat uvozovky - Target1=s$nìjaký text

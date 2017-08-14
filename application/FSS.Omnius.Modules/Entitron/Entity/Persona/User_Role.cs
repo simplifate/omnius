@@ -16,6 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         [Required]
         [StringLength(50)]
         public string RoleName { get; set; }
+        public string ApplicationName { get; set; }
         public int ApplicationId { get; set; }
 
         public virtual User User { get; set; }

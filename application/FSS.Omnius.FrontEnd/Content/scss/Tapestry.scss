@@ -61,7 +61,7 @@ body.tapestryModule {
                 overflow-y: auto;
                 position: relative;
 
-                .spinner-2{
+                .spinner-2 {
                     display: none
                 }
             }
@@ -351,13 +351,16 @@ body.tapestryModule {
 
             .processedItem {
                 box-shadow: 0 0 0 2px black;
+
+                &.activeItem {
+                    box-shadow: 0 0 0px 2px green;
+                }
             }
 
             .activeItem {
-                box-shadow: 0 0 0 2px green;
+                box-shadow: 0 0 0px 2px green;
             }
-
-            .isMatch {
+	    .isMatch {
                 box-shadow: 0 0 0 3px #c2b52b !important;
             }
 
@@ -368,15 +371,38 @@ body.tapestryModule {
             .actionItem {
                 background-color: #5bb3e4;
                 color: black;
+                border: 2px solid #5bb3e4;
+
+                .itemComment {
+                    font-style: italic;
+                    color: #888;
+                    position: absolute;
+                    left: 5px;
+                    bottom: 100%;
+                    padding-bottom: 3px;
+                    text-align: left;
+
+                    &:before {
+                        content: "// ";
+                        font-style: normal;
+                    }
+
+                    &.bottom {
+                        top: 100%;
+                        margin-top: 3px;
+                    }
+                }
             }
 
             .attributeItem {
                 background-color: #8e67ad;
+                border: 2px solid #8e67ad;
                 color: white;
             }
 
             .uiItem {
                 background-color: #f4e80b;
+                border: 2px solid #f4e80b;
                 color: black;
             }
 
@@ -387,16 +413,19 @@ body.tapestryModule {
 
             .stateItem {
                 background-color: #4d77db;
+                border: 2px solid #4d77db;
                 color: white;
             }
 
             .targetItem {
                 background-color: #f26822;
+                border: 2px solid #f26822;
                 color: black;
             }
 
             .templateItem {
                 background-color: #58bf8f;
+                border: 2px solid #58bf8f;
                 color: black;
             }
 
@@ -546,6 +575,10 @@ body.tapestryModule {
                         height: 50%;
                         border-bottom: 2px solid #bcbbbc;
 
+                        .dragHover {
+                            outline: 1px solid #f98e4b;
+                        }
+
                         .swimlaneRolesArea {
                             position: absolute;
                             left: 0px;
@@ -630,6 +663,20 @@ body.tapestryModule {
                             .actionItem {
                                 background-color: #5bb3e4;
                                 color: black;
+
+                                .itemLabel {
+                                    color: #fff;
+                                    position: absolute;
+                                    left: 5px;
+                                    bottom: 0px;
+                                }
+
+                                .fa-play, .fa-stop {
+                                    position: absolute;
+                                    color: #c7e7fa;
+                                    left: 3px;
+                                    top: 3px;
+                                }
                             }
 
                             .templateItem {
@@ -641,6 +688,62 @@ body.tapestryModule {
                                 background-color: #e1f5ff;
                                 border: 2px solid #91d9ff;
                                 color: #316177;
+                            }
+
+                            .subflow, .foreach {
+                                position: absolute;
+                                border: 1px solid #ccc;
+                                background: #efefef;
+
+                                .subflowName, .foreachName {
+                                    position: absolute;
+                                    top: -23px;
+                                    left: -1px;
+                                    right: -1px;
+                                    height: 24px;
+                                    line-height: 24px;
+                                    padding: 0px 10px;
+                                    background: #ccc;
+                                    font-weight: bold;
+                                    font-size: 0.8em;
+                                }
+
+                                .subflowComment, .foreachComment {
+                                    font-style: italic;
+                                    color: #888;
+                                    position: absolute;
+                                    left: 5px;
+                                    bottom: 100%;
+                                    padding-bottom: 3px;
+                                    text-align: left;
+
+                                    &:before {
+                                        content: "// ";
+                                        font-style: normal;
+                                    }
+
+                                    &.withName {
+                                        margin-bottom: 20px;
+                                    }
+
+                                    &.bottom {
+                                        top: 100%;
+                                        margin-top: 3px;
+                                    }
+                                }
+                            }
+
+                            .foreach {
+                                border-color: #5bb3e4;
+                                background: #c7e7fa;
+
+                                .foreachName {
+                                    background: #5bb3e4;
+                                }
+
+                                .fa-repeat {
+                                    margin: 5px;
+                                }
                             }
                         }
                     }
@@ -780,7 +883,7 @@ body.tapestryModule {
             }
 
             .conditionActions {
-                 width: 100px;
+                width: 100px;
 
                 .conditionActionIcon {
                     display: inline-block;
@@ -853,6 +956,7 @@ body.tapestryModule {
         max-height: 200px;
         overflow-y: auto;
         overflow-x: hidden;
+
         .ui-autocomplete-category {
             font-weight: bold;
             padding: 2px 5px;
@@ -863,6 +967,15 @@ body.tapestryModule {
                 padding: 0px 14px;
             }
         }
+    }
+
+    .nu-selection-box {
+        border: 1px dotted #BBB;
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    .nu-selected {
+        border: 2px dashed #000 !important;
     }
 
     @media only screen and (max-width: 1855px) {

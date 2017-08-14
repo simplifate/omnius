@@ -37,6 +37,11 @@
         }
     });
 };
+function dateTimePickerPreventWhenReadOnly(current_time, $input) {
+    if ($input.attr("readonly") !== undefined) {
+        return false;
+    }
+}
 function HidePanel(paneName) {
     panel = $("#userContentArea").find('div[name="' + paneName + '"]');
     if (panel.is(":visible")) {

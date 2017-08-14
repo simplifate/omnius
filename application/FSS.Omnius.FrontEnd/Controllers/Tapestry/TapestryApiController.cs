@@ -10,6 +10,8 @@ using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using Logger;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using M = System.Web.Mvc;
+using System.Web;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 {
@@ -62,6 +64,20 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+        [Route("api/tapestry/apps/{appId}/blocks/{blockId}/getLastCommit")]
+        [HttpGet]
+        public int? GetLastCommitId(int appId, int blockId)
+        {
+            using (var context = DBEntities.instance)
+            {
+                TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
+                    TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
+                    if(blockCommit!=null)
+                        return blockCommit.Id;
+                return null;
+             }
+        }
+
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}")]
         [HttpGet]
         public AjaxTapestryDesignerBlockCommit GetBlock(int appId, int blockId)
@@ -75,7 +91,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     try
                     {
                         TapestryDesignerBlockCommit blockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
-
+                        
                         if (blockCommit == null)
                         {
                             result = new AjaxTapestryDesignerBlockCommit
@@ -100,8 +116,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                                 PositionX = blockCommit.PositionX,
                                 PositionY = blockCommit.PositionY,
                                 Timestamp = blockCommit.Timestamp,
+                                
                                 CommitMessage = blockCommit.CommitMessage,
                                 ModelTableName = blockCommit.ModelTableName,
+                                LockedForUserId = requestedBlock.LockedForUserId,
+                                LockedForUserName = requestedBlock.LockedForUserId != null ? context.Users.FirstOrDefault(u => u.Id == requestedBlock.LockedForUserId).DisplayName : "",
                                 AssociatedPageIds = string.IsNullOrEmpty(blockCommit.AssociatedPageIds) ? new List<int>()
                                     : blockCommit.AssociatedPageIds.Split(',').Select(int.Parse).ToList(),
                                 AssociatedBootstrapPageIds = string.IsNullOrEmpty(blockCommit.AssociatedBootstrapPageIds) ? new List<int>()
@@ -136,9 +155,97 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
             }
         }
+
+        [Route("api/tapestry/apps/{appId}/blocks/{blockId}/lockBlock/{userId}")]
+        [HttpGet]
+        public bool LockBlock(int appId, int blockId,int userId)
+        {
+            try
+            {
+                using (var context = DBEntities.instance)
+                {
+                    TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
+                    if (requestedBlock.LockedForUserId == null)
+                    {
+                        requestedBlock.LockedForUserId = userId;
+                        context.SaveChanges();
+
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Designer: error when locking block data (GET api/tapestry/apps/{appId}/blocks/{blockId}/{userId}). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
+        [Route("api/tapestry/apps/{appId}/blocks/{blockId}/isBlockLocked/{userId}/commits/{currentCommitId}")]
+        [HttpGet]
+        public AjaxBlockLockingStatus isBlockLocked(int appId, int blockId, int userId,int currentCommitId)
+        {
+         
+            using (var context = DBEntities.instance)
+            {
+                
+                TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
+                if (requestedBlock.LockedForUserId != null && userId != requestedBlock.LockedForUserId)
+                {
+                    string lockForUserName = context.Users.FirstOrDefault(u => u.Id == requestedBlock.LockedForUserId).DisplayName;
+                    return new AjaxBlockLockingStatus() { lockStatusId = 1, lockedForUserName = lockForUserName };
+                }
+                else if (requestedBlock.LockedForUserId != null && userId == requestedBlock.LockedForUserId)
+                {
+                    TapestryDesignerBlockCommit lastBlockCommit = requestedBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
+                    
+                    if (lastBlockCommit == null || (lastBlockCommit!=null && lastBlockCommit.Id == currentCommitId)) {//if last commit == current commit => OK
+                        return new AjaxBlockLockingStatus() { lockStatusId = 2, lockedForUserName = "" };
+
+                    }else
+                    return new AjaxBlockLockingStatus() { lockStatusId = 3, lockedForUserName = "" };
+                }
+                else
+                    return new AjaxBlockLockingStatus() { lockStatusId = 0, lockedForUserName = "" };
+            }
+        }
+
+        [Route("api/tapestry/apps/{appId}/blocks/{blockId}/unlockBlock")]
+        [HttpGet]
+        public bool UnlockBlock(int appId, int blockId)
+        {
+            try
+            {
+                using (var context = DBEntities.instance)
+                {
+                    TapestryDesignerBlock requestedBlock = context.TapestryDesignerBlocks.Find(blockId);
+                    if (requestedBlock.LockedForUserId != null)
+                    {
+                        requestedBlock.LockedForUserId = null;
+                        context.SaveChanges();
+                        return true;
+
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Tapestry Designer: error when unlocking block data (GET api/tapestry/apps/{appId}/blocks/{blockId}). Exception message: {ex.Message}";
+                throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+
+
+
         [Route("api/tapestry/apps/{appId}/blocks/{blockId}")]
         [HttpPost]
-        public void SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
+        public int? SaveBlock(int appId, int blockId, AjaxTapestryDesignerBlockCommit postData)
         {
             try
             {
@@ -154,6 +261,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     {
                         targetBlock = new TapestryDesignerBlock();
                         targetBlock.ParentMetablock = context.TapestryDesignerMetablocks.Find(postData.ParentMetablockId);
+
                         context.TapestryDesignerBlocks.Add(targetBlock);
                     }
                     TapestryDesignerBlockCommit blockCommit = new TapestryDesignerBlockCommit
@@ -169,6 +277,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                         RoleWhitelist = postData.RoleWhitelist != null ? string.Join(",", postData.RoleWhitelist) : "",
                     };
                     targetBlock.IsChanged = true;
+                    targetBlock.LockedForUserId = null;
                     targetBlock.BlockCommits.Add(blockCommit);
 
                     foreach (AjaxTapestryDesignerResourceRule ajaxRule in postData.ResourceRules)
@@ -272,61 +381,84 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                             };
                             rule.Swimlanes.Add(swimlane);
                             context.SaveChanges();
+
+                            foreach(AjaxTapestryDesignerSubflow ajaxSubflow in ajaxSwimlane.Subflow) {
+                                TapestryDesignerSubflow subflow = new TapestryDesignerSubflow
+                                {
+                                    Name = ajaxSubflow.Name,
+                                    Comment = ajaxSubflow.Comment,
+                                    CommentBottom = ajaxSubflow.CommentBottom,
+                                    Width = ajaxSubflow.Width,
+                                    Height = ajaxSubflow.Height,
+                                    PositionX = ajaxSubflow.PositionX,
+                                    PositionY = ajaxSubflow.PositionY,
+                                };
+
+                                swimlane.Subflow.Add(subflow);
+                                context.SaveChanges();
+
+                                foreach(AjaxTapestryDesignerWorkflowItem ajaxItem in ajaxSubflow.WorkflowItems) {
+                                    TapestryDesignerWorkflowItem item = convertWorkflowItem(ajaxItem);
+                                    item.ParentSwimlane = swimlane;
+                                    subflow.WorkflowItems.Add(item);
+                                    context.SaveChanges();
+
+                                    workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
+                                    convertConditionSets(ref item, ajaxItem);
+                                }
+                            }
+
+                            foreach(AjaxTapestryDesignerForeach ajaxForeach in ajaxSwimlane.Foreach) {
+                                TapestryDesignerForeach forEach = new TapestryDesignerForeach
+                                {
+                                    Name = ajaxForeach.Name,
+                                    Comment = ajaxForeach.Comment,
+                                    CommentBottom = ajaxForeach.CommentBottom,
+                                    Width = ajaxForeach.Width,
+                                    Height = ajaxForeach.Height,
+                                    PositionX = ajaxForeach.PositionX,
+                                    PositionY = ajaxForeach.PositionY,
+                                    DataSource = ajaxForeach.DataSource
+                                };
+                                swimlane.Foreach.Add(forEach);
+                                context.SaveChanges();
+
+                                foreach(AjaxTapestryDesignerWorkflowItem ajaxItem in ajaxForeach.WorkflowItems) {
+                                    TapestryDesignerWorkflowItem item = convertWorkflowItem(ajaxItem);
+                                    item.ParentSwimlane = swimlane;
+                                    forEach.WorkflowItems.Add(item);
+                                    context.SaveChanges();
+
+                                    workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
+                                    convertConditionSets(ref item, ajaxItem);
+                                }
+
+                                TapestryDesignerWorkflowItem virtualItem = new TapestryDesignerWorkflowItem
+                                {
+                                    ActionId = null,
+                                    Label = "Foreach virtual action",
+                                    PositionX = ajaxForeach.PositionX,
+                                    PositionY = ajaxForeach.PositionY,
+                                    SymbolType = "foreach",
+                                    TypeClass = "virtualAction",
+                                    ParentSwimlane = swimlane,
+                                    ParentForeach = forEach,
+                                    InputVariables = "DataSource=" + forEach.DataSource
+                                };
+                                swimlane.WorkflowItems.Add(virtualItem);
+                                context.SaveChanges();
+
+                                workflowItemIdMapping.Add(ajaxForeach.Id, virtualItem.Id);
+                            }
+                            
                             foreach (AjaxTapestryDesignerWorkflowItem ajaxItem in ajaxSwimlane.WorkflowItems)
                             {
-                                TapestryDesignerWorkflowItem item = new TapestryDesignerWorkflowItem
-                                {
-                                    Label = ajaxItem.Label,
-                                    Name = ajaxItem.Name,
-                                    Comment = ajaxItem.Comment,
-                                    TypeClass = ajaxItem.TypeClass,
-                                    DialogType = ajaxItem.DialogType,
-                                    PositionX = ajaxItem.PositionX,
-                                    PositionY = ajaxItem.PositionY,
-                                    ActionId = ajaxItem.ActionId,
-                                    InputVariables = ajaxItem.InputVariables,
-                                    StateId = ajaxItem.StateId,
-                                    TargetId = ajaxItem.TargetId,
-                                    OutputVariables = ajaxItem.OutputVariables,
-                                    PageId = ajaxItem.PageId,
-                                    ComponentName = ajaxItem.ComponentName,
-                                    isAjaxAction = ajaxItem.isAjaxAction,
-                                    SymbolType = ajaxItem.SymbolType,
-                                    IsBootstrap = ajaxItem.IsBootstrap
-                                };
+                                TapestryDesignerWorkflowItem item = convertWorkflowItem(ajaxItem);
                                 swimlane.WorkflowItems.Add(item);
                                 context.SaveChanges();
+
                                 workflowItemIdMapping.Add(ajaxItem.Id, item.Id);
-                                if (ajaxItem.ConditionSets.Count > 0)
-                                {
-                                    TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup
-                                    {
-                                        ApplicationId = appId
-                                    };
-                                    item.ConditionGroups.Add(conditionGroup);
-                                    foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
-                                    {
-                                        TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
-                                        {
-                                            SetIndex = ajaxConditionSet.SetIndex,
-                                            SetRelation = ajaxConditionSet.SetRelation,
-                                            ConditionGroup = conditionGroup
-                                        };
-                                        foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
-                                        {
-                                            TapestryDesignerCondition condition = new TapestryDesignerCondition
-                                            {
-                                                Index = ajaxCondition.Index,
-                                                Relation = ajaxCondition.Relation,
-                                                Variable = ajaxCondition.Variable,
-                                                Operator = ajaxCondition.Operator,
-                                                Value = ajaxCondition.Value
-                                            };
-                                            conditionSet.Conditions.Add(condition);
-                                        }
-                                        conditionGroup.ConditionSets.Add(conditionSet);
-                                    }
-                                }
+                                convertConditionSets(ref item, ajaxItem);
                             }
                         }
                         foreach (AjaxTapestryDesignerWorkflowConnection ajaxConnection in ajaxRule.Connections)
@@ -393,12 +525,73 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     }
                     targetBlock.Name = postData.Name;
                     context.SaveChanges();
+
+                    TapestryDesignerBlockCommit lastBlockCommit = targetBlock.BlockCommits.OrderByDescending(bc => bc.Timestamp).FirstOrDefault();
+                    return lastBlockCommit.Id;
                 }
             }
             catch (Exception ex)
             {
                 var errorMessage = $"Tapestry Designer: error when saving block data (POST api/tapestry/apps/{appId}/blocks/{blockId}). Exception message: {ex.Message}";
                 throw GetHttpInternalServerErrorResponseException(errorMessage);
+            }
+        }
+        private static TapestryDesignerWorkflowItem convertWorkflowItem(AjaxTapestryDesignerWorkflowItem ajaxItem)
+        {
+            TapestryDesignerWorkflowItem item = new TapestryDesignerWorkflowItem
+            {
+                Label = ajaxItem.Label,
+                Name = ajaxItem.Name,
+                Comment = ajaxItem.Comment,
+                CommentBottom = ajaxItem.CommentBottom,
+                TypeClass = ajaxItem.TypeClass,
+                DialogType = ajaxItem.DialogType,
+                PositionX = ajaxItem.PositionX,
+                PositionY = ajaxItem.PositionY,
+                ActionId = ajaxItem.ActionId,
+                InputVariables = ajaxItem.InputVariables,
+                StateId = ajaxItem.StateId,
+                TargetId = ajaxItem.TargetId,
+                OutputVariables = ajaxItem.OutputVariables,
+                PageId = ajaxItem.PageId,
+                ComponentName = ajaxItem.ComponentName,
+                isAjaxAction = ajaxItem.isAjaxAction,
+                SymbolType = ajaxItem.SymbolType,
+                IsBootstrap = ajaxItem.IsBootstrap,
+                IsForeachStart = ajaxItem.IsForeachStart,
+                IsForeachEnd = ajaxItem.IsForeachEnd
+            };
+
+            return item;
+        }
+        private static void convertConditionSets(ref TapestryDesignerWorkflowItem item, AjaxTapestryDesignerWorkflowItem ajaxItem)
+        {
+            if (ajaxItem.ConditionSets.Count > 0)
+            {
+                TapestryDesignerConditionGroup conditionGroup = new TapestryDesignerConditionGroup();
+                item.ConditionGroups.Add(conditionGroup);
+                foreach (AjaxTapestryDesignerConditionSet ajaxConditionSet in ajaxItem.ConditionSets)
+                {
+                    TapestryDesignerConditionSet conditionSet = new TapestryDesignerConditionSet
+                    {
+                        SetIndex = ajaxConditionSet.SetIndex,
+                        SetRelation = ajaxConditionSet.SetRelation,
+                        ConditionGroup = conditionGroup
+                    };
+                    conditionGroup.ConditionSets.Add(conditionSet);
+                    foreach (AjaxTapestryDesignerCondition ajaxCondition in ajaxConditionSet.Conditions)
+                    {
+                        TapestryDesignerCondition condition = new TapestryDesignerCondition
+                        {
+                            Index = ajaxCondition.Index,
+                            Relation = ajaxCondition.Relation,
+                            Variable = ajaxCondition.Variable,
+                            Operator = ajaxCondition.Operator,
+                            Value = ajaxCondition.Value
+                        };
+                        conditionSet.Conditions.Add(condition);
+                    }
+                }
             }
         }
         private static ToolboxItem convertToolboxItem(AjaxToolboxItem ajaxItem)
@@ -749,6 +942,187 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
             }
         }
 
+        [Route("api/tapestry/{appId}/blocks/{blockId}/copy/{targetMetablockId}")]
+        [HttpGet]
+        public bool CopyBlock(int appId, int blockId, int targetMetablockId)
+        {
+            DBEntities context = DBEntities.instance;
+
+            try {
+                TapestryDesignerBlock block = context.TapestryDesignerBlocks.FirstOrDefault(b => b.Id == blockId);
+                TapestryDesignerMetablock target = context.TapestryDesignerMetablocks.FirstOrDefault(mb => mb.Id == targetMetablockId && mb.ParentAppId == appId);
+
+                if (target == null || block == null) {
+                    return false;
+                }
+
+                string blockName = block.Name;
+                int i = 1;
+                while(target.Blocks.Where(b => b.Name == blockName).Count() > 0) {
+                    blockName = block.Name + " (" + i.ToString() + ")";
+                    i++;
+                }
+
+                // create new block with modified values
+                TapestryDesignerBlock clone = new TapestryDesignerBlock()
+                {
+                    AssociatedTableId = block.AssociatedTableId,
+                    AssociatedTableName = block.AssociatedTableName,
+                    BuiltBlockId = null,
+                    IsChanged = true,
+                    IsDeleted = false,
+                    IsInitial = false,
+                    IsInMenu = block.IsInMenu,
+                    LockedForUserId = null,
+                    MenuOrder = block.MenuOrder,
+                    ParentMetablock = target,
+                    PositionX = block.PositionX,
+                    PositionY = block.PositionY,
+                    Name = blockName
+                };
+                
+                context.TapestryDesignerBlocks.Add(clone);
+                
+                // Set toolbox state
+                TapestryDesignerToolboxState state = new TapestryDesignerToolboxState();
+                foreach(ToolboxItem item in block.ToolboxState.Actions) {
+                    state.Actions.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.Attributes) {
+                    state.Attributes.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.Integrations) {
+                    state.Integrations.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.Roles) {
+                    state.Roles.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.States) {
+                    state.States.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.Targets) {
+                    state.Targets.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.Templates) {
+                    state.Templates.Add(CloneToolboxItem(item));
+                }
+                foreach(ToolboxItem item in block.ToolboxState.UiComponents) {
+                    state.UiComponents.Add(CloneToolboxItem(item));
+                }
+
+                // get last commit and create new one
+                TapestryDesignerBlockCommit commit = CloneLastCommit(block, clone, blockName, false);
+                commit.Name = blockName;
+                commit.CommitMessage = string.Format("Copy {0} from {1} metablock", block.Name, block.ParentMetablock.Name);
+
+                clone.ToolboxState = state;
+                clone.BlockCommits.Add(commit);
+                
+                context.SaveChanges();
+            }
+            catch (Exception) {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Route("api/tapestry/{appId}/blocks/{blockId}/move/{targetMetablockId}")]
+        [HttpGet]
+        public bool MoveBlock(int appId, int blockId, int targetMetablockId)
+        {
+            DBEntities context = DBEntities.instance;
+
+            try {
+                TapestryDesignerBlock block = context.TapestryDesignerBlocks.FirstOrDefault(b => b.Id == blockId);
+                TapestryDesignerMetablock target = context.TapestryDesignerMetablocks.FirstOrDefault(mb => mb.Id == targetMetablockId && mb.ParentAppId == appId);
+
+                if (target == null || block == null) {
+                    return false;
+                }
+
+                string tmpName = block.Name;
+                int i = 1;
+                while(target.Blocks.Where(b => b.Name == tmpName).Count() > 0) {
+                    tmpName = block.Name + " (" + i.ToString() + ")";
+                    i++;
+                }
+
+                block.ParentMetablock = target;
+                block.Name = tmpName;
+
+                TapestryDesignerBlockCommit commit = CloneLastCommit(block, block, tmpName, false);
+                commit.Name = tmpName;
+                commit.CommitMessage = string.Format("Move {0} from {1} metablock", block.Name, block.ParentMetablock.Name);
+
+                block.BlockCommits.Add(commit);
+                
+                context.SaveChanges();
+            }
+            catch(Exception) {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Route("api/tapestry/apps/{appId}/blocks/{blockId}/copyWorkflow/{sourceId}/target/{targetBlockId}")]
+        [HttpGet]
+        public bool CopyWorkflow(int appId, int blockId, int sourceId, int targetBlockId)
+        {
+            DBEntities context = DBEntities.instance;
+
+            Application app = context.Applications.FirstOrDefault(a => a.Id == appId);
+            TapestryDesignerWorkflowRule source = context.TapestryDesignerWorkflowRules.FirstOrDefault(w => w.Id == sourceId);
+            TapestryDesignerBlock target = context.TapestryDesignerBlocks.FirstOrDefault(b => b.Id == targetBlockId && b.ParentMetablock.ParentAppId == appId);
+            TapestryDesignerBlock block = context.TapestryDesignerBlocks.FirstOrDefault(b => b.Id == blockId && b.ParentMetablock.ParentAppId == appId);
+
+            if(source == null || target == null || block == null) {
+                return false;
+            }
+
+            try {
+                TapestryDesignerBlockCommit commit = CloneLastCommit(target, null, null, true);
+                commit.CommitMessage = string.Format("Copy workflow \"{0}\" from block \"{1}\"", source.Name, block.Name);
+
+                string tmpName = source.Name;
+                int i = 1;
+                while (commit.WorkflowRules.Where(w => w.Name == tmpName).Count() > 0) {
+                    tmpName = source.Name + " (" + i.ToString() + ")";
+                    i++;
+                }
+
+                TapestryDesignerWorkflowRule bottomRule = null;
+                int top = 0;
+                foreach (TapestryDesignerWorkflowRule r in commit.WorkflowRules) {
+                    if (r.PositionY > top) {
+                        top = r.PositionY;
+                        bottomRule = r;
+                    }
+                }
+
+                TapestryDesignerWorkflowRule newWR = new TapestryDesignerWorkflowRule()
+                {
+                    Height = source.Height,
+                    Name = source.Name,
+                    PositionX = bottomRule == null ? 10 : bottomRule.PositionX,
+                    PositionY = bottomRule == null ? 10 : bottomRule.PositionY + bottomRule.Height + 10,
+                    Width = source.Width
+                };
+
+                commit.WorkflowRules.Add(newWR);
+                CloneWorkflowContent(source, ref newWR, target, null, null, true);
+
+                target.BlockCommits.Add(commit);
+
+                context.SaveChanges();
+                return true;
+            }
+            catch(Exception) { }
+
+            return false;
+        }
+
         private static HttpResponseException GetHttpInternalServerErrorResponseException(string errorMessage)
         {
             Log.Error(errorMessage);
@@ -915,8 +1289,45 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     Height = swimlane.Height,
                     Roles = string.IsNullOrEmpty(swimlane.Roles) ? new List<string>() : swimlane.Roles.Split(',').ToList()
                 };
+                LoadSubflow(swimlane, ajaxSwimlane);
+                LoadForeach(swimlane, ajaxSwimlane);
                 LoadWorkflowItems(swimlane, ajaxSwimlane);
                 result.Swimlanes.Add(ajaxSwimlane);
+            }
+        }
+        private static void LoadSubflow(TapestryDesignerSwimlane requestedSwimlane, AjaxTapestryDesignerSwimlane result)
+        {
+            foreach (TapestryDesignerSubflow subflow in requestedSwimlane.Subflow) {
+                var ajaxSubflow = new AjaxTapestryDesignerSubflow
+                {
+                    Id = subflow.Id,
+                    Name = subflow.Name,
+                    Comment = subflow.Comment,
+                    CommentBottom = subflow.CommentBottom,
+                    Height = subflow.Height,
+                    Width = subflow.Width,
+                    PositionX = subflow.PositionX,
+                    PositionY = subflow.PositionY
+                };
+                result.Subflow.Add(ajaxSubflow);
+            }
+        }
+        private static void LoadForeach(TapestryDesignerSwimlane requestedSwimlane, AjaxTapestryDesignerSwimlane result)
+        {
+            foreach (TapestryDesignerForeach forEach in requestedSwimlane.Foreach) {
+                var ajaxForeach = new AjaxTapestryDesignerForeach
+                {
+                    Id = forEach.Id,
+                    Name = forEach.Name,
+                    Comment = forEach.Comment,
+                    CommentBottom = forEach.CommentBottom,
+                    Height = forEach.Height,
+                    Width = forEach.Width,
+                    PositionX = forEach.PositionX,
+                    PositionY = forEach.PositionY,
+                    DataSource = forEach.DataSource
+                };
+                result.Foreach.Add(ajaxForeach);
             }
         }
         private static void LoadWorkflowItems(TapestryDesignerSwimlane requestedSwimlane, AjaxTapestryDesignerSwimlane result)
@@ -929,6 +1340,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     Label = item.Label,
                     Name = item.Name,
                     Comment = item.Comment,
+                    CommentBottom = item.CommentBottom,
                     TypeClass = item.TypeClass,
                     DialogType = item.DialogType,
                     PositionX = item.PositionX,
@@ -942,7 +1354,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     IsBootstrap = item.IsBootstrap,
                     TargetId = item.TargetId,
                     isAjaxAction = item.isAjaxAction,
-                    SymbolType = item.SymbolType
+                    SymbolType = item.SymbolType,
+                    ParentSubflowId = item.ParentSubflowId,
+                    ParentForeachId = item.ParentForeachId,
+                    IsForeachStart = item.IsForeachStart,
+                    IsForeachEnd = item.IsForeachEnd
                 };
                 LoadConditionSets(item, ajaxItem);
                 result.WorkflowItems.Add(ajaxItem);
@@ -1184,18 +1600,58 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 
                 target.Swimlanes.Add(newSL);
 
+                // copy subflow
+                Dictionary<int, TapestryDesignerSubflow> subflowMapping = new Dictionary<int, TapestryDesignerSubflow>();
+                foreach(TapestryDesignerSubflow sf in sl.Subflow) {
+                    TapestryDesignerSubflow newSF = new TapestryDesignerSubflow
+                    {
+                        Name = sf.Name,
+                        Comment = sf.Comment,
+                        CommentBottom = sf.CommentBottom,
+                        Height = sf.Height,
+                        Width = sf.Width,
+                        PositionX = sf.PositionX,
+                        PositionY = sf.PositionY,
+                    };
+
+                    newSL.Subflow.Add(newSF);
+                    subflowMapping.Add(sf.Id, newSF);
+                }
+
+                // copy foreach
+                Dictionary<int, TapestryDesignerForeach> foreachMapping = new Dictionary<int, TapestryDesignerForeach>();
+                foreach (TapestryDesignerForeach fe in sl.Foreach) {
+                    TapestryDesignerForeach newFE = new TapestryDesignerForeach
+                    {
+                        Name = fe.Name,
+                        Comment = fe.Comment,
+                        CommentBottom = fe.CommentBottom,
+                        Height = fe.Height,
+                        Width = fe.Width,
+                        PositionX = fe.PositionX,
+                        PositionY = fe.PositionY,
+                        DataSource = fe.DataSource
+                    };
+
+                    newSL.Foreach.Add(newFE);
+                    foreachMapping.Add(fe.Id, newFE);
+                }
+
                 // set swimlane workflow items
                 foreach (TapestryDesignerWorkflowItem wi in sl.WorkflowItems) {
                     TapestryDesignerWorkflowItem newWI = new TapestryDesignerWorkflowItem()
                     {
                         ActionId = wi.ActionId,
                         Comment = wi.Comment,
+                        CommentBottom = wi.CommentBottom,
                         ComponentName = wi.ComponentName,
                         Condition = wi.Condition,
                         DialogType = wi.DialogType,
                         InputVariables = wi.InputVariables,
                         isAjaxAction = wi.isAjaxAction,
                         IsBootstrap = wi.IsBootstrap,
+                        IsForeachStart = wi.IsForeachStart,
+                        IsForeachEnd = wi.IsForeachEnd,
                         Label = wi.Label,
                         Name = wi.Name,
                         OutputVariables = wi.OutputVariables,
@@ -1211,7 +1667,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 
                     newSL.WorkflowItems.Add(newWI);
                     allItems.Add(newWI);
-                    
+
+                    if(wi.ParentSubflowId != null) {
+                        subflowMapping[(int)wi.ParentSubflowId].WorkflowItems.Add(newWI);
+                    }
+                    if (wi.ParentForeachId != null) {
+                        foreachMapping[(int)wi.ParentForeachId].WorkflowItems.Add(newWI);
+                    }
+
                     // set workflow item condition sets
                     foreach (TapestryDesignerConditionGroup cg in wi.ConditionGroups)
                     {

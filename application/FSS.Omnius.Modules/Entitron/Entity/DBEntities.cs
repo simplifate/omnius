@@ -287,6 +287,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<Ldap> Ldaps { get; set; }
         public virtual DbSet<WS> WSs { get; set; }
         public virtual DbSet<API> APIs { get; set; }
+        public virtual DbSet<TCPSocketListener> TCPListeners { get; set; }
 
         // Persona
         public virtual DbSet<ActionRuleRight> ActionRuleRights { get; set; }
@@ -318,6 +319,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public virtual DbSet<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
         public virtual DbSet<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         public virtual DbSet<TapestryDesignerCondition> TapestryDesignerConditions { get; set; }
+        public virtual DbSet<TapestryDesignerToolboxState> TapestryDesignerToolboxStates { get; set; }
+        public virtual DbSet<TapestryDesignerSubflow> TapestryDesignerSubflow { get; set; }
+        public virtual DbSet<TapestryDesignerForeach> TapestryDesignerForeach { get; set; }
 
         // Watchtower
         public virtual DbSet<LogItem> LogItems { get; set; }
@@ -434,6 +438,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             modelBuilder.Entity<FileMetadata>()
                 .HasOptional<FileSyncCache>(s => s.CachedCopy)
                 .WithRequired(s => s.FileMetadata);
+
+            modelBuilder.Entity<TCPSocketListener>()
+                .HasRequired(r => r.Application)
+                .WithMany(a => a.TCPListeners)
+                .HasForeignKey(r => r.ApplicationId);
 
             // Persona
             modelBuilder.Entity<PersonaAppRole>()
@@ -595,7 +604,10 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                         .HasMany(s => s.Views)
                         .WithRequired(s => s.DbSchemeCommit);
             modelBuilder.Entity<Application>()
-                        .HasMany(e => e.DatabaseDesignerSchemeCommits);
+                        .HasMany(e => e.DatabaseDesignerSchemeCommits)
+                        .WithRequired(s => s.Application)
+                        .HasForeignKey(s => s.Application_Id);
+                        
 
             modelBuilder.Entity<TapestryDesignerMetablock>()
                 .HasRequired<Application>(s => s.ParentApp)
@@ -632,6 +644,24 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 .WillCascadeOnDelete(true);
             modelBuilder.Entity<TapestryDesignerSwimlane>()
                 .HasMany(s => s.WorkflowItems);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.Subflow)
+                .WithRequired(s => s.ParentSwimlane)
+                .HasForeignKey(s => s.ParentSwimlaneId)
+                .WillCascadeOnDelete(true);
+            modelBuilder.Entity<TapestryDesignerSwimlane>()
+                .HasMany(s => s.Foreach)
+                .WithRequired(s => s.ParentSwimlane)
+                .HasForeignKey(s => s.ParentSwimlaneId)
+                .WillCascadeOnDelete(true);
+            modelBuilder.Entity<TapestryDesignerWorkflowItem>()
+                .HasOptional(s => s.ParentSubflow)
+                .WithMany(s => s.WorkflowItems)
+                .HasForeignKey(s => s.ParentSubflowId);
+            modelBuilder.Entity<TapestryDesignerWorkflowItem>()
+                .HasOptional(s => s.ParentForeach)
+                .WithMany(s => s.WorkflowItems)
+                .HasForeignKey(s => s.ParentForeachId);
             modelBuilder.Entity<TapestryDesignerToolboxState>()
                 .HasMany(s => s.Actions);
             modelBuilder.Entity<TapestryDesignerToolboxState>()

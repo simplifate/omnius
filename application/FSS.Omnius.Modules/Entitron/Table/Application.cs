@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FSS.Omnius.Modules.Entitron.Table;
+using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Master
 {
@@ -20,7 +21,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
                     && a.ADgroups.FirstOrDefault().ADgroup_Users.Any(adu => adu.User.UserName == userName));
         }
         // return app from application DB
+        [ImportExportIgnore]
         private Application _similarApp;
+        [ImportExportIgnore]
         public Application similarApp
         {
             get
@@ -37,6 +40,11 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public string GetLayout()
         {
             return this.CssTemplate.Url;
+        }
+
+        public static Application GetByName(Modules.CORE.CORE core, string appName)
+        {
+            return core.Entitron.GetStaticTables().Applications.FirstOrDefault(app => app.Name == appName);
         }
 
         internal SqlQueue queries = new SqlQueue();

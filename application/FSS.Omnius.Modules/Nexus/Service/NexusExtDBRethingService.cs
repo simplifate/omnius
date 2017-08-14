@@ -258,16 +258,17 @@ namespace FSS.Omnius.Modules.Nexus.Service
             OrderBy();
 
             string[] order = body.Split(' ');
-            string column = order[0];
+            bool useIndex = order[0].StartsWith("index:");
+            string column = useIndex ? order[0].Substring(6) : order[0];
             string dir = order.Count() > 1 ? order[1].ToLower() : "asc";
 
             switch(dir) {
                 case "asc": {
-                        query = query.OrderBy(r.Asc(column));
+                        query = useIndex ? query.OrderBy().OptArg("index", r.Asc(column)) : query.OrderBy(r.Asc(column));
                         break;
                     }
                 case "desc": {
-                        query = query.OrderBy(r.Desc(column));
+                        query = useIndex ? query.OrderBy().OptArg("index", r.Desc(column)) :  query.OrderBy(r.Desc(column));
                         break;
                     }
             }

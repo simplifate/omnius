@@ -273,6 +273,7 @@
     <Compile Include="Controllers\Mozaic\TemplateCategoryController.cs" />
     <Compile Include="Controllers\Mozaic\TemplateController.cs" />
     <Compile Include="Controllers\Nexus\ExtDBController.cs" />
+    <Compile Include="Controllers\Nexus\TCPSocketController.cs" />
     <Compile Include="Controllers\Nexus\NexusApiController.cs" />
     <Compile Include="Controllers\Nexus\WebDAVController.cs" />
     <Compile Include="Controllers\Nexus\APIController.cs" />
@@ -342,6 +343,7 @@
     <Content Include="Content\Images\Icons\monero_black.png" />
     <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
+    <Content Include="Content\Images\TapestryIcons\circle-event.png" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
     <Content Include="Content\Fonts\context-menu-icons.eot" />
@@ -724,6 +726,7 @@
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.countdown.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.dataTables.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.datetimepicker.js" />
+    <Content Include="Scripts\CommonLibraries\jQuery\jquery.nu-selectable.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.plugin.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.storageapi.min.js" />
     <Content Include="Scripts\CommonLibraries\jQuery\jquery.unobtrusive-ajax.js" />
@@ -749,6 +752,8 @@
     <Content Include="Scripts\CommonLibraries\Other\RuleDetailViewModel.js" />
     <Content Include="Scripts\CommonLibraries\Other\RuleListViewModel.js" />
     <Content Include="Scripts\CommonLibraries\Other\spectrum.js" />
+    <Content Include="Scripts\DatabaseDesigner\DatabaseDesigner.js" />
+    <Content Include="Scripts\DatabaseDesigner\_Lock.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Clipboard.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\CommonOptions.js" />
     <Content Include="Scripts\MozaicEditor\Bootstrap\Context.js" />
@@ -776,6 +781,12 @@
     <Content Include="Scripts\MozaicEditor\Bootstrap\_UI.js" />
     <Content Include="Scripts\Tapestry\Builder\TapestryBuilder.js" />
     <Content Include="Scripts\Tapestry\Builder\_Context.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Foreach.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Selection.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Subflow.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Lock.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Dialog.js" />
+    <Content Include="Scripts\Tapestry\Builder\_Save.js" />
     <Content Include="Scripts\Tapestry\Builder\_Toolbox.js" />
     <Content Include="Scripts\Tapestry\Builder\_Library.js" />
     <Content Include="Scripts\Tapestry\Builder\_Load.js" />
@@ -783,6 +794,14 @@
     <Content Include="Scripts\Tapestry\Builder\_Screen.js" />
     <Content Include="Scripts\Tapestry\Builder\_Wizard.js" />
     <Content Include="Scripts\Tapestry\Builder\_WorkflowRules.js" />
+    <Content Include="Scripts\Tapestry\Overview\TapestryOverview.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Block.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Context.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Dialog.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Load.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Metablock.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Save.js" />
+    <Content Include="Scripts\Tapestry\Overview\_Trash.js" />
     <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
@@ -1730,7 +1749,6 @@
     <Content Include="Scripts\Nexus\Dialogs.js" />
     <Content Include="Scripts\Nexus\Init.js" />
     <Content Include="Scripts\Overview\Dialogs.js" />
-    <Content Include="Scripts\Overview\Init.js" />
     <Content Include="Scripts\Overview\Load.js" />
     <Content Include="Scripts\Overview\MenuOrder.js" />
     <Content Include="Scripts\Overview\Save.js" />
@@ -1744,8 +1762,6 @@
     <Content Include="Scripts\Tapestry\ContextMenu.js" />
     <Content Include="Scripts\Tapestry\Dialogs.js" />
     <Content Include="Scripts\Tapestry\Init.js" />
-    <Content Include="Scripts\Tapestry\InitDemo.js" />
-    <Content Include="Scripts\Tapestry\Load.js" />
     <Content Include="Scripts\Tapestry\Save.js" />
     <Content Include="Scripts\Tapestry\Utils.js" />
     <Content Include="Scripts\Tapestry\VisualConfiguration.js" />

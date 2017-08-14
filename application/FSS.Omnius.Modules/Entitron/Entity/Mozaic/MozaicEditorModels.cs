@@ -44,6 +44,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
             else {
                 stringBuilder.Append("@{T t = new T( (string)ViewData[\"locale\"] );}");
                 stringBuilder.Append("@{ Layout = \"~/Views/Shared/_OmniusUserAppLayout.cshtml\"; }");
+				stringBuilder.Append("@{Dictionary<string, string> formState = (Dictionary<string, string>)ViewData[\"formState\"]; }");
             }
 
             //Michal Šebela - 11.10. Přidáno enctype
@@ -113,7 +114,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                 else if (c.Type == "input-single-line")
                 {
                     stringBuilder.Append($"<{c.Tag} id =\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} type=\"text\" placeholder=\"@(t._(\"{c.Label}\"))\" tabindex=\"{c.TabIndex}\" ");
-                    stringBuilder.Append($"value=\"@(ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\")\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
+                    stringBuilder.Append($"value=\"@(formState.ContainsKey(\"{c.Name}\") ? formState[\"{c.Name}\"] : (ViewData.ContainsKey(\"inputData_{c.Name}\") ? @ViewData[\"inputData_{c.Name}\"] : \"\"))\" class=\"uic {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\"");
                     if (!string.IsNullOrEmpty(c.Properties))
                     {
@@ -156,27 +157,26 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     }
                     if (c.Classes.Contains("input-read-only"))
                         stringBuilder.Append($" readonly ");
-                    stringBuilder.Append($">@ViewData[\"inputData_{c.Name}\"]</{c.Tag}>");
+                    stringBuilder.Append($">@(formState.ContainsKey(\"{c.Name}\") ? formState[\"{c.Name}\"] : ViewData[\"inputData_{c.Name}\"])</{c.Tag}>");
                 }
                 else if (c.Type == "label")
                 {
-                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? \"{c.Label}\".Replace(\"{{var1}}\", (ViewData[\"inputData_{c.Name}\"] ?? \"\").ToString()) : t._(\"{c.Label}\") )";
-
+                    string labelText = $"@Html.Raw(ViewData.ContainsKey(\"inputData_{c.Name}\") ? t._(\"{c.Label.Replace("\"", "\\\"")}\").Replace(\"{{var1}}\", t._(ViewData[\"inputData_{c.Name}\"].ToString())) : t._(\"{c.Label.Replace("\"", "\\\"")}\") )";
                     stringBuilder.Append($"<{c.Tag} id=\"uic_{c.Name}\" name=\"{c.Name}\" {c.Attributes} class=\"uic {c.Classes}\" contentTemplate=\"{c.Content}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
-                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">{labelText}</{c.Tag}>");
+                    stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">@(t._(\"{c.Label}\"))</{c.Tag}>");
                 }
                 else if (c.Type == "breadcrumb")
                 {
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" name=\"{c.Name}\" class=\"uic breadcrumb-navigation {c.Classes}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
                     stringBuilder.Append($"<div class=\"app-icon fa @ViewData[\"appIcon\"]\"></div>");
-                    stringBuilder.Append($"<div class=\"nav-text\">@(t._(ViewData[\"appName\"].ToString())) &gt; @(t._(ViewData[\"pageName\"].ToString()))</div></div>");
+                    stringBuilder.Append($"<div class=\"nav-text\">@ViewData[\"appName\"] &gt; @ViewData[\"pageName\"]</div></div>");
                 }
                 else if (c.Type == "checkbox")
                 {
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@(ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"] ? \" checked\" : \"\") /><span class=\"checkbox-label\">@(t._(\"{c.Label}\"))</span></div>");
+                    stringBuilder.Append($"<input type=\"checkbox\" name=\"{c.Name}\"@((formState.ContainsKey(\"{c.Name}\") && formState[\"{c.Name}\"] == \"on\") || (ViewData.ContainsKey(\"checkboxData_{c.Name}\") && (bool)ViewData[\"checkboxData_{c.Name}\"]) ? \" checked\" : \"\") /><span class=\"checkbox-label\">@(t._(\"{c.Label}\"))</span></div>");
                 }
                 else if (c.Type == "radio")
                 {
@@ -196,7 +196,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     }
                     stringBuilder.Append($"<div id=\"uic_{c.Name}\" class=\"uic {c.Classes}\" tabindex=\"{c.TabIndex}\" style=\"left: {c.PositionX}; top: {c.PositionY}; ");
                     stringBuilder.Append($"width: {c.Width}; height: {c.Height}; {c.Styles}\">");
-                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" value=\"{value}\" /><span class=\"radio-label\">@(t._(\"{c.Label}\"))</span></div>");
+                    stringBuilder.Append($"<input type=\"radio\" name=\"{c.Name}\" value=\"{value}\"@(formState.ContainsKey(\"{c.Name}\") && formState[\"{c.Name}\"] == \"{value}\" ? \" checked\" : \"\") /><span class=\"radio-label\">@(t._(\"{c.Label}\"))</span></div>");
                 }
                 else if (c.Type == "dropdown-select")
                 {
@@ -222,7 +222,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     {
                         stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                         stringBuilder.Append($"{{ foreach(var option in ((Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"]).OrderBy(p => p.Value))");
-                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
+                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @((formState.ContainsKey(\"{c.Name}\") && Convert.ToInt32(formState[\"{c.Name}\"]) == option.Key) || (ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key) ? \"selected\" : \"\") >");
                         stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
 
                     }
@@ -230,7 +230,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Mozaic
                     {
                         stringBuilder.Append($"@{{ if(ViewData[\"dropdownData_{c.Name}\"] != null) ");
                         stringBuilder.Append($"{{ foreach(var option in (Dictionary<int, string>)ViewData[\"dropdownData_{c.Name}\"])");
-                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @(ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key ? \"selected\" : \"\") >");
+                        stringBuilder.Append($"{{ <option value=\"@(option.Key)\" @((formState.ContainsKey(\"{c.Name}\") && Convert.ToInt32(formState[\"{c.Name}\"]) == option.Key) || (ViewData.ContainsKey(\"dropdownSelection_{c.Name}\") && ViewData[\"dropdownSelection_{c.Name}\"] is int && (int)ViewData[\"dropdownSelection_{c.Name}\"] == option.Key) ? \"selected\" : \"\") >");
                         stringBuilder.Append($"@(t._(option.Value))</option>}}; }} }}");
 
                     }

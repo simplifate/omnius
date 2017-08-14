@@ -16,6 +16,11 @@ namespace FSS.Omnius.Modules.Tapestry
         int Order { get; set; }
         string InputVariablesMapping { get; set; }
         string OutputVariablesMapping { get; set; }
+        string VirtualAction { get; set; }
+        int? VirtualItemId { get; set; }
+        int? VirtualParentId { get; set; }
+        bool? IsForeachStart { get; set; }
+        bool? IsForeachEnd { get; set; }
     }
 
     public static class IActionRule_Action_Extension

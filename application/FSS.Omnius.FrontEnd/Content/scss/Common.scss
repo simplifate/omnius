@@ -213,6 +213,11 @@
             font-size: 110px;
             top: 22px;
         }
+        .fa-play-circle-o {
+            font-size: 110px;
+            top: 22px;
+        }
+
         .buttonLabel {
             position: absolute;
             top: 40px;
@@ -220,6 +225,7 @@
             text-align: center;
             width: 100%;
         }
+
         .itemCount {
             position: absolute;
             right: 12px;
@@ -227,6 +233,7 @@
             font-size: 32px;
         }
     }
+
     .tileMenuItem.highlighted {
         background-color: #f68d4d !important;
     }
@@ -348,6 +355,10 @@ body.adminLayout #appNotificationArea {
     left: 225px;
     top: 75px;
     right: 0px;
+}
+.lowerPanelNoOverlap {
+    width: calc(100% - 225px);
+    overflow: auto;
 }
 #lowerPanelContainer {
     position: absolute;

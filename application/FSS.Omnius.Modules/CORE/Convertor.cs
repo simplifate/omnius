@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using FSS.Omnius.Modules.Tapestry;
 
 namespace FSS.Omnius.Modules.CORE
 {
@@ -30,7 +31,7 @@ namespace FSS.Omnius.Modules.CORE
                 case "string":
                     return Convert.ToString(input);
                 case "float":
-                    return Convert.ToDouble(input);
+                    return TapestryUtils.ParseDouble(input);
                 case "DateTime":
                     return Convert.ToDateTime(input);
                 case "blob":

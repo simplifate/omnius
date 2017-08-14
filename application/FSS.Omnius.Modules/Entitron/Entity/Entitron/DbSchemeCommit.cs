@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 {
@@ -13,10 +14,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
         public bool IsComplete { get; set; }
+        public int Application_Id { get; set; }
 
         public virtual ICollection<DbTable> Tables { get; set; }
         public virtual ICollection<DbRelation> Relations { get; set; }
         public virtual ICollection<DbView> Views { get; set; }
+
+        [ImportExportIgnore]
+        public virtual Application Application { get; set; }
 
         public DbSchemeCommit()
         {

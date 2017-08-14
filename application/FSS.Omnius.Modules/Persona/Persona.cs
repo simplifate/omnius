@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Persona
@@ -21,6 +21,8 @@ namespace FSS.Omnius.Modules.Persona
 
         private const string _AdGroupContainer = "OU=OSS";
         private static Dictionary<string, string> _ADServerMapping = new Dictionary<string, string> { { "ext", "rwe-ext" }, { "rwe", "rwe-cz" } };
+
+        public static UserManager<User, int> userManager;
 
         public Persona(CORE core)
         {

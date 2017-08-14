@@ -1,4 +1,5 @@
 ﻿var CurrentAppId;
+var CurrentExportUrl;
 
 $(function () {
     appPropertiesDialog = $("#app-properties-dialog").dialog({
@@ -131,4 +132,30 @@ $(function () {
         width: 640,
         height: 320
     });
+    exportAppDialog = $("#export-application-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 660,
+        height: 380,
+        buttons: {
+            "Exportovat": function () {
+                exportAppDialog_SubmitData();
+            },
+            "Zrušit": function () {
+                exportAppDialog.dialog("close");
+            }
+        },
+        create: function () {
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    exportAppDialog_SubmitData();
+                    return false;
+                }
+            });
+        }
+    });
+    function exportAppDialog_SubmitData() {
+        $("#export-application-dialog form").attr('action', CurrentExportUrl).submit();
+        exportAppDialog.dialog('close');
+    }
 });

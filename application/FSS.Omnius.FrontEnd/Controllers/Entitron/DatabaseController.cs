@@ -90,7 +90,78 @@ namespace FSS.Omnius.Controllers.Entitron
 
             }
         }
+        [Route("api/database/apps/{appId}/isSchemeLocked/{userId}/{CurrentSchemeCommitId}")]
+        [HttpGet]
+        public AjaxSchemeLockingStatus isSchemeLocked(int appId,int userId,int CurrentSchemeCommitId)
+        {
+            using (var context = DBEntities.instance)
+            {
+                var result = new AjaxSchemeLockingStatus();
+                var app = context.Applications.Find(appId);
+                int? lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+                var lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
+                if (lockedForUserId != null && userId != lockedForUserId)//if scheme is locked 
+                {
+                    string lockForUserName = context.Users.FirstOrDefault(u => u.Id == app.SchemeLockedForUserId).DisplayName;
+                    return new AjaxSchemeLockingStatus() { lockStatusId = 1, lockedForUserName = lockForUserName };
+                }
+                else if (lockedForUserId != null && lockedForUserId == userId)
+                { //if scheme is locked for me
+                    if (lastCommitId == null || (lastCommitId != null && lastCommitId == CurrentSchemeCommitId))
+                    {
+                        return new AjaxSchemeLockingStatus() { lockStatusId = 2, lockedForUserName = "" };
 
+                    }
+                    else {
+                        return new AjaxSchemeLockingStatus() { lockStatusId = 3, lockedForUserName = "" };
+                    }
+                }
+                else
+                    return new AjaxSchemeLockingStatus() { lockStatusId = 0, lockedForUserName = "" };
+            }
+        }
+
+
+        [Route("api/database/apps/{appId}/LockScheme/{userId}/")]
+        [HttpGet]
+        public bool LockScheme(int appId, int userId)
+        {
+            using (var context = DBEntities.instance)
+            {
+                try {
+                    var app = context.Applications.Find(appId);
+                    app.SchemeLockedForUserId = userId;
+                    context.SaveChanges();
+                    return true;
+                } catch (Exception ex)
+                {
+                    var errorMessage = $"DatabaseDesigner: error when locking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                   $"Exception message: {ex.Message}";
+                    throw GetHttpInternalServerErrorResponseException(errorMessage);
+                }
+            }
+        }
+        [Route("api/database/apps/{appId}/UnlockScheme/{userId}/")]
+        [HttpGet]
+        public bool UnlockScheme(int appId, int userId)
+        {
+            using (var context = DBEntities.instance)
+            {
+                try
+                {
+                    var app = context.Applications.Find(appId);
+                    app.SchemeLockedForUserId = null;
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    var errorMessage = $"DatabaseDesigner: error when unlocking the latest commit (GET api/database/apps/{appId}/commits/latest). " +
+                   $"Exception message: {ex.Message}";
+                    throw GetHttpInternalServerErrorResponseException(errorMessage);
+                }
+            }
+        }
         [Route("api/database/apps/{appId}/commits/latest")]
         [HttpGet]
         public AjaxTransferDbScheme LoadLatest(int appId)
@@ -146,6 +217,7 @@ namespace FSS.Omnius.Controllers.Entitron
                 using (var context = DBEntities.instance)
                 {
                     var requestedApp = context.Applications.Find(appId);
+                    requestedApp.SchemeLockedForUserId = null;
                     if (requestedApp.DbSchemeLocked)
                         throw new InvalidOperationException("This application's database scheme is locked because another process is currently working with it.");
                     requestedApp.DbSchemeLocked = dbSchemeLocked = true;
@@ -372,16 +444,19 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 var result = new AjaxTransferDbScheme();
                 var requestedCommit = FetchDbSchemeCommit(appId, commitId, context);
-
+                int? lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
+                result.SchemeLockedForUserId = lockedForUserId; //set the lockedForUserId for ajax model
+                if(lockedForUserId != null){
+                    result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
+                }
                 if (commitId == -1) {
                     DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
-
                     AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
-
-                    SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
+                    
+					SetAttributesRequestCommitTables(sharedCommit, sharedScheme);
                     SetAttributesRequestCommitRelations(sharedCommit, sharedScheme);
                     SetAttributesRequestCommitViews(sharedCommit, sharedScheme);
-
+                    sharedScheme.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
                     result.Shared = sharedScheme;
                     if (requestedCommit == null)
                     {
@@ -392,8 +467,10 @@ namespace FSS.Omnius.Controllers.Entitron
                 //Latest commit was requested, but there are no commits yet. Returning an empty commit.
                 if (requestedCommit == null)
                 {
-                    return new AjaxTransferDbScheme();
+                    return new AjaxTransferDbScheme() { CurrentSchemeCommitId = null} ;
                 }
+                result.CurrentSchemeCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+
                 SetAttributesRequestCommitTables(requestedCommit, result);
                 SetAttributesRequestCommitRelations(requestedCommit, result);
                 SetAttributesRequestCommitViews(requestedCommit, result);

@@ -29,9 +29,13 @@ namespace FSS.Omnius.Controllers.Entitron
                 appId = userApp.Id;
                 appName = userApp.DisplayName;
             }
+            var userId = HttpContext.GetCORE().User.Id;
             ViewData["appId"] = appId;
             ViewData["appName"] = appName;
 
+            ViewData["currentUserId"] = userId;
+            ViewData["currentUserName"] = context.Users.SingleOrDefault(u=> u.Id == userId).DisplayName;
+            
             return View();
         }
     }

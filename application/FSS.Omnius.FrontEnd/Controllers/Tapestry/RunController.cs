@@ -50,12 +50,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                 return new HttpStatusCodeResult(404);
 
             // Check if user has one of allowed roles, otherwise return 403
-            if (!String.IsNullOrEmpty(block.RoleWhitelist))
-            {
+            if (!String.IsNullOrEmpty(block.RoleWhitelist)) {
                 User user = core.User;
                 bool userIsAllowed = false;
-                foreach (var role in block.RoleWhitelist.Split(',').ToList())
-                {
+                foreach (var role in block.RoleWhitelist.Split(',').ToList()) {
                     if (user.HasRole(role, core.Entitron.AppId))
                         userIsAllowed = true;
                 }
@@ -63,12 +61,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                     return new HttpStatusCodeResult(403);
             }
 
-            try
-            {
+            try {
                 block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == app.Id && w.InitBlockId != null && !w.IsTemp).InitBlock;
             }
-            catch (NullReferenceException)
-            {
+            catch (NullReferenceException) {
                 return new HttpStatusCodeResult(404);
             }
 
@@ -76,8 +72,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             var fc = new FormCollection();
             if (!string.IsNullOrEmpty(registry))
                 crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(registry);
-            foreach (var pair in crossBlockRegistry)
-            {
+            foreach (var pair in crossBlockRegistry) {
                 fc.Add(pair.Key, pair.Value.ToString());
             }
 
@@ -98,8 +93,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             Dictionary<string, object> tapestryVars = result.Item1.OutputData;
 
-            foreach (var pair in crossBlockRegistry)
-            {
+            foreach (var pair in crossBlockRegistry) {
                 if (!tapestryVars.ContainsKey(pair.Key))
                     tapestryVars.Add(pair.Key, pair.Value.ToString());
             }
@@ -117,12 +111,15 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["crossBlockRegistry"] = registry;
             ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));
             ViewData["HttpContext"] = HttpContext;
+
+            // Form state
+            ViewData["formState"] = System.Web.HttpContext.Current.Session["FormState"] != null ? System.Web.HttpContext.Current.Session["FormState"] : new Dictionary<string, string>();
+            System.Web.HttpContext.Current.Session["FormState"] = null;
             
             context.SaveChanges();
             DBItem modelRow = null;
             bool modelLoaded = false;
-            if (modelId != -1 && !string.IsNullOrEmpty(block.ModelName))
-            {
+            if (modelId != -1 && !string.IsNullOrEmpty(block.ModelName)) {
                 modelRow = core.Entitron.GetDynamicTable(block.ModelName).GetById(modelId);
                 modelLoaded = true;
             }
@@ -130,8 +127,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             var tableQueryResultCache = new Dictionary<string, List<DBItem>>();
             var viewQueryResultCache = new Dictionary<string, List<DBItem>>();
             #region foreachSourceTableName
-            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && String.IsNullOrEmpty(r.SourceColumnName)).ToList())
-            {
+            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && String.IsNullOrEmpty(r.SourceColumnName)).ToList()) {
                 DataTable dataSource = null;
                 List<string> columnNameList = null;
                 Dictionary<string, string> columnDisplayNameDictionary = null;
@@ -142,52 +138,43 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool noConditions = true;
                 bool idAvailable = true;
                 List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
-                if (resourceMappingPair.relationType.StartsWith("V:"))
-                {
+
+                if (resourceMappingPair.relationType.StartsWith("V:")) {
                     dataSource = new DataTable();
                     columnDisplayNameDictionary = new Dictionary<string, string>();
                     var entitronView = core.Entitron.GetDynamicView(sourceTableName);
                     dataSource.Columns.Add("hiddenId", typeof(int));
                     if (viewQueryResultCache.ContainsKey(sourceTableName))
                         entitronRowList = viewQueryResultCache[sourceTableName];
-                    else
-                    {
+                    else {
                         entitronRowList = entitronView.Select().ToList();
                         viewQueryResultCache.Add(sourceTableName, entitronRowList);
                     }
                     noConditions = conditionSets.Count == 0;
-                    if (entitronRowList.Count > 0)
-                    {
+                    if (entitronRowList.Count > 0) {
                         columnNameList = entitronRowList[0].getColumnNames();
                         idAvailable = columnNameList.Contains("id");
                     }
-                    else
-                    {
+                    else {
                         continue;
                     }
-                    foreach (var columnName in columnNameList)
-                    {
+                    foreach (var columnName in columnNameList) {
                         dataSource.Columns.Add(columnName);
                         columnDisplayNameDictionary.Add(columnName, columnName);
                     }
-                    foreach (var entitronRow in entitronRowList)
-                    {
-                        if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                        {
+                    foreach (var entitronRow in entitronRowList) {
+                        if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                             var newRow = dataSource.NewRow();
                             newRow["hiddenId"] = idAvailable ? entitronRow["id"] : 0;
-                            foreach (var columnName in columnNameList)
-                            {
+                            foreach (var columnName in columnNameList) {
                                 var currentCell = entitronRow[columnName];
-                                if (currentCell is bool)
-                                {
+                                if (currentCell is bool) {
                                     if ((bool)currentCell == true)
                                         newRow[columnName] = "Ano";
                                     else
                                         newRow[columnName] = "Ne";
                                 }
-                                else if (currentCell is DateTime)
-                                {
+                                else if (currentCell is DateTime) {
                                     newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                 }
                                 else
@@ -197,10 +184,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                 }
-                else
-                {
-                    if (sourceTableName != null && sourceTableName.StartsWith("Omnius::"))
-                    {
+                else {
+                    if (sourceTableName != null && sourceTableName.StartsWith("Omnius::")) {
                         dataSource = new DataTable();
                         columnDisplayNameDictionary = new Dictionary<string, string>();
                         var systemTable = core.Entitron.GetSystemTable(sourceTableName);
@@ -209,50 +194,40 @@ namespace FSS.Omnius.Controllers.Tapestry
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
                         noConditions = conditionSets.Count == 0;
-                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
-                        {
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter)) {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
                             if (columnFilter.Count > 0)
                                 getAllColumns = false;
                         }
                         dataSource.Columns.Add("hiddenId", typeof(int));
-                        foreach (string columnName in columnNameList)
-                        {
+                        foreach (string columnName in columnNameList) {
                             dataSource.Columns.Add(columnName);
                             columnDisplayNameDictionary.Add(columnName, columnName);
                         }
                         idAvailable = false;
                         string idProperty = "";
-                        if (columnNameList.Contains("id"))
-                        {
+                        if (columnNameList.Contains("id")) {
                             idProperty = "id";
                             idAvailable = true;
                         }
-                        else if (columnNameList.Contains("Id"))
-                        {
+                        else if (columnNameList.Contains("Id")) {
                             idProperty = "Id";
                             idAvailable = true;
                         }
-                        foreach (var entitronRow in rowList)
-                        {
-                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                            {
+                        foreach (var entitronRow in rowList) {
+                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
-                                foreach (string columnName in columnNameList)
-                                {
-                                    if (getAllColumns || columnFilter.Contains(columnName))
-                                    {
+                                foreach (string columnName in columnNameList) {
+                                    if (getAllColumns || columnFilter.Contains(columnName)) {
                                         var currentCell = entitronRow[columnName];
-                                        if (currentCell is bool)
-                                        {
+                                        if (currentCell is bool) {
                                             if ((bool)currentCell == true)
                                                 newRow[columnName] = "Ano";
                                             else
                                                 newRow[columnName] = "Ne";
                                         }
-                                        else if (currentCell is DateTime)
-                                        {
+                                        else if (currentCell is DateTime) {
                                             newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                         }
                                         else
@@ -264,28 +239,22 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                     if (resourceMappingPair.DataSourceParams == "currentUser"
-                     && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType))
-                    {
-                        if (sourceTableName == "Omnius::Users")
-                        {
-                            switch (resourceMappingPair.SourceColumnName)
-                            {
+                     && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType)) {
+                        if (sourceTableName == "Omnius::Users") {
+                            switch (resourceMappingPair.SourceColumnName) {
                                 case "DisplayName":
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
                                     break;
                                 case "Company":
                                     var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                                    if (epkUserRowList.Count > 0)
-                                    {
+                                    if (epkUserRowList.Count > 0) {
                                         var abkrsRowList = core.Entitron.GetDynamicTable("ABKRS").Select()
                                         .where(c => c.column("abkrs").Equal(epkUserRowList[0]["abkrs"])).ToList();
-                                        if (abkrsRowList.Count > 0)
-                                        {
+                                        if (abkrsRowList.Count > 0) {
                                             var companyRowList = core.Entitron.GetDynamicTable("Companies").Select()
                                                                 .where(c => c.column("id_company").Equal(abkrsRowList[0]["id_company"])).ToList();
-                                            if (companyRowList.Count > 0)
-                                            {
+                                            if (companyRowList.Count > 0) {
                                                 ViewData["inputData_" + resourceMappingPair.TargetName] = companyRowList[0]["name"];
                                             }
                                         }
@@ -302,8 +271,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     break;
                             }
                         }
-                        else if (sourceTableName == "Users")
-                        {
+                        else if (sourceTableName == "Users") {
                             var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                             if (epkUserRowList.Count > 0)
@@ -311,14 +279,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                     else if (resourceMappingPair.DataSourceParams == "superior"
-                        && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType))
-                    {
+                        && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType)) {
                         var tableUsers = core.Entitron.GetDynamicTable("Users");
-                        if (resourceMappingPair.SourceTableName == "Users")
-                        {
+                        if (resourceMappingPair.SourceTableName == "Users") {
                             var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                            if (epkUserRowList.Count > 0)
-                            {
+                            if (epkUserRowList.Count > 0) {
                                 int superiorId = (int)epkUserRowList[0]["h_pernr"];
                                 var epkSuperiorRowList = tableUsers.Select()
                                         .where(c => c.column("pernr").Equal(superiorId)).ToList();
@@ -327,16 +292,13 @@ namespace FSS.Omnius.Controllers.Tapestry
                             }
                         }
                     }
-
-                    else
-                    {
+                    else {
                         dataSource = new DataTable();
                         columnDisplayNameDictionary = new Dictionary<string, string>();
                         var entitronTable = core.Entitron.GetDynamicTable(sourceTableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
-                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
-                        {
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter)) {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
                             if (columnFilter.Count > 0)
                                 getAllColumns = false;
@@ -344,23 +306,19 @@ namespace FSS.Omnius.Controllers.Tapestry
                         noConditions = conditionSets.Count == 0;
                         if (tableQueryResultCache.ContainsKey(sourceTableName))
                             entitronRowList = tableQueryResultCache[sourceTableName];
-                        else
-                        {
+                        else {
                             entitronRowList = entitronTable.Select().ToList();
                             tableQueryResultCache.Add(sourceTableName, entitronRowList);
                         }
                         idAvailable = false;
                         string idProperty = "";
-                        if (entitronRowList.Count > 0)
-                        {
+                        if (entitronRowList.Count > 0) {
                             columnNameList = entitronRowList[0].getColumnNames();
-                            if (columnNameList.Contains("id"))
-                            {
+                            if (columnNameList.Contains("id")) {
                                 idProperty = "id";
                                 idAvailable = true;
                             }
-                            else if (columnNameList.Contains("Id"))
-                            {
+                            else if (columnNameList.Contains("Id")) {
                                 idProperty = "Id";
                                 idAvailable = true;
                             }
@@ -368,50 +326,39 @@ namespace FSS.Omnius.Controllers.Tapestry
                             List<ColumnMetadata> columnMetadataList = null;
                             if (columnMetadataResultCache.ContainsKey(sourceTableName))
                                 columnMetadataList = columnMetadataResultCache[sourceTableName];
-                            else
-                            {
+                            else {
                                 columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == sourceTableName).ToList();
                                 columnMetadataResultCache.Add(sourceTableName, columnMetadataList);
                             }
-                            foreach (string columnName in columnNameList)
-                            {
-                                if (getAllColumns || columnFilter.Contains(columnName))
-                                {
+                            foreach (string columnName in columnNameList) {
+                                if (getAllColumns || columnFilter.Contains(columnName)) {
                                     var columnMetadata = columnMetadataList.FirstOrDefault(c => c.ColumnName == columnName);
-                                    if (columnMetadata != null && !string.IsNullOrEmpty(columnMetadata.ColumnDisplayName))
-                                    {
+                                    if (columnMetadata != null && !string.IsNullOrEmpty(columnMetadata.ColumnDisplayName)) {
                                         var newColumn = new DataColumn(columnName);
                                         newColumn.Caption = columnMetadata.ColumnDisplayName;
                                         dataSource.Columns.Add(newColumn);
                                         columnDisplayNameDictionary.Add(columnName, columnMetadata.ColumnDisplayName);
                                     }
-                                    else
-                                    {
+                                    else {
                                         dataSource.Columns.Add(columnName);
                                         columnDisplayNameDictionary.Add(columnName, columnName);
                                     }
                                 }
                             }
-                            foreach (var entitronRow in entitronRowList)
-                            {
-                                if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                                {
+                            foreach (var entitronRow in entitronRowList) {
+                                if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                                     var newRow = dataSource.NewRow();
                                     newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
-                                    foreach (string columnName in columnNameList)
-                                    {
-                                        if (getAllColumns || columnFilter.Contains(columnName))
-                                        {
+                                    foreach (string columnName in columnNameList) {
+                                        if (getAllColumns || columnFilter.Contains(columnName)) {
                                             var currentCell = entitronRow[columnName];
-                                            if (currentCell is bool)
-                                            {
+                                            if (currentCell is bool) {
                                                 if ((bool)currentCell == true)
                                                     newRow[columnName] = "Ano";
                                                 else
                                                     newRow[columnName] = "Ne";
                                             }
-                                            else if (currentCell is DateTime)
-                                            {
+                                            else if (currentCell is DateTime) {
                                                 newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                             }
                                             else
@@ -431,8 +378,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
 
 
-                switch (resourceMappingPair.TargetType)
-                {
+                switch (resourceMappingPair.TargetType) {
                     case "data-table-read-only":
                     case "data-table-with-actions":
                     case "name-value-list":
@@ -441,28 +387,21 @@ namespace FSS.Omnius.Controllers.Tapestry
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                         break;
                     case "form|select":
-
                     case "dropdown-select":
-                        if (modelLoaded && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName))
-                        {
+                        if (modelLoaded && !string.IsNullOrEmpty(resourceMappingPair.SourceColumnName)) {
                             ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                         }
-                        else
-                        {
+                        else {
                             var dropdownDictionary = new Dictionary<int, string>();
-                            if (columnDisplayNameDictionary.ContainsKey("name"))
-                            {
-                                foreach (DataRow datarow in dataSource.Rows)
-                                {
+                            if (columnDisplayNameDictionary.ContainsKey("name")) {
+                                foreach (DataRow datarow in dataSource.Rows) {
                                     int id = (int)datarow["hiddenId"];
                                     if (!dropdownDictionary.ContainsKey(id))
                                         dropdownDictionary.Add(id, (string)datarow["name"]);
                                 }
                             }
-                            else if (columnDisplayNameDictionary.ContainsKey("code"))
-                            {
-                                foreach (DataRow datarow in dataSource.Rows)
-                                {
+                            else if (columnDisplayNameDictionary.ContainsKey("code")) {
+                                foreach (DataRow datarow in dataSource.Rows) {
                                     int id = (int)datarow["hiddenId"];
                                     if (!dropdownDictionary.ContainsKey(id))
                                         dropdownDictionary.Add(id, (string)datarow["code"]);
@@ -491,14 +430,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "form|input-search":
                     case "form|input-password":
                     case "form|textarea":
-                        if (modelLoaded)
-                        {
-                            if (resourceMappingPair.DataSourceParams == "currentUser")
-                            {
-                                if (sourceTableName == "Omnius::Users")
-                                {
-                                    switch (resourceMappingPair.SourceColumnName)
-                                    {
+                        if (modelLoaded) {
+                            if (resourceMappingPair.DataSourceParams == "currentUser") {
+                                if (sourceTableName == "Omnius::Users") {
+                                    switch (resourceMappingPair.SourceColumnName) {
                                         case "DisplayName":
                                             ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
                                             break;
@@ -516,22 +451,18 @@ namespace FSS.Omnius.Controllers.Tapestry
                                             break;
                                     }
                                 }
-                                else if (sourceTableName == "Users")
-                                {
+                                else if (sourceTableName == "Users") {
                                     var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                                 .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                                     if (epkUserRowList.Count > 0)
                                         ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.SourceColumnName];
                                 }
                             }
-                            else if (resourceMappingPair.DataSourceParams == "superior")
-                            {
+                            else if (resourceMappingPair.DataSourceParams == "superior") {
                                 var tableUsers = core.Entitron.GetDynamicTable("Users");
-                                if (sourceTableName == "Users")
-                                {
+                                if (sourceTableName == "Users") {
                                     var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                                    if (epkUserRowList.Count > 0)
-                                    {
+                                    if (epkUserRowList.Count > 0) {
                                         int superiorId = (int)epkUserRowList[0]["h_pernr"];
                                         var epkSuperiorRowList = tableUsers.Select()
                                                 .where(c => c.column("pernr").Equal(superiorId)).ToList();
@@ -540,8 +471,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     }
                                 }
                             }
-                            else if (modelRow[resourceMappingPair.SourceColumnName] is DateTime)
-                            {
+                            else if (modelRow[resourceMappingPair.SourceColumnName] is DateTime) {
 
                                 ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                             }
@@ -553,8 +483,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (modelLoaded)
                             if (modelRow[resourceMappingPair.SourceColumnName] == DBNull.Value)
                                 ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = null;
-                            else
-                            {
+                            else {
                                 ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = TimeZoneInfo.ConvertTimeToUtc(
                                         DateTime.SpecifyKind((DateTime)modelRow[resourceMappingPair.SourceColumnName], DateTimeKind.Unspecified),
                                         TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time")
@@ -565,8 +494,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             }
             #endregion
             #region foreachSourceTableName && ColumnName
-            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && r.SourceColumnName != null).ToList())
-            {
+            foreach (var resourceMappingPair in block.ResourceMappingPairs.Where(r => r.SourceTableName != null && r.SourceColumnName != null).ToList()) {
                 DataTable dataSource = null;
                 List<string> columnNameList = null;
                 Dictionary<string, string> columnDisplayNameDictionary = null;
@@ -578,52 +506,42 @@ namespace FSS.Omnius.Controllers.Tapestry
                 bool idAvailable = true;
                 List<TapestryDesignerConditionSet> conditionSets = context.TapestryDesignerConditionGroups.FirstOrDefault(cg => cg.ResourceMappingPairId == resourceMappingPair.Id)?.ConditionSets.ToList() ?? new List<TapestryDesignerConditionSet>();
 
-                if (resourceMappingPair.relationType.StartsWith("V:"))
-                {
+                if (resourceMappingPair.relationType.StartsWith("V:")) {
                     dataSource = new DataTable();
                     columnDisplayNameDictionary = new Dictionary<string, string>();
                     var entitronView = core.Entitron.GetDynamicView(sourceTableName);
                     dataSource.Columns.Add("hiddenId", typeof(int));
                     if (viewQueryResultCache.ContainsKey(sourceTableName))
                         entitronRowList = viewQueryResultCache[sourceTableName];
-                    else
-                    {
+                    else {
                         entitronRowList = entitronView.Select().ToList();
                         viewQueryResultCache.Add(sourceTableName, entitronRowList);
                     }
                     noConditions = conditionSets.Count == 0;
-                    if (entitronRowList.Count > 0)
-                    {
+                    if (entitronRowList.Count > 0) {
                         columnNameList = entitronRowList[0].getColumnNames();
                         idAvailable = columnNameList.Contains("id");
                     }
-                    else
-                    {
+                    else {
                         continue;
                     }
-                    foreach (var columnName in columnNameList)
-                    {
+                    foreach (var columnName in columnNameList) {
                         dataSource.Columns.Add(columnName);
                         columnDisplayNameDictionary.Add(columnName, columnName);
                     }
-                    foreach (var entitronRow in entitronRowList)
-                    {
-                        if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                        {
+                    foreach (var entitronRow in entitronRowList) {
+                        if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                             var newRow = dataSource.NewRow();
                             newRow["hiddenId"] = idAvailable ? entitronRow["id"] : 0;
-                            foreach (var columnName in columnNameList)
-                            {
+                            foreach (var columnName in columnNameList) {
                                 var currentCell = entitronRow[columnName];
-                                if (currentCell is bool)
-                                {
+                                if (currentCell is bool) {
                                     if ((bool)currentCell == true)
                                         newRow[columnName] = "Ano";
                                     else
                                         newRow[columnName] = "Ne";
                                 }
-                                else if (currentCell is DateTime)
-                                {
+                                else if (currentCell is DateTime) {
                                     newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                 }
                                 else
@@ -633,10 +551,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                 }
-                else
-                {
-                    if (sourceTableName != null && sourceTableName.StartsWith("Omnius::"))
-                    {
+                else {
+                    if (sourceTableName != null && sourceTableName.StartsWith("Omnius::")) {
                         dataSource = new DataTable();
                         columnDisplayNameDictionary = new Dictionary<string, string>();
                         var systemTable = core.Entitron.GetSystemTable(sourceTableName);
@@ -645,50 +561,40 @@ namespace FSS.Omnius.Controllers.Tapestry
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
                         noConditions = conditionSets.Count == 0;
-                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
-                        {
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter)) {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
                             if (columnFilter.Count > 0)
                                 getAllColumns = false;
                         }
                         dataSource.Columns.Add("hiddenId", typeof(int));
-                        foreach (string columnName in columnNameList)
-                        {
+                        foreach (string columnName in columnNameList) {
                             dataSource.Columns.Add(columnName);
                             columnDisplayNameDictionary.Add(columnName, columnName);
                         }
                         idAvailable = false;
                         string idProperty = "";
-                        if (columnNameList.Contains("id"))
-                        {
+                        if (columnNameList.Contains("id")) {
                             idProperty = "id";
                             idAvailable = true;
                         }
-                        else if (columnNameList.Contains("Id"))
-                        {
+                        else if (columnNameList.Contains("Id")) {
                             idProperty = "Id";
                             idAvailable = true;
                         }
-                        foreach (var entitronRow in rowList)
-                        {
-                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                            {
+                        foreach (var entitronRow in rowList) {
+                            if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                                 var newRow = dataSource.NewRow();
                                 newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
-                                foreach (string columnName in columnNameList)
-                                {
-                                    if (getAllColumns || columnFilter.Contains(columnName))
-                                    {
+                                foreach (string columnName in columnNameList) {
+                                    if (getAllColumns || columnFilter.Contains(columnName)) {
                                         var currentCell = entitronRow[columnName];
-                                        if (currentCell is bool)
-                                        {
+                                        if (currentCell is bool) {
                                             if ((bool)currentCell == true)
                                                 newRow[columnName] = "Ano";
                                             else
                                                 newRow[columnName] = "Ne";
                                         }
-                                        else if (currentCell is DateTime)
-                                        {
+                                        else if (currentCell is DateTime) {
                                             newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                         }
                                         else
@@ -700,28 +606,22 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                     if (resourceMappingPair.DataSourceParams == "currentUser"
-                     && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType))
-                    {
-                        if (sourceTableName == "Omnius::Users")
-                        {
-                            switch (resourceMappingPair.SourceColumnName)
-                            {
+                     && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType)) {
+                        if (sourceTableName == "Omnius::Users") {
+                            switch (resourceMappingPair.SourceColumnName) {
                                 case "DisplayName":
                                     ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
                                     break;
                                 case "Company":
                                     var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                                    if (epkUserRowList.Count > 0)
-                                    {
+                                    if (epkUserRowList.Count > 0) {
                                         var abkrsRowList = core.Entitron.GetDynamicTable("ABKRS").Select()
                                         .where(c => c.column("abkrs").Equal(epkUserRowList[0]["abkrs"])).ToList();
-                                        if (abkrsRowList.Count > 0)
-                                        {
+                                        if (abkrsRowList.Count > 0) {
                                             var companyRowList = core.Entitron.GetDynamicTable("Companies").Select()
                                                                 .where(c => c.column("id_company").Equal(abkrsRowList[0]["id_company"])).ToList();
-                                            if (companyRowList.Count > 0)
-                                            {
+                                            if (companyRowList.Count > 0) {
                                                 ViewData["inputData_" + resourceMappingPair.TargetName] = companyRowList[0]["name"];
                                             }
                                         }
@@ -738,8 +638,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     break;
                             }
                         }
-                        else if (sourceTableName == "Users")
-                        {
+                        else if (sourceTableName == "Users") {
                             var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                         .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                             if (epkUserRowList.Count > 0)
@@ -747,14 +646,11 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                     }
                     else if (resourceMappingPair.DataSourceParams == "superior"
-                        && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType))
-                    {
+                        && ResourceMappingPairsTarget.IsInput(resourceMappingPair.TargetType)) {
                         var tableUsers = core.Entitron.GetDynamicTable("Users");
-                        if (resourceMappingPair.SourceTableName == "Users")
-                        {
+                        if (resourceMappingPair.SourceTableName == "Users") {
                             var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                            if (epkUserRowList.Count > 0)
-                            {
+                            if (epkUserRowList.Count > 0) {
                                 int superiorId = (int)epkUserRowList[0]["h_pernr"];
                                 var epkSuperiorRowList = tableUsers.Select()
                                         .where(c => c.column("pernr").Equal(superiorId)).ToList();
@@ -763,16 +659,13 @@ namespace FSS.Omnius.Controllers.Tapestry
                             }
                         }
                     }
-
-                    else
-                    {
+                    else {
                         dataSource = new DataTable();
                         columnDisplayNameDictionary = new Dictionary<string, string>();
                         var entitronTable = core.Entitron.GetDynamicTable(sourceTableName);
                         List<string> columnFilter = null;
                         bool getAllColumns = true;
-                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter))
-                        {
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnFilter)) {
                             columnFilter = resourceMappingPair.SourceColumnFilter.Split(',').ToList();
                             if (columnFilter.Count > 0)
                                 getAllColumns = false;
@@ -780,23 +673,19 @@ namespace FSS.Omnius.Controllers.Tapestry
                         noConditions = conditionSets.Count == 0;
                         if (tableQueryResultCache.ContainsKey(sourceTableName))
                             entitronRowList = tableQueryResultCache[sourceTableName];
-                        else
-                        {
+                        else {
                             entitronRowList = entitronTable.Select().ToList();
                             tableQueryResultCache.Add(sourceTableName, entitronRowList);
                         }
                         idAvailable = false;
                         string idProperty = "";
-                        if (entitronRowList.Count > 0)
-                        {
+                        if (entitronRowList.Count > 0) {
                             columnNameList = entitronRowList[0].getColumnNames();
-                            if (columnNameList.Contains("id"))
-                            {
+                            if (columnNameList.Contains("id")) {
                                 idProperty = "id";
                                 idAvailable = true;
                             }
-                            else if (columnNameList.Contains("Id"))
-                            {
+                            else if (columnNameList.Contains("Id")) {
                                 idProperty = "Id";
                                 idAvailable = true;
                             }
@@ -804,50 +693,39 @@ namespace FSS.Omnius.Controllers.Tapestry
                             List<ColumnMetadata> columnMetadataList = null;
                             if (columnMetadataResultCache.ContainsKey(sourceTableName))
                                 columnMetadataList = columnMetadataResultCache[sourceTableName];
-                            else
-                            {
+                            else {
                                 columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == sourceTableName).ToList();
                                 columnMetadataResultCache.Add(sourceTableName, columnMetadataList);
                             }
-                            foreach (string columnName in columnNameList)
-                            {
-                                if (getAllColumns || columnFilter.Contains(columnName))
-                                {
+                            foreach (string columnName in columnNameList) {
+                                if (getAllColumns || columnFilter.Contains(columnName)) {
                                     var columnMetadata = columnMetadataList.FirstOrDefault(c => c.ColumnName == columnName);
-                                    if (columnMetadata != null && !string.IsNullOrEmpty(columnMetadata.ColumnDisplayName))
-                                    {
+                                    if (columnMetadata != null && !string.IsNullOrEmpty(columnMetadata.ColumnDisplayName)) {
                                         var newColumn = new DataColumn(columnName);
                                         newColumn.Caption = columnMetadata.ColumnDisplayName;
                                         dataSource.Columns.Add(newColumn);
                                         columnDisplayNameDictionary.Add(columnName, columnMetadata.ColumnDisplayName);
                                     }
-                                    else
-                                    {
+                                    else {
                                         dataSource.Columns.Add(columnName);
                                         columnDisplayNameDictionary.Add(columnName, columnName);
                                     }
                                 }
                             }
-                            foreach (var entitronRow in entitronRowList)
-                            {
-                                if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars))
-                                {
+                            foreach (var entitronRow in entitronRowList) {
+                                if (noConditions || core.Entitron.filteringService.MatchConditionSets(conditionSets, entitronRow, tapestryVars)) {
                                     var newRow = dataSource.NewRow();
                                     newRow["hiddenId"] = idAvailable ? entitronRow[idProperty] : 0;
-                                    foreach (string columnName in columnNameList)
-                                    {
-                                        if (getAllColumns || columnFilter.Contains(columnName))
-                                        {
+                                    foreach (string columnName in columnNameList) {
+                                        if (getAllColumns || columnFilter.Contains(columnName)) {
                                             var currentCell = entitronRow[columnName];
-                                            if (currentCell is bool)
-                                            {
+                                            if (currentCell is bool) {
                                                 if ((bool)currentCell == true)
                                                     newRow[columnName] = "Ano";
                                                 else
                                                     newRow[columnName] = "Ne";
                                             }
-                                            else if (currentCell is DateTime)
-                                            {
+                                            else if (currentCell is DateTime) {
                                                 newRow[columnName] = ((DateTime)currentCell).ToString("d. M. yyyy H:mm:ss");
                                             }
                                             else
@@ -862,39 +740,27 @@ namespace FSS.Omnius.Controllers.Tapestry
                     }
                 }
 
-
-
-
-
-
-                switch (resourceMappingPair.TargetType)
-                {
+                switch (resourceMappingPair.TargetType) {
                     case "data-table-read-only":
                     case "data-table-with-actions":
                     case "name-value-list":
                         ViewData["tableData_" + resourceMappingPair.TargetName] = dataSource;
                         break;
                     case "dropdown-select":
-                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnName) && modelLoaded)
-                        {
+                        if (!string.IsNullOrEmpty(resourceMappingPair.SourceColumnName) && modelLoaded) {
                             ViewData["dropdownSelection_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                         }
-                        else
-                        {
+                        else {
                             var dropdownDictionary = new Dictionary<int, string>();
-                            if (columnDisplayNameDictionary.ContainsKey("name"))
-                            {
-                                foreach (DataRow datarow in dataSource.Rows)
-                                {
+                            if (columnDisplayNameDictionary.ContainsKey("name")) {
+                                foreach (DataRow datarow in dataSource.Rows) {
                                     int id = (int)datarow["hiddenId"];
                                     if (!dropdownDictionary.ContainsKey(id))
                                         dropdownDictionary.Add(id, (string)datarow["name"]);
                                 }
                             }
-                            else if (columnDisplayNameDictionary.ContainsKey("code"))
-                            {
-                                foreach (DataRow datarow in dataSource.Rows)
-                                {
+                            else if (columnDisplayNameDictionary.ContainsKey("code")) {
+                                foreach (DataRow datarow in dataSource.Rows) {
                                     int id = (int)datarow["hiddenId"];
                                     if (!dropdownDictionary.ContainsKey(id))
                                         dropdownDictionary.Add(id, (string)datarow["code"]);
@@ -924,14 +790,10 @@ namespace FSS.Omnius.Controllers.Tapestry
                     case "form|input-password":
                     case "text|span":
                     case "form|textarea":
-                        if (modelLoaded)
-                        {
-                            if (resourceMappingPair.DataSourceParams == "currentUser")
-                            {
-                                if (sourceTableName == "Omnius::Users")
-                                {
-                                    switch (resourceMappingPair.SourceColumnName)
-                                    {
+                        if (modelLoaded) {
+                            if (resourceMappingPair.DataSourceParams == "currentUser") {
+                                if (sourceTableName == "Omnius::Users") {
+                                    switch (resourceMappingPair.SourceColumnName) {
                                         case "DisplayName":
                                             ViewData["inputData_" + resourceMappingPair.TargetName] = core.User.DisplayName;
                                             break;
@@ -949,22 +811,18 @@ namespace FSS.Omnius.Controllers.Tapestry
                                             break;
                                     }
                                 }
-                                else if (sourceTableName == "Users")
-                                {
+                                else if (sourceTableName == "Users") {
                                     var epkUserRowList = core.Entitron.GetDynamicTable("Users").Select()
                                                 .where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
                                     if (epkUserRowList.Count > 0)
                                         ViewData["inputData_" + resourceMappingPair.TargetName] = epkUserRowList[0][resourceMappingPair.SourceColumnName];
                                 }
                             }
-                            else if (resourceMappingPair.DataSourceParams == "superior")
-                            {
+                            else if (resourceMappingPair.DataSourceParams == "superior") {
                                 var tableUsers = core.Entitron.GetDynamicTable("Users");
-                                if (sourceTableName == "Users")
-                                {
+                                if (sourceTableName == "Users") {
                                     var epkUserRowList = tableUsers.Select().where(c => c.column("ad_email").Equal(core.User.Email)).ToList();
-                                    if (epkUserRowList.Count > 0)
-                                    {
+                                    if (epkUserRowList.Count > 0) {
                                         int superiorId = (int)epkUserRowList[0]["h_pernr"];
                                         var epkSuperiorRowList = tableUsers.Select()
                                                 .where(c => c.column("pernr").Equal(superiorId)).ToList();
@@ -973,8 +831,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                     }
                                 }
                             }
-                            else if (modelRow[resourceMappingPair.SourceColumnName] is DateTime)
-                            {
+                            else if (modelRow[resourceMappingPair.SourceColumnName] is DateTime) {
 
                                 ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                             }
@@ -986,8 +843,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         if (modelLoaded)
                             if (modelRow[resourceMappingPair.SourceColumnName] == DBNull.Value)
                                 ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = null;
-                            else
-                            {
+                            else {
                                 ViewData["countdownTargetData_" + resourceMappingPair.TargetName] = TimeZoneInfo.ConvertTimeToUtc(
                                         DateTime.SpecifyKind((DateTime)modelRow[resourceMappingPair.SourceColumnName], DateTimeKind.Unspecified),
                                         TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time")
@@ -997,12 +853,9 @@ namespace FSS.Omnius.Controllers.Tapestry
                 }
             }
             #endregion
-            foreach (var pair in tapestryVars)
-            {
-                if (pair.Key.StartsWith("_uic_"))
-                {
-                    if (pair.Value is DateTime && pair.Key.Contains("#"))
-                    {
+            foreach (var pair in tapestryVars) {
+                if (pair.Key.StartsWith("_uic_")) {
+                    if (pair.Value is DateTime && pair.Key.Contains("#")) {
                         string key = pair.Key;
                         string keyWithoutSuffix = key.Substring(0, key.LastIndexOf('#'));
 
@@ -1016,39 +869,32 @@ namespace FSS.Omnius.Controllers.Tapestry
                     else
                         ViewData[pair.Key.Substring(5)] = pair.Value;
                 }
-                else if (pair.Key.StartsWith("_uictable_"))
-                {
+                else if (pair.Key.StartsWith("_uictable_")) {
                     List<DBItem> entitronRowList;
-                    if (pair.Value is DBItem)
-                    {
+                    if (pair.Value is DBItem) {
                         entitronRowList = new List<DBItem>();
                         entitronRowList.Add((DBItem)pair.Value);
                     }
-                    else
-                    {
+                    else {
                         entitronRowList = (List<DBItem>)pair.Value;
                     }
                     bool columnsCreated = false;
                     DataTable dataSource = new DataTable();
                     dataSource.Columns.Add("hiddenId", typeof(int));
-                    foreach (var entitronRow in entitronRowList)
-                    {
+                    foreach (var entitronRow in entitronRowList) {
                         var newRow = dataSource.NewRow();
                         var columnNames = entitronRow.getColumnNames();
                         newRow["hiddenId"] = columnNames.Contains("id") ? entitronRow["id"] : -1;
-                        foreach (var columnName in columnNames)
-                        {
+                        foreach (var columnName in columnNames) {
                             if (!columnsCreated)
                                 dataSource.Columns.Add(columnName);
-                            if (entitronRow[columnName] is bool)
-                            {
+                            if (entitronRow[columnName] is bool) {
                                 if ((bool)entitronRow[columnName] == true)
                                     newRow[columnName] = "Ano";
                                 else
                                     newRow[columnName] = "Ne";
                             }
-                            else if (entitronRow[columnName] is DateTime)
-                            {
+                            else if (entitronRow[columnName] is DateTime) {
                                 newRow[columnName] = ((DateTime)entitronRow[columnName]).ToString("d. M. yyyy H:mm:ss");
                             }
                             else
@@ -1060,8 +906,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                     ViewData[pair.Key.Substring(10)] = dataSource;
                 }
             }
-            string viewPath = (block.BootstrapPageId != null) 
-                ? $"{core.Entitron.Application.Name}\\Page\\Bootstrap\\{block.BootstrapPageId}.cshtml" 
+            string viewPath = (block.BootstrapPageId != null)
+                ? $"{core.Entitron.Application.Name}\\Page\\Bootstrap\\{block.BootstrapPageId}.cshtml"
                 : $"{core.Entitron.Application.Name}\\Page\\{block.EditorPageId}.cshtml";
 
             prepareEnd = DateTime.Now;
@@ -1070,7 +916,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
             //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
-            return View(viewPath);
+            return View(viewPath/*, app.GetLayout()*/);
 
         }
 
@@ -1080,20 +926,16 @@ namespace FSS.Omnius.Controllers.Tapestry
             List<string> messageCollection;
 
             // Select most important type - limitation of transfer style
-            if (message.Errors.Count > 0)
-            {
+            if (message.Errors.Count > 0) {
                 messageCollection = message.Errors;
             }
-            else if (message.Success.Count > 0)
-            {
+            else if (message.Success.Count > 0) {
                 messageCollection = message.Success;
             }
-            else if (message.Warnings.Count > 0)
-            {
+            else if (message.Warnings.Count > 0) {
                 messageCollection = message.Warnings;
             }
-            else
-            {
+            else {
                 messageCollection = message.Info;
             }
 
@@ -1124,14 +966,11 @@ namespace FSS.Omnius.Controllers.Tapestry
             if (block == null)
                 return new HttpStatusCodeResult(404);
 
-            foreach (var pair in core.CrossBlockRegistry)
-            {
-                if (pair.Value != null)
-                {
+            foreach (var pair in core.CrossBlockRegistry) {
+                if (pair.Value != null) {
                     fc.Add(pair.Key, pair.Value.ToString());
                 }
-                else
-                {
+                else {
                     fc.Add(pair.Key, "");
                 }
             }
@@ -1140,8 +979,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc, deleteId);
             Session["CrossBlockRegistry"] = core.CrossBlockRegistry;
 
-            if (Response.StatusCode != 202)
-            {
+            if (Response.StatusCode != 202) {
                 return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
             }
             return null;

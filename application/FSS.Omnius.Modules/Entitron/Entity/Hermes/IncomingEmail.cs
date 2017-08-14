@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Newtonsoft.Json;
 
     [Table("Hermes_Incoming_Email")]
     public partial class IncomingEmail : IEntity
@@ -12,6 +13,7 @@
             IncomingEmailRule = new List<IncomingEmailRule>();
         }
 
+        [ImportExportIgnore(IsKey = true)]
         public int? Id { get; set; }
 
         [Required]
@@ -36,6 +38,7 @@
         [Display(Name = "Heslo")]
         public string Password { get; set; }
 
+        [ImportExportIgnore]
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
     }
 }

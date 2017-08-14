@@ -34,6 +34,7 @@
     data: null,
 
     onAttributesLoad: [],
+    onLoadBlock: [],
 
     init: function () {
 
@@ -73,6 +74,8 @@
         self.setRoleWhiteList(data.RoleWhitelist);
         self.loadPages();
         self.loadLibrary();
+
+        TB.callHooks(self.onLoadBlock, data, []);
     },
 
     clearBuilder: function() {

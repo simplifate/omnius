@@ -436,7 +436,7 @@ namespace FSS.Omnius.Controllers.Master
             HashSet<string> rights = new HashSet<string>();
 
             List<TapestryDesignerMenuItem> items = new List<TapestryDesignerMenuItem>();
-            foreach (TapestryDesignerMetablock m in e.TapestryDesignerMetablocks.Include("ParentMetablock").Where(m => m.ParentMetablock.Id == rootId && m.IsInMenu == true))
+            foreach (TapestryDesignerMetablock m in e.TapestryDesignerMetablocks.Include("ParentMetablock").Where(m => m.ParentMetablock.Id == rootId && m.IsInMenu == true && !m.IsDeleted))
             {
                 var menuResult = GetApplicationMenu(core, blockMapping, m.Id, level + 1);
                 rights.AddRange(menuResult.Item2);

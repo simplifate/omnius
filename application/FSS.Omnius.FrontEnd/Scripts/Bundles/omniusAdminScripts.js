@@ -1,3 +1,245 @@
+/**
+ * nuSelectable - jQuery Plugin
+ * Copyright (c) 2015, Alex Suyun
+ * Copyrights licensed under The MIT License (MIT)
+ */
+;
+(function ($, window, document, undefined) {
+
+    'use strict';
+
+    var plugin = 'nuSelectable';
+
+    var defaults = {
+        onSelect: function () { },
+        onUnSelect: function () { },
+        onClear: function () { }
+    };
+
+    var nuSelectable = function (container, options) {
+        this.container = $(container);
+        this.options = $.extend({}, defaults, options);
+        this.selection = $('<div>')
+          .addClass(this.options.selectionClass);
+        this.items = $(this.options.items);
+        this.downTimer = null;
+        this.init();
+    };
+
+    nuSelectable.prototype.init = function () {
+        if (!this.options.autoRefresh) {
+            this.itemData = this._cacheItemData();
+        }
+        this.selecting = false;
+        this._normalizeContainer();
+        this._bindEvents();
+        return true;
+    };
+
+    nuSelectable.prototype._normalizeContainer = function () {
+        this.container.css({
+            '-webkit-touch-callout': 'none',
+            '-webkit-user-select': 'none',
+            '-khtml-user-select': 'none',
+            '-moz-user-select': 'none',
+            '-ms-user-select': 'none',
+            'user-select': 'none'
+        });
+    };
+
+    nuSelectable.prototype._cacheItemData = function () {
+        var itemData = [],
+          itemsLength = this.items.length;
+
+        for (var i = 0, item; item = $(this.items[i]), i <
+          itemsLength; i++) {
+            itemData.push({
+                element: item,
+                selected: item.hasClass(this.options.selectedClass),
+                selecting: false,
+                position: item[0].getBoundingClientRect()
+            });
+        }
+        return itemData;
+    };
+
+    nuSelectable.prototype._collisionDetector = function () {
+        var selector = this.selection[0].getBoundingClientRect(),
+          dataLength = this.itemData.length;
+        // Using native for loop vs $.each for performance (no overhead)
+        for (var i = dataLength - 1, item; item = this.itemData[i], i >=
+          0; i--) {
+            var collided = !(selector.right < item.position.left ||
+              selector.left > item.position.right ||
+              selector.bottom < item.position.top ||
+              selector.top > item.position.bottom);
+
+            if (collided) {
+                if (item.selected) {
+                    item.element.removeClass(this.options.selectedClass);
+                    item.selected = false;
+                }
+                if (!item.selected) {
+                    item.element.addClass(this.options.selectedClass);
+                    item.selected = true;
+                    this.options.onSelect(item.element);
+                }
+            }
+            else {
+                if (this.selecting) {
+                    item.element.removeClass(this.options.selectedClass);
+                    this.options.onUnSelect(item.element);
+                }
+            }
+
+        }
+    };
+
+    nuSelectable.prototype._createSelection = function (x, y) {
+        this.selection.css({
+            'position': 'absolute',
+            'top': y + 'px',
+            'left': x + 'px',
+            'width': '0',
+            'height': '0',
+            'z-index': '999',
+            'overflow': 'hidden'
+        })
+          .appendTo(this.container);
+    };
+
+    nuSelectable.prototype._drawSelection = function (width, height, x,
+      y) {
+        this.selection.css({
+            'width': width,
+            'height': height,
+            'top': y,
+            'left': x
+        });
+    };
+
+    nuSelectable.prototype.clear = function () {
+        this.items.removeClass(this.options.selectedClass);
+        this.options.onClear();
+    };
+
+    nuSelectable.prototype._mouseDown = function (event) {
+        var e = event;
+        var that = this;
+
+        if ($(e.target).is(this.container) && e.shiftKey) {
+            this.downTimer = setTimeout(function () {
+                that._mouseHold.apply(that, [e]);
+            }, 50);
+        }
+    };
+
+    nuSelectable.prototype._mouseHold = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.options.disable) {
+            return false;
+        }
+        if (event.which !== 1) {
+            return false;
+        }
+        if (this.options.autoRefresh) {
+            this.itemData = this._cacheItemData();
+        }
+        if (event.metaKey || event.ctrlKey) {
+            this.selecting = false;
+        }
+        else {
+            this.selecting = true;
+        }
+
+        var x = (event.pageX - this.container.offset().left);
+        var y = (event.pageY - this.container.offset().top);
+
+        this.pos = [x, y];
+        this._createSelection(x, y);
+
+    };
+
+    nuSelectable.prototype._mouseMove = function (event) {
+        // Save some bytes
+        var pos = this.pos;
+        if (!pos) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        var x = (event.pageX - this.container.offset().left);
+        var y = (event.pageY - this.container.offset().top);
+
+        var newpos = [x, y],
+          width = Math.abs(newpos[0] - pos[0]),
+          height = Math.abs(newpos[1] - pos[1]),
+          top, left;
+
+        top = (newpos[0] < pos[0]) ? (pos[0] - width) : pos[0];
+        left = (newpos[1] < pos[1]) ? (pos[1] - height) : pos[1];
+        this._drawSelection(width, height, top, left);
+        this._collisionDetector();
+
+    };
+
+    nuSelectable.prototype._mouseUp = function (event) {
+        clearTimeout(this.downTimer);
+
+        if (!this.pos) {
+            this.clear();
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.selecting = false;
+        this.selection.remove();
+
+        var x = (event.pageX - this.container.offset().left);
+        var y = (event.pageY - this.container.offset().top);
+
+        if (x === this.pos[0] && y === this.pos[1]) {
+            this.clear();
+        }
+
+        this.pos = [];
+    };
+
+    nuSelectable.prototype._bindEvents = function () {
+        this.container.on('mousedown', $.proxy(this._mouseDown, this));
+        this.container.on('mousemove', $.proxy(this._mouseMove, this));
+        // Binding to document is 'safer' than the container for mouse up
+        $(document)
+          .on('mouseup', $.proxy(this._mouseUp, this));
+    };
+
+    $.fn[plugin] = function (options) {
+        var args = Array.prototype.slice.call(arguments, 1);
+
+        return this.each(function () {
+            var item = $(this),
+              instance = item.data(plugin);
+            if (!instance) {
+                item.data(plugin, new nuSelectable(this, options));
+            }
+            else {
+
+                if (typeof options === 'string' && options[0] !== '_' &&
+                  options !== 'init') {
+                    instance[options].apply(instance, args);
+                }
+            }
+
+        });
+    };
+
+})(jQuery, window, document);
+
 $(function () {
     $("#TimeSince,#TimeTo").datetimepicker({
         datepicker: true,
@@ -521,6 +763,7 @@ function SaveBlock(commitMessage) {
     $("#workflowRulesPanel .workflowRule").each(function (ruleIndex, ruleDiv) {
         swimlanesArray = [];
         currentRule = $(ruleDiv);
+
         currentRule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
             currentSwimlane = $(swimlaneDiv);
             currentSwimlane.attr("swimlaneIndex", swimlaneIndex);
@@ -528,9 +771,27 @@ function SaveBlock(commitMessage) {
             itemArray = [];
             symbolArray = [];
             connectionArray = [];
+            subflowArray = [];
             currentSwimlane.find(".swimlaneRolesArea .roleItem").each(function (roleIndex, roleDiv) {
                 rolesArray.push($(roleDiv).text());
             });
+
+            currentSwimlane.find("> .subflow").each(function (subflowIndex) {
+                var subflow = $(this);
+                subflow.attr("saveId", saveId);
+                saveId++;
+
+                subflowArray.push({
+                    Id: subflow.attr('saveId'),
+                    Name: "",
+                    Comment: "",
+                    PositionX: parseInt(subflow.css('left')),
+                    PositionY: parseInt(subflow.css('top')),
+                    Width: parseInt(subflow.css('width')),
+                    Height: parseInt(subflow.css('height'))
+                })
+            });
+            
             currentSwimlane.find(".item, .symbol").each(function (itemIndex, itemDiv) {
                 currentItem = $(itemDiv);
                 currentItem.attr("saveId", saveId);
@@ -538,6 +799,9 @@ function SaveBlock(commitMessage) {
                 itemArray.push({
                     Id: currentItem.attr("saveId"),
                     Label: currentItem.find(".itemLabel").length ? currentItem.find(".itemLabel").text() : currentItem.data("label"),
+                    Name: currentItem.find('.itemName').text(),
+                    Comment: currentItem.find('.itemComment').text(),
+                    CommentBottom: currentItem.find('.itemComment').hasClass('bottom'),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),
@@ -556,13 +820,17 @@ function SaveBlock(commitMessage) {
                     SymbolType: currentItem.attr("symbolType")
                 });
             });
+
             swimlanesArray.push({
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
-                WorkflowItems: itemArray
+                WorkflowItems: itemArray,
+                subflow: subflowArray
             });
         });
+
+
         currentInstance = currentRule.data("jsPlumbInstance");
         jsPlumbConnections = currentInstance.getAllConnections();
         for (i = 0; i < jsPlumbConnections.length; i++) {
@@ -583,6 +851,7 @@ function SaveBlock(commitMessage) {
                 });
             }
         }
+
         workflowRulesArray.push({
             Id: ruleIndex,
             Name: currentRule.find(".workflowRuleHeader .verticalLabel").text(),
@@ -594,6 +863,7 @@ function SaveBlock(commitMessage) {
             Connections: connectionArray
         });
     });
+
     toolboxState = {
         Actions: [],
         Attributes: [],
@@ -678,908 +948,12 @@ function SaveBlock(commitMessage) {
         },
         success: function () {
             ChangedSinceLastSave = false;
-            alert("OK");
+            alert("The block has been successfully saved");
+            $('#btnLock').html('Zamknout');
+            TB.lock.isLockedForCurrentUser = false;
         }
     });
 }
-
-function LoadBlock(commitId) {
-    console.log("LOADING BLOCKSS");
-
-    pageSpinner.show();
-
-    appId = $("#currentAppId").val();
-    blockId = $("#currentBlockId").val();
-    if (commitId) {
-        url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId + "/commits/" + commitId;
-    } else {
-        url = "/api/tapestry/apps/" + appId + "/blocks/" + blockId;
-    }
-
-    $.ajax({
-        type: "GET",
-        url: url,
-        dataType: "json",
-        complete: function () {
-            pageSpinner.hide()
-        },
-        success: function (data) {
-            ChangedSinceLastSave = false;
-            $("#resourceRulesPanel .resourceRule").remove();
-            $("#workflowRulesPanel .workflowRule").remove();
-            $("#blockHeaderBlockName").text(data.Name);
-            console.log("Obtained data from server.");
-            for (i = 0; i < data.ResourceRules.length; i++) {
-            console.log("Iterating resource rule");
-                currentRuleData = data.ResourceRules[i];
-                newRule = $('<div class="rule resourceRule" style="width: '+currentRuleData.Width+'px; height: '+currentRuleData.Height+'px; left: '
-                    + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"></div>');
-                newRule.attr("id", AssingID());
-                $("#resourceRulesPanel .scrollArea").append(newRule);
-                newRule.draggable({
-                    containment: "parent",
-                    revert: function (event, ui) {
-                        return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
-                    },
-                    stop: function (event, ui) {
-                        ChangedSinceLastSave = true;
-                    }
-                });
-                newRule.resizable({
-                    start: function (event, ui) {
-                        rule = $(this);
-                        contentsWidth = 120;
-                        contentsHeight = 40;
-                        rule.find(".item").each(function (index, element) {
-                            rightEdge = $(element).position().left + $(element).width();
-                            if (rightEdge > contentsWidth)
-                                contentsWidth = rightEdge;
-                            bottomEdge = $(element).position().top + $(element).height();
-                            if (bottomEdge > contentsHeight)
-                                contentsHeight = bottomEdge;
-                        });
-                        rule.css("min-width", contentsWidth + 40);
-                        rule.css("min-height", contentsHeight + 20);
-
-                        limits = CheckRuleResizeLimits(rule, true);
-                        rule.css("max-width", limits.horizontal - 10);
-                        rule.css("max-height", limits.vertical - 10);
-                    },
-                    resize: function (event, ui) {
-                        rule = $(this);
-                        limits = CheckRuleResizeLimits(rule, true);
-                        rule.css("max-width", limits.horizontal - 10);
-                        rule.css("max-height", limits.vertical - 10);
-                    },
-                    stop: function (event, ui) {
-                        instance = $(this).data("jsPlumbInstance");
-                        instance.recalculateOffsets();
-                        instance.repaintEverything();
-                        ChangedSinceLastSave = true;
-                    }
-                });
-                CreateJsPlumbInstanceForRule(newRule);
-                newRule.droppable({
-                    containment: ".resourceRule",
-                    tolerance: "touch",
-                    accept: ".toolboxItem",
-                    greedy: true,
-                    drop: function (e, ui) {
-                        if (dragModeActive) {
-                            dragModeActive = false;
-                            droppedElement = ui.helper.clone();
-                            droppedElement.removeClass("toolboxItem");
-                            droppedElement.addClass("item");
-                            droppedElement.css({ width: "", height: "" });
-                            $(this).append(droppedElement);
-                            ruleContent = $(this);
-                            leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
-                            topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                            ui.helper.remove();
-                            AddToJsPlumb(droppedElement);
-                            if (droppedElement.position().left + droppedElement.width() + 35 > ruleContent.width()) {
-                                droppedElement.css("left", ruleContent.width() - droppedElement.width() - 40);
-                                instance = ruleContent.data("jsPlumbInstance");
-                                instance.repaintEverything();
-                            }
-                            if (droppedElement.position().top + droppedElement.height() + 5 > ruleContent.height()) {
-                                droppedElement.css("top", ruleContent.height() - droppedElement.height() - 15);
-                                instance = ruleContent.data("jsPlumbInstance");
-                                instance.repaintEverything();
-                            }
-                            ChangedSinceLastSave = true;
-                        }
-                    }
-                });
-                for (j = 0; j < currentRuleData.ResourceItems.length; j++) {
-                    console.log("Got item data:");
-                    console.log(currentItemData);
-                    currentItemData = currentRuleData.ResourceItems[j];
-                    newItem = $('<div id="resItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
-                        + currentItemData.PositionY + 'px;">'
-                        + currentItemData.Label + '</div>');
-                    if (currentItemData.ActionId != null)
-                        newItem.attr("actionId", currentItemData.ActionId);
-                    if (currentItemData.StateId != null)
-                        newItem.attr("stateId", currentItemData.StateId);
-                    if (currentItemData.PageId != null)
-                        newItem.attr("pageId", currentItemData.PageId);
-                    if (currentItemData.ComponentName != null)
-                        newItem.attr("componentName", currentItemData.ComponentName);
-                    if (currentItemData.TableName != null) {
-                        newItem.data("columnFilter", currentItemData.ColumnFilter);
-                        newItem.attr("tableName", currentItemData.TableName);
-                        if (currentItemData.Label.indexOf("View:") == 0)
-                            newItem.addClass("viewAttribute");
-                        else
-                            newItem.addClass("tableAttribute");
-                    }
-                    if (currentItemData.IsShared != null && currentItemData != false) {
-                        newItem.attr("shared", currentItemData.IsShared);
-                    }
-                    if (currentItemData.ColumnName != null) {
-                        newItem.attr("columnName", currentItemData.ColumnName);
-                    }
-                    if (currentItemData.ConditionSets != null) {
-                        newItem.data("conditionSets", currentItemData.ConditionSets);
-                    }
-                    if (currentItemData.IsBootstrap != null) {
-                        newItem.attr('isBootstrap', currentItemData.IsBootstrap);
-                    }
-                    newItem.addClass(currentItemData.TypeClass);
-                    newRule.append(newItem);
-                    AddToJsPlumb(newItem);
-                }
-                currentInstance = newRule.data("jsPlumbInstance");
-                for (j = 0; j < currentRuleData.Connections.length; j++) {
-                    currentConnectionData = currentRuleData.Connections[j];
-                    currentInstance.connect({
-                        uuids: ["resItem" + currentConnectionData.SourceId + "RightMiddle"], target: "resItem" + currentConnectionData.TargetId
-                    });
-                }
-            }
-            for (i = 0; i < data.WorkflowRules.length; i++) {
-                currentRuleData = data.WorkflowRules[i];
-                newRule = $('<div class="rule workflowRule" style="width: ' + currentRuleData.Width + 'px; height: ' + currentRuleData.Height
-                    + 'px; left: ' + currentRuleData.PositionX + 'px; top: ' + currentRuleData.PositionY + 'px;"><div class="workflowRuleHeader">'
-                    + '<div class="verticalLabel" style="margin-top: 0px;">' + currentRuleData.Name + '</div></div><div class="swimlaneArea"></div></div>');
-                newRule.attr("id", AssingID());
-                $("#workflowRulesPanel .scrollArea").append(newRule);
-                newRule.draggable({
-                    containment: "parent",
-                    handle: ".workflowRuleHeader",
-                    revert: function (event, ui) {
-                        return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
-                    },
-                    stop: function (event, ui) {
-                        ChangedSinceLastSave = true;
-                    }
-                });
-                newRule.resizable({
-                    start: function (event, ui) {
-                        rule = $(this);
-                        contentsWidth = 120;
-                        contentsHeight = 40;
-                        rule.find(".item").each(function (index, element) {
-                            rightEdge = $(element).position().left + $(element).width();
-                            if (rightEdge > contentsWidth)
-                                contentsWidth = rightEdge;
-                            bottomEdge = $(element).position().top + $(element).height();
-                            if (bottomEdge > contentsHeight)
-                                contentsHeight = bottomEdge;
-                        });
-                        rule.css("min-width", contentsWidth + 40);
-                        rule.css("min-height", contentsHeight + 20);
-
-                        limits = CheckRuleResizeLimits(rule, false);
-                        rule.css("max-width", limits.horizontal - 10);
-                        rule.css("max-height", limits.vertical - 10);
-                    },
-                    resize: function (event, ui) {
-                        rule = $(this);
-                        instance = rule.data("jsPlumbInstance");
-                        instance.recalculateOffsets();
-                        instance.repaintEverything();
-                        limits = CheckRuleResizeLimits(rule, false);
-                        rule.css("max-width", limits.horizontal - 10);
-                        rule.css("max-height", limits.vertical - 10);
-                    },
-                    stop: function (event, ui) {
-                        ChangedSinceLastSave = true;
-                    }
-                });
-                CreateJsPlumbInstanceForRule(newRule);
-                for (j = 0; j < currentRuleData.Swimlanes.length; j++) {
-                    currentSwimlaneData = currentRuleData.Swimlanes[j];
-                    newSwimlane = $('<div class="swimlane" style="height: ' + (100 / currentRuleData.Swimlanes.length) + '%;"><div class="swimlaneRolesArea"><div class="roleItemContainer"></div><div class="rolePlaceholder"><div class="rolePlaceholderLabel">Pokud chcete specifikovat roli<br />'
-                        + 'přetáhněte ji do této oblasti</div></div></div><div class="swimlaneContentArea"></div></div>');
-                    newRule.find(".swimlaneArea").append(newSwimlane);
-                    if (currentSwimlaneData.Roles.length > 0)
-                        newSwimlane.find(".swimlaneRolesArea .rolePlaceholder").remove();
-                    for (k = 0; k < currentSwimlaneData.Roles.length; k++) {
-                        newSwimlane.find(".swimlaneRolesArea .roleItemContainer").append($('<div class="roleItem">' + currentSwimlaneData.Roles[k] + '</div>'));
-                    }
-                    for (k = 0; k < currentSwimlaneData.WorkflowItems.length; k++) {
-                        currentItemData = currentSwimlaneData.WorkflowItems[k];
-                        if (currentItemData.TypeClass === "symbol" && currentItemData.SymbolType === "comment") {
-                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + currentItemData.PositionX +
-                            'px; top: ' + currentItemData.PositionY + 'px; width: 30px; padding: 3px; border: 2px solid grey; border-right: none; min-height: 60px;"> <span class="itemLabel">'
-                            + currentItemData.Label + '</span></div>');
-                        }else if (currentItemData.TypeClass == "symbol") {
-                            newItem = $('<img id="wfItem' + currentItemData.Id + '" class="symbol" symbolType="' + currentItemData.SymbolType +
-                            '" src="/Content/images/TapestryIcons/' + currentItemData.SymbolType + '.png" style="left: ' + currentItemData.PositionX + 'px; top: '
-                            + currentItemData.PositionY + 'px;" />');
-                        }else{
-                            newItem = $('<div id="wfItem' + currentItemData.Id + '" class="item" style="left: ' + currentItemData.PositionX + 'px; top: '
-                            + currentItemData.PositionY + 'px;"><span class="itemLabel">' + currentItemData.Label + '</span></div>');
-                        }
-                        newItem.addClass(currentItemData.TypeClass);
-                        if (currentItemData.ActionId != null)
-                            newItem.attr('actionId', currentItemData.ActionId);
-                        if (currentItemData.InputVariables != null)
-                            newItem.data('inputVariables', currentItemData.InputVariables);
-                        if (currentItemData.OutputVariables != null)
-                            newItem.data('outputVariables', currentItemData.OutputVariables);
-                        if (currentItemData.PageId != null)
-                            newItem.attr("pageId", currentItemData.PageId);
-                        if (currentItemData.ComponentName != null)
-                            newItem.attr('componentName', currentItemData.ComponentName);
-                        if (currentItemData.TargetId != null)
-                            newItem.attr('targetId', currentItemData.TargetId);
-                        if (currentItemData.StateId != null)
-                            newItem.attr("stateId", currentItemData.StateId);
-                        if (currentItemData.isAjaxAction != null)
-                            newItem.data('isAjaxAction', currentItemData.isAjaxAction);
-                        if (currentItemData.TypeClass == "circle-thick")
-                            newItem.attr("endpoints", "final");
-                        if (currentItemData.SymbolType && currentItemData.SymbolType.substr(0, 8) == "gateway-")
-                            newItem.attr("endpoints", "gateway");
-                        if (currentItemData.Condition != null)
-                            newItem.data("condition", currentItemData.Condition);
-                        if (currentItemData.ConditionSets != null) {
-                            newItem.data("conditionSets", currentItemData.ConditionSets);
-                        }
-                        if (currentItemData.IsBootstrap != null) {
-                            newItem.attr('isBootstrap', currentItemData.IsBootstrap);
-                        }
-                        
-                        targetSwimlane = newRule.find(".swimlane").eq(currentSwimlaneData.SwimlaneIndex).find(".swimlaneContentArea");
-                        targetSwimlane.append(newItem);
-                        AddToJsPlumb(newItem);
-                    }
-                }
-                newRule.find(".swimlaneRolesArea").droppable({
-                    tolerance: "touch",
-                    accept: ".toolboxItem.roleItem",
-                    greedy: true,
-                    drop: function (e, ui) {
-                        if (dragModeActive) {
-                            dragModeActive = false;
-                            roleExists = false;
-                            $(this).find(".roleItem").each(function (index, element) {
-                                if ($(element).text() == ui.helper.text())
-                                    roleExists = true;
-                            });
-                            if (!roleExists) {
-                                droppedElement = ui.helper.clone();
-                                $(this).find(".rolePlaceholder").remove();
-                                $(this).find(".roleItemContainer").append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                                ui.helper.remove();
-                                ChangedSinceLastSave = true;
-                            }
-                        }
-                    }
-                });
-                newRule.find(".swimlaneContentArea").droppable({
-                    containment: ".swimlaneContentArea",
-                    tolerance: "touch",
-                    accept: ".toolboxSymbol, .toolboxItem",
-                    greedy: false,
-                    drop: function (e, ui) {
-                        if (dragModeActive) {
-                            dragModeActive = false;
-                            droppedElement = ui.helper.clone();
-                            if (droppedElement.hasClass("roleItem")) {
-                                ui.draggable.draggable("option", "revert", true);
-                                return false;
-                            }
-                            ruleContent = $(this);
-                            ruleContent.append(droppedElement);
-                            if (droppedElement.hasClass("toolboxSymbol")) {
-                                droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                                droppedElement.addClass("symbol");
-                                droppedElement.css({ height: "" });
-                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                            }
-                            else {
-                                droppedElement.removeClass("toolboxItem");
-                                droppedElement.addClass("item");
-                                droppedElement.css({ width: "", height: "" });
-                                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                            }
-                            droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                            ui.helper.remove();
-                            AddToJsPlumb(droppedElement);
-                            if (droppedElement.position().top + droppedElement.height() + 10 > ruleContent.height()) {
-                                droppedElement.css("top", ruleContent.height() - droppedElement.height() - 20);
-                                instance = ruleContent.parents(".workflowRule").data("jsPlumbInstance");
-                                instance.repaintEverything();
-                            }
-                            ChangedSinceLastSave = true;
-                        }
-                    }
-                });
-                currentInstance = newRule.data("jsPlumbInstance");
-                for (j = 0; j < currentRuleData.Connections.length; j++) {
-                    currentConnectionData = currentRuleData.Connections[j];
-                    sourceId = "wfItem" + currentConnectionData.SourceId;
-                    targetId = "wfItem" + currentConnectionData.TargetId;
-                    if (currentConnectionData.SourceSlot == 1)
-                        sourceEndpointUuid = "BottomCenter";
-                    else
-                        sourceEndpointUuid = "RightMiddle";
-                    currentInstance.connect({ uuids: [sourceId + sourceEndpointUuid], target: targetId });
-                }
-            }
-            RoleWhitelist = data.RoleWhitelist;
-            $("#blockHeaderRolesCount").text(RoleWhitelist.length);
-            appId = $("#currentAppId").val();
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/database/apps/" + appId + "/commits/latest",
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (tableData) {
-                    console.log("Got tables data:");
-                    console.log(tableData);
-                    attributesInToolboxState = data.ToolboxState ? data.ToolboxState.Attributes : [];
-                    $(".tapestryToolbox .toolboxLi_Attributes").remove();
-                    for (tableIndex = 0; tableIndex < tableData.Tables.length; tableIndex++) {
-                        attributeLibId = ++lastLibId;
-                        attributeLibraryItem = $('<div libId="' + ++attributeLibId + '" libType="table-attribute" class="libraryItem tableAttribute" tableName="'
-                            + tableData.Tables[tableIndex].Name + '">Table: ' + tableData.Tables[tableIndex].Name + '</div>')
-                        $("#libraryCategory-Attributes").append(attributeLibraryItem);
-                        attributeMatch = attributesInToolboxState.filter(function (value) {
-                            return !value.ColumnName && value.TableName == tableData.Tables[tableIndex].Name;
-                        }).length;
-                        if (attributeMatch) {
-                            newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + tableData.Tables[tableIndex].Name + '">'
-                                + '<span class="itemLabel">Table: ' + tableData.Tables[tableIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
-                            ToolboxItemDraggable(newToolboxLiAttribute);
-                            attributeLibraryItem.addClass("highlighted");
-                        }
-                    }
-                    for (viewIndex = 0; viewIndex < tableData.Views.length; viewIndex++) {
-                        attributeLibId = ++lastLibId;
-                        attributeLibraryItem = $('<div libId="' + ++attributeLibId + '" libType="view-attribute" class="libraryItem viewAttribute" tableName="'
-                            + tableData.Views[viewIndex].Name + '">View: ' + tableData.Views[viewIndex].Name + '</div>')
-                        $("#libraryCategory-Attributes").append(attributeLibraryItem);
-                        attributeMatch = attributesInToolboxState.filter(function (value) {
-                            return !value.ColumnName && value.TableName == tableData.Views[viewIndex].Name;
-                        }).length;
-                        if (attributeMatch) {
-                            newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem viewAttribute" tableName="' + tableData.Views[viewIndex].Name + '">'
-                                + '<span class="itemLabel">View: ' + tableData.Views[viewIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
-                            ToolboxItemDraggable(newToolboxLiAttribute);
-                            attributeLibraryItem.addClass("highlighted");
-                        }
-                    }
-                    AssociatedTableIds = data.AssociatedTableIds;
-                    AssociatedTableName = data.AssociatedTableName;
-                    ModelTableName = data.ModelTableName;
-                    $("#blockHeaderDbResCount").text(data.AssociatedTableName.length);
-                    somethingWasAdded = false;
-                    for (tableIndex = 0; tableIndex < data.AssociatedTableName.length; tableIndex++) {
-                        currentTable = tableData.Tables.filter(function (value) {
-                            return value.Name == data.AssociatedTableName[tableIndex];
-                        })[0];
-                        if (currentTable != undefined) {
-                            for (columnIndex = 0; columnIndex < currentTable.Columns.length; columnIndex++) {
-                                attributeLibId = ++lastLibId;
-                                attributeLibraryItem = $('<div libId="' + attributeLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                    + currentTable.Name + '" columnName="' + currentTable.Columns[columnIndex].Name + '">' + currentTable.Name + '.' + currentTable.Columns[columnIndex].Name + '</div>');
-                                $("#libraryCategory-Attributes").append(attributeLibraryItem);
-                                attributeMatch = attributesInToolboxState.filter(function (value) {
-                                    return value.ColumnName == currentTable.Columns[columnIndex].Name && value.TableName == currentTable.Name;
-                                }).length;
-                                if (attributeMatch) {
-                                    newToolboxLiAttribute = $('<li libId="' + attributeLibId + '" class="toolboxLi toolboxLi_Attributes"><div class="toolboxItem attributeItem tableAttribute" tableName="' + currentTable.Name + '" columnName="' + currentTable.Columns[columnIndex].Name + '"><span class="itemLabel">'
-                                        + currentTable.Name + '.' + currentTable.Columns[columnIndex].Name + '</span></div></li>');
-                                    $(".tapestryToolbox .toolboxCategoryHeader_UI").before(newToolboxLiAttribute);
-                                    ToolboxItemDraggable(newToolboxLiAttribute);
-                                    attributeLibraryItem.addClass("highlighted");
-                                }
-                            }
-                        }
-                        systemTable = SystemTables.filter(function (value) {
-                            return value.Name == data.AssociatedTableName[tableIndex];
-                        })[0];
-                        if (systemTable)
-                            for (i = 0; i < systemTable.Columns.length; i++) {
-                                $("#libraryCategory-Attributes").append($('<div libId="' + ++lastLibId + '" libType="column-attribute" class="libraryItem columnAttribute" tableName="'
-                                    + systemTable.Name + '" columnName="' + systemTable.Columns[i] + '">' + systemTable.Name + '.' + systemTable.Columns[i] + '</div>'));
-                            }
-                    };
-                }
-            });
-            
-            pageSpinner.show();
-            $('.libraryItem').remove();
-            $.ajax({
-                type: "GET",
-                url: "/api/tapestry/actions",
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (actionData) {
-                    actionsInToolboxState = data.ToolboxState ? data.ToolboxState.Actions : [];
-                    $(".tapestryToolbox .toolboxLi_Actions").remove();
-                    for (actionIndex = 0; actionIndex < actionData.Items.length; actionIndex++)
-                    {
-                        actionLibId = ++lastLibId;
-                        actionLibraryItem = $('<div libId="' + actionLibId + '" libType="action" class="libraryItem" actionId="' + actionData.Items[actionIndex].Id + '">' + actionData.Items[actionIndex].Name + '</div>');
-                        $('#libraryCategory-Actions').append(actionLibraryItem);
-                        actionMatch = actionsInToolboxState.filter(function (value) {
-                            return value.ActionId == actionData.Items[actionIndex].Id;
-                        }).length;
-                        if (actionMatch) {
-                            newToolboxLiAction = $('<li libId="' + actionLibId + '" class="toolboxLi toolboxLi_Actions"><div class="toolboxItem actionItem" actionId="' + actionData.Items[actionIndex].Id + '"><span class="itemLabel">'
-                            + actionData.Items[actionIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_Attributes").before(newToolboxLiAction);
-                            ToolboxItemDraggable(newToolboxLiAction);
-                            actionLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/Persona/app-roles/" + appId,
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (roleData) {
-                    rolesInToolboxState = data.ToolboxState ? data.ToolboxState.Roles : [];
-                    $(".tapestryToolbox .toolboxLi_Roles").remove();
-                    for (roleIndex = 0; roleIndex < roleData.Roles.length; roleIndex++) {
-                        roleLibId = ++lastLibId;
-                        roleLibraryItem = $('<div libId="' + roleLibId + '" libType="role" class="libraryItem">' + roleData.Roles[roleIndex].Name + '</div>');
-                        $('#libraryCategory-Roles').append(roleLibraryItem);
-                        roleMatch = rolesInToolboxState.filter(function (value) {
-                            return value.Label == roleData.Roles[roleIndex].Name;
-                        }).length;
-                        if (roleMatch) {
-                            newToolboxLiRole = $('<li libId="' + roleLibId + '" class="toolboxLi toolboxLi_Roles"><div class="toolboxItem roleItem"><span class="itemLabel">'
-                            + roleData.Roles[roleIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_States").before(newToolboxLiRole);
-                            ToolboxItemDraggable(newToolboxLiRole);
-                            roleLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/Persona/app-states/" + appId,
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (stateData) {
-                    statesInToolboxState = data.ToolboxState ? data.ToolboxState.States : [];
-                    $(".tapestryToolbox .toolboxLi_States").remove();
-                    for (stateIndex = 0; stateIndex < stateData.States.length; stateIndex++) {
-                        stateLibId = ++lastLibId;
-                        stateLibraryItem = $('<div libId="' + stateLibId + '" libType="state" class="libraryItem" stateId="' + stateData.States[stateIndex].Id + '">' + stateData.States[stateIndex].Name + '</div>');
-                        $('#libraryCategory-States').append(stateLibraryItem);
-                        stateMatch = statesInToolboxState.filter(function (value) {
-                            return value.StateId == stateData.States[stateIndex].Id;
-                        }).length;
-                        if (stateMatch) {
-                            newToolboxLiState = $('<li libId="' + stateLibId + '" class="toolboxLi toolboxLi_States"><div class="toolboxItem stateItem" stateId="' + stateData.States[stateIndex].Id + '"><span class="itemLabel">'
-                            + stateData.States[stateIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_Targets").before(newToolboxLiState);
-                            ToolboxItemDraggable(newToolboxLiState);
-                            stateLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/tapestry/apps/" + appId + "/blocks",
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (targetData) {
-                    targetsInToolboxState = data.ToolboxState ? data.ToolboxState.Targets : [];
-                    $(".tapestryToolbox .toolboxLi_Targets").remove();
-                    for (targetIndex = 0; targetIndex < targetData.ListItems.length; targetIndex++) {
-                        targetLibId = ++lastLibId;
-                        targetLibraryItem = $('<div libId="' + targetLibId + '" libType="target" class="libraryItem" targetId="' + targetData.ListItems[targetIndex].Id + '">' + targetData.ListItems[targetIndex].Name + '</div>');
-                        $('#libraryCategory-Targets').append(targetLibraryItem);
-                        targetMatch = targetsInToolboxState.filter(function (value) {
-                            return value.TargetId == targetData.ListItems[targetIndex].Id;
-                        }).length;
-                        if (targetMatch) {
-                            newToolboxLiTarget = $('<li libId="' + targetLibId + '" class="toolboxLi toolboxLi_Targets"><div class="toolboxItem targetItem" targetId="' + targetData.ListItems[targetIndex].Id + '"><span class="itemLabel">'
-                            + targetData.ListItems[targetIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_Templates").before(newToolboxLiTarget);
-                            ToolboxItemDraggable(newToolboxLiTarget);
-                            targetLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/hermes/" + appId + "/templates",
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (templateData) {
-                    templatesInToolboxState = data.ToolboxState ? data.ToolboxState.Templates : [];
-                    $(".tapestryToolbox .toolboxLi_Templates").remove();
-                    for (templateIndex = 0; templateIndex < templateData.length; templateIndex++) {
-                        templateLibId = ++lastLibId;
-                        templateLibraryItem = $('<div libId="' + templateLibId + '" libType="template" class="libraryItem">' + templateData[templateIndex].Name + '</div>');
-                        $('#libraryCategory-Templates').append(templateLibraryItem);
-                        templateMatch = templatesInToolboxState.filter(function (value) {
-                            return value.Label == templateData[templateIndex].Name;
-                        }).length;
-                        if (templateMatch) {
-                            newToolboxLiIntegration = $('<li libId="' + templateLibId + '" class="toolboxLi toolboxLi_Templates"><div class="toolboxItem templateItem"><span class="itemLabel">'
-                                + templateData[templateIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox .toolboxCategoryHeader_Integrations").before(newToolboxLiIntegration);
-                            ToolboxItemDraggable(newToolboxLiIntegration);
-                            templateLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-            pageSpinner.show();
-            $.ajax({
-                type: "GET",
-                url: "/api/nexus/" + appId + "/gateways",
-                dataType: "json",
-                complete: function () {
-                    pageSpinner.hide()
-                },
-                success: function (integrationData) {
-                    integrationsInToolboxState = data.ToolboxState ? data.ToolboxState.Integrations : [];
-                    $(".tapestryToolbox .toolboxLi_Integrations").remove();
-                    for (integrationIndex = 0; integrationIndex < integrationData.Ldap.length; integrationIndex++) {
-                        integrationLibId = ++lastLibId;
-                        integrationLibraryItem = $('<div libId="' + integrationLibId + '" libType="ldap" class="libraryItem">LDAP: ' + integrationData.Ldap[integrationIndex].Name + '</div>');
-                        $('#libraryCategory-Integration').append(integrationLibraryItem);
-                        integrationMatch = integrationsInToolboxState.filter(function (value) {
-                            return value.Label == "LDAP: " + integrationData.Ldap[integrationIndex].Name;
-                        }).length;
-                        if (integrationMatch) {
-                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
-                                + 'LDAP: ' + integrationData.Ldap[integrationIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox").append(newToolboxLiIntegration);
-                            ToolboxItemDraggable(newToolboxLiIntegration);
-                            integrationLibraryItem.addClass("highlighted");
-                        }
-                    }
-                    for (integrationIndex = 0; integrationIndex < integrationData.WS.length; integrationIndex++) {
-                        integrationLibId = ++lastLibId;
-                        integrationLibraryItem = $('<div libId="' + integrationLibId + '" libType="ws" libSubType="' + integrationData.WS[integrationIndex].Type + '" class="libraryItem">WS: ' + integrationData.WS[integrationIndex].Name + '</div>');
-                        $('#libraryCategory-Integration').append(integrationLibraryItem);
-                        integrationMatch = integrationsInToolboxState.filter(function (value) {
-                            return value.Label == "WS: " + integrationData.WS[integrationIndex].Name;
-                        }).length;
-                        if (integrationMatch) {
-                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
-                                + 'WS: ' + integrationData.WS[integrationIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox").append(newToolboxLiIntegration);
-                            ToolboxItemDraggable(newToolboxLiIntegration);
-                            integrationLibraryItem.addClass("highlighted");
-                        }
-                    }
-                    for (integrationIndex = 0; integrationIndex < integrationData.SMTP.length; integrationIndex++) {
-                        integrationLibId = ++lastLibId;
-                        integrationLibraryItem = $('<div libId="' + integrationLibId + '" libType="smtp" class="libraryItem">SMTP: ' + integrationData.SMTP[integrationIndex].Name + '</div>');
-                        $('#libraryCategory-Integration').append(integrationLibraryItem);
-                        integrationMatch = integrationsInToolboxState.filter(function (value) {
-                            return value.Label == "SMTP: " + integrationData.SMTP[integrationIndex].Name;
-                        }).length;
-                        if (integrationMatch) {
-                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
-                                + 'SMTP: ' + integrationData.SMTP[integrationIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox").append(newToolboxLiIntegration);
-                            ToolboxItemDraggable(newToolboxLiIntegration);
-                            integrationLibraryItem.addClass("highlighted");
-                        }
-                    }
-                    for (integrationIndex = 0; integrationIndex < integrationData.WebDAV.length; integrationIndex++) {
-                        integrationLibId = ++lastLibId;
-                        integrationLibraryItem = $('<div libId="' + integrationLibId + '" libType="smtp" class="libraryItem">WebDAV: ' + integrationData.WebDAV[integrationIndex].Name + '</div>');
-                        $('#libraryCategory-Integration').append(integrationLibraryItem);
-                        integrationMatch = integrationsInToolboxState.filter(function (value) {
-                            return value.Label == "WebDAV: " + integrationData.WebDAV[integrationIndex].Name;
-                        }).length;
-                        if (integrationMatch) {
-                            newToolboxLiIntegration = $('<li libId="' + integrationLibId + '" class="toolboxLi toolboxLi_Integrations"><div class="toolboxItem integrationItem"><span class="itemLabel">'
-                                + 'WebDAV: ' + integrationData.WebDAV[integrationIndex].Name + '</span></div></li>');
-                            $(".tapestryToolbox").append(newToolboxLiIntegration);
-                            ToolboxItemDraggable(newToolboxLiIntegration);
-                            integrationLibraryItem.addClass("highlighted");
-                        }
-                    }
-                }
-            });
-
-            AssociatedPageIds = data.AssociatedPageIds;
-            $("#blockHeaderScreenCount").text(data.AssociatedPageIds.length);
-            uicInToolboxState = data.ToolboxState ? data.ToolboxState.UiComponents : [];
-            $(".tapestryToolbox .toolboxLi_UI").remove();
-
-            for (pageIndex = 0; pageIndex < data.AssociatedPageIds.length; pageIndex++) {
-                pageId = data.AssociatedPageIds[pageIndex];
-                pageSpinner.show();
-                $.ajax({
-                    type: "GET",
-                    url: "/api/mozaic-editor/apps/" + appId + "/pages/" + pageId,
-                    dataType: "json",
-                    complete: function () {
-                        pageSpinner.hide()
-                    },
-                    success: function (uiPageData) {
-                        for (componentIndex = 0; componentIndex < uiPageData.Components.length; componentIndex++) {
-                            if (componentIndex == 0) {
-                                uicLibId = ++lastLibId;
-                                uicLibraryItem = $('<div libId="' + uicLibId + '" pageId="' + uiPageData.Id + '" libType="ui" class="libraryItem">Screen: '
-                                    + uiPageData.Name + '</div>');
-                                $('#libraryCategory-UI').append(uicLibraryItem);
-                                uicMatch = uicInToolboxState.filter(function (value) {
-                                    return value.PageId == uiPageData.Id && (!value.ComponentName || value.ComponentName == "undefined");
-                                }).length;
-                                if (uicMatch) {
-                                    newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem pageUi" pageId="' + uiPageData.Id + '">'
-                                        + '<span class="itemLabel">Screen: ' + uiPageData.Name + '</span></div></li>');
-                                    $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
-                                    ToolboxItemDraggable(newToolboxLiUic);
-                                    uicLibraryItem.addClass("highlighted");
-                                }
-                            }
-
-                            uicLibId = ++lastLibId;
-                            uicLibraryItem = $('<div libId="' + uicLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '" libType="ui" class="libraryItem">'
-                            + uiPageData.Components[componentIndex].Name + '</div>');
-                            $('#libraryCategory-UI').append(uicLibraryItem);
-                            uicMatch = uicInToolboxState.filter(function (value) {
-                                return value.PageId == uiPageData.Id && value.ComponentName == uiPageData.Components[componentIndex].Name;
-                            }).length;
-                            if (uicMatch) {
-                                newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '"><span class="itemLabel">'
-                                    + uiPageData.Components[componentIndex].Name + '</span></div></li>');
-                                $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
-                                ToolboxItemDraggable(newToolboxLiUic);
-                                uicLibraryItem.addClass("highlighted");
-                            }
-                            if (uiPageData.Components[componentIndex].Type == "data-table-with-actions") {
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '_EditAction" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].Name + '_EditAction</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '_DetailsAction" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].Name + '_DetailsAction</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '_DeleteAction" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].Name + '_DeleteAction</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '_A_Action" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].Name + '_A_Action</div>');
-                                $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].Name + '_B_Action" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].Name + '_B_Action</div>');
-                            }
-                            if (uiPageData.Components[componentIndex].ChildComponents) {
-                                for (childComponentIndex = 0; childComponentIndex < uiPageData.Components[componentIndex].ChildComponents.length; childComponentIndex++) {
-                                    uicLibId = ++lastLibId;
-                                    uicLibraryItem = $('<div libId="' + uicLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '" libType="ui" class="libraryItem">'
-                                    + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '</div>');
-                                    $('#libraryCategory-UI').append(uicLibraryItem);
-                                    uicMatch = uicInToolboxState.filter(function (value) {
-                                        return value.PageId == uiPageData.Id && value.ComponentName == uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name;
-                                    }).length;
-                                    if (uicMatch) {
-                                        newToolboxLiUic = $('<li libId="' + uicLibId + '" class="toolboxLi toolboxLi_UI"><div class="toolboxItem uiItem" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '"><span class="itemLabel">'
-                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '</span></div></li>');
-                                        $(".tapestryToolbox .toolboxCategoryHeader_Roles").before(newToolboxLiUic);
-                                        ToolboxItemDraggable(newToolboxLiUic);
-                                        uicLibraryItem.addClass("highlighted");
-                                    }
-                                    if (uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Type == "data-table-with-actions") {
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_EditAction" libType="ui" class="libraryItem">'
-                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_EditAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DetailsAction" libType="ui" class="libraryItem">'
-                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DetailsAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DeleteAction" libType="ui" class="libraryItem">'
-                                            + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_DeleteAction</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_A_Action" libType="ui" class="libraryItem">'
-                                            + uiPageData.Components[componentIndex].Name + '_A_Action</div>');
-                                        $("#libraryCategory-UI").append('<div libId="' + ++lastLibId + '" pageId="' + uiPageData.Id + '" componentName="' + uiPageData.Components[componentIndex].ChildComponents[childComponentIndex].Name + '_B_Action" libType="ui" class="libraryItem">'
-                                            + uiPageData.Components[componentIndex].Name + '_B_Action</div>');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    });
-};
-
-$(function () {
-    if (CurrentModuleIs("tapestryModule")) {
-
-        // Resource rules
-        $("#resourceRulesPanel .resourceRule").draggable({
-            containment: "parent",
-            revert: function (event, ui) {
-                return ($(this).collision("#resourceRulesPanel .resourceRule").length > 1);
-            },
-            stop: function (event, ui) {
-                ChangedSinceLastSave = true;
-            }
-        });
-        $("#resourceRulesPanel .resourceRule").droppable({
-            containment: ".resourceRule",
-            tolerance: "touch",
-            accept: ".toolboxItem",
-            greedy: true,
-            drop: function (e, ui) {
-                droppedElement = ui.helper.clone();
-                droppedElement.removeClass("toolboxItem");
-                droppedElement.addClass("item");
-                $(this).append(droppedElement);
-                ruleContent = $(this);
-                leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 20;
-                topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                ui.helper.remove();
-                AddToJsPlumb(droppedElement);
-                ChangedSinceLastSave = true;
-            }
-        });
-        $("#resourceRulesPanel .resourceRule").resizable({
-            start: function (event, ui) {
-                rule = $(this);
-                contentsWidth = 120;
-                contentsHeight = 40;
-                rule.find(".item").each(function (index, element) {
-                    rightEdge = $(element).position().left + $(element).width();
-                    if (rightEdge > contentsWidth)
-                        contentsWidth = rightEdge;
-                    bottomEdge = $(element).position().top + $(element).height();
-                    if (bottomEdge > contentsHeight)
-                        contentsHeight = bottomEdge;
-                });
-                rule.css("min-width", contentsWidth + 40);
-                rule.css("min-height", contentsHeight + 20);
-
-                limits = CheckRuleResizeLimits(rule, true);
-                rule.css("max-width", limits.horizontal - 10);
-                rule.css("max-height", limits.vertical - 10);
-            },
-            resize: function (event, ui) {
-                rule = $(this);
-                limits = CheckRuleResizeLimits(rule, true);
-                rule.css("max-width", limits.horizontal - 10);
-                rule.css("max-height", limits.vertical - 10);
-            },
-            stop: function (event, ui) {
-                instance = $(this).data("jsPlumbInstance");
-                instance.recalculateOffsets();
-                instance.repaintEverything();
-                ChangedSinceLastSave = true;
-            }
-        });
-
-        // Workflow rules
-        $("#workflowRulesPanel .workflowRule").draggable({
-            containment: "parent",
-            handle: ".workflowRuleHeader",
-            revert: function (event, ui) {
-                return ($(this).collision("#workflowRulesPanel .workflowRule").length > 1);
-            },
-            stop: function (event, ui) {
-                ChangedSinceLastSave = true;
-            }
-        });
-        $(".swimlaneRolesArea").droppable({
-            tolerance: "touch",
-            accept: ".toolboxItem.roleItem",
-            greedy: true,
-            drop: function (e, ui) {
-                droppedElement = ui.helper.clone();
-                $(this).find(".rolePlaceholder, .roleItem").remove();
-                $(this).append($('<div class="roleItem">' + droppedElement.text() + '</div>'));
-                ui.helper.remove();
-                ChangedSinceLastSave = true;
-            }
-        });
-        $(".swimlaneContentArea").droppable({
-            containment: ".swimlaneContentArea",
-            tolerance: "touch",
-            accept: ".toolboxSymbol, .toolboxItem",
-            greedy: false,
-            drop: function (e, ui) {
-                droppedElement = ui.helper.clone();
-                if (droppedElement.hasClass("roleItem")) {
-                    ui.draggable.draggable("option", "revert", true);
-                    return false;
-                }
-                $(this).append(droppedElement);
-                ruleContent = $(this);
-                if (droppedElement.hasClass("toolboxSymbol")) {
-                    droppedElement.removeClass("toolboxSymbol ui-draggable ui-draggable-dragging");
-                    droppedElement.addClass("symbol");
-                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left;
-                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top;
-                }
-                else {
-                    droppedElement.removeClass("toolboxItem");
-                    droppedElement.addClass("item");
-                    leftOffset = $("#tapestryWorkspace").offset().left - ruleContent.offset().left + 38;
-                    topOffset = $("#tapestryWorkspace").offset().top - ruleContent.offset().top - 18;
-                }
-                droppedElement.offset({ left: droppedElement.offset().left + leftOffset, top: droppedElement.offset().top + topOffset });
-                ui.helper.remove();
-                AddToJsPlumb(droppedElement);
-                ChangedSinceLastSave = true;
-            }
-        });
-        $("#workflowRulesPanel .workflowRule").resizable({
-            start: function (event, ui) {
-                rule = $(this);
-                contentsWidth = 120;
-                contentsHeight = 40;
-                rule.find(".item").each(function (index, element) {
-                    rightEdge = $(element).position().left + $(element).width();
-                    if (rightEdge > contentsWidth)
-                        contentsWidth = rightEdge;
-                    bottomEdge = $(element).position().top + $(element).height();
-                    if (bottomEdge > contentsHeight)
-                        contentsHeight = bottomEdge;
-                });
-                rule.css("min-width", contentsWidth + 40);
-                rule.css("min-height", contentsHeight + 20);
-
-                limits = CheckRuleResizeLimits(rule, false);
-                rule.css("max-width", limits.horizontal - 10);
-                rule.css("max-height", limits.vertical - 10);
-            },
-            resize: function (event, ui) {
-                rule = $(this);
-                instance = rule.data("jsPlumbInstance");
-                instance.recalculateOffsets();
-                instance.repaintEverything();
-                limits = CheckRuleResizeLimits(rule, false);
-                rule.css("max-width", limits.horizontal - 10);
-                rule.css("max-height", limits.vertical - 10);
-            },
-            stop: function (event, ui) {
-                ChangedSinceLastSave = true;
-            }
-        });
-    }
-});
 
 var ZoomFactor = 1.0;
 var ChangedSinceLastSave = false, dragModeActive = false;
@@ -1599,9 +973,7 @@ $(function () {
             $("#workflowRulesPanel .workflowRule").remove();
             ChangedSinceLastSave = true;
         });
-        $("#btnSave").on("click", function () {
-            saveDialog.dialog("open");
-        });
+
         $("#btnLoad").on("click", function () {
             if (ChangedSinceLastSave)
                 confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
@@ -1611,6 +983,7 @@ $(function () {
                 TB.load.loadBlock();
             }
         });
+        $("#btnLock").on("click",TB.lock._btnLockClick);
         $("#btnHistory").on("click", function () {
             historyDialog.dialog("open");
         });
@@ -2291,34 +1664,7 @@ $(function () {
             else
                 alert("Please select a commit");
         }
-        saveDialog = $("#save-dialog").dialog({
-            autoOpen: false,
-            width: 400,
-            height: 190,
-            buttons: {
-                "Save": function () {
-                    saveDialog_SubmitData();
-                },
-                Cancel: function () {
-                    saveDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        saveDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
-            open: function () {
-                saveDialog.find("#message").val("");
-            }
-        });
-        function saveDialog_SubmitData() {
-            saveDialog.dialog("close");
-            SaveBlock(saveDialog.find("#message").val());
-        }
+        
         chooseScreensDialog = $("#choose-screens-dialog").dialog({
             autoOpen: false,
             width: 450,
@@ -3041,6 +2387,29 @@ $(function () {
         envelopeStartPropertiesDialog.dialog("close");
         CurrentItem.removeClass("activeItem");
     }
+
+    circleEventPropertiesDialog = $("#circleEvent-properties-dialog").dialog({
+        autoOpen: false,
+        width: 450,
+        height: 180,
+        buttons: {
+            "Save": function () {
+                circleEventPropertiesDialog_SubmitData();
+            },
+            Cancel: function () {
+                circleEventPropertiesDialog.dialog("close");
+                CurrentItem.removeClass("activeItem");
+            }
+        },
+        open: function (event, ui) {
+            circleEventPropertiesDialog.find("#circleEventButtonName").val(CurrentItem.data("label"));
+        }
+    });
+    function circleEventPropertiesDialog_SubmitData() {
+        CurrentItem.data("label", circleEventPropertiesDialog.find("#circleEventButtonName").val());
+        circleEventPropertiesDialog.dialog("close");
+        CurrentItem.removeClass("activeItem");
+    }
 });
 
 $(function () {
@@ -3082,6 +2451,624 @@ function FillConditionsForLogicTableRow(row) {
     }
 }
 
+var TO = {
+    
+    zoomFactor: 1,
+    currentBlock: null,
+    currentMetablock: null,
+    changeSinceLastSave: false,
+
+    onInit: [],
+
+    init: function ()
+    {
+        var self = TO;
+
+        $(document)
+            .on('click', '#headerMetablockName', function () { TO.dialog.open('metablockRename'); })
+            .on('click', '#btnAddMetablock', function () { TO.dialog.open('metablockAdd'); })
+            .on('click', '#btnAddBlock', function () { TO.dialog.open('blockAdd'); })
+            .on('click', '#btnTrash', function () { TO.dialog.open('trash'); })
+            .on('click', '#btnSave', self.save._save)
+            .on('click', '#btnLoad', self.load._load)
+            .on('click', '#btnMenuOrder', self.sortForMenu)
+            .on('click', '#btnClear', self.clear)
+            .on('click', '#btnGoUp', self.goUp)
+            .on('click', '#btnZoomIn', self.zoomIn)
+            .on('click', '#btnZoomOut', self.zoomOut)
+        ;
+
+        window.onbeforeunload = self._beforeUnload; 
+
+        self.callHooks(self.onInit, null, []);
+    },
+
+    clear: function() {
+        $('#overviewPanel .block, #overviewPanel .metablock').each(function () {
+            instance.removeAllEndpoints(this, true);
+            $(this).remove();
+        });
+    },
+
+    goUp: function() {
+        SaveMetablock(function () {
+            var openMetablockForm = $('#openMetablockForm');
+            openMetablockForm.find('input[name=metablockId]').val($('#parentMetablockId').val());
+            openMetablockForm.submit();
+        });
+    },
+
+    zoomIn: function() {
+        TO.zoomFactor += 0.1;
+        $('#overviewPanel .scrollArea').css('transform', 'scale(' + TO.zoomFactor + ')');
+        $('#zoomLabel').text('Zoom ' + Math.floor(TO.zoomFactor * 100) + '%');
+    },
+
+    zoomOut: function() {
+        if (TO.zoomFactor >= 0.2)
+            TO.zoomFactor -= 0.1;
+        $('#overviewPanel .scrollArea').css('transform', 'scale(' + TO.zoomFactor + ')');
+        $('#zoomLabel').text('Zoom ' + Math.floor(TO.zoomFactor * 100) + '%');
+    },
+
+    sortForMenu: function() {
+        location.href = "/Tapestry/Overview/MenuOrder/" + $('#currentMetablockId').val();
+    },
+
+    callHooks: function (hooks, context, params) {
+        for (var i = 0; i < hooks.length; i++) {
+            hooks[i].apply(context, params);
+        }
+    },
+
+    _beforeUnload: function() {
+        if (TO.changedSinceLastSave)
+            SaveMetablock(null, true);
+        return null;
+    }
+};
+
+if (CurrentModuleIs("overviewModule")) {
+    $(TO.init);
+}
+TO.metablock = {
+
+    contextItems: {
+        'properties': { name: 'Properties...', icon: 'fa-cog' },
+        'initial': { name: 'Set as initial', icon: 'fa-flag-checkered' },
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+    init: function () {
+        var self = TO.metablock;
+
+        $(document).on('dblclick', '.metablock', self._doubleClick);
+    },
+
+    rename: function () {
+        $('#headerMetablockName').text($(this).find('#metablock-name').val());
+        TO.changeSinceLastSave = true;
+        TO.dialog.close.apply(this);
+    },
+
+    add: function() {
+        var metablockName = $(this).find('#metablock-name').val();
+        var newMetablock = $('<div class="metablock"><div class="metablockName">'
+            + metablockName + '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo"></div></div>');
+
+        newMetablock.appendTo('#overviewPanel .scrollArea');
+        newMetablock.css({
+            'top': $('#overviewPanel').scrollTop() + 20,
+            'left': $('#overviewPanel').scrollLeft() + 20
+        });
+        
+        instance.draggable(newMetablock, { containment: 'parent' });
+        
+        TO.changeSinceLastSave = true;
+        TO.dialog.close.apply(this);
+    },
+
+    /***********************************************/
+    /* EVENTS                                      */
+    /***********************************************/
+    _doubleClick: function() {
+        var metablockToOpen = $(this);
+        SaveMetablock(function () {
+            var openMetablockForm = $('#openMetablockForm');
+            openMetablockForm.find('input[name=metablockId]').val(metablockToOpen.attr('metablockId'));
+            openMetablockForm.submit();
+        });
+    },
+
+    _renameOpen: function () {
+        $(this).find('#metablock-name').val($('#headerMetablockName').text());
+    },
+
+    _addOpen: function () {
+        $(this).find('#metablock-name').val('');
+    },
+
+    _onContextAction: function (key, options) {
+        switch (key) {
+            case "delete": {
+                instance.removeAllEndpoints(options.$trigger, true);
+                options.$trigger.remove();
+                TO.changedSinceLastSave = true;
+                SaveMetablock();
+                break;
+            }
+            case "initial": {
+                $("#overviewPanel .metablock").each(function (index, element) {
+                    $(element).attr("isInitial", false);
+                    $(element).find(".metablockInfo").text("");
+                });
+                options.$trigger.attr("isInitial", true);
+                options.$trigger.find(".metablockInfo").text("Initial");
+                
+                TO.changedSinceLastSave = true;
+                break;
+            }
+            case "properties": {
+                currentMetablock = options.$trigger;
+                metablockPropertiesDialog.dialog("open");
+                break;
+            }
+        }
+    }
+};
+
+TO.onInit.push(TO.metablock.init);
+TO.block = {
+    
+    contextItems: {
+        'copy': { name: 'Copy...', icon: 'fa-clone' },
+        'properties': { name: 'Properties...', icon: 'fa-cog' },
+        'initial': { name: 'Set as initial', icon: 'fa-flag-checkered' },
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+    init: function () {
+        var self = TO.block;
+
+        $(document).on('dblclick', '.block', self._doubleClick);
+    },
+
+    add: function() {
+        var blockName = $(this).find('#block-name').val();
+        var newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="blockInfo"></div></div>');
+
+        newBlock.appendTo('#overviewPanel .scrollArea');
+        newBlock.css({
+            'top': $('#overviewPanel').scrollTop() + 20,
+            'left': $('#overviewPanel').scrollLeft() + 20
+        });
+
+        instance.draggable(newBlock, { containment: 'parent' });
+        
+        TO.changedSinceLastSave = true;
+        TO.dialog.close.apply(this);
+    },
+
+    copy: function() {
+
+        if (!$('#c-target-name').val().length) {
+            alert('Vyberte cílový metablok.');
+            return false;
+        }
+
+        var url = '/api/tapestry/{appId}/blocks/{blockId}/copy/{targetMetablockId}';
+        url = url.replace(/\{appId\}/, $('#currentAppId').val())
+                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+
+        var d = this;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {},
+            success: function (data) {
+                if (data == true) {
+                    alert('Blok byl úspěšně zkopírován');
+
+                    if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
+                        window.location.reload();
+                    } 
+                }
+                else {
+                    alert('Blok se nepodařilo zkopírovat');
+                }
+                TO.dialog.close.apply(d);
+            }
+        });
+    },
+
+    move: function () {
+
+        if (!$('#c-target-name').val().length) {
+            alert('Vyberte cílový metablok.');
+            return false;
+        }
+
+        if ($('#currentMetablockId').val() == $('#c-target-name').val()) {
+            alert('Block nelze přesunout. Již se ve vybraném metabloku nachází.');
+            return false;
+        }
+
+        var url = '/api/tapestry/{appId}/blocks/{blockId}/move/{targetMetablockId}';
+        url = url.replace(/\{appId\}/, $('#currentAppId').val())
+                 .replace(/\{blockId\}/, $(currentBlock).attr('blockid'))
+                 .replace(/\{targetMetablockId\}/, $('#c-target-name').val());
+
+        var d = this;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {},
+            success: function (data) {
+                if (data == true) {
+                    alert('Blok byl úspěšně přesunut');
+                    window.location.reload();
+                }
+                else {
+                    alert('Blok se nepodařilo přesunout');
+                    TO.dialog.close.apply(d);
+                }
+            }
+        });
+    },
+
+    /*************************************************/
+    /* EVENTS                                        */
+    /*************************************************/
+    _doubleClick: function() {
+        var blockToOpen = $(this);
+
+        SaveMetablock(function () {
+            var openBlockForm = $('#openBlockForm');
+            openBlockForm.find('input[name=blockId]').val(blockToOpen.attr('blockId'));
+            openBlockForm.submit();
+        });
+    },
+
+    _addOpen: function() {
+        $(this).find('#block-name').val('');
+    },
+
+    _copyOpen: function() {
+        $('#c-block-name').html($(currentBlock).find('.blockName').text());
+        $('#c-target-name').val('');
+    },
+
+    _onContextAction: function (key, options) {
+        switch (key) {
+            case 'delete': {
+                instance.removeAllEndpoints(options.$trigger, true);
+                options.$trigger.remove();
+                TO.changedSinceLastSave = true;
+                SaveMetablock();
+                break;
+            }
+            case 'initial': {
+                $('#overviewPanel .block').each(function (index, element) {
+                    $(element).attr('isInitial', false);
+                    $(element).find('.blockInfo').text('');
+                });
+                options.$trigger.attr('isInitial', true);
+                options.$trigger.find('.blockInfo').text('Initial');
+                
+                TO.changedSinceLastSave = true;
+                break;
+            }
+            case 'properties': {
+                currentBlock = options.$trigger;
+                blockPropertiesDialog.dialog('open');
+                break;
+            }
+            case 'copy': {
+                currentBlock = options.$trigger;
+                TO.dialog.open('blockCopy');
+                break;
+            }
+        }
+    }
+};
+
+TO.onInit.push(TO.block.init);
+TO.trash = {
+
+    init: function () {
+
+    },
+
+    _trashOpen: function () {
+        var d = $(this);
+
+        d.find("#metablock-table:first tbody:nth-child(2) tr").remove();
+        d.find("#block-table:first tbody:nth-child(2) tr").remove();
+        d.find(" .spinner-2").show();
+        d.data("selectedMetablock", null);
+        d.data("selectedBlock", null);
+         
+        var appId = $("#currentAppId").val();
+        var blockId = $("#currentBlockId").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/api/database/apps/" + appId + "/trashDialog",
+            dataType: "json",
+            success: function (data) {
+                var tBlockBody = d.find("#block-table tbody:nth-child(2)");
+                var tMetablockBody = d.find("#metablock-table tbody:nth-child(2)");
+
+                var blockIdArray = [];
+                var metablockIdArray = [];
+
+                // Fill blocks in the block-table rows
+                for (i = 0; i < data[0].length; i++) {
+                    blockIdArray.push(data[0][i].Id);
+                    var newRow = $('<tr class="blockRow"><td>' + data[0][i].Name + '</td></tr>');
+                    tBlockBody.append(newRow);
+                }
+
+                // Highlight the selected block row
+                $(document).on('click', '#block-table tr.blockRow', function (event) {
+                    d.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                    d.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                    $(this).addClass("highlightedBlockRow");
+                    var rowIndex = $(this).index();
+                    d.data("selectedBlockOrMetablock", data[0][rowIndex]);
+                    d.data("selectedTypeOfBlock", "block");
+                });
+
+                // Fill metablocks in the metablock-table rows
+                for (i = 0; i < data[1].length; i++) {
+                    metablockIdArray.push(data[1][i].Id);
+                    var newRow = $('<tr class="blockRow"><td>' + data[1][i].Name + '</td></tr>');
+                    tMetablockBody.append(newRow);
+                }
+
+                // Highlight the selected metablock row
+                $(document).on('click', '#metablock-table tr.blockRow', function (event) {
+                    d.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                    d.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
+                    $(this).addClass("highlightedBlockRow");
+                    var rowIndex = $(this).index();
+                    d.data("selectedBlockOrMetablock", data[1][rowIndex]);
+                    d.data("selectedTypeOfBlock", "metablock");
+                });
+
+                d.find(".spinner-2").hide();
+            }
+        });
+    },
+
+    _trashLoad: function () {
+        var d = $(this);
+        var confirmed = true;
+
+        if (d.data("selectedBlockOrMetablock")) {
+            d.dialog("close");
+
+            if (TO.changedSinceLastSave)
+                confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
+                
+            if (confirmed) {
+                // Draw block or metablock as user chose
+                if (d.data("selectedTypeOfBlock") == "block") {
+                    var currentBlockData = d.data("selectedBlockOrMetablock");
+                    var newBlock = $('<div class="block" id="block' + currentBlockData.Id + '" isInitial="' + currentBlockData.IsInitial + '" style="left: '
+                        + currentBlockData.PositionX + 'px; top: ' + currentBlockData.PositionY + 'px;" blockId="'
+                        + currentBlockData.Id + '" tableId="' + currentBlockData.AssociatedTableId + '"><div class="blockName">'
+                        + currentBlockData.Name + '</div><div class="blockInfo">'
+                        + (currentBlockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                    newBlock.data("IsInMenu", currentBlockData.IsInMenu);
+                    $("#overviewPanel .scrollArea").append(newBlock);
+                    instance.draggable(newBlock, {
+                        containment: "parent",
+                        stop: function () {
+                            TO.changedSinceLastSave = true;
+                        }
+                    });
+
+                    SaveMetablock();
+                } else {
+                    var currentMetablockData = d.data("selectedBlockOrMetablock");
+                    var newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
+                    + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
+                    currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
+                    '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
+                    + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
+                    newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
+                    $("#overviewPanel .scrollArea").append(newMetablock);
+                    instance.draggable(newMetablock, {
+                        containment: "parent",
+                        stop: function () {
+                            TO.changedSinceLastSave = true;
+                        }
+                    });
+
+                    SaveMetablock();
+                }
+            }
+        }
+        else {
+            alert("Please select a block");
+        }
+    }
+};
+
+TO.onInit.push(TO.trash.init);
+TO.load = {
+
+    init: function () {
+
+    },
+
+    _load: function () {
+        var confirmed = true;
+
+        if (TO.changedSinceLastSave)
+            confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
+            
+        if (confirmed) {
+            LoadMetablock();
+        }
+    }
+
+};
+
+TO.onInit.push(TO.load.init);
+TO.save = {
+
+    init: function () {
+
+    },
+
+    _save: function () {
+        SaveMetablock();
+    }
+
+};
+
+TO.onInit.push(TO.save.init);
+TO.dialog = {
+
+    dialogList: {},
+
+    dialogDefaults: {
+        autoOpen: false,
+        width: 'auto',
+        height: 'auto',
+        create: function () {
+            var d = $(this).parents('.ui-dialog');
+            var buttons = d.find('.ui-dialog-buttonset button');
+            var dialogId = $(this).data('dialogId');
+
+            $.each(TO.dialog.dialogList[dialogId].options.buttons, function (index) {
+                buttons.eq(index).addClass(this.className);
+                if (this.icon) {
+                    buttons.eq(index).prepend('<span class="fa ' + this.icon + '"></span> ');
+                }
+            });
+
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    TO.dialog.dialogList[dialogId].submit.apply(this, []);
+                    return false;
+                }
+            });
+
+            d.find('.ui-dialog-buttonset').css('float', 'none');
+        }
+    },
+
+    init: function () {
+        var self = TO.dialog;
+        for (var k in self.dialogList) {
+            var d = self.dialogList[k];
+            $(d.target).data('dialogId', k);
+            $(d.target).dialog($.extend(self.dialogDefaults, d.options));
+        }
+    },
+
+    open: function (dialogId) {
+        $(TO.dialog.dialogList[dialogId].target).dialog('open');
+    },
+
+    close: function () {
+        $(this).dialog('close');
+    }
+};
+
+TO.dialog.dialogList = {
+    metablockRename: {
+        target: '#rename-metablock-dialog',
+        submit: TO.metablock.rename,
+        options: {
+            buttons: [
+                { text: 'Save', click: TO.metablock.rename, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TO.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TO.metablock._renameOpen
+        }
+    },
+    metablockAdd: {
+        target: '#add-metablock-dialog',
+        submit: TO.metablock.add,
+        options: {
+            buttons: [
+                { text: 'Add', click: TO.metablock.add, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TO.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TO.metablock._addOpen
+        }
+    },
+    blockAdd: {
+        target: '#add-block-dialog',
+        submit: TO.block.add,
+        options: {
+            buttons: [
+                { text: 'Add', click: TO.block.add, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TO.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TO.block._addOpen
+        }
+    },
+    blockCopy: {
+        target: '#copy-block-dialog',
+        submit: TO.block.copy,
+        options: {
+            width: 700,
+            buttons: [
+                { text: 'Copy', click: TO.block.copy, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Move', click: TO.block.move, className: 'btn btn-default pull-right', icon: 'fa-arrow-right' },
+                { text: 'Cancel', click: TO.dialog.close, className: 'btn btn-default', icon: 'fa-times'}
+            ],
+            open: TO.block._copyOpen
+        }
+    },
+    trash: {
+        target: '#trash-dialog',
+        submit: TO.trash._trashLoad,
+        options: {
+            buttons: [
+                { text: 'Load', click: TO.trash._trashLoad, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TO.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TO.trash._trashOpen
+        }
+    }
+}
+
+TO.onInit.push(TO.dialog.init);
+TO.context = {
+
+    defaultSettings: {
+        trigger: 'right',
+        zIndex: 300
+    },
+
+    init: function () {
+        var self = TO.context;
+        var ds = self.defaultSettings;
+
+        $.contextMenu($.extend(ds, {
+            selector: '.metablock',
+            callback: TO.metablock._onContextAction,
+            items: TO.metablock.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.block',
+            callback: TO.block._onContextAction,
+            items: TO.block.contextItems
+        }));
+    }
+};
+
+TO.onInit.push(TO.context.init);
 var TB = {
 
     onInit: [],
@@ -3090,7 +3077,6 @@ var TB = {
 
     init: function () {
         var self = TB;
-
         for (var i = 0; i < self.onInit.length; i++) {
             self.onInit[i]();
         }
@@ -3457,6 +3443,7 @@ TB.load = {
     data: null,
 
     onAttributesLoad: [],
+    onLoadBlock: [],
 
     init: function () {
 
@@ -3496,6 +3483,8 @@ TB.load = {
         self.setRoleWhiteList(data.RoleWhitelist);
         self.loadPages();
         self.loadLibrary();
+
+        TB.callHooks(self.onLoadBlock, data, []);
     },
 
     clearBuilder: function() {
@@ -3888,6 +3877,1146 @@ TB.load = {
 };
 
 TB.onInit.push(TB.load.init);
+TB.save = {
+
+    onBeforeSave: [],
+    onAfterSave: [],
+    saveId: 0,
+
+    toolboxMap: {
+        Actions: 'actionItem',
+        Attributes: 'attributeItem',
+        UiComponents: 'uiItem',
+        Roles: 'roleItem',
+        States: 'stateItem',
+        Targets: 'targetItem',
+        Templates: 'templateItem',
+        Integrations: 'integrationItem'
+    },
+
+    init: function () {
+        var self = TB.save;
+        $(document).on('click', '#btnSave', $.proxy(self._beforeSave, self));
+    },
+
+    saveBlock: function () {
+        pageSpinner.show();
+       
+        $('.activeItem, .processedItem').removeClass('activeItem processedItem');
+
+        var commitMessage = $(this).find('#message').val(),
+            self = TB.save,
+            rrList = [],
+            wrList = [],
+            toolboxState = {};
+
+        // Sestavíme pole resource rules
+        $('#resourceRulesPanel .resourceRule').each(function (index) {
+            rrList.push(self.getResourceRule(this, index));
+        });
+
+        // Sestavíme pole workflow rules
+        $('#workflowRulesPanel .workflowRule').each(function (index) {
+            wrList.push(self.getWorkflowRule(this, index));
+        });
+
+        // Sestavíme toolbox state
+        for (var k in self.toolboxMap) {
+            toolboxState[k] = [];
+
+            $('.tapestryToolbox .toolboxItem.' + self.toolboxMap[k]).each(function () {
+                var item = $(this);
+
+                toolboxState[k].push({
+                    Label: item.find('.itemLabel').text(),
+                    ActionId: item.attr('ActionId'),
+                    TableName: item.attr('TableName') ? item.attr('TableName') : null,
+                    IsShared: item.attr('shared') === 'true',
+                    ColumnName: item.attr('ColumnName') ? item.attr('ColumnName') : null,
+                    PageId: item.attr('PageId'),
+                    ComponentName: item.attr('ComponentName') ? item.attr('ComponentName') : null,
+                    IsBootstrap: GetIsBootstrap(item),
+                    StateId: item.attr('StateId'),
+                    TargetName: item.attr('TargetName') ? item.attr('TargetName') : null,
+                    TargetId: item.attr('TargetId'),
+                    TypeClass: self.toolboxMap[k]
+                });
+            });
+        }
+
+        // Sestavíme finální data
+        var postData = {
+            CommitMessage: commitMessage,
+            Name: $('#blockHeaderBlockName').text(),
+            ResourceRules: rrList,
+            WorkflowRules: wrList,
+            PortTargets: [],
+            ModelTableName: ModelTableName,
+            AssociatedTableName: AssociatedTableName,
+            AssociatedPageIds: AssociatedPageIds,
+            AssociatedBootstrapPageIds: AssociatedBootstrapPageIds,
+            AssociatedTableIds: AssociatedTableIds,
+            RoleWhitelist: RoleWhitelist,
+            ToolboxState: toolboxState,
+            ParentMetablockId: $('#parentMetablockId').val()
+        };
+
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/tapestry/apps/' + appId + '/blocks/' + blockId,
+            data: postData,
+            complete: pageSpinner.hide,
+            success: self._afterSave
+        });
+
+        TB.dialog.close.apply(this);
+    },
+
+    /*****************************************************************/
+    /* GET RESOURCE RULES                                            */
+    /*****************************************************************/
+    getResourceRule: function(node, index) {
+        var items = [],
+            connections = [],
+            rule = $(node),
+            self = this;
+
+        rule.find('.item').each(function () {
+            items.push(self.getResourceItem(this));
+        });
+
+        $.each(rule.data('jsPlumbInstance').getAllConnections(), function () {
+            connections.push(self.getConnection(this));
+        });
+
+        return {
+            Id: index+1,
+            Width: Math.round(rule.width()),
+            Height: Math.round(rule.height()),
+            PositionX: Math.round(rule.position().left),
+            PositionY: Math.round(rule.position().top),
+            ResourceItems: items,
+            Connections: connections
+        };
+    },
+
+    getResourceItem: function(node) {
+        var item = $(node);
+        item.attr('saveId', ++this.saveId);
+
+        return {
+            Id: item.attr('saveId'),
+            Label: item.text(),
+            TypeClass: GetItemTypeClass(item),
+            PositionX: Math.round(item.position().left),
+            PositionY: Math.round(item.position().top),
+            ActionId: item.attr('actionid'),
+            StateId: item.attr('stateid'),
+            PageId: GetIsBootstrap(item) ? null : item.attr('pageId'),
+            ComponentName: item.attr('componentName'),
+            IsBootstrap: GetIsBootstrap(item),
+            BootstrapPageId: GetIsBootstrap(item) ? item.attr('pageId') : null,
+            TableName: item.attr('tableName'),
+            IsShared: item.attr('shared') === 'true',
+            ColumnName: item.attr('columnName'),
+            ColumnFilter: item.data('columnFilter'),
+            ConditionSets: item.data('conditionSets')
+        };
+    },
+
+    getConnection: function(connection) {
+        var source = $(connection.source),
+            target = $(connection.target);
+
+        return {
+            SourceId: source.attr('saveId'),
+            SourceSlot: 0,
+            TargetId: target.attr('saveId'),
+            TargetSlot: 0
+        };
+    },
+
+    /*****************************************************************/
+    /* GET WORKFLOW RULES                                            */
+    /*****************************************************************/
+    getWorkflowRule: function(node, index) {
+        var swimlanes = [],
+            connections = [],
+            self = this,
+            rule = $(node);
+
+        rule.find('.swimlane').each(function (index) {
+            swimlanes.push(self.getSwimlane(this, index));
+        });
+
+        $.each(rule.data('jsPlumbInstance').getAllConnections(), function () {
+            var connection = self.getWorkflowConnection(this);
+            if (connection !== false) {
+                connections.push(connection);
+            }
+        });
+
+        return {
+            Id: index,
+            Name: rule.find('.workflowRuleHeader .verticalLabel').text(),
+            Width: Math.round(rule.width()),
+            Height: Math.round(rule.height()),
+            PositionX: Math.round(rule.position().left),
+            PositionY: Math.round(rule.position().top),
+            Swimlanes: swimlanes,
+            Connections: connections
+        };
+    },
+
+    getSwimlane: function(node, index) {
+        var roles = [],
+            items = [],
+            subflows = [],
+            foreachs = [],
+            self = this,
+            sl = $(node);
+
+        sl.attr('swimlaneIndex', index);
+
+        sl.find('.swimlaneRolesArea .roleItem').each(function () {
+            roles.push($(this).text());
+        });
+
+        sl.find('.swimlaneContentArea > .subflow').each(function () {
+            subflows.push(self.getSubflow(this));
+        });
+
+        sl.find('.swimlaneContentArea > .foreach').each(function () {
+            foreachs.push(self.getForeach(this));
+        });
+
+        sl.find('.swimlaneContentArea > .item, .swimlaneContentArea > .symbol').each(function () {
+            items.push(self.getWorkflowItem(this));
+        });
+
+        return {
+            SwimlaneIndex: index,
+            Height: Math.round(sl.height()),
+            Roles: roles,
+            WorkflowItems: items,
+            Subflow: subflows,
+            Foreach: foreachs
+        };
+    },
+
+    getSubflow: function(node) {
+        var items = [],
+            self = this,
+            subflow = $(node);
+
+        subflow.attr('saveId', ++this.saveId);
+        subflow.find('> .item, > .symbol').each(function () {
+            items.push(self.getWorkflowItem(this));
+        });
+
+        return {
+            Id: subflow.attr('saveId'),
+            Name: subflow.find('> .subflowName').text(),
+            Comment: subflow.find('> .subflowComment').text(),
+            CommentBottom: subflow.find('> .subflowComment').hasClass('bottom'),
+            PositionX: Math.round(subflow.position().left),
+            PositionY: Math.round(subflow.position().top),
+            Width: Math.round(subflow.width()),
+            Height: Math.round(subflow.height()),
+            WorkflowItems: items
+        };
+    },
+
+    getForeach: function (node) {
+        var items = [],
+            self = this,
+            foreach = $(node);
+
+        foreach.attr('saveId', ++this.saveId);
+        foreach.find('> .item, > .symbol').each(function () {
+            items.push(self.getWorkflowItem(this));
+        });
+        
+        return {
+            Id: foreach.attr('saveId'),
+            Name: foreach.find('> .foreachName').text(),
+            Comment: foreach.find('> .foreachComment').text(),
+            CommentBottom: foreach.find('> .foreachComment').hasClass('bottom'),
+            PositionX: Math.round(foreach.position().left),
+            PositionY: Math.round(foreach.position().top),
+            Width: Math.round(foreach.width()),
+            Height: Math.round(foreach.height()),
+            WorkflowItems: items,
+            DataSource: foreach.attr('data-datasource')
+        };
+    },
+
+    getWorkflowItem: function(node) {
+        var item = $(node);
+        item.attr('saveId', ++this.saveId);
+
+        return {
+            Id: item.attr('saveId'),
+            Label: item.find('.itemLabel').length ? item.find('.itemLabel').text() : item.data('label'),
+            Name: item.find('.itemName').text(),
+            Comment: item.find('.itemComment').text(),
+            CommentBottom: item.find('.itemComment').hasClass('bottom'),
+            TypeClass: GetItemTypeClass(item),
+            DialogType: item.attr('dialogType'),
+            StateId: item.attr('stateid'),
+            TargetId: item.attr('targetid'),
+            PositionX: Math.round(item.position().left),
+            PositionY: Math.round(item.position().top),
+            ActionId: item.attr('actionid'),
+            InputVariables: item.data('inputVariables'),
+            OutputVariables: item.data('outputVariables'),
+            PageId: item.attr('pageId'),
+            ComponentName: item.attr('componentName'),
+            IsBootstrap: GetIsBootstrap(item),
+            isAjaxAction: item.data('isAjaxAction'),
+            Condition: item.data('condition'),
+            ConditionSets: item.data('conditionSets'),
+            SymbolType: item.attr('symbolType'),
+            IsForeachStart: item.find('.fa-play').length > 0,
+            IsForeachEnd: item.find('.fa-stop').length > 0
+        };
+    },
+
+    getWorkflowConnection: function(connection) {
+        var source = $(connection.source),
+            target = $(connection.target),
+            sourceEndpointUuid = connection.endpoints[0].getUuid();
+
+        var sourceSlot = sourceEndpointUuid.match("BottomCenter$") ? 1 : 0;
+
+        if (!source.hasClass('subSymbol')) {
+            return {
+                SourceId: source.attr("saveId"),
+                SourceSlot: sourceSlot,
+                TargetId: target.attr("saveId"),
+                TargetSlot: 0
+            };
+        }
+        return false;
+    },
+
+    /*****************************************************************/
+    /* EVENTS                                                        */
+    /*****************************************************************/
+    _dialogOpen: function () {
+        $(this).find('#message').val('');
+    },
+
+    _beforeSave: function () {
+        var allow = true;
+        for (var i = 0; i < this.onBeforeSave.length; i++) {
+            allow = allow && this.onBeforeSave[i]();
+        }
+
+        if (allow) {
+            TB.dialog.open('save');
+        }
+    },
+
+    _afterSave: function (lastCommitId) {
+        alert("The block has been successfully saved");
+
+        ChangedSinceLastSave = false; /// OBSOLATE
+        TB.changedSinceLastSave = false;
+        TB.callHooks(TB.save.onAfterSave, this, [lastCommitId]);
+    }
+};
+
+TB.onInit.push(TB.save.init);
+TB.selection = {
+
+    holdTimer: null,
+    pos: [],
+    target: null,
+    itemsCache: [],
+    selecting: false,
+    selection: null,
+    
+    init: function () {
+        var self = TB.selection;
+
+        $(document)
+            .on('mousedown', $.proxy(self._mouseDown, self))
+            .on('mousemove', $.proxy(self._mouseMove, self))
+            .on('mouseup', $.proxy(self._mouseUp, self))
+            ;
+
+        TB.load.onLoadBlock.push(self._blockLoad);
+    },
+    
+    /******************************************************/
+    /* SELECTION EVENTS                                   */
+    /******************************************************/
+    _blockLoad: function () {
+        $('.swimlaneContentArea').css({
+            '-webkit-touch-callout': 'none',
+            '-webkit-user-select': 'none',
+            '-khtml-user-select': 'none',
+            '-moz-user-select': 'none',
+            '-ms-user-select': 'none',
+            'user-select': 'none'
+        });
+    },
+
+    _mouseDown: function (e) {
+        var target = $(e.target);
+        var that = this;
+
+        if (target.is('.swimlaneContentArea') && e.shiftKey && e.which === 1) {
+            this.holdTimer = setTimeout(function () {
+                that.target = target;
+                that._mouseHold.apply(that, [e]);
+            }, 50);
+        }
+    },
+
+    _mouseHold: function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var x = (e.pageX - this.target.offset().left);
+        var y = (e.pageY - this.target.offset().top);
+
+        var items = this.target.find('> .item, > .symbol');
+        for (var i = 0; i < items.length; i++) {
+            this.itemsCache.push({
+                element: items.eq(i),
+                selected: items.eq(i).hasClass('nu-selected'),
+                selecting: false,
+                position: items[i].getBoundingClientRect()
+            });
+        }
+
+        this.pos = [x, y];
+        this.selecting = true;
+        this._createSelection(x, y);
+    },
+
+    _mouseMove: function (e) {
+        var pos = this.pos;
+        if (!pos.length)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        var x = e.pageX - this.target.offset().left;
+        var y = e.pageY - this.target.offset().top;
+
+        var newPos = [x, y],
+            width = Math.abs(newPos[0] - pos[0]),
+            height = Math.abs(newPos[1] - pos[1]),
+            left, top;
+
+        left = (newPos[0] < pos[0]) ? (pos[0] - width) : pos[0];
+        top = (newPos[1] < pos[1]) ? (pos[1] - height) : pos[1];
+
+        this._drawSelection(width, height, left, top);
+        this._detectCollision();
+    },
+
+    _mouseUp: function (e) {
+        clearTimeout(this.holdTimer);
+
+        if (!this.pos.length) {
+            if (e.which !== 3) {
+                this._clearSelection();
+            }
+            return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.selecting = false;
+        this.selection.remove();
+
+        var x = e.pageX - this.target.offset().left;
+        var y = e.pageY - this.target.offset().top;
+
+        if (x === this.pos[0] && y === this.pos[1]) {
+            this._clearSelection();
+        }
+
+        this.target = null;
+        this.pos = [];
+    },
+
+    _createSelection: function (x, y) {
+        this.selection = $('<div class="nu-selection-box" />');
+
+        this.selection.css({
+            'position': 'absolute',
+            'top': y + 'px',
+            'left': x + 'px',
+            'width': '0',
+            'height': '0',
+            'z-index': '999',
+            'overflow': 'hidden'
+        }).appendTo(this.target);
+    },
+
+    _drawSelection: function (width, height, x, y) {
+        this.selection.css({
+            'width': width,
+            'height': height,
+            'top': y,
+            'left': x
+        });
+    },
+
+    _clearSelection: function () {
+        $('.nu-selected').removeClass('nu-selected');
+    },
+
+    _detectCollision: function () {
+        var selector = this.selection[0].getBoundingClientRect(),
+            dataLength = this.itemsCache.length;
+
+        for (var i = dataLength - 1, item; item = this.itemsCache[i], i >= 0; i--) {
+            var collided = !(selector.right < item.position.left ||
+                selector.left > item.position.right ||
+                selector.bottom < item.position.top ||
+                selector.top > item.position.bottom);
+
+            if (collided) {
+                if (item.selected) {
+                    item.element.removeClass('nu-selected');
+                    item.selected = false;
+                }
+                if (!item.selected) {
+                    item.element.addClass('nu-selected');
+                    item.selected = true;
+                }
+            }
+            else {
+                if (this.selecting) {
+                    item.element.removeClass('nu-selected');
+                }
+            }
+
+        }
+    }
+}
+
+TB.onInit.push(TB.selection.init);
+TB.subflow = {
+
+    target: null,
+
+    contextItems: {
+        'name': { name: 'Name...', icon: 'fa-tag' },
+        'comment': { name: 'Comment...', icon: 'fa-comment' },
+        'break': { name: 'Break subflow', icon: 'fa-object-ungroup' }
+    },
+
+    init: function () {
+        var self = TB.subflow;
+    },
+
+    cannotBeGruped: function (key, options) {
+        if(options.$trigger.is('.item') || options.$trigger.is('.symbol'))
+            return options.$trigger.parents('.swimlane').find('.nu-selected').length == 0;
+        else
+            return options.$trigger.find('.nu-selected').length == 0;
+    },
+
+    groupToSubflow: function () {
+        var self = TB.subflow;
+
+        var target = this.is('.item') || this.is('.symbol') ? this.parents('.swimlane') : this;
+        var items = target.find('.nu-selected');
+        if (items.length) {
+            var minX = null, minY = null, maxX = null, maxY = null;
+
+            items.each(function () {
+                var p = $(this).position();
+                var w = $(this).outerWidth(false);
+                var h = $(this).outerHeight(false);
+
+                minX = minX == null || p.left < minX ? p.left : minX;
+                minY = minY == null || p.top < minY ? p.top : minY;
+                maxX = maxX == null || (p.left + w) > maxX ? p.left + w : maxX;
+                maxY = maxY == null || (p.top + h) > maxY ? p.top + h : maxY;
+            });
+
+            var subflow = self.createSubflow({
+                PositionX: minX - 15,
+                PositionY: minY - 15,
+                Width: maxX - minX + 30,
+                Height: maxY - minY + 30,
+                Id: ''
+            }, target);
+
+            target.find('.swimlaneContentArea').append(subflow);
+            subflow.append(items);
+
+            var sX = subflow.position().left;
+            var sY = subflow.position().top;
+
+            subflow.find('> .item, > .symbol').each(function () {
+                var e = $(this);
+                e.css({
+                    top: e.position().top - sY - 1,
+                    left: e.position().left - sX - 1
+                });
+            });
+
+            self.alive(subflow);
+            TB.selection._clearSelection();
+            TB.changedSinceLastSave = true;
+            ChangedSinceLastSave = true; /// OBSOLATE
+        }
+    },
+
+    breakSubflow: function(subflow) {
+        var sX = subflow.position().left + 1;
+        var sY = subflow.position().top + 1;
+
+        subflow.find('> .item, > .symbol').each(function () {
+            $(this).css({
+                left: '+=' + sX,
+                top: '+=' + sY
+            }).appendTo(subflow.parent());
+        });
+
+        subflow.remove();
+        TB.changedSinceLastSave = true;
+        ChangedSinceLastSave = true; /// OBSOLATE
+    },
+
+    createSubflow: function (subflowData, parentSwimlane) {
+        var subflow = $('<div class="subflow" />');
+        subflow.css({
+            width: subflowData.Width,
+            height: subflowData.Height,
+            left: subflowData.PositionX,
+            top: subflowData.PositionY
+        }).attr({
+            'data-subflowid': subflowData.Id
+        });
+
+        if (subflowData.Name) {
+            subflow.append('<span class="subflowName">' + subflowData.Name + '</span>');
+        }
+        if (subflowData.Comment) {
+            subflow.append('<span class="subflowComment' + (subflowData.CommentBottom ? ' bottom' : '') + (subflowData.Name ? ' withName' : '') + '">' + subflowData.Comment + '</span>');
+        }
+
+        parentSwimlane.find('.swimlaneContentArea').append(subflow);
+        this.alive(subflow);
+
+        return subflow;
+    },
+
+    alive: function(subflow) {
+        subflow.resizable({});
+        subflow.draggable({
+            drag: this._subflowDrag,
+            stop: this._subflowStop
+        });
+    },
+
+    setName: function() {
+        var self = TB.subflow;
+        var name = $(this).find('#SubflowName').val();
+
+        if (name.length) {
+            if (!self.target.find('> .subflowName').length) {
+                self.target.append('<span class="subflowName" />');
+            }
+            self.target.find('> .subflowName').html(name);
+            self.target.find('> .subflowComment').addClass('withName');
+        }
+        else {
+            self.target.find('> .subflowName').remove();
+            self.target.find('> .subflowComment').removeClass('withName');
+        }
+
+        TB.dialog.close.apply(this);
+    },
+
+    setComment: function() {
+        var self = TB.subflow;
+        var comment = $(this).find('#SubflowComment').val();
+        var commentBottom = $(this).find('#SubflowCommentBottom').is(':checked');
+
+        if (comment.length) {
+            if (!self.target.find('> .subflowComment').length) {
+                self.target.append('<span class="subflowComment" />');
+            }
+            self.target.find('> .subflowComment')
+                .html(comment)
+                .toggleClass('bottom', commentBottom)
+                .toggleClass('withName', self.target.find('> .subflowName').length > 0);
+        }
+        else {
+            self.target.find('> .subflowComment').remove();
+        }
+
+        TB.dialog.close.apply(this);
+    },
+
+    /******************************************************/
+    /* SUBFLOW EVENTS                                     */
+    /******************************************************/
+    _subflowDrag: function () {
+        var rule = $(this).parents('.rule');
+        rule.data('jsPlumbInstance').repaintEverything();
+    },
+
+    _subflowStop: function() {
+        var instance = $(this).parents('.rule').data('jsPlumbInstance');
+        instance.recalculateOffsets();
+        instance.repaintEverything();
+        TB.changedSinceLastSave = true;
+    },
+
+    _contextAction: function(key, options) {
+        var self = TB.subflow;
+        switch (key) {
+            case 'name': {
+                self.target = options.$trigger;
+                TB.dialog.open('subflowName');
+                break;
+            }
+            case 'comment': {
+                self.target = options.$trigger;
+                TB.dialog.open('subflowComment');
+                break;
+            }
+            case 'break': {
+                self.breakSubflow(options.$trigger);
+                break;
+            }
+        }
+    },
+
+    _setNameOpen: function() {
+        $(this).find('#SubflowName').val(TB.subflow.target.find('> .subflowName').text());
+    },
+
+    _setCommentOpen: function() {
+        $(this).find('#SubflowComment').val(TB.subflow.target.find('> .subflowComment').text());
+        $(this).find('#SubflowCommentBottom').prop('checked', TB.subflow.target.find('> .subflowComment.bottom').length > 0);
+    }
+}
+
+TB.onInit.push(TB.subflow.init);
+TB.foreach = {
+
+    contextItems: {
+        'datasource': { name: 'Set datasource...', icon: 'fa-database' },
+        'name': { name: 'Name...', icon: 'fa-tag' },
+        'comment': { name: 'Comment...', icon: 'fa-comment' },
+        'break': { name: 'Break foreach', icon: 'fa-times-circle' }
+    },
+
+    target: null,
+    id2VirtualId: {},
+
+    init: function () {
+        var self = TB.foreach;
+
+        TB.wfr.onCreateRule.push(self._onCreateRule);
+    },
+    
+    cannotBeGruped: function (key, options) {
+        if (options.$trigger.is('.item') || options.$trigger.is('.symbol'))
+            return options.$trigger.parents('.swimlane').find('.nu-selected').length == 0;
+        else
+            return options.$trigger.find('.nu-selected').length == 0;
+    },
+
+    isNotInForeach: function (key, options) {
+        return !options.$trigger.parent().is('.foreach') || options.$trigger.is('.symbol');
+    },
+
+    groupToForeach: function () {
+        var self = TB.foreach;
+
+        var target = this.is('.item') || this.is('.symbol') ? this.parents('.swimlane') : this;
+        var items = target.find('.nu-selected');
+        if (items.length) {
+            var minX = null, minY = null, maxX = null, maxY = null;
+
+            items.each(function () {
+                var p = $(this).position();
+                var w = $(this).outerWidth(false);
+                var h = $(this).outerHeight(false);
+
+                minX = minX == null || p.left < minX ? p.left : minX;
+                minY = minY == null || p.top < minY ? p.top : minY;
+                maxX = maxX == null || (p.left + w) > maxX ? p.left + w : maxX;
+                maxY = maxY == null || (p.top + h) > maxY ? p.top + h : maxY;
+            });
+
+            var foreach = self.createForeach({
+                PositionX: minX - 20,
+                PositionY: minY - 20,
+                Width: maxX - minX + 40,
+                Height: maxY - minY + 40,
+                Id: ''
+            }, target, items);
+            
+            var sX = foreach.position().left;
+            var sY = foreach.position().top;
+
+            foreach.find('> .item, > .symbol').each(function () {
+                var e = $(this);
+                e.css({
+                    top: e.position().top - sY - 1,
+                    left: e.position().left - sX - 1
+                });
+            });
+            self.target = foreach;
+
+            TB.selection._clearSelection();
+            TB.dialog.open('foreachDatasource');
+            TB.changedSinceLastSave = true;
+            ChangedSinceLastSave = true; /// OBSOLATE
+        }
+    },
+
+    breakForeach: function (foreach) {
+        var sX = foreach.position().left + 1;
+        var sY = foreach.position().top + 1;
+
+        foreach.find('> .item, > .symbol').each(function () {
+            $(this).css({
+                left: '+=' + sX,
+                top: '+=' + sY
+            }).appendTo(foreach.parent()).find('.fa').remove();
+        });
+
+        var instance = foreach.parents('.rule').data('jsPlumbInstance');
+        instance.removeAllEndpoints(foreach, true);
+        
+        foreach.remove();
+        TB.changedSinceLastSave = true;
+        ChangedSinceLastSave = true; /// OBSOLATE
+    },
+
+    createForeach: function (foreachData, parentSwimlane, items, blockLoad) {
+        var foreach = $('<div class="foreach" />');
+        foreach.css({
+            width: foreachData.Width,
+            height: foreachData.Height,
+            left: foreachData.PositionX,
+            top: foreachData.PositionY
+        }).attr({
+            'data-foreachid': foreachData.Id
+        });
+
+        if (foreachData.Id) {
+            foreach.attr('id', 'wfItem' + this.id2VirtualId[foreachData.Id]);
+        }
+       
+        if (items) {
+            foreach.append(items);
+        }
+
+        if (foreachData.DataSource) {
+            foreach.attr('data-datasource', foreachData.DataSource);
+        }
+        if (foreachData.Name) {
+            foreach.append('<span class="foreachName">' + foreachData.Name + '</span>');
+        }
+        if (foreachData.Comment) {
+            foreach.append('<span class="foreachComment' + (foreachData.CommentBottom ? ' bottom' : '') + (foreachData.Name ? ' withName' : '') + '">' + foreachData.Comment + '</span>');
+        }
+
+        foreach.append('<span class="fa fa-repeat fa-spin"></span>');
+        parentSwimlane.find('.swimlaneContentArea').append(foreach);
+        this.alive(foreach, blockLoad);
+
+        return foreach;
+    },
+
+    alive: function (foreach, blockLoad) {
+    
+        var itemID = foreach.attr('id') || AssingID();
+
+        foreach.attr('id', itemID);
+        foreach.resizable({
+            resize: this._foreachResize,
+            stop: this._foreachResizeStop
+        });
+        foreach.draggable({
+            drag: this._foreachDrag,
+            stop: this._foreachDragStop
+        });
+        foreach.droppable({
+            tolerance: 'touch',
+            accept: '.toolboxSymbol, .toolboxItem',
+            greedy: true,
+            drop: TB.wfr._swimlaneItemDrop
+        });
+
+        var instance = foreach.parents('.rule').data('jsPlumbInstance');
+        instance.addEndpoint(itemID, sourceEndpoint, { anchor: 'RightMiddle', uuid: itemID + "RightMiddle" });
+        instance.makeTarget(foreach, {
+            dropOptions: { hoverClass: 'dragHover' },
+            anchor: 'Continuous',
+            allowLoopback: false
+        });
+
+        if (blockLoad) {
+            return;
+        }
+
+        // Nějaký podivný bug - musíme si connections nejdřív naklonovat
+        var connections = [];
+        $.each(instance.getAllConnections(), function () {
+            connections.push(this);
+        });
+        var s = '#' + itemID;
+        var errors = [];
+
+        // Přepojíme šipky, pokud existují
+        $.each(connections, function () {
+            var source = $(this.source);
+            var target = $(this.target);
+            
+            // Zdroj je mimo FE - cíl je ve FE (považujme ho za počátek)
+            if (!source.parents(s).length && target.parents(s).length) {
+                var type = this.getType();
+                var uuids = this.getUuids();
+
+                if (target.is('.symbol')) {
+                    errors.push('Cyklus nemůže začínat symbolem. Upravte spojení manuálně a označte počáteční akci.');
+                }
+                else if (!foreach.find('.fa-play').length) {
+                    target.append('<span class="fa fa-play"></span>');
+                    jsPlumb.detach(this);
+                    instance.connect({
+                        source: source[0],
+                        target: foreach[0],
+                        uuids: [uuids[0], null],
+                        type: type
+                    });
+                }
+                else {
+                    foreach.find('.fa-play').remove();
+                    errors.push('Nelze jednoznačně určit počáteční akci. Upravte spojení manuálně a označte počáteční akci.');
+                }
+            }
+            // Zdroj je ve FE - cíl je mimo FE (považujme ho za konec)  
+            if (source.parents(s).length && !target.parents(s).length) {
+                var type = this.getType();
+
+                if (target.is('.symbol')) {
+                    errors.push('Cyklus nemůže končit symbolem. Upravte spojení manuálně a označte koncovou akci.');
+                }
+                else if (!foreach.find('.fa-stop').length) {
+                    source.append('<span class="fa fa-stop"></span>');
+                    jsPlumb.detach(this);
+                    instance.connect({
+                        source: foreach[0],
+                        target: target[0],
+                        uuids: [itemID + "RightMiddle", null],
+                        type: type
+                    });
+                }
+                else {
+                    foreach.find('.fa-stop').remove();
+                    errors.push('Nelze jednoznačně určit koncovou akci. Upravte spojení manuálně a označte koncovou akci.');
+                }
+            }
+        });
+
+        if (!foreach.find('.fa-play').length) {
+            errors.push('Nebyl nalezen začátek cyklu. Upravte spojení manuálně a označte počáteční akci.');
+        }
+        if (!foreach.find('.fa-stop').length) {
+            errors.push('Nebyl nalezen konec cyklu. Upravte spojení mauálně a označte koncovou akci.');
+        }
+
+        if (errors.length) {
+            var d = $('<div title="' + document.title + ' saying"></div>');
+            d.append('<p class="text-danger text-nowrap" style="margin:0">' + errors.join('<br>') + '</p>');
+
+            d.dialog({
+                resizable: false,
+                draggable: false,
+                modal: true,
+                width: 'auto',
+                minHeight: 0
+            });
+        }
+    },
+
+    setStart: function () {
+        if (!this.parent().is('.foreach'))
+            return;
+
+        this.parent().find('> .item .fa-play').remove();
+        this.find('.fa').remove().end().append('<span class="fa fa-play"></span>');
+    },
+
+    setEnd: function () {
+        if (!this.parent().is('.foreach'))
+            return;
+
+        this.parent().find('> .item .fa-stop').remove();
+        this.find('.fa').remove().end().append('<span class="fa fa-stop"></span>');
+    },
+
+    setDatasource: function () {
+        var self = TB.foreach;
+        var datasource = $(this).find('#ForeachDatasource').val();
+
+        self.target.attr('data-datasource', datasource);
+        TB.dialog.close.apply(this);
+    },
+
+    setName: function () {
+        var self = TB.foreach;
+        var name = $(this).find('#ForeachName').val();
+
+        if (name.length) {
+            if (!self.target.find('> .foreachName').length) {
+                self.target.append('<span class="foreachName" />');
+            }
+            self.target.find('> .foreachName').html(name);
+            self.target.find('> .foreachComment').addClass('withName');
+        }
+        else {
+            self.target.find('> .foreachName').remove();
+            self.target.find('> .foreachComment').removeClass('withName');
+        }
+
+        TB.dialog.close.apply(this);
+    },
+
+    setComment: function () {
+        var self = TB.foreach;
+        var comment = $(this).find('#ForeachComment').val();
+        var commentBottom = $(this).find('#ForeachCommentBottom').is(':checked');
+
+        if (comment.length) {
+            if (!self.target.find('> .foreachComment').length) {
+                self.target.append('<span class="foreachComment" />');
+            }
+            self.target.find('> .foreachComment')
+                .html(comment)
+                .toggleClass('bottom', commentBottom)
+                .toggleClass('withName', self.target.find('> .foreachName').length > 0);
+        }
+        else {
+            self.target.find('> .foreachComment').remove();
+        }
+
+        TB.dialog.close.apply(this);
+    },
+
+    /******************************************************/
+    /* Foreach EVENTS                                     */
+    /******************************************************/
+    
+    _foreachDrag: function () {
+        var rule = $(this).parents('.rule');
+        rule.data('jsPlumbInstance').repaintEverything();
+    },
+
+    _foreachDragStop: function () {
+        var instance = $(this).parents('.rule').data('jsPlumbInstance');
+        instance.recalculateOffsets();
+        instance.repaintEverything();
+        TB.changedSinceLastSave = true;
+    },
+
+    _foreachResize: function () {
+        var rule = $(this).parents('.rule');
+        rule.data('jsPlumbInstance').repaintEverything();
+    },
+
+    _foreachResizeStop: function () {
+        var instance = $(this).parents('.rule').data('jsPlumbInstance');
+        instance.recalculateOffsets();
+        instance.repaintEverything();
+        TB.changedSinceLastSave = true;
+    },
+
+    _contextAction: function (key, options) {
+        var self = TB.foreach;
+        switch (key) {
+            case 'datasource': {
+                self.target = options.$trigger;
+                TB.dialog.open('foreachDatasource');
+                break;
+            }
+            case 'name': {
+                self.target = options.$trigger;
+                TB.dialog.open('foreachName');
+                break;
+            }
+            case 'comment': {
+                self.target = options.$trigger;
+                TB.dialog.open('foreachComment');
+                break;
+            }
+            case 'break': {
+                self.breakForeach(options.$trigger);
+                break;
+            }
+        }
+    },
+
+    _setDatasourceOpen: function () {
+        var t = TB.foreach.target;
+        $(this).find('#ForeachDatasource').val(t.attr('data-datasource'));
+
+        var categoryName = 'Workflow: ' + t.parents('.rule').find('.verticalLabel').text();
+        var variables = [];
+
+        for (var i = 0; i < TB.wizard.variableList.length; i++) {
+            var v = TB.wizard.variableList[i];
+            if (v.category == categoryName) {
+                variables.push(v);
+            }
+        }
+
+        $(this).find('#ForeachDatasource').autocomplete({
+            delay: 0,
+            source: variables
+        });
+    },
+
+    _setNameOpen: function () {
+        $(this).find('#ForeachName').val(TB.foreach.target.find('> .foreachName').text());
+    },
+
+    _setCommentOpen: function () {
+        $(this).find('#ForeachComment').val(TB.foreach.target.find('> .foreachComment').text());
+        $(this).find('#ForeachCommentBottom').prop('checked', TB.foreach.target.find('> .foreachComment.bottom').length > 0);
+    },
+
+    _beforeConnectionDrop: function (info) {
+        console.log(info);
+
+        if ($('#' + info.sourceId).parent().is('#' + info.targetId)) {
+            return false;
+        }
+
+        return true;
+    },
+
+    _onCreateRule: function () {
+        var instance = this.data('jsPlumbInstance');
+        instance.bind('beforeDrop', TB.foreach._beforeConnectionDrop);
+    }
+}
+
+TB.onInit.push(TB.foreach.init);
 TB.rr = {
 
     templates: {
@@ -4075,6 +5204,7 @@ TB.rr = {
 TB.wfr = {
 
     onCreateItem: [],
+    onCreateRule: [],
 
     templates: {
         rule: '<div class="rule workflowRule"><div class="workflowRuleHeader"><div class="verticalLabel" style="margin-top: 0px;"></div></div><div class="swimlaneArea"></div></div>',
@@ -4084,14 +5214,49 @@ TB.wfr = {
     },
     
     contextItems: {
-        'add-swimlane': { name: 'Add swimlane', icon: 'add' },
-        'rename': { name: 'Rename rule', icon: 'edit' },
-        'delete': { name: 'Delete rule', icon: 'delete' }
+        'add-swimlane': { name: 'Add swimlane', icon: 'fa-plus' },
+        'rename': { name: 'Rename rule...', icon: 'fa-edit' },
+        'copy': { name: 'Copy rule...', icon: 'fa-clone' },
+        'delete': { name: 'Delete rule', icon: 'fa-trash' }
     },
 
     swimlaneContextItems: {
-        'remove-swimlane': { name: 'Remove swimlane', icon: 'delete' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'remove-swimlane': { name: 'Remove swimlane', icon: 'fa-trash' },
     },
+
+    roleContextItems: {
+        'delete': { name: 'Remove role', icon: 'fa-trash' }
+    },
+
+    itemContextItems: {
+        'properties': { name: 'Properties...', icon: 'fa-edit' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'sep1': '---------',
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
+        'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'sep2': '---------',
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+    actionItemContextItems: {
+        'wizard': { name: 'Wizard...', icon: 'fa-magic' },
+        'properties': { name: 'Properties...', icon: 'fa-edit' },
+        'name': { name: 'Name...', icon: 'fa-tag' },
+        'comment': { name: 'Comment...', icon: 'fa-comment' },
+        'group-to-subflow': { name: 'Group to subflow', icon: 'fa-object-group', disabled: TB.subflow.cannotBeGruped },
+        'sep1': '---------',
+        'group-to-foreach': { name: 'Group to foreach', icon: 'fa-repeat', disabled: TB.foreach.cannotBeGruped },
+        'set-as-fe-start': { name: 'Set as foreach start', icon: 'fa-play', disabled: TB.foreach.isNotInForeach },
+        'set-as-fe-end': { name: 'Set as foreach end', icon: 'fa-stop', disabled: TB.foreach.isNotInForeach },
+        'sep2': '---------',
+        'delete': { name: 'Delete', icon: 'fa-trash' }
+    },
+
+
+    currentRule: null,
 
     init: function () {
         var self = TB.wfr;
@@ -4113,10 +5278,12 @@ TB.wfr = {
             top: ruleData.PositionY
         })
         .find('.verticalLabel').html(ruleData.Name).end()
-        .attr('id', AssingID())
+        .attr({ 'id': AssingID(), 'data-id': ruleData.Id })
         .appendTo("#workflowRulesPanel .scrollArea");
         
         self.aliveRule(rule);
+        TB.callHooks(self.onCreateRule, rule, []);
+
         return rule;
     },
 
@@ -4157,6 +5324,23 @@ TB.wfr = {
                 swimlane.find('.swimlaneRolesArea .roleItemContainer').append('<div class="roleItem">' + swimlaneData.Roles[r] + '</div>');
             }
         }
+
+        // Připravíme mapování foreach id => virtual action id
+        for (var k = 0; k < swimlaneData.WorkflowItems.length; k++) {
+            var item = swimlaneData.WorkflowItems[k];
+            if (item.TypeClass == 'virtualAction' && item.SymbolType == 'foreach' && item.ParentForeachId) {
+                TB.foreach.id2VirtualId[item.ParentForeachId] = item.Id;
+            }
+        }
+
+        for (var k = 0; k < swimlaneData.Subflow.length; k++) {
+            TB.subflow.createSubflow(swimlaneData.Subflow[k], swimlane);
+        }
+
+        for (var k = 0; k < swimlaneData.Foreach.length; k++) {
+            TB.foreach.createForeach(swimlaneData.Foreach[k], swimlane, null, true);
+        }
+
         for (var k = 0; k < swimlaneData.WorkflowItems.length; k++) {
             self.createItem(swimlaneData.WorkflowItems[k], swimlane);
         }
@@ -4187,6 +5371,9 @@ TB.wfr = {
 
     createItem: function(itemData, parentSwimlane)
     {
+        if (itemData.TypeClass == 'virtualAction') // Pouze virtuální akce
+            return;
+
         var item;
         if (itemData.TypeClass === "symbol" && itemData.SymbolType === "comment") {
             item = $('<div id="wfItem' + itemData.Id + '" class="symbol" symbolType="comment" endpoints="final" style="left: ' + itemData.PositionX +
@@ -4197,7 +5384,7 @@ TB.wfr = {
             '" src="/Content/Images/TapestryIcons/' + itemData.SymbolType + '.png" style="left: ' + itemData.PositionX + 'px; top: '
             + itemData.PositionY + 'px;" />');
 
-            if (itemData.SymbolType == "envelope-start") {
+            if (itemData.SymbolType == "envelope-start" || itemData.SymbolType == "circle-event") {
                 item.data('label', itemData.Label);
             }
         } else {
@@ -4231,10 +5418,31 @@ TB.wfr = {
             item.data("conditionSets", itemData.ConditionSets);
         if (itemData.IsBootstrap != null)
             item.attr('isBootstrap', itemData.IsBootstrap);
-        if (itemData.TypeClass == "integrationItem")
-            item.addClass('integrationItem');
+        if (itemData.IsForeachStart)
+            item.append('<span class="fa fa-play"></span>');
+        if (itemData.IsForeachEnd)
+            item.append('<span class="fa fa-stop"></span>');
+       
+        if (itemData.TypeClass == 'actionItem') {
+            if (itemData.Name) item.append('<span class="itemName">' + itemData.Name + '</span>');
+            if (itemData.Comment) item.append('<span class="itemComment">' + itemData.Comment + '</span>');
+            if (itemData.CommentBottom) item.find('.itemComment').addClass('bottom');
+        }
+
+        var target;
+        switch (true) {
+            case itemData.ParentForeachId && itemData.ParentForeachId > 0:
+                target = parentSwimlane.find('.foreach[data-foreachid=' + itemData.ParentForeachId + ']');
+                break;
+            case itemData.ParentSubflowId && itemData.ParentSubflowId > 0:
+                target = parentSwimlane.find('.subflow[data-subflowid=' + itemData.ParentSubflowId + ']');
+                break;
+            default:
+                target = parentSwimlane.find('.swimlaneContentArea');
+                break;
+        }
         
-        item.appendTo(parentSwimlane.find('.swimlaneContentArea'));
+        item.appendTo(target);
         AddToJsPlumb(item);
 
         TB.callHooks(TB.wfr.onCreateItem, item, []);
@@ -4276,6 +5484,10 @@ TB.wfr = {
         });
     },
 
+    /******************************************************************/
+    /* WORKFLOW RULE EVENTS                                           */
+    /******************************************************************/
+
     _ruleDraggableRevert: function(event, ui) {
         return ($(this).collision('#workflowRulesPanel .workflowRule').length > 1);
     },
@@ -4316,6 +5528,43 @@ TB.wfr = {
         rule.css({'max-width': limits.horizontal - 10, 'max-height': limits.vertical - 10});
     },
 
+    _ruleCopy: function () {
+        var d = this;
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var wfrId = TB.wfr.currentRule.attr('data-id');
+        var targetBlockId = $('#wr-copy-target').val();
+
+        if (!targetBlockId) {
+            alert('Vyberte cílový blok.');
+        }
+        else {
+            var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '/copyWorkflow/' + wfrId + /target/ + targetBlockId;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {},
+                success: function (data) {
+                    if (data) {
+                        alert('Workflow bylo úspěšně zkopírováno.');
+                        TB.dialog.close.apply(d);
+                    }
+                    else {
+                        alert('Workflow se nepodařilo zkopírovat.');
+                    }
+                }
+            })
+        }
+    },
+
+    _ruleCopyOpen: function() {
+        $('#wr-copy-source').html(TB.wfr.currentRule.find('.verticalLabel').text());
+        $('#wr-copy-target').val('');
+    },
+
+    /******************************************************************/
+    /* SWIMLANE EVENTS                                                */
+    /******************************************************************/
     _ruleResizableStop: function (event, ui) {
         ChangedSinceLastSave = true; /// OBSOLATE
         TB.changedSinceLastSave = true;
@@ -4384,11 +5633,18 @@ TB.wfr = {
         }
     },
 
+    /******************************************************************/
+    /* CONTEXT MENU ACTIONS                                           */
+    /******************************************************************/
     _contextAction: function (key, options) {
         var self = TB.wfr;
         switch (key) {
             case 'delete': self.remove.apply(options.$trigger, []); break;
             case 'rename': self.rename.apply(options.$trigger, []); break;
+            case 'copy':
+                self.currentRule = options.$trigger;
+                TB.dialog.open('workflowCopy');
+                break;
             case 'add-swimlane': self.addSwimlane.apply(options.$trigger, []); break;
         }
     },
@@ -4397,14 +5653,181 @@ TB.wfr = {
         if (key == 'remove-swimlane') {
             TB.wfr.removeSwimlane.apply(options.$trigger, []);
         }
+        else if (key == 'group-to-subflow') {
+            TB.subflow.groupToSubflow.apply(options.$trigger, []);
+        }
+        else if (key == 'group-to-foreach') {
+            TB.foreach.groupToForeach.apply(options.$trigger, []);
+        }
     },
 
+    _roleContextAction: function (key, options) {
+        var item = options.$trigger;
+        if (key == "delete") {
+            var swimlaneRolesArea = item.parents(".swimlaneRolesArea");
+            item.remove();
+            if (swimlaneRolesArea.find(".roleItem").length == 0)
+                swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
+                    + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
+            ChangedSinceLastSave = true; /// OBSOLATE
+            TB.changedSinceLastSave = true;
+        }
+    },
+
+    _itemContextAction: function (key, options) {
+        item = options.$trigger;
+        switch (key) {
+            case "delete": {
+                currentInstance = item.parents(".rule").data("jsPlumbInstance");
+                currentInstance.removeAllEndpoints(item, true);
+                item.remove();
+                ChangedSinceLastSave = true;
+                break;
+            }
+            case "wizard": {
+                item.addClass("activeItem processedItem");
+
+                if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                    CurrentItem = item;
+                    TB.wizard.open.apply(item, []);
+                }
+                else {
+                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    item.removeClass("activeItem");
+                }
+                break;
+            }
+            case "properties": {
+                item.addClass("activeItem processedItem");
+                if (item.hasClass("tableAttribute")) {
+                    CurrentItem = item;
+                    tableAttributePropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("viewAttribute")) {
+                    CurrentItem = item;
+                    gatewayConditionsDialog.dialog("open");
+                }
+                else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
+                    CurrentItem = item;
+                    actionPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x") {
+                    CurrentItem = item;
+                    gatewayConditionsDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start") {
+                    CurrentItem = item;
+                    envelopeStartPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start") {
+                    CurrentItem = item;
+                    envelopeStartPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symboltype") == "circle-event") {
+                    CurrentItem = item;
+                    circleEventPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("uiItem")) {
+                    CurrentItem = item;
+                    uiitemPropertiesDialog.dialog("open");
+                }
+                else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
+                    CurrentItem = item;
+                    labelPropertyDialog.dialog("open");
+                }
+                else {
+                    alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
+                    item.removeClass("activeItem");
+                }
+                break;
+            }
+            case 'name': {
+                CurrentItem = item;
+                TB.dialog.open('actionItemName');
+                break;
+            }
+            case 'comment': {
+                CurrentItem = item;
+                TB.dialog.open('actionItemComment');
+                break;
+            }
+            case 'group-to-subflow': {
+                TB.subflow.groupToSubflow.apply(options.$trigger, []);
+                break;
+            }
+            case 'group-to-foreach': {
+                TB.foreach.groupToForeach.apply(options.$trigger, []);
+                break;
+            }
+            case 'set-as-fe-start': {
+                TB.foreach.setStart.apply(options.$trigger, []);
+                break;
+            }
+            case 'set-as-fe-end': {
+                TB.foreach.setEnd.apply(options.$trigger, []);
+                break;
+            }
+        }
+    },
+
+    /*******************************************************************/
+    /* DIALOG ACTIONS                                                  */
+    /*******************************************************************/
+    _actionItemSetNameOpen: function() {
+        $(this).find('#ActionName').val($(CurrentItem).find('.itemName').text());
+    },
+
+    _actionItemSetName: function () {
+        var name = $(this).find('#ActionName').val();
+        var item = $(CurrentItem);
+
+        if (name.length) {
+            if (!item.find('.itemName').length) {
+                item.append('<span class="itemName" />');
+            }
+            item.find('.itemName').html(name);
+        }
+        else {
+            item.find('.itemName').remove();
+        }
+        
+        CurrentItem = null;
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+        TB.dialog.close.apply(this);
+    },
+
+    _actionItemSetCommentOpen: function() {
+        $(this).find('#ActionComment').val($(CurrentItem).find('.itemComment').text());
+        $(this).find('#ActionCommentBottom').prop('checked', $(CurrentItem).find('.itemComment').hasClass('bottom'));
+    },
+
+    _actionItemSetComment: function () {
+        var comment = $(this).find('#ActionComment').val();
+        var item = $(CurrentItem);
+
+        if (name.length) {
+            if (!item.find('.itemComment').length) {
+                item.append('<span class="itemComment" />');
+            }
+            item.find('.itemComment').toggleClass('bottom', $('#ActionCommentBottom').is(':checked')).html(comment);
+        }
+        else {
+            item.find('.itemComment').remove();
+        }
+
+        CurrentItem = null;
+        ChangedSinceLastSave = true; /// OBSOLATE
+        TB.changedSinceLastSave = true;
+        TB.dialog.close.apply(this);
+    },
+    
     /*************************************************/
     /* SEARCH IN WORKFLOW's                          */
     /*************************************************/
 
     _keyDown: function (e) {
-        if (e.ctrlKey || e.metaKey) {
+        if ((e.ctrlKey && e.shiftKey) || e.metaKey) {
             if (String.fromCharCode(e.which).toLowerCase() == 'f') {
                 e.preventDefault();
 
@@ -4530,6 +5953,161 @@ TB.toolbox = {
     }
 };
 
+TB.dialog = {
+
+    dialogList: {},
+
+    dialogDefaults: {
+        autoOpen: false,
+        width: 'auto',
+        height: 'auto',
+        create: function () {
+            var d = $(this).parents('.ui-dialog');
+            var buttons = d.find('.ui-dialog-buttonset button');
+            var dialogId = $(this).data('dialogId');
+
+            $.each(TB.dialog.dialogList[dialogId].options.buttons, function (index) {
+                buttons.eq(index).addClass(this.className);
+                if (this.icon) {
+                    buttons.eq(index).prepend('<span class="fa ' + this.icon + '"></span> ');
+                }
+            });
+
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    TB.dialog.dialogList[dialogId].submit.apply(this, []);
+                    return false;
+                }
+            });
+
+            d.find('.ui-dialog-buttonset').css('float', 'none');
+        }
+    },
+
+    init: function()
+    {
+        var self = TB.dialog;
+        for (var k in self.dialogList) {
+            var d = self.dialogList[k];
+            $(d.target).data('dialogId', k);
+            $(d.target).dialog($.extend(self.dialogDefaults, d.options));
+        }
+    },
+
+    open: function(dialogId) {
+        $(TB.dialog.dialogList[dialogId].target).dialog('open');
+    },
+
+    close: function () {
+        $(this).dialog('close');
+    }
+};
+
+TB.dialog.dialogList = {
+    actionItemName: {
+        target: '#action-item-name-dialog',
+        submit: TB.wfr._actionItemSetName,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.wfr._actionItemSetName, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.wfr._actionItemSetNameOpen
+        }
+    },
+    actionItemComment: {
+        target: '#action-item-comment-dialog',
+        submit: TB.wfr._actionItemSetComment,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.wfr._actionItemSetComment, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.wfr._actionItemSetCommentOpen
+        }
+    },
+    workflowCopy: {
+        target: '#workflow-copy-dialog',
+        submit: TB.wfr._ruleCopy,
+        options: {
+            buttons: [
+                { text: 'Copy', click: TB.wfr._ruleCopy, className: 'btn btn-success pull-right', icon: 'fa-clone' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-defult', icon: 'fa-times' }
+            ],
+            open: TB.wfr._ruleCopyOpen,
+            width: 600
+        }
+    },
+    save: {
+        target: '#save-dialog',
+        submit: TB.save.saveBlock,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.save.saveBlock, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.save._dialogOpen,
+            width: 400
+        }
+    },
+    subflowName: {
+        target: '#subflow-name-dialog',
+        submit: TB.subflow.setName,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.subflow.setName, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.subflow._setNameOpen
+        }
+    },
+    subflowComment: {
+        target: '#subflow-comment-dialog',
+        submit: TB.subflow.setComment,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.subflow.setComment, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.subflow._setCommentOpen
+        }
+    },
+    foreachDatasource: {
+        target: '#foreach-datasource-dialog',
+        submit: TB.foreach.setDatasource,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.foreach.setDatasource, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.foreach._setDatasourceOpen
+        }
+    },
+    foreachName: {
+        target: '#foreach-name-dialog',
+        submit: TB.foreach.setName,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.foreach.setName, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.foreach._setNameOpen
+        }
+    },
+    foreachComment: {
+        target: '#foreach-comment-dialog',
+        submit: TB.foreach.setComment,
+        options: {
+            buttons: [
+                { text: 'Save', click: TB.foreach.setComment, className: 'btn btn-success pull-right', icon: 'fa-check' },
+                { text: 'Cancel', click: TB.dialog.close, className: 'btn btn-default', icon: 'fa-times' }
+            ],
+            open: TB.foreach._setCommentOpen
+        }
+    }
+}
+
+TB.onInit.push(TB.dialog.init);
 TB.context = {
 
     defaultSettings: {
@@ -4537,10 +6115,10 @@ TB.context = {
         zIndex: 300
     },
 
-    init: function()
+    init: function() 
     {
         var ds = TB.context.defaultSettings; 
-
+        
         $.contextMenu($.extend(ds, {
             selector: '.resourceRule',
             callback: TB.rr._contextAction,
@@ -4560,6 +6138,36 @@ TB.context = {
         }));
 
         $.contextMenu($.extend(ds, {
+            selector: '.swimlaneRolesArea .roleItem',
+            callback: TB.wfr._roleContextAction,
+            items: TB.wfr.roleContextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item:not(.actionItem), .symbol',
+            callback: TB.wfr._itemContextAction,
+            items: TB.wfr.itemContextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.item.actionItem',
+            callback: TB.wfr._itemContextAction,
+            items: TB.wfr.actionItemContextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.subflow',
+            callback: TB.subflow._contextAction,
+            items: TB.subflow.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
+            selector: '.foreach',
+            callback: TB.foreach._contextAction,
+            items: TB.foreach.contextItems
+        }));
+
+        $.contextMenu($.extend(ds, {
             selector: '.tableRow',
             callback: function (key, options) {
                 if (key == "model") {
@@ -4571,120 +6179,6 @@ TB.context = {
             },
             items: {
                 "model": { name: "Set as model", icon: "edit" }
-            }
-        }));
-
-        $.contextMenu($.extend(ds, {
-            selector: '.swimlaneRolesArea .roleItem',
-            callback: function (key, options) {
-                var item = options.$trigger;
-                if (key == "delete") {
-                    var swimlaneRolesArea = item.parents(".swimlaneRolesArea");
-                    item.remove();
-                    if (swimlaneRolesArea.find(".roleItem").length == 0)
-                        swimlaneRolesArea.append($('<div class="rolePlaceholder"><div class="rolePlaceholderLabel">'
-                            + 'Pokud chcete specifikovat roli<br />přetáhněte ji do této oblasti</div></div>'));
-                    ChangedSinceLastSave = true; /// OBSOLATE
-                    TB.changedSinceLastSave = true;
-                }
-            },
-            items: {
-                "delete": { name: "Remove role", icon: "delete" }
-            }
-        }));
-
-        $.contextMenu($.extend(ds, {
-            selector: '.item:not(.actionItem), .symbol',
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
-                    currentInstance.removeAllEndpoints(item, true);
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "properties") {
-                    item.addClass("activeItem processedItem");
-                    if (item.hasClass("tableAttribute")) {
-                        CurrentItem = item;
-                        tableAttributePropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("viewAttribute")) {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        actionPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symboltype") == "gateway-x")
-                    {
-                        CurrentItem = item;
-                        gatewayConditionsDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symboltype") == "envelope-start")
-                    { 
-                        CurrentItem = item;
-                        envelopeStartPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("uiItem")) {
-                        CurrentItem = item;
-                        uiitemPropertiesDialog.dialog("open");
-                    }
-                    else if (item.hasClass("symbol") && item.attr("symbolType") === "comment") {
-                        CurrentItem = item;
-                        labelPropertyDialog.dialog("open");
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
-                }
-            },
-            items: {
-                "properties": { name: "Properties", icon: "edit" },
-                "delete": { name: "Delete", icon: "delete" }
-            }
-        }));
-
-        $.contextMenu($.extend(ds, {
-            selector: '.item.actionItem',
-            callback: function (key, options) {
-                item = options.$trigger;
-                if (key == "delete") {
-                    currentInstance = item.parents(".rule").data("jsPlumbInstance");
-                    currentInstance.removeAllEndpoints(item, true);
-                    item.remove();
-                    ChangedSinceLastSave = true;
-                }
-                else if (key == "wizard") {
-                    item.addClass("activeItem processedItem");
-
-                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        TB.wizard.open.apply(item, []);
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
-                }
-                else if (key == "properties") {
-                    item.addClass("activeItem processedItem");
-                    if (item.hasClass("actionItem") && item.parents(".rule").hasClass("workflowRule")) {
-                        CurrentItem = item;
-                        actionPropertiesDialog.dialog("open");
-                    }
-                    else {
-                        alert("Pro tento typ objektu nejsou dostupná žádná nastavení.");
-                        item.removeClass("activeItem");
-                    }
-                }
-            },
-            items: {
-                "wizard": { name: "Wizard", icon: "fa-magic" },
-                "properties": { name: "Properties", icon: "edit" },
-                "delete": { name: "Delete", icon: "delete" }
             }
         }));
     }
@@ -4865,8 +6359,6 @@ TB.wizard = {
 
             iSet.appendTo(form);
             oSet.appendTo(form);
-
-            console.log(inputVarsValues);
 
             if (action.inputVars.length || inputVarsValues.length) {
                 for (var i = 0; i < action.inputVars.length; i++) {
@@ -5473,6 +6965,8 @@ TB.wizard = {
                 });
             }
         }
+
+        self.variableList.sort(self.sort);
     },
 
     _workflowCreateItem: function() {
@@ -5571,6 +7065,187 @@ TB.wizard = {
 };
 
 TB.onInit.push(TB.wizard.init);
+TB.lock = {
+
+    isLocked : false,
+    isLockedForCurrentUser: false,
+    currentCommitId: null,
+    lockStatusId: null,
+
+    init: function () {
+        var self = TB.lock;
+
+        TB.load.onLoadBlock.push(self._blockLoad);
+        TB.save.onBeforeSave.push($.proxy(self._beforeSave, self));
+        TB.save.onAfterSave.push($.proxy(self._afterSave, self));
+    },
+
+    _blockLoad: function () {
+
+        // this = AjaxTapestryDesignerBlockCommit
+
+        TB.lock.isLocked = this.LockedForUserId != null && this.LockedForUserId != Number($('#currentUserId').val());
+        TB.lock.isLockedForCurrentUser = this.LockedForUserId == Number($('#currentUserId').val());
+        TB.lock.LockedForUserName = this.LockedForUserName;
+        if (TB.lock.isLockedForCurrentUser) {
+            $('#btnLock').html('Odemknout');
+        } else {
+            $('#btnLock').html('Zamknout');
+
+        }
+
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var userId = $('#currentUserId').val();
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/getLastCommit/';
+
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+           
+            success: function (result) {
+                TB.lock.currentCommitId = result;
+            }
+        });
+    },
+
+
+    _btnLockClick: function () {
+        pageSpinner.show();
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var userId = $('#currentUserId').val();
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + TB.lock.currentCommitId;
+
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            complete: pageSpinner.hide,
+            success: TB.lock._lockTheBlock
+        });
+    },
+     
+    _lockTheBlock: function (result) {
+        pageSpinner.show();
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var userId = $('#currentUserId').val();
+        if (result.lockStatusId == 0 && $('#btnLock').text() == 'Zamknout') { //if block is not locked  and lockBUttonText= Zamknout
+            var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/lockBlock/' + userId;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                complete: pageSpinner.hide,
+                success: TB.lock._onLock
+            });
+            alert("This block has been successfully locked");
+        }
+
+        else if (result.lockStatusId == 2) { //if block is locked and id = currentuserId and lockBUttonText= Odemknout
+            var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/unlockBlock/';
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                complete: pageSpinner.hide,
+                success: TB.lock._onUnlock
+            });
+            alert("This block has been successfully unlocked");
+
+        }
+
+        else if (result.lockStatusId == 3)
+        {
+            alert('This block has been recently updated,please reload the latest version of it and try again');
+        }
+        else {
+            alert('This block has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
+
+        }
+    },
+
+    _onLock: function (result) {
+        if (result) {
+            $('#btnLock').html('Odemknout');
+            TB.lock.isLockedForCurrentUser = true;
+        }else{
+            $('#btnLock').html('Zamknout');
+            TB.lock.isLockedForCurrentUser = false;
+        }
+    },
+
+    _onUnlock: function (result) {
+        if (result) {
+            $('#btnLock').html('Zamknout');
+            TB.lock.isLockedForCurrentUser = false;
+        } else {
+            $('#btnLock').html('Odemknout');
+            TB.lock.isLockedForCurrentUser = true;
+        }
+    },
+
+
+    _beforeSave: function () {
+        pageSpinner.show();
+
+        var appId = $('#currentAppId').val();
+        var blockId = $('#currentBlockId').val();
+        var userId = $('#currentUserId').val();
+        if (this.currentCommitId == null) {
+            this.currentCommitId = -1;
+        }
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + this.currentCommitId;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            async: false,
+            complete: pageSpinner.hide,
+            success: $.proxy(this._checkLockBeforeSave, this)
+        });
+
+        return this.lockStatusId == 2;
+    },
+    
+    _checkLockBeforeSave: function (result) {
+        this.lockStatusId = result.lockStatusId;
+        switch (this.lockStatusId) {
+            case 3: {
+                alert('The block has been recently updated, please load the latest version of this block to get around overwriting others commit');
+                break;
+            }
+            case 2: { // mohu uložit kdyz lockedUserid == muj id
+                break;
+            }
+            case 1: {
+                alert('The block is currently locked by user ' + result.lockedForUserName + ',please wait until this user unlock this block');
+                break;
+            }
+            default: {
+                alert('The block is not locked,please lock the block before saving it');
+                break;
+            }
+        }
+    },
+
+    _afterSave: function (lastCommitId) {
+        $('#btnLock').html('Zamknout');
+        this.isLockedForCurrentUser = false;
+        this.currentCommitId = lastCommitId;
+    }
+};
+
+TB.onInit.push(TB.lock.init);
+
+
 function LoadModuleAdminScript() {
     $("#moduleAdminPanel .moduleSquare").on("click", function () {
         $("#moduleAdminPanel .moduleSquare").removeClass("selectedSquare");
@@ -6052,387 +7727,10 @@ function LoadMetablock() {
     });
 }
 
-var ZoomFactor = 1.0;
-var currentBlock, currentMetablock;
-var ChangedSinceLastSave = false;
-
 $(function () {
     if (CurrentModuleIs("overviewModule")) {
-        $("#headerMetablockName").on("click", function () {
-            renameMetablockDialog.dialog("open");
-        });
-        $("#btnAddBlock").on("click", function () {
-            addBlockDialog.dialog("open");
-        });
-        $("#btnAddMetablock").on("click", function () {
-            addMetablockDialog.dialog("open");
-        });
-        $("#btnLoad").on("click", function () {
-            if (ChangedSinceLastSave)
-                confirmed = confirm("Máte neuložené změny, opravdu si přejete tyto změny zahodit?");
-            else
-                confirmed = true;
-            if (confirmed) {
-                LoadMetablock();
-            }
-        });
-        $("#btnMenuOrder").on("click", function () {
-            location.href = "/Tapestry/Overview/MenuOrder/" + $('#currentMetablockId').val();
-        });
-        $("#btnSave").on("click", function () {
-            SaveMetablock();
-        });
-        $("#btnClear").on("click", function () {
-            $("#overviewPanel .block, #overviewPanel .metablock").each(function (index, element) {
-                instance.removeAllEndpoints(element, true);
-                $(element).remove();
-            });
-        });
-        $("#btnGoUp").on("click", function () {
-            SaveMetablock(function () {
-                openMetablockForm = $("#openMetablockForm");
-                openMetablockForm.find("input[name='metablockId']").val($("#parentMetablockId").val());
-                openMetablockForm.submit();
-            });
-        });
-        window.onbeforeunload = function () {
-            if (ChangedSinceLastSave)
-                SaveMetablock(null, true);
-            return null;
-        };
-        $("#btnTrash").on("click", function () {
-            trashDialog.dialog("open");
-        });
-        $("#btnZoomIn").on("click", function () {
-            ZoomFactor += 0.1;
-            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
-            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
-        });
-        $("#btnZoomOut").on("click", function () {
-            if (ZoomFactor >= 0.2)
-                ZoomFactor -= 0.1;
-            $("#overviewPanel .scrollArea").css("transform", "scale(" + ZoomFactor + ")");
-            $("#zoomLabel").text("Zoom " + Math.floor(ZoomFactor * 100) + "%");
-        });
-        $.contextMenu({
-            selector: '.block, .metablock',
-            trigger: 'right',
-            zIndex: 300,
-            callback: function (key, options) {
-                switch(key)
-                {
-                    case "delete": {
-                        instance.removeAllEndpoints(options.$trigger, true);
-                        options.$trigger.remove();
-                        ChangedSinceLastSave = true;
-                        SaveMetablock();
-                        break;
-                    }
-                    case "initial": {
-                        if (options.$trigger.hasClass("metablock")) {
-                            $("#overviewPanel .metablock").each(function (index, element) {
-                                $(element).attr("isInitial", false);
-                                $(element).find(".metablockInfo").text("");
-                            });
-                            options.$trigger.attr("isInitial", true);
-                            options.$trigger.find(".metablockInfo").text("Initial");
-                        }
-                        else {
-                            $("#overviewPanel .block").each(function (index, element) {
-                                $(element).attr("isInitial", false);
-                                $(element).find(".blockInfo").text("");
-                            });
-                            options.$trigger.attr("isInitial", true);
-                            options.$trigger.find(".blockInfo").text("Initial");
-                        }
-                        ChangedSinceLastSave = true;
-                        break;
-                    }
-                    case "properties": {
-                        if (options.$trigger.hasClass("metablock")) {
-                            currentMetablock = options.$trigger;
-                            metablockPropertiesDialog.dialog("open");
-                        }
-                        else {
-                            currentBlock = options.$trigger;
-                            blockPropertiesDialog.dialog("open");
-                        }
-                        break;
-                    }
-                }
-            },
-            items: {
-                "properties": { name: "Properties", icon: "cog" },
-                "initial": { name: "Set as initial", icon: "edit" },
-                "delete": { name: "Delete", icon: "delete" }
-            }
-        });
-    }
-});
-
-$(function () {
-    if (CurrentModuleIs("overviewModule")) {
-        addBlockDialog = $("#add-block-dialog").dialog({
-            autoOpen: false,
-            resizable: false,
-            width: 400,
-            height: 140,
-            buttons: {
-                "Add": function () {
-                    addBlockDialog_SubmitData();
-                },
-                Cancel: function () {
-                    addBlockDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        addBlockDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
-            open: function () {
-                $(this).find("#block-name").val("");
-            }
-        });
-        function addBlockDialog_SubmitData() {
-            blockName = addBlockDialog.find("#block-name").val();
-            newBlock = $('<div class="block"><div class="blockName">' + blockName + '</div><div class="blockInfo"></div></div>');
-            $("#overviewPanel .scrollArea").append(newBlock);
-            instance.draggable(newBlock, { containment: "parent" });
-            newBlock.css("top", $("#overviewPanel").scrollTop() + 20);
-            newBlock.css("left", $("#overviewPanel").scrollLeft() + 20);
-            newBlock.on("dblclick", function () {
-                blockToOpen = $(this);
-                SaveMetablock(function () {
-                    openBlockForm = $("#openBlockForm");
-                    openBlockForm.find("input[name='blockId']").val(blockToOpen.attr("blockId"));
-                    openBlockForm.submit();
-                });
-            });
-            ChangedSinceLastSave = true;
-            addBlockDialog.dialog("close");
-        }
-        addMetablockDialog = $("#add-metablock-dialog").dialog({
-            autoOpen: false,
-            resizable: false,
-            width: 400,
-            height: 140,
-            buttons: {
-                "Add": function () {
-                    addMetablockDialog_SubmitData();
-                },
-                Cancel: function () {
-                    addMetablockDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        addMetablockDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
-            open: function () {
-                $(this).find("#metablock-name").val("");
-            }
-        });
-        function addMetablockDialog_SubmitData() {
-            metablockName = addMetablockDialog.find("#metablock-name").val();
-            newMetablock = $('<div class="metablock"><div class="metablockName">'
-                + metablockName + '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo"></div></div>');
-            $("#overviewPanel .scrollArea").append(newMetablock);
-            instance.draggable(newMetablock, { containment: "parent" });
-            newMetablock.css("top", $("#overviewPanel").scrollTop() + 20);
-            newMetablock.css("left", $("#overviewPanel").scrollLeft() + 20);
-            newMetablock.on("dblclick", function () {
-                metablockToOpen = $(this);
-                SaveMetablock(function () {
-                    openMetablockForm = $("#openMetablockForm");
-                    openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
-                    openMetablockForm.submit();
-                });
-            });
-            ChangedSinceLastSave = true;
-            addMetablockDialog.dialog("close");
-        }
-        trashDialog = $("#trash-dialog").dialog({
-            autoOpen: false,
-            resizable: false,
-            width: 700,
-            height: 540,
-            buttons: {
-                "Load": function () {
-                    trashDialog_SubmitData();
-                },
-                Cancel: function () {
-                    trashDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        trashDialog_SubmitData();
-                        return false;
-                    }
-                })                           
-            },
-            open: function (event, ui) {
-                trashDialog.find("#metablock-table:first tbody:nth-child(2) tr").remove();
-                trashDialog.find("#block-table:first tbody:nth-child(2) tr").remove();
-                trashDialog.find(" .spinner-2").show();
-                trashDialog.data("selectedMetablock", null);
-                trashDialog.data("selectedBlock", null);
-                appId = $("#currentAppId").val();
-                blockId = $("#currentBlockId").val();
-                $.ajax({
-                    type: "GET",
-                    url: "/api/database/apps/" + appId + "/trashDialog",
-                    dataType: "json",
-                    success: function (data) {
-                        tBlockBody = trashDialog.find("#block-table tbody:nth-child(2)");
-                        tMetablockBody = trashDialog.find("#metablock-table tbody:nth-child(2)");
-                        blockIdArray = [];
-                        metablockIdArray = [];
-
-                        // Fill blocks in the block-table rows
-                        for (i = 0; i < data[0].length; i++) {
-                            blockIdArray.push(data[0][i].Id);
-                            newRow = $('<tr class="blockRow"><td>' + data[0][i].Name + '</td></tr>');
-                            tBlockBody.append(newRow);
-                        }
-
-                        // Highlight the selected block row
-                        $(document).on('click', '#block-table tr.blockRow', function (event) {
-                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
-                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
-                            $(this).addClass("highlightedBlockRow");
-                            var rowIndex = $(this).index();
-                            trashDialog.data("selectedBlockOrMetablock", data[0][rowIndex]);
-                            trashDialog.data("selectedTypeOfBlock", "block");
-                        });
-
-                        // Fill metablocks in the metablock-table rows
-                        for (i = 0; i < data[1].length; i++) {
-                            metablockIdArray.push(data[1][i].Id);
-                            newRow = $('<tr class="blockRow"><td>' + data[1][i].Name + '</td></tr>');
-                            tMetablockBody.append(newRow);
-                        }
-
-                        // Highlight the selected metablock row
-                        $(document).on('click', '#metablock-table tr.blockRow', function (event) {
-                            trashDialog.find("#block-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
-                            trashDialog.find("#metablock-table tbody:nth-child(2) tr").removeClass("highlightedBlockRow");
-                            $(this).addClass("highlightedBlockRow");
-                            var rowIndex = $(this).index();
-                            trashDialog.data("selectedBlockOrMetablock", data[1][rowIndex]);
-                            trashDialog.data("selectedTypeOfBlock", "metablock");
-                        });
-
-                        trashDialog.find(".spinner-2").hide();
-                    }
-                });
-            }
-        });
-        function trashDialog_SubmitData() {
-            if (trashDialog.data("selectedBlockOrMetablock")) {
-                trashDialog.dialog("close");
-                if (ChangedSinceLastSave)
-                    confirmed = confirm("You have unsaved changes. Do you really want to discard unsaved changes?");
-                else
-                    confirmed = true;
-                if (confirmed) {
-                    // Draw block or metablock as user chose
-                    if (trashDialog.data("selectedTypeOfBlock") == "block") {
-                        currentBlockData = trashDialog.data("selectedBlockOrMetablock");
-                        newBlock = $('<div class="block" id="block' + currentBlockData.Id + '" isInitial="' + currentBlockData.IsInitial + '" style="left: '
-                            + currentBlockData.PositionX + 'px; top: ' + currentBlockData.PositionY + 'px;" blockId="'
-                            + currentBlockData.Id + '" tableId="' + currentBlockData.AssociatedTableId + '"><div class="blockName">'
-                            + currentBlockData.Name + '</div><div class="blockInfo">'
-                            + (currentBlockData.IsInitial ? 'Initial' : '') + '</div></div>');
-                        newBlock.data("IsInMenu", currentBlockData.IsInMenu);
-                        $("#overviewPanel .scrollArea").append(newBlock);
-                        instance.draggable(newBlock, {
-                            containment: "parent",
-                            stop: function () {
-                                ChangedSinceLastSave = true;
-                            }
-                        });
-                        newBlock.on("dblclick", function () {
-                            blockToOpen = $(this);
-                            SaveMetablock(function () {
-                                openBlockForm = $("#openBlockForm");
-                                openBlockForm.find("input[name='blockId']").val(blockToOpen.attr("blockId"));
-                                openBlockForm.submit();
-                            });
-                        });
-
-                        SaveMetablock();
-                    } else {
-                        currentMetablockData = trashDialog.data("selectedBlockOrMetablock");
-                        newMetablock = $('<div class="metablock" id="metablock' + currentMetablockData.Id + '" isInitial="' + currentMetablockData.IsInitial + '"style="left: '
-                        + currentMetablockData.PositionX + 'px; top: ' + currentMetablockData.PositionY + 'px;" metablockId="' +
-                        currentMetablockData.Id + '"><div class="metablockName">' + currentMetablockData.Name +
-                        '</div><div class="metablockSymbol fa fa-th-large"></div><div class="metablockInfo">'
-                        + (currentMetablockData.IsInitial ? 'Initial' : '') + '</div></div>');
-                        newMetablock.data("IsInMenu", currentMetablockData.IsInMenu);
-                        $("#overviewPanel .scrollArea").append(newMetablock);
-                        instance.draggable(newMetablock, {
-                            containment: "parent",
-                            stop: function () {
-                                ChangedSinceLastSave = true;
-                            }
-                        });
-
-                        newMetablock.on("dblclick", function () {
-                            metablockToOpen = $(this);
-                            SaveMetablock(function () {
-                                openMetablockForm = $("#openMetablockForm");
-                                openMetablockForm.find("input[name='metablockId']").val(metablockToOpen.attr("metablockId"));
-                                openMetablockForm.submit();
-                            });
-                        });
-
-                        SaveMetablock();
-                    }             
-                }
-            }
-            else
-                alert("Please select a block");
-        }
-        renameMetablockDialog = $("#rename-metablock-dialog").dialog({
-            autoOpen: false,
-            width: 400,
-            height: 190,
-            buttons: {
-                "Save": function () {
-                    renameMetablockDialog_SubmitData();
-                },
-                Cancel: function () {
-                    renameMetablockDialog.dialog("close");
-                }
-            },
-            create: function () {
-                $(this).keypress(function (e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        renameMetablockDialog_SubmitData();
-                        return false;
-                    }
-                })
-            },
-            open: function () {
-                renameMetablockDialog.find("#metablock-name").val($("#headerMetablockName").text());
-            }
-        });
-        function renameMetablockDialog_SubmitData() {
-            renameMetablockDialog.dialog("close");
-            $("#headerMetablockName").text(renameMetablockDialog.find("#metablock-name").val());
-            ChangedSinceLastSave = true;
-        }
-
+        
+        
         blockPropertiesDialog = $('#block-properties-dialog').dialog({
             autoOpen: false,
             width: 500,
@@ -7986,7 +9284,8 @@ function SaveDbScheme(commitMessage) {
             pageSpinner.hide();
         },
         success: function () {
-            alert("OK");
+            alert("The database scheme has been successfully saved!");
+            $('#btnLockScheme').html('Lock scheme');
         }
     });
 }
@@ -7994,6 +9293,8 @@ function SaveDbScheme(commitMessage) {
 function LoadDbScheme(commitId) {
     pageSpinner.show();
     appId = $("#currentAppId").val();
+    currentUserId = $("#currentUserId").val();
+
     $.ajax({
         type: "GET",
         url: "/api/database/apps/" + appId + "/commits/" + commitId,
@@ -8002,6 +9303,7 @@ function LoadDbScheme(commitId) {
             pageSpinner.hide()
         },
         success: function (data) {
+          
             ClearDbScheme();
             for (i = 0; i < data.Tables.length; i++) {
                 newTable = $('<div class="dbTable"><div class="dbTableHeader"><div class="deleteTableIcon fa fa-remove"></div><div class="dbTableName">'
@@ -8142,11 +9444,16 @@ $(function () {
         $("#btnAddView").on("click", function () {
             addViewDialog.dialog("open");
         });
+        $("#btnLockScheme").on("click", function () {
+            console.log(DD);
+            DD.lock._lockSchemeClick();
+        });
+
         $("#switchToWorkflow").on("click", function () {
             window.location = "/workflow";
         });
         $("#btnSaveScheme").on("click", function () {
-            saveDialog.dialog("open");
+            DD.lock._save();
         });
         $("#btnLoadScheme").on("click", function () {
             LoadDbScheme("latest");
@@ -8790,7 +10097,191 @@ $(function () {
     }
 });
 
+var DD = {
+
+    onInit: [],
+
+    init: function () {
+
+        var self = DD;
+
+        self.callHooks(self.onInit, null, []);
+    },
+
+    callHooks: function (hooks, context, params) {
+        for (var i = 0; i < hooks.length; i++) {
+            hooks[i].apply(context, params);
+        }
+    }
+};
+
+if (CurrentModuleIs("dbDesignerModule")) {
+    $(DD.init);
+}
+DD.lock = {
+
+    appId: null, //current app id
+    currentUserId: null, //current user id
+    currentUserName:null, //currentUserName
+    isLockedForCurrentUser: false,
+    isLocked: false,
+    CurrentSchemeCommitId: null,
+    
+    init: function () {
+        pageSpinner.show();
+        var self = DD.lock;
+        self.appId = $("#currentAppId").val();
+        self.currentUserId = $("#currentUserId").val();
+        self.currentUserName = $("#currentUserName").val(); //optional: currentUser name
+        console.log("appId: " + self.appId + " | currentUser: " + self.currentUserId);
+        $('.top-bar-container').html($('#appName').val()); //ApplicationName on top panel
+
+        $.ajax({
+            type: "GET",
+            url: "/api/database/apps/" + appId + "/commits/latest",
+            dataType: "json",
+            complete: function () {
+                pageSpinner.hide()
+            },
+            success: function (data) {
+                self.CurrentSchemeCommitId = data.CurrentSchemeCommitId;
+
+                DD.lock.isLockedForCurrentUser = data.SchemeLockedForUserId != null && DD.lock.currentUserId == data.SchemeLockedForUserId;
+                DD.lock.isLocked = data.SchemeLockedForUserId != null && DD.lock.currentUserId != data.SchemeLockedForUserId;
+
+                if (DD.lock.isLockedForCurrentUser) {
+                    $('#btnLockScheme').html('Unlock scheme');
+                }
+                else if (DD.lock.isLocked) {
+                    $('.top-bar-container').html($('#appName').val() + ' - ' + data.SchemeLockedForUserName + ' is working with Entitron!');
+                }
+                else {
+
+                    $('#btnLockScheme').html('Lock scheme');
+                    $('.top-bar-container').html($('#appName').val()); //ApplicationName on top panel
+                }
+            }
+        });
+    },
+
+    _lockSchemeClick: function () {  //when user clicks to lock scheme
+        pageSpinner.show();
+        var appId = self.appId;
+        var userId = self.currentUserId;
+        var CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
+
+        var url = "/api/database/apps/" + appId + "/isSchemeLocked/" + userId + "/" + CurrentSchemeCommitId;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            complete: pageSpinner.hide,
+            success: DD.lock._lockScheme
+        });
+
+    },
+
+    _lockScheme: function(result){
+        if (result.lockStatusId == 0) //if scheme is not locked
+        {
+            pageSpinner.show();
+            var appId = self.appId;
+            var userId = self.currentUserId;
+
+            var url = "/api/database/apps/" + appId + "/LockScheme/" + userId  ;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                complete: pageSpinner.hide,
+                success: DD.lock._onLock
+            });
+            alert("Scheme has been successfully locked");
+
+        }
+        else if (result.lockStatusId == 2) //if scheme is locked for me => unlock now
+        {
+            pageSpinner.show();
+            var appId = self.appId;
+            var userId = self.currentUserId;
+
+            var url = "/api/database/apps/" + appId + "/UnlockScheme/" + userId;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                complete: pageSpinner.hide,
+                success: DD.lock._onUnlock
+            });
+            alert("Scheme has been successfully unlocked");
+
+        }
+        else if (result.lockStatusId == 3) {
+            alert('Application scheme has been recently updated,please reload the latest version of it and try again');
+        }
+        else {
+            alert('Applicaton scheme has been locked by ' + result.lockedForUserName + ' ,please wait untill this user unlocks it');
+
+        }
+    },
+
+    _onLock: function (result) {
+
+        if (result) {
+            $('#btnLockScheme').html('Unlock scheme');
+        } 
+    },
+    _onUnlock: function (result) {
+
+        if (result) {
+            $('#btnLockScheme').html('Lock scheme');
+        }
+    },
+
+    _save: function () {
+        pageSpinner.show();
+        var appId = self.appId;
+        var userId = self.currentUserId;
+        var CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
+        if (CurrentSchemeCommitId == null) {
+            CurrentSchemeCommitId = -1;
+        }
+        var url = "/api/database/apps/" + appId + "/isSchemeLocked/" + userId + "/" + CurrentSchemeCommitId;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            complete: pageSpinner.hide,
+            success: DD.lock._onSaveScheme
+        });
+
+    },
+    _onSaveScheme: function (result) {
+        if (result.lockStatusId == 3) {
+            alert('The scheme has been recently updated, please firstly load the latest version to get around overwriting others commit');
+        }
+        else if (result.lockStatusId == 2) {  // mohu uložit kdyz lockedUserid == muj id
+            saveDialog.dialog("open");
+          
+        }
+        else if (result.lockStatusId == 1) {
+            alert('The scheme is currently locked by user ' + result.lockedForUserName + ',please wait until this user unlock it');
+        }
+        else {
+            alert('The scheme is not locked,please lock the scheme before saving it');
+        }
+
+    }
+  
+};
+
+DD.onInit.push(DD.lock.init);
 var CurrentAppId;
+var CurrentExportUrl;
 
 $(function () {
     appPropertiesDialog = $("#app-properties-dialog").dialog({
@@ -8923,6 +10414,32 @@ $(function () {
         width: 640,
         height: 320
     });
+    exportAppDialog = $("#export-application-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 660,
+        height: 380,
+        buttons: {
+            "Exportovat": function () {
+                exportAppDialog_SubmitData();
+            },
+            "Zrušit": function () {
+                exportAppDialog.dialog("close");
+            }
+        },
+        create: function () {
+            $(this).keypress(function (e) {
+                if (e.keyCode == $.ui.keyCode.ENTER) {
+                    exportAppDialog_SubmitData();
+                    return false;
+                }
+            });
+        }
+    });
+    function exportAppDialog_SubmitData() {
+        $("#export-application-dialog form").attr('action', CurrentExportUrl).submit();
+        exportAppDialog.dialog('close');
+    }
 });
 
 $(function () {
@@ -9108,6 +10625,12 @@ $(function () {
         });
         $("#btnAddApp").on("click", function () {
             addAppDialog.dialog("open");
+        });
+        $('.btn-export').on("click", function () {
+            CurrentExportUrl = this.href;
+            exportAppDialog.dialog('open');
+
+            return false;
         });
     }
 });

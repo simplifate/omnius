@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_OmniusAdminLayout.cshtml";
     Page.ModuleClass = "tapestryModule";
 }
+@using Newtonsoft.Json.Linq;
+
 <div id="upperPanel">
     <div class="panelLabel">Tapestry</div>
     <svg class="backgroundDecoration" width="540px" height="357px">
@@ -89,7 +91,8 @@
                 <img class="toolboxSymbol" symbolType="circle-double" src="~/Content/Images/TapestryIcons/circle-double.png" style="left: 86px; top: 17px;" />
                 <img class="toolboxSymbol" endpoints="final" symbolType="circle-thick" src="~/Content/Images/TapestryIcons/circle-thick.png" style="left: 157px; top: 17px;" />
                 <img class="toolboxSymbol" symbolType="circle-single-dashed" src="~/Content/Images/TapestryIcons/circle-single-dashed.png" style="left: 14px; top: 68px;" />
-                <img class="toolboxSymbol" symbolType="circle-souble-dashed" src="~/Content/Images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" />
+                <!--img class="toolboxSymbol" symbolType="circle-souble-dashed" src="~/Content/Images/TapestryIcons/circle-double-dashed.png" style="left: 86px; top: 68px;" /-->
+                <img class="toolboxSymbol" symbolType="circle-event" src="~/Content/Images/TapestryIcons/circle-event.png" style="left: 86px; top: 68px;" />
                 <img class="toolboxSymbol" symbolType="envelope-start" src="~/Content/Images/TapestryIcons/envelope-start.png" style="left: 157px; top: 68px;" />
                 <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-plus" src="~/Content/Images/TapestryIcons/gateway-plus.png" style="left: 6px; top: 127px;" />
                 <img class="toolboxSymbol" endpoints="gateway" symbolType="gateway-x" src="~/Content/Images/TapestryIcons/gateway-x.png" style="left: 77px; top: 127px;" />
@@ -124,6 +127,7 @@
                 <button id="btnClear" class="btn-omnius-rectangular">Vymazat</button>
                 <button id="btnSave" class="btn-omnius-rectangular">Uložit</button>
                 <button id="btnLoad" class="btn-omnius-rectangular">Načíst</button>
+                <button id="btnLock" class="btn-omnius-rectangular">Zamknout</button>
                 <button id="btnHistory" class="btn-omnius-rectangular">Historie</button>
             </div>
         </div>
@@ -151,6 +155,9 @@
 <input type="hidden" id="currentBlockId" value="@ViewData["blockId"]" />
 <input type="hidden" id="parentMetablockId" value="@ViewData["parentMetablockId"]" />
 <input type="hidden" id="associatedTableId" value="1" />
+<input type="hidden" id="currentUserId" value="@ViewData["currentUserId"]" />
+
+
 <form id="openMetablockForm" method="post" action="/Tapestry/Overview">
     <input type="hidden" name="metablockId" />
 </form>
@@ -312,6 +319,18 @@
         </fieldset>
     </form>
 </div>
+<div id="circleEvent-properties-dialog" title="Properties">
+    <form>
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="circleEventButtonName">"Button" name</label></td>
+                    <td><input type="text" name="button_name" id="circleEventButtonName" value="" class="text ui-widget-content ui-corner-all" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
 <div id="conditions-dialog" title="Conditions">
     <form>
         <fieldset>
@@ -351,4 +370,108 @@
             <tr></tr>
         </tbody>
     </table>
+</div>
+<div id="action-item-name-dialog" title="Set action name">
+    <form>
+        <fieldset>
+            <label for="ActionName">Name</label>
+            <input type="text" name="action_name" id="ActionName" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="action-item-comment-dialog" title="Set action comment">
+    <form>
+        <fieldset>
+            <div>
+                <label for="ActionComment">Comment</label>
+                <input type="text" name="action_comment" id="ActionComment" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+            </div>
+            <div>
+                <label for="ActionCommentBottom">
+                    <input type="checkbox" name="action_comment_bottom" id="ActionCommentBottom" value="1" /> Show below action
+                </label>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="subflow-name-dialog" title="Set subflow name">
+    <form>
+        <fieldset>
+            <label for="SubflowName">Name</label>
+            <input type="text" name="subflow_name" id="SubflowName" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="subflow-comment-dialog" title="Set subflow comment">
+    <form>
+        <fieldset>
+            <div>
+                <label for="SubflowComment">Comment</label>
+                <input type="text" name="subflow_comment" id="SubflowComment" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+            </div>
+            <div>
+                <label for="SubflowCommentBottom">
+                    <input type="checkbox" name="subflow_comment_bottom" id="SubflowCommentBottom" value="1" /> Show below subflow
+                </label>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="workflow-copy-dialog" title="Copy workflow">
+    <form class="form-horizontal">
+        <fieldset>
+            <div class="form-group form-group-sm">
+                <label for="wr-copy-source" class="control-label col-sm-3">Workflow name:</label>
+                <div class="col-sm-9">
+                    <span class="form-control-static" id="wr-copy-source"></span>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label for="wr-copy-target" class="control-label col-sm-3">Target block:</label>
+                <div class="col-sm-9">
+                    <select id="wr-copy-target" class="form-control">
+                        <option value="">-- select one --</option>
+                        @foreach(JToken mb in (JArray)ViewData["blockTree"]) {
+                            <optgroup label="@("----------------------------------".Substring(0, (int)mb["Level"] * 2) + (string)mb["Name"])">
+                            @foreach(JToken b in (JArray)mb["Items"]) {
+                                <option value="@((int)b["Id"])">@("----------------------------------".Substring(0, (int)b["Level"] * 2) + (string)b["Name"])</option>
+                            }
+                            </optgroup>
+                        }
+                    </select>
+                </div>
+            </div> 
+        </fieldset>
+    </form>
+</div>
+<div id="foreach-name-dialog" title="Set foreach name">
+    <form>
+        <fieldset>
+            <label for="ForeachName">Name</label>
+            <input type="text" name="foreach_name" id="ForeachName" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
+</div>
+<div id="foreach-comment-dialog" title="Set foreach comment">
+    <form>
+        <fieldset>
+            <div>
+                <label for="ForeachComment">Comment</label>
+                <input type="text" name="foreach_comment" id="ForeachComment" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+            </div>
+            <div>
+                <label for="ForeachCommentBottom">
+                    <input type="checkbox" name="foreach_comment_bottom" id="ForeachCommentBottom" value="1" /> Show below foreach
+                </label>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="foreach-datasource-dialog" title="Set foreach datasource">
+    <form>
+        <fieldset>
+            <label for="ForeachDatasource">Data collection</label>
+            <input type="text" name="foreach_datasource" id="ForeachDatasource" value="" class="text ui-widget-content ui-corner-all" style="width:365px;">
+        </fieldset>
+    </form>
 </div>

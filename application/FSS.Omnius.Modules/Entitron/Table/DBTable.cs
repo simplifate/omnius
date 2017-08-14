@@ -360,6 +360,15 @@ namespace FSS.Omnius.Modules.Entitron
             });
         }
 
+        public void DropAllConstraints()
+        {
+            Application.queries.Add(new SqlQuery_AllConstraintDrop()
+            {
+                application = Application,
+                table = this
+            });
+        }
+
         public override string ToString() => tableName;
 
         public void DisableConstraint(string constraintName)

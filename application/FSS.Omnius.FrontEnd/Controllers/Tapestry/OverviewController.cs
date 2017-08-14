@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 {
@@ -15,9 +16,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
         {
             using (var context = DBEntities.instance)
             {
+                JArray metablockList = JArray.Parse("[]");
+
                 if (Request.HttpMethod == "POST")
                 {
-
                     int metablockId = 0;
                     TapestryDesignerMetablock parentMetablock = null;
                     if (formParams["appId"] != null)
@@ -42,6 +44,8 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                             metablockId = rootMetablock.Id;
                         ViewData["appName"] = context.Applications.Find(appId).DisplayName;
                         ViewData["currentAppId"] = appId;
+
+                        GetMetablockList(rootMetablock, ref metablockList, 0);
                     }
                     else
                     {
@@ -53,12 +57,14 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
 
                         ViewData["appName"] = app.Name;
                         ViewData["currentAppId"] = app.Id;
+                        GetMetablockList(app.TapestryDesignerRootMetablock, ref metablockList, 0);
                     }
                     ViewData["metablockId"] = metablockId;
                     if (parentMetablock == null)
                         ViewData["parentMetablockId"] = 0;
                     else
                         ViewData["parentMetablockId"] = parentMetablock.Id;
+                    
                 }
                 else
                 {
@@ -69,7 +75,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     ViewData["parentMetablockId"] = 0;
                     ViewData["appName"] = userApp.DisplayName;
                     ViewData["currentAppId"] = userApp.Id;
+                    GetMetablockList(userApp.TapestryDesignerRootMetablock, ref metablockList, 0);
                 }
+
+                ViewData["metablockList"] = metablockList;
             }
             return View();
         }
@@ -134,5 +143,12 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
             return context.Applications.SingleOrDefault(a => a.TapestryDesignerMetablocks.Any(mb => mb.Id == rootMetablockId));
         }
 
+        private void GetMetablockList(TapestryDesignerMetablock item, ref JArray list, int level)
+        {
+            list.Add(JToken.Parse($"{{ Id: \"{item.Id}\", Name: \"{item.Name}\", Level: \"{level.ToString()}\" }}"));
+            foreach(TapestryDesignerMetablock mb in item.Metablocks.Where(m => m.IsDeleted == false)) {
+                GetMetablockList(mb, ref list, level + 1);
+            }
+        }
     }
 }

@@ -84,6 +84,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string CommitMessage { get; set; }
         public DateTime Timestamp { get; set; }
         public string TimeString => Timestamp.ToString("d. M. yyyy H:mm:ss");
+        public int? LockedForUserId { get; set; }
+        public string LockedForUserName { get; set; }
+        
 
         public List<AjaxTapestryDesignerResourceRule> ResourceRules { get; set; }
         public List<AjaxTapestryDesignerWorkflowRule> WorkflowRules { get; set; }
@@ -106,6 +109,14 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
             RoleWhitelist = new List<string>();
         }
     }
+
+
+    public class AjaxBlockLockingStatus
+    {
+       public int lockStatusId { get; set; }
+       public string lockedForUserName { get; set; }
+    }
+
     public class AjaxTapestryDesignerBlockCommitHeader : IEntity
     {
         public int Id { get; set; }
@@ -181,6 +192,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string Label { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
+        public bool CommentBottom { get; set; }
         public string TypeClass { get; set; }
         public string DialogType { get; set; }
         public int SwimlaneIndex { get; set; }
@@ -196,8 +208,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string ComponentName { get; set; }
         public bool? IsBootstrap { get; set; }
         public bool? isAjaxAction { get; set; }
+        public bool? IsForeachStart { get; set; }
+        public bool? IsForeachEnd { get; set; }
         public string Condition { get; set; }
         public string SymbolType { get; set; }
+        public int? ParentSubflowId { get; set; }
+        public int? ParentForeachId { get; set; }
         public virtual List<AjaxTapestryDesignerConditionSet> ConditionSets { get; set; }
 
         public AjaxTapestryDesignerWorkflowItem()
@@ -212,10 +228,51 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public int Height { get; set; }
         public List<string> Roles { get; set; }
         public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+        public List<AjaxTapestryDesignerSubflow> Subflow { get; set; }
+        public List<AjaxTapestryDesignerForeach> Foreach { get; set; }
 
         public AjaxTapestryDesignerSwimlane()
         {
             Roles = new List<string>();
+            WorkflowItems = new List<AjaxTapestryDesignerWorkflowItem>();
+            Subflow = new List<AjaxTapestryDesignerSubflow>();
+            Foreach = new List<AjaxTapestryDesignerForeach>();
+        }
+    }
+    public class AjaxTapestryDesignerSubflow : IEntity
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Comment { get; set; }
+        public bool CommentBottom { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+
+        public AjaxTapestryDesignerSubflow()
+        {
+            WorkflowItems = new List<AjaxTapestryDesignerWorkflowItem>();
+        }
+    }
+    public class AjaxTapestryDesignerForeach : IEntity
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Comment { get; set; }
+        public bool CommentBottom { get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public string DataSource { get; set; }
+
+        public List<AjaxTapestryDesignerWorkflowItem> WorkflowItems { get; set; }
+
+        public AjaxTapestryDesignerForeach()
+        {
             WorkflowItems = new List<AjaxTapestryDesignerWorkflowItem>();
         }
     }

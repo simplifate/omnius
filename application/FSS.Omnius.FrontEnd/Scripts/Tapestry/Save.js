@@ -60,6 +60,7 @@ function SaveBlock(commitMessage) {
     $("#workflowRulesPanel .workflowRule").each(function (ruleIndex, ruleDiv) {
         swimlanesArray = [];
         currentRule = $(ruleDiv);
+
         currentRule.find(".swimlane").each(function (swimlaneIndex, swimlaneDiv) {
             currentSwimlane = $(swimlaneDiv);
             currentSwimlane.attr("swimlaneIndex", swimlaneIndex);
@@ -67,9 +68,27 @@ function SaveBlock(commitMessage) {
             itemArray = [];
             symbolArray = [];
             connectionArray = [];
+            subflowArray = [];
             currentSwimlane.find(".swimlaneRolesArea .roleItem").each(function (roleIndex, roleDiv) {
                 rolesArray.push($(roleDiv).text());
             });
+
+            currentSwimlane.find("> .subflow").each(function (subflowIndex) {
+                var subflow = $(this);
+                subflow.attr("saveId", saveId);
+                saveId++;
+
+                subflowArray.push({
+                    Id: subflow.attr('saveId'),
+                    Name: "",
+                    Comment: "",
+                    PositionX: parseInt(subflow.css('left')),
+                    PositionY: parseInt(subflow.css('top')),
+                    Width: parseInt(subflow.css('width')),
+                    Height: parseInt(subflow.css('height'))
+                })
+            });
+            
             currentSwimlane.find(".item, .symbol").each(function (itemIndex, itemDiv) {
                 currentItem = $(itemDiv);
                 currentItem.attr("saveId", saveId);
@@ -77,6 +96,9 @@ function SaveBlock(commitMessage) {
                 itemArray.push({
                     Id: currentItem.attr("saveId"),
                     Label: currentItem.find(".itemLabel").length ? currentItem.find(".itemLabel").text() : currentItem.data("label"),
+                    Name: currentItem.find('.itemName').text(),
+                    Comment: currentItem.find('.itemComment').text(),
+                    CommentBottom: currentItem.find('.itemComment').hasClass('bottom'),
                     TypeClass: GetItemTypeClass(currentItem),
                     DialogType: currentItem.attr("dialogType"),
                     StateId: currentItem.attr("stateid"),
@@ -95,13 +117,17 @@ function SaveBlock(commitMessage) {
                     SymbolType: currentItem.attr("symbolType")
                 });
             });
+
             swimlanesArray.push({
                 SwimlaneIndex: swimlaneIndex,
                 Height: parseInt(currentSwimlane.css("height")),
                 Roles: rolesArray,
-                WorkflowItems: itemArray
+                WorkflowItems: itemArray,
+                subflow: subflowArray
             });
         });
+
+
         currentInstance = currentRule.data("jsPlumbInstance");
         jsPlumbConnections = currentInstance.getAllConnections();
         for (i = 0; i < jsPlumbConnections.length; i++) {
@@ -122,6 +148,7 @@ function SaveBlock(commitMessage) {
                 });
             }
         }
+
         workflowRulesArray.push({
             Id: ruleIndex,
             Name: currentRule.find(".workflowRuleHeader .verticalLabel").text(),
@@ -133,6 +160,7 @@ function SaveBlock(commitMessage) {
             Connections: connectionArray
         });
     });
+
     toolboxState = {
         Actions: [],
         Attributes: [],
@@ -217,7 +245,9 @@ function SaveBlock(commitMessage) {
         },
         success: function () {
             ChangedSinceLastSave = false;
-            alert("OK");
+            alert("The block has been successfully saved");
+            $('#btnLock').html('Zamknout');
+            TB.lock.isLockedForCurrentUser = false;
         }
     });
 }

@@ -82,7 +82,7 @@
                         {
                             <button class="btn btn-primary btnValidate">Aktualizovat</button>
                         }
-                        @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default", @target = "_blank" })
+                        @Html.RouteLink("Export", "Master", new { @controller = "Service", @action = "BackupApp", @id = app.Id }, new { @class = "btn btn-default btn-export", @target = "_blank" })
                     </td>
                 </tr>
             }
@@ -217,6 +217,59 @@
                 <tr>
                     <td><label for="icon-class">Ikona (font awesome)</label></td>
                     <td><input type="text" name="icon-class" id="icon-class" value=""></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div id="export-application-dialog" title="Export aplikace">
+    <form method="post">
+        <fieldset>
+            <table class="formTable">
+                <tr>
+                    <td><label for="">Možnosti:</label></td>
+                    <td>
+                        <label for="ExportDatabaseDesignerSchemeCommits">
+                            <input type="checkbox" name="ExportDatabaseDesignerSchemeCommits" id="ExportDatabaseDesignerSchemeCommits" value="1" />
+                            &nbsp;Exportovat schéma databáze
+                        </label><br />
+                        <label for="ExportEmailTemplates">
+                            <input type="checkbox" name="ExportEmailTemplates" id="ExportEmailTemplates" value="1" />
+                            &nbsp;Exportovat e-mailové šablony
+                        </label><br />
+                        <label for="ExportIncomingEmailRule">
+                            <input type="checkbox" name="ExportIncomingEmailRule" id="ExportIncomingEmailRule" value="1" />
+                            &nbsp;Exportovat příchozí e-mailová pravidla
+                        </label><br />
+                        <label for="ExportJs">
+                            <input type="checkbox" name="ExportJs" id="ExportJs" value="1" />
+                            &nbsp;Exportovat aplikační javascripty
+                        </label><br />
+                        <label for="ExportMozaicBootstrapPages">
+                            <input type="checkbox" name="ExportMozaicBootstrapPages" id="ExportMozaicBootstrapPages" value="1" />
+                            &nbsp;Exportovat boostrap stránky
+                        </label><br />
+                        <label for="ExportMozaicEditorPages">
+                            <input type="checkbox" name="ExportMozaicEditorPages" id="ExportMozaicEditorPages" value="1" />
+                            &nbsp;Exportovat "legacy" stránky
+                        </label><br />
+                        <label for="ExportRoles">
+                            <input type="checkbox" name="ExportRoles" id="ExportRoles" value="1" />
+                            &nbsp;Exportovat role
+                        </label><br />
+                        <!--label for="ExportTapestryDesignerConditionGroups">
+                            <input type="checkbox" name="ExportTapestryDesignerConditionGroups" id="ExportTapestryDesignerConditionGroups" value="1" />
+                            &nbsp;Exportovat podmínky
+                        </label><br /-->
+                        <label for="ExportTapestryDesignerMetablocks">
+                            <input type="checkbox" name="ExportTapestryDesignerMetablocks" id="ExportTapestryDesignerMetablocks" value="1" />
+                            &nbsp;Exportovat Tapestry
+                        </label><br />
+                        <label for="ExportTCPListeners">
+                            <input type="checkbox" name="ExportTCPListeners" id="ExportTCPListeners" value="1" />
+                            &nbsp;Exportovat TCP listenery
+                        </label><br />
+                    </td>
                 </tr>
             </table>
         </fieldset>

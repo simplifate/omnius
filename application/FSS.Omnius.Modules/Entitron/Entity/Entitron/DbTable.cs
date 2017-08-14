@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Entitron
 
         [ImportExportIgnore(IsParentKey = true)]
         public int DbSchemeCommitId { get; set; }
+
         [ImportExportIgnore(IsParent = true)]
         public virtual DbSchemeCommit DbSchemeCommit { get; set; }
 

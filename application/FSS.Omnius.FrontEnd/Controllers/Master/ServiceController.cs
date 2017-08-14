@@ -18,14 +18,16 @@ namespace FSS.Omnius.Controllers.Master
     {
         public FileStreamResult BackupApp(int id)
         {
+            var form = Request.Form;
+
             var backupService = new BackupGeneratorService();
             var context = DBEntities.instance;
-            string jsonText = backupService.ExportApplication(id);
+            string jsonText = backupService.ExportApplication(id, form);
             var appName = context.Applications.SingleOrDefault(a => a.Id == id).Name;
             var byteArray = Encoding.UTF8.GetBytes(jsonText);
             var stream = new MemoryStream(byteArray);
 
-            return File(stream, "text/plain",  appName + ".txt");
+            return File(stream, "application/force-download",  appName + ".txt");
 
         }
         public ActionResult RecoverApp()
