@@ -63,9 +63,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             DBEntities context = DBEntities.instance;
             ListJson<DBItem> data = (ListJson<DBItem>)vars["Data"];
             List<DBItem> ds = new List<DBItem>();
-            
-            if(data.Count() > 0) 
-            {
+
+            if (data.Count() > 0) {
                 /**********************************************************************************/
                 /* Vytvoříme si datasource - všechny sloupce jako string, přidáme hiddenId a akce */
                 /**********************************************************************************/
@@ -102,23 +101,23 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 catch (NullReferenceException) {
                     displayNames = columnsNames;
                 }
-                 
+
                 foreach (DBItem row in data) {
                     DBItem newRow = new DBItem();
                     int i = 0;
-                    
+
                     foreach (string prop in columnsNames) {
                         var value = row[prop];
                         var displayName = displayNames[columnsNames.IndexOf(prop)];
-                        
+
                         // Převedeme všechny hodnoty na string
-                        if(value is bool) {
+                        if (value is bool) {
                             newRow.createProperty(i, displayName, (bool)value ? "Ano" : "Ne");
                         }
-                        else if(value is DateTime) {
+                        else if (value is DateTime) {
                             newRow.createProperty(i, displayName, ((DateTime)value).ToString("d. M. yyyy H:mm:ss"));
                         }
-                        else if(value is string) {
+                        else if (value is string) {
                             newRow.createProperty(i, displayName, (string)value);
                         }
                         else {
@@ -126,14 +125,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         }
 
                         // pokud je sloupec id nebo Id nastavíme hiddenId
-                        if(prop == "id" || prop == "Id") {
+                        if (prop == "id" || prop == "Id") {
                             i++;
                             newRow.createProperty(i, "hiddenId", value.ToString());
                         }
                         i++;
                     }
                     // Pokud existují akce, přidáme je
-                    if(!string.IsNullOrEmpty(actionIcons)) {
+                    if (!string.IsNullOrEmpty(actionIcons)) {
                         newRow.createProperty(i, "Akce", actionIcons);
                     }
 
@@ -209,8 +208,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             /**********************************************************************************/
             int start = Convert.ToInt32(vars["start"]);
             int length = Convert.ToInt32(vars["length"]);
-
-            var pagedData = filteredData.Skip(start).Take(length).ToList();
+            
+            var pagedData = length == -1 ? filteredData.ToList() : filteredData.Skip(start).Take(length).ToList();
 
             /**********************************************************************************/
             /* Vrátíme výsledek                                                               */
