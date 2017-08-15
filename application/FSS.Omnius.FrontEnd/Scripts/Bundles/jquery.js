@@ -31683,7 +31683,7 @@ var DateFormatter;
 					"Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září­", "Říjen", "Listopad", "Prosinec"
                 ],
                 dayOfWeekShort: [
-					"Ne", "Po", "Út", "St", "Čt", "Páˇ", "So"
+					"Ne", "Po", "Út", "St", "Čt", "Pá", "So"
                 ]
             },
             hu: { // Hungarian
