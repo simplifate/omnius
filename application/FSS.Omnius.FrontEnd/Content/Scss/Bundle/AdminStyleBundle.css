@@ -2100,8 +2100,7 @@ body.watchtowerModule #lowerPanel {
     body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td {
       vertical-align: middle; }
       body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td.truncate-base {
-        max-width: 1px;
-        min-width: 100000px; }
+        max-width: 1px; }
         body.watchtowerModule #lowerPanel #watchtowerLogTable tbody td.truncate-base .truncate {
           white-space: nowrap;
           overflow: hidden;
