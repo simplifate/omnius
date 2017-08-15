@@ -544,7 +544,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 case "datetime-local": format = "yyyy-MM-dd HH:mm:ss"; break;
                 case "month": format = "yyyy-MM"; break;
             }
-            mergeAttrs.Add("value", $"@(formState.ContainsKey(\"{c.ElmId}\") ? formState[\"{c.ElmId}\"] : ((ViewData.ContainsKey(\"inputData_{c.ElmId}\") && ViewData[\"inputData_{c.ElmId}\"] is DateTime) ? ((DateTime)ViewData[\"inputData_{c.ElmId}\"]).ToString(\"{format}\") : \"\")");
+            mergeAttrs.Add("value", $"@(formState.ContainsKey(\"{c.ElmId}\") ? formState[\"{c.ElmId}\"] : ((ViewData.ContainsKey(\"inputData_{c.ElmId}\") && ViewData[\"inputData_{c.ElmId}\"] is DateTime) ? ((DateTime)ViewData[\"inputData_{c.ElmId}\"]).ToString(\"{format}\") : \"\"))");
 
             string attrs = BuildAttributes(c, new List<string>(), mergeAttrs);
 
