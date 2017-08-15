@@ -1071,6 +1071,7 @@ table.dataTable {
 body.userLayout {
     a {
         color: black;
+
         &:hover {
             color: $second_color;
         }
@@ -1094,15 +1095,26 @@ body.userLayout {
             color: $heading_text_color !important;
             border: none !important;
             background: $shade_st_six !important;
+
             &.current {
                 color: $heading_text_color !important;
                 border: none !important;
                 background: $second_color !important;
             }
+
             &.previous, &.next {
                 background: transparent !important;
                 color: $content_text_color !important;
                 padding: 0px 5px;
+            }
+        }
+    }
+    .data-table {
+        thead tr {
+            background-color: $third_color_bright !important;
+            th {
+                vertical-align: middle;
+                color: white;
             }
         }
     }
