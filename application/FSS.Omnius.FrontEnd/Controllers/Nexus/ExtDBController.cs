@@ -51,6 +51,7 @@ namespace FSS.Omnius.Controllers.Nexus
                     row.DB_Name = model.DB_Name;
                     row.DB_User = model.DB_User;
                     row.DB_Password = model.DB_Password;
+                    row.DB_Alias = model.DB_Alias;
 
                     e.SaveChanges();
                 }

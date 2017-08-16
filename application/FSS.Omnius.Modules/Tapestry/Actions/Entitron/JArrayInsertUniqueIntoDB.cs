@@ -85,20 +85,32 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JArray jarray = (JArray)vars["JArray"];
             foreach (JObject jo in jarray)
             {
-                //Skip if an item already exists in the table
-                if (table.Select().ToList().Any(c => (string)c[uniqueCol] == jo.GetValue(uniqueExtCol).ToString()))
-                    continue;
-                DBItem insertedRow = new DBItem();
+                Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
+                TapestryUtils.ParseJObject(jo, parsedColumns);
+
+                DBItem parsedRow = new DBItem();
                 int colId = 0;
-                foreach (JProperty prop in jo.Properties())
+                foreach (var parsedCol in parsedColumns)
+                    parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
+
+                //Skip if an item already exists in the table
+                if (table.Select().ToList().Any(c => c[uniqueCol].ToString() == parsedRow[uniqueExtCol].ToString()))
+                    continue;
+
+                DBItem item = new DBItem();
+                colId = 0;
+                foreach (DBColumn col in table.columns)
                 {
-                    string property = (prop.Name == "id") ? "ext_id" : prop.Name;
-                    insertedRow.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
+                    if (col.Name == "id")
+                        continue;
+                    string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
+                    item.createProperty(colId++, col.Name, parsedRow[parsedColName]);
                 }
-                table.Add(insertedRow);
+
+                table.Add(item);
             }
             core.Entitron.Application.SaveChanges();
-
+            outputVars["Result"] = "Successful";
         }
     }
 }
