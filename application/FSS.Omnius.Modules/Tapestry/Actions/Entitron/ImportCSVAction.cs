@@ -50,7 +50,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Success", "Message" };
+                return new string[] { "Success", "Message", "CountAdded" };
             }
         }
 
@@ -240,6 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             outputVars["Success"] = messages.Count() == 0;
             outputVars["Message"] = string.Join("<br>", messages);
+            outputVars["CountAdded"] = countAdded;
         }
     }
 }

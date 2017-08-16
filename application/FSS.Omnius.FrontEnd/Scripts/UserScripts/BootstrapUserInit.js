@@ -2,17 +2,17 @@
 
     context: null,
 
-    init: function(bootstrapContext)
-    {
+    init: function (bootstrapContext) {
         var self = BootstrapUserInit;
         self.context = bootstrapContext;
 
         $(self.context)
             .on('keyup change', '.data-table > tfoot input', self.DataTable.filter)
             .on('click', '.data-table i.fa[data-action]', self.DataTable.onAction)
-        ;
+            ;
 
         self.DataTable.init();
+        self.loadValidators();
     },
 
     confirm: function(message, callbackTrue, callbackFalse, context)
@@ -239,6 +239,66 @@
 
             $('<form class="hiddenForm" method="POST" action="' + window.location.href + '"><input type="hidden" name="' + button.data('idparam') + '" value="' + rowId + '" /><input type="hidden" name="button" value="' + tableName + '_' + button.data('action') + '" /></form>').appendTo('body').submit();
         }
+    },
+    loadValidators: function () {
+        $.extend($.validator.methods, {
+            auditNumber: function (value, element, attr) {
+                return value.match(/^[0-9]{4} [PA] [0-9]{2,3}$/);
+            }
+        });
+        $.extend($.validator.methods, {
+            auditNumberNoWF: function (value, element, attr) {
+                return value.match(/^[0-9]{4} [BCEFSZ] [0-9]{2,3}$/);
+            }
+        });
+        $.extend($.validator.methods, {
+            auditNumberNonWF: function (value, element, attr) {
+                return value.match(/^[0-9]{4} C [0-9]{2,3}$/);
+            }
+        });
+        $.extend($.validator.methods, {
+            greaterThan: function (value, element, attr) {
+                return this.optional(element) || +value > +attr;
+            }
+        });
+        $.extend($.validator.methods, {
+            greaterOrEqual: function (value, element, attr) {
+                return this.optional(element) || +value >= +attr;
+            }
+        });
+        $.extend($.validator.methods, {
+            optionSelected: function (value, element, attr) {
+                return $(element).attr("required") == undefined || +value != +attr;
+            }
+        });
+        jQuery.validator.addClassRules("dropdown-select", {
+            optionSelected: -1
+        });
+
+        mozaicFormValidator = $(".mozaicBootstrapPage form").validate({
+            errorLabelContainer: $("<div>"), //put error messages into a detached element, AKA a trash bin; todo: find a better way to get rid of them
+            ignore: "[readonly]",
+            unhighlight: function (element) {
+                $("button[ignoredonvalidation]").addClass("cancel");
+                $(element).removeClass("has-error");
+
+                // Element validator
+                $('#' + element.id + '_validator').hide();
+
+                if (this.numberOfInvalids() === 0) $("button:not([ignoredonvalidation])").removeClass("looks-disabled");
+            },
+            highlight: function (element) {
+                $("button[ignoredonvalidation]").addClass("cancel");
+                $(element).addClass("has-error");
+
+                // Element validator
+                $('#' + element.id + '_validator').show();
+
+                $("button:not([ignoredonvalidation])").addClass("looks-disabled");
+            }
+        });
+        if ($(".mozaicBootstrapPage from").length)
+            mozaicFormValidator.form();
     }
 };
 

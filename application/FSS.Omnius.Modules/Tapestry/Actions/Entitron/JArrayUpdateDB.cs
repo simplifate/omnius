@@ -53,9 +53,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             }
         }
 
-        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
-        {
 
+        public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
+        {          
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
@@ -85,30 +85,45 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JArray jarray = (JArray)vars["JArray"];
             foreach (JObject jo in jarray)
             {
-                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(jo.GetValue(uniqueExtCol).ToObject<object>())).FirstOrDefault();
-                if (updatedRow != null)
+                Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
+                TapestryUtils.ParseJObject(jo, parsedColumns);
+                DBItem parsedRow = new DBItem();
+                int colId = 0;
+                foreach (var parsedCol in parsedColumns)
+                    parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
+                
+                DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(parsedRow[uniqueExtCol])).FirstOrDefault();
+                if(updatedRow != null) //update
                 {
-                    foreach (JProperty prop in jo.Properties())
+                    foreach(var col in parsedRow.getColumnNames())
                     {
-                        if (prop.Name != "id" && prop.Name != uniqueCol)
-                            updatedRow[prop.Name] = prop.Value.ToObject<object>();
+                        if (updatedRow.getColumnNames().Contains(col) && col != "id" && col != uniqueCol)
+                        {
+                            updatedRow[col] = parsedRow[col];
+                        }
                     }
                     table.Update(updatedRow, (int)updatedRow["id"]);
                 }
-                else // insert row if it does not exist
+                else // insert row if it does not exist 
                 {
                     DBItem item = new DBItem();
-                    int colId = 0;
-                    foreach (JProperty prop in jo.Properties())
+                    int i = 0;
+                    foreach(DBColumn col in table.columns)
                     {
-                        string property = (prop.Name == "id") ? "ext_id" : prop.Name;
-                        item.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
+                        if (col.Name == "id")
+                            continue;
+                        string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
+                        item.createProperty(i++, col.Name, parsedRow[parsedColName]);
                     }
+
                     table.Add(item);
-                }        
+                }
+    
+
             }
             core.Entitron.Application.SaveChanges();
             outputVars["Result"] = "Successful";
         }
-    }
+
+    }   
 }

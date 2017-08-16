@@ -1042,6 +1042,12 @@ body.userLayout .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: black !important;
     padding: 0px 5px; }
 
+body.userLayout .data-table thead tr {
+  background-color: #0d499a !important; }
+  body.userLayout .data-table thead tr th {
+    vertical-align: middle;
+    color: white; }
+
 .mozaicBootstrapPage .data-table tfoot {
   display: table-header-group; }
   .mozaicBootstrapPage .data-table tfoot th input {
@@ -1378,6 +1384,9 @@ body.appManagerModule {
     .tileMenuArea .tileMenuItem .fa-cloud-upload {
       font-size: 110px;
       top: 22px; }
+    .tileMenuArea .tileMenuItem .fa-play-circle-o {
+      font-size: 110px;
+      top: 22px; }
     .tileMenuArea .tileMenuItem .buttonLabel {
       position: absolute;
       top: 40px;
@@ -1501,6 +1510,10 @@ body.adminLayout #appNotificationArea {
   left: 225px;
   top: 75px;
   right: 0px; }
+
+.lowerPanelNoOverlap {
+  width: calc(100% - 225px);
+  overflow: auto; }
 
 #lowerPanelContainer {
   position: absolute;

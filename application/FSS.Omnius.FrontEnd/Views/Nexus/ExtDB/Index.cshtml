@@ -29,6 +29,7 @@
                     <th>Typ</th>
                     <th>Server</th>
                     <th>Jméno databáze</th>
+                    <th>Alias</th>
                     <th>Akce</th>
                 </tr>
             </thead>
@@ -42,6 +43,7 @@
                             <td>@db.DB_Type</td>
                             <td>@db.DB_Server</td>
                             <td>@db.DB_Name</td>
+                            <td>@db.DB_Alias</td>
                             <td class="table-row-action">
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Detail", @id = db.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-eye ico-only btn btn-default", @title = "Detail" })
                                 @Ajax.RouteLink(" ", "Nexus", new { @action = "Edit", @id = db.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ContentContainer" }, new { @class = "fa fa-pencil ico-only btn btn-primary", @title = "Upravit" })

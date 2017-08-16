@@ -60,7 +60,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Nexus
                         result.ExtDB.Add(new AjaxTransferNexusExtDB()
                         {
                             Id = item.Id,
-                            Name = item.DB_Name
+                            Name = item.DB_Alias,
                         });
                     }
 

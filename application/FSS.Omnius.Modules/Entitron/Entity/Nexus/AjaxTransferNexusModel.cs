@@ -43,6 +43,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
     {
         public int? Id { get; set; }
         public string Name { get; set; }
+        public string Alias { get; set; }
     }
 
     public class AjaxTransferHermesSMTP : IEntity

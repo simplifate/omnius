@@ -20,7 +20,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
         {
             DBEntities e = DBEntities.instance;
 
-            Entitron.Entity.Nexus.ExtDB row = e.ExtDBs.Single(m => m.DB_Server == serverName && m.DB_Name == dbName);
+            Entitron.Entity.Nexus.ExtDB row = e.ExtDBs.Single(m => m.DB_Server == serverName && m.DB_Alias == dbName);
             if (row == null) {
                 throw new Exception(string.Format("Konfigurace pro server {0} a databázi {1} nebyla nalezena", serverName, dbName));
             }

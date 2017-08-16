@@ -55,9 +55,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
             string tableName = vars.ContainsKey("TableName")
@@ -74,14 +72,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 
             foreach (JObject jo in jarray)
             {
-                DBItem item = new DBItem();
+                Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
+                TapestryUtils.ParseJObject(jo, parsedColumns);
+
+                DBItem parsedRow = new DBItem();
                 int colId = 0;
-                foreach (JProperty prop in jo.Properties())
+                foreach (var parsedCol in parsedColumns)
+                    parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
+
+                DBItem item = new DBItem();
+                colId = 0;
+                foreach (DBColumn col in table.columns)
                 {
-                    string property = (prop.Name == "id") ? "ext_id" : prop.Name;
-                    item.createProperty(colId++, property, jo.GetValue(prop.Name).ToObject<object>());
+                    if (col.Name == "id")
+                        continue;
+                    string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
+                    item.createProperty(colId++, col.Name, parsedRow[parsedColName]);
                 }
-                table.Add(item);              
+
+                table.Add(item);
+
             }
             core.Entitron.Application.SaveChanges();
             outputVars["Result"] = "Successful";

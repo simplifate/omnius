@@ -72,7 +72,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 string dbName = (string)vars["dbName"];
                 string tableName = (string)vars["TableName"];
 
-                ExtDB dbInfo = context.ExtDBs.Where(d => d.DB_Name == dbName).SingleOrDefault();
+                ExtDB dbInfo = context.ExtDBs.Where(d => d.DB_Alias == dbName).SingleOrDefault();
                 if(dbInfo == null) {
                     throw new Exception(string.Format("{0}: Integration was not found", Name));
                 }
@@ -83,7 +83,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                         service = new NexusExtDBRethingService(dbInfo);
                         break;
                     default:
-                        service = (new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Name)).NewQuery("").Select("*");
+                        service = (new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Alias)).NewQuery("").Select("*");
                         break;
                 }
 
