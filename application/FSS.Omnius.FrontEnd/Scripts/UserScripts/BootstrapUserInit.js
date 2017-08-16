@@ -87,7 +87,7 @@
                         sInfoFiltered: '(filtrováno z celkem _MAX_ záznamů)',
                         sInfoPostFix: '',
                         sInfoThousands: '',
-                        sLengthMenu: 'Zobraz záznamů _MENU_',
+                        sLengthMenu: 'Zobrazovaných záznamů _MENU_',
                         sLoadingRecords: 'Načítám...',
                         sProcessing: 'Provádím...',
                         sSearch: 'Hledat:',
