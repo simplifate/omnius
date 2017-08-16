@@ -240,7 +240,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             outputVars["Success"] = messages.Count() == 0;
             outputVars["Message"] = string.Join("<br>", messages);
-            outputVars["CountAdded"] = outputVars["Message"];
+            outputVars["CountAdded"] = countAdded;
         }
     }
 }
