@@ -1203,6 +1203,7 @@
     <Compile Include="Compass\Service\IElasticService.cs" />
     <Compile Include="Nexus\Service\IFileSyncService.cs" />
     <Compile Include="Nexus\Service\NexusExtDBBaseService.cs" />
+    <Compile Include="Nexus\Service\NexusExtDBResult.cs" />
     <Compile Include="Nexus\Service\NexusExtDBRethingService.cs" />
     <Compile Include="Nexus\Service\TCPSocketListenerService.cs" />
     <Compile Include="Nexus\Service\INexusLdapService.cs" />
@@ -1281,6 +1282,8 @@
     <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Hermes\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\ExtDBUpdate.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\ExtDBInsert.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBSelect.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallJsonRpc.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallRestAction.cs" />
@@ -1288,6 +1291,7 @@
     <Compile Include="Tapestry\Actions\Nexus\Json2Dict.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
+    <Compile Include="Tapestry\Actions\other\ObjectToJTokenAction.cs" />
     <Compile Include="Tapestry\Actions\other\CopyVariableAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\FormatDatetimeAction.cs" />
     <Compile Include="Tapestry\Actions\other\FormatStringAction.cs" />

@@ -299,6 +299,7 @@
     <Compile Include="Controllers\Persona\RulesController.cs" />
     <Compile Include="Controllers\Nexus\NexusController.cs" />
     <Compile Include="Controllers\Watchtower\LogController.cs" />
+    <Compile Include="ExtDBSelect.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -18,6 +18,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
         public abstract JToken FetchAllAsHashArray(string keyColumn);
         public abstract List<Object> FetchArray(string column);
         public abstract Object FetchCell(string column);
+
+        public abstract NexusExtDBResult Insert(string table, JToken row);
+        public abstract NexusExtDBResult Update(string table, JToken row, object id);
         
         #region SqlBuilderProxy
 

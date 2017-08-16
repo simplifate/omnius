@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.Entity;
 using Newtonsoft.Json.Linq;
 using System.Data.Common;
 using System.Collections.Generic;
+using FSS.Omnius.Modules.Nexus.Service;
 
 namespace FSS.Omnius.Modules.Nexus.Gate
 {
@@ -28,13 +29,13 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             conn.Open();
             db = new Database(conn);
         }
-        
+
         public ExtDB NewQuery(string sqlText = "")
         {
             sql = new SqlBuilder(sqlText);
             return this;
         }
-        
+
         public JToken FetchAll()
         {
             SqlSet set = new SqlSet(sql, db.Connection);
@@ -56,7 +57,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             List<Object> list = new List<Object>();
 
             JToken rows = FetchAll();
-            foreach(JToken row in rows) {
+            foreach (JToken row in rows) {
                 list.Add(row[column]);
             }
 
@@ -68,7 +69,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             JToken hash = JToken.FromObject(new { });
 
             JToken rows = FetchAll();
-            foreach(JToken row in rows) {
+            foreach (JToken row in rows) {
                 hash[(string)row[keyColumn]] = row[valueColumn];
             }
 
@@ -80,7 +81,7 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             JToken hash = JToken.FromObject(new { });
 
             JToken rows = FetchAll();
-            foreach(JToken row in rows) {
+            foreach (JToken row in rows) {
                 hash[(string)row[keyColumn]] = row;
             }
 
@@ -92,15 +93,60 @@ namespace FSS.Omnius.Modules.Nexus.Gate
             JToken hash = JToken.FromObject(new { });
 
             JToken rows = FetchAll();
-            foreach(JToken row in rows)
-            {
-                if(hash[(string)row[keyColumn]] == null) {
+            foreach (JToken row in rows) {
+                if (hash[(string)row[keyColumn]] == null) {
                     hash[(string)row[keyColumn]] = new JArray();
                 }
-                ((JArray)hash[(string)row[keyColumn]]).Add(row);          
+                ((JArray)hash[(string)row[keyColumn]]).Add(row);
             }
 
             return hash;
+        }
+
+        public NexusExtDBResult Insert(string table, JToken row)
+        {
+            List<string> columns = new List<string>();
+            List<object> values = new List<object>();
+            foreach(JProperty prop in row) {
+                columns.Add(prop.Name);
+                values.Add(((JValue)prop.Value).Value);
+            }
+
+            sql.INSERT_INTO(string.Format("{0}({1})", table, string.Join(", ", columns))).VALUES(values);
+
+            NexusExtDBResult result = new NexusExtDBResult();
+            try {
+                db.Execute(sql);
+                result.Inserted = 1;
+                result.GeneratedKeys.Add(db.LastInsertId());
+            }
+            catch(Exception e) {
+                result.Errors = 1;
+                result.FirstError = e.Message;
+            }
+
+            return result;
+        }
+
+        public NexusExtDBResult Update(string table, JToken row, object id)
+        {
+            sql = sql.UPDATE(table);
+            foreach(JProperty prop in row) {
+                sql = sql.SET($"{prop.Name} = {0}", ((JValue)prop.Value).Value);
+            }
+            sql = sql.WHERE((string)id);
+
+            NexusExtDBResult result = new NexusExtDBResult();
+            try {
+                int affected = db.Execute(sql);
+                result.Replaced = (ulong)affected;
+            }
+            catch(Exception e) {
+                result.Errors = 1;
+                result.FirstError = e.Message;
+            }
+
+            return result;
         }
 
         #region SqlBuilderProxy

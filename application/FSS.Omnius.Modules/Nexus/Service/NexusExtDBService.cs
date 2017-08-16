@@ -64,6 +64,16 @@ namespace FSS.Omnius.Modules.Nexus.Service
         /// </summary>
         public override Object FetchCell(string column) { return db.FetchCell(column); }
 
+        public override NexusExtDBResult Insert(string table, JToken row)
+        {
+            return db.Insert(table, row);
+        }
+
+        public override NexusExtDBResult Update(string table, JToken row, object id)
+        {
+            return db.Update(table, row, id);
+        }
+
         #region SqlBuilderProxy
 
         public override NexusExtDBBaseService _(string body) { db._(body); return this; }
