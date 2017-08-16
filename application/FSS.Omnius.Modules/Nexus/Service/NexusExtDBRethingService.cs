@@ -404,13 +404,13 @@ namespace FSS.Omnius.Modules.Nexus.Service
         
         public override NexusExtDBResult Insert(string table, JToken row)
         {
-            var result = r.Table(table).Insert(row).RunResult(c);
+            var result = r.Db(dbName).Table(table).Insert(row).RunResult(c);
             return new NexusExtDBResult(result);
         }
 
         public override NexusExtDBResult Update(string table, JToken row, object id)
         {
-            var result = r.Table(table).Get(id).Update(row).RunResult(c);
+            var result = r.Db(dbName).Table(table).Get(id).Update(row).RunResult(c);
             return new NexusExtDBResult(result);
         }
     }

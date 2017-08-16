@@ -215,6 +215,14 @@ namespace FSS.Omnius.Modules.Tapestry
             if (o is JObject)
                 return ((JObject)o)[calling];
 
+            try {
+                if (o is List<object>) {
+                    int key = int.Parse(calling);
+                    return ((List<object>)o)[key];
+                }
+            }
+            catch(Exception) { }
+
             PropertyInfo property = o.GetType().GetProperty(calling);
 
             if (property == null)

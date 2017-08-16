@@ -39,6 +39,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                 #warning appName nesmí být null!
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
+            core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
+
             DBEntities context = DBEntities.appInstance(core.Entitron.Application);
             Application app = core.Entitron.Application.similarApp;
 
@@ -70,10 +72,13 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             var crossBlockRegistry = new Dictionary<string, object>();
             var fc = new FormCollection();
-            if (!string.IsNullOrEmpty(registry))
-                crossBlockRegistry = JsonConvert.DeserializeObject<Dictionary<string, object>>(registry);
-            foreach (var pair in crossBlockRegistry) {
-                fc.Add(pair.Key, pair.Value.ToString());
+            foreach (var pair in core.CrossBlockRegistry) {
+                if (pair.Value != null) {
+                    fc.Add(pair.Key, pair.Value.ToString());
+                }
+                else {
+                    fc.Add(pair.Key, "");
+                }
             }
 
             blockDependencies.Add("Translator", this.GetTranslator());
@@ -93,9 +98,11 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             Dictionary<string, object> tapestryVars = result.Item1.OutputData;
 
-            foreach (var pair in crossBlockRegistry) {
+            foreach (var pair in core.CrossBlockRegistry) {
                 if (!tapestryVars.ContainsKey(pair.Key))
                     tapestryVars.Add(pair.Key, pair.Value.ToString());
+                else
+                    tapestryVars[pair.Key] = pair.Value.ToString();
             }
 
             if (tapestryVars.ContainsKey("__ModelId__") && Convert.ToInt32(tapestryVars["__ModelId__"]) != modelId)
@@ -108,7 +115,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["pageName"] = block.DisplayName;
             ViewData["UserEmail"] = core.User.Email;
             ViewData["blockName"] = block.Name;
-            ViewData["crossBlockRegistry"] = registry;
+            ViewData["crossBlockRegistry"] = "";
             ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));
             ViewData["HttpContext"] = HttpContext;
 
@@ -910,6 +917,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 ? $"{core.Entitron.Application.Name}\\Page\\Bootstrap\\{block.BootstrapPageId}.cshtml"
                 : $"{core.Entitron.Application.Name}\\Page\\{block.EditorPageId}.cshtml";
 
+            Session["CrossBlockRegistry"] = core.CrossBlockRegistry;
             prepareEnd = DateTime.Now;
             // show
             //return View(block.MozaicPage.ViewPath);

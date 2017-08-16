@@ -46,11 +46,11 @@ namespace FSS.Omnius.Modules.Nexus.Service
             this.Inserted = r.Inserted;
             this.TablesCreated = r.TablesCreated;
 
-            if (r.Warnings.Length > 0) {
+            if (r.Warnings != null && r.Warnings.Length > 0) {
                 this.Warnings.AddRange(r.Warnings);
             }
 
-            if (r.GeneratedKeys.Length > 0) {
+            if (r.GeneratedKeys != null && r.GeneratedKeys.Length > 0) {
                 foreach(Guid k in r.GeneratedKeys) {
                     this.GeneratedKeys.Add(k);
                 }

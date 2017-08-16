@@ -78,7 +78,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     throw new Exception(string.Format("{0}: where is missing. You must provide where clausule or rethingDB item id", Name));
                 }
 
-                ExtDB dbInfo = context.ExtDBs.Where(d => d.DB_Name == dbName).SingleOrDefault();
+                ExtDB dbInfo = context.ExtDBs.Where(d => d.DB_Alias == dbName).SingleOrDefault();
                 if(dbInfo == null) {
                     throw new Exception(string.Format("{0}: Integration was not found", Name));
                 }
@@ -89,7 +89,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                         service = new NexusExtDBRethingService(dbInfo);
                         break;
                     default:
-                        service = (new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Name)).NewQuery("");
+                        service = (new NexusExtDBService(dbInfo.DB_Server, dbInfo.DB_Alias)).NewQuery("");
                         break;
                 }
 
@@ -100,7 +100,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     outputVars["Error"] = false;
                 }
                 else {
-                    outputVars["Result"] = null;
+                    outputVars["Result"] = result.FirstError;
                     outputVars["Error"] = true;
 
                     OmniusException.Log(result.FirstError, OmniusLogSource.Nexus, null, core.Entitron.Application, core.User);
