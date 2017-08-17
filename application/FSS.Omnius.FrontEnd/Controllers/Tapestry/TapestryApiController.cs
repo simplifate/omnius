@@ -1524,17 +1524,18 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                         {
                             TapestryDesignerConditionGroup newCg = new TapestryDesignerConditionGroup
                             {
-                                TapestryDesignerResourceItem = newRI,
                                 ApplicationId = block.ParentMetablock.ParentAppId
                             };
+                            newRI.ConditionGroups.Add(newCg);
+
                             foreach (TapestryDesignerConditionSet cs in cg.ConditionSets)
                             {
                                 TapestryDesignerConditionSet newCs = new TapestryDesignerConditionSet
                                 {
                                     SetIndex = cs.SetIndex,
-                                    SetRelation = cs.SetRelation,
-                                    ConditionGroup = cs.ConditionGroup
+                                    SetRelation = cs.SetRelation
                                 };
+                                newCg.ConditionSets.Add(newCs);
 
                                 // set condition set conditions
                                 foreach (TapestryDesignerCondition c in cs.Conditions)
@@ -1680,18 +1681,17 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                     {
                         TapestryDesignerConditionGroup newcg = new TapestryDesignerConditionGroup
                         {
-                            TapestryDesignerWorkflowItem = newWI,
                             ApplicationId = block.ParentMetablock.ParentAppId
                         };
+                        newWI.ConditionGroups.Add(newcg);
                         foreach (TapestryDesignerConditionSet cs in cg.ConditionSets)
                         {
                             TapestryDesignerConditionSet newCS = new TapestryDesignerConditionSet()
                             {
                                 SetIndex = cs.SetIndex,
-                                SetRelation = cs.SetRelation,
-                                ConditionGroup = newcg
+                                SetRelation = cs.SetRelation
                             };
-
+                            newcg.ConditionSets.Add(newCS);
                             // set conditions in set
                             foreach (TapestryDesignerCondition c in cs.Conditions)
                             {
