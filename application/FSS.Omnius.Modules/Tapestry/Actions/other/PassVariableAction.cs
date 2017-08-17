@@ -53,7 +53,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 
             if (core.CrossBlockRegistry.ContainsKey((string)vars["Key"])) {
-                core.CrossBlockRegistry[(string)vars["Key"]] = vars["Value"];
+                if (vars["Value"] == null || (vars["Value"] is string && string.IsNullOrEmpty((string)vars["Value"]))) {
+                    core.CrossBlockRegistry.Remove((string)vars["Key"]);
+                }
+                else {
+                    core.CrossBlockRegistry[(string)vars["Key"]] = vars["Value"];
+                }
             }
             else {
                 core.CrossBlockRegistry.Add((string)vars["Key"], vars["Value"]);
