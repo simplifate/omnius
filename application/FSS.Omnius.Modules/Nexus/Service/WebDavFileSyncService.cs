@@ -46,6 +46,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
         {
             var context = DBEntities.instance;
             HttpWebRequest httpWebRequest = this.CreateWebRequest(file, "DELETE");
+            context.CachedFiles.Remove(file.CachedCopy);
             context.FileMetadataRecords.Remove(file);
             context.SaveChanges();
             httpWebRequest.GetResponse();
