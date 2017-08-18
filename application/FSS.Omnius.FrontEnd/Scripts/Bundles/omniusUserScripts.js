@@ -1753,6 +1753,8 @@ var BootstrapUserInit = {
             var button = $(this);
             var confirm = button.data('confirm');
 
+            if (button.attr("title") == "modal")
+                return;
             if (confirm && confirm.length) {
                 while (match = /(\{col_(\d)\})/.exec(confirm)) {
                     var colIndex = match[2];
