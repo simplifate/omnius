@@ -804,6 +804,8 @@
     <Content Include="Scripts\Tapestry\Overview\_Save.js" />
     <Content Include="Scripts\Tapestry\Overview\_Trash.js" />
     <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
+    <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
+    <Content Include="Scripts\UserScripts\Application\Xmu\TrezorTest.js.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
     <Content Include="Scripts\AppManager\Dialogs.js" />
     <Content Include="Scripts\UserScripts\BootstrapUserInit.js" />

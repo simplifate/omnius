@@ -16,7 +16,7 @@ $(function(){
                     $("#modal_name_ticket").html(x.find("#modal_name_ticket").html());
                 }
             });
-        });
+        }); 
 	var reload = function () {
             var SupportID = $("#model_id").val();
             $("#modal_body_ticket").html("");
