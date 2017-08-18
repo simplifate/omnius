@@ -78,7 +78,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
@@ -109,7 +109,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
@@ -133,7 +133,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId<int>(), true);
@@ -148,7 +148,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/DisableTwoFactorAuthentication
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId<int>(), false);
@@ -172,7 +172,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
             if (!ModelState.IsValid)
@@ -221,7 +221,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -252,7 +252,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/SetPassword
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -300,7 +300,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user

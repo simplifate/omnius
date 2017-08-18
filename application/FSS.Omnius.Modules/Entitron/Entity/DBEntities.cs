@@ -34,7 +34,12 @@ namespace FSS.Omnius.Modules.Entitron.Entity
     public partial class DBEntities : IdentityDbContext<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>
     {
         private bool isDisposed = false;
-        
+        private static readonly object _connectionsLock = new object();
+        private static readonly object _instanceLock = new object();
+        private static readonly object _appConnectionsLock = new object();
+        private static readonly object _appInstanceLock = new object();
+        private static readonly object _messagesLock = new object();
+
         private HttpRequest _r;
         private static HttpRequest r
         {
@@ -57,27 +62,27 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
             get
             {
-                if (r == null)
+                lock (_instanceLock)
                 {
-                    if (nullRequestInstance == null || nullRequestInstance.isDisposed)
+                    if (r == null)
                     {
-                        nullRequestInstance = new DBEntities();
+                        if (nullRequestInstance == null || nullRequestInstance.isDisposed)
+                        {
+                            nullRequestInstance = new DBEntities();
+                        }
+                        return nullRequestInstance;
                     }
-                    return nullRequestInstance;
+                    else if (!_instances.ContainsKey(r) || _instances[r].isDisposed)
+                    {
+                        if (_instances.ContainsKey(r))
+                            _instances.Remove(r);
+                        Create();
+                    }
+                    return _instances[r];
                 }
-                else if (!_instances.ContainsKey(r) || _instances[r].isDisposed)
-                {
-                    if (_instances.ContainsKey(r))
-                        _instances.Remove(r);
-                    Create();
-                }
-
-                return _instances[r];
-                //return new DBEntities();
             }
         }
 
-        private static object _messagesLock = new object();
         private static Dictionary<HttpRequest, List<string>> _messages = new Dictionary<HttpRequest, List<string>>();
         public static List<string> messages
         {
@@ -90,7 +95,6 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             }
         }
 
-        private static object _connectionsLock = new object();
         private static Dictionary<HttpRequest, DbConnection> _connections = new Dictionary<HttpRequest, DbConnection>();
         private static DbConnection connection
         {
@@ -115,18 +119,20 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             // empty connection string - return usual entities
             if (app == null || app.connectionString_schema == null)
                 return instance;
-            
-            if (!_appInstances.ContainsKey(r) || _appInstances[r].isDisposed)
+
+            lock (_appInstanceLock)
             {
-                if (_appInstances.ContainsKey(r))
-                    _appInstances.Remove(r);
+                if (!_appInstances.ContainsKey(r) || _appInstances[r].isDisposed)
+                {
+                    if (_appInstances.ContainsKey(r))
+                        _appInstances.Remove(r);
 
-                Create(app);
+                    Create(app);
+                }
+                return _appInstances[r];
             }
-
-            return _appInstances[r];
         }
-        private static object _appConnectionsLock = new object();
+
         private static Dictionary<HttpRequest, DbConnection> _appConnections = new Dictionary<HttpRequest, DbConnection>();
         private static DbConnection appConnection(string connectionString)
         {
@@ -144,22 +150,31 @@ namespace FSS.Omnius.Modules.Entitron.Entity
 
         public static void Create()
         {
-            _instances.Add(r, new DBEntities(r));
+            lock (_instanceLock)
+            {
+                _instances.Add(r, new DBEntities(r));
+            }
         }
         public static void Create(Application app)
         {
-            _appInstances.Add(r, new DBEntities(r, app.connectionString_schema));
+            lock (_appInstanceLock)
+            {
+                _appInstances.Add(r, new DBEntities(r, app.connectionString_schema));
+            }
         }
 
         public static void Destroy()
         {
-            if (_connections.ContainsKey(r))
+            lock (_connectionsLock)
             {
-                lock (_connectionsLock)
+                if (_connections.ContainsKey(r))
                 {
-                    _connections[r].Close();
-                    _connections[r].Dispose();
-                    _connections.Remove(r);
+                    lock (_connectionsLock)
+                    {
+                        _connections[r].Close();
+                        _connections[r].Dispose();
+                        _connections.Remove(r);
+                    }
                 }
             }
 
@@ -171,22 +186,29 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 }
             }
 
-            if (_instances.ContainsKey(r))
-            {
-                _instances[r].Dispose();
-                _instances.Remove(r);
+            if (_instances.ContainsKey(r)) {
+                lock (_instanceLock) {
+                    if (_instances.ContainsKey(r)) {
+                        _instances[r].Dispose();
+                        _instances.Remove(r);
+                    }
+                }
             }
 
             if (_appInstances.ContainsKey(r)) {
-                _appInstances[r].Dispose();
-                _appInstances.Remove(r);
+                lock (_appInstanceLock) {
+                    _appInstances[r].Dispose();
+                    _appInstances.Remove(r);
+                }
             }
 
-            if (_messages.ContainsKey(r))
-            {
-                lock (_messagesLock)
-                {
-                    _messages.Remove(r);
+            if (_messages.ContainsKey(r)) {
+                lock (_messagesLock) {
+                    if (_messages.ContainsKey(r)) {
+                        lock (_messagesLock) {
+                            _messages.Remove(r);
+                        }
+                    }
                 }
             }
         }
@@ -195,11 +217,16 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
             if (r != null)
             {
-                if (_instances.ContainsKey(r)) {
-                    _instances[r].isDisposed = true;
+                lock (_instanceLock) {
+                    if (_instances.ContainsKey(r)) {
+                        _instances[r].isDisposed = true;
+
+                    }
                 }
-                if (_appInstances.ContainsKey(r)) {
-                    _appInstances[r].isDisposed = true;
+                lock (_appInstanceLock) {
+                    if (_appInstances.ContainsKey(r)) {
+                        _appInstances[r].isDisposed = true;
+                    }
                 }
             }
         }

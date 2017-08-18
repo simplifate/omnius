@@ -77,10 +77,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             bool isView = false;
 
             List<string> chars = new List<string>();
-            for (int i = -1; i < abc.Length; i++)
-            {
-                for (int j = 0; j < abc.Length; j++)
-                {
+            for(int i = -1; i < abc.Length; i++) {
+                for(int j = 0; j < abc.Length; j++) {
                     string ch = (i >= 0 ? abc[i].ToString() : "") + abc[j].ToString();
                     chars.Add(ch);
                 }
@@ -118,19 +116,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             Dictionary<string, Dictionary<int, string>> foreignData = new Dictionary<string, Dictionary<int, string>>();
             Dictionary<string, string> foreignColumnNames = new Dictionary<string, string>();
 
-            using (DBEntities e = new DBEntities())
-            {
-                if (vars.ContainsKey("ForeignKeys"))
-                {
-                    foreach (KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"])
-                    {
+            using (DBEntities e = new DBEntities()) {
+                if (vars.ContainsKey("ForeignKeys")) {
+                    foreach (KeyValuePair<string, string> key in (Dictionary<string, string>)vars["ForeignKeys"]) {
                         foreignData.Add(key.Key, new Dictionary<int, string>());
                         string[] target = key.Value.Split('.');
                         string foreignTable = target[0];
                         string foreignColumn = target[1];
 
-                        foreach (DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList())
-                        {
+                        foreach (DBItem fr in core.Entitron.GetDynamicTable(foreignTable).Select().where(c => c.column("id").In(new HashSet<object>(data.Select(i => i[key.Key])))).ToList()) {
                             foreignData[key.Key].Add((int)fr["id"], (string)fr[foreignColumn]);
                         }
 
@@ -139,15 +133,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                     }
                 }
 
-                if (isTable)
-                {
+                if (isTable) {
                     DBColumns = e.DbTables.Include("Columns").Where(t => t.Name == tableName).OrderByDescending(t => t.DbSchemeCommitId).First().Columns.ToList();
                 }
-
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true))
-                    {
+                
+                using (MemoryStream stream = new MemoryStream()) {
+                    using (SpreadsheetDocument xls = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook, true)) {
                         WorkbookPart bookPart = xls.AddWorkbookPart();
                         bookPart.Workbook = new Workbook();
                         bookPart.Workbook.AppendChild<Sheets>(new Sheets());
@@ -156,19 +147,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         WorksheetPart sheetPart = InsertWorksheet("Data", bookPart);
 
                         int c = 0;
-                        if (isTable)
-                        {
-                            foreach (DbColumn col in DBColumns)
-                            {
-                                if (columns.Contains(col.Name))
-                                {
+                        if(isTable) {
+                            foreach (DbColumn col in DBColumns) {
+                                if (columns.Contains(col.Name)) {
                                     string name;
-                                    if (foreignColumnNames.ContainsKey(col.Name))
-                                    {
+                                    if (foreignColumnNames.ContainsKey(col.Name)) {
                                         name = foreignColumnNames[col.Name];
                                     }
-                                    else
-                                    {
+                                    else {
                                         name = col.DisplayName ?? col.Name;
                                     }
 
@@ -180,10 +166,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                                 }
                             }
                         }
-                        if (isView)
-                        {
-                            foreach (string colName in columns)
-                            {
+                        if(isView) {
+                            foreach(string colName in columns) {
                                 int i = InsertSharedStringItem(colName, strings);
                                 Cell cell = InsertCellInWorksheet(chars[c], 1, sheetPart);
                                 cell.CellValue = new CellValue(i.ToString());
@@ -191,37 +175,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                                 c++;
                             }
                         }
-
+                        
                         uint r = 1;
-                        foreach (DBItem item in data)
-                        {
+                        foreach (DBItem item in data) {
                             c = 0;
                             r++;
 
-                            if (isTable)
-                            {
-                                foreach (DbColumn col in DBColumns)
-                                {
-                                    if (columns.Contains(col.Name))
-                                    {
+                            if (isTable) {
+                                foreach (DbColumn col in DBColumns) {
+                                    if (columns.Contains(col.Name)) {
                                         string value;
 
-                                        if (foreignData.ContainsKey(col.Name))
-                                        {
-                                            if (foreignData[col.Name].ContainsKey((int)item[col.Name]))
-                                            {
+                                        if (foreignData.ContainsKey(col.Name)) {
+                                            if (foreignData[col.Name].ContainsKey((int)item[col.Name])) {
                                                 value = foreignData[col.Name][(int)item[col.Name]];
                                             }
-                                            else
-                                            {
+                                            else {
                                                 value = item[col.Name].ToString();
                                             }
                                         }
-                                        else
-                                        {
+                                        else {
                                             value = item[col.Name].ToString();
-                                            if (col.Type == "boolean")
-                                            {
+                                            if (col.Type == "boolean") {
                                                 value = value == "True" ? "Ano" : "Ne";
                                             }
                                         }
@@ -234,10 +209,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                                     }
                                 }
                             }
-                            if (isView)
-                            {
-                                foreach (string colName in columns)
-                                {
+                            if(isView) {
+                                foreach(string colName in columns) {
                                     string value = item[colName].ToString();
 
                                     int i = InsertSharedStringItem(value, strings);
@@ -251,7 +224,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         xls.Close();
 
                         stream.Seek(0, SeekOrigin.Begin);
-
+                        
                         HttpContext context = HttpContext.Current;
                         HttpResponse response = context.Response;
 
@@ -284,13 +257,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             FSS.Omnius.Modules.Entitron.Table.DBView view = core.Entitron.GetDynamicView(viewName);
 
             List<DBItem> rows;
-            if (vars.ContainsKey("Filter"))
-            {
+            if (vars.ContainsKey("Filter")) {
                 string[] ids = ((string)vars["Filter"]).Split(',');
                 rows = view.Select().where(m => m.column("id").In(ids)).ToList();
             }
-            else
-            {
+            else {
                 rows = view.Select().ToList();
             }
             return rows;
@@ -300,15 +271,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             List<string> columns = new List<string>();
 
-            if (!vars.ContainsKey("Columns"))
-            {
-                foreach (DBColumn col in core.Entitron.GetDynamicTable(tableName).columns)
-                {
+            if (!vars.ContainsKey("Columns")) {
+                foreach (DBColumn col in core.Entitron.GetDynamicTable(tableName).columns) {
                     columns.Add(col.Name);
                 }
             }
-            else
-            {
+            else {
                 columns = (vars["Columns"] as string).Split(';').ToList();
             }
             return columns;
@@ -318,15 +286,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             List<string> columns = new List<string>();
 
-            if (!vars.ContainsKey("Columns"))
-            {
-                if (data.Count > 0)
-                {
-                    columns = data.First().getColumnNames().Where(c => !c.StartsWith("hidden__")).ToList();
+            if (!vars.ContainsKey("Columns")) {
+                if(data.Count > 0) { 
+                    columns = data.First().getColumnNames();
                 }
             }
-            else
-            {
+            else {
                 columns = (vars["Columns"] as string).Split(';').ToList();
             }
             return columns;
@@ -335,18 +300,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         private int InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
         {
             // If the part does not contain a SharedStringTable, create one.
-            if (shareStringPart.SharedStringTable == null)
-            {
+            if (shareStringPart.SharedStringTable == null) {
                 shareStringPart.SharedStringTable = new SharedStringTable();
             }
 
             int i = 0;
 
             // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
-            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>())
-            {
-                if (item.InnerText == text)
-                {
+            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>()) {
+                if (item.InnerText == text) {
                     return i;
                 }
 
@@ -372,8 +334,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // Get a unique ID for the new sheet.
             uint sheetId = 1;
-            if (sheets.Elements<Sheet>().Count() > 0)
-            {
+            if (sheets.Elements<Sheet>().Count() > 0) {
                 sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
             }
 
@@ -393,23 +354,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
             // If the worksheet does not contain a row with the specified row index, insert one.
             Row row;
-            if (sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).Count() != 0)
-            {
+            if (sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).Count() != 0) {
                 row = sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).First();
             }
-            else
-            {
+            else {
                 row = new Row() { RowIndex = rowIndex };
                 sheetData.Append(row);
             }
 
             // If there is not a cell with the specified column name, insert one.  
-            if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0)
-            {
+            if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0) {
                 return row.Elements<Cell>().Where(c => c.CellReference.Value == cellReference).First();
             }
-            else
-            {
+            else {
                 // Cells must be in sequential order according to CellReference. Determine where to insert the new cell.
                 Cell refCell = null;
                 string lettersOnly = Regex.Replace(cellReference, "[\\d]", "");

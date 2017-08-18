@@ -42,6 +42,8 @@ namespace FSS.Omnius.FrontEnd
         {
         }
 
+        public static ApplicationUserManager staticUserManager;
+
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<User, Iden_Role, int, UserLogin, Iden_User_Role, UserClaim>(context.Get<DBEntities>()));
@@ -86,6 +88,8 @@ namespace FSS.Omnius.FrontEnd
                 manager.UserTokenProvider = 
                     new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
+            Modules.Persona.Persona.userManager = manager;
             return manager;
         }
     }

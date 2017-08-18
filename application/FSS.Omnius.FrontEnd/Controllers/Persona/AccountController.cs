@@ -170,7 +170,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/VerifyCode
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -206,7 +206,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/Register
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -287,7 +287,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -329,7 +329,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -361,7 +361,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
@@ -385,7 +385,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/SendCode
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -433,7 +433,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
@@ -471,7 +471,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         // POST: /Account/LogOff
         [HttpPost]
         [PersonaAuthorize]
-        // [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

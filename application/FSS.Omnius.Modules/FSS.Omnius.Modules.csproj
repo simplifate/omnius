@@ -112,6 +112,9 @@
       <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
+      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
+    </Reference>
     <Reference Include="Nest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <HintPath>..\packages\NEST.2.4.6\lib\net45\Nest.dll</HintPath>
       <Private>True</Private>
@@ -1221,7 +1224,7 @@
     <Compile Include="Persona\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
-    <Compile Include="Tapestry\Actions\Apps\SmartCoaster\ParseCoasterValues.cs" />
+    <Compile Include="Tapestry\Actions\Apps\SmartCoasters\ParseValues.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GroupTableRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JArrayInsertIntoDB.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JArrayInsertUniqueIntoDB.cs" />
@@ -1260,6 +1263,7 @@
     <Compile Include="Tapestry\Actions\Apps\EPK\FillOrderAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddInVectorAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\BasicsAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ColumnAutosumAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ColumnAverageAction.cs" />
     <Compile Include="Tapestry\Actions\Math\CopyInVectorAction.cs" />
@@ -1281,6 +1285,7 @@
     <Compile Include="Tapestry\Actions\Mozaic\MozaicRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ReadDBItemAction.cs" />
     <Compile Include="Tapestry\Actions\Hermes\SendMailAction.cs" />
+    <Compile Include="Tapestry\Actions\Mozaic\SaveFormState.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBUpdate.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBInsert.cs" />
@@ -1288,6 +1293,8 @@
     <Compile Include="Tapestry\Actions\Nexus\CallJsonRpc.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallRestAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\CallSOAPWSAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\GetTableFromJSON.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\JsonStringifyAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\Json2Dict.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
@@ -1316,6 +1323,7 @@
     <Compile Include="Tapestry\Actions\Persona\AutoLogoffAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\ChangeUserPasswordAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\CreateUserAction.cs" />
+    <Compile Include="Tapestry\Actions\Persona\PersonaRepository.cs" />
     <Compile Include="Tapestry\Actions\Persona\RecordDatesDeletedUsers.cs" />
     <Compile Include="Tapestry\Actions\Persona\RefreshUserFromADAction.cs" />
     <Compile Include="Tapestry\Actions\Persona\RemoveUserFromGroupAction.cs" />

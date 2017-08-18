@@ -11,29 +11,39 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 {
     class SqlQueue
     {
+        private static readonly object _queryLock = new object();
         internal static List<SqlQuery> _queries = new List<SqlQuery>();
 
         public SqlQueue Add(SqlQuery query)
         {
-            _queries.Add(query);
+            lock (_queryLock)
+            {
+                _queries.Add(query);
+            }
 
             return this;
         }
         public T GetQuery<T>(string tableName) where T : SqlQuery_withAppTable
         {
-            return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
+            lock (_queryLock)
+            {
+                return (T)_queries.FirstOrDefault(q => q is T && (q as T).table.tableName == tableName);
+            }
         }
         public List<T> GetAndRemoveQueries<T>(string tableName) where T : SqlQuery_withAppTable
         {
             List<T> output = new List<T>();
-            for(int i = 0; i < _queries.Count; i++)
+            lock (_queryLock)
             {
-                SqlQuery q = _queries[i];
-                if (q is T && (q as T).table.tableName == tableName)
+                for (int i = 0; i < _queries.Count; i++)
                 {
-                    output.Add((T)q);
-                    _queries.RemoveAt(i);
-                    i--;
+                    SqlQuery q = _queries[i];
+                    if (q is T && (q as T).table.tableName == tableName)
+                    {
+                        output.Add((T)q);
+                        _queries.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
 
@@ -54,26 +64,35 @@ namespace FSS.Omnius.Modules.Entitron.Sql
                 {
                     try
                     {
-                        foreach (SqlQuery query in _queries)
+                        lock (_queryLock)
                         {
-                            query.PreExecution();
-                            query.Execute(transaction);
+                            foreach (SqlQuery query in _queries)
+                            {
+                                query.PreExecution();
+                                query.Execute(transaction);
+                            }
+                            transaction.Commit();
+                            _queries = new List<SqlQuery>();
                         }
-                        transaction.Commit();
-                        _queries = new List<SqlQuery>();
                     }
                     catch (SqlException e)
                     {
                         Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
                         transaction.Rollback();
-                        _queries = new List<SqlQuery>();
+                        lock (_queryLock)
+                        {
+                            _queries = new List<SqlQuery>();
+                        }
                         throw e;
                     }
                     catch (Exception e)
                     {
                         Log.Error(string.Format("Entitron: sql query '{0}' could not be executed!", ToString()));
                         transaction.Rollback();
-                        _queries = new List<SqlQuery>();
+                        lock (_queryLock)
+                        {
+                            _queries = new List<SqlQuery>();
+                        }
                         throw e;
                     }
                 }

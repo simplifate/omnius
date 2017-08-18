@@ -66,5 +66,9 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         {
             return Users_Roles.Where(r => r.ApplicationId == appId).Select(r => r.RoleName).ToList();
         }
+        public List<string> GetAppRoles(string appName)
+        {
+            return Users_Roles.Where(r => r.ApplicationName == appName).Select(r => r.RoleName).ToList();
+        }
     }
 }
