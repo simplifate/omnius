@@ -15,7 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         protected override ListJson<DBItem> BaseExecutionWithRead(MarshalByRefObject connection)
         {
             sqlString =
-                $"SELECT {((columns != null && columns.Count > 0) ? string.Join(",", columns) : "*")} FROM [{realTableName}] {_where} {string.Join(" ", _join)} {_group} {_order};";
+                $"SELECT {_top} {((columns != null && columns.Count > 0) ? string.Join(",", columns) : "*")} FROM [{realTableName}] {_where} {string.Join(" ", _join)} {_group} {_order};";
             //if (table != null)
             //{
 
@@ -99,6 +99,14 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public DBItem FirstOrDefault()
         {
             DBItem output = ExecuteWithRead().FirstOrDefault();
+            if (output != null)
+                output.table = table;
+
+            return output;
+        }
+        public DBItem LastOrDefault()
+        {
+            DBItem output = ExecuteWithRead().LastOrDefault();
             if (output != null)
                 output.table = table;
 

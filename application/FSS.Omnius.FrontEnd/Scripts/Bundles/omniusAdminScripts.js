@@ -4064,8 +4064,8 @@ TB.save = {
             Name: rule.find('.workflowRuleHeader .verticalLabel').text(),
             Width: Math.round(rule.width()),
             Height: Math.round(rule.height()),
-            PositionX: Math.round(rule.position().left),
-            PositionY: Math.round(rule.position().top),
+            PositionX: Math.round(rule.position().left + rule.parents('.scrollContainer').scrollLeft()),
+            PositionY: Math.round(rule.position().top + rule.parents('.scrollContainer').scrollTop()),
             Swimlanes: swimlanes,
             Connections: connections
         };
@@ -5806,7 +5806,7 @@ TB.wfr = {
         var comment = $(this).find('#ActionComment').val();
         var item = $(CurrentItem);
 
-        if (name.length) {
+        if (comment.length) {
             if (!item.find('.itemComment').length) {
                 item.append('<span class="itemComment" />');
             }

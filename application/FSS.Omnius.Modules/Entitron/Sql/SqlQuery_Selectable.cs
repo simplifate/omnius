@@ -12,6 +12,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         internal Condition_concat _where = null;
         internal string _order = "";
         internal string _group = "";
+        internal string _top = "";
         
         public T where(Func<Conditions, Condition_concat> conditions)
         {
@@ -45,7 +46,6 @@ namespace FSS.Omnius.Modules.Entitron.Sql
 
             return (T)this;
         }
- 
         public T order(string columnName)
         {
             if (!string.IsNullOrWhiteSpace(columnName))
@@ -63,6 +63,12 @@ namespace FSS.Omnius.Modules.Entitron.Sql
         public T group(string columnName)
         {
             _group = string.Format(" GROUP BY {0}", columnName);
+
+            return (T)this;
+        }
+        public T top(int count)
+        {
+            _top = string.Format("TOP {0}", count);
 
             return (T)this;
         }

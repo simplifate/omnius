@@ -603,7 +603,7 @@
         var comment = $(this).find('#ActionComment').val();
         var item = $(CurrentItem);
 
-        if (name.length) {
+        if (comment.length) {
             if (!item.find('.itemComment').length) {
                 item.append('<span class="itemComment" />');
             }
