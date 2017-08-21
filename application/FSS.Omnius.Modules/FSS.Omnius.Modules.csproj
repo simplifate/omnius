@@ -1226,6 +1226,7 @@
     <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
     <Compile Include="Tapestry\Actions\Apps\SmartCoasters\ParseValues.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\ParseExchangeRates.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\AddToListAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GroupTableRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JArrayInsertIntoDB.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JArrayInsertUniqueIntoDB.cs" />

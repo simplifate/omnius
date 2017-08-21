@@ -291,9 +291,13 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                 if(ignoreAttrs.Contains((string)t["name"])) {
                     continue;
                 }
+                
                 string value = (string)t["value"];
                 if (value.StartsWith("@row")) {
                     value = $"@(Convert.ToString({value.TrimStart('@').Replace('\'', '"')}))";
+                }
+                if (value.StartsWith("@item")) {
+                    value = $"@(Convert.ToString(FSS.Omnius.Modules.Tapestry.KeyValueString.ParseValue(\"{value.Replace("@item", "row")}\", new Dictionary<string, object>() {{ {{ \"row\", row }} }} )))";
                 }
 
                 if (mergeAttrs.ContainsKey((string)t["name"])) {
@@ -621,7 +625,21 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             string varName = GetAttribute(c.Attributes, "data-varname");
             string type = GetAttribute(c.Attributes, "data-type");
             string attrs = BuildAttributes(c, new List<string>() { "data-varname", "data-type" });
-            string conversion = type == "jtoken" ? "(Newtonsoft.Json.Linq.JToken)" : "(IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)";
+            string conversion;
+            switch (type) {
+                case "jtoken":
+                    conversion = "(Newtonsoft.Json.Linq.JToken)";
+                    break;
+                case "dbitem":
+                    conversion = "(IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)";
+                    break;
+                case "object":
+                    conversion = "(List<object>)";
+                    break;
+                default:
+                    conversion = "(IEnumerable<object>)";
+                    break;
+            }
 
             html.Append($@"
 @{{ if(ViewData.ContainsKey(""{varName}"")) {{
@@ -713,6 +731,9 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                         if (subStr.StartsWith("@row")) {
                             subStr = $"@({subStr.TrimStart('@')}.ToString())";
                         }
+                        else if (subStr.StartsWith("@item")) {
+                            subStr = $"@(Convert.ToString(FSS.Omnius.Modules.Tapestry.KeyValueString.ParseValue(\"{subStr.Replace("@item", "row")}\", new Dictionary<string, object>() {{ {{ \"row\", row }} }} )))";
+                        }
                         else if (properties.ContainsKey("razer") && properties["razer"].ToLower() == "true") {
                             // do nothing
                         }
@@ -730,6 +751,9 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             else {
                 if (c.Content.StartsWith("@row")) {
                     html = $"@({c.Content.TrimStart('@')}.ToString())";
+                }
+                else if (c.Content.StartsWith("@item")) {
+                    html = $"@(Convert.ToString(FSS.Omnius.Modules.Tapestry.KeyValueString.ParseValue(\"{c.Content.Replace("@item", "row")}\", new Dictionary<string, object>() {{ {{ \"row\", row }} }} )))";
                 }
                 else if(properties.ContainsKey("razer") && properties["razer"].ToLower() == "true") {
                     // do nothing

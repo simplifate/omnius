@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    internal class KeyValueString
+    public class KeyValueString
     {
         private Dictionary<string, string> _value;
         private Dictionary<string, object> _result;
@@ -222,7 +222,7 @@ namespace FSS.Omnius.Modules.Tapestry
                 }
             }
             catch(Exception) { }
-
+            
             PropertyInfo property = o.GetType().GetProperty(calling);
 
             if (property == null)

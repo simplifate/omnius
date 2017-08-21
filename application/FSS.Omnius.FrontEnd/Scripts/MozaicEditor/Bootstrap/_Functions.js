@@ -32,7 +32,8 @@
                     options: {
                         'null': '-- chose one --',
                         'jtoken': 'JToken',
-                        'dbitem': 'DbItem'
+                        'dbitem': 'List&lt;DbItem&gt;',
+                        'object': 'List&lt;Object&gt;'
                     },
                     attr: 'data-type',
                     get: MBE.options.hasAttr,

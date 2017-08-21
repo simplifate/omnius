@@ -15427,7 +15427,8 @@ MBE.types.text = {
         'small': '<small>Text</small>',
         'strong': '<strong>Bold</strong>',
         'italic': '<em>Italic</em>',
-        'span': '<span>Text</span>'
+        'span': '<span>Text</span>',
+        'text-node': '<span class="mbe-text-node">...</span>'
     },
 
     options: {
@@ -17610,7 +17611,8 @@ MBE.types.functions = {
                     options: {
                         'null': '-- chose one --',
                         'jtoken': 'JToken',
-                        'dbitem': 'DbItem'
+                        'dbitem': 'List&lt;DbItem&gt;',
+                        'object': 'List&lt;Object&gt;'
                     },
                     attr: 'data-type',
                     get: MBE.options.hasAttr,
