@@ -1,0 +1,2799 @@
+msgid ""
+" Dokumenty k nápravnému opatření prokazující realizaci/nerealizaci/posunutí "
+"termínu NO"
+msgstr ""
+"Documents related to corrective measures prove realization/non-realization/"
+"rescheduling the deadline of CM"
+
+#: 1370-Formulace zjištění:1 1672-Formulace 1797-Formulace 1922-Formulace
+#: 2043-Formulace 2168-Formulace 2293-Formulace 2435-Formulace 2556-Formulace
+#: 2687-Formulace 2813-Formulace 2935-Formulace
+msgid "-- vyberte činnost --"
+msgstr "-- select action --"
+
+#: 1478-Editace neaktivní pozice:1 1479-Nová 1766-Editace 1767-Nová
+#: 1891-Editace 1892-Nová 2016-Editace 2017-Nová 2137-Editace 2138-Nová
+#: 2262-Editace 2263-Nová 2387-Editace 2388-Nová 2529-Editace 2530-Nová
+#: 2650-Editace 2651-Nová 2781-Editace 2782-Nová 2907-Editace 2908-Nová
+#: 3029-Editace 3030-Nová
+msgid "-- vyberte funkci --"
+msgstr "-- select function --"
+
+#: 1484-Nový nadřízený:1 1768-Nový 1893-Nový 2018-Nový 2139-Nový
+#: 2264-Nový 2389-Nový 2531-Nový 2652-Nový 2783-Nový 2909-Nový
+#: 3031-Nový
+msgid "-- vyberte nadřízeného --"
+msgstr "-- select superior --"
+
+#: 1369-Zadání auditu:1 1373-Detail 1385-Formulace záznamu:1 1396-Formulace
+#: Doporučení:1 1463-Detail auditu bez WF:1 1671-Zadání 1675-Detail
+#: 1687-Formulace 1698-Formulace 1759-Detail 1796-Zadání 1800-Detail
+#: 1812-Formulace 1823-Formulace 1884-Detail 1921-Zadání 1925-Detail
+#: 1937-Formulace 1948-Formulace 2009-Detail 2042-Zadání 2046-Detail
+#: 2058-Formulace 2069-Formulace 2130-Detail 2167-Zadání 2171-Detail
+#: 2183-Formulace 2194-Formulace 2255-Detail 2292-Zadání 2296-Detail
+#: 2308-Formulace 2319-Formulace 2380-Detail 2434-Zadání 2438-Detail
+#: 2450-Formulace 2461-Formulace 2522-Detail 2555-Zadání 2559-Detail
+#: 2571-Formulace 2582-Formulace 2643-Detail 2686-Zadání 2690-Detail
+#: 2702-Formulace 2713-Formulace 2774-Detail 2812-Zadání 2816-Detail
+#: 2828-Formulace 2839-Formulace 2900-Detail 2934-Zadání 2938-Detail
+#: 2950-Formulace 2961-Formulace 3022-Detail
+msgid "-- vyberte osobu --"
+msgstr "-- select person --"
+
+#: 1369-Zadání auditu:1 1373-Detail 1671-Zadání 1675-Detail 1796-Zadání
+#: 1800-Detail 1921-Zadání 1925-Detail 2042-Zadání 2046-Detail
+#: 2167-Zadání 2171-Detail 2292-Zadání 2296-Detail 2434-Zadání
+#: 2438-Detail 2555-Zadání 2559-Detail 2686-Zadání 2690-Detail
+#: 2812-Zadání 2816-Detail 2934-Zadání 2938-Detail
+msgid "-- vyberte popis --"
+msgstr "-- select description --"
+
+#: 1370-Formulace zjištění:1 1672-Formulace 1797-Formulace 1922-Formulace
+#: 2043-Formulace 2168-Formulace 2293-Formulace 2435-Formulace 2556-Formulace
+#: 2687-Formulace 2813-Formulace 2935-Formulace
+msgid "-- vyberte proces --"
+msgstr "-- select process --"
+
+#: 1369-Zadání auditu:1 1373-Detail 1478-Editace neaktivní pozice:1
+#: 1479-Nová 1671-Zadání 1675-Detail 1766-Editace 1767-Nová 1796-Zadání
+#: 1800-Detail 1891-Editace 1892-Nová 1921-Zadání 1925-Detail 2016-Editace
+#: 2017-Nová 2042-Zadání 2046-Detail 2137-Editace 2138-Nová 2167-Zadání
+#: 2171-Detail 2262-Editace 2263-Nová 2292-Zadání 2296-Detail 2387-Editace
+#: 2388-Nová 2434-Zadání 2438-Detail 2529-Editace 2530-Nová 2555-Zadání
+#: 2559-Detail 2650-Editace 2651-Nová 2686-Zadání 2690-Detail 2781-Editace
+#: 2782-Nová 2812-Zadání 2816-Detail 2907-Editace 2908-Nová 2934-Zadání
+#: 2938-Detail 3029-Editace 3030-Nová
+msgid "-- vyberte společnost --"
+msgstr "-- select company --"
+
+#: 1484-Nový nadřízený:1 1768-Nový 1893-Nový 2018-Nový 2139-Nový
+#: 2264-Nový 2389-Nový 2531-Nový 2652-Nový 2783-Nový 2909-Nový
+#: 3031-Nový
+msgid "-- vyberte uživatele --"
+msgstr "-- select user --"
+
+#: 2704-Editace Zjištění:1 2712-Nepojmenovaná stránka:1 2713-Formulace
+#: Doporučení:1 2714-Editace 2747-Vyjádření k auditu:1 2748-Vyjádření
+#: auditora:1 2750-Vyjádření nadřízeného:1 2751-Vráceno přepracování
+#: nadřízeným:1 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace
+#: opatření v řešení:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu 2787-Detail nápravného opatření:1
+#: 2789-Editace rolí:1 2795-Editovat hesla:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "{var1}"
+msgstr "{var1}"
+
+#: 2683-Test:1
+msgid "A:"
+msgstr "A:"
+
+#: 1367-PortalInternichAuditu2 layout:46 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 layout:43 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Administrace"
+msgstr "Administration"
+
+#: 1373-Detail auditu:1 1387-Editace Zjištění:1 1396-Formulace
+#: Doporučení:1 1397-Editace 1404-Editace Auditu:1 1405-EditaceDoporuc2:1
+#: 1406-Ke zpracování:1 1407-Přehled nápravných opatření:1
+#: 1408-EditaceZjisteni2:1 1410-Editace Auditu Bez WF:1 1412-Společnosti:1
+#: 1413-Procesy:1 1414-Činnosti:1 1415-AuditoriEy:1 1416-UzivateleRWE:1
+#: 1417-Funkce:1 1419-Neaktivní pozice:1 1427-FollowUp:1 1430-Vyjádření k
+#: 1431-Vyjádření auditora:1 1435-Vyjádření nadřízeného:1
+#: 1436-Vráceno přepracování nadřízeným:1 1437-Vráceno auditorem:1
+#: 1438-Posouzení 1439-Editace opatření v řešení:1 1440-Schválení
+#: změny termínu:1 1458-Přehled souborů:1 1459-Test panelu:1 1463-Detail
+#: auditu bez 1486-Změna 1527-Schválení termínu 1555-Detail nápravného
+#: 1556-Změna společnosti:1 1557-Editace rolí:1 1558-Role:1 1573-hesla:1
+#: 1579-Společnosti koordinátorů:1 1585-EditaceNapravnychOpatření:1
+#: 1675-Detail 1689-Editace 1698-Formulace 1699-Editace 1706-Editace
+#: 1707-EditaceDoporuc2:1 1708-Ke 1709-Přehled 1710-EditaceZjisteni2:1
+#: 1712-Editace 1714-Společnosti:1 1715-Procesy:1 1716-Činnosti:1
+#: 1717-AuditoriEy:1 1718-UzivateleRWE:1 1719-Funkce:1 1721-Neaktivní
+#: 1729-FollowUp:1 1732-Vyjádření 1733-Vyjádření 1735-Vyjádření
+#: 1736-Vráceno 1737-Vráceno 1738-Posouzení 1739-Editace 1740-Schválení
+#: 1756-Přehled 1757-Test 1759-Detail 1770-Změna 1771-Schválení
+#: 1772-Detail 1773-Změna 1774-Editace 1775-Role:1 1779-hesla:1
+#: 1782-Společnosti 1787-EditaceNapravnychOpatření:1 1796-Zadání
+#: 1800-Detail 1814-Editace 1823-Formulace 1824-Editace 1825-Zadání
+#: 1831-Editace 1832-EditaceDoporuc2:1 1833-Ke 1834-Přehled
+#: 1835-EditaceZjisteni2:1 1837-Editace 1839-Společnosti:1 1840-Procesy:1
+#: 1841-Činnosti:1 1842-AuditoriEy:1 1843-UzivateleRWE:1 1844-Funkce:1
+#: 1846-Neaktivní 1854-FollowUp:1 1857-Vyjádření 1858-Vyjádření
+#: 1860-Vyjádření 1861-Vráceno 1862-Vráceno 1863-Posouzení 1864-Editace
+#: 1865-Schválení 1881-Přehled 1882-Test 1884-Detail 1895-Změna
+#: 1896-Schválení 1897-Detail 1898-Změna 1899-Editace 1900-Role:1
+#: 1904-hesla:1 1907-Společnosti 1912-EditaceNapravnychOpatření:1
+#: 1925-Detail 1939-Editace 1948-Formulace 1949-Editace 1956-Editace
+#: 1957-EditaceDoporuc2:1 1958-Ke 1959-Přehled 1960-EditaceZjisteni2:1
+#: 1962-Editace 1964-Společnosti:1 1965-Procesy:1 1966-Činnosti:1
+#: 1967-AuditoriEy:1 1968-UzivateleRWE:1 1969-Funkce:1 1971-Neaktivní
+#: 1979-FollowUp:1 1982-Vyjádření 1983-Vyjádření 1985-Vyjádření
+#: 1986-Vráceno 1987-Vráceno 1988-Posouzení 1989-Editace 1990-Schválení
+#: 2006-Přehled 2007-Test 2009-Detail 2020-Změna 2021-Schválení
+#: 2022-Detail 2023-Změna 2024-Editace 2025-Role:1 2029-hesla:1
+#: 2032-Společnosti 2037-EditaceNapravnychOpatření:1 2046-Detail
+#: 2060-Editace 2069-Formulace 2070-Editace 2077-Editace
+#: 2078-EditaceDoporuc2:1 2079-Ke 2080-Přehled 2081-EditaceZjisteni2:1
+#: 2083-Editace 2085-Společnosti:1 2086-Procesy:1 2087-Činnosti:1
+#: 2088-AuditoriEy:1 2089-UzivateleRWE:1 2090-Funkce:1 2092-Neaktivní
+#: 2100-FollowUp:1 2103-Vyjádření 2104-Vyjádření 2106-Vyjádření
+#: 2107-Vráceno 2108-Vráceno 2109-Posouzení 2110-Editace 2111-Schválení
+#: 2127-Přehled 2128-Test 2130-Detail 2141-Změna 2142-Schválení
+#: 2143-Detail 2144-Změna 2145-Editace 2146-Role:1 2150-hesla:1
+#: 2153-Společnosti 2158-EditaceNapravnychOpatření:1 2171-Detail
+#: 2185-Editace 2194-Formulace 2195-Editace 2202-Editace
+#: 2203-EditaceDoporuc2:1 2204-Ke 2205-Přehled 2206-EditaceZjisteni2:1
+#: 2208-Editace 2210-Společnosti:1 2211-Procesy:1 2212-Činnosti:1
+#: 2213-AuditoriEy:1 2214-UzivateleRWE:1 2215-Funkce:1 2217-Neaktivní
+#: 2225-FollowUp:1 2228-Vyjádření 2229-Vyjádření 2231-Vyjádření
+#: 2232-Vráceno 2233-Vráceno 2234-Posouzení 2235-Editace 2236-Schválení
+#: 2252-Přehled 2253-Test 2255-Detail 2266-Změna 2267-Schválení
+#: 2268-Detail 2269-Změna 2270-Editace 2271-Role:1 2275-hesla:1
+#: 2278-Společnosti 2283-EditaceNapravnychOpatření:1 2296-Detail
+#: 2310-Editace 2319-Formulace 2320-Editace 2327-Editace
+#: 2328-EditaceDoporuc2:1 2329-Ke 2330-Přehled 2331-EditaceZjisteni2:1
+#: 2333-Editace 2335-Společnosti:1 2336-Procesy:1 2337-Činnosti:1
+#: 2338-AuditoriEy:1 2339-UzivateleRWE:1 2340-Funkce:1 2342-Neaktivní
+#: 2350-FollowUp:1 2353-Vyjádření 2354-Vyjádření 2356-Vyjádření
+#: 2357-Vráceno 2358-Vráceno 2359-Posouzení 2360-Editace 2361-Schválení
+#: 2377-Přehled 2378-Test 2380-Detail 2391-Změna 2392-Schválení
+#: 2393-Detail 2394-Změna 2395-Editace 2396-Role:1 2400-hesla:1
+#: 2403-Společnosti 2408-EditaceNapravnychOpatření:1 2438-Detail
+#: 2452-Editace 2461-Formulace 2462-Editace 2469-Editace
+#: 2470-EditaceDoporuc2:1 2471-Ke 2472-Přehled 2473-EditaceZjisteni2:1
+#: 2475-Editace 2477-Společnosti:1 2478-Procesy:1 2479-Činnosti:1
+#: 2480-AuditoriEy:1 2481-UzivateleRWE:1 2482-Funkce:1 2484-Neaktivní
+#: 2492-FollowUp:1 2495-Vyjádření 2496-Vyjádření 2498-Vyjádření
+#: 2499-Vráceno 2500-Vráceno 2501-Posouzení 2502-Editace 2503-Schválení
+#: 2519-Přehled 2520-Test 2522-Detail 2533-Změna 2534-Schválení
+#: 2535-Detail 2536-Změna 2537-Editace 2538-Role:1 2542-hesla:1
+#: 2545-Společnosti 2550-EditaceNapravnychOpatření:1 2559-Detail
+#: 2573-Editace 2582-Formulace 2583-Editace 2590-Editace
+#: 2591-EditaceDoporuc2:1 2592-Ke 2593-Přehled 2594-EditaceZjisteni2:1
+#: 2596-Editace 2598-Společnosti:1 2599-Procesy:1 2600-Činnosti:1
+#: 2601-AuditoriEy:1 2602-UzivateleRWE:1 2603-Funkce:1 2605-Neaktivní
+#: 2613-FollowUp:1 2616-Vyjádření 2617-Vyjádření 2619-Vyjádření
+#: 2620-Vráceno 2621-Vráceno 2622-Posouzení 2623-Editace 2624-Schválení
+#: 2640-Přehled 2641-Test 2643-Detail 2654-Změna 2655-Schválení
+#: 2656-Detail 2657-Změna 2658-Editace 2659-Role:1 2663-hesla:1
+#: 2666-Společnosti 2671-EditaceNapravnychOpatření:1 2686-Zadání
+#: 2690-Detail 2704-Editace 2713-Formulace 2714-Editace 2715-Zadání
+#: 2721-Editace 2722-EditaceDoporuc2:1 2723-Ke 2724-Přehled
+#: 2725-EditaceZjisteni2:1 2727-Editace 2729-Společnosti:1 2730-Procesy:1
+#: 2731-Činnosti:1 2732-AuditoriEy:1 2733-UzivateleRWE:1 2734-Funkce:1
+#: 2736-Neaktivní 2744-FollowUp:1 2747-Vyjádření 2748-Vyjádření
+#: 2750-Vyjádření 2751-Vráceno 2752-Vráceno 2753-Posouzení 2754-Editace
+#: 2755-Schválení 2771-Přehled 2772-Test 2774-Detail 2785-Změna
+#: 2786-Schválení 2787-Detail 2788-Změna 2789-Editace 2790-Role:1
+#: 2794-hesla:1 2797-Společnosti 2802-EditaceNapravnychOpatření:1
+#: 2803-Editace nahlizeni:1 2804-Editace 2805-Editace 2806-Editace
+#: 2807-Editace 2808-Editace 2816-Detail 2830-Editace 2839-Formulace
+#: 2840-Editace 2847-Editace 2848-EditaceDoporuc2:1 2849-Ke 2850-Přehled
+#: 2851-EditaceZjisteni2:1 2853-Editace 2855-Společnosti:1 2856-Procesy:1
+#: 2857-Činnosti:1 2858-AuditoriEy:1 2859-UzivateleRWE:1 2860-Funkce:1
+#: 2862-Neaktivní 2870-FollowUp:1 2873-Vyjádření 2874-Vyjádření
+#: 2876-Vyjádření 2877-Vráceno 2878-Vráceno 2879-Posouzení 2880-Editace
+#: 2881-Schválení 2897-Přehled 2898-Test 2900-Detail 2911-Změna
+#: 2912-Schválení 2913-Detail 2914-Změna 2915-Editace 2916-Role:1
+#: 2920-hesla:1 2923-Společnosti 2928-EditaceNapravnychOpatření:1
+#: 2929-Editace 2938-Detail 2952-Editace 2961-Formulace 2962-Editace
+#: 2969-Editace 2970-EditaceDoporuc2:1 2971-Ke 2972-Přehled
+#: 2973-EditaceZjisteni2:1 2975-Editace 2977-Společnosti:1 2978-Procesy:1
+#: 2979-Činnosti:1 2980-AuditoriEy:1 2981-UzivateleRWE:1 2982-Funkce:1
+#: 2984-Neaktivní 2992-FollowUp:1 2995-Vyjádření 2996-Vyjádření
+#: 2998-Vyjádření 2999-Vráceno 3000-Vráceno 3001-Posouzení 3002-Editace
+#: 3003-Schválení 3019-Přehled 3020-Test 3022-Detail 3033-Změna
+#: 3034-Schválení 3035-Detail 3036-Změna 3037-Editace 3038-Role:1
+#: 3042-hesla:1 3045-Společnosti 3050-EditaceNapravnychOpatření:1
+#: 3051-Editace 3053-nahlizenikonkretni:1 3054-nahlizenikonkretni:1
+#: 3055-nahlizenikonkretni:1 3056-nahlizenikonkretni:1
+#: 3057-nahlizenikonkretni:1
+msgid "Akce"
+msgstr "Action"
+
+#: 1444-Editace společnosti:1 1744-Editace 1869-Editace 1994-Editace
+#: 2115-Editace 2240-Editace 2365-Editace 2507-Editace 2628-Editace
+#: 2759-Editace 2885-Editace 3007-Editace
+msgid "Aktivní"
+msgstr "Active"
+
+#: 1438-Posouzení auditorem:1 1738-Posouzení 1863-Posouzení 1988-Posouzení
+#: 2109-Posouzení 2234-Posouzení 2359-Posouzení 2501-Posouzení
+#: 2622-Posouzení 2753-Posouzení 2879-Posouzení 3001-Posouzení
+msgid "Ano"
+msgstr "Yes"
+
+#: 2715-Zadání auditu bez WF:1 2774-Detail
+msgid "Auditor"
+msgstr "Auditor"
+
+#: 2715-Zadání auditu bez WF:1 2774-Detail
+msgid "Auditor IA TG"
+msgstr "Auditor IA TG"
+
+#: 2747-Vyjádření k auditu:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1
+msgid "Auditor:"
+msgstr "Auditor:"
+
+#: 1367-PortalInternichAuditu2 layout:65 1415-AuditoriEy:1 1717-AuditoriEy:1
+#: 1788-PortalInternichAuditu2 layout:62 1842-AuditoriEy:1
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1967-AuditoriEy:1 2038-PortalInternichAuditu2
+#: 2088-AuditoriEy:1 2213-AuditoriEy:1 2338-AuditoriEy:1
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2 2480-AuditoriEy:1
+#: 2551-PortalInternichAuditu2 2601-AuditoriEy:1 2682-PortalInternichAuditu2
+#: 2732-AuditoriEy:1 2858-AuditoriEy:1 2930-PortalInternichAuditu2
+#: 2980-AuditoriEy:1 3052-PortalInternichAuditu2
+msgid "Auditoři EY"
+msgstr "Auditors EY"
+
+#: 1367-PortalInternichAuditu2 layout:41 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 layout:38 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Audity"
+msgstr "Audits"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Činnost"
+msgstr "Action"
+
+#: 2799-Detail opatření:1
+msgid "Činnost:"
+msgstr "Action:"
+
+#: 1367-PortalInternichAuditu2 layout:62 1414-Činnosti:1 1716-Činnosti:1
+#: 1788-PortalInternichAuditu2 layout:59 1841-Činnosti:1
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1966-Činnosti:1 2038-PortalInternichAuditu2
+#: 2087-Činnosti:1 2212-Činnosti:1 2337-Činnosti:1
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2 2479-Činnosti:1
+#: 2551-PortalInternichAuditu2 2600-Činnosti:1 2682-PortalInternichAuditu2
+#: 2731-Činnosti:1 2857-Činnosti:1 2930-PortalInternichAuditu2
+#: 2979-Činnosti:1 3052-PortalInternichAuditu2
+msgid "Činnosti"
+msgstr "Actions"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Číslo auditu"
+msgstr "Audit number"
+
+#: 2704-Editace Zjištění:1 2712-Nepojmenovaná stránka:1 2713-Formulace
+#: Doporučení:1 2747-Vyjádření k auditu:1 2748-Vyjádření auditora:1
+#: 2750-Vyjádření nadřízeného:1 2751-Vráceno přepracování
+#: nadřízeným:1 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace
+#: opatření v řešení:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu 2799-Detail opatření:1
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Číslo auditu:"
+msgstr "Audit number:"
+
+#: 2781-Editace neaktivní pozice:1 2782-Nová
+msgid "Číslo opatření"
+msgstr "Procuration number:"
+
+#: 2683-Test:1 2685-Named panel test:1
+msgid "Control label"
+msgstr "Label control"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Datum"
+msgstr "Date"
+
+#: 2799-Detail opatření:1
+msgid "Datum:"
+msgstr "Date:"
+
+#: 1477-Nový neaktivní uživatel:1 1765-Nový 1890-Nový 2015-Nový
+#: 2136-Nový 2261-Nový 2386-Nový 2528-Nový 2649-Nový 2780-Nový
+#: 2906-Nový 3028-Nový
+msgid "Deaktivace uživatele"
+msgstr "User deactivation"
+
+#: 1477-Nový neaktivní uživatel:1 1765-Nový 1890-Nový 2015-Nový
+#: 2136-Nový 2261-Nový 2386-Nový 2528-Nový 2649-Nový 2780-Nový
+#: 2906-Nový 3028-Nový
+msgid "Deaktivovat"
+msgstr "Deactivate"
+
+#: 1373-Detail auditu:1 1582-Detail opatření:1
+#: 1583-FollowUpKonkretnihoOpatreni:1 1675-Detail 1784-Detail
+#: 1785-FollowUpKonkretnihoOpatreni:1 1800-Detail 1909-Detail
+#: 1910-FollowUpKonkretnihoOpatreni:1 1925-Detail 2034-Detail
+#: 2035-FollowUpKonkretnihoOpatreni:1 2046-Detail 2155-Detail
+#: 2156-FollowUpKonkretnihoOpatreni:1 2171-Detail 2280-Detail
+#: 2281-FollowUpKonkretnihoOpatreni:1 2296-Detail 2405-Detail
+#: 2406-FollowUpKonkretnihoOpatreni:1 2438-Detail 2547-Detail
+#: 2548-FollowUpKonkretnihoOpatreni:1 2559-Detail 2668-Detail
+#: 2669-FollowUpKonkretnihoOpatreni:1 2690-Detail 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1 2816-Detail 2925-Detail
+#: 2926-FollowUpKonkretnihoOpatreni:1 2938-Detail 3047-Detail
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Detail auditu"
+msgstr "Audit details"
+
+#: 1582-Detail opatření:1 1583-FollowUpKonkretnihoOpatreni:1 1784-Detail
+#: 1785-FollowUpKonkretnihoOpatreni:1 1909-Detail
+#: 1910-FollowUpKonkretnihoOpatreni:1 2034-Detail
+#: 2035-FollowUpKonkretnihoOpatreni:1 2155-Detail
+#: 2156-FollowUpKonkretnihoOpatreni:1 2280-Detail
+#: 2281-FollowUpKonkretnihoOpatreni:1 2405-Detail
+#: 2406-FollowUpKonkretnihoOpatreni:1 2547-Detail
+#: 2548-FollowUpKonkretnihoOpatreni:1 2668-Detail
+#: 2669-FollowUpKonkretnihoOpatreni:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1 2925-Detail
+#: 2926-FollowUpKonkretnihoOpatreni:1 3047-Detail
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Detail doporučení"
+msgstr "Recommendation number:"
+
+#: 2683-Test:1
+msgid "Detail label 123456789:"
+msgstr "Label 123456789 details:"
+
+#: 2683-Test:1
+msgid "Detail label:"
+msgstr "Label details:"
+
+#: 1582-Detail opatření:1 1583-FollowUpKonkretnihoOpatreni:1 1784-Detail
+#: 1785-FollowUpKonkretnihoOpatreni:1 1909-Detail
+#: 1910-FollowUpKonkretnihoOpatreni:1 2034-Detail
+#: 2035-FollowUpKonkretnihoOpatreni:1 2155-Detail
+#: 2156-FollowUpKonkretnihoOpatreni:1 2280-Detail
+#: 2281-FollowUpKonkretnihoOpatreni:1 2405-Detail
+#: 2406-FollowUpKonkretnihoOpatreni:1 2547-Detail
+#: 2548-FollowUpKonkretnihoOpatreni:1 2668-Detail
+#: 2669-FollowUpKonkretnihoOpatreni:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1 2925-Detail
+#: 2926-FollowUpKonkretnihoOpatreni:1 3047-Detail
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Detail opatření"
+msgstr "Procuration details:"
+
+#: 1387-Editace Zjištění:1 1582-Detail opatření:1
+#: 1583-FollowUpKonkretnihoOpatreni:1 1689-Editace 1784-Detail
+#: 1785-FollowUpKonkretnihoOpatreni:1 1814-Editace 1909-Detail
+#: 1910-FollowUpKonkretnihoOpatreni:1 1939-Editace 2034-Detail
+#: 2035-FollowUpKonkretnihoOpatreni:1 2060-Editace 2155-Detail
+#: 2156-FollowUpKonkretnihoOpatreni:1 2185-Editace 2280-Detail
+#: 2281-FollowUpKonkretnihoOpatreni:1 2310-Editace 2405-Detail
+#: 2406-FollowUpKonkretnihoOpatreni:1 2452-Editace 2547-Detail
+#: 2548-FollowUpKonkretnihoOpatreni:1 2573-Editace 2668-Detail
+#: 2669-FollowUpKonkretnihoOpatreni:1 2704-Editace 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1 2830-Editace 2925-Detail
+#: 2926-FollowUpKonkretnihoOpatreni:1 2952-Editace 3047-Detail
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Detail zjištění"
+msgstr "Detection details:"
+
+#: 1377-:1 1378-:1 1379-:1 1380-:1 1381-:1 1383-:1 1384-Editace záznamu:1
+#: 1385-Formulace 1679-:1 1680-:1 1681-:1 1682-:1 1683-:1 1685-:1 1686-Editace
+#: 1687-Formulace 1804-:1 1805-:1 1806-:1 1807-:1 1808-:1 1810-:1 1811-Editace
+#: 1812-Formulace 1929-:1 1930-:1 1931-:1 1932-:1 1933-:1 1935-:1 1936-Editace
+#: 1937-Formulace 2050-:1 2051-:1 2052-:1 2053-:1 2054-:1 2056-:1 2057-Editace
+#: 2058-Formulace 2175-:1 2176-:1 2177-:1 2178-:1 2179-:1 2181-:1 2182-Editace
+#: 2183-Formulace 2300-:1 2301-:1 2302-:1 2303-:1 2304-:1 2306-:1 2307-Editace
+#: 2308-Formulace 2442-:1 2443-:1 2444-:1 2445-:1 2446-:1 2448-:1 2449-Editace
+#: 2450-Formulace 2563-:1 2564-:1 2565-:1 2566-:1 2567-:1 2569-:1 2570-Editace
+#: 2571-Formulace 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace
+#: 2702-Formulace 2820-:1 2821-:1 2822-:1 2823-:1 2824-:1 2826-:1 2827-Editace
+#: 2828-Formulace 2942-:1 2943-:1 2944-:1 2945-:1 2946-:1 2948-:1 2949-Editace
+#: 2950-Formulace
+msgid "Dokončit"
+msgstr "Complete"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Dokument CZ"
+msgstr "CZ document"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Dokument EN"
+msgstr "EN document"
+
+#: 1582-Detail opatření:1 1784-Detail 1909-Detail 2034-Detail 2155-Detail
+#: 2280-Detail 2405-Detail 2547-Detail 2668-Detail 2799-Detail 2925-Detail
+#: 3047-Detail
+msgid ""
+"Dokument k nápravnému opatření prokazující realizaci/nerealizaci/posunutí "
+"termínu NO"
+msgstr ""
+"Document related to corrective measures proves realization/non-realization/"
+"rescheduling the deadline of CM"
+
+#: 1582-Detail opatření:1 1784-Detail 1909-Detail 2034-Detail 2155-Detail
+#: 2280-Detail 2405-Detail 2547-Detail 2668-Detail 2799-Detail 2925-Detail
+#: 3047-Detail
+msgid "Dokumenty auditu"
+msgstr "Audit documents"
+
+#: 1582-Detail opatření:1 1583-FollowUpKonkretnihoOpatreni:1 1784-Detail
+#: 1785-FollowUpKonkretnihoOpatreni:1 1909-Detail
+#: 1910-FollowUpKonkretnihoOpatreni:1 2034-Detail
+#: 2035-FollowUpKonkretnihoOpatreni:1 2155-Detail
+#: 2156-FollowUpKonkretnihoOpatreni:1 2280-Detail
+#: 2281-FollowUpKonkretnihoOpatreni:1 2405-Detail
+#: 2406-FollowUpKonkretnihoOpatreni:1 2547-Detail
+#: 2548-FollowUpKonkretnihoOpatreni:1 2668-Detail
+#: 2669-FollowUpKonkretnihoOpatreni:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1 2925-Detail
+#: 2926-FollowUpKonkretnihoOpatreni:1 3047-Detail
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Dokumenty k nápravnému opatření"
+msgstr "Documents related to corrective measures"
+
+#: 1440-Schválení změny termínu:1 1527-Schválení termínu auditorem:1
+#: 1740-Schválení 1771-Schválení 1865-Schválení 1896-Schválení
+#: 1990-Schválení 2021-Schválení 2111-Schválení 2142-Schválení
+#: 2236-Schválení 2267-Schválení 2361-Schválení 2392-Schválení
+#: 2503-Schválení 2534-Schválení 2624-Schválení 2655-Schválení
+#: 2755-Schválení 2786-Schválení 2881-Schválení 2912-Schválení
+#: 3003-Schválení 3034-Schválení
+msgid ""
+"Dokumenty k nápravnému opatření prokazující realizaci /nerealizaci / "
+"posunutí termínu NO"
+msgstr ""
+"Documents related to corrective measures prove realization /non-"
+"realization / rescheduling the deadline of CM"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid ""
+"Dokumenty k nápravnému opatření prokazující realizaci/nerealizaci/posunutí "
+"termínu NO"
+msgstr ""
+"Documents related to corrective measures prove realization/non-realization/"
+"rescheduling the deadline of CM"
+
+#: 1431-Vyjádření auditora:1 1435-Vyjádření nadřízeného:1
+#: 1438-Posouzení auditorem:1 1439-Editace opatření v řešení:1
+#: 1440-Schválení změny termínu:1 1527-Schválení termínu
+#: 1733-Vyjádření 1735-Vyjádření 1738-Posouzení 1739-Editace
+#: 1740-Schválení 1771-Schválení 1858-Vyjádření 1860-Vyjádření
+#: 1863-Posouzení 1864-Editace 1865-Schválení 1896-Schválení
+#: 1983-Vyjádření 1985-Vyjádření 1988-Posouzení 1989-Editace
+#: 1990-Schválení 2021-Schválení 2104-Vyjádření 2106-Vyjádření
+#: 2109-Posouzení 2110-Editace 2111-Schválení 2142-Schválení
+#: 2229-Vyjádření 2231-Vyjádření 2234-Posouzení 2235-Editace
+#: 2236-Schválení 2267-Schválení 2354-Vyjádření 2356-Vyjádření
+#: 2359-Posouzení 2360-Editace 2361-Schválení 2392-Schválení
+#: 2496-Vyjádření 2498-Vyjádření 2501-Posouzení 2502-Editace
+#: 2503-Schválení 2534-Schválení 2617-Vyjádření 2619-Vyjádření
+#: 2622-Posouzení 2623-Editace 2624-Schválení 2655-Schválení
+#: 2748-Vyjádření 2750-Vyjádření 2753-Posouzení 2754-Editace
+#: 2755-Schválení 2786-Schválení 2874-Vyjádření 2876-Vyjádření
+#: 2879-Posouzení 2880-Editace 2881-Schválení 2912-Schválení
+#: 2996-Vyjádření 2998-Vyjádření 3001-Posouzení 3002-Editace
+#: 3003-Schválení 3034-Schválení
+msgid "Dokumenty k nápravnému opratření"
+msgstr "Documents related to corrective measures"
+
+#: 1387-Editace Zjištění:1 1430-Vyjádření k auditu:1 1436-Vráceno
+#: přepracování nadřízeným:1 1437-Vráceno auditorem:1 1555-Detail
+#: nápravného opatření:1 1689-Editace 1732-Vyjádření 1736-Vráceno
+#: 1737-Vráceno 1772-Detail 1814-Editace 1857-Vyjádření 1861-Vráceno
+#: 1862-Vráceno 1897-Detail 1939-Editace 1982-Vyjádření 1986-Vráceno
+#: 1987-Vráceno 2022-Detail 2060-Editace 2103-Vyjádření 2107-Vráceno
+#: 2108-Vráceno 2143-Detail 2185-Editace 2228-Vyjádření 2232-Vráceno
+#: 2233-Vráceno 2268-Detail 2310-Editace 2353-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2393-Detail 2452-Editace 2495-Vyjádření 2499-Vráceno
+#: 2500-Vráceno 2535-Detail 2573-Editace 2616-Vyjádření 2620-Vráceno
+#: 2621-Vráceno 2656-Detail 2688-:1 2704-Editace 2705-:1 2707-:1
+#: 2712-Nepojmenovaná stránka:1 2713-Formulace Doporučení:1 2714-Editace
+#: 2747-Vyjádření 2751-Vráceno 2752-Vráceno 2787-Detail 2830-Editace
+#: 2873-Vyjádření 2877-Vráceno 2878-Vráceno 2913-Detail 2952-Editace
+#: 2995-Vyjádření 2999-Vráceno 3000-Vráceno 3035-Detail
+msgid "Doporučení"
+msgstr "Recommendation"
+
+#: 1440-Schválení změny termínu:1 1740-Schválení 1865-Schválení
+#: 1990-Schválení 2111-Schválení 2236-Schválení 2361-Schválení
+#: 2503-Schválení 2624-Schválení 2755-Schválení 2881-Schválení
+#: 3003-Schválení
+msgid "Doporučení / nápravné opatření"
+msgstr "Recommendation / corrective measures"
+
+#: 1431-Vyjádření auditora:1 1435-Vyjádření nadřízeného:1
+#: 1438-Posouzení auditorem:1 1439-Editace opatření v řešení:1
+#: 1527-Schválení změny termínu 1733-Vyjádření 1735-Vyjádření
+#: 1738-Posouzení 1739-Editace 1771-Schválení 1858-Vyjádření
+#: 1860-Vyjádření 1863-Posouzení 1864-Editace 1896-Schválení
+#: 1983-Vyjádření 1985-Vyjádření 1988-Posouzení 1989-Editace
+#: 2021-Schválení 2104-Vyjádření 2106-Vyjádření 2109-Posouzení
+#: 2110-Editace 2142-Schválení 2229-Vyjádření 2231-Vyjádření
+#: 2234-Posouzení 2235-Editace 2267-Schválení 2354-Vyjádření
+#: 2356-Vyjádření 2359-Posouzení 2360-Editace 2392-Schválení
+#: 2496-Vyjádření 2498-Vyjádření 2501-Posouzení 2502-Editace
+#: 2534-Schválení 2617-Vyjádření 2619-Vyjádření 2622-Posouzení
+#: 2623-Editace 2655-Schválení 2748-Vyjádření 2750-Vyjádření
+#: 2753-Posouzení 2754-Editace 2786-Schválení 2874-Vyjádření
+#: 2876-Vyjádření 2879-Posouzení 2880-Editace 2912-Schválení
+#: 2996-Vyjádření 2998-Vyjádření 3001-Posouzení 3002-Editace
+#: 3034-Schválení
+msgid "Doporučení / nápravní opatření"
+msgstr "Recommendation / corrective measures"
+
+#: 2688-:1 2705-:1 2707-:1 2712-Nepojmenovaná stránka:1 2713-Formulace
+#: Doporučení:1 2714-Editace 2787-Detail nápravného opatření:1
+msgid "Doporučení EN"
+msgstr "EN recommendation"
+
+#: 2747-Vyjádření k auditu:1 2748-Vyjádření auditora:1 2750-Vyjádření
+#: nadřízeného:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace opatření v
+#: řešení:1 2799-Detail opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Doporučení:"
+msgstr "Recommendation:"
+
+#: 2747-Vyjádření k auditu:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1 2754-Editace opatření v řešení:1
+msgid "Důvod"
+msgstr "Reason"
+
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Důvod:"
+msgstr "Reason:"
+
+#: 1367-PortalInternichAuditu2 layout:7 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Editace"
+msgstr "Edit"
+
+#: 1473-Editace auditora:1 1475-:1 1476-Editace 1761-Editace 1763-:1
+#: 1764-Editace 1886-Editace 1888-:1 1889-Editace 2011-Editace 2013-:1
+#: 2014-Editace 2132-Editace 2134-:1 2135-Editace 2257-Editace 2259-:1
+#: 2260-Editace 2382-Editace 2384-:1 2385-Editace 2524-Editace 2526-:1
+#: 2527-Editace 2645-Editace 2647-:1 2648-Editace 2776-Editace 2778-:1
+#: 2779-Editace 2902-Editace 2904-:1 2905-Editace 3024-Editace 3026-:1
+#: 3027-Editace
+msgid "Editace auditora"
+msgstr "Author edit"
+
+#: 1367-PortalInternichAuditu2 layout:14 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Editace auditů"
+msgstr "Audit edit"
+
+#: 1463-Detail auditu bez WF:1 1759-Detail 1884-Detail 2009-Detail 2130-Detail
+#: 2255-Detail 2380-Detail 2522-Detail 2643-Detail 2774-Detail 2900-Detail
+#: 3022-Detail
+msgid "Editace auditu bez WF"
+msgstr "Editing audit without WF"
+
+#: 1367-PortalInternichAuditu2 layout:20 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Editace auditů bez WF"
+msgstr "Editing audits without WF"
+
+#: 1448-Editace činností:1 1748-Editace 1873-Editace 1998-Editace
+#: 2119-Editace 2244-Editace 2369-Editace 2511-Editace 2632-Editace
+#: 2763-Editace 2889-Editace 3011-Editace
+msgid "Editace činností"
+msgstr "Action edit"
+
+#: 1367-PortalInternichAuditu2 layout:26 1371-:1 1673-:1
+#: 1788-PortalInternichAuditu2 1798-:1 1913-PortalInternichAuditu2
+#: 1915-PortalInternichAuditu2 1916-PortalInternichAuditu2 1923-:1
+#: 2038-PortalInternichAuditu2 2044-:1 2169-:1 2294-:1
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2 2436-:1
+#: 2551-PortalInternichAuditu2 2557-:1 2682-PortalInternichAuditu2 2688-:1
+#: 2814-:1 2930-PortalInternichAuditu2 2936-:1 3052-PortalInternichAuditu2
+msgid "Editace doporučení"
+msgstr "Recommendation edit"
+
+#: 1478-Editace neaktivní pozice:1 1766-Editace 1891-Editace 2016-Editace
+#: 2137-Editace 2262-Editace 2387-Editace 2529-Editace 2650-Editace
+#: 2781-Editace 2907-Editace 3029-Editace
+msgid "Editace neaktivní pozice"
+msgstr "Inactive position edit"
+
+#: 1474-Editace neaktivního uživatele:1 1762-Editace 1887-Editace
+#: 2012-Editace 2133-Editace 2258-Editace 2383-Editace 2525-Editace
+#: 2646-Editace 2777-Editace 2903-Editace 3025-Editace
+msgid "Editace neaktivního uživatele"
+msgstr "Inactive user edit"
+
+#: 1367-PortalInternichAuditu2 layout:29 1788-PortalInternichAuditu2
+#: 2038-PortalInternichAuditu2 2411-PortalInternichAuditu2
+msgid "Editace opatření"
+msgstr "Procuration edit"
+
+#: 1446-Editace procesu:1 1746-Editace 1871-Editace 1996-Editace 2117-Editace
+#: 2242-Editace 2367-Editace 2509-Editace 2630-Editace 2761-Editace
+#: 2887-Editace 3009-Editace
+msgid "Editace procesu"
+msgstr "Process edit"
+
+#: 1444-Editace společnosti:1 1744-Editace 1869-Editace 1994-Editace
+#: 2115-Editace 2240-Editace 2365-Editace 2507-Editace 2628-Editace
+#: 2759-Editace 2885-Editace 3007-Editace
+msgid "Editace společnosti"
+msgstr "Company edit"
+
+#: 1454-Editace uživatele:1 1754-Editace 1879-Editace 2004-Editace
+#: 2125-Editace 2250-Editace 2375-Editace 2517-Editace 2638-Editace
+#: 2769-Editace 2895-Editace 3017-Editace
+msgid "Editace uživatele"
+msgstr "User edit"
+
+#: 1384-Editace záznamu:1 1686-Editace 1811-Editace 1936-Editace 2057-Editace
+#: 2182-Editace 2307-Editace 2449-Editace 2570-Editace 2701-Editace
+#: 2827-Editace 2949-Editace
+msgid "Editace záznamu"
+msgstr "Record edit"
+
+#: 1367-PortalInternichAuditu2 layout:23 1374-:1 1676-:1
+#: 1788-PortalInternichAuditu2 1801-:1 1913-PortalInternichAuditu2
+#: 1915-PortalInternichAuditu2 1916-PortalInternichAuditu2 1926-:1
+#: 2038-PortalInternichAuditu2 2047-:1 2172-:1 2297-:1
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2 2439-:1
+#: 2551-PortalInternichAuditu2 2560-:1 2682-PortalInternichAuditu2 2691-:1
+#: 2817-:1 2930-PortalInternichAuditu2 2939-:1 3052-PortalInternichAuditu2
+msgid "Editace zjištění"
+msgstr "Detection edit"
+
+#: 2768-Nový uživatel:1 2769-Editace uživatele:1 2775-Nový auditor:1
+#: 2776-Editace auditora:1 2778-:1 2779-Editace 2793-Nový externí
+msgid "E-mail"
+msgstr "E-mail"
+
+#: 1407-Přehled nápravných opatření:1 1709-Přehled 1834-Přehled
+#: 1959-Přehled 2080-Přehled 2205-Přehled 2330-Přehled 2472-Přehled
+#: 2593-Přehled 2724-Přehled 2850-Přehled 2972-Přehled
+msgid "Exportovat"
+msgstr "Export"
+
+#: 2759-Editace společnosti:1 2760-Nová společnost:1
+msgid "Externí ID"
+msgstr "External ID"
+
+#: 2721-Editace Auditu:1 2724-Přehled nápravných opatření:1 2727-Editace
+#: Auditu Bez WF:1 2744-FollowUp:1
+msgid "Filtrovat dle měsíce do"
+msgstr "Filter according to month untill"
+
+#: 2721-Editace Auditu:1 2724-Přehled nápravných opatření:1 2727-Editace
+#: Auditu Bez WF:1 2744-FollowUp:1
+msgid "Filtrovat dle měsíce od"
+msgstr "Filter according to month from"
+
+#: 1367-PortalInternichAuditu2 layout:109 1788-PortalInternichAuditu2
+#: layout:106 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Follow up"
+msgstr "Follow up"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1854-FollowUp:1 1910-FollowUpKonkretnihoOpatreni:1
+#: 2035-FollowUpKonkretnihoOpatreni:1 2100-FollowUp:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2225-FollowUp:1
+#: 2281-FollowUpKonkretnihoOpatreni:1 2406-FollowUpKonkretnihoOpatreni:1
+#: 2492-FollowUp:1 2548-FollowUpKonkretnihoOpatreni:1 2613-FollowUp:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2744-FollowUp:1
+#: 2800-FollowUpKonkretnihoOpatreni:1 2870-FollowUp:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 2992-FollowUp:1
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Follow Up"
+msgstr "Follow Up"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Follow Up dokumenty"
+msgstr "Follow Up documents"
+
+#: 1388-:1 1390-:1 1395-Nepojmenovaná stránka:1 1396-Formulace
+#: Doporučení:1 1397-Editace 1690-:1 1692-:1 1697-Nepojmenovaná
+#: 1698-Formulace 1699-Editace 1815-:1 1817-:1 1822-Nepojmenovaná
+#: 1823-Formulace 1824-Editace 1940-:1 1942-:1 1947-Nepojmenovaná
+#: 1948-Formulace 1949-Editace 2061-:1 2063-:1 2068-Nepojmenovaná
+#: 2069-Formulace 2070-Editace 2186-:1 2188-:1 2193-Nepojmenovaná
+#: 2194-Formulace 2195-Editace 2311-:1 2313-:1 2318-Nepojmenovaná
+#: 2319-Formulace 2320-Editace 2453-:1 2455-:1 2460-Nepojmenovaná
+#: 2461-Formulace 2462-Editace 2574-:1 2576-:1 2581-Nepojmenovaná
+#: 2582-Formulace 2583-Editace 2705-:1 2707-:1 2712-Nepojmenovaná
+#: 2713-Formulace 2714-Editace 2831-:1 2833-:1 2838-Nepojmenovaná
+#: 2839-Formulace 2840-Editace 2953-:1 2955-:1 2960-Nepojmenovaná
+#: 2961-Formulace 2962-Editace
+msgid "Formulace doporučení"
+msgstr "Recommendation formulation"
+
+#: 1377-:1 1378-:1 1379-:1 1380-:1 1381-:1 1383-:1 1385-Formulace záznamu:1
+#: 1679-:1 1680-:1 1681-:1 1682-:1 1683-:1 1685-:1 1687-Formulace 1804-:1
+#: 1805-:1 1806-:1 1807-:1 1808-:1 1810-:1 1812-Formulace 1929-:1 1930-:1
+#: 1931-:1 1932-:1 1933-:1 1935-:1 1937-Formulace 2050-:1 2051-:1 2052-:1
+#: 2053-:1 2054-:1 2056-:1 2058-Formulace 2175-:1 2176-:1 2177-:1 2178-:1
+#: 2179-:1 2181-:1 2183-Formulace 2300-:1 2301-:1 2302-:1 2303-:1 2304-:1
+#: 2306-:1 2308-Formulace 2442-:1 2443-:1 2444-:1 2445-:1 2446-:1 2448-:1
+#: 2450-Formulace 2563-:1 2564-:1 2565-:1 2566-:1 2567-:1 2569-:1
+#: 2571-Formulace 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1
+#: 2702-Formulace 2820-:1 2821-:1 2822-:1 2823-:1 2824-:1 2826-:1
+#: 2828-Formulace 2942-:1 2943-:1 2944-:1 2945-:1 2946-:1 2948-:1
+#: 2950-Formulace
+msgid "Formulace záznamu"
+msgstr "Record formulation"
+
+#: 1370-Formulace zjištění:1 1672-Formulace 1797-Formulace 1922-Formulace
+#: 2043-Formulace 2168-Formulace 2293-Formulace 2435-Formulace 2556-Formulace
+#: 2687-Formulace 2813-Formulace 2935-Formulace
+msgid "Formulace zjištění"
+msgstr "Detection formulation"
+
+#: 2714-Editace Doporučení:1
+msgid "Formulace zjištění:"
+msgstr "Detection formulation:"
+
+#: 1367-PortalInternichAuditu2 layout:68 1417-Funkce:1 1719-Funkce:1
+#: 1788-PortalInternichAuditu2 layout:65 1844-Funkce:1
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1969-Funkce:1 2038-PortalInternichAuditu2
+#: 2090-Funkce:1 2215-Funkce:1 2340-Funkce:1 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2482-Funkce:1 2551-PortalInternichAuditu2
+#: 2603-Funkce:1 2682-PortalInternichAuditu2 2734-Funkce:1 2781-Editace
+#: neaktivní pozice:1 2782-Nová 2860-Funkce:1 2930-PortalInternichAuditu2
+#: 2982-Funkce:1 3052-PortalInternichAuditu2
+msgid "Funkce"
+msgstr "Funkction"
+
+#: 1367-PortalInternichAuditu2 layout:50 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 layout:47 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Hesla"
+msgstr "Passwords"
+
+#: 2793-Nový externí uživatel:1 2795-Editovat hesla:1
+msgid "Heslo"
+msgstr "Password"
+
+#: 1387-Editace Zjištění:1 1397-Editace Doporučení:1 1431-Vyjádření
+#: auditora:1 1435-Vyjádření nadřízeného:1 1436-Vráceno k
+#: přepracování nadřízeným:1 1437-Vráceno auditorem:1 1438-Posouzení
+#: 1463-Detail auditu bez WF:1 1555-Detail nápravného opatření:1
+#: 1689-Editace 1699-Editace 1733-Vyjádření 1735-Vyjádření 1736-Vráceno
+#: 1737-Vráceno 1738-Posouzení 1759-Detail 1772-Detail 1814-Editace
+#: 1824-Editace 1858-Vyjádření 1860-Vyjádření 1861-Vráceno
+#: 1862-Vráceno 1863-Posouzení 1884-Detail 1897-Detail 1939-Editace
+#: 1949-Editace 1983-Vyjádření 1985-Vyjádření 1986-Vráceno
+#: 1987-Vráceno 1988-Posouzení 2009-Detail 2022-Detail 2060-Editace
+#: 2070-Editace 2104-Vyjádření 2106-Vyjádření 2107-Vráceno
+#: 2108-Vráceno 2109-Posouzení 2130-Detail 2143-Detail 2185-Editace
+#: 2195-Editace 2229-Vyjádření 2231-Vyjádření 2232-Vráceno
+#: 2233-Vráceno 2234-Posouzení 2255-Detail 2268-Detail 2310-Editace
+#: 2320-Editace 2354-Vyjádření 2356-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2359-Posouzení 2380-Detail 2393-Detail 2452-Editace
+#: 2462-Editace 2496-Vyjádření 2498-Vyjádření 2499-Vráceno
+#: 2500-Vráceno 2501-Posouzení 2522-Detail 2535-Detail 2573-Editace
+#: 2583-Editace 2617-Vyjádření 2619-Vyjádření 2620-Vráceno
+#: 2621-Vráceno 2622-Posouzení 2643-Detail 2656-Detail 2704-Editace
+#: 2714-Editace 2748-Vyjádření 2750-Vyjádření 2751-Vráceno
+#: 2752-Vráceno 2753-Posouzení 2774-Detail 2787-Detail 2830-Editace
+#: 2840-Editace 2874-Vyjádření 2876-Vyjádření 2877-Vráceno
+#: 2878-Vráceno 2879-Posouzení 2900-Detail 2913-Detail 2952-Editace
+#: 2962-Editace 2996-Vyjádření 2998-Vyjádření 2999-Vráceno
+#: 3000-Vráceno 3001-Posouzení 3022-Detail 3035-Detail
+msgid "Historie"
+msgstr "History"
+
+#: 2714-Editace Doporučení:1 2777-Editace neaktivního uživatele:1 2778-:1
+#: 2780-Nový neaktivní uživatel:1 2787-Detail nápravného opatření:1
+msgid "ID"
+msgstr "ID"
+
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu auditorem:1
+#: 2799-Detail opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "ID:"
+msgstr "ID:"
+
+#: 1387-Editace Zjištění:1 1689-Editace 1814-Editace 1939-Editace
+#: 2060-Editace 2185-Editace 2310-Editace 2452-Editace 2573-Editace
+#: 2704-Editace 2830-Editace 2952-Editace
+msgid "Interní audit"
+msgstr "Internal audit"
+
+#: 2714-Editace Doporučení:1 2787-Detail nápravného opatření:1
+msgid "Interní audit:"
+msgstr "Internal audit:"
+
+#: 2768-Nový uživatel:1 2769-Editace uživatele:1 2775-Nový auditor:1
+#: 2776-Editace auditora:1 2777-Editace neaktivního 2778-:1 2779-Editace
+#: 2780-Nový neaktivní 2781-Editace pozice:1 2782-Nová 2793-Nový externí
+msgid "Jméno"
+msgstr "First name"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "K posouzení auditorem"
+msgstr "For auditor to assess"
+
+#: 1367-PortalInternichAuditu2 layout:4 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Ke zpracování"
+msgstr "To be processed"
+
+#: 2750-Vyjádření nadřízeného:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu auditorem:1
+msgid "Komentář"
+msgstr "Commentary"
+
+#: 1437-Vráceno k přepracování auditorem:1 1737-Vráceno 1862-Vráceno
+#: 1987-Vráceno 2108-Vráceno 2233-Vráceno 2358-Vráceno 2500-Vráceno
+#: 2621-Vráceno 2748-Vyjádření auditora:1 2752-Vráceno 2753-Posouzení
+#: 2878-Vráceno 3000-Vráceno
+msgid "Komentář auditora"
+msgstr "Auditors commentary"
+
+#: 2750-Vyjádření nadřízeného:1 2752-Vráceno k přepracování
+#: auditorem:1
+msgid "Komentář auditora:"
+msgstr "Auditors commentary:"
+
+#: 1436-Vráceno k přepracování nadřízeným:1 1736-Vráceno 1861-Vráceno
+#: 1986-Vráceno 2107-Vráceno 2232-Vráceno 2357-Vráceno 2499-Vráceno
+#: 2620-Vráceno 2751-Vráceno 2877-Vráceno 2999-Vráceno
+msgid "Komentář nadřízeného"
+msgstr "Superior commentary"
+
+#: 2751-Vráceno k přepracování nadřízeným:1
+msgid "Komentář nadřízeného:"
+msgstr "Superior commentary"
+
+#: 2754-Editace opatření v řešení:1
+msgid "Komentář odpovědné osoby"
+msgstr "Commentary of person responsible"
+
+#: 2750-Vyjádření nadřízeného:1 2753-Posouzení auditorem:1 2799-Detail
+#: opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Komentář odpovědné osoby:"
+msgstr "Commentary of person responsible:"
+
+#: 2754-Editace opatření v řešení:1 2755-Schválení změny termínu:1
+msgid "Komentář:"
+msgstr "Commentary:"
+
+#: 2686-Zadání auditu:1 2690-Detail 2796-Nová změna společnosti
+#: koordinátora:1 2798-Editrace změny
+msgid "Koordinátor"
+msgstr "Coordinator"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Koordinátor IA iČR"
+msgstr "IA iCZ Coordinator"
+
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Koordinátor IA TG"
+msgstr "IA TG Coordinator"
+
+#: 2799-Detail opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Koordinátor IA TG:"
+msgstr "IA TG Coordinator:"
+
+#: 2799-Detail opatření:1
+msgid "Koordinátor IA:"
+msgstr "IA Coordinator:"
+
+#: 1368-Named panel test:1 1459-Test panelu:1 1670-Named 1757-Test 1795-Named
+#: 1882-Test 1920-Named 2007-Test 2041-Named 2128-Test 2166-Named 2253-Test
+#: 2291-Named 2378-Test 2433-Named 2520-Test 2554-Named 2641-Test 2685-Named
+#: 2772-Test 2811-Named 2898-Test 2933-Named 3020-Test
+msgid "Large button"
+msgstr "Large button"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Leading senior"
+msgstr "Leading senior"
+
+#: 2799-Detail opatření:1
+msgid "Leading Senior:"
+msgstr "Leading Senior:"
+
+#: 2768-Nový uživatel:1 2769-Editace uživatele:1 2776-Editace auditora:1
+msgid "Login"
+msgstr "Login"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Manager auditu"
+msgstr "Audit manager"
+
+#: 2799-Detail opatření:1
+msgid "Manager EY:"
+msgstr "EY manager:"
+
+#: 2768-Nový uživatel:1 2769-Editace uživatele:1 2776-Editace auditora:1
+msgid "Mobil"
+msgstr "Mobile phone"
+
+#: 1396-Formulace Doporučení:1 1698-Formulace 1823-Formulace 1948-Formulace
+#: 2069-Formulace 2194-Formulace 2319-Formulace 2461-Formulace 2582-Formulace
+#: 2713-Formulace 2839-Formulace 2961-Formulace
+msgid "Nadřazená doporučení"
+msgstr "Superior recommendation"
+
+#: 1397-Editace Doporučení:1 1555-Detail nápravného opatření:1
+#: 1699-Editace 1772-Detail 1824-Editace 1897-Detail 1949-Editace 2022-Detail
+#: 2070-Editace 2143-Detail 2195-Editace 2268-Detail 2320-Editace 2393-Detail
+#: 2462-Editace 2535-Detail 2583-Editace 2656-Detail 2705-:1 2707-:1
+#: 2712-Nepojmenovaná stránka:1 2713-Formulace 2714-Editace 2787-Detail
+#: 2840-Editace 2913-Detail 2962-Editace 3035-Detail
+msgid "Nadřazené doporučení"
+msgstr "Superior recommendation:"
+
+#: 2783-Nový nadřízený:1 2784-Editovat nadřízeného:1
+msgid "Nadřízený"
+msgstr "Superior"
+
+#: 1913-PortalInternichAuditu2 layout:53 1916-PortalInternichAuditu2
+#: 2682-PortalInternichAuditu2
+msgid "Nahlizeni"
+msgstr "Viewing"
+
+#: 1915-PortalInternichAuditu2 layout:53 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2930-PortalInternichAuditu2
+#: 3052-PortalInternichAuditu2
+msgid "Nahlížení"
+msgstr "Viewing"
+
+#: 2754-Editace opatření v řešení:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Nahrát dokument"
+msgstr "Upload document"
+
+#: 1825-Zadání auditu bez WF:1 2715-Zadání
+msgid "Nápověda: Číslo auditu"
+msgstr "Help: Audit number"
+
+#: 1796-Zadání auditu:1 2686-Zadání
+msgid "Nápověda: Číslo auditu "
+msgstr "Help: Audit number"
+
+#: 1367-PortalInternichAuditu2 layout:38 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 layout:35 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Nápravná opatření"
+msgstr "Corrective measures"
+
+#: 2728-NapravnaOpatreni:1
+msgid "Nápravná Opatření"
+msgstr "Corrective measures"
+
+#: 2799-Detail opatření:1
+msgid "Nápravná opatření:"
+msgstr "Corrective measures:"
+
+#: 2688-:1 2714-Editace Doporučení:1 2747-Vyjádření k auditu:1
+#: 2751-Vráceno přepracování nadřízeným:1 2752-Vráceno auditorem:1
+#: 2787-Detail nápravného opatření:1
+msgid "Nápravné opatření"
+msgstr "Corrective measures"
+
+#: 2688-:1 2714-Editace Doporučení:1 2787-Detail nápravného opatření:1
+msgid "Nápravné opatření EN"
+msgstr "Corrective measures EN"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "Nápravné opatření v řešení"
+msgstr "Corrective measures in solution"
+
+#: 2748-Vyjádření auditora:1 2750-Vyjádření nadřízeného:1
+#: 2753-Posouzení auditorem:1 2754-Editace opatření v řešení:1
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Nápravné opatření:"
+msgstr "Corrective measures:"
+
+#: 1430-Vyjádření k auditu:1 1732-Vyjádření 1857-Vyjádření
+#: 1982-Vyjádření 2103-Vyjádření 2228-Vyjádření 2353-Vyjádření
+#: 2495-Vyjádření 2616-Vyjádření 2747-Vyjádření 2873-Vyjádření
+#: 2995-Vyjádření
+msgid "Návrh předání jiné osobě"
+msgstr "Suggestion of handover to another peson"
+
+#: 2747-Vyjádření k auditu:1
+msgid "Navrhovaná odpovědná osoba"
+msgstr "Recommended person responsible"
+
+#: 2755-Schválení změny termínu:1
+msgid "Navrhovaný stav opatření:"
+msgstr "Recomended state of taken measures:"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "Návrhy na změnu odpovědné osoby"
+msgstr "Suggestion of change of the person responsible"
+
+#: 2761-Editace procesu:1 2762-Nový proces:1 2763-Editace činností:1
+#: 2764-Nová činnost:1 2766-Nová funkce:1 2767-Editace
+msgid "Název"
+msgstr "Name"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Název auditu"
+msgstr "Audit name"
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail
+msgid "Název auditu EN"
+msgstr "Audit name EN"
+
+#: 2704-Editace Zjištění:1 2712-Nepojmenovaná stránka:1 2713-Formulace
+#: Doporučení:1 2747-Vyjádření k auditu:1 2748-Vyjádření auditora:1
+#: 2750-Vyjádření nadřízeného:1 2751-Vráceno přepracování
+#: nadřízeným:1 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace
+#: opatření v řešení:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu
+msgid "Název auditu:"
+msgstr "Audit name:"
+
+#: 2762-Nový proces:1
+msgid "Nazev EN"
+msgstr "Name EN"
+
+#: 2761-Editace procesu:1 2763-Editace činností:1 2764-Nová činnost:1
+#: 2766-Nová funkce:1 2767-Editace
+msgid "Název EN"
+msgstr "Name EN"
+
+#: 1451-Nová funkce:1 1452-Editace 1459-Test panelu:1 1751-Nová 1752-Editace
+#: 1757-Test 1876-Nová 1877-Editace 1882-Test 2001-Nová 2002-Editace
+#: 2007-Test 2122-Nová 2123-Editace 2128-Test 2247-Nová 2248-Editace
+#: 2253-Test 2372-Nová 2373-Editace 2378-Test 2514-Nová 2515-Editace
+#: 2520-Test 2635-Nová 2636-Editace 2641-Test 2766-Nová 2767-Editace
+#: 2772-Test 2892-Nová 2893-Editace 2898-Test 3014-Nová 3015-Editace
+#: 3020-Test
+msgid "Název panelu"
+msgstr "Panel name"
+
+#: 2759-Editace společnosti:1 2760-Nová společnost:1
+msgid "Název společnosti"
+msgstr "Company name"
+
+#: 2799-Detail opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Název:"
+msgstr "Name:"
+
+#: 1438-Posouzení auditorem:1 1738-Posouzení 1863-Posouzení 1988-Posouzení
+#: 2109-Posouzení 2234-Posouzení 2359-Posouzení 2501-Posouzení
+#: 2622-Posouzení 2753-Posouzení 2879-Posouzení 3001-Posouzení
+msgid "Ne"
+msgstr "No"
+
+#: 1419-Neaktivní pozice:1 1721-Neaktivní 1846-Neaktivní 1971-Neaktivní
+#: 2092-Neaktivní 2217-Neaktivní 2342-Neaktivní 2484-Neaktivní
+#: 2605-Neaktivní 2736-Neaktivní 2862-Neaktivní 2984-Neaktivní
+msgid "Neaktivní pozice"
+msgstr "Inactive position"
+
+#: 1367-PortalInternichAuditu2 layout:71 1418-Neaktivní uživatelé:1
+#: 1720-Neaktivní 1788-PortalInternichAuditu2 layout:68 1845-Neaktivní
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1970-Neaktivní 2038-PortalInternichAuditu2
+#: 2091-Neaktivní 2216-Neaktivní 2341-Neaktivní 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2483-Neaktivní 2551-PortalInternichAuditu2
+#: 2604-Neaktivní 2682-PortalInternichAuditu2 2735-Neaktivní 2861-Neaktivní
+#: 2930-PortalInternichAuditu2 2983-Neaktivní 3052-PortalInternichAuditu2
+msgid "Neaktivní uživatelé"
+msgstr "Inactive users"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "nebo"
+msgstr "or"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Nebude realizováno"
+msgstr "Not to be realized"
+
+#: 1430-Vyjádření k auditu:1 1436-Vráceno přepracování nadřízeným:1
+#: 1437-Vráceno auditorem:1 1440-Schválení změny termínu:1
+#: 1527-Schválení termínu 1732-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1740-Schválení 1771-Schválení 1857-Vyjádření 1861-Vráceno
+#: 1862-Vráceno 1865-Schválení 1896-Schválení 1982-Vyjádření
+#: 1986-Vráceno 1987-Vráceno 1990-Schválení 2021-Schválení
+#: 2103-Vyjádření 2107-Vráceno 2108-Vráceno 2111-Schválení
+#: 2142-Schválení 2228-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2236-Schválení 2267-Schválení 2353-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2361-Schválení 2392-Schválení 2495-Vyjádření
+#: 2499-Vráceno 2500-Vráceno 2503-Schválení 2534-Schválení
+#: 2616-Vyjádření 2620-Vráceno 2621-Vráceno 2624-Schválení
+#: 2655-Schválení 2747-Vyjádření 2751-Vráceno 2752-Vráceno
+#: 2755-Schválení 2786-Schválení 2873-Vyjádření 2877-Vráceno
+#: 2878-Vráceno 2881-Schválení 2912-Schválení 2995-Vyjádření
+#: 2999-Vráceno 3000-Vráceno 3003-Schválení 3034-Schválení
+msgid "Nesouhlasím"
+msgstr "I disagree."
+
+#: 1435-Vyjádření nadřízeného:1 1735-Vyjádření 1860-Vyjádření
+#: 1985-Vyjádření 2106-Vyjádření 2231-Vyjádření 2356-Vyjádření
+#: 2498-Vyjádření 2619-Vyjádření 2750-Vyjádření 2876-Vyjádření
+#: 2998-Vyjádření
+msgid ""
+"Nesouhlasím s navrženým nápravným opatřením / stanoveným termínem "
+"realizace, vracím k přepracování"
+msgstr ""
+"I disagree with suggested corrective measures / established realization "
+"deadline, I am returning it to redrafting."
+
+#: 1414-Činnosti:1 1449-Nová činnost:1 1716-Činnosti:1 1749-Nová
+#: 1841-Činnosti:1 1874-Nová 1966-Činnosti:1 1999-Nová 2087-Činnosti:1
+#: 2120-Nová 2212-Činnosti:1 2245-Nová 2337-Činnosti:1 2370-Nová
+#: 2479-Činnosti:1 2512-Nová 2600-Činnosti:1 2633-Nová 2731-Činnosti:1
+#: 2764-Nová 2857-Činnosti:1 2890-Nová 2979-Činnosti:1 3012-Nová
+msgid "Nová činnost"
+msgstr "New action"
+
+#: 1417-Funkce:1 1719-Funkce:1 1844-Funkce:1 1969-Funkce:1 2090-Funkce:1
+#: 2215-Funkce:1 2340-Funkce:1 2482-Funkce:1 2603-Funkce:1 2734-Funkce:1
+#: 2860-Funkce:1 2982-Funkce:1
+msgid "Nová funkce"
+msgstr "New function"
+
+#: 1419-Neaktivní pozice:1 1479-Nová neaktivní 1721-Neaktivní 1767-Nová
+#: 1846-Neaktivní 1892-Nová 1971-Neaktivní 2017-Nová 2092-Neaktivní
+#: 2138-Nová 2217-Neaktivní 2263-Nová 2342-Neaktivní 2388-Nová
+#: 2484-Neaktivní 2530-Nová 2605-Neaktivní 2651-Nová 2736-Neaktivní
+#: 2782-Nová 2862-Neaktivní 2908-Nová 2984-Neaktivní 3030-Nová
+msgid "Nová neaktivní pozice"
+msgstr "New inactive position"
+
+#: 2755-Schválení změny termínu:1
+msgid "Nová odpovědná osoba:"
+msgstr "New person responsible"
+
+#: 1412-Společnosti:1 1445-Nová společnost:1 1556-Změna společnosti:1
+#: 1579-Společnosti koordinátorů:1 1714-Společnosti:1 1745-Nová
+#: 1773-Změna 1782-Společnosti 1839-Společnosti:1 1870-Nová 1898-Změna
+#: 1907-Společnosti 1964-Společnosti:1 1995-Nová 2023-Změna
+#: 2032-Společnosti 2085-Společnosti:1 2116-Nová 2144-Změna
+#: 2153-Společnosti 2210-Společnosti:1 2241-Nová 2269-Změna
+#: 2278-Společnosti 2335-Společnosti:1 2366-Nová 2394-Změna
+#: 2403-Společnosti 2477-Společnosti:1 2508-Nová 2536-Změna
+#: 2545-Společnosti 2598-Společnosti:1 2629-Nová 2657-Změna
+#: 2666-Společnosti 2729-Společnosti:1 2760-Nová 2788-Změna
+#: 2797-Společnosti 2855-Společnosti:1 2886-Nová 2914-Změna
+#: 2923-Společnosti 2977-Společnosti:1 3008-Nová 3036-Změna
+#: 3045-Společnosti
+msgid "Nová společnost"
+msgstr "New company"
+
+#: 1367-PortalInternichAuditu2 layout:11 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Nový audit"
+msgstr "New audit"
+
+#: 1367-PortalInternichAuditu2 layout:17 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Nový audit bez WF"
+msgstr "New audit without WF"
+
+#: 1415-AuditoriEy:1 1472-Nový auditor:1 1717-AuditoriEy:1 1760-Nový
+#: 1842-AuditoriEy:1 1885-Nový 1967-AuditoriEy:1 2010-Nový 2088-AuditoriEy:1
+#: 2131-Nový 2213-AuditoriEy:1 2256-Nový 2338-AuditoriEy:1 2381-Nový
+#: 2480-AuditoriEy:1 2523-Nový 2601-AuditoriEy:1 2644-Nový 2732-AuditoriEy:1
+#: 2775-Nový 2858-AuditoriEy:1 2901-Nový 2980-AuditoriEy:1 3023-Nový
+msgid "Nový auditor"
+msgstr "New auditor"
+
+#: 1367-PortalInternichAuditu2 layout:53 1566-Nový externí uživatel:1
+#: 1778-Nový 1903-Nový 2028-Nový 2149-Nový 2274-Nový 2399-Nový
+#: 2541-Nový 2662-Nový 2793-Nový 2919-Nový 3041-Nový
+msgid "Nový externí uživatel"
+msgstr "New external user"
+
+#: 1484-Nový nadřízený:1 1486-Změna nadřízeného:1 1768-Nový
+#: 1770-Změna 1893-Nový 1895-Změna 2018-Nový 2020-Změna 2139-Nový
+#: 2141-Změna 2264-Nový 2266-Změna 2389-Nový 2391-Změna 2531-Nový
+#: 2533-Změna 2652-Nový 2654-Změna 2783-Nový 2785-Změna 2909-Nový
+#: 2911-Změna 3031-Nový 3033-Změna
+msgid "Nový nadřízený"
+msgstr "New superior"
+
+#: 1413-Procesy:1 1447-Nový proces:1 1715-Procesy:1 1747-Nový 1840-Procesy:1
+#: 1872-Nový 1965-Procesy:1 1997-Nový 2086-Procesy:1 2118-Nový
+#: 2211-Procesy:1 2243-Nový 2336-Procesy:1 2368-Nový 2478-Procesy:1
+#: 2510-Nový 2599-Procesy:1 2631-Nový 2730-Procesy:1 2762-Nový
+#: 2856-Procesy:1 2888-Nový 2978-Procesy:1 3010-Nový
+msgid "Nový proces"
+msgstr "New process"
+
+#: 2754-Editace opatření v řešení:1
+msgid "Nový termín realizace"
+msgstr "New realization deadline"
+
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu auditorem:1
+msgid "Nový termín:"
+msgstr "New deadline:"
+
+#: 1416-UzivateleRWE:1 1453-Nový uživatel:1 1718-UzivateleRWE:1 1753-Nový
+#: 1843-UzivateleRWE:1 1878-Nový 1968-UzivateleRWE:1 2003-Nový
+#: 2089-UzivateleRWE:1 2124-Nový 2214-UzivateleRWE:1 2249-Nový
+#: 2339-UzivateleRWE:1 2374-Nový 2481-UzivateleRWE:1 2516-Nový
+#: 2602-UzivateleRWE:1 2637-Nový 2733-UzivateleRWE:1 2768-Nový
+#: 2859-UzivateleRWE:1 2894-Nový 2981-UzivateleRWE:1 3016-Nový
+msgid "Nový uživatel"
+msgstr "New user"
+
+#: 1438-Posouzení auditorem:1 1738-Posouzení 1863-Posouzení 1988-Posouzení
+#: 2109-Posouzení 2234-Posouzení 2359-Posouzení 2501-Posouzení
+#: 2622-Posouzení 2753-Posouzení 2879-Posouzení 3001-Posouzení
+msgid "Odešli"
+msgstr "Send"
+
+#: 1431-Vyjádření auditora:1 1733-Vyjádření 1858-Vyjádření
+#: 1983-Vyjádření 2104-Vyjádření 2229-Vyjádření 2354-Vyjádření
+#: 2496-Vyjádření 2617-Vyjádření 2748-Vyjádření 2874-Vyjádření
+#: 2996-Vyjádření
+msgid "Odešli nadřízenému"
+msgstr "Send to superior"
+
+#: 1430-Vyjádření k auditu:1 1732-Vyjádření 1857-Vyjádření
+#: 1982-Vyjádření 2103-Vyjádření 2228-Vyjádření 2353-Vyjádření
+#: 2495-Vyjádření 2616-Vyjádření 2747-Vyjádření 2873-Vyjádření
+#: 2995-Vyjádření
+msgid "Odešli návrh změny odpovědné osoby"
+msgstr "Send the suggestion of changing the person responsible"
+
+#: 1430-Vyjádření k auditu:1 1435-Vyjádření nadřízeného:1
+#: 1436-Vráceno přepracování nadřízeným:1 1437-Vráceno auditorem:1
+#: 1440-Schválení změny termínu:1 1527-Schválení termínu
+#: 1732-Vyjádření 1735-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1740-Schválení 1771-Schválení 1857-Vyjádření 1860-Vyjádření
+#: 1861-Vráceno 1862-Vráceno 1865-Schválení 1896-Schválení
+#: 1982-Vyjádření 1985-Vyjádření 1986-Vráceno 1987-Vráceno
+#: 1990-Schválení 2021-Schválení 2103-Vyjádření 2106-Vyjádření
+#: 2107-Vráceno 2108-Vráceno 2111-Schválení 2142-Schválení
+#: 2228-Vyjádření 2231-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2236-Schválení 2267-Schválení 2353-Vyjádření 2356-Vyjádření
+#: 2357-Vráceno 2358-Vráceno 2361-Schválení 2392-Schválení
+#: 2495-Vyjádření 2498-Vyjádření 2499-Vráceno 2500-Vráceno
+#: 2503-Schválení 2534-Schválení 2616-Vyjádření 2619-Vyjádření
+#: 2620-Vráceno 2621-Vráceno 2624-Schválení 2655-Schválení
+#: 2747-Vyjádření 2750-Vyjádření 2751-Vráceno 2752-Vráceno
+#: 2755-Schválení 2786-Schválení 2873-Vyjádření 2876-Vyjádření
+#: 2877-Vráceno 2878-Vráceno 2881-Schválení 2912-Schválení
+#: 2995-Vyjádření 2998-Vyjádření 2999-Vráceno 3000-Vráceno
+#: 3003-Schválení 3034-Schválení
+msgid "Odešli vyjádření"
+msgstr "Send statement"
+
+#: 1439-Editace opatření v řešení:1 1440-Schválení změny termínu:1
+#: 1527-Schválení termínu auditorem:1 1739-Editace 1740-Schválení
+#: 1771-Schválení 1864-Editace 1865-Schválení 1896-Schválení
+#: 1989-Editace 1990-Schválení 2021-Schválení 2110-Editace
+#: 2111-Schválení 2142-Schválení 2235-Editace 2236-Schválení
+#: 2267-Schválení 2360-Editace 2361-Schválení 2392-Schválení
+#: 2502-Editace 2503-Schválení 2534-Schválení 2623-Editace
+#: 2624-Schválení 2655-Schválení 2754-Editace 2755-Schválení
+#: 2786-Schválení 2880-Editace 2881-Schválení 2912-Schválení
+#: 3002-Editace 3003-Schválení 3034-Schválení
+msgid "Odložené termíny realizace"
+msgstr "deferred realization deadlines"
+
+#: 2688-:1 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace
+#: záznamu:1 2702-Formulace 2705-:1 2707-:1 2712-Nepojmenovaná stránka:1
+#: 2713-Formulace Doporučení:1 2714-Editace 2787-Detail nápravného
+#: opatření:1
+msgid "Odpovědná osoba"
+msgstr "Person responsible"
+
+#: 2748-Vyjádření auditora:1 2750-Vyjádření nadřízeného:1
+#: 2753-Posouzení auditorem:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu 2799-Detail opatření:1
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Odpovědná osoba:"
+msgstr "Person responsible:"
+
+#: 1368-Named panel test:1 1670-Named 1795-Named 1920-Named 2041-Named
+#: 2166-Named 2291-Named 2433-Named 2554-Named 2685-Named 2811-Named
+#: 2933-Named
+msgid "Panel A"
+msgstr "Panel A"
+
+#: 1368-Named panel test:1 1670-Named 1795-Named 1920-Named 2041-Named
+#: 2166-Named 2291-Named 2433-Named 2554-Named 2685-Named 2811-Named
+#: 2933-Named
+msgid "Panel B"
+msgstr "Panel B"
+
+#: 2686-Zadání auditu:1 2715-Zadání auditu bez WF:1
+msgid ""
+"Pole nesmí být prázdné, název musí začínat velkým písmenem např.: \"Audit\""
+msgstr ""
+"Field must not be empty, the name must start woth capital letter, ex.: "
+"\"Audit\""
+
+#: 2754-Editace opatření v řešení:1
+msgid "Popis"
+msgstr "Description"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Popis CZ"
+msgstr "Description CZ"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Popis EN"
+msgstr "Description EN"
+
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Popis:"
+msgstr "Description:"
+
+#: 2799-Detail opatření:1
+msgid "Pořad. číslo:"
+msgstr "Ord. number:"
+
+#: 2687-Formulace zjištění:1 2691-:1 2694-:1 2695-:1 2696-:1 2697-:1
+#: 2698-:1 2700-:1 2701-Editace záznamu:1 2702-Formulace 2704-Editace
+#: Zjištění:1
+msgid "Pořadové číslo"
+msgstr "Ordinal number"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Posunout termín realizace"
+msgstr "Move the realization deadline"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "Požadavky na vyjádření"
+msgstr "Statement requirements"
+
+#: 2792-Nová změna společnosti:1
+msgid "Pozice uživatele"
+msgstr "User position"
+
+#: 1367-PortalInternichAuditu2 layout:34 1788-PortalInternichAuditu2
+#: 1913-PortalInternichAuditu2 layout:31 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Přehled"
+msgstr "Overview"
+
+#: 1460-PrehledAuditu:1 1758-PrehledAuditu:1 1883-PrehledAuditu:1
+#: 2008-PrehledAuditu:1 2129-PrehledAuditu:1 2254-PrehledAuditu:1
+#: 2379-PrehledAuditu:1 2521-PrehledAuditu:1 2642-PrehledAuditu:1
+#: 2773-PrehledAuditu:1 2899-PrehledAuditu:1 3021-PrehledAuditu:1
+msgid "Přehled auditu"
+msgstr "Audit overview"
+
+#: 1404-Editace Auditu:1 1706-Editace 1831-Editace 1956-Editace 2077-Editace
+#: 2202-Editace 2327-Editace 2469-Editace 2590-Editace 2721-Editace
+#: 2847-Editace 2969-Editace
+msgid "Přehled auditů"
+msgstr "Audits overiew"
+
+#: 1410-Editace Auditu Bez WF:1 1712-Editace 1837-Editace 1962-Editace
+#: 2083-Editace 2208-Editace 2333-Editace 2475-Editace 2596-Editace
+#: 2727-Editace 2853-Editace 2975-Editace
+msgid "Přehled auditů bez WF"
+msgstr "Overview of audits without WF"
+
+#: 1405-EditaceDoporuc2:1 1707-EditaceDoporuc2:1 1832-EditaceDoporuc2:1
+#: 1957-EditaceDoporuc2:1 2078-EditaceDoporuc2:1 2203-EditaceDoporuc2:1
+#: 2328-EditaceDoporuc2:1 2470-EditaceDoporuc2:1 2591-EditaceDoporuc2:1
+#: 2722-EditaceDoporuc2:1 2848-EditaceDoporuc2:1 2970-EditaceDoporuc2:1
+msgid "Přehled doporučení"
+msgstr "Recommendation overview"
+
+#: 1407-Přehled nápravných opatření:1 1427-FollowUp:1
+#: 1585-EditaceNapravnychOpatření:1 1709-Přehled 1729-FollowUp:1
+#: 1787-EditaceNapravnychOpatření:1 1834-Přehled
+#: 1912-EditaceNapravnychOpatření:1 1959-Přehled 1979-FollowUp:1
+#: 2037-EditaceNapravnychOpatření:1 2080-Přehled
+#: 2158-EditaceNapravnychOpatření:1 2205-Přehled
+#: 2283-EditaceNapravnychOpatření:1 2330-Přehled 2350-FollowUp:1
+#: 2408-EditaceNapravnychOpatření:1 2472-Přehled
+#: 2550-EditaceNapravnychOpatření:1 2593-Přehled
+#: 2671-EditaceNapravnychOpatření:1 2724-Přehled
+#: 2802-EditaceNapravnychOpatření:1 2850-Přehled
+#: 2928-EditaceNapravnychOpatření:1 2972-Přehled
+#: 3050-EditaceNapravnychOpatření:1
+msgid "Přehled nápravných opatření"
+msgstr "Corrective measures overview"
+
+#: 2803-Editace nahlizeni:1 2804-Editace 2805-Editace 2806-Editace
+#: 2807-Editace 2808-Editace 2929-Editace 3051-Editace
+msgid "Přehled uživatelů"
+msgstr "User overview"
+
+#: 1408-EditaceZjisteni2:1 1710-EditaceZjisteni2:1 1835-EditaceZjisteni2:1
+#: 1960-EditaceZjisteni2:1 2081-EditaceZjisteni2:1 2206-EditaceZjisteni2:1
+#: 2331-EditaceZjisteni2:1 2473-EditaceZjisteni2:1 2594-EditaceZjisteni2:1
+#: 2725-EditaceZjisteni2:1 2851-EditaceZjisteni2:1 2973-EditaceZjisteni2:1
+msgid "Přehled Zjištění"
+msgstr "Detection overview"
+
+#: 1438-Posouzení auditorem:1 1738-Posouzení 1863-Posouzení 1988-Posouzení
+#: 2109-Posouzení 2234-Posouzení 2359-Posouzení 2501-Posouzení
+#: 2622-Posouzení 2753-Posouzení 2879-Posouzení 3001-Posouzení
+msgid "Přejdi na editaci doporučení"
+msgstr "Go to recommendation edit"
+
+#: 1438-Posouzení auditorem:1 1738-Posouzení 1863-Posouzení 1988-Posouzení
+#: 2109-Posouzení 2234-Posouzení 2359-Posouzení 2501-Posouzení
+#: 2622-Posouzení 2753-Posouzení 2879-Posouzení 3001-Posouzení
+msgid "Přejdi na editaci zjištění"
+msgstr "Go to detection edit"
+
+#: 1557-Editace rolí:1 1774-Editace 1899-Editace 2024-Editace 2145-Editace
+#: 2270-Editace 2395-Editace 2537-Editace 2658-Editace 2789-Editace
+#: 2915-Editace 3037-Editace
+msgid "Přidání nadřízeného"
+msgstr "Adding of superior"
+
+#: 1557-Editace rolí:1 1774-Editace 1899-Editace 2024-Editace 2145-Editace
+#: 2270-Editace 2395-Editace 2537-Editace 2658-Editace 2789-Editace
+#: 2915-Editace 3037-Editace
+msgid "Přidat"
+msgstr "Add"
+
+#: 1899-Editace rolí:1 2024-Editace 2145-Editace 2270-Editace 2537-Editace
+#: 2658-Editace 2789-Editace 2915-Editace 3037-Editace
+msgid "Přidat společnost"
+msgstr "Add company"
+
+#: 1373-Detail auditu:1 1675-Detail 1800-Detail 1925-Detail 2046-Detail
+#: 2171-Detail 2296-Detail 2438-Detail 2559-Detail 2690-Detail 2816-Detail
+#: 2938-Detail
+msgid "Přidat zjištění"
+msgstr "Add detection"
+
+#: 2768-Nový uživatel:1 2769-Editace uživatele:1 2775-Nový auditor:1
+#: 2776-Editace auditora:1 2777-Editace neaktivního 2778-:1 2779-Editace
+#: 2780-Nový neaktivní 2781-Editace pozice:1 2782-Nová 2793-Nový externí
+msgid "Příjmení"
+msgstr "Surname"
+
+#: 2747-Vyjádření k auditu:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1
+msgid "Příloha"
+msgstr "Attachment"
+
+#: 1373-Detail auditu:1 1430-Vyjádření k 1436-Vráceno přepracování
+#: nadřízeným:1 1437-Vráceno auditorem:1 1458-Přehled souborů:1
+#: 1463-Detail auditu bez WF:1 1675-Detail 1732-Vyjádření 1736-Vráceno
+#: 1737-Vráceno 1756-Přehled 1759-Detail 1800-Detail 1857-Vyjádření
+#: 1861-Vráceno 1862-Vráceno 1881-Přehled 1884-Detail 1925-Detail
+#: 1982-Vyjádření 1986-Vráceno 1987-Vráceno 2006-Přehled 2009-Detail
+#: 2046-Detail 2103-Vyjádření 2107-Vráceno 2108-Vráceno 2127-Přehled
+#: 2130-Detail 2171-Detail 2228-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2252-Přehled 2255-Detail 2296-Detail 2353-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2377-Přehled 2380-Detail 2438-Detail 2495-Vyjádření
+#: 2499-Vráceno 2500-Vráceno 2519-Přehled 2522-Detail 2559-Detail
+#: 2616-Vyjádření 2620-Vráceno 2621-Vráceno 2640-Přehled 2643-Detail
+#: 2690-Detail 2747-Vyjádření 2751-Vráceno 2752-Vráceno 2771-Přehled
+#: 2774-Detail 2816-Detail 2873-Vyjádření 2877-Vráceno 2878-Vráceno
+#: 2897-Přehled 2900-Detail 2938-Detail 2995-Vyjádření 2999-Vráceno
+#: 3000-Vráceno 3019-Přehled 3022-Detail
+msgid "Přiložené soubory"
+msgstr "Attached files"
+
+#: 2688-:1
+msgid "Primární doporučení"
+msgstr "Primary delivery"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Proces"
+msgstr "Process"
+
+#: 2799-Detail opatření:1
+msgid "Proces:"
+msgstr "Process:"
+
+#: 1367-PortalInternichAuditu2 layout:59 1413-Procesy:1 1715-Procesy:1
+#: 1788-PortalInternichAuditu2 layout:56 1840-Procesy:1
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1965-Procesy:1 2038-PortalInternichAuditu2
+#: 2086-Procesy:1 2211-Procesy:1 2336-Procesy:1 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2478-Procesy:1 2551-PortalInternichAuditu2
+#: 2599-Procesy:1 2682-PortalInternichAuditu2 2730-Procesy:1 2856-Procesy:1
+#: 2930-PortalInternichAuditu2 2978-Procesy:1 3052-PortalInternichAuditu2
+msgid "Procesy"
+msgstr "Processes"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Procházet.."
+msgstr "Browse.."
+
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu auditorem:1
+msgid "Původní termín:"
+msgstr "Original deadline:"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Realizace NO bude ověřena samostatně"
+msgstr "Realization of CM will be veryfied independently"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Realizace NO bude ověřena v rámci auditu"
+msgstr "Realization of CM will be veryfied within audit"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Realizace NO byla ověřena"
+msgstr "Realization of CM has been veryfied"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Realizace NO nebude ověřena"
+msgstr "Realization of CM will not be veryfied"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid ""
+"Realizaci nápravného opatření nelze prokázat žádným existujícím dokumentem"
+msgstr ""
+"Realization of corrective measures cannot be proved by any existing document"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Realizaci nápravného opatření prokazují přiložené dokumenty"
+msgstr "Realization of corrective measure is proved by attached documents"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Realizováno"
+msgstr "Realized"
+
+#: 1377-:1 1378-:1 1379-:1 1380-:1 1381-:1 1383-:1 1384-Editace záznamu:1
+#: 1679-:1 1680-:1 1681-:1 1682-:1 1683-:1 1685-:1 1686-Editace 1804-:1
+#: 1805-:1 1806-:1 1807-:1 1808-:1 1810-:1 1811-Editace 1929-:1 1930-:1
+#: 1931-:1 1932-:1 1933-:1 1935-:1 1936-Editace 2050-:1 2051-:1 2052-:1
+#: 2053-:1 2054-:1 2056-:1 2057-Editace 2175-:1 2176-:1 2177-:1 2178-:1
+#: 2179-:1 2181-:1 2182-Editace 2300-:1 2301-:1 2302-:1 2303-:1 2304-:1
+#: 2306-:1 2307-Editace 2442-:1 2443-:1 2444-:1 2445-:1 2446-:1 2448-:1
+#: 2449-Editace 2563-:1 2564-:1 2565-:1 2566-:1 2567-:1 2569-:1 2570-Editace
+#: 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace 2820-:1
+#: 2821-:1 2822-:1 2823-:1 2824-:1 2826-:1 2827-Editace 2942-:1 2943-:1
+#: 2944-:1 2945-:1 2946-:1 2948-:1 2949-Editace
+msgid "record_en_multiline"
+msgstr "record_en_multiline"
+
+#: 1367-PortalInternichAuditu2 layout:92 1421-Report nový:1 1723-Report
+#: 1788-PortalInternichAuditu2 layout:89 1848-Report
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1973-Report 2038-PortalInternichAuditu2
+#: 2094-Report 2219-Report 2344-Report 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2486-Report 2551-PortalInternichAuditu2
+#: 2607-Report 2682-PortalInternichAuditu2 2738-Report 2864-Report
+#: 2930-PortalInternichAuditu2 2986-Report 3052-PortalInternichAuditu2
+msgid "Report nový"
+msgstr "New report"
+
+#: 1367-PortalInternichAuditu2 layout:95 1788-PortalInternichAuditu2 layout:92
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Report nový - společnosti"
+msgstr "New report - companies"
+
+#: 1367-PortalInternichAuditu2 layout:101 1788-PortalInternichAuditu2
+#: layout:98 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Report nový - společnosti CZ"
+msgstr "New report - companies CZ"
+
+#: 1422-Report nový / společnosti:1 1724-Report 1849-Report 1974-Report
+#: 2095-Report 2220-Report 2345-Report 2487-Report 2608-Report 2739-Report
+#: 2865-Report 2987-Report
+msgid "Report nový / společnosti"
+msgstr "New report / companies"
+
+#: 1424-Report nový / společnosti CZ:1 1726-Report 1851-Report 1976-Report
+#: 2097-Report 2222-Report 2347-Report 2489-Report 2610-Report 2741-Report
+#: 2867-Report 2989-Report
+msgid "Report nový / společnosti CZ"
+msgstr "New report / companies CZ"
+
+#: 1367-PortalInternichAuditu2 layout:98 1423-Report nový CZ:1 1725-Report
+#: 1788-PortalInternichAuditu2 layout:95 1850-Report
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1975-Report 2038-PortalInternichAuditu2
+#: 2096-Report 2221-Report 2346-Report 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2488-Report 2551-PortalInternichAuditu2
+#: 2609-Report 2682-PortalInternichAuditu2 2740-Report 2866-Report
+#: 2930-PortalInternichAuditu2 2988-Report 3052-PortalInternichAuditu2
+msgid "Report nový CZ"
+msgstr "New report CZ"
+
+#: 1367-PortalInternichAuditu2 layout:89 1788-PortalInternichAuditu2 layout:86
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Report pro Česko"
+msgstr "Report for Czech Republic"
+
+#: 1367-PortalInternichAuditu2 layout:104 1425-Report pro Německo:1
+#: 1727-Report 1788-PortalInternichAuditu2 layout:101 1852-Report
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 1977-Report 2038-PortalInternichAuditu2
+#: 2098-Report 2223-Report 2348-Report 2411-PortalInternichAuditu2
+#: 2430-PortalInternichAuditu2 2490-Report 2551-PortalInternichAuditu2
+#: 2611-Report 2682-PortalInternichAuditu2 2742-Report 2868-Report
+#: 2930-PortalInternichAuditu2 2990-Report 3052-PortalInternichAuditu2
+msgid "Report pro Německo"
+msgstr "Report for Germany"
+
+#: 1367-PortalInternichAuditu2 layout:85 1788-PortalInternichAuditu2 layout:82
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Reporty"
+msgstr "Reports"
+
+#: 1420-Reporty pro česko:1 1722-Reporty 1847-Reporty 1972-Reporty
+#: 2093-Reporty 2218-Reporty 2343-Reporty 2485-Reporty 2606-Reporty
+#: 2737-Reporty 2863-Reporty 2985-Reporty
+msgid "Reporty pro česko"
+msgstr "Reports for Czech Republic"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Riziko"
+msgstr "Risk"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Riziko EN"
+msgstr "Risk EN"
+
+#: 2712-Nepojmenovaná stránka:1 2713-Formulace Doporučení:1 2714-Editace
+#: 2747-Vyjádření k auditu:1 2748-Vyjádření auditora:1 2750-Vyjádření
+#: nadřízeného:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace opatření v
+#: řešení:1 2755-Schválení změny termínu:1 2786-Schválení termínu
+#: 2787-Detail nápravného opatření:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Riziko:"
+msgstr "Risk:"
+
+#: 1367-PortalInternichAuditu2 layout:56 1788-PortalInternichAuditu2 layout:53
+#: 1913-PortalInternichAuditu2 layout:50 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Role"
+msgstr "Role"
+
+#: 2789-Editace rolí:1
+msgid "Role:"
+msgstr "Role:"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "Rozpracovaná doporučení"
+msgstr "Unfinished recommendations"
+
+#: 2748-Vyjádření auditora:1
+msgid "S formulací auditora"
+msgstr "With auditor's formulation"
+
+#: 2750-Vyjádření nadřízeného:1 2753-Posouzení auditorem:1
+msgid "S formulací auditora:"
+msgstr "With auditor's formulation:"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Senior"
+msgstr "Senior"
+
+#: 2799-Detail opatření:1
+msgid "Senior:"
+msgstr "Senior:"
+
+#: 1675-Detail auditu:1 1800-Detail 1925-Detail 2046-Detail 2171-Detail
+#: 2296-Detail 2438-Detail 2559-Detail 2690-Detail 2816-Detail 2938-Detail
+msgid "Seznam doporučení"
+msgstr "List of reccomendations"
+
+#: 1373-Detail auditu:1 1675-Detail 1800-Detail 1925-Detail 2046-Detail
+#: 2171-Detail 2296-Detail 2438-Detail 2559-Detail 2690-Detail 2816-Detail
+#: 2938-Detail
+msgid "Seznam zjištění"
+msgstr "Listo of detections"
+
+#: 1368-Named panel test:1 1670-Named 1795-Named 1920-Named 1948-Formulace
+#: Doporučení:1 2041-Named 2166-Named 2291-Named 2433-Named 2554-Named
+#: 2685-Named 2811-Named 2933-Named
+msgid "Small button"
+msgstr "Small button"
+
+#: 1458-Přehled souborů:1 1557-Editace rolí:1 1756-Přehled 1774-Editace
+#: 1881-Přehled 1899-Editace 2006-Přehled 2024-Editace 2127-Přehled
+#: 2145-Editace 2252-Přehled 2270-Editace 2377-Přehled 2395-Editace
+#: 2519-Přehled 2537-Editace 2640-Přehled 2658-Editace 2771-Přehled
+#: 2789-Editace 2897-Přehled 2915-Editace 3019-Přehled 3037-Editace
+msgid "Smazat"
+msgstr "Delete"
+
+#: 1367-PortalInternichAuditu2 layout:80 1788-PortalInternichAuditu2 layout:77
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Soubory"
+msgstr "Files"
+
+#: 2753-Posouzení auditorem:1
+msgid "Souhlas s opatřením"
+msgstr "Procuration consent"
+
+#: 1430-Vyjádření k auditu:1 1436-Vráceno přepracování nadřízeným:1
+#: 1437-Vráceno auditorem:1 1440-Schválení změny termínu:1
+#: 1527-Schválení termínu 1732-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1740-Schválení 1771-Schválení 1857-Vyjádření 1861-Vráceno
+#: 1862-Vráceno 1865-Schválení 1896-Schválení 1982-Vyjádření
+#: 1986-Vráceno 1987-Vráceno 1990-Schválení 2021-Schválení
+#: 2103-Vyjádření 2107-Vráceno 2108-Vráceno 2111-Schválení
+#: 2142-Schválení 2228-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2236-Schválení 2267-Schválení 2353-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2361-Schválení 2392-Schválení 2495-Vyjádření
+#: 2499-Vráceno 2500-Vráceno 2503-Schválení 2534-Schválení
+#: 2616-Vyjádření 2620-Vráceno 2621-Vráceno 2624-Schválení
+#: 2655-Schválení 2747-Vyjádření 2751-Vráceno 2752-Vráceno
+#: 2755-Schválení 2786-Schválení 2873-Vyjádření 2877-Vráceno
+#: 2878-Vráceno 2881-Schválení 2912-Schválení 2995-Vyjádření
+#: 2999-Vráceno 3000-Vráceno 3003-Schválení 3034-Schválení
+msgid "Souhlasím"
+msgstr "I agree"
+
+#: 1435-Vyjádření nadřízeného:1 1735-Vyjádření 1860-Vyjádření
+#: 1985-Vyjádření 2106-Vyjádření 2231-Vyjádření 2356-Vyjádření
+#: 2498-Vyjádření 2619-Vyjádření 2750-Vyjádření 2876-Vyjádření
+#: 2998-Vyjádření
+msgid ""
+"Souhlasím s navrženým nápravným opatřením a stanoveným termínem realizace"
+msgstr ""
+"I agree with suggested corrective measures and established realozation "
+"deadline"
+
+#: 2686-Zadání auditu:1 2715-Zadání auditu bez WF:1
+msgid ""
+"Špatně zadaný formát čísla auditu,zadejte prosím ve formátu: \"RRRR P XXX "
+"(např. 2007 P 012)\""
+msgstr ""
+"Wrong number format, please enter in the following format: \"YYYY P XXX "
+"(ex.: 2007 P 012)\" "
+
+#: 2686-Zadání auditu:1 2690-Detail 2715-Zadání auditu bez WF:1
+#: 2774-Detail 2781-Editace neaktivní pozice:1 2782-Nová 2791-Editace změny
+#: společnosti:1 2792-Nová změna 2796-Nová společnosti koordinátora:1
+#: 2798-Editrace
+msgid "Společnost"
+msgstr "Company"
+
+#: 2704-Editace Zjištění:1 2712-Nepojmenovaná stránka:1 2713-Formulace
+#: Doporučení:1 2714-Editace 2747-Vyjádření k auditu:1 2748-Vyjádření
+#: auditora:1 2750-Vyjádření nadřízeného:1 2751-Vráceno přepracování
+#: nadřízeným:1 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace
+#: opatření v řešení:1 2755-Schválení změny termínu:1
+#: 2786-Schválení termínu 2787-Detail nápravného opatření:1 2799-Detail
+msgid "Společnost:"
+msgstr "Company:"
+
+#: 1412-Společnosti:1 1714-Společnosti:1 1839-Společnosti:1
+#: 1964-Společnosti:1 2085-Společnosti:1 2210-Společnosti:1
+#: 2335-Společnosti:1 2477-Společnosti:1 2598-Společnosti:1
+#: 2729-Společnosti:1 2855-Společnosti:1 2977-Společnosti:1
+msgid "Společnosti"
+msgstr "Companie"
+
+#: 1579-Společnosti koordinátorů:1 1782-Společnosti 1907-Společnosti
+#: 2032-Společnosti 2153-Společnosti 2278-Společnosti 2403-Společnosti
+#: 2545-Společnosti 2666-Společnosti 2797-Společnosti 2923-Společnosti
+#: 3045-Společnosti
+msgid "Společnosti koordinátorů"
+msgstr "Coordinator companies"
+
+#: 2686-Zadání auditu:1 2690-Detail
+msgid "Společnosti při GROUP"
+msgstr "Companies within GROUP"
+
+#: 1373-Detail auditu:1 1430-Vyjádření k 1431-Vyjádření auditora:1
+#: 1435-Vyjádření nadřízeného:1 1436-Vráceno přepracování
+#: nadřízeným:1 1437-Vráceno auditorem:1 1438-Posouzení 1439-Editace
+#: opatření v řešení:1 1440-Schválení změny termínu:1 1458-Přehled
+#: souborů:1 1463-Detail auditu bez WF:1 1527-Schválení termínu
+#: 1675-Detail 1732-Vyjádření 1733-Vyjádření 1735-Vyjádření
+#: 1736-Vráceno 1737-Vráceno 1738-Posouzení 1739-Editace 1740-Schválení
+#: 1756-Přehled 1759-Detail 1771-Schválení 1800-Detail 1857-Vyjádření
+#: 1858-Vyjádření 1860-Vyjádření 1861-Vráceno 1862-Vráceno
+#: 1863-Posouzení 1864-Editace 1865-Schválení 1881-Přehled 1884-Detail
+#: 1896-Schválení 1925-Detail 1982-Vyjádření 1983-Vyjádření
+#: 1985-Vyjádření 1986-Vráceno 1987-Vráceno 1988-Posouzení 1989-Editace
+#: 1990-Schválení 2006-Přehled 2009-Detail 2021-Schválení 2046-Detail
+#: 2103-Vyjádření 2104-Vyjádření 2106-Vyjádření 2107-Vráceno
+#: 2108-Vráceno 2109-Posouzení 2110-Editace 2111-Schválení 2127-Přehled
+#: 2130-Detail 2142-Schválení 2171-Detail 2228-Vyjádření
+#: 2229-Vyjádření 2231-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2234-Posouzení 2235-Editace 2236-Schválení 2252-Přehled 2255-Detail
+#: 2267-Schválení 2296-Detail 2353-Vyjádření 2354-Vyjádření
+#: 2356-Vyjádření 2357-Vráceno 2358-Vráceno 2359-Posouzení 2360-Editace
+#: 2361-Schválení 2377-Přehled 2380-Detail 2392-Schválení 2438-Detail
+#: 2495-Vyjádření 2496-Vyjádření 2498-Vyjádření 2499-Vráceno
+#: 2500-Vráceno 2501-Posouzení 2502-Editace 2503-Schválení 2519-Přehled
+#: 2522-Detail 2534-Schválení 2559-Detail 2616-Vyjádření
+#: 2617-Vyjádření 2619-Vyjádření 2620-Vráceno 2621-Vráceno
+#: 2622-Posouzení 2623-Editace 2624-Schválení 2640-Přehled 2643-Detail
+#: 2655-Schválení 2690-Detail 2747-Vyjádření 2748-Vyjádření
+#: 2750-Vyjádření 2751-Vráceno 2752-Vráceno 2753-Posouzení 2754-Editace
+#: 2755-Schválení 2771-Přehled 2774-Detail 2786-Schválení 2816-Detail
+#: 2873-Vyjádření 2874-Vyjádření 2876-Vyjádření 2877-Vráceno
+#: 2878-Vráceno 2879-Posouzení 2880-Editace 2881-Schválení 2897-Přehled
+#: 2900-Detail 2912-Schválení 2938-Detail 2995-Vyjádření
+#: 2996-Vyjádření 2998-Vyjádření 2999-Vráceno 3000-Vráceno
+#: 3001-Posouzení 3002-Editace 3003-Schválení 3019-Přehled 3022-Detail
+#: 3034-Schválení
+msgid "Stáhnout"
+msgstr "Download"
+
+#: 2754-Editace opatření v řešení:1 2781-Editace neaktivní pozice:1
+#: 2782-Nová 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Status"
+msgstr "Status"
+
+#: 2799-Detail opatření:1 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Status opatření:"
+msgstr "Corrective measures status:"
+
+#: 2754-Editace opatření v řešení:1
+msgid "Status:"
+msgstr "Status:"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Stav"
+msgstr "State"
+
+#: 2684-Stránka chybí:1
+msgid "Stránka chybí"
+msgstr "Missing page"
+
+#: 1373-Detail auditu:1 1387-Editace Zjištění:1 1396-Formulace
+#: Doporučení:1 1397-Editace 1404-Editace Auditu:1 1405-EditaceDoporuc2:1
+#: 1406-Ke zpracování:1 1407-Přehled nápravných opatření:1
+#: 1408-EditaceZjisteni2:1 1410-Editace Auditu Bez WF:1 1412-Společnosti:1
+#: 1413-Procesy:1 1414-Činnosti:1 1415-AuditoriEy:1 1416-UzivateleRWE:1
+#: 1417-Funkce:1 1418-Neaktivní uživatelé:1 1419-Neaktivní pozice:1
+#: 1420-Reporty pro česko:1 1421-Report nový:1 1422-Report nový /
+#: společnosti:1 1423-Report CZ:1 1424-Report společnosti 1425-Report
+#: Německo:1 1427-FollowUp:1 1430-Vyjádření k 1431-Vyjádření auditora:1
+#: 1435-Vyjádření nadřízeného:1 1436-Vráceno přepracování
+#: nadřízeným:1 1437-Vráceno auditorem:1 1438-Posouzení 1439-Editace
+#: opatření v řešení:1 1440-Schválení změny termínu:1 1458-Přehled
+#: souborů:1 1459-Test panelu:1 1460-PrehledAuditu:1 1463-Detail auditu bez
+#: 1486-Změna 1527-Schválení termínu 1555-Detail nápravného 1556-Změna
+#: 1557-Editace rolí:1 1558-Role:1 1573-hesla:1 1579-Společnosti
+#: koordinátorů:1 1585-EditaceNapravnychOpatření:1 1675-Detail
+#: 1689-Editace 1698-Formulace 1699-Editace 1706-Editace
+#: 1707-EditaceDoporuc2:1 1708-Ke 1709-Přehled 1710-EditaceZjisteni2:1
+#: 1712-Editace 1714-Společnosti:1 1715-Procesy:1 1716-Činnosti:1
+#: 1717-AuditoriEy:1 1718-UzivateleRWE:1 1719-Funkce:1 1720-Neaktivní
+#: 1721-Neaktivní 1722-Reporty 1723-Report 1724-Report 1725-Report
+#: 1726-Report 1727-Report 1729-FollowUp:1 1732-Vyjádření 1733-Vyjádření
+#: 1735-Vyjádření 1736-Vráceno 1737-Vráceno 1738-Posouzení 1739-Editace
+#: 1740-Schválení 1756-Přehled 1757-Test 1758-PrehledAuditu:1 1759-Detail
+#: 1770-Změna 1771-Schválení 1772-Detail 1773-Změna 1774-Editace
+#: 1775-Role:1 1779-hesla:1 1782-Společnosti
+#: 1787-EditaceNapravnychOpatření:1 1796-Zadání 1800-Detail 1814-Editace
+#: 1823-Formulace 1824-Editace 1825-Zadání 1831-Editace
+#: 1832-EditaceDoporuc2:1 1833-Ke 1834-Přehled 1835-EditaceZjisteni2:1
+#: 1837-Editace 1839-Společnosti:1 1840-Procesy:1 1841-Činnosti:1
+#: 1842-AuditoriEy:1 1843-UzivateleRWE:1 1844-Funkce:1 1845-Neaktivní
+#: 1846-Neaktivní 1847-Reporty 1848-Report 1849-Report 1850-Report
+#: 1851-Report 1852-Report 1854-FollowUp:1 1857-Vyjádření 1858-Vyjádření
+#: 1860-Vyjádření 1861-Vráceno 1862-Vráceno 1863-Posouzení 1864-Editace
+#: 1865-Schválení 1881-Přehled 1882-Test 1883-PrehledAuditu:1 1884-Detail
+#: 1895-Změna 1896-Schválení 1897-Detail 1898-Změna 1899-Editace
+#: 1900-Role:1 1904-hesla:1 1907-Společnosti
+#: 1912-EditaceNapravnychOpatření:1 1925-Detail 1939-Editace 1948-Formulace
+#: 1949-Editace 1956-Editace 1957-EditaceDoporuc2:1 1958-Ke 1959-Přehled
+#: 1960-EditaceZjisteni2:1 1962-Editace 1964-Společnosti:1 1965-Procesy:1
+#: 1966-Činnosti:1 1967-AuditoriEy:1 1968-UzivateleRWE:1 1969-Funkce:1
+#: 1970-Neaktivní 1971-Neaktivní 1972-Reporty 1973-Report 1974-Report
+#: 1975-Report 1976-Report 1977-Report 1979-FollowUp:1 1982-Vyjádření
+#: 1983-Vyjádření 1985-Vyjádření 1986-Vráceno 1987-Vráceno
+#: 1988-Posouzení 1989-Editace 1990-Schválení 2006-Přehled 2007-Test
+#: 2008-PrehledAuditu:1 2009-Detail 2020-Změna 2021-Schválení 2022-Detail
+#: 2023-Změna 2024-Editace 2025-Role:1 2029-hesla:1 2032-Společnosti
+#: 2037-EditaceNapravnychOpatření:1 2046-Detail 2060-Editace 2069-Formulace
+#: 2070-Editace 2077-Editace 2078-EditaceDoporuc2:1 2079-Ke 2080-Přehled
+#: 2081-EditaceZjisteni2:1 2083-Editace 2085-Společnosti:1 2086-Procesy:1
+#: 2087-Činnosti:1 2088-AuditoriEy:1 2089-UzivateleRWE:1 2090-Funkce:1
+#: 2091-Neaktivní 2092-Neaktivní 2093-Reporty 2094-Report 2095-Report
+#: 2096-Report 2097-Report 2098-Report 2100-FollowUp:1 2103-Vyjádření
+#: 2104-Vyjádření 2106-Vyjádření 2107-Vráceno 2108-Vráceno
+#: 2109-Posouzení 2110-Editace 2111-Schválení 2127-Přehled 2128-Test
+#: 2129-PrehledAuditu:1 2130-Detail 2141-Změna 2142-Schválení 2143-Detail
+#: 2144-Změna 2145-Editace 2146-Role:1 2150-hesla:1 2153-Společnosti
+#: 2158-EditaceNapravnychOpatření:1 2171-Detail 2185-Editace 2194-Formulace
+#: 2195-Editace 2202-Editace 2203-EditaceDoporuc2:1 2204-Ke 2205-Přehled
+#: 2206-EditaceZjisteni2:1 2208-Editace 2210-Společnosti:1 2211-Procesy:1
+#: 2212-Činnosti:1 2213-AuditoriEy:1 2214-UzivateleRWE:1 2215-Funkce:1
+#: 2216-Neaktivní 2217-Neaktivní 2218-Reporty 2219-Report 2220-Report
+#: 2221-Report 2222-Report 2223-Report 2225-FollowUp:1 2228-Vyjádření
+#: 2229-Vyjádření 2231-Vyjádření 2232-Vráceno 2233-Vráceno
+#: 2234-Posouzení 2235-Editace 2236-Schválení 2252-Přehled 2253-Test
+#: 2254-PrehledAuditu:1 2255-Detail 2266-Změna 2267-Schválení 2268-Detail
+#: 2269-Změna 2270-Editace 2271-Role:1 2275-hesla:1 2278-Společnosti
+#: 2283-EditaceNapravnychOpatření:1 2296-Detail 2310-Editace 2319-Formulace
+#: 2320-Editace 2327-Editace 2328-EditaceDoporuc2:1 2329-Ke 2330-Přehled
+#: 2331-EditaceZjisteni2:1 2333-Editace 2335-Společnosti:1 2336-Procesy:1
+#: 2337-Činnosti:1 2338-AuditoriEy:1 2339-UzivateleRWE:1 2340-Funkce:1
+#: 2341-Neaktivní 2342-Neaktivní 2343-Reporty 2344-Report 2345-Report
+#: 2346-Report 2347-Report 2348-Report 2350-FollowUp:1 2353-Vyjádření
+#: 2354-Vyjádření 2356-Vyjádření 2357-Vráceno 2358-Vráceno
+#: 2359-Posouzení 2360-Editace 2361-Schválení 2377-Přehled 2378-Test
+#: 2379-PrehledAuditu:1 2380-Detail 2391-Změna 2392-Schválení 2393-Detail
+#: 2394-Změna 2395-Editace 2396-Role:1 2400-hesla:1 2403-Společnosti
+#: 2408-EditaceNapravnychOpatření:1 2438-Detail 2452-Editace 2461-Formulace
+#: 2462-Editace 2469-Editace 2470-EditaceDoporuc2:1 2471-Ke 2472-Přehled
+#: 2473-EditaceZjisteni2:1 2475-Editace 2477-Společnosti:1 2478-Procesy:1
+#: 2479-Činnosti:1 2480-AuditoriEy:1 2481-UzivateleRWE:1 2482-Funkce:1
+#: 2483-Neaktivní 2484-Neaktivní 2485-Reporty 2486-Report 2487-Report
+#: 2488-Report 2489-Report 2490-Report 2492-FollowUp:1 2495-Vyjádření
+#: 2496-Vyjádření 2498-Vyjádření 2499-Vráceno 2500-Vráceno
+#: 2501-Posouzení 2502-Editace 2503-Schválení 2519-Přehled 2520-Test
+#: 2521-PrehledAuditu:1 2522-Detail 2533-Změna 2534-Schválení 2535-Detail
+#: 2536-Změna 2537-Editace 2538-Role:1 2542-hesla:1 2545-Společnosti
+#: 2550-EditaceNapravnychOpatření:1 2559-Detail 2573-Editace 2582-Formulace
+#: 2583-Editace 2590-Editace 2591-EditaceDoporuc2:1 2592-Ke 2593-Přehled
+#: 2594-EditaceZjisteni2:1 2596-Editace 2598-Společnosti:1 2599-Procesy:1
+#: 2600-Činnosti:1 2601-AuditoriEy:1 2602-UzivateleRWE:1 2603-Funkce:1
+#: 2604-Neaktivní 2605-Neaktivní 2606-Reporty 2607-Report 2608-Report
+#: 2609-Report 2610-Report 2611-Report 2613-FollowUp:1 2616-Vyjádření
+#: 2617-Vyjádření 2619-Vyjádření 2620-Vráceno 2621-Vráceno
+#: 2622-Posouzení 2623-Editace 2624-Schválení 2640-Přehled 2641-Test
+#: 2642-PrehledAuditu:1 2643-Detail 2654-Změna 2655-Schválení 2656-Detail
+#: 2657-Změna 2658-Editace 2659-Role:1 2663-hesla:1 2666-Společnosti
+#: 2671-EditaceNapravnychOpatření:1 2686-Zadání 2690-Detail 2704-Editace
+#: 2713-Formulace 2714-Editace 2715-Zadání 2721-Editace
+#: 2722-EditaceDoporuc2:1 2723-Ke 2724-Přehled 2725-EditaceZjisteni2:1
+#: 2727-Editace 2729-Společnosti:1 2730-Procesy:1 2731-Činnosti:1
+#: 2732-AuditoriEy:1 2733-UzivateleRWE:1 2734-Funkce:1 2735-Neaktivní
+#: 2736-Neaktivní 2737-Reporty 2738-Report 2739-Report 2740-Report
+#: 2741-Report 2742-Report 2744-FollowUp:1 2747-Vyjádření 2748-Vyjádření
+#: 2750-Vyjádření 2751-Vráceno 2752-Vráceno 2753-Posouzení 2754-Editace
+#: 2755-Schválení 2771-Přehled 2772-Test 2773-PrehledAuditu:1 2774-Detail
+#: 2785-Změna 2786-Schválení 2787-Detail 2788-Změna 2789-Editace
+#: 2790-Role:1 2794-hesla:1 2797-Společnosti
+#: 2802-EditaceNapravnychOpatření:1 2803-Editace nahlizeni:1 2804-Editace
+#: 2805-Editace 2806-Editace 2807-Editace 2808-Editace 2816-Detail
+#: 2830-Editace 2839-Formulace 2840-Editace 2847-Editace
+#: 2848-EditaceDoporuc2:1 2849-Ke 2850-Přehled 2851-EditaceZjisteni2:1
+#: 2853-Editace 2855-Společnosti:1 2856-Procesy:1 2857-Činnosti:1
+#: 2858-AuditoriEy:1 2859-UzivateleRWE:1 2860-Funkce:1 2861-Neaktivní
+#: 2862-Neaktivní 2863-Reporty 2864-Report 2865-Report 2866-Report
+#: 2867-Report 2868-Report 2870-FollowUp:1 2873-Vyjádření 2874-Vyjádření
+#: 2876-Vyjádření 2877-Vráceno 2878-Vráceno 2879-Posouzení 2880-Editace
+#: 2881-Schválení 2897-Přehled 2898-Test 2899-PrehledAuditu:1 2900-Detail
+#: 2911-Změna 2912-Schválení 2913-Detail 2914-Změna 2915-Editace
+#: 2916-Role:1 2920-hesla:1 2923-Společnosti
+#: 2928-EditaceNapravnychOpatření:1 2929-Editace 2938-Detail 2952-Editace
+#: 2961-Formulace 2962-Editace 2969-Editace 2970-EditaceDoporuc2:1 2971-Ke
+#: 2972-Přehled 2973-EditaceZjisteni2:1 2975-Editace 2977-Společnosti:1
+#: 2978-Procesy:1 2979-Činnosti:1 2980-AuditoriEy:1 2981-UzivateleRWE:1
+#: 2982-Funkce:1 2983-Neaktivní 2984-Neaktivní 2985-Reporty 2986-Report
+#: 2987-Report 2988-Report 2989-Report 2990-Report 2992-FollowUp:1
+#: 2995-Vyjádření 2996-Vyjádření 2998-Vyjádření 2999-Vráceno
+#: 3000-Vráceno 3001-Posouzení 3002-Editace 3003-Schválení 3019-Přehled
+#: 3020-Test 3021-PrehledAuditu:1 3022-Detail 3033-Změna 3034-Schválení
+#: 3035-Detail 3036-Změna 3037-Editace 3038-Role:1 3042-hesla:1
+#: 3045-Společnosti 3050-EditaceNapravnychOpatření:1 3051-Editace
+#: 3053-nahlizenikonkretni:1 3054-nahlizenikonkretni:1
+#: 3055-nahlizenikonkretni:1 3056-nahlizenikonkretni:1
+#: 3057-nahlizenikonkretni:1
+msgid "Tabulka neobsahuje žádná data"
+msgstr "Table does not contain any data"
+
+#: 2684-Stránka chybí:1
+msgid "Tato stránka zatím nebyla vytvořena"
+msgstr "This page has not yet been created"
+
+#: 2775-Nový auditor:1 2779-Editace auditora:1
+msgid "Telefon"
+msgstr "Phone"
+
+#: 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace záznamu:1
+#: 2702-Formulace 2747-Vyjádření k auditu:1 2751-Vráceno přepracování
+#: nadřízeným:1 2752-Vráceno auditorem:1 2781-Editace neaktivní pozice:1
+#: 2782-Nová
+msgid "Termín realizace"
+msgstr "Realization deadline"
+
+#: 2748-Vyjádření auditora:1 2750-Vyjádření nadřízeného:1
+#: 2753-Posouzení auditorem:1 2754-Editace opatření v řešení:1
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu 2787-Detail
+#: nápravného opatření:1 2799-Detail
+msgid "Termín realizace:"
+msgstr "Realization deadline:"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Ulož a odešli ke schválení"
+msgstr "Save and send for approval"
+
+#: 1439-Editace opatření v řešení:1 1739-Editace 1864-Editace
+#: 1989-Editace 2110-Editace 2235-Editace 2360-Editace 2502-Editace
+#: 2623-Editace 2754-Editace 2880-Editace 3002-Editace
+msgid "Ulož dokument"
+msgstr "Save document"
+
+#: 1430-Vyjádření k auditu:1 1436-Vráceno přepracování nadřízeným:1
+#: 1437-Vráceno auditorem:1 1732-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1857-Vyjádření 1861-Vráceno 1862-Vráceno 1982-Vyjádření
+#: 1986-Vráceno 1987-Vráceno 2103-Vyjádření 2107-Vráceno 2108-Vráceno
+#: 2228-Vyjádření 2232-Vráceno 2233-Vráceno 2353-Vyjádření
+#: 2357-Vráceno 2358-Vráceno 2495-Vyjádření 2499-Vráceno 2500-Vráceno
+#: 2616-Vyjádření 2620-Vráceno 2621-Vráceno 2747-Vyjádření
+#: 2751-Vráceno 2752-Vráceno 2873-Vyjádření 2877-Vráceno 2878-Vráceno
+#: 2995-Vyjádření 2999-Vráceno 3000-Vráceno
+msgid "Ulož pro pozdější editaci"
+msgstr "Save for later editing"
+
+#: 1397-Editace Doporučení:1 1444-Editace společnosti:1 1446-Editace
+#: procesu:1 1448-Editace činností:1 1452-Editace funkce:1 1454-Editace
+#: uživatele:1 1463-Detail auditu bez WF:1 1473-Editace auditora:1
+#: 1474-Editace neaktivního 1475-:1 1476-Editace 1478-Editace neaktivní
+#: pozice:1 1484-Nový nadřízený:1 1485-Editovat nadřízeného:1
+#: 1564-Editace změny 1565-Nová změna 1574-Editovat hesla:1 1578-Nová
+#: společnosti koordinátora:1 1580-Editrace 1699-Editace 1744-Editace
+#: 1746-Editace 1748-Editace 1752-Editace 1754-Editace 1759-Detail
+#: 1761-Editace 1762-Editace 1763-:1 1764-Editace 1766-Editace 1768-Nový
+#: 1769-Editovat 1776-Editace 1777-Nová 1780-Editovat 1781-Nová
+#: 1783-Editrace 1824-Editace 1869-Editace 1871-Editace 1873-Editace
+#: 1877-Editace 1879-Editace 1884-Detail 1886-Editace 1887-Editace 1888-:1
+#: 1889-Editace 1891-Editace 1893-Nový 1894-Editovat 1901-Editace 1902-Nová
+#: 1905-Editovat 1906-Nová 1908-Editrace 1949-Editace 1994-Editace
+#: 1996-Editace 1998-Editace 2002-Editace 2004-Editace 2009-Detail
+#: 2011-Editace 2012-Editace 2013-:1 2014-Editace 2016-Editace 2018-Nový
+#: 2019-Editovat 2026-Editace 2027-Nová 2030-Editovat 2031-Nová
+#: 2033-Editrace 2070-Editace 2115-Editace 2117-Editace 2119-Editace
+#: 2123-Editace 2125-Editace 2130-Detail 2132-Editace 2133-Editace 2134-:1
+#: 2135-Editace 2137-Editace 2139-Nový 2140-Editovat 2147-Editace 2148-Nová
+#: 2151-Editovat 2152-Nová 2154-Editrace 2195-Editace 2240-Editace
+#: 2242-Editace 2244-Editace 2248-Editace 2250-Editace 2255-Detail
+#: 2257-Editace 2258-Editace 2259-:1 2260-Editace 2262-Editace 2264-Nový
+#: 2265-Editovat 2272-Editace 2273-Nová 2276-Editovat 2277-Nová
+#: 2279-Editrace 2320-Editace 2365-Editace 2367-Editace 2369-Editace
+#: 2373-Editace 2375-Editace 2380-Detail 2382-Editace 2383-Editace 2384-:1
+#: 2385-Editace 2387-Editace 2389-Nový 2390-Editovat 2397-Editace 2398-Nová
+#: 2401-Editovat 2402-Nová 2404-Editrace 2462-Editace 2507-Editace
+#: 2509-Editace 2511-Editace 2515-Editace 2517-Editace 2522-Detail
+#: 2524-Editace 2525-Editace 2526-:1 2527-Editace 2529-Editace 2531-Nový
+#: 2532-Editovat 2539-Editace 2540-Nová 2543-Editovat 2544-Nová
+#: 2546-Editrace 2583-Editace 2628-Editace 2630-Editace 2632-Editace
+#: 2636-Editace 2638-Editace 2643-Detail 2645-Editace 2646-Editace 2647-:1
+#: 2648-Editace 2650-Editace 2652-Nový 2653-Editovat 2660-Editace 2661-Nová
+#: 2664-Editovat 2665-Nová 2667-Editrace 2714-Editace 2759-Editace
+#: 2761-Editace 2763-Editace 2767-Editace 2769-Editace 2774-Detail
+#: 2776-Editace 2777-Editace 2778-:1 2779-Editace 2781-Editace 2783-Nový
+#: 2784-Editovat 2791-Editace 2792-Nová 2795-Editovat 2796-Nová
+#: 2798-Editrace 2840-Editace 2885-Editace 2887-Editace 2889-Editace
+#: 2893-Editace 2895-Editace 2900-Detail 2902-Editace 2903-Editace 2904-:1
+#: 2905-Editace 2907-Editace 2909-Nový 2910-Editovat 2917-Editace 2918-Nová
+#: 2921-Editovat 2922-Nová 2924-Editrace 2962-Editace 3007-Editace
+#: 3009-Editace 3011-Editace 3015-Editace 3017-Editace 3022-Detail
+#: 3024-Editace 3025-Editace 3026-:1 3027-Editace 3029-Editace 3031-Nový
+#: 3032-Editovat 3039-Editace 3040-Nová 3043-Editovat 3044-Nová
+#: 3046-Editrace
+msgid "Uložit"
+msgstr "Save"
+
+#: 1369-Zadání auditu:1 1370-Formulace zjištění:1 1373-Detail
+#: 1387-Editace Zjištění:1 1398-Zadání auditu bez WF:1 1582-Detail
+#: opatření:1 1671-Zadání 1672-Formulace 1675-Detail 1689-Editace
+#: 1700-Zadání 1784-Detail 1796-Zadání 1797-Formulace 1800-Detail
+#: 1814-Editace 1825-Zadání 1909-Detail 1921-Zadání 1922-Formulace
+#: 1925-Detail 1939-Editace 1950-Zadání 2034-Detail 2042-Zadání
+#: 2043-Formulace 2046-Detail 2060-Editace 2071-Zadání 2155-Detail
+#: 2167-Zadání 2168-Formulace 2171-Detail 2185-Editace 2196-Zadání
+#: 2280-Detail 2292-Zadání 2293-Formulace 2296-Detail 2310-Editace
+#: 2321-Zadání 2405-Detail 2434-Zadání 2435-Formulace 2438-Detail
+#: 2452-Editace 2463-Zadání 2547-Detail 2555-Zadání 2556-Formulace
+#: 2559-Detail 2573-Editace 2584-Zadání 2668-Detail 2686-Zadání
+#: 2687-Formulace 2690-Detail 2704-Editace 2715-Zadání 2799-Detail
+#: 2812-Zadání 2813-Formulace 2816-Detail 2830-Editace 2841-Zadání
+#: 2925-Detail 2934-Zadání 2935-Formulace 2938-Detail 2952-Editace
+#: 2963-Zadání 3047-Detail
+msgid "Uložit a pokračovat"
+msgstr "Save and continue"
+
+#: 1388-:1 1390-:1 1395-Nepojmenovaná stránka:1 1396-Formulace
+#: Doporučení:1 1690-:1 1692-:1 1697-Nepojmenovaná 1698-Formulace 1815-:1
+#: 1817-:1 1822-Nepojmenovaná 1823-Formulace 1940-:1 1942-:1
+#: 1947-Nepojmenovaná 1948-Formulace 2061-:1 2063-:1 2068-Nepojmenovaná
+#: 2069-Formulace 2186-:1 2188-:1 2193-Nepojmenovaná 2194-Formulace 2311-:1
+#: 2313-:1 2318-Nepojmenovaná 2319-Formulace 2453-:1 2455-:1
+#: 2460-Nepojmenovaná 2461-Formulace 2574-:1 2576-:1 2581-Nepojmenovaná
+#: 2582-Formulace 2705-:1 2707-:1 2712-Nepojmenovaná 2713-Formulace 2831-:1
+#: 2833-:1 2838-Nepojmenovaná 2839-Formulace 2953-:1 2955-:1
+#: 2960-Nepojmenovaná 2961-Formulace
+msgid "Uložit bez odeslání odpovědné osobě"
+msgstr "Save without sending to person responsible"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Uložit dokument"
+msgstr "Save document"
+
+#: 1371-:1 1374-:1 1583-FollowUpKonkretnihoOpatreni:1 1673-:1 1676-:1
+#: 1785-FollowUpKonkretnihoOpatreni:1 1798-:1 1801-:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 1923-:1 1926-:1
+#: 2035-FollowUpKonkretnihoOpatreni:1 2044-:1 2047-:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2169-:1 2172-:1
+#: 2281-FollowUpKonkretnihoOpatreni:1 2294-:1 2297-:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2436-:1 2439-:1
+#: 2548-FollowUpKonkretnihoOpatreni:1 2557-:1 2560-:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2688-:1 2691-:1
+#: 2800-FollowUpKonkretnihoOpatreni:1 2814-:1 2817-:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 2936-:1 2939-:1
+#: 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Uložit změny"
+msgstr "Save changes"
+
+#: 1403-FileUploadTest:1 1705-FileUploadTest:1 1830-FileUploadTest:1
+#: 1955-FileUploadTest:1 2076-FileUploadTest:1 2201-FileUploadTest:1
+#: 2326-FileUploadTest:1 2468-FileUploadTest:1 2589-FileUploadTest:1
+#: 2720-FileUploadTest:1 2846-FileUploadTest:1 2968-FileUploadTest:1
+msgid "Upload"
+msgstr "Upload"
+
+#: 1406-Ke zpracování:1 1708-Ke 1833-Ke 1958-Ke 2079-Ke 2204-Ke 2329-Ke
+#: 2471-Ke 2592-Ke 2723-Ke 2849-Ke 2971-Ke 3053-nahlizenikonkretni:1
+#: 3054-nahlizenikonkretni:1 3055-nahlizenikonkretni:1
+#: 3056-nahlizenikonkretni:1 3057-nahlizenikonkretni:1
+msgid "Upozornění na blížící se termín realizace"
+msgstr "Warning about fothcoming realization deadline"
+
+#: 2783-Nový nadřízený:1 2784-Editovat nadřízeného:1 2791-Editace
+#: změny společnosti:1 2792-Nová změna 2795-Editovat hesla:1
+msgid "Uživatel"
+msgstr "User"
+
+#: 2789-Editace rolí:1
+msgid "Uživatel:"
+msgstr "User:"
+
+#: 1573-hesla:1 1779-hesla:1 1904-hesla:1 2029-hesla:1 2150-hesla:1
+#: 2275-hesla:1 2400-hesla:1 2542-hesla:1 2663-hesla:1 2794-hesla:1
+#: 2920-hesla:1 3042-hesla:1
+msgid "Uživatelé a jejich hesla"
+msgstr "Users and their passwords"
+
+#: 1486-Změna nadřízeného:1 1770-Změna 1895-Změna 2020-Změna
+#: 2141-Změna 2266-Změna 2391-Změna 2533-Změna 2654-Změna 2785-Změna
+#: 2911-Změna 3033-Změna
+msgid "Uživatelé a jejich nadřízení"
+msgstr "Users and their superiors"
+
+#: 1558-Role:1 1775-Role:1 1900-Role:1 2025-Role:1 2146-Role:1 2271-Role:1
+#: 2396-Role:1 2538-Role:1 2659-Role:1 2790-Role:1 2916-Role:1 3038-Role:1
+msgid "Uživatelé a jejich role"
+msgstr "Users and their roles"
+
+#: 1556-Změna společnosti:1 1773-Změna 1898-Změna 2023-Změna 2144-Změna
+#: 2269-Změna 2394-Změna 2536-Změna 2657-Změna 2788-Změna 2914-Změna
+#: 3036-Změna
+msgid "Uživatelé a jejich společnosti"
+msgstr "Users and their companies"
+
+#: 1416-UzivateleRWE:1 1718-UzivateleRWE:1 1843-UzivateleRWE:1
+#: 1968-UzivateleRWE:1 2089-UzivateleRWE:1 2214-UzivateleRWE:1
+#: 2339-UzivateleRWE:1 2481-UzivateleRWE:1 2602-UzivateleRWE:1
+#: 2733-UzivateleRWE:1 2859-UzivateleRWE:1 2981-UzivateleRWE:1
+msgid "Uživatelé RWE"
+msgstr "RWE users"
+
+#: 1431-Vyjádření auditora:1 1733-Vyjádření 1858-Vyjádření
+#: 1983-Vyjádření 2104-Vyjádření 2229-Vyjádření 2354-Vyjádření
+#: 2496-Vyjádření 2617-Vyjádření 2748-Vyjádření 2874-Vyjádření
+#: 2996-Vyjádření
+msgid "Vrať odpovědné osobě"
+msgstr "Return to person responsible"
+
+#: 1396-Formulace Doporučení:1 1397-Editace 1406-Ke zpracování:1
+#: 1407-Přehled nápravných opatření:1 1410-Editace Auditu Bez WF:1
+#: 1698-Formulace 1699-Editace 1708-Ke 1709-Přehled 1712-Editace
+#: 1823-Formulace 1824-Editace 1833-Ke 1834-Přehled 1837-Editace
+#: 1948-Formulace 1949-Editace 1958-Ke 1959-Přehled 1962-Editace
+#: 2069-Formulace 2070-Editace 2079-Ke 2080-Přehled 2083-Editace
+#: 2194-Formulace 2195-Editace 2204-Ke 2205-Přehled 2208-Editace
+#: 2319-Formulace 2320-Editace 2329-Ke 2330-Přehled 2333-Editace
+#: 2461-Formulace 2462-Editace 2471-Ke 2472-Přehled 2475-Editace
+#: 2582-Formulace 2583-Editace 2592-Ke 2593-Přehled 2596-Editace
+#: 2713-Formulace 2714-Editace 2723-Ke 2724-Přehled 2727-Editace 2803-Editace
+#: nahlizeni:1 2804-Editace 2805-Editace 2806-Editace 2807-Editace
+#: 2808-Editace 2839-Formulace 2840-Editace 2849-Ke 2850-Přehled 2853-Editace
+#: 2929-Editace 2961-Formulace 2962-Editace 2971-Ke 2972-Přehled 2975-Editace
+#: 3051-Editace 3053-nahlizenikonkretni:1 3054-nahlizenikonkretni:1
+#: 3055-nahlizenikonkretni:1 3056-nahlizenikonkretni:1
+#: 3057-nahlizenikonkretni:1
+msgid "Vstoupit"
+msgstr "Enter"
+
+#: 1396-Formulace Doporučení:1 1698-Formulace 1823-Formulace 1948-Formulace
+#: 2069-Formulace 2194-Formulace 2319-Formulace 2461-Formulace 2582-Formulace
+#: 2713-Formulace 2839-Formulace 2961-Formulace
+msgid "Vybrat"
+msgstr "Choose"
+
+#: 1396-Formulace Doporučení:1 1698-Formulace 1823-Formulace 1948-Formulace
+#: 2069-Formulace 2194-Formulace 2319-Formulace 2461-Formulace 2582-Formulace
+#: 2713-Formulace 2839-Formulace 2961-Formulace
+msgid "Vybrat nadřazené doporučení"
+msgstr "Choose superior recommendation"
+
+#: 2747-Vyjádření k auditu:1 2750-Vyjádření nadřízeného:1
+#: 2751-Vráceno přepracování nadřízeným:1 2752-Vráceno auditorem:1
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu
+msgid "Vyjádření"
+msgstr "Statement"
+
+#: 1431-Vyjádření auditora:1 1438-Posouzení auditorem:1 1733-Vyjádření
+#: 1738-Posouzení 1858-Vyjádření 1863-Posouzení 1983-Vyjádření
+#: 1988-Posouzení 2104-Vyjádření 2109-Posouzení 2229-Vyjádření
+#: 2234-Posouzení 2354-Vyjádření 2359-Posouzení 2496-Vyjádření
+#: 2501-Posouzení 2617-Vyjádření 2622-Posouzení 2748-Vyjádření
+#: 2753-Posouzení 2874-Vyjádření 2879-Posouzení 2996-Vyjádření
+#: 3001-Posouzení
+msgid "Vyjádření auditora"
+msgstr "Auditor statement"
+
+#: 1435-Vyjádření nadřízeného:1 1439-Editace opatření v řešení:1
+#: 1440-Schválení změny termínu:1 1527-Schválení termínu auditorem:1
+#: 1735-Vyjádření 1739-Editace 1740-Schválení 1771-Schválení
+#: 1860-Vyjádření 1864-Editace 1865-Schválení 1896-Schválení
+#: 1985-Vyjádření 1989-Editace 1990-Schválení 2021-Schválení
+#: 2106-Vyjádření 2110-Editace 2111-Schválení 2142-Schválení
+#: 2231-Vyjádření 2235-Editace 2236-Schválení 2267-Schválení
+#: 2356-Vyjádření 2360-Editace 2361-Schválení 2392-Schválení
+#: 2498-Vyjádření 2502-Editace 2503-Schválení 2534-Schválení
+#: 2619-Vyjádření 2623-Editace 2624-Schválení 2655-Schválení
+#: 2750-Vyjádření 2754-Editace 2755-Schválení 2786-Schválení
+#: 2876-Vyjádření 2880-Editace 2881-Schválení 2912-Schválení
+#: 2998-Vyjádření 3002-Editace 3003-Schválení 3034-Schválení
+msgid "Vyjádření nadřízeného"
+msgstr "Statement of the superior"
+
+#: 1430-Vyjádření k auditu:1 1436-Vráceno přepracování nadřízeným:1
+#: 1437-Vráceno auditorem:1 1732-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1857-Vyjádření 1861-Vráceno 1862-Vráceno 1982-Vyjádření
+#: 1986-Vráceno 1987-Vráceno 2103-Vyjádření 2107-Vráceno 2108-Vráceno
+#: 2228-Vyjádření 2232-Vráceno 2233-Vráceno 2353-Vyjádření
+#: 2357-Vráceno 2358-Vráceno 2495-Vyjádření 2499-Vráceno 2500-Vráceno
+#: 2616-Vyjádření 2620-Vráceno 2621-Vráceno 2747-Vyjádření
+#: 2751-Vráceno 2752-Vráceno 2873-Vyjádření 2877-Vráceno 2878-Vráceno
+#: 2995-Vyjádření 2999-Vráceno 3000-Vráceno
+msgid "Vyjádření odpovědné osoby"
+msgstr "Statement of person responsible"
+
+#: 2751-Vráceno k přepracování nadřízeným:1 2752-Vráceno auditorem:1
+msgid "Vyjádření:"
+msgstr "Statement:"
+
+#: 1445-Nová společnost:1 1447-Nový proces:1 1449-Nová činnost:1
+#: 1451-Nová funkce:1 1453-Nový uživatel:1 1472-Nový auditor:1 1479-Nová
+#: neaktivní pozice:1 1566-Nový externí 1745-Nová 1747-Nový 1749-Nová
+#: 1751-Nová 1753-Nový 1760-Nový 1767-Nová 1778-Nový 1870-Nová
+#: 1872-Nový 1874-Nová 1876-Nová 1878-Nový 1885-Nový 1892-Nová
+#: 1903-Nový 1995-Nová 1997-Nový 1999-Nová 2001-Nová 2003-Nový
+#: 2010-Nový 2017-Nová 2028-Nový 2116-Nová 2118-Nový 2120-Nová
+#: 2122-Nová 2124-Nový 2131-Nový 2138-Nová 2149-Nový 2241-Nová
+#: 2243-Nový 2245-Nová 2247-Nová 2249-Nový 2256-Nový 2263-Nová
+#: 2274-Nový 2366-Nová 2368-Nový 2370-Nová 2372-Nová 2374-Nový
+#: 2381-Nový 2388-Nová 2399-Nový 2508-Nová 2510-Nový 2512-Nová
+#: 2514-Nová 2516-Nový 2523-Nový 2530-Nová 2541-Nový 2629-Nová
+#: 2631-Nový 2633-Nová 2635-Nová 2637-Nový 2644-Nový 2651-Nová
+#: 2662-Nový 2760-Nová 2762-Nový 2764-Nová 2766-Nová 2768-Nový
+#: 2775-Nový 2782-Nová 2793-Nový 2886-Nová 2888-Nový 2890-Nová
+#: 2892-Nová 2894-Nový 2901-Nový 2908-Nová 2919-Nový 3008-Nová
+#: 3010-Nový 3012-Nová 3014-Nová 3016-Nový 3023-Nový 3030-Nová
+#: 3041-Nový
+msgid "Vytvořit"
+msgstr "Create"
+
+#: 2751-Vráceno k přepracování nadřízeným:1 2752-Vráceno auditorem:1
+msgid ""
+"Z důvodu zpracování čtvrtletního reportingu<br>byly zablokovány měsíce 03, "
+"06, 09, 12."
+msgstr ""
+"Because of processing of the quaterly report<br>months 03, 06, 09, 12 were "
+"blocked."
+
+#: 1369-Zadání auditu:1 1398-Zadání auditu bez WF:1 1671-Zadání
+#: 1700-Zadání 1796-Zadání 1825-Zadání 1921-Zadání 1950-Zadání
+#: 2042-Zadání 2071-Zadání 2167-Zadání 2196-Zadání 2292-Zadání
+#: 2321-Zadání 2434-Zadání 2463-Zadání 2555-Zadání 2584-Zadání
+#: 2686-Zadání 2715-Zadání 2812-Zadání 2841-Zadání 2934-Zadání
+#: 2963-Zadání
+msgid "Zadání auditu"
+msgstr "Audit assignment"
+
+#: 1396-Formulace Doporučení:1 1698-Formulace 1823-Formulace 1948-Formulace
+#: 2069-Formulace 2194-Formulace 2319-Formulace 2461-Formulace 2582-Formulace
+#: 2713-Formulace 2839-Formulace 2961-Formulace
+msgid "Založ a odešli odpovědné osobě"
+msgstr "File and send to person responsible"
+
+#: 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace záznamu:1
+#: 2702-Formulace
+msgid "Závažnost"
+msgstr "Relevance"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Závažnost zjištění"
+msgstr "Detection relevance"
+
+#: 2787-Detail nápravného opatření:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Závažnost:"
+msgstr "Relevance:"
+
+#: 1823-Formulace Doporučení:1 2461-Formulace 2582-Formulace 2713-Formulace
+msgid "Zavřít doporučení"
+msgstr "Close recommendation"
+
+#: 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace záznamu:1
+#: 2702-Formulace
+msgid "Záznam"
+msgstr "Entry"
+
+#: 2694-:1 2695-:1 2696-:1 2697-:1 2698-:1 2700-:1 2701-Editace záznamu:1
+#: 2702-Formulace
+msgid "Záznam EN"
+msgstr "Entry EN"
+
+#: 2755-Schválení změny termínu:1 2786-Schválení termínu auditorem:1
+msgid "Zdůvodnění změny:"
+msgstr "Justification of the change"
+
+#: 1395-Nepojmenovaná stránka:1 1396-Formulace Doporučení:1 1397-Editace
+#: 1555-Detail nápravného opatření:1 1697-Nepojmenovaná 1698-Formulace
+#: 1699-Editace 1772-Detail 1822-Nepojmenovaná 1823-Formulace 1824-Editace
+#: 1897-Detail 1947-Nepojmenovaná 1948-Formulace 1949-Editace 2022-Detail
+#: 2068-Nepojmenovaná 2069-Formulace 2070-Editace 2143-Detail
+#: 2193-Nepojmenovaná 2194-Formulace 2195-Editace 2268-Detail
+#: 2318-Nepojmenovaná 2319-Formulace 2320-Editace 2393-Detail
+#: 2460-Nepojmenovaná 2461-Formulace 2462-Editace 2535-Detail
+#: 2581-Nepojmenovaná 2582-Formulace 2583-Editace 2656-Detail
+#: 2712-Nepojmenovaná 2713-Formulace 2714-Editace 2787-Detail
+#: 2838-Nepojmenovaná 2839-Formulace 2840-Editace 2913-Detail
+#: 2960-Nepojmenovaná 2961-Formulace 2962-Editace 3035-Detail
+msgid "Zjištení"
+msgstr "Detection"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Zjištění"
+msgstr "Detection"
+
+#: 2687-Formulace zjištění:1 2691-:1 2704-Editace Zjištění:1
+msgid "Zjištění EN"
+msgstr "Detection EN"
+
+#: 2712-Nepojmenovaná stránka:1 2713-Formulace Doporučení:1
+#: 2747-Vyjádření k auditu:1 2748-Vyjádření auditora:1 2750-Vyjádření
+#: nadřízeného:1 2751-Vráceno přepracování nadřízeným:1
+#: 2752-Vráceno auditorem:1 2753-Posouzení 2754-Editace opatření v
+#: řešení:1 2755-Schválení změny termínu:1 2786-Schválení termínu
+#: 2787-Detail nápravného opatření:1 2799-Detail
+#: 2800-FollowUpKonkretnihoOpatreni:1
+msgid "Zjištění:"
+msgstr "Detection:"
+
+#: 1367-PortalInternichAuditu2 layout:74 1788-PortalInternichAuditu2 layout:71
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Změna nadřízeného"
+msgstr "Change of superior"
+
+#: 1367-PortalInternichAuditu2 layout:77 1788-PortalInternichAuditu2 layout:74
+#: 1913-PortalInternichAuditu2 1915-PortalInternichAuditu2
+#: 1916-PortalInternichAuditu2 2038-PortalInternichAuditu2
+#: 2411-PortalInternichAuditu2 2430-PortalInternichAuditu2
+#: 2551-PortalInternichAuditu2 2682-PortalInternichAuditu2
+#: 2930-PortalInternichAuditu2 3052-PortalInternichAuditu2
+msgid "Změna společnosti"
+msgstr "Change of company"
+
+#: 1440-Schválení změny termínu:1 1740-Schválení 1865-Schválení
+#: 1990-Schválení 2111-Schválení 2236-Schválení 2361-Schválení
+#: 2503-Schválení 2624-Schválení 2755-Schválení 2881-Schválení
+#: 3003-Schválení
+msgid "Změna stavu opatření"
+msgstr "Change of procuration state"
+
+#: 1440-Schválení změny termínu:1 1527-Schválení termínu auditorem:1
+#: 1740-Schválení 1771-Schválení 1865-Schválení 1896-Schválení
+#: 1990-Schválení 2021-Schválení 2111-Schválení 2142-Schválení
+#: 2236-Schválení 2267-Schválení 2361-Schválení 2392-Schválení
+#: 2503-Schválení 2534-Schválení 2624-Schválení 2655-Schválení
+#: 2755-Schválení 2786-Schválení 2881-Schválení 2912-Schválení
+#: 3003-Schválení 3034-Schválení
+msgid "Změna termínu"
+msgstr "Change of deadline"
+
+#: 1574-Editovat hesla:1 1780-Editovat 1905-Editovat 2030-Editovat
+#: 2151-Editovat 2276-Editovat 2401-Editovat 2543-Editovat 2664-Editovat
+#: 2795-Editovat 2921-Editovat 3043-Editovat
+msgid "Změnit heslo"
+msgstr "Change password"
+
+#: 1485-Editovat nadřízeného:1 1769-Editovat 1894-Editovat 2019-Editovat
+#: 2140-Editovat 2265-Editovat 2390-Editovat 2532-Editovat 2653-Editovat
+#: 2784-Editovat 2910-Editovat 3032-Editovat
+msgid "Změnit nadřízeného"
+msgstr "Change superior"
+
+#: 1564-Editace změny společnosti:1 1565-Nová změna 1578-Nová
+#: společnosti koordinátora:1 1580-Editrace 1776-Editace 1777-Nová
+#: 1781-Nová 1783-Editrace 1901-Editace 1902-Nová 1906-Nová 1908-Editrace
+#: 2026-Editace 2027-Nová 2031-Nová 2033-Editrace 2147-Editace 2148-Nová
+#: 2152-Nová 2154-Editrace 2272-Editace 2273-Nová 2277-Nová 2279-Editrace
+#: 2397-Editace 2398-Nová 2402-Nová 2404-Editrace 2539-Editace 2540-Nová
+#: 2544-Nová 2546-Editrace 2660-Editace 2661-Nová 2665-Nová 2667-Editrace
+#: 2791-Editace 2792-Nová 2796-Nová 2798-Editrace 2917-Editace 2918-Nová
+#: 2922-Nová 2924-Editrace 3039-Editace 3040-Nová 3044-Nová 3046-Editrace
+msgid "Změnit společnost"
+msgstr "Change company"
+
+#: 1371-:1 1374-:1 1397-Editace Doporučení:1 1430-Vyjádření k auditu:1
+#: 1431-Vyjádření auditora:1 1435-Vyjádření nadřízeného:1
+#: 1436-Vráceno přepracování nadřízeným:1 1437-Vráceno auditorem:1
+#: 1438-Posouzení 1439-Editace opatření v řešení:1 1440-Schválení
+#: změny termínu:1 1527-Schválení termínu 1555-Detail nápravného
+#: opatření:1 1673-:1 1676-:1 1699-Editace 1732-Vyjádření
+#: 1733-Vyjádření 1735-Vyjádření 1736-Vráceno 1737-Vráceno
+#: 1738-Posouzení 1739-Editace 1740-Schválení 1771-Schválení 1772-Detail
+#: 1798-:1 1801-:1 1824-Editace 1857-Vyjádření 1858-Vyjádření
+#: 1860-Vyjádření 1861-Vráceno 1862-Vráceno 1863-Posouzení 1864-Editace
+#: 1865-Schválení 1896-Schválení 1897-Detail 1923-:1 1926-:1 1949-Editace
+#: 1982-Vyjádření 1983-Vyjádření 1985-Vyjádření 1986-Vráceno
+#: 1987-Vráceno 1988-Posouzení 1989-Editace 1990-Schválení
+#: 2021-Schválení 2022-Detail 2044-:1 2047-:1 2070-Editace 2103-Vyjádření
+#: 2104-Vyjádření 2106-Vyjádření 2107-Vráceno 2108-Vráceno
+#: 2109-Posouzení 2110-Editace 2111-Schválení 2142-Schválení 2143-Detail
+#: 2169-:1 2172-:1 2195-Editace 2228-Vyjádření 2229-Vyjádření
+#: 2231-Vyjádření 2232-Vráceno 2233-Vráceno 2234-Posouzení 2235-Editace
+#: 2236-Schválení 2267-Schválení 2268-Detail 2294-:1 2297-:1 2320-Editace
+#: 2353-Vyjádření 2354-Vyjádření 2356-Vyjádření 2357-Vráceno
+#: 2358-Vráceno 2359-Posouzení 2360-Editace 2361-Schválení
+#: 2392-Schválení 2393-Detail 2436-:1 2439-:1 2462-Editace 2495-Vyjádření
+#: 2496-Vyjádření 2498-Vyjádření 2499-Vráceno 2500-Vráceno
+#: 2501-Posouzení 2502-Editace 2503-Schválení 2534-Schválení 2535-Detail
+#: 2557-:1 2560-:1 2583-Editace 2616-Vyjádření 2617-Vyjádření
+#: 2619-Vyjádření 2620-Vráceno 2621-Vráceno 2622-Posouzení 2623-Editace
+#: 2624-Schválení 2655-Schválení 2656-Detail 2688-:1 2691-:1 2714-Editace
+#: 2747-Vyjádření 2748-Vyjádření 2750-Vyjádření 2751-Vráceno
+#: 2752-Vráceno 2753-Posouzení 2754-Editace 2755-Schválení
+#: 2786-Schválení 2787-Detail 2814-:1 2817-:1 2840-Editace 2873-Vyjádření
+#: 2874-Vyjádření 2876-Vyjádření 2877-Vráceno 2878-Vráceno
+#: 2879-Posouzení 2880-Editace 2881-Schválení 2912-Schválení 2913-Detail
+#: 2936-:1 2939-:1 2962-Editace 2995-Vyjádření 2996-Vyjádření
+#: 2998-Vyjádření 2999-Vráceno 3000-Vráceno 3001-Posouzení 3002-Editace
+#: 3003-Schválení 3034-Schválení 3035-Detail
+msgid "Zpět"
+msgstr "Back"
+
+#: 1444-Editace společnosti:1 1445-Nová společnost:1 1446-Editace procesu:1
+#: 1447-Nový proces:1 1448-Editace činností:1 1449-Nová činnost:1
+#: 1451-Nová funkce:1 1452-Editace 1453-Nový uživatel:1 1454-Editace
+#: uživatele:1 1472-Nový auditor:1 1473-Editace auditora:1 1474-Editace
+#: neaktivního 1475-:1 1476-Editace 1477-Nový neaktivní 1478-Editace
+#: pozice:1 1479-Nová 1484-Nový nadřízený:1 1485-Editovat
+#: nadřízeného:1 1557-Editace rolí:1 1564-Editace změny 1565-Nová změna
+#: 1574-Editovat hesla:1 1578-Nová společnosti koordinátora:1 1580-Editrace
+#: 1744-Editace 1745-Nová 1746-Editace 1747-Nový 1748-Editace 1749-Nová
+#: 1751-Nová 1752-Editace 1753-Nový 1754-Editace 1760-Nový 1761-Editace
+#: 1762-Editace 1763-:1 1764-Editace 1765-Nový 1766-Editace 1767-Nová
+#: 1768-Nový 1769-Editovat 1774-Editace 1776-Editace 1777-Nová 1780-Editovat
+#: 1781-Nová 1783-Editrace 1869-Editace 1870-Nová 1871-Editace 1872-Nový
+#: 1873-Editace 1874-Nová 1876-Nová 1877-Editace 1878-Nový 1879-Editace
+#: 1885-Nový 1886-Editace 1887-Editace 1888-:1 1889-Editace 1890-Nový
+#: 1891-Editace 1892-Nová 1893-Nový 1894-Editovat 1899-Editace 1901-Editace
+#: 1902-Nová 1905-Editovat 1906-Nová 1908-Editrace 1994-Editace 1995-Nová
+#: 1996-Editace 1997-Nový 1998-Editace 1999-Nová 2001-Nová 2002-Editace
+#: 2003-Nový 2004-Editace 2010-Nový 2011-Editace 2012-Editace 2013-:1
+#: 2014-Editace 2015-Nový 2016-Editace 2017-Nová 2018-Nový 2019-Editovat
+#: 2024-Editace 2026-Editace 2027-Nová 2030-Editovat 2031-Nová 2033-Editrace
+#: 2115-Editace 2116-Nová 2117-Editace 2118-Nový 2119-Editace 2120-Nová
+#: 2122-Nová 2123-Editace 2124-Nový 2125-Editace 2131-Nový 2132-Editace
+#: 2133-Editace 2134-:1 2135-Editace 2136-Nový 2137-Editace 2138-Nová
+#: 2139-Nový 2140-Editovat 2145-Editace 2147-Editace 2148-Nová 2151-Editovat
+#: 2152-Nová 2154-Editrace 2240-Editace 2241-Nová 2242-Editace 2243-Nový
+#: 2244-Editace 2245-Nová 2247-Nová 2248-Editace 2249-Nový 2250-Editace
+#: 2256-Nový 2257-Editace 2258-Editace 2259-:1 2260-Editace 2261-Nový
+#: 2262-Editace 2263-Nová 2264-Nový 2265-Editovat 2270-Editace 2272-Editace
+#: 2273-Nová 2276-Editovat 2277-Nová 2279-Editrace 2365-Editace 2366-Nová
+#: 2367-Editace 2368-Nový 2369-Editace 2370-Nová 2372-Nová 2373-Editace
+#: 2374-Nový 2375-Editace 2381-Nový 2382-Editace 2383-Editace 2384-:1
+#: 2385-Editace 2386-Nový 2387-Editace 2388-Nová 2389-Nový 2390-Editovat
+#: 2395-Editace 2397-Editace 2398-Nová 2401-Editovat 2402-Nová 2404-Editrace
+#: 2507-Editace 2508-Nová 2509-Editace 2510-Nový 2511-Editace 2512-Nová
+#: 2514-Nová 2515-Editace 2516-Nový 2517-Editace 2523-Nový 2524-Editace
+#: 2525-Editace 2526-:1 2527-Editace 2528-Nový 2529-Editace 2530-Nová
+#: 2531-Nový 2532-Editovat 2537-Editace 2539-Editace 2540-Nová 2543-Editovat
+#: 2544-Nová 2546-Editrace 2628-Editace 2629-Nová 2630-Editace 2631-Nový
+#: 2632-Editace 2633-Nová 2635-Nová 2636-Editace 2637-Nový 2638-Editace
+#: 2644-Nový 2645-Editace 2646-Editace 2647-:1 2648-Editace 2649-Nový
+#: 2650-Editace 2651-Nová 2652-Nový 2653-Editovat 2658-Editace 2660-Editace
+#: 2661-Nová 2664-Editovat 2665-Nová 2667-Editrace 2759-Editace 2760-Nová
+#: 2761-Editace 2762-Nový 2763-Editace 2764-Nová 2766-Nová 2767-Editace
+#: 2768-Nový 2769-Editace 2775-Nový 2776-Editace 2777-Editace 2778-:1
+#: 2779-Editace 2780-Nový 2781-Editace 2782-Nová 2783-Nový 2784-Editovat
+#: 2789-Editace 2791-Editace 2792-Nová 2795-Editovat 2796-Nová 2798-Editrace
+#: 2885-Editace 2886-Nová 2887-Editace 2888-Nový 2889-Editace 2890-Nová
+#: 2892-Nová 2893-Editace 2894-Nový 2895-Editace 2901-Nový 2902-Editace
+#: 2903-Editace 2904-:1 2905-Editace 2906-Nový 2907-Editace 2908-Nová
+#: 2909-Nový 2910-Editovat 2915-Editace 2917-Editace 2918-Nová 2921-Editovat
+#: 2922-Nová 2924-Editrace 3007-Editace 3008-Nová 3009-Editace 3010-Nový
+#: 3011-Editace 3012-Nová 3014-Nová 3015-Editace 3016-Nový 3017-Editace
+#: 3023-Nový 3024-Editace 3025-Editace 3026-:1 3027-Editace 3028-Nový
+#: 3029-Editace 3030-Nová 3031-Nový 3032-Editovat 3037-Editace 3039-Editace
+#: 3040-Nová 3043-Editovat 3044-Nová 3046-Editrace
+msgid "Zpět na seznam"
+msgstr "Back to list"
+
+#: 1583-FollowUpKonkretnihoOpatreni:1 1785-FollowUpKonkretnihoOpatreni:1
+#: 1910-FollowUpKonkretnihoOpatreni:1 2035-FollowUpKonkretnihoOpatreni:1
+#: 2156-FollowUpKonkretnihoOpatreni:1 2281-FollowUpKonkretnihoOpatreni:1
+#: 2406-FollowUpKonkretnihoOpatreni:1 2548-FollowUpKonkretnihoOpatreni:1
+#: 2669-FollowUpKonkretnihoOpatreni:1 2800-FollowUpKonkretnihoOpatreni:1
+#: 2926-FollowUpKonkretnihoOpatreni:1 3048-FollowUpKonkretnihoOpatreni:1
+msgid "Zpráva auditu"
+msgstr "Message to audit"
+
+#: 2754-Editace opatření v řešení:1 2786-Schválení změny termínu
+#: auditorem:1
+msgid "Zadané číslo auditu již existuje"
+msgstr "Entered audit number already exists"
+
+msgid "Doporučení bylo uloženo bez odeslání odpovědné osobě"
+msgstr "Reccomendation has been saved without sending to person responsible"
+
+msgid "Doporučení bylo úspěšně odesláno odpovědné osobě"
+msgstr "Recommendation has been successfully sent to person responsible"
+
+msgid "Doporučení úspěšně změněno"
+msgstr "Recommendation successfully changed"
+
+msgid "Společnost úspěšně přiřazena"
+msgstr "Company assigned successfully"
+
+msgid "Heslo bylo úspěšně změněno"
+msgstr "Password changed successfully"
+
+msgid "Společnost úspěšně změněna"
+msgstr "Company changed successfully"
+
+msgid "Neplatný stav uložení"
+msgstr "Invalid state of saving"
+
+msgid "E-mail byl úspěšně odeslán"
+msgstr "E-mail has been sent successfully"
+
+msgid "Uložení proběhlo úspěšně"
+msgstr "Saving has been successful"
+
+msgid "Návrh na změnu odpovědné osoby odeslán"
+msgstr "Suggestion to change person responsible has been sent"
+
+msgid "Nápravné opatření odesláno ke schválení"
+msgstr "Corrective measures sent for approval"
+
+msgid "Nápravné opatření bylo vráceno k přepracování"
+msgstr "Corrective measures have been returned for reworking"
+
+msgid "Vyjádření odesláno"
+msgstr "Statement sent"
+
+msgid "E-mail byl odeslán"
+msgstr "E-mail has been sent"
+
+msgid ""
+"Cílová odpovědná osoba nemá účet na platformě Omnius. Kontaktujte "
+"administrátora"
+msgstr ""
+"Final person responsible does not have an account on Omnius platform. "
+"Contact an administrator"
+
+msgid "Návrh byl úspěšně odeslán"
+msgstr "Suggestion has been sent successfully"
+
+msgid "Vyjádření bylo úspěšně odesláno"
+msgstr "Statement has been sent successfully"
+
+msgid "Změna termínu realizace byla zamítnuta"
+msgstr "Change of the realization deadline has been declined"
+
+msgid "Stav opatření změněn na Realizováno"
+msgstr "Procuration state changed to Realized"
+
+msgid "Stav opatření změněn na Nebude realizován"
+msgstr "Procuration state changed to Not to be realized"
+
+msgid "Nápravné opatření bylo schváleno"
+msgstr "Corrective measures have been approved"
+
+msgid "E-mail byl odeslán k přepracování nápravného opatření"
+msgstr "E-mail to rework the corrective measures has been sent"
+
+msgid "Návrh na změnu stavu opatření byl odeslán"
+msgstr "Suggestion to change procuration has been sent"
+
+msgid "Změna termínu realizace byla Schválena"
+msgstr "Change of realization deadline has been approved"
+
+msgid "Pro tuto akci nemáte dostatečná oprávnění"
+msgstr "You do not have enough authorization for this action"
+
+msgid "Oss Portál"
+msgstr "Oss Portal"
+
+msgid "Portál Interních Auditů 2"
+msgstr "Portal of Internal Audits 2"
+
+msgid "Odhlásit se"
+msgstr "Log out"
+
+msgid "Vyhledat v aplikaci"
+msgstr "Search in application"
+
+msgid "Název souboru"
+msgstr "File name"
+
+msgid "Dat. vytvořeno"
+msgstr "Creation date"
+
+msgid "Dat. změněno"
+msgstr "Modified date"
+
+msgid "Verze"
+msgstr "Version"
+
+msgid "Číslo zjištění"
+msgstr "Detection number"
+
+msgid "Datum realizace"
+msgstr "Realization date"
+
+msgid "Relevance"
+msgstr "Relevance"
+
+msgid "Typ auditu"
+msgstr "Audit type"
+
+msgid "Jméno nadřízeného"
+msgstr "Superior's name"
+
+msgid "Č. opatření"
+msgstr "Procuration number"
+
+msgid "Č. auditu"
+msgstr "Audit number"
