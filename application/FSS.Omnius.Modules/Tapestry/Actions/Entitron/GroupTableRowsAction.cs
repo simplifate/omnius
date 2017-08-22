@@ -67,8 +67,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 // Sort tableData at first
                 List<DBItem> sortedTableData = tableData.OrderBy(c => c[groupingColumn]).ToList();
                 DBItem element = sortedTableData[0];
-                for (int i = 0; i < sortedTableData.Count - 1; i++)
+                for (int i = 0; i < sortedTableData.Count; i++)
                 {
+                    var isLastElement = false;
                     var currentRow = sortedTableData[i];
                     bool isDateTime = currentRow[groupingColumn] is DateTime; ;
                     if ((!isDateTime && currentRow[groupingColumn].ToString() == element[groupingColumn].ToString()) || (isDateTime && (Convert.ToDateTime(currentRow[groupingColumn]) - Convert.ToDateTime(element[groupingColumn])).TotalMinutes <= dtSensitivity))
@@ -83,10 +84,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                 if (i == sortedTableData.Count - 1)
                                 {
                                     element[columnName] = current;
-                                    result.Add(element);
+                                    isLastElement = true;
                                 }
                             }
                         }
+                        if(isLastElement)
+                            result.Add(element);
                     }
                     else
                     {
