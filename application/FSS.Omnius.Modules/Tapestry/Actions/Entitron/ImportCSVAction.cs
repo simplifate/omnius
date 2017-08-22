@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.VisualBasic.FileIO;
 using System.Globalization;
+using CsvHelper;
+using System.IO;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
@@ -84,23 +86,28 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             List<string> messages = new List<string>();
 
+            bool isHeader = true;
             foreach (string fileName in files) {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
                 if (file.ContentLength == 0 || fileName != inputName)
                     continue;
 
-                using (TextFieldParser parser = new TextFieldParser(file.InputStream)) {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(delimiter);
-                    parser.HasFieldsEnclosedInQuotes = enclosed;
-                    parser.TrimWhiteSpace = true;
+                Encoding cp1250 = Encoding.GetEncoding(1250);
+                using (StreamReader sr = new StreamReader(file.InputStream, cp1250)) 
+                {
+                    sr.Peek();
+                    Encoding enc = sr.CurrentEncoding;
 
-                    while (!parser.EndOfData) {
-                        long line = parser.LineNumber;
-                        string[] fields = parser.ReadFields();
+                    using (CsvReader reader = new CsvReader(sr)) 
+                    {
+                        reader.Configuration.Delimiter = delimiter;
+                        reader.Configuration.TrimFields = true;
+                        reader.Configuration.TrimHeaders = true;
+                        reader.Configuration.Encoding = cp1250;
 
-                        if (line == 1) {
+                        if(reader.ReadHeader()) {
+                            string[] fields = reader.FieldHeaders;
                             int i = 0;
                             foreach (string field in fields) {
                                 if (columns.Where(c => c.Name == field).Count() > 0) {
@@ -110,124 +117,135 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             }
                         }
                         else {
-                            int i = 0;
-                            Dictionary<string, object> data = new Dictionary<string, object>();
-                            bool isValid = true;
+                            messages.Add("Nepodařilo se načíst názvy sloupců. Nelze pokračovat.");
+                            isHeader = false;
+                        }
 
-                            foreach (string value in fields) {
-                                // Neznámé sloupce ignorujeme
-                                if (!columnsMap.ContainsKey(i)) {
-                                    i++;
-                                    continue;
-                                }
+                        if (isHeader) 
+                        {
+                            while (reader.Read()) 
+                            {
+                                long line = reader.Row;
+                                string[] fields = reader.CurrentRecord;
 
-                                // Prázdné hodnoty vynecháme
-                                if(string.IsNullOrEmpty(value)) {
-                                    i++;
-                                    continue;
-                                }
+                                int i = 0;
+                                Dictionary<string, object> data = new Dictionary<string, object>();
+                                bool isValid = true;
 
-                                DBColumn col = columnsMap[i];
+                                foreach (string value in fields) {
+                                    // Neznámé sloupce ignorujeme
+                                    if (!columnsMap.ContainsKey(i)) {
+                                        i++;
+                                        continue;
+                                    }
 
-                                switch (col.type.ToLower())
-                                {
-                                    case "nvarchar":
-                                    case "varchar":
-                                        data.Add(col.Name, value);
-                                        break;
-                                    case "boolean":
-                                    case "bit":
-                                        bool parsedBool;
-                                        if (bool.TryParse(value, out parsedBool)) {
-                                            data.Add(col.Name, parsedBool);
-                                        }
-                                        else {
-                                            if (value == "0") {
-                                                data.Add(col.Name, false);
+                                    // Prázdné hodnoty vynecháme
+                                    if (string.IsNullOrEmpty(value)) {
+                                        i++;
+                                        continue;
+                                    }
+
+                                    DBColumn col = columnsMap[i];
+
+                                    switch (col.type.ToLower()) {
+                                        case "nvarchar":
+                                        case "varchar":
+                                            data.Add(col.Name, value);
+                                            break;
+                                        case "boolean":
+                                        case "bit":
+                                            bool parsedBool;
+                                            if (bool.TryParse(value, out parsedBool)) {
+                                                data.Add(col.Name, parsedBool);
                                             }
-                                            else if (value == "1") {
-                                                data.Add(col.Name, true);
+                                            else {
+                                                if (value == "0") {
+                                                    data.Add(col.Name, false);
+                                                }
+                                                else if (value == "1") {
+                                                    data.Add(col.Name, true);
+                                                }
+                                                else {
+                                                    isValid = false;
+                                                    messages.Add(string.Format(typeError, line, col.Name, "logická hodnota"));
+                                                }
+                                            }
+                                            break;
+                                        case "int":
+                                        case "integer":
+                                            int parsedInt;
+                                            if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt)) {
+                                                data.Add(col.Name, parsedInt);
                                             }
                                             else {
                                                 isValid = false;
-                                                messages.Add(string.Format(typeError, line, col.Name, "logická hodnota"));
+                                                messages.Add(string.Format(typeError, line, col.Name, "celé číslo"));
                                             }
-                                        }
-                                        break;
-                                    case "int":
-                                    case "integer":
-                                        int parsedInt;
-                                        if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt)) {
-                                            data.Add(col.Name, parsedInt);
-                                        }
-                                        else {
-                                            isValid = false;
-                                            messages.Add(string.Format(typeError, line, col.Name, "celé číslo"));
-                                        }
-                                        break;
-                                    case "float":
-                                        double parsedDouble;
-                                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble)) {
-                                            data.Add(col.Name, parsedDouble);
-                                        }
-                                        else {
-                                            isValid = false;
-                                            messages.Add(string.Format(typeError, line, col.Name, "celé nebo desetinní číslo"));
-                                        }
-                                        break;
-                                    case "datetime":
-                                    case "date":
-                                    case "time":
-                                        DateTime parsedDateTime;
-                                        if (DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out parsedDateTime)) {
-                                            data.Add(col.Name, parsedDateTime);
-                                        }
-                                        else {
-                                            isValid = false;
-                                            messages.Add(string.Format(typeError, line, col.Name, "platné datum"));
-                                        }
-                                        break;
-                                }
-                                i++;
-                            }
-
-                            if (!isValid) {
-                                continue;
-                            }
-
-                            if (uniqueColumns.Count > 0) {
-                                var select = table.Select();
-                                Conditions condition = new Conditions(select);
-                                Condition_concat outCondition = null;
-
-                                // setConditions
-                                foreach (string colName in uniqueColumns) {
-                                    object condValue = data[colName].ToString().PadLeft(8,'0') ;
-                                    DBColumn column = columns.Single(c => c.Name == colName);
-
-                                    outCondition = condition.column(colName).Equal(condValue);
-                                    condition = outCondition.and();
+                                            break;
+                                        case "float":
+                                            double parsedDouble;
+                                            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble)) {
+                                                data.Add(col.Name, parsedDouble);
+                                            }
+                                            else {
+                                                isValid = false;
+                                                messages.Add(string.Format(typeError, line, col.Name, "celé nebo desetinní číslo"));
+                                            }
+                                            break;
+                                        case "datetime":
+                                        case "date":
+                                        case "time":
+                                            DateTime parsedDateTime;
+                                            if (DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out parsedDateTime)) {
+                                                data.Add(col.Name, parsedDateTime);
+                                            }
+                                            else {
+                                                isValid = false;
+                                                messages.Add(string.Format(typeError, line, col.Name, "platné datum"));
+                                            }
+                                            break;
+                                    }
+                                    i++;
                                 }
 
-                                // check if row already exists
-                                if (select.where(c => outCondition).ToList().Count > 0) {
-                                    isValid = false;
-                                    messages.Add(string.Format(uniqueError, line));
+                                if (!isValid) {
+                                    continue;
                                 }
-                            }
 
-                            if (isValid) {
-                                data.Add("Datum_vlozeni",DateTime.Now);
-                                data.Add("Cas_editace", DateTime.Now);
-                                data.Add("Editoval", core.User.Id);
-                                DBItem item = new DBItem();
-                                int j = 0;
-                                foreach (KeyValuePair<string, object> kv in data) {
-                                    item.createProperty(j, kv.Key, kv.Value);
-                                    j++;
+                                if (uniqueColumns.Count > 0) {
+                                    var select = table.Select();
+                                    Conditions condition = new Conditions(select);
+                                    Condition_concat outCondition = null;
+
+                                    // setConditions
+                                    foreach (string colName in uniqueColumns) {
+                                        object condValue = data[colName].ToString().PadLeft(8, '0');
+                                        DBColumn column = columns.Single(c => c.Name == colName);
+
+                                        outCondition = condition.column(colName).Equal(condValue);
+                                        condition = outCondition.and();
+                                    }
+
+                                    // check if row already exists
+                                    if (select.where(c => outCondition).ToList().Count > 0) {
+                                        isValid = false;
+                                        messages.Add(string.Format(uniqueError, line));
+                                    }
                                 }
-                                table.Add(item);
-                                countAdded++;
+
+                                if (isValid) {
+                                    data.Add("Datum_vlozeni", DateTime.Now);
+                                    data.Add("Cas_editace", DateTime.Now);
+                                    data.Add("Editoval", core.User.Id);
+                                    DBItem item = new DBItem();
+                                    int j = 0;
+                                    foreach (KeyValuePair<string, object> kv in data) {
+                                        item.createProperty(j, kv.Key, kv.Value);
+                                        j++;
+                                    }
+                                    table.Add(item);
+                                    countAdded++;
+                                }
                             }
                         }
                     }
