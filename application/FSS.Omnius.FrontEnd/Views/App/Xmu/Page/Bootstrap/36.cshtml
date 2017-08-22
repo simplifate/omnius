@@ -1,4 +1,4 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="mbe-active" id="ProfileDiv"><div class="container"><form class="form-horizontal" method="post"><div class="panel panel-default" ><div class="panel-heading"><h2 class="panel-title" id="headingUser">Settings of {var1} <span class="">@(@"(ID: {var1})")</span></h2></div><div class="panel-body" style="padding: 50px"><div class="col-xs-12 col-lg-12"><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Username")</label><div class="col-xs-9" style="padding: 0px"><input name="inputUsername" value="@(formState.ContainsKey("inputUsername") ? formState["inputUsername"] : (ViewData.ContainsKey("inputData_inputUsername") ? @ViewData["inputData_inputUsername"] : ""))" class="form-control input-sm" id="inputUsername" type="text" /></div></div><div class="form-group"><label for="inputName" class="col-lg-3 col-sm-3 col-md-2">@(@"Name")</label><div class="col-xs-9" style="padding: 0px"><input name="inputName" value="@(formState.ContainsKey("inputName") ? formState["inputName"] : (ViewData.ContainsKey("inputData_inputName") ? @ViewData["inputData_inputName"] : ""))" class="form-control input-sm" id="inputName" type="text" /></div></div><div class="form-group"><label for="inputEmail" class="col-lg-3 col-sm-3 col-md-2">@(@"Email")</label><div class="col-xs-9" style="padding: 0px"><input name="inputEmail" value="@(formState.ContainsKey("inputEmail") ? formState["inputEmail"] : (ViewData.ContainsKey("inputData_inputEmail") ? @ViewData["inputData_inputEmail"] : ""))" class="form-control input-sm" id="inputEmail" type="text" /></div></div><div class="row" style="padding-bottom: 20px;"><label for="name_input" class="col-lg-3 col-sm-3 col-md-2">@(@"ID Card Photos")</label><img src="" width="80" height="80" alt="" class=""></img></div><div class="form-group"><label for="inputOtherDetail" class="col-lg-3 col-sm-3 col-md-2">@(@"Other detail")</label><div class="col-xs-9" style="padding: 0px"><textarea class="form-control empty-element" name="inputOtherDetail" value="" id="inputOtherDetail">@(formState.ContainsKey("inputOtherDetail") ? formState["inputOtherDetail"] : ViewData["inputData_inputOtherDetail"])</textarea></div></div><button type="submit" class="btn btn-primary" id="buttonUpdate" name="button" value="buttonUpdate" data-toggle="modal" data-target="#modalUpdate" >@(@"Update")</button><button type="submit" class="btn btn-success" id="buttonCredit" name="button" value="buttonCredit" style="margin-left: 15px;" data-toggle="modal" data-target="#modalCredit" >@(@"Credit")</button><button type="submit" class="btn btn-warning" id="buttonReset" name="button" value="buttonReset" data-toggle="modal" data-target="#modalReset" style="margin-left: 15px;" >@(@"Reset")</button><button type="submit" class="btn btn-danger" id="buttonSuspend" name="button" value="buttonSuspend" style="margin-left: 15px;" data-toggle="modal" data-target="#modalSuspend" >@(@"Suspend ")</button></div></div></div><div class="panel panel-default" id="panelBalance" ><div class="panel-heading"><h3 class="panel-title">@(@"Balance<br>")</h3></div><div class="panel-body"><div class="col-xs-12 col-md-6" style="padding-bottom: 15px">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="" id="ProfileDiv"><div class="container"><form class="form-horizontal" method="post"><div class="panel panel-default" ><div class="panel-heading"><h2 class="panel-title">Settings of <span class="" id="headingUsername">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("headingUsername")).Value ?? "").ToString()))</span><span class="">@(@" (ID: ")</span><span class="" id="headingHash">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("headingHash")).Value ?? "").ToString()))</span><span class="">@(@")")</span></h2></div><div class="panel-body" style="padding: 50px"><div class="col-xs-12 col-lg-12"><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Username")</label><div class="col-xs-9" style="padding: 0px"><input name="inputUsername" value="@(formState.ContainsKey("inputUsername") ? formState["inputUsername"] : (ViewData.ContainsKey("inputData_inputUsername") ? @ViewData["inputData_inputUsername"] : ""))" class="form-control input-sm" id="inputUsername" type="text" /></div></div><div class="form-group"><label for="inputName" class="col-lg-3 col-sm-3 col-md-2">@(@"Name")</label><div class="col-xs-9" style="padding: 0px"><input name="inputName" value="@(formState.ContainsKey("inputName") ? formState["inputName"] : (ViewData.ContainsKey("inputData_inputName") ? @ViewData["inputData_inputName"] : ""))" class="form-control input-sm" id="inputName" type="text" /></div></div><div class="form-group"><label for="inputEmail" class="col-lg-3 col-sm-3 col-md-2">@(@"Email")</label><div class="col-xs-9" style="padding: 0px"><input name="inputEmail" value="@(formState.ContainsKey("inputEmail") ? formState["inputEmail"] : (ViewData.ContainsKey("inputData_inputEmail") ? @ViewData["inputData_inputEmail"] : ""))" class="form-control input-sm" id="inputEmail" type="text" /></div></div><div class="row" style="padding-bottom: 20px;"><label for="name_input" class="col-lg-3 col-sm-3 col-md-2">@(@"ID Card Photos")</label><img src="" width="80" height="80" alt="" class=""></img></div><div class="form-group"><label for="inputOtherDetail" class="col-lg-3 col-sm-3 col-md-2">@(@"Other detail")</label><div class="col-xs-9" style="padding: 0px"><textarea class="form-control empty-element" name="inputOtherDetail" value="" id="inputOtherDetail">@(formState.ContainsKey("inputOtherDetail") ? formState["inputOtherDetail"] : ViewData["inputData_inputOtherDetail"])</textarea></div></div><button type="submit" class="btn btn-primary" id="buttonUpdate" name="button" value="buttonUpdate" data-toggle="modal" data-target="#modalUpdate" >@(@"Update")</button><button type="submit" class="btn btn-success" id="buttonCredit" name="button" value="buttonCredit" style="margin-left: 15px;" data-toggle="modal" data-target="#modalCredit" >@(@"Credit")</button><button type="submit" class="btn btn-warning" id="buttonReset" name="button" value="buttonReset" data-toggle="modal" data-target="#modalReset" style="margin-left: 15px;" >@(@"Reset")</button><button type="submit" class="btn btn-danger" id="buttonSuspend" name="button" value="buttonSuspend" style="margin-left: 15px;" data-toggle="modal" data-target="#modalSuspend" >@(@"Suspend ")</button></div></div></div><div class="panel panel-default" id="panelBalance" ><div class="panel-heading"><h3 class="panel-title">@(@"Balance")</h3></div><div class="panel-body"><div class="col-xs-12 col-md-6" style="padding-bottom: 15px">
 @{ if(ViewData.ContainsKey("tableData_datatableCrypto") && ((System.Data.DataTable)(ViewData["tableData_datatableCrypto"])).Rows.Count > 0) {
     <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableCrypto" role="grid" aria-describedby="datatableCrypto_info">
         <thead>
@@ -62,7 +62,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatableFiat" />
-</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class="active"><a href="#tabTrades" data-toggle="tab" aria-expanded="true" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class=""><a href="#tabPending" data-toggle="tab" aria-expanded="false" class="">@(@"Pending requests")</a></li><li class=""><a href="#tabSupport" data-toggle="tab" aria-expanded="false" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tabTrades"><div class="col-xs-12">
+</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tabTrades" data-toggle="tab" aria-expanded="false" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class=""><a href="#tabPending" data-toggle="tab" aria-expanded="false" class="">@(@"Pending requests")</a></li><li class="active"><a href="#tabSupport" data-toggle="tab" aria-expanded="true" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tabTrades"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableTrades") && ((System.Data.DataTable)(ViewData["tableData_datatableTrades"])).Rows.Count > 0) {
     <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableTrades" role="grid" aria-describedby="datatableTrades_info">
         <thead>
@@ -160,20 +160,20 @@
 <input type="hidden" name="datatableDeposits" />
 </div></div><div class="tab-pane" id="tabPending"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatablePending") && ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Rows.Count > 0) {
-    <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatablePending" role="grid" aria-describedby="datatablePending_info">
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="datatablePending" role="grid" aria-describedby="datatablePending_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Columns) {
                 <th>@col.Caption</th>
             }
-                
+                <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
             <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Columns) {
                 <th>@col.Caption</th>
             }
-                
+                <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
@@ -181,7 +181,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i> <i title="delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -190,22 +190,22 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatablePending" />
-</div></div><div class="tab-pane" id="tabSupport"><div class="col-xs-12">
+</div></div><div class="tab-pane active" id="tabSupport"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableSupport") && ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Rows.Count > 0) {
-    <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableSupport" role="grid" aria-describedby="datatableSupport_info">
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="datatableSupport" role="grid" aria-describedby="datatableSupport_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Columns) {
                 <th>@col.Caption</th>
             }
-                
+                <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
             <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Columns) {
                 <th>@col.Caption</th>
             }
-                
+                <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
@@ -213,7 +213,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                
+                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i> <i title="delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
