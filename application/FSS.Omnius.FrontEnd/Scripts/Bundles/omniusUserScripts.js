@@ -1604,6 +1604,12 @@ var BootstrapUserInit = {
 
             $('.data-table', self.context).each(function () {
                 var table = $(this);
+                self.DataTable.initTable(table);
+            });
+        },
+
+        initTable: function(table) {
+           
                 var columns = [];
                 table.find('tr:eq(0) th').each(function () {
                     columns.push({ data: $(this).text() });
@@ -1736,7 +1742,8 @@ var BootstrapUserInit = {
                         }
                     });
                 }*/
-            });
+           
+ 
         },
 
         filter: function ()
