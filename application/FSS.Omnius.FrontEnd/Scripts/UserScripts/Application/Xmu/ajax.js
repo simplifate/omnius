@@ -43,6 +43,18 @@ $(function(){
                 }
             });
         });
+  $(document).on("click", ".fa-remove", function (e) {
+    alert("bagr");
+    var Tag = e.target.parent().parent().parent().child("#tag_hiddenSpan").html();
+            $.ajax({
+                type: 'POST',
+                url: '/api/run/Xmu/' + $('#currentBlockName').val() + '/?button=total_balance',
+                data: { 'deleteTag': Tag},
+                success: function (data) {
+                    reload();
+                }
+            });
+        });
 });
 
 
@@ -67,8 +79,11 @@ $(function(){
                     $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
                     $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-                  	var crypto = $("#datatableCrypto");
-                    BootstrapUserInit.DataTable.initTable(crypto);
+                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#datatablePending").add("#datatableSupport");
+                    tables.each(function() {
+                      var table = $(this);
+                      BootstrapUserInit.DataTable.initTable(table);
+                    });
                 }
             });
         }); 
