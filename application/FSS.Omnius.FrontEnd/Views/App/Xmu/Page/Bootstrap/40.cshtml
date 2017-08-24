@@ -12,8 +12,8 @@
 </select></div></div><div class="row" style="margin-top: 10px"><label for="" class="col-xs-4">@(@"Tag")</label><div class="col-xs-12 col-sm-8"><input type="text" name="ticketTag_input" value="@(formState.ContainsKey("ticketTag_input") ? formState["ticketTag_input"] : (ViewData.ContainsKey("inputData_ticketTag_input") ? @ViewData["inputData_ticketTag_input"] : ""))" class="form-control" id="ticketTag_input" /></div><div class="col-xs-12 col-sm-8 col-sm-offset-4">
 @{ if(ViewData.ContainsKey("tag_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["tag_foreach"]) {
-            <div class="" style="display: inline-block;">
-                <span class="mbe-active" id="tag_hiddenSpan" style="display: none;">@(row["id"].ToString())</span><div class="" style="display: inline-block; background-color: #d8e8fd; border-radius: 5px; padding: 4px 14px; margin: 5px 5px 0 5px;"><span class="">@row["tag"]<span class="fa fa-remove" style="margin: 0 0 0 10px;"></span></span></div>   
+            <div class="mbe-active tag" style="display: inline-block;">
+                <span class="" id="tag_hiddenSpan" style="display: none;">@(row["id"].ToString())</span><div class="" style="display: inline-block; background-color: #d8e8fd; border-radius: 5px; padding: 4px 14px; margin: 5px 5px 0 5px;"><span class="">@row["tag"]<span class="fa fa-remove" style="margin: 0 0 0 10px;"></span></span></div>   
             </div>
         }
     }

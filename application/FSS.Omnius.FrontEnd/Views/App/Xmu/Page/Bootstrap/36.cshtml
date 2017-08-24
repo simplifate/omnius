@@ -32,7 +32,7 @@
 <input type="hidden" name="datatableCrypto" />
 </div><div class="col-xs-12 col-md-6" style="padding-bottom: 15px">
 @{ if(ViewData.ContainsKey("tableData_datatableFiat") && ((System.Data.DataTable)(ViewData["tableData_datatableFiat"])).Rows.Count > 0) {
-    <table class="table data-table no-footer mbe-active dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableFiat" role="grid" aria-describedby="datatableFiat_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableFiat" role="grid" aria-describedby="datatableFiat_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableFiat"])).Columns) {
@@ -62,7 +62,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatableFiat" />
-</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tabTrades" data-toggle="tab" aria-expanded="false" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class=""><a href="#tabPending" data-toggle="tab" aria-expanded="false" class="">@(@"Pending requests")</a></li><li class="active"><a href="#tabSupport" data-toggle="tab" aria-expanded="true" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tabTrades"><div class="col-xs-12">
+</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tabTrades" data-toggle="tab" aria-expanded="false" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class="active"><a href="#tabPending" data-toggle="tab" aria-expanded="true" class="mbe-active">@(@"Pending requests")</a></li><li class=""><a href="#tabSupport" data-toggle="tab" aria-expanded="false" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tabTrades"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableTrades") && ((System.Data.DataTable)(ViewData["tableData_datatableTrades"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableTrades" role="grid" aria-describedby="datatableTrades_info" style="">
         <thead>
@@ -96,7 +96,7 @@
 <input type="hidden" name="datatableTrades" />
 </div></div><div class="tab-pane" id="tabWithdrawals"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableWithdrawals") && ((System.Data.DataTable)(ViewData["tableData_datatableWithdrawals"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableWithdrawals" role="grid" aria-describedby="datatableWithdrawals_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableWithdrawals" role="grid" aria-describedby="datatableWithdrawals_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableWithdrawals"])).Columns) {
@@ -128,7 +128,7 @@
 <input type="hidden" name="datatableWithdrawals" />
 </div></div><div class="tab-pane" id="tabDeposits"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableDeposits") && ((System.Data.DataTable)(ViewData["tableData_datatableDeposits"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableDeposits" role="grid" aria-describedby="datatableDeposits_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableDeposits" role="grid" aria-describedby="datatableDeposits_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableDeposits"])).Columns) {
@@ -158,7 +158,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatableDeposits" />
-</div></div><div class="tab-pane" id="tabPending"><div class="col-xs-12">
+</div></div><div class="tab-pane active" id="tabPending"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatablePending") && ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatablePending" role="grid" aria-describedby="datatablePending_info" style="">
         <thead>
@@ -190,7 +190,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatablePending" />
-</div></div><div class="tab-pane active" id="tabSupport"><div class="col-xs-12">
+</div></div><div class="tab-pane" id="tabSupport"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableSupport") && ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableSupport" role="grid" aria-describedby="datatableSupport_info" style="">
         <thead>
