@@ -195,11 +195,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                         case "datetime":
                                         case "date":
                                         case "time":
-                                            DateTime parsedDateTime;
-                                            if (DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out parsedDateTime)) {
+                                            try
+                                            {
+                                                DateTime parsedDateTime = Convert.ToDateTime(value);
                                                 data.Add(col.Name, parsedDateTime);
                                             }
-                                            else {
+                                            catch(FormatException)
+                                            {
                                                 isValid = false;
                                                 messages.Add(string.Format(typeError, line, col.Name, "platné datum"));
                                             }
