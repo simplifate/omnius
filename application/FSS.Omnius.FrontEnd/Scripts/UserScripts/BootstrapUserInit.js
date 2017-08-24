@@ -127,7 +127,7 @@
                     table.find('tfoot th').each(function () {
                         var title = $(this).text();
                         if (title != "Akce")
-                            $(this).html('<input type="text" placeholder="Hledat v &quot;' + title + '&quot;" />');
+                            $(this).html('<input type="text" placeholder="" />');
                         else
                             $(this).html("");
                     });
