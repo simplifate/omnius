@@ -44,8 +44,7 @@ $(function(){
             });
         });
   $(document).on("click", ".fa-remove", function (e) {
-    alert("bagr");
-    var Tag = e.target.parent().parent().parent().child("#tag_hiddenSpan").html();
+    var Tag = $(e.target).parents(".tag").children("#tag_hiddenSpan").html();
             $.ajax({
                 type: 'POST',
                 url: '/api/run/Xmu/' + $('#currentBlockName').val() + '/?button=total_balance',
