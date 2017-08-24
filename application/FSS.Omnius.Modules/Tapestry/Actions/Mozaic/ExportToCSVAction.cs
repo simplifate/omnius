@@ -95,6 +95,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
 
             response.ContentType = "application/csv";
+            response.Charset = Encoding.GetEncoding(1250).EncodingName;
+            response.ContentEncoding = Encoding.GetEncoding(1250);
             response.AddHeader("content-disposition", "attachment; filename=export.csv");
             response.Write(csv);
             response.Flush();
