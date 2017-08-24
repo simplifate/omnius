@@ -86,10 +86,6 @@
       <HintPath>..\packages\NGettext.0.6.2\lib\net45\NGettext.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NSass.Core, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NSass.Core.0.0.3.0\lib\net40\NSass.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -514,12 +510,6 @@
     <Content Include="Content\Fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="NSass.Wrapper\NSass.Wrapper.x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NSass.Wrapper\NSass.Wrapper.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppManager\AdminInit.js" />
     <Content Include="Scripts\Athena\Main.js" />
     <Content Include="Scripts\Bundles\omniusAdminScripts.js" />

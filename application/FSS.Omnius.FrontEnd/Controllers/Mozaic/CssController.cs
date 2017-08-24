@@ -3,7 +3,6 @@ using FSS.Omnius.Modules.Entitron.Entity.Mozaic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web.Mvc;
-using NSass;
 using System;
 
 namespace FSS.Omnius.Controllers.Mozaic
@@ -60,8 +59,9 @@ namespace FSS.Omnius.Controllers.Mozaic
             e.Css.AddOrUpdate(model);
             e.SaveChanges();
 
-            SassCompiler compiler = new SassCompiler();
-            var cssText = compiler.Compile(model.Value, OutputStyle.Compressed, true);
+            // SassCompiler compiler = new SassCompiler();
+            // var cssText = compiler.Compile(model.Value, OutputStyle.Compressed, true);
+            string cssText = "";
 
             string path = GetCssFilePath(model);
             System.IO.File.WriteAllText(path, cssText);
