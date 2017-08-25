@@ -94,7 +94,6 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    alert("last commit id is: " + data);
                     DD.lock.CurrentSchemeCommitId = data;
 
 
