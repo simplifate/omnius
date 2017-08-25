@@ -58,6 +58,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         private string typeError = "Řádek {0}, sloupec {1}: hodnota musí být {2}. Řádek vynechán.";
         private string uniqueError = "Řádek {0}: Tabulka již obsahuje takovýto řádek. Řádek vynechán.";
+        private string uniqueColumnMissingError = "Řádek {0}: Unikátní sloupec není vyplněn. Řádek vynechán.";
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
@@ -215,23 +216,32 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                 }
 
                                 if (uniqueColumns.Count > 0) {
-                                    var select = table.Select();
-                                    Conditions condition = new Conditions(select);
-                                    Condition_concat outCondition = null;
+                                    try
+                                    {
+                                        var select = table.Select();
+                                        Conditions condition = new Conditions(select);
+                                        Condition_concat outCondition = null;
 
-                                    // setConditions
-                                    foreach (string colName in uniqueColumns) {
-                                        object condValue = data[colName].ToString().PadLeft(8, '0');
-                                        DBColumn column = columns.Single(c => c.Name == colName);
+                                        // setConditions
+                                        foreach (string colName in uniqueColumns)
+                                        {
+                                            object condValue = data[colName].ToString().PadLeft(8, '0');
+                                            DBColumn column = columns.Single(c => c.Name == colName);
 
-                                        outCondition = condition.column(colName).Equal(condValue);
-                                        condition = outCondition.and();
+                                            outCondition = condition.column(colName).Equal(condValue);
+                                            condition = outCondition.and();
+                                        }
+
+                                        // check if row already exists
+                                        if (select.where(c => outCondition).ToList().Count > 0)
+                                        {
+                                            isValid = false;
+                                            messages.Add(string.Format(uniqueError, line));
+                                        }
                                     }
-
-                                    // check if row already exists
-                                    if (select.where(c => outCondition).ToList().Count > 0) {
-                                        isValid = false;
-                                        messages.Add(string.Format(uniqueError, line));
+                                    catch(KeyNotFoundException)
+                                    {
+                                        messages.Add(string.Format(uniqueColumnMissingError, line));
                                     }
                                 }
 
