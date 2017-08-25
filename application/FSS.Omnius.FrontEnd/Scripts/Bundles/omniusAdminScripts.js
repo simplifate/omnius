@@ -9286,8 +9286,23 @@ function SaveDbScheme(commitMessage) {
         success: function () {
             alert("The database scheme has been successfully saved!");
             $('#btnLockScheme').html('Lock scheme');
+            $.ajax({
+                type: "GET",
+                url: "/api/database/apps/" + appId + "/getLastCommitId",
+                dataType: "json",
+                complete: function () {
+                },
+                success: function (data) {
+                    alert("last commit id is: " + data);
+                    DD.lock.CurrentSchemeCommitId = data;
+
+
+                }
+            });
         }
     });
+
+  
 }
 
 function LoadDbScheme(commitId) {
@@ -15427,8 +15442,7 @@ MBE.types.text = {
         'small': '<small>Text</small>',
         'strong': '<strong>Bold</strong>',
         'italic': '<em>Italic</em>',
-        'span': '<span>Text</span>',
-        'text-node': '<span class="mbe-text-node">...</span>'
+        'span': '<span>Text</span>'
     },
 
     options: {

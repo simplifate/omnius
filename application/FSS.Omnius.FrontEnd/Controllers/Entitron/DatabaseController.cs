@@ -90,6 +90,21 @@ namespace FSS.Omnius.Controllers.Entitron
 
             }
         }
+
+        [Route("api/database/apps/{appId}/getLastCommitId")]
+        [HttpGet]
+        public int getLastCommitId(int appId)
+        {
+            using (var context = DBEntities.instance)
+            {
+                var app = context.Applications.Find(appId);
+                int lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+
+                return lastCommitId;
+            }
+        }
+
+
         [Route("api/database/apps/{appId}/isSchemeLocked/{userId}/{CurrentSchemeCommitId}")]
         [HttpGet]
         public AjaxSchemeLockingStatus isSchemeLocked(int appId,int userId,int CurrentSchemeCommitId)

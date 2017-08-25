@@ -87,6 +87,21 @@
         success: function () {
             alert("The database scheme has been successfully saved!");
             $('#btnLockScheme').html('Lock scheme');
+            $.ajax({
+                type: "GET",
+                url: "/api/database/apps/" + appId + "/getLastCommitId",
+                dataType: "json",
+                complete: function () {
+                },
+                success: function (data) {
+                    alert("last commit id is: " + data);
+                    DD.lock.CurrentSchemeCommitId = data;
+
+
+                }
+            });
         }
     });
+
+  
 }
