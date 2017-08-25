@@ -241,6 +241,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     }
                                     catch(KeyNotFoundException)
                                     {
+                                        isValid = false;
                                         messages.Add(string.Format(uniqueColumnMissingError, line));
                                     }
                                 }
