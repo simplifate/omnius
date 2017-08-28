@@ -13,8 +13,7 @@ namespace FSS.Omnius.Modules.Entitron
     using System.Data.Entity;
     public class Entitron : IModule
     {
-        public const string connectionString = "data source=93.185.103.49;initial catalog=omnius-work;user id=admin;password=8xKkmaIS;MultipleActiveResultSets=True;App=EntityFramework;";
-        
+        public static string connectionString = "DefaultConnection";
         private CORE _CORE;
         private DBEntities entities = null;
 
