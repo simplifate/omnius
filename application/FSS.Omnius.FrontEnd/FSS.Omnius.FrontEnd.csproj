@@ -313,6 +313,7 @@
     <Compile Include="Views\MyVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Start\Logo Crymico.png" />
     <Content Include="Assemblies\i18n.dll" />
     <Content Include="Assemblies\i18n.Domain.dll" />
     <Content Include="bundleconfig.json" />
@@ -340,6 +341,7 @@
     <Content Include="Content\Images\Icons\monero_black.png" />
     <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
+    <Content Include="Content\Images\LogoCrymico.png" />
     <Content Include="Content\Images\TapestryIcons\circle-event.png" />
     <Content Include="Content\Images\TapestryIcons\envelope-start.png" />
     <Content Include="Content\CssLibs\PagedList.css" />
