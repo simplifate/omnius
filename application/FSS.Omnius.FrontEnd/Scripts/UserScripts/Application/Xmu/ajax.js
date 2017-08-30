@@ -93,8 +93,30 @@ $(function(){
   $("#Transactions_table tbody tr").each(function(){
     var flag = $(this).children("td:nth-child(3)").text();
     if (flag == "True") {
-      $(this).css("background-color","#FFA6A6")
+      $(this).css("background-color","#ffdede")
     }
   })
+});
+
+$(function(){
+  $("#ExchangeVOther_table").find(".fa-sign-in").attr("data-toggle","modal").attr("data-target","#modalPair");
+  
+  $("#ExchangeVOther_table").on("click", ".fa-sign-in", function () {
+            var Pair = $(this).parent().parent().children("td:nth-child(2)").html();
+            $("#exchange_heading").html("");
+            $("#exchange_body").html("");
+            $("#preloader_pair").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Xmu/Exchange?button=headingExchange",
+                data: { 'pairCurr': Pair},
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader_pair").css("display", "none");
+                    $("#exchange_body").html(x.find("#exchange_body").html());
+                    $("#exchange_heading").html(x.find("#exchange_heading").html());
+                }
+            });
+        }); 
 });
 
