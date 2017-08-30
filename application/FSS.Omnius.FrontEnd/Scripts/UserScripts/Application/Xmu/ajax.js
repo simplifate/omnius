@@ -1,8 +1,8 @@
 $(function(){
   $("#Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
   
-  $("#Support_request_table").on("click", ".fa-edit", function () {
-            var SupportID = $(this).parent().parent().children("td:first-child").html();
+  $(document).on("click", "#Support_request_table .fa-edit", function (e) {
+            var SupportID = $(e.target).parent().parent().children("td:first-child").html();
             $("#modal_body_ticket").html("");
             $("#modal_name_ticket").html("");
             $("#preloader_ticket").css("display", "block");
@@ -78,7 +78,8 @@ $(function(){
                     $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
                     $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#datatablePending").add("#datatableSupport");
+                  	$("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
+                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #Withdrawal_request_table").add("#modalProfile #Support_request_table");
                     tables.each(function() {
                       var table = $(this);
                       BootstrapUserInit.DataTable.initTable(table);
@@ -87,3 +88,13 @@ $(function(){
             });
         }); 
 });
+
+$(function(){
+  $("#Transactions_table tbody tr").each(function(){
+    var flag = $(this).children("td:nth-child(3)").text();
+    if (flag == "True") {
+      $(this).css("background-color","#FFA6A6")
+    }
+  })
+});
+
