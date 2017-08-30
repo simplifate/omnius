@@ -102,7 +102,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                 if (!tapestryVars.ContainsKey(pair.Key))
                     tapestryVars.Add(pair.Key, pair.Value.ToString());
                 else
-                    tapestryVars[pair.Key] = pair.Value.ToString();
+                    tapestryVars[pair.Key] = (pair.Value == null?"":pair.Value.ToString());
             }
 
             if (tapestryVars.ContainsKey("__ModelId__") && Convert.ToInt32(tapestryVars["__ModelId__"]) != modelId)
