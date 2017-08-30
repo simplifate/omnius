@@ -72,6 +72,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             string dateFormat = vars.ContainsKey("DateTimeFormat") ? (string)vars["DateTimeFormat"] : "yyyy-MM-dd";
             bool enclosed = vars.ContainsKey("b$HasFieldsInQuotes") ? (bool)vars["b$HasFieldsInQuotes"] : false;
             List<string> uniqueColumns = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
+            CultureInfo czechCulture = new CultureInfo("cs-CZ");
 
             DBTable table = core.Entitron.GetDynamicTable(tableName, false);
             if (table == null) {
@@ -198,7 +199,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                         case "time":
                                             try
                                             {
-                                                DateTime parsedDateTime = Convert.ToDateTime(value);
+                                                DateTime parsedDateTime = DateTime.Parse(value, czechCulture);
                                                 data.Add(col.Name, parsedDateTime);
                                             }
                                             catch(FormatException)
