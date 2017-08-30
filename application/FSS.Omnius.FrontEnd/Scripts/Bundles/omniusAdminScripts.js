@@ -4064,8 +4064,8 @@ TB.save = {
             Name: rule.find('.workflowRuleHeader .verticalLabel').text(),
             Width: Math.round(rule.width()),
             Height: Math.round(rule.height()),
-            PositionX: Math.round(rule.position().left + rule.parents('.scrollContainer').scrollLeft()),
-            PositionY: Math.round(rule.position().top + rule.parents('.scrollContainer').scrollTop()),
+            PositionX: parseInt(rule.css('left')),
+            PositionY: parseInt(rule.css('top')),
             Swimlanes: swimlanes,
             Connections: connections
         };
@@ -15441,7 +15441,8 @@ MBE.types.text = {
         'small': '<small>Text</small>',
         'strong': '<strong>Bold</strong>',
         'italic': '<em>Italic</em>',
-        'span': '<span>Text</span>'
+        'span': '<span>Text</span>',
+        'text-node': '<span class="mbe-text-node">...</span>'
     },
 
     options: {
