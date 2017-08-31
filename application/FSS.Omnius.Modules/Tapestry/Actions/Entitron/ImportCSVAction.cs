@@ -84,7 +84,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             foreach (string sourceColumn in uniqueColumnSourceList)
             {
                 var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == sourceColumn);
-                uniqueColumns.Add(targetColumnMetadata.ColumnDisplayName);
+                if (targetColumnMetadata == null)
+                    uniqueColumns.Add(sourceColumn);
+                else
+                    uniqueColumns.Add(targetColumnMetadata.ColumnDisplayName);
             }
 
             DBColumns columns = table.columns;
@@ -116,19 +119,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         reader.Configuration.TrimHeaders = true;
                         reader.Configuration.Encoding = cp1250;
 
-                        if(reader.ReadHeader()) {
+                        if (reader.ReadHeader())
+                        {
                             string[] fields = reader.FieldHeaders;
                             int i = 0;
-                            foreach (string field in fields) {
+                            foreach (string field in fields)
+                            {
                                 var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == field);
-                                if (targetColumnMetadata != null) {
-
+                                if (targetColumnMetadata != null)
                                     columnsMap.Add(i, columns.Where(c => c.Name == targetColumnMetadata.ColumnDisplayName).First());
-                                }
+                                else
+                                    columnsMap.Add(i, columns.Where(c => c.Name == field).First());
                                 i++;
                             }
                         }
-                        else {
+                        else
+                        {
                             messages.Add("Nepodařilo se načíst názvy sloupců. Nelze pokračovat.");
                             isHeader = false;
                         }
