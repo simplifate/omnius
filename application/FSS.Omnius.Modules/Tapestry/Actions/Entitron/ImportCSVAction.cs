@@ -71,12 +71,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
             string dateFormat = vars.ContainsKey("DateTimeFormat") ? (string)vars["DateTimeFormat"] : "yyyy-MM-dd";
             bool enclosed = vars.ContainsKey("b$HasFieldsInQuotes") ? (bool)vars["b$HasFieldsInQuotes"] : false;
-            List<string> uniqueColumns = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
+            List<string> uniqueColumnSourceList = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
             CultureInfo czechCulture = new CultureInfo("cs-CZ");
+            var columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == tableName).ToList();
 
             DBTable table = core.Entitron.GetDynamicTable(tableName, false);
             if (table == null) {
                 throw new Exception(string.Format("{0}: Cílová tabulka nebyla nalezena ({1})", Name, tableName));
+            }
+
+            List<string> uniqueColumns = new List<string>();
+            foreach (string sourceColumn in uniqueColumnSourceList)
+            {
+                var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == sourceColumn);
+                uniqueColumns.Add(targetColumnMetadata.ColumnDisplayName);
             }
 
             DBColumns columns = table.columns;
@@ -112,8 +120,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             string[] fields = reader.FieldHeaders;
                             int i = 0;
                             foreach (string field in fields) {
-                                if (columns.Where(c => c.Name == field).Count() > 0) {
-                                    columnsMap.Add(i, columns.Where(c => c.Name == field).First());
+                                var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == field);
+                                if (targetColumnMetadata != null) {
+
+                                    columnsMap.Add(i, columns.Where(c => c.Name == targetColumnMetadata.ColumnDisplayName).First());
                                 }
                                 i++;
                             }
