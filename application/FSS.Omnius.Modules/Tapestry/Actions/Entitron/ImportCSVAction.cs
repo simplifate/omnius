@@ -126,11 +126,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             foreach (string field in fields)
                             {
                                 var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == field);
+                                DBColumn targetColumn = null;
                                 if (targetColumnMetadata != null)
-                                    columnsMap.Add(i, columns.Where(c => c.Name == targetColumnMetadata.ColumnDisplayName).First());
+                                    targetColumn = columns.Where(c => c.Name == targetColumnMetadata.ColumnDisplayName).FirstOrDefault();
                                 else
-                                    columnsMap.Add(i, columns.Where(c => c.Name == field).First());
-                                i++;
+                                    targetColumn = columns.Where(c => c.Name == field).FirstOrDefault();
+                                if (targetColumn != null)
+                                {
+                                    columnsMap.Add(i, targetColumn);
+                                    i++;
+                                }
                             }
                         }
                         else
