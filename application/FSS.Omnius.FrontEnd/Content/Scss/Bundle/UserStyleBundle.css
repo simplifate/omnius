@@ -450,6 +450,10 @@ body.userLayout.leftBarHidden #userContentArea, body.userLayout.leftBarHidden #h
   #userTopBar .clientTitle {
     display: none; } }
 
+@media (min-width: 992px) {
+  .modal-large .modal-dialog {
+    width: 900px; } }
+
 body.userLayout #brandBar {
   background-color: #0d499a;
   height: 100px;

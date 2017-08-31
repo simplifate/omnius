@@ -62,7 +62,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatableFiat" />
-</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tabTrades" data-toggle="tab" aria-expanded="false" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class="active"><a href="#tabPending" data-toggle="tab" aria-expanded="true" class="">@(@"Pending requests")</a></li><li class=""><a href="#tabSupport" data-toggle="tab" aria-expanded="false" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tabTrades"><div class="col-xs-12">
+</div><div class="col-xs-12"><p class="text-center lead" style="font-weight: bold;">@(@"Total amount in USD: {var1}")</p></div></div></div><div class="panel panel-default" id="panelTransactions" ><div class="panel-heading" role="button" aria-expanded="true" href="#actualYieldBody" data-toggle="collapse"><h3 class="panel-title">@(@"Transactions ")</h3></div><div class="panel-body collapse in" id="actualTransactions" aria-expanded="true" style="padding: 0px;"><div class=""><ul class="nav nav-tabs"><li class=""><a href="#tabTrades" data-toggle="tab" aria-expanded="false" class="active">@(@"Trades")</a></li><li class=""><a href="#tabWithdrawals" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li><li class=""><a href="#tabDeposits" data-toggle="tab" aria-expanded="false" class="">@(@"Deposits")</a></li><li class=""><a href="#tabPending" data-toggle="tab" aria-expanded="false" class="">@(@"Pending requests")</a></li><li class="active"><a href="#tabSupport" data-toggle="tab" aria-expanded="true" class="">@(@"Support requests")</a></li></ul><div class="tab-content"><div class="tab-pane" id="tabTrades"><div class="col-xs-12">
 @{ if(ViewData.ContainsKey("tableData_datatableTrades") && ((System.Data.DataTable)(ViewData["tableData_datatableTrades"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableTrades" role="grid" aria-describedby="datatableTrades_info" style="">
         <thead>
@@ -158,30 +158,30 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="datatableDeposits" />
-</div></div><div class="tab-pane active" id="tabPending"><div class="col-xs-12">
-@{ if(ViewData.ContainsKey("tableData_datatablePending") && ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatablePending" role="grid" aria-describedby="datatablePending_info" style="">
+</div></div><div class="tab-pane" id="tabPending"><div class="col-xs-12">
+@{ if(ViewData.ContainsKey("tableData_Withdrawal_request_table") && ((System.Data.DataTable)(ViewData["tableData_Withdrawal_request_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="Withdrawal_request_table" role="grid" aria-describedby="datatablePending_info" style="">
         <thead>
             <tr>
-            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Columns) {
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Withdrawal_request_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
-            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Columns) {
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Withdrawal_request_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
-        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_datatablePending"])).Rows) {
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_Withdrawal_request_table"])).Rows) {
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="allow" class="fa fa-check-circle" data-action="allow" data-idparam="modelId" data-confirm=""></i> <i title="stop" class="fa fa-times-circle" data-action="stop" data-idparam="modelId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="Allow" class="fa fa-check-circle" data-action="Allow" data-idparam="modelId" data-confirm=""></i> <i title="Stop" class="fa fa-times-circle" data-action="Stop" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -189,27 +189,27 @@
 } else {
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
-<input type="hidden" name="datatablePending" />
-</div></div><div class="tab-pane" id="tabSupport"><div class="col-xs-12">
-@{ if(ViewData.ContainsKey("tableData_datatableSupport") && ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="datatableSupport" role="grid" aria-describedby="datatableSupport_info" style="">
+<input type="hidden" name="Withdrawal_request_table" />
+</div></div><div class="tab-pane active" id="tabSupport"><div class="col-xs-12">
+@{ if(ViewData.ContainsKey("tableData_Support_request_table") && ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="0" data-dtinfo="0" data-dtfilter="0" data-dtordering="0" data-dtcolumnfilter="0" data-dtserverside="0" id="Support_request_table" role="grid" aria-describedby="datatableSupport_info" style="">
         <thead>
             <tr>
-            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Columns) {
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </thead>
         <tfoot>
-            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Columns) {
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Columns) {
                 <th>@col.Caption</th>
             }
                 <th>Akce</th>
             </tr>
         </tfoot>
         <tbody>
-        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_datatableSupport"])).Rows) {
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Rows) {
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
@@ -221,6 +221,6 @@
 } else {
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
-<input type="hidden" name="datatableSupport" />
+<input type="hidden" name="Support_request_table" />
 </div></div></div></div></div><div class="panel-footer hidden"><span class="">@(@"Panel footer")</span></div></div></div>
-<div class="row" style="padding: 0px"><div class="col-xs-12"><button type="submit" class="btn btn-primary" id="buttonBack" name="button" value="buttonBack" style="margin: 30px" >@(@"Back")</button></div></div>@Html.AntiForgeryToken()</form></div></div><div class="" id="modal_modal_profile"><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalReset"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Are you sure?")</h4></div><div class="modal-body"><p class="">@(@"Do you really want to reset this profiles' balance?")</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"No")</button><button type="button" class="btn btn-primary" name="button" value="buttonYes" id="buttonYesReset" >@(@"Yes")</button></div></div></div></div><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalSuspend"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header mbe-active"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Are you sure?")</h4></div><div class="modal-body"><p class="">@(@"Do you really want to freeze all actives?")</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"No")</button><form class="form-horizontal" method="post"><button type="submit" class="btn btn-primary" name="button" value="buttonYesSuspend" id="buttonYesSuspend" >@(@"Yes")</button>@Html.AntiForgeryToken()</form></div></div></div></div><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalCredit"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Add money to your account")</h4></div><div class="modal-body"><form class="form-horizontal" method="post"><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Amount")</label><div class="col-xs-9" style="padding: 0px"><input type="number" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="form-control input-sm" min="0" /></div></div><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Currency")</label><div class="col-xs-9" style="padding: 0px"><input name="inputUsername" value="@(formState.ContainsKey("inputUsername") ? formState["inputUsername"] : (ViewData.ContainsKey("inputData_inputUsername") ? @ViewData["inputData_inputUsername"] : ""))" class="form-control input-sm" id="inputUsername" type="text" /></div></div>@Html.AntiForgeryToken()</form></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"Cancel")</button><button type="button" class="btn btn-primary" name="button" value="buttonYes" id="buttonYesCredit" >@(@"Add")</button></div></div></div></div></div></div>
+<div class="row" style="padding: 0px"><div class="col-xs-12"><button type="submit" class="btn btn-primary" id="buttonBack" name="button" value="buttonBack" style="margin: 30px" >@(@"Back")</button></div></div>@Html.AntiForgeryToken()</form></div></div><div class="" id="modal_modal_profile"><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalReset"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Are you sure?")</h4></div><div class="modal-body"><p class="">@(@"Do you really want to reset this profiles' balance?")</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"No")</button><button type="button" class="btn btn-primary" name="button" value="buttonYes" id="buttonYesReset" >@(@"Yes")</button></div></div></div></div><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalSuspend"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Are you sure?")</h4></div><div class="modal-body"><p class="">@(@"Do you really want to freeze all actives?")</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"No")</button><form class="form-horizontal" method="post"><button type="submit" class="btn btn-primary" name="button" value="buttonYesSuspend" id="buttonYesSuspend" >@(@"Yes")</button>@Html.AntiForgeryToken()</form></div></div></div></div><div class="modal fade" tabindex="-1" role="dialog" style="display: none;" id="modalCredit"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"Add money to your account")</h4></div><div class="modal-body"><form class="form-horizontal" method="post"><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Amount")</label><div class="col-xs-9" style="padding: 0px"><input type="number" name="" value="@(formState.ContainsKey("") ? formState[""] : (ViewData.ContainsKey("inputData_") ? @ViewData["inputData_"] : ""))" class="form-control input-sm" min="0" /></div></div><div class="form-group"><label for="inputUsername" class="col-lg-3 col-sm-3 col-md-2">@(@"Currency")</label><div class="col-xs-9" style="padding: 0px"><input name="inputUsername" value="@(formState.ContainsKey("inputUsername") ? formState["inputUsername"] : (ViewData.ContainsKey("inputData_inputUsername") ? @ViewData["inputData_inputUsername"] : ""))" class="form-control input-sm" id="inputUsername" type="text" /></div></div>@Html.AntiForgeryToken()</form></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" value="buttonNo" id="buttonNo" name="button" >@(@"Cancel")</button><button type="button" class="btn btn-primary" name="button" value="buttonYes" id="buttonYesCredit" >@(@"Add")</button></div></div></div></div></div></div>

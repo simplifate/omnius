@@ -1,8 +1,8 @@
 $(function(){
   $("#Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
   
-  $("#Support_request_table").on("click", ".fa-edit", function () {
-            var SupportID = $(this).parent().parent().children("td:first-child").html();
+  $(document).on("click", "#Support_request_table .fa-edit", function (e) {
+            var SupportID = $(e.target).parent().parent().children("td:first-child").html();
             $("#modal_body_ticket").html("");
             $("#modal_name_ticket").html("");
             $("#preloader_ticket").css("display", "block");
@@ -78,7 +78,8 @@ $(function(){
                     $("#modal_modal_profile").html(x.find("#modal_modal_profile").html());
                     $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
-                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#datatablePending").add("#datatableSupport");
+                  	$("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
+                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #Withdrawal_request_table").add("#modalProfile #Support_request_table");
                     tables.each(function() {
                       var table = $(this);
                       BootstrapUserInit.DataTable.initTable(table);
@@ -87,3 +88,35 @@ $(function(){
             });
         }); 
 });
+
+$(function(){
+  $("#Transactions_table tbody tr").each(function(){
+    var flag = $(this).children("td:nth-child(3)").text();
+    if (flag == "True") {
+      $(this).css("background-color","#ffdede")
+    }
+  })
+});
+
+$(function(){
+  $("#ExchangeVOther_table").find(".fa-sign-in").attr("data-toggle","modal").attr("data-target","#modalPair");
+  
+  $("#ExchangeVOther_table").on("click", ".fa-sign-in", function () {
+            var Pair = $(this).parent().parent().children("td:nth-child(2)").html();
+            $("#exchange_heading").html("");
+            $("#exchange_body").html("");
+            $("#preloader_pair").css("display", "block");
+            $.ajax({
+                type: 'POST',
+                url: "/Xmu/Exchange?button=headingExchange",
+                data: { 'pairCurr': Pair},
+                success: function (response) {
+                    var x = $(response)
+                    $("#preloader_pair").css("display", "none");
+                    $("#exchange_body").html(x.find("#exchange_body").html());
+                    $("#exchange_heading").html(x.find("#exchange_heading").html());
+                }
+            });
+        }); 
+});
+

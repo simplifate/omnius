@@ -30,6 +30,9 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="DataTables_Subjekt" />
-</div>@Html.AntiForgeryToken()</form></div><div class="row"><div class="col-xs-12"><form class="form-horizontal" method="post"><button type="submit" class="btn btn-lg btn-primary" name="button" value="export_button" id="export_button" >@(@"Export celé databáze")</button>@Html.AntiForgeryToken()</form></div></div><div class="mbe-active"><style>
+</div>@Html.AntiForgeryToken()</form></div>
+@if((ViewData.ContainsKey("ifExportButton") && (bool)ViewData["ifExportButton"]) == true) {
+<div class="mbe-active" data-varname="ifExportButton"><div class="row"><div class="col-xs-12"><form class="form-horizontal" method="post"><button type="submit" class="btn btn-lg btn-primary" name="button" value="export_button" id="export_button" >@(@"Export celé databáze")</button>@Html.AntiForgeryToken()</form></div></div></div>
+}<div class=""><style>
   #DataTables_Subjekt_wrapper .fa-pencil {margin-right: 10px;}
 </style></div></div></div>

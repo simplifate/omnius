@@ -439,6 +439,11 @@ body.userLayout.leftBarHidden {
         display: none;
     }
 }
+@media (min-width: 992px) {
+  .modal-large .modal-dialog {
+    width: 900px;
+  }
+}
 
 body.userLayout #brandBar {
     background-color: $third_color_bright;
