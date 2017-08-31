@@ -6,10 +6,10 @@ $(function(){
       var display = 'YEP';
     }
   })
-  if (display = 'YEP') {
+  if (display == 'YEP') {
     $("#yes_panel").css("display","block");
   }
   else {
-    $("no_panel").css("display","block");
+    $("#no_panel").css("display","block");
   }
 });
