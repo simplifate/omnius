@@ -71,23 +71,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
             string dateFormat = vars.ContainsKey("DateTimeFormat") ? (string)vars["DateTimeFormat"] : "yyyy-MM-dd";
             bool enclosed = vars.ContainsKey("b$HasFieldsInQuotes") ? (bool)vars["b$HasFieldsInQuotes"] : false;
-            List<string> uniqueColumnSourceList = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
+            List<string> uniqueColumns = vars.ContainsKey("UniqueColumns") ? ((string)vars["UniqueColumns"]).Split(',').ToList() : new List<string>();
             CultureInfo czechCulture = new CultureInfo("cs-CZ");
             var columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == tableName).ToList();
 
             DBTable table = core.Entitron.GetDynamicTable(tableName, false);
-            if (table == null) {
-                throw new Exception(string.Format("{0}: Cílová tabulka nebyla nalezena ({1})", Name, tableName));
-            }
-
-            List<string> uniqueColumns = new List<string>();
-            foreach (string sourceColumn in uniqueColumnSourceList)
+            if (table == null)
             {
-                var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == sourceColumn);
-                if (targetColumnMetadata == null)
-                    uniqueColumns.Add(sourceColumn);
-                else
-                    uniqueColumns.Add(targetColumnMetadata.ColumnDisplayName);
+                throw new Exception(string.Format("{0}: Cílová tabulka nebyla nalezena ({1})", Name, tableName));
             }
 
             DBColumns columns = table.columns;
@@ -100,19 +91,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             List<string> messages = new List<string>();
 
             bool isHeader = true;
-            foreach (string fileName in files) {
+            foreach (string fileName in files)
+            {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
 
                 if (file.ContentLength == 0 || fileName != inputName)
                     continue;
 
                 Encoding cp1250 = Encoding.GetEncoding(1250);
-                using (StreamReader sr = new StreamReader(file.InputStream, cp1250)) 
+                using (StreamReader sr = new StreamReader(file.InputStream, cp1250))
                 {
                     sr.Peek();
                     Encoding enc = sr.CurrentEncoding;
 
-                    using (CsvReader reader = new CsvReader(sr)) 
+                    using (CsvReader reader = new CsvReader(sr))
                     {
                         reader.Configuration.Delimiter = delimiter;
                         reader.Configuration.TrimFields = true;
@@ -125,17 +117,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             int i = 0;
                             foreach (string field in fields)
                             {
-                                var targetColumnMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnName == field);
-                                DBColumn targetColumn = null;
-                                if (targetColumnMetadata != null)
-                                    targetColumn = columns.Where(c => c.Name == targetColumnMetadata.ColumnDisplayName).FirstOrDefault();
-                                else
-                                    targetColumn = columns.Where(c => c.Name == field).FirstOrDefault();
-                                if (targetColumn != null)
+                                var colMetadata = columnMetadataList.SingleOrDefault(c => c.ColumnDisplayName == field);
+                                string colName = colMetadata == null ? field : colMetadata.ColumnName;
+                                if (columns.Where(c => c.Name == colName).Count() > 0)
                                 {
-                                    columnsMap.Add(i, targetColumn);
-                                    i++;
+                                    columnsMap.Add(i, columns.Where(c => c.Name == colName).First());
                                 }
+                                i++;
                             }
                         }
                         else
@@ -144,9 +132,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                             isHeader = false;
                         }
 
-                        if (isHeader) 
+                        if (isHeader)
                         {
-                            while (reader.Read()) 
+                            while (reader.Read())
                             {
                                 long line = reader.Row;
                                 string[] fields = reader.CurrentRecord;
@@ -155,22 +143,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                 Dictionary<string, object> data = new Dictionary<string, object>();
                                 bool isValid = true;
 
-                                foreach (string value in fields) {
+                                foreach (string value in fields)
+                                {
                                     // Neznámé sloupce ignorujeme
-                                    if (!columnsMap.ContainsKey(i)) {
+                                    if (!columnsMap.ContainsKey(i))
+                                    {
                                         i++;
                                         continue;
                                     }
 
                                     // Prázdné hodnoty vynecháme
-                                    if (string.IsNullOrEmpty(value)) {
+                                    if (string.IsNullOrEmpty(value))
+                                    {
                                         i++;
                                         continue;
                                     }
 
                                     DBColumn col = columnsMap[i];
 
-                                    switch (col.type.ToLower()) {
+                                    switch (col.type.ToLower())
+                                    {
                                         case "nvarchar":
                                         case "varchar":
                                             data.Add(col.Name, value);
@@ -178,17 +170,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                         case "boolean":
                                         case "bit":
                                             bool parsedBool;
-                                            if (bool.TryParse(value, out parsedBool)) {
+                                            if (bool.TryParse(value, out parsedBool))
+                                            {
                                                 data.Add(col.Name, parsedBool);
                                             }
-                                            else {
-                                                if (value == "0") {
+                                            else
+                                            {
+                                                if (value == "0")
+                                                {
                                                     data.Add(col.Name, false);
                                                 }
-                                                else if (value == "1") {
+                                                else if (value == "1")
+                                                {
                                                     data.Add(col.Name, true);
                                                 }
-                                                else {
+                                                else
+                                                {
                                                     isValid = false;
                                                     messages.Add(string.Format(typeError, line, col.Name, "logická hodnota"));
                                                 }
@@ -197,20 +194,24 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                         case "int":
                                         case "integer":
                                             int parsedInt;
-                                            if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt)) {
+                                            if (int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedInt))
+                                            {
                                                 data.Add(col.Name, parsedInt);
                                             }
-                                            else {
+                                            else
+                                            {
                                                 isValid = false;
                                                 messages.Add(string.Format(typeError, line, col.Name, "celé číslo"));
                                             }
                                             break;
                                         case "float":
                                             double parsedDouble;
-                                            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble)) {
+                                            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble))
+                                            {
                                                 data.Add(col.Name, parsedDouble);
                                             }
-                                            else {
+                                            else
+                                            {
                                                 isValid = false;
                                                 messages.Add(string.Format(typeError, line, col.Name, "celé nebo desetinní číslo"));
                                             }
@@ -223,7 +224,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                                 DateTime parsedDateTime = DateTime.Parse(value, czechCulture);
                                                 data.Add(col.Name, parsedDateTime);
                                             }
-                                            catch(FormatException)
+                                            catch (FormatException)
                                             {
                                                 isValid = false;
                                                 messages.Add(string.Format(typeError, line, col.Name, "platné datum"));
@@ -233,11 +234,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                     i++;
                                 }
 
-                                if (!isValid) {
+                                if (!isValid)
+                                {
                                     continue;
                                 }
 
-                                if (uniqueColumns.Count > 0) {
+                                if (uniqueColumns.Count > 0)
+                                {
                                     try
                                     {
                                         var select = table.Select();
@@ -247,12 +250,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                         // setConditions
                                         foreach (string colName in uniqueColumns)
                                         {
-                                            object condValue = data[colName].ToString();
-                                            if(colName == "Ico")
-                                                condValue = data[colName].ToString().PadLeft(8, '0');
-                                            DBColumn column = columns.Single(c => c.Name == colName);
+                                            string colName2 = columnMetadataList.SingleOrDefault(c => c.ColumnDisplayName == colName).ColumnName;
+                                            object condValue = data[colName2].ToString();
+                                            if (colName == "IČO")
+                                                condValue = data[colName2].ToString().PadLeft(8, '0');
+                                            DBColumn column = columns.Single(c => c.Name == colName2);
 
-                                            outCondition = condition.column(colName).Equal(condValue);
+                                            outCondition = condition.column(colName2).Equal(condValue);
                                             condition = outCondition.and();
                                         }
 
@@ -263,20 +267,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                                             messages.Add(string.Format(uniqueError, line));
                                         }
                                     }
-                                    catch(KeyNotFoundException)
+                                    catch (KeyNotFoundException)
                                     {
                                         isValid = false;
                                         messages.Add(string.Format(uniqueColumnMissingError, line));
                                     }
                                 }
 
-                                if (isValid) {
+                                if (isValid)
+                                {
                                     data.Add("Datum_vlozeni", DateTime.Now);
                                     data.Add("Cas_editace", DateTime.Now);
                                     data.Add("Editoval", core.User.Id);
                                     DBItem item = new DBItem();
                                     int j = 0;
-                                    foreach (KeyValuePair<string, object> kv in data) {
+                                    foreach (KeyValuePair<string, object> kv in data)
+                                    {
                                         item.createProperty(j, kv.Key, kv.Value);
                                         j++;
                                     }
@@ -289,7 +295,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
             }
 
-            if (countAdded > 0) {
+            if (countAdded > 0)
+            {
                 core.Entitron.Application.SaveChanges();
             }
 
