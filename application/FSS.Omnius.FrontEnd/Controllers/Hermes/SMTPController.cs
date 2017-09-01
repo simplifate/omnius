@@ -99,7 +99,7 @@ namespace FSS.Omnius.Controllers.Hermes
 
             FileMetadata file = e.FileMetadataRecords.First();
 
-            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            Mailer mail = new Mailer("Test", "Seznam WS", model, 1);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.Attachment(new KeyValuePair<int, string>(file.Id, file.Filename));
             mail.SendMail();
@@ -124,7 +124,7 @@ namespace FSS.Omnius.Controllers.Hermes
             model.Add("count", e.WSs.Count());
             model.Add("ws", e.WSs);
 
-            Mailer mail = new Mailer("Test", "Seznam WS", model);
+            Mailer mail = new Mailer("Test", "Seznam WS", model, 1);
             mail.To("martin.novak@futuresolutionservices.com", "Martin Novák");
             mail.Attachment(new KeyValuePair<int, string>(1, "neexistujici-soubor.doc"));
             mail.SendBySender();

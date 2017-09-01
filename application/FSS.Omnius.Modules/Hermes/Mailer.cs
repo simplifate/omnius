@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Mime;
 using System.IO;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+using System.ComponentModel.DataAnnotations;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Modules.Hermes
@@ -35,16 +36,16 @@ namespace FSS.Omnius.Modules.Hermes
 
         public Mailer(string serverName = "")
         {
+            mailerLanguage = 1;
             Init(serverName);
         }
 
-        public Mailer(string serverName, string templateName, Object model, int language = 1)
+        public Mailer(string serverName, string templateName, Object model, int language)
         {
             mailerLanguage = language;
             Init(serverName);
             Prepare(templateName, model);
         }
-
 
         private void Init(string serverName = "")
         {
@@ -77,8 +78,8 @@ namespace FSS.Omnius.Modules.Hermes
             data = model;
 
             EmailTemplate template = e.EmailTemplates.Single(t => t.Name == templateName);
-            plcs = template.PlaceholderList.ToList();
-            EmailTemplateContent contentModel = template.ContentList.Single(t => t.LanguageId == 1);
+            plcs = template.PlaceholderList.OrderBy(p => p.Num_Order).ToList();
+            EmailTemplateContent contentModel = template.ContentList.Single(t => t.LanguageId == mailerLanguage);
 
             string subject = SetData(contentModel.Subject);
             string content = SetData(contentModel.Content);
@@ -110,18 +111,21 @@ namespace FSS.Omnius.Modules.Hermes
 
         public string SetData(string content)
         {
-            Regex regExpList = new Regex("^\\{list\\@([^\\}]+)}$");
+            Regex regExpList = new Regex("^\\{list@([^\\}]+)}$");
+            Regex regExpIf = new Regex("^\\{if@([^\\}]+)}$");
 
             foreach (EmailPlaceholder p in plcs)
             {
                 string key = "{" + p.Prop_Name + "}";
-                if (regExpList.IsMatch(key))
-                {
+                if (regExpList.IsMatch(key)) {
                     Match m = regExpList.Match(key);
                     ParseList(ref content, p.Prop_Name, m.Groups[1].ToString(), GetValue(data, m.Groups[1].ToString()));
                 }
-                else if(!key.Contains("@"))
-                {
+                else if (regExpIf.IsMatch(key)) {
+                    Match m = regExpIf.Match(key);
+                    ParseIf(ref content, p.Prop_Name, GetValue(data, m.Groups[1].ToString()));
+                }
+                else if (!key.Contains('@')) {
                     object value = GetValue(data, p.Prop_Name);
                     content = content.Replace(key, value == null ? string.Empty : value.ToString());
                 }
@@ -133,7 +137,7 @@ namespace FSS.Omnius.Modules.Hermes
         public bool SendBySender(int? applicationId = null, DateTime? sendAfter = null)
         {
             EmailQueue item = new EmailQueue();
-            item.ApplicationId = applicationId ?? e.Applications.Single(a => a.IsSystem).Id;
+            item.ApplicationId = applicationId;
             item.Message = HermesUtils.SerializeMailMessage(mail, Formatting.Indented);
             item.Date_Send_After = sendAfter == null ? DateTime.UtcNow : (DateTime)sendAfter;
             item.Date_Inserted = DateTime.UtcNow;
@@ -170,9 +174,9 @@ namespace FSS.Omnius.Modules.Hermes
 
                             att = new Attachment(fileContent, fileInfo.Filename);
                         }
-                        catch(NullReferenceException e)
+                        catch(NullReferenceException ex)
                         {
-                            OmniusException.Log($"Odeslání e-mailu se nezdařilo - příloha <b>{attachmentList[i]["Value"].ToString()}</b> nebyla nalezena", OmniusLogSource.Hermes, e, application);
+                            OmniusException.Log($"Odeslání e-mailu se nezdařilo - příloha <b>{attachmentList[i]["Value"].ToString()}</b> nebyla nalezena", OmniusLogSource.Hermes, ex, application);
                             return false;
                         }
                     }
@@ -280,7 +284,15 @@ namespace FSS.Omnius.Modules.Hermes
         {
             mail.To.Clear();
             foreach(KeyValuePair<string, string> addr in addressList) {
-                mail.To.Add(new MailAddress(addr.Key, addr.Value));
+                if (addr.Key != "")
+                    if (new EmailAddressAttribute().IsValid(addr.Key))
+                    {
+                        mail.To.Add(new MailAddress(addr.Key, addr.Value));
+                    }
+                    else
+                    {
+                        OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
+                    }
             }
         }
 
@@ -308,7 +320,15 @@ namespace FSS.Omnius.Modules.Hermes
         {
             mail.Bcc.Clear();
             foreach (KeyValuePair<string, string> addr in addressList) {
-                mail.Bcc.Add(new MailAddress(addr.Key, addr.Value));
+                if (addr.Key != "")
+                    if (new EmailAddressAttribute().IsValid(addr.Key))
+                    {
+                        mail.Bcc.Add(new MailAddress(addr.Key, addr.Value));
+                    }
+                    else
+                    {
+                        OmniusLog.Log($"User passed invalid email address '{addr.Key}'.", OmniusLogLevel.Warning, OmniusLogSource.Hermes);
+                    }
             }
         }
 
@@ -357,6 +377,7 @@ namespace FSS.Omnius.Modules.Hermes
         private void ParseList(ref string content, string listKey, string objectKey, object model)
         {
             Regex regExpList = new Regex("(\\{" + listKey + "\\}(.*?)\\{end@" + listKey + "\\})", RegexOptions.Singleline);
+            Regex regExpIf = new Regex("^\\{" + objectKey + "@if@([^\\}]+)}$");
             MatchCollection lists = regExpList.Matches(content);
 
             foreach (Match list in lists)
@@ -371,9 +392,15 @@ namespace FSS.Omnius.Modules.Hermes
                     {
                         if(p.Prop_Name.StartsWith(objectKey))
                         {
-                            string propName = p.Prop_Name.Replace(objectKey + "@", "");
-                            object value = GetValue(item, propName);
-                            text = text.Replace("{" + p.Prop_Name + "}", value == null ? string.Empty : value.ToString());    
+                            if(regExpIf.IsMatch(p.Prop_Name)) {
+                                Match m = regExpIf.Match(p.Prop_Name);
+                                ParseIfInList(ref text, p.Prop_Name, GetValue(item, m.Groups[1].ToString()));
+                            }
+                            else {
+                                string propName = p.Prop_Name.Replace(objectKey + "@", "");
+                                object value = GetValue(item, propName);
+                                text = text.Replace("{" + p.Prop_Name + "}", value == null ? string.Empty : value.ToString());
+                            }
                         } 
                     }
                     items.Add(text);
@@ -383,11 +410,58 @@ namespace FSS.Omnius.Modules.Hermes
             }
         }
 
+        private void ParseIf(ref string content, string ifKey, object value)
+        {
+            Regex regExpIf = new Regex("(\\{" + ifKey + "\\}(.*?)\\{end@" + ifKey + "\\})", RegexOptions.Singleline);
+            MatchCollection ifList = regExpIf.Matches(content);
+
+            foreach (Match block in ifList) {
+                string template = block.Groups[2].ToString();
+                string[] trueFalse = template.Split(new string[] { "{else@" + ifKey + "}" }, StringSplitOptions.None);
+
+                string result = "";
+                if (value as bool? == true || value as string == "true" || value as int? == 1 || value as string == "1") {
+                    result = trueFalse[0];
+                }
+                else {
+                    if(trueFalse.Length == 2) {
+                        result = trueFalse[1];
+                    }
+                }
+
+                result = SetData(result);
+                content = content.Replace(block.Groups[1].ToString(), result);
+            }
+        }
+
+        private void ParseIfInList(ref string content, string ifKey, object value)
+        {
+            Regex regExpIf = new Regex("(\\{" + ifKey + "\\}(.*?)\\{end@" + ifKey + "\\})", RegexOptions.Singleline);
+            MatchCollection ifList = regExpIf.Matches(content);
+
+            foreach (Match block in ifList) {
+                string template = block.Groups[2].ToString();
+                string[] trueFalse = template.Split(new string[] { "{else@" + ifKey + "}" }, StringSplitOptions.None);
+
+                string result = "";
+                if (value as bool? == true || value as string == "true" || value as int? == 1 || value as string == "1") {
+                    result = trueFalse[0];
+                }
+                else {
+                    if (trueFalse.Length == 2) {
+                        result = trueFalse[1];
+                    }
+                }
+                content = content.Replace(block.Groups[1].ToString(), result);
+            }
+        }
+
         private object GetValue(object model, string propName)
         {
             if(model is IDictionary)
             {
-                return ((IDictionary)model)[propName] as object;
+                var data = (IDictionary)model;
+                return data.Contains(propName) ? data[propName] as object : null;
             }
             else
             {

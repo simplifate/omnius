@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "Template", "?ListOfData", "?Dictionary" };
+                return new string[] { "Template", "?ListOfData", "?Dictionary", "?SendAsBCC" };
             }
         }
         public override string[] OutputVar
@@ -53,8 +53,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             var listOfDBItems = new List<DBItem>();
             listOfDBItems = (List<DBItem>)vars["ListOfData"];
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var context = DBEntities.appInstance(core.Entitron.Application);
+            var context = DBEntities.instance;
 
             var urlDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Dictionary"))
@@ -75,7 +74,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     foreach (var item in urlDictionary)
                     {
                         newDictionary.Add(item.Key, item.Value);
-                    }
+                    }           
                 }
 
                 string emailAddress = newDictionary["__email"].ToString();
@@ -88,15 +87,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                 Mailer mail = new Mailer("", (string)vars["Template"], newDictionary, selectedLocale);
 
-                if (vars.ContainsKey("SendAsBCC") && (bool)vars["SendAsBCC"] == true)
-                {
+                if(vars.ContainsKey("SendAsBCC") && (bool)vars["SendAsBCC"] == true) {
                     mail.BCC(recipients);
                 }
                 else {
                     mail.To(recipients);
                 }
-
-                mail.SendMail();
+                
+                mail.SendBySender();
             }         
         }
     }

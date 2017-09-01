@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         public override string[] InputVar
         {
             get {
-                return new string[] { "Recipients", "Subject", "Template", "?CC", "?BCC", "?Data" };
+                return new string[] { "?Recipients", "Subject", "Template", "?CC", "?BCC", "?Data" };
             }
         }
         public override string[] OutputVar
@@ -45,8 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            var context = DBEntities.appInstance(core.Entitron.Application);
+            var context = DBEntities.instance;
             var dataDictionary = new Dictionary<string, object>();
             if (vars.ContainsKey("Data"))
                 dataDictionary = (Dictionary<string, object>)vars["Data"];
@@ -74,8 +73,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 czechMailer.BCC(recipientsCzechOutput);
                 englishMailer.BCC(recipientsEnglishOutput);
             }
-            if (vars.ContainsKey("BCC"))
-            {
+            if (vars.ContainsKey("BCC")) {
                 var bccInputDict = (Dictionary<string, string>)vars["BCC"];
 
                 var bccCzechOutput = new Dictionary<string, string>();
@@ -94,8 +92,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 englishMailer.BCC(bccEnglishOutput);
             }
 
-            czechMailer.SendMail();
-            englishMailer.SendMail();
+            czechMailer.SendBySender();
+            englishMailer.SendBySender();
         }
     }
 }

@@ -1198,6 +1198,10 @@
     <Compile Include="Migrations\201708141312346_Merge.Designer.cs">
       <DependentUpon>201708141312346_Merge.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709011206320_EmailQueueOptionalApp.cs" />
+    <Compile Include="Migrations\201709011206320_EmailQueueOptionalApp.Designer.cs">
+      <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1988,6 +1992,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708141312346_Merge.resx">
       <DependentUpon>201708141312346_Merge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709011206320_EmailQueueOptionalApp.resx">
+      <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
