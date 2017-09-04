@@ -225,46 +225,60 @@ namespace FSS.Omnius.Modules.Hermes
 
             foreach(EmailQueue row in rows)
             {
-                JToken m = JToken.Parse(row.Message);
-
-                mail = new MailMessage();
-                mail.From = new MailAddress((string)m["From"]["Address"], (string)m["From"]["DisplayName"]);
-
-                foreach (JToken replyTo in m["ReplyToList"]) {
-                    mail.ReplyToList.Add(new MailAddress((string)replyTo["Address"], (string)replyTo["DisplayName"]));
-                }
-                foreach(JToken to in m["To"]) {
-                    mail.To.Add(new MailAddress((string)to["Address"], (string)to["DisplayName"]));
-                }
-                foreach(JToken bcc in m["Bcc"]) {
-                    mail.Bcc.Add(new MailAddress((string)bcc["Address"], (string)bcc["DisplayName"]));
-                }
-                foreach(JToken cc in m["CC"]) {
-                    mail.CC.Add(new MailAddress((string)cc["Address"], (string)cc["DisplayName"]));
-                }
-                mail.Priority = (MailPriority)((int)m["Priority"]);
-                mail.DeliveryNotificationOptions = (DeliveryNotificationOptions)((int)m["DeliveryNotificationOptions"]);
-                mail.Subject = (string)m["Subject"];
-                mail.Body = (string)m["Body"];
-                mail.BodyTransferEncoding = (System.Net.Mime.TransferEncoding)((int)m["BodyTransferEncoding"]);
-                mail.IsBodyHtml = (bool)m["IsBodyHtml"];
-
-                if(m["AlternateViews"].Children().Count() > 0)
+                try
                 {
-                    foreach(JObject view in m["AlternateViews"].Children())
+
+                    JToken m = JToken.Parse(row.Message);
+
+                    mail = new MailMessage();
+                    mail.From = new MailAddress((string)m["From"]["Address"], (string)m["From"]["DisplayName"]);
+
+                    foreach (JToken replyTo in m["ReplyToList"])
                     {
-                        mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(view["Content"].ToString(), Encoding.UTF8, view["Type"]["MediaType"].ToString()));
+                        mail.ReplyToList.Add(new MailAddress((string)replyTo["Address"], (string)replyTo["DisplayName"]));
+                    }
+                    foreach (JToken to in m["To"])
+                    {
+                        mail.To.Add(new MailAddress((string)to["Address"], (string)to["DisplayName"]));
+                    }
+                    foreach (JToken bcc in m["Bcc"])
+                    {
+                        mail.Bcc.Add(new MailAddress((string)bcc["Address"], (string)bcc["DisplayName"]));
+                    }
+                    foreach (JToken cc in m["CC"])
+                    {
+                        mail.CC.Add(new MailAddress((string)cc["Address"], (string)cc["DisplayName"]));
+                    }
+                    mail.Priority = (MailPriority)((int)m["Priority"]);
+                    mail.DeliveryNotificationOptions = (DeliveryNotificationOptions)((int)m["DeliveryNotificationOptions"]);
+                    mail.Subject = (string)m["Subject"];
+                    mail.Body = (string)m["Body"];
+                    mail.BodyTransferEncoding = (System.Net.Mime.TransferEncoding)((int)m["BodyTransferEncoding"]);
+                    mail.IsBodyHtml = (bool)m["IsBodyHtml"];
+
+                    if (m["AlternateViews"].Children().Count() > 0)
+                    {
+                        foreach (JObject view in m["AlternateViews"].Children())
+                        {
+                            mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(view["Content"].ToString(), Encoding.UTF8, view["Type"]["MediaType"].ToString()));
+                        }
+                    }
+
+                    attachmentList = JArray.Parse(row.AttachmentList);
+
+                    bool sent = SendMail(row.Application, false);
+                    if (sent)
+                    {
+                        e.EmailQueueItems.Remove(row);
+                    }
+                    else
+                    {
+                        row.Status = EmailQueueStatus.error;
                     }
                 }
-
-                attachmentList = JArray.Parse(row.AttachmentList);
-
-                bool sent = SendMail(row.Application, false);
-                if(sent) {
-                    e.EmailQueueItems.Remove(row);
-                }
-                else {
-                    row.Status = EmailQueueStatus.error;
+                catch(Exception ex)
+                {
+                    OmniusException.Log(ex, OmniusLogSource.Hermes);
                 }
             }
 

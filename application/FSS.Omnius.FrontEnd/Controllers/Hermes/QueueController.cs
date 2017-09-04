@@ -39,9 +39,9 @@ namespace FSS.Omnius.Controllers.Hermes
             return RedirectToRoute("Hermes", new { @action = "Index" });
         }
 
-        public ActionResult RunSender()
+        public ActionResult RunSender(string serverName = "")
         {
-            Mailer mailer = new Mailer("Test");
+            Mailer mailer = new Mailer(serverName);
             mailer.RunSender();
 
             return RedirectToRoute("Hermes", new { @action = "Index" });

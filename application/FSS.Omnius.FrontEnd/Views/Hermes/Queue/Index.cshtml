@@ -50,7 +50,7 @@
                             <td>@item.Id</td>
                             <td>@item.Date_Inserted.ToShortDateString()</td>
                             <td>@item.Date_Send_After.ToShortDateString()</td>
-                            <td>@WatchtowerLogger.Instance.GetEventSourceString(item.Application_Id == null, item.Application_Id)</td>
+                            <td>@(item.Application?.Name)</td>
                             <td>@mail["Subject"]</td>
                             <td>@Html.Raw(mail["From"]["Address"])</td>
                             <td>@Mailer.QueuStatusName((int)item.Status)</td>
