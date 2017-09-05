@@ -54,13 +54,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             Mailer czechMailer = new Mailer("", templateName, dataDictionary, 1);
             Mailer englishMailer = new Mailer("", templateName, dataDictionary, 2);
 
+            var recipientsCzechOutput = new Dictionary<string, string>();
+            var recipientsEnglishOutput = new Dictionary<string, string>();
+            var bccCzechOutput = new Dictionary<string, string>();
+            var bccEnglishOutput = new Dictionary<string, string>();
+            
             if (vars.ContainsKey("Recipients"))
             {
                 var recipientsInputDict = (Dictionary<string, string>)vars["Recipients"];
-
-                var recipientsCzechOutput = new Dictionary<string, string>();
-                var recipientsEnglishOutput = new Dictionary<string, string>();
-
+                
                 foreach (var addressPair in recipientsInputDict)
                 {
                     var user = context.Users.Where(u => u.Email == addressPair.Key).FirstOrDefault();
@@ -75,10 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
             if (vars.ContainsKey("BCC")) {
                 var bccInputDict = (Dictionary<string, string>)vars["BCC"];
-
-                var bccCzechOutput = new Dictionary<string, string>();
-                var bccEnglishOutput = new Dictionary<string, string>();
-
+                
                 foreach (var addressPair in bccInputDict)
                 {
                     var user = context.Users.Where(u => u.Email == addressPair.Key).FirstOrDefault();
@@ -92,8 +91,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 englishMailer.BCC(bccEnglishOutput);
             }
 
-            czechMailer.SendBySender();
-            englishMailer.SendBySender();
+            if(recipientsCzechOutput.Count > 0 || bccCzechOutput.Count > 0)
+                czechMailer.SendBySender();
+            if(recipientsEnglishOutput.Count > 0 || bccEnglishOutput.Count > 0)
+                englishMailer.SendBySender();
         }
     }
 }
