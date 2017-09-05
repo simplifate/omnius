@@ -1,16 +1,45 @@
+using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using System.Collections.Generic;
+using FSS.Omnius.FrontEnd;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Hermes;
 using FSS.Omnius.Modules.Hermes;
+using Microsoft.AspNet.Identity.Owin;
+using C = FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Controllers.Hermes
 {
-    [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
     public class QueueController : Controller
     {
+        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set {
+                _userManager = value;
+            }
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set {
+                _signInManager = value;
+            }
+        }
+
+        private string userName;
+
         // GET: Queue
+        [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Index()
         {
             DBEntities e = DBEntities.instance;
@@ -21,6 +50,7 @@ namespace FSS.Omnius.Controllers.Hermes
             return View(e.EmailQueueItems);
         }
 
+        [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Detail(int id)
         {
             DBEntities e = DBEntities.instance;
@@ -28,6 +58,7 @@ namespace FSS.Omnius.Controllers.Hermes
             return PartialView("~/Views/Hermes/Queue/Detail.cshtml", e.EmailQueueItems.Single(m => m.Id == id));
         }
 
+        [PersonaAuthorize(NeedsAdmin = true, Module = "Hermes")]
         public ActionResult Delete(int id)
         {
             DBEntities e = DBEntities.instance;
@@ -39,12 +70,43 @@ namespace FSS.Omnius.Controllers.Hermes
             return RedirectToRoute("Hermes", new { @action = "Index" });
         }
 
+        [AllowAnonymous]
         public ActionResult RunSender(string serverName = "")
         {
+            bool isAuthorized = Authorize();
+            bool redirect = true;
+
+            if (!isAuthorized)
+                return new Http403Result();
+
+            C.CORE core = HttpContext.GetCORE();
+
+            if (core.User == null) {
+                redirect = false;
+                core.User = core.Persona.AuthenticateUser(userName);
+            }
+
             Mailer mailer = new Mailer(serverName);
             mailer.RunSender();
 
-            return RedirectToRoute("Hermes", new { @action = "Index" });
+            if (redirect) {
+                return RedirectToRoute("Hermes", new { @action = "Index" });
+            }
+            else {
+                return new EmptyResult();
+            }
+        }
+
+        private bool Authorize()
+        {
+            userName = HttpContext.Request.QueryString["User"];
+            string password = HttpContext.Request.QueryString["Password"];
+
+            var result = SignInManager.PasswordSignIn(userName, password, false, shouldLockout: false);
+            if (result == SignInStatus.Success) {
+                return true;
+            }
+            return false;
         }
     }
 }
