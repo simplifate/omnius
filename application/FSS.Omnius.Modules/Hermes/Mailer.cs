@@ -221,7 +221,7 @@ namespace FSS.Omnius.Modules.Hermes
         public void RunSender()
         {
             DateTime now = DateTime.UtcNow;
-            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now && m.Status != EmailQueueStatus.error).ToList();
+            List<EmailQueue> rows = e.EmailQueueItems.Where(m => m.Date_Send_After <= now).ToList();
 
             foreach(EmailQueue row in rows)
             {
