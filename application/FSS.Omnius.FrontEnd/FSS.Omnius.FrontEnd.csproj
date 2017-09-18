@@ -2151,6 +2151,7 @@
     <Content Include="Views\App\DatabazeSubjektu\Page\Bootstrap\45.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\46.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\47.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\48.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
