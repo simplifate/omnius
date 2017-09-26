@@ -1234,6 +1234,7 @@
     <Compile Include="Tapestry\Actions\Apps\SmartCoasters\ParseValues.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\ParseExchangeRates.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToListAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetListsElementByIndexAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TableColumnToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GroupTableRowsAction.cs" />
