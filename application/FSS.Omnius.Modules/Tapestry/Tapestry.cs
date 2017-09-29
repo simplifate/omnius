@@ -59,6 +59,8 @@ namespace FSS.Omnius.Modules.Tapestry
                         output[key] = (int)pair.Value;
                     else if (pair.Value is double)
                         output[key] = (double)pair.Value;
+                    else if (pair.Value is Dictionary<string,object>)
+                        output[key] = JToken.FromObject(pair.Value);
                     else
                         output[key] = pair.Value != null ? (pair.Value as IToJson).ToJson() : null;
                 }
