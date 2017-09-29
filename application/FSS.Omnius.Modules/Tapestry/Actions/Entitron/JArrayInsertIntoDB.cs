@@ -73,7 +73,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             foreach (JObject jo in jarray)
             {
                 Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
-                TapestryUtils.ParseJObject(jo, parsedColumns);
+                TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
 
                 DBItem parsedRow = new DBItem();
                 int colId = 0;

@@ -86,7 +86,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             foreach (JObject jo in jarray)
             {
                 Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
-                TapestryUtils.ParseJObject(jo, parsedColumns);
+                TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
 
                 DBItem parsedRow = new DBItem();
                 int colId = 0;
@@ -104,7 +104,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     if (col.Name == "id")
                         continue;
                     string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
-                    item.createProperty(colId++, col.Name, parsedRow[parsedColName]);
+                    if(parsedRow[parsedColName] != null)//
+                        item.createProperty(colId++, col.Name, parsedRow[parsedColName]);
                 }
 
                 table.Add(item);
