@@ -114,7 +114,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     string orderBy = (string)vars["OrderBy"];
                     if(!string.IsNullOrEmpty(orderBy))
                     {
-                        query = isOrderedByIndex ? query.OrderBy($"index: {orderBy}") : query.OrderBy(orderBy);
+                        query = isOrderedByIndex ? query.OrderBy($"index:{orderBy}") : query.OrderBy(orderBy);
                     }
                 }
                 if(vars.ContainsKey("Limit")) {
