@@ -47,8 +47,12 @@ namespace FSS.Omnius.Modules.Tapestry
             {
                 int startIndex = pair.Key.IndexOf('[') + 1;
                 string key = pair.Key.Substring(startIndex, pair.Key.IndexOf(']', startIndex) - startIndex);
-                if (key.Length == 0) {
-                    output = pair.Value is JToken ? (JToken)pair.Value : (pair.Value as IToJson).ToJson();
+                if (key.Length == 0)
+                {
+                    if (pair.Value is Dictionary<string, object>)
+                        output = JToken.FromObject(pair.Value);                    
+                    else
+                        output = pair.Value is JToken ? (JToken)pair.Value : (pair.Value as IToJson).ToJson();
                 }
                 else {
                     if (pair.Value is string)
