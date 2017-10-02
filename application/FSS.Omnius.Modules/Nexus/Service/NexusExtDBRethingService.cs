@@ -62,7 +62,14 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
         public override JToken FetchAll()
         {
-            return query.RunResult<JArray>(c);
+            Cursor<JObject> all = query.RunCursor<JObject>(c);
+            JArray rows = new JArray();
+
+            foreach(JObject row in all) {
+                rows.Add(row);
+            }
+
+            return rows;
         }
 
         public override JToken FetchOne()
