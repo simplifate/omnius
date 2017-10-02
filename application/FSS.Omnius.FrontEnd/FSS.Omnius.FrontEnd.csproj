@@ -2152,6 +2152,9 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\46.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\47.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\48.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\49.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\50.cshtml" />
+    <Content Include="Views\App\Xmu\Page\Bootstrap\51.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
