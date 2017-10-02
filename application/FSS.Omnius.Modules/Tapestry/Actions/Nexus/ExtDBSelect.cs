@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			get
 			{
-				return new string[] { "s$TableName", "?s$CondColumn[]", "?CondValue[]", "?s$CondOperator[][eq|lt|gt|lte|gte|like|not-like|in|not-in]", "?s$OrderBy", "?b$OrderByIndex", "?i$Limit", "?i$Skip" };
+				return new string[] { "s$TableName", "?s$CondColumn[]", "?CondValue[]", "?s$CondOperator[][eq|lt|gt|lte|gte|like|not-like|in|not-in]", "?s$OrderBy", "?OrderByIndex", "?i$Limit", "?i$Skip" };
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     throw new Exception(string.Format("{0}: Integration was not found", Name));
                 }
 
-                bool isOrderedByIndex = (vars.ContainsKey("OrderByIndex")) ? (bool)vars["Index"] : false;
+                bool isOrderedByIndex = (vars.ContainsKey("OrderByIndex")) ? Convert.ToBoolean(vars["Index"]) : false;
 
                 NexusExtDBBaseService service;
                 switch(dbInfo.DB_Type) {
@@ -114,7 +114,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     string orderBy = (string)vars["OrderBy"];
                     if(!string.IsNullOrEmpty(orderBy))
                     {
-                        query = isOrderedByIndex ? query.OrderBy(orderBy) : query.OrderBy($"index: {orderBy}");
+                        query = isOrderedByIndex ? query.OrderBy($"index: {orderBy}") : query.OrderBy(orderBy);
                     }
                 }
                 if(vars.ContainsKey("Limit")) {
