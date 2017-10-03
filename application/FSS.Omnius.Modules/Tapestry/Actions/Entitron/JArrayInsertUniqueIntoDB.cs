@@ -55,63 +55,80 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-
-            bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-
-            string tableName = vars.ContainsKey("TableName")
-                ? (string)vars["TableName"]
-                : (string)vars["__TableName__"];
-            DBTable table = core.Entitron.GetDynamicTable(tableName, searchInShared);
-            if (table == null)
-                throw new Exception($"Queried table not found! (Table: {tableName}, Action: {Name} ({Id}))");
-
-            string uniqueCol;
-            string uniqueExtCol; //basicly foreign key
-            if (vars.ContainsKey("UniqueCol"))
+            JArray jarray = (JArray)vars["JArray"];
+            if (jarray.HasValues)
             {
-                uniqueCol = (string)vars["UniqueCol"];
-                uniqueExtCol = uniqueCol;
+                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+
+                bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
+
+                string tableName = vars.ContainsKey("TableName")
+                    ? (string)vars["TableName"]
+                    : (string)vars["__TableName__"];
+                DBTable table = core.Entitron.GetDynamicTable(tableName, searchInShared);
+                if (table == null)
+                    throw new Exception($"Queried table not found! (Table: {tableName}, Action: {Name} ({Id}))");
+
+                string uniqueCol;
+                string uniqueExtCol; //basicly foreign key
+                if (vars.ContainsKey("UniqueCol"))
+                {
+                    uniqueCol = (string)vars["UniqueCol"];
+                    uniqueExtCol = uniqueCol;
+                }
+                else
+                {
+                    uniqueCol = "ext_id";
+                    uniqueExtCol = "id";
+                }
+                if (!table.columns.Exists(c => c.Name == uniqueExtCol))
+                    throw new Exception($"Table column named '{uniqueExtCol}' not found!");
+
+                HashSet<string> tableUniques = new HashSet<string>(table.Select(uniqueCol).ToList().Select(x => x[uniqueCol].ToString()).ToList());
+
+                HashSet<DBItem> parsedItems = new HashSet<DBItem>();
+                foreach (JObject jo in jarray)
+                {
+                    Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
+                    TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
+
+                    DBItem parsedRow = new DBItem();
+                    int colId = 0;
+                    foreach (var parsedCol in parsedColumns)
+                        parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
+                    parsedItems.Add(parsedRow);
+                }
+                HashSet<string> parsedExtIds = new HashSet<string>(); //ids of items from input jarray
+                foreach (var item in parsedItems)
+                    parsedExtIds.Add(item[uniqueExtCol].ToString());
+                HashSet<string> newUniqueIDs = new HashSet<string>(parsedExtIds.Except(tableUniques));
+                parsedItems.RemoveWhere(x => !newUniqueIDs.Contains(x[uniqueExtCol]));
+
+                foreach (DBItem parsedItem in parsedItems)
+                {
+                    DBItem item = new DBItem();
+                    int colId = 0;
+                    foreach (DBColumn col in table.columns)
+                    {
+                        if (col.Name == "id")
+                            continue;
+                        string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
+                        if (parsedItem[parsedColName] != null)//
+                            item.createProperty(colId++, col.Name, parsedItem[parsedColName]);
+                    }
+
+                    table.Add(item);
+
+                }
+
+                core.Entitron.Application.SaveChanges();
+                outputVars["Result"] = true;
             }
             else
             {
-                uniqueCol = "ext_id";
-                uniqueExtCol = "id";
+                Watchtower.OmniusLog.Log($"{Name}: Input JArray has no values! Action aborted", Watchtower.OmniusLogLevel.Warning);
+                outputVars["Result"] = false;
             }
-            if (!table.columns.Exists(c => c.Name == uniqueExtCol))
-                throw new Exception($"Table column named '{uniqueExtCol}' not found!");
-
-            JArray jarray = (JArray)vars["JArray"];
-            foreach (JObject jo in jarray)
-            {
-                Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
-                TapestryUtils.ParseJObjectRecursively(jo, parsedColumns);
-
-                DBItem parsedRow = new DBItem();
-                int colId = 0;
-                foreach (var parsedCol in parsedColumns)
-                    parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
-
-                //Skip if an item already exists in the table
-                if (table.Select().ToList().Any(c => c[uniqueCol].ToString() == parsedRow[uniqueExtCol].ToString()))
-                    continue;
-
-                DBItem item = new DBItem();
-                colId = 0;
-                foreach (DBColumn col in table.columns)
-                {
-                    if (col.Name == "id")
-                        continue;
-                    string parsedColName = (col.Name == "ext_id") ? "id" : col.Name;
-                    if(parsedRow[parsedColName] != null)//
-                        item.createProperty(colId++, col.Name, parsedRow[parsedColName]);
-                }
-
-                table.Add(item);
-            }
-            core.Entitron.Application.SaveChanges();
-            outputVars["Result"] = "Successful";
         }
     }
 }

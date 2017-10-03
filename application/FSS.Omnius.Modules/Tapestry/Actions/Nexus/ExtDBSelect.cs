@@ -77,7 +77,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     throw new Exception(string.Format("{0}: Integration was not found", Name));
                 }
 
-                bool isOrderedByIndex = (vars.ContainsKey("OrderByIndex")) ? Convert.ToBoolean(vars["Index"]) : false;
+                bool isOrderedByIndex = (vars.ContainsKey("OrderByIndex")) ? Convert.ToBoolean(vars["OrderByIndex"]) : false;
 
                 NexusExtDBBaseService service;
                 switch(dbInfo.DB_Type) {
@@ -91,6 +91,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
                 var query = service.From(tableName);
 
+                if(service is NexusExtDBRethingService && vars.ContainsKey("OrderBy")) {
+                    string orderBy = (string)vars["OrderBy"];
+                    if(!string.IsNullOrEmpty(orderBy))
+                    {
+                        query = isOrderedByIndex ? query.OrderBy($"index:{orderBy}") : query.OrderBy(orderBy);
+                    }
+                }
                 int condCount = vars.Keys.Where(k => k.StartsWith("CondColumn[") && k.EndsWith("]")).Count();
                 if(condCount > 0) { 
                     JArray cond = new JArray();
@@ -110,14 +117,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     query = query.Where(cond);
                 }
 
-                if(vars.ContainsKey("OrderBy")) {
+                if (service is NexusExtDBService && vars.ContainsKey("OrderBy"))
+                {
                     string orderBy = (string)vars["OrderBy"];
-                    if(!string.IsNullOrEmpty(orderBy))
+                    if (!string.IsNullOrEmpty(orderBy))
                     {
-                        query = isOrderedByIndex ? query.OrderBy($"index:{orderBy}") : query.OrderBy(orderBy);
+                        query = query.OrderBy(orderBy);
                     }
                 }
-                if(vars.ContainsKey("Limit")) {
+
+                if (vars.ContainsKey("Limit")) {
                     query = query.Limit((int)vars["Limit"]);
                 }
                 if(vars.ContainsKey("Skip")) {
