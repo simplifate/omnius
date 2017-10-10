@@ -464,7 +464,7 @@ namespace FSS.Omnius.Controllers.Entitron
                 if(lockedForUserId != null){
                     result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
                 }
-                if (commitId == -1) {
+                if (commitId == -1 && requestedCommit != null) {
                     DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
                     AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
                     
