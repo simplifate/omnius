@@ -10182,7 +10182,10 @@ DD.lock = {
         pageSpinner.show();
         var appId = self.appId;
         var userId = self.currentUserId;
-        var CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
+        var CurrentSchemeCommitId = -1;
+        if (DD.lock.CurrentSchemeCommitId != null) {
+            CurrentSchemeCommitId = DD.lock.CurrentSchemeCommitId;
+        }
 
         var url = "/api/database/apps/" + appId + "/isSchemeLocked/" + userId + "/" + CurrentSchemeCommitId;
 

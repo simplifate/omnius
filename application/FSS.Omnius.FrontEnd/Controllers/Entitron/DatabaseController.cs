@@ -113,7 +113,9 @@ namespace FSS.Omnius.Controllers.Entitron
             {
                 var result = new AjaxSchemeLockingStatus();
                 var app = context.Applications.Find(appId);
-                int? lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
+                int? lastCommitId = -1;
+                if(CurrentSchemeCommitId != -1)
+                    lastCommitId = context.Applications.Find(appId).DatabaseDesignerSchemeCommits.OrderByDescending(s => s.Timestamp).FirstOrDefault().Id;
                 var lockedForUserId = context.Applications.Find(appId).SchemeLockedForUserId;
                 if (lockedForUserId != null && userId != lockedForUserId)//if scheme is locked 
                 {
@@ -131,7 +133,7 @@ namespace FSS.Omnius.Controllers.Entitron
                         return new AjaxSchemeLockingStatus() { lockStatusId = 3, lockedForUserName = "" };
                     }
                 }
-                else
+                else //if its not locked
                     return new AjaxSchemeLockingStatus() { lockStatusId = 0, lockedForUserName = "" };
             }
         }
