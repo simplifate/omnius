@@ -2155,6 +2155,12 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\49.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\50.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\51.cshtml" />
+    <Content Include="Views\App\VozovyPark\menuLayout.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\52.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\53.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\54.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\55.cshtml" />
+    <Content Include="Views\App\VozovyPark\Page\Bootstrap\58.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
