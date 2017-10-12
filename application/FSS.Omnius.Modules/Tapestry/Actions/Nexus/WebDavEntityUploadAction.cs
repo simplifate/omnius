@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "ModelEntityName", "InputNames", "WebDavServerName", "DescriptionInput" };    //TODO: české tagy?
+                return new string[] { "ModelEntityName", "InputNames", "WebDavServerName", "DescriptionInput", "?NewId" };    //TODO: české tagy?
             }
         }
 
