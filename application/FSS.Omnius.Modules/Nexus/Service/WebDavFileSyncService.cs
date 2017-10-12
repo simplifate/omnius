@@ -161,7 +161,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
             #endregion
 
-            #region index with elastic search engine
+         /*   #region index with elastic search engine
 
 
             IElasticService serviceElastic = new ElasticService();
@@ -174,9 +174,9 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
 
             #endregion
-
+            */
         }
-
+        
         /*
         private Uri getUriDirectory(string baseUrl, FileMetadata fmd)
         {
