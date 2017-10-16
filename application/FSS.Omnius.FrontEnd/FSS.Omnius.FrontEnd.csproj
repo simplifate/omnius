@@ -2161,6 +2161,13 @@
     <Content Include="Views\App\VozovyPark\Page\Bootstrap\54.cshtml" />
     <Content Include="Views\App\VozovyPark\Page\Bootstrap\55.cshtml" />
     <Content Include="Views\App\VozovyPark\Page\Bootstrap\58.cshtml" />
+    <Content Include="Views\App\TicketSupport\menuLayout.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\1125.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\60.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\61.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\62.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\63.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\64.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
