@@ -317,5 +317,23 @@ $(function () {
     if(bc.length)
     {
         BootstrapUserInit.init(bc);
+
+        $(".uic.input-with-datepicker").datetimepicker({
+            datepicker: true,
+            timepicker: false,
+            format: "d.m.Y"
+        });
+        $(".uic.input-with-timepicker").datetimepicker({
+            datepicker: false,
+            timepicker: true,
+            step: 5,
+            format: "H:i:00"
+        });
+        $(".uic.input-with-datetimepicker").datetimepicker({
+            datepicker: true,
+            timepicker: true,
+            step: 5,
+            format: "d.m.Y H:i:00"
+        });
     }
 });
