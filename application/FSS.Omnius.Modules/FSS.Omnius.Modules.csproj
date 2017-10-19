@@ -1202,6 +1202,10 @@
     <Compile Include="Migrations\201709011206320_EmailQueueOptionalApp.Designer.cs">
       <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.cs" />
+    <Compile Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.Designer.cs">
+      <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -1998,6 +2002,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709011206320_EmailQueueOptionalApp.resx">
       <DependentUpon>201709011206320_EmailQueueOptionalApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.resx">
+      <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
