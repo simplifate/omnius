@@ -2168,6 +2168,8 @@
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\62.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\63.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\64.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\66.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\67.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
