@@ -57,17 +57,32 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     else
                         return leftOperand.ToString() != value.ToString();
                 case ">":
-                    return Convert.ToDecimal(leftOperand) > Convert.ToDecimal(value);
+                    if (leftOperand is DateTime && value is DateTime)
+                        return (DateTime)leftOperand > (DateTime)value;
+                    else
+                        return Convert.ToDecimal(leftOperand) > Convert.ToDecimal(value);
                 case ">=":
-                    return Convert.ToDecimal(leftOperand) >= Convert.ToDecimal(value);
+                    if (leftOperand is DateTime && value is DateTime)
+                        return (DateTime)leftOperand >= (DateTime)value;
+                    else
+                        return Convert.ToDecimal(leftOperand) >= Convert.ToDecimal(value);
                 case "<":
-                    return Convert.ToDecimal(leftOperand) < Convert.ToDecimal(value);
+                    if (leftOperand is DateTime && value is DateTime)
+                        return (DateTime)leftOperand < (DateTime)value;
+                    else
+                        return Convert.ToDecimal(leftOperand) < Convert.ToDecimal(value);
                 case "<=":
-                    return Convert.ToDecimal(leftOperand) <= Convert.ToDecimal(value);
+                    if (leftOperand is DateTime && value is DateTime)
+                        return (DateTime)leftOperand <= (DateTime)value;
+                    else
+                        return Convert.ToDecimal(leftOperand) <= Convert.ToDecimal(value);
                 case "contains":
                     return ((string)leftOperand).Contains(value.ToString());
+                case "is in":
+                    return ((List<object>)value).Contains(leftOperand);
             }
             return true;
+
         }
     }
 }
