@@ -47,7 +47,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var tableData = (List<object>)vars["TableData"];
+            var tableData = (List<DBItem>)vars["TableData"];
             int tableDataCount = tableData.Count;
 
             outputVars["Result"] = tableDataCount;
