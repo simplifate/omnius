@@ -158,7 +158,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="dataTablesCompleted" />
-</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><button type="button" class="btn btn-primary mbe-active" name="button" value="scheduleButtton" id="scheduleButtton" style="float: right; display: inline-block" >@(@"Schedule")</button><p class="" style="float: right; display: inline-block">@(@"Check severity of tickets: ")</p></div></div><div class="row"><div class="col-xs-12"><div class="graphWrapper" id="hc_ticketOverview" style="height: 300px;">@Html.Raw(@"<div id=""hc_ticketOverview_graph""></div><script>Highcharts.setOptions({
+</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><form class="form-horizontal" method="post"><button type="submit" class="btn btn-primary mbe-active" name="button" value="scheduleButtton" id="scheduleButtton" style="float: right; display: inline-block" >@(@"Schedule")</button><p class="" style="float: right; display: inline-block">@(@"Check severity of tickets: ")</p>@Html.AntiForgeryToken()</form></div></div><div class="row"><div class="col-xs-12"><div class="graphWrapper" id="hc_ticketOverview" style="height: 300px;">@Html.Raw(@"<div id=""hc_ticketOverview_graph""></div><script>Highcharts.setOptions({
  colors: ['#dbdbdb', '#ff2323', '#1fe052', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
 });
 
