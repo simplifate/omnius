@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Globalization;
+using System.Configuration;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -33,6 +34,7 @@ namespace FSS.Omnius.FrontEnd
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
+            Omnius.Modules.Entitron.Entitron.connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             MvcHandler.DisableMvcResponseHeader = true;
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");

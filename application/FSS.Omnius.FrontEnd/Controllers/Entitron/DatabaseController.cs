@@ -14,6 +14,7 @@ using Logger;
 using static System.String;
 using FSS.Omnius.Modules.Entitron;
 using System.Data.SqlClient;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 
 namespace FSS.Omnius.Controllers.Entitron
 {
@@ -203,14 +204,14 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpPost]
         public AjaxTransferViewColumnList GetViewScheme(int appId, string viewName)
         {
-            string appName = DBEntities.instance.Applications.FirstOrDefault(a => a.Id == appId).Name;
+            Application app = DBEntities.instance.Applications.FirstOrDefault(a => a.Id == appId);
 
             AjaxTransferViewColumnList list = new AjaxTransferViewColumnList();
 
-            using (SqlConnection connection = new SqlConnection(Modules.Entitron.Entitron.connectionString)) {
+            using (SqlConnection connection = new SqlConnection(app.connectionString_data ?? Modules.Entitron.Entitron.connectionString)) {
                 connection.Open();
 
-                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = 'Entitron_{appName}_{viewName}'", connection);
+                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = 'Entitron_{app.Name}_{viewName}'", connection);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows) {

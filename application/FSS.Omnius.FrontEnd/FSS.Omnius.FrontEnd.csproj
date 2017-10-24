@@ -797,6 +797,7 @@
     <Content Include="Scripts\Tapestry\Overview\_Save.js" />
     <Content Include="Scripts\Tapestry\Overview\_Trash.js" />
     <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
+    <Content Include="Scripts\UserScripts\Application\TicketSupport\highlightJS.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\TrezorTest.js.js" />
     <Content Include="Scripts\UserScripts\AppUtils.js" />
@@ -2168,6 +2169,8 @@
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\62.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\63.cshtml" />
     <Content Include="Views\App\TicketSupport\Page\Bootstrap\64.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\66.cshtml" />
+    <Content Include="Views\App\TicketSupport\Page\Bootstrap\67.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

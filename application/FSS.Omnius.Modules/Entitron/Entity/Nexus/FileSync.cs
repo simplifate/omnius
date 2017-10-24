@@ -43,6 +43,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Nexus
         public DateTime TimeCreated { get; set; }
         public DateTime TimeChanged { get; set; }
         public int Version { get; set; }
+        public string AbsoluteURL { get; set; }
 
         public virtual WebDavServer WebDavServer { get; set; }
         public virtual FileSyncCache CachedCopy { get; set; }

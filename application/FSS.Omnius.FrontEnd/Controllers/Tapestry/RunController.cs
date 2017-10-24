@@ -114,6 +114,7 @@ namespace FSS.Omnius.Controllers.Tapestry
             ViewData["appIcon"] = core.Entitron.Application.Icon;
             ViewData["pageName"] = block.DisplayName;
             ViewData["UserEmail"] = core.User.Email;
+            ViewData["UserId"] = core.User.Id;
             ViewData["blockName"] = block.Name;
             ViewData["crossBlockRegistry"] = "";
             ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));

@@ -103,6 +103,7 @@
     <input type="hidden" id="currentLocale" value="@((string)ViewData["locale"])" />
     <input type="hidden" id="currentBlockName" value="@t._((string)ViewData["blockName"])" />
     <input type="hidden" id="currentUserName" value="@ViewData["userName"]" />
+    <input type="hidden" id="currentUserId" value="@ViewData["UserId"]" />
     @if ((string)ViewData["Mode"] == "App" && ViewData["AssociatedModals"] != null)
     {
         <div id="modalRepository">
