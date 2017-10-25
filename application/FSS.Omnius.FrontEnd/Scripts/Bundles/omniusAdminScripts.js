@@ -10492,7 +10492,7 @@ $(function () {
             appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
             var messagesById = {};
 
-            var ws = new WebSocket('wss://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
+            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/BuildApp/' + CurrentAppId);
             currentWs = ws;
             //var timeLast = Date.now();
             ws.onerror = function () {
@@ -10549,7 +10549,7 @@ $(function () {
             appBuildDialog.dialog("option", { title: "aktualizuji " + $(this).parents("tr").data("displayName") }).empty().dialog("open");
             var messagesById = {};
 
-            var ws = new WebSocket('wss://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);
+            var ws = new WebSocket('ws://' + window.location.hostname + ':' + window.location.port + '/Master/AppAdminManager/RebuildApp/' + CurrentAppId);
             currentWs = ws;
             //var timeLast = Date.now();
             ws.onerror = function () {
