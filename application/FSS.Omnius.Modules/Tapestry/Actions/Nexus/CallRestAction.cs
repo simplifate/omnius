@@ -37,7 +37,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?MaxAge" };
+                return new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?MaxAge", "?v$CustomHeaders" };
             }
         }
 
@@ -76,6 +76,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 string method = (string)vars["Method"];
                 string wsName = (string)vars["WSName"];
                 string inputData = vars.ContainsKey("InputData") ? (string)vars["InputData"] : "";
+                List<string> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<string>)vars["CustomHeaders"] : new List<string>(); 
                 int maxAge = vars.ContainsKey("MaxAge") ? (int)vars["MaxAge"] : 0;
                 bool inputFromJSON = vars.ContainsKey("InputFromJSON") ? (bool)vars["InputFromJSON"] : false;
 
@@ -134,7 +135,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 httpWebRequest.Method = method.ToUpper();
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Accept = "application/json";
-
+                
+                foreach(string header in customHeaders) {
+                    httpWebRequest.Headers.Add(header);
+                }
+                
                 if (!string.IsNullOrEmpty(service.Auth_User))
                 {
                     httpWebRequest.Credentials = new NetworkCredential(service.Auth_User, service.Auth_Password);
