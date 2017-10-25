@@ -3,4 +3,7 @@
 @if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
                     <a href="/Xmu/Overview">@(t._("Overview"))</a>
             </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",117)){            <li>
+                    <a href="/Xmu/Atsrobot">@(t._("AtsRobot"))</a>
+            </li>
 }    </ul>
