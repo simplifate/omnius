@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "RowData", "KeyMapping", "?Dictionary" };
+                return new string[] { "RowData", "KeyMapping", "?Dictionary", "?AutoMapping" };
             }
         }
 
@@ -64,6 +64,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             
             DBItem rowData = null;
             bool useRowData = true;
+            bool skipMapping = false;
             if (!vars.ContainsKey("RowData"))
                 useRowData = false;
             else if (vars["RowData"] is string)
@@ -73,42 +74,49 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else if (vars["RowData"] is IEnumerable<DBItem>)
                 rowData = (vars["RowData"] as IEnumerable<DBItem>).FirstOrDefault();
 
-            var autoMapping = (vars.ContainsKey("AutoMapping") && Convert.ToBoolean(vars["AutoMapping"])) || !vars.ContainsKey("KeyMapping");
+            var autoMapping = (vars.ContainsKey("AutoMapping") && Convert.ToBoolean(vars["AutoMapping"]));
 
-            List <string> mappingStringList;
+            List <string> mappingStringList = null;
             if (autoMapping)
             {
                 mappingStringList = rowData.getColumnNames().Select(a => $"{a}:{a}").ToList();
+            }
+            else if (!vars.ContainsKey("KeyMapping"))
+            {
+                skipMapping = true;
             }
             else
             { 
                 mappingStringList = ((string)vars["KeyMapping"]).Split(',').ToList();
             }
 
-            foreach (string mappingString in mappingStringList)
+            if (!skipMapping)
             {
-                List<string> tokens = mappingString.Split(':').ToList();
-                if (tokens.Count != 2)
-                    continue;
-                string columnName = tokens[1];
-                object value;
-                if (useRowData)
-                    value = rowData[columnName];
-                else
-                    value = KeyValueString.ParseValue(columnName, vars);
-                if(dictionary.ContainsKey(tokens[0]))
+                foreach (string mappingString in mappingStringList)
                 {
-                    if (value == null)
-                        dictionary[tokens[0]] = "";
+                    List<string> tokens = mappingString.Split(':').ToList();
+                    if (tokens.Count != 2)
+                        continue;
+                    string columnName = tokens[1];
+                    object value;
+                    if (useRowData)
+                        value = rowData[columnName];
                     else
-                        dictionary[tokens[0]] = value;
-                }
-                else
-                {
-                    if (value == null)
-                        dictionary.Add(tokens[0], "");
+                        value = KeyValueString.ParseValue(columnName, vars);
+                    if (dictionary.ContainsKey(tokens[0]))
+                    {
+                        if (value == null)
+                            dictionary[tokens[0]] = "";
+                        else
+                            dictionary[tokens[0]] = value;
+                    }
                     else
-                        dictionary.Add(tokens[0], value);
+                    {
+                        if (value == null)
+                            dictionary.Add(tokens[0], "");
+                        else
+                            dictionary.Add(tokens[0], value);
+                    }
                 }
             }
             outputVars["Result"] = dictionary;
