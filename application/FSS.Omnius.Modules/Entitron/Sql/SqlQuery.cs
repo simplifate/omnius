@@ -174,7 +174,7 @@ namespace FSS.Omnius.Modules.Entitron.Sql
             }
 
             // save param
-            _params[key] = value;
+            _params[key] = value ?? DBNull.Value;
             var a = new SqlParameter("to koukáš, co?", value);
             string type = a.SqlDbType.ToString();
             if (type == "Decimal")//TODO precision a scale se už vyplňuje, ale stále dochází k chybám, float zatím neotestován
