@@ -50,7 +50,11 @@
         var appId = $('#currentAppId').val();
         var blockId = $('#currentBlockId').val();
         var userId = $('#currentUserId').val();
-        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + TB.lock.currentCommitId;
+        var cCommitId = -1;
+        if (TB.lock.currentCommitId != null) {
+            cCommitId = TB.lock.currentCommitId;
+        }
+        var url = '/api/tapestry/apps/' + appId + '/blocks/' + blockId + '' + '/isBlockLocked/' + userId + '/commits/' + cCommitId;
 
 
         $.ajax({
