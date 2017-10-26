@@ -84,7 +84,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
                 if (!table.columns.Exists(c => c.Name == uniqueCol))
                     throw new Exception($"Table column named '{uniqueCol}' not found!");
-                var select = table.Select();
                 foreach (JObject jo in jarray)
                 {
                     Dictionary<string, object> parsedColumns = new Dictionary<string, object>();
@@ -94,7 +93,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     foreach (var parsedCol in parsedColumns)
                         parsedRow.createProperty(colId++, parsedCol.Key, parsedCol.Value);
 
-                    DBItem updatedRow = select.where(c => c.column(uniqueCol).Equal(parsedRow[uniqueExtCol])).FirstOrDefault();
+                    DBItem updatedRow = table.Select().where(c => c.column(uniqueCol).Equal(parsedRow[uniqueExtCol])).FirstOrDefault();
+
                     if (updatedRow != null) //update
                     {
                         foreach (var col in parsedRow.getColumnNames())
