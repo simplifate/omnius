@@ -61,7 +61,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"btcusd\"}}, \"id\": {requestId++}}}";
             string inputJson =
                     $"{{\"jsonrpc\": \"2.0\", \"method\": \"Orderbook.get\", \"params\": [], \"id\": {requestId++ + 1}}}";
-            var result2 = SendJsonOverTCP("194.145.180.207", 18123,initJson,inputJson);
+            var result = SendJsonOverTCP("194.145.180.207", 18123,initJson,inputJson);
+            var orderCashTable = core.Entitron.GetDynamicTable("order_cash", false);
+            core.Entitron.TruncateTable("order_cash");
+            core.Entitron.Application.SaveChanges();
+
+            foreach (var order in (JArray)result["result"])
+            {
+                DBItem row = new DBItem();
+                row.createProperty(0, "order_id", order[0].ToString());
+                row.createProperty(1, "buy_sell", order[1].ToString());
+                row.createProperty(2, "price", (double)order[2]);
+                row.createProperty(3, "amount", (double)order[3]);
+                orderCashTable.Add(row);
+                core.Entitron.Application.SaveChanges();
+            }
 
         }
 
