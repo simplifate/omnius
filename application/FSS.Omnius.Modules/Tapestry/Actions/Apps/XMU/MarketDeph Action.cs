@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { };
+                return new string[] {"IpAddress","Port"};
             }
         }
 
@@ -61,7 +61,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"btcusd\"}}, \"id\": {requestId++}}}";
             string inputJson =
                     $"{{\"jsonrpc\": \"2.0\", \"method\": \"Orderbook.get\", \"params\": [], \"id\": {requestId++ + 1}}}";
-            var result = SendJsonOverTCP("194.145.180.207", 18123,initJson,inputJson);
+            string ipAddress = vars["IpAddress"].ToString();
+            int port = Convert.ToInt32(vars["Port"]);
+            var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
             var orderCashTable = core.Entitron.GetDynamicTable("order_cash", false);
             core.Entitron.TruncateTable("order_cash");
             core.Entitron.Application.SaveChanges();
