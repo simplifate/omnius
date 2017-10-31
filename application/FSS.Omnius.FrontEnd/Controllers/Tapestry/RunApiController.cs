@@ -36,11 +36,11 @@ namespace FSS.Omnius.FrontEnd.Controllers.Tapestry
                 try
                 {
                     int blockId = Convert.ToInt32(blockIdentify);
-                    block = context.Blocks.SingleOrDefault(b => b.Id == blockId);
+                    block = context.Blocks.FirstOrDefault(b => b.Id == blockId);
                 }
                 catch (FormatException)
                 {
-                    block = context.Blocks.SingleOrDefault(b => b.Name == blockIdentify);
+                    block = context.Blocks.FirstOrDefault(b => b.Name == blockIdentify && b.WorkFlow.ApplicationId == core.Entitron.AppId);
                 }
 
                 try
