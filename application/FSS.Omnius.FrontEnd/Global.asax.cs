@@ -61,11 +61,12 @@ namespace FSS.Omnius.FrontEnd
         protected void Application_BeginRequest()
         {
             // SECURE: Ensure any request is returned over SSL/TLS in production
-            if (!Request.IsLocal && !Context.Request.IsSecureConnection)
+            // Has to be disabled on IIS instances without SSL certificates
+            /*if (!Request.IsLocal && !Context.Request.IsSecureConnection)
             {
                 var redirect = Context.Request.Url.ToString().ToLower(CultureInfo.CurrentCulture).Replace("http:", "https:");
                 Response.Redirect(redirect);
-            }
+            }*/
 
             RunController.requestStart = DateTime.Now;
             DBEntities.Create();
