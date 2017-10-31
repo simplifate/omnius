@@ -1312,6 +1312,7 @@
     <Compile Include="Tapestry\Actions\Hermes\SendMailAction.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\SaveFormState.cs" />
     <Compile Include="Tapestry\Actions\Mozaic\ValidateInputAction.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\ConvertJValue.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBUpdate.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBInsert.cs" />
     <Compile Include="Tapestry\Actions\Nexus\ExtDBSelect.cs" />
