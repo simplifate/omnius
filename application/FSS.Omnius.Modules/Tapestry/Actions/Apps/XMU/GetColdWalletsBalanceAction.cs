@@ -114,7 +114,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                          case "ZEC":
+                         case "ZEC":
                             var resultZec = GetResponse(string.Format("https://api.zcha.in/v2/mainnet/accounts/{0}", coldWallet["address"].ToString()));
                             if (resultZec != null)
                             {
@@ -123,9 +123,25 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
+                        case "XRP":
+                            var resultXrp = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
+                            if (resultXrp != null)
+                            {
+                                foreach(var b in (JArray)resultXrp["balances"])
+                                {
+                                    if(b["currency"].ToString() == "XRP")
+                                    {
+                                        coldWallet["balance"] = ((JValue)b["value"]).ToObject<double>();
+                                        hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                        ent.Application.SaveChanges();
+                                    }
+                                }
+                          
+                            }
+                            break;
 
                     }
-                   
+
                 }
             }
 
