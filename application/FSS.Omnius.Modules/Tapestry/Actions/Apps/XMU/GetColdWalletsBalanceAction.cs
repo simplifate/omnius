@@ -114,6 +114,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
+                          case "ZEC":
+                            var resultZec = GetResponse(string.Format("https://api.zcha.in/v2/mainnet/accounts/{0}", coldWallet["address"].ToString()));
+                            if (resultZec != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultZec["balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
+
                     }
                    
                 }
