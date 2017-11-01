@@ -165,6 +165,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 }
                             }
                             break;
+                        case "ETC":
+                            var resultEtc = GetResponse(string.Format("https://etcchain.com/api/v1/getAddressBalance?address={0}", coldWallet["address"].ToString()));
+                            if (resultEtc != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultEtc["balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
 
                     }
 
