@@ -139,6 +139,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                           
                             }
                             break;
+                        case "XVG":
+                            var resultXvg = GetResponse(string.Format("https://verge-blockchain.info/ext/getbalance/{0}", coldWallet["address"].ToString()));
+                            if (resultXvg != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultXvg).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+
+                            }
+                            break;
 
                     }
 
