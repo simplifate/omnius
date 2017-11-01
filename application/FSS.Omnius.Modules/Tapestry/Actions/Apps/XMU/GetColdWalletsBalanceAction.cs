@@ -70,10 +70,46 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     switch (coldWallet["currency_code"].ToString())
                     {
                         case "BTC":
-                            var result = GetResponse(string.Format("https://api.blockcypher.com/v1/btc/main/addrs/{0}/balance",coldWallet["address"].ToString()));
-                            if (result != null)
+                            var resultBtc = GetResponse(string.Format("https://api.blockcypher.com/v1/btc/main/addrs/{0}/balance",coldWallet["address"].ToString()));
+                            if (resultBtc != null)
                             {
-                                coldWallet["balance"] = ((JValue)result["final_balance"]).ToObject<double>();
+                                coldWallet["balance"] = ((JValue)resultBtc["final_balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
+                        case "ETH":
+                            var resultEth = GetResponse(string.Format("https://api.blockcypher.com/v1/eth/main/addrs/{0}/balance", coldWallet["address"].ToString()));
+                            if (resultEth != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
+                        case "DASH":
+                            var resultDash = GetResponse(string.Format("https://api.blockcypher.com/v1/dash/main/addrs/{0}/balance", coldWallet["address"].ToString()));
+                            if (resultDash != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultDash["final_balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
+                        case "LTC":
+                            var resultLtc = GetResponse(string.Format("https://api.blockcypher.com/v1/ltc/main/addrs/{0}/balance", coldWallet["address"].ToString()));
+                            if (resultLtc != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultLtc["final_balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
+                        case "DOGE":
+                            var resultDoge = GetResponse(string.Format("https://api.blockcypher.com/v1/doge/main/addrs/{0}/balance", coldWallet["address"].ToString()));
+                            if (resultDoge != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultDoge["final_balance"]).ToObject<double>();
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                                 ent.Application.SaveChanges();
                             }
