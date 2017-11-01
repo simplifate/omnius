@@ -150,6 +150,22 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
 
+                        case "NEO":
+                            var resultNeo = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
+                            if (resultNeo != null)
+                            {
+                                foreach (var b in (JArray)resultNeo["balance"])
+                                {
+                                    if (b["asset"].ToString() == "NEO")
+                                    {
+                                        coldWallet["balance"] = ((JValue)b["amount"]).ToObject<double>();
+                                        hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                        ent.Application.SaveChanges();
+                                    }
+                                }
+                            }
+                            break;
+
                     }
 
                 }
