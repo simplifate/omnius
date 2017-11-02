@@ -89,13 +89,15 @@ $(function(){
         }); 
 });
 
-$(function(){
-  $("#Transactions_table tbody tr").each(function(){
-    var flag = $(this).children("td:nth-child(3)").text();
-    if (flag == "True") {
-      $(this).css("background-color","#ffdede")
-    }
-  })
+$(function () {
+    setTimeout(function () {
+        $("#Transactions_table tbody tr").each(function () {
+            var flag = $(this).children("td:nth-child(3)").text();
+            if (flag == "True") {
+                $(this).css("background-color", "#ffdede")
+            }
+        })
+    }, 1000);
 });
 
 $(function(){
