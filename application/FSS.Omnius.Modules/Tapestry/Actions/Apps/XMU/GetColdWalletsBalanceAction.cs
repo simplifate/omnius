@@ -1,5 +1,6 @@
 ﻿using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron;
+using Jayrock.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,15 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     [OtherRepository]
     class GetColdWalletBalanceAction : Action
     {
+        private const string XmrRpcUsername = "grid";
+        private const string XmrRpcPass = "g149u6W3_e8/Wkqi";
+        private int idRpc = 0;
+
         public override int Id
         {
             get
@@ -28,7 +32,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] {};
+                return new string[] { };
             }
         }
 
@@ -70,7 +74,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     switch (coldWallet["currency_code"].ToString())
                     {
                         case "BTC":
-                            var resultBtc = GetResponse(string.Format("https://api.blockcypher.com/v1/btc/main/addrs/{0}/balance",coldWallet["address"].ToString()));
+                            var resultBtc = GetResponse(string.Format("https://api.blockcypher.com/v1/btc/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultBtc != null)
                             {
                                 coldWallet["balance"] = ((JValue)resultBtc["final_balance"]).ToObject<double>();
@@ -114,7 +118,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                         case "ZEC":
+                        case "ZEC":
                             var resultZec = GetResponse(string.Format("https://api.zcha.in/v2/mainnet/accounts/{0}", coldWallet["address"].ToString()));
                             if (resultZec != null)
                             {
@@ -127,16 +131,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             var resultXrp = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
                             if (resultXrp != null)
                             {
-                                foreach(var b in (JArray)resultXrp["balances"])
+                                foreach (var b in (JArray)resultXrp["balances"])
                                 {
-                                    if(b["currency"].ToString() == "XRP")
+                                    if (b["currency"].ToString() == "XRP")
                                     {
                                         coldWallet["balance"] = ((JValue)b["value"]).ToObject<double>();
                                         hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                                         ent.Application.SaveChanges();
                                     }
                                 }
-                          
+
                             }
                             break;
                         case "XVG":
@@ -175,6 +179,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
 
+                        case "XMR":
+                            var resultXmr = GetResponse();
+                            if (resultXmr != null)
+                            {
+                                coldWallet["balance"] = ((JValue)resultXmr["balance"]).ToObject<double>();
+                                hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
+                                ent.Application.SaveChanges();
+                            }
+                            break;
                     }
 
                 }
@@ -182,7 +195,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         }
 
-      
+
 
         private JToken GetResponse(string url)
         {
@@ -216,6 +229,59 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             }
         }
 
+        private JToken GetResponse()
+        {
+            try
+            {
+                string method = "getbalance";
+             
+                string rpcVersion = "2.0";
+                //get username and password from rpc service 
+                string rpcUserName = XmrRpcUsername;
+                string rpcPassword = XmrRpcPass;
+                bool work = true;
+
+                // Create request
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://185.59.209.146:8093/json_rpc");
+                httpWebRequest.Accept = "application/json";
+                httpWebRequest.Credentials = new NetworkCredential(rpcUserName, rpcPassword); //make credentials for request
+                httpWebRequest.Method = "POST";
+                httpWebRequest.ContentType = "application/json";
+
+                Dictionary<string, object> paramsDict = new Dictionary<string, object>();
+                JsonObject call = new JsonObject();
+                call["jsonrpc"] = rpcVersion;
+                call["id"] = ++idRpc;
+                call["method"] = method;
+                call["params"] = paramsDict;
+                string jsonString = call.ToString();
+
+                byte[] postJsonBytes = Encoding.UTF8.GetBytes(jsonString);
+
+                httpWebRequest.ContentLength = postJsonBytes.Length;
+                Stream requestStream = httpWebRequest.GetRequestStream();
+                requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
+
+                var response = httpWebRequest.GetResponse();
+                using (Stream stream2 = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream2, Encoding.UTF8))
+                {
+                    JsonObject answer = new JsonObject();
+                    answer.Import(new Jayrock.Json.JsonTextReader(reader));
+                    object errorObject = answer["error"];
+                    var jtokenResult = JToken.Parse(answer["result"].ToString());
+                    return jtokenResult;
+                  
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+        }
+
 
     }
 }
+ 
