@@ -2299,6 +2299,8 @@ body.watchtowerModule .logIsEmpty, body.watchtowerModule .noSearchResults {
   .personaRolesModule #lowerPanel #groupRolesTable {
     width: auto;
     margin-top: 40px; }
+    .personaRolesModule #lowerPanel #groupRolesTable td {
+      height: 5px; }
     .personaRolesModule #lowerPanel #groupRolesTable th {
       font-weight: bold;
       text-align: center; }
