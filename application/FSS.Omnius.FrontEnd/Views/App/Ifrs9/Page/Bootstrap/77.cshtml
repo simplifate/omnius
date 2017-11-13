@@ -1,0 +1,33 @@
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="container"><div class="row"><div class="col-xs-12"><h1 class="">@(@"Dashboard")</h1><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"Import log")</h3></div><div class="panel-body">
+@{ if(ViewData.ContainsKey("tableData_ImportLog_datatable") && ((System.Data.DataTable)(ViewData["tableData_ImportLog_datatable"])).Rows.Count > 0) {
+    <table class="table data-table dataTable no-footer" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="ImportLog_datatable" role="grid" aria-describedby="DataTables_Table_0_info">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_ImportLog_datatable"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_ImportLog_datatable"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_ImportLog_datatable"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="ImportLog_datatable" />
+</div></div><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title">@(@"Možnosti exportu")</h3></div><div class="panel-body"><div class="row"><div class="col-xs-12 col-md-6"><span class="">@(@"IBIS zamknut: ")</span><span class="pull-right">@(@"var1")</span></div></div></div></div></div></div></div></div>
