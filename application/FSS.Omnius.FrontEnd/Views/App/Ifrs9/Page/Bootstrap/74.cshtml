@@ -24,7 +24,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i> <i title="delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
@@ -35,10 +35,10 @@
 <input type="hidden" name="IBIS_table" />
 </div></div><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><h3 class="panel-title" style="float: left;">@(@"Profile")</h3>
 @if((ViewData.ContainsKey("") && (bool)ViewData[""]) == true) {
-<div class="" id="profileLock_if"><button type="button" class="btn btn-sm btn-primary mbe-active" name="button" style="float: right;" value="profileLock_button" id="profileLock_button" >@(@"Zamknout")</button></div>
+<div class="" id="profileLock_if"><button type="button" class="btn btn-sm btn-primary" name="button" style="float: right;" value="profileLock_button" id="profileLock_button" >@(@"Zamknout")</button></div>
 }</div></div><div class="panel-body">
 @{ if(ViewData.ContainsKey("tableData_Profile_table") && ((System.Data.DataTable)(ViewData["tableData_Profile_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="Profile_table" role="grid" aria-describedby="DataTables_Table_1_info" style="">
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="0" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="0" data-dtserverside="0" id="Profile_table" role="grid" aria-describedby="DataTables_Table_1_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Profile_table"])).Columns) {
@@ -59,7 +59,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i> <i title="delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
