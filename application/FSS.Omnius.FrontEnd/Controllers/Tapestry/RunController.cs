@@ -419,6 +419,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         break;
                     case "checkbox":
+                    case "form|checkbox":
                         if (modelLoaded)
                             ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                         break;
@@ -778,6 +779,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                         }
                         break;
                     case "checkbox":
+                    case "form|checkbox":
                         if (modelLoaded)
                             ViewData["checkboxData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                         break;
