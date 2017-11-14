@@ -2176,6 +2176,14 @@
     <Content Include="Views\App\Xmu\Page\Bootstrap\68.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\70.cshtml" />
     <Content Include="Views\App\Xmu\Page\Bootstrap\69.cshtml" />
+    <Content Include="Views\App\Ifrs9\menuLayout.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\74.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\75.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\76.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\77.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\78.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\79.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\80.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
