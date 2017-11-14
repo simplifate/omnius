@@ -1333,6 +1333,7 @@
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
     <Compile Include="Tapestry\Actions\other\EditJObjectAction.cs" />
+    <Compile Include="Tapestry\Actions\other\GetFolderFilesAction.cs" />
     <Compile Include="Tapestry\Actions\other\ObjectToJTokenAction.cs" />
     <Compile Include="Tapestry\Actions\other\CopyVariableAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\FormatDatetimeAction.cs" />
