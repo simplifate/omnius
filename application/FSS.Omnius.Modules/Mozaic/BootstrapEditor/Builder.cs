@@ -201,11 +201,14 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
                     case "functions|foreach": 					html = RenderForeach(c, p); break;
                     case "functions|if": 						html = RenderIf(c, p); 		break;
                     /***** DEFAULT *****/
-                    default: {
-                            if (c.UIC.StartsWith("athena")) {
+                    default:
+                        {
+                            if (c.UIC != null && c.UIC.StartsWith("athena"))
+                            {
                                 html = RenderAthena(c, p);
                             }
-                            else {
+                            else
+                            {
                                 html = RenderDefault(c, p);
                             }
                             break;
