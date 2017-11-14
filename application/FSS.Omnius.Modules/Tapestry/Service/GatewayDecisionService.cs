@@ -32,6 +32,11 @@ namespace FSS.Omnius.Modules.Tapestry.Service
         }
         private static bool matchCondition(TapestryDesignerCondition condition, Dictionary<string, object> vars)
         {
+            switch (condition.Operator)
+            {
+                case "exists":
+                    return vars.ContainsKey(condition.Variable);
+            }
             object leftOperand = KeyValueString.ParseValue(condition.Variable, vars);
             switch (condition.Operator)
             {
