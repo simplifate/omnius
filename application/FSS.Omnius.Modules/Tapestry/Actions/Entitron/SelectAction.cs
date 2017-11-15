@@ -67,7 +67,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 				object condValue = vars[$"CondValue[{i}]"];
 
 				DBColumn column = table.columns.Single(c => c.Name == condColumn);
-				var value = Convertor.convert(DataType.ByDBColumnTypeName(column.type), condValue);
+				var value = Convertor.convert(DataType.BySqlName(column.type), condValue);
 
 				switch (condOperator)
 				{
