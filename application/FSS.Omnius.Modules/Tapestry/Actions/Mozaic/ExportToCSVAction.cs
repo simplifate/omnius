@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "TableName" };
+                return new string[] { "TableName", "?ViewName", "Columns" };
             }
         }
 
@@ -55,29 +55,46 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            
-            // Získáme data podle podmínek
-            Entitron.SelectAction selectAction = new Entitron.SelectAction();
-            selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
-
-            // Připravíme CSV
             List<string> rows = new List<string>();
+            List<string> columns = null;
 
-            List<string> columns = new List<string>();
-            if (!vars.ContainsKey("Columns")) {
-                foreach(DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns) {
-                    columns.Add(col.Name);
+            if (vars.ContainsKey("ViewName"))
+            {
+                // Získáme data podle podmínek
+                Entitron.SelectFromViewAction selectAction = new Entitron.SelectFromViewAction();
+                selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
+
+                // Připravíme CSV
+                columns = (vars["Columns"] as string).Split(',').ToList();
+            }
+            else
+            {
+                // Získáme data podle podmínek
+                Entitron.SelectAction selectAction = new Entitron.SelectAction();
+                selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
+
+                // Připravíme CSV
+                rows = new List<string>();
+
+                columns = new List<string>();
+                if (!vars.ContainsKey("Columns"))
+                {
+                    foreach (DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns)
+                    {
+                        columns.Add(col.Name);
+                    }
                 }
+                else
+                {
+                    columns = (vars["Columns"] as string).Split(',').ToList();
+                }
+                List<string> header = new List<string>();
+                foreach (string column in columns)
+                {
+                    header.Add($"\"{column}\"");
+                }
+                rows.Add(string.Join(";", header));
             }
-            else {
-                columns = (vars["Columns"] as string).Split(';').ToList();
-            }
-
-            List<string> header = new List<string>();
-            foreach(string column in columns) {
-                header.Add($"\"{column}\"");
-            }
-            rows.Add(string.Join(";", header));
 
             foreach(DBItem item in (List<DBItem>)vars["Data"]) 
             {
