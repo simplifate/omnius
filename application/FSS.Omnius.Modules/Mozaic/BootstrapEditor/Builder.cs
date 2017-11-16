@@ -605,7 +605,7 @@ namespace FSS.Omnius.Modules.Mozaic.BootstrapEditor
             StringBuilder html = new StringBuilder();
             string attrs = BuildAttributes(c);
 
-            html.Append($"<input {attrs} @(formState.ContainsKey(\"{c.ElmId}\") && formState[\"{c.ElmId}\"] == \"on\") || (ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true)) ? \" checked\" : \"\") />");
+            html.Append($"<input {attrs} @((formState.ContainsKey(\"{c.ElmId}\") && formState[\"{c.ElmId}\"] == \"on\") || (ViewData.ContainsKey(\"checkboxData_{c.ElmId}\") && (ViewData[\"checkboxData_{c.ElmId}\"] as bool? == true)) ? \" checked\" : \"\") />");
 
             return html.ToString();
         }
