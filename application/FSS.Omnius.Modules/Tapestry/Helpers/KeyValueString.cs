@@ -203,6 +203,16 @@ namespace FSS.Omnius.Modules.Tapestry
 
         private static object resolveSingleArray(object o, string calling)
         {
+            if (o is IEnumerable<object>)
+            {
+                List<object> list = new List<object>();
+                var enumerator = ((IEnumerable<object>)o).GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    list.Add(enumerator.Current);
+                }
+                return list[Convert.ToInt16(calling)];
+            }
             var prop = o.GetType().GetMethod("get_Item", new Type[] { typeof(string) });
             return prop.Invoke(o, new object[] { calling });
         }
