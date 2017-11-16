@@ -612,8 +612,8 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                 switch (item.TypeClass)
                 {
                     case "actionItem":
-                        if (item.ActionId == 181) // noAction
-                            break;
+                        //if (item.ActionId == 181) // noAction
+                        //    break;
 
                         string generatedInputVariables = "";
                         if (item.ActionId == 2005 || item.ActionId == 193) // Send mail, Send mail for each
