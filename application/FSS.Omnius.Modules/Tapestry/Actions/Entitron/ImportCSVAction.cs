@@ -36,7 +36,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "s$InputName", "s$TableName", "?s$Delimiter", "?b$HasFieldsInQuotes", "?s$UniqueColumns", "?s$DateTimeFormat" };
+                return new string[] { "s$CsvSource", "?isServerFile", "s$TableName", "?s$Delimiter", "?b$HasFieldsInQuotes", "?s$UniqueColumns", "?s$DateTimeFormat" };
             }
         }
 
@@ -64,9 +64,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             // init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            bool isServerFile = vars.ContainsKey("isServerFile") ? (bool)vars["isServerFile"] : false;
 
             int countAdded = 0;
-            string inputName = (string)vars["InputName"];
+            //jméno form inputu, nebo cesta k souboru
+            string csvSource = (string)vars["CsvSource"];
             string tableName = (string)vars["TableName"];
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
             string dateFormat = vars.ContainsKey("DateTimeFormat") ? (string)vars["DateTimeFormat"] : "yyyy-MM-dd";
@@ -84,22 +86,33 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             DBColumns columns = table.columns;
             Dictionary<int, DBColumn> columnsMap = new Dictionary<int, DBColumn>();
 
-            var files = HttpContext.Current.Request.Files;
-            if (files == null)
-                return;
+            dynamic files;
+            if (!isServerFile)
+            {
+                files = HttpContext.Current.Request.Files;
+                if (files == null)
+                    return;
+            }
+            else
+            {
+                files = new string[] { csvSource };
+            }
 
             List<string> messages = new List<string>();
 
             bool isHeader = true;
             foreach (string fileName in files)
             {
-                HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
-
-                if (file.ContentLength == 0 || fileName != inputName)
-                    continue;
+                HttpPostedFile file = null;
+                if (!isServerFile)
+                {
+                    file = HttpContext.Current.Request.Files[fileName];
+                    if (file.ContentLength == 0 || fileName != csvSource)
+                        continue;
+                }
 
                 Encoding cp1250 = Encoding.GetEncoding(1250);
-                using (StreamReader sr = new StreamReader(file.InputStream, cp1250))
+                using (StreamReader sr = new StreamReader((isServerFile) ? File.OpenRead(csvSource) : file.InputStream, cp1250))
                 {
                     sr.Peek();
                     Encoding enc = sr.CurrentEncoding;
