@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.IO;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
@@ -31,7 +32,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "Data", "?Delimiter" };
+                return new string[] { "Data", "?Delimiter", "?ExportPath" };
             }
         }
 
@@ -56,6 +57,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             List<string> rows = new List<string>();
+            string exportPath = vars.ContainsKey("ExportPath") ? (string)vars["ExportPath"] : null;
 
             List<DBItem> data = (List<DBItem>)vars["Data"];
             string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
@@ -79,18 +81,25 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             }
 
             string csv = string.Join("\r\n", rows);
-            
-            HttpContext context = HttpContext.Current;
-            HttpResponse response = context.Response;
 
+            if (string.IsNullOrEmpty(exportPath)) //send to browser
+            {
+                HttpContext context = HttpContext.Current;
+                HttpResponse response = context.Response;
 
-            response.ContentType = "application/csv";
-            response.Charset = Encoding.GetEncoding(1250).EncodingName;
-            response.ContentEncoding = Encoding.GetEncoding(1250);
-            response.AddHeader("content-disposition", "attachment; filename=export.csv");
-            response.Write(csv);
-            response.Flush();
-            response.Close();
+                response.ContentType = "application/csv";
+                response.Charset = Encoding.GetEncoding(1250).EncodingName;
+                response.ContentEncoding = Encoding.GetEncoding(1250);
+                response.AddHeader("content-disposition", "attachment; filename=export.csv");
+                response.Write(csv);
+                response.Flush();
+                response.Close();
+            }
+            else //save file to server
+            {
+                File.WriteAllText(exportPath, csv);
+            }
+
         }
     }
 }
