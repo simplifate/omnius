@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
         {
             get
             {
-                return new string[] { "TableName", "?ViewName", "Columns" };
+                return new string[] { "Data", "?Delimiter" };
             }
         }
 
@@ -56,53 +56,26 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             // Init
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             List<string> rows = new List<string>();
-            List<string> columns = null;
 
-            if (vars.ContainsKey("ViewName"))
+            List<DBItem> data = (List<DBItem>)vars["Data"];
+            string delimiter = vars.ContainsKey("Delimiter") ? (string)vars["Delimiter"] : ";";
+
+            // Připravíme CSV
+            //nastavit header
+            List<string> header = new List<string>();
+            foreach (string column in data[0].getColumnNames())
             {
-                // Získáme data podle podmínek
-                Entitron.SelectFromViewAction selectAction = new Entitron.SelectFromViewAction();
-                selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
-
-                // Připravíme CSV
-                columns = (vars["Columns"] as string).Split(',').ToList();
+                header.Add($"{column}");
             }
-            else
-            {
-                // Získáme data podle podmínek
-                Entitron.SelectAction selectAction = new Entitron.SelectAction();
-                selectAction.InnerRun(vars, outputVars, InvertedInputVars, message);
-
-                // Připravíme CSV
-                rows = new List<string>();
-
-                columns = new List<string>();
-                if (!vars.ContainsKey("Columns"))
-                {
-                    foreach (DBColumn col in core.Entitron.GetDynamicTable((string)vars["TableName"]).columns)
-                    {
-                        columns.Add(col.Name);
-                    }
-                }
-                else
-                {
-                    columns = (vars["Columns"] as string).Split(',').ToList();
-                }
-                List<string> header = new List<string>();
-                foreach (string column in columns)
-                {
-                    header.Add($"\"{column}\"");
-                }
-                rows.Add(string.Join(";", header));
-            }
-
-            foreach(DBItem item in (List<DBItem>)vars["Data"]) 
+            rows.Add(string.Join(delimiter, header));
+            
+            foreach(DBItem item in data) 
             {
                 List<string> row = new List<string>();
-                foreach(string column in columns) {
-                    row.Add($"\"{item[column].ToString()}\"");
+                foreach(string column in data[0].getColumnNames()) {
+                    row.Add($"{item[column].ToString()}");
                 }
-                rows.Add(string.Join(";", row));
+                rows.Add(string.Join(delimiter, row));
             }
 
             string csv = string.Join("\r\n", rows);
