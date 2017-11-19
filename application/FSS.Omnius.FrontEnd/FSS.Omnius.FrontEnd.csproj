@@ -2184,6 +2184,9 @@
     <Content Include="Views\App\Ifrs9\Page\Bootstrap\78.cshtml" />
     <Content Include="Views\App\Ifrs9\Page\Bootstrap\79.cshtml" />
     <Content Include="Views\App\Ifrs9\Page\Bootstrap\80.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\81.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\82.cshtml" />
+    <Content Include="Views\App\Ifrs9\Page\Bootstrap\83.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
