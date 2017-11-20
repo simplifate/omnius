@@ -846,7 +846,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                                 ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
                             }
                             else
-                                ViewData["inputData_" + resourceMappingPair.TargetName] = modelRow[resourceMappingPair.SourceColumnName];
+                                ViewData["inputData_" + resourceMappingPair.TargetName] = Modules.Tapestry.TapestryUtils.UseInvariantDecimalPoint(modelRow[resourceMappingPair.SourceColumnName]);
                         }
                         break;
                     case "countdown":

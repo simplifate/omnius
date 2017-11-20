@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FSS.Omnius.Modules.Tapestry
 {
-    class TapestryUtils
+   public class TapestryUtils
     {
         static string decSeparator = System.Windows.Forms.Application.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
@@ -48,6 +48,18 @@ namespace FSS.Omnius.Modules.Tapestry
             else
             {
                 return Convert.ToDouble(input);
+            }
+        }
+
+        public static string UseInvariantDecimalPoint(object input)
+        {
+            if (input is double || input is float)
+            {
+                return Convert.ToDouble(input).ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return input.ToString();
             }
         }
 
