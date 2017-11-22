@@ -9,4 +9,7 @@
 }@if (Context.GetLoggedUser().canUseBlock("Admin,Uzivatel,Kontrolor,Manazer",122)){            <li>
                     <a href="/Ifrs9/Profile">@(t._("Profile"))</a>
             </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin,Uzivatel,Kontrolor,Manazer",122)){            <li>
+                    <a href="/Ifrs9/PrehledKlientu">@(t._("Přehled klientů"))</a>
+            </li>
 }    </ul>
