@@ -71,7 +71,7 @@
     type: 'area',
     name: 'Rate changes',
   }]
-});        </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_rate_changes")).Value ?? "").ToString()))</div></div></div><div class="row"><div class="col-xs-12"><p class="mbe-active" style="font-weight: bold; font-size: 120%;" id="volume">@(@"Amount traded: {var1} $".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("volume")).Value ?? "").ToString()))</p></div></div><div class="row"><div class="col-xs-12"><div class="graphWrapper" id="hc_market_depth">@Html.Raw(@"<div id=""hc_market_depth_graph""></div><script>hc_market_depth_graph_chart = new Highcharts.stockChart({
+});        </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_rate_changes")).Value ?? "").ToString()))</div></div></div><div class="row"><div class="col-xs-12"><p class="" style="font-weight: bold; font-size: 120%;" id="volume">@(@"Amount traded: {var1} $".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("volume")).Value ?? "").ToString()))</p></div></div><div class="row mbe-active"><div class="col-xs-12"><div class="graphWrapper" id="hc_market_depth">@Html.Raw(@"<div id=""hc_market_depth_graph""></div><script>hc_market_depth_graph_chart = new Highcharts.stockChart({
   rangeSelector: {
   	selected: $.cookie('hc_market_depth_graph_chart_selectedRange') || 0
   },
@@ -132,7 +132,16 @@ rangeSelector: {
         enabled: false
     },
   tooltip: {
-    split: false
+    split: false,
+    formatter: function() {
+        var s = 'Price: <b>'+ this.x +'</b>';
+
+        $.each(this.points, function(i, point) {
+            s += '<br/><span style=""color:' + point.color + '"">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
+        });
+
+        return s;
+    }
   },
   series: [{
     type: 'area',
