@@ -1,7 +1,4 @@
 @{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="container">
-@if((ViewData.ContainsKey("emptyBOTH") && (bool)ViewData["emptyBOTH"]) == true) {
-<div class="" data-varname="emptyBOTH"><div class="row"><div class="col-xs-12"><h1 class="">@(@"Klient nezadal žádný záznam.")</h1></div></div></div>
-}
 @if((ViewData.ContainsKey("emptyPROFILE") && (bool)ViewData["emptyPROFILE"]) == true) {
 <div class="" data-varname="emptyPROFILE"><div class="row"><div class="col-xs-12"><h1 class="">Editace záznamů PROFILE pro <span class="" id="klient_span">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("klient_span")).Value ?? "").ToString()))</span></h1></div></div><div class="panel panel-default" ><div class="panel-body">
 @{ if(ViewData.ContainsKey("profileRow_foreach")) {
@@ -14,7 +11,7 @@
 }</div></div></div>
 }
 @if((ViewData.ContainsKey("emptyIBIS") && (bool)ViewData["emptyIBIS"]) == true) {
-<div class="mbe-active" data-varname="emptyIBIS"><div class="row"><div class="col-xs-12"><h1 class="">Editace záznamů IBIS pro <span class="" id="klient_span">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("klient_span")).Value ?? "").ToString()))</span></h1></div></div><div class="panel panel-default" ><div class="panel-body">
+<div class="" data-varname="emptyIBIS"><div class="row"><div class="col-xs-12"><h1 class="">Editace záznamů IBIS pro <span class="" id="klient_span">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("klient_span")).Value ?? "").ToString()))</span></h1></div></div><div class="panel panel-default" ><div class="panel-body">
 @{ if(ViewData.ContainsKey("ibisRow_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["ibisRow_foreach"]) {
             <div class="" id="ibisRow_foreach">
