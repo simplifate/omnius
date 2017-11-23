@@ -69,8 +69,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             var hotAndColdList = hotAndCold.Select().ToList();
             foreach (var coldWallet in hotAndColdList)
             {
-                if (coldWallet["type"].ToString() == "cold") //only need cold
-                {
                     switch (coldWallet["currency_code"].ToString())
                     {
                         case "BTC":
@@ -190,7 +188,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             break;
                     }
 
-                }
             }
 
         }
