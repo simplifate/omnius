@@ -100,7 +100,7 @@ namespace FSS.Omnius.Controllers.Tapestry
 
             foreach (var pair in core.CrossBlockRegistry) {
                 if (!tapestryVars.ContainsKey(pair.Key))
-                    tapestryVars.Add(pair.Key, pair.Value.ToString());
+                    tapestryVars.Add(pair.Key, pair.Value == null ? "" : pair.Value.ToString());
                 else
                     tapestryVars[pair.Key] = (pair.Value == null?"":pair.Value.ToString());
             }
