@@ -1,1 +1,3 @@
-$('body').addClass('bodyLeaderboard');
+$( document ).ready(function() {
+    $('.userLayout').attr('class', 'bodyLeaderboard');
+});

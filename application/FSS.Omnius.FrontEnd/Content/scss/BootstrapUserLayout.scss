@@ -16,3 +16,27 @@
         }
     }
 }
+
+.bodyLeaderboard {
+    #userTopBar {
+        display: none;
+    }
+
+    #userLeftBar {
+        display: none;
+    }
+
+    #userContentArea {
+        left: 0px;
+        top: 0px;
+        background-color: #07081e;
+    }
+
+    h1 {
+        color: #f8682a;
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 50px;
+        text-align: center;
+    }
+}
