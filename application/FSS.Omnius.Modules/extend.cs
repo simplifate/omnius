@@ -136,7 +136,12 @@ namespace System
             foreach (var pair in range)
             {
                 if (source.ContainsKey(pair.Key))
+                {
+                    if (pair.Key as string == "DataSource") {
+                        continue;
+                    }
                     source[pair.Key] = pair.Value;
+                }
                 else
                     source.Add(pair.Key, pair.Value);
             }

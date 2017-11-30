@@ -96,8 +96,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 				condition = outCondition.and();
 			}
 
-			// return
-			outputVars["Data"] = select.where(i => outCondition).ToList();
-		}
+            // return
+
+
+            outputVars["Data"] = select.where(i => outCondition).ToList();
+
+        }
 	}
 }
