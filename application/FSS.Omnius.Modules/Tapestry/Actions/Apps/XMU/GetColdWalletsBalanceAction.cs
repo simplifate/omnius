@@ -71,7 +71,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             {
                     switch (coldWallet["currency_code"].ToString())
                     {
-                        case "BTC":
+                        case "btc":
                             var resultBtc = GetResponse(string.Format("https://api.blockcypher.com/v1/btc/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultBtc != null)
                             {
@@ -80,16 +80,16 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "ETH":
+                        case "eth":
                             var resultEth = GetResponse(string.Format("https://api.blockcypher.com/v1/eth/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultEth != null)
                             {
-                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>();
+                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>()/1E+18;
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "DASH":
+                        case "dash":
                             var resultDash = GetResponse(string.Format("https://api.blockcypher.com/v1/dash/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultDash != null)
                             {
@@ -98,7 +98,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "LTC":
+                        case "ltc":
                             var resultLtc = GetResponse(string.Format("https://api.blockcypher.com/v1/ltc/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultLtc != null)
                             {
@@ -107,7 +107,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "DOGE":
+                        case "doge":
                             var resultDoge = GetResponse(string.Format("https://api.blockcypher.com/v1/doge/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultDoge != null)
                             {
@@ -116,7 +116,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "ZEC":
+                        case "zec":
                             var resultZec = GetResponse(string.Format("https://api.zcha.in/v2/mainnet/accounts/{0}", coldWallet["address"].ToString()));
                             if (resultZec != null)
                             {
@@ -125,7 +125,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 ent.Application.SaveChanges();
                             }
                             break;
-                        case "XRP":
+                        case "xrp":
                             var resultXrp = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
                             if (resultXrp != null)
                             {
@@ -141,7 +141,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
                             }
                             break;
-                        case "XVG":
+                        case "xvg":
                             var resultXvg = GetResponse(string.Format("https://verge-blockchain.info/ext/getbalance/{0}", coldWallet["address"].ToString()));
                             if (resultXvg != null)
                             {
@@ -152,7 +152,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
 
-                        case "NEO":
+                        case "neo":
                             var resultNeo = GetResponse(string.Format("https://data.ripple.com/v2/accounts/{0}/balances", coldWallet["address"].ToString()));
                             if (resultNeo != null)
                             {
@@ -167,7 +167,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                                 }
                             }
                             break;
-                        case "ETC":
+                        case "etc":
                             var resultEtc = GetResponse(string.Format("https://etcchain.com/api/v1/getAddressBalance?address={0}", coldWallet["address"].ToString()));
                             if (resultEtc != null)
                             {
@@ -177,7 +177,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
 
-                        case "XMR":
+                        case "xmr":
                             var resultXmr = GetResponse();
                             if (resultXmr != null)
                             {
