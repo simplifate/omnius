@@ -25,6 +25,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
         public bool canUseBlock(string rights, int appId)
         {
+            DBEntities ent = new DBEntities();
+            Application app = ent.Applications.SingleOrDefault(a => a.Id == appId);
+            if(app.IsAllowedGuests)
+            {
+                return true;
+            }
+
             if (string.IsNullOrEmpty(rights))
                 return false;
 
@@ -38,6 +45,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
         }
         public bool canUseBlock(string rights, string appName)
         {
+            DBEntities ent = new DBEntities();
+            Application app = ent.Applications.SingleOrDefault(a => a.Name == appName);
+            if (app.IsAllowedGuests)
+            {
+                return true;
+            }
+
             if (string.IsNullOrEmpty(rights))
                 return false;
 
