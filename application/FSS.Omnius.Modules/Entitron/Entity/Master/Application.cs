@@ -58,6 +58,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public int TileHeight { get; set; }
         
         public bool IsAllowedForAll { get; set; }
+        public bool IsAllowedGuests { get; set; }
+
         public bool IsPublished { get; set; }
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }

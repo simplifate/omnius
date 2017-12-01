@@ -42,6 +42,12 @@ $(function () {
                         $('#cbAllowAll').prop('checked', false);
 
                     }
+                    if (data.IsAllowedGuests) { //set if application is allowed for all users.
+                        $('#cbAllowAll').prop('checked', true);
+                    } else {
+                        $('#cbAllowAll').prop('checked', false);
+
+                    }
                     appPropertiesDialog.find("#app-name").val(data.DisplayName);
                     appPropertiesDialog.find("#template").val(data.CSSTemplateId);
                     appPropertiesDialog.find("#tile-width").val(data.TileWidth);
@@ -63,7 +69,9 @@ $(function () {
             Color: appPropertiesDialog.find("#bg-color").val(),
             Icon: appPropertiesDialog.find("#icon-class").val(),
                 
-            IsAllowedForAll: $('#cbAllowAll').is(':checked') == true ? true : false
+            IsAllowedForAll: $('#cbAllowAll').is(':checked') == true ? true : false,
+            IsAllowedGuests: $('#cbAllowGuest').is(':checked') == true ? true : false
+
         }
         $.ajax({
             type: "POST",

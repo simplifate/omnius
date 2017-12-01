@@ -1218,6 +1218,10 @@
     <Compile Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.Designer.cs">
       <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712041556123_tableApplication.cs" />
+    <Compile Include="Migrations\201712041556123_tableApplication.Designer.cs">
+      <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2022,6 +2026,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710191356205_Add AbsoluteURL to file metadata.resx">
       <DependentUpon>201710191356205_Add AbsoluteURL to file metadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712041556123_tableApplication.resx">
+      <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                         TileHeight = app.TileHeight,
                         Color = app.Color,
                         Icon = app.Icon,
-                        IsAllowedForAll = app.IsAllowedForAll
+                        IsAllowedForAll = app.IsAllowedForAll,
+                        IsAllowedGuests = app.IsAllowedGuests
                     };
                     return result;
                 }
@@ -60,6 +61,7 @@ namespace FSS.Omnius.Controllers.Tapestry
                     app.Color = postData.Color;
                     app.Icon = postData.Icon;
                     app.IsAllowedForAll = postData.IsAllowedForAll;
+                    app.IsAllowedGuests = postData.IsAllowedGuests;
                     context.SaveChanges();
                 }
             }
@@ -142,7 +144,8 @@ namespace FSS.Omnius.Controllers.Tapestry
                 DBEntities db = DBEntities.instance;
                 User currentUser = User.GetLogged(core);
                 var app = db.Applications.SingleOrDefault(a => a.Name == appName);
-                if (app != null) {
+                if (app != null)
+                {
                     UsersApplications uapp = app.UsersApplications.SingleOrDefault(ua => ua.UserId == currentUser.Id);
                     if (uapp != null)
                     {
