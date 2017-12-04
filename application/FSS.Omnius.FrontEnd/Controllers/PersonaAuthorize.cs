@@ -1,5 +1,7 @@
 ﻿using FSS.Omnius.FrontEnd;
 using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.Entity;
+using FSS.Omnius.Modules.Entitron.Entity.Master;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -32,6 +34,16 @@ namespace System.Web.Mvc
             CORE core = filterContext.HttpContext.GetCORE();
             User user = filterContext.HttpContext.GetLoggedUser();
 
+            string appName = filterContext.RouteData.Values.ContainsKey("appName") ? filterContext.RouteData.Values["appName"].ToString() : "";
+            if(appName != "")
+            {
+                DBEntities ent = new DBEntities();
+                Application app = ent.Applications.SingleOrDefault(a => a.Name == appName);
+                if (app != null && app.IsAllowedGuests)
+                    return;
+            }
+
+           
             // not logged -> redirect
             if (user == null)
             {

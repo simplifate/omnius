@@ -10329,6 +10329,7 @@ $(function () {
         open: function () {
             appPropertiesDialog.find("#app-name").val("");
             appPropertiesDialog.find("#cbAllowAll").val("");
+            appPropertiesDialog.find("#cbAllowGuests").val("");
             appPropertiesDialog.find("#template").val(1);
             appPropertiesDialog.find("#tile-width").val(2);
             appPropertiesDialog.find("#tile-height").val(1);
@@ -10340,9 +10341,15 @@ $(function () {
                 dataType: "json",
                 success: function (data) {
                     if (data.IsAllowedForAll) { //set if application is allowed for all users.
-                        $('#cbAllowAll').prop('checked',true);
+                        $("#cbAllowAll").prop("checked",true);
                     } else {
-                        $('#cbAllowAll').prop('checked', false);
+                        $("#cbAllowAll").prop("checked", false);
+
+                    }
+                    if (data.IsAllowedGuests) { //set if application is allowed for guests.
+                        $("#cbAllowGuests").prop("checked", true);
+                    } else {
+                        $("#cbAllowGuests").prop("checked", false);
 
                     }
                     appPropertiesDialog.find("#app-name").val(data.DisplayName);
@@ -10365,14 +10372,14 @@ $(function () {
             TileHeight: appPropertiesDialog.find("#tile-height").val(),
             Color: appPropertiesDialog.find("#bg-color").val(),
             Icon: appPropertiesDialog.find("#icon-class").val(),
-                
-            IsAllowedForAll: $('#cbAllowAll').is(':checked') == true ? true : false
+            IsAllowedForAll: $("#cbAllowAll").is(":checked") == true ? true : false,
+            IsAllowedGuests: $("#cbAllowGuests").is(":checked") == true ? true : false
         }
         $.ajax({
             type: "POST",
             url: "/api/master/apps/" + CurrentAppId + "/properties",
             data: postData,
-            success: function() {
+            success: function () {
                 alert("OK");
                 // Reload page to change application name in AppManager table
                 // after application name was changed

@@ -30,6 +30,7 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string locale = "", string blockIdentify = null, int modelId = -1, string message = null, string messageType = null, string registry = null)
         {
             Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
 
             RunController.startTime = DateTime.Now;
             
@@ -39,9 +40,14 @@ namespace FSS.Omnius.Controllers.Tapestry
                 #warning appName nesmí být null!
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
+
+            if (core.User != null && core.Entitron.Application.IsAllowedGuests)
+            {
+                core.User = context.Users.SingleOrDefault(x => x.UserName == "guest");
+            }
+
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
 
-            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
             Application app = core.Entitron.Application.similarApp;
 
             // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
