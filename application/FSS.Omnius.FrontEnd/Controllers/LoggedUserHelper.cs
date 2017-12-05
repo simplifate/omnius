@@ -8,6 +8,7 @@ using System.Security.Principal;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using FSS.Omnius.Modules.Entitron.Entity;
 
 namespace System
 {
@@ -40,9 +41,14 @@ namespace System
 
         public static User GetLogged(this IPrincipal user, CORE core)
         {
+            DBEntities context = DBEntities.instance;
             if (core.User == null || core.User.UserName != user.Identity.Name)
                 core.User = core.Persona.AuthenticateUser(user.Identity.Name);
 
+            if (core.User == null && core.Entitron.Application != null && core.Entitron.Application.IsAllowedGuests)
+            {
+                core.User = context.Users.SingleOrDefault(x => x.UserName == "guest");
+            }
             return core.User;
         }
     }

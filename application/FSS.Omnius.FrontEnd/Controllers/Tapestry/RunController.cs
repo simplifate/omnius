@@ -30,21 +30,19 @@ namespace FSS.Omnius.Controllers.Tapestry
         public ActionResult Index(string appName, string locale = "", string blockIdentify = null, int modelId = -1, string message = null, string messageType = null, string registry = null)
         {
             Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
-            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
 
             RunController.startTime = DateTime.Now;
             
             // init
             C.CORE core = HttpContext.GetCORE();
+            DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+
             if (!string.IsNullOrEmpty(appName))
                 #warning appName nesmí být null!
                 core.Entitron.AppName = appName;
             core.User = User.GetLogged(core);
 
-            if (core.User != null && core.Entitron.Application.IsAllowedGuests)
-            {
-                core.User = context.Users.SingleOrDefault(x => x.UserName == "guest");
-            }
+          
 
             core.CrossBlockRegistry = Session["CrossBlockRegistry"] == null ? new Dictionary<string, object>() : (Dictionary<string, object>)Session["CrossBlockRegistry"];
 
