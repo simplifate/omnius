@@ -801,6 +801,7 @@
     <Content Include="Scripts\UserScripts\Application\App2\TestJs.js" />
     <Content Include="Scripts\UserScripts\Application\Ifrs9\CrossBlockIco.js" />
     <Content Include="Scripts\UserScripts\Application\Ifrs9\Value.js" />
+    <Content Include="Scripts\UserScripts\Application\Leaderboard\leaderboardJS.js" />
     <Content Include="Scripts\UserScripts\Application\TicketSupport\highlightJS.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\ajax.js" />
     <Content Include="Scripts\UserScripts\Application\Xmu\TrezorTest.js.js" />
