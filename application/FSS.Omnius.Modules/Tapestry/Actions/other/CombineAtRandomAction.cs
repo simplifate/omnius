@@ -75,6 +75,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
             if (result.EndsWith(separator))
                 result.Remove(result.Length-separator.Length);
+            outputVars["Result"] = result;
         }
     }
 }
