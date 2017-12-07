@@ -1336,6 +1336,7 @@
     <Compile Include="Tapestry\Actions\Nexus\Json2Dict.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
+    <Compile Include="Tapestry\Actions\other\CombineAtRandomAction.cs" />
     <Compile Include="Tapestry\Actions\other\EditJObjectAction.cs" />
     <Compile Include="Tapestry\Actions\other\GetFolderFilesAction.cs" />
     <Compile Include="Tapestry\Actions\other\ObjectToJTokenAction.cs" />
