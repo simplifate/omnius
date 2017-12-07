@@ -70,7 +70,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 DBTable table = core.Entitron.GetDynamicTable(vars[$"TableName[{i}]"].ToString());
                 Random rnd = new Random();
                 var rows = table.Select(vars[$"Column[{i}]"].ToString()).ToList();
-                result += rows[rnd.Next(rows.Count)].ToString() + separator;
+                result += rows[rnd.Next(rows.Count)][vars[$"Column[{i}]"].ToString()].ToString() + separator;
             }
 
             if (result.EndsWith(separator))
