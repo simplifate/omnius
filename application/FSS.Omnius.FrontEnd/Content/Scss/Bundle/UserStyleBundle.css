@@ -1063,23 +1063,29 @@ body.userLayout .data-table thead tr {
     margin: 0px 5px;
     cursor: pointer; }
 
-.bodyLeaderboard #userTopBar {
+body.Leaderboard #userTopBar {
   display: none; }
 
-.bodyLeaderboard #userLeftBar {
+body.Leaderboard #userLeftBar {
   display: none; }
 
-.bodyLeaderboard #userContentArea {
+body.Leaderboard #userContentArea {
   left: 0px;
   top: 0px;
   background-color: #07081e; }
 
-.bodyLeaderboard h1 {
+body.Leaderboard h1 {
   color: #f8682a;
   font-family: sans-serif;
   font-weight: 400;
   font-size: 50px;
   text-align: center; }
+
+body.Leaderboard thead th {
+  color: initial !important; }
+
+body.Leaderboard .data-table.table thead tr {
+  background-color: #fff !important; }
 
 @font-face {
   font-family: "RweHeadlineRegular";

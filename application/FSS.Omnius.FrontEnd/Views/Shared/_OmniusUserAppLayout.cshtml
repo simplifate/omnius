@@ -31,7 +31,7 @@
     </style>
     @RenderSection("Styles", false)
 </head>
-<body class="@Page.ModuleClass userLayout pageSpinnerShown">
+<body class="@Page.ModuleClass @ViewData["appName"] @ViewData["blockName"] userLayout pageSpinnerShown">
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/jquery.min.js")"></script>
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/commonLibraries.js")"></script>
     <div id="brandBar">

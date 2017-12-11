@@ -17,7 +17,7 @@
     }
 }
 
-.bodyLeaderboard {
+body.Leaderboard {
     #userTopBar {
         display: none;
     }
@@ -38,5 +38,11 @@
         font-weight: 400;
         font-size: 50px;
         text-align: center;
+    }
+    thead th {
+        color:initial !important;
+    }
+    .data-table.table thead tr {
+        background-color: #fff !important;
     }
 }
