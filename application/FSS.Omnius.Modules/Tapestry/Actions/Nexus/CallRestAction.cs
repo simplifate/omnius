@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override int Id => 3002;
 
-        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?isFromBase64", "?MaxAge", "?v$CustomHeaders" };
+        public override string[] InputVar => new string[] { "Endpoint", "Method", "?WSName", "?InputData", "?InputFromJSON", "?isFromBase64", "?MaxAge", "?v$CustomHeaders", "?AddressOverride" };
 
         public override string Name => "Call REST";
 
@@ -40,8 +40,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             try
             {
                 string endpoint = (string)vars["Endpoint"];
+                string addressOverride = vars.ContainsKey("AddressOverride") ? (string)vars["AddressOverride"] : null;
                 string method = (string)vars["Method"];
-                string wsName = (string)vars["WSName"];
+                string wsName = vars.ContainsKey("WSName") ? (string)vars["WSName"] : null;
                 string inputData = vars.ContainsKey("InputData") ? (string)vars["InputData"] : "";
                 List<string> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<string>)vars["CustomHeaders"] : new List<string>(); 
                 int maxAge = vars.ContainsKey("MaxAge") ? (int)vars["MaxAge"] : 0;
@@ -77,7 +78,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
                 var context = DBEntities.appInstance(core.Application);
                 string queryString = "";
-                var service = context.WSs.First(c => c.Name == wsName);
+                var service = !String.IsNullOrEmpty(wsName) ? context.WSs.First(c => c.Name == wsName) : null;
 
                 if (inputData != "" && method.ToUpper() == "GET")
                 {
@@ -96,7 +97,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     }
                 }
 
-                string endpointPath = string.Format("{0}/{1}?{2}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'), queryString);
+                string endpointPath = string.Format("{0}/{1}?{2}",
+                    addressOverride == null ? service.REST_Base_Url.TrimEnd('/') : addressOverride.TrimEnd('/'),
+                    endpoint.Trim('/'), 
+                    queryString);
                 var endpointUri = new Uri(endpointPath);
 
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -111,7 +115,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                     httpWebRequest.Headers.Add(header);
                 }
                 
-                if (!string.IsNullOrEmpty(service.Auth_User))
+                if (service != null && !string.IsNullOrEmpty(service.Auth_User))
                 {
                     string authEncoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{service.Auth_User}:{service.Auth_Password}"));
                     httpWebRequest.Headers.Add("Authorization", $"Basic {authEncoded}");
