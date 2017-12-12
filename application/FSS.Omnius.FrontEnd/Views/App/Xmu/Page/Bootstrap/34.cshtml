@@ -1,12 +1,12 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} $".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
-                <div class="col-md-2 col-xs-6 col-sm-4" style="margin: 15px 0; border-right: 2px solid black;"><img src="/Content/Images/Icons/@row["image_link"]" alt="" class="" style="margin-top: -5px;" height="25"></img><span class="" style="font-size: 16px;margin-left: 10px;">@(row["currency"].ToString())</span><span class="">@(@" Balance")</span><p class="" style="font-size: 35px;" id="BTC_balance">@(row["ex_curr"].ToString())</p><span class="" style="font-size: 16px;" id="BTC_balance_diff">@(row["diff"].ToString())</span><span class="" style="font-size: 16px;">@(@" difference")</span></div>   
+                <div class="col-xs-6 col-sm-4 col-md-3" style="margin: 15px 0; border-right: 2px solid black;"><img src="/Content/Images/Icons/@row["image_link"]" alt="" class="" style="margin-top: -5px;" height="25"></img><span class="" style="font-size: 16px;margin-left: 10px;">@(row["currency"].ToString())</span><span class="">@(@" Balance")</span><p class="" style="font-size: 35px;" id="BTC_balance">@(row["ex_curr"].ToString())</p><span class="" style="font-size: 16px;" id="BTC_balance_diff">@(row["diff"].ToString())</span><span class="" style="font-size: 16px;">@(@" difference")</span></div>   
             </div>
         }
     }
-}</div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading" role="button" aria-expanded="true" href="#minerStatusBody" data-toggle="collapse"><h3 class="panel-title">@(@"Cash Movement")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-md-8"><h3 class="text-center" style="margin-top: 10px;">@(@"Transfers")</h3><div class="graphWrapper" id="transfers_highchart" style="height: 400px;">@Html.Raw(@"<div id=""transfers_highchart_graph""></div><script>transfers_highchart_graph_chart = new Highcharts.stockChart({
+}</div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading" role="button" aria-expanded="true" href="#minerStatusBody" data-toggle="collapse"><h3 class="panel-title">@(@"Cash Movement")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-md-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Transfers")</h3><div class="graphWrapper" id="transfers_highchart" style="height: 400px;">@Html.Raw(@"<div id=""transfers_highchart_graph""></div><script>transfers_highchart_graph_chart = new Highcharts.stockChart({
   rangeSelector: {
   	selected: $.cookie('transfers_highchart_graph_chart_selectedRange') || 0
   },
@@ -110,7 +110,7 @@
   }
 });
 
-            </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("transfers_highchart")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-4"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawal requests")</h3>
+            </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("transfers_highchart")).Value ?? "").ToString()))</div></div><div class="col-xs-12 col-md-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawal requests")</h3>
 @{ if(ViewData.ContainsKey("tableData_Withdrawal_request_table") && ((System.Data.DataTable)(ViewData["tableData_Withdrawal_request_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Withdrawal_request_table" role="grid" aria-describedby="DataTables_Table_0_info" style="">
         <thead>
@@ -142,7 +142,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Withdrawal_request_table" />
-</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12 col-md-4"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><h3 class="panel-title pull-left">@(@"Bank Accounts")</h3><button type="button" class="btn pull-right btn-primary btn-xs" name="button" value="newBankAccount" id="newBankAccount" data-toggle="modal" data-target="#bankaccountmodal" bankaccountmodal="bankaccountmodal" >@(@"AddBankAccount")</button></div></div><div class="panel-body">
+</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><h3 class="panel-title pull-left">@(@"Bank Accounts")</h3><button type="button" class="btn pull-right btn-primary btn-xs" name="button" value="newBankAccount" id="newBankAccount" data-toggle="modal" data-target="#bankaccountmodal" bankaccountmodal="bankaccountmodal" >@(@"AddBankAccount")</button></div></div><div class="panel-body">
 @{ if(ViewData.ContainsKey("tableData_bank_accounts_table") && ((System.Data.DataTable)(ViewData["tableData_bank_accounts_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="bank_accounts_table" role="grid" aria-describedby="DataTables_Table_0_info" style="margin-top: 44px;">
         <thead>
@@ -174,7 +174,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="bank_accounts_table" />
-</div></div></div><div class="col-md-8 col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="col-xs-12 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">Wallets<button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addHotWallet" id="addHotWallet" data-toggle="modal" data-target="#hotWallet" >@(@"AddHotWallet")</button></h3></div><div class="col-xs-12 col-sm-6"><button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addColdWallet" id="addColdWallet" data-toggle="modal" data-target="#coldWallet" >@(@"AddColdWallet")</button></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Hot")</h3>
+</div></div></div><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="row"><div class="col-xs-12 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">Wallets<button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addHotWallet" id="addHotWallet" data-toggle="modal" data-target="#hotWallet" >@(@"AddHotWallet")</button></h3></div><div class="col-xs-12 col-sm-6"><button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addColdWallet" id="addColdWallet" data-toggle="modal" data-target="#coldWallet" >@(@"AddColdWallet")</button></div></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-4"><h3 class="text-center" style="margin-top: 10px;">@(@"Hot")</h3>
 @{ if(ViewData.ContainsKey("tableData_Hot_wallets_table") && ((System.Data.DataTable)(ViewData["tableData_Hot_wallets_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Hot_wallets_table" role="grid" aria-describedby="Hot_wallets_table_info" style="">
         <thead>
@@ -182,14 +182,14 @@
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Hot_wallets_table"])).Columns) {
                 <th>@col.Caption</th>
             }
-                <th>Akce</th>
+                
             </tr>
         </thead>
         <tfoot>
             <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Hot_wallets_table"])).Columns) {
                 <th>@col.Caption</th>
             }
-                <th>Akce</th>
+                
             </tr>
         </tfoot>
         <tbody>
@@ -197,7 +197,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="Delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
+                
             </tr>
         }
         </tbody>
@@ -206,7 +206,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Hot_wallets_table" />
-</div><div class="col-xs-12 col-lg-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Cold")</h3>
+</div><div class="col-xs-12 col-lg-8 mbe-active"><h3 class="text-center" style="margin-top: 10px;">@(@"Cold")</h3>
 @{ if(ViewData.ContainsKey("tableData_Cold_wallet_table") && ((System.Data.DataTable)(ViewData["tableData_Cold_wallet_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Cold_wallet_table" role="grid" aria-describedby="Cold_wallet_table_info" style="">
         <thead>
@@ -302,38 +302,6 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Transactions_table" />
-</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Support requests")</h3></div><div class="panel-body collapse in" aria-expanded="true">
-@{ if(ViewData.ContainsKey("tableData_Support_request_table") && ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Support_request_table" role="grid" aria-describedby="Support_request_table_info" style="">
-        <thead>
-            <tr>
-            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Columns) {
-                <th>@col.Caption</th>
-            }
-                <th>Akce</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Columns) {
-                <th>@col.Caption</th>
-            }
-                <th>Akce</th>
-            </tr>
-        </tfoot>
-        <tbody>
-        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_Support_request_table"])).Rows) {
-            <tr>@foreach (var cell in row.ItemArray) {
-                <td>@cell.ToString()</td>
-            }
-                <td class="actionIcons"><i title="modal" class="fa fa-edit" data-action="modal" data-idparam="modelId" data-confirm=""></i> <i title="delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-} else {
-    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
-} }
-<input type="hidden" name="Support_request_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Profiles")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table" role="grid" aria-describedby="Profiles_table_info" style="">
@@ -388,7 +356,7 @@
             }
         }
     }    
-</select></div></div></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" >@(@"Close")</button><button type="submit" class="btn btn-primary" name="button" value="addHotWallet" id="addHotWallet" >@(@"Add")</button></div></div></div></div>@Html.AntiForgeryToken()</form><form class="form-horizontal" method="post"><div class="modal fade mbe-active" tabindex="-1" role="dialog" id="bankaccountmodal" style="display: none; padding-right: 22px;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"New Bank Account")</h4></div><div class="modal-body"><div class="form-group"><label for="" class="col-sm-3">@(@"Account number")</label><div class="col-xs-12 col-sm-9"><input name="accountnumber" value="@(formState.ContainsKey("accountnumber") ? formState["accountnumber"] : (ViewData.ContainsKey("inputData_accountnumber") ? @ViewData["inputData_accountnumber"] : ""))" class="form-control" id="accountnumber" type="text" /></div></div><div class="form-group"><label for="" class="col-sm-3">@(@"Api Key")</label><div class="col-xs-12 col-sm-9"><input name="apikey" value="@(formState.ContainsKey("apikey") ? formState["apikey"] : (ViewData.ContainsKey("inputData_apikey") ? @ViewData["inputData_apikey"] : ""))" class="form-control" id="apikey" type="text" /></div></div><div class="form-group"><label for="" class="col-sm-3">@(@"Currency")</label><div class="col-xs-12 col-sm-9">
+</select></div></div></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" >@(@"Close")</button><button type="submit" class="btn btn-primary" name="button" value="addHotWallet" id="addHotWallet" >@(@"Add")</button></div></div></div></div>@Html.AntiForgeryToken()</form><form class="form-horizontal" method="post"><div class="modal fade" tabindex="-1" role="dialog" id="bankaccountmodal" style="display: none; padding-right: 22px;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"New Bank Account")</h4></div><div class="modal-body"><div class="form-group"><label for="" class="col-sm-3">@(@"Account number")</label><div class="col-xs-12 col-sm-9"><input name="accountnumber" value="@(formState.ContainsKey("accountnumber") ? formState["accountnumber"] : (ViewData.ContainsKey("inputData_accountnumber") ? @ViewData["inputData_accountnumber"] : ""))" class="form-control" id="accountnumber" type="text" /></div></div><div class="form-group"><label for="" class="col-sm-3">@(@"Api Key")</label><div class="col-xs-12 col-sm-9"><input name="apikey" value="@(formState.ContainsKey("apikey") ? formState["apikey"] : (ViewData.ContainsKey("inputData_apikey") ? @ViewData["inputData_apikey"] : ""))" class="form-control" id="apikey" type="text" /></div></div><div class="form-group"><label for="" class="col-sm-3">@(@"Currency")</label><div class="col-xs-12 col-sm-9">
 <select name="currency" class="form-control" id="currency">
     
     @{ if(ViewData["dropdownData_currency"] != null) {

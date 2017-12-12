@@ -71,7 +71,7 @@
     type: 'area',
     name: 'Rate changes',
   }]
-});        </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_rate_changes")).Value ?? "").ToString()))</div></div></div><div class="row"><div class="col-xs-12"><p class="" style="font-weight: bold; font-size: 120%;" id="volume">@(@"Amount traded: {var1} $".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("volume")).Value ?? "").ToString()))</p></div></div><div class="row mbe-active"><div class="col-xs-12"><div class="graphWrapper" id="hc_market_depth">@Html.Raw(@"<div id=""hc_market_depth_graph""></div><script>hc_market_depth_graph_chart = new Highcharts.stockChart({
+});        </script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_rate_changes")).Value ?? "").ToString()))</div></div></div><div class="row"><div class="col-xs-12 col-sm-6"><p class="" style="font-weight: bold; font-size: 120%;">Amount traded: <span class="" id="volume">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("volume")).Value ?? "").ToString()))</span><span class="mbe-active" id="asset_name">@(@"{var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("asset_name")).Value ?? "").ToString()))</span></p></div><div class="col-xs-12 col-sm-6"><p class="" style="font-weight: bold; font-size: 120%;" id="current_rate">@(@"Current exchange-rate: {var1} ".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("current_rate")).Value ?? "").ToString()))</p></div></div><div class="row"><div class="col-xs-12"><div class="graphWrapper" id="hc_market_depth">@Html.Raw(@"<div id=""hc_market_depth_graph""></div><script>hc_market_depth_graph_chart = new Highcharts.stockChart({
   rangeSelector: {
   	selected: $.cookie('hc_market_depth_graph_chart_selectedRange') || 0
   },
@@ -145,20 +145,21 @@ rangeSelector: {
   },
   series: [{
     type: 'area',
-    color: '#2dcc2d',
-    lineColor: '#2dcc2d',
-    lineWidth: 2,
-    showInNavigator: true,
-    fillOpacity: 0.2,
-    name: 'Sell'
-  }, {
-    type: 'area',
     color: '#c71616',
     lineColor: '#c71616',
     lineWidth: 2,
     showInNavigator: true,
     fillOpacity: 0.2,
     name: 'Buy'
+  }, 
+  {
+    type: 'area',
+    color: '#2dcc2d',
+    lineColor: '#2dcc2d',
+    lineWidth: 2,
+    showInNavigator: true,
+    fillOpacity: 0.2,
+    name: 'Sell'
   }],
   navigator: {
     series: {
