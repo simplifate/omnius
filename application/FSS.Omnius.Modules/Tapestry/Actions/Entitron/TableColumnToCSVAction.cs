@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Globalization;
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
     /// <summary>
@@ -53,10 +53,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 return "Table Column To CSV";
             }
         }
+        private string checkNull(object Input)
+        {
+            if (Input == DBNull.Value || Input == null)
+                return "";
+            else
+                return Input.ToString();
+        }
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             List<DBItem> dbitems = (List<DBItem>)vars["TableData"];
+
             if (dbitems.Count > 0)
             { //IF theres is more than 0 element in the List!!!
                 StringBuilder sb = new StringBuilder();
@@ -68,7 +76,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     sb.Append("\\n");  //new line
                     foreach (DBItem di in dbitems)
                     {
-                        sb.AppendFormat("{0},{1}", di[labelColumn], di[valColumn1]);
+                        sb.AppendFormat("{0},{1}", checkNull(di[labelColumn]).Replace(",", "."), checkNull(di[valColumn1]).Replace(",", "."));
                         sb.Append("\\n");  //new lin4
                     }
                 }
@@ -80,7 +88,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     sb.Append("\\n");  //new line
                     foreach (DBItem di in dbitems)
                     {
-                        sb.AppendFormat("{0},{1},{2}", di[labelColumn], di[valColumn1], di[valColumn2]);
+                        sb.AppendFormat("{0},{1},{2}", checkNull(di[labelColumn]).Replace(",", "."), checkNull(di[valColumn1]).Replace(",", "."), checkNull(di[valColumn2]).Replace(",", "."));
                         sb.Append("\\n");  //new line
                     }
                 }
@@ -92,7 +100,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     sb.Append("\\n");  //new line
                     foreach (DBItem di in dbitems)
                     {
-                        sb.AppendFormat("{0},{1},{2},{3}", di[labelColumn], di[valColumn1], di[valColumn2], di[valColumn3]);
+                        sb.AppendFormat("{0},{1},{2},{3}", checkNull(di[labelColumn]).Replace(",", "."), checkNull(di[valColumn1]).Replace(",", "."), checkNull(di[valColumn2]).Replace(",", "."), checkNull(di[valColumn3]).Replace(",", "."));
                         sb.Append("\\n");  //new line
                     }
                 }
@@ -106,7 +114,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     sb.Append("\\n");  //new line
                     foreach (DBItem di in dbitems)
                     {
-                        sb.AppendFormat("{0},{1},{2},{3},{4}", di[labelColumn], di[valColumn1], di[valColumn2], di[valColumn3], di[valColumn4]);
+                        sb.AppendFormat("{0},{1},{2},{3},{4}", di[labelColumn].ToString().Replace(",", "."), di[valColumn1].ToString().Replace(",", "."), di[valColumn2].ToString().Replace(",", "."), di[valColumn3].ToString().Replace(",", "."), di[valColumn4].ToString().Replace(",", "."));
                         sb.Append("\\n");  //new line
                     }
                 }
