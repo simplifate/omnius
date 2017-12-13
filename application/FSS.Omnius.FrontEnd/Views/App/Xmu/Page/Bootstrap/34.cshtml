@@ -174,7 +174,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="bank_accounts_table" />
-</div></div></div><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="row"><div class="col-xs-12 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">Wallets<button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addHotWallet" id="addHotWallet" data-toggle="modal" data-target="#hotWallet" >@(@"AddHotWallet")</button></h3></div><div class="col-xs-12 col-sm-6"><button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addColdWallet" id="addColdWallet" data-toggle="modal" data-target="#coldWallet" >@(@"AddColdWallet")</button></div></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-4"><h3 class="text-center" style="margin-top: 10px;">@(@"Hot")</h3>
+</div></div></div><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="row"><div class="col-xs-7 col-lg-4 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">Wallets<button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addHotWallet" id="addHotWallet" data-toggle="modal" data-target="#hotWallet" >@(@"AddHotWallet")</button></h3></div><div class="col-xs-5 col-lg-8 col-sm-6"><button type="button" class="btn btn-primary btn-xs pull-right" name="button" value="addColdWallet" id="addColdWallet" data-toggle="modal" data-target="#coldWallet" >@(@"AddColdWallet")</button></div></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-4"><h3 class="text-center mbe-active" style="margin-top: 10px;">@(@"Hot")</h3>
 @{ if(ViewData.ContainsKey("tableData_Hot_wallets_table") && ((System.Data.DataTable)(ViewData["tableData_Hot_wallets_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Hot_wallets_table" role="grid" aria-describedby="Hot_wallets_table_info" style="">
         <thead>
@@ -206,7 +206,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Hot_wallets_table" />
-</div><div class="col-xs-12 col-lg-8 mbe-active"><h3 class="text-center" style="margin-top: 10px;">@(@"Cold")</h3>
+</div><div class="col-xs-12 col-lg-8"><h3 class="text-center" style="margin-top: 10px;">@(@"Cold")</h3>
 @{ if(ViewData.ContainsKey("tableData_Cold_wallet_table") && ((System.Data.DataTable)(ViewData["tableData_Cold_wallet_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Cold_wallet_table" role="grid" aria-describedby="Cold_wallet_table_info" style="">
         <thead>
