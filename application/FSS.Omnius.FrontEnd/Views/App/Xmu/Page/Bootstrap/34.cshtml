@@ -1,4 +1,4 @@
-@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center mbe-active" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
+@{ Layout = "~/Views/Shared/_OmniusUserAppLayout.cshtml"; }@{ Dictionary<string, string> formState = (Dictionary<string, string>)ViewData["formState"]; }<div class="mozaicBootstrapPage"><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#RigUpDownHistoryGraphBody" aria-expanded="true">@(@"Exchange Balance")</h3></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="col-xs-12"><p class="text-center" style="font-size: 50px;" id="total_balance">@(@"Total Balance: {var1} €".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("total_balance")).Value ?? "").ToString()))</p></div></div><div class="row">
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
@@ -302,6 +302,70 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Transactions_table" />
+</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Transactions errors")</h3></div><div class="panel-body collapse in" aria-expanded="true">
+@{ if(ViewData.ContainsKey("tableData_TransactionsErrors_table") && ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                <td class="actionIcons"><i title="Solved" class="fa fa-check" data-action="solved" data-idparam="modelId" data-confirm=""></i></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="TransactionsErrors_table" />
+</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Withdrawal errors")</h3></div><div class="panel-body collapse in" aria-expanded="true">
+@{ if(ViewData.ContainsKey("tableData_WithdrawalErrors_table") && ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="WithdrawalErrors_table" role="grid" aria-describedby="WithdrawalErrors_table_info" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                <th>Akce</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                <td class="actionIcons"><i title="Solved" class="fa fa-check" data-action="solved" data-idparam="modelId" data-confirm=""></i></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="WithdrawalErrors_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Profiles")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table" role="grid" aria-describedby="Profiles_table_info" style="">
