@@ -19,7 +19,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] { "JToken", "?PrettyPrint" };
+                return new string[] { "JToken", "?b$PrettyPrint" };
             }
         }
 
@@ -50,15 +50,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             var jToken = (JToken)vars["JToken"];
-            bool prettyPrint = vars.ContainsKey("PrettyPrint") ? (bool)vars["PrettyPrint"] : true;
+            bool prettyPrint = vars.ContainsKey("PrettyPrint") ? (bool)vars["PrettyPrint"] : false;
 
             if (prettyPrint)
             {
-                vars["Result"] = jToken.ToString(Newtonsoft.Json.Formatting.Indented);
+                outputVars["Result"] = jToken.ToString(Newtonsoft.Json.Formatting.Indented);
             }
             else
             {
-                vars["Result"] = jToken.ToString(Newtonsoft.Json.Formatting.None);
+                outputVars["Result"] = jToken.ToString(Newtonsoft.Json.Formatting.None);
             }
         }
     }
