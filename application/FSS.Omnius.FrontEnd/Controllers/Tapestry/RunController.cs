@@ -16,6 +16,9 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.FrontEnd.Utils;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
 using FSS.Omnius.Modules.Entitron.Entity.Master;
+using Microsoft.AspNet.Identity.Owin;
+using FSS.Omnius.FrontEnd;
+using System.Web;
 
 namespace FSS.Omnius.Controllers.Tapestry
 {
@@ -1133,3 +1136,144 @@ namespace FSS.Omnius.Controllers.Tapestry
         }
     }
 }
+[AllowAnonymous]
+public class UnauthorizedRunController : Controller
+{
+    private ApplicationUserManager _userManager;
+    private ApplicationSignInManager _signInManager;
+
+    public ApplicationUserManager UserManager
+    {
+        get
+        {
+            return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        }
+        private set
+        {
+            _userManager = value;
+        }
+    }
+
+    public ApplicationSignInManager SignInManager
+    {
+        get
+        {
+            return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+        }
+        private set
+        {
+            _signInManager = value;
+        }
+    }
+
+    private string userName;
+
+    public ActionResult Get(string appName, string button, string blockIdentify = null, int modelId = -1)
+    {
+        try
+        {
+            Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
+
+            bool isAuthorized = Authorize();
+            if (!isAuthorized)
+                return new Http403Result();
+
+            C.CORE core = HttpContext.GetCORE();
+
+            if (core.User == null)
+            {
+                core.User = core.Persona.AuthenticateUser(userName);
+            }
+
+            DBEntities context = DBEntities.instance;
+            core.Entitron.Application = context.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+
+            // get block
+            Block block = getBlockWithWF(core, context, appName, blockIdentify);
+            if (block == null)
+                return new HttpStatusCodeResult(404);
+
+            blockDependencies.Add("Translator", this.GetTranslator());
+            // run
+            var result = core.Tapestry.run(core.User, block, button, modelId, new FormCollection(), -1, blockDependencies);
+
+            // redirect
+            return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
+
+
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+
+    }
+    public ActionResult GetJson(string appName, string button, string blockIdentify = null, int modelId = -1)
+    {
+        Dictionary<string, object> blockDependencies = new Dictionary<string, object>();
+
+        bool isAuthorized = Authorize();
+        if (!isAuthorized)
+            return new Http403Result();
+
+        C.CORE core = HttpContext.GetCORE();
+
+        if (core.User == null)
+        {
+            core.User = core.Persona.AuthenticateUser(userName);
+        }
+
+        DBEntities context = DBEntities.instance;
+        core.Entitron.Application = context.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+        var currentUser = context.Users.Find(252);
+        // get block
+        Block block = getBlockWithWF(core, context, appName, blockIdentify);
+        if (block == null)
+            return new HttpStatusCodeResult(404);
+
+        blockDependencies.Add("Translator", this.GetTranslator());
+        // run
+        var result = core.Tapestry.jsonRun(currentUser, block, button, modelId, new FormCollection());
+
+        // redirect
+        return Content(result.ToString(), "application/json");
+    }
+
+    private bool Authorize()
+    {
+        userName = HttpContext.Request.QueryString["User"];
+        string password = HttpContext.Request.QueryString["Password"];
+
+        var result = SignInManager.PasswordSignIn(userName, password, false, shouldLockout: false);
+        if (result == SignInStatus.Success)
+        {
+            return true;
+        }
+        return false;
+    }
+    private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
+    {
+        return blockName != null
+            ? context.Blocks
+                .Include(b => b.SourceTo_ActionRules)
+                .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
+            : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+    }
+
+    public string GetLocaleNameById(int? id)
+    {
+        if (id.HasValue && id == 1)
+            return "cs";
+        else return "en";
+
+    }
+
+    public ITranslator GetTranslator()
+    {
+        return new T(this.GetLocaleNameById(HttpContext.GetCORE().User.LocaleId));
+    }
+}
+

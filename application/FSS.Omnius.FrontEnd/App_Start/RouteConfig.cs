@@ -136,6 +136,20 @@ namespace FSS.Omnius.FrontEnd
                 namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
             );
 
+            routes.MapRoute(
+                name: "Get",
+                url: "{appName}/{blockIdentify}/Get",
+                defaults: new { controller = "UnauthorizedRun", action = "Get", blockIdentify = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+            );
+
+            routes.MapRoute(
+                name: "GetJson",
+                url: "{appName}/{blockIdentify}/GetJson",
+                defaults: new { controller = "UnauthorizedRun", action = "GetJson", blockIdentify = UrlParameter.Optional },
+                namespaces: new string[] { "FSS.Omnius.Controllers.Tapestry" }
+            );
+
             // REST API
             routes.MapRoute(
                 name: "Rest",
