@@ -304,7 +304,7 @@
 <input type="hidden" name="Transactions_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Transactions errors")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_TransactionsErrors_table") && ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
+    <table class="table data-table no-footer mbe-active dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
@@ -336,7 +336,7 @@
 <input type="hidden" name="TransactionsErrors_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Withdrawal errors")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_WithdrawalErrors_table") && ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="WithdrawalErrors_table" role="grid" aria-describedby="WithdrawalErrors_table_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="WithdrawalErrors_table" role="grid" aria-describedby="WithdrawalErrors_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_WithdrawalErrors_table"])).Columns) {
