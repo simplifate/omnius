@@ -33,7 +33,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             }
 
             if (string.IsNullOrEmpty(rights))
-                return false;
+                return true;
 
             string[] roles = rights.Split(',');
             foreach (string role in roles)
@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Persona
             }
 
             if (string.IsNullOrEmpty(rights))
-                return false;
+                return true;
 
             string[] roles = rights.Split(',');
             foreach (string role in roles)
