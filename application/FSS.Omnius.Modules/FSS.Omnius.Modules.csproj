@@ -1334,6 +1334,7 @@
     <Compile Include="Tapestry\Actions\Nexus\GetTableFromJSON.cs" />
     <Compile Include="Tapestry\Actions\Nexus\JsonStringifyAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\Json2Dict.cs" />
+    <Compile Include="Tapestry\Actions\Nexus\ListToStringAction.cs" />
     <Compile Include="Tapestry\Actions\Nexus\NexusRepository.cs" />
     <Compile Include="Tapestry\Actions\Entitron\ColumnToListAction.cs" />
     <Compile Include="Tapestry\Actions\other\CombineAtRandomAction.cs" />
