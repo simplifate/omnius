@@ -72,9 +72,8 @@ sE0FP1G8FoMc/5V0lRLGpwyUfH8rT9H/VYC4l2gM58TCmEZ4mu1ygy7mg7vhDZ4d
         {
             string timestamp = GetCurrentTimestamp();
             string body = (string)vars["Data"];
-            string remoteAddress = HttpContext.Current.Request.ServerVariables["LOCAL_ADDR"];
 
-            byte[] data = Encoding.UTF8.GetBytes(string.Format("{0}@{1}@{2}", body, timestamp, remoteAddress));
+            byte[] data = Encoding.UTF8.GetBytes(string.Format("{0}@{1}", body, timestamp));
 
             StringReader reader = new StringReader(XMUPrivateKey);
             PemObject pem = (new PemReader(reader)).ReadPemObject();
