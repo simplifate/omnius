@@ -54,7 +54,7 @@ namespace FSS.Omnius.FrontEnd
             }
             catch (Exception exc)
             {
-                Logger.Log.Error($"!Failed to log error!:{Environment.NewLine}{exc.Message}");
+                Logger.Log.Error(exc, Request);
             }
         }
 
