@@ -1310,6 +1310,7 @@
     <Compile Include="Tapestry\Actions\Math\ModuloAction.cs" />
     <Compile Include="Tapestry\Actions\Math\MultiplyAction.cs" />
     <Compile Include="Tapestry\Actions\Math\MultiplyInVectorAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\RoundAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ScalarDivisionAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ScalarProductAction.cs" />
     <Compile Include="Tapestry\Actions\Math\SubtractAction.cs" />
