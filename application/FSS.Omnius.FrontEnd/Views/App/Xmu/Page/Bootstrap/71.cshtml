@@ -21,7 +21,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="Edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i> <i title="Delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm=""></i></td>
+                <td class="actionIcons"><i title="Edit" class="fa fa-pencil" data-action="edit" data-idparam="modelId" data-confirm=""></i> <i title="Delete" class="fa fa-remove" data-action="delete" data-idparam="deleteId" data-confirm="Opravdu chcete daný záznam smazat?"></i></td>
             </tr>
         }
         </tbody>
