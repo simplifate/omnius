@@ -49,7 +49,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            var List = (List<string>)vars["List"];
+            var List = (List<object>)vars["List"];
             var Separator = vars.ContainsKey("Separator") ? (string)vars["Separator"] : ",";
             
             outputVars["Result"] = string.Join(Separator, List.ToArray());
