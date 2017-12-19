@@ -292,13 +292,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     if (target.IsBootstrap == null || target.IsBootstrap == false)
                     {
                         var targetPage = target.Page;
-                        var component = targetPage.Components.SingleOrDefault(c => c.Name == target.ComponentName);
+                        var component = targetPage.Components.FirstOrDefault(c => c.Name == target.ComponentName);
                         if (component == null)
                         {
                             foreach (var parentComponent in targetPage.Components)
                             {
                                 if (parentComponent.ChildComponents.Count > 0)
-                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.Name == target.ComponentName);
+                                    component = parentComponent.ChildComponents.FirstOrDefault(c => c.Name == target.ComponentName);
                                 if (component != null)
                                     break;
                             }
@@ -312,13 +312,13 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                     else
                     {
                         var targetPage = target.BootstrapPage;
-                        var component = targetPage.Components.SingleOrDefault(c => c.ElmId == target.ComponentName);
+                        var component = targetPage.Components.FirstOrDefault(c => c.ElmId == target.ComponentName);
                         if (component == null)
                         {
                             foreach (var parentComponent in targetPage.Components)
                             {
                                 if (parentComponent.ChildComponents.Count > 0)
-                                    component = parentComponent.ChildComponents.SingleOrDefault(c => c.ElmId == target.ComponentName);
+                                    component = parentComponent.ChildComponents.FirstOrDefault(c => c.ElmId == target.ComponentName);
                                 if (component != null)
                                     break;
                             }
