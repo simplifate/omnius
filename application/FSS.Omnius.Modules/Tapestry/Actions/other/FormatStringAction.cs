@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            List<string> replace = new List<string>();
+            List<object> replace = new List<object>();
             for (int i = 0; i < 10; i++)
             {
                 string key = "var" + i.ToString();
