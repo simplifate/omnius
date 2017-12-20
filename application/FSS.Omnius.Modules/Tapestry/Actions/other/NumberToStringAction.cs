@@ -7,17 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
-    public class FormatStringAction : Action
+    public class NumberToStringAction : Action
     {
         public override int Id
         {
             get
             {
-                return 183;
+                return 1105;
             }
         }
         public override int? ReverseActionId
@@ -31,7 +32,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return new string[] { "Input", "?var0", "?var1", "?var2", "?var3", "?var4", "?var5", "?var6", "?var7", "?var8", "?var9" };
+                return new string[] { "Number", "?Format" };
             }
         }
 
@@ -39,7 +40,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
         {
             get
             {
-                return "Format string";
+                return "Number to String";
             }
         }
 
@@ -53,17 +54,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            List<object> replace = new List<object>();
-            for (int i = 0; i < 10; i++)
-            {
-                string key = "var" + i.ToString();
-                if (vars.ContainsKey(key))
-                {
-                    replace.Add(vars[key].ToString());
-                }
-            }
-
-            outputVars["Result"] = string.Format((string)vars["Input"], replace.ToArray());
+            string format = vars.ContainsKey("Format") ? "\"" + vars["Format"].ToString() + "\"" : "\"g\"";
+            outputVars["Result"] = Convert.ToDouble(vars["Number"]).ToString(format);
         }
     }
 }
