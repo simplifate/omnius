@@ -673,6 +673,61 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
 
         public ActionResult SyncFromAD()
         {
+            try
+            {
+                DBEntities e = DBEntities.instance;
+                NexusLdapService service = new NexusLdapService();
+
+                JToken ldapUsers = service.GetUsers();
+                foreach (JToken ldapUser in ldapUsers)
+                {
+                    string username = (string)ldapUser["samaccountname"];
+                    if (ldapUser["samaccountname"] == null)
+                        continue;
+                    if (e.Users.Any(u => u.UserName == username))
+                        continue;
+
+                    try
+                    {
+                        User user = new User
+                        {
+                            UserName = username,
+                            DisplayName = string.IsNullOrWhiteSpace((string)ldapUser["displayname"]) ? username : (string)ldapUser["displayname"],
+                            Email = (string)ldapUser["mail"],
+                            Address = "",
+                            Company = "",
+                            Department = "",
+                            Team = "",
+                            Job = "",
+                            WorkPhone = "",
+                            MobilPhone = "",
+                            LastLogin = (long)ldapUser["lastlogon"] != 0 ? DateTime.FromFileTime((long)ldapUser["lastlogon"]) : new DateTime(1970, 1, 1),
+                            CurrentLogin = DateTime.UtcNow,
+
+                            ModuleAccessPermission = new ModuleAccessPermission(),
+
+                            isLocalUser = false,
+                            localExpiresAt = DateTime.UtcNow.AddMonths(1)
+                        };
+                        e.Users.Add(user);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception("", ex);
+                    }
+                }
+                e.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                OmniusException.Log(ex, OmniusLogSource.Persona);
+            }
+            
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SyncFromWSO()
+        {
             var core = new CORE();
             var db = core.Entitron.GetStaticTables();
 
