@@ -1260,6 +1260,7 @@
     <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetHostUrl.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetListsElementByIndexAction.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\SaveListAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\TableColumnToCSVAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GroupTableRowsAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\JArrayInsertIntoDB.cs" />
