@@ -54,8 +54,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            string format = vars.ContainsKey("Format") ? "\"" + vars["Format"].ToString() + "\"" : "\"g\"";
-            outputVars["Result"] = Convert.ToDouble(vars["Number"]).ToString(format);
+            string format = vars.ContainsKey("Format") ? vars["Format"].ToString() : "g";
+            outputVars["Result"] = (Convert.ToDouble(vars["Number"])).ToString(format);
         }
     }
 }
