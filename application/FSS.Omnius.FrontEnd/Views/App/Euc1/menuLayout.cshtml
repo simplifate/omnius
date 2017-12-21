@@ -1,0 +1,12 @@
+@{ FSS.Omnius.FrontEnd.Utils.T t = new FSS.Omnius.FrontEnd.Utils.T( (string)ViewData["locale"] ); }
+    <ul  id=appMenu>
+@if (Context.GetLoggedUser().canUseBlock("User",98)){            <li>
+                    <a href="/Euc1/Rozhodnuti">@(t._("Rozhodnutí"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",98)){            <li>
+                    <a href="/Euc1/PrehledProjektu">@(t._("Přehled projektů"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("User",98)){            <li>
+                    <a href="/Euc1/NovyProjekt">@(t._("Nový projekt"))</a>
+            </li>
+}    </ul>
