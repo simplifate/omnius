@@ -1302,6 +1302,7 @@
     <Compile Include="Tapestry\Actions\Math\AddAction.cs" />
     <Compile Include="Tapestry\Actions\Math\AddInVectorAction.cs" />
     <Compile Include="Tapestry\Actions\Math\BasicsAction.cs" />
+    <Compile Include="Tapestry\Actions\Math\ExponentiationAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ColumnAutosumAction.cs" />
     <Compile Include="Tapestry\Actions\Math\ColumnAverageAction.cs" />
     <Compile Include="Tapestry\Actions\Math\CopyInVectorAction.cs" />
