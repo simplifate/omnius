@@ -1087,6 +1087,9 @@ body.Leaderboard thead th {
 body.Leaderboard .data-table.table thead tr {
   background-color: #fff !important; }
 
+body.XMU.Overview {
+  font-size: 12px; }
+
 @font-face {
   font-family: "RweHeadlineRegular";
   src: url(/Content/Fonts/rweheadline-regularcondens-webfont.ttf) format("truetype"); }
