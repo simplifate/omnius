@@ -436,7 +436,7 @@
       enabled: false
     }
   }]
-});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("weekly_active_hc")).Value ?? "").ToString()))</div></div><div class="row"><div class="graphWrapper" id="monthly_active_hc">@Html.Raw(@"<div id=""monthly_active_hc_graph""></div><style type=""text/css"" rel=""stylesheet"">            </style><script>monthly_active_hc_graph_chart = new Highcharts.chart({
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("weekly_active_hc")).Value ?? "").ToString()))</div></div><div class="row"><div class="graphWrapper mbe-active" id="monthly_active_hc">@Html.Raw(@"<div id=""monthly_active_hc_graph""></div><style type=""text/css"" rel=""stylesheet"">            </style><script>monthly_active_hc_graph_chart = new Highcharts.chart({
   chart: {
     renderTo: 'monthly_active_hc_graph',
     backgroundColor: ""#fff"",
@@ -506,7 +506,7 @@
       enabled: false
     }
   }]
-});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("monthly_active_hc")).Value ?? "").ToString()))</div></div><div class=""><span class="" id="noactionUsers" style="font-size: 25px;">@(@"noaction users {var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("noactionUsers")).Value ?? "").ToString()))</span></div></div><div class="col-xs-12 col-lg-8">
+});</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("monthly_active_hc")).Value ?? "").ToString()))</div></div><div class=""><span class="" id="noactionUsers" style="font-size: 25px;">@(@"Noaction users: {var1}".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("noactionUsers")).Value ?? "").ToString()))</span></div></div><div class="col-xs-12 col-lg-8">
 @{ if(ViewData.ContainsKey("tableData_Profiles_table") && ((System.Data.DataTable)(ViewData["tableData_Profiles_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="0" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="Profiles_table" role="grid" aria-describedby="Profiles_table_info" style="">
         <thead>
