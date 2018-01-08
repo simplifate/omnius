@@ -72,8 +72,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                         recipientsCzechOutput.Add(addressPair.Key, addressPair.Value);
                 }
 
-                czechMailer.BCC(recipientsCzechOutput);
-                englishMailer.BCC(recipientsEnglishOutput);
+                czechMailer.To(recipientsCzechOutput);
+                englishMailer.To(recipientsEnglishOutput);
             }
             if (vars.ContainsKey("BCC")) {
                 var bccInputDict = (Dictionary<string, string>)vars["BCC"];
