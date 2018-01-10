@@ -84,7 +84,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             var resultEth = GetResponse(string.Format("https://api.blockcypher.com/v1/eth/main/addrs/{0}/balance", coldWallet["address"].ToString()));
                             if (resultEth != null)
                             {
-                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>()/1E+18;
+                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>();
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                                 ent.Application.SaveChanges();
                             }
