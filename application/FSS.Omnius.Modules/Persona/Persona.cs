@@ -196,17 +196,18 @@ namespace FSS.Omnius.Modules.Persona
 
             // groups
             List<string> groupNames = new List<string>();
-            foreach (JToken group in ldapResult["memberof"])
-            {
-                string groupIdentify = (string)group;
-                // get only OSS groups
-                if (groupIdentify.Split(',').Contains(_AdGroupContainer))
+            if (ldapResult["memberof"] != null)
+                foreach (JToken group in ldapResult["memberof"])
                 {
-                    int startI = groupIdentify.IndexOf("CN=") + 3;
-                    int EndI = groupIdentify.IndexOf(',', startI);
-                    groupNames.Add(groupIdentify.Substring(startI, EndI - startI));
+                    string groupIdentify = (string)group;
+                    // get only OSS groups
+                    if (groupIdentify.Split(',').Contains(_AdGroupContainer))
+                    {
+                        int startI = groupIdentify.IndexOf("CN=") + 3;
+                        int EndI = groupIdentify.IndexOf(',', startI);
+                        groupNames.Add(groupIdentify.Substring(startI, EndI - startI));
+                    }
                 }
-            }
 
             return new Tuple<User, List<string>>(user, groupNames);
         }

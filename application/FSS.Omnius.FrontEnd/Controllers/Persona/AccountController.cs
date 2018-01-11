@@ -685,7 +685,10 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                     if (ldapUser["samaccountname"] == null)
                         continue;
                     if (e.Users.Any(u => u.UserName == username))
+                    {
+                        Logger.Log.Info($"SyncAD: skipping user {username}");
                         continue;
+                    }
 
                     try
                     {
@@ -713,7 +716,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
                     }
                     catch(Exception ex)
                     {
-                        throw new Exception("", ex);
+                        throw new Exception($"LDAP: error in creating user '{username}'", ex);
                     }
                 }
                 e.SaveChanges();
