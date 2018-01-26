@@ -341,6 +341,7 @@
     <Compile Include="Entitron\Service\IRecoveryService.cs" />
     <Compile Include="Entitron\Service\RecoveryService.cs" />
     <Compile Include="Entitron\SharedTables.cs" />
+    <Compile Include="Entitron\Sql\SqlQuery_Command.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_AllConstraintDrop.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_IndexColumns.cs" />
     <Compile Include="Entitron\Sql\SqlQuery_isTableInEntitron.cs" />

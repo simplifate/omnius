@@ -244,6 +244,7 @@
     <Compile Include="Controllers\Athena\AthenaController.cs" />
     <Compile Include="Controllers\Athena\AthenaApiController.cs" />
     <Compile Include="Controllers\Compass\CompassController.cs" />
+    <Compile Include="Controllers\Entitron\DbController.cs" />
     <Compile Include="Controllers\Hermes\IncomingController.cs" />
     <Compile Include="Controllers\Hermes\IncomingRuleController.cs" />
     <Compile Include="Controllers\Master\ServiceController.cs" />
