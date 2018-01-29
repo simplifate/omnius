@@ -42,7 +42,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
                         "CLOSE c_Users " +
                         "DEALLOCATE c_Users"
                 };
-                query.Execute(E.Entitron.EntitronConnectionString);
+                query.Execute(E.Entitron.connectionString);
 
                 return count;
             }
