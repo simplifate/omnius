@@ -17,7 +17,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
             try
             {
                 int count = 0;
-                SqlQuery_Command query = new SqlQuery_Command(E.Entitron.EntitronConnectionString)
+                SqlQuery_Command query = new SqlQuery_Command(E.Entitron.connectionString)
                 {
                     Sql = "DECLARE @v_spid INT " +
                         "DECLARE c_Users CURSOR " +
