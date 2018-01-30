@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] {"IpAddress","Port"};
+                return new string[] {"IpAddress","Port", "Market"};
             }
         }
 
@@ -64,8 +64,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             string ipAddress = vars["IpAddress"].ToString();
             int port = Convert.ToInt32(vars["Port"]);
             var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
-            var orderCashTable = core.Entitron.GetDynamicTable("order_cash", false);
-            core.Entitron.TruncateTable("order_cash");
+            var orderCashTable = core.Entitron.GetDynamicTable("order_book", false);
+            core.Entitron.TruncateTable("order_book");
             core.Entitron.Application.SaveChanges();
 
             foreach (var order in (JArray)result["result"])
