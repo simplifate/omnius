@@ -340,9 +340,12 @@
     <Content Include="Content\Images\Icons\doge_black.png" />
     <Content Include="Content\Images\Icons\ether_black.png" />
     <Content Include="Content\Images\Icons\euro_black.png" />
+    <Content Include="Content\Images\Icons\logo-bitcoincash-stroke.png" />
     <Content Include="Content\Images\Icons\LTC_dark2.png" />
     <Content Include="Content\Images\Icons\modalpreloader.gif" />
     <Content Include="Content\Images\Icons\monero_black.png" />
+    <Content Include="Content\Images\Icons\ripple_logo.png" />
+    <Content Include="Content\Images\Icons\verge_logo.png" />
     <Content Include="Content\Images\Icons\zcash_black.png" />
     <Content Include="Content\Images\innogy_logo_H_n_4C_ly.svg" />
     <Content Include="Content\Images\LogoCrymico.png" />
