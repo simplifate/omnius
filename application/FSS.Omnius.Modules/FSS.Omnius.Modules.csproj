@@ -1254,6 +1254,7 @@
     <Compile Include="Tapestry\Actions\Apps\AuctionSystem\GetWSO_Users.cs" />
     <Compile Include="Tapestry\Actions\Apps\SmartCoasters\ParseValues.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\CreateMSSignature.cs" />
+    <Compile Include="Tapestry\Actions\Apps\XMU\DictionaryToDBItem.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\GetColdWalletsBalanceAction.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\MarketDeph Action.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\ParseExchangeRates.cs" />
