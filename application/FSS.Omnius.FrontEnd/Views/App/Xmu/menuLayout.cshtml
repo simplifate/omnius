@@ -16,6 +16,9 @@
                     <a href="/Xmu/Atsrobot">@(t._("AtsRobot"))</a>
             </li>
 }@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
+                    <a href="/Xmu/Tradestatus">@(t._("tradeStatus"))</a>
+            </li>
+}@if (Context.GetLoggedUser().canUseBlock("Admin",117)){            <li>
                     <a href="/Xmu/Bankaccountoverview">@(t._("BankAccountOverview"))</a>
             </li>
 }    </ul>
