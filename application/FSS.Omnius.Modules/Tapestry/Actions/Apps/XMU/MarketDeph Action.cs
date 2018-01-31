@@ -66,7 +66,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             int port = Convert.ToInt32(vars["Port"]);
             var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
             var orderCashTable = core.Entitron.GetDynamicTable("order_book", false);
-            core.Entitron.TruncateTable("order_book");
             core.Entitron.Application.SaveChanges();
 
             foreach (var order in (JArray)result["result"])
