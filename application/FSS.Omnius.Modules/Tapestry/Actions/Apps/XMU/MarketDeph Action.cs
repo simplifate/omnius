@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] {"IpAddress","Port", "Market"};
+                return new string[] {"IpAddress","Port","CurencyPair"};
             }
         }
 
@@ -58,14 +58,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"btcusd\"}}, \"id\": {requestId++}}}";
+            string pair = vars["CurencyPair"].ToString();
+            string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
             string inputJson =
                     $"{{\"jsonrpc\": \"2.0\", \"method\": \"Orderbook.get\", \"params\": [], \"id\": {requestId++ + 1}}}";
             string ipAddress = vars["IpAddress"].ToString();
             int port = Convert.ToInt32(vars["Port"]);
             var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
             var orderCashTable = core.Entitron.GetDynamicTable("order_book", false);
-            core.Entitron.TruncateTable("order_book");
             core.Entitron.Application.SaveChanges();
 
             foreach (var order in (JArray)result["result"])

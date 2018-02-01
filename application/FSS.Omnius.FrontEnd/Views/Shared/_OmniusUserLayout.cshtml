@@ -25,7 +25,7 @@
     <div id="userTopBar">
         <div class="icon" id="toggleMenuIcon"><div class="fa fa-bars"></div></div>
         <a href="/Master"><div class="icon activeIcon" id="appManagerIcon"><div class="fa fa-th"></div></div></a>
-        @if (Context.GetLoggedUser().isAdmin())
+        @if (Context.GetLoggedUser() != null && Context.GetLoggedUser().isAdmin())
         {
             <a href="/CORE"><div class="icon" id="adminSectionIcon"><div class="fa fa-cog"></div></div></a>
         }
@@ -42,8 +42,11 @@
         <div class="userBox">
             <div class="notificationIcon fa fa-bell"></div>
             <div class="avatar"></div>
+            @if (Context.GetLoggedUser() != null)
+            {
             <div class="fullName">@Context.GetLoggedUser().DisplayName</div>
             <div class="commands">@Html.Raw(Context.GetLoggedUser().isLocalUser ? $"<form action=\"/Persona/Account/LogOff\" id=\"logoutForm\" method=\"POST\">{Html.AntiForgeryToken()}</form><a id=\"logoutLink\" href=\"/Persona/Account/LogOff\">odhlásit</a> | " : "")<a href="/Master/Home/Details">detail</a></div>
+            }
         </div>
         <div class="searchBoxMinimized">
             <div class="searchIcon fa fa-search"></div>
