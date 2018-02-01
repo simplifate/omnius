@@ -81,10 +81,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             }
                             break;
                         case "eth":
-                            var resultEth = GetResponse(string.Format("https://api.blockcypher.com/v1/eth/main/addrs/{0}/balance", coldWallet["address"].ToString()));
+                            var resultEth = GetResponse(string.Format("http://api.etherscan.io/api?module=account&action=balance&address={0}&tag=latest", coldWallet["address"].ToString()));
                             if (resultEth != null)
                             {
-                                coldWallet["balance"] = ((JValue)resultEth["final_balance"]).ToObject<double>();
+                                coldWallet["balance"] = ((JValue)resultEth["result"]).ToObject<double>()/ 1000000000000000000.0;
                                 hotAndCold.Update(coldWallet, Convert.ToInt32(coldWallet["id"]));
                                 ent.Application.SaveChanges();
                             }
