@@ -2,7 +2,7 @@
 @{ if(ViewData.ContainsKey("currency_foreach")) {
         foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["currency_foreach"]) {
             <div class="">
-                <div class="col-xs-6 col-sm-4 col-md-3 mbe-active" style="margin: 15px 0; border-right: 2px solid black; min-height: 110px;"><img src="/Content/Images/Icons/@row["image_link"]" alt="" class="" style="margin-top: -5px;" height="25"></img><span class="" style="font-size: 16px;margin-left: 10px;">@(row["currency"].ToString())</span><span class="" style="font-size: 16px;">@(@" Balance")</span><p class="" style="font-size: 35px;" id="BTC_balance">@(row["ex_curr"].ToString())</p><span class="" style="font-size: 16px;" id="BTC_balance_diff">@(row["diff"].ToString())</span><span class="" style="font-size: 16px;">@(@" difference")</span></div>   
+                <div class="col-xs-6 col-sm-4 col-md-3" style="margin: 15px 0; border-right: 2px solid black; min-height: 110px;"><img src="/Content/Images/Icons/@row["image_link"]" alt="" class="" style="margin-top: -5px;" height="25"></img><span class="" style="font-size: 16px;margin-left: 10px;">@(row["currency"].ToString())</span><span class="" style="font-size: 16px;">@(@" Balance")</span><p class="" style="font-size: 35px;" id="BTC_balance">@(row["ex_curr"].ToString())</p><span class="" style="font-size: 16px;" id="BTC_balance_diff">@(row["diff"].ToString())</span><span class="" style="font-size: 16px;">@(@" difference")</span></div>   
             </div>
         }
     }
@@ -144,7 +144,7 @@
 <input type="hidden" name="Withdrawal_request_table" />
 </div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><h3 class="panel-title pull-left">@(@"Bank Accounts")</h3><form class="form-horizontal" method="post"><button type="submit" class="btn pull-right btn-primary btn-xs" name="button" value="newBankAccount" id="newBankAccount" data-toggle="modal" data-target="#bankaccountmodal" bankaccountmodal="bankaccountmodal" >@(@"AddBankAccount")</button>@Html.AntiForgeryToken()</form></div></div><div class="panel-body">
 @{ if(ViewData.ContainsKey("tableData_bank_accounts_table") && ((System.Data.DataTable)(ViewData["tableData_bank_accounts_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="bank_accounts_table" role="grid" aria-describedby="DataTables_Table_0_info" style="margin-top: 44px;">
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="bank_accounts_table" role="grid" aria-describedby="DataTables_Table_0_info" style="margin-top: 44px;">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_bank_accounts_table"])).Columns) {
@@ -165,7 +165,7 @@
             <tr>@foreach (var cell in row.ItemArray) {
                 <td>@cell.ToString()</td>
             }
-                <td class="actionIcons"><i title="Delete" class="fa fa-remove" data-action="Delete" data-idparam="deleteId" data-confirm="Opravdu chcete daný účet smazat?"></i></td>
+                <td class="actionIcons"><i title="Delete" class="fa fa-remove" data-action="Delete" data-idparam="deleteId" data-confirm="Opravdu chcete daný účet smazat?"></i> <i title="Edit" class="fa fa-pencil" data-action="Edit" data-idparam="modelId" data-confirm=""></i></td>
             </tr>
         }
         </tbody>
