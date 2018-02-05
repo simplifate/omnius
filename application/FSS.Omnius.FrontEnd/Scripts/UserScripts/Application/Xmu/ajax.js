@@ -104,7 +104,7 @@ $(function(){
   $("#ExchangeVOther_table").find(".fa-sign-in").attr("data-toggle","modal").attr("data-target","#modalPair");
   
   $("#ExchangeVOther_table").on("click", ".fa-sign-in", function () {
-            var Pair = $(this).parent().parent().children("td:nth-child(2)").html();
+            var Pair = $(this).parent().parent().children("td:nth-child(3)").html();
             $("#exchange_heading").html("");
             $("#exchange_body").html("");
             $("#preloader_pair").css("display", "block");
