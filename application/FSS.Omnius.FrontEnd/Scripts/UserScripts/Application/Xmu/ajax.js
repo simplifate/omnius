@@ -79,7 +79,7 @@ $(function(){
                     $("#modal_body_cash").html(x.find("#modal_body_cash").html());
                     $("#modal_name_profile").html(x.find("#modal_name_profile").html());
                   	$("#modalProfile #Support_request_table").find(".fa-edit").attr("data-toggle","modal").attr("data-target","#modalTicket");
-                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors");
+                  	var tables = $("#datatableCrypto").add("#datatableFiat").add("#datatableTrades").add("#datatableWithdrawals").add("#datatableDeposits").add("#modalProfile #pendingReuquest").add("#modalProfile #transactionerrors").add("#modalProfile #withdrawErrors");
                     tables.each(function() {
                       var table = $(this);
                       BootstrapUserInit.DataTable.initTable(table);

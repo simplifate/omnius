@@ -1385,6 +1385,7 @@
     <Compile Include="Tapestry\Actions\Apps\PIA\LogChangesAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\AddTimeSpanAction.cs" />
     <Compile Include="Tapestry\Actions\DateTime\TimeSpanAction.cs" />
+    <Compile Include="Tapestry\Actions\Scheduler\UnregisterTaskAction.cs" />
     <Compile Include="Tapestry\Running\Action.cs" />
     <Compile Include="Tapestry\Running\ActionBase.cs" />
     <Compile Include="Tapestry\Running\ActionRuleBase.cs" />
