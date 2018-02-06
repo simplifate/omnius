@@ -66,10 +66,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
             string targetUrl;
 
-            if (serverName == "localhost")
-                targetUrl = $"https://omniuswork.azurewebsites.net/{appName}/{blockName}/Get?modelId={modelId}&User={systemAccName}&Password={systemAccPass}";
-            else
-                targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User={systemAccName}&Password={systemAccPass}";
+            targetUrl = $"{hostname}/{appName}/{blockName}/Get?modelId={modelId}&User=Scheduler&Password=194GsQwd/AgB4ZZnf_uF";
 
             if (button != "")
                 targetUrl += $"&button={button}";
