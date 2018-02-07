@@ -338,6 +338,7 @@
     <Content Include="Content\Images\Icons\bitcoin_black.png" />
     <Content Include="Content\Images\Icons\dash_black.png" />
     <Content Include="Content\Images\Icons\doge_black.png" />
+    <Content Include="Content\Images\Icons\ethereum-classic-logo.png" />
     <Content Include="Content\Images\Icons\ether_black.png" />
     <Content Include="Content\Images\Icons\euro_black.png" />
     <Content Include="Content\Images\Icons\logo-bitcoincash-stroke.png" />
