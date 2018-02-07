@@ -570,7 +570,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="deposits_table" />
-</div></div><div class="tab-pane" id="tab-withdraw"><div class="col-xs-12 mbe-active"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawals")</h3>
+</div></div><div class="tab-pane" id="tab-withdraw"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawals")</h3>
 @{ if(ViewData.ContainsKey("tableData_withdrawals_table") && ((System.Data.DataTable)(ViewData["tableData_withdrawals_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="withdrawals_table" role="grid" aria-describedby="withdrawals_table_info" style="">
         <thead>
@@ -666,6 +666,38 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="activityLog_table" />
+</div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title mbe-active" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"User log")</h3></div><div class="panel-body collapse in" aria-expanded="true">
+@{ if(ViewData.ContainsKey("tableData_userLog_table") && ((System.Data.DataTable)(ViewData["tableData_userLog_table"])).Rows.Count > 0) {
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="userLog_table" role="grid" aria-describedby="activityLog_table_info" style="">
+        <thead>
+            <tr>
+            @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_userLog_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>@foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_userLog_table"])).Columns) {
+                <th>@col.Caption</th>
+            }
+                
+            </tr>
+        </tfoot>
+        <tbody>
+        @foreach(System.Data.DataRow row in ((System.Data.DataTable)(ViewData["tableData_userLog_table"])).Rows) {
+            <tr>@foreach (var cell in row.ItemArray) {
+                <td>@cell.ToString()</td>
+            }
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+} else {
+    <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
+} }
+<input type="hidden" name="userLog_table" />
 </div></div></div></div><div class="empty-element" id="modal_modal_profile"></div><form class="form-horizontal" method="post"><div class="modal fade" tabindex="-1" role="dialog" id="coldWallet" style="display: none;"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><h4 class="modal-title">@(@"New Cold Wallet")</h4></div><div class="modal-body"><div class="form-group"><label for="" class="col-sm-3">@(@"Address")</label><div class="col-xs-12 col-sm-9"><input name="coldAddress" value="@(formState.ContainsKey("coldAddress") ? formState["coldAddress"] : (ViewData.ContainsKey("inputData_coldAddress") ? @ViewData["inputData_coldAddress"] : ""))" class="form-control" id="coldAddress" type="text" /></div></div><div class="form-group"><label for="" class="col-sm-3">@(@"Currency code")</label><div class="col-xs-12 col-sm-9">
 <select name="ColdCurrencyCode" class="form-control" id="ColdCurrencyCode">
     
