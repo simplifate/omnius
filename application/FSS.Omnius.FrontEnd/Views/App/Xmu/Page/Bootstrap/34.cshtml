@@ -144,7 +144,7 @@
 <input type="hidden" name="Withdrawal_request_table" />
 </div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><h3 class="panel-title pull-left">@(@"Bank Accounts")</h3><form class="form-horizontal" method="post"><button type="submit" class="btn pull-right btn-primary btn-xs" name="button" value="newBankAccount" id="newBankAccount" data-toggle="modal" data-target="#bankaccountmodal" bankaccountmodal="bankaccountmodal" >@(@"AddBankAccount")</button>@Html.AntiForgeryToken()</form></div></div><div class="panel-body">
 @{ if(ViewData.ContainsKey("tableData_bank_accounts_table") && ((System.Data.DataTable)(ViewData["tableData_bank_accounts_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="bank_accounts_table" role="grid" aria-describedby="DataTables_Table_0_info" style="margin-top: 44px;">
+    <table class="table data-table no-footer dataTable" data-dtpaging="0" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="bank_accounts_table" role="grid" aria-describedby="DataTables_Table_0_info" style="margin-top: 44px;">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_bank_accounts_table"])).Columns) {
@@ -272,7 +272,7 @@
 <input type="hidden" name="ExchangeVOther_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Transactions")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_Transactions_table") && ((System.Data.DataTable)(ViewData["tableData_Transactions_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="Transactions_table" role="grid" aria-describedby="Transactions_table_info" style="">
+    <table class="table data-table no-footer dataTable mbe-active" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="Transactions_table" role="grid" aria-describedby="Transactions_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_Transactions_table"])).Columns) {
@@ -304,7 +304,7 @@
 <input type="hidden" name="Transactions_table" />
 </div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Transactions errors")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_TransactionsErrors_table") && ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="1" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="TransactionsErrors_table" role="grid" aria-describedby="TransactionsErrors_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_TransactionsErrors_table"])).Columns) {
