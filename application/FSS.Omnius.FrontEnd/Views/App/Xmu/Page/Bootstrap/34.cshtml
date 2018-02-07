@@ -538,7 +538,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="Profiles_table" />
-</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="row"><div class="col-xs-7 col-lg-4 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">@(@"Deposits and withdrawals")</h3></div></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class="row"><div class="clearfix"><div class="col-xs-12 col-lg-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Deposits")</h3>
+</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><div class="clearfix"><div class="row"><div class="col-xs-7 col-lg-4 col-sm-6"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExpectationVSRealityBody" aria-expanded="true">@(@"Deposits and withdrawals")</h3></div></div></div></div><div class="panel-body collapse in" aria-expanded="true"><div class=""><ul class="nav nav-tabs"><li class="active"><a href="#tab-deposit" data-toggle="tab" class="" aria-expanded="true">@(@"Deposits")</a></li><li class=""><a href="#tab-withdraw" data-toggle="tab" aria-expanded="false" class="">@(@"Withdrawals")</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-deposit"><div class="col-xs-12"><h3 class="text-center" style="margin-top: 10px;">@(@"Deposits")</h3>
 @{ if(ViewData.ContainsKey("tableData_deposits_table") && ((System.Data.DataTable)(ViewData["tableData_deposits_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="deposits_table" role="grid" aria-describedby="Hot_wallets_table_info" style="">
         <thead>
@@ -570,9 +570,9 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="deposits_table" />
-</div><div class="col-xs-12 col-lg-6"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawals")</h3>
+</div></div><div class="tab-pane" id="tab-withdraw"><div class="col-xs-12 mbe-active"><h3 class="text-center" style="margin-top: 10px;">@(@"Withdrawals")</h3>
 @{ if(ViewData.ContainsKey("tableData_withdrawals_table") && ((System.Data.DataTable)(ViewData["tableData_withdrawals_table"])).Rows.Count > 0) {
-    <table class="table data-table no-footer mbe-active dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="withdrawals_table" role="grid" aria-describedby="withdrawals_table_info" style="">
+    <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="0" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="withdrawals_table" role="grid" aria-describedby="withdrawals_table_info" style="">
         <thead>
             <tr>
             @foreach (System.Data.DataColumn col in ((System.Data.DataTable)(ViewData["tableData_withdrawals_table"])).Columns) {
@@ -602,7 +602,7 @@
     <div class="alert alert-info empty-table-label">Tabulka neobsahuje žádná data</div>
 } }
 <input type="hidden" name="withdrawals_table" />
-</div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Deviants")</h3></div><div class="panel-body collapse in" aria-expanded="true">
+</div></div></div></div></div></div></div></div><div class="row"><div class="col-xs-12"><div class="panel panel-default" ><div class="panel-heading"><h3 class="panel-title" role="button" data-toggle="collapse" href="#ExchangeRatesBody" aria-expanded="true">@(@"Deviants")</h3></div><div class="panel-body collapse in" aria-expanded="true">
 @{ if(ViewData.ContainsKey("tableData_deviants_table") && ((System.Data.DataTable)(ViewData["tableData_deviants_table"])).Rows.Count > 0) {
     <table class="table data-table no-footer dataTable" data-dtpaging="1" data-dtinfo="1" data-dtfilter="1" data-dtordering="1" data-dtcolumnfilter="1" data-dtserverside="0" id="deviants_table" role="grid" aria-describedby="deviants_table_info" style="">
         <thead>
