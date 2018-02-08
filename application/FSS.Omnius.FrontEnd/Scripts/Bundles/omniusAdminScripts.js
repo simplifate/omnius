@@ -17621,6 +17621,7 @@ MBE.types.functions = {
                     type: 'select',
                     options: {
                         'tr': 'tr',
+                        'td': 'td',
                         'div': 'div',
                         'li': 'list item'
                     },
