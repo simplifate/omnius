@@ -172,6 +172,11 @@ namespace FSS.Omnius.Modules.Tapestry
 
                 if (_results.Type == ActionResultType.Error)
                 {
+                    _results.Message.Errors.Add(ex.Message);
+                    OmniusApplicationException.Log(ex, OmniusLogSource.Tapestry, Entitron.i.Application, _CORE.User);
+                    return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
+                }
+                if (_results.Type == ActionResultType.Error) {
                     return new Tuple<ActionResult, Block>(_results, actionRule.TargetBlock);
                     //return new Tuple<ActionResult, Block>(_results, Rollback(prevActionRules).SourceBlock);
                 }

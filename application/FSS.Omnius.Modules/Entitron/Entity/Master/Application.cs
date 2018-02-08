@@ -11,7 +11,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
     using System.Linq;
     using Mozaic.Bootstrap;
     using Hermes;
-    using FSS.Omnius.Modules.Entitron.Entity.Nexus;
+    using FSS.Omnius.Modules.Entitron.DB;
 
     [Table("Master_Applications")]
     public partial class Application : IEntity
@@ -25,6 +25,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             TitleFontSize = 20;
 
             WorkFlows = new HashSet<WorkFlow>();
+            Tables = new HashSet<Table>();
             ADgroups = new HashSet<ADgroup>();
             DesignedBy = new HashSet<User>();
             UsersApplications = new HashSet<UsersApplications>();
@@ -32,15 +33,13 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
             MozaicBootstrapPages = new List<MozaicBootstrapPage>();
             DatabaseDesignerSchemeCommits = new List<DbSchemeCommit>();
             TapestryDesignerMetablocks = new HashSet<TapestryDesignerMetablock>();
-            TapestryDesignerConditionGroups = new HashSet<TapestryDesignerConditionGroup>();
+            TapestryDesignerConditionSets = new HashSet<TapestryDesignerConditionSet>();
             DbSchemeLocked = false;
             ColumnMetadata = new HashSet<ColumnMetadata>();
             EmailTemplates = new HashSet<EmailTemplate>();
             IncomingEmailRule = new List<IncomingEmailRule>();
-            TCPListeners = new List<TCPSocketListener>();
         }
-
-        [ImportExportIgnore(IsKey = true)]
+        
         public int Id { get; set; }
 
         [Required]
@@ -56,66 +55,62 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Master
         public string LaunchCommand { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
-        
-        public bool IsAllowedForAll { get; set; }
-        public bool IsAllowedGuests { get; set; }
 
         public bool IsPublished { get; set; }
         public bool IsEnabled { get; set; }
         public bool IsSystem { get; set; }
 
         // empty for default, database name or full connection string
+        public ESqlType DB_Type { get; set; }
+        public string DB_ConnectionString { get; set; }
         public string connectionString_data { get; set; }
-        public string connectionString_schema { get; set; }
+        public string DBscheme_connectionString { get; set; }
 
         public bool TapestryChangedSinceLastBuild { get; set; }
         public bool MozaicChangedSinceLastBuild { get; set; }
         public bool EntitronChangedSinceLastBuild { get; set; }
         public bool MenuChangedSinceLastBuild { get; set; }
         public bool DbSchemeLocked { get; set; }
-        public int? SchemeLockedForUserId { get; set; }
-
-        [ImportExportIgnore]
-        public virtual MozaicCssTemplate CssTemplate { get; set; }
 
         // tapestry
-        [ImportExportIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkFlow> WorkFlows { get; set; }
+        [ImportExport(ELinkType.Child, Branch = "Tapestry")]
+        public virtual ICollection<TapestryDesignerConditionSet> TapestryDesignerConditionSets { get; set; }
         // tapestry - designer
+        [ImportExport(ELinkType.Child, Branch = "Tapestry")]
         public virtual ICollection<TapestryDesignerMetablock> TapestryDesignerMetablocks { get; set; }
-        [ImportExportIgnore]
         public TapestryDesignerMetablock TapestryDesignerRootMetablock
         {
             get { return TapestryDesignerMetablocks.SingleOrDefault(mb => mb.ParentMetablock_Id == null); }
         }
-        public virtual ICollection<TapestryDesignerConditionGroup> TapestryDesignerConditionGroups { get; set; }
 
         // persona
-        [ImportExportIgnore]
         public virtual ICollection<ADgroup> ADgroups { get; set; }
+        [ImportExport(ELinkType.Child, Branch = "Persona")]
         public virtual ICollection<PersonaAppRole> Roles { get; set; }
-        [ImportExportIgnore]
         public ICollection<User> DesignedBy { get; set; }
-        [ImportExportIgnore]
         public virtual ICollection<UsersApplications> UsersApplications { get; set; }
 
         // entitron
-        [ImportExportIgnore]
+        public virtual ICollection<Table> Tables { get; set; }
+        [ImportExport(ELinkType.Child, Branch = "Entitron")]
         public virtual ICollection<ColumnMetadata> ColumnMetadata { get; set; }
         // entitron - designer
+        [ImportExport(ELinkType.Child, Branch = "Entitron")]
         public virtual ICollection<DbSchemeCommit> DatabaseDesignerSchemeCommits { get; set; }
-        
+
         // mozaic
+        [ImportExport(ELinkType.Child, Branch = "MozaicLegacy")]
         public virtual ICollection<MozaicEditorPage> MozaicEditorPages { get; set; }
+        [ImportExport(ELinkType.Child, Branch = "MozaicBootstrap")]
         public virtual ICollection<MozaicBootstrapPage> MozaicBootstrapPages { get; set; }
-        public virtual ICollection<Js> Js { get; set; }
 
         // hermes
+        [ImportExport(ELinkType.Child, Branch = "HermesOut")]
         public virtual ICollection<EmailTemplate> EmailTemplates { get; set; }
+        // don't export now
+        //[ImportExport(ELinkType.Child, Branch = "HermesIn")]
         public virtual ICollection<IncomingEmailRule> IncomingEmailRule { get; set; }
-
-        // Nexus
-        public virtual ICollection<TCPSocketListener> TCPListeners { get; set; }
     }
 }

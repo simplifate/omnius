@@ -1,196 +1,148 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace FSS.Omnius.Modules.Entitron
+﻿namespace FSS.Omnius.Modules.Entitron
 {
-    using Entity;
-    using CORE;
-    using Entity.Master;
-    using Service;
-    using Table;
-    using System.Data.SqlClient;
+    using DB;
+    using FSS.Omnius.Modules.CORE;
+    using FSS.Omnius.Modules.Entitron.Entity;
+    using FSS.Omnius.Modules.Entitron.Entity.Master;
+    using FSS.Omnius.Modules.Entitron.Service;
+    using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
+    using System.Web;
+
     public class Entitron : IModule
     {
-        public static string connectionString = "DefaultConnection";
-        private CORE _CORE;
-        private DBEntities entities = null;
-
-        public Application Application { get; set; }
-        public string AppName
-        {
-            get { return (Application != null) ? Application.Name : null; }
-            set
-            {
-                if (value != null)
-                    Application = this.GetAppSchemeByName(value);
-            }
-        }
-        public int AppId
-        {
-            get { return Application.Id; }
-            set
-            {
-                Application = this.GetAppSchemeById(value);
-            }
-        }
-        public IConditionalFilteringService filteringService { get; set; }
-
-        public Application GetAppSchemeById(int id)
-        {
-            return GetStaticTables().Applications.SingleOrDefault(app => app.Id == id);
-        }
-
-        public Application GetAppSchemeByName(string name)
-        {
-            return GetStaticTables().Applications.SingleOrDefault(app => app.Name == name);
-        }
-
-        public Entitron(CORE core, string ApplicationName = null)
+        public Entitron(CORE core)
         {
             _CORE = core;
-            AppName = ApplicationName;
-            filteringService = new ConditionalFilteringService();
+            FilteringService = new ConditionalFilteringService();
         }
 
-        public DBEntities GetStaticTables()
-        {
-            if (entities == null)
-                entities = DBEntities.instance;
+        private CORE _CORE;
+        public IConditionalFilteringService FilteringService { get; set; }
 
-            return entities;
-        }
-        public void CloseStaticTables()
-        {
-            if (entities != null)
-                entities.Dispose();
-        }
+
         public Tuple<List<string>, List<DBItem>> GetSystemTable(string tableName)
         {
+            DBEntities context = DBEntities.instance;
+
             switch (tableName)
             {
                 case "Omnius::AppRoles":
-                    return DBSetToTable(entities.Roles);
+                    return DBSetToTable(context.Roles);
                 case "Omnius::Users":
-                    return DBSetToTable(entities.Users);
+                    return DBSetToTable(context.Users);
                 case "Omnius::LogItems":
-                    return DBSetToTable(entities.LogItems);
+                    return DBSetToTable(context.LogItems);
                 default:
                     throw new InvalidOperationException($"System table {tableName} not found");
             }
         }
-        public IEnumerable<DBTable> GetDynamicTables()
-        {
-            if (Application == null)
-                throw new ArgumentNullException("Application");
-
-            return Application.GetTables();
-        }
         public Tuple<List<string>, List<DBItem>> DBSetToTable<T>(IDbSet<T> dbset) where T : class
         {
-            List<T> inputList = dbset.ToList();
             List<DBItem> rowList = new List<DBItem>();
             var propertyList = typeof(T).GetProperties().Where(c => c.PropertyType.IsValueType)
                 .GroupBy(c => c.Name).Select(c => c.First());
-            foreach (var entity in inputList)
+            foreach (var entity in dbset.ToList())
             {
-                var newRow = new DBItem();
-                int columnId = 0;
+                var newRow = new DBItem(i);
                 foreach (var property in propertyList)
                 {
                     object value = property.GetValue(entity, null);
-                    newRow.createProperty(columnId, property.Name, value);
-                    columnId++;
+                    newRow[property.Name] = value;
                 }
                 rowList.Add(newRow);
             }
             var columnList = propertyList.Select(c => c.Name).ToList();
             return new Tuple<List<string>, List<DBItem>>(columnList, rowList);
         }
-        public DBTable GetDynamicTable(string tableName, bool shared = false)
-        {
-         
-                if (Application == null)
-                    throw new ArgumentNullException("Application");
 
-                if (!shared)
+
+        public static string DefaultConnectionString = "DefaultConnection";
+        public static ESqlType DefaultDBType = ESqlType.MSSQL;
+        public static string EntityConnectionString
+        {
+            get
+            {
+                if (DefaultConnectionString == "DefaultConnection")
+                    return DefaultConnectionString;
+
+                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=EntityFramework;";
+            }
+        }
+        public static string EntitronConnectionString
+        {
+            get
+            {
+                if (DefaultConnectionString == "DefaultConnection")
+                    return DefaultConnectionString;
+
+                return $"{DefaultConnectionString}{(DefaultConnectionString.EndsWith(";") ? "" : ";")}App=Entitron;";
+            }
+        }
+
+        private static int requestHash
+        {
+            get
+            {
+                try
                 {
-                    return Application.GetTable(tableName);
+                    if (HttpContext.Current == null)
+                        return 0;    //pro přístup z jiného vlákna
+                    return HttpContext.Current.Request.GetHashCode();
                 }
-                else
+                catch (HttpException)
                 {
-                    return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName);
+                    return 0;
                 }
-            
-        }
-
-        public DBView GetDynamicView(string viewName, bool shared = false)
-        {
-            if (Application == null)
-                throw new ArgumentNullException("Application");
-
-            if (!shared)
-            {
-                return Application.GetView(viewName);
-            }
-            else
-            {
-                return this.GetAppSchemeById(SharedTables.AppId).GetView(viewName);
             }
         }
-
-        public DBItem GetDynamicItem(string tableName, int modelId, bool shared = false)
+        private static Dictionary<int, DBConnection> _connections = new Dictionary<int, DBConnection>();
+        private static object _connectionLock = new object();
+        public static DBConnection i
         {
-            if (string.IsNullOrWhiteSpace(tableName) || modelId < 0)
-                return null;
-
-            if (!shared)
+            get
             {
-                return Application.GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
-            }
-            else
-            {
-                return this.GetAppSchemeById(SharedTables.AppId).GetTable(tableName).Select().where(c => c.column("Id").Equal(modelId)).ToList().FirstOrDefault();
-            }
-        }
+                lock (_connectionLock)
+                {
+                    if (!_connections.ContainsKey(requestHash))
+                    {
+                        _connections[requestHash] = new DBConnection(requestHash);
+                    }
 
-        public bool ExecSP(string procedureName, Dictionary<string, string> parameters)
-        {
-            string execParams = "";
-            List<string> execParamsList = new List<string>();
-            if(parameters.Count > 0) {
-                foreach(KeyValuePair<string,string> p in parameters) {
-                    execParamsList.Add($"@{p.Key} = '{p.Value}'");
+                    return _connections[requestHash];
                 }
-                execParams = " " + string.Join(", ", execParamsList);
             }
+        }
+        public static bool Create(int applicationId)
+        {
+            return Create(DBEntities.instance.Applications.Find(applicationId));
+        }
+        public static bool Create(string applicationName)
+        {
+            return Create(DBEntities.instance.Applications.SingleOrDefault(a => a.Name == applicationName));
+        }
+        public static bool Create(Application application)
+        {
+            if (application != null)
+            {
+                if (_connections.ContainsKey(requestHash))
+                {
+                    Logger.Log.Warn("DBConnection overriten");
+                }
 
-            try {
-                var cmd = new SqlCommand($"EXEC {procedureName}{execParams};", new SqlConnection(connectionString));
-                cmd.ExecuteNonQuery();
+                _connections[requestHash] = new DBConnection(requestHash, application);
                 return true;
             }
-            catch(Exception) {
-                return false;
-            }
+
+            return false;
         }
-
-        public bool TruncateTable(string tableName)
+        public static void Destroy()
         {
-            string realTableName = $"Entitron_{(Application.Id == SharedTables.AppId ? SharedTables.Prefix : Application.Name)}_{tableName}";
-
-            try {
-                using (var connection = new SqlConnection(connectionString)) {
-                    connection.Open();
-
-                    var cmd = new SqlCommand($"TRUNCATE TABLE {realTableName};", connection);
-                    cmd.ExecuteNonQuery();
-                }
-                return true;
-            }
-            catch (Exception) {
-                return false;
+            lock(_connectionLock)
+            {
+                _connections.Remove(requestHash);
             }
         }
     }

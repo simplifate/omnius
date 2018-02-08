@@ -1,15 +1,12 @@
-﻿using FSS.Omnius.FrontEnd.Views;
-using FSS.Omnius.Controllers.CORE;
-using System;
-using System.Collections.Specialized;
+﻿using System;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
+using System.Configuration;
 using System.Web.Routing;
-using System.Net.Mail;
-using System.Net;
+using FSS.Omnius.FrontEnd.Views;
+using FSS.Omnius.Controllers.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Controllers.Tapestry;
 using System.Collections.Generic;
@@ -17,6 +14,7 @@ using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Globalization;
 using System.Configuration;
+using FSS.Omnius.Modules.Entitron;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -70,6 +68,9 @@ namespace FSS.Omnius.FrontEnd
 
             RunController.requestStart = DateTime.Now;
             DBEntities.Create();
+            //string appName = Context.Request.Url.LocalPath.TrimStart(new char[] { '/' }).Split('/').FirstOrDefault();
+            RouteData routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current));
+            Entitron.Create((string)routeData.Values["appName"] ?? (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"]); // run controller || api run controller
         }
 
         protected void Application_EndRequest()
@@ -100,6 +101,7 @@ namespace FSS.Omnius.FrontEnd
                 c.Execute(new RequestContext(new HttpContextWrapper(Context), rd));
             }
             DBEntities.Destroy();
+            Entitron.Destroy();
         }
     }
 }

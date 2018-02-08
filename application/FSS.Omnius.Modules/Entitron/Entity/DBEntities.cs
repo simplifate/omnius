@@ -247,7 +247,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
             Database.Log = s => Log(s);
         }
 
-        public DBEntities() : base(FSS.Omnius.Modules.Entitron.Entitron.connectionString)
+        public DBEntities() : base(Modules.Entitron.Entitron.EntityConnectionString)
         {
         }
         
