@@ -70,7 +70,10 @@ namespace FSS.Omnius.FrontEnd
             DBEntities.Create();
             //string appName = Context.Request.Url.LocalPath.TrimStart(new char[] { '/' }).Split('/').FirstOrDefault();
             RouteData routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current));
-            Entitron.Create((string)routeData.Values["appName"] ?? (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"]); // run controller || api run controller
+            string appName = (string)routeData.Values["appName"];
+            if (string.IsNullOrEmpty(appName) && (routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values.ContainsKey("appName") == true)
+                appName = (string)(routeData.Values["MS_SubRoutes"] as System.Web.Http.Routing.IHttpRouteData[])?.FirstOrDefault()?.Values["appName"];
+            Entitron.Create(appName); // run controller || api run controller
         }
 
         protected void Application_EndRequest()
