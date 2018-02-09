@@ -97,6 +97,12 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public DBItem Add(DBItem item)
         {
+            if (!item.getAllProperties().Any())
+            {
+                Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
+                return item;
+            }
+
             using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.INSERT(_db, Name, item)))
             {
                 reader.Read();
@@ -112,6 +118,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
             foreach(PropertyInfo prop in item.GetType().GetProperties().Where(p => DataType.BaseTypes.Contains(p.PropertyType)))
             {
                 values.Add(prop.Name, prop.GetValue(item));
+            }
+            if (!values.Any())
+            {
+                Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
+                return -1;
             }
 
             using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.INSERT(_db, Name, values)))

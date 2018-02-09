@@ -177,9 +177,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             MySqlCommand command = new MySqlCommand();
 
+            IEnumerable<string> columnNames = item.getColumnNames().Except(new string[] { PrimaryKey, FullPrimaryKey(tableName, false) });
+
             command.CommandText =
-                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", item.getFullColumnNames().Select(c => AddQuote(c)))}) " +
-                $"VALUES ({string.Join(",", item.getFullColumnNames().Select(c => $"@{command.AddParam(c, item[c])}"))});" +
+                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
+                $"VALUES ({string.Join(",", columnNames.Select(c => $"@{command.AddParam(c, item[c])}"))});" +
                 $"SELECT LAST_INSERT_ID();";
 
             return command;
@@ -188,9 +190,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             MySqlCommand command = new MySqlCommand();
 
+            IEnumerable<string> columnNames = item.Keys.Except(new string[] { PrimaryKey, FullPrimaryKey(tableName, false) });
+
             command.CommandText =
-                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", item.Keys.Select(c => AddQuote(c)))}) " +
-                $"VALUES ({string.Join(",", item.Keys.Select(c => $"@{command.AddParam(c, item[c])}"))});" +
+                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
+                $"VALUES ({string.Join(",", columnNames.Select(c => $"@{command.AddParam(c, item[c])}"))});" +
                 $"SELECT LAST_INSERT_ID() {PrimaryKey};";
 
             return command;
@@ -213,8 +217,10 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             MySqlCommand command = new MySqlCommand();
 
+            var columnTuples = ColumnsToTuple(db.Application, tableName, item.getFullColumnNames()).Where(ct => ct.Item2 != PrimaryKey);
+
             command.CommandText =
-                $"UPDATE {ToRealTableName(db.Application, tableName)} SET {string.Join(", ", item.getFullColumnNames().Select(c => $"{AddQuote(c)}=@{command.AddParam(c, item[c])}"))} WHERE {FullPrimaryKey(tableName)}=@_{PrimaryKey}_;";
+                $"UPDATE {ToRealTableName(db.Application, tableName)} SET {string.Join(", ", columnTuples.Select(pair => $"{ToRealTableName(db.Application, pair.Item1)}.{AddQuote(pair.Item2)}=@{command.AddParam(pair.Item2, item[$"{pair.Item1}.{pair.Item2}"])}"))} WHERE {ToRealTableName(db.Application, tableName)}.{AddQuote(PrimaryKey)}=@_{PrimaryKey}_;";
 
             command.Parameters.Add(new MySqlParameter($"_{PrimaryKey}_", rowId));
 
