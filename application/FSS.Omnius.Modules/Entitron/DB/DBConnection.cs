@@ -17,7 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             _type = Entitron.DefaultDBType;
             _connectionString = Entitron.DefaultConnectionString;
 
-            _commandSet = getDBCommandSet(_type);
+            _commandSet = DBCommandSet.GetDBCommandSet(_type);
         }
 
         public DBConnection(int requestHash, Application application)
@@ -31,7 +31,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                     ? Application.DB_ConnectionString
                     : Entitron.DefaultConnectionString;
 
-            _commandSet = getDBCommandSet(_type);
+            _commandSet = DBCommandSet.GetDBCommandSet(_type);
         }
 
         private int _requestHash;
@@ -65,29 +65,29 @@ namespace FSS.Omnius.Modules.Entitron.DB
             return result;
         }
 
-        public DBTable Table(string name, bool isSystem = false)
+        public DBTable Table(string name, bool isShared = false)
         {
-            return new DBTable(this)
+            return new DBTable(isShared ? Entitron.iShared : this)
             {
                 Name = name
             };
         }
 
-        public Tabloid Tabloid(string name, bool isSystem = false)
+        public Tabloid Tabloid(string name, bool isShared = false)
         {
-            return new Tabloid(this)
+            return new Tabloid(isShared ? Entitron.iShared : this)
             {
                 Name = name
             };
         }
 
-        public Select Select(string tabloidName, bool isSystem = false, params string[] columns)
+        public Select Select(string tabloidName, bool isShared = false, params string[] columns)
         {
-            return new Select(this, tabloidName, columns, isSystem);
+            return new Select(isShared ? Entitron.iShared : this, tabloidName, columns);
         }
-        public Delete Delete(string tabloidName, bool isSystem = false)
+        public Delete Delete(string tabloidName, bool isShared = false)
         {
-            return new Delete(this, tabloidName, isSystem);
+            return new Delete(isShared ? Entitron.iShared : this, tabloidName);
         }
         public bool ExecSP(string procedureName, Dictionary<string, string> parameters)
         {
@@ -283,23 +283,5 @@ namespace FSS.Omnius.Modules.Entitron.DB
             return items;
         }
         #endregion
-        
-        public static void ClearCache()
-        {
-            DBColumn.Cache.Clear();
-        }
-
-        private static DBCommandSet getDBCommandSet(ESqlType type)
-        {
-            switch (type)
-            {
-                case ESqlType.MSSQL:
-                    return new DBCommandSet_MSSQL();
-                case ESqlType.MySQL:
-                    return new DBCommandSet_MySQL();
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
     }
 }

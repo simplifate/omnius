@@ -217,7 +217,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         }
         public Delete Delete()
         {
-            return new Delete(_db, Name, _db.Application.IsSystem);
+            return new Delete(_db, Name);
         }
 
         public DBItem SelectById(int id)

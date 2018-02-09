@@ -54,7 +54,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
                 }
                 finally
                 {
-                    DBConnection.ClearCache();
+                    Entitron.ClearCache();
                 }
             }
         }

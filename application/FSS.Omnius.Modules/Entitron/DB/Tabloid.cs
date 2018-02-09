@@ -21,7 +21,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public Select Select(params string[] columns)
         {
-            return new Select(_db, Name, columns, _db.Application.IsSystem);
+            return new Select(_db, Name, columns);
         }
 
         public override string ToString() => $"Tabloid [{Name}][{_db.Application.Name}]";

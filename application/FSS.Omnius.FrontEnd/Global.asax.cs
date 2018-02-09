@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Configuration;
 using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.FrontEnd
 {
@@ -32,8 +33,9 @@ namespace FSS.Omnius.FrontEnd
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             Logger.Log.ConfigureRootDir(Server);
-            Omnius.Modules.Entitron.Entitron.connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             MvcHandler.DisableMvcResponseHeader = true;
+            Entitron.DefaultConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            Entitron.DefaultDBType = DBCommandSet.GetSqlType(ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName);
             App_Start.AppStart.AppInitialize();
             Logger.Log.Info("Omnius starts");
         }

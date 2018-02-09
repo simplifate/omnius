@@ -6,10 +6,9 @@ namespace FSS.Omnius.Modules.Entitron.Queryable
 {
     public class Delete : IQueryable, IWhere<Delete>, IJoin<Delete>
     {
-        public Delete(DBConnection db, string tabloidName, bool isSystem = false)
+        public Delete(DBConnection db, string tabloidName)
         {
             _tabloidName = tabloidName;
-            _isSystem = isSystem;
             _db = db;
             
             _conditions = new Manager<Condition>(_db);
@@ -19,7 +18,6 @@ namespace FSS.Omnius.Modules.Entitron.Queryable
 
         private DBConnection _db;
         private string _tabloidName;
-        private bool _isSystem;
         private Manager<Condition> _conditions;
         private Manager<Join> _join;
 

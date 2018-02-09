@@ -15,6 +15,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public override ESqlType Type => ESqlType.MySQL;
         public override IDbConnection Connection => new MySqlConnection();
         public override IDbCommand Command => new MySqlCommand();
+        public override string ProviderName => "MySql.Data.MySqlClient";
 
         public override string QuotesBegin => "`";
         public override string QuotesEnd => "`";
@@ -46,7 +47,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         }
 
         #region DATA
-        public override IDbCommand SELECT(DBConnection db, Tabloid tabloid, bool isSystem = false, IEnumerable<string> columnNames = null, Manager<Condition> conditions = null, Manager<Join> joins = null, Order order = null, GroupBy groupBy = null, int? limit = null, Page page = null, DropStep dropStep = null)
+        public override IDbCommand SELECT(DBConnection db, Tabloid tabloid, IEnumerable<string> columnNames = null, Manager<Condition> conditions = null, Manager<Join> joins = null, Order order = null, GroupBy groupBy = null, int? limit = null, Page page = null, DropStep dropStep = null)
         {
             MySqlCommand command = new MySqlCommand();
             List<string> withTable = new List<string>();

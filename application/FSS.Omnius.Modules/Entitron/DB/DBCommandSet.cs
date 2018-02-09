@@ -19,6 +19,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public abstract ESqlType Type { get; }
         public abstract IDbConnection Connection { get; }
         public abstract IDbCommand Command { get; }
+        public abstract string ProviderName { get; }
 
         public abstract string QuotesBegin { get; }
         public abstract string QuotesEnd { get; }
@@ -139,7 +140,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public abstract string AutoIncrement { get; }
 
         #region DATA
-        public abstract IDbCommand SELECT(DBConnection db, Tabloid table, bool isSystem = false, IEnumerable<string> columnNames = null, Manager<Condition> conditions = null, Manager<Join> joins = null, Order order = null, GroupBy groupBy = null, int? limit = null, Page page = null, DropStep dropStep = null);
+        public abstract IDbCommand SELECT(DBConnection db, Tabloid table, IEnumerable<string> columnNames = null, Manager<Condition> conditions = null, Manager<Join> joins = null, Order order = null, GroupBy groupBy = null, int? limit = null, Page page = null, DropStep dropStep = null);
 
         public abstract IDbCommand INSERT(DBConnection db, string tableName, DBItem item);
         public abstract IDbCommand INSERT(DBConnection db, string tableName, Dictionary<string, object> item);
@@ -148,7 +149,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public abstract IDbCommand UPDATE(DBConnection db, string tableName, int rowId, DBItem values);
 
-        public virtual IDbCommand SELECT_count(DBConnection db, Tabloid table, bool isSystem = false, Manager<Condition> conditions = null, Manager<Join> joins = null, GroupBy groupBy = null)
+        public virtual IDbCommand SELECT_count(DBConnection db, Tabloid table, Manager<Condition> conditions = null, Manager<Join> joins = null, GroupBy groupBy = null)
         {
             IDbCommand command = Command;
 
@@ -268,6 +269,30 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public virtual string IndexToSql(DBConnection db, DBIndex index)
         {
             return $"INDEX {IndexName(db.Application, index.Table.Name, index.Columns)} ({string.Join(",", index.Columns.Select(c => AddQuote(c)))})";
+        }
+
+        public static readonly Type[] CommandSets = new Type[] { typeof(DBCommandSet_MSSQL), typeof(DBCommandSet_MySQL) };
+        public static DBCommandSet GetDBCommandSet(ESqlType type)
+        {
+            foreach(Type commandSetType in CommandSets)
+            {
+                DBCommandSet commandSet = (DBCommandSet)Activator.CreateInstance(commandSetType);
+                if (commandSet.Type == type)
+                    return commandSet;
+            }
+
+            throw new InvalidOperationException("Unknown ESqlType");
+        }
+        public static ESqlType GetSqlType(string typeProvider)
+        {
+            foreach (Type commandSetType in CommandSets)
+            {
+                DBCommandSet commandSet = (DBCommandSet)Activator.CreateInstance(commandSetType);
+                if (commandSet.ProviderName == typeProvider)
+                    return commandSet.Type;
+            }
+
+            throw new InvalidOperationException("Unknown provider name");
         }
     }
 

@@ -115,6 +115,18 @@
                 }
             }
         }
+        private static DBConnection _iShared;
+        public static DBConnection iShared
+        {
+            get
+            {
+                if (_iShared == null)
+                    _iShared = new DBConnection(requestHash, Application.SystemApp());
+
+                return _iShared;
+            }
+        }
+
         public static bool Create(int applicationId)
         {
             return Create(DBEntities.instance.Applications.Find(applicationId));
@@ -144,6 +156,11 @@
             {
                 _connections.Remove(requestHash);
             }
+        }
+
+        public static void ClearCache()
+        {
+            DBColumn.Cache.Clear();
         }
     }
 }

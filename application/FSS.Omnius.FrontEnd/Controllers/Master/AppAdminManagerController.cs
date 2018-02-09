@@ -136,24 +136,8 @@ namespace FSS.Omnius.Controllers.Master
             
             try
             {
-                // If building shared tables app
-                if (_AppId == SharedTables.AppId)
-                {
-                    // Create instance of db builder
-                    SharedTableBuilder builder = new SharedTableBuilder(core, context, app);
-
-                    // Assign dispatcher 
-                    builder.OnDispatch += this.SendMessage;
-
-                    // Build tables
-                    builder.Build();
-
-                    // And skip standard building process.
-                    return;
-                }
-
-                // Entitron Generate Database
-                if (masterApp.EntitronChangedSinceLastBuild || _rebuildInAction)
+                /// Entitron Generate Database
+                if (app.EntitronChangedSinceLastBuild || _rebuildInAction)
                     Send(Json.Encode(new { id = "entitron", type = "info", message = "proběhne aktualizace databáze" }));
                 else
                     Send(Json.Encode(new { id = "entitron", type = "success", message = "databázi není potřeba aktualizovat" }));
@@ -241,6 +225,10 @@ namespace FSS.Omnius.Controllers.Master
                         masterContext.SaveChanges();
                     }
                 }
+                // system app only build entitron
+                if (masterApp.IsSystem)
+                    return;
+
 
                 // Mozaic pages
                 string applicationViewPath = $"{AppDomain.CurrentDomain.BaseDirectory}Views\\App\\{app.Name}";

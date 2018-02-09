@@ -85,7 +85,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
         //    table2.ForeignKeys.Add(new DBForeignKey(db) { SourceTable = table2, SourceColumn = "TestId", TargetTable = table, TargetColumn = "id" });
         //    table3.Columns.Add(new DBColumn(db) { Tabloid = table3, Name = "hebleble", Type = DbType.String });
         //    db.SaveChanges();
-            
+
         //    TestEntitronDataCreate(id);
         //    TestEntitronData(id);
 
@@ -140,7 +140,7 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
         //    if (E.Entitron.i.Application == null)
         //        E.Entitron.Create(id);
         //    DBConnection db = E.Entitron.i;
-            
+
         //    DBTable table = db.Table("Test_ueoaueoa_aueoa");
         //    DBTable table2 = db.Table("Test2_ueoaueoa_aueoa");
         //    DBTable table3 = db.Table("Test3_ueoaueoa_aueoa");
@@ -177,6 +177,28 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
         //        .Where(c => c.Column($"{table2.Name}.TestId").Between(12, 15))
         //        .DropStep(3, ESqlFunction.LAST, AscDesc.Asc, $"{table2.Name}.id")
         //        .ToList();
+
+        //    return "";
+        //}
+        //public string TestShared(int id)
+        //{
+        //    E.Entitron.Create(id);
+        //    DBConnection db = E.Entitron.i;
+
+        //    DBTable appTable = db.Table("Ahoj");
+        //    var app = appTable.Select().ToList();
+        //    DBTable shared = db.Table("foobar", true);
+        //    var sha = shared.Select().ToList();
+
+        //    return "";
+        //}
+        //public string Error(int id)
+        //{
+        //    E.Entitron.Create(id);
+        //    DBConnection db = E.Entitron.i;
+
+        //    var table = db.Table("huetonau");
+        //    table.Add(new { ju="a" });
 
         //    return "";
         //}

@@ -10,10 +10,9 @@ namespace FSS.Omnius.Modules.Entitron.Queryable
 {
     public class Select : IQueryable, IWhere<Select>, IJoin<Select>, IOrder<Select>, IGroup<Select>, IPage<Select>, IDropStep<Select>
     {
-        public Select(DBConnection db, string tabloidName, string[] columns, bool isSystem = false)
+        public Select(DBConnection db, string tabloidName, string[] columns)
         {
             _tabloidName = tabloidName;
-            _isSystem = isSystem;
             _columns = columns;
             _db = db;
 
@@ -24,7 +23,6 @@ namespace FSS.Omnius.Modules.Entitron.Queryable
 
         private DBConnection _db;
         private string _tabloidName;
-        private bool _isSystem;
         private string[] _columns;
         private int? _limit;
         private Manager<Condition> _condition;
@@ -37,32 +35,32 @@ namespace FSS.Omnius.Modules.Entitron.Queryable
         public ListJson<DBItem> ToList()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _isSystem, _columns, _condition, _join, _order, _groupColumns, _limit, _page, _dropStep), newTabloid);
+            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _columns, _condition, _join, _order, _groupColumns, _limit, _page, _dropStep), newTabloid);
         }
         public DBItem First()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _isSystem, _columns, _condition, _join, _order, _groupColumns, 1, _page, _dropStep), newTabloid).First();
+            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _columns, _condition, _join, _order, _groupColumns, 1, _page, _dropStep), newTabloid).First();
         }
         public DBItem FirstOrDefault()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _isSystem, _columns, _condition, _join, _order, _groupColumns, 1, _page, _dropStep), newTabloid).FirstOrDefault();
+            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _columns, _condition, _join, _order, _groupColumns, 1, _page, _dropStep), newTabloid).FirstOrDefault();
         }
         public DBItem Single()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _isSystem, _columns, _condition, _join, _order, _groupColumns, 2, _page, _dropStep), newTabloid).Single();
+            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _columns, _condition, _join, _order, _groupColumns, 2, _page, _dropStep), newTabloid).Single();
         }
         public DBItem SingleOrDefault()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _isSystem, _columns, _condition, _join, _order, _groupColumns, 2, _page, _dropStep), newTabloid).SingleOrDefault();
+            return _db.ExecuteRead(_db.CommandSet.SELECT(_db, newTabloid, _columns, _condition, _join, _order, _groupColumns, 2, _page, _dropStep), newTabloid).SingleOrDefault();
         }
         public int Count()
         {
             Tabloid newTabloid = new Tabloid(_db) { Name = _tabloidName };
-            using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.SELECT_count(_db, newTabloid, _isSystem, _condition, _join, _groupColumns)))
+            using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.SELECT_count(_db, newTabloid, _condition, _join, _groupColumns)))
             {
                 reader.Read();
 
