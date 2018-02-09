@@ -624,7 +624,7 @@ namespace FSS.Omnius.Modules.Tapestry.Service
                                     generatedInputVariables = ";Template=s$" + relatedConnections.Source.Label;
                             }
                         }
-                        if (item.ActionId == 3001 || item.ActionId == 3002) // Call SOAP, Call REST
+                        if (item.ActionId == 3001 || item.ActionId == 3002 || item.ActionId == 3012) // Call SOAP, Call REST
                         {
                             foreach (var relatedConnections in workflowRule.Connections.Where(c => c.TargetId == item.Id))
                             {

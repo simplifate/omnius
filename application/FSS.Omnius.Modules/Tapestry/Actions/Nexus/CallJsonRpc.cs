@@ -28,7 +28,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		private const string WsName = "WSName";
 		private const string Method = "Method";
 		private const string Params = "Params";
-		private const string Endpoint = "Endpoint";
+		private const string Endpoint = "?Endpoint";
 
 		public override int Id
 		{
@@ -80,18 +80,19 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 				string wsName = (string)vars[WsName];
 				string method = (string)vars[Method];
 				string parameters = (string)vars[Params];
-				string endpoint = (string)vars[Endpoint];
-
-				// vezmu uri
-				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+				string endpoint = null;
+                if (vars[Endpoint] != null)
+                    endpoint = (string)vars[Endpoint];
+                // vezmu uri
+                CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 				var context = DBEntities.appInstance(core.Entitron.Application);
 				var service = context.WSs.First(c => c.Name == wsName);
 
-				string endpointPath = string.Format("{0}/{1}?{2}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
+				string endpointPath = string.Format("{0}/{1}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
 
 				// Create request
 				var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
-				httpWebRequest.Method = method.ToUpper();
+				httpWebRequest.Method = "POST";
 				httpWebRequest.ContentType = "application/json";
 				httpWebRequest.Accept = "application/json";
 
@@ -99,16 +100,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 				// Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
 				string inputJson =
 					$"{{\"jsonrpc\": \"2.0\", \"method\": {method}, \"params\": {parameters}, \"id\": {GenerateJsonId()}";
-				byte[] postJsonBytes = Encoding.UTF8.GetBytes(inputJson);
-				httpWebRequest.ContentLength = postJsonBytes.Length;
-				Stream requestStream = httpWebRequest.GetRequestStream();
-				requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
+				httpWebRequest.ContentLength = inputJson.Length;
+                using (StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    writer.Write(inputJson);
+                }
 
 				// Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}
 				var response = httpWebRequest.GetResponse();
-				Stream responseStream = response.GetResponseStream();
-				StreamReader responseReader = new StreamReader(responseStream);
-				string outputJsonString = responseReader.ReadToEnd();
+
+				string outputJsonString = "";
+                using (StreamReader reader = new StreamReader(httpWebRequest.GetRequestStream()))
+                {
+                    outputJsonString = reader.ReadToEnd();
+                }
 
 				var outputJToken = (JObject)JToken.Parse(outputJsonString);
 				outputVars["Result"] = outputJToken["result"];
