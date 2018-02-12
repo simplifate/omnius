@@ -303,7 +303,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"SELECT TABLE_NAME `name` FROM information_schema.`TABLES` WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{ToRealTableName(db.Application, "", false)}%'";
+                $"SELECT TABLE_NAME `name` FROM information_schema.`TABLES` WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{ToRealTableName(db.Application, "", false).Replace("_", "\\_")}%'";
 
             return command;
         }
@@ -437,7 +437,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
             command.CommandText =
                 $"SELECT INDEX_NAME name, if(MAX(NON_UNIQUE) = 0, 1, 0) is_unique FROM information_schema.STATISTICS " +
-                $"WHERE INDEX_NAME<>'PRIMARY' AND INDEX_NAME NOT LIKE 'FK_%' AND INDEX_SCHEMA='{databaseName(db)}' AND TABLE_NAME='{ToRealTableName(db.Application, tableName, false)}' " +
+                $"WHERE INDEX_NAME<>'PRIMARY' AND INDEX_NAME NOT LIKE 'FK\\_%' AND INDEX_SCHEMA='{databaseName(db)}' AND TABLE_NAME='{ToRealTableName(db.Application, tableName, false)}' " +
                 $"GROUP BY INDEX_SCHEMA, INDEX_NAME";
 
             return command;
@@ -514,7 +514,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             command.CommandText =
                 $"SELECT cu.TABLE_NAME sourceTable, cu.COLUMN_NAME sourceColumn, cu.REFERENCED_TABLE_NAME targetTable, cu.REFERENCED_COLUMN_NAME targetColumn, rc.DELETE_RULE onDelete, rc.UPDATE_RULE onUpdate FROM information_schema.KEY_COLUMN_USAGE cu " +
                 $"JOIN information_schema.REFERENTIAL_CONSTRAINTS rc ON cu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND cu.CONSTRAINT_SCHEMA = rc.CONSTRAINT_SCHEMA " +
-                $"WHERE cu.TABLE_SCHEMA='{databaseName(db)}' AND cu.CONSTRAINT_NAME LIKE 'FK_%' AND ({where})";
+                $"WHERE cu.TABLE_SCHEMA='{databaseName(db)}' AND cu.CONSTRAINT_NAME LIKE 'FK\\_%' AND ({where})";
 
             return command;
         }
@@ -566,7 +566,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             command.CommandText =
-                $"SELECT TABLE_NAME `name` FROM information_schema.VIEWS WHERE TABLE_NAME LIKE '{ToRealTableName(db.Application, "", false)}%'";
+                $"SELECT TABLE_NAME `name` FROM information_schema.VIEWS WHERE TABLE_NAME LIKE '{ToRealTableName(db.Application, "", false).Replace("_", "\\_")}%'";
 
             return command;
         }
@@ -592,11 +592,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
             List<string> query = new List<string>();
 
             if (list.Contains(ETabloid.ApplicationTables))
-                query.Add($"SELECT TABLE_NAME name, 'table' source FROM information_schema.TABLES WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_TYPE='BASE TABLE' AND TABLE_NAME LIKE '{emptyTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT TABLE_NAME name, 'table' source FROM information_schema.TABLES WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_TYPE='BASE TABLE' AND TABLE_NAME LIKE '{emptyTableName.Replace("_", "\\_")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
             if (list.Contains(ETabloid.SystemTables))
-                query.Add($"SELECT TABLE_NAME name, 'system' source FROM information_schema.TABLES WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{sysTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT TABLE_NAME name, 'system' source FROM information_schema.TABLES WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{sysTableName.Replace("_", "\\_")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
             if (list.Contains(ETabloid.Views))
-                query.Add($"SELECT TABLE_NAME name, 'view' source FROM information_schema.VIEWS WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{emptyTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT TABLE_NAME name, 'view' source FROM information_schema.VIEWS WHERE TABLE_SCHEMA='{databaseName(db)}' AND TABLE_NAME LIKE '{emptyTableName.Replace("_", "\\_")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
 
             command.CommandText =
                 string.Join(" UNION ALL ", query);

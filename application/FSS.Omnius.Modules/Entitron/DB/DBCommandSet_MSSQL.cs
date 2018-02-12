@@ -293,7 +293,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                $"SELECT name FROM sys.tables WHERE name LIKE '{ToRealTableName(db.Application, "", false)}%'";
+                $"SELECT name FROM sys.tables WHERE name LIKE '{ToRealTableName(db.Application, "", false).Replace("_", "[_]")}%'";
 
             return command;
         }
@@ -561,7 +561,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                $"SELECT * FROM [sys].[views] WHERE [name] LIKE '{ToRealTableName(db.Application, "", false)}%'";
+                $"SELECT * FROM [sys].[views] WHERE [name] LIKE '{ToRealTableName(db.Application, "", false).Replace("_", "[_]")}%'";
 
             return command;
         }
@@ -587,11 +587,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
             List<string> query = new List<string>();
 
             if (list.Contains(ETabloid.ApplicationTables))
-                query.Add($"SELECT name, 'table' [source] FROM sys.tables WHERE name LIKE '{emptyTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT name, 'table' [source] FROM sys.tables WHERE name LIKE '{emptyTableName.Replace("_", "[_]")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
             if (list.Contains(ETabloid.SystemTables))
-                query.Add($"SELECT name, 'system' [source] FROM sys.tables WHERE name LIKE '{sysTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT name, 'system' [source] FROM sys.tables WHERE name LIKE '{sysTableName.Replace("_", "[_]")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
             if (list.Contains(ETabloid.Views))
-                query.Add($"SELECT name, 'view' [source] FROM sys.views WHERE name LIKE '{emptyTableName}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
+                query.Add($"SELECT name, 'view' [source] FROM sys.views WHERE name LIKE '{emptyTableName.Replace("_", "[_]")}{(string.IsNullOrEmpty(tabloidName) ? "%" : "")}'");
 
             command.CommandText =
                 string.Join(" UNION ALL ", query);
