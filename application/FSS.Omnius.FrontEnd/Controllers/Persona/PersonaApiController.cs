@@ -113,29 +113,24 @@ namespace FSS.Omnius.FrontEnd.Controllers.Persona
         {
             try
             {
-                using (var context = DBEntities.instance)
+                DBEntities context = DBEntities.instance;
+                AjaxPersonaAppstates result = new AjaxPersonaAppstates();
+                DBConnection db = Modules.Entitron.Entitron.i;
+                if (db.Exists("WF_states", ETabloid.ApplicationTables|ETabloid.Views))
                 {
-                    AjaxPersonaAppstates result = new AjaxPersonaAppstates();
-                    var entitron = new CORE().Entitron;
-                    entitron.AppId = appId;
-                    var table = entitron.GetDynamicTable("WF_states");
-                    if (table != null)
+                    var statesList = db.Select("WF_states").ToList();
+
+                    foreach (var state in statesList)
                     {
-                        var statesList =
-                            table.Select().ToList();
-
-                        foreach (var state in statesList)
+                        result.States.Add(new AjaxPersonaAppRoles_State()
                         {
-                            result.States.Add(new AjaxPersonaAppRoles_State()
-                            {
-                                Id = Convert.ToInt32(state["id"]),
-                                Name = Convert.ToString(state["name"])
-                            });
-                        }
+                            Id = Convert.ToInt32(state["id"]),
+                            Name = Convert.ToString(state["name"])
+                        });
                     }
-
-                    return result;
                 }
+
+                return result;
             }
             catch (Exception ex)
             {

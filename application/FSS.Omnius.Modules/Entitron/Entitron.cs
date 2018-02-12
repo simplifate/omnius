@@ -139,13 +139,16 @@
         {
             if (application != null)
             {
-                if (_connections.ContainsKey(requestHash))
+                lock(_connectionLock)
                 {
-                    Logger.Log.Warn("DBConnection overriten");
-                }
+                    if (_connections.ContainsKey(requestHash))
+                    {
+                        Logger.Log.Warn("DBConnection overriten");
+                    }
 
-                _connections[requestHash] = new DBConnection(requestHash, application);
-                return true;
+                    _connections[requestHash] = new DBConnection(requestHash, application);
+                    return true;
+                }
             }
 
             return false;

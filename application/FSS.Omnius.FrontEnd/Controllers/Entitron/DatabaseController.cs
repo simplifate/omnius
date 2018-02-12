@@ -205,7 +205,6 @@ namespace FSS.Omnius.Controllers.Entitron
         [HttpPost]
         public AjaxTransferViewColumnList GetViewScheme(int appId, string viewName)
         {
-            Modules.Entitron.Entitron.Create(appId);
             DBConnection db = Modules.Entitron.Entitron.i;
 
             AjaxTransferViewColumnList list = new AjaxTransferViewColumnList(db.Tabloid(viewName).Columns.Select(c => c.Name).ToList());
