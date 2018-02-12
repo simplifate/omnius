@@ -46,7 +46,7 @@
                 .GroupBy(c => c.Name).Select(c => c.First());
             foreach (var entity in dbset.ToList())
             {
-                var newRow = new DBItem(i);
+                var newRow = new DBItem(i, null);
                 foreach (var property in propertyList)
                 {
                     object value = property.GetValue(entity, null);

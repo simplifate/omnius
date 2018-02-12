@@ -269,7 +269,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
             while (reader.Read())
             {
-                DBItem newItem = new DBItem(this) { tabloid = tabloid };
+                DBItem newItem = new DBItem(this, tabloid);
 
                 for (int i = 0; i < reader.FieldCount; i++)
                 {

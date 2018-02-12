@@ -9,17 +9,19 @@ namespace FSS.Omnius.Modules.Entitron.DB
 {
     public class DBItem : IToJson
     {
-        public DBItem(DBConnection db)
+        public DBItem(DBConnection db, Tabloid tabloid)
         {
             _db = db;
+            Tabloid = tabloid;
         }
-        public DBItem(DBConnection db, Dictionary<string, object> dict)
+        public DBItem(DBConnection db, Tabloid tabloid, Dictionary<string, object> dict)
         {
             _db = db;
+            Tabloid = tabloid;
             _properties = dict;
         }
 
-        public Tabloid tabloid { get; set; }
+        public Tabloid Tabloid { get; set; }
 
         private DBConnection _db;
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
@@ -38,7 +40,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 // only property
                 else
                 {
-                    string realPropertyName = $"{tabloid.Name}.{propertyName}";
+                    string realPropertyName = $"{Tabloid?.Name}.{propertyName}";
                     if (_properties.ContainsKey(realPropertyName))
                         return _properties[realPropertyName];
                 }
@@ -51,7 +53,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 if (propertyName.Contains('.'))
                     _properties[propertyName] = value;
                 else
-                    _properties[$"{tabloid?.Name}.{propertyName}"] = value;
+                    _properties[$"{Tabloid?.Name}.{propertyName}"] = value;
             }
         }
 
@@ -62,7 +64,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 return _properties.ContainsKey(propertyName);
             }
 
-            return _properties.ContainsKey($"{tabloid.Name}.{propertyName}");
+            return _properties.ContainsKey($"{Tabloid?.Name}.{propertyName}");
         }
 
         public IEnumerable<string> getFullColumnNames()
@@ -75,11 +77,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
             foreach(string column in _properties.Keys)
             {
                 string[]pair = column.Split('.');
-                if (tabloid == null && pair.Length < 2)
+                if (Tabloid == null && pair.Length < 2)
                 {
                     result.Add(column);
                 }
-                else if (pair.FirstOrDefault() == tabloid?.Name)
+                else if (pair.FirstOrDefault() == Tabloid?.Name)
                 {
                     result.Add(pair[1]);
                 }
@@ -91,7 +93,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public IEnumerable<string> getColumnDisplayNames()
         {
             DBEntities e = DBEntities.instance;
-            DbTable table = e.Applications.Find(_db.Application.Id).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault()?.Tables.FirstOrDefault(t => t.Name == tabloid.Name);
+            DbTable table = e.Applications.Find(_db.Application.Id).DatabaseDesignerSchemeCommits.OrderByDescending(o => o.Timestamp).FirstOrDefault()?.Tables.FirstOrDefault(t => t.Name == Tabloid?.Name);
             if (table != null)
                 return table.Columns.Select(c => c.DisplayName ?? c.Name);
 
@@ -115,6 +117,6 @@ namespace FSS.Omnius.Modules.Entitron.DB
             return result;
         }
 
-        public override string ToString() => $"DBItem [{tabloid.Name}][{_db.Application.Name}]: {string.Join(",", _properties.Select(p => $"{p.Key} => {p.Value.ToString()}"))}";
+        public override string ToString() => $"DBItem [{Tabloid?.Name}][{_db.Application.Name}]: {string.Join(",", _properties.Select(p => $"{p.Key} => {p.Value.ToString()}"))}";
     }
 }
