@@ -50,6 +50,16 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
                 return -1;
             }
         }
+        //public string Test()
+        //{
+        //    E.Entitron.Create(98);
+        //    DBConnection db = E.Entitron.i;
+
+        //    DBTable table = db.Table("Location");
+        //    var item = table.Select("Name").Where(c => c.Column("Container_count").Greater(1)).ToList();
+
+        //    return "";
+        //}
         //public string TestEntitron(int id)
         //{
         //    /// INIT

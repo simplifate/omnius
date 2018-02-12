@@ -53,10 +53,17 @@ namespace FSS.Omnius.Modules.Entitron.DB
                     columns.AddRange(new Tabloid(db) { Name = join.joinTableName }.Columns.Select(c => new Tuple<string, string>(join.joinTableName, c.Name)));
                 }
             }
+            List<Tuple<string, string>> whereColumns = new List<Tuple<string, string>>(columns);
+            foreach(Condition condition in conditions)
+            {
+                Tuple<string, string> tuple = ColumnsToTuple(db.Application, tabloid.Name, new List<string> { condition.column }).First();
+                if (!whereColumns.Contains(tuple))
+                    whereColumns.Add(tuple);
+            }
 
             /// SELECT FROM, JOIN
             command.CommandText =
-                $"SELECT {ColumnTuplesToString(db.Application, columns)} FROM {ToRealTableName(db.Application, tabloid.Name)} {joins.ToSql(this, command)}";
+                $"SELECT {ColumnTuplesToString(db.Application, whereColumns)} FROM {ToRealTableName(db.Application, tabloid.Name)} {joins.ToSql(this, command)}";
 
             /// WHERE, GROUP, HAVING
             string conditionString = conditions.ToSql(this, command);
@@ -68,7 +75,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 if (!string.IsNullOrEmpty(conditionString) && groupBy == null)
                 {
                     command.CommandText =
-                        $"SELECT * FROM __table1 {(!string.IsNullOrEmpty(conditionString) ? "WHERE" : "")} {conditionString}";
+                        $"SELECT {ColumnTuplesToString(db.Application, columns, true, false)} FROM __table1 {(!string.IsNullOrEmpty(conditionString) ? "WHERE" : "")} {conditionString}";
                 }
 
                 // GROUP BY
