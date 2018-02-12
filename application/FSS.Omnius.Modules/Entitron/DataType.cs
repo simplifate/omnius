@@ -15,6 +15,10 @@ namespace FSS.Omnius.Modules.Entitron
             typeof(bool),
             typeof(bool?),
             typeof(string),
+            typeof(float),
+            typeof(float?),
+            typeof(decimal),
+            typeof(decimal?),
             typeof(DateTime),
             typeof(DateTime?)
         };
@@ -37,6 +41,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return 'i';
                 case DbType.Double:
                     return 'f';
+                case DbType.Decimal:
+                    return 'c';
                 case DbType.DateTime:
                     return 'd';
                 case DbType.Binary:
@@ -57,6 +63,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return DbType.Int32;
                 case 'f':
                     return DbType.Double;
+                case 'c':
+                    return DbType.Decimal;
                 case 'd':
                     return DbType.DateTime;
                 case 'l':
@@ -78,6 +86,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return "int";
                 case DbType.Double:
                     return "float";
+                case DbType.Decimal:
+                    return "decimal";
                 case DbType.DateTime:
                     return "DateTime";
                 case DbType.Binary:
@@ -98,6 +108,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return typeof(int);
                 case DbType.Double:
                     return typeof(float);
+                case DbType.Decimal:
+                    return typeof(decimal);
                 case DbType.DateTime:
                     return typeof(DateTime);
                 case DbType.Binary:
@@ -118,6 +130,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return DbType.Int32;
                 case "float":
                     return DbType.Double;
+                case "decimal":
+                    return DbType.Decimal;
                 case "DateTime":
                     return DbType.DateTime;
                 case "object":
@@ -132,17 +146,19 @@ namespace FSS.Omnius.Modules.Entitron
             switch (type)
             {
                 case DbType.String:
-                    return "nvarchar";
+                    return "varchar";
                 case DbType.Boolean:
                     return "boolean";
                 case DbType.Int32:
                     return "integer";
                 case DbType.Double:
                     return "float";
+                case DbType.Decimal:
+                    return "decimal";
                 case DbType.DateTime:
                     return "datetime";
                 case DbType.Binary:
-                    return "binary";
+                    return "blob";
                 default:
                     throw new InvalidOperationException();
             }
@@ -159,6 +175,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return DbType.Int32;
                 case "float":
                     return DbType.Double;
+                case "decimal":
+                    return DbType.Decimal;
                 case "datetime":
                     return DbType.DateTime;
                 case "binary":
@@ -190,6 +208,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return "int";
                 case DbType.Double:
                     return "float";
+                case DbType.Decimal:
+                    return "decimal";
                 case DbType.DateTime:
                     return "datetime";
                 case DbType.Binary:
@@ -229,6 +249,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return DbType.Int32;
                 case "float":
                     return DbType.Double;
+                case "decimal":
+                    return DbType.Decimal;
                 case "datetime":
                     return DbType.DateTime;
                 case "binary":
@@ -248,6 +270,7 @@ namespace FSS.Omnius.Modules.Entitron
                 case DbType.Boolean:
                 case DbType.Int32:
                 case DbType.Double:
+                case DbType.Decimal:
                 case DbType.DateTime:
                     return 0;
                 default:
@@ -265,6 +288,7 @@ namespace FSS.Omnius.Modules.Entitron
                 case DbType.Boolean:
                 case DbType.Int32:
                 case DbType.Double:
+                case DbType.Decimal:
                 case DbType.DateTime:
                     return -1;
                 default:
@@ -282,6 +306,7 @@ namespace FSS.Omnius.Modules.Entitron
                     return false;
                 case DbType.Int32:
                 case DbType.Double:
+                case DbType.Decimal:
                 case DbType.DateTime:
                     return true;
                 default:
@@ -315,6 +340,12 @@ namespace FSS.Omnius.Modules.Entitron
                     if (sqlType == ESqlType.MySQL)
                         return "float(255,30)";
                     throw new InvalidOperationException();
+                case DbType.Decimal:
+                    if (sqlType == ESqlType.MSSQL)
+                        return "decimal(38,20)";
+                    if (sqlType == ESqlType.MySQL)
+                        return "decimal(38,20)";
+                    throw new InvalidOperationException();
                 case DbType.DateTime:
                     return "datetime";
                 case DbType.Binary:
@@ -336,6 +367,8 @@ namespace FSS.Omnius.Modules.Entitron
                     return Convert.ToInt32(value);
                 case DbType.Double:
                     return Convert.ToDouble(value);
+                case DbType.Decimal:
+                    return Convert.ToDecimal(value);
                 case DbType.DateTime:
                     return Convert.ToDateTime(value);
                 case DbType.Binary:
