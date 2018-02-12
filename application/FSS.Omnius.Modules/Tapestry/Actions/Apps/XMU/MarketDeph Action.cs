@@ -27,7 +27,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         {
             get
             {
-                return new string[] {"IpAddress","Port","CurencyPair"};
+                return new string[] {"IpAddress","Port","CurencyPair", "Method", "?Params"};
             }
         }
 
@@ -58,26 +58,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            string method = vars["Method"].ToString();
+            string parameters = "[]";
+            if(vars["Params"] != null)
+            {
+                parameters = $"[{vars["Params"]}]";
+            }
             string pair = vars["CurencyPair"].ToString();
             string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
             string inputJson =
-                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"Orderbook.get\", \"params\": [], \"id\": {requestId++ + 1}}}";
+                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {requestId++ + 1}}}";
             string ipAddress = vars["IpAddress"].ToString();
             int port = Convert.ToInt32(vars["Port"]);
             var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
-            var orderCashTable = core.Entitron.GetDynamicTable("order_book", false);
-            core.Entitron.Application.SaveChanges();
-
-            foreach (var order in (JArray)result["result"])
-            {
-                DBItem row = new DBItem();
-                row.createProperty(0, "order_id", order[0].ToString());
-                row.createProperty(1, "buy_sell", order[1].ToString());
-                row.createProperty(2, "price", (double)order[2]);
-                row.createProperty(3, "amount", (double)order[3]);
-                orderCashTable.Add(row);
-                core.Entitron.Application.SaveChanges();
-            }
+            outputVars["Result"] = result;
 
         }
 
