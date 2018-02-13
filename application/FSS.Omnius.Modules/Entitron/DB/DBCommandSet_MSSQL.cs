@@ -604,12 +604,13 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             command.CommandText =
-                "SELECT DISTINCT columns.name [name], types.name [typeName], (columns.max_length / 2) max_length, columns.scale, columns.is_nullable, i.is_unique_constraint [is_unique], d.definition [default] FROM sys.columns columns " +
+                "SELECT DISTINCT columns.column_id, columns.name [name], types.name [typeName], (columns.max_length / 2) max_length, columns.scale, columns.is_nullable, i.is_unique_constraint [is_unique], d.definition [default] FROM sys.columns columns " +
                 "JOIN sys.types types ON columns.user_type_id = types.user_type_id " +
                 "left join sys.index_columns ic on columns.object_id = ic.object_id and columns.column_id = ic.column_id " +
                 "left join sys.indexes i on i.index_id = ic.index_id AND i.object_id = columns.object_id " +
                 "left join sys.default_constraints d ON columns.default_object_id = d.object_id " +
-                $"WHERE columns.object_id = OBJECT_ID('{ToRealTableName(db.Application, tabloidName, false)}')";
+                $"WHERE columns.object_id = OBJECT_ID('{ToRealTableName(db.Application, tabloidName, false)}')" +
+                $"ORDER BY columns.column_id";
 
             return command;
         }
