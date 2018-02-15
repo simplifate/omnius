@@ -24,11 +24,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 			}
 		}
 		#endregion
-
-		private const string WsName = "WSName";
-		private const string Method = "Method";
-		private const string Params = "Params";
-		private const string Endpoint = "?Endpoint";
+       
 
 		public override int Id
 		{
@@ -42,7 +38,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			get
 			{
-				return new string[] { WsName, Method, Params, Endpoint, "?v$CustomHeaders" };
+				return new string[] { "WsName", "Method", "Params", "?Endpoint", "?v$CustomHeaders" };
 			}
 		}
 
@@ -77,11 +73,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			try
 			{
-				string wsName = (string)vars[WsName];
-				string method = (string)vars[Method];
-				string parameters = (string)vars[Params];
-                List<string> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<string>)vars["CustomHeaders"] : new List<string>();
-                string endpoint = vars.ContainsKey("Endpoint") ? (string)vars[Endpoint] : "";
+				string wsName = (string)vars["WsName"];
+				string method = (string)vars["Method"];
+				string parameters = (string)vars["Params"];
+                List<object> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<object>)vars["CustomHeaders"] : new List<object>();
+                string endpoint = vars.ContainsKey("Endpoint") ? (string)vars["Endpoint"] : "";
                 // vezmu uri
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 				var context = DBEntities.appInstance(core.Entitron.Application);
