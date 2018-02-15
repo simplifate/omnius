@@ -81,7 +81,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 {
                     result.Add(column);
                 }
-                else if (pair.FirstOrDefault() == Tabloid?.Name)
+                else if (pair.FirstOrDefault() == (Tabloid?.Name ?? ""))
                 {
                     result.Add(pair[1]);
                 }

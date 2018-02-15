@@ -16,6 +16,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             _indexes = new EntityManager<DBIndex>(_db, this);
             _foreignKeys = new EntityManager<DBForeignKey>(_db, this);
+            _itemsToAdd = new List<DBItem>();
         }
         
         private EntityManager<DBIndex> _indexes;
@@ -71,6 +72,8 @@ namespace FSS.Omnius.Modules.Entitron.DB
             }
         }
 
+        internal List<DBItem> _itemsToAdd;
+
         public DBTable Create()
         {
             _db.TableCreate(this);
@@ -95,12 +98,12 @@ namespace FSS.Omnius.Modules.Entitron.DB
             return this;
         }
 
-        public DBItem Add(DBItem item)
+        public int AddGetId(DBItem item)
         {
             if (!item.getAllProperties().Any())
             {
                 Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
-                return item;
+                return -1;
             }
 
             using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.INSERT(_db, Name, item)))
@@ -108,34 +111,29 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 reader.Read();
                 int id = Convert.ToInt32(reader[DBCommandSet.PrimaryKey]);
                 item[DBCommandSet.PrimaryKey] = id;
-            }
-
-            return item;
-        }
-        public int Add(object item)
-        {
-            Dictionary<string, object> values = new Dictionary<string, object>();
-            foreach(PropertyInfo prop in item.GetType().GetProperties().Where(p => DataType.BaseTypes.Contains(p.PropertyType)))
-            {
-                values.Add(prop.Name, prop.GetValue(item));
-            }
-            if (!values.Any())
-            {
-                Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
-                return -1;
-            }
-
-            using (DBReader reader = _db.ExecuteCommand(_db.CommandSet.INSERT(_db, Name, values)))
-            {
-                reader.Read();
-                int id = Convert.ToInt32(reader[DBCommandSet.PrimaryKey]);
-
-                PropertyInfo idProp = item.GetType().GetProperty(DBCommandSet.PrimaryKey);
-                if (idProp != null)
-                    idProp.SetValue(item, id);
-
                 return id;
             }
+        }
+        public void Add(DBItem item)
+        {
+            if (!item.getAllProperties().Any())
+            {
+                Watchtower.OmniusWarning.Log($"Try to insert no values to table [{RealName}]", Watchtower.OmniusLogSource.Entitron, _db.Application);
+                return;
+            }
+            _itemsToAdd.Add(item);
+            _db.SaveTable(this);
+        }
+        public void AddRange(IEnumerable<DBItem> items)
+        {
+            int page = 0;
+            int batch = 10;
+            do
+            {
+                _db.Commands.Enqueue(_db.CommandSet.INSERT_range(_db, Name, items.Skip(page * batch).Take(batch)));
+                page++;
+            }
+            while (page * batch < items.Count());
         }
 
         public DBTable AddCheck(string checkName, Manager<Condition> where)
@@ -183,7 +181,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public DBTable Update(DBItem item, int id)
         {
-            _db.ExecuteNonQuery(_db.CommandSet.UPDATE(_db, Name, id, item));
+            _db.Commands.Enqueue(_db.CommandSet.UPDATE(_db, Name, id, item));
 
             return this;
         }
@@ -199,7 +197,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 conditions.Next();
             }
 
-            _db.ExecuteNonQuery(_db.CommandSet.DELETE(_db, Name, conditions));
+            _db.Commands.Enqueue(_db.CommandSet.DELETE(_db, Name, conditions));
 
             return this;
         }
@@ -211,8 +209,8 @@ namespace FSS.Omnius.Modules.Entitron.DB
             conditions.i.operation_params.Add(itemId);
             conditions.Next();
 
-            _db.ExecuteNonQuery(_db.CommandSet.DELETE(_db, Name, conditions));
-            
+            _db.Commands.Enqueue(_db.CommandSet.DELETE(_db, Name, conditions));
+
             return this;
         }
         public Delete Delete()

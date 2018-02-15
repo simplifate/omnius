@@ -17,6 +17,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
             _type = Entitron.DefaultDBType;
             _connectionString = Entitron.DefaultConnectionString;
 
+            _tablesToSave = new HashSet<DBTable>();
             _commandSet = DBCommandSet.GetDBCommandSet(_type);
         }
 
@@ -31,6 +32,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                     ? Application.DB_ConnectionString
                     : Entitron.DefaultConnectionString;
 
+            _tablesToSave = new HashSet<DBTable>();
             _commandSet = DBCommandSet.GetDBCommandSet(_type);
         }
 
@@ -44,6 +46,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public string ConnectionString => _connectionString;
         private string _connectionString;
 
+        private HashSet<DBTable> _tablesToSave;
         private DBCommandSet _commandSet;
         public DBCommandSet CommandSet => _commandSet;
         private Queue<IDbCommand> _commands = new Queue<IDbCommand>();
@@ -224,8 +227,16 @@ namespace FSS.Omnius.Modules.Entitron.DB
                 }
             }
         }
+        internal void SaveTable(DBTable table)
+        {
+            _tablesToSave.Add(table);
+        }
         public int SaveChanges()
         {
+            // add items
+            foreach (DBTable table in _tablesToSave)
+                table.AddRange(table._itemsToAdd);
+
             if (!_commands.Any())
                 return 0;
 

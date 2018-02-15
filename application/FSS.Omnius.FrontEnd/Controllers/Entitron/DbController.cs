@@ -5,6 +5,7 @@ using FSS.Omnius.Modules.Entitron.DB;
 using System.Data;
 using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron;
+using System.Diagnostics;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Entitron
 {
@@ -50,6 +51,62 @@ namespace FSS.Omnius.FrontEnd.Controllers.Entitron
                 return -1;
             }
         }
+        //public string TestInsert(int id)
+        //{
+        //    E.Entitron.Create(99);
+        //    DBConnection db = E.Entitron.i;
+        //    DBTable table = db.Table("Testing");
+        //    string result = "";
+
+        //    // Generate
+        //    Random rand = new Random();
+        //    List<DBItem> randData = new List<DBItem>();
+        //    for (int i=0;i<id; i++)
+        //    {
+        //        DBItem item = new DBItem(db, table);
+        //        item["Name"] = randString(40, rand);
+        //        item["Value"] = randString(50, rand);
+        //        randData.Add(item);
+        //    }
+
+        //    // original
+        //    Stopwatch sw = Stopwatch.StartNew();
+        //    foreach (DBItem item in randData)
+        //    {
+        //        table.AddGetId(item);
+        //    }
+        //    sw.Stop();
+        //    result += $"Original: {sw.ElapsedMilliseconds}ms <br>{Environment.NewLine}";
+
+        //    // single connection
+        //    sw = Stopwatch.StartNew();
+        //    foreach (DBItem item in randData)
+        //    {
+        //        table.Add(item);
+        //    }
+        //    db.SaveChanges();
+        //    sw.Stop();
+        //    result += $"Single connection: {sw.ElapsedMilliseconds}ms <br>{Environment.NewLine}";
+            
+        //    // range batch 10
+        //    sw = Stopwatch.StartNew();
+        //    table.AddRange(randData);
+        //    db.SaveChanges();
+        //    sw.Stop();
+        //    result += $"Range batch(10): {sw.ElapsedMilliseconds}ms <br>{Environment.NewLine}";
+            
+        //    return result;
+        //}
+        //private string randString(int length, Random rand)
+        //{
+        //    string result = "";
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        result += (char)((rand.Next() % 26) + 97);
+        //    }
+
+        //    return result;
+        //}
         //public string Test()
         //{
         //    E.Entitron.Create(98);

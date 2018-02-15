@@ -144,6 +144,45 @@ namespace FSS.Omnius.Modules.Entitron.DB
 
         public abstract IDbCommand INSERT(DBConnection db, string tableName, DBItem item);
         public abstract IDbCommand INSERT(DBConnection db, string tableName, Dictionary<string, object> item);
+        public virtual IDbCommand INSERT_withoutId(DBConnection db, string tableName, DBItem item)
+        {
+            IDbCommand command = Command;
+
+            IEnumerable<string> columnNames = item.getColumnNames().Except(new string[] { PrimaryKey, FullPrimaryKey(tableName, false) });
+
+            command.CommandText =
+                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
+                $"VALUES ({string.Join(",", columnNames.Select(key => $"@{command.AddParam(key, item[key])}"))});";
+
+            return command;
+        }
+        public virtual IDbCommand INSERT_withoutId(DBConnection db, string tableName, Dictionary<string, object> item)
+        {
+            IDbCommand command = Command;
+
+            IEnumerable<string> columnNames = item.Keys.Except(new string[] { PrimaryKey, FullPrimaryKey(tableName, false) });
+
+            command.CommandText =
+                $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
+                $"VALUES ({string.Join(",", columnNames.Select(key => $"@{command.AddParam(key, item[key])}"))});";
+
+            return command;
+        }
+        public virtual IDbCommand INSERT_range(DBConnection db, string tableName, IEnumerable<DBItem> items)
+        {
+            IDbCommand command = Command;
+
+            foreach (DBItem item in items)
+            {
+                IEnumerable<string> columnNames = item.getColumnNames().Except(new string[] { PrimaryKey, FullPrimaryKey(tableName, false) });
+
+                command.CommandText +=
+                    $"INSERT INTO {ToRealTableName(db.Application, tableName)}({string.Join(",", columnNames.Select(c => AddQuote(c)))}) " +
+                    $"VALUES ({string.Join(",", columnNames.Select(key => $"@{command.AddParam(key, item[key])}"))});";
+            }
+
+            return command;
+        }
 
         public abstract IDbCommand DELETE(DBConnection db, string tableName, Manager<Condition> conditions, Manager<Join> joins = null);
 
@@ -301,11 +340,11 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public static string AddParam(this IDbCommand command, string name, object value)
         {
             string finalName = name;
-            int count = 0;
+            int count = command.Parameters.Count;
             while (command.Parameters.Contains(finalName))
             {
-                count++;
                 finalName = $"{name}{count}";
+                count++;
             }
 
             if (command.GetType() == typeof(SqlCommand))
