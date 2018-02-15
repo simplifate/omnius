@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using System.Data;
 using FSS.Omnius.Modules.Entitron.Queryable.Cond;
 using FSS.Omnius.Modules.Entitron.Queryable;
 using FSS.Omnius.Modules.Entitron.Entity.Entitron;
-using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Entitron.DB
 {
@@ -217,12 +216,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
         {
             return new Delete(_db, Name);
         }
-
-        public DBItem SelectById(int id)
-        {
-            return Select().Where(c => c.Column(DBCommandSet.PrimaryKey).Equal(id)).ToList().FirstOrDefault();
-        }
-
+        
         public void RefreshIndexes()
         {
             _indexes = new EntityManager<DBIndex>(_db, this);

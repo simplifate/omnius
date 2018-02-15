@@ -1,4 +1,5 @@
 ﻿using FSS.Omnius.Modules.Entitron.Queryable;
+using System.Linq;
 
 namespace FSS.Omnius.Modules.Entitron.DB
 {
@@ -22,6 +23,10 @@ namespace FSS.Omnius.Modules.Entitron.DB
         public Select Select(params string[] columns)
         {
             return new Select(_db, Name, columns);
+        }
+        public DBItem SelectById(int id)
+        {
+            return Select().Where(c => c.Column(DBCommandSet.PrimaryKey).Equal(id)).ToList().FirstOrDefault();
         }
 
         public override string ToString() => $"Tabloid [{Name}][{_db.Application.Name}]";
