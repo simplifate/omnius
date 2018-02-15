@@ -67,7 +67,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         {
 
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string pair = vars["CurencyPair"].ToString();
+            string pair = vars.ContainsKey("CurrencyPair") ? vars["CurencyPair"].ToString() : "";
             string method = vars["Method"].ToString();
             string parameters = vars.ContainsKey("Params") ? vars["Params"].ToString() : "";
             bool skipInit = vars.ContainsKey("SkipInit") ? (bool)vars["SkipInit"] : false; ;
