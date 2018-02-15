@@ -116,7 +116,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                         }
 
                         command.CommandText =
-                            $"SELECT {ColumnTuplesToString(db.Application, columns, true, false, groupBy.Function.ToString(), groupBy.Columns)} FROM __table1 GROUP BY {ColumnTuplesToString(db.Application, ColumnsToTuple(db.Application, tabloid.Name, groupBy.Columns), true, false)}";
+                            $"SELECT {ColumnTuplesToString(db.Application, columns, true, false, groupBy.Function.ToString(), groupBy.Columns)} FROM __table1 {(!string.IsNullOrEmpty(conditionString) ? "WHERE" : "")} {conditionString} GROUP BY {ColumnTuplesToString(db.Application, ColumnsToTuple(db.Application, tabloid.Name, groupBy.Columns), true, false)}";
                         if (!string.IsNullOrEmpty(havingString))
                         {
                             withTable.Add($"__table3 as ({command.CommandText})");
@@ -200,6 +200,9 @@ namespace FSS.Omnius.Modules.Entitron.DB
             SqlCommand command = new SqlCommand();
 
             string realTableName = ToRealTableName(db.Application, tableName);
+
+            foreach (Condition cond in conditions)
+                cond.columnNameWithTable = false;
 
             string where = conditions.ToSql(this, command);
             if (!string.IsNullOrEmpty(where))

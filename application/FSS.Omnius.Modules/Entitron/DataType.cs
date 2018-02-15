@@ -303,11 +303,11 @@ namespace FSS.Omnius.Modules.Entitron
                 case DbType.Binary:
                 case DbType.String:
                 case DbType.Boolean:
+                case DbType.DateTime:
                     return false;
                 case DbType.Int32:
                 case DbType.Double:
                 case DbType.Decimal:
-                case DbType.DateTime:
                     return true;
                 default:
                     throw new InvalidOperationException();

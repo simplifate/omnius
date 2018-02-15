@@ -138,7 +138,7 @@ namespace FSS.Omnius.Modules.Entitron.DB
                         }
 
                         command.CommandText =
-                            $"SELECT {ColumnTuplesToString(db.Application, columns, true, false, groupBy.Function.ToString(), groupBy.Columns)} FROM __table1 GROUP BY {ColumnTuplesToString(db.Application, ColumnsToTuple(db.Application, tabloid.Name, groupBy.Columns), true, false)} {havingString}";
+                            $"SELECT {ColumnTuplesToString(db.Application, columns, true, false, groupBy.Function.ToString(), groupBy.Columns)} FROM __table1 {conditionString} GROUP BY {ColumnTuplesToString(db.Application, ColumnsToTuple(db.Application, tabloid.Name, groupBy.Columns), true, false)} {havingString}";
                     }
                 }
             }
@@ -213,6 +213,9 @@ namespace FSS.Omnius.Modules.Entitron.DB
             MySqlCommand command = new MySqlCommand();
 
             string realTableName = ToRealTableName(db.Application, tableName);
+
+            foreach (Condition cond in conditions)
+                cond.columnNameWithTable = false;
 
             command.CommandText =
                 $"SELECT * FROM {realTableName} {joins?.ToSql(this, command)} WHERE {conditions.ToSql(this, command)};" +

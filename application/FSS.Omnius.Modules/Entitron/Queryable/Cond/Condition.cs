@@ -10,6 +10,7 @@ namespace FSS.Omnius.Modules.Entitron.Queryable.Cond
         public Condition(DBConnection db)
         {
             _db = db;
+            columnNameWithTable = true;
             operation_params = new List<object>();
         }
 
@@ -21,6 +22,8 @@ namespace FSS.Omnius.Modules.Entitron.Queryable.Cond
         public string operation_columnFunction { get; set; }
         public List<object> operation_params { get; set; }
         public string concat { get; set; }
+        public bool columnNameWithTable { get; set; }
+
 
         public string Separator => " ";
 
@@ -33,6 +36,12 @@ namespace FSS.Omnius.Modules.Entitron.Queryable.Cond
 
         public string ToSql(DBCommandSet set, IDbCommand command)
         {
+            string column = this.column;
+            if (!columnNameWithTable && column.Contains("."))
+            {
+                column = column.Substring(column.IndexOf('.') + 1);
+            }
+
             switch (operation)
             {
                 // no params
