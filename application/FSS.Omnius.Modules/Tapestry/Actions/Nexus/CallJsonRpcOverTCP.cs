@@ -1,72 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Tapestry.Actions.Nexus;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Watchtower;
-using System.Linq;
-using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Text;
-using System.Security.Cryptography;
 using System.Net.Sockets;
+using FSS.Omnius.Modules.CORE;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
-
     [NexusRepository]
     public class CallRestAction : Action
     {
         public static int requestId = 0;
-        public override int Id
-        {
-            get
-            {
-                return 300212;
-            }
-        }
+        public override int Id => 300212;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "IpAddress", "Port", "CurencyPair","Method","Params"};
-            }
-        }
+        public override string[] InputVar => new string[] { "IpAddress", "Port", "CurencyPair","Method","Params"};
 
-        public override string Name
-        {
-            get
-            {
-                return "Call JsonRPC Over TCP";
-            }
-        }
+        public override string Name => "Call JsonRPC Over TCP";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Result"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             string pair = vars["CurencyPair"].ToString();
             string method = vars["Method"].ToString();
             string parameters = vars.ContainsKey("Params") ? vars["Params"].ToString() : "";
@@ -89,9 +45,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 socket.ReceiveTimeout = 10000;
                 socket.Connect(host, port);
                 socket.Send(Encoding.ASCII.GetBytes(initJson + "\n"));
-
-
-
+                
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
 
                 socket.Shutdown(SocketShutdown.Send);

@@ -1,73 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Nexus.Service;
-using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
 using FSS.Omnius.Modules.Watchtower;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
-	class ExtDBSelectAction : Action
+    [NexusRepository]
+    class ExtDBSelectAction : Action
 	{
-		public override int Id
-		{
-			get
-			{
-				return 3004;
-			}
-		}
+		public override int Id => 3004;
 
-		public override string[] InputVar
-		{
-			get
-			{
-				return new string[] { "s$TableName", "?s$CondColumn[]", "?CondValue[]", "?s$CondOperator[][eq|lt|gt|lte|gte|like|not-like|in|not-in]", "?s$OrderBy", "?OrderByIndex", "?i$Limit", "?i$Skip" };
-			}
-		}
+		public override string[] InputVar => new string[] { "s$TableName", "?s$CondColumn[]", "?CondValue[]", "?s$CondOperator[][eq|lt|gt|lte|gte|like|not-like|in|not-in]", "?s$OrderBy", "?OrderByIndex", "?i$Limit", "?i$Skip" };
 
-		public override string Name
-		{
-			get
-			{
-				return "ExtDB: Select";
-			}
-		}
+		public override string Name => "ExtDB: Select";
 
-		public override string[] OutputVar
-		{
-			get
-			{
-				return new string[]
-				{
-					"Result", "Error"
-				};
-			}
-		}
+		public override string[] OutputVar => new string[] { "Result", "Error" };
 
-		public override int? ReverseActionId
-		{
-			get
-			{
-				return null;
-			}
-		}
+		public override int? ReverseActionId => null;
 
 		public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
 		{
 			try
 			{
 				CORE.CORE core = (CORE.CORE) vars["__CORE__"];
-				var context = DBEntities.appInstance(core.Entitron.Application);
+				var context = DBEntities.appInstance(core.Application);
 
                 string dbName = (string)vars["dbName"];
                 string tableName = (string)vars["TableName"];
@@ -141,7 +102,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 			{
 				string errorMsg = e.Message;
 				CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-				OmniusException.Log(e, OmniusLogSource.Nexus, core.Entitron.Application, core.User);
+				OmniusException.Log(e, OmniusLogSource.Nexus, core.Application, core.User);
 				outputVars["Result"] = String.Empty;
 				outputVars["Error"] = true;
 			}

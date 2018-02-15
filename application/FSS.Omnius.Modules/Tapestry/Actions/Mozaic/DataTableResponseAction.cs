@@ -1,68 +1,36 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Newtonsoft.Json.Linq;
+using System.Globalization;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 using FSS.Omnius.Modules.Entitron.Entity.Mozaic.Bootstrap;
 using FSS.Omnius.Modules.Entitron.Entity;
-using System.Data;
-using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
     [MozaicRepository]
     public class DataTableResponseAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 2007;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "v$Data" };
-            }
-        }
+        public override int Id => 2007;
 
-        public override string Name
-        {
-            get
-            {
-                return "DataTable response";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Response" };
-            }
-        }
+        public override string[] InputVar => new string[] { "v$Data" };
+
+        public override string Name => "DataTable response";
+
+        public override string[] OutputVar => new string[] { "Response" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // Init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
             DBEntities context = DBEntities.instance;
             ListJson<DBItem> data = (ListJson<DBItem>)vars["Data"];
             List<DBItem> ds = new List<DBItem>();
+            string orderColumnName = null;
 
             if (data.Count() > 0) {
                 /**********************************************************************************/
@@ -96,44 +64,46 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
                 List<string> displayNames = new List<string>();
                 List<string> columnsNames = data[0].getColumnNames();
                 try {
-                    displayNames = data[0].getColumnDisplayNames();
+                    displayNames = data[0].getColumnDisplayNames().ToList();
                 }
                 catch (NullReferenceException) {
                     displayNames = columnsNames;
                 }
-
+                
                 foreach (DBItem row in data) {
-                    DBItem newRow = new DBItem();
+                    DBItem newRow = new DBItem(null, null);
                     int i = 0;
 
                     foreach (string prop in columnsNames) {
                         var value = row[prop];
                         var displayName = displayNames[columnsNames.IndexOf(prop)];
+                        if (i == 0)
+                            orderColumnName = displayName;
 
                         // Převedeme všechny hodnoty na string
                         if (value is bool) {
-                            newRow.createProperty(i, displayName, (bool)value ? "Ano" : "Ne");
+                            newRow[displayName] = (bool)value ? "Ano" : "Ne";
                         }
                         else if (value is DateTime) {
-                            newRow.createProperty(i, displayName, ((DateTime)value).ToString("d. M. yyyy H:mm:ss"));
+                            newRow[displayName] = ((DateTime)value).ToString("d. M. yyyy H:mm:ss");
                         }
                         else if (value is string) {
-                            newRow.createProperty(i, displayName, (string)value);
+                            newRow[displayName] = (string)value;
                         }
                         else {
-                            newRow.createProperty(i, displayName, value.ToString());
+                            newRow[displayName] = value.ToString();
                         }
 
                         // pokud je sloupec id nebo Id nastavíme hiddenId
                         if (prop == "id" || prop == "Id") {
                             i++;
-                            newRow.createProperty(i, "hiddenId", value.ToString());
+                            newRow["hiddenId"] = value.ToString();
                         }
                         i++;
                     }
                     // Pokud existují akce, přidáme je
                     if (!string.IsNullOrEmpty(actionIcons)) {
-                        newRow.createProperty(i, "Akce", actionIcons);
+                        newRow["Akce"] = actionIcons;
                     }
 
                     ds.Add(newRow);
@@ -182,7 +152,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
             /**********************************************************************************/
             JToken order = JToken.Parse((string)vars["order"]);
             int j = 0;
-            IOrderedEnumerable<DBItem> tmpData = filteredData.OrderBy(r => r[0]);
+            IOrderedEnumerable<DBItem> tmpData = filteredData.OrderBy(r => r[r.getColumnNames().First()]);
             var comparer = new NaturalComparer<string>(CompareNatural);
 
             foreach (JToken by in order) {

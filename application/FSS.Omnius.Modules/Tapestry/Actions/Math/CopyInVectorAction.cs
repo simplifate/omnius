@@ -1,55 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
+namespace FSS.Omnius.Modules.Tapestry.Actions.Math
 {
     [MathRepository]
     class CopyInVectorAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 4014;
-            }
-        }
+        public override int Id => 4014;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableData", "SourceColumn", "TargetColumn", "?ConstantSource" };
-            }
-        }
+        public override string[] InputVar => new string[] { "TableData", "SourceColumn", "TargetColumn", "?ConstantSource" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Math: Copy in vector";
-            }
-        }
+        public override string Name => "Math: Copy in vector";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Result"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
@@ -59,41 +25,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if (tableData.Count == 0)
                 return;
             var firstRow = tableData[0];
-            bool createNewColumn = !firstRow.HasProperty(targetColumn);
 
             if (vars.ContainsKey("ConstantSource"))
             {
                 object constant = vars["ConstantSource"];
-                if (createNewColumn)
+
+                foreach (var row in tableData)
                 {
-                    foreach (var row in tableData)
-                    {
-                        row.createProperty(0, targetColumn, constant);
-                    }
-                }
-                else
-                {
-                    foreach (var row in tableData)
-                    {
-                        row[targetColumn] = constant;
-                    }
+                    row[targetColumn] = constant;
                 }
             }
             else
             {
-                if (createNewColumn)
+                foreach (var row in tableData)
                 {
-                    foreach (var row in tableData)
-                    {
-                        row.createProperty(0, targetColumn, row[sourceColumn]);
-                    }
-                }
-                else
-                {
-                    foreach (var row in tableData)
-                    {
-                        row[targetColumn] = row[sourceColumn];
-                    }
+                    row[targetColumn] = row[sourceColumn];
                 }
             }
             outputVars["Result"] = tableData;

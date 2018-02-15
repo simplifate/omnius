@@ -1,11 +1,8 @@
-﻿using FSS.Omnius.Modules.CORE;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Nexus.Service;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 {
@@ -16,36 +13,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
     [NexusRepository]
     public class CallSOAPWSAction : Action
     {
-        public override int Id
-        {
-            get {
-                return 3001;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get {
-                return new string[] { "MethodName", "WSName", "?JsonBody" };
-            }
-        }
-        public override string[] OutputVar
-        {
-            get {
-                return new string[] { "Data" };
-            }
-        }
-        public override string Name
-        {
-            get {
-                return "Call SOAP";
-            }
-        }
+        public override int Id => 3001;
+
+        public override int? ReverseActionId => null;
+
+        public override string[] InputVar => new string[] { "MethodName", "WSName", "?JsonBody" };
+
+        public override string[] OutputVar => new string[] { "Data" };
+
+        public override string Name => "Call SOAP";
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

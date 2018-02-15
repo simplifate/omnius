@@ -1,68 +1,32 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Sql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class MassEditAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1035;
-            }
-        }
+        public override int Id => 1035;
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
+        public override int? ReverseActionId => null;
 
-            }
-        }
+        public override string[] InputVar => new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData", "?ValueType", "?SearchInShared" };
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableName", "ColumnName", "Value", "?IdList", "?TableData", "?ValueType", "?SearchInShared" };
-            }
-        }
+        public override string Name => "Mass edit";
 
-        public override string Name
-        {
-            get
-            {
-                return "Mass edit";
-            }
-        }
-
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[0];
-            }
-        }
+        public override string[] OutputVar => new string[0];
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            Modules.Entitron.Entitron ent = core.Entitron;
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
-            DBTable table = ent.GetDynamicTable((string)vars["TableName"], searchInShared);
+            DBTable table = db.Table((string)vars["TableName"], searchInShared);
             string targetColumnName = (string)vars["ColumnName"];
             object targetValue = 0;
             if (vars.ContainsKey("ValueType"))
@@ -92,7 +56,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             else if (vars.ContainsKey("IdList"))
             {
                 idList = ((string)vars["IdList"]).Split(',').Select(int.Parse).Cast<object>().ToList();
-                results = table.Select().where(c => c.column("id").In(idList)).ToList();
+                results = table.Select().Where(c => c.Column(DBCommandSet.PrimaryKey).In(idList)).ToList();
             }
             else
             {
@@ -101,9 +65,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             foreach (var row in results)
             {
                 row[targetColumnName] = targetValue;
-                table.Update(row, (int)row["id"]);
+                table.Update(row, (int)row[DBCommandSet.PrimaryKey]);
             }
-            ent.Application.SaveChanges();
+            db.SaveChanges();
         }
     }
 }

@@ -1,61 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Tapestry.Actions.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     [OtherRepository]
     class GenerateAuctionEvaluationsAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 192;
-            }
-        }
+        public override int Id => 192;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "AuctionId", "CurrentDemands", "?DiminishingMode", "?PreviousDemands" };
-            }
-        }
+        public override string[] InputVar => new string[] { "AuctionId", "CurrentDemands", "?DiminishingMode", "?PreviousDemands" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Specific: Generate auction evaluations";
-            }
-        }
+        public override string Name => "Specific: Generate auction evaluations";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[0];
-            }
-        }
+        public override string[] OutputVar => new string[0];
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            DBTable evaluationTable = core.Entitron.GetDynamicTable("auctions_evaluations");
+            DBConnection db = Modules.Entitron.Entitron.i;
+            DBTable evaluationTable = db.Table("auctions_evaluations");
             //var demandsView = core.Entitron.GetDynamicView("DemandsVsCapacity");
 
             bool diminishingMode = vars.ContainsKey("DiminishingMode") && (bool)vars["DiminishingMode"] == true;
@@ -99,27 +67,27 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
                         remainingCapacity -= demandAbsolute;
 
-                        var newEvaluation = new DBItem();
-                        newEvaluation.createProperty(1, "id_auction", auctionId);
-                        newEvaluation.createProperty(2, "id_organization", orgId);
+                        var newEvaluation = new DBItem(db, evaluationTable);
+                        newEvaluation["id_auction"] = auctionId;
+                        newEvaluation["id_organization"] = orgId;
 
-                        newEvaluation.createProperty(3, "assigned_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(4, "assigned_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", 0);
-                        newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", 0);
-                        newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                        newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                        newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["unsatisfied_capacity_absolute"] = 0;
+                        newEvaluation["unsatisfied_capacity_percentage"] = 0;
+                        newEvaluation["supplemented_capacity_absolute"] = 0;
+                        newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                        newEvaluation.createProperty(11, "period", period);
-                        newEvaluation.createProperty(12, "unit_price", roundPrice);
-                        newEvaluation.createProperty(13, "total_price", roundPrice * demandAbsolute);
+                        newEvaluation["period"] = period;
+                        newEvaluation["unit_price"] = roundPrice;
+                        newEvaluation["total_price"] = roundPrice * demandAbsolute;
 
-                        newEvaluation.createProperty(14, "id_user_insert", userId);
-                        newEvaluation.createProperty(15, "id_user_change", userId);
-                        newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                        newEvaluation.createProperty(17, "datetime_change", timestamp);
+                        newEvaluation["id_user_insert"] = userId;
+                        newEvaluation["id_user_change"] = userId;
+                        newEvaluation["datetime_insert"] = timestamp;
+                        newEvaluation["datetime_change"] = timestamp;
 
                         evaluationTable.Add(newEvaluation);
                     }
@@ -127,7 +95,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     // RWE demands - split remaining
                     double rweTotalDemandCapacity = sumOfCurrentDemands - totalCapacity + remainingCapacity;
                     double ratio = remainingCapacity / rweTotalDemandCapacity;
-                    foreach(DBItem demand in rweDemands)
+                    foreach (DBItem demand in rweDemands)
                     {
                         double demandAbsolute = Convert.ToDouble(demand["DemandAbsolute"]);
                         double demandFraction = Convert.ToDouble(demand["DemandFraction"]);
@@ -137,27 +105,27 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         int period = (int)demand["Period"];
                         double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
 
-                        var newEvaluation = new DBItem();
-                        newEvaluation.createProperty(1, "id_auction", auctionId);
-                        newEvaluation.createProperty(2, "id_organization", orgId);
+                        var newEvaluation = new DBItem(db, evaluationTable);
+                        newEvaluation["id_auction"] = auctionId;
+                        newEvaluation["id_organization"] = orgId;
 
-                        newEvaluation.createProperty(3, "assigned_capacity_absolute", assignedAbsolute);
-                        newEvaluation.createProperty(4, "assigned_capacity_percentage", assignedPercentage);
-                        newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", 0);
-                        newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", 0);
-                        newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                        newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                        newEvaluation["assigned_capacity_absolute"] = assignedAbsolute;
+                        newEvaluation["assigned_capacity_percentage"] = assignedPercentage;
+                        newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["unsatisfied_capacity_absolute"] = 0;
+                        newEvaluation["unsatisfied_capacity_percentage"] = 0;
+                        newEvaluation["supplemented_capacity_absolute"] = 0;
+                        newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                        newEvaluation.createProperty(11, "period", period);
-                        newEvaluation.createProperty(12, "unit_price", roundPrice);
-                        newEvaluation.createProperty(13, "total_price", roundPrice * assignedAbsolute);
+                        newEvaluation["period"] = period;
+                        newEvaluation["unit_price"] = roundPrice;
+                        newEvaluation["total_price"] = roundPrice * assignedAbsolute;
 
-                        newEvaluation.createProperty(14, "id_user_insert", userId);
-                        newEvaluation.createProperty(15, "id_user_change", userId);
-                        newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                        newEvaluation.createProperty(17, "datetime_change", timestamp);
+                        newEvaluation["id_user_insert"] = userId;
+                        newEvaluation["id_user_change"] = userId;
+                        newEvaluation["datetime_insert"] = timestamp;
+                        newEvaluation["datetime_change"] = timestamp;
 
                         evaluationTable.Add(newEvaluation);
                     }
@@ -171,27 +139,27 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         int period = (int)demand["Period"];
                         double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
 
-                        var newEvaluation = new DBItem();
-                        newEvaluation.createProperty(1, "id_auction", auctionId);
-                        newEvaluation.createProperty(2, "id_organization", orgId);
+                        var newEvaluation = new DBItem(db, evaluationTable);
+                        newEvaluation["id_auction"] = auctionId;
+                        newEvaluation["id_organization"] = orgId;
 
-                        newEvaluation.createProperty(3, "assigned_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(4, "assigned_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", 0);
-                        newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", 0);
-                        newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                        newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                        newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["unsatisfied_capacity_absolute"] = 0;
+                        newEvaluation["unsatisfied_capacity_percentage"] = 0;
+                        newEvaluation["supplemented_capacity_absolute"] = 0;
+                        newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                        newEvaluation.createProperty(11, "period", period);
-                        newEvaluation.createProperty(12, "unit_price", roundPrice);
-                        newEvaluation.createProperty(13, "total_price", roundPrice * demandAbsolute);
+                        newEvaluation["period"] = period;
+                        newEvaluation["unit_price"] = roundPrice;
+                        newEvaluation["total_price"] = roundPrice * demandAbsolute;
 
-                        newEvaluation.createProperty(14, "id_user_insert", userId);
-                        newEvaluation.createProperty(15, "id_user_change", userId);
-                        newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                        newEvaluation.createProperty(17, "datetime_change", timestamp);
+                        newEvaluation["id_user_insert"] = userId;
+                        newEvaluation["id_user_change"] = userId;
+                        newEvaluation["datetime_insert"] = timestamp;
+                        newEvaluation["datetime_change"] = timestamp;
 
                         evaluationTable.Add(newEvaluation);
                     }
@@ -211,40 +179,40 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         int period = (int)demand["Period"];
                         double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
 
-                        var newEvaluation = new DBItem();
-                        newEvaluation.createProperty(1, "id_auction", auctionId);
-                        newEvaluation.createProperty(2, "id_organization", orgId);
+                        var newEvaluation = new DBItem(db, evaluationTable);
+                        newEvaluation["id_auction"] = auctionId;
+                        newEvaluation["id_organization"] = orgId;
 
-                        newEvaluation.createProperty(3, "assigned_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(4, "assigned_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                        newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                        newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", 0);
-                        newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", 0);
-                        newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                        newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                        newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["unsatisfied_capacity_absolute"] = 0;
+                        newEvaluation["unsatisfied_capacity_percentage"] = 0;
+                        newEvaluation["supplemented_capacity_absolute"] = 0;
+                        newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                        newEvaluation.createProperty(11, "period", period);
-                        newEvaluation.createProperty(12, "unit_price", roundPrice);
-                        newEvaluation.createProperty(13, "total_price", roundPrice * demandAbsolute);
+                        newEvaluation["period"] = period;
+                        newEvaluation["unit_price"] = roundPrice;
+                        newEvaluation["total_price"] = roundPrice * demandAbsolute;
 
-                        newEvaluation.createProperty(14, "id_user_insert", userId);
-                        newEvaluation.createProperty(15, "id_user_change", userId);
-                        newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                        newEvaluation.createProperty(17, "datetime_change", timestamp);
+                        newEvaluation["id_user_insert"] = userId;
+                        newEvaluation["id_user_change"] = userId;
+                        newEvaluation["datetime_insert"] = timestamp;
+                        newEvaluation["datetime_change"] = timestamp;
 
                         evaluations.Add(orgId, newEvaluation);
 
                         foreach (DBItem previousDemand in previousDemands)
                         {
                             if (orgId == (int)previousDemand["OrgId"])
-                                previousDemand["DemandAbsolute"] = Convert.ToDouble(previousDemand["DemandAbsolute"]) - Convert.ToDouble(demand["DemandAbsolute"]);                        
+                                previousDemand["DemandAbsolute"] = Convert.ToDouble(previousDemand["DemandAbsolute"]) - Convert.ToDouble(demand["DemandAbsolute"]);
                         }
                     }
 
                     sumOfPreviousDemands -= sumOfCurrentDemands;
 
-                    foreach(DBItem demand in previousDemands)
+                    foreach (DBItem demand in previousDemands)
                     {
                         double demandAbsolute = Convert.ToDouble(demand["DemandAbsolute"]);
                         double previousFinalAbsolute = Math.Round((demandAbsolute / sumOfPreviousDemands) * (totalCapacity - sumOfCurrentDemands), 3);
@@ -274,34 +242,34 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         {
                             // add
                             // count capacity
-                            var newEvaluation = new DBItem();
-                            newEvaluation.createProperty(1, "id_auction", auctionId);
-                            newEvaluation.createProperty(2, "id_organization", orgId);
+                            var newEvaluation = new DBItem(db, evaluationTable);
+                            newEvaluation["id_auction"] = auctionId;
+                            newEvaluation["id_organization"] = orgId;
 
-                            newEvaluation.createProperty(3, "assigned_capacity_absolute", previousFinalAbsolute);
-                            newEvaluation.createProperty(4, "assigned_capacity_percentage", Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2));
-                            newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                            newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                            newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", 0);
-                            newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", 0);
-                            newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                            newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                            newEvaluation["assigned_capacity_absolute"] = previousFinalAbsolute;
+                            newEvaluation["assigned_capacity_percentage"] = Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2);
+                            newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                            newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                            newEvaluation["unsatisfied_capacity_absolute"] = 0;
+                            newEvaluation["unsatisfied_capacity_percentage"] = 0;
+                            newEvaluation["supplemented_capacity_absolute"] = 0;
+                            newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                            newEvaluation.createProperty(11, "period", period);
-                            newEvaluation.createProperty(12, "unit_price", roundPrice);
-                            newEvaluation.createProperty(13, "total_price", roundPrice * previousFinalAbsolute);
+                            newEvaluation["period"] = period;
+                            newEvaluation["unit_price"] = roundPrice;
+                            newEvaluation["total_price"] = roundPrice * previousFinalAbsolute;
 
-                            newEvaluation.createProperty(14, "id_user_insert", userId);
-                            newEvaluation.createProperty(15, "id_user_change", userId);
-                            newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                            newEvaluation.createProperty(17, "datetime_change", timestamp);
+                            newEvaluation["id_user_insert"] = userId;
+                            newEvaluation["id_user_change"] = userId;
+                            newEvaluation["datetime_insert"] = timestamp;
+                            newEvaluation["datetime_change"] = timestamp;
 
                             evaluations.Add(orgId, newEvaluation);
                         }
                     }
 
                     // save created evaluations
-                    foreach(var pair in evaluations)
+                    foreach (var pair in evaluations)
                     {
                         evaluationTable.Add(pair.Value);
                     }
@@ -312,10 +280,10 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 // Vyhodnocení klesající aukce, kde se poptávky řadí podle časové priority
 
                 // předcházející kola
-                double previousRoundsSum = core.Entitron.GetDynamicView("DemandsForRound")
-                                        .Select("Demand").where(c => 
-                                            c.column("AuctionId").Equal(auctionId)
-                                            .and().column("RoundNumber").NotEqual(currentRoundNumber))
+                double previousRoundsSum = db.Tabloid("DemandsForRound")
+                                        .Select("Demand").Where(c =>
+                                            c.Column("AuctionId").Equal(auctionId)
+                                            .And.Column("RoundNumber").NotEqual(currentRoundNumber))
                                         .ToList().Sum(d => Convert.ToDouble(d["Demand"]));
                 remainingCapacity -= previousRoundsSum;
                 // toto kolo
@@ -335,32 +303,32 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
                     remainingCapacity -= assignedAbsolute;
 
-                    var newEvaluation = new DBItem();
-                    newEvaluation.createProperty(1, "id_auction", auctionId);
-                    newEvaluation.createProperty(2, "id_organization", orgId);
+                    var newEvaluation = new DBItem(db, evaluationTable);
+                    newEvaluation["id_auction"] = auctionId;
+                    newEvaluation["id_organization"] = orgId;
 
-                    newEvaluation.createProperty(3, "assigned_capacity_absolute", assignedAbsolute);
-                    newEvaluation.createProperty(4, "assigned_capacity_percentage", Math.Round((assignedAbsolute/totalCapacity) * 100, 2));
-                    newEvaluation.createProperty(5, "demanded_capacity_absolute", demandAbsolute);
-                    newEvaluation.createProperty(6, "demanded_capacity_percentage", Math.Round(demandFraction * 100, 2));
-                    newEvaluation.createProperty(7, "unsatisfied_capacity_absolute", demandAbsolute - assignedAbsolute);
-                    newEvaluation.createProperty(8, "unsatisfied_capacity_percentage", Math.Round(((demandAbsolute - assignedAbsolute) / totalCapacity) * 100, 2));
-                    newEvaluation.createProperty(9, "supplemented_capacity_absolute", 0);
-                    newEvaluation.createProperty(10, "supplemented_capacity_percentage", 0);
+                    newEvaluation["assigned_capacity_absolute"] = assignedAbsolute;
+                    newEvaluation["assigned_capacity_percentage"] = Math.Round((assignedAbsolute / totalCapacity) * 100, 2);
+                    newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
+                    newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                    newEvaluation["unsatisfied_capacity_absolute"] = demandAbsolute - assignedAbsolute;
+                    newEvaluation["unsatisfied_capacity_percentage"] = Math.Round(((demandAbsolute - assignedAbsolute) / totalCapacity) * 100, 2);
+                    newEvaluation["supplemented_capacity_absolute"] = 0;
+                    newEvaluation["supplemented_capacity_percentage"] = 0;
 
-                    newEvaluation.createProperty(11, "period", period);
-                    newEvaluation.createProperty(12, "unit_price", roundPrice);
-                    newEvaluation.createProperty(13, "total_price", roundPrice * assignedAbsolute);
+                    newEvaluation["period"] = period;
+                    newEvaluation["unit_price"] = roundPrice;
+                    newEvaluation["total_price"] = roundPrice * assignedAbsolute;
 
-                    newEvaluation.createProperty(14, "id_user_insert", userId);
-                    newEvaluation.createProperty(15, "id_user_change", userId);
-                    newEvaluation.createProperty(16, "datetime_insert", timestamp);
-                    newEvaluation.createProperty(17, "datetime_change", timestamp);
+                    newEvaluation["id_user_insert"] = userId;
+                    newEvaluation["id_user_change"] = userId;
+                    newEvaluation["datetime_insert"] = timestamp;
+                    newEvaluation["datetime_change"] = timestamp;
 
                     evaluationTable.Add(newEvaluation);
                 }
             }
-            core.Entitron.Application.SaveChanges();
+            db.SaveChanges();
         }
     }
 }

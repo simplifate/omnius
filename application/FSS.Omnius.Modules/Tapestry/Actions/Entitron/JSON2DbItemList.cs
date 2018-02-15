@@ -1,13 +1,10 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using FSS.Omnius.Modules.Entitron.Entity;
-using FSS.Omnius.Modules.Entitron.Entity.CORE;
-using FSS.Omnius.Modules.Entitron.Sql;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Xml;
-using Newtonsoft.Json;
-using System;
+using FSS.Omnius.Modules.Entitron.DB;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron;
 using Newtonsoft.Json.Linq;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
@@ -15,48 +12,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
     [EntitronRepository]
     public class JSON2DbItemListAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1047;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableName", "BaseName", "Data", "?ItemName", "?SearchInShared" };
-            }
-        }
+        public override int Id => 1047;
 
-        public override string Name
-        {
-            get
-            {
-                return "JSON to DbItem list";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
-        
+        public override string[] InputVar => new string[] { "TableName", "BaseName", "Data", "?ItemName", "?SearchInShared" };
+
+        public override string Name => "JSON to DbItem list";
+
+        public override string[] OutputVar => new string[] { "Result" };
+
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> invertedVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
 
@@ -95,35 +64,34 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             JToken data = JToken.Parse(jsonText);
             ****************************************************************************************/
 
-            var table = core.Entitron.GetDynamicTable(tableName, searchInShared);
+            DBTable table = db.Table(tableName, searchInShared);
 
             Dictionary<string, DBColumn> columnExists = new Dictionary<string, DBColumn>();
-            Dictionary<string, DataType> columnType = new Dictionary<string, DataType>();
+            Dictionary<string, DbType> columnType = new Dictionary<string, DbType>();
 
             var items = data.SelectToken($"$..{baseName}.{itemName}");
             foreach (JToken item in items) {
-                DBItem entity = new DBItem();
+                DBItem entity = new DBItem(db, table);
                 foreach (JProperty pair in item) 
                 {
                     // Zjistíme, jestli ten slupec v tabulce vůbec existuje
                     string columnName = pair.Name.ToLowerInvariant();
                     if(!columnExists.ContainsKey(columnName)) {
-                        DBColumn column = table.columns.Where(c => c.Name == columnName).FirstOrDefault();
+                        DBColumn column = table.Columns.Where(c => c.Name == columnName).FirstOrDefault();
 
                         columnExists.Add(columnName, column);
                         if(column != null) {
-                            columnType.Add(columnName, DataType.ByDBColumnTypeName(column.type));
+                            columnType.Add(columnName, column.Type);
                         }
                     }
 
                     if(columnExists[columnName] != null) { 
-                        entity.createProperty(columnExists[columnName].ColumnId, columnName, Convertor.convert(columnType[columnName], (string)pair));
+                        entity[columnName] = DataType.ConvertTo(columnType[columnName], (string)pair);
                     }
                 }
                 table.Add(entity);
             }
-
-            core.Entitron.Application.SaveChanges();
+            db.SaveChanges();
 
             // return
             outputVars["Result"] = true;

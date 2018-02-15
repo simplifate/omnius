@@ -1,53 +1,20 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Watchtower;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FSS.Omnius.Modules.CORE;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Mozaic
 {
     [MozaicRepository]
     public class ValidateInputAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 2006;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "InputName", "Condition", "?InputAlias", "?SuppressMessage" };
-            }
-        }
+        public override int Id => 2006;
 
-        public override string Name
-        {
-            get
-            {
-                return "Validate input";
-            }
-        }
+        public override int? ReverseActionId => null;
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] InputVar => new string[] { "InputName", "Condition", "?InputAlias", "?SuppressMessage" };
+
+        public override string Name => "Validate input";
+
+        public override string[] OutputVar => new string[] { "Result" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {

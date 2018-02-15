@@ -1,47 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Cortex;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
     [OtherRepository]
     public class ValidateInput : Action
     {
-        public override int Id
-        {
-            get {
-                return 200;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get {
-                return null;
-            }
-        }
-        public override string[] InputVar
-        {
-            get {
-                return new string[] { "s$FieldName", "s$HumanName", "s$Type[string|int|float|bool|date|time|dateTime]", "b$Required", "?Min", "?Max", "b$IsValid", "?s$Messages" };
-            }
-        }
-        public override string Name
-        {
-            get {
-                return "Validate input";
-            }
-        }
-        public override string[] OutputVar
-        {
-            get {
-                return new string[] { "Result", "Messages" };
-            }
-        }
+        public override int Id => 200;
+        public override int? ReverseActionId => null;
+        public override string[] InputVar => new string[] { "s$FieldName", "s$HumanName", "s$Type[string|int|float|bool|date|time|dateTime]", "b$Required", "?Min", "?Max", "b$IsValid", "?s$Messages" };
+        public override string Name => "Validate input";
+        public override string[] OutputVar => new string[] { "Result", "Messages" };
 
         private static Dictionary<string, string> m = new Dictionary<string, string>() {
             {"req", "{0} je povinná položka. "},

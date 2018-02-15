@@ -1,55 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
+using FSS.Omnius.Modules.Entitron.DB;
 
-namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
+namespace FSS.Omnius.Modules.Tapestry.Actions.Math
 {
     [MathRepository]
     class SubtractInVectorAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 4010;
-            }
-        }
+        public override int Id => 4010;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "TableData", "ColumnA", "ColumnB", "ResultColumn" };
-            }
-        }
+        public override string[] InputVar => new string[] { "TableData", "ColumnA", "ColumnB", "ResultColumn" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Math: Subtract in vector";
-            }
-        }
+        public override string Name => "Math: Subtract in vector";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Result"
-                };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
@@ -61,41 +28,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
             if(tableData.Count == 0)
                 return;
             var firstRow = tableData[0];
-            bool createNewColumn = !firstRow.HasProperty(resultColumn);
             bool integerMode = firstRow[columnA] is int && firstRow[columnB] is int;
-
-            if (createNewColumn)
+            
+            if (integerMode)
             {
-                if (integerMode)
+                foreach (var row in tableData)
                 {
-                    foreach (var row in tableData)
-                    {
-                        row.createProperty(0, resultColumn, (int)row[columnA] - (int)row[columnB]);
-                    }
-                }
-                else
-                {
-                    foreach (var row in tableData)
-                    {
-                        row.createProperty(0, resultColumn, Convert.ToDouble(row[columnA]) - Convert.ToDouble(row[columnB]));
-                    }
+                    row[resultColumn] = (int)row[columnA] - (int)row[columnB];
                 }
             }
             else
             {
-                if (integerMode)
+                foreach (var row in tableData)
                 {
-                    foreach (var row in tableData)
-                    {
-                        row[resultColumn] = (int)row[columnA] - (int)row[columnB];
-                    }
-                }
-                else
-                {
-                    foreach (var row in tableData)
-                    {
-                        row[resultColumn] = Convert.ToDouble(row[columnA]) - Convert.ToDouble(row[columnB]);
-                    }
+                    row[resultColumn] = Convert.ToDouble(row[columnA]) - Convert.ToDouble(row[columnB]);
                 }
             }
             outputVars["Result"] = tableData;

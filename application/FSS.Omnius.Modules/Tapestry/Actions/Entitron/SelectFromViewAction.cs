@@ -1,66 +1,38 @@
-﻿using FSS.Omnius.Modules.CORE;
-using FSS.Omnius.Modules.Entitron;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FSS.Omnius.Modules.CORE;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 {
     [EntitronRepository]
     public class SelectFromViewAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 1034;
-            }
-        }
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int Id => 1034;
+
+        public override int? ReverseActionId => null;
+
         /// <summary>
         /// You can add more conditions by add InputVar "?ColumnNameX" and "?ValueX" where X is number in the row
         /// </summary>
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "ViewName", "?SearchInShared", "?OrderBy", "?Descending", "?ColumnName", "?Value", "?ColumnName2", "?Value2", "?ColumnName3", "?Value3" };
-            }
-        }
+        public override string[] InputVar => new string[] { "ViewName", "?SearchInShared", "?OrderBy", "?Descending", "?ColumnName", "?Value", "?ColumnName2", "?Value2", "?ColumnName3", "?Value3" };
 
-        public override string Name
-        {
-            get
-            {
-                return "Select from view";
-            }
-        }
+        public override string Name => "Select from view";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "Result" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "Result" };
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
             // init
-            CORE.CORE core = (CORE.CORE)vars["__CORE__"];
+            DBConnection db = Modules.Entitron.Entitron.i;
 
             // get view
             string orderBy = vars.ContainsKey("OrderBy") ? (string)vars["OrderBy"] : null;
             bool searchInShared = vars.ContainsKey("SearchInShared") ? (bool)vars["SearchInShared"] : false;
-            bool isDescending = vars.ContainsKey("Descending") ? (bool)vars["Descending"] : false;
+            AscDesc isDescending = vars.ContainsKey("Descending") && (bool)vars["Descending"] ? AscDesc.Desc : AscDesc.Asc;
 
-            var view = core.Entitron.GetDynamicView((string)vars["ViewName"], searchInShared);
+            Tabloid view = db.Tabloid((string)vars["ViewName"], searchInShared);
 
             var result = view.Select();
             int conditionIndex = 1;
@@ -87,29 +59,23 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                         return;
                     }
 
-                    result = result.where(c => c.column(columnName).In((IEnumerable<object>)value));
+                    result = result.Where(c => c.Column(columnName).In((IEnumerable<object>)value));
                 }
                 // condition is list of strings
                 else if ((value is string) && ((string)value).Contains(","))
                 {
                     string[] list = vars["Value"].ToString().Split(',');
-                    result = result.where(c => c.column(columnName).In(list));
+                    result = result.Where(c => c.Column(columnName).In(list));
                 }
                 // condition is object
                 else
-                    result = result.where(c => c.column(columnName).Equal(value));
+                    result = result.Where(c => c.Column(columnName).Equal(value));
 
                 conditionIndex++;
             }
 
             // result
-            if (isDescending)
-            {
-                outputVars["Result"] = result.orderDesc(orderBy).ToList();
-            }
-            else
-                outputVars["Result"] = result.order(orderBy).ToList();
-
+            outputVars["Result"] = result.Order(isDescending, orderBy).ToList();
         }
     }
 }

@@ -1,63 +1,28 @@
-﻿using FSS.Omnius.Modules.CORE;
-using System;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Nexus;
 using FSS.Omnius.Modules.Nexus.Service;
-using FSS.Omnius.Modules.Compass;
-using System.IO;
 
 
 namespace FSS.Omnius.Modules.Tapestry.Actions.other
 {
-    
-
     [OtherRepository]
     class WebDavUploadAction : Action
     {
-        public override int Id
-        {
-            get
-            {
-                return 195;
-            }
-        }
+        public override int Id => 195;
 
-        public override string[] InputVar
-        {
-            get
-            {
-                return new string[] { "InputName", "WebDavServerName" };
-            }
-        }
+        public override string[] InputVar => new string[] { "InputName", "WebDavServerName" };
 
-        public override string Name
-        {
-            get
-            {
-                return "WebDav Upload";
-            }
-        }
+        public override string Name => "WebDav Upload";
 
-        public override string[] OutputVar
-        {
-            get
-            {
-                return new string[] { "UploadMetadataId" };
-            }
-        }
+        public override string[] OutputVar => new string[] { "UploadMetadataId" };
 
-        public override int? ReverseActionId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override int? ReverseActionId => null;
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
@@ -71,8 +36,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 return;
 
             CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-            string appName = core.Entitron.AppName;
-            var context = DBEntities.appInstance(core.Entitron.Application);
+            string appName = core.Application.Name;
+            var context = DBEntities.appInstance(core.Application);
             foreach (string fileName in files)
             {
                 HttpPostedFile file = HttpContext.Current.Request.Files[fileName];
@@ -81,7 +46,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     continue;
                     
                 FileMetadata fmd = new FileMetadata();
-                fmd.AppFolderName = core.Entitron.AppName;
+                fmd.AppFolderName = core.Application.Name;
                 fmd.CachedCopy = new FileSyncCache();
 
                 byte[] streamBytes = new byte[file.ContentLength];
