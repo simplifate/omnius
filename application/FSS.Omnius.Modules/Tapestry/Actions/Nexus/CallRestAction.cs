@@ -130,13 +130,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 string endpointPath = string.Format("{0}/{1}?{2}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'), queryString);
                 //var endpointUri = new Uri(endpointPath);
 
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
 
                 httpWebRequest.Method = method.ToUpper();
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Accept = "application/json";
-                
-                foreach(string header in customHeaders) {
+                httpWebRequest.KeepAlive = false;
+
+                foreach (string header in customHeaders) {
                     httpWebRequest.Headers.Add(header);
                 }
                 
