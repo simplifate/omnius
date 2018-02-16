@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Nexus.Service
 
                     if (block != null) {
                         var core = new CORE.CORE();
-                        core.Entitron.Application = listener.Application;
+                        Entitron.Entitron.Create(listener.Application);
 
                         try {
                             PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == listener.ApplicationId);

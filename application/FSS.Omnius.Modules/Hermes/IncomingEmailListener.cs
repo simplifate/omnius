@@ -58,7 +58,7 @@ namespace FSS.Omnius.Modules.Hermes
                             if (block != null) 
                             {
                                 var core = new CORE.CORE();
-                                core.Entitron.Application = rule.Application;
+                                Entitron.Entitron.Create(rule.Application);
 
                                 try {
                                     PersonaAppRole role = db.AppRoles.FirstOrDefault(r => r.Name == "System" && r.ApplicationId == rule.ApplicationId);

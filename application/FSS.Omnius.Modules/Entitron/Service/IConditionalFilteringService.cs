@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FSS.Omnius.Modules.Entitron.Entity.Tapestry;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.Modules.Entitron.Service
 {

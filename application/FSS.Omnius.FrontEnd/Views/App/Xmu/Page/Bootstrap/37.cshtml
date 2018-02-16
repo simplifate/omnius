@@ -177,7 +177,7 @@ rangeSelector: {
 
 });</script>".Replace("{var1}", (ViewData.FirstOrDefault(v => v.Key.EndsWith("hc_market_depth")).Value ?? "").ToString()))</div></div></div><div class="row" style="margin-top: 40px;">
 @{ if(ViewData.ContainsKey("exchange_foreach")) {
-        foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DBItem>)ViewData["exchange_foreach"]) {
+        foreach(var row in (IEnumerable<FSS.Omnius.Modules.Entitron.DB.DBItem>)ViewData["exchange_foreach"]) {
             <div class="">
                 <div class="col-xs-6 col-sm-4 col-md-3"><div class="" style="border: 2px solid #444; margin-top: 15px;"><div class="" style="width: 50%; padding: 15px 5px; background-color: #444; color: #fff; text-align: center; display: inline-block;"><span class="">@(row["exchange"].ToString())</span></div><div class="" style="width: 50%; padding: 15px 5px; text-align: center; display: inline-block;"><span class="">@(row["value"].ToString())</span></div></div></div>   
             </div>

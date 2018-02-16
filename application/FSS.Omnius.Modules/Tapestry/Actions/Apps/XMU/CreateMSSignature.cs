@@ -66,7 +66,7 @@ sE0FP1G8FoMc/5V0lRLGpwyUfH8rT9H/VYC4l2gM58TCmEZ4mu1ygy7mg7vhDZ4d
         {
             TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc));
             double unixTime = span.TotalSeconds;
-            return string.Format("{0}", Math.Floor(unixTime));
+            return string.Format("{0}", System.Math.Floor(unixTime));
         }
     }
 }

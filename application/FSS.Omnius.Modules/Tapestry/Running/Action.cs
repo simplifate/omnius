@@ -53,7 +53,7 @@ namespace FSS.Omnius.Modules.Tapestry
 
             if (((IEnumerable<object>)vars["DataSource"]).Count() > 0) {
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
-                DBEntities context = DBEntities.appInstance(core.Entitron.Application);
+                DBEntities context = DBEntities.appInstance(core.Application);
                 //List<ActionRule_Action> actions = context.ActionRule_Action.Where(a => a.VirtualParentId == actionRule_action.VirtualItemId).OrderBy(a => a.Order).ToList();
 
                 var startRule = context.ActionRules.Include("ActionRule_Actions").Where(a => a.ActionRule_Actions.Where(aa => aa.IsForeachStart == true && aa.VirtualParentId == actionRule_action.VirtualItemId).Any()).FirstOrDefault();

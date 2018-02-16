@@ -45,7 +45,7 @@ namespace System
             if (core.User == null || core.User.UserName != user.Identity.Name)
                 core.User = core.Persona.AuthenticateUser(user.Identity.Name);
 
-            if (core.User == null && core.Entitron.Application != null && core.Entitron.Application.IsAllowedGuests)
+            if (core.User == null && core.Application != null && core.Application.IsAllowedGuests)
             {
                 core.User = context.Users.SingleOrDefault(x => x.UserName == "guest");
             }

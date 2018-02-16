@@ -104,8 +104,8 @@ namespace FSS.Omnius.Modules.Entitron.Entity
                 {
                     if (!_connections.ContainsKey(r))
                     {
-                        SqlConnectionFactory f = new SqlConnectionFactory(Omnius.Modules.Entitron.Entitron.connectionString);
-                        _connections.Add(r, f.CreateConnection(Omnius.Modules.Entitron.Entitron.connectionString));
+                        SqlConnectionFactory f = new SqlConnectionFactory(Modules.Entitron.Entitron.EntityConnectionString);
+                        _connections.Add(r, f.CreateConnection(Omnius.Modules.Entitron.Entitron.EntityConnectionString));
                         _connections[r].Open();
                     }
                     return _connections[r];
@@ -117,7 +117,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         public static DBEntities appInstance(Application app)
         {
             // empty connection string - return usual entities
-            if (app == null || app.connectionString_schema == null)
+            if (app == null || app.DBscheme_connectionString == null)
                 return instance;
 
             lock (_appInstanceLock)
@@ -159,7 +159,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity
         {
             lock (_appInstanceLock)
             {
-                _appInstances.Add(r, new DBEntities(r, app.connectionString_schema));
+                _appInstances.Add(r, new DBEntities(r, app.DBscheme_connectionString));
             }
         }
 

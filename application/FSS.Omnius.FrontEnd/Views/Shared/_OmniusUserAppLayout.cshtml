@@ -1,8 +1,7 @@
 ﻿@using FSS.Omnius.Modules.Entitron.Entity
-@using FSS.Omnius.Modules.Entitron.Entity.Master
-@using FSS.Omnius.Modules.Entitron.Entity.Tapestry
 @using FSS.Omnius.Modules.Entitron.Entity.Mozaic
 @using FSS.Omnius.Modules.CORE
+@using FSS.Omnius.Modules.Entitron.Entity.Master
 @using FSS.Omnius.FrontEnd.Utils
 @{
     T t = new T((string)ViewData["locale"]);
@@ -20,9 +19,9 @@
     <script type="text/javascript" src="@Services.GetFileVersion("/Scripts/Bundles/modernizr.min.js")"></script>
     <style>
         @{
-            int appId = Context.GetCORE().Entitron.AppId;
+            Application app = FSS.Omnius.Modules.Entitron.Entitron.i.Application;
             var context = DBEntities.instance;
-            var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == appId).First();
+            var applicationTemplate = context.Applications.Include("CSSTemplate").Where(c => c.Id == app.Id).First();
 
 
         }
@@ -80,7 +79,7 @@
         <div id="showMenuIcon" class="fa fa-angle-double-right"></div>
         <div id="hideMenuIcon" class="fa fa-angle-double-left"></div>
         <div class="widgetLabel">Menu</div>
-        @Html.Partial($"/Views/App/{Context.GetCORE().Entitron.AppName}/menuLayout.cshtml")
+        @Html.Partial($"/Views/App/{app.Name}/menuLayout.cshtml")
     </div>
     <script>
         if (window.innerWidth < 1280) {

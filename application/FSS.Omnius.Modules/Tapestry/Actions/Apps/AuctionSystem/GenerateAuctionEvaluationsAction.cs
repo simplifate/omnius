@@ -72,9 +72,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         newEvaluation["id_organization"] = orgId;
 
                         newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["assigned_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["unsatisfied_capacity_absolute"] = 0;
                         newEvaluation["unsatisfied_capacity_percentage"] = 0;
                         newEvaluation["supplemented_capacity_absolute"] = 0;
@@ -99,8 +99,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     {
                         double demandAbsolute = Convert.ToDouble(demand["DemandAbsolute"]);
                         double demandFraction = Convert.ToDouble(demand["DemandFraction"]);
-                        double assignedAbsolute = Math.Round(ratio * demandAbsolute, 3);
-                        double assignedPercentage = Math.Round((assignedAbsolute / totalCapacity) * 100, 2);
+                        double assignedAbsolute = System.Math.Round(ratio * demandAbsolute, 3);
+                        double assignedPercentage = System.Math.Round((assignedAbsolute / totalCapacity) * 100, 2);
                         int orgId = (int)demand["OrgId"];
                         int period = (int)demand["Period"];
                         double roundPrice = Convert.ToDouble(demand["RoundPrice"]);
@@ -112,7 +112,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         newEvaluation["assigned_capacity_absolute"] = assignedAbsolute;
                         newEvaluation["assigned_capacity_percentage"] = assignedPercentage;
                         newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["unsatisfied_capacity_absolute"] = 0;
                         newEvaluation["unsatisfied_capacity_percentage"] = 0;
                         newEvaluation["supplemented_capacity_absolute"] = 0;
@@ -144,9 +144,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         newEvaluation["id_organization"] = orgId;
 
                         newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["assigned_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["unsatisfied_capacity_absolute"] = 0;
                         newEvaluation["unsatisfied_capacity_percentage"] = 0;
                         newEvaluation["supplemented_capacity_absolute"] = 0;
@@ -184,9 +184,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                         newEvaluation["id_organization"] = orgId;
 
                         newEvaluation["assigned_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["assigned_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["assigned_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                        newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                        newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                         newEvaluation["unsatisfied_capacity_absolute"] = 0;
                         newEvaluation["unsatisfied_capacity_percentage"] = 0;
                         newEvaluation["supplemented_capacity_absolute"] = 0;
@@ -215,7 +215,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     foreach (DBItem demand in previousDemands)
                     {
                         double demandAbsolute = Convert.ToDouble(demand["DemandAbsolute"]);
-                        double previousFinalAbsolute = Math.Round((demandAbsolute / sumOfPreviousDemands) * (totalCapacity - sumOfCurrentDemands), 3);
+                        double previousFinalAbsolute = System.Math.Round((demandAbsolute / sumOfPreviousDemands) * (totalCapacity - sumOfCurrentDemands), 3);
                         double demandFraction = Convert.ToDouble(demand["DemandFraction"]);
                         int orgId = (int)demand["OrgId"];
                         int period = (int)demand["Period"];
@@ -227,14 +227,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             DBItem newEvaluation = evaluations[orgId];
 
                             double totalAssignedAbsolute = (double)newEvaluation["assigned_capacity_absolute"] + previousFinalAbsolute;
-                            double totalAssignedPercentage = Math.Round((totalAssignedAbsolute / totalCapacity) * 100, 2);
+                            double totalAssignedPercentage = System.Math.Round((totalAssignedAbsolute / totalCapacity) * 100, 2);
                             double totalPrice = (double)newEvaluation["total_price"] + (roundPrice * previousFinalAbsolute);
-                            double unitPrice = Math.Round(totalPrice / totalAssignedAbsolute, 2);
+                            double unitPrice = System.Math.Round(totalPrice / totalAssignedAbsolute, 2);
 
                             newEvaluation["assigned_capacity_absolute"] = totalAssignedAbsolute;
                             newEvaluation["assigned_capacity_percentage"] = totalAssignedPercentage;
                             newEvaluation["supplemented_capacity_absolute"] = previousFinalAbsolute;
-                            newEvaluation["supplemented_capacity_percentage"] = Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2);
+                            newEvaluation["supplemented_capacity_percentage"] = System.Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2);
                             newEvaluation["unit_price"] = unitPrice;
                             newEvaluation["total_price"] = totalPrice;
                         }
@@ -247,9 +247,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                             newEvaluation["id_organization"] = orgId;
 
                             newEvaluation["assigned_capacity_absolute"] = previousFinalAbsolute;
-                            newEvaluation["assigned_capacity_percentage"] = Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2);
+                            newEvaluation["assigned_capacity_percentage"] = System.Math.Round((previousFinalAbsolute / totalCapacity) * 100, 2);
                             newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                            newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                            newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                             newEvaluation["unsatisfied_capacity_absolute"] = 0;
                             newEvaluation["unsatisfied_capacity_percentage"] = 0;
                             newEvaluation["supplemented_capacity_absolute"] = 0;
@@ -308,11 +308,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                     newEvaluation["id_organization"] = orgId;
 
                     newEvaluation["assigned_capacity_absolute"] = assignedAbsolute;
-                    newEvaluation["assigned_capacity_percentage"] = Math.Round((assignedAbsolute / totalCapacity) * 100, 2);
+                    newEvaluation["assigned_capacity_percentage"] = System.Math.Round((assignedAbsolute / totalCapacity) * 100, 2);
                     newEvaluation["demanded_capacity_absolute"] = demandAbsolute;
-                    newEvaluation["demanded_capacity_percentage"] = Math.Round(demandFraction * 100, 2);
+                    newEvaluation["demanded_capacity_percentage"] = System.Math.Round(demandFraction * 100, 2);
                     newEvaluation["unsatisfied_capacity_absolute"] = demandAbsolute - assignedAbsolute;
-                    newEvaluation["unsatisfied_capacity_percentage"] = Math.Round(((demandAbsolute - assignedAbsolute) / totalCapacity) * 100, 2);
+                    newEvaluation["unsatisfied_capacity_percentage"] = System.Math.Round(((demandAbsolute - assignedAbsolute) / totalCapacity) * 100, 2);
                     newEvaluation["supplemented_capacity_absolute"] = 0;
                     newEvaluation["supplemented_capacity_percentage"] = 0;
 

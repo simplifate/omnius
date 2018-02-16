@@ -269,7 +269,7 @@ namespace FSS.Omnius.Modules.Entitron.Service
 
             // Drop old
             IEnumerable<string> designerColumnNames = schemeTable.Columns.Select(dc => dc.Name);
-            foreach (DBColumn column in entitronTable.Columns.Where(c => !designerColumnNames.Contains(c.Name)).ToList())
+            foreach (DBColumn column in entitronTable.Columns.Where(c => !designerColumnNames.Select(dcn => dcn.ToLower()).Contains(c.Name.ToLower())).ToList())
             {
                 // remove index
                 foreach(DBIndex index in entitronTable.Indexes.Where(i => i.Columns.Contains(column.Name)).ToList())

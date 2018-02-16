@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FSS.Omnius.Modules.Entitron.Entity.Master;
+using DT = System.ComponentModel.DataAnnotations.DataType;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Athena
 {
@@ -25,19 +24,19 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Athena
 
         [Required]
         [Display(Name = "JavaScript")]
-        [DataType(DataType.MultilineText)]
+        [DataType(DT.MultilineText)]
         public string Js { get; set; }
         
         [Display(Name = "CSS")]
-        [DataType(DataType.MultilineText)]
+        [DataType(DT.MultilineText)]
         public string Css { get; set; }
 
         [Display(Name = "Demo data")]
-        [DataType(DataType.MultilineText)]
+        [DataType(DT.MultilineText)]
         public string DemoData { get; set; }
 
         [Display(Name = "HTML")]
-        [DataType(DataType.MultilineText)]
+        [DataType(DT.MultilineText)]
         public string Html { get; set; }
 
         [Display(Name = "Library")]

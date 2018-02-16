@@ -260,7 +260,6 @@
     <Compile Include="Entitron\Entitron.cs" />
     <Compile Include="Entitron\Entity\Athena\Graph.cs" />
     <Compile Include="Entitron\Entity\CORE\ConfigPair.cs" />
-    <Compile Include="Entitron\Entity\CORE\DataType.cs" />
     <Compile Include="Entitron\Entity\Cortex\Task.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbColumn.cs" />
     <Compile Include="Entitron\Entity\Entitron\AjaxTransferDbIndex.cs" />
@@ -291,7 +290,6 @@
     <Compile Include="Entitron\Entity\Mozaic\MozaicCssTemplate.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorAjaxModels.cs" />
     <Compile Include="Entitron\Entity\Mozaic\MozaicEditorModels.cs" />
-    <Compile Include="Entitron\Entity\Mozaic\sdfsfs.cs" />
     <Compile Include="Entitron\Entity\Nexus\AjaxTransferNexusModel.cs" />
     <Compile Include="Entitron\Entity\Nexus\extdb.cs" />
     <Compile Include="Entitron\Entity\Nexus\FileSync.cs" />
@@ -1185,6 +1183,10 @@
     <Compile Include="Migrations\201712041556123_tableApplication.Designer.cs">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802160746220_Entitron2.cs" />
+    <Compile Include="Migrations\201802160746220_Entitron2.Designer.cs">
+      <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Mozaic\BootstrapEditor\Builder.cs" />
     <Compile Include="Mozaic\Mozaic.cs" />
@@ -2002,6 +2004,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712041556123_tableApplication.resx">
       <DependentUpon>201712041556123_tableApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802160746220_Entitron2.resx">
+      <DependentUpon>201802160746220_Entitron2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

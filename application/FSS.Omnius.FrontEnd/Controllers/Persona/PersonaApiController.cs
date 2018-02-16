@@ -8,6 +8,7 @@ using FSS.Omnius.Modules.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Modules.Entitron.Entity.Persona;
 using Logger;
+using FSS.Omnius.Modules.Entitron.DB;
 
 namespace FSS.Omnius.FrontEnd.Controllers.Persona
 {

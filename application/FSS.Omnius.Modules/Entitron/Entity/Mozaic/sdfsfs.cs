@@ -42,11 +42,11 @@
 //            // init
 //            C.CORE core = HttpContext.GetCORE();
 //            if (!string.IsNullOrEmpty(appName))
-//                core.Entitron.AppName = appName;
+//                core.Application.Name = appName;
 //            core.User = User.GetLogged(core);
 
 //            // WatchtowerLogger.Instance.LogEvent($"Začátek WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
-//            //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//            //    core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            Block block = getBlockWithResource(core, context, appName, blockIdentify);
 //            if (block == null)
@@ -68,7 +68,7 @@
 
 //            try
 //            {
-//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Application.Id && w.InitBlockId != null && !w.IsTemp).InitBlock;
 //            }
 //            catch (NullReferenceException)
 //            {
@@ -101,13 +101,13 @@
 //                modelId = Convert.ToInt32(tapestryVars["__ModelId__"]);
 
 //            // fill data
-//            ViewData["appName"] = core.Entitron.Application.DisplayName;
-//            ViewData["appIcon"] = core.Entitron.Application.Icon;
+//            ViewData["appName"] = core.Application.DisplayName;
+//            ViewData["appIcon"] = core.Application.Icon;
 //            ViewData["pageName"] = block.DisplayName;
 //            ViewData["UserEmail"] = core.User.Email;
 //            ViewData["blockName"] = block.Name;
 //            ViewData["crossBlockRegistry"] = registry;
-//            ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Entitron.AppId));
+//            ViewData["userRoleArray"] = JsonConvert.SerializeObject(core.User.GetAppRoles(core.Application.Id));
 //            ViewData["HttpContext"] = HttpContext;
 //            string lastLocale = this.GetLocaleNameById(core.User.LocaleId);
 //            if (locale == "")
@@ -299,7 +299,7 @@
 //                                if (columnMetadataResultCache.ContainsKey(sourceTableName))
 //                                    columnMetadataList = columnMetadataResultCache[sourceTableName];
 //                                else {
-//                                    columnMetadataList = core.Entitron.Application.ColumnMetadata.Where(c => c.TableName == sourceTableName).ToList();
+//                                    columnMetadataList = core.Application.ColumnMetadata.Where(c => c.TableName == sourceTableName).ToList();
 //                                    columnMetadataResultCache.Add(sourceTableName, columnMetadataList);
 //                                }
 //                                foreach (string columnName in columnNameList)
@@ -551,14 +551,14 @@
 //                    ViewData[pair.Key.Substring(10)] = dataSource;
 //                }
 //            }
-//            string viewPath = $"{core.Entitron.Application.Id}\\Page\\{block.EditorPageId}.cshtml";
+//            string viewPath = $"{core.Application.Id}\\Page\\{block.EditorPageId}.cshtml";
 
 //            prepareEnd = DateTime.Now;
 //            // show
 //            //return View(block.MozaicPage.ViewPath);
 
 //            // WatchtowerLogger.Instance.LogEvent($"Konec WF: GET {appName}/{blockIdentify}. ModelId={modelId}.",
-//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            return View(viewPath);
 //        }
@@ -566,10 +566,10 @@
 //        public ActionResult Index(string appName, string button, FormCollection fc, string blockIdentify = null, int modelId = -1, int deleteId = -1)
 //        {
 //            C.CORE core = HttpContext.GetCORE();
-//            core.Entitron.Application = DBEntities.instance.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+//            core.Application = DBEntities.instance.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
 
 //            // WatchtowerLogger.Instance.LogEvent($"Začátek WF: POST {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
-//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            DBEntities context = DBEntities.instance;
 //            // get block
@@ -577,16 +577,16 @@
 //            try
 //            {
 //                int blockId = Convert.ToInt32(blockIdentify);
-//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Id == blockId && !b.WorkFlow.IsTemp);
+//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Id == blockId && !b.WorkFlow.IsTemp);
 //            }
 //            catch (FormatException)
 //            {
-//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockIdentify && !b.WorkFlow.IsTemp);
+//                block = context.Blocks.FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name == blockIdentify && !b.WorkFlow.IsTemp);
 //            }
 
 //            try
 //            {
-//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Entitron.AppId && w.InitBlockId != null && !w.IsTemp).InitBlock;
+//                block = block ?? context.WorkFlows.FirstOrDefault(w => w.ApplicationId == core.Application.Id && w.InitBlockId != null && !w.IsTemp).InitBlock;
 //            }
 //            catch (NullReferenceException)
 //            {
@@ -603,7 +603,7 @@
 //            var result = core.Tapestry.run(HttpContext.GetLoggedUser(), block, button, modelId, fc, deleteId);
 
 //            // WatchtowerLogger.Instance.LogEvent($"Konec WF: POST {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
-//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//            //     core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            // redirect
 //            if (Response.ContentType.IndexOf("application/") == -1)
@@ -619,12 +619,12 @@
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
 //                    .Include(b => b.SourceTo_ActionRules)
-//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName && !b.WorkFlow.IsTemp)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name == blockName && !b.WorkFlow.IsTemp)
 //                : context.Blocks
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
 //                    .Include(b => b.SourceTo_ActionRules)
-//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id && !b.WorkFlow.IsTemp);
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.WorkFlow.InitBlockId == b.Id && !b.WorkFlow.IsTemp);
 //        }
 //        private Block getBlockWithWF(C.CORE core, DBEntities context, string appName, string blockName)
 //        {
@@ -633,11 +633,11 @@
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
 //                    .Include(b => b.SourceTo_ActionRules)
-//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName && !b.WorkFlow.IsTemp)
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name == blockName && !b.WorkFlow.IsTemp)
 //                : context.Blocks
 //                    .Include(b => b.ResourceMappingPairs)
 //                    .Include(b => b.SourceTo_ActionRules)
-//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id && b.WorkFlow.IsTemp);
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.WorkFlow.InitBlockId == b.Id && b.WorkFlow.IsTemp);
 //        }
 
 //        public static string GetRunTime()
@@ -767,10 +767,10 @@
 //            }
 
 //            DBEntities context = DBEntities.instance;
-//            core.Entitron.Application = context.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
+//            core.Application = context.Applications.SingleOrDefault(a => a.Name == appName && a.IsEnabled && a.IsPublished && !a.IsSystem);
 
 //            WatchtowerLogger.Instance.LogEvent($"Začátek WF: Cortex Get {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
-//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            // get block
 //            Block block = getBlockWithWF(core, context, appName, blockIdentify);
@@ -783,7 +783,7 @@
 //            var result = core.Tapestry.run(core.User, block, button, modelId, new FormCollection(), -1, blockDependencies);
 
 //            WatchtowerLogger.Instance.LogEvent($"Konec WF: Cortex Get {appName}/{blockIdentify}. ModelId={modelId}, Button={button}.",
-//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Entitron.AppId);
+//                core.User == null ? 0 : core.User.Id, LogEventType.NotSpecified, LogLevel.Info, false, core.Application.Id);
 
 //            // redirect
 //            return RedirectToRoute("Run", new { appName = appName, blockIdentify = result.Item2.Name, modelId = modelId, message = result.Item1.ToUser(), messageType = result.Item1.Type.ToString(), registry = JsonConvert.SerializeObject(result.Item3) });
@@ -809,8 +809,8 @@
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Source))
 //                    .Include(b => b.ResourceMappingPairs.Select(mp => mp.Target))
 //                    .Include(b => b.SourceTo_ActionRules)
-//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.Name == blockName)
-//                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Entitron.AppId && b.WorkFlow.InitBlockId == b.Id);
+//                    .FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.Name == blockName)
+//                : context.Blocks.Include(b => b.ResourceMappingPairs).Include(b => b.SourceTo_ActionRules).FirstOrDefault(b => b.WorkFlow.ApplicationId == core.Application.Id && b.WorkFlow.InitBlockId == b.Id);
 //        }
 
 //        public string GetLocaleNameById(int? id)

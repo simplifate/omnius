@@ -41,7 +41,7 @@
             {
                 <tr appId="@app.Id" data-display-name="@app.DisplayName">
                     <td>@app.DisplayName</td>
-                    @if (@app.Id != SharedTables.AppId)
+                    @if (!@app.IsSystem)
                     {
                         <td><button class="btn btn-info btnOpenWorkflow">Tapestry</button></td>
                         <td><button class="btn btn-info btnOpenDbScheme">Entitron</button></td>
@@ -56,7 +56,7 @@
                     <td>@(app.IsPublished ? "Ano" : "Ne")</td>
                     <td class="isEnabledColumn">@(app.IsEnabled ? "Ano" : "Ne")</td>
                     <td class="actions">
-                        @if (app.Id != SharedTables.AppId)//id 30 mají sdílené tabulky
+                        @if (!app.IsSystem)//id 30 mají sdílené tabulky
                         {
                             if (app.IsPublished)
                             {

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
 {
+    using FSS.Omnius.Modules.Entitron.Entity.Entitron;
     using Master;
     using Mozaic;
     using Mozaic.Bootstrap;
@@ -128,7 +129,7 @@ namespace FSS.Omnius.Modules.Entitron.Entity.Tapestry
         public string AssociatedPageIds { get; set; }
         [LinkToEntity(typeof(MozaicBootstrapPage), true)]
         public string AssociatedBootstrapPageIds { get; set; }
-        [LinkToEntity(typeof(DBTable), true)]
+        [LinkToEntity(typeof(DbTable), true)]
         public string AssociatedTableIds { get; set; }
         public string RoleWhitelist { get; set; }
 

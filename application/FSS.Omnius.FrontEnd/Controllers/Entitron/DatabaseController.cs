@@ -207,7 +207,7 @@ namespace FSS.Omnius.Controllers.Entitron
         {
             DBConnection db = Modules.Entitron.Entitron.i;
 
-            AjaxTransferViewColumnList list = new AjaxTransferViewColumnList(db.Tabloid(viewName).Columns.Select(c => c.Name).ToList());
+            AjaxTransferViewColumnList list = new AjaxTransferViewColumnList() { Columns = db.Tabloid(viewName).Columns.Select(c => c.Name).ToList() };
 
             return list;
         }
@@ -456,7 +456,7 @@ namespace FSS.Omnius.Controllers.Entitron
                     result.SchemeLockedForUserName = context.Users.SingleOrDefault(u => u.Id == result.SchemeLockedForUserId).DisplayName;
                 }
                 if (commitId == -1 && requestedCommit != null) {
-                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(SharedTables.AppId, commitId, context);
+                    DbSchemeCommit sharedCommit = FetchDbSchemeCommit(Application.SystemApp().Id, commitId, context);
                     AjaxTransferDbScheme sharedScheme = new AjaxTransferDbScheme();
                     
 					SetAttributesRequestCommitTables(sharedCommit, sharedScheme);

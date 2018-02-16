@@ -43,7 +43,7 @@ namespace FSS.Omnius.Controllers.Compass
             this.ViewBag.Search = search;
 
 #warning AppName je null
-            this.ViewBag.AppName = core.Entitron.AppName;
+            this.ViewBag.AppName = core.Application.Name;
 
             //DBEntities e = DBEntities.instance;
 

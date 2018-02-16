@@ -23,7 +23,7 @@
         }
         else
         {
-            DBEntities db = Context.GetCORE().Entitron.GetStaticTables();
+            DBEntities db = DBEntities.instance;
             db.UsersApplications.Add(new UsersApplications() {ApplicationId = app.Id,UserId = LoggedUser.Id});
             db.SaveChanges();
         }

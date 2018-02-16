@@ -9,14 +9,8 @@ using FSS.Omnius.FrontEnd.Views;
 using FSS.Omnius.Controllers.CORE;
 using FSS.Omnius.Modules.Entitron.Entity;
 using FSS.Omnius.Controllers.Tapestry;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Diagnostics;
-using System.Globalization;
-using System.Configuration;
 using FSS.Omnius.Modules.Entitron;
 using FSS.Omnius.Modules.Entitron.DB;
-using System.Collections.Generic;
 
 namespace FSS.Omnius.FrontEnd
 {
