@@ -227,7 +227,6 @@ namespace FSS.Omnius.Modules.Entitron
                         return DbType.String;
                     throw new InvalidOperationException($"Unknown type: {type} for {sqlType}");
                 case "varchar":
-                    #warning inconsistent data types 
                     if (sqlType == ESqlType.MySQL || sqlType == ESqlType.MSSQL)
                         return DbType.String;
                     throw new InvalidOperationException($"Unknown type: {type} for {sqlType}");

@@ -58,7 +58,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 }
             }
             DateTime timestamp = DateTime.Now;
-            string timestampColumn = "";
             if (table.Columns.Any(c => c.Name == "ID_USER_VLOZIL"))
             {
                 int userId = core.User.Id;
@@ -66,17 +65,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
                 item["ID_USER_EDITOVAL"] = userId;
                 item["DATUM_VLOZENI"] = timestamp;
                 item["DATUM_EDITACE"] = timestamp;
-                timestampColumn = "DATUM_VLOZENI";
             }
             else if (table.Columns.Any(c => c.Name == "date"))
             {
                 item["date"] = timestamp;
-                timestampColumn = "date";
             }
             else if (table.Columns.Any(c => c.Name == "date_purchase"))
             {
                 item["date_purchase"] = timestamp;
-                timestampColumn = "date_purchase";
             }
             outputVars["AssignedId"] = table.AddGetId(item);
         }
