@@ -70,11 +70,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
             string pair = vars.ContainsKey("CurrencyPair") ? vars["CurencyPair"].ToString() : "";
             string method = vars["Method"].ToString();
             string parameters = vars.ContainsKey("Params") ? vars["Params"].ToString() : "";
-            bool skipInit = vars.ContainsKey("SkipInit") ? (bool)vars["SkipInit"] : false; ;
+            bool skipInit = vars.ContainsKey("SkipInit") ? (bool)vars["SkipInit"] : false;
 
             string initJson = skipInit ? "" : $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
             string inputJson =
-                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters} \"id\": {requestId++ + 1}}}";
+                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {requestId++ + 1}}}";
             string ipAddress = vars["IpAddress"].ToString();
             int port = Convert.ToInt32(vars["Port"]);
 
@@ -96,8 +96,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 
                 socket.Shutdown(SocketShutdown.Send);
                 socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
-
-                socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
+                
             }
             var responseJson = Encoding.ASCII.GetString(receiveBytes);
             return JObject.Parse(responseJson);
