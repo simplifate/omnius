@@ -110,13 +110,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 // Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}
                 var response = httpWebRequest.GetResponse();
 
-				string outputJsonString = "";
-                using (StreamReader reader = new StreamReader(httpWebRequest.GetRequestStream()))
-                {
-                    outputJsonString = reader.ReadToEnd();
-                }
+                Stream responseStream = response.GetResponseStream();
+                StreamReader responseReader = new StreamReader(responseStream);
+                string outputJsonString = responseReader.ReadToEnd();
 
-				var outputJToken = (JObject)JToken.Parse(outputJsonString);
+                var outputJToken = (JObject)JToken.Parse(outputJsonString);
 				outputVars["Result"] = outputJToken["result"];
 
 				outputVars["Error"] = outputJToken["Error"];
