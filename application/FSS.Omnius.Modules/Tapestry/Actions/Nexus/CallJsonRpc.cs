@@ -83,13 +83,15 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 				var context = DBEntities.appInstance(core.Entitron.Application);
 				var service = context.WSs.First(c => c.Name == wsName);
 
-				string endpointPath = string.Format("{0}/{1}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                string endpointPath = string.Format("{0}/{1}", service.REST_Base_Url.TrimEnd('/'), endpoint.Trim('/'));
 
 				// Create request
 				var httpWebRequest = (HttpWebRequest)WebRequest.Create(endpointPath);
 				httpWebRequest.Method = "POST";
 				httpWebRequest.ContentType = "application/json";
 				httpWebRequest.Accept = "application/json";
+                httpWebRequest.KeepAlive = false;
 
                 foreach (string header in customHeaders)
                 {
@@ -99,16 +101,14 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                 // Build inputJson
                 // Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
                 string inputJson =
-					$"{{\"jsonrpc\": \"2.0\", \"method\": {method}, \"params\": {parameters}, \"id\": {GenerateJsonId()}";
+                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {GenerateJsonId()}}}";
                 byte[] postJsonBytes = Encoding.UTF8.GetBytes(inputJson);
                 httpWebRequest.ContentLength = postJsonBytes.Length;
-                using (StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    writer.Write(postJsonBytes);
-                }
+                Stream requestStream = httpWebRequest.GetRequestStream();
+                requestStream.Write(postJsonBytes, 0, postJsonBytes.Length);
 
-				// Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}
-				var response = httpWebRequest.GetResponse();
+                // Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}
+                var response = httpWebRequest.GetResponse();
 
 				string outputJsonString = "";
                 using (StreamReader reader = new StreamReader(httpWebRequest.GetRequestStream()))
