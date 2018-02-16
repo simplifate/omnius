@@ -14,7 +14,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
         public static int requestId = 0;
         public override int Id => 19856;
 
-        public override string[] InputVar => new string[] { "IpAddress", "Port", "CurencyPair" };
+        public override string[] InputVar => new string[] { "IpAddress", "Port", "CurencyPair", "Method", "?Params" };
 
         public override string Name => "Market Deph Action";
 
@@ -24,28 +24,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            DBConnection db = Modules.Entitron.Entitron.i;
-
+            string method = vars["Method"].ToString();
+            string parameters = "[]";
+            if (vars["Params"] != null)
+            {
+                parameters = $"[{vars["Params"]}]";
+            }
             string pair = vars["CurencyPair"].ToString();
             string initJson = $"{{\"jsonrpc\": \"2.0\", \"method\": \"init\", \"params\": {{\"market\" : \"{pair}\"}}, \"id\": {requestId++}}}";
             string inputJson =
-                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"Orderbook.get\", \"params\": [], \"id\": {requestId++ + 1}}}";
+                    $"{{\"jsonrpc\": \"2.0\", \"method\": \"{method}\", \"params\": {parameters}, \"id\": {requestId++ + 1}}}";
             string ipAddress = vars["IpAddress"].ToString();
             int port = Convert.ToInt32(vars["Port"]);
-            var result = SendJsonOverTCP(ipAddress, port, initJson, inputJson);
-            var orderCashTable = db.Table("order_book", false);
-
-            foreach (var order in (JArray)result["result"])
-            {
-                DBItem row = new DBItem(db, orderCashTable);
-                row["order_id"] = order[0].ToString();
-                row["buy_sell"] = order[1].ToString();
-                row["price"] = (double)order[2];
-                row["amount"] = (double)order[3];
-                orderCashTable.Add(row);
-            }
-
-            db.SaveChanges();
+            var result = SendJsonOverTCP(ipAddress, port,initJson,inputJson);
+            outputVars["Result"] = result;
         }
 
         public JObject SendJsonOverTCP(string host, int port, string initJson, string json, int receivedBufferSize = 20060)

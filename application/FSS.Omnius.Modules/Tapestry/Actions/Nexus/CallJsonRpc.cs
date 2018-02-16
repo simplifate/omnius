@@ -25,14 +25,9 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		}
 		#endregion
 
-		private const string WsName = "WSName";
-		private const string Method = "Method";
-		private const string Params = "Params";
-		private const string Endpoint = "?Endpoint";
-
 		public override int Id => 3012;
 
-		public override string[] InputVar => new string[] { WsName, Method, Params, Endpoint };
+		public override string[] InputVar => new string[] { "WsName", "Method", "Params", "?Endpoint", "?v$CustomHeaders" };
 
 		public override string Name => "Call JSON RPC";
 
@@ -44,12 +39,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 		{
 			try
 			{
-				string wsName = (string)vars[WsName];
-				string method = (string)vars[Method];
-				string parameters = (string)vars[Params];
-				string endpoint = null;
-                if (vars[Endpoint] != null)
-                    endpoint = (string)vars[Endpoint];
+				string wsName = (string)vars["WsName"];
+				string method = (string)vars["Method"];
+				string parameters = (string)vars["Params"];
+                List<object> customHeaders = vars.ContainsKey("CustomHeaders") ? (List<object>)vars["CustomHeaders"] : new List<object>();
+                string endpoint = vars.ContainsKey("Endpoint") ? (string)vars["Endpoint"] : "";
                 // vezmu uri
                 CORE.CORE core = (CORE.CORE)vars["__CORE__"];
 				var context = DBEntities.appInstance(core.Application);
@@ -63,14 +57,20 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
 				httpWebRequest.ContentType = "application/json";
 				httpWebRequest.Accept = "application/json";
 
-				// Build inputJson
-				// Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
-				string inputJson =
+                foreach (string header in customHeaders)
+                {
+                    httpWebRequest.Headers.Add(header);
+                }
+
+                // Build inputJson
+                // Example form of the request: {"jsonrpc": "2.0", "method": "subtract", "params": {"minuend": 42, "subtrahend": 23}, "id": 3}
+                string inputJson =
 					$"{{\"jsonrpc\": \"2.0\", \"method\": {method}, \"params\": {parameters}, \"id\": {GenerateJsonId()}";
-				httpWebRequest.ContentLength = inputJson.Length;
+                byte[] postJsonBytes = Encoding.UTF8.GetBytes(inputJson);
+                httpWebRequest.ContentLength = postJsonBytes.Length;
                 using (StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    writer.Write(inputJson);
+                    writer.Write(postJsonBytes);
                 }
 
 				// Example form of the response {"jsonrpc": "2.0", "result": 19, "id": 3}

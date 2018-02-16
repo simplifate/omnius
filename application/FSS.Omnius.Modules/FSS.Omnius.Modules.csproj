@@ -1222,6 +1222,7 @@
     <Compile Include="Tapestry\Actions\Apps\XMU\GetColdWalletsBalanceAction.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\MarketDeph Action.cs" />
     <Compile Include="Tapestry\Actions\Apps\XMU\ParseExchangeRates.cs" />
+    <Compile Include="Tapestry\Actions\Entitron\AddToJArray.cs" />
     <Compile Include="Tapestry\Actions\Entitron\AddToListAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\Dictionary2JtokenAction.cs" />
     <Compile Include="Tapestry\Actions\Entitron\GetHostUrl.cs" />
