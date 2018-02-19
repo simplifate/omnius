@@ -55,7 +55,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             DateTime dateTime = (DateTime)vars["Input"];
             string format = vars.ContainsKey("Format") ? (string)vars["Format"] : "o";
 
-            outputVars["Result"] = dateTime.ToUniversalTime().ToString(format);
+            outputVars["Result"] = dateTime.ToLocalTime().ToString(format);
         }
     }
 }
