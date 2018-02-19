@@ -53,11 +53,11 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Entitron
 
         public override void InnerRun(Dictionary<string, object> vars, Dictionary<string, object> outputVars, Dictionary<string, object> InvertedInputVars, Message message)
         {
-            double timestamp = Convert.ToDouble(vars["Int"]);
+            int timestamp = Convert.ToInt32(vars["Int"]);
 
-            System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
-            outputVars["Result"] = dateTime.AddSeconds(timestamp).ToUniversalTime();
+            outputVars["Result"] = dateTime.AddSeconds(timestamp).ToLocalTime();
         }
     }
 }
