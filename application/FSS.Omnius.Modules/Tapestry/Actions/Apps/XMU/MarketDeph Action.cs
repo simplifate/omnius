@@ -75,6 +75,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 row.createProperty(1, "buy_sell", order[1].ToString());
                 row.createProperty(2, "price", (double)order[2]);
                 row.createProperty(3, "amount", (double)order[3]);
+                row.createProperty(4, "pair", pair);
                 orderCashTable.Add(row);
                 core.Entitron.Application.SaveChanges();
             }
@@ -83,6 +84,7 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
 
         public JObject SendJsonOverTCP(string host, int port, string initJson, string json, int receivedBufferSize = 20060)
         {
+            var receiveInitBytes = new byte[receivedBufferSize];
             var receiveBytes = new byte[receivedBufferSize];
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
@@ -90,14 +92,13 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 socket.Connect(host, port);
                 socket.Send(Encoding.ASCII.GetBytes(initJson + "\n"));
 
-
+                socket.Receive(receiveInitBytes, receiveInitBytes.Length, SocketFlags.None);
 
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
 
-                socket.Shutdown(SocketShutdown.Send);
                 socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
 
-                socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
+                socket.Shutdown(SocketShutdown.Both);
             }
             var responseJson = Encoding.ASCII.GetString(receiveBytes);
             return JObject.Parse(responseJson);

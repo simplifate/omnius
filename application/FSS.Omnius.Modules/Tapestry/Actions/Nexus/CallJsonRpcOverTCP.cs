@@ -84,19 +84,21 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         }
         public JObject SendJsonOverTCP(string host, int port, string initJson, string json, bool skipInit = false, int receivedBufferSize = 20060)
         {
+            var receiveInitBytes = new byte[receivedBufferSize];
             var receiveBytes = new byte[receivedBufferSize];
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.ReceiveTimeout = 10000;
                 socket.Connect(host, port);
-                if(!skipInit)
+                if (!skipInit)
+                {
                     socket.Send(Encoding.ASCII.GetBytes(initJson + "\n"));
-
+                    socket.Receive(receiveInitBytes, receiveBytes.Length, SocketFlags.None);
+                }
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
-
-                socket.Shutdown(SocketShutdown.Send);
                 socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
-                
+
+                socket.Shutdown(SocketShutdown.Both);
             }
             var responseJson = Encoding.ASCII.GetString(receiveBytes);
             return JObject.Parse(responseJson);
