@@ -86,6 +86,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
         {
             var receiveInitBytes = new byte[receivedBufferSize];
             var receiveBytes = new byte[receivedBufferSize];
+            string responseJson = "";
+
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.ReceiveTimeout = 10000;
@@ -96,12 +98,18 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.Nexus
                     socket.Receive(receiveInitBytes, receiveBytes.Length, SocketFlags.None);
                 }
                 socket.Send(Encoding.ASCII.GetBytes(json + "\n"));
-                socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.None);
+                while (socket.Available > 0)
+                {
+                    socket.Receive(receiveBytes, receiveBytes.Length, SocketFlags.Partial);
+
+                    responseJson += Encoding.ASCII.GetString(receiveBytes);
+                    receiveBytes = new byte[receivedBufferSize];
+                }
 
                 socket.Shutdown(SocketShutdown.Both);
             }
-            var responseJson = Encoding.ASCII.GetString(receiveBytes);
-            return JObject.Parse(responseJson);
+            JObject Parsed = string.IsNullOrEmpty(responseJson) ? new JObject() : JObject.Parse(responseJson);
+            return Parsed;
         }
     }
 }
