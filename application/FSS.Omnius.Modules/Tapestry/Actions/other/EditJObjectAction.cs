@@ -63,7 +63,12 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             {
                 string propertyName = (string)vars[$"PropertyName[{i}]"];
                 var value = vars[$"Value[{i}]"];
-                jObject.Property(propertyName).Value = new JValue(value);
+                if (jObject.Property(propertyName) != null) {
+                    jObject.Property(propertyName).Value = new JValue(value);
+                }
+                else {
+                    jObject.Add(propertyName, new JValue(value));
+                }
             }
 
             outputVars["Result"] = jObject;
