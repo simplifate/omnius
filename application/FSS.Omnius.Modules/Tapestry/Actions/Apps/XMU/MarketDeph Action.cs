@@ -66,7 +66,6 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
             int port = Convert.ToInt32(vars["Port"]);
             var result = SendJsonOverTCP(ipAddress, port, initJson, inputJson);
             var orderCashTable = core.Entitron.GetDynamicTable("order_book", false);
-            core.Entitron.Application.SaveChanges();
 
             foreach (var order in (JArray)result["result"])
             {
@@ -77,8 +76,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 row.createProperty(3, "amount", (double)order[3]);
                 row.createProperty(4, "pair", pair);
                 orderCashTable.Add(row);
-                core.Entitron.Application.SaveChanges();
             }
+            core.Entitron.Application.SaveChanges();
 
         }
 
@@ -108,7 +107,8 @@ namespace FSS.Omnius.Modules.Tapestry.Actions.other
                 socket.Shutdown(SocketShutdown.Both);
             }
 
-            return JObject.Parse(responseJson);
+            JObject Parsed = string.IsNullOrEmpty(responseJson) ? new JObject() : JObject.Parse(responseJson);
+            return Parsed;
         }
     }
 }
